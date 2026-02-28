@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Related Documents - Dependency Chain Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111419;
+      --surface: #171d25;
+      --surface-2: #1f2833;
+      --text: #edf3fa;
+      --muted: #9aa9bc;
+      --accent: #3b82f6;
+      --border: rgba(154, 169, 188, 0.26);
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --font-sans: "Work Sans", "Helvetica Neue", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: rgba(71, 85, 105, 0.26);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 42px 18px 60px;
+    }
+
+    .eyebrow {
+      font: 600 11px/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.55rem;
+    }
+
+    h1 {
+      margin: 12px 0 10px;
+      font-size: clamp(1.65rem, 2.8vw, 2.2rem);
+      line-height: 1.12;
+    }
+
+    .intro {
+      margin: 0 0 20px;
+      color: var(--muted);
+      max-width: 75ch;
+    }
+
+    .layout {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 980px) {
+      .layout {
+        grid-template-columns: 250px minmax(0, 1fr);
+      }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font: 600 0.78rem/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .stage-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .stage-list li {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+      padding: 8px 10px;
+      font-size: 0.86rem;
+    }
+
+    .chain {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      padding: 10px;
+    }
+
+    @media (min-width: 740px) {
+      .row {
+        grid-template-columns: 120px minmax(0, 1fr) auto;
+        align-items: center;
+      }
+    }
+
+    .id {
+      font: 600 0.74rem/1 var(--font-mono);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .path {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      min-width: 0;
+      font-size: 0.9rem;
+    }
+
+    .node {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      background: var(--surface);
+    }
+
+    .arrow {
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .impact {
+      font: 600 0.72rem/1 var(--font-mono);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 8px;
+      white-space: nowrap;
+    }
+
+    .impact.ok { color: var(--ok); }
+    .impact.warn { color: var(--warn); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">15 // Related Documents</div>
+    <h1>Dependency Chain Index</h1>
+    <p class="intro">This index shows document dependency order so teams can validate upstream context before editing downstream guides.</p>
+
+    <section class="layout" aria-label="Dependency chain index">
+      <aside class="panel" aria-labelledby="stage-order">
+        <h2 id="stage-order">Stage Order</h2>
+        <ol class="stage-list">
+          <li>1. Foundations</li>
+          <li>2. Architecture</li>
+          <li>3. Runtime</li>
+          <li>4. Operations</li>
+          <li>5. Troubleshooting</li>
+        </ol>
+      </aside>
+
+      <article class="panel" aria-labelledby="chains">
+        <h2 id="chains">Indexed Chains</h2>
+        <div class="chain">
+          <div class="row">
+            <div class="id">CHAIN-01</div>
+            <div class="path">
+              <span class="node">README.md</span><span class="arrow">-></span>
+              <span class="node">Setup Guide</span><span class="arrow">-></span>
+              <span class="node">Configuration Matrix</span>
+            </div>
+            <span class="impact ok">Stable</span>
+          </div>
+
+          <div class="row">
+            <div class="id">CHAIN-02</div>
+            <div class="path">
+              <span class="node">Architecture Overview</span><span class="arrow">-></span>
+              <span class="node">Adapter Contracts</span><span class="arrow">-></span>
+              <span class="node">Extensibility Playbook</span>
+            </div>
+            <span class="impact ok">Stable</span>
+          </div>
+
+          <div class="row">
+            <div class="id">CHAIN-03</div>
+            <div class="path">
+              <span class="node">Security Baseline</span><span class="arrow">-></span>
+              <span class="node">Policy Overrides</span><span class="arrow">-></span>
+              <span class="node">Audit Checklist</span>
+            </div>
+            <span class="impact warn">Review</span>
+          </div>
+
+          <div class="row">
+            <div class="id">CHAIN-04</div>
+            <div class="path">
+              <span class="node">Integration Guide</span><span class="arrow">-></span>
+              <span class="node">Provider Registry</span><span class="arrow">-></span>
+              <span class="node">Incident Runbook</span>
+            </div>
+            <span class="impact warn">Review</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

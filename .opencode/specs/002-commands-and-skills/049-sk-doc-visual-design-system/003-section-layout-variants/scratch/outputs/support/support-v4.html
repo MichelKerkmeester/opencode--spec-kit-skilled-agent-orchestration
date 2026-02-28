@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="ve-artifact-type" content="auto">
-  <meta name="ve-source-doc" content="support-playbook">
-  <meta name="ve-speckit-level" content="2">
-  <meta name="ve-view-mode" content="traceability-board">
-  <title>Support Playbook</title>
+  <meta name="ve-artifact-type" content="design-variant">
+  <meta name="ve-source-doc" content="support">
+  <meta name="ve-speckit-level" content="n/a">
+  <meta name="ve-view-mode" content="artifact-dashboard">
+  <title>Support: Service Playbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* CSS Variables embedded for standalone encapsulation */
     :root {
       --bg: #131314;
       --surface: #1c1c1e;
@@ -22,536 +25,268 @@
       --accent-muted: rgba(59, 130, 246, 0.1);
       --border: rgba(255, 255, 255, 0.08);
       --border-light: rgba(255, 255, 255, 0.05);
-      --success: #22c55e;
+      --border-faint: rgba(255, 255, 255, 0.02);
       --warning: #ffbd2e;
+      --warning-alpha: rgba(255, 189, 46, 0.15);
       --error: #ff5f56;
-      --zinc-200: #e4e4e7;
-      --zinc-300: #d4d4d8;
-      --zinc-400: #a1a1aa;
-      --zinc-500: #71717a;
-      
-      --font-sans: 'Helvetica', 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      
-      --container-max: 96rem;
       --radius-card: 12px;
-      --radius-bento: 1rem;
+      --radius-bento: 16px;
+      --font-sans: 'Helvetica', 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
       --lh-base: 1.75;
-      
-      --transition-main: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      --lh-tight: 1.1;
+      --container-max: 96rem;
+      --duration: 0.3s;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f4f4f5;
-        --surface: #ffffff;
-        --surface-l2: #f4f4f5;
-        --surface-l3: #e4e4e7;
-        --text: #18181b;
-        --text-muted: #71717a;
-        --border: rgba(0, 0, 0, 0.1);
-        --border-light: rgba(0, 0, 0, 0.05);
-        --zinc-200: #3f3f46;
-        --zinc-300: #52525b;
-        --zinc-400: #71717a;
-      }
-    }
-
-    html {
-      box-sizing: border-box;
+    body {
       background-color: var(--bg);
       color: var(--text);
       font-family: var(--font-sans);
       line-height: var(--lh-base);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-
-    body {
       margin: 0;
       padding: 0;
+    }
+
+    .font-mono { 
+      font-family: var(--font-mono); 
+    }
+    
+    .playbook-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      transition: border-color var(--duration) var(--ease), background-color var(--duration) var(--ease);
+    }
+
+    .playbook-card:hover {
+      border-color: var(--border-light);
+      background-color: var(--surface-l2);
+    }
+
+    .escalation-checkpoint {
+      background-color: var(--warning-alpha);
+      border-left: 3px solid var(--warning);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .faq-accordion summary {
+      cursor: pointer;
+      list-style: none;
+    }
+    .faq-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s var(--ease) forwards;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
       }
-    }
-
-    /* Structural Layout */
-    .playbook-container {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      padding: clamp(2rem, 5vw, 4rem);
-    }
-
-    .playbook-header {
-      margin-bottom: 3rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 2rem;
-    }
-
-    .playbook-title {
-      font-size: 2.25rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem 0;
-      letter-spacing: -0.02em;
-    }
-
-    .playbook-subtitle {
-      color: var(--text-muted);
-      margin: 0;
-      font-size: 1.125rem;
-      max-width: 65ch;
-    }
-
-    .playbook-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    @media (min-width: 1024px) {
-      .playbook-grid {
-        grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+      .fade-in-up {
+        opacity: 1;
+        transform: none;
+        animation: none;
       }
-    }
-
-    /* Troubleshooting Playbook Lane */
-    .process-lane {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .process-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-bento);
-      padding: 1.5rem;
-      position: relative;
-      transition: var(--transition-main);
-    }
-
-    .process-card:hover {
-      border-color: var(--border-light);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .incident-type {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-    }
-
-    .indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-    }
-    .indicator.critical { background-color: var(--error); }
-    .indicator.degraded { background-color: var(--warning); }
-    .indicator.minor { background-color: var(--accent); }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0 0 0.5rem 0;
-      color: var(--text);
-    }
-
-    .card-desc {
-      color: var(--zinc-300);
-      font-size: 0.875rem;
-      margin: 0 0 1.5rem 0;
-      max-width: 65ch;
-    }
-
-    .action-steps {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1.5rem 0;
-      border-left: 2px solid var(--border);
-      margin-left: 0.5rem;
-    }
-
-    .step-item {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 1.25rem;
-      font-size: 0.875rem;
-      color: var(--zinc-200);
-    }
-
-    .step-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .step-item::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 0.5rem;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--surface-l2);
-      border: 2px solid var(--border);
-    }
-
-    .step-code {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      background: var(--surface-l2);
-      padding: 0.75rem;
-      border-radius: 6px;
-      margin-top: 0.5rem;
-      color: var(--zinc-300);
-      border: 1px solid var(--border-light);
-      overflow-x: auto;
-    }
-    
-    .badge-mono {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      background: var(--surface-l2);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      color: var(--zinc-300);
-      border: 1px solid var(--border-light);
-    }
-
-    /* Escalation Protocol Focus */
-    .escalation-checkpoint {
-      background: var(--surface-l2);
-      border-left: 3px solid var(--error);
-      padding: 1.25rem;
-      border-radius: 0 var(--radius-card) var(--radius-card) 0;
-      font-size: 0.875rem;
-    }
-
-    .escalation-title {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--error);
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-    }
-
-    .escalation-desc {
-      color: var(--zinc-300);
-      margin: 0;
-      font-size: 0.875rem;
-      line-height: 1.6;
-    }
-
-    /* Sidebar Context & FAQ */
-    .support-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      position: sticky;
-      top: 2rem;
-    }
-
-    .status-panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 1.5rem;
-    }
-
-    .section-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-bottom: 1.25rem;
-      font-weight: 600;
-    }
-
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--border-light);
-      font-size: 0.875rem;
-    }
-    .status-row:last-child {
-      border-bottom: none;
-      padding-bottom: 0;
-    }
-
-    .status-label {
-      color: var(--zinc-300);
-    }
-
-    .status-value {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-    }
-
-    .status-value.ok { color: var(--success); }
-
-    .faq-accordion {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      background: var(--surface);
-    }
-
-    .faq-item {
-      border-bottom: 1px solid var(--border-light);
-    }
-    .faq-item:last-child {
-      border-bottom: none;
-    }
-
-    .faq-summary {
-      padding: 1.25rem;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      user-select: none;
-      color: var(--zinc-200);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.2s ease;
-      outline: none;
-    }
-
-    .faq-summary:hover, .faq-summary:focus-visible {
-      background: var(--surface-l2);
-    }
-
-    .faq-summary::after {
-      content: '+';
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
-
-    details[open] .faq-summary::after {
-      content: '-';
-    }
-    
-    details[open] .faq-summary {
-      background: var(--surface-l2);
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .faq-content {
-      padding: 1.25rem;
-      font-size: 0.875rem;
-      color: var(--zinc-400);
-      line-height: 1.6;
-      background: var(--bg);
-    }
-    
-    .faq-content a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    
-    .faq-content a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-<main class="playbook-container" aria-labelledby="support-heading">
+<section id="{{section_id|default('support-playbook')}}" class="w-full max-w-[var(--container-max)] mx-auto px-6 lg:px-12 py-16">
   
-  <header class="playbook-header">
-    <h1 id="support-heading" class="playbook-title">Service Playbook &amp; Escalation</h1>
-    <p class="playbook-subtitle">Diagnostic procedures, remediation steps, and hard escalation boundaries for resolving system anomalies before requesting Tier 2 support.</p>
+  <header class="mb-12 border-b border-[var(--border)] pb-8 fade-in-up">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[var(--surface-l2)] border border-[var(--border-faint)] text-[11px] font-medium tracking-wide text-[var(--text-muted)] uppercase mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--warning)]"></span>
+          Service Playbook
+        </div>
+        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight leading-[var(--lh-tight)]">{{headline|default("Support & Escalation Playbook")}}</h2>
+        <p class="mt-4 text-[var(--text-muted)]">{{description|default("Standardized response procedures, diagnostic checklists, and defined escalation paths for service disruptions.")}}</p>
+      </div>
+      <div class="text-left md:text-right flex-shrink-0 bg-[var(--surface)] p-4 rounded-lg border border-[var(--border-faint)]">
+        <div class="text-[11px] font-mono text-[var(--text-muted)] uppercase tracking-wider">Current Status</div>
+        <div class="flex items-center md:justify-end gap-2 mt-1.5">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          <span class="text-sm font-medium text-[var(--text)]">All Systems Operational</span>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <div class="playbook-grid">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
     
-    <!-- Left Column: Procedural Pathways -->
-    <section class="process-lane" aria-label="Troubleshooting Procedures">
+    <aside class="lg:col-span-4 space-y-8 fade-in-up" style="animation-delay: 0.1s;">
       
-      <!-- Critical Incident -->
-      <article class="process-card">
-        <header class="card-header">
-          <div class="incident-type">
-            <span class="indicator critical" aria-hidden="true"></span>
-            Critical Impact
-          </div>
-          <span class="badge-mono">ERR_SVC_DOWN</span>
-        </header>
+      <div class="bg-[var(--surface)] border border-[var(--border-faint)] rounded-[var(--radius-card)] p-6">
+        <h3 class="text-xs font-mono font-medium text-[var(--text-muted)] uppercase tracking-widest mb-4 border-b border-[var(--border-faint)] pb-3">Tier 0: Self-Serve FAQ</h3>
         
-        <h2 class="card-title">Core Service Unresponsive (Crashloop)</h2>
-        <p class="card-desc">The primary application daemon fails to bind to the required port or continuously restarts, causing a total localized outage.</p>
-        
-        <ol class="action-steps">
-          <li class="step-item">
-            <strong>Verify port availability:</strong> Ensure no zombie processes are holding the designated binding port.
-            <code class="step-code">sudo lsof -i :8080</code>
-          </li>
-          <li class="step-item">
-            <strong>Check daemon logs for panic traces:</strong> Identify syntax faults or memory exhaustion signals.
-            <code class="step-code">journalctl -u core-service -n 50 --no-pager</code>
-          </li>
-          <li class="step-item">
-            <strong>Validate configuration syntax:</strong> Run the dry-run parser against the active configuration map.
-            <code class="step-code">app-cli validate-config /etc/app/config.yml</code>
-          </li>
-        </ol>
+        <div class="space-y-1 divide-y divide-[var(--border-faint)]">
+          <details class="faq-accordion group py-3">
+            <summary class="flex justify-between items-center text-sm font-medium text-[var(--text)] select-none hover:text-[var(--accent)] transition-colors">
+              {{question1|default("Configuration validation failing?")}}
+              <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="pt-3 text-sm text-[var(--text-muted)] leading-relaxed">
+              {{answer1|default("Ensure all required environment variables are set. Run validation script with --verbose flag to identify the specific missing key.")}}
+            </div>
+          </details>
+          
+          <details class="faq-accordion group py-3">
+            <summary class="flex justify-between items-center text-sm font-medium text-[var(--text)] select-none hover:text-[var(--accent)] transition-colors">
+              {{question2|default("Deployment stuck in pending?")}}
+              <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="pt-3 text-sm text-[var(--text-muted)] leading-relaxed">
+              {{answer2|default("Check the runner logs. If the queue is saturated, deployments may pause. Do not cancel manually; it will auto-resolve within 10 minutes.")}}
+            </div>
+          </details>
 
-        <div class="escalation-checkpoint">
-          <div class="escalation-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-            Hard Escalation Checkpoint
-          </div>
-          <p class="escalation-desc">If the configuration validates but the service panics on startup, capture the stack trace and immediately page the <strong>Platform Engineering</strong> on-call. Do not attempt blind rollbacks.</p>
-        </div>
-      </article>
-
-      <!-- Degraded State -->
-      <article class="process-card">
-        <header class="card-header">
-          <div class="incident-type">
-            <span class="indicator degraded" aria-hidden="true"></span>
-            Degraded State
-          </div>
-          <span class="badge-mono">WARN_LATENCY</span>
-        </header>
-        
-        <h2 class="card-title">Elevated API Latency</h2>
-        <p class="card-desc">Requests are completing, but p99 latency has exceeded the 500ms threshold, triggering upstream circuit breakers.</p>
-        
-        <ol class="action-steps">
-          <li class="step-item">
-            <strong>Inspect connection pool metrics:</strong> Ensure the database connection pool is not exhausted.
-            <code class="step-code">curl -s http://localhost:9090/metrics | grep db_pool_active</code>
-          </li>
-          <li class="step-item">
-            <strong>Identify query bottlenecks:</strong> Check slow query logs in the database cluster via the telemetry dashboard.
-          </li>
-          <li class="step-item">
-            <strong>Scale out replica sets:</strong> If the service is CPU bound, manually deploy additional read replicas.
-          </li>
-        </ol>
-
-        <div class="escalation-checkpoint" style="border-left-color: var(--warning);">
-          <div class="escalation-title" style="color: var(--warning);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            Review Checkpoint
-          </div>
-          <p class="escalation-desc">If latency persists after horizontal scaling, open a high-priority ticket with the <strong>Database Team</strong> to review indexing strategies and query plans.</p>
-        </div>
-      </article>
-
-      <!-- Minor Issue -->
-      <article class="process-card">
-        <header class="card-header">
-          <div class="incident-type">
-            <span class="indicator minor" aria-hidden="true"></span>
-            Minor Issue
-          </div>
-          <span class="badge-mono">ERR_CACHE_MISS</span>
-        </header>
-        
-        <h2 class="card-title">Cache Synchronization Failure</h2>
-        <p class="card-desc">Edge nodes are serving stale payload assets due to a breakdown in the invalidation pipeline.</p>
-        
-        <ol class="action-steps">
-          <li class="step-item">
-            <strong>Verify webhook delivery:</strong> Check the CMS webhook logs for failed payload deliveries or 5xx responses.
-          </li>
-          <li class="step-item">
-            <strong>Manually purge the edge cache:</strong> Force an immediate invalidation of the affected paths.
-            <code class="step-code">cli-tool cache purge --zone=global --path="/assets/*"</code>
-          </li>
-        </ol>
-      </article>
-
-    </section>
-
-    <!-- Right Column: Context & Metadata -->
-    <aside class="support-sidebar" aria-label="Support Context and FAQ">
-      
-      <div class="status-panel">
-        <h3 class="section-label">Diagnostic Context</h3>
-        <div class="status-row">
-          <span class="status-label">Runbook Version</span>
-          <span class="status-value text-muted">v4.0.0</span>
-        </div>
-        <div class="status-row">
-          <span class="status-label">System Status</span>
-          <span class="status-value ok">OPERATIONAL</span>
-        </div>
-        <div class="status-row">
-          <span class="status-label">Last Audit</span>
-          <span class="status-value text-muted">2026-02-28</span>
-        </div>
-        <div class="status-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
-          <span class="status-label">On-Call Tier 1</span>
-          <span class="status-value">@sre-primary</span>
+          <details class="faq-accordion group py-3">
+            <summary class="flex justify-between items-center text-sm font-medium text-[var(--text)] select-none hover:text-[var(--accent)] transition-colors">
+              {{question3|default("Authentication token expired?")}}
+              <svg class="w-4 h-4 text-[var(--text-muted)] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="pt-3 text-sm text-[var(--text-muted)] leading-relaxed">
+              {{answer3|default("Use the CLI utility to refresh your session: `auth-cli refresh`. Browser sessions require a hard reload after token renewal.")}}
+            </div>
+          </details>
         </div>
       </div>
 
-      <div>
-        <h3 class="section-label">Self-Serve FAQs</h3>
-        <div class="faq-accordion">
-          
-          <details class="faq-item" name="faq">
-            <summary class="faq-summary">How do I request emergency access?</summary>
-            <div class="faq-content">
-              Submit a break-glass request via the internal identity portal. Approval is automatically granted to members of the <code>sysadmin</code> and <code>sre</code> groups for 2 hours. All actions are audited.
-            </div>
-          </details>
-
-          <details class="faq-item" name="faq">
-            <summary class="faq-summary">Where are historical incident reports?</summary>
-            <div class="faq-content">
-              Post-mortems and incident timelines are archived in the <a href="#">Reliability Wiki</a>. Ensure you have the correct IAM roles to view restricted root-cause analyses.
-            </div>
-          </details>
-
-          <details class="faq-item" name="faq">
-            <summary class="faq-summary">Can I bypass an escalation checkpoint?</summary>
-            <div class="faq-content">
-              No. Escalation checkpoints are mandatory guardrails designed to prevent cascading failures. Proceeding past a checkpoint without domain expert approval violates the SLA operating agreement.
-            </div>
-          </details>
-
-        </div>
+      <div class="bg-[var(--surface-l2)] border border-[var(--border-light)] rounded-[var(--radius-card)] p-5">
+         <h3 class="text-xs font-mono font-medium text-[var(--text-muted)] uppercase tracking-widest mb-3">Diagnostic Tools</h3>
+         <ul class="space-y-3 text-sm">
+           <li><a href="#" class="text-[var(--text)] hover:text-[var(--accent)] transition-colors flex items-center gap-3"><span class="font-mono text-[10px] bg-[var(--surface-l3)] border border-[var(--border)] px-1.5 py-0.5 rounded text-[var(--text-muted)]">CMD</span> Run Healthcheck</a></li>
+           <li><a href="#" class="text-[var(--text)] hover:text-[var(--accent)] transition-colors flex items-center gap-3"><span class="font-mono text-[10px] bg-[var(--surface-l3)] border border-[var(--border)] px-1.5 py-0.5 rounded text-[var(--text-muted)]">LOG</span> View Audit Trail</a></li>
+         </ul>
       </div>
 
     </aside>
 
+    <div class="lg:col-span-8 space-y-6 fade-in-up" style="animation-delay: 0.2s;">
+      
+      <h3 class="text-xs font-mono font-medium text-[var(--text-muted)] uppercase tracking-widest border-b border-[var(--border-faint)] pb-3">Tier 1 & 2: Process Playbooks</h3>
+
+      <article class="playbook-card p-0 overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-[var(--border-faint)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--surface)]">
+          <div class="flex items-center gap-4">
+             <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[var(--surface-l3)] flex items-center justify-center border border-[var(--border-light)]">
+               <svg class="w-5 h-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+             </div>
+             <div>
+               <h4 class="text-base font-semibold text-[var(--text)]">{{issue1_name|default("Service Degradation / Timeout")}}</h4>
+               <p class="text-xs font-mono text-[var(--text-muted)] mt-1 tracking-wide">Playbook ID: TS-01-NET</p>
+             </div>
+          </div>
+          <span class="inline-flex px-2.5 py-1 bg-[var(--surface-l2)] border border-[var(--border-light)] text-[10px] font-mono rounded text-[var(--text-muted)] uppercase tracking-wider">Severity: Medium</span>
+        </div>
+
+        <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h5 class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4">Symptoms & Triggers</h5>
+            <ul class="space-y-2.5 text-sm text-[var(--text-muted)] list-disc list-inside">
+              <li>API requests drop by > 15%</li>
+              <li>Latency spikes above 500ms</li>
+              <li>Client reports of 504 Gateway Timeouts</li>
+            </ul>
+          </div>
+          
+          <div>
+             <h5 class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4">Action Plan</h5>
+             <ol class="relative border-l border-[var(--border-faint)] ml-2 space-y-5">
+                <li class="pl-5 relative">
+                  <div class="absolute w-2.5 h-2.5 bg-[var(--surface-l3)] border-[2px] border-[var(--border)] rounded-full -left-[5.5px] top-1"></div>
+                  <p class="text-sm font-medium text-[var(--text)]">Verify Load Balancer</p>
+                  <p class="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed">Check active node count in the infrastructure dashboard.</p>
+                </li>
+                <li class="pl-5 relative">
+                  <div class="absolute w-2.5 h-2.5 bg-[var(--surface-l3)] border-[2px] border-[var(--border)] rounded-full -left-[5.5px] top-1"></div>
+                  <p class="text-sm font-medium text-[var(--text)]">Restart Stalled Workers</p>
+                  <p class="text-[11px] font-mono text-[var(--text-muted)] mt-2 bg-[var(--surface-l2)] px-2 py-1 border border-[var(--border-faint)] rounded inline-block">pm2 reload all</p>
+                </li>
+             </ol>
+          </div>
+        </div>
+
+        <div class="bg-[var(--surface-l2)] px-5 sm:px-6 py-4 border-t border-[var(--border-faint)] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div class="escalation-checkpoint pl-4 py-1.5">
+             <p class="text-[10px] font-mono font-semibold text-[var(--warning)] uppercase tracking-widest">Escalation Checkpoint</p>
+             <p class="text-sm text-[var(--text-muted)] mt-1">If latency does not recover within 5 minutes, escalate to Tier 3.</p>
+          </div>
+          <button class="px-4 py-2 bg-[var(--surface-l3)] hover:bg-[var(--border-light)] border border-[var(--border)] rounded-md text-sm font-medium text-[var(--text)] transition-colors whitespace-nowrap">
+            Page Platform Eng
+          </button>
+        </div>
+      </article>
+
+      <article class="playbook-card p-0 overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-[var(--border-faint)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[var(--surface)]">
+          <div class="flex items-center gap-4">
+             <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[var(--surface-l3)] flex items-center justify-center border border-[var(--border-light)]">
+               <svg class="w-5 h-5 text-[var(--text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+             </div>
+             <div>
+               <h4 class="text-base font-semibold text-[var(--text)]">{{issue2_name|default("Build Pipeline Failure")}}</h4>
+               <p class="text-xs font-mono text-[var(--text-muted)] mt-1 tracking-wide">Playbook ID: TS-02-CI</p>
+             </div>
+          </div>
+          <span class="inline-flex px-2.5 py-1 bg-[var(--surface-l2)] border border-[var(--border-light)] text-[10px] font-mono rounded text-[var(--text-muted)] uppercase tracking-wider">Severity: Low</span>
+        </div>
+
+        <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h5 class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4">Symptoms & Triggers</h5>
+            <ul class="space-y-2.5 text-sm text-[var(--text-muted)] list-disc list-inside">
+              <li>Automated tests fail on main branch</li>
+              <li>Docker image build step errors out</li>
+            </ul>
+          </div>
+          
+          <div>
+             <h5 class="text-xs font-semibold text-[var(--text)] uppercase tracking-wider mb-4">Action Plan</h5>
+             <ol class="relative border-l border-[var(--border-faint)] ml-2 space-y-5">
+                <li class="pl-5 relative">
+                  <div class="absolute w-2.5 h-2.5 bg-[var(--surface-l3)] border-[2px] border-[var(--border)] rounded-full -left-[5.5px] top-1"></div>
+                  <p class="text-sm font-medium text-[var(--text)]">Clear Build Cache</p>
+                  <p class="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed">Navigate to CI settings and purge cache directory.</p>
+                </li>
+                <li class="pl-5 relative">
+                  <div class="absolute w-2.5 h-2.5 bg-[var(--surface-l3)] border-[2px] border-[var(--border)] rounded-full -left-[5.5px] top-1"></div>
+                  <p class="text-sm font-medium text-[var(--text)]">Re-trigger Pipeline</p>
+                  <p class="text-xs text-[var(--text-muted)] mt-1.5 leading-relaxed">Run pipeline manually with empty cache parameter.</p>
+                </li>
+             </ol>
+          </div>
+        </div>
+
+        <div class="bg-[var(--surface-l2)] px-5 sm:px-6 py-4 border-t border-[var(--border-faint)] flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+          <div class="pl-4 py-1.5 border-l-[3px] border-[var(--border-light)]">
+             <p class="text-[10px] font-mono font-semibold text-[var(--text)] uppercase tracking-widest">Standard Resolution</p>
+             <p class="text-sm text-[var(--text-muted)] mt-1">If failure persists, revert last commit. No page required.</p>
+          </div>
+          <button class="px-4 py-2 bg-[var(--surface-l3)] hover:bg-[var(--border-light)] border border-[var(--border)] rounded-md text-sm font-medium text-[var(--text)] transition-colors whitespace-nowrap">
+            View CI Logs
+          </button>
+        </div>
+      </article>
+
+    </div>
   </div>
-
-</main>
-
+</section>
 </body>
 </html>

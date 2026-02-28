@@ -4,432 +4,190 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="ve-artifact-type" content="design-variant">
-  <meta name="ve-source-doc" content="extensibility">
-  <meta name="ve-speckit-level" content="n/a">
-  <meta name="ve-view-mode" content="artifact-dashboard">
-  <title>Extensibility - Philosophy Practice Split</title>
-  
+  <title>Extensibility - Philosophy & Practice</title>
+  <link rel="stylesheet" href="../variables/fluid-typography.css">
+  <link rel="stylesheet" href="../variables/colors.css">
+  <link rel="stylesheet" href="../variables/typography.css">
+  <link rel="stylesheet" href="../variables/layout.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
   <style>
     :root {
-      /* Core Theme Variables (Dark Mode Default) */
+      /* Base Variable Fallbacks */
       --bg: #131314;
-      --bg-alpha: rgba(19, 19, 20, 0.85);
       --surface: #1c1c1e;
       --surface-l2: #252528;
+      --surface-l3: #2d2d30;
       --text: #fafafa;
       --text-muted: #71717a;
-      
       --accent: #3b82f6;
-      --accent-muted: rgba(59, 130, 246, 0.1);
-      --accent-border: rgba(59, 130, 246, 0.2);
-      
       --border: rgba(255, 255, 255, 0.08);
       --border-light: rgba(255, 255, 255, 0.05);
       --border-faint: rgba(255, 255, 255, 0.02);
-      
-      --success: #22c55e;
-      
-      --zinc-200: #e4e4e7;
       --zinc-300: #d4d4d8;
       --zinc-400: #a1a1aa;
+      --zinc-500: #71717a;
       
-      /* Typography & Layout Tokens */
-      --font-body: 'Inter', sans-serif;
+      --font-sans: 'Helvetica', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
+      --container-max: 96rem;
+      --radius-card: 12px;
+      --radius-bento: 16px;
       --lh-base: 1.75;
       --lh-tight: 1.1;
-      
-      --radius-card: 12px;
-      --radius-bento: 1rem;
-      
-      --glass-shadow: 0 8px 32px rgba(59, 130, 246, 0.05);
-    }
-
-    /* Dual-Theme Capability */
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #fcfcfc;
-        --bg-alpha: rgba(252, 252, 252, 0.85);
-        --surface: #ffffff;
-        --surface-l2: #f4f4f5;
-        --text: #18181b;
-        --text-muted: #52525b;
-        
-        --accent: #2563eb;
-        --accent-muted: rgba(37, 99, 235, 0.08);
-        --accent-border: rgba(37, 99, 235, 0.2);
-        
-        --border: rgba(0, 0, 0, 0.1);
-        --border-light: rgba(0, 0, 0, 0.06);
-        --border-faint: rgba(0, 0, 0, 0.03);
-        
-        --success: #16a34a;
-        
-        --zinc-200: #3f3f46;
-        --zinc-300: #52525b;
-        --zinc-400: #71717a;
-      }
-    }
-
-    /* Base Reset & Document Setup */
-    html {
-      scroll-behavior: smooth;
-      background-color: var(--bg);
-      color: var(--text);
-      box-sizing: border-box;
     }
     
-    *, *::before, *::after {
-      box-sizing: inherit;
-    }
-
-    body {
-      font-family: var(--font-body);
-      line-height: var(--lh-base);
-      font-weight: 400;
-      -webkit-font-smoothing: antialiased;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Reduced Motion Fallback */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
-      html { scroll-behavior: auto; }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
-    /* Entrance Animations */
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+    
+    body {
+      font-family: var(--font-sans);
+      line-height: var(--lh-base);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+    }
+    
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+    }
+
+    /* Variant Specific Layout: Split Pane */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    
+    @media (min-width: 1024px) {
+      .split-layout {
+        grid-template-columns: 5fr 7fr;
+        gap: 5rem;
+      }
+    }
+
+    /* Glass Card Motif */
+    .glass-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-card);
+      transition: border-color 0.3s ease;
+    }
+    .glass-card:hover {
+      border-color: var(--border);
+    }
+
+    /* File Tree Motif */
+    .file-tree-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 0.8125rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      position: relative;
+    }
+    .file-tree-item:hover {
+      background-color: var(--surface-l2);
+      color: var(--text);
+    }
+    .file-tree-line {
+      position: absolute;
+      left: 17px;
+      top: 24px;
+      bottom: -4px;
+      width: 1px;
+      background-color: var(--border-light);
+    }
+
+    /* Reveal Animation */
     .reveal {
       opacity: 0;
       transform: translateY(16px);
-      animation: reveal-keyframe 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-
-    @keyframes reveal-keyframe {
+    @keyframes fadeUp {
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-
-    /* Structural Layout */
-    .container {
-      width: 100%;
-      max-width: 96rem;
-      margin: 0 auto;
-      padding: clamp(3rem, 7.5vh, 6rem) 2rem;
-    }
-
-    .split-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 4rem;
-    }
-
-    @media (min-width: 1024px) {
-      .split-layout {
-        grid-template-columns: 4fr 7fr;
-        gap: 6rem;
-        align-items: start;
-      }
-    }
-
-    /* -------------------------------------
-       Left Column: Philosophy & Concepts
-       ------------------------------------- */
-    .philosophy-col {
-      position: sticky;
-      top: 4rem;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-    }
-    
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 1.5rem;
-      height: 1px;
-      background-color: var(--accent);
-    }
-
-    .philosophy-title {
-      font-size: clamp(2rem, 3.5vw, 2.75rem);
-      line-height: var(--lh-tight);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin: 0 0 1.5rem 0;
-      color: var(--text);
-      text-wrap: balance;
-    }
-
-    .philosophy-prose {
-      font-size: 1.125rem;
-      color: var(--zinc-400);
-      max-width: 45ch;
-      margin-bottom: 2.5rem;
-    }
-
-    .ledger-line {
-      height: 1px;
-      width: 100%;
-      background: var(--border);
-      margin: 2.5rem 0;
-    }
-
-    .core-tenet {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .tenet-num {
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      color: var(--accent);
-      padding-top: 0.35rem;
-    }
-
-    .tenet-text {
-      font-size: 0.9375rem;
-      color: var(--zinc-300);
-      line-height: 1.6;
-    }
-
-    .tenet-text strong {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* -------------------------------------
-       Right Column: Practice & Implementation
-       ------------------------------------- */
-    .practice-col {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      min-width: 0;
-    }
-
-    .glass-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-bento);
-      padding: 2rem;
-      box-shadow: var(--glass-shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .glass-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border-light), transparent);
-    }
-
-    .practice-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .practice-title {
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--zinc-200);
-      margin: 0;
-    }
-
-    .practice-badge {
-      font-family: var(--font-mono);
-      font-size: 0.6875rem;
-      padding: 0.25rem 0.625rem;
-      background: var(--surface-l2);
-      border: 1px solid var(--border);
-      border-radius: 9999px;
-      color: var(--text-muted);
-    }
-
-    .practice-desc {
-      font-size: 0.9375rem;
-      color: var(--zinc-400);
-      margin: 0 0 1.5rem 0;
-      max-width: 60ch;
-      line-height: 1.6;
-    }
-
-    .code-window {
-      background: var(--bg);
-      border: 1px solid var(--border-faint);
-      border-radius: var(--radius-card);
-      padding: 1.25rem;
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      color: var(--zinc-300);
-      overflow-x: auto;
-      white-space: pre;
-      line-height: 1.5;
-    }
-
-    .code-comment { color: var(--text-muted); }
-    .code-keyword { color: var(--accent); }
-    .code-string  { color: var(--success); }
-
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .bento-cell {
-      background: var(--surface-l2);
-      border: 1px solid var(--border-faint);
-      border-radius: var(--radius-card);
-      padding: 1.5rem;
-      transition: border-color 0.2s ease;
-    }
-
-    .bento-cell:hover {
-      border-color: var(--accent-border);
-    }
-
-    .cell-title {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--zinc-200);
-      margin: 0 0 0.5rem 0;
-    }
-
-    .cell-desc {
-      font-size: 0.875rem;
-      color: var(--zinc-400);
-      margin: 0;
-      line-height: 1.6;
-    }
-    
-    .code-inline {
-      font-family: var(--font-mono);
-      background: var(--bg);
-      padding: 0.125rem 0.375rem;
-      border-radius: 4px;
-      font-size: 0.85em;
-      border: 1px solid var(--border);
-      color: var(--zinc-200);
-    }
   </style>
 </head>
 <body>
-
-<main class="container">
-  <section id="extensibility" class="split-layout">
-    
-    <!-- Left Column: Philosophy & Concepts -->
-    <div class="philosophy-col reveal" style="animation-delay: 0ms;">
-      <div class="section-label">10 // Extensibility</div>
-      <h2 class="philosophy-title">Adapt without disruption.</h2>
-      <p class="philosophy-prose">
-        Convention over configuration. The extension model is designed to let you build on top of structural templates without rewriting the foundational layers. You own the content; the platform adapts to your project.
-      </p>
-
-      <div class="ledger-line"></div>
-
-      <div class="core-tenet">
-        <div class="tenet-num">01</div>
-        <div class="tenet-text"><strong>Isolated capabilities.</strong> Custom behaviors are encapsulated in distinct roles or skills, never polluting global state.</div>
-      </div>
-      <div class="core-tenet">
-        <div class="tenet-num">02</div>
-        <div class="tenet-text"><strong>Declarative routing.</strong> The system automatically detects and routes to new extensions without manual registry updates.</div>
-      </div>
-      <div class="core-tenet">
-        <div class="tenet-num">03</div>
-        <div class="tenet-text"><strong>Inheritable defaults.</strong> System templates act as fallbacks. Update the core once, and all extensions inherit the baseline.</div>
-      </div>
-    </div>
-
-    <!-- Right Column: Practice & Implementation -->
-    <div class="practice-col">
+  <div class="page-container px-6 lg:px-12 py-16">
+    <section id="extensibility" class="reveal">
       
-      <div class="glass-card reveal" style="animation-delay: 100ms;">
-        <header class="practice-header">
-          <h3 class="practice-title">Extension Skills</h3>
-          <span class="practice-badge">Auto-Detected</span>
-        </header>
-        <p class="practice-desc">
-          Generate a new specialized skill bounded to your workspace. The routing module will automatically map the command namespace upon generation.
+      <!-- Metadata Header -->
+      <div class="mb-10 lg:mb-16">
+        <div class="inline-flex items-center gap-3 border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 rounded-full text-[10px] font-semibold tracking-widest text-[var(--zinc-300)] mb-5 uppercase">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--text-muted)]"></span> Section 08 // Extensibility
+        </div>
+        <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-[var(--text)] mb-4" style="line-height: var(--lh-tight);">Extension Model</h2>
+        <p class="text-[var(--text-muted)] text-base max-w-2xl leading-relaxed">
+          The system architecture supports controlled adaptation. By separating conceptual intent from implementation details, you can extend capabilities predictably without compromising core platform stability.
         </p>
-        <div class="code-window">
-<span class="code-comment"># Create a new skill structure</span>
-<span class="code-keyword">/create:skill</span> my-custom-skill
-
-<span class="code-comment"># The system generates:</span>
-<span class="code-comment"># .opencode/skill/my-custom-skill/</span>
-<span class="code-comment"># ├── SKILL.md</span>
-<span class="code-comment"># ├── scripts/</span>
-<span class="code-comment"># └── references/</span>
-        </div>
       </div>
 
-      <div class="bento-grid">
-        <div class="bento-cell reveal" style="animation-delay: 150ms;">
-          <h4 class="cell-title">Extension Roles</h4>
-          <p class="cell-desc">Define specific behavioral rules and access constraints using <code class="code-inline">/create:role</code>. Roles orchestrate how skills are permitted to interact.</p>
-        </div>
-        <div class="bento-cell reveal" style="animation-delay: 200ms;">
-          <h4 class="cell-title">Extension Commands</h4>
-          <p class="cell-desc">Add new CLI hooks via layered configuration files. Maintain clear separation between interface definitions and execution logic.</p>
-        </div>
-      </div>
+      <!-- Philosophy & Practice Split Layout -->
+      <div class="split-layout">
+        
+        <!-- Left Column: Philosophy (Sticky) -->
+        <div class="space-y-8 lg:sticky lg:top-12">
+          <div class="p-8 rounded-[var(--radius-bento)] bg-[var(--surface)] border border-[var(--border-light)]">
+            <div class="flex items-center gap-3 mb-8 pb-4 border-b border-[var(--border-faint)]">
+              <iconify-icon icon="ph:book-open-text-duotone" class="text-2xl text-[var(--text)]"></iconify-icon>
+              <h3 class="text-lg font-medium text-[var(--text)]">Design Philosophy</h3>
+            </div>
+            
+            <div class="space-y-8">
+              <div class="relative">
+                <div class="absolute left-0 top-1 bottom-1 w-0.5 bg-[var(--border-light)] transition-colors duration-300 hover:bg-[var(--accent)]"></div>
+                <div class="pl-5">
+                  <h4 class="text-xs font-semibold text-[var(--text)] mb-2 uppercase tracking-wider">Convention Over Configuration</h4>
+                  <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+                    Avoid reinventing structural paradigms. Pre-built templates provide the necessary scaffolding so you can focus entirely on mapping custom logic and domain-specific content.
+                  </p>
+                </div>
+              </div>
 
-      <div class="glass-card reveal" style="animation-delay: 250ms;">
-        <header class="practice-header">
-          <h3 class="practice-title">System Templates</h3>
-          <span class="practice-badge">Inheritance Layer</span>
-        </header>
-        <p class="practice-desc">
-          When extending visual outputs or documentation formats, derive from the core templates. This ensures your custom artifacts maintain full compatibility with the design system tokens.
-        </p>
-        <div class="code-window">
-<span class="code-keyword">import</span> { baseConfig } <span class="code-keyword">from</span> <span class="code-string">'@templates/core'</span>;
+              <div class="relative">
+                <div class="absolute left-0 top-1 bottom-1 w-0.5 bg-[var(--border-light)] transition-colors duration-300 hover:bg-[var(--accent)]"></div>
+                <div class="pl-5">
+                  <h4 class="text-xs font-semibold text-[var(--text)] mb-2 uppercase tracking-wider">Isolated Capabilities</h4>
+                  <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+                    Extensions must not pollute the global namespace. Wrap new tools, agents, and behaviors in bounded contexts (Skills) that are explicitly invoked when required by the orchestrator.
+                  </p>
+                </div>
+              </div>
 
-<span class="code-keyword">export</span> <span class="code-keyword">const</span> customExtension = {
-  ...baseConfig,
-  name: <span class="code-string">'Extended Variant'</span>,
-  overrides: [ <span class="code-string">'theme'</span>, <span class="code-string">'layout'</span> ]
-};
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-</main>
-
-</body>
-</html>
+              <div class="relative">
+                <div class="absolute

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Quick Start Variant v6 - Dependency Gate Cards</title>
+  <style>
+    :root {
+      --bg: #131314;
+      --surface: #1c1c1e;
+      --text: #fafafa;
+      --accent: #3b82f6;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #a1a1aa;
+      --surface-soft: #252528;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --font-sans: "Helvetica", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8f8f8;
+        --surface: #ffffff;
+        --text: #18181b;
+        --border: rgba(0, 0, 0, 0.12);
+        --muted: #52525b;
+        --surface-soft: #f4f4f5;
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: clamp(1rem, 2.5vw, 2rem);
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .head {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+
+    .head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      max-width: 80ch;
+    }
+
+    .head h1 {
+      margin: 0 0 0.45rem;
+      font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+      letter-spacing: -0.02em;
+      border-left: 3px solid var(--accent);
+      padding-left: 0.65rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 0.8rem;
+      padding: 1rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .gate {
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 10px;
+      padding: 0.9rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .gate-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .gate h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .state {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.15rem 0.45rem;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      color: var(--muted);
+      background: var(--surface);
+      white-space: nowrap;
+    }
+
+    .state.ok {
+      color: var(--ok);
+      border-color: color-mix(in srgb, var(--ok) 40%, var(--border));
+    }
+
+    .state.warn {
+      color: var(--warn);
+      border-color: color-mix(in srgb, var(--warn) 40%, var(--border));
+    }
+
+    .copyline {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .cmd,
+    .check {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface);
+      padding: 0.45rem 0.55rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .check {
+      color: var(--muted);
+    }
+
+    @media (min-width: 800px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 1060px) {
+      .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="head">
+      <h1>Dependency Gate Cards</h1>
+      <p>Each card acts as an explicit entry condition. Teams can validate readiness in any order while keeping command intent and verification output tightly paired.</p>
+    </header>
+
+    <section class="grid" aria-label="Dependency gate cards">
+      <article class="gate">
+        <div class="gate-top">
+          <h2>CLI Availability</h2>
+          <span class="state ok">Required</span>
+        </div>
+        <p class="copyline">Confirm local command surface is installed.</p>
+        <pre class="cmd"><code>opencode --version</code></pre>
+        <pre class="check"><code>Expect semantic version output</code></pre>
+      </article>
+
+      <article class="gate">
+        <div class="gate-top">
+          <h2>Runtime Version</h2>
+          <span class="state ok">Required</span>
+        </div>
+        <p class="copyline">Ensure Node baseline is compatible with tasks.</p>
+        <pre class="cmd"><code>node --version</code></pre>
+        <pre class="check"><code>Expect v18.x or higher</code></pre>
+      </article>
+
+      <article class="gate">
+        <div class="gate-top">
+          <h2>Package Resolution</h2>
+          <span class="state warn">Blocking</span>
+        </div>
+        <p class="copyline">Resolve dependencies before start commands.</p>
+        <pre class="cmd"><code>npm install</code></pre>
+        <pre class="check"><code>Expect install summary without errors</code></pre>
+      </article>
+
+      <article class="gate">
+        <div class="gate-top">
+          <h2>Service Boot</h2>
+          <span class="state warn">Blocking</span>
+        </div>
+        <p class="copyline">Launch dev service and verify endpoint.</p>
+        <pre class="cmd"><code>npm run dev</code></pre>
+        <pre class="check"><code>Expect localhost endpoint announcement</code></pre>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="ve-artifact-type" content="auto">
+  <meta name="ve-artifact-type" content="readme">
   <meta name="ve-source-doc" content="setup-and-usage-v4">
   <meta name="ve-speckit-level" content="n/a">
   <meta name="ve-view-mode" content="artifact-dashboard">
+  
   <title>Setup and Usage - Failure-Aware Cookbook</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-
+  
   <style>
     :root {
+      /* Core Palette - Dark Default */
       --bg: #131314;
       --bg-alpha: rgba(19, 19, 20, 0.85);
       --surface: #1c1c1e;
@@ -44,34 +47,58 @@
       --zinc-300: #d4d4d8;
       --zinc-400: #a1a1aa;
       --zinc-500: #71717a;
-      
-      --font-sans: 'Inter', 'Helvetica', sans-serif;
+      --zinc-600: #52525b;
+
+      /* Typography */
+      --font-sans: 'Helvetica', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      
+      --weight-regular: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      --lh-base: 1.75;
+      --lh-tight: 1.1;
+      --size-h2: 1.875rem; 
+
+      /* Layout */
       --container-max: 96rem;
-      --radius-bento: 1rem;
+      --radius-card: 12px;
+      --transition-main: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    html {
-      scroll-behavior: smooth;
-      background-color: var(--bg);
-      color: var(--text);
-      color-scheme: dark light;
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #ffffff;
+        --bg-alpha: rgba(255, 255, 255, 0.85);
+        --surface: #f4f4f5;
+        --surface-l2: #e4e4e7;
+        --surface-l3: #d4d4d8;
+        --surface-l3-alpha: rgba(212, 212, 216, 0.5);
+        --text: #18181b;
+        --text-muted: #52525b;
+        --border: rgba(0, 0, 0, 0.1);
+        --border-light: rgba(0, 0, 0, 0.05);
+        --border-faint: rgba(0, 0, 0, 0.02);
+        
+        --zinc-200: #27272a; 
+        --zinc-300: #3f3f46;
+        --zinc-400: #52525b;
+        --zinc-500: #71717a;
+        --zinc-600: #a1a1aa;
+      }
     }
 
     body {
       font-family: var(--font-sans);
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: var(--lh-base);
       margin: 0;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .mono { font-family: var(--font-mono); }
-    
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--surface-l3); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--zinc-500); }
+    .font-mono-custom {
+      font-family: var(--font-mono);
+    }
 
     .page-container {
       width: 100%;
@@ -79,289 +106,220 @@
       margin: 0 auto;
     }
 
-    /* Diagnostics Specific Styles */
-    .diagnosis-card {
-      background: var(--surface-l2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-bento);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .diagnosis-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; bottom: 0;
-      width: 3px;
-      background: var(--warning);
-      opacity: 0.8;
-    }
-
-    .code-panel {
-      background: #0d0d0e;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-
-    /* Reduce Motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
       }
-      .reveal { opacity: 1 !important; transform: none !important; }
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    /* Subdued Interactive States */
+    .btn-icon:hover {
+      background-color: var(--surface-l3);
+      color: var(--text);
     }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
+    
+    .code-window {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+    }
+    
+    .diagnosis-pane {
+      background-color: var(--surface-l3-alpha);
+      border-left: 2px solid var(--border-light);
+      border-top-right-radius: var(--radius-card);
+      border-bottom-right-radius: var(--radius-card);
     }
   </style>
 </head>
 <body>
 
-<main class="page-container px-4 sm:px-8 lg:px-16 py-16">
+<div class="page-container px-6 lg:px-12 py-16">
   
-  <section id="setup-and-usage" class="space-y-16">
-    <!-- Header Area -->
-    <header class="max-w-3xl reveal active">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[var(--surface-l2)] border border-[var(--border)] mb-6">
-        <iconify-icon icon="lucide:book-open-check" class="text-[var(--accent)] text-sm"></iconify-icon>
-        <span class="text-[10px] font-mono font-medium tracking-widest text-[var(--zinc-300)] uppercase">Cookbook // Setup & Usage</span>
+  <section id="setup-and-usage" class="max-w-5xl">
+    
+    <!-- Section Header -->
+    <header class="mb-14">
+      <div class="inline-flex items-center gap-3 border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 rounded-full text-[10px] font-semibold tracking-widest text-[var(--zinc-400)] mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]"></span> 07 // SETUP AND USAGE
       </div>
-      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--text)] mb-4" style="line-height: 1.1;">
-        Implementation & Diagnosis
-      </h2>
-      <p class="text-[var(--zinc-400)] text-base">
-        A progressive guide to configuring and running the system. Each step is paired with an immediate diagnostic protocol to resolve common failures before moving forward.
+      <h2 class="text-[var(--size-h2)] font-semibold tracking-tight text-[var(--zinc-200)] leading-[var(--lh-tight)] mb-4">Failure-Aware Cookbook</h2>
+      <p class="text-[var(--zinc-400)] text-sm max-w-2xl leading-relaxed">
+        Execute initialization and usage commands chronologically. Each operational step is paired with an immediate diagnosis matrix to help you resolve environment and configuration failures without breaking flow.
       </p>
     </header>
 
-    <!-- Step Layout Container -->
-    <div class="space-y-12">
-
-      <!-- Step 1 -->
-      <article class="reveal active grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start border-t border-[var(--border-light)] pt-12 relative">
-        <div class="absolute -top-3.5 left-0 lg:left-auto bg-[var(--bg)] pr-4 text-[10px] font-mono font-semibold tracking-widest text-[var(--zinc-500)] uppercase" aria-hidden="true">
-          Phase 01
-        </div>
-
-        <!-- Action / Code Column -->
-        <div class="lg:col-span-7 space-y-5">
-          <div>
-            <h3 class="text-lg font-medium text-[var(--zinc-200)] mb-1">Define Core Configuration</h3>
-            <p class="text-sm text-[var(--zinc-400)]">Establish provider endpoints, storage paths, and fallback behaviors in your local <code class="mono text-[11px] text-[var(--zinc-300)] bg-[var(--surface-l2)] px-1 py-0.5 rounded border border-[var(--border-faint)]">opencode.json</code>.</p>
-          </div>
+    <!-- Stepper Layout -->
+    <div class="flex flex-col gap-12">
+      
+      <!-- Step 01: Storage & Context -->
+      <article class="relative pl-12 md:pl-16">
+        <!-- Vertical Timeline Anchor -->
+        <div class="absolute left-0 top-0 w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface-l2)] flex items-center justify-center text-[var(--zinc-300)] font-mono-custom text-[11px] font-medium z-10" aria-hidden="true">01</div>
+        <div class="absolute left-[15px] top-8 bottom-[-3rem] w-[1px] bg-[var(--border-light)] z-0" aria-hidden="true"></div>
+        
+        <!-- Grid Content Split -->
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-start">
           
-          <div class="code-panel overflow-hidden group">
-            <div class="flex items-center justify-between px-4 py-2 bg-[var(--surface)] border-b border-[var(--border)]">
-              <span class="text-[10px] font-mono text-[var(--zinc-500)]">opencode.json</span>
-              <button class="text-[var(--zinc-500)] hover:text-[var(--text)] focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] transition-colors" aria-label="Copy configuration">
-                <iconify-icon icon="lucide:copy" class="text-xs"></iconify-icon>
-              </button>
-            </div>
-            <pre class="p-4 text-[12px] mono text-[var(--zinc-300)] overflow-x-auto leading-relaxed"><code>{
-  <span class="text-[var(--accent)]">"project"</span>: {
-    <span class="text-[var(--accent)]">"provider"</span>: <span class="text-[var(--success)]">"default-provider"</span>,
-    <span class="text-[var(--accent)]">"storage"</span>: <span class="text-[var(--success)]">"./data/context"</span>,
-    <span class="text-[var(--accent)]">"validation"</span>: <span class="text-[#ffbd2e]">true</span>
-  }
-}</code></pre>
-          </div>
-        </div>
-
-        <!-- Diagnosis Column -->
-        <div class="lg:col-span-5 diagnosis-card p-5 space-y-4">
-          <div class="flex items-center gap-2">
-            <iconify-icon icon="lucide:stethoscope" class="text-[var(--warning)]" aria-hidden="true"></iconify-icon>
-            <h4 class="text-xs font-semibold uppercase tracking-widest text-[var(--zinc-200)]">Diagnostic Protocol</h4>
-          </div>
-          
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:x-circle" class="text-[var(--error)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">SyntaxError: Unexpected token</span>
-              </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">Ensure trailing commas are removed. JSON strictly forbids them at the end of objects or arrays.</p>
-            </div>
+          <!-- Action Pane -->
+          <div class="space-y-4 pt-1">
+            <h3 class="text-base font-semibold text-[var(--zinc-200)]">Bootstrap Storage & Context</h3>
+            <p class="text-sm text-[var(--zinc-400)] leading-relaxed">
+              Create the isolated workspace directory and baseline configuration payload. This ensures state is retained between workflow executions.
+            </p>
             
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:alert-triangle" class="text-[var(--warning)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">Storage path not writable</span>
+            <div class="code-window overflow-hidden mt-4">
+              <div class="flex items-center justify-between px-4 h-10 bg-[var(--surface-l2)] border-b border-[var(--border-light)]">
+                <span class="text-[9px] font-semibold text-[var(--zinc-500)] uppercase tracking-widest">bash</span>
+                <button class="btn-icon copy-btn text-[var(--zinc-500)] transition-colors p-1.5 rounded outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]" aria-label="Copy to clipboard">
+                  <iconify-icon icon="lucide:copy" class="text-sm"></iconify-icon>
+                </button>
               </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">Run <code class="mono bg-[var(--surface-l3)] text-[var(--zinc-300)] px-1 py-0.5 rounded border border-[var(--border-light)]">chmod 755 ./data/context</code> to grant directory write permissions before proceeding.</p>
+              <pre class="p-4 text-[12px] font-mono-custom text-[var(--zinc-300)] overflow-x-auto whitespace-pre"><code>mkdir -p .opencode/memory
+touch .opencode/config.json
+echo '{"schema": "v2", "strict": true}' > .opencode/config.json</code></pre>
             </div>
           </div>
+
+          <!-- Diagnosis Pane -->
+          <aside class="diagnosis-pane p-5 lg:mt-11">
+            <h4 class="text-[10px] font-semibold uppercase tracking-widest text-[var(--zinc-400)] flex items-center gap-2 mb-4">
+              <iconify-icon icon="lucide:activity" class="text-[var(--text-muted)]"></iconify-icon> Diagnosis Matrix
+            </h4>
+            <ul class="space-y-4 m-0 p-0 list-none">
+              <li class="border-l border-[var(--error)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">EACCES_DENIED</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">Lacking write permissions in the current directory. Elevate permissions or run <code>chmod +w .</code></span>
+              </li>
+              <li class="border-l border-[var(--warning)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">WARN_OVERWRITE</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">If <code>config.json</code> already exists, using <code>&gt;</code> will overwrite custom rules. Use <code>&gt;&gt;</code> to append safely.</span>
+              </li>
+            </ul>
+          </aside>
+          
         </div>
       </article>
 
-      <!-- Step 2 -->
-      <article class="reveal active grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start border-t border-[var(--border-light)] pt-12 relative">
-        <div class="absolute -top-3.5 left-0 lg:left-auto bg-[var(--bg)] pr-4 text-[10px] font-mono font-semibold tracking-widest text-[var(--zinc-500)] uppercase" aria-hidden="true">
-          Phase 02
-        </div>
-
-        <!-- Action / Code Column -->
-        <div class="lg:col-span-7 space-y-5">
-          <div>
-            <h3 class="text-lg font-medium text-[var(--zinc-200)] mb-1">Initialize Workspace</h3>
-            <p class="text-sm text-[var(--zinc-400)]">Run the initialization sequence to validate configuration schemas and scaffold required cache directories.</p>
-          </div>
+      <!-- Step 02: Provider Connection -->
+      <article class="relative pl-12 md:pl-16">
+        <div class="absolute left-0 top-0 w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface-l2)] flex items-center justify-center text-[var(--zinc-300)] font-mono-custom text-[11px] font-medium z-10" aria-hidden="true">02</div>
+        <div class="absolute left-[15px] top-8 bottom-[-3rem] w-[1px] bg-[var(--border-light)] z-0" aria-hidden="true"></div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-start">
           
-          <div class="code-panel overflow-hidden group">
-            <div class="flex items-center justify-between px-4 py-2 bg-[var(--surface)] border-b border-[var(--border)]">
-              <span class="text-[10px] font-mono text-[var(--zinc-500)]">bash</span>
-              <button class="text-[var(--zinc-500)] hover:text-[var(--text)] focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] transition-colors" aria-label="Copy bash commands">
-                <iconify-icon icon="lucide:copy" class="text-xs"></iconify-icon>
-              </button>
-            </div>
-            <pre class="p-4 text-[12px] mono text-[var(--zinc-300)] overflow-x-auto leading-relaxed"><code><span class="text-[var(--zinc-500)]"># 1. Verify environment schema against opencode.json</span>
-tool run setup:verify
-
-<span class="text-[var(--zinc-500)]"># 2. Scaffold local cache and index architecture</span>
-tool run setup:init --force</code></pre>
-          </div>
-        </div>
-
-        <!-- Diagnosis Column -->
-        <div class="lg:col-span-5 diagnosis-card p-5 space-y-4">
-          <div class="flex items-center gap-2">
-            <iconify-icon icon="lucide:stethoscope" class="text-[var(--warning)]" aria-hidden="true"></iconify-icon>
-            <h4 class="text-xs font-semibold uppercase tracking-widest text-[var(--zinc-200)]">Diagnostic Protocol</h4>
-          </div>
-          
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:x-circle" class="text-[var(--error)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">Command 'tool' not found</span>
-              </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">The CLI isn't in your PATH. Run <code class="mono bg-[var(--surface-l3)] text-[var(--zinc-300)] px-1 py-0.5 rounded border border-[var(--border-light)]">npm link</code> in the tool repository, or use the absolute binary path.</p>
-            </div>
+          <div class="space-y-4 pt-1">
+            <h3 class="text-base font-semibold text-[var(--zinc-200)]">Initialize Provider Connection</h3>
+            <p class="text-sm text-[var(--zinc-400)] leading-relaxed">
+              Authenticate the CLI tool against the preferred backend runtime. This step maps your environment variables to the active profile.
+            </p>
             
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:alert-circle" class="text-[var(--warning)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">Schema Validation Failed</span>
+            <div class="code-window overflow-hidden mt-4">
+              <div class="flex items-center justify-between px-4 h-10 bg-[var(--surface-l2)] border-b border-[var(--border-light)]">
+                <span class="text-[9px] font-semibold text-[var(--zinc-500)] uppercase tracking-widest">bash</span>
+                <button class="btn-icon copy-btn text-[var(--zinc-500)] transition-colors p-1.5 rounded outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]" aria-label="Copy to clipboard">
+                  <iconify-icon icon="lucide:copy" class="text-sm"></iconify-icon>
+                </button>
               </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">A required field from Phase 01 is missing or malformed. Double-check your <code class="mono bg-[var(--surface-l3)] text-[var(--zinc-300)] px-1 py-0.5 rounded border border-[var(--border-light)]">opencode.json</code> syntax.</p>
+              <pre class="p-4 text-[12px] font-mono-custom text-[var(--zinc-300)] overflow-x-auto whitespace-pre"><code>export PROVIDER_API_KEY="your_secure_token"
+tool run setup:provider --verify --profile default</code></pre>
             </div>
           </div>
+
+          <aside class="diagnosis-pane p-5 lg:mt-11">
+            <h4 class="text-[10px] font-semibold uppercase tracking-widest text-[var(--zinc-400)] flex items-center gap-2 mb-4">
+              <iconify-icon icon="lucide:activity" class="text-[var(--text-muted)]"></iconify-icon> Diagnosis Matrix
+            </h4>
+            <ul class="space-y-4 m-0 p-0 list-none">
+              <li class="border-l border-[var(--error)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">ERR_UNAUTHORIZED</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">API key rejected. Ensure the token is structurally valid and the session hasn't expired.</span>
+              </li>
+              <li class="border-l border-[var(--error)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">ERR_TIMEOUT</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">Handshake failed. Check if an active VPN or strict proxy is blocking outbound TCP traffic.</span>
+              </li>
+            </ul>
+          </aside>
+          
         </div>
       </article>
 
-      <!-- Step 3 -->
-      <article class="reveal active grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start border-t border-[var(--border-light)] pt-12 relative border-b border-[var(--border-faint)] pb-12">
-        <div class="absolute -top-3.5 left-0 lg:left-auto bg-[var(--bg)] pr-4 text-[10px] font-mono font-semibold tracking-widest text-[var(--zinc-500)] uppercase" aria-hidden="true">
-          Phase 03
-        </div>
-
-        <!-- Action / Code Column -->
-        <div class="lg:col-span-7 space-y-5">
-          <div>
-            <h3 class="text-lg font-medium text-[var(--zinc-200)] mb-1">Execute Core Workflow</h3>
-            <p class="text-sm text-[var(--zinc-400)]">With setup verified, run standard operations. Always generate a plan before applying changes to capture intent properly.</p>
-          </div>
+      <!-- Step 03: Execute Primary Workflow -->
+      <article class="relative pl-12 md:pl-16">
+        <div class="absolute left-0 top-0 w-8 h-8 rounded-full border border-[var(--border)] bg-[var(--surface-l2)] flex items-center justify-center text-[var(--zinc-300)] font-mono-custom text-[11px] font-medium z-10" aria-hidden="true">03</div>
+        <!-- No vertical line for the last item -->
+        
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8 items-start">
           
-          <div class="code-panel overflow-hidden group">
-            <div class="flex items-center justify-between px-4 py-2 bg-[var(--surface)] border-b border-[var(--border)]">
-              <span class="text-[10px] font-mono text-[var(--zinc-500)]">bash</span>
-              <button class="text-[var(--zinc-500)] hover:text-[var(--text)] focus:outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)] transition-colors" aria-label="Copy workflow commands">
-                <iconify-icon icon="lucide:copy" class="text-xs"></iconify-icon>
-              </button>
-            </div>
-            <pre class="p-4 text-[12px] mono text-[var(--zinc-300)] overflow-x-auto leading-relaxed"><code><span class="text-[var(--zinc-500)]"># 1. Generate execution plan context</span>
-tool run workflow:plan "update authentication middleware"
-
-<span class="text-[var(--zinc-500)]"># 2. Apply changes and commit state ledger</span>
-tool run workflow:apply
-tool run workflow:save</code></pre>
-          </div>
-        </div>
-
-        <!-- Diagnosis Column -->
-        <div class="lg:col-span-5 diagnosis-card p-5 space-y-4">
-          <div class="flex items-center gap-2">
-            <iconify-icon icon="lucide:stethoscope" class="text-[var(--warning)]" aria-hidden="true"></iconify-icon>
-            <h4 class="text-xs font-semibold uppercase tracking-widest text-[var(--zinc-200)]">Diagnostic Protocol</h4>
-          </div>
-          
-          <div class="space-y-4">
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:clock" class="text-[var(--error)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">Connection Timeout (504)</span>
-              </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">The provider API is unreachable. Switch to local fallback mode by appending <code class="mono bg-[var(--surface-l3)] text-[var(--zinc-300)] px-1 py-0.5 rounded border border-[var(--border-light)]">--offline</code> to your command.</p>
-            </div>
+          <div class="space-y-4 pt-1">
+            <h3 class="text-base font-semibold text-[var(--zinc-200)]">Execute Primary Workflow</h3>
+            <p class="text-sm text-[var(--zinc-400)] leading-relaxed">
+              With the baseline active and the provider verified, initiate a strict workflow plan. Ensure your target directory matches the expected operational scope.
+            </p>
             
-            <div class="space-y-1">
-              <div class="flex items-center gap-2 text-sm text-[var(--zinc-200)]">
-                <iconify-icon icon="lucide:file-warning" class="text-[var(--warning)] text-xs" aria-hidden="true"></iconify-icon>
-                <span class="font-medium">Uncommitted Changes Block</span>
+            <div class="code-window overflow-hidden mt-4">
+              <div class="flex items-center justify-between px-4 h-10 bg-[var(--surface-l2)] border-b border-[var(--border-light)]">
+                <span class="text-[9px] font-semibold text-[var(--zinc-500)] uppercase tracking-widest">bash</span>
+                <button class="btn-icon copy-btn text-[var(--zinc-500)] transition-colors p-1.5 rounded outline-none focus-visible:ring-1 focus-visible:ring-[var(--accent)]" aria-label="Copy to clipboard">
+                  <iconify-icon icon="lucide:copy" class="text-sm"></iconify-icon>
+                </button>
               </div>
-              <p class="text-xs text-[var(--zinc-400)] pl-5">The working directory must be clean before running <code class="mono bg-[var(--surface-l3)] text-[var(--zinc-300)] px-1 py-0.5 rounded border border-[var(--border-light)]">apply</code>. Commit or stash current git modifications.</p>
+              <pre class="p-4 text-[12px] font-mono-custom text-[var(--zinc-300)] overflow-x-auto whitespace-pre"><code>tool run workflow:plan "update UI routing" --strict</code></pre>
             </div>
           </div>
+
+          <aside class="diagnosis-pane p-5 lg:mt-11">
+            <h4 class="text-[10px] font-semibold uppercase tracking-widest text-[var(--zinc-400)] flex items-center gap-2 mb-4">
+              <iconify-icon icon="lucide:activity" class="text-[var(--text-muted)]"></iconify-icon> Diagnosis Matrix
+            </h4>
+            <ul class="space-y-4 m-0 p-0 list-none">
+              <li class="border-l border-[var(--error)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">VAL_SCHEMA_FAIL</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">Strict mode rejected the plan due to malformed targets. Check <code>--help</code> for required arguments.</span>
+              </li>
+              <li class="border-l border-[var(--warning)] pl-3">
+                <span class="block font-mono-custom font-medium text-[var(--zinc-200)] text-[11px] mb-1">STATE_LOCKED</span>
+                <span class="block text-[var(--zinc-500)] text-xs leading-relaxed">A prior run crashed. Delete the hidden lockfile inside <code>.opencode/memory/.lock</code> and try again.</span>
+              </li>
+            </ul>
+          </aside>
+          
         </div>
       </article>
 
     </div>
   </section>
-
-</main>
+</div>
 
 <script>
-  // Simple copy to clipboard functionality for code panels
-  document.querySelectorAll('.code-panel').forEach(panel => {
-    const btn = panel.querySelector('button');
-    const code = panel.querySelector('code');
-    
-    if (btn && code) {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Copy code logic
+    document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(code.innerText).then(() => {
+        const codeBlock = btn.closest('.code-window').querySelector('code');
+        if (!codeBlock) return;
+        
+        navigator.clipboard.writeText(codeBlock.innerText).then(() => {
           const icon = btn.querySelector('iconify-icon');
-          if(icon) {
-            const originalIcon = icon.getAttribute('icon');
+          if (icon) {
             icon.setAttribute('icon', 'lucide:check');
-            btn.classList.add('text-[var(--success)]');
+            btn.style.color = 'var(--success)';
             
             setTimeout(() => {
-              icon.setAttribute('icon', originalIcon);
-              btn.classList.remove('text-[var(--success)]');
+              icon.setAttribute('icon', 'lucide:copy');
+              btn.style.color = 'var(--zinc-500)';
             }, 2000);
           }
-        }).catch(err => console.error('Failed to copy', err));
+        }).catch(err => {
+          console.error('Failed to copy to clipboard', err);
+        });
       });
-    }
-  });
-
-  // Reveal animation intersection observer honoring reduced motion
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (entry.isIntersecting && !prefersReducedMotion) {
-        entry.target.classList.add('active');
-      }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-  document.querySelectorAll('.reveal').forEach(el => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!prefersReducedMotion) {
-      el.classList.remove('active');
-      observer.observe(el);
-    } else {
-      el.classList.add('active');
-    }
   });
 </script>
+
 </body>
 </html>

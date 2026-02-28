@@ -1,19 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="ve-artifact-type" content="spec">
-  <meta name="ve-source-doc" content="operations-overview">
+  <meta name="ve-artifact-type" content="operations">
   <meta name="ve-speckit-level" content="2">
-  <meta name="ve-view-mode" content="traceability-board">
-  <title>Operations Overview - Audit Snapshot Variant</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+  <meta name="ve-view-mode" content="artifact-dashboard">
+  <title>Operations Overview - Audit Snapshot Panel</title>
   <style>
     :root {
       /* Core Palette */
@@ -21,475 +15,483 @@
       --surface: #1c1c1e;
       --surface-l2: #252528;
       --surface-l3: #2d2d30;
+      --surface-l3-alpha: rgba(45, 45, 48, 0.5);
       --text: #fafafa;
       --text-muted: #71717a;
       
-      /* Accents & Status */
+      /* Brand / Accent */
       --accent: #3b82f6;
+      --accent-hover: rgba(59, 130, 246, 0.4);
       --accent-muted: rgba(59, 130, 246, 0.1);
-      --success: #22c55e;
-      --warning: #ffbd2e;
-      --error: #ff5f56;
+      --accent-border: rgba(59, 130, 246, 0.2);
       
       /* Borders */
       --border: rgba(255, 255, 255, 0.08);
       --border-light: rgba(255, 255, 255, 0.05);
       --border-faint: rgba(255, 255, 255, 0.02);
       
-      /* Zinc scale */
+      /* Semantic */
+      --success: #22c55e;
+      --success-alpha: rgba(34, 197, 94, 0.6);
+      --warning: #ffbd2e;
+      
+      /* Zinc */
       --zinc-200: #e4e4e7;
       --zinc-300: #d4d4d8;
       --zinc-400: #a1a1aa;
       --zinc-500: #71717a;
       
-      /* Typography & Layout */
-      --font-sans: 'Inter', 'Helvetica', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      /* Typography */
+      --font-sans: 'Helvetica', 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --lh-base: 1.75;
+      --lh-tight: 1.1;
+      
+      /* Layout Tokens */
       --radius-card: 12px;
       --radius-bento: 16px;
-      --lh-base: 1.75;
-      
-      --transition-main: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      --container-max: 96rem;
+      --section-y: clamp(3rem, 7.5vh, 6rem);
     }
 
     @media (prefers-color-scheme: light) {
+      /* Dual-theme compatibility signal (Anobel is predominantly dark, but CSS vars provide hooks) */
       :root {
-        --bg: #f4f4f5;
+        --bg: #f8f9fa;
         --surface: #ffffff;
-        --surface-l2: #fafafa;
-        --surface-l3: #f4f4f5;
-        --text: #18181b;
-        --text-muted: #52525b;
+        --surface-l2: #f1f3f5;
+        --surface-l3: #e9ecef;
+        --text: #111827;
+        --text-muted: #6c757d;
         --border: rgba(0, 0, 0, 0.1);
         --border-light: rgba(0, 0, 0, 0.05);
-        --border-faint: rgba(0, 0, 0, 0.02);
-        --zinc-200: #18181b;
-        --zinc-300: #27272a;
-        --zinc-400: #3f3f46;
-        --zinc-500: #52525b;
+        --zinc-200: #212529;
+        --zinc-300: #495057;
+        --zinc-400: #6c757d;
+        --zinc-500: #adb5bd;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-      }
-    }
-
-    @media (prefers-contrast: more) {
-      :root {
-        --text-muted: var(--text);
-        --border: var(--text);
+        scroll-behavior: auto !important;
       }
     }
 
     body {
+      margin: 0;
       background-color: var(--bg);
       color: var(--text);
       font-family: var(--font-sans);
       line-height: var(--lh-base);
-      margin: 0;
       -webkit-font-smoothing: antialiased;
-    }
-
-    .mono {
-      font-family: var(--font-mono);
+      padding: 2rem 1.5rem;
     }
 
     .page-container {
-      max-width: 96rem;
+      max-width: var(--container-max);
       margin: 0 auto;
-      padding: 3rem 1.5rem;
     }
 
-    @media (min-width: 1024px) {
-      .page-container {
-        padding: 5rem 3rem;
-      }
+    /* Utility */
+    .mono { font-family: var(--font-mono); }
+    .text-balance { text-wrap: balance; }
+    
+    /* Animation Stagger */
+    .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: revealAnim 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    @keyframes revealAnim {
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Section Typography */
+    /* Header Context */
     .section-header {
-      margin-bottom: 3rem;
+      margin-bottom: 2.5rem;
     }
-
-    .section-label {
+    .section-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 0.625rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 1.5rem;
-    }
-
-    .section-label::before {
-      content: "";
-      display: block;
-      width: 6px;
-      height: 6px;
-      background-color: var(--accent);
-      border-radius: 50%;
-    }
-
-    /* Audit Snapshot Panel */
-    .audit-panel {
-      background-color: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-bento);
-      overflow: hidden;
-      margin-bottom: 4rem;
-    }
-
-    .audit-panel-header {
-      padding: 2rem;
-      border-bottom: 1px solid var(--border-light);
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .audit-panel-header {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-      }
-    }
-
-    .audit-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--zinc-200);
-      margin: 0 0 0.5rem 0;
-      letter-spacing: -0.02em;
-    }
-
-    .audit-desc {
-      font-size: 0.875rem;
-      color: var(--zinc-400);
-      margin: 0;
-      max-width: 65ch;
-    }
-
-    .audit-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background-color: rgba(34, 197, 94, 0.1);
-      color: var(--success);
-      border: 1px solid rgba(34, 197, 94, 0.2);
-      padding: 0.375rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 500;
-    }
-
-    .audit-badge::before {
-      content: "";
-      display: block;
-      width: 6px;
-      height: 6px;
-      background-color: var(--success);
-      border-radius: 50%;
-    }
-
-    .audit-metrics {
-      display: grid;
-      grid-template-columns: 1fr;
-      background-color: var(--surface-l2);
-    }
-
-    @media (min-width: 768px) {
-      .audit-metrics {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .metric-block {
-      padding: 1.5rem 2rem;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    @media (min-width: 768px) {
-      .metric-block {
-        border-bottom: none;
-        border-right: 1px solid var(--border-light);
-      }
-      .metric-block:last-child {
-        border-right: none;
-      }
-    }
-
-    .metric-label {
-      display: block;
+      gap: 0.75rem;
       font-size: 0.6875rem;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .eyebrow-line {
+      width: 24px;
+      height: 1px;
+      background-color: var(--border);
+    }
+    .section-title {
+      font-size: 1.875rem;
+      font-weight: 600;
+      color: var(--zinc-200);
+      margin: 0 0 0.5rem 0;
+      line-height: var(--lh-tight);
+    }
+    .section-desc {
+      font-size: 0.875rem;
+      color: var(--zinc-400);
+      max-width: 65ch;
+      margin: 0;
     }
 
-    .metric-value {
-      font-size: 1.125rem;
+    /* Top Summary Panel (Inset Dashboard) */
+    .dashboard-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-bento);
+      padding: 2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .dashboard-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      background: var(--surface-l2);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--zinc-200);
     }
-
-    .metric-hash {
-      font-size: 0.8125rem;
-      color: var(--zinc-400);
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success-alpha);
     }
 
-    /* Operations Ledger Breakdown */
-    .ledger-container {
-      border-top: 1px solid var(--border);
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-light);
     }
 
-    .ledger-row {
+    .metric-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: var(--zinc-200);
+      font-family: var(--font-mono);
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--zinc-500);
+      font-weight: 600;
+    }
+
+    /* Split Pane Details */
+    .split-layout {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 2rem;
-      padding: 3rem 0;
-      border-bottom: 1px solid var(--border-light);
+      gap: 3rem;
     }
-
     @media (min-width: 1024px) {
-      .ledger-row {
-        grid-template-columns: 320px 1fr;
-        gap: 5rem;
+      .split-layout {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
       }
     }
 
-    .ledger-meta {
+    /* Stepper List (Lifecycle Steps) */
+    .group-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stepper {
       display: flex;
       flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
     }
-
-    .phase-id {
+    .stepper::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border-light);
+      z-index: 0;
+    }
+    .step-item {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 1.25rem;
+    }
+    .step-marker {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--surface-l2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.625rem;
+      color: var(--zinc-300);
       font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 1rem;
+      flex-shrink: 0;
+      font-family: var(--font-mono);
     }
-
-    .phase-title {
-      font-size: 1.125rem;
+    .step-content {
+      padding-top: 1px;
+    }
+    .step-title {
+      font-size: 0.875rem;
       font-weight: 500;
       color: var(--zinc-200);
-      margin: 0 0 0.75rem 0;
+      margin: 0 0 0.25rem 0;
     }
-
-    .phase-desc {
-      font-size: 0.875rem;
+    .step-desc {
+      font-size: 0.8125rem;
       color: var(--zinc-400);
-      margin: 0 0 1.5rem 0;
+      margin: 0;
+      line-height: 1.6;
     }
 
-    .phase-tags {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: auto;
-    }
-
-    .phase-tag {
-      font-size: 0.6875rem;
-      padding: 0.25rem 0.5rem;
-      background-color: var(--surface-l2);
-      border: 1px solid var(--border-light);
-      border-radius: 4px;
-      color: var(--zinc-300);
-    }
-
-    /* Code Terminal Display */
-    .code-window {
-      background-color: var(--surface);
+    /* Tabbed Terminal / Governance Checks */
+    .terminal-container {
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
-
-    .code-header {
+    .terminal-tabs {
       display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      background-color: var(--surface-l2);
+      background: var(--surface-l3-alpha);
       border-bottom: 1px solid var(--border-light);
+      padding: 0 0.5rem;
     }
-
-    .code-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--border);
-      margin-right: 1rem;
-    }
-
-    .code-label {
+    .terminal-tab {
+      padding: 0.625rem 1rem;
       font-size: 0.6875rem;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
+      font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid transparent;
+      cursor: default;
     }
-
-    .code-body {
-      padding: 1.5rem;
+    .terminal-tab.active {
+      color: var(--zinc-200);
+      border-bottom-color: var(--accent);
+    }
+    .terminal-body {
+      padding: 1.25rem;
       overflow-x: auto;
-      margin: 0;
       font-size: 0.8125rem;
       color: var(--zinc-300);
       line-height: 1.6;
     }
+    .code-comment { color: var(--zinc-500); }
+    .code-command { color: var(--accent); }
+    .code-output { color: var(--zinc-400); }
 
-    .code-comment {
-      color: var(--zinc-500);
+    /* Accordion Constraints (Governance Rules) */
+    .rule-list {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .rule-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.875rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .rule-icon {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 2px;
+    }
+    .rule-text {
+      font-size: 0.8125rem;
+      color: var(--zinc-300);
+    }
+    .rule-text strong {
+      color: var(--zinc-200);
+      font-weight: 500;
     }
 
-    .code-prompt {
-      color: var(--accent);
-      margin-right: 0.5rem;
-    }
-
-    .code-success {
-      color: var(--success);
-    }
-
-    @media (forced-colors: active) {
-      .audit-panel, .code-window { border: 1px solid CanvasText; }
-      .audit-badge { border: 1px solid CanvasText; color: CanvasText; }
-    }
   </style>
 </head>
 <body>
-  <main class="page-container">
+
+<main class="page-container">
+  
+  <header class="section-header reveal">
+    <div class="section-eyebrow">
+      <span class="eyebrow-line"></span>
+      Operations Overview
+    </div>
+    <h2 class="section-title text-balance">Audit & Governance Model</h2>
+    <p class="section-desc">A unified view of current operational parameters, execution lifecycle, and automated guardrails ensuring compliance across deployments.</p>
+  </header>
+
+  <!-- Top Summary Panel (Inset Dashboard) -->
+  <section class="dashboard-panel reveal delay-1">
+    <div class="dashboard-header">
+      <div>
+        <h3 class="step-title" style="font-size: 1rem; margin-bottom: 0.25rem;">System Snapshot</h3>
+        <p class="step-desc">Real-time status of workflow queues and validation states.</p>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Validation Engine Active
+      </div>
+    </div>
     
-    <section id="operations-overview" aria-labelledby="ops-heading">
-      <div class="section-header">
-        <div class="section-label">06 // Operations Overview</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Execution Mode</span>
+        <span class="metric-value" style="font-family: var(--font-sans); font-size: 1.125rem; padding-top: 0.375rem;">Strict Gated</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Spec Level Required</span>
+        <span class="metric-value">Lvl 2+</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Last Audit</span>
+        <span class="metric-value">2m ago</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Success Rate</span>
+        <span class="metric-value">99.8%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Split Pane Detail Breakdown -->
+  <div class="split-layout reveal delay-2">
+    
+    <!-- Left Column: Lifecycle Steps -->
+    <div>
+      <h4 class="group-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        Operational Lifecycle
+      </h4>
+      <div class="stepper">
+        <div class="step-item">
+          <div class="step-marker">1</div>
+          <div class="step-content">
+            <h5 class="step-title">Intake & Scope</h5>
+            <p class="step-desc">Establish bounded spec folder. Record intent, constraints, and baseline metrics before any operations begin.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-marker">2</div>
+          <div class="step-content">
+            <h5 class="step-title">Route & Strategy</h5>
+            <p class="step-desc">Invoke skill matching (confidence > 0.8) and define the execution path. Decompose into verifiable sub-tasks.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-marker">3</div>
+          <div class="step-content">
+            <h5 class="step-title">Execute Changes</h5>
+            <p class="step-desc">Apply scoped changes cleanly. Enforce semantic boundaries and maintain code styling consistency.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-marker">4</div>
+          <div class="step-content">
+            <h5 class="step-title">Validate & Record</h5>
+            <p class="step-desc">Run strict policy checks. Compile validation artifacts and generate immutable memory context.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Terminal & Rules -->
+    <div>
+      <h4 class="group-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+        Action Example
+      </h4>
+      
+      <div class="terminal-container">
+        <div class="terminal-tabs">
+          <div class="terminal-tab active">Validation Exec</div>
+          <div class="terminal-tab" style="opacity: 0.5">Policy JSON</div>
+        </div>
+        <div class="terminal-body mono">
+<span class="code-comment"># Enforce layout policy across spec boundaries</span>
+<span class="code-command">$</span> tool run workflow:check --strict
+
+<span class="code-output">[INFO] Scanning standard directories...</span>
+<span class="code-output">[INFO] Validating Level 2 constraints...</span>
+<span class="code-output" style="color: var(--success)">[PASS] Spec.md formatting intact</span>
+<span class="code-output" style="color: var(--success)">[PASS] Implementation summary updated</span>
+<span class="code-output">[OK] Policy check cleared. Ready for state record.</span>
+        </div>
       </div>
 
-      <!-- Audit Snapshot Panel -->
-      <article class="audit-panel">
-        <div class="audit-panel-header">
-          <div>
-            <h2 id="ops-heading" class="audit-title">Operational Governance Ledger</h2>
-            <p class="audit-desc">High-level summary of active policies, integrated automation, and execution guardrails governing the documentation workflow.</p>
-          </div>
-          <div class="audit-badge" aria-label="System Status: Validated">
-            System Validated
-          </div>
+      <div class="rule-list">
+        <div class="rule-item">
+          <svg class="rule-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <div class="rule-text"><strong>Read-First Guardrail:</strong> Context must be validated programmatically before modification access is granted.</div>
         </div>
-        
-        <div class="audit-metrics">
-          <div class="metric-block">
-            <span class="metric-label">Enforcement Policy</span>
-            <span class="metric-value">Strict Mode (Level 3)</span>
-          </div>
-          <div class="metric-block">
-            <span class="metric-label">Active Workflows</span>
-            <span class="metric-value">4 Gated Operations</span>
-          </div>
-          <div class="metric-block">
-            <span class="metric-label">Latest Integrity Hash</span>
-            <span class="metric-value metric-hash mono">a8f9bc2...99f1</span>
-          </div>
+        <div class="rule-item">
+          <svg class="rule-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <div class="rule-text"><strong>Scope Locking:</strong> Adjustments are restricted strictly to paths mapped in the current execution phase.</div>
         </div>
-      </article>
-
-      <!-- Operations Ledger Breakdown -->
-      <div class="ledger-container">
-        
-        <!-- Phase 1 -->
-        <div class="ledger-row">
-          <div class="ledger-meta">
-            <div class="phase-id mono">PHASE 01</div>
-            <h3 class="phase-title">Intake &amp; Scope Initialization</h3>
-            <p class="phase-desc">Capture the incoming request, define specific operational constraints, and establish an isolated workspace directory to prevent scope bleed.</p>
-            <div class="phase-tags">
-              <span class="phase-tag mono">@orchestrate</span>
-              <span class="phase-tag mono">gate-1</span>
-            </div>
-          </div>
-          <div class="ledger-action">
-            <div class="code-window">
-              <div class="code-header">
-                <span class="code-dot"></span>
-                <span class="code-label mono">Terminal</span>
-              </div>
-              <pre class="code-body mono"><code><span class="code-comment"># Establish execution context and constraints</span>
-<span class="code-prompt">$</span>tool run workflow:init --scope section
-
-<span class="code-comment"># System Response</span>
-<span class="code-success">[OK]</span> Workspace initialized at /specs/003.
-<span class="code-success">[OK]</span> Policy constraint locked to Strict.</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- Phase 2 -->
-        <div class="ledger-row">
-          <div class="ledger-meta">
-            <div class="phase-id mono">PHASE 02</div>
-            <h3 class="phase-title">Execute &amp; Validate</h3>
-            <p class="phase-desc">Apply required structural changes within the scoped boundary. Trigger mandatory syntax checks, logic verification, and accessibility compliance rules.</p>
-            <div class="phase-tags">
-              <span class="phase-tag mono">@review</span>
-              <span class="phase-tag mono">gate-2</span>
-            </div>
-          </div>
-          <div class="ledger-action">
-            <div class="code-window">
-              <div class="code-header">
-                <span class="code-dot"></span>
-                <span class="code-label mono">Terminal</span>
-              </div>
-              <pre class="code-body mono"><code><span class="code-comment"># Apply changes and enforce compliance</span>
-<span class="code-prompt">$</span>tool run workflow:check --strict
-
-<span class="code-comment"># System Response</span>
-<span class="code-success">[PASS]</span> HTML syntax and hierarchy verified.
-<span class="code-success">[PASS]</span> Contrast ratios meet WCAG AA standards.
-<span class="code-success">[PASS]</span> Zero scope drift detected.</code></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- Phase 3 -->
-        <div class="ledger-row">
-          <div class="ledger-meta">
-            <div class="phase-id mono">PHASE 03</div>
-            <h3 class="phase-title">Record Lifecycle State</h3>
-            <p class="phase-desc">Commit the final state summary into the centralized system memory. Generate traceability records for future continuous integration audits.</p>
-            <div class="phase-tags">
-              <span class="phase-tag mono">@speckit</span>
-              <span class="phase-tag mono">gate-3</span>
-            </div>
-          </div>
-          <div class="ledger-action">
-            <div class="code-window">
-              <div class="code-header">
-                <span class="code-dot"></span>
-                <span class="code-label mono">Terminal</span>
-              </div>
-              <pre class="code-body mono"><code><span class="code-comment"># Persist state and generate audit trail</span>
-<span class="code-prompt">$</span>tool run workflow:record --artifact spec
-
-<span class="code-comment"># System Response</span>
-<span class="code-success">[OK]</span> Traceability hash generated: a8f9bc2
-<span class="code-success">[OK]</span> Operational state safely preserved to ledger.</code></pre>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </section>
 
-  </main>
+    </div>
+  </div>
+
+</main>
+
 </body>
 </html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="ve-artifact-type" content="spec">
+  <meta name="ve-source-doc" content="hero-section.html">
+  <meta name="ve-speckit-level" content="1">
+  <meta name="ve-view-mode" content="artifact-dashboard">
+  <title>Diagrammatic Masthead - Hero v4</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  
+  <style>
+    :root {
+      /* Core Palette - Anobel Theme */
+      --bg: #131314;
+      --surface: #1c1c1e;
+      --surface-l2: #252528;
+      --surface-l3: #2d2d30;
+      --text: #fafafa;
+      --text-muted: #71717a;
+      
+      /* Brand / Accent */
+      --accent: #3b82f6;
+      --accent-muted: rgba(59, 130, 246, 0.1);
+      --accent-border: rgba(59, 130, 246, 0.2);
+      
+      /* Borders */
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.05);
+      --border-faint: rgba(255, 255, 255, 0.02);
+      
+      /* Typography */
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --lh-base: 1.75;
+      --lh-tight: 1.1;
+      
+      /* Layout */
+      --container-max: 96rem;
+      --radius-interactive: 6px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      /* Dual-theme compatibility signal */
+      :root {
+        --bg: #fafafa;
+        --surface: #f4f4f5;
+        --surface-l2: #e4e4e7;
+        --surface-l3: #d4d4d8;
+        --text: #131314;
+        --text-muted: #52525b;
+        --border: rgba(0, 0, 0, 0.1);
+        --border-light: rgba(0, 0, 0, 0.05);
+        --border-faint: rgba(0, 0, 0, 0.02);
+      }
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: var(--lh-base);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body { margin: 0; }
+    
+    .mono { font-family: var(--font-mono); }
+    
+    .page-container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Schematic Layout CSS */
+    .schematic-masthead {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .schematic-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      /* The 1px gap forms the internal schematic borders */
+      gap: 1px;
+      background-color: var(--border);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 32px rgba(0,0,0,0.1);
+      border-radius: 2px;
+    }
+
+    @media (min-width: 1024px) {
+      .schematic-grid {
+        grid-template-columns: 260px 1fr 300px;
+        grid-template-rows: auto auto;
+      }
+      .grid-header { grid-column: 1 / -1; }
+      .grid-left { grid-column: 1 / 2; }
+      .grid-center { grid-column: 2 / 3; }
+      .grid-right { grid-column: 3 / 4; }
+    }
+
+    .schematic-cell {
+      background-color: var(--bg);
+      position: relative;
+      padding: 2rem;
+    }
+
+    .schematic-cell.grid-header {
+      padding: 0.75rem 2rem;
+      background-color: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Decorative crosshairs for the diagrammatic feel */
+    .crosshair {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .crosshair::before, .crosshair::after {
+      content: '';
+      position: absolute;
+      background-color: var(--text-muted);
+      opacity: 0.4;
+    }
+    .crosshair::before { top: 5px; left: 0; right: 0; height: 1px; }
+    .crosshair::after { left: 5px; top: 0; bottom: 0; width: 1px; }
+    .crosshair.top-left { top: -6px; left: -6px; }
+    .crosshair.top-right { top: -6px; right: -6px; }
+    .crosshair.bottom-left { bottom: -6px; left: -6px; }
+    .crosshair.bottom-right { bottom: -6px; right: -6px; }
+
+    /* Micro-typography for technical labels */
+    .tech-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem; /* 11px */
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.375rem;
+      display: block;
+    }
+    
+    .tech-value {
+      font-family: var(--font-mono);
+      font-size: 0.875rem; /* 14px */
+      color: var(--text);
+    }
+
+    /* Motion Restraint */
+    .reveal {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: reveal-anim 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .reveal-delay-1 { animation-delay: 0.1s; }
+    .reveal-delay-2 { animation-delay: 0.2s; }
+
+    @keyframes reveal-anim {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* Mini Schema Visual */
+    .mini-schema {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .schema-node {
+      border: 1px solid var(--border);
+      padding: 0.625rem 0.75rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--surface);
+      border-radius: 2px;
+    }
+    .schema-node.active {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      background-color: var(--accent-muted);
+    }
+    .schema-line {
+      width: 1px;
+      height: 1.25rem;
+      background-color: var(--border);
+      margin-left: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-container">
+  <section class="schematic-masthead reveal" id="hero-masthead" aria-label="Document Masthead">
+    <div class="schematic-grid">
+      
+      <!-- HEADER ROW: System Path -->
+      <div class="schematic-cell grid-header">
+        <div class="crosshair top-left"></div>
+        <div class="crosshair top-right"></div>
+        
+        <div class="flex items-center gap-4">
+          <span class="tech-label !mb-0 text-xs flex items-center gap-2">
+            <iconify-icon icon="lucide:folder-tree" class="text-[var(--text-muted)]" aria-hidden="true"></iconify-icon>
+            // docs / architecture / {{doc_id|default("core-system")}}
+          </span>
+        </div>
+        
+        <div class="hidden sm:flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5 px-2 py-1 bg-[var(--surface-l2)] border border-[var(--border)] text-[var(--text)] text-[10px] font-mono rounded-sm" aria-label="System Status: Online">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+            SYSTEM_ONLINE
+          </span>
+        </div>
+      </div>
+
+      <!-- LEFT COLUMN: Technical Metadata -->
+      <div class="schematic-cell grid-left flex flex-col justify-between gap-8">
+        <div class="crosshair bottom-left"></div>
+        
+        <div class="space-y-6">
+          <div>
+            <span class="tech-label">Document ID</span>
+            <span class="tech-value">ARCH-094-V4</span>
+          </div>
+          <div>
+            <span class="tech-label">Last Updated</span>
+            <span class="tech-value">2026-02-28</span>
+          </div>
+          <div>
+            <span class="tech-label">Target Version</span>
+            <span class="tech-value text-[var(--accent)]">v{{version|default("2.4.1")}}</span>
+          </div>
+          <div>
+            <span class="tech-label">Context Owner</span>
+            <span class="tech-value">{{author|default("System Engineering")}}</span>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-[var(--border-light)]">
+          <span class="tech-label">Required Modules</span>
+          <div class="flex flex-wrap gap-2 mt-2">
+            <span class="px-1.5 py-0.5 border border-[var(--border)] text-[10px] font-mono text-[var(--text-muted)] rounded-sm">@core/events</span>
+            <span class="px-1.5 py-0.5 border border-[var(--border)] text-[10px] font-mono text-[var(--text-muted)] rounded-sm">@core/bus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER COLUMN: Primary Title & Abstract -->
+      <div class="schematic-cell grid-center flex flex-col justify-center py-10 lg:py-16 px-6 lg:px-12">
+        <div class="space-y-6 max-w-2xl reveal reveal-delay-1">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] text-[11px] font-mono tracking-wide rounded-sm w-fit">
+            <iconify-icon icon="lucide:cpu" width="14" aria-hidden="true"></iconify-icon>
+            {{section_type|default("ARCHITECTURE SPECIFICATION")}}
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-balance leading-[var(--lh-tight)]">
+            {{title|default("Event Loop & Plugin Execution Model")}}
+          </h1>
+          
+          <p class="text-lg text-[var(--text-muted)] leading-relaxed max-w-xl">
+            {{description|default("Comprehensive technical overview of the non-blocking event loop architecture, detailing synchronous boundaries, asynchronous microtask queues, and safe plugin isolation strategies.")}}
+          </p>
+
+          <div class="pt-4 flex flex-wrap items-center gap-4">
+            <button class="px-5 py-2.5 bg-[var(--text)] text-[var(--bg)] font-medium text-sm rounded-[var(--radius-interactive)] hover:bg-[var(--text-muted)] transition-colors inline-flex items-center gap-2">
+              <iconify-icon icon="lucide:book-open" aria-hidden="true"></iconify-icon>
+              Read Specification
+            </button>
+            <button class="px-5 py-2.5 bg-transparent border border-[var(--border)] text-[var(--text)] font-medium text-sm rounded-[var(--radius-interactive)] hover:bg-[var(--surface-l2)] transition-colors inline-flex items-center gap-2">
+              <iconify-icon icon="lucide:github" aria-hidden="true"></iconify-icon>
+              View Source
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Schematic Topology Diagram -->
+      <div class="schematic-cell grid-right hidden lg:flex flex-col">
+        <div class="crosshair bottom-right"></div>
+        
+        <span class="tech-label mb-4">Topology Reference</span>
+        
+        <div class="flex-1 flex flex-col justify-center border border-[var(--border-faint)] bg-[var(--surface)] p-6 rounded-sm relative overflow-hidden group">
+          <!-- Subtle blueprint background grid -->
+          <div class="absolute inset-0 opacity-[0.03] pointer-events-none" 
+               style="background-image: linear-gradient(var(--text) 1px, transparent 1px), linear-gradient(90deg, var(--text) 1px, transparent 1px); background-size: 20px 20px;">
+          </div>
+
+          <div class="relative z-10 w-full reveal reveal-delay-2">
+            <div class="mini-schema">
+              <div class="schema-node">
+                <iconify-icon icon="lucide:server" aria-hidden="true"></iconify-icon> Main Thread
+              </div>
+              <div class="schema-line"></div>
+              <div class="schema-node active">
+                <iconify-icon icon="lucide:arrow-down-up" aria-hidden="true"></iconify-icon> Event Bus [Target]
+              </div>
+              <div class="schema-line"></div>
+              <div class="schema-node">
+                <iconify-icon icon="lucide:blocks" aria-hidden="true"></iconify-icon> Plugin Sandbox
+              </div>
+            </div>
+          </div>
+          
+          <div class="absolute bottom-4 right-4 flex gap-2 opacity-40 group-hover:opacity-100 transition-opacity">
+            <button class="p-1 hover:text-[var(--text)] transition-colors" aria-label="Zoom Diagram">
+              <iconify-icon icon="lucide:zoom-in"></iconify-icon>
+            </button>
+            <button class="p-1 hover:text-[var(--text)] transition-colors" aria-label="Expand Diagram">
+              <iconify-icon icon="lucide:maximize"></iconify-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

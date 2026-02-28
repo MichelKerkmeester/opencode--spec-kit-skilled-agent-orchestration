@@ -31,5 +31,3 @@ QUALITY CONTROLS
 - Avoid aggressive visual effects.
 - Avoid decorative noise.
 - Maintain clear hierarchy and implementation practicality.
-
-Previous attempt failed validation. Missing/forbidden signals: <section. Regenerate complete HTML only and satisfy all constraints exactly.

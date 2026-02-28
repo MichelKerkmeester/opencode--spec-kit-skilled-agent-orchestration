@@ -1,11 +1,11 @@
 As @write agent, generate one complete standalone HTML file for a documentation section layout variant.
 
 TASK
-- Section key: quick-start
-- Variant: v5
-- Direction: Milestone Tracker
-- Direction intent: Milestone checkpoints with command snippets and verification.
-- Section purpose: Fast onboarding path with prerequisites and first executable steps.
+- Section key: feature-grid
+- Variant: v4
+- Direction: Comparative Pillars
+- Direction intent: Pillar-style presentation emphasizing distinctions.
+- Section purpose: Feature overview block highlighting capabilities in scannable cards.
 
 HARD REQUIREMENTS
 1) Adhere to style tokens and variables from supplied files (colors, typography, layout).
@@ -18,16 +18,14 @@ HARD REQUIREMENTS
 8) Reference shadcn pre-built layout motifs from the supplied brief for structural inspiration only.
    Do NOT copy exact classes or component markup.
 
-OUTPUT FORMAT
-- Return ONLY raw HTML (no markdown fences, no explanation).
-- Full standalone HTML document is required.
-
 UNIQUENESS CONTROLS
 - Make this variant materially different in at least 3 axes:
   information flow, container strategy, grouping logic, emphasis model, or navigation treatment.
 - Do not do color-only or icon-only changes.
 
-QUALITY CONTROLS
-- Avoid aggressive visual effects.
-- Avoid decorative noise.
-- Maintain clear hierarchy and implementation practicality.
+OUTPUT FORMAT
+- Return ONLY raw HTML (no markdown fences, no explanation).
+- Full standalone HTML document is required.
+
+COACH FEEDBACK FROM PREVIOUS ITERATION
+- none

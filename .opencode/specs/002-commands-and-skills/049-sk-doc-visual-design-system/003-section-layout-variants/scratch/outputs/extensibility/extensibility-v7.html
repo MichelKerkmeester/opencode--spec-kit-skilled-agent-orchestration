@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Extensibility - Customization Playbook Grid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101317;
+      --surface: #161b22;
+      --surface-2: #1d2531;
+      --text: #ecf1f7;
+      --muted: #93a4b8;
+      --accent: #3b82f6;
+      --border: rgba(147, 164, 184, 0.26);
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --font-sans: "Public Sans", "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: rgba(71, 85, 105, 0.28);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 38px 18px 58px;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    @media (min-width: 900px) {
+      .header {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+      }
+    }
+
+    .eyebrow {
+      font: 600 11px/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: var(--muted);
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent);
+      padding-left: 0.55rem;
+    }
+
+    h1 {
+      margin: 0;
+      line-height: 1.12;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    }
+
+    .intro {
+      margin: 10px 0 0;
+      max-width: 70ch;
+      color: var(--muted);
+    }
+
+    .legend {
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font: 600 0.72rem/1 var(--font-mono);
+    }
+
+    .legend span {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: var(--surface);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 760px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .play {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .play-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .play-top h2 {
+      font-size: 1.02rem;
+      margin: 0;
+    }
+
+    .tag {
+      font: 600 0.72rem/1 var(--font-mono);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 8px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .rows {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 8px;
+      align-items: start;
+      padding: 8px;
+      border-radius: 8px;
+      background: var(--surface-2);
+    }
+
+    .k {
+      font: 600 0.72rem/1.3 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .v {
+      font-size: 0.9rem;
+      min-width: 0;
+    }
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .state-ok { color: var(--ok); }
+    .state-warn { color: var(--warn); }
+
+    @media (max-width: 520px) {
+      .row { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <div class="eyebrow">10 // Extensibility</div>
+        <h1>Customization Playbook Grid</h1>
+        <p class="intro">Each playbook captures one extension scenario with a consistent recipe: what to configure, where to hook, and which guardrails must remain intact.</p>
+      </div>
+      <div class="legend" aria-label="Playbook legend">
+        <span>Scope: Module</span>
+        <span>Type: Controlled</span>
+        <span>Review: Required</span>
+      </div>
+    </header>
+
+    <section class="grid" aria-label="Customization playbooks">
+      <article class="play">
+        <div class="play-top"><h2>Tenant Theming</h2><span class="tag">Visual Layer</span></div>
+        <div class="rows">
+          <div class="row"><div class="k">Inputs</div><div class="v">Theme token set, brand palette overrides, semantic color map.</div></div>
+          <div class="row"><div class="k">Extension Hooks</div><div class="v">`render.theme.before` and `render.theme.after` pipeline events.</div></div>
+          <div class="row"><div class="k">Guardrails</div><div class="v">Contrast audit must pass before publish.</div></div>
+        </div>
+        <div class="foot"><span>Owner: UI Platform</span><span class="state-ok">Ready</span></div>
+      </article>
+
+      <article class="play">
+        <div class="play-top"><h2>Workflow Automation</h2><span class="tag">Runtime Layer</span></div>
+        <div class="rows">
+          <div class="row"><div class="k">Inputs</div><div class="v">Trigger catalogue, action map, fallback policy.</div></div>
+          <div class="row"><div class="k">Extension Hooks</div><div class="v">`task.enqueue` middleware and post-execution notifier.</div></div>
+          <div class="row"><div class="k">Guardrails</div><div class="v">Timeout ceiling and idempotency keys are mandatory.</div></div>
+        </div>
+        <div class="foot"><span>Owner: Workflow Team</span><span class="state-warn">Pending Review</span></div>
+      </article>
+
+      <article class="play">
+        <div class="play-top"><h2>Provider Integration</h2><span class="tag">Connector Layer</span></div>
+        <div class="rows">
+          <div class="row"><div class="k">Inputs</div><div class="v">Credential profile, endpoint map, retry policy.</div></div>
+          <div class="row"><div class="k">Extension Hooks</div><div class="v">`provider.connect` adapter contract and transform middleware.</div></div>
+          <div class="row"><div class="k">Guardrails</div><div class="v">PII fields are scrubbed before logging.</div></div>
+        </div>
+        <div class="foot"><span>Owner: Integrations</span><span class="state-ok">Ready</span></div>
+      </article>
+
+      <article class="play">
+        <div class="play-top"><h2>Policy Overrides</h2><span class="tag">Governance Layer</span></div>
+        <div class="rows">
+          <div class="row"><div class="k">Inputs</div><div class="v">Role matrix, exception criteria, audit retention period.</div></div>
+          <div class="row"><div class="k">Extension Hooks</div><div class="v">`policy.evaluate` chain and escalation callback.</div></div>
+          <div class="row"><div class="k">Guardrails</div><div class="v">Override actions require signed change records.</div></div>
+        </div>
+        <div class="foot"><span>Owner: Security</span><span class="state-warn">Policy Sign-off</span></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

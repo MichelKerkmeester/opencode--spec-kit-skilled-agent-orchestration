@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero Variant v6 - Command Capsule Hero</title>
+  <style>
+    :root {
+      --bg: #131314;
+      --surface: #1c1c1e;
+      --text: #fafafa;
+      --accent: #3b82f6;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #a1a1aa;
+      --surface-soft: #252528;
+      --accent-soft: rgba(59, 130, 246, 0.12);
+      --ok: #22c55e;
+      --font-sans: "Helvetica", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f7f8;
+        --surface: #ffffff;
+        --text: #171717;
+        --border: rgba(0, 0, 0, 0.12);
+        --muted: #52525b;
+        --surface-soft: #f4f4f5;
+        --accent-soft: rgba(59, 130, 246, 0.08);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 80% -10%, var(--accent-soft), transparent 40%), var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: clamp(1rem, 2vw, 2rem);
+    }
+
+    .frame {
+      max-width: 1100px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-soft);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero {
+      padding: clamp(1.25rem, 3vw, 2.75rem);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      border-radius: 999px;
+      padding: 0.3rem 0.65rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ok);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 16ch;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      max-width: 72ch;
+      font-size: clamp(0.95rem, 1.9vw, 1.1rem);
+    }
+
+    .capsules {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .capsule {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-soft);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 0.75rem;
+      transition: border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .capsule:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .idx,
+    .meta,
+    code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .idx {
+      color: var(--muted);
+      border-right: 1px solid var(--border);
+      padding-right: 0.65rem;
+    }
+
+    .meta { color: var(--muted); }
+
+    code {
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      overflow-x: auto;
+      white-space: nowrap;
+      max-width: 100%;
+      display: inline-block;
+    }
+
+    @media (min-width: 920px) {
+      .hero { gap: 1.6rem; }
+      .capsules { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .capsule { grid-template-columns: auto 1fr; grid-template-rows: auto auto; }
+      .capsule code { grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="frame" aria-label="Command capsule hero">
+    <div class="topbar">
+      <span>Hero v6 // Command Capsule</span>
+      <span>Target: Documentation Teams</span>
+    </div>
+
+    <div class="hero">
+      <div class="badge"><span class="badge-dot" aria-hidden="true"></span> Execution-ready overview</div>
+      <h1>Command Capsule <span>Hero</span></h1>
+      <p class="lead">A hero focused on immediate command literacy: each capsule exposes one setup checkpoint so readers can scan intent, run command, and move forward without leaving the top section.</p>
+
+      <div class="capsules" role="list" aria-label="Primary command capsules">
+        <article class="capsule" role="listitem">
+          <span class="idx">01</span>
+          <div class="meta">Environment gate</div>
+          <code>opencode --version</code>
+        </article>
+        <article class="capsule" role="listitem">
+          <span class="idx">02</span>
+          <div class="meta">Dependency gate</div>
+          <code>node --version</code>
+        </article>
+        <article class="capsule" role="listitem">
+          <span class="idx">03</span>
+          <div class="meta">Boot gate</div>
+          <code>npm run dev</code>
+        </article>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

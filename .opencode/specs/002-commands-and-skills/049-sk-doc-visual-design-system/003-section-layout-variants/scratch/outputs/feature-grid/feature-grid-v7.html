@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Feature Grid - Outcome Ribbon Grid</title>
+  <style>
+    :root {
+      --bg: #131314;
+      --surface: #1c1c1e;
+      --text: #fafafa;
+      --accent: #3b82f6;
+      --border: rgba(255, 255, 255, 0.1);
+      --muted: #a1a1aa;
+      --surface-2: #252528;
+      --font-sans: "Helvetica", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8f8f9;
+        --surface: #ffffff;
+        --text: #18181b;
+        --accent: #1e40af;
+        --border: rgba(0, 0, 0, 0.13);
+        --muted: #52525b;
+        --surface-2: #f4f4f5;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+    }
+
+    .shell {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 52px 20px;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--muted);
+      font: 600 11px/1 var(--font-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+      line-height: 1.18;
+      max-width: 26ch;
+    }
+
+    .lead {
+      margin: 14px 0 28px;
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .ribbon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .tile {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      min-height: 260px;
+      transition: border-color 180ms ease, background-color 180ms ease;
+    }
+
+    .tile:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+
+    .ribbon {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--accent) 11%, var(--surface));
+      font: 600 0.7rem/1.2 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    .content {
+      padding: 14px;
+    }
+
+    .content h2 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    .content p {
+      margin: 8px 0 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+      max-width: 36ch;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      font: 0.72rem/1.2 var(--font-mono);
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .ribbon-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 680px) {
+      .ribbon-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <p class="kicker">03 // Feature Grid</p>
+    <h1>Outcome Ribbon Grid</h1>
+    <p class="lead">Outcome ribbons orient each capability by business result first, then attach measurable scope and expected realization windows.</p>
+
+    <section class="ribbon-grid" aria-label="Feature outcomes with ribbon labels">
+      <article class="tile">
+        <div class="ribbon">Outcome: Faster Delivery</div>
+        <div class="content">
+          <h2>Template-Driven Section Assembly</h2>
+          <p>Reduces drafting time by grounding every variant in reusable layout contracts and pre-validated section patterns.</p>
+        </div>
+        <footer class="meta"><span>Window: 2 sprints</span><span>Impact: 34%</span></footer>
+      </article>
+
+      <article class="tile">
+        <div class="ribbon">Outcome: Better Compliance</div>
+        <div class="content">
+          <h2>Gated Validation Signals</h2>
+          <p>Introduces mandatory verification checkpoints before deliverables are treated as complete or merged into baseline docs.</p>
+        </div>
+        <footer class="meta"><span>Window: 1 sprint</span><span>Impact: 42%</span></footer>
+      </article>
+
+      <article class="tile">
+        <div class="ribbon">Outcome: Lower Risk</div>
+        <div class="content">
+          <h2>Scoped Output Boundaries</h2>
+          <p>Constrain each run to known paths to avoid accidental cross-section edits and maintain repeatable change histories.</p>
+        </div>
+        <footer class="meta"><span>Window: Immediate</span><span>Impact: 28%</span></footer>
+      </article>
+
+      <article class="tile">
+        <div class="ribbon">Outcome: Stronger Reuse</div>
+        <div class="content">
+          <h2>Pattern-Mapped Variant Families</h2>
+          <p>Provides layout alternatives under one section type so teams can pick density and hierarchy without rewriting structure.</p>
+        </div>
+        <footer class="meta"><span>Window: 3 sprints</span><span>Impact: 31%</span></footer>
+      </article>
+
+      <article class="tile">
+        <div class="ribbon">Outcome: Audit Readiness</div>
+        <div class="content">
+          <h2>Traceable Design Decisions</h2>
+          <p>Captures rationale in each variant and links visual structure choices to governance and readability standards.</p>
+        </div>
+        <footer class="meta"><span>Window: 2 sprints</span><span>Impact: 24%</span></footer>
+      </article>
+
+      <article class="tile">
+        <div class="ribbon">Outcome: Team Alignment</div>
+        <div class="content">
+          <h2>Shared Enterprise Visual Language</h2>
+          <p>Uses muted tokens, structural rhythm, and predictable interaction states across dark and light themes.</p>
+        </div>
+        <footer class="meta"><span>Window: Ongoing</span><span>Impact: 29%</span></footer>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

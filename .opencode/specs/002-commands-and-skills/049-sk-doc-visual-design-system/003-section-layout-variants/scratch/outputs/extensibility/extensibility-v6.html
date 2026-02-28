@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Extensibility - Adapters and Contracts Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #111418;
+      --surface: #181d23;
+      --surface-2: #202732;
+      --text: #edf2f7;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --border: rgba(148, 163, 184, 0.25);
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --risk: #ef4444;
+      --radius: 12px;
+      --font-sans: "Source Sans 3", "Helvetica Neue", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f9fc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #475569;
+        --border: rgba(71, 85, 105, 0.28);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 600 11px/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: var(--surface);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      line-height: 1.15;
+      margin: 16px 0 10px;
+    }
+
+    .lede {
+      margin: 0 0 28px;
+      max-width: 72ch;
+      color: var(--muted);
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 1024px) {
+      .board {
+        grid-template-columns: 280px minmax(0, 1fr) 260px;
+      }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      min-width: 0;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .adapter-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .adapter {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: var(--surface-2);
+    }
+
+    .adapter strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 3px;
+    }
+
+    .adapter span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 8px;
+    }
+
+    th {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pill {
+      display: inline-block;
+      font: 600 0.72rem/1 var(--font-mono);
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .risk { color: var(--risk); }
+
+    .rail {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rail-item {
+      border-left: 3px solid var(--accent);
+      padding: 8px 0 8px 12px;
+    }
+
+    .rail-item h3 {
+      margin: 0 0 2px;
+      font-size: 0.95rem;
+    }
+
+    .rail-item p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">10 // Extensibility</div>
+    <h1>Adapters and Contracts Board</h1>
+    <p class="lede">Track extension entry points as explicit adapters, then map every integration to a contract, owner, and verification gate.</p>
+
+    <section class="board" aria-label="Adapter and contract board">
+      <article class="panel" aria-labelledby="adapter-inventory">
+        <h2 id="adapter-inventory">Adapter Inventory</h2>
+        <div class="adapter-list">
+          <div class="adapter"><strong>CLI Adapter</strong><span>Command parsing and context binding.</span></div>
+          <div class="adapter"><strong>Webhook Adapter</strong><span>Inbound event normalization for external systems.</span></div>
+          <div class="adapter"><strong>Schema Adapter</strong><span>Version-aware payload translation.</span></div>
+          <div class="adapter"><strong>Policy Adapter</strong><span>Rule gate before core execution.</span></div>
+        </div>
+      </article>
+
+      <article class="panel" aria-labelledby="contract-matrix">
+        <h2 id="contract-matrix">Contract Matrix</h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Contract</th>
+                <th>Adapter</th>
+                <th>Owner</th>
+                <th>Verification</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>InputSchema.v3</strong><br><span style="color:var(--muted);">Required fields + enum policy.</span></td>
+                <td>Schema Adapter</td>
+                <td>Platform Team</td>
+                <td>Contract test + snapshot</td>
+                <td><span class="pill ok">Compliant</span></td>
+              </tr>
+              <tr>
+                <td><strong>ExecutionHooks.v2</strong><br><span style="color:var(--muted);">Lifecycle callbacks and abort behavior.</span></td>
+                <td>CLI Adapter</td>
+                <td>Runtime Team</td>
+                <td>Integration tests</td>
+                <td><span class="pill warn">Reviewing</span></td>
+              </tr>
+              <tr>
+                <td><strong>AuthBridge.v1</strong><br><span style="color:var(--muted);">Token relay and role checks.</span></td>
+                <td>Webhook Adapter</td>
+                <td>Security Team</td>
+                <td>Policy audit</td>
+                <td><span class="pill risk">Blocked</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <aside class="panel" aria-labelledby="gate-notes">
+        <h2 id="gate-notes">Gate Notes</h2>
+        <div class="rail">
+          <div class="rail-item">
+            <h3>Boundary Rule</h3>
+            <p>Adapters can enrich context, but cannot mutate core contract semantics.</p>
+          </div>
+          <div class="rail-item">
+            <h3>Rollback Rule</h3>
+            <p>Any failed contract check routes execution to safe defaults.</p>
+          </div>
+          <div class="rail-item">
+            <h3>Promotion Rule</h3>
+            <p>Only compliant adapters are eligible for production rollout lanes.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>

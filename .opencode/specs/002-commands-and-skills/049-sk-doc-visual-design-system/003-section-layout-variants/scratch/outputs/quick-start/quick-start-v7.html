@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Quick Start Variant v7 - Contextual Command Flow</title>
+  <style>
+    :root {
+      --bg: #131314;
+      --surface: #1c1c1e;
+      --text: #fafafa;
+      --accent: #3b82f6;
+      --border: rgba(255, 255, 255, 0.08);
+      --muted: #a1a1aa;
+      --surface-soft: #252528;
+      --accent-soft: rgba(59, 130, 246, 0.1);
+      --font-sans: "Helvetica", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8f8f8;
+        --surface: #ffffff;
+        --text: #18181b;
+        --border: rgba(0, 0, 0, 0.12);
+        --muted: #52525b;
+        --surface-soft: #f3f4f6;
+        --accent-soft: rgba(59, 130, 246, 0.07);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      padding: clamp(1rem, 2.4vw, 2rem);
+    }
+
+    .layout {
+      max-width: 1120px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .context {
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-soft);
+    }
+
+    .context h1 {
+      margin: 0 0 0.4rem;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      letter-spacing: -0.02em;
+    }
+
+    .context p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      max-width: 70ch;
+    }
+
+    .flow {
+      padding: 1rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .lane {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .lane-head {
+      padding: 0.5rem 0.7rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: var(--muted);
+    }
+
+    .lane-body {
+      padding: 0.65rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.55rem;
+      background: color-mix(in srgb, var(--surface) 80%, var(--surface-soft));
+    }
+
+    .step {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 0.6rem;
+    }
+
+    .step h2 {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.3;
+    }
+
+    .step p {
+      margin: 0.3rem 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .command {
+      margin-top: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--bg);
+      padding: 0.4rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .arrow {
+      display: none;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      background: var(--accent-soft);
+      border-radius: 7px;
+      border: 1px dashed var(--border);
+      min-width: 60px;
+      padding: 0 0.5rem;
+    }
+
+    @media (min-width: 980px) {
+      .layout { grid-template-columns: 290px 1fr; }
+      .context { border-bottom: 0; border-right: 1px solid var(--border); }
+      .lane-body {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: stretch;
+      }
+      .arrow { display: flex; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="layout" aria-label="Contextual command flow quick start">
+    <aside class="context">
+      <h1>Contextual Command Flow</h1>
+      <p>Commands are grouped by execution context instead of by chronology only. This keeps environment setup, source acquisition, and runtime verification distinct for faster troubleshooting.</p>
+    </aside>
+
+    <section class="flow">
+      <article class="lane">
+        <header class="lane-head">
+          <span>Workspace context</span>
+          <span>Lane 01</span>
+        </header>
+        <div class="lane-body">
+          <section class="step">
+            <h2>Validate tooling</h2>
+            <p>Confirm command surface availability before any clone action.</p>
+            <div class="command">opencode --version</div>
+          </section>
+          <div class="arrow" aria-hidden="true">then</div>
+          <section class="step">
+            <h2>Validate runtime</h2>
+            <p>Ensure package scripts execute on supported runtime versions.</p>
+            <div class="command">node --version</div>
+          </section>
+          <div class="arrow" aria-hidden="true">then</div>
+          <section class="step">
+            <h2>Validate package manager</h2>
+            <p>Keep lockfile resolution behavior consistent across contributors.</p>
+            <div class="command">npm --version</div>
+          </section>
+        </div>
+      </article>
+
+      <article class="lane">
+        <header class="lane-head">
+          <span>Repository context</span>
+          <span>Lane 02</span>
+        </header>
+        <div class="lane-body">
+          <section class="step">
+            <h2>Acquire source</h2>
+            <p>Clone canonical repository to preserve onboarding parity.</p>
+            <div class="command">git clone https://github.com/example/repo.git</div>
+          </section>
+          <div class="arrow" aria-hidden="true">then</div>
+          <section class="step">
+            <h2>Enter project root</h2>
+            <p>Scope all subsequent commands to the repository context.</p>
+            <div class="command">cd repo</div>
+          </section>
+          <div class="arrow" aria-hidden="true">then</div>
+          <section class="step">
+            <h2>Resolve dependencies</h2>
+            <p>Install required packages and capture install output signals.</p>
+            <div class="command">npm install</div>
+          </section>
+        </div>
+      </article>
+
+      <article class="lane">
+        <header class="lane-head">
+          <span>Runtime context</span>
+          <span>Lane 03</span>
+        </header>
+        <div class="lane-body">
+          <section class="step">
+            <h2>Initialize app process</h2>
+            <p>Start local service using project-standard runtime script.</p>
+            <div class="command">npm run dev</div>
+          </section>
+          <div class="arrow" aria-hidden="true">verify</div>
+          <section class="step">
+            <h2>Confirm endpoint</h2>
+            <p>Check for local URL and successful module compilation logs.</p>
+            <div class="command">http://localhost:3000</div>
+          </section>
+          <div class="arrow" aria-hidden="true">handoff</div>
+          <section class="step">
+            <h2>Proceed to feature docs</h2>
+            <p>Continue with section-level implementation walkthroughs.</p>
+            <div class="command">open docs/README.md</div>
+          </section>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

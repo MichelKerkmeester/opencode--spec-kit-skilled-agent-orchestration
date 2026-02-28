@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Setup and Usage - Progressive Sandbox Flow</title>
+  <style>
+    :root {
+      --bg: #111827;
+      --surface: #1f2937;
+      --surface-2: #273449;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent: #38bdf8;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-soft: rgba(255, 255, 255, 0.06);
+      --success: #34d399;
+      --warning: #fbbf24;
+      --container: 96rem;
+      --radius: 12px;
+      --font-sans: "Helvetica", "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --text-muted: #475569;
+        --border: rgba(15, 23, 42, 0.15);
+        --border-soft: rgba(15, 23, 42, 0.08);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 500 16px/1.65 var(--font-sans);
+    }
+
+    .page {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 3vw, 2.4rem);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 0.5rem;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.7rem;
+      background: var(--surface);
+      color: var(--text-muted);
+      font: 600 0.7rem/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    h1 {
+      margin: 1rem 0 0.6rem;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 72ch;
+      color: var(--text-muted);
+    }
+
+    .flow {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 1024px) {
+      .flow {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+    }
+
+    .phase {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 1rem;
+      position: relative;
+      min-width: 0;
+      transition: border-color 180ms ease;
+    }
+
+    .phase:hover { border-color: var(--accent); }
+
+    .phase + .phase::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -0.5rem;
+      width: 0.5rem;
+      height: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 1023px) {
+      .phase + .phase::before {
+        top: -0.55rem;
+        left: 50%;
+        width: 1px;
+        height: 0.55rem;
+        transform: translateX(-50%);
+      }
+    }
+
+    .phase-id {
+      margin: 0;
+      font: 600 0.67rem/1 var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+    }
+
+    .phase h2 {
+      margin: 0.45rem 0 0.25rem;
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+
+    .phase p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .gate {
+      margin-top: 0.8rem;
+      border-top: 1px solid var(--border-soft);
+      padding-top: 0.8rem;
+    }
+
+    .gate-label {
+      margin: 0 0 0.35rem;
+      font: 600 0.68rem/1 var(--font-mono);
+      text-transform: uppercase;
+      color: var(--warning);
+      letter-spacing: 0.06em;
+    }
+
+    .cmd {
+      margin: 0.5rem 0 0;
+      padding: 0.55rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: var(--bg);
+      font: 0.72rem/1.4 var(--font-mono);
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .checklist {
+      margin-top: 1.6rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .item {
+      padding: 0.85rem;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      background: var(--surface-2);
+    }
+
+    .item h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.88rem;
+    }
+
+    .item p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font: 600 0.65rem/1 var(--font-mono);
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    .tag.ok { color: var(--success); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">07 // Setup and Usage</div>
+    <h1>Progressive Sandbox Flow</h1>
+    <p class="lead">
+      Move from a safe sandbox to production readiness through explicit promotion gates.
+      Each phase has one command path and one acceptance signal to keep rollout predictable.
+    </p>
+
+    <section class="flow" aria-label="Sandbox progression phases">
+      <article class="phase">
+        <p class="phase-id">Phase 01</p>
+        <h2>Create isolated workspace</h2>
+        <p>Start with disposable storage and local credentials.</p>
+        <div class="gate">
+          <p class="gate-label">Gate</p>
+          <p>Workspace can be created and reset without side effects.</p>
+          <p class="cmd">tool setup:init --profile sandbox --storage ./sandbox/context</p>
+        </div>
+      </article>
+
+      <article class="phase">
+        <p class="phase-id">Phase 02</p>
+        <h2>Run guided validation</h2>
+        <p>Verify config, schema, and required dependencies.</p>
+        <div class="gate">
+          <p class="gate-label">Gate</p>
+          <p>Validation output returns no errors and known warnings only.</p>
+          <p class="cmd">tool setup:verify --profile sandbox --strict true</p>
+        </div>
+      </article>
+
+      <article class="phase">
+        <p class="phase-id">Phase 03</p>
+        <h2>Simulate real workflow</h2>
+        <p>Execute plan, apply, and persistence against test payloads.</p>
+        <div class="gate">
+          <p class="gate-label">Gate</p>
+          <p>Generated artifacts pass review and can be reproduced twice.</p>
+          <p class="cmd">tool workflow:plan "sandbox-run" && tool workflow:apply && tool workflow:save</p>
+        </div>
+      </article>
+
+      <article class="phase">
+        <p class="phase-id">Phase 04</p>
+        <h2>Promote to controlled mode</h2>
+        <p>Switch profile and enforce stricter runtime checks.</p>
+        <div class="gate">
+          <p class="gate-label">Gate</p>
+          <p>Promotion checklist approved by reviewer and CI baseline is green.</p>
+          <p class="cmd">tool setup:promote --from sandbox --to ci --require-review</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="checklist" aria-label="Promotion readiness checklist">
+      <article class="item">
+        <h3>Data safety</h3>
+        <p>No production secrets in sandbox files or command history.</p>
+        <span class="tag ok">required</span>
+      </article>
+      <article class="item">
+        <h3>Validation coverage</h3>
+        <p>Schema checks and workflow checks executed in the same run.</p>
+        <span class="tag ok">required</span>
+      </article>
+      <article class="item">
+        <h3>Reproducibility</h3>
+        <p>Second engineer can repeat the flow with the documented commands.</p>
+        <span class="tag ok">required</span>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

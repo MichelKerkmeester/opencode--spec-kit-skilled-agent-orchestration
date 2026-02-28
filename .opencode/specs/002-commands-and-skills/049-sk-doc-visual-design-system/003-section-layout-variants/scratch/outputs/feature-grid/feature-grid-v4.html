@@ -1,71 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="color-scheme: light dark;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="ve-artifact-type" content="spec">
-  <meta name="ve-source-doc" content="features.md">
+  <meta name="ve-artifact-type" content="design-variant">
+  <meta name="ve-source-doc" content="feature-grid-v4">
   <meta name="ve-speckit-level" content="1">
-  <meta name="ve-view-mode" content="artifact-dashboard">
+  <meta name="ve-view-mode" content="traceability-board">
   <title>Feature Grid - Comparative Pillars</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
   <style>
+    /* CSS Variables mapped to Anobel Theme strict requirements */
     :root {
       --bg: #131314;
       --bg-alpha: rgba(19, 19, 20, 0.85);
       --surface: #1c1c1e;
       --surface-l2: #252528;
+      --surface-l3: #2d2d30;
       --text: #fafafa;
       --text-muted: #71717a;
+      
       --accent: #3b82f6;
       --accent-muted: rgba(59, 130, 246, 0.1);
+      
       --border: rgba(255, 255, 255, 0.08);
       --border-light: rgba(255, 255, 255, 0.05);
+      --border-faint: rgba(255, 255, 255, 0.02);
+      
       --zinc-200: #e4e4e7;
-      --zinc-400: #a1a1aa;
+      --zinc-300: #d4d4d8;
       --zinc-500: #71717a;
       
-      --container-max: 96rem;
-      --section-y: clamp(3rem, 7.5vh, 6rem);
-      --radius-bento: 1rem;
-      
-      --font-sans: 'Helvetica', sans-serif;
+      --font-sans: 'Helvetica', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      
+      --weight-regular: 400;
+      --weight-medium: 500;
+      --weight-semibold: 600;
+      
       --lh-base: 1.75;
       --lh-tight: 1.1;
       
-      --transition-main: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      --container-max: 96rem;
+      --radius-card: 12px;
+      --radius-bento: 1rem;
+      --transition-main: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    
+
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #ffffff;
+        --bg-alpha: rgba(255, 255, 255, 0.85);
         --surface: #f4f4f5;
         --surface-l2: #e4e4e7;
+        --surface-l3: #d4d4d8;
         --text: #18181b;
-        --text-muted: #52525b;
+        --text-muted: #71717a;
+        
         --border: rgba(0, 0, 0, 0.1);
         --border-light: rgba(0, 0, 0, 0.05);
-        --zinc-200: #18181b;
-        --zinc-400: #52525b;
-        --zinc-500: #71717a;
+        --border-faint: rgba(0, 0, 0, 0.02);
+        
+        --zinc-200: #3f3f46;
+        --zinc-300: #52525b;
+        --zinc-500: #a1a1aa;
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
+    /* Base Reset & Typography */
+    html {
+      box-sizing: border-box;
+      -webkit-text-size-adjust: 100%;
     }
-
-    @media (prefers-contrast: more) {
-      :root {
-        --text-muted: var(--text);
-        --zinc-400: var(--zinc-200);
-        --zinc-500: var(--zinc-200);
-        --border: var(--text);
-      }
+    
+    *, *:before, *:after {
+      box-sizing: inherit;
     }
 
     body {
@@ -75,253 +90,352 @@
       font-family: var(--font-sans);
       line-height: var(--lh-base);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    .container {
+    /* Accessibility Signals */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    @media (prefers-contrast: more) {
+      :root {
+        --text-muted: var(--text);
+        --border-light: var(--border);
+        --border-faint: var(--border);
+      }
+    }
+
+    /* Layout Containers */
+    .page-container {
+      width: 100%;
       max-width: var(--container-max);
       margin: 0 auto;
-      padding: var(--section-y) 2rem;
+      padding: clamp(3rem, 7.5vh, 6rem) 1.5rem;
     }
 
+    @media (min-width: 1024px) {
+      .page-container {
+        padding-left: 3rem;
+        padding-right: 3rem;
+      }
+    }
+
+    /* Component: Section Header */
     .pillar-header {
-      margin-bottom: 4rem;
-      max-width: 65ch;
+      max-width: 48rem;
+      margin-bottom: 3rem;
     }
 
     .pillar-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 0.75rem;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-      margin-bottom: 1rem;
-      display: inline-block;
-      padding: 0.35rem 0.85rem;
-      background: var(--accent-muted);
-      border-radius: 999px;
-      font-weight: 600;
+      font-size: 0.6875rem;
+      font-weight: var(--weight-semibold);
+      letter-spacing: 0.05em;
+      color: var(--zinc-300);
+      margin-bottom: 1.25rem;
+    }
+
+    .pillar-eyebrow::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent);
     }
 
     .pillar-title {
-      font-size: 2.5rem;
-      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: var(--weight-semibold);
       line-height: var(--lh-tight);
+      color: var(--text);
       margin: 0 0 1rem 0;
-      color: var(--zinc-200);
       letter-spacing: -0.02em;
+      text-wrap: balance;
     }
 
     .pillar-desc {
-      font-size: 1.125rem;
-      color: var(--zinc-400);
+      font-size: 1rem;
+      color: var(--text-muted);
       margin: 0;
+      max-width: 65ch;
     }
 
-    .pillars-wrapper {
+    /* Component: Comparative Pillars Grid */
+    .pillar-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-bento);
-      overflow: hidden;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
     }
 
-    .pillar {
-      padding: 3rem 2.5rem;
+    @media (min-width: 1024px) {
+      /* Contiguous block strategy on desktop */
+      .pillar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background-color: var(--border);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-bento);
+        overflow: hidden;
+      }
+    }
+
+    /* Component: Pillar Card */
+    .pillar-card {
+      background-color: var(--surface);
       display: flex;
       flex-direction: column;
-      position: relative;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-card);
       transition: var(--transition-main);
+      position: relative;
     }
 
-    .pillar:not(:last-child) {
-      border-right: 1px solid var(--border);
+    @media (min-width: 1024px) {
+      .pillar-card {
+        border: none;
+        border-radius: 0;
+      }
     }
 
-    .pillar:hover {
-      background: var(--surface-l2);
+    .pillar-card:hover {
+      background-color: var(--surface-l2);
     }
 
-    .pillar-icon-wrap {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
+    /* Pillar Emphasis Variant */
+    .pillar-card.is-emphasized {
+      background-color: var(--surface-l2);
+    }
+
+    .pillar-card.is-emphasized::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--accent);
+      z-index: 10;
+    }
+
+    .pillar-card-header {
+      padding: 2rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border-faint);
+    }
+
+    .pillar-icon-wrapper {
+      width: 2.5rem;
+      height: 2.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 2rem;
-      color: var(--zinc-200);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      color: var(--text);
     }
 
-    .pillar-icon-wrap svg {
-      width: 20px;
-      height: 20px;
+    .pillar-card-title {
+      font-size: 1.125rem;
+      font-weight: var(--weight-semibold);
+      color: var(--text);
+      margin: 0 0 0.5rem 0;
     }
 
-    .pillar-name {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--zinc-200);
-      margin: 0 0 0.75rem 0;
-      letter-spacing: -0.01em;
-    }
-
-    .pillar-summary {
+    .pillar-card-subtitle {
       font-size: 0.875rem;
-      color: var(--zinc-400);
-      margin: 0 0 2.5rem 0;
-      min-height: 3em; 
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
     }
 
-    .pillar-divider {
-      height: 1px;
-      background: var(--border-light);
-      margin: 0 0 2.5rem 0;
-      width: 100%;
+    /* Component: Feature List */
+    .pillar-card-content {
+      padding: 1.5rem 2rem 2.5rem;
+      flex-grow: 1;
     }
 
-    .trait-list {
+    .feature-list {
       list-style: none;
       padding: 0;
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
-      flex-grow: 1;
+      gap: 1.5rem;
     }
 
-    .trait-item {
+    .feature-item {
       display: flex;
       align-items: flex-start;
       gap: 1rem;
     }
 
-    .trait-bullet {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--zinc-500);
-      margin-top: 0.25rem;
-      user-select: none;
+    .feature-item-icon {
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.125rem;
     }
 
-    .trait-text {
+    .feature-item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .feature-item-title {
       font-size: 0.875rem;
+      font-weight: var(--weight-semibold);
       color: var(--zinc-200);
-      line-height: 1.6;
+      line-height: 1.4;
     }
 
-    @media (max-width: 1024px) {
-      .pillars-wrapper {
-        grid-template-columns: 1fr;
-      }
-      .pillar:not(:last-child) {
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-      }
-      .pillar-summary {
-        min-height: auto;
-      }
+    .feature-item-desc {
+      font-size: 0.8125rem;
+      color: var(--zinc-500);
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
 
-  <section class="container" aria-labelledby="pillars-heading">
-    <div class="pillar-header">
-      <span class="pillar-eyebrow" aria-hidden="true">Capability Matrix</span>
-      <h2 id="pillars-heading" class="pillar-title">Comparative Pillars</h2>
+<div class="page-container">
+  <section id="comparative-architecture" aria-labelledby="architecture-heading">
+    
+    <header class="pillar-header">
+      <div class="pillar-eyebrow">Architecture</div>
+      <h2 id="architecture-heading" class="pillar-title">Platform Capabilities</h2>
       <p class="pillar-desc">
-        Evaluate core system modes side-by-side. Each pillar is optimized for distinct operational constraints and scaling requirements.
+        Evaluate the system architecture across three core operational domains. Each pillar represents a unified subsystem engineered for specific organizational outcomes.
       </p>
-    </div>
+    </header>
 
-    <div class="pillars-wrapper">
+    <div class="pillar-grid">
       
-      <article class="pillar">
-        <div class="pillar-icon-wrap" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
-          </svg>
+      <!-- Pillar 1: Development -->
+      <article class="pillar-card">
+        <div class="pillar-card-header">
+          <div class="pillar-icon-wrapper">
+            <iconify-icon icon="lucide:terminal-square" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <h3 class="pillar-card-title">Development</h3>
+          <p class="pillar-card-subtitle">Local tooling and native APIs engineered to maximize iteration speed.</p>
         </div>
-        <h3 class="pillar-name">Development</h3>
-        <p class="pillar-summary">
-          Optimized for iteration speed, deep introspection, and rapid prototyping.
-        </p>
-        <div class="pillar-divider" aria-hidden="true"></div>
-        <ul class="trait-list" aria-label="Development traits">
-          <li class="trait-item">
-            <span class="trait-bullet">01</span>
-            <span class="trait-text">Hot-reloading enabled by default with in-memory state retention.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">02</span>
-            <span class="trait-text">Verbose logging profile with structured trace emission.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">03</span>
-            <span class="trait-text">Bypasses strict authentication checks for local endpoints.</span>
-          </li>
-        </ul>
+        <div class="pillar-card-content">
+          <ul class="feature-list" aria-label="Development capabilities">
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Typed Integration SDKs</span>
+                <span class="feature-item-desc">Native TypeScript and Python clients featuring deep IDE autocompletion.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Offline Emulator</span>
+                <span class="feature-item-desc">Execute the complete infrastructure stack locally without cloud dependencies.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">State-Preserving HMR</span>
+                <span class="feature-item-desc">Hot module replacement applies logic updates instantly without losing session data.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </article>
 
-      <article class="pillar">
-        <div class="pillar-icon-wrap" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-          </svg>
+      <!-- Pillar 2: Security (Emphasized) -->
+      <article class="pillar-card is-emphasized">
+        <div class="pillar-card-header">
+          <div class="pillar-icon-wrapper">
+            <iconify-icon icon="lucide:shield-check" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <h3 class="pillar-card-title">Security &amp; Compliance</h3>
+          <p class="pillar-card-subtitle">Enterprise-grade protections integrated directly into the infrastructure layer.</p>
         </div>
-        <h3 class="pillar-name">Staging</h3>
-        <p class="pillar-summary">
-          Production-parity environment for behavioral validation and integration testing.
-        </p>
-        <div class="pillar-divider" aria-hidden="true"></div>
-        <ul class="trait-list" aria-label="Staging traits">
-          <li class="trait-item">
-            <span class="trait-bullet">01</span>
-            <span class="trait-text">Identical container topology to production infrastructure.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">02</span>
-            <span class="trait-text">Connects to sanitized replicas of production databases.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">03</span>
-            <span class="trait-text">Automated regression suites block deployment on failure.</span>
-          </li>
-        </ul>
+        <div class="pillar-card-content">
+          <ul class="feature-list" aria-label="Security capabilities">
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Zero-Trust Boundaries</span>
+                <span class="feature-item-desc">Cryptographic identity verification required for every inter-service request.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Immutable Audit Logs</span>
+                <span class="feature-item-desc">Append-only ledger capturing all administrative actions and access events.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Automated Key Rotation</span>
+                <span class="feature-item-desc">Granular lifecycle management for secrets with zero-downtime key rolling.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </article>
 
-      <article class="pillar">
-        <div class="pillar-icon-wrap" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-          </svg>
+      <!-- Pillar 3: Operations -->
+      <article class="pillar-card">
+        <div class="pillar-card-header">
+          <div class="pillar-icon-wrapper">
+            <iconify-icon icon="lucide:activity" width="20" aria-hidden="true"></iconify-icon>
+          </div>
+          <h3 class="pillar-card-title">Operations</h3>
+          <p class="pillar-card-subtitle">Observability and orchestration ensuring high-availability deployments.</p>
         </div>
-        <h3 class="pillar-name">Production</h3>
-        <p class="pillar-summary">
-          Hardened for maximum resilience, horizontal scaling, and zero-trust security.
-        </p>
-        <div class="pillar-divider" aria-hidden="true"></div>
-        <ul class="trait-list" aria-label="Production traits">
-          <li class="trait-item">
-            <span class="trait-bullet">01</span>
-            <span class="trait-text">Strict ingress rules with edge caching and rate limiting.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">02</span>
-            <span class="trait-text">Read-only file systems with ephemeral data volumes.</span>
-          </li>
-          <li class="trait-item">
-            <span class="trait-bullet">03</span>
-            <span class="trait-text">Multi-region active-active deployment for high availability.</span>
-          </li>
-        </ul>
+        <div class="pillar-card-content">
+          <ul class="feature-list" aria-label="Operations capabilities">
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Distributed Tracing</span>
+                <span class="feature-item-desc">End-to-end telemetry providing complete request visibility across nodes.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Telemetry-Driven Auto-Scaling</span>
+                <span class="feature-item-desc">Dynamic computational resource allocation based on real-time load metrics.</span>
+              </div>
+            </li>
+            <li class="feature-item">
+              <iconify-icon icon="lucide:check" class="feature-item-icon" width="16" aria-hidden="true"></iconify-icon>
+              <div class="feature-item-text">
+                <span class="feature-item-title">Proactive Node Isolation</span>
+                <span class="feature-item-desc">Automated health checks instantly quarantine failing workloads during degradation.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
       </article>
 
     </div>
   </section>
+</div>
 
 </body>
 </html>
