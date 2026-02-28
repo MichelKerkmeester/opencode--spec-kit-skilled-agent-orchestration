@@ -139,17 +139,6 @@ export function isLearnedFeedbackEnabled(): boolean {
 }
 
 /**
- * Check if the system is still in the 1-week shadow period (Safeguard #6).
- * @deprecated Shadow period no longer needed — LEARN_FROM_SELECTION graduated to default-ON.
- * SPECKIT_LEARN_FROM_SELECTION_START env var is inert. Always returns false.
- *
- * @returns false (shadow period permanently ended)
- */
-export function isInShadowPeriod(): boolean {
-  return false;
-}
-
-/**
  * Check if a memory is old enough to learn from (Safeguard #7).
  * Memories younger than 72 hours are excluded because they haven't
  * had enough time to establish relevance patterns.
@@ -284,20 +273,14 @@ export function recordSelection(
     }
 
     const now = Date.now();
-    const shadowMode = isInShadowPeriod();
 
     // Ensure audit table exists (Safeguard #10)
     ensureAuditTable(db);
 
-    // Log to audit (Safeguard #10 -- always log, even in shadow mode)
+    // Log to audit (Safeguard #10)
     db.prepare(
       'INSERT INTO learned_feedback_audit (memory_id, action, terms, source, timestamp, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(memoryId, 'add', JSON.stringify(terms), queryId, now, shadowMode ? 1 : 0);
-
-    // Safeguard #6: In shadow period, log only -- don't apply
-    if (shadowMode) {
-      return { terms, applied: false, reason: 'shadow_period' };
-    }
+    ).run(memoryId, 'add', JSON.stringify(terms), queryId, now, 0);
 
     // Apply learned triggers (Safeguard #1 -- separate column, NOT FTS5)
     applyLearnedTriggers(memoryId, terms, db, queryId);
@@ -388,7 +371,7 @@ export function queryLearnedTriggers(
   db: Database
 ): LearnedTriggerMatch[] {
   try {
-    if (!isLearnedFeedbackEnabled() || isInShadowPeriod()) {
+    if (!isLearnedFeedbackEnabled()) {
       return [];
     }
 

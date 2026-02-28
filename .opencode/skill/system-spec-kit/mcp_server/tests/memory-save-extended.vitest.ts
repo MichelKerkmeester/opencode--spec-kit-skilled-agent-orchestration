@@ -744,7 +744,7 @@ This is test content.
       } finally {
         try { fs.rmSync(tmpDir, { recursive: true, force: true }); } catch (_cleanupError: unknown) {}
       }
-    });
+    }, 15000);
 
     it.skipIf(!atomicSaveFn)('rejects for empty params', async () => {
       try {

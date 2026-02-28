@@ -9,12 +9,11 @@ import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cache/cognitive/co-ac
 import { applyMMR } from './mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
-import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled, isShadowScoringEnabled } from './search-flags';
+import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled } from './search-flags';
 import { computeDegreeScores } from './graph-search-fn';
 
 // Sprint 3 modules — all flag-gated, disabled by default
 import { routeQuery } from './query-router';
-import { fuseResultsRsfMulti, isRsfEnabled } from './rsf-fusion';
 import { enforceChannelRepresentation } from './channel-enforcement';
 import { truncateByConfidence } from './confidence-truncation';
 import { getDynamicTokenBudget, isDynamicTokenBudgetEnabled } from './dynamic-token-budget';
@@ -28,9 +27,6 @@ import {
 
 // Sprint 4 modules — all flag-gated, disabled by default
 import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
-import { runShadowScoring, logShadowComparison } from '../eval/shadow-scoring';
-import { getChannelAttribution } from '../eval/channel-attribution';
-import type { ChannelSources } from '../eval/channel-attribution';
 
 // Type-only
 import type Database from 'better-sqlite3';
@@ -38,7 +34,6 @@ import type { SpreadResult } from '../cache/cognitive/co-activation';
 import type { MMRCandidate } from './mmr-reranker';
 import type { FusionResult, RankedList } from './rrf-fusion';
 import type { ChannelName } from './query-router';
-import type { RsfResult } from './rsf-fusion';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
 import type { BudgetResult } from './dynamic-token-budget';
@@ -690,33 +685,6 @@ async function hybridSearchEnhanced(
 
       const fused = fuseResultsMulti(lists);
 
-      // ── Sprint 3 Stage B: RSF Shadow Fusion (SPECKIT_RSF_FUSION) ──
-      // AI-WHY: RSF runs as shadow comparison alongside RRF — its results are logged
-      // for eval but NOT used for ranking. This allows A/B comparison of fusion methods.
-      if (isRsfEnabled()) {
-        try {
-          const rsfLists: RankedList[] = lists.map(l => ({
-            source: l.source,
-            results: l.results.map(r => ({ ...r, id: r.id })),
-            weight: l.weight,
-          }));
-          const rsfResults: RsfResult[] = fuseResultsRsfMulti(rsfLists);
-          s3meta.rsfShadow = {
-            resultCount: rsfResults.length,
-            topRsfScore: rsfResults.length > 0 ? rsfResults[0].rsfScore : 0,
-          };
-          // AI-WHY: Shadow-mode only — RSF results are NOT used for ranking.
-          // Logged for eval infrastructure comparison of RRF vs RSF orderings.
-          console.debug(
-            `[hybrid-search] RSF shadow: ${rsfResults.length} results, ` +
-            `top RSF score=${rsfResults[0]?.rsfScore?.toFixed(4) ?? 'N/A'}, ` +
-            `top RRF score=${fused[0]?.rrfScore?.toFixed(4) ?? 'N/A'}`
-          );
-        } catch (_rsfErr: unknown) {
-          // AI-GUARD: Non-critical shadow — RSF failure does not affect RRF pipeline
-        }
-      }
-
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
 
@@ -901,87 +869,6 @@ async function hybridSearchEnhanced(
           reranked.sort((a, b) => ((b.score as number) ?? 0) - ((a.score as number) ?? 0));
         } catch (_err: unknown) {
           // AI-GUARD: Non-critical enrichment — co-activation failure does not affect core ranking
-        }
-      }
-
-      // ── Sprint 4: R13-S2 Shadow Scoring + Channel Attribution (fire-and-forget) ──
-      // AI-WHY: When enabled, runs a parallel scoring comparison and channel attribution
-      // for evaluation purposes. CRITICAL: must NEVER affect production results.
-      // All operations are wrapped in try/catch with results only logged, never returned.
-      if (isShadowScoringEnabled()) {
-        try {
-          // Build channel sources from the search lists for attribution
-          const channelSources: ChannelSources = {};
-          for (const list of lists) {
-            channelSources[list.source] = list.results
-              .map(r => r.id)
-              .filter((id): id is number => typeof id === 'number');
-          }
-
-          // Channel attribution on current results
-          const attributionResults = reranked
-            .filter(r => typeof r.id === 'number')
-            .map((r, idx) => ({
-              memoryId: r.id as number,
-              score: r.score,
-              rank: idx + 1,
-            }));
-
-          if (attributionResults.length > 0 && Object.keys(channelSources).length > 0) {
-            const attribution = getChannelAttribution(attributionResults, channelSources, limit);
-            // Attach attribution as non-enumerable metadata (eval only)
-            Object.defineProperty(reranked, '_s4attribution', {
-              value: attribution,
-              enumerable: false,
-              configurable: true,
-            });
-          }
-
-          // Execute and log a real shadow comparison against pre-MMR baseline.
-          const productionResults = reranked
-            .filter((r): r is HybridSearchResult & { id: number } => typeof r.id === 'number')
-            .slice(0, limit)
-            .map((r, idx) => ({
-              memoryId: r.id,
-              score: r.score,
-              rank: idx + 1,
-            }));
-
-          const preMmrBaseline = [...fusedHybridResults]
-            .filter((r): r is HybridSearchResult & { id: number } => typeof r.id === 'number')
-            .sort((a, b) => b.score - a.score)
-            .slice(0, limit)
-            .map((r, idx) => ({
-              memoryId: r.id,
-              score: r.score,
-              rank: idx + 1,
-            }));
-
-          if (productionResults.length > 0 && preMmrBaseline.length > 0) {
-            const comparison = await runShadowScoring(query, productionResults, {
-              algorithmName: 'pre_mmr_baseline',
-              shadowScoringFn: () => preMmrBaseline,
-              metadata: {
-                stage: 'hybrid-search',
-                candidateCount: preMmrBaseline.length,
-              },
-            });
-
-            if (comparison) {
-              const logged = logShadowComparison(comparison);
-              Object.defineProperty(reranked, '_s4shadow', {
-                value: {
-                  logged,
-                  algorithm: comparison.algorithmName,
-                  summary: comparison.summary,
-                },
-                enumerable: false,
-                configurable: true,
-              });
-            }
-          }
-        } catch (_shadowErr: unknown) {
-          // AI-GUARD: Shadow scoring must never affect production results
         }
       }
 

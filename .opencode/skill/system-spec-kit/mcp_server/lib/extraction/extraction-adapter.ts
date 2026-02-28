@@ -202,16 +202,6 @@ function resolveMemoryIdFromText(sourceText: string): number | null {
     }
   }
 
-  const fallback = (db.prepare(`
-    SELECT id
-    FROM memory_index
-    ORDER BY created_at DESC, id DESC
-    LIMIT 1
-  `) as Database.Statement).get() as { id: number } | undefined;
-  if (fallback?.id) {
-    return fallback.id;
-  }
-
   return null;
 }
 

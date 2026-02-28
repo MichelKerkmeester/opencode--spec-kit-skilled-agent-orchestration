@@ -39,10 +39,6 @@ import type {
 } from '../lib/storage/reconsolidation';
 
 import {
-  isShadowScoringEnabled,
-} from '../lib/eval/shadow-scoring';
-
-import {
   getChannelAttribution,
 } from '../lib/eval/channel-attribution';
 import type { ChannelSources } from '../lib/eval/channel-attribution';
@@ -50,7 +46,6 @@ import type { ChannelSources } from '../lib/eval/channel-attribution';
 // Feature flags from search-flags
 import {
   isDocscoreAggregationEnabled,
-  isShadowScoringEnabled as isShadowScoringFlag,
   isSaveQualityGateEnabled,
   isReconsolidationEnabled as isReconsolidationFlag,
 } from '../lib/search/search-flags';
@@ -499,16 +494,14 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   it('S4-INT-13: Shadow scoring always disabled (REMOVED flag)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: 'true' },
     () => {
-      expect(isShadowScoringEnabled()).toBe(false);
-      expect(isShadowScoringFlag()).toBe(false);
+      // isShadowScoringEnabled removed — shadow scoring permanently disabled
     },
   ));
 
   it('S4-INT-14: Shadow scoring disabled when flag is OFF (REMOVED)', withEnvVars(
     { SPECKIT_SHADOW_SCORING: undefined },
     () => {
-      expect(isShadowScoringEnabled()).toBe(false);
-      expect(isShadowScoringFlag()).toBe(false);
+      // isShadowScoringEnabled removed — shadow scoring permanently disabled
     },
   ));
 
@@ -565,7 +558,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(true);
-    expect(isShadowScoringFlag()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -575,7 +568,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    expect(isShadowScoringFlag()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -585,7 +578,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_RECONSOLIDATION = 'false';
     delete process.env.SPECKIT_SHADOW_SCORING;
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    expect(isShadowScoringFlag()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(true);
     expect(isReconsolidationFlag()).toBe(false);
 
@@ -594,7 +587,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_DOCSCORE_AGGREGATION = 'false';
     process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
-    expect(isShadowScoringFlag()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(true);
   });
@@ -606,7 +599,7 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     process.env.SPECKIT_RECONSOLIDATION = 'true';
 
     expect(isDocscoreAggregationEnabled()).toBe(true);
-    expect(isShadowScoringFlag()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(true);
     expect(isReconsolidationFlag()).toBe(true);
   });
@@ -655,8 +648,7 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
     // Verify all flags are off
     expect(isDocscoreAggregationEnabled()).toBe(false);
     expect(isMpabEnabled()).toBe(false);
-    expect(isShadowScoringFlag()).toBe(false);  // REMOVED — always false
-    expect(isShadowScoringEnabled()).toBe(false); // REMOVED — always false
+    // isShadowScoringEnabled removed — shadow scoring permanently disabled
     expect(isSaveQualityGateEnabled()).toBe(false);
     expect(isQualityGateEnabled()).toBe(false);
     expect(isReconsolidationFlag()).toBe(false);

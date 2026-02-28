@@ -31,7 +31,6 @@ const RELATION_WEIGHTS: Record<string, number> = {
   enabled:      1.1,  // Weak causal link
   supports:     1.0,  // Neutral / default
   derived_from: 1.0,  // Neutral / default
-  related:      1.0,  // Explicit default for open-ended relations
   contradicts:  0.8,  // Dampened — conflicting signals lower confidence
 };
 
@@ -146,13 +145,18 @@ function insertEdge(
   try {
     const clampedStrength = Math.max(0, Math.min(1, effectiveStrength));
 
-    // Check if edge exists (for weight_history logging on conflict update)
+    // Check if edge exists (for weight_history logging on conflict update).
+    // This SELECT is intentional: we need the old strength to decide whether
+    // to write a weight_history row after the upsert. The subsequent INSERT
+    // uses last_insert_rowid() to avoid a second post-upsert SELECT.
     const existing = (db.prepare(`
       SELECT id, strength FROM causal_edges
       WHERE source_id = ? AND target_id = ? AND relation = ?
     `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
 
-    (db.prepare(`
+    // Single upsert — SQLite sets last_insert_rowid() to the row's rowid for
+    // both INSERT and the DO UPDATE conflict path, so we avoid a post-upsert SELECT.
+    const upsertResult = (db.prepare(`
       INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
       VALUES (?, ?, ?, ?, ?, ?)
       ON CONFLICT(source_id, target_id, relation) DO UPDATE SET
@@ -160,21 +164,18 @@ function insertEdge(
         evidence = COALESCE(excluded.evidence, causal_edges.evidence)
     `) as Database.Statement).run(sourceId, targetId, relation, clampedStrength, evidence, createdBy);
 
-    const row = (db.prepare(`
-      SELECT id FROM causal_edges
-      WHERE source_id = ? AND target_id = ? AND relation = ?
-    `) as Database.Statement).get(sourceId, targetId, relation) as { id: number } | undefined;
+    const rowId = Number((upsertResult as { lastInsertRowid: number | bigint }).lastInsertRowid);
 
     // T001d: Log weight change on conflict update
-    if (existing && row && existing.strength !== clampedStrength) {
-      logWeightChange(row.id, existing.strength, clampedStrength, createdBy, 'insert-upsert');
+    if (existing && rowId && existing.strength !== clampedStrength) {
+      logWeightChange(rowId, existing.strength, clampedStrength, createdBy, 'insert-upsert');
     }
 
     if (shouldInvalidateCache) {
       invalidateDegreeCache();
     }
 
-    return row?.id ?? null;
+    return rowId || null;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] insertEdge error: ${msg}`);
@@ -652,8 +653,8 @@ function getStaleEdges(thresholdDays: number = STALENESS_THRESHOLD_DAYS): Causal
   try {
     return (db.prepare(`
       SELECT * FROM causal_edges
-      WHERE last_accessed IS NULL AND extracted_at < datetime('now', '-' || ? || ' days')
-         OR last_accessed < datetime('now', '-' || ? || ' days')
+      WHERE last_accessed IS NULL AND (extracted_at < datetime('now', '-' || ? || ' days')
+         OR last_accessed < datetime('now', '-' || ? || ' days'))
       ORDER BY COALESCE(last_accessed, extracted_at) ASC
     `) as Database.Statement).all(thresholdDays, thresholdDays) as CausalEdge[];
   } catch (error: unknown) {

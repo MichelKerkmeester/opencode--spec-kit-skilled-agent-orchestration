@@ -327,14 +327,18 @@ export function calculateImportanceScore(tier: string, baseWeight: number | unde
  * T033: Calculate citation recency score (REQ-017 Factor 5)
  */
 export function calculateCitationScore(row: ScoringInput): number {
-  const lastCited = (row.lastCited as string | undefined) || row.last_accessed as string | undefined || row.updated_at;
+  // C2 FIX: Only use actual citation data (lastCited / last_cited).
+  // Never fall back to last_accessed or updated_at — those conflate
+  // general recency with citation recency. Uncited memories score 0.
+  const lastCited = (row.lastCited as string | undefined)
+    || (row.last_cited as string | undefined);
 
   if (!lastCited) {
-    return 0.5;
+    return 0;
   }
 
   const timestamp = new Date(lastCited).getTime();
-  if (isNaN(timestamp)) return 0.5; // Neutral score for invalid dates
+  if (isNaN(timestamp)) return 0; // No valid citation date → score 0
 
   const elapsedMs = Date.now() - timestamp;
   const elapsedDays = Math.max(0, elapsedMs / (1000 * 60 * 60 * 24));
@@ -492,20 +496,12 @@ function applyPostProcessingAndObserve(
   const docMultiplier = DOCUMENT_TYPE_MULTIPLIERS[docType] ?? 1.0;
   composite *= docMultiplier;
 
-  // T010: Capture score before N4/TM-01 for observability
-  const scoreBeforeBoosts = composite;
-
-  // N4: Apply cold-start novelty boost (BEFORE FSRS temporal decay cap)
-  const noveltyBoost = calculateNoveltyBoost(row.created_at);
-  // AI-INVARIANT: N4 novelty-boosted scores capped at NOVELTY_BOOST_SCORE_CAP to prevent inflation
-  const scoreCap = noveltyBoost > 0 ? NOVELTY_BOOST_SCORE_CAP : 1;
-  composite = Math.min(scoreCap, composite + noveltyBoost);
-
-  // TM-01: Apply interference penalty (AFTER N4 novelty boost, after doc multiplier)
+  // TM-01: Apply interference penalty (after doc multiplier)
   const interferenceScore = (row.interference_score as number) || 0;
   composite = applyInterferencePenalty(composite, interferenceScore);
 
-  const finalScore = Math.max(0, composite);
+  // C1 FIX: Clamp to [0, 1] — doc-type multipliers can push composite above 1.0
+  const finalScore = Math.max(0, Math.min(1, composite));
 
   // T010: Scoring observability (5% sampled, fail-safe)
   try {
@@ -515,17 +511,17 @@ function applyPostProcessingAndObserve(
         memoryId: (row.id as number) || 0,
         queryId: `${queryIdPrefix}-${Date.now()}`,
         timestamp: new Date().toISOString(),
-        noveltyBoostApplied: noveltyBoost > 0,
-        noveltyBoostValue: noveltyBoost,
+        noveltyBoostApplied: false,
+        noveltyBoostValue: 0,
         memoryAgeDays: isNaN(createdMs) ? 0 : (Date.now() - createdMs) / 86400000,
         // AI-WHY: Graduated flag — default ON. Use !== 'false' to match graduated semantics (BUG-4 fix).
         interferenceApplied: interferenceScore > 0 && process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false',
         interferenceScore,
         interferencePenalty: process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false' && interferenceScore > 0
           ? INTERFERENCE_PENALTY_COEFFICIENT * interferenceScore : 0,
-        scoreBeforeBoosts,
+        scoreBeforeBoosts: composite,
         scoreAfterBoosts: finalScore,
-        scoreDelta: finalScore - scoreBeforeBoosts,
+        scoreDelta: finalScore - composite,
       });
     }
   } catch (_err: unknown) { /* AI-RISK: Telemetry must never affect scoring — fail-safe swallow */ }

@@ -68,7 +68,7 @@ function makeSimilarMemory(overrides: Partial<SimilarMemory> = {}): SimilarMemor
     content_text: 'This is the existing memory content that was previously stored.',
     similarity: 0.90,
     spec_folder: 'test-spec',
-    frequency_counter: 1,
+    importance_weight: 0.5,
     ...overrides,
   };
 }
@@ -337,17 +337,17 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('Merge Path (>= 0.88)', () => {
-    it('MP1: Merges content and increments frequency', async () => {
+    it('MP1: Merges content and boosts importance_weight', async () => {
       // Seed existing memory in DB
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (100, 'test-spec', '/test/existing.md', 'Existing', 'Existing content line A', 2, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (100, 'test-spec', '/test/existing.md', 'Existing', 'Existing content line A', 0.5, datetime('now'), datetime('now'))
       `).run();
 
       const existing = makeSimilarMemory({
         id: 100,
         content_text: 'Existing content line A',
-        frequency_counter: 2,
+        importance_weight: 0.5,
         similarity: 0.90,
       });
 
@@ -357,31 +357,31 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
       expect(result.action).toBe('merge');
       expect(result.existingMemoryId).toBe(100);
-      expect(result.frequencyCounter).toBe(3); // 2 + 1
+      expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       expect(result.similarity).toBe(0.90);
 
       // Verify DB update
-      const row = testDb.prepare('SELECT content_text, frequency_counter FROM memory_index WHERE id = 100').get();
-      expect(row.frequency_counter).toBe(3);
+      const row = testDb.prepare('SELECT content_text, importance_weight FROM memory_index WHERE id = 100').get();
+      expect(row.importance_weight).toBeCloseTo(0.6);
       expect(row.content_text).toContain('Existing content line A');
       expect(row.content_text).toContain('New unique content line B');
     });
 
-    it('MP2: Frequency counter starts at 0 if not present', async () => {
+    it('MP2: importance_weight defaults to 0.5 if not present', async () => {
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (101, 'test-spec', '/test/101.md', 'No freq', 'Base content', 0, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (101, 'test-spec', '/test/101.md', 'No weight', 'Base content', 0.5, datetime('now'), datetime('now'))
       `).run();
 
       const existing = makeSimilarMemory({
         id: 101,
         content_text: 'Base content',
-        frequency_counter: undefined,
+        importance_weight: undefined,
         similarity: 0.92,
       });
 
       const result = await executeMerge(existing, makeNewMemory({ content: 'Extra content' }), testDb);
-      expect(result.frequencyCounter).toBe(1); // 0 + 1
+      expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1) — default 0.5 + boost
     });
 
     it('MP3: Merge with embedding regeneration callback', async () => {
@@ -554,12 +554,12 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
     it('RO1: Merge path when similarity >= 0.88', async () => {
       // Seed existing memory
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (400, 'test-spec', '/test/400.md', 'Existing', 'Existing content', 1, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (400, 'test-spec', '/test/400.md', 'Existing', 'Existing content', 0.5, datetime('now'), datetime('now'))
       `).run();
 
       const findSimilar = mockFindSimilar([
-        makeSimilarMemory({ id: 400, similarity: 0.90, content_text: 'Existing content', frequency_counter: 1 }),
+        makeSimilarMemory({ id: 400, similarity: 0.90, content_text: 'Existing content', importance_weight: 0.5 }),
       ]);
 
       const result = await reconsolidate(
@@ -572,7 +572,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result!.action).toBe('merge');
       if (result!.action === 'merge') {
         expect(result!.existingMemoryId).toBe(400);
-        expect(result!.frequencyCounter).toBe(2);
+        expect(result!.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       }
     });
 
@@ -656,8 +656,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       // - ALLOWED by TM-04 (threshold 0.92 for dedup rejection)
       // - HANDLED by TM-06 as MERGE (threshold 0.88)
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (450, 'test-spec', '/test/450.md', 'Existing', 'Existing content', 0, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (450, 'test-spec', '/test/450.md', 'Existing', 'Existing content', 0.5, datetime('now'), datetime('now'))
       `).run();
 
       const findSimilar = mockFindSimilar([
@@ -665,7 +665,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
           id: 450,
           similarity: 0.89, // Between TM-04 (0.92) and TM-06 merge (0.88)
           content_text: 'Existing content',
-          frequency_counter: 0,
+          importance_weight: 0.5,
         }),
       ]);
 
@@ -684,7 +684,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result!.action).toBe('merge');
       if (result!.action === 'merge') {
         expect(result!.existingMemoryId).toBe(450);
-        expect(result!.frequencyCounter).toBe(1);
+        expect(result!.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       }
     });
   });
@@ -757,20 +757,20 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     it('EC3: Merge with null existing content handles gracefully', async () => {
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (510, 'test-spec', '/test/510.md', 'Null content', NULL, 0, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (510, 'test-spec', '/test/510.md', 'Null content', NULL, 0.5, datetime('now'), datetime('now'))
       `).run();
 
       const existing = makeSimilarMemory({
         id: 510,
         content_text: null,
         similarity: 0.90,
-        frequency_counter: 0,
+        importance_weight: 0.5,
       });
 
       const result = await executeMerge(existing, makeNewMemory({ content: 'New content' }), testDb);
       expect(result.action).toBe('merge');
-      expect(result.frequencyCounter).toBe(1);
+      expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
     });
 
     it('EC4: Boundary similarity 0.88 -> merge (not conflict)', async () => {

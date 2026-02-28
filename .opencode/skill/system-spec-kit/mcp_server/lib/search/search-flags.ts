@@ -67,15 +67,6 @@ export function isDocscoreAggregationEnabled(): boolean {
 }
 
 /**
- * R13-S2: Shadow scoring for A/B comparison evaluation.
- * @deprecated Eval complete. Flag scheduled for removal.
- * Hardcoded to false — env var SPECKIT_SHADOW_SCORING is inert.
- */
-export function isShadowScoringEnabled(): boolean {
-  return false;
-}
-
-/**
  * TM-04: Pre-storage quality gate for memory saves.
  * Default: TRUE (graduated). Set SPECKIT_SAVE_QUALITY_GATE=false to disable.
  */

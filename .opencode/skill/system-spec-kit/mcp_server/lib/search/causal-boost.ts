@@ -133,7 +133,7 @@ function getNeighborBoosts(memoryIds: number[]): Map<number, number> {
       FROM causal_edges ce
       WHERE ce.target_id IN (${placeholders})
 
-      UNION ALL
+      UNION
 
       SELECT cw.origin_id,
              CASE

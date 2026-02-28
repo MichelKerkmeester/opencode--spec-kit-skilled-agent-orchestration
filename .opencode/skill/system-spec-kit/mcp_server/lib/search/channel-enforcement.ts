@@ -67,7 +67,7 @@ export interface EnforcementResult {
  *  - Promoted items are APPENDED to the window slice and then the full
  *    result list is re-sorted by score (descending) so callers always
  *    receive a score-ordered list.
- *  - Only results with score >= QUALITY_FLOOR (0.2) are eligible for
+ *  - Only results with score >= QUALITY_FLOOR (0.005) are eligible for
  *    promotion; channels whose best result is below the floor are noted
  *    in `underRepresentedChannels` but no item is injected.
  *

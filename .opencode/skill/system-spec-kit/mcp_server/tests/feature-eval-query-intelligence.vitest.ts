@@ -231,8 +231,8 @@ describe('T003: Channel Min-Representation R2', () => {
     process.env.SPECKIT_CHANNEL_MIN_REP = 'true';
   });
 
-  it('T003-01: QUALITY_FLOOR constant is 0.2', () => {
-    expect(QUALITY_FLOOR).toBe(0.2);
+  it('T003-01: QUALITY_FLOOR constant is 0.005', () => {
+    expect(QUALITY_FLOOR).toBe(0.005);
   });
 
   it('T003-02: vector-dominated results get padded with under-represented channels', () => {
@@ -283,7 +283,7 @@ describe('T003: Channel Min-Representation R2', () => {
 
     const allChannelResults = new Map([
       ['vector', [{ id: 1, score: 0.9 }]],
-      ['bm25', [{ id: 10, score: 0.1 }]], // below 0.2 floor
+      ['bm25', [{ id: 10, score: 0.003 }]], // below 0.005 floor
     ]);
 
     const result = analyzeChannelRepresentation(topK, allChannelResults);

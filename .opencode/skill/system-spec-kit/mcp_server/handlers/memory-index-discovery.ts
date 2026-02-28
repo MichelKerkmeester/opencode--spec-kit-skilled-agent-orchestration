@@ -21,7 +21,7 @@ const SPEC_DOCUMENT_FILENAMES = new Set([
 ]);
 
 /** Directories to exclude from spec document discovery. */
-const SPEC_DOC_EXCLUDE_DIRS = new Set(['z_archive', 'scratch', 'memory', 'node_modules']);
+const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules']);
 
 /** Constitutional markdown basenames intentionally excluded from indexing. */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
@@ -35,7 +35,7 @@ export interface SpecDiscoveryOptions {
  * Finds spec.md, plan.md, tasks.md, checklist.md, decision-record.md,
  * implementation-summary.md, research.md, handover.md.
  *
- * Excludes z_archive/, scratch/, memory/, and hidden directories.
+ * Excludes scratch/, memory/, and hidden directories.
  */
 export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryOptions = {}): string[] {
   // Feature flag: allow opt-out.

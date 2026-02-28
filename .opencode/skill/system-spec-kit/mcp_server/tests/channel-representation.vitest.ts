@@ -115,7 +115,7 @@ describe('T024 Channel Representation Check', () => {
     ];
     const allChannelResults = new Map<string, ChannelResult[]>([
       ['vector', [makeChannelResult('a1', 0.9)]],
-      ['graph',  [makeChannelResult('g1', 0.19), makeChannelResult('g2', 0.10)]],
+      ['graph',  [makeChannelResult('g1', 0.004), makeChannelResult('g2', 0.001)]],
     ]);
 
     const result = analyzeChannelRepresentation(topK, allChannelResults);
@@ -260,7 +260,7 @@ describe('T024 Channel Representation Check', () => {
     // Test with a result just below the floor
     const belowFloor = new Map<string, ChannelResult[]>([
       ['vector', [makeChannelResult('a1', 0.9)]],
-      ['graph',  [makeChannelResult('g1', 0.19)]],            // just below 0.2
+      ['graph',  [makeChannelResult('g1', 0.004)]],            // just below 0.005
     ]);
     const resultBelowFloor = analyzeChannelRepresentation(topK, belowFloor);
     expect(resultBelowFloor.promoted).toHaveLength(0);
@@ -334,8 +334,8 @@ describe('T024 Channel Representation Check', () => {
     expect(result.promoted[0].promotedFrom).toBe('graph');
   });
 
-  // ---- T15: QUALITY_FLOOR constant is exactly 0.2 ----
-  it('T15: QUALITY_FLOOR constant is exactly 0.2', () => {
-    expect(QUALITY_FLOOR).toBe(0.2);
+  // ---- T15: QUALITY_FLOOR constant is exactly 0.005 ----
+  it('T15: QUALITY_FLOOR constant is exactly 0.005', () => {
+    expect(QUALITY_FLOOR).toBe(0.005);
   });
 });

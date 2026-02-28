@@ -17,10 +17,6 @@ interface CausalEdgeRow {
   strength: number;
 }
 
-interface SubgraphWeights {
-  causalWeight: number;
-}
-
 // ─── 2. TYPED-DEGREE CONSTANTS ───
 
 /** Edge type weights for typed-degree computation (R4 5th RRF channel) */
@@ -41,15 +37,6 @@ const MAX_TOTAL_DEGREE = 50;
 
 /** Maximum normalized boost score */
 const DEGREE_BOOST_CAP = 0.15;
-
-// ─── 2b. WEIGHTING ───
-
-/**
- * Causal graph is the only graph channel.
- */
-function getSubgraphWeights(_intent?: string): SubgraphWeights {
-  return { causalWeight: 1.0 };
-}
 
 // ─── 3. CAUSAL EDGE CHANNEL (FTS5-BACKED) ───
 
@@ -434,14 +421,13 @@ function createUnifiedGraphSearchFn(
     options: Record<string, unknown>
   ): Array<Record<string, unknown>> {
     const limit = typeof options['limit'] === 'number' ? options['limit'] : 20;
-    const weights = getSubgraphWeights(typeof options['intent'] === 'string' ? options['intent'] : undefined);
 
     const specFolder = typeof options['specFolder'] === 'string' ? options['specFolder'] : undefined;
 
     return queryCausalEdges(database, query, limit, specFolder)
       .map((result) => ({
         ...result,
-        score: (typeof result['score'] === 'number' ? result['score'] : 0) * weights.causalWeight,
+        score: (typeof result['score'] === 'number' ? result['score'] : 0),
       }))
       .sort((a, b) => {
         const scoreA = typeof a['score'] === 'number' ? a['score'] : 0;
@@ -455,7 +441,6 @@ function createUnifiedGraphSearchFn(
 
 export {
   createUnifiedGraphSearchFn,
-  getSubgraphWeights,
   // Typed-degree computation (R4 5th RRF channel)
   EDGE_TYPE_WEIGHTS,
   DEFAULT_MAX_TYPED_DEGREE,

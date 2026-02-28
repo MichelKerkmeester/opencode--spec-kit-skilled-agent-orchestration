@@ -381,23 +381,12 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
   return finalResults.sort((a, b) => b.rsfScore - a.rsfScore);
 }
 
-/* ─── 6. FEATURE FLAG ─── */
-
-/**
- * @deprecated Eval complete (Sprint 7 audit). Hardcoded to false.
- * RSF shadow fusion experiment concluded — env var SPECKIT_RSF_FUSION is inert.
- */
-function isRsfEnabled(): boolean {
-  return false;
-}
-
-/* ─── 7. EXPORTS ─── */
+/* ─── 6. EXPORTS ─── */
 
 export {
   fuseResultsRsf,
   fuseResultsRsfMulti,
   fuseResultsRsfCrossVariant,
-  isRsfEnabled,
   extractScore,
   minMaxNormalize,
   clamp01,

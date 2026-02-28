@@ -10,7 +10,6 @@ import * as fs from 'fs';
 import * as os from 'os';
 
 import {
-  isShadowScoringEnabled,
   runShadowScoring,
   compareShadowResults,
   logShadowComparison,
@@ -44,43 +43,6 @@ function makeResults(ids: number[]): ScoredResult[] {
 /* ─── Shadow Scoring Tests ─── */
 
 describe('Shadow Scoring (R13-S2)', () => {
-  describe('Feature Flag', () => {
-    const originalEnv = process.env.SPECKIT_SHADOW_SCORING;
-
-    afterEach(() => {
-      if (originalEnv === undefined) {
-        delete process.env.SPECKIT_SHADOW_SCORING;
-      } else {
-        process.env.SPECKIT_SHADOW_SCORING = originalEnv;
-      }
-    });
-
-    it('returns false when env var is not set', () => {
-      delete process.env.SPECKIT_SHADOW_SCORING;
-      expect(isShadowScoringEnabled()).toBe(false);
-    });
-
-    it('returns false when env var is "true" (REMOVED flag)', () => {
-      process.env.SPECKIT_SHADOW_SCORING = 'true';
-      expect(isShadowScoringEnabled()).toBe(false);
-    });
-
-    it('returns false when env var is "TRUE" (REMOVED flag)', () => {
-      process.env.SPECKIT_SHADOW_SCORING = 'TRUE';
-      expect(isShadowScoringEnabled()).toBe(false);
-    });
-
-    it('returns false when env var is "false"', () => {
-      process.env.SPECKIT_SHADOW_SCORING = 'false';
-      expect(isShadowScoringEnabled()).toBe(false);
-    });
-
-    it('returns false when env var is "1" (REMOVED flag)', () => {
-      process.env.SPECKIT_SHADOW_SCORING = '1';
-      expect(isShadowScoringEnabled()).toBe(false);
-    });
-  });
-
   describe('compareShadowResults', () => {
     it('computes correct deltas for overlapping results', () => {
       const production = makeResults([1, 2, 3]);

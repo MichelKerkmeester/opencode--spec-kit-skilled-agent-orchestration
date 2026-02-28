@@ -366,12 +366,17 @@ function markMemorySuperseded(memoryId: number): boolean {
   const database = requireDb();
 
   try {
-    database.prepare(`
+    const result = database.prepare(`
       UPDATE memory_index
       SET importance_tier = 'deprecated',
           updated_at = datetime('now')
       WHERE id = ?
     `).run(memoryId);
+
+    if ((result as { changes: number }).changes === 0) {
+      console.warn(`[PE-Gate] Memory ${memoryId} not found, cannot mark as superseded`);
+      return false;
+    }
 
     console.info(`[PE-Gate] Memory ${memoryId} marked as superseded`);
     return true;
@@ -409,7 +414,7 @@ function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding:
   const fileMetadata = incrementalIndex.getFileMetadata(parsed.filePath);
   const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-  database.prepare(`
+  const updateResult = database.prepare(`
     UPDATE memory_index
     SET content_hash = ?,
         context_type = ?,
@@ -438,6 +443,16 @@ function updateExistingMemory(memoryId: number, parsed: ParsedMemory, embedding:
     JSON.stringify(parsed.qualityFlags ?? []),
     memoryId
   );
+
+  if ((updateResult as { changes: number }).changes === 0) {
+    return {
+      status: 'error',
+      id: memoryId,
+      specFolder: parsed.specFolder,
+      title: parsed.title,
+      error: `Memory ${memoryId} not found in memory_index, update had no effect`,
+    };
+  }
 
   return {
     status: 'updated',
@@ -1197,14 +1212,14 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   let peDecision: PeDecision = { action: 'CREATE', similarity: 0 };
   let candidates: SimilarMemory[] = [];
 
-  if (embedding) {
+  if (!force && embedding) {
     candidates = findSimilarMemories(embedding, {
       limit: 5,
       specFolder: parsed.specFolder
     });
   }
 
-  if (candidates.length > 0) {
+  if (!force && candidates.length > 0) {
     peDecision = predictionErrorGate.evaluateMemory(
       parsed.contentHash,
       parsed.content,
@@ -1323,7 +1338,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings: string[] = [];
 
-  if (isReconsolidationFlagEnabled() && isReconsolidationEnabled() && embedding) {
+  if (!force && isReconsolidationFlagEnabled() && isReconsolidationEnabled() && embedding) {
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
       if (!hasCheckpoint) {
@@ -1358,9 +1373,9 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
                 content_text: (r.content as string) ?? null,
                 similarity: ((r.similarity as number) ?? 0) / 100,
                 spec_folder: parsed.specFolder,
-                frequency_counter: typeof (r.frequency_counter as unknown) === 'number'
-                  ? (r.frequency_counter as number)
-                  : 0,
+                importance_weight: typeof (r.importance_weight as unknown) === 'number'
+                  ? (r.importance_weight as number)
+                  : 0.5,
               }));
             },
             storeMemory: (memory) => {

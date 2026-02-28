@@ -503,6 +503,56 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         `) as Database.Statement
       : null;
 
+    // T213: Ensure working_memory table schema is ready BEFORE the transaction.
+    // DDL (CREATE TABLE, ALTER TABLE) causes SQLite to auto-commit, which would
+    // corrupt a surrounding transaction. Run DDL outside the transaction boundary.
+    if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
+      try {
+        database.exec(`
+          CREATE TABLE IF NOT EXISTS working_memory (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT NOT NULL,
+            memory_id INTEGER NOT NULL,
+            attention_score REAL DEFAULT 1.0,
+            added_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
+            focus_count INTEGER DEFAULT 1,
+            event_counter INTEGER NOT NULL DEFAULT 0,
+            mention_count INTEGER NOT NULL DEFAULT 0,
+            source_tool TEXT,
+            source_call_id TEXT,
+            extraction_rule_id TEXT,
+            redaction_applied INTEGER NOT NULL DEFAULT 0,
+            UNIQUE(session_id, memory_id),
+            FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
+          )
+        `);
+
+        const wmColumns = (database.prepare('PRAGMA table_info(working_memory)').all() as Array<{ name: string }>)
+          .map(column => column.name);
+        if (!wmColumns.includes('event_counter')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN event_counter INTEGER NOT NULL DEFAULT 0');
+        }
+        if (!wmColumns.includes('mention_count')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN mention_count INTEGER NOT NULL DEFAULT 0');
+        }
+        if (!wmColumns.includes('source_tool')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN source_tool TEXT');
+        }
+        if (!wmColumns.includes('source_call_id')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN source_call_id TEXT');
+        }
+        if (!wmColumns.includes('extraction_rule_id')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN extraction_rule_id TEXT');
+        }
+        if (!wmColumns.includes('redaction_applied')) {
+          database.exec('ALTER TABLE working_memory ADD COLUMN redaction_applied INTEGER NOT NULL DEFAULT 0');
+        }
+      } catch {
+        // Table may already exist with different schema — proceed anyway
+      }
+    }
+
     // T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
     // When clearExisting=true, the DELETE and all INSERTs must be atomic.
     // If any INSERT fails after DELETE, ROLLBACK restores original data.
@@ -603,53 +653,8 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       // T213: Restore working memory state from checkpoint snapshot.
       // The working_memory table holds session-based attention data that must
       // survive checkpoint save/restore cycles.
+      // DDL (CREATE TABLE, ALTER TABLE) is executed BEFORE the transaction above.
       if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
-        // Ensure working_memory table exists
-        try {
-          database.exec(`
-            CREATE TABLE IF NOT EXISTS working_memory (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              session_id TEXT NOT NULL,
-              memory_id INTEGER NOT NULL,
-              attention_score REAL DEFAULT 1.0,
-              added_at TEXT DEFAULT CURRENT_TIMESTAMP,
-              last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
-              focus_count INTEGER DEFAULT 1,
-              event_counter INTEGER NOT NULL DEFAULT 0,
-              mention_count INTEGER NOT NULL DEFAULT 0,
-              source_tool TEXT,
-              source_call_id TEXT,
-              extraction_rule_id TEXT,
-              redaction_applied INTEGER NOT NULL DEFAULT 0,
-              UNIQUE(session_id, memory_id),
-              FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
-            )
-          `);
-
-          const wmColumns = (database.prepare('PRAGMA table_info(working_memory)').all() as Array<{ name: string }>)
-            .map(column => column.name);
-          if (!wmColumns.includes('event_counter')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN event_counter INTEGER NOT NULL DEFAULT 0');
-          }
-          if (!wmColumns.includes('mention_count')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN mention_count INTEGER NOT NULL DEFAULT 0');
-          }
-          if (!wmColumns.includes('source_tool')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN source_tool TEXT');
-          }
-          if (!wmColumns.includes('source_call_id')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN source_call_id TEXT');
-          }
-          if (!wmColumns.includes('extraction_rule_id')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN extraction_rule_id TEXT');
-          }
-          if (!wmColumns.includes('redaction_applied')) {
-            database.exec('ALTER TABLE working_memory ADD COLUMN redaction_applied INTEGER NOT NULL DEFAULT 0');
-          }
-        } catch {
-          // Table may already exist with different schema — proceed anyway
-        }
-
         if (clearExisting) {
           try { database.prepare('DELETE FROM working_memory').run(); } catch { /* table may not exist */ }
         }

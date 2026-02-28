@@ -108,10 +108,9 @@ describe('Suite 1 — Module wiring: all exports are accessible', () => {
     expect(typeof mod.resetGraphMetrics).toBe('function');
   });
 
-  it('graph-search-fn exports: createUnifiedGraphSearchFn, getSubgraphWeights', async () => {
+  it('graph-search-fn exports: createUnifiedGraphSearchFn', async () => {
     const mod = await import('../lib/search/graph-search-fn');
     expect(typeof mod.createUnifiedGraphSearchFn).toBe('function');
-    expect(typeof mod.getSubgraphWeights).toBe('function');
   });
 
   it('graph-flags exports: isGraphUnifiedEnabled', async () => {

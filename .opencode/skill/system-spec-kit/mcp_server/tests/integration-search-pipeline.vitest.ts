@@ -3,12 +3,13 @@
 // TEST: INTEGRATION SEARCH PIPELINE
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterEach } from 'vitest';
 
 import * as searchHandler from '../handlers/memory-search';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as bm25Index from '../lib/search/bm25-index';
+import { isMMREnabled, isTRMEnabled, isMultiQueryEnabled } from '../lib/search/search-flags';
 
 describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtures]', () => {
 
@@ -221,34 +222,72 @@ describe('C138: Feature Flag Regression Guards', () => {
     }
   });
 
-  it('C138-T2: pipeline flags are independent (no coupling)', () => {
-    // Each flag should be independently configurable
-    const flags = ['SPECKIT_MMR', 'SPECKIT_TRM', 'SPECKIT_MULTI_QUERY'];
-    expect(new Set(flags).size).toBe(flags.length);
+  it('C138-T2: pipeline flags are independent (toggling one does not affect others)', () => {
+    // Verify each flag can be disabled independently without coupling side-effects.
+    const saved = {
+      MMR: process.env['SPECKIT_MMR'],
+      TRM: process.env['SPECKIT_TRM'],
+      MULTI_QUERY: process.env['SPECKIT_MULTI_QUERY'],
+    };
+    try {
+      // Disable only MMR; TRM and MULTI_QUERY must remain enabled.
+      process.env['SPECKIT_MMR'] = 'false';
+      delete process.env['SPECKIT_TRM'];
+      delete process.env['SPECKIT_MULTI_QUERY'];
+
+      expect(isMMREnabled()).toBe(false);
+      expect(isTRMEnabled()).toBe(true);
+      expect(isMultiQueryEnabled()).toBe(true);
+    } finally {
+      if (saved.MMR === undefined) delete process.env['SPECKIT_MMR']; else process.env['SPECKIT_MMR'] = saved.MMR;
+      if (saved.TRM === undefined) delete process.env['SPECKIT_TRM']; else process.env['SPECKIT_TRM'] = saved.TRM;
+      if (saved.MULTI_QUERY === undefined) delete process.env['SPECKIT_MULTI_QUERY']; else process.env['SPECKIT_MULTI_QUERY'] = saved.MULTI_QUERY;
+    }
   });
 
-  it('C138-T3: SPECKIT_MMR undefined means MMR is ENABLED (opt-out, not opt-in)', () => {
-    // The absence of a feature flag means the feature is ENABLED.
-    // Operators must explicitly set flag=false to disable. This verifies the opt-out pattern.
-    const mmrValue = process.env['SPECKIT_MMR'];
-    // When not set (undefined), pipeline must treat MMR as enabled.
-    // Verify: flag !== 'false' is the condition for enabled.
-    const mmrEnabled = mmrValue !== 'false';
-    expect(mmrEnabled).toBe(true);
+  it('C138-T3: SPECKIT_MMR=false disables MMR; absent re-enables it', () => {
+    // Verify the actual isMMREnabled() function responds correctly to the env var,
+    // not just the raw env var value itself.
+    const saved = process.env['SPECKIT_MMR'];
+    try {
+      delete process.env['SPECKIT_MMR'];
+      expect(isMMREnabled()).toBe(true);  // absent → enabled (opt-out pattern)
+
+      process.env['SPECKIT_MMR'] = 'false';
+      expect(isMMREnabled()).toBe(false); // explicit false → disabled
+    } finally {
+      if (saved === undefined) delete process.env['SPECKIT_MMR']; else process.env['SPECKIT_MMR'] = saved;
+    }
   });
 
-  it('C138-T4: SPECKIT_TRM undefined means evidence gap detection is ACTIVE (opt-out)', () => {
-    // Same opt-out pattern: undefined = feature active.
-    const trmValue = process.env['SPECKIT_TRM'];
-    const trmEnabled = trmValue !== 'false';
-    expect(trmEnabled).toBe(true);
+  it('C138-T4: SPECKIT_TRM=false disables evidence gap detection; absent re-enables it', () => {
+    // Verify the actual isTRMEnabled() function responds correctly to the env var.
+    const saved = process.env['SPECKIT_TRM'];
+    try {
+      delete process.env['SPECKIT_TRM'];
+      expect(isTRMEnabled()).toBe(true);  // absent → enabled (opt-out pattern)
+
+      process.env['SPECKIT_TRM'] = 'false';
+      expect(isTRMEnabled()).toBe(false); // explicit false → disabled
+    } finally {
+      if (saved === undefined) delete process.env['SPECKIT_TRM']; else process.env['SPECKIT_TRM'] = saved;
+    }
   });
 
-  it('C138-T5: opt-out pattern — only explicit false disables a feature', () => {
-    // Verify the opt-out semantics: absent or 'true' → enabled, only 'false' → disabled.
-    const interpretFlag = (val: string | undefined): boolean => val !== 'false';
-    expect(interpretFlag(undefined)).toBe(true);   // absent → enabled
-    expect(interpretFlag('true')).toBe(true);       // explicit true → enabled
-    expect(interpretFlag('false')).toBe(false);     // explicit false → disabled
+  it('C138-T5: opt-out pattern — isMultiQueryEnabled() responds to all three states', () => {
+    // Verify the actual isMultiQueryEnabled() function: absent/'true' → enabled, 'false' → disabled.
+    const saved = process.env['SPECKIT_MULTI_QUERY'];
+    try {
+      delete process.env['SPECKIT_MULTI_QUERY'];
+      expect(isMultiQueryEnabled()).toBe(true);   // absent → enabled
+
+      process.env['SPECKIT_MULTI_QUERY'] = 'true';
+      expect(isMultiQueryEnabled()).toBe(true);   // explicit true → enabled
+
+      process.env['SPECKIT_MULTI_QUERY'] = 'false';
+      expect(isMultiQueryEnabled()).toBe(false);  // explicit false → disabled
+    } finally {
+      if (saved === undefined) delete process.env['SPECKIT_MULTI_QUERY']; else process.env['SPECKIT_MULTI_QUERY'] = saved;
+    }
   });
 });

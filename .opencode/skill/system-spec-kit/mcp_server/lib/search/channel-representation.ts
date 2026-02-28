@@ -3,10 +3,10 @@
 /* ─── 1. CONSTANTS ─── */
 
 /** Minimum similarity / relevance score for a result to qualify for promotion.
- * AI-WHY: 0.2 floor prevents promoting irrelevant results — assumes normalized [0,1] scores.
- * NOTE: When used with raw RRF scores (~0.01-0.03), results may never qualify.
- * Enable SPECKIT_SCORE_NORMALIZATION alongside SPECKIT_CHANNEL_MIN_REP for correct behavior. */
-export const QUALITY_FLOOR = 0.2;
+ * AI-WHY: 0.005 floor prevents promoting irrelevant results while remaining compatible
+ * with raw RRF scores (~0.01-0.03). Previous value of 0.2 filtered out ALL RRF results.
+ * Works with both normalized [0,1] scores and raw RRF scores. */
+export const QUALITY_FLOOR = 0.005;
 
 /** Env-var name for the feature flag. */
 const FEATURE_FLAG = 'SPECKIT_CHANNEL_MIN_REP';

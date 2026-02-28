@@ -85,6 +85,8 @@ export function buildEntityCatalog(
   db: Database.Database,
 ): Map<string, { memoryIds: number[]; specFolders: string[] }> {
   const catalog = new Map<string, { memoryIds: number[]; specFolders: string[] }>();
+  // Track seen values per canonical name using Sets for O(1) dedup instead of O(n) .includes()
+  const catalogSets = new Map<string, { memoryIdSet: Set<number>; specFolderSet: Set<string> }>();
 
   try {
     const rows = (db.prepare(`
@@ -102,15 +104,20 @@ export function buildEntityCatalog(
       if (canonical.length === 0) continue;
 
       let entry = catalog.get(canonical);
-      if (!entry) {
+      let sets = catalogSets.get(canonical);
+      if (!entry || !sets) {
         entry = { memoryIds: [], specFolders: [] };
+        sets = { memoryIdSet: new Set<number>(), specFolderSet: new Set<string>() };
         catalog.set(canonical, entry);
+        catalogSets.set(canonical, sets);
       }
 
-      if (!entry.memoryIds.includes(row.memory_id)) {
+      if (!sets.memoryIdSet.has(row.memory_id)) {
+        sets.memoryIdSet.add(row.memory_id);
         entry.memoryIds.push(row.memory_id);
       }
-      if (row.spec_folder && !entry.specFolders.includes(row.spec_folder)) {
+      if (row.spec_folder && !sets.specFolderSet.has(row.spec_folder)) {
+        sets.specFolderSet.add(row.spec_folder);
         entry.specFolders.push(row.spec_folder);
       }
     }
@@ -197,6 +204,16 @@ function getEntityLinkingDensityThreshold(): number {
 }
 
 /**
+ * Compute edge density: totalEdges / totalMemories.
+ *
+ * @param db - An initialized better-sqlite3 Database instance.
+ * @returns Density ratio, or 0 if no memories exist or on error.
+ */
+export function computeEdgeDensity(db: Database.Database): number {
+  return getGlobalEdgeDensityStats(db).density;
+}
+
+/**
  * Compute global graph density as total_edges / total_memories.
  * Returns 0 when there are no memories or when a DB error occurs.
  */
@@ -234,6 +251,45 @@ function getGlobalEdgeDensityStats(
  * @param matches - Array of cross-document entity matches to link
  * @returns Result with counts of links created, entities processed, and matches
  */
+/**
+ * Batch-fetch edge counts for a set of node IDs in a single query.
+ * Returns a map of nodeId -> edge count (source OR target).
+ * Uses UNION ALL to count both directions per node in one round-trip.
+ */
+function batchGetEdgeCounts(db: Database.Database, nodeIds: string[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  if (nodeIds.length === 0) return counts;
+
+  // Build: SELECT id, COUNT(*) AS cnt FROM (
+  //   SELECT source_id AS id FROM causal_edges WHERE source_id IN (...)
+  //   UNION ALL
+  //   SELECT target_id AS id FROM causal_edges WHERE target_id IN (...)
+  // ) GROUP BY id
+  const placeholders = nodeIds.map(() => '?').join(', ');
+  const sql = `
+    SELECT id, COUNT(*) AS cnt FROM (
+      SELECT source_id AS id FROM causal_edges WHERE source_id IN (${placeholders})
+      UNION ALL
+      SELECT target_id AS id FROM causal_edges WHERE target_id IN (${placeholders})
+    ) GROUP BY id
+  `;
+
+  try {
+    const rows = (db.prepare(sql) as Database.Statement).all(
+      ...nodeIds,
+      ...nodeIds,
+    ) as Array<{ id: string; cnt: number }>;
+    for (const row of rows) {
+      counts.set(row.id, row.cnt);
+    }
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-linker] batchGetEdgeCounts failed: ${message}`);
+  }
+
+  return counts;
+}
+
 export function createEntityLinks(
   db: Database.Database,
   matches: EntityMatch[],
@@ -255,6 +311,20 @@ export function createEntityLinks(
     INSERT OR IGNORE INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
     VALUES (?, ?, 'supports', 0.7, ?, 'entity_linker')
   `) as Database.Statement;
+
+  // --- P3b: Batch edge-count pre-fetch ---
+  // Collect all unique node IDs across all matches so we can fetch edge counts
+  // in a single query instead of one query per node per pair (N+1 pattern).
+  const allNodeIds = new Set<string>();
+  for (const match of matches) {
+    for (const memoryId of match.memoryIds) {
+      allNodeIds.add(String(memoryId));
+    }
+  }
+  // edgeCountCache holds the edge counts at the start of this run.
+  // As we insert new edges we increment the cached value so subsequent
+  // checks within the same run stay accurate without extra DB round-trips.
+  const edgeCountCache = batchGetEdgeCounts(db, Array.from(allNodeIds));
 
   for (const match of matches) {
     entitiesProcessed += 1;
@@ -294,9 +364,11 @@ export function createEntityLinks(
           }
         }
 
-        // Respect MAX_EDGES_PER_NODE for both source and target
-        if (getEdgeCount(db, sourceId) >= MAX_EDGES_PER_NODE) continue;
-        if (getEdgeCount(db, targetId) >= MAX_EDGES_PER_NODE) continue;
+        // Respect MAX_EDGES_PER_NODE — use cached counts (O(1) map lookup)
+        const sourceCount = edgeCountCache.get(sourceId) ?? 0;
+        const targetCount = edgeCountCache.get(targetId) ?? 0;
+        if (sourceCount >= MAX_EDGES_PER_NODE) continue;
+        if (targetCount >= MAX_EDGES_PER_NODE) continue;
 
         const evidence = `Cross-doc entity: ${match.canonicalName}`;
 
@@ -305,6 +377,9 @@ export function createEntityLinks(
           if (result.changes > 0) {
             linksCreated += 1;
             totalEdges += 1;
+            // Keep cache consistent so later pairs in this run see accurate counts
+            edgeCountCache.set(sourceId, sourceCount + 1);
+            edgeCountCache.set(targetId, targetCount + 1);
           }
         } catch (error: unknown) {
           const message = error instanceof Error ? error.message : String(error);

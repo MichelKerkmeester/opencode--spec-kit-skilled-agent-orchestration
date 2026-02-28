@@ -60,14 +60,13 @@ export function vectorSearchWithContiguity(
   }));
 
   for (let i = 0; i < boosted.length; i++) {
-    for (let j = 0; j < boosted.length; j++) {
-      if (i === j) continue;
-
+    for (let j = i + 1; j < boosted.length; j++) {
       const timeDelta = Math.abs(boosted[i]._ts - boosted[j]._ts) / 1000; // seconds
       if (timeDelta > windowSeconds) continue;
 
       const boost = (1 - timeDelta / windowSeconds) * BOOST_FACTOR;
       boosted[i].similarity = boosted[i].similarity * (1 + boost);
+      boosted[j].similarity = boosted[j].similarity * (1 + boost);
     }
   }
 

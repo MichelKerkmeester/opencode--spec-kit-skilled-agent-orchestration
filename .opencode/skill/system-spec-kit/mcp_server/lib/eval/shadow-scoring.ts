@@ -17,15 +17,6 @@
 
 import { initEvalDb, getEvalDb } from './eval-db';
 
-/* ─── 1. FEATURE FLAG ─── */
-
-/**
- * @deprecated Eval complete (Sprint 7 audit). Hardcoded to false.
- */
-export function isShadowScoringEnabled(): boolean {
-  return false;
-}
-
 /* ─── 2. TYPES ─── */
 
 /** A single scored result from either production or shadow path. */
@@ -254,40 +245,12 @@ function computeRankCorrelation(
  * @returns ShadowComparison with detailed deltas, or null if shadow scoring is disabled.
  */
 export async function runShadowScoring(
-  query: string,
-  productionResults: ScoredResult[],
-  shadowConfig: ShadowConfig,
+  _query: string,
+  _productionResults: ScoredResult[],
+  _shadowConfig: ShadowConfig,
 ): Promise<ShadowComparison | null> {
-  if (!isShadowScoringEnabled()) return null;
-
-  try {
-    // Deep copy production results to prevent mutation
-    const productionCopy: ScoredResult[] = productionResults.map(r => ({
-      memoryId: r.memoryId,
-      score: r.score,
-      rank: r.rank,
-    }));
-
-    // Run the shadow scoring function
-    const shadowResults = await Promise.resolve(
-      shadowConfig.shadowScoringFn(query, productionCopy),
-    );
-
-    // Compare results
-    const comparison = compareShadowResults(
-      query,
-      productionResults,
-      shadowResults,
-      shadowConfig.algorithmName,
-      shadowConfig.metadata,
-    );
-
-    return comparison;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.warn('[shadow-scoring] runShadowScoring failed (non-fatal):', msg);
-    return null;
-  }
+  // Shadow scoring eval complete (Sprint 7 audit) — permanently disabled.
+  return null;
 }
 
 /**
@@ -375,39 +338,9 @@ export function compareShadowResults(
  * @param comparison - The ShadowComparison to persist.
  * @returns true if successfully logged.
  */
-export function logShadowComparison(comparison: ShadowComparison): boolean {
-  if (!isShadowScoringEnabled()) return false;
-
-  try {
-    ensureShadowSchema();
-    const db = getDb();
-
-    db.prepare(`
-      INSERT INTO eval_shadow_comparisons
-        (timestamp, query, algorithm_name, production_count, shadow_count,
-         overlap_count, mean_abs_score_delta, mean_abs_rank_delta,
-         rank_correlation, deltas_json, metadata_json)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      comparison.timestamp,
-      comparison.query,
-      comparison.algorithmName,
-      comparison.summary.productionCount,
-      comparison.summary.shadowCount,
-      comparison.summary.overlapCount,
-      comparison.summary.meanAbsScoreDelta,
-      comparison.summary.meanAbsRankDelta,
-      comparison.summary.rankCorrelation,
-      JSON.stringify(comparison.deltas),
-      comparison.metadata ? JSON.stringify(comparison.metadata) : null,
-    );
-
-    return true;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.warn('[shadow-scoring] logShadowComparison failed (non-fatal):', msg);
-    return false;
-  }
+export function logShadowComparison(_comparison: ShadowComparison): boolean {
+  // Shadow scoring eval complete (Sprint 7 audit) — permanently disabled.
+  return false;
 }
 
 /**

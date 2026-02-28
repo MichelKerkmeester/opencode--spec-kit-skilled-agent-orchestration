@@ -17,8 +17,7 @@ describe('Co-Activation Module', () => {
 
   describe('Module Exports', () => {
     // Production exports: CO_ACTIVATION_CONFIG (not CONFIG), init, isEnabled,
-    // boostScore, getRelatedMemories, populateRelatedMemories, spreadActivation,
-    // logCoActivationEvent
+    // boostScore, getRelatedMemories, populateRelatedMemories, spreadActivation
     const expectedExports = [
       'init',
       'isEnabled',
@@ -26,7 +25,6 @@ describe('Co-Activation Module', () => {
       'getRelatedMemories',
       'boostScore',
       'populateRelatedMemories',
-      'logCoActivationEvent',
       'CO_ACTIVATION_CONFIG',
     ];
 
@@ -158,28 +156,6 @@ describe('Co-Activation Module', () => {
       const result = coActivation.spreadActivation([]);
       expect(Array.isArray(result)).toBe(true);
       expect(result).toHaveLength(0);
-    });
-  });
-
-  /* ─────────────────────────────────────────────────────────────
-     logCoActivationEvent()
-  ──────────────────────────────────────────────────────────────── */
-
-  describe('logCoActivationEvent()', () => {
-    // Production signature: logCoActivationEvent(event: CoActivationEvent): void
-    // CoActivationEvent has: timestamp, sourceId, targetId, similarity, boost
-    // Returns void (just logs to console when SPECKIT_DEBUG=true)
-
-    it('logCoActivationEvent accepts valid event', () => {
-      expect(() => {
-        coActivation.logCoActivationEvent({
-          timestamp: new Date().toISOString(),
-          sourceId: 1,
-          targetId: 2,
-          similarity: 85,
-          boost: 0.1,
-        });
-      }).not.toThrow();
     });
   });
 

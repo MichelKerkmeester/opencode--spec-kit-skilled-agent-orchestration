@@ -174,9 +174,9 @@ function getQueriesToEvaluate(config: AblationConfig): GroundTruthQuery[] {
  * @param nNegative - Number of queries where ablated > baseline (channel hurt).
  * @returns p-value, or null if fewer than 5 non-tied observations.
  *
- * Precision note: For n > ~50, the iterative binomial coefficient exceeds
- * Number.MAX_SAFE_INTEGER. The cumulative probability remains usable for
- * practical ground truth sizes (<=110 queries) but is an approximation.
+ * Precision note: Uses log-space computation to avoid integer overflow
+ * for large n (the naive iterative binomial coefficient exceeds
+ * Number.MAX_SAFE_INTEGER for n > ~50).
  */
 function signTestPValue(nPositive: number, nNegative: number): number | null {
   const n = nPositive + nNegative;
@@ -185,16 +185,23 @@ function signTestPValue(nPositive: number, nNegative: number): number | null {
   // Two-sided sign test: P(X <= min(n+, n-)) under Binomial(n, 0.5)
   const k = Math.min(nPositive, nNegative);
 
-  // Compute cumulative binomial probability P(X <= k) for Binomial(n, 0.5)
-  let cumProb = 0;
-  let binomCoeff = 1;
-  const p = 0.5;
-
-  for (let i = 0; i <= k; i++) {
-    if (i > 0) {
-      binomCoeff = binomCoeff * (n - i + 1) / i;
+  // Log-space binomial coefficient to avoid overflow for large n
+  function logBinomial(nVal: number, kVal: number): number {
+    if (kVal < 0 || kVal > nVal) return -Infinity;
+    if (kVal === 0 || kVal === nVal) return 0;
+    let result = 0;
+    for (let i = 0; i < kVal; i++) {
+      result += Math.log(nVal - i) - Math.log(i + 1);
     }
-    cumProb += binomCoeff * Math.pow(p, n);
+    return result;
+  }
+
+  // Compute cumulative binomial probability P(X <= k) for Binomial(n, 0.5)
+  // Sum in log-space: each term is exp(logBinom(n, i) + n * log(0.5))
+  const logP = n * Math.log(0.5);
+  let cumProb = 0;
+  for (let i = 0; i <= k; i++) {
+    cumProb += Math.exp(logBinomial(n, i) + logP);
   }
 
   // Two-sided: multiply by 2, cap at 1

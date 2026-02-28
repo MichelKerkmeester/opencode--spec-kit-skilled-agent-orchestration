@@ -1,6 +1,6 @@
 ---
 title: Summary of new and updated features
-description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-7 complete; deferred features (N2, R10, R8, S5) implemented.
+description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-7 complete; deferred features (N2, R10, R8, S5) implemented. Sprint 8 comprehensive remediation (15 bug fixes, ~360 lines dead code removed, 13 performance improvements) applied.
 ---
 
 # Summary of new and updated features
@@ -81,6 +81,15 @@ description: Every improvement delivered in the Hybrid RAG Fusion Refinement pro
 - [Governance](#governance)
   - [Feature flag governance](#feature-flag-governance)
   - [Feature flag sunset audit](#feature-flag-sunset-audit)
+- [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8)
+  - [Database and schema safety](#database-and-schema-safety)
+  - [Scoring and ranking corrections](#scoring-and-ranking-corrections)
+  - [Search pipeline safety](#search-pipeline-safety)
+  - [Guards and edge cases](#guards-and-edge-cases)
+  - [Entity normalization consolidation](#entity-normalization-consolidation)
+  - [Dead code removal](#dead-code-removal)
+  - [Performance improvements](#performance-improvements)
+  - [Test quality improvements](#test-quality-improvements)
 - [Decisions and deferrals](#decisions-and-deferrals)
   - [INT8 quantization evaluation (R5)](#int8-quantization-evaluation-r5)
   - [Implemented: graph centrality and community detection (N2)](#implemented-graph-centrality-and-community-detection-n2)
@@ -170,7 +179,9 @@ An initial pattern report identified at least five distinct consumption categori
 
 ### Scoring observability (T010)
 
-Novelty boost values and interference score distributions are logged at query time via 5% sampling to a `scoring_observations` table. Each observation captures memory ID, query ID, the novelty boost value, interference penalty, score before and after and the delta.
+Interference score distributions are logged at query time via 5% sampling to a `scoring_observations` table. Each observation captures memory ID, query ID, interference penalty, score before and after and the delta.
+
+The novelty boost (`calculateNoveltyBoost`) was removed from the hot scoring path during Sprint 8 remediation because it always returned 0 (the feature completed its evaluation). Telemetry now hardcodes `noveltyBoostApplied: false, noveltyBoostValue: 0` for backward-compatible log schemas.
 
 The 5% sample rate keeps storage costs low while still catching calibration drift. A try-catch wrapper guarantees that telemetry failures never affect scoring results. If the observation write fails, the search result is unchanged and the failure is swallowed silently.
 
@@ -178,7 +189,7 @@ The 5% sample rate keeps storage costs low while still catching calibration drif
 
 The ablation study framework disables one retrieval channel at a time (vector, BM25, FTS5, graph or trigger) and measures Recall@20 delta against a full-pipeline baseline. "What happens if we turn off the graph channel?" is now a question with a measured answer rather than speculation.
 
-The framework uses dependency injection for the search function, making it testable without the full pipeline. Statistical significance is assessed via a sign test (exact binomial distribution) because it is robust with small query sets. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation data. Runs behind the `SPECKIT_ABLATION` flag.
+The framework uses dependency injection for the search function, making it testable without the full pipeline. Statistical significance is assessed via a sign test using log-space binomial coefficient computation (preventing overflow for n>50, fixed in Sprint 8). Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation data. Runs behind the `SPECKIT_ABLATION` flag.
 
 The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the evaluation database. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON. A `isHigherBetter()` helper correctly interprets trend direction for different metric types. Both the ablation runner and the dashboard are exposed as new MCP tools: `eval_run_ablation` and `eval_reporting_dashboard`.
 
@@ -188,7 +199,7 @@ Full A/B comparison infrastructure ran alternative scoring algorithms in paralle
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
 
-Shadow scoring completed its evaluation purpose and has been deprecated. The `isShadowScoringEnabled()` function is hardcoded to `false` and the `SPECKIT_SHADOW_SCORING` environment variable is inert. The flag is scheduled for removal in the next maintenance pass. Channel attribution logic remains active within the 4-stage pipeline.
+Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function, `isInShadowPeriod()` function and all shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. Channel attribution logic remains active within the 4-stage pipeline.
 
 ---
 
@@ -234,7 +245,7 @@ Not all memories sit at the same level of abstraction. A root decision that caus
 
 Causal depth measures each memory's maximum distance from root nodes (those with in-degree zero) via BFS traversal. The raw depth is normalized by graph diameter to produce a [0,1] score. A memory at depth 3 in a graph with diameter 6 scores 0.5.
 
-Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus.
+Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 
 The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This keeps graph signals as a tiebreaker rather than a dominant ranking factor. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2a).
 
@@ -267,6 +278,8 @@ FSRS temporal decay biases against recent items. A memory indexed 2 hours ago ha
 The novelty boost applies an exponential decay (`0.15 * exp(-elapsed_hours / 12)`) to memories under 48 hours old, counteracting that bias. At indexing time, the boost is 0.15. After 12 hours, it drops to about 0.055. By 48 hours, it is effectively zero.
 
 The boost applies before FSRS decay and caps the composite score at 0.95 to prevent runaway inflation. One side effect: memories with high base scores (above 0.80) see diminished effective boost because the cap clips them. That is intentional. High-scoring memories do not need extra help.
+
+**Sprint 8 update:** The `calculateNoveltyBoost()` call was removed from the hot scoring path in `composite-scoring.ts` because evaluation showed it always returned 0. The function definition remains but is no longer invoked during search. Telemetry fields are hardcoded to `noveltyBoostApplied: false, noveltyBoostValue: 0` for log schema compatibility.
 
 ### Interference scoring (TM-01)
 
@@ -314,9 +327,11 @@ A grid search over K values {20, 40, 60, 80, 100} measured MRR@5 delta per value
 
 ### Negative feedback confidence signal (A4)
 
-When you mark a memory as not useful via `memory_validate(wasUseful: false)`, the signal now flows into composite scoring as a demotion multiplier. The multiplier starts at 1.0, decreases by 0.1 per negative validation and floors at 0.3 so a memory is never suppressed below 30% of its natural score. Time-based recovery with a 30-day half-life gradually restores the multiplier: the penalty halves every 30 days since the last negative validation.
+When you mark a memory as not useful via `memory_validate(wasUseful: false)`, the signal now flows into composite scoring as a demotion multiplier. The multiplier starts at 1.0, decreases by 0.1 per negative validation and floors at 0.3 so a memory is never suppressed below 30% of its natural score. Time-based recovery with a 30-day half-life (`RECOVERY_HALF_LIFE_MS`) gradually restores the multiplier: the penalty halves every 30 days since the last negative validation.
 
 Negative feedback events are persisted to a `negative_feedback_events` table. The search handler reads these events and applies the multiplier during the feedback signals step in Stage 2 of the pipeline. Runs behind the `SPECKIT_NEGATIVE_FEEDBACK` flag (default ON).
+
+**Sprint 8 update:** The unused `RECOVERY_HALF_LIFE_DAYS` constant was removed (the millisecond-based `RECOVERY_HALF_LIFE_MS` is the actual constant used in computation).
 
 ### Auto-promotion on validation (T002a)
 
@@ -343,6 +358,8 @@ RRF has been the fusion method since day one, but is it the best option? Relativ
 Three RSF variants are implemented: single-pair (fusing two ranked lists), multi-list (fusing N lists with proportional penalties for missing sources) and cross-variant (fusing results across query expansions with a +0.10 convergence bonus). RSF results are logged for evaluation comparison but do not affect actual ranking.
 
 Kendall tau correlation between RSF and RRF rankings is computed at sprint exit to measure how much the two methods diverge. If RSF consistently outperforms, a future sprint can switch the primary fusion method with measured evidence.
+
+**Sprint 8 update:** The `isRsfEnabled()` feature flag function was removed as dead code. The dead RSF branch in `hybrid-search.ts` (which was gated behind this flag returning `false`) was also removed. The RSF fusion module (`rsf-fusion.ts`) retains its core fusion logic for potential future activation, but the flag guard function is gone.
 
 ### Channel min-representation (R2)
 

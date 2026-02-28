@@ -471,13 +471,16 @@ describe('updateEntityCatalog', () => {
   });
 
   it('normalizes entity names to lowercase with stripped punctuation', () => {
+    // Unicode-aware normalizeEntityName replaces all non-letter/non-number/non-space
+    // characters (dots, !, hyphens) with spaces, then collapses whitespace.
+    // 'React.js Framework!' -> 'react js framework' (dot replaced with space)
     const entities: ExtractedEntity[] = [
       { text: 'React.js Framework!', type: 'technology', frequency: 1 },
     ];
     updateEntityCatalog(db, entities);
 
     const row = db.prepare('SELECT * FROM entity_catalog').get() as { canonical_name: string };
-    expect(row.canonical_name).toBe('reactjs framework');
+    expect(row.canonical_name).toBe('react js framework');
   });
 
   it('appends new alias variants for the same canonical name', () => {
@@ -563,11 +566,13 @@ describe('normalizeEntityName', () => {
     expect(normalizeEntityName('HELLO WORLD')).toBe('hello world');
   });
 
-  it('strips punctuation but keeps hyphens', () => {
-    expect(normalizeEntityName('React.js!')).toBe('reactjs');
-    expect(normalizeEntityName('hello-world')).toBe('hello-world');
-    expect(normalizeEntityName('test@special#chars')).toBe('testspecialchars');
-    expect(normalizeEntityName('it\'s a "test"')).toBe('its a test');
+  it('strips punctuation (Unicode-aware, hyphens stripped too)', () => {
+    // Unicode-aware regex /[^\p{L}\p{N}\s]/gu replaces all non-letter/non-number/non-space
+    // characters (including dots and hyphens) with a space, then collapses whitespace.
+    expect(normalizeEntityName('React.js!')).toBe('react js');
+    expect(normalizeEntityName('hello-world')).toBe('hello world');
+    expect(normalizeEntityName('test@special#chars')).toBe('test special chars');
+    expect(normalizeEntityName('it\'s a "test"')).toBe('it s a test');
   });
 
   it('collapses whitespace and trims', () => {

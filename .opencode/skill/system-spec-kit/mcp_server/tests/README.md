@@ -43,8 +43,8 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Test Files | 196 | All `.vitest.ts` format |
-| Total Tests | 5,797 | Across all test files |
+| Test Files | 226 | All `.vitest.ts` format |
+| Total Tests | 7,003 | Across all test files |
 | Test Framework | Vitest | TypeScript-native, no compilation step needed |
 | Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
 
@@ -53,7 +53,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | Feature | Description |
 |---------|-------------|
 | **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Full Coverage** | 196 test files covering cognitive, search, handlers, integration and eval |
+| **Full Coverage** | 226 test files covering cognitive, search, handlers, integration and eval |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
 | **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
@@ -464,8 +464,8 @@ npx vitest run
 #  PASS  tests/composite-scoring.vitest.ts (101 tests)
 #  PASS  tests/working-memory.vitest.ts (51 tests)
 #  ...
-#  Test Files  196 passed
-#  Tests       5797 passed
+#  Test Files  226 passed
+#  Tests       7003 passed
 ```
 
 ### Example 2: Run Specific Feature Test
@@ -579,7 +579,7 @@ npx vitest --version
 
 # List test files
 ls tests/*.vitest.ts | wc -l
-# Expected: 196
+# Expected: 226
 
 # Run tests with detailed output
 npx vitest run --reporter=verbose 2>&1 | head -50
@@ -680,4 +680,4 @@ Use `npx vitest run` output and CI logs for current verification details.
 
 <!-- /ANCHOR:related -->
 
-*Documentation version: 2.1 | Last updated: 2026-02-19*
+*Documentation version: 2.2 | Last updated: 2026-02-28*

@@ -21,7 +21,6 @@ const MAX_ACCUMULATOR_SIZE = 10000;
 interface AccumulatorState {
   memoryId: number;
   accumulated: number;
-  flushCount: number;
 }
 
 /* -------------------------------------------------------------
@@ -131,7 +130,6 @@ function getAccumulatorState(memoryId: number): AccumulatorState {
   return {
     memoryId,
     accumulated: accumulators.get(memoryId) || 0,
-    flushCount: 0,
   };
 }
 

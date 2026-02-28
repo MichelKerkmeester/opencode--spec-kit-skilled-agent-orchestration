@@ -21,19 +21,12 @@ interface WorkingMemoryConfigType {
   enabled: boolean;
   maxCapacity: number;
   sessionTimeoutMs: number;
-  decayInterval: number;
-  attentionDecayRate: number;
-  minAttentionScore: number;
 }
 
 const WORKING_MEMORY_CONFIG: WorkingMemoryConfigType = {
   enabled: process.env.SPECKIT_WORKING_MEMORY !== 'false',
   maxCapacity: 7, // Miller's Law: 7 +/- 2
   sessionTimeoutMs: 1800000, // 30 minutes
-  decayInterval: 60000, // 1 minute
-  attentionDecayRate: 0.95,
-  minAttentionScore: 0.1,
-  // T302: Removed dead cleanupIntervalMs (GAP 3) — was never wired to a timer
 };
 
 const EVENT_DECAY_FACTOR = 0.85;

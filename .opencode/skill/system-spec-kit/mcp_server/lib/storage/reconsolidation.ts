@@ -5,7 +5,7 @@
 // After embedding generation, check top-3 most similar memories
 // in the spec folder:
 // - similarity >= 0.88: MERGE (duplicate - merge content,
-//   increment frequency counter)
+//   boost importance_weight)
 // - similarity 0.75-0.88: CONFLICT (supersede prior memory via causal
 //   'supersedes' edge)
 // - similarity < 0.75: COMPLEMENT (store new memory unchanged)
@@ -32,7 +32,7 @@ export interface SimilarMemory {
   content_text: string | null;
   similarity: number;
   spec_folder: string;
-  frequency_counter?: number;
+  importance_weight?: number;
   [key: string]: unknown;
 }
 
@@ -53,7 +53,7 @@ export interface NewMemoryData {
 export interface MergeResult {
   action: 'merge';
   existingMemoryId: number;
-  frequencyCounter: number;
+  importanceWeight: number;
   mergedContentLength: number;
   similarity: number;
 }
@@ -175,8 +175,8 @@ export function determineAction(similarity: number): ReconsolidationAction {
  * Merge a new memory into an existing one (similarity >= 0.88).
  *
  * Combines content by appending new unique sections to the existing
- * memory, increments the frequency_counter metadata field, and
- * updates the embedding to reflect the merged content.
+ * memory, boosts the importance_weight, and updates the embedding
+ * to reflect the merged content.
  *
  * @param existingMemory - The existing memory to merge into
  * @param newMemory - The new memory being saved
@@ -196,19 +196,19 @@ export async function executeMerge(
   // Merge content: append new unique sections
   const mergedContent = mergeContent(existingContent, newContent);
 
-  // Increment frequency counter
-  const currentFrequency = existingMemory.frequency_counter ?? 0;
-  const newFrequency = currentFrequency + 1;
+  // Boost importance_weight on merge (capped at 1.0)
+  const currentWeight = existingMemory.importance_weight ?? 0.5;
+  const boostedWeight = Math.min(1.0, currentWeight + 0.1);
 
   try {
-    // Update the existing memory with merged content and incremented counter
+    // Update the existing memory with merged content and boosted importance
     db.prepare(`
       UPDATE memory_index
       SET content_text = ?,
-          frequency_counter = ?,
+          importance_weight = ?,
           updated_at = datetime('now')
       WHERE id = ?
-    `).run(mergedContent, newFrequency, existingMemory.id);
+    `).run(mergedContent, boostedWeight, existingMemory.id);
 
     // Optionally regenerate embedding for merged content
     if (generateEmbedding) {
@@ -230,7 +230,7 @@ export async function executeMerge(
     return {
       action: 'merge',
       existingMemoryId: existingMemory.id,
-      frequencyCounter: newFrequency,
+      importanceWeight: boostedWeight,
       mergedContentLength: mergedContent.length,
       similarity: existingMemory.similarity,
     };

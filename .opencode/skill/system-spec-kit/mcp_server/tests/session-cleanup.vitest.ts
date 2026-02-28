@@ -169,7 +169,7 @@ describe('T302: Session Cleanup Tests', () => {
 
     it('T302-12: All expected config keys present', () => {
       const config = wm.WORKING_MEMORY_CONFIG;
-      const expectedKeys = ['enabled', 'maxCapacity', 'sessionTimeoutMs', 'decayInterval', 'attentionDecayRate', 'minAttentionScore'];
+      const expectedKeys = ['enabled', 'maxCapacity', 'sessionTimeoutMs'];
       for (const key of expectedKeys) {
         expect(config).toHaveProperty(key);
       }

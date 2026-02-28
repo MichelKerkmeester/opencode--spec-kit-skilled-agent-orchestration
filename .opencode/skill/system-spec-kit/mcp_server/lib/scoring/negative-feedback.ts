@@ -32,11 +32,6 @@ export const NEGATIVE_PENALTY_PER_VALIDATION = 0.1;
  */
 export const RECOVERY_HALF_LIFE_MS = 30 * 24 * 60 * 60 * 1000;
 
-/**
- * Recovery half-life in days (for human-readable reference).
- */
-export const RECOVERY_HALF_LIFE_DAYS = 30;
-
 /** Persistence table for negative-validation history. */
 const NEGATIVE_FEEDBACK_TABLE_SQL = `
   CREATE TABLE IF NOT EXISTS negative_feedback_events (

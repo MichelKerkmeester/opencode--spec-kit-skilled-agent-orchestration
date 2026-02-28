@@ -146,7 +146,8 @@ export function computeTfIdf(sentences: string[]): ScoredSentence[] {
   });
 
   // Normalize scores to [0, 1]
-  const maxScore = Math.max(...scored.map(s => s.score));
+  // Use reduce-based max to avoid RangeError when scored is large (spread exceeds call-stack limit)
+  const maxScore = scored.reduce((max, s) => s.score > max ? s.score : max, -Infinity);
   if (maxScore > 0) {
     for (const s of scored) {
       s.score = s.score / maxScore;

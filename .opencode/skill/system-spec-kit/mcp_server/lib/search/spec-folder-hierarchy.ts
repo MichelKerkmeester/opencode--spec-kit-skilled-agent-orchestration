@@ -8,6 +8,33 @@
 
 import type Database from 'better-sqlite3';
 
+// ─── 0. HIERARCHY TREE CACHE ───
+//
+// buildHierarchyTree does a full scan of spec_folder values on every call.
+// The hierarchy changes only when new spec folders are created, so we cache
+// the result with a TTL. A single cached value per database instance is
+// sufficient — no full LRU library needed.
+
+const HIERARCHY_CACHE_TTL_MS = 60_000; // 60 seconds
+
+interface HierarchyCacheEntry {
+  tree: HierarchyTree;
+  expiresAt: number;
+}
+
+// Keyed by database instance identity so tests using different in-memory DBs
+// don't share a stale cache.
+const hierarchyCache = new WeakMap<Database.Database, HierarchyCacheEntry>();
+
+/**
+ * Invalidate the cached hierarchy tree for a given database instance.
+ * Call this whenever spec_folder membership changes (e.g. after a new memory
+ * is saved to a previously unseen folder).
+ */
+export function invalidateHierarchyCache(database: Database.Database): void {
+  hierarchyCache.delete(database);
+}
+
 // ─── 1. TYPES ───
 
 export interface HierarchyNode {
@@ -31,6 +58,12 @@ export interface HierarchyTree {
  * into a tree structure where each path segment is a node.
  */
 export function buildHierarchyTree(database: Database.Database): HierarchyTree {
+  // Return cached result if still within TTL
+  const cached = hierarchyCache.get(database);
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.tree;
+  }
+
   const rows = (database.prepare(`
     SELECT spec_folder, COUNT(*) as count
     FROM memory_index
@@ -64,7 +97,12 @@ export function buildHierarchyTree(database: Database.Database): HierarchyTree {
     }
   }
 
-  return { roots, nodeMap };
+  const tree: HierarchyTree = { roots, nodeMap };
+
+  // Store in cache with TTL
+  hierarchyCache.set(database, { tree, expiresAt: Date.now() + HIERARCHY_CACHE_TTL_MS });
+
+  return tree;
 }
 
 function ensureNodeExists(

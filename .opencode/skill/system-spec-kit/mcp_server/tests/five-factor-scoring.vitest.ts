@@ -196,15 +196,15 @@ describe('Factor 5: Citation Recency Score (T033)', () => {
     expect(score).toBe(0);
   });
 
-  it('T033-07: Falls back to last_accessed', () => {
+  it('T033-07: No last_accessed fallback — uncited memory scores 0', () => {
     const now = new Date();
     const score = calculateCitationScore({ last_accessed: now.toISOString() });
-    expect(score).toBeGreaterThanOrEqual(0.99);
+    expect(score).toBe(0);
   });
 
-  it('T033-08: No citation data = neutral score', () => {
+  it('T033-08: No citation data = 0 (uncited memories are not boosted)', () => {
     const score = calculateCitationScore({});
-    expect(score).toBe(0.5);
+    expect(score).toBe(0);
   });
 });
 
@@ -760,10 +760,10 @@ describe('Edge Cases: Citation Factor', () => {
     expect(score).toBeGreaterThan(0);
   });
 
-  it('EDGE-C03: Falls back to updated_at when no last_cited or last_accessed', () => {
+  it('EDGE-C03: No updated_at fallback — uncited memory scores 0', () => {
     const now = new Date();
     const score = calculateCitationScore({ updated_at: now.toISOString() });
-    expect(score).toBeGreaterThanOrEqual(0.99);
+    expect(score).toBe(0);
   });
 
   it('EDGE-C04: Decay formula verification at 10 days', () => {

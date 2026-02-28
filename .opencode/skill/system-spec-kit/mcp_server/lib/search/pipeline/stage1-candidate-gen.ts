@@ -522,14 +522,18 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               }
             }
 
-            if (newSummaryHits.length > 0) {
-              candidates = [...candidates, ...newSummaryHits];
+            // Apply the same quality threshold that other candidates go through
+            const filteredSummaryHits = filterByMinQualityScore(newSummaryHits, qualityThreshold);
+
+            if (filteredSummaryHits.length > 0) {
+              candidates = [...candidates, ...filteredSummaryHits];
               channelCount++;
 
               if (trace) {
-                addTraceEntry(trace, 'candidate', 1, newSummaryHits.length, 0, {
+                addTraceEntry(trace, 'candidate', 1, filteredSummaryHits.length, 0, {
                   channel: 'r8-summary-embeddings',
-                  summaryHits: newSummaryHits.length,
+                  summaryHits: filteredSummaryHits.length,
+                  preFilterCount: newSummaryHits.length,
                 });
               }
             }

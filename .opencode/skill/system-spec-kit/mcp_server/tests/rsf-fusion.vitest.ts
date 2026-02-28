@@ -5,7 +5,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   fuseResultsRsf,
-  isRsfEnabled,
   extractScore,
   minMaxNormalize,
   clamp01,
@@ -432,51 +431,6 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
         expect(r.rsfScore).toBeCloseTo(1.0, 5);
         expect(r.sources.length).toBe(2);
       }
-    });
-  });
-
-  /* ─────────────────────────────────────────────────────────────
-     T023.9: Feature flag check (isRsfEnabled)
-     ───────────────────────────────────────────────────────────── */
-  describe('T023.9: Feature flag (isRsfEnabled)', () => {
-    const originalEnv = process.env.SPECKIT_RSF_FUSION;
-
-    afterEach(() => {
-      if (originalEnv === undefined) {
-        delete process.env.SPECKIT_RSF_FUSION;
-      } else {
-        process.env.SPECKIT_RSF_FUSION = originalEnv;
-      }
-    });
-
-    it('T023.9.1: returns false when env var is not set', () => {
-      delete process.env.SPECKIT_RSF_FUSION;
-      expect(isRsfEnabled()).toBe(false);
-    });
-
-    it('T023.9.2: returns false even when env var is "true" (feature removed)', () => {
-      process.env.SPECKIT_RSF_FUSION = 'true';
-      expect(isRsfEnabled()).toBe(false);
-    });
-
-    it('T023.9.3: returns false when env var is "false"', () => {
-      process.env.SPECKIT_RSF_FUSION = 'false';
-      expect(isRsfEnabled()).toBe(false);
-    });
-
-    it('T023.9.4: returns false when env var is empty string', () => {
-      process.env.SPECKIT_RSF_FUSION = '';
-      expect(isRsfEnabled()).toBe(false);
-    });
-
-    it('T023.9.5: fuseResultsRsf works regardless of flag state', () => {
-      process.env.SPECKIT_RSF_FUSION = 'false';
-      const listA = makeList('vector', [makeItem(1, 0.9)]);
-      const listB = makeList('bm25', [makeItem(1, 0.8)]);
-
-      const results = fuseResultsRsf(listA, listB);
-      expect(results.length).toBe(1);
-      expect(results[0].rsfScore).toBeCloseTo(1.0, 5);
     });
   });
 

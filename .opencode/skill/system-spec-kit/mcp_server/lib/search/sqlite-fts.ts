@@ -5,7 +5,7 @@
 // testing and future delegation.
 // ---------------------------------------------------------------
 
-import { sanitizeFTS5Query } from './bm25-index';
+import { sanitizeQueryTokens } from './bm25-index';
 
 import type Database from 'better-sqlite3';
 
@@ -66,10 +66,10 @@ function fts5Bm25Search(
 ): FtsBm25Result[] {
   const { limit = 20, specFolder, includeArchived = false } = options;
 
-  // Sanitize and build OR-joined query for recall
-  const sanitized = sanitizeFTS5Query(query)
-    .split(/\s+/)
-    .filter(Boolean)
+  // Sanitize via shared tokenizer, then wrap each token in quotes and join with OR for recall
+  const tokens = sanitizeQueryTokens(query);
+  const sanitized = tokens
+    .map(t => `"${t}"`)
     .join(' OR ');
 
   if (!sanitized) return [];

@@ -5,8 +5,12 @@
 // ---------------------------------------------------------------
 
 import { isEntityDenied } from './entity-denylist.js';
+import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker.js';
 
 import type Database from 'better-sqlite3';
+
+// Re-export canonical versions from entity-linker for backward compatibility
+export { normalizeEntityName, computeEdgeDensity };
 
 // ---------------------------------------------------------------------------
 // 1. TYPES
@@ -111,38 +115,7 @@ export function filterEntities(entities: ExtractedEntity[]): ExtractedEntity[] {
 }
 
 // ---------------------------------------------------------------------------
-// 4. EDGE DENSITY
-// ---------------------------------------------------------------------------
-
-/**
- * Compute edge density: totalEdges / totalMemories.
- *
- * @param db - An initialized better-sqlite3 Database instance.
- * @returns Density ratio, or 0 if no memories exist or on error.
- */
-export function computeEdgeDensity(db: Database.Database): number {
-  try {
-    const edgeRow = db
-      .prepare('SELECT COUNT(*) AS cnt FROM causal_edges')
-      .get() as { cnt: number } | undefined;
-    const totalEdges = edgeRow?.cnt ?? 0;
-
-    const memRow = db
-      .prepare('SELECT COUNT(*) AS cnt FROM memory_index')
-      .get() as { cnt: number } | undefined;
-    const totalMemories = memRow?.cnt ?? 0;
-
-    if (totalMemories === 0) return 0;
-    return totalEdges / totalMemories;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[entity-extractor] computeEdgeDensity failed: ${msg}`);
-    return 0;
-  }
-}
-
-// ---------------------------------------------------------------------------
-// 5. STORAGE
+// 4. STORAGE
 // ---------------------------------------------------------------------------
 
 /**
@@ -185,7 +158,7 @@ export function storeEntities(
 }
 
 // ---------------------------------------------------------------------------
-// 6. ENTITY CATALOG
+// 5. ENTITY CATALOG
 // ---------------------------------------------------------------------------
 
 /**
@@ -265,27 +238,7 @@ export function updateEntityCatalog(
 }
 
 // ---------------------------------------------------------------------------
-// 7. HELPERS
-// ---------------------------------------------------------------------------
-
-/**
- * Normalize entity name for catalog matching.
- *
- * Transforms: lowercase, strip punctuation, collapse whitespace.
- *
- * @param name - Raw entity name.
- * @returns Canonical form for dedup and catalog lookup.
- */
-export function normalizeEntityName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')   // strip punctuation (keep hyphens)
-    .replace(/\s+/g, ' ')       // collapse whitespace
-    .trim();
-}
-
-// ---------------------------------------------------------------------------
-// 8. INTERNAL HELPERS (exported for testing)
+// 6. INTERNAL HELPERS (exported for testing)
 // ---------------------------------------------------------------------------
 
 /**

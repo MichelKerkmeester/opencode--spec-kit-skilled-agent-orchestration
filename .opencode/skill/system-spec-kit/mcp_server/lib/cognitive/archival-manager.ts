@@ -109,7 +109,6 @@ interface ArchivalStats {
 let db: Database.Database | null = null;
 let backgroundJob: ReturnType<typeof setInterval> | null = null;
 
-const stmtCache: Map<string, Database.Statement> = new Map();
 const archivalStats: ArchivalStats = {
   totalScanned: 0,
   totalArchived: 0,
@@ -124,7 +123,6 @@ const archivalStats: ArchivalStats = {
 
 function init(database: Database.Database): void {
   db = database;
-  stmtCache.clear();
   ensureArchivedColumn();
   ensureArchivalStatsTable();
   loadArchivalStats();
@@ -558,7 +556,6 @@ function resetStats(): void {
 
 function cleanup(): void {
   stopBackgroundJob();
-  stmtCache.clear();
   db = null;
 }
 

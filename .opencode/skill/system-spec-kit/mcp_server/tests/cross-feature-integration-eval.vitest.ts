@@ -38,7 +38,6 @@ import {
 import {
   fuseResultsRsf,
   fuseResultsRsfMulti,
-  isRsfEnabled,
   clamp01,
   type RsfResult,
 } from '../lib/search/rsf-fusion';
@@ -812,7 +811,7 @@ describe('Cross-Sprint Integration', () => {
       // Graph channel should be under-represented
       expect(rep.underRepresentedChannels).toContain('graph');
 
-      // Best graph result (score=0.6 > QUALITY_FLOOR=0.2) should be promoted
+      // Best graph result (score=0.6 > QUALITY_FLOOR=0.005) should be promoted
       expect(rep.promoted.length).toBe(1);
       expect(rep.promoted[0].promotedFrom).toBe('graph');
       expect(rep.promoted[0].id).toBe(10);

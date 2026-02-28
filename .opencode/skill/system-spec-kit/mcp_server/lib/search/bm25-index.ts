@@ -284,11 +284,15 @@ function resetIndex(): void {
    --------------------------------------------------------------- */
 
 /**
- * Sanitize a query string for safe use with SQLite FTS5.
- * Removes all FTS5 operators and special characters, then wraps
- * each remaining term in quotes for safety.
+ * Sanitize a query string for safe use with SQLite FTS5 and return
+ * the individual tokens as an array. This is the shared tokenization
+ * entry point — both FTS5 query construction and BM25 callers should
+ * use this array to ensure consistent tokenization.
+ *
+ * Removes all FTS5 operators and special characters, then returns
+ * the remaining non-empty tokens.
  */
-function sanitizeFTS5Query(query: string): string {
+function sanitizeQueryTokens(query: string): string[] {
   // Input length guard: truncate overly long queries to prevent DoS
   if (query.length > 2000) {
     query = query.substring(0, 2000);
@@ -306,10 +310,18 @@ function sanitizeFTS5Query(query: string): string {
     .replace(/[*^(){}[\]"]/g, '')
     .replace(/:/g, ' ')
     .trim();
-  // Wrap remaining terms in quotes for safety
   return sanitized
     .split(/\s+/)
-    .filter(Boolean)
+    .filter(Boolean);
+}
+
+/**
+ * Sanitize a query string for safe use with SQLite FTS5.
+ * Delegates to `sanitizeQueryTokens` for tokenization, then wraps
+ * each token in quotes for FTS5 safety.
+ */
+function sanitizeFTS5Query(query: string): string {
+  return sanitizeQueryTokens(query)
     .map(t => `"${t}"`)
     .join(' ');
 }
@@ -326,6 +338,7 @@ export {
   simpleStem,
   getTermFrequencies,
   isBm25Enabled,
+  sanitizeQueryTokens,
   sanitizeFTS5Query,
   DEFAULT_K1,
   DEFAULT_B,

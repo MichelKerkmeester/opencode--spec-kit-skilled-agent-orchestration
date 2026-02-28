@@ -158,11 +158,15 @@ export function querySummaryEmbeddings(
   limit: number
 ): SummarySearchResult[] {
   try {
+    // Cap rows fetched to avoid full-table scans on large databases.
+    // Over-fetch by a factor so that after cosine ranking we can still return `limit` results.
+    const fetchCap = Math.max(limit * 10, 1000);
     const rows = db.prepare(`
       SELECT id, memory_id, summary_embedding
       FROM memory_summaries
       WHERE summary_embedding IS NOT NULL
-    `).all() as Array<{ id: number; memory_id: number; summary_embedding: Buffer }>;
+      LIMIT ?
+    `).all(fetchCap) as Array<{ id: number; memory_id: number; summary_embedding: Buffer }>;
 
     const results: SummarySearchResult[] = [];
 

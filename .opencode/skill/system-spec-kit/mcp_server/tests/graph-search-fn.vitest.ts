@@ -4,7 +4,7 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { createUnifiedGraphSearchFn, getSubgraphWeights } from '../lib/search/graph-search-fn';
+import { createUnifiedGraphSearchFn } from '../lib/search/graph-search-fn';
 
 const mockAll = vi.fn();
 const mockGet = vi.fn();
@@ -222,9 +222,3 @@ describe('createUnifiedGraphSearchFn', () => {
   });
 });
 
-describe('getSubgraphWeights', () => {
-  it('returns causal-only weighting', () => {
-    const weights = getSubgraphWeights('anything');
-    expect(weights).toEqual({ causalWeight: 1 });
-  });
-});

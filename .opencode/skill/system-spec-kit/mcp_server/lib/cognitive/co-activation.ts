@@ -27,14 +27,6 @@ const CO_ACTIVATION_CONFIG = {
 
 /* ─── 2. INTERFACES ─── */
 
-interface CoActivationEvent {
-  timestamp: string;
-  sourceId: number;
-  targetId: number;
-  similarity: number;
-  boost: number;
-}
-
 interface RelatedMemory {
   id: number;
   similarity: number;
@@ -370,16 +362,6 @@ function spreadActivation(
   return results.sort((a, b) => b.activationScore - a.activationScore);
 }
 
-/**
- * Log a co-activation event.
- */
-function logCoActivationEvent(event: CoActivationEvent): void {
-  // Currently logging to console; could be stored in DB
-  if (process.env.SPECKIT_DEBUG === 'true') {
-    console.error(`[co-activation] Event: ${event.sourceId} -> ${event.targetId} (boost: ${event.boost})`);
-  }
-}
-
 /* ─── 6. EXPORTS ─── */
 
 export {
@@ -392,12 +374,10 @@ export {
   getCausalNeighbors,
   populateRelatedMemories,
   spreadActivation,
-  logCoActivationEvent,
   clearRelatedCache,
 };
 
 export type {
-  CoActivationEvent,
   RelatedMemory,
   SpreadResult,
 };

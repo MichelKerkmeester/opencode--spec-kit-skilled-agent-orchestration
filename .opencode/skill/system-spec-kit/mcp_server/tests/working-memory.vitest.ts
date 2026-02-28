@@ -35,12 +35,6 @@ describe('Working Memory Module', () => {
       expect(workingMemory.WORKING_MEMORY_CONFIG.sessionTimeoutMs).toBeGreaterThan(0);
     });
 
-    it('attentionDecayRate is valid', () => {
-      const rate = workingMemory.WORKING_MEMORY_CONFIG.attentionDecayRate;
-      expect(typeof rate).toBe('number');
-      expect(rate).toBeGreaterThan(0);
-      expect(rate).toBeLessThanOrEqual(1);
-    });
   });
 
   /* ─────────────────────────────────────────────────────────────
@@ -67,7 +61,7 @@ describe('Working Memory Module', () => {
     it('getConfig() has all expected keys', () => {
       const config = workingMemory.getConfig();
       const configRecord = config as unknown as Record<string, unknown>;
-      const expectedKeys = ['enabled', 'maxCapacity', 'sessionTimeoutMs', 'attentionDecayRate', 'minAttentionScore'];
+      const expectedKeys = ['enabled', 'maxCapacity', 'sessionTimeoutMs'];
       for (const key of expectedKeys) {
         expect(configRecord[key]).toBeDefined();
       }

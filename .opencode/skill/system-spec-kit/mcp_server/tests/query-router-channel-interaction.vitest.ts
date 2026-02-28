@@ -289,10 +289,10 @@ describe('T033: R15 + R2 Interaction Tests', () => {
 
       const channelResults = new Map<string, Array<{ id: number | string; score: number }>>();
       channelResults.set('vector', [makeChannelResult(1, 0.9), makeChannelResult(2, 0.85)]);
-      // fts results are all below quality floor (0.2)
+      // fts results are all below quality floor (0.005)
       channelResults.set('fts', [
-        makeChannelResult(10, 0.1),
-        makeChannelResult(11, 0.05),
+        makeChannelResult(10, 0.003),
+        makeChannelResult(11, 0.002),
       ]);
 
       const result = analyzeChannelRepresentation(topK, channelResults);

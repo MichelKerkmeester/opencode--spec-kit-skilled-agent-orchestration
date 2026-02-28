@@ -33,7 +33,6 @@ import {
 // Module under test: Learned Feedback Engine
 import {
   isLearnedFeedbackEnabled,
-  isInShadowPeriod,
   isMemoryEligible,
   extractLearnableTerms,
   recordSelection,
@@ -325,23 +324,6 @@ describe('Learned Feedback Feature Flags', () => {
   it('R11-FF03: isLearnedFeedbackEnabled is case-insensitive', () => {
     process.env[FEATURE_FLAG] = 'TRUE';
     expect(isLearnedFeedbackEnabled()).toBe(true);
-  });
-
-  it('R11-FF04: isInShadowPeriod always returns false (REMOVED)', () => {
-    delete process.env.SPECKIT_LEARN_FROM_SELECTION_START;
-    expect(isInShadowPeriod()).toBe(false);
-  });
-
-  it('R11-FF05: isInShadowPeriod returns false even within 1 week (REMOVED)', () => {
-    // Set start time to 1 day ago — still returns false (REMOVED flag)
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 1 * 24 * 60 * 60 * 1000);
-    expect(isInShadowPeriod()).toBe(false);
-  });
-
-  it('R11-FF06: isInShadowPeriod returns false after 1 week (REMOVED)', () => {
-    // Set start time to 8 days ago
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 8 * 24 * 60 * 60 * 1000);
-    expect(isInShadowPeriod()).toBe(false);
   });
 
   it('R11-FF07: isMemoryEligible rejects <72h memories', () => {

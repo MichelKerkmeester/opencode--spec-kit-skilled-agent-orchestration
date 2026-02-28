@@ -20,7 +20,6 @@ type AdjacencyList = Map<string, Set<string>>;
 // 3. MODULE-LEVEL DEBOUNCE STATE
 // ---------------------------------------------------------------------------
 
-let lastComputedAt: number = 0;
 let lastEdgeCount: number = -1;
 let computedThisSession: boolean = false;
 
@@ -28,7 +27,6 @@ let computedThisSession: boolean = false;
  * Reset module-level debounce state. Exported for testing only.
  */
 export function resetCommunityDetectionState(): void {
-  lastComputedAt = 0;
   lastEdgeCount = -1;
   computedThisSession = false;
 }
@@ -324,7 +322,6 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
     }
 
     // --- Update debounce state -----------------------------------------------
-    lastComputedAt = Date.now();
     lastEdgeCount = currentEdgeCount;
     computedThisSession = true;
 

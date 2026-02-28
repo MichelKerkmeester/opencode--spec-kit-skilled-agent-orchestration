@@ -287,14 +287,14 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
   });
 
   // ---- T9: Quality floor prevents low-quality promotions ----
-  it('T9: quality floor blocks promotions below 0.2, preventing low-quality pollution', () => {
+  it('T9: quality floor blocks promotions below 0.005, preventing low-quality pollution', () => {
     const fused: FusedResult[] = [
       makeFused('a1', 0.9, 'vector'),
     ];
     const channels = new Map<string, ChannelResult[]>([
       ['vector', [makeChannel('a1', 0.9)]],
-      ['bm25',   [makeChannel('b1', 0.19)]],  // just below floor
-      ['graph',  [makeChannel('g1', 0.10)]],  // well below floor
+      ['bm25',   [makeChannel('b1', 0.004)]],  // just below floor (0.005)
+      ['graph',  [makeChannel('g1', 0.001)]],  // well below floor
     ]);
 
     const result = enforceChannelRepresentation(fused, channels);
@@ -496,8 +496,8 @@ describe('T028 Channel Enforcement + Precision Verification', () => {
   });
 
   // ---- Extra: QUALITY_FLOOR re-exported and usable ----
-  it('SANITY: QUALITY_FLOOR is 0.2 and is exported from channel-representation', () => {
-    expect(QUALITY_FLOOR).toBe(0.2);
+  it('SANITY: QUALITY_FLOOR is 0.005 and is exported from channel-representation', () => {
+    expect(QUALITY_FLOOR).toBe(0.005);
   });
 
   it('T19: preserves global score order when topK is smaller than result list', () => {

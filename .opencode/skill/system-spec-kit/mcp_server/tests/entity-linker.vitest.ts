@@ -109,6 +109,7 @@ describe('S8 Entity Linker', () => {
   });
 
   afterEach(() => {
+    db.close();
     delete process.env.SPECKIT_ENTITY_LINKING_MAX_DENSITY;
   });
 

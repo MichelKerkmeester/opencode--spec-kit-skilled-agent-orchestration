@@ -118,8 +118,6 @@ const CACHE_TTL = 300000; // 5 minutes
 const latencyTracker: { durations: number[] } = { durations: [] };
 const MAX_LATENCY_SAMPLES = 100;
 
-let activeProvider: string | null = null;
-
 /* -----------------------------------------------------------
    4. PROVIDER RESOLUTION
 ----------------------------------------------------------------*/
@@ -128,8 +126,6 @@ function resolveProvider(): string | null {
   if (!isCrossEncoderEnabled()) {
     return null;
   }
-
-  if (activeProvider) return activeProvider;
 
   // Check API keys in priority order
   if (process.env.VOYAGE_API_KEY) return 'voyage';
@@ -441,7 +437,7 @@ function resetSession(): void {
 }
 
 function resetProvider(): void {
-  activeProvider = null;
+  // no-op: activeProvider cache removed (was never populated)
 }
 
 /* -----------------------------------------------------------

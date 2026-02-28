@@ -285,23 +285,17 @@ function getDivergenceReconcileAttemptCount(db: Database.Database, normalizedPat
     return 0;
   }
 
-  const rows = db.prepare(`
-    SELECT decision_meta
+  // Use COUNT(*) with json_extract to filter by path in SQL rather than scanning
+  // all decision_meta rows in application code (O(1) vs O(n) full-table scan).
+  const row = db.prepare(`
+    SELECT COUNT(*) AS cnt
     FROM mutation_ledger
     WHERE mutation_type = 'reindex'
       AND reason = ?
-    ORDER BY id ASC
-  `).all(DIVERGENCE_RECONCILE_REASON) as Array<{ decision_meta: string }>;
+      AND json_extract(decision_meta, '$.normalizedPath') = ?
+  `).get(DIVERGENCE_RECONCILE_REASON, targetPath) as { cnt: number } | undefined;
 
-  let attempts = 0;
-  for (const row of rows) {
-    const rowPath = readDecisionMetaNormalizedPath(row.decision_meta);
-    if (rowPath === targetPath) {
-      attempts++;
-    }
-  }
-
-  return attempts;
+  return row?.cnt ?? 0;
 }
 
 function hasDivergenceEscalationEntry(db: Database.Database, normalizedPath: string): boolean {
@@ -310,22 +304,16 @@ function hasDivergenceEscalationEntry(db: Database.Database, normalizedPath: str
     return false;
   }
 
-  const rows = db.prepare(`
-    SELECT decision_meta
+  // Use COUNT(*) with json_extract to avoid O(n) full-table scan in application code.
+  const row = db.prepare(`
+    SELECT COUNT(*) AS cnt
     FROM mutation_ledger
     WHERE mutation_type = 'reindex'
       AND reason = ?
-    ORDER BY id ASC
-  `).all(DIVERGENCE_RECONCILE_ESCALATION_REASON) as Array<{ decision_meta: string }>;
+      AND json_extract(decision_meta, '$.normalizedPath') = ?
+  `).get(DIVERGENCE_RECONCILE_ESCALATION_REASON, targetPath) as { cnt: number } | undefined;
 
-  for (const row of rows) {
-    const rowPath = readDecisionMetaNormalizedPath(row.decision_meta);
-    if (rowPath === targetPath) {
-      return true;
-    }
-  }
-
-  return false;
+  return (row?.cnt ?? 0) > 0;
 }
 
 function buildDivergenceReconcilePolicy(

@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // TEST: GRAPH SIGNALS — Momentum + Causal Depth (N2a + N2b)
-// Covers: snapshotDegrees, computeMomentum, computeCausalDepth,
-//         applyGraphSignals, clearGraphSignalsCache
+// Covers: snapshotDegrees, computeMomentum,
+//         computeCausalDepthScores, applyGraphSignals, clearGraphSignalsCache
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
@@ -10,7 +10,6 @@ import {
   snapshotDegrees,
   computeMomentum,
   computeMomentumScores,
-  computeCausalDepth,
   computeCausalDepthScores,
   applyGraphSignals,
   clearGraphSignalsCache,
@@ -272,74 +271,6 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
   });
 
   // ─────────────────────────────────────────────────────────────
-  // 4. computeCausalDepth
-  // ─────────────────────────────────────────────────────────────
-  describe('computeCausalDepth', () => {
-    it('returns 0 for a root node (in-degree = 0) in a chain', () => {
-      // Chain: 1 -> 2 -> 3
-      insertEdge(db, 1, 2);
-      insertEdge(db, 2, 3);
-
-      const depth = computeCausalDepth(db, 1);
-      // Node 1 is root, depth = 0, normalized = 0/2 = 0
-      expect(depth).toBe(0);
-    });
-
-    it('returns normalized depth for a node 1 hop from root', () => {
-      // Chain: 1 -> 2 -> 3
-      insertEdge(db, 1, 2);
-      insertEdge(db, 2, 3);
-
-      const depth = computeCausalDepth(db, 2);
-      // Node 2: BFS depth = 1, maxDepth = 2, normalized = 1/2 = 0.5
-      expect(depth).toBeCloseTo(0.5, 5);
-    });
-
-    it('returns 0 for a disconnected node not in the graph', () => {
-      insertEdge(db, 1, 2);
-
-      const depth = computeCausalDepth(db, 999);
-      expect(depth).toBe(0);
-    });
-
-    it('normalizes correctly for a linear chain', () => {
-      // Chain: 1 -> 2 -> 3 -> 4
-      insertEdge(db, 1, 2);
-      insertEdge(db, 2, 3);
-      insertEdge(db, 3, 4);
-
-      // maxDepth = 3
-      expect(computeCausalDepth(db, 1)).toBeCloseTo(0, 5);      // 0/3
-      expect(computeCausalDepth(db, 2)).toBeCloseTo(1 / 3, 5);  // 1/3
-      expect(computeCausalDepth(db, 3)).toBeCloseTo(2 / 3, 5);  // 2/3
-      expect(computeCausalDepth(db, 4)).toBeCloseTo(1, 5);       // 3/3
-    });
-
-    it('computes correct depth for a diamond graph', () => {
-      // Diamond:
-      //   1 -> 2
-      //   1 -> 3
-      //   2 -> 4
-      //   3 -> 4
-      insertEdge(db, 1, 2);
-      insertEdge(db, 1, 3);
-      insertEdge(db, 2, 4);
-      insertEdge(db, 3, 4);
-
-      // BFS from root 1:
-      // Node 1: depth 0
-      // Node 2: depth 1
-      // Node 3: depth 1
-      // Node 4: depth 2 (BFS shortest path)
-      // maxDepth = 2
-      expect(computeCausalDepth(db, 1)).toBeCloseTo(0, 5);    // 0/2
-      expect(computeCausalDepth(db, 2)).toBeCloseTo(0.5, 5);  // 1/2
-      expect(computeCausalDepth(db, 3)).toBeCloseTo(0.5, 5);  // 1/2
-      expect(computeCausalDepth(db, 4)).toBeCloseTo(1, 5);    // 2/2
-    });
-  });
-
-  // ─────────────────────────────────────────────────────────────
   // 5. computeCausalDepthScores
   // ─────────────────────────────────────────────────────────────
   describe('computeCausalDepthScores', () => {
@@ -566,14 +497,12 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
   // 8. Edge cases
   // ─────────────────────────────────────────────────────────────
   describe('Edge cases', () => {
-    it('non-existent memoryId returns 0 for both signals', () => {
+    it('non-existent memoryId returns 0 for momentum signal', () => {
       insertEdge(db, 1, 2);
 
       const momentum = computeMomentum(db, 9999);
-      const depth = computeCausalDepth(db, 9999);
 
       expect(momentum).toBe(0);
-      expect(depth).toBe(0);
     });
 
     it('self-referencing edge is handled correctly', () => {
@@ -592,12 +521,6 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // Momentum: degree 1, no past -> 1
       const momentum = computeMomentum(db, 1);
       expect(momentum).toBe(1);
-
-      // Depth: node 1 has in-degree > 0 (from self), but it also appears as source
-      // In-degree = 1 (from self-loop), so it is NOT a root
-      // No roots exist -> returns 0
-      const depth = computeCausalDepth(db, 1);
-      expect(depth).toBe(0);
     });
 
     it('very large graph does not throw', () => {
@@ -616,14 +539,13 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       // Should not throw
       expect(() => snapshotDegrees(db)).not.toThrow();
       expect(() => computeMomentum(db, 100)).not.toThrow();
-      expect(() => computeCausalDepth(db, 100)).not.toThrow();
       expect(() => computeCausalDepthScores(db, [1, 50, 100, 150, 200])).not.toThrow();
       expect(() => applyGraphSignals([{ id: 100, score: 0.5 }], db)).not.toThrow();
 
-      // Verify reasonable depth results
-      const depth = computeCausalDepth(db, 200);
+      // Verify reasonable depth results via batch function
+      const scores = computeCausalDepthScores(db, [200]);
       // Node 200 is the deepest: depth 199, maxDepth 199, normalized = 1.0
-      expect(depth).toBeCloseTo(1.0, 5);
+      expect(scores.get(200)).toBeCloseTo(1.0, 5);
     });
   });
 

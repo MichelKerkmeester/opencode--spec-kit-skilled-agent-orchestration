@@ -8,6 +8,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as wm from '../lib/cache/cognitive/working-memory';
+import { DECAY_FLOOR, DELETE_THRESHOLD } from '../lib/cache/cognitive/working-memory';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('T214: Decay/Delete Race Condition', () => {
@@ -86,8 +87,7 @@ describe('T214: Decay/Delete Race Condition', () => {
     });
 
     it('T214-01: Score near floor stays above floor after 1 decay', () => {
-      const config = wm.getConfig();
-      const decayFloor = config.minAttentionScore * 0.5;
+      const decayFloor = DECAY_FLOOR;
 
       setScoreDirectly(sessionId, 1, 0.06);
       wm.batchUpdateScores(sessionId);
@@ -98,8 +98,7 @@ describe('T214: Decay/Delete Race Condition', () => {
     });
 
     it('T214-02: Score clamps at floor after 20 decay cycles', () => {
-      const config = wm.getConfig();
-      const decayFloor = config.minAttentionScore * 0.5;
+      const decayFloor = DECAY_FLOOR;
 
       for (let i = 0; i < 20; i++) {
         wm.batchUpdateScores(sessionId);
@@ -179,21 +178,18 @@ describe('T214: Decay/Delete Race Condition', () => {
 
   describe('Threshold values are correct', () => {
     it('T214-07: Decay floor is 0.05', () => {
-      const config = wm.getConfig();
-      const decayFloor = config.minAttentionScore * 0.5;
+      const decayFloor = DECAY_FLOOR;
       expect(decayFloor).toBe(0.05);
     });
 
     it('T214-08: Delete threshold is 0.01', () => {
-      const config = wm.getConfig();
-      const deleteThreshold = config.minAttentionScore * 0.1;
+      const deleteThreshold = DELETE_THRESHOLD;
       expect(Math.abs(deleteThreshold - 0.01)).toBeLessThan(0.001);
     });
 
     it('T214-09: Floor > deleteThreshold (race condition prevented)', () => {
-      const config = wm.getConfig();
-      const decayFloor = config.minAttentionScore * 0.5;
-      const deleteThreshold = config.minAttentionScore * 0.1;
+      const decayFloor = DECAY_FLOOR;
+      const deleteThreshold = DELETE_THRESHOLD;
       expect(decayFloor).toBeGreaterThan(deleteThreshold);
     });
   });
