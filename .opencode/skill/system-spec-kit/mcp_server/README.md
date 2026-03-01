@@ -148,7 +148,7 @@ ls dist/context-server.js
 
 # Run full test suite
 npx vitest run
-# Expected: 5,797 tests passing across 196 files
+# Expected: 7,008 tests passing across 226 files
 ```
 
 ### MCP Configuration
@@ -181,7 +181,7 @@ Add to your MCP client configuration (e.g., `opencode.json`):
 context-server.ts          (server init, startup, shutdown, main orchestration)
         |
         v
-tool-schemas.ts            (TOOL_DEFINITIONS: all 23 tool schemas)
+tool-schemas.ts            (TOOL_DEFINITIONS: all 25 tool schemas)
         |
         v
 tools/index.ts             (dispatchTool: routes call to correct handler)
@@ -475,6 +475,10 @@ Maximum Marginal Relevance reranking balances relevance with diversity in the re
 
 The Token Relevance Monitor (TRM) applies Z-score confidence scoring to detect when retrieved memories do not adequately cover the query context. Gaps surface as advisory hints in the response.
 
+### 4-Stage Pipeline Architecture
+
+The search subsystem uses a 4-stage pipeline (candidate generation, fusion + signal enrichment, reranking + aggregation, filtering + annotation). Each stage has bounded score mutation rules and an immutability invariant on upstream scores. See `lib/search/README.md` for detailed architecture and per-stage module mapping.
+
 ### ANCHOR Format (93% Token Savings)
 
 Memory files use ANCHOR markers for section-level retrieval:
@@ -581,7 +585,7 @@ README files and skill documentation trees (`sk-*`, including `references/` and 
 
 ```
 mcp_server/
-├── context-server.ts       # Main MCP server entry point (23 tools) [source]
+├── context-server.ts       # Main MCP server entry point (25 tools) [source]
 ├── tool-schemas.ts         # All 23 tool schema definitions
 ├── cli.ts                  # CLI entry point (stats, bulk-delete, reindex, schema-downgrade)
 ├── package.json            # @spec-kit/mcp-server v1.7.2
@@ -734,7 +738,20 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET`  | `true`  | Complexity-tier token budgets |
 | `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |
 | `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
-| `SPECKIT_LEARN_FROM_SELECTION`  | `false` | Learned-feedback from selection events |
+| `SPECKIT_LEARN_FROM_SELECTION`  | `true`  | Learned-feedback from selection events (R11 — 9 safeguards, 0.7x boost weight) |
+
+#### Save-Time and Feedback Flags
+
+Flags governing save-time processing and feedback-driven scoring. All default-on after Sprint 7.
+
+| Flag                           | Default | Description |
+| ------------------------------ | ------- | ----------- |
+| `SPECKIT_SAVE_QUALITY_GATE`    | `true`  | Pre-storage quality gate rejects content below 0.4 signal density (TM-04) |
+| `SPECKIT_RECONSOLIDATION`      | `true`  | Auto-merges similar memories on save at >=0.88 similarity (TM-06) |
+| `SPECKIT_NEGATIVE_FEEDBACK`    | `true`  | `wasUseful=false` applies score demotion with 30-day recovery (A4) |
+| `SPECKIT_EMBEDDING_EXPANSION`  | `true`  | Expands queries with semantic neighbors before search (R12) |
+| `SPECKIT_AUTO_ENTITIES`        | `true`  | Extracts entities at save time for cross-document linking (R10) |
+| `SPECKIT_ENTITY_LINKING`       | `true`  | Links memories sharing extracted entities (S5) |
 
 ### Database Schema
 
@@ -1037,12 +1054,21 @@ node dist/cli.js reindex --eager-warmup
 node dist/cli.js schema-downgrade --to 15 --confirm
 ```
 
+### Spec Kit Utility Scripts
+
+Additional utility scripts are available in the parent `scripts/` directory:
+
+| Script | Purpose |
+| ------ | ------- |
+| `scripts/spec/progressive-validate.sh` | 4-level progressive validation for spec documents (lint, structure, content, cross-ref) |
+| `scripts/core/workflow.ts` | Tree thinning for spec folder consolidation (token-budget-aware merge of low-value nodes) |
+
 ### Run Tests
 
 ```bash
 # Run full test suite (from mcp_server directory)
 npx vitest run
-# Expected: tests passing across 164 files
+# Expected: 7,008 tests passing across 226 files
 
 # Run specific test file
 npx vitest run tests/fsrs-scheduler.vitest.ts
@@ -1101,9 +1127,9 @@ A: Yes. Flags are default-on and only explicit `FLAG=false` disables them. `SPEC
 
 | Spec | Path                                               | Purpose                                   |
 | ---- | -------------------------------------------------- | ----------------------------------------- |
-| 137  | `specs/003-system-spec-kit/137-*`                  | Pre-hybrid-RAG search improvements        |
-| 138  | `specs/003-system-spec-kit/138-hybrid-rag-fusion/` | Hybrid RAG fusion (adaptive RRF, MMR)     |
-| 139  | `specs/003-system-spec-kit/139-*`                  | Post-fusion enhancements and phase system |
+| 137  | `specs/02--system-spec-kit/020-*`                  | Pre-hybrid-RAG search improvements        |
+| 138  | `specs/02--system-spec-kit/022-hybrid-rag-fusion/` | Hybrid RAG fusion (adaptive RRF, MMR)     |
+| 139  | `specs/02--system-spec-kit/023-*`                  | Post-fusion enhancements and phase system |
 
 ### Key Library Modules
 

@@ -67,7 +67,7 @@ Examples:
   spec-kit-cli stats
   spec-kit-cli bulk-delete --tier deprecated
   spec-kit-cli bulk-delete --tier temporary --older-than 30
-  spec-kit-cli bulk-delete --tier deprecated --folder 003-system-spec-kit --dry-run
+  spec-kit-cli bulk-delete --tier deprecated --folder 02--system-spec-kit --dry-run
   spec-kit-cli reindex
   spec-kit-cli reindex --force
   spec-kit-cli reindex --eager-warmup

@@ -250,7 +250,7 @@ export function computeInterferenceScoresBatch(
  *
  * @param score - Current composite score
  * @param interferenceScore - Number of interfering memories (0+)
- * @returns Adjusted score, clamped to [0, Infinity)
+ * @returns Adjusted score, clamped to [0, 1]
  */
 export function applyInterferencePenalty(
   score: number,
@@ -261,5 +261,5 @@ export function applyInterferencePenalty(
   if (!interferenceScore || interferenceScore <= 0) return score;
 
   const penalty = INTERFERENCE_PENALTY_COEFFICIENT * interferenceScore;
-  return Math.max(0, score + penalty);
+  return Math.min(1, Math.max(0, score + penalty));
 }

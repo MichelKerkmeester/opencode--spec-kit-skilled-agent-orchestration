@@ -66,6 +66,13 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 | **Interference Scoring** | TM-01 penalizes high-similarity near-duplicates in result sets |
 | **Confidence Truncation** | Removes low-confidence tail results using 2x median gap detection |
 | **Dynamic Token Budget** | Tier-aware budgets (1500/2500/4000) for result delivery |
+| **Classification Decay** | TM-03 tier/context 2D multiplier matrix for FSRS decay modulation |
+| **Learned Feedback** | R11 selection tracking boosts future searches (9 safeguards, 0.7x weight) |
+| **Save Quality Gate** | TM-04 pre-storage 3-layer gate rejects content below 0.4 signal density |
+| **Reconsolidation** | TM-06 auto-merges similar memories on save (>=0.88 similarity threshold) |
+| **Graph Signals** | N2a momentum scoring, N2b causal depth signal, N2c community detection |
+| **Chunk Thinning** | R7 anchor-aware chunk scoring and threshold-based dropping at index time |
+| **Entity Extraction** | R10 auto-extracts entities at save time for cross-document linking |
 
 ### Requirements
 
@@ -729,4 +736,4 @@ console.log('Embedding dimensions:', embedding.length);
 
 ---
 
-*Documentation version: 1.5 | Last updated: 2026-02-27*
+*Documentation version: 1.6 | Last updated: 2026-03-01*

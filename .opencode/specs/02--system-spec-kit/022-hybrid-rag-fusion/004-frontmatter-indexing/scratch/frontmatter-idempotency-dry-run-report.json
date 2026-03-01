@@ -1,0 +1,273 @@
+{
+  "generatedAt": "2026-02-22T07:57:26.343Z",
+  "mode": "dry-run",
+  "options": {
+    "includeArchive": true,
+    "skipTemplates": false,
+    "roots": [
+      "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/.opencode/specs",
+      "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs"
+    ]
+  },
+  "summary": {
+    "total": 1789,
+    "changed": 30,
+    "unchanged": 1759,
+    "failed": 0
+  },
+  "byKind": {
+    "template:template": {
+      "total": 81,
+      "changed": 0
+    },
+    "spec_doc:checklist": {
+      "total": 219,
+      "changed": 7
+    },
+    "spec_doc:implementation_summary": {
+      "total": 180,
+      "changed": 2
+    },
+    "spec_doc:plan": {
+      "total": 262,
+      "changed": 5
+    },
+    "spec_doc:spec": {
+      "total": 270,
+      "changed": 6
+    },
+    "spec_doc:tasks": {
+      "total": 238,
+      "changed": 6
+    },
+    "spec_doc:decision_record": {
+      "total": 114,
+      "changed": 2
+    },
+    "memory:memory": {
+      "total": 365,
+      "changed": 1
+    },
+    "spec_doc:research": {
+      "total": 27,
+      "changed": 1
+    },
+    "spec_doc:handover": {
+      "total": 33,
+      "changed": 0
+    }
+  },
+  "changedFiles": [
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/memory/13-12-25_11-10__finsweet-performance.md",
+      "kind": "memory",
+      "documentType": "memory",
+      "title": "Finsweet Performance Verification Session [001-finsweet-performance/13-12-25_11-10__finsweet-performance]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: Create Commands Codex Compatibility [012-create-codex-compatibility/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "Decision Record: Create Commands Codex Compatibility [012-create-codex-compatibility/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation Summary: Create Commands Codex Compatibility [012-create-codex-compatibility/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan: Create Commands Codex Compatibility [012-create-codex-compatibility/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Feature Specification: Create Commands Codex Compatibility [012-create-codex-compatibility/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/012-create-codex-compatibility/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Create Commands Codex Compatibility [012-create-codex-compatibility/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Plan: SpecKit Skill Refinement (Conservative Approach) [003-speckit-skill-refinement/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Spec: SpecKit Skill Refinement [003-speckit-skill-refinement/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: SpecKit Skill Refinement [003-speckit-skill-refinement/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: Rename workflows-memory → system-memory [025-system-memory-rename/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Memory System Comprehensive Bug Fix [031-comprehensive-bug-fix/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Completion Checklist [036-post-merge-refinement-1/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Post-Merger Refinement Plan [036-post-merge-refinement-1/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Post-Merger System Refinement [036-post-merge-refinement-1/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Task Breakdown [036-post-merge-refinement-1/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Completion Checklist [039-node-modules-consolidation/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Implementation Plan [039-node-modules-consolidation/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Node Modules Consolidation [039-node-modules-consolidation/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Task Breakdown [039-node-modules-consolidation/tasks]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "QA Validation Checklist: SpecKit & Memory System Remediation [048-system-analysis/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: system-spec-kit References Reorganization [056-spec-kit-references-reorganization/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Verification Checklist: generate-context.js Modularization [058-generate-context-modularization/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix/implementation-summary.md",
+      "kind": "spec_doc",
+      "documentType": "implementation_summary",
+      "title": "Implementation Summary: SpecKit Bug Fix Project [064-bug-analysis-and-fix/implementation-summary]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/checklist.md",
+      "kind": "spec_doc",
+      "documentType": "checklist",
+      "title": "Checklist: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/checklist]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/decision-record.md",
+      "kind": "spec_doc",
+      "documentType": "decision_record",
+      "title": "Decision Record: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/decision-record]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/plan.md",
+      "kind": "spec_doc",
+      "documentType": "plan",
+      "title": "Plan: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/plan]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/research.md",
+      "kind": "spec_doc",
+      "documentType": "research",
+      "title": "Research: system-spec-kit Ecosystem Audit [089-speckit-reimagined-refinement/research]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/spec.md",
+      "kind": "spec_doc",
+      "documentType": "spec",
+      "title": "Spec 089: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/spec]",
+      "hadFrontmatter": true
+    },
+    {
+      "filePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement/tasks.md",
+      "kind": "spec_doc",
+      "documentType": "tasks",
+      "title": "Tasks: system-spec-kit Reimagined Refinement [089-speckit-reimagined-refinement/tasks]",
+      "hadFrontmatter": true
+    }
+  ],
+  "failedFiles": []
+}

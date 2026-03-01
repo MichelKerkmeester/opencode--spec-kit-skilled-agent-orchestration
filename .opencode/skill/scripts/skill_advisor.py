@@ -148,6 +148,10 @@ SYNONYM_MAP = {
     "verify": ["check", "validate", "test", "confirm"],
     "validate": ["check", "verify", "test"],
     
+    # Prompt engineering
+    "prompt": ["enhance", "improve", "optimize", "engineering", "framework"],
+    "enhance": ["prompt", "improve", "optimize", "refine"],
+
     # Understanding & explanation
     "help": ["guide", "assist", "documentation", "explain"],
     "how": ["understand", "explain", "works", "meaning"],
@@ -357,6 +361,21 @@ INTENT_BOOSTERS = {
     "typescript": ("sk-code--opencode", 0.8),
     "utcp": ("mcp-code-mode", 0.8),
     "webflow": ("mcp-code-mode", 2.5),
+
+    # ─────────────────────────────────────────────────────────────────
+    # SK-PROMPT-IMPROVER: Prompt engineering and enhancement
+    # ─────────────────────────────────────────────────────────────────
+    "prompt": ("sk-prompt-improver", 1.5),
+    "prompts": ("sk-prompt-improver", 1.2),
+    "enhance": ("sk-prompt-improver", 1.2),
+    "rcaf": ("sk-prompt-improver", 2.0),
+    "costar": ("sk-prompt-improver", 2.0),
+    "tidd-ec": ("sk-prompt-improver", 2.0),
+    "crispe": ("sk-prompt-improver", 2.0),
+    "craft": ("sk-prompt-improver", 1.5),
+    "depth": ("sk-prompt-improver", 1.5),
+    "ricce": ("sk-prompt-improver", 1.5),
+    "scoring": ("sk-prompt-improver", 0.8),
 }
 
 # Ambiguous keywords that should boost MULTIPLE skills
@@ -394,6 +413,10 @@ MULTI_SKILL_BOOSTERS = {
     "delegate": [("mcp-gemini-cli", 0.5)],
     "opinion": [("mcp-gemini-cli", 0.3), ("sk-code--review", 0.2)],
     "validate": [("mcp-gemini-cli", 0.2), ("sk-code--review", 0.3)],
+    "improve": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
+    "enhance": [("sk-prompt-improver", 0.8)],
+    "refine": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
+    "framework": [("sk-prompt-improver", 0.5), ("sk-code--full-stack", 0.3)],
 }
 
 # Phrase-level intent boosters for high-signal multi-token requests
@@ -449,6 +472,22 @@ PHRASE_INTENT_BOOSTERS = {
     "mcp-gemini-cli": [("mcp-gemini-cli", 2.8)],
     "/mcp-gemini-cli": [("mcp-gemini-cli", 2.8)],
     ".opencode/skill/mcp-gemini-cli": [("mcp-gemini-cli", 3.0)],
+    # --- Prompt Improver: prompt engineering and enhancement ---
+    "improve my prompt": [("sk-prompt-improver", 2.5)],
+    "improve this prompt": [("sk-prompt-improver", 2.5)],
+    "enhance this prompt": [("sk-prompt-improver", 2.5)],
+    "enhance my prompt": [("sk-prompt-improver", 2.5)],
+    "prompt engineering": [("sk-prompt-improver", 2.5)],
+    "prompt improvement": [("sk-prompt-improver", 2.5)],
+    "create a prompt": [("sk-prompt-improver", 2.0)],
+    "optimize this prompt": [("sk-prompt-improver", 2.2)],
+    "optimize prompt": [("sk-prompt-improver", 2.2)],
+    "refine this prompt": [("sk-prompt-improver", 2.2)],
+    "clear scoring": [("sk-prompt-improver", 2.0)],
+    "depth processing": [("sk-prompt-improver", 2.0)],
+    "sk-prompt-improver": [("sk-prompt-improver", 2.8)],
+    "/sk-prompt-improver": [("sk-prompt-improver", 2.8)],
+    ".opencode/skill/sk-prompt-improver": [("sk-prompt-improver", 3.0)],
 }
 
 

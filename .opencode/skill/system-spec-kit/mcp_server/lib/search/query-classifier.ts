@@ -12,7 +12,7 @@ interface ClassificationResult {
     hasTriggerMatch: boolean;
     stopWordRatio: number;
   };
-  confidence: string;
+  confidence: 'high' | 'medium' | 'low' | 'fallback';
 }
 
 /** Config-driven thresholds */
@@ -98,7 +98,7 @@ function determineConfidence(
   termCount: number,
   hasTrigger: boolean,
   stopWordRatio: number,
-): string {
+): 'high' | 'medium' | 'low' {
   if (tier === 'simple') {
     // AI-WHY: Trigger match is strongest simplicity signal — overrides term count
     if (hasTrigger) return 'high';

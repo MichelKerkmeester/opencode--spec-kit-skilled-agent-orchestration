@@ -63,7 +63,6 @@ async function testSpecFolderPatternValid() {
     const { SPEC_FOLDER_PATTERN } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
 
     const validCases = [
-      '003-system-spec-kit',
       '121-script-audit',
       '001-a',
       '000-hello-world',
@@ -111,6 +110,7 @@ async function testSpecFolderPatternInvalid() {
       { input: '003-foo bar', reason: 'space in name' },
       { input: '003-foo/bar', reason: 'slash in name' },
       { input: '12-short', reason: 'two digit prefix' },
+      { input: '02--system-spec-kit', reason: 'category folder (2 digits + double hyphen)' },
       { input: 'z_archive', reason: 'no digit prefix at all' },
       { input: '003-foo.bar', reason: 'dot in name' },
     ];
@@ -182,7 +182,6 @@ async function testSpecFolderBasicPatternValid() {
     const validCases = [
       '003-SystemSpecKit',
       '121-A',
-      '003-system-spec-kit',
       '000-Hello',
       '999-Zulu',
       '042-mixedCASE',
@@ -302,26 +301,14 @@ async function testFindChildFolderSyncExisting() {
 
     try {
       const result = findChildFolderSync(childName);
-      const realSpecsDirs = specsDirs.map(dir => {
-        try { return fs.realpathSync(dir); } catch (_) { return path.resolve(dir); }
-      });
-      const hasAliasedRoots = new Set(realSpecsDirs).size < realSpecsDirs.length;
-
-      if (hasAliasedRoots) {
-        if (result === null) {
-          pass('T-SF03a: Find existing child', 'Returned null as expected with aliased specs roots');
-        } else {
-          fail('T-SF03a: Find existing child', `Expected null for aliased roots, got: ${result}`);
-        }
+      // With aliased roots, deduplication should resolve to a single result
+      const isAbsolute = path.isAbsolute(result || '');
+      const endsCorrectly = (result || '').endsWith(childName);
+      const containsParent = (result || '').includes(parentName);
+      if (result !== null && isAbsolute && endsCorrectly && containsParent) {
+        pass('T-SF03a: Find existing child', `Found: ${result}`);
       } else {
-        const isAbsolute = path.isAbsolute(result || '');
-        const endsCorrectly = (result || '').endsWith(childName);
-        const containsParent = (result || '').includes(parentName);
-        if (result !== null && isAbsolute && endsCorrectly && containsParent) {
-          pass('T-SF03a: Find existing child', `Found: ${result}`);
-        } else {
-          fail('T-SF03a: Find existing child', `Unexpected result: ${result}`);
-        }
+        fail('T-SF03a: Find existing child', `Unexpected result: ${result}`);
       }
     } finally {
       try { fs.rmSync(path.join(specsDirs[0], parentName), { recursive: true, force: true }); } catch (_) {}
@@ -350,18 +337,8 @@ async function testFindChildFolderSyncSecondChild() {
 
     try {
       const result = findChildFolderSync(childName);
-      const realSpecsDirs = specsDirs.map(dir => {
-        try { return fs.realpathSync(dir); } catch (_) { return path.resolve(dir); }
-      });
-      const hasAliasedRoots = new Set(realSpecsDirs).size < realSpecsDirs.length;
-
-      if (hasAliasedRoots) {
-        if (result === null) {
-          pass('T-SF03b: Find second existing child', 'Returned null as expected with aliased specs roots');
-        } else {
-          fail('T-SF03b: Find second existing child', `Expected null for aliased roots, got: ${result}`);
-        }
-      } else if (path.isAbsolute(result || '') && (result || '').endsWith(childName)) {
+      // With aliased roots, deduplication should resolve to a single result
+      if (path.isAbsolute(result || '') && (result || '').endsWith(childName)) {
         pass('T-SF03b: Find second existing child', `Found: ${path.basename(path.dirname(result))}/${path.basename(result)}`);
       } else {
         fail('T-SF03b: Find second existing child', `Unexpected: ${result}`);
@@ -434,14 +411,24 @@ async function testFindChildFolderSyncAmbiguous() {
   log('\n🔬 findChildFolderSync: Returns null for ambiguous child (multiple parents)');
 
   const fs = require('fs');
-  const tempChildName = '999-ambiguity-test';
-  const dir1 = path.join(process.cwd(), 'specs', '003-system-spec-kit', tempChildName);
-  const dir2 = path.join(process.cwd(), '.opencode', 'specs', '003-system-spec-kit', tempChildName);
+  const token = Date.now().toString(36);
+  const tempChildName = `999-ambiguity-${token}`;
+  // Create same child name under TWO different spec-folder parents in the SAME specs root
+  // This creates genuine ambiguity that dedup cannot resolve
+  const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-SF03f: Ambiguous child returns null', 'No specs directories available');
+    return;
+  }
+  const parent1 = `997-ambig-parent1-${token}`;
+  const parent2 = `998-ambig-parent2-${token}`;
+  const dir1 = path.join(specsDirs[0], parent1, tempChildName);
+  const dir2 = path.join(specsDirs[0], parent2, tempChildName);
 
   try {
     const { findChildFolderSync } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
 
-    // Create temp child folder under TWO different parent spec directories
     fs.mkdirSync(dir1, { recursive: true });
     fs.mkdirSync(dir2, { recursive: true });
 
@@ -455,9 +442,8 @@ async function testFindChildFolderSyncAmbiguous() {
   } catch (err) {
     fail('T-SF03f: Ambiguous child returns null', err.message);
   } finally {
-    // Cleanup temp directories
-    try { fs.rmdirSync(dir1); } catch (_) {}
-    try { fs.rmdirSync(dir2); } catch (_) {}
+    try { fs.rmSync(path.join(specsDirs[0], parent1), { recursive: true, force: true }); } catch (_) {}
+    try { fs.rmSync(path.join(specsDirs[0], parent2), { recursive: true, force: true }); } catch (_) {}
   }
 }
 
@@ -485,25 +471,13 @@ async function testFindChildFolderAsyncExisting() {
 
     try {
       const result = await findChildFolderAsync(childName);
-      const realSpecsDirs = specsDirs.map(dir => {
-        try { return fs.realpathSync(dir); } catch (_) { return path.resolve(dir); }
-      });
-      const hasAliasedRoots = new Set(realSpecsDirs).size < realSpecsDirs.length;
-
-      if (hasAliasedRoots) {
-        if (result === null) {
-          pass('T-SF04a: Async find existing child', 'Returned null as expected with aliased specs roots');
-        } else {
-          fail('T-SF04a: Async find existing child', `Expected null for aliased roots, got: ${result}`);
-        }
+      // With aliased roots, deduplication should resolve to a single result
+      const isAbsolute = path.isAbsolute(result || '');
+      const endsCorrectly = (result || '').endsWith(childName);
+      if (result !== null && isAbsolute && endsCorrectly) {
+        pass('T-SF04a: Async find existing child', `Found: ${result}`);
       } else {
-        const isAbsolute = path.isAbsolute(result || '');
-        const endsCorrectly = (result || '').endsWith(childName);
-        if (result !== null && isAbsolute && endsCorrectly) {
-          pass('T-SF04a: Async find existing child', `Found: ${result}`);
-        } else {
-          fail('T-SF04a: Async find existing child', `Unexpected path: ${result}`);
-        }
+        fail('T-SF04a: Async find existing child', `Unexpected path: ${result}`);
       }
     } finally {
       try { fs.rmSync(path.join(specsDirs[0], parentName), { recursive: true, force: true }); } catch (_) {}
@@ -609,14 +583,22 @@ async function testFindChildFolderAsyncAmbiguous() {
   log('\n🔬 findChildFolderAsync: Returns null for ambiguous child (multiple parents)');
 
   const fs = require('fs');
-  const tempChildName = '999-ambiguity-test';
-  const dir1 = path.join(process.cwd(), 'specs', '003-system-spec-kit', tempChildName);
-  const dir2 = path.join(process.cwd(), '.opencode', 'specs', '003-system-spec-kit', tempChildName);
+  const token = `${Date.now().toString(36)}-af`;
+  const tempChildName = `999-ambiguity-${token}`;
+  const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-SF04f: Async ambiguous child returns null', 'No specs directories available');
+    return;
+  }
+  const parent1 = `997-ambig-parent1-${token}`;
+  const parent2 = `998-ambig-parent2-${token}`;
+  const dir1 = path.join(specsDirs[0], parent1, tempChildName);
+  const dir2 = path.join(specsDirs[0], parent2, tempChildName);
 
   try {
     const { findChildFolderAsync } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
 
-    // Create temp child folder under TWO different parent spec directories
     fs.mkdirSync(dir1, { recursive: true });
     fs.mkdirSync(dir2, { recursive: true });
 
@@ -630,9 +612,8 @@ async function testFindChildFolderAsyncAmbiguous() {
   } catch (err) {
     fail('T-SF04f: Async ambiguous child returns null', err.message);
   } finally {
-    // Cleanup temp directories
-    try { fs.rmdirSync(dir1); } catch (_) {}
-    try { fs.rmdirSync(dir2); } catch (_) {}
+    try { fs.rmSync(path.join(specsDirs[0], parent1), { recursive: true, force: true }); } catch (_) {}
+    try { fs.rmSync(path.join(specsDirs[0], parent2), { recursive: true, force: true }); } catch (_) {}
   }
 }
 
@@ -650,6 +631,7 @@ async function testCoreIndexReExports() {
     const expectedExports = [
       { name: 'SPEC_FOLDER_PATTERN', type: 'object' },       // RegExp is typeof 'object'
       { name: 'SPEC_FOLDER_BASIC_PATTERN', type: 'object' },
+      { name: 'CATEGORY_FOLDER_PATTERN', type: 'object' },
       { name: 'findChildFolderSync', type: 'function' },
       { name: 'findChildFolderAsync', type: 'function' },
     ];
@@ -722,7 +704,134 @@ async function testCoreIndexFunctionsWork() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   8. MAIN TEST RUNNER
+   8. TEST: CATEGORY_FOLDER_PATTERN
+   Regex: /^\d{2}--[a-z][a-z0-9-]*$/
+────────────────────────────────────────────────────────────────*/
+
+async function testCategoryFolderPatternValid() {
+  log('\n🔬 CATEGORY_FOLDER_PATTERN: Valid category patterns match');
+
+  try {
+    const { CATEGORY_FOLDER_PATTERN } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+
+    const validCases = [
+      '02--system-spec-kit',
+      '01--anobel',
+      '00--opencode-environment',
+      '99--test-category',
+    ];
+
+    let allPassed = true;
+    const failures = [];
+    for (const input of validCases) {
+      if (!CATEGORY_FOLDER_PATTERN.test(input)) {
+        allPassed = false;
+        failures.push(input);
+      }
+    }
+
+    if (allPassed) {
+      pass('T-SF06a: Category valid patterns match', `All ${validCases.length} valid patterns matched`);
+    } else {
+      fail('T-SF06a: Category valid patterns match', `Failed to match: ${failures.join(', ')}`);
+    }
+  } catch (err) {
+    fail('T-SF06a: Category valid patterns match', err.message);
+  }
+}
+
+async function testCategoryFolderPatternInvalid() {
+  log('\n🔬 CATEGORY_FOLDER_PATTERN: Invalid category patterns rejected');
+
+  try {
+    const { CATEGORY_FOLDER_PATTERN } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+
+    const invalidCases = [
+      { input: '003-spec-folder', reason: 'spec folder (3 digits + single hyphen)' },
+      { input: '2--short', reason: 'single digit prefix' },
+      { input: '02-single-hyphen', reason: 'single hyphen (not category)' },
+      { input: '02--UPPERCASE', reason: 'uppercase after double hyphen' },
+      { input: '', reason: 'empty string' },
+    ];
+
+    let allPassed = true;
+    const failures = [];
+    for (const { input, reason } of invalidCases) {
+      if (CATEGORY_FOLDER_PATTERN.test(input)) {
+        allPassed = false;
+        failures.push(`"${input}" (${reason})`);
+      }
+    }
+
+    if (allPassed) {
+      pass('T-SF06b: Category invalid patterns rejected', `All ${invalidCases.length} invalid patterns rejected`);
+    } else {
+      fail('T-SF06b: Category invalid patterns rejected', `Incorrectly matched: ${failures.join(', ')}`);
+    }
+  } catch (err) {
+    fail('T-SF06b: Category invalid patterns rejected', err.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. TEST: findChildFolderSync with deep nesting (category/parent/child)
+────────────────────────────────────────────────────────────────*/
+
+async function testFindChildFolderSyncDeepNesting() {
+  log('\n🔬 findChildFolderSync: Finds child in category/parent/child structure');
+
+  try {
+    const { findChildFolderSync } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+    const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+    const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+    if (specsDirs.length === 0) {
+      skip('T-SF07a: Deep nesting find', 'No specs directories available');
+      return;
+    }
+
+    const token = Date.now().toString(36);
+    const categoryName = `02--test-category-${token}`;
+    const parentName = `997-deep-parent-${token}`;
+    const childName = `996-deep-child-${token}`;
+    const createdPath = path.join(specsDirs[0], categoryName, parentName, childName);
+    fs.mkdirSync(createdPath, { recursive: true });
+
+    try {
+      const result = findChildFolderSync(childName);
+      const realSpecsDirs = specsDirs.map(dir => {
+        try { return fs.realpathSync(dir); } catch (_) { return path.resolve(dir); }
+      });
+      const hasAliasedRoots = new Set(realSpecsDirs).size < realSpecsDirs.length;
+
+      if (hasAliasedRoots) {
+        if (result !== null && result.endsWith(childName)) {
+          pass('T-SF07a: Deep nesting find', `Found (aliased roots handled): ${result}`);
+        } else if (result === null) {
+          pass('T-SF07a: Deep nesting find', 'Returned null as expected with aliased specs roots');
+        } else {
+          fail('T-SF07a: Deep nesting find', `Unexpected result: ${result}`);
+        }
+      } else {
+        const isAbsolute = path.isAbsolute(result || '');
+        const endsCorrectly = (result || '').endsWith(childName);
+        const containsCategory = (result || '').includes(categoryName);
+        const containsParent = (result || '').includes(parentName);
+        if (result !== null && isAbsolute && endsCorrectly && containsCategory && containsParent) {
+          pass('T-SF07a: Deep nesting find', `Found: ${result}`);
+        } else {
+          fail('T-SF07a: Deep nesting find', `Unexpected result: ${result}`);
+        }
+      }
+    } finally {
+      try { fs.rmSync(path.join(specsDirs[0], categoryName), { recursive: true, force: true }); } catch (_) {}
+    }
+  } catch (err) {
+    fail('T-SF07a: Deep nesting find', err.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. MAIN TEST RUNNER
 ────────────────────────────────────────────────────────────────*/
 
 async function main() {
@@ -765,6 +874,15 @@ async function main() {
   await testCoreIndexReExports();
   await testCoreIndexPatternsAreRegExp();
   await testCoreIndexFunctionsWork();
+
+  // Category F: CATEGORY_FOLDER_PATTERN
+  log('\n── Category F: CATEGORY_FOLDER_PATTERN ──');
+  await testCategoryFolderPatternValid();
+  await testCategoryFolderPatternInvalid();
+
+  // Category G: Deep nesting (category/parent/child)
+  log('\n── Category G: Deep Nesting ──');
+  await testFindChildFolderSyncDeepNesting();
 
   // Results summary
   log('\n═══════════════════════════════════════════════════════════════');

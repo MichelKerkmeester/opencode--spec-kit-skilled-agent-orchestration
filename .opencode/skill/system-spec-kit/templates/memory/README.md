@@ -47,7 +47,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <sp
 
 ```bash
 # Direct spec folder mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/003-system-spec-kit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/02--system-spec-kit
 
 # Subfolder / phase mode (parent/child)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-parent/001-child

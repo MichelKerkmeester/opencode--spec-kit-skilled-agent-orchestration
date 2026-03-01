@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendation: SQLite vs libSQL/Turso Decision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ve-font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --ve-font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+    --ve-bg: #faf7f5;
+    --ve-surface: #ffffff;
+    --ve-surface-2: #f5f0ec;
+    --ve-border: rgba(0, 0, 0, 0.08);
+    --ve-border-strong: rgba(0, 0, 0, 0.16);
+    --ve-text: #2a1f17;
+    --ve-text-dim: #7e7062;
+    --ve-accent: #c2410c;
+    --ve-accent-dim: rgba(194, 65, 12, 0.09);
+    --ve-accent-2: #4d7c0f;
+    --ve-shadow: 0 16px 36px rgba(41, 32, 23, 0.08);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ve-bg: #191411;
+      --ve-surface: #241d19;
+      --ve-surface-2: #2f2621;
+      --ve-border: rgba(255, 255, 255, 0.08);
+      --ve-border-strong: rgba(255, 255, 255, 0.16);
+      --ve-text: #f0e8df;
+      --ve-text-dim: #b39f8d;
+      --ve-accent: #fb923c;
+      --ve-accent-dim: rgba(251, 146, 60, 0.15);
+      --ve-accent-2: #bef264;
+      --ve-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 34px 20px 72px;
+    color: var(--ve-text);
+    font-family: var(--ve-font-body);
+    background-color: var(--ve-bg);
+    background-image: radial-gradient(1100px 560px at 5% 0%, var(--ve-accent-dim), transparent 62%), radial-gradient(900px 460px at 96% 100%, color-mix(in srgb, var(--ve-accent-2) 15%, transparent), transparent 60%);
+  }
+
+  .layout {
+    width: min(1240px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .panel {
+    min-width: 0;
+    background: var(--ve-surface);
+    border: 1px solid var(--ve-border);
+    border-radius: 14px;
+    box-shadow: var(--ve-shadow);
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+    padding: 16px;
+  }
+
+  .tag {
+    font-family: var(--ve-font-mono);
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ve-accent);
+    margin: 0 0 8px;
+  }
+
+  .sidebar h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    line-height: 1.24;
+  }
+
+  .meta {
+    font-family: var(--ve-font-mono);
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--ve-text-dim);
+    margin: 0 0 16px;
+  }
+
+  .toc-title {
+    margin: 0 0 8px;
+    font-family: var(--ve-font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ve-text-dim);
+  }
+
+  .toc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .toc a {
+    display: block;
+    text-decoration: none;
+    color: var(--ve-text);
+    border: 1px solid var(--ve-border);
+    background: var(--ve-surface-2);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 12px;
+    line-height: 1.35;
+    min-width: 0;
+    overflow-wrap: break-word;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .toc a:hover {
+    background: var(--ve-accent-dim);
+    border-color: var(--ve-border-strong);
+  }
+
+  .toc a.h3 {
+    margin-left: 10px;
+    font-size: 11px;
+  }
+
+  .content-wrap {
+    padding: 26px 30px 32px;
+    min-width: 0;
+  }
+
+  .hero {
+    margin-bottom: 18px;
+    padding: 20px 22px;
+    border: 1px solid var(--ve-border);
+    border-left: 4px solid var(--ve-accent);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ve-surface) 72%, var(--ve-accent-dim));
+  }
+
+  .hero h1 {
+    margin: 0 0 8px;
+    font-size: clamp(31px, 3.2vw, 42px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .hero p {
+    margin: 0;
+    font-family: var(--ve-font-mono);
+    font-size: 12px;
+    color: var(--ve-text-dim);
+  }
+
+  #content > h1:first-child { display: none; }
+
+  #content h2 {
+    margin: 26px 0 10px;
+    padding: 8px 12px;
+    border: 1px solid var(--ve-border);
+    border-left: 4px solid var(--ve-accent);
+    border-radius: 8px;
+    background: var(--ve-surface-2);
+    font-size: 24px;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  #content h3 {
+    margin: 20px 0 8px;
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  #content h4 {
+    margin: 16px 0 8px;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  #content p,
+  #content li {
+    font-size: 14px;
+    line-height: 1.72;
+    overflow-wrap: break-word;
+  }
+
+  #content ul,
+  #content ol {
+    margin: 8px 0 12px 22px;
+    padding: 0;
+  }
+
+  #content code {
+    font-family: var(--ve-font-mono);
+    font-size: 0.84em;
+    background: var(--ve-accent-dim);
+    color: var(--ve-accent);
+    padding: 2px 6px;
+    border-radius: 5px;
+    overflow-wrap: break-word;
+  }
+
+  #content pre {
+    margin: 12px 0;
+    padding: 13px;
+    border: 1px solid var(--ve-border);
+    border-radius: 10px;
+    background: var(--ve-surface-2);
+    overflow-x: auto;
+  }
+
+  #content pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+
+  .table-scroll {
+    margin: 12px 0 16px;
+    border: 1px solid var(--ve-border);
+    border-radius: 10px;
+    overflow-x: auto;
+    background: var(--ve-surface);
+  }
+
+  #content table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 860px;
+  }
+
+  #content th,
+  #content td {
+    border-bottom: 1px solid var(--ve-border);
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    overflow-wrap: break-word;
+  }
+
+  #content thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--ve-surface-2);
+    color: var(--ve-text-dim);
+    font-family: var(--ve-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 10px;
+  }
+
+  #content tr:last-child td { border-bottom: 0; }
+
+  #content blockquote {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-left: 3px solid var(--ve-accent-2);
+    border-radius: 0 8px 8px 0;
+    background: var(--ve-surface-2);
+  }
+
+  #content a {
+    color: var(--ve-accent);
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    overflow-wrap: break-word;
+  }
+
+  .anim {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.38s ease forwards;
+    animation-delay: calc(var(--i, 0) * 0.04s);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 980px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar panel">
+    <p class="tag">Doc Visual</p>
+    <h2>Recommendation: SQLite vs libSQL/Turso Decision</h2>
+    <p class="meta">Decision guidance visual<br>Generated: 2026-02-21 19:18:06</p>
+    <p class="toc-title">Sections</p>
+    <ul id="toc" class="toc"></ul>
+  </aside>
+  <main class="content-wrap panel">
+    <header class="hero">
+      <h1>Recommendation: SQLite vs libSQL/Turso Decision</h1>
+      <p>Decision guidance visual</p>
+    </header>
+    <article id="content">
+<h1>Recommendation: SQLite vs libSQL/Turso Decision for System Spec Kit MCP</h1>
+<p>Index: Companion analysis document at <a href="specs/02--system-spec-kit/024-sqlite-to-libsql/analysis-system-speckit-mcp-sqlite-vs-libsql.md"><code>specs/02--system-spec-kit/024-sqlite-to-libsql/analysis-system-speckit-mcp-sqlite-vs-libsql.md</code></a>.</p>
+<p>Source validation date: <strong>February 21, 2026</strong>.</p>
+<h2>1) Final Recommendation Statement</h2>
+<p><strong>Decision:</strong> Keep the current local SQLite architecture as the default backend now (<code>sqlite_local</code>) and defer any production Turso/libSQL cutover until adapter, consistency, and operational readiness gates are passed.</p>
+<p>Rationale summary:</p>
+<ul>
+<li>Current runtime is deeply coupled to direct <code>better-sqlite3</code> local DB operations, SQLite PRAGMAs, <code>sqlite-vec</code>, and local checkpoint/restore transactions. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:15</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1184</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1602</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:313</code>)</li>
+<li>Startup/server/CLI wiring assumes local DB lifecycle and no remote endpoint/token contract, including file-based DB update signaling and local-handle reinitialize flows. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/context-server.ts:450</code>, <code>.opencode/skill/system-spec-kit/mcp_server/cli.ts:82</code>, <code>.opencode/skill/system-spec-kit/mcp_server/package.json:36</code>, <code>.opencode/skill/system-spec-kit/mcp_server/core/db-state.ts:101</code>, <code>.opencode/skill/system-spec-kit/mcp_server/core/db-state.ts:141</code>)</li>
+<li>Turso/libSQL introduces protocol and consistency semantics (baton stream lifecycle, replica visibility model) that require deliberate redesign and test coverage before cutover. (Local libSQL clone: <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/HTTP_V2_SPEC.md:14</code>, <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/CONSISTENCY_MODEL.md:13</code>)</li>
+<li>libSQL positioning confirms SQLite file compatibility and embedded operation goals, but this does not remove runtime adapter needs for this codebase. (Local libSQL clone: <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/README.md:126</code>, <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/README.md:128</code>)</li>
+</ul>
+<h2>2) Option Analysis</h2>
+<h3>2.1 Option A: SQLite local (status quo)</h3>
+<p><strong>Description:</strong> Keep existing backend with no runtime storage migration.</p>
+<p><strong>Pros</strong></p>
+<ul>
+<li>Zero migration risk and preserves known operational behavior.</li>
+<li>Full compatibility with current <code>better-sqlite3</code>, PRAGMA tuning, <code>sqlite-vec</code>, FTS5 triggers, checkpoint restore transaction model. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1184</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1602</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:313</code>)</li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li>No managed durability/PITR or global access out of the box.</li>
+<li>Local file lifecycle remains operational burden.</li>
+</ul>
+<p><strong>Recommendation status:</strong> <strong>Default now</strong>.</p>
+<h3>2.2 Option B: libSQL local bridge (embedded/local libSQL client)</h3>
+<p><strong>Description:</strong> Keep local-first deployment but route through an abstraction that can also target libSQL-compatible clients.</p>
+<p><strong>Pros</strong></p>
+<ul>
+<li>Lowest-risk path to future portability.</li>
+<li>Preserves local execution while forcing API boundary cleanup.</li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li>Still requires vector and transaction semantic abstraction.</li>
+<li>Can add temporary complexity without immediate business value if triggers are not met.</li>
+</ul>
+<p><strong>Recommendation status:</strong> <strong>Build as preparatory phase, not cutover phase</strong>.</p>
+<h3>2.3 Option C: Turso hybrid (local + replica/sync)</h3>
+<p><strong>Description:</strong> Keep local primary developer flow but add Turso-backed replication/sync for selected environments.</p>
+<p><strong>Pros</strong></p>
+<ul>
+<li>Incremental path to managed durability and multi-environment sharing.</li>
+<li>Can validate consistency/latency/cost with canary workloads.</li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li>Consistency behavior becomes mode-dependent; requires strict guardrails.</li>
+<li>Operational burden increases during dual-mode period.</li>
+</ul>
+<p><strong>Recommendation status:</strong> <strong>Only after adapter + shadow-read parity pass</strong>.</p>
+<h3>2.4 Option D: Turso full remote</h3>
+<p><strong>Description:</strong> Remote-first DB for all runtime operations.</p>
+<p><strong>Pros</strong></p>
+<ul>
+<li>Centralized managed infra, remote access, platform-level durability features.</li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li>Highest migration complexity and highest blast radius.</li>
+<li>Requires robust stream/retry/idempotency behavior and full consistency test maturity.</li>
+</ul>
+<p><strong>Recommendation status:</strong> <strong>Not now</strong>.</p>
+<h3>2.5 Weighted decision snapshot</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Delivery risk</th>
+<th>Ops complexity</th>
+<th>Strategic value</th>
+<th>Net decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A SQLite local</td>
+<td>Low</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Choose now</td>
+</tr>
+<tr>
+<td>B libSQL local bridge</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>High</td>
+<td>Build next</td>
+</tr>
+<tr>
+<td>C Turso hybrid</td>
+<td>Medium-High</td>
+<td>High</td>
+<td>High</td>
+<td>Pilot later</td>
+</tr>
+<tr>
+<td>D Turso full remote</td>
+<td>High</td>
+<td>High</td>
+<td>High</td>
+<td>Defer</td>
+</tr>
+</tbody></table>
+<h2>3) Decision Tree with Hard Trigger Thresholds</h2>
+<p>Use this tree to decide when to progress beyond local SQLite.</p>
+<h3>3.1 Hard triggers (must be true to advance)</h3>
+<ol>
+<li><strong>Cross-host consistency need:</strong> At least 2 independent hosts/process groups must share live memory state, and local-file workflows are failing target freshness requirements (SLO miss in 2 consecutive release cycles).</li>
+<li><strong>Durability requirement gap:</strong> Required RPO/RTO cannot be met by current checkpoint process (max checkpoint retention is 10 entries) and at least 2 restore drills show unacceptable recovery risk. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:20</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:195</code>)</li>
+<li><strong>Operational incident threshold:</strong> 2 or more storage-related Sev-2+ incidents in a rolling quarter attributable to local DB lifecycle limits.</li>
+<li><strong>Cost viability:</strong> Projected Turso spend for expected query/write/sync load is within approved budget envelope with 30% headroom based on live pricing/usage rules. (Web: <code>https://turso.tech/pricing</code>, <code>https://docs.turso.tech/help/usage-and-billing</code>)</li>
+</ol>
+<h3>3.2 Decision logic</h3>
+<pre><code class="language-text">If no hard trigger is met -&gt; stay sqlite_local
+If trigger #1 only -&gt; build adapter + run shadow-read
+If #1 and #2 met -&gt; allow turso_hybrid pilot
+If #1 #2 #3 #4 all met and tests pass -&gt; consider turso_remote cutover
+If any cutover gate fails -&gt; rollback to previous phase immediately
+</code></pre>
+<h2>4) Phased Roadmap (Adapter -&gt; Shadow Read -&gt; Dual Write/Canary -&gt; Cutover)</h2>
+<h3>Phase 0: Baseline freeze (now)</h3>
+<ul>
+<li>Backend: <code>sqlite_local</code></li>
+<li>Deliverables:<ul>
+<li>Capture baseline latency, search quality, checkpoint restore times.</li>
+<li>Lock current schema and search behavior as parity target.</li>
+</ul>
+</li>
+<li>Exit criteria:<ul>
+<li>Baseline metrics stable for 2 weeks.</li>
+</ul>
+</li>
+</ul>
+<h3>Phase 1: Adapter introduction</h3>
+<ul>
+<li>Backend: <code>sqlite_local</code> only (runtime unchanged)</li>
+<li>Deliverables:<ul>
+<li>Introduce <code>DatabaseAdapter</code> abstraction and backend selector env contract.</li>
+<li>Keep implementation bound to existing SQLite driver under adapter facade.</li>
+</ul>
+</li>
+<li>Exit criteria:<ul>
+<li>No behavior regression in local mode.</li>
+<li>100% parity in current integration tests.</li>
+</ul>
+</li>
+</ul>
+<h3>Phase 2: Shadow-read (non-authoritative remote/hybrid reads)</h3>
+<ul>
+<li>Backend: <code>sqlite_local</code> authoritative; <code>turso_hybrid</code> read shadow for comparison.</li>
+<li>Deliverables:<ul>
+<li>Compare result sets/ranking/checkpoint metadata without affecting user output.</li>
+<li>Add stream error telemetry (baton invalidation, timeout, retry attempts).</li>
+</ul>
+</li>
+<li>Exit criteria:<ul>
+<li>Search parity &gt;= 99% for top-k overlap on defined corpus.</li>
+<li>No unresolved consistency anomalies.</li>
+</ul>
+</li>
+</ul>
+<h3>Phase 3: Dual-write canary</h3>
+<ul>
+<li>Backend: <code>sqlite_local</code> primary writes plus canary writes to hybrid/remote path.</li>
+<li>Deliverables:<ul>
+<li>Idempotent write keys.</li>
+<li>Compensating actions for partial dual-write failure.</li>
+<li>Canary scope limited to non-critical folders first.</li>
+</ul>
+</li>
+<li>Exit criteria:<ul>
+<li>0 unmitigated data divergence incidents over canary window.</li>
+<li>Checkpoint restore drills pass on both source of truth and canary path.</li>
+</ul>
+</li>
+</ul>
+<h3>Phase 4: Controlled cutover</h3>
+<ul>
+<li>Backend: switch selected environments to <code>turso_hybrid</code> then potentially <code>turso_remote</code>.</li>
+<li>Deliverables:<ul>
+<li>Production runbook and rollback automation.</li>
+<li>Cost alerts and quota-block alarms.</li>
+</ul>
+</li>
+<li>Exit criteria:<ul>
+<li>SLOs met for latency/error/cost for at least one full release cycle.</li>
+</ul>
+</li>
+</ul>
+<h2>5) Rollback Strategy per Phase</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Rollback trigger</th>
+<th>Rollback action</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1 Adapter</td>
+<td>Any parity regression</td>
+<td>Disable adapter flag and route to existing direct local path</td>
+</tr>
+<tr>
+<td>Phase 2 Shadow-read</td>
+<td>Parity &lt; target or protocol instability</td>
+<td>Stop shadow queries, keep local authoritative path only</td>
+</tr>
+<tr>
+<td>Phase 3 Dual-write</td>
+<td>Divergence, failed idempotency, replay uncertainty</td>
+<td>Disable secondary writes immediately; reconcile from local authoritative DB and checkpoint</td>
+</tr>
+<tr>
+<td>Phase 4 Cutover</td>
+<td>SLO breach, quota blocking, incident escalation</td>
+<td>Revert backend selector to previous phase backend and execute restore/reconcile runbook</td>
+</tr>
+</tbody></table>
+<p>Checkpoint and restore remain mandatory controls during migration experiments. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:142</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:273</code>)</p>
+<h2>6) Governance and Readiness Checklist</h2>
+<p>Use this checklist before entering each new phase.</p>
+<h3>6.1 Security and auth</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Backend-specific auth token handling is documented and rotated.</li>
+<li><input disabled="" type="checkbox"> Non-production and production credentials are separated.</li>
+<li><input disabled="" type="checkbox"> Auth failure behavior is fail-closed for write paths.</li>
+</ul>
+<p>Reference URLs:</p>
+<ul>
+<li><code>https://docs.turso.tech/sdk/authentication</code></li>
+<li><code>https://docs.turso.tech/api-reference/authentication</code></li>
+</ul>
+<h3>6.2 Observability and reliability</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Stream-level metrics captured: baton reuse failures, stream closures, retry counts, timeout rates.</li>
+<li><input disabled="" type="checkbox"> Consistency-mode metrics captured by backend mode.</li>
+<li><input disabled="" type="checkbox"> Alerts configured for query blocking/quota and latency regression.</li>
+</ul>
+<p>Reference URLs:</p>
+<ul>
+<li><code>https://docs.turso.tech/sdk/http/reference</code></li>
+<li><code>https://docs.turso.tech/help/usage-and-billing</code></li>
+</ul>
+<h3>6.3 Cost guardrails</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Monthly budget threshold + 30% headroom approved.</li>
+<li><input disabled="" type="checkbox"> Forecasted reads/writes/storage/sync compared to plan limits.</li>
+<li><input disabled="" type="checkbox"> Automated alert on threshold crossing.</li>
+</ul>
+<p>Reference URLs:</p>
+<ul>
+<li><code>https://turso.tech/pricing</code></li>
+<li><code>https://docs.turso.tech/cli/plan/show</code></li>
+</ul>
+<h3>6.4 Incident runbook readiness</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Runbook contains backend switch rollback steps.</li>
+<li><input disabled="" type="checkbox"> Runbook includes checkpoint restore drill evidence.</li>
+<li><input disabled="" type="checkbox"> On-call has simulation-based rehearsal at each phase boundary.</li>
+</ul>
+<h2>7) Explicit &quot;Not Now&quot; List</h2>
+<p>The following are explicitly deferred until triggers and readiness gates are met:</p>
+<ol>
+<li>Full replacement of local SQLite runtime with <code>turso_remote</code> in production.</li>
+<li>Immediate rewrite of vector search SQL semantics without parity harness.</li>
+<li>Removing local checkpoint safety net before remote/hybrid restore drills pass.</li>
+<li>Broad CLI remote operation enablement without auth/telemetry/failure-policy hardening.</li>
+<li>Any migration that combines architecture shift and feature changes in one release.</li>
+</ol>
+<h2>Design-Level Interface Proposals</h2>
+<p>These interfaces are required to make migration phases safe and reversible.</p>
+<h3>A) <code>StorageBackend</code> enum</h3>
+<pre><code class="language-ts">export enum StorageBackend {
+  sqlite_local = &#39;sqlite_local&#39;,
+  libsql_local = &#39;libsql_local&#39;,
+  turso_hybrid = &#39;turso_hybrid&#39;,
+  turso_remote = &#39;turso_remote&#39;,
+}
+</code></pre>
+<h3>B) <code>ConsistencyMode</code> enum</h3>
+<pre><code class="language-ts">export enum ConsistencyMode {
+  local_strict_serializable = &#39;local_strict_serializable&#39;,
+  primary_linearizable = &#39;primary_linearizable&#39;,
+  replica_monotonic_read_your_writes = &#39;replica_monotonic_read_your_writes&#39;,
+  eventual_replica = &#39;eventual_replica&#39;,
+}
+</code></pre>
+<p>Grounding evidence:</p>
+<ul>
+<li>Local strict transaction behavior is assumed in current code. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:313</code>)</li>
+<li>sqld consistency differentiates primary linearizable vs replica visibility guarantees. (Local libSQL clone: <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/CONSISTENCY_MODEL.md:13</code>, <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/CONSISTENCY_MODEL.md:15</code>)</li>
+<li>The stateless HTTP API documents no interactive transaction support and forbids explicit transaction statements in request batches. (Local libSQL clone: <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/http_api.md:47</code>, <code>specs/02--system-spec-kit/024-sqlite-to-libsql/context/libsql-main/docs/http_api.md:49</code>)</li>
+</ul>
+<h3>C) <code>SearchCapabilityProfile</code></h3>
+<pre><code class="language-ts">export interface SearchCapabilityProfile {
+  supportsFts5: boolean;
+  supportsBm25: boolean;
+  supportsSqliteVec: boolean;
+  supportsNativeVector: boolean;
+  expectedEmbeddingDimension: number;
+  supportsVectorDistanceCosine: boolean;
+  supportsContentTriggers: boolean;
+}
+</code></pre>
+<p>Grounding evidence:</p>
+<ul>
+<li>Current feature set depends on FTS5/BM25 and sqlite-vec behavior. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts:90</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1602</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:2118</code>)</li>
+</ul>
+<h3>D) <code>DatabaseAdapter</code> contract</h3>
+<pre><code class="language-ts">export interface DatabaseAdapter {
+  backend: StorageBackend;
+  consistencyMode: ConsistencyMode;
+
+  init(): Promise&lt;void&gt;;
+  close(): Promise&lt;void&gt;;
+  health(): Promise&lt;{ ok: boolean; details?: string }&gt;;
+
+  execute(sql: string, params?: unknown[]): Promise&lt;{ rowsAffected: number }&gt;;
+  query&lt;T = Record&lt;string, unknown&gt;&gt;(sql: string, params?: unknown[]): Promise&lt;T[]&gt;;
+
+  transaction&lt;T&gt;(fn: (tx: TransactionAdapter) =&gt; Promise&lt;T&gt;): Promise&lt;T&gt;;
+
+  createCheckpoint(input: {
+    name: string;
+    specFolder?: string | null;
+    metadata?: Record&lt;string, unknown&gt;;
+  }): Promise&lt;{ id: number; name: string }&gt;;
+
+  restoreCheckpoint(input: {
+    nameOrId: string | number;
+    clearExisting?: boolean;
+  }): Promise&lt;{ restored: number; skipped: number; errors: string[] }&gt;;
+
+  getSearchCapabilities(): Promise&lt;SearchCapabilityProfile&gt;;
+}
+
+export interface TransactionAdapter {
+  execute(sql: string, params?: unknown[]): Promise&lt;{ rowsAffected: number }&gt;;
+  query&lt;T = Record&lt;string, unknown&gt;&gt;(sql: string, params?: unknown[]): Promise&lt;T[]&gt;;
+}
+</code></pre>
+<p>Grounding evidence:</p>
+<ul>
+<li>Transaction wrapper and checkpoint semantics are core correctness boundaries today. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:1742</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:313</code>)</li>
+</ul>
+<h3>E) Environment contract proposal</h3>
+<pre><code class="language-ts">export interface StorageEnvironmentConfig {
+  SPECKIT_STORAGE_BACKEND: StorageBackend;
+
+  // Local settings
+  MEMORY_DB_PATH?: string;
+  SPEC_KIT_DB_DIR?: string;
+
+  // Turso/libSQL settings
+  SPECKIT_LIBSQL_URL?: string;      // e.g. libsql://... or https://...
+  SPECKIT_LIBSQL_AUTH_TOKEN?: string;
+
+  // Protocol tuning
+  SPECKIT_REQUEST_TIMEOUT_MS?: number;     // default 10000
+  SPECKIT_STREAM_IDLE_TIMEOUT_MS?: number; // default 30000
+  SPECKIT_MAX_RETRIES?: number;            // default 2
+  SPECKIT_RETRY_BACKOFF_MS?: number;       // default 250
+
+  // Fallback behavior
+  SPECKIT_FALLBACK_MODE?: &#39;sqlite_local&#39; | &#39;read_only&#39; | &#39;fail_closed&#39;;
+}
+</code></pre>
+<p>Grounding evidence:</p>
+<ul>
+<li>Current env contract is local-path oriented and lacks remote endpoint/token controls. (Local: <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:285</code>, <code>.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-impl.ts:293</code>)</li>
+</ul>
+<h2>Explicit Test Scenarios (Required Before Any Cutover)</h2>
+<h3>1) Search parity</h3>
+<ul>
+<li>Compare top-k overlap and ranking drift across local vs candidate backend.</li>
+<li>Validate FTS/BM25 score behavior and vector similarity ordering.</li>
+<li>Include archived/non-archived and spec-folder-scoped queries.</li>
+</ul>
+<h3>2) Transaction integrity</h3>
+<ul>
+<li>Validate multi-statement atomicity under normal and faulted execution.</li>
+<li>Reproduce clear-existing restore flows and verify rollback correctness.</li>
+</ul>
+<h3>3) Checkpoint/restore safety</h3>
+<ul>
+<li>Validate snapshot integrity, schema validation failures, and restore counters.</li>
+<li>Test both full restore and scoped restore behavior.</li>
+</ul>
+<h3>4) Remote protocol behavior</h3>
+<ul>
+<li>Baton reuse correctness over stream sequence.</li>
+<li>Stream timeout recovery after idle closure.</li>
+<li>Retry idempotency under ambiguous network outcomes.</li>
+</ul>
+<h3>5) Consistency tests</h3>
+<ul>
+<li>Read-your-write checks in same process/connection.</li>
+<li>Cross-process replica visibility checks with monotonicity assertions.</li>
+<li>No stale-read violations for protected operations.</li>
+</ul>
+<h3>6) Failure injection</h3>
+<ul>
+<li>Inject network timeouts, 4xx/5xx protocol failures, token expiry, quota-block responses.</li>
+<li>Verify fallback behavior (<code>sqlite_local</code>, <code>read_only</code>, <code>fail_closed</code>) is policy-compliant.</li>
+</ul>
+<h3>7) Rollback drills</h3>
+<ul>
+<li>Drill phase-level rollback playbooks with time-to-recovery measurements.</li>
+<li>Validate checkpoint-based reconcile after simulated dual-write divergence.</li>
+</ul>
+<h2>Official Online Source URLs (Validated February 21, 2026)</h2>
+<ul>
+<li>Turso SDK (TypeScript reference): <code>https://docs.turso.tech/sdk/ts/reference</code></li>
+<li>Turso SDK quickstart (TypeScript): <code>https://docs.turso.tech/sdk/ts</code></li>
+<li>Authentication (SDK): <code>https://docs.turso.tech/sdk/authentication</code></li>
+<li>Authentication (Platform API): <code>https://docs.turso.tech/api-reference/authentication</code></li>
+<li>HTTP v2 / libSQL remote HTTP usage: <code>https://docs.turso.tech/sdk/http/reference</code></li>
+<li>Migration to Turso: <code>https://docs.turso.tech/cloud/migrate-to-turso</code></li>
+<li>Durability model: <code>https://docs.turso.tech/cloud/durability</code></li>
+<li>SQLite extensions (FTS5, optional sqlite-vec): <code>https://docs.turso.tech/features/sqlite-extensions</code></li>
+<li>Native vector search: <code>https://docs.turso.tech/features/ai-and-embeddings</code></li>
+<li>Embedded replicas: <code>https://docs.turso.tech/features/embedded-replicas/introduction</code></li>
+<li>Turso Sync usage: <code>https://docs.turso.tech/sync/usage</code></li>
+<li>Pricing: <code>https://turso.tech/pricing</code></li>
+<li>Usage and billing: <code>https://docs.turso.tech/help/usage-and-billing</code></li>
+<li>CLI plan usage visibility: <code>https://docs.turso.tech/cli/plan/show</code></li>
+</ul>
+
+    </article>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+<script>
+(function () {
+  const content = document.getElementById('content');
+  const toc = document.getElementById('toc');
+  if (!content || !toc) return;
+
+  const slug = (t) => t.toLowerCase().replace(/`/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+  const seen = new Map();
+  const headings = content.querySelectorAll('h2, h3');
+
+  headings.forEach((h) => {
+    let id = h.id || slug(h.textContent || 'section');
+    const n = seen.get(id) || 0;
+    seen.set(id, n + 1);
+    if (n > 0) id = `${id}-${n + 1}`;
+    h.id = id;
+
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    if (h.tagName.toLowerCase() === 'h3') a.classList.add('h3');
+    a.href = `#${id}`;
+    a.textContent = h.textContent || id;
+    li.appendChild(a);
+    toc.appendChild(li);
+  });
+
+  content.querySelectorAll('table').forEach((table) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'table-scroll';
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+
+  content.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach((a) => {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  });
+
+  const animTargets = content.querySelectorAll('h2, h3, p, ul, ol, pre, blockquote, .table-scroll');
+  animTargets.forEach((el, i) => {
+    el.classList.add('anim');
+    el.style.setProperty('--i', String(i));
+  });
+})();
+</script>
+</body>
+</html>

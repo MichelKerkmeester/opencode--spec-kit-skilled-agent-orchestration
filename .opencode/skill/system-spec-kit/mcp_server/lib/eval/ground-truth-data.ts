@@ -224,7 +224,7 @@ const SEED_QUERIES: GroundTruthQuery[] = [
     category: 'temporal',
     source: 'seed',
     expectedResultDescription:
-      'Should surface memories in spec folder 003-system-spec-kit/139-hybrid-rag-fusion (89 memories) and 140-hybrid-rag-fusion-refinement. Lists spec documents created in those sprints.',
+      'Should surface memories in spec folder 02--system-spec-kit/022-hybrid-rag-fusion (89 memories) and 140-hybrid-rag-fusion-refinement. Lists spec documents created in those sprints.',
     notes: 'Find-spec intent with temporal/scope framing. Tests specFolder-aware retrieval.',
   },
   {
@@ -428,7 +428,7 @@ const PATTERN_DERIVED_QUERIES: GroundTruthQuery[] = [
     category: 'scope_filtered',
     source: 'pattern_derived',
     expectedResultDescription:
-      'Spec-scoped browse. Should surface memory titles and tiers from spec folder 003-system-spec-kit/139-hybrid-rag-fusion or 140-hybrid-rag-fusion-refinement.',
+      'Spec-scoped browse. Should surface memory titles and tiers from spec folder 02--system-spec-kit/022-hybrid-rag-fusion or 140-hybrid-rag-fusion-refinement.',
     notes: 'From T007b Pattern 6: architecture discovery using specFolder filter.',
   },
   {

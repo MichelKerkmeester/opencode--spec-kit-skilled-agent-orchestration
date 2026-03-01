@@ -346,6 +346,11 @@ export function logShadowComparison(_comparison: ShadowComparison): boolean {
 /**
  * Retrieve aggregated shadow scoring statistics over an optional time range.
  *
+ * @deprecated Shadow scoring write path (logShadowComparison) was permanently
+ * disabled in Sprint 7. The eval_shadow_comparisons table is always empty,
+ * so this function always returns the zero-case object. Retained for interface
+ * compatibility. Use channel-attribution.ts for scoring observability instead.
+ *
  * @param timeRange - Optional ISO timestamp bounds. Omit for all data.
  * @returns ShadowStats with aggregated metrics, or null on error.
  */

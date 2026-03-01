@@ -14,6 +14,14 @@ export const SPEC_FOLDER_PATTERN: RegExp = /^\d{3}-[a-z][a-z0-9-]*$/;
 /** Basic pattern for initial spec folder detection (less strict). */
 export const SPEC_FOLDER_BASIC_PATTERN: RegExp = /^\d{3}-[a-zA-Z]/;
 
+/** Pattern for category/organizational folders: 2 digits + double-hyphen + kebab-case (e.g., "02--system-spec-kit"). */
+export const CATEGORY_FOLDER_PATTERN: RegExp = /^\d{2}--[a-z][a-z0-9-]*$/;
+
+/** Check if a directory entry is traversable during child folder search. */
+function isTraversableFolder(name: string): boolean {
+  return SPEC_FOLDER_PATTERN.test(name) || CATEGORY_FOLDER_PATTERN.test(name);
+}
+
 function isDirectorySync(filePath: string): boolean {
   try {
     return fsSync.statSync(filePath).isDirectory();
@@ -22,26 +30,35 @@ function isDirectorySync(filePath: string): boolean {
   }
 }
 
-/** Find a bare child folder under all spec parents (sync). */
+/** Find a bare child folder under all spec parents (sync, recursive up to MAX_DEPTH). */
 export function findChildFolderSync(childName: string): string | null {
   if (!childName) return null;
   const specsDirs = getSpecsDirectories();
   const matches: string[] = [];
+  const MAX_DEPTH = 4;
+
+  function searchDir(dir: string, depth: number): void {
+    if (depth > MAX_DEPTH) return;
+    let entries: string[];
+    try {
+      entries = fsSync.readdirSync(dir);
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const entryPath = path.join(dir, entry);
+      if (!isDirectorySync(entryPath)) continue;
+      if (entry === childName) {
+        matches.push(entryPath);
+      } else if (isTraversableFolder(entry)) {
+        searchDir(entryPath, depth + 1);
+      }
+    }
+  }
 
   for (const specsDir of specsDirs) {
     if (!fsSync.existsSync(specsDir)) continue;
-
-    const parentFolders = fsSync.readdirSync(specsDir).filter((entry: string) => {
-      const entryPath = path.join(specsDir, entry);
-      return SPEC_FOLDER_PATTERN.test(entry) && isDirectorySync(entryPath);
-    });
-
-    for (const parent of parentFolders) {
-      const candidatePath = path.join(specsDir, parent, childName);
-      if (fsSync.existsSync(candidatePath) && isDirectorySync(candidatePath)) {
-        matches.push(candidatePath);
-      }
-    }
+    searchDir(specsDir, 0);
   }
 
   if (matches.length === 1) {
@@ -49,7 +66,14 @@ export function findChildFolderSync(childName: string): string | null {
   }
 
   if (matches.length > 1) {
-    console.error(`❌ Ambiguous child folder "${childName}" found in multiple parents:`);
+    // Deduplicate aliased roots (specs/ vs .opencode/specs/ pointing to same real path)
+    const uniqueReal = [...new Set(matches.map((m) => {
+      try { return fsSync.realpathSync(m); } catch { return m; }
+    }))];
+    if (uniqueReal.length === 1) {
+      return matches[0];
+    }
+    console.error(`❌ Ambiguous child folder "${childName}" found in multiple locations:`);
     matches.forEach((m: string) => console.error(`   - ${m}`));
     return null;
   }
@@ -57,11 +81,36 @@ export function findChildFolderSync(childName: string): string | null {
   return null;
 }
 
-/** Find a bare child folder under all spec parents (async). */
+/** Find a bare child folder under all spec parents (async, recursive up to MAX_DEPTH). */
 export async function findChildFolderAsync(childName: string): Promise<string | null> {
   if (!childName) return null;
   const specsDirs = getSpecsDirectories();
   const matches: string[] = [];
+  const MAX_DEPTH = 4;
+
+  async function searchDir(dir: string, depth: number): Promise<void> {
+    if (depth > MAX_DEPTH) return;
+    let entries: string[];
+    try {
+      entries = await fs.readdir(dir);
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const entryPath = path.join(dir, entry);
+      try {
+        const stat = await fs.stat(entryPath);
+        if (!stat.isDirectory()) continue;
+        if (entry === childName) {
+          matches.push(entryPath);
+        } else if (isTraversableFolder(entry)) {
+          await searchDir(entryPath, depth + 1);
+        }
+      } catch (_error: unknown) {
+        continue;
+      }
+    }
+  }
 
   for (const specsDir of specsDirs) {
     try {
@@ -69,33 +118,7 @@ export async function findChildFolderAsync(childName: string): Promise<string | 
     } catch (_error: unknown) {
       continue;
     }
-
-    const entries = await fs.readdir(specsDir);
-    const parentFolders: string[] = [];
-
-    for (const entry of entries) {
-      const entryPath = path.join(specsDir, entry);
-      try {
-        const stat = await fs.stat(entryPath);
-        if (SPEC_FOLDER_PATTERN.test(entry) && stat.isDirectory()) {
-          parentFolders.push(entry);
-        }
-      } catch (_error: unknown) {
-        continue;
-      }
-    }
-
-    for (const parent of parentFolders) {
-      const candidatePath = path.join(specsDir, parent, childName);
-      try {
-        const stat = await fs.stat(candidatePath);
-        if (stat.isDirectory()) {
-          matches.push(candidatePath);
-        }
-      } catch (_error: unknown) {
-        continue;
-      }
-    }
+    await searchDir(specsDir, 0);
   }
 
   if (matches.length === 1) {
@@ -103,7 +126,14 @@ export async function findChildFolderAsync(childName: string): Promise<string | 
   }
 
   if (matches.length > 1) {
-    console.error(`❌ Ambiguous child folder "${childName}" found in multiple parents:`);
+    // Deduplicate aliased roots (specs/ vs .opencode/specs/ pointing to same real path)
+    const uniqueReal = [...new Set(await Promise.all(matches.map(async (m) => {
+      try { return await fs.realpath(m); } catch { return m; }
+    })))];
+    if (uniqueReal.length === 1) {
+      return matches[0];
+    }
+    console.error(`❌ Ambiguous child folder "${childName}" found in multiple locations:`);
     matches.forEach((m: string) => console.error(`   - ${m}`));
     return null;
   }

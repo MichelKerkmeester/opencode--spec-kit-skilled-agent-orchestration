@@ -25,7 +25,6 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-01 |
-| **Branch** | `main` |
 <!-- /ANCHOR:metadata -->
 
 ---

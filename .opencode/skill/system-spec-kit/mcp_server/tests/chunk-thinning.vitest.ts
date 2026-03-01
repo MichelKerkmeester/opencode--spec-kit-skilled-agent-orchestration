@@ -366,7 +366,7 @@ describe('R7 integration wiring', () => {
     expect(thinning.dropped.length).toBeGreaterThan(0);
 
     const parsed = {
-      specFolder: 'specs/003-system-spec-kit/test-r7',
+      specFolder: 'specs/02--system-spec-kit/test-r7',
       filePath,
       title: 'R7 chunk wiring test',
       triggerPhrases: [],

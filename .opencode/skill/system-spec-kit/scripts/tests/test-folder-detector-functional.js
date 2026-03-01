@@ -1002,16 +1002,16 @@ async function testAliasNormalizationDeterminism() {
     }
 
     const variants = [
-      'specs/003-system-spec-kit/139-hybrid-rag-fusion',
-      '.opencode/specs/003-system-spec-kit/139-hybrid-rag-fusion',
-      'specs\\003-system-spec-kit\\139-hybrid-rag-fusion',
-      '003-system-spec-kit/139-hybrid-rag-fusion'
+      'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+      '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion',
+      'specs\\02--system-spec-kit\\139-hybrid-rag-fusion',
+      '02--system-spec-kit/022-hybrid-rag-fusion'
     ];
 
     const normalized = variants.map((v) => TEST_HELPERS.normalizeSpecReferenceForLookup(v));
     const unique = Array.from(new Set(normalized));
 
-    if (unique.length === 1 && unique[0] === '003-system-spec-kit/139-hybrid-rag-fusion') {
+    if (unique.length === 1 && unique[0] === '02--system-spec-kit/022-hybrid-rag-fusion') {
       pass('T-FD09b: Alias normalization deterministic', `Canonical=${unique[0]}`);
     } else {
       fail('T-FD09b: Alias normalization deterministic',

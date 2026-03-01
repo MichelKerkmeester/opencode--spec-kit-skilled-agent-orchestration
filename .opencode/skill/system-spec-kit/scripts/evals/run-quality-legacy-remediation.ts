@@ -8,13 +8,13 @@ import path from 'path';
 import Database from 'better-sqlite3';
 
 const LEGACY_PATH = '003-memory-and-spec-kit';
-const MODERN_PATH = '003-system-spec-kit';
+const MODERN_PATH = '02--system-spec-kit';
 const QUERY_COUNT = 20;
 
 const SCRIPT_DIR = path.dirname(__filename);
 const SKILL_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
 const WORKSPACE_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..');
-const SPECS_ROOT = path.join(WORKSPACE_ROOT, '.opencode', 'specs', '003-system-spec-kit');
+const SPECS_ROOT = path.join(WORKSPACE_ROOT, '.opencode', 'specs', '02--system-spec-kit');
 const TARGET_SPEC = path.join(SPECS_ROOT, '136-mcp-working-memory-hybrid-rag');
 const SCRATCH_DIR = path.join(TARGET_SPEC, 'scratch');
 const DB_PATH = path.join(SKILL_ROOT, 'mcp_server', 'database', 'context-index.sqlite');

@@ -2,7 +2,7 @@
 // Builds a spec folder hierarchy from stored spec_folder paths
 // and enables hierarchy-aware retrieval (REQ-S6-006).
 //
-// Parses folder paths like "003-system-spec-kit/140-hybrid-rag/006-sprint-5"
+// Parses folder paths like "02--system-spec-kit/140-hybrid-rag/006-sprint-5"
 // into a tree structure where each path segment is a node, allowing child
 // folders to discover and retrieve memories from parent/sibling folders.
 
@@ -54,7 +54,7 @@ export interface HierarchyTree {
 /**
  * Build a spec folder hierarchy tree from all spec_folder values in the database.
  *
- * Parses folder paths like "003-system-spec-kit/140-hybrid-rag/006-sprint-5"
+ * Parses folder paths like "02--system-spec-kit/140-hybrid-rag/006-sprint-5"
  * into a tree structure where each path segment is a node.
  */
 export function buildHierarchyTree(database: Database.Database): HierarchyTree {

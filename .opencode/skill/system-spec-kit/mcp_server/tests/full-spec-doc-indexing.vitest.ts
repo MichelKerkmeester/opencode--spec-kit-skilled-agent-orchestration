@@ -273,23 +273,23 @@ describe('Spec 126 Phase 4: Parser Enhancements', () => {
 
   describe('T068: extractSpecFolder() handles non-memory paths', () => {
     it('Extracts folder from standard memory path', () => {
-      const result = extractSpecFolder('/p/.opencode/specs/003-system-spec-kit/100-feature/memory/notes.md');
-      expect(result).toBe('003-system-spec-kit/100-feature');
+      const result = extractSpecFolder('/p/.opencode/specs/02--system-spec-kit/100-feature/memory/notes.md');
+      expect(result).toBe('02--system-spec-kit/100-feature');
     });
 
     it('Extracts folder from spec.md path (non-memory)', () => {
-      const result = extractSpecFolder('/p/.opencode/specs/003-system-spec-kit/100-feature/spec.md');
-      expect(result).toBe('003-system-spec-kit/100-feature');
+      const result = extractSpecFolder('/p/.opencode/specs/02--system-spec-kit/100-feature/spec.md');
+      expect(result).toBe('02--system-spec-kit/100-feature');
     });
 
     it('Extracts folder from plan.md path (non-memory)', () => {
-      const result = extractSpecFolder('/p/.opencode/specs/003-system-spec-kit/100-feature/plan.md');
-      expect(result).toBe('003-system-spec-kit/100-feature');
+      const result = extractSpecFolder('/p/.opencode/specs/02--system-spec-kit/100-feature/plan.md');
+      expect(result).toBe('02--system-spec-kit/100-feature');
     });
 
     it('Extracts folder from decision-record.md path (non-memory)', () => {
-      const result = extractSpecFolder('/p/.opencode/specs/003-system-spec-kit/100-feature/decision-record.md');
-      expect(result).toBe('003-system-spec-kit/100-feature');
+      const result = extractSpecFolder('/p/.opencode/specs/02--system-spec-kit/100-feature/decision-record.md');
+      expect(result).toBe('02--system-spec-kit/100-feature');
     });
 
     it('Returns folder category for skill README path', () => {

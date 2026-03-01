@@ -50,7 +50,7 @@ function buildCommandMatrix(workspaceRoot: string): CommandSpec[] {
     { command: 'ls', args: ['-la'], cwd: workspaceRoot },
     { command: 'ls', args: ['-la', '.opencode/skill/system-spec-kit'], cwd: workspaceRoot },
     { command: 'ls', args: ['-la', '.opencode/skill/system-spec-kit/mcp_server'], cwd: workspaceRoot },
-    { command: 'ls', args: ['-la', '.opencode/specs/003-system-spec-kit/136-mcp-working-memory-hybrid-rag/scratch'], cwd: workspaceRoot },
+    { command: 'ls', args: ['-la', '.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch'], cwd: workspaceRoot },
   ];
 
   const outputs: CommandSpec[] = [];

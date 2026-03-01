@@ -475,19 +475,19 @@ The generate-context script supports nested spec folder paths (parent/child form
 
 ```bash
 # Full nested path (parent/child)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-system-spec-kit/121-script-audit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/121-script-audit
 
 # Bare child name (auto-searches all parents for unique match)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 121-script-audit
 
 # With specs/ prefix
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/003-system-spec-kit/121-script-audit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/02--system-spec-kit/121-script-audit
 
 # Flat folder (existing behavior, unchanged)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-system-spec-kit
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit
 ```
 
-Memory files are always saved to the child folder's `memory/` directory (e.g., `specs/003-system-spec-kit/121-script-audit/memory/`). If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+Memory files are always saved to the child folder's `memory/` directory (e.g., `specs/02--system-spec-kit/121-script-audit/memory/`). If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
 
 **Memory File Structure:**
 ```markdown
@@ -524,6 +524,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `checkpoint_create()`           | L5    | Create gzip-compressed checkpoint snapshot        |
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
 
+> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 
 **memory_context() — Mode Routing:**
 
@@ -539,6 +540,12 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - Use `anchors` with `includeContent: true` for token-efficient section retrieval (~90% savings).
 - Intent weights auto-adjust scoring: `fix_bug` boosts recency, `security_audit` boosts importance, `refactor`/`understand` boost similarity.
 - **Full parameter reference:** See [memory_system.md](./references/memory/memory_system.md)
+
+**memory_save() — Save-Time Processing:**
+- Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
+- Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
+- A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 3 retries).
+- Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
 
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
 
@@ -558,6 +565,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled via feature flag `SPECKIT_EXTENDED_TELEMETRY` (default: on)
+- **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 
 **Feature Flags:**
 
@@ -566,6 +574,13 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_ADAPTIVE_FUSION`     | on      | Enables intent-aware weighted RRF with 7 task-type profiles in `memory_search()` (set `false` to disable) |
 | `SPECKIT_EXTENDED_TELEMETRY`  | on      | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) per search operation |
 | `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. |
+| `SPECKIT_SAVE_QUALITY_GATE`  | on      | Pre-storage quality gate rejects content below 0.4 signal density (14-day warn-only period after activation) |
+| `SPECKIT_RECONSOLIDATION`    | on      | Auto-merges similar memories on save when similarity ≥0.88; supersedes at 0.75-0.88 |
+| `SPECKIT_NEGATIVE_FEEDBACK`  | on      | `wasUseful=false` applies score demotion with 30-day recovery window |
+| `SPECKIT_LEARN_FROM_SELECTION` | on    | Tracks which search results are used and boosts them in future searches |
+| `SPECKIT_EMBEDDING_EXPANSION` | on     | Expands queries with semantic neighbors before vector search |
+| `SPECKIT_AUTO_ENTITIES`      | on      | Extracts entities at save time for cross-document linking |
+| `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
 
 Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 

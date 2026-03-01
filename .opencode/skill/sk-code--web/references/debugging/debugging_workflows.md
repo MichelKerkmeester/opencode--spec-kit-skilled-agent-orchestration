@@ -1936,7 +1936,7 @@ bdg stop 2>&1
 
 ### Memory Files (Evidence)
 - `specs/005-example.com/z_archive/004-table-of-content/003-icon-animation-isolation/memory/2024-12-14_toc-scroll-lenis-fix.md` - Lenis conflict resolution case study
-- `specs/002-commands-and-skills/001-commands/005-subagent-delegation/implementation-summary.md` - Sub-agent delegation pattern implementation
+- `specs/03--commands-and-skills/001-commands/005-subagent-delegation/implementation-summary.md` - Sub-agent delegation pattern implementation
 
 ### External Resources
 - [MDN Web Docs](https://developer.mozilla.org) - Browser APIs and JavaScript documentation

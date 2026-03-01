@@ -118,7 +118,7 @@ function isUnderApprovedSpecsRoot(normalizedInput: string): boolean {
 function isValidSpecFolder(folderPath: string): SpecFolderValidation {
   const folderName = path.basename(folderPath);
 
-  // --- Subfolder support: parent/child format (e.g., "003-parent/121-child") ---
+  // --- Subfolder support: parent/child format (e.g., "003-parent/121-child" or "02--cat/003-parent/121-child") ---
   const normalizedInput = folderPath.replace(/\\/g, '/').replace(/\/+$/, '');
   // Extract the trailing portion that might be "parent/child"
   const trailingSegments = normalizedInput.split('/');
@@ -130,6 +130,13 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
       const hasSpecsParent = isUnderApprovedSpecsRoot(normalizedInput);
 
       if (!hasSpecsParent) {
+        // Fallback: check if the path resolves to an existing directory under any specs root
+        for (const specsDir of getSpecsDirectories()) {
+          const candidate = path.join(specsDir, normalizedInput);
+          if (fsSync.existsSync(candidate)) {
+            return { valid: true };
+          }
+        }
         return {
           valid: false,
           reason: `Spec folder must be under specs/ or .opencode/specs/: ${folderPath}`
@@ -157,6 +164,8 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
   const hasSpecsParent = isUnderApprovedSpecsRoot(normalizedInput);
 
   if (!hasSpecsParent) {
+    // Fallback: check if bare name can be resolved via recursive child search
+    // (findChildFolderSync in validateArguments handles this, so just report the error here)
     return {
       valid: false,
       reason: `Spec folder must be under specs/ or .opencode/specs/: ${folderPath}`
@@ -192,22 +201,23 @@ function parseArguments(): void {
     // Remove trailing slashes
     cleaned = cleaned.replace(/\/+$/, '');
 
-    // Check if cleaned is "parent/child" format (exactly one separator, both segments valid)
+    // Check if cleaned is a multi-segment path (e.g., "parent/child" or "category/parent/child")
     const segments = cleaned.split('/');
-    if (segments.length === 2 && SPEC_FOLDER_PATTERN.test(segments[0]) && SPEC_FOLDER_PATTERN.test(segments[1])) {
-      // Try to resolve to an absolute path using known specs directories
+    if (segments.length >= 2) {
+      // Try to resolve the full segment path under known specs directories
       for (const specsDir of getSpecsDirectories()) {
-        const candidate = path.join(specsDir, segments[0], segments[1]);
+        const candidate = path.join(specsDir, ...segments);
         if (fsSync.existsSync(candidate)) {
           resolvedNestedPath = candidate;
           break;
         }
       }
       // Even if path doesn't exist on disk yet, treat it as a spec folder reference
-      if (!resolvedNestedPath) {
+      // if the last segment looks like a spec folder
+      if (!resolvedNestedPath && SPEC_FOLDER_PATTERN.test(segments[segments.length - 1])) {
         const activeDir = findActiveSpecsDir();
         if (activeDir) {
-          resolvedNestedPath = path.join(activeDir, segments[0], segments[1]);
+          resolvedNestedPath = path.join(activeDir, ...segments);
         }
       }
     }

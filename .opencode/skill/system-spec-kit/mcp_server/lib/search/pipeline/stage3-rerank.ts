@@ -359,7 +359,7 @@ function electBestChunk(chunks: PipelineRow[]): PipelineRow {
  */
 function effectiveScore(row: PipelineRow): number {
   if (typeof row.score === 'number' && isFinite(row.score)) return row.score;
-  if (typeof row.similarity === 'number' && isFinite(row.similarity)) return row.similarity;
+  if (typeof row.similarity === 'number' && isFinite(row.similarity)) return row.similarity / 100;
   return 0;
 }
 

@@ -1,0 +1,4 @@
+./.opencode/specs/03--commands-and-skills/002-skill-rename/004-sk-doc/004-sk-documentation
+./.opencode/specs/03--commands-and-skills/002-skill-rename/006-sk-doc-visual/006-sk-visual-explainer
+./.opencode/specs/03--commands-and-skills/002-sk-doc-visual-hardening/040-sk-visual-explainer-hardening
+./.opencode/specs/03--commands-and-skills/044-sk-doc-visual-template-improvement/044-sk-visual-explainer-template-improvement

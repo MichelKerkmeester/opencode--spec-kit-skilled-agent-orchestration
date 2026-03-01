@@ -1,7 +1,7 @@
 ---
-description: Manage memory database - stats, scan, cleanup, tier, triggers, validate, delete, health, and checkpoint operations
-argument-hint: "[scan [--force]] | [cleanup] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>]"
-allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete
+description: Manage memory database - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, and checkpoint operations
+argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>]"
+allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete
 ---
 
 # 🚨 TOOL ENFORCEMENT
@@ -24,13 +24,13 @@ allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, 
 BEFORE executing ANY workflow:
 
 1. PARSE $ARGUMENTS to determine mode
-2. VALIDATE mode is recognized (stats, scan, cleanup, tier, triggers, validate, delete, health, checkpoint)
+2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint)
    - IF $ARGUMENTS is empty → mode = "stats" (default)
 3. For modes requiring <id>: VERIFY id is provided and numeric
 4. For modes requiring <name>: VERIFY name is provided
 
 IF mode unrecognized:
-  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, tier, triggers, validate, delete, health, checkpoint"
+  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint"
 
 IF required parameter missing:
   → STATUS=FAIL ERROR="Missing required parameter for <mode>"
@@ -40,7 +40,7 @@ IF required parameter missing:
 
 ## 2. CONDITIONAL GATES FOR INTERACTIVE/DESTRUCTIVE OPERATIONS
 
-**Gates apply to scan, cleanup, delete, and checkpoint restore modes. Other modes pass through immediately.**
+**Gates apply to scan, cleanup, bulk-delete, delete, and checkpoint restore modes. Other modes pass through immediately.**
 
 ### GATE 1: CLEANUP CONFIRMATION
 
@@ -101,16 +101,31 @@ If `$ARGUMENTS` contains `scan`:
 
 HARD STOP: DO NOT execute scan until user confirms scan mode for this run
 
+### GATE 5: BULK DELETE CONFIRMATION
+
+**STATUS: N/A** (default for non-bulk-delete modes)
+
+If `$ARGUMENTS` starts with "bulk-delete":
+1. SET STATUS: BLOCKED
+2. Parse `<tier>` (required), `--older-than <days>` (optional), `--folder <spec>` (optional)
+3. Validate tier is one of: constitutional, critical, important, normal, temporary, deprecated
+4. If tier is `constitutional` or `critical` AND no `--folder` specified:
+   - REFUSE: "Bulk delete of constitutional/critical tier requires --folder scope. Use: bulk-delete <tier> --folder <spec>"
+5. Preview affected count via `memory_list({ limit: 100 })` filtered by tier (and folder/age if specified)
+6. Display count and ask: `[y]es | [n]o`
+
+HARD STOP: DO NOT execute bulk delete until user explicitly confirms
+
 ---
 
 # Memory Management Command
 
-Unified management interface for the memory database: scan for new files, cleanup old memories, change tiers, edit triggers, validate usefulness, delete entries, check health, and manage checkpoints.
+Unified management interface for the memory database: scan for new files, cleanup old memories, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, and manage checkpoints.
 
 ```yaml
 role: Memory Database Administrator
 purpose: Unified management interface for memory database maintenance and checkpoint operations
-action: Route through scan, cleanup, tier, triggers, validate, delete, health, checkpoint based on arguments
+action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint based on arguments
 operating_mode:
   workflow: interactive_management
   approvals: cleanup_delete_restore_require_confirmation
@@ -141,22 +156,25 @@ Provide a unified interface for memory database **management** operations:
 
 ### Argument Patterns
 
-| Pattern                     | Mode              | Example                                             |
-| --------------------------- | ----------------- | --------------------------------------------------- |
-| (empty)                     | Stats             | `/memory:manage`                                    |
-| `scan`                      | Scan              | `/memory:manage scan`                               |
-| `scan --force`              | Force Scan        | `/memory:manage scan --force`                       |
-| `cleanup`                   | Cleanup           | `/memory:manage cleanup`                            |
-| `tier <id> <tier>`          | Tier Change       | `/memory:manage tier 42 critical`                   |
-| `triggers <id>`             | Edit Triggers     | `/memory:manage triggers 42`                        |
-| `validate <id> useful`      | Validate          | `/memory:manage validate 42 useful`                 |
-| `validate <id> not`         | Validate          | `/memory:manage validate 42 not`                    |
-| `delete <id>`               | Delete            | `/memory:manage delete 42`                          |
-| `health`                    | Health            | `/memory:manage health`                             |
-| `checkpoint create <name>`  | Create Checkpoint | `/memory:manage checkpoint create before-refactor`  |
-| `checkpoint restore <name>` | Restore           | `/memory:manage checkpoint restore before-refactor` |
-| `checkpoint list`           | List Checkpoints  | `/memory:manage checkpoint list`                    |
-| `checkpoint delete <name>`  | Delete Checkpoint | `/memory:manage checkpoint delete old-checkpoint`   |
+| Pattern                                  | Mode              | Example                                                |
+| ---------------------------------------- | ----------------- | ------------------------------------------------------ |
+| (empty)                                  | Stats             | `/memory:manage`                                       |
+| `scan`                                   | Scan              | `/memory:manage scan`                                  |
+| `scan --force`                           | Force Scan        | `/memory:manage scan --force`                          |
+| `cleanup`                                | Cleanup           | `/memory:manage cleanup`                               |
+| `bulk-delete <tier>`                     | Bulk Delete       | `/memory:manage bulk-delete deprecated`                |
+| `bulk-delete <tier> --older-than <days>` | Bulk Delete       | `/memory:manage bulk-delete temporary --older-than 30` |
+| `bulk-delete <tier> --folder <spec>`     | Bulk Delete       | `/memory:manage bulk-delete normal --folder 007-auth`  |
+| `tier <id> <tier>`                       | Tier Change       | `/memory:manage tier 42 critical`                      |
+| `triggers <id>`                          | Edit Triggers     | `/memory:manage triggers 42`                           |
+| `validate <id> useful`                   | Validate          | `/memory:manage validate 42 useful`                    |
+| `validate <id> not`                      | Validate          | `/memory:manage validate 42 not`                       |
+| `delete <id>`                            | Delete            | `/memory:manage delete 42`                             |
+| `health`                                 | Health            | `/memory:manage health`                                |
+| `checkpoint create <name>`               | Create Checkpoint | `/memory:manage checkpoint create before-refactor`     |
+| `checkpoint restore <name>`              | Restore           | `/memory:manage checkpoint restore before-refactor`    |
+| `checkpoint list`                        | List Checkpoints  | `/memory:manage checkpoint list`                       |
+| `checkpoint delete <name>`               | Delete Checkpoint | `/memory:manage checkpoint delete old-checkpoint`      |
 
 ### Importance Tiers
 
@@ -179,6 +197,7 @@ $ARGUMENTS
     ├─ Empty (no args)       → STATS DASHBOARD (Section 7)
     ├─ "scan [--force]"      → GATE 4 → SCAN MODE (Section 8)
     ├─ "cleanup"             → GATE 1 → CLEANUP MODE (Section 9)
+    ├─ "bulk-delete <tier>"  → GATE 5 → BULK DELETE MODE (Section 9B)
     ├─ "tier <id> <tier>"    → TIER MANAGEMENT (Section 10)
     ├─ "triggers <id>"       → TRIGGER EDIT (Section 11)
     ├─ "validate <id> <u|n>" → VALIDATE MODE (Section 12)
@@ -195,20 +214,21 @@ $ARGUMENTS
 
 ## 6. MCP ENFORCEMENT MATRIX
 
-| MODE               | REQUIRED CALLS                                                             | PATTERN  | ON FAILURE      |
-| ------------------ | -------------------------------------------------------------------------- | -------- | --------------- |
-| STATS              | `memory_stats()` + `memory_list()`                                         | PARALLEL | Show error msg  |
-| SCAN               | `GATE 4` → `memory_index_scan()`                                           | SEQUENCE | Show error msg  |
-| CLEANUP            | `memory_list()` → [confirm] → `checkpoint_create()` → `memory_delete()`   | SEQUENCE | Abort operation |
-| TIER CHANGE        | `memory_update()`                                                          | SINGLE   | Show error msg  |
-| TRIGGER EDIT       | `memory_update()`                                                          | SINGLE   | Show error msg  |
-| VALIDATION         | `memory_validate()`                                                        | SINGLE   | Show error msg  |
-| DELETE             | `memory_list()` → [confirm] → `memory_delete()`                           | SEQUENCE | Abort operation |
-| HEALTH             | `memory_health()`                                                          | SINGLE   | Show error msg  |
-| CHECKPOINT CREATE  | `checkpoint_create()`                                                      | SINGLE   | Show error msg  |
-| CHECKPOINT RESTORE | `checkpoint_list()` → [confirm] → snapshot → `checkpoint_restore()`       | SEQUENCE | Rollback+abort  |
-| CHECKPOINT LIST    | `checkpoint_list()`                                                        | SINGLE   | Show empty msg  |
-| CHECKPOINT DELETE  | `checkpoint_delete()`                                                      | SINGLE   | Show error msg  |
+| MODE               | REQUIRED CALLS                                                          | PATTERN  | ON FAILURE      |
+| ------------------ | ----------------------------------------------------------------------- | -------- | --------------- |
+| STATS              | `memory_stats()` + `memory_list()`                                      | PARALLEL | Show error msg  |
+| SCAN               | `GATE 4` → `memory_index_scan()`                                        | SEQUENCE | Show error msg  |
+| CLEANUP            | `memory_list()` → [confirm] → `checkpoint_create()` → `memory_delete()` | SEQUENCE | Abort operation |
+| BULK DELETE        | `memory_list()` → [confirm] → `memory_bulk_delete()`                    | SEQUENCE | Abort operation |
+| TIER CHANGE        | `memory_update()`                                                       | SINGLE   | Show error msg  |
+| TRIGGER EDIT       | `memory_update()`                                                       | SINGLE   | Show error msg  |
+| VALIDATION         | `memory_validate()`                                                     | SINGLE   | Show error msg  |
+| DELETE             | `memory_list()` → [confirm] → `memory_delete()`                         | SEQUENCE | Abort operation |
+| HEALTH             | `memory_health()`                                                       | SINGLE   | Show error msg  |
+| CHECKPOINT CREATE  | `checkpoint_create()`                                                   | SINGLE   | Show error msg  |
+| CHECKPOINT RESTORE | `checkpoint_list()` → [confirm] → snapshot → `checkpoint_restore()`     | SEQUENCE | Rollback+abort  |
+| CHECKPOINT LIST    | `checkpoint_list()`                                                     | SINGLE   | Show empty msg  |
+| CHECKPOINT DELETE  | `checkpoint_delete()`                                                   | SINGLE   | Show error msg  |
 
 ### MCP Tool Signatures
 
@@ -220,6 +240,7 @@ spec_kit_memory_memory_index_scan({ force, specFolder, includeSpecDocs, includeC
 spec_kit_memory_memory_validate({ id: <id>, wasUseful: <bool> })
 spec_kit_memory_memory_update({ id: <id>, importanceTier: "<tier>", triggerPhrases: [...] })
 spec_kit_memory_memory_delete({ id: <id> })
+spec_kit_memory_memory_bulk_delete({ tier: "<tier>", confirm: true, specFolder: "optional", olderThanDays: N, skipCheckpoint: false })
 spec_kit_memory_memory_health({})
 spec_kit_memory_checkpoint_create({ name: "<name>", specFolder: "optional", metadata: {...} })
 spec_kit_memory_checkpoint_restore({ name: "<name>", clearExisting: <bool> })
@@ -231,13 +252,13 @@ spec_kit_memory_checkpoint_delete({ name: "<name>" })
 
 ### `memory_index_scan` Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| force | boolean | false | Force re-index all files |
-| specFolder | string | - | Limit scan to specific spec folder |
-| includeSpecDocs | boolean | true | Include spec folder documents |
-| includeConstitutional | boolean | true | Include constitutional rule files |
-| incremental | boolean | true | Skip unchanged files (mtime check) |
+| Parameter             | Type    | Default | Description                        |
+| --------------------- | ------- | ------- | ---------------------------------- |
+| force                 | boolean | false   | Force re-index all files           |
+| specFolder            | string  | -       | Limit scan to specific spec folder |
+| includeSpecDocs       | boolean | true    | Include spec folder documents      |
+| includeConstitutional | boolean | true    | Include constitutional rule files  |
+| incremental           | boolean | true    | Skip unchanged files (mtime check) |
 
 ---
 
@@ -323,11 +344,11 @@ Map selection to `force` for this run.
 
 The scan discovers memory-eligible files from three sources:
 
-| # | Source | Key | Location |
-|---|--------|-----|----------|
-| 1 | Spec Memories | specFiles | specs/*/memory/*.{md,txt} |
-| 2 | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
-| 3 | Spec Documents | specDocFiles | .opencode/specs/**/*.md |
+| #   | Source         | Key                 | Location                              |
+| --- | -------------- | ------------------- | ------------------------------------- |
+| 1   | Spec Memories  | specFiles           | specs/*/memory/*.{md,txt}             |
+| 2   | Constitutional | constitutionalFiles | .opencode/skill/*/constitutional/*.md |
+| 3   | Spec Documents | specDocFiles        | .opencode/specs/**/*.md               |
 
 ### Canonical Path Deduplication
 
@@ -409,7 +430,66 @@ STATUS=OK REMOVED=<N> KEPT=<N> CHECKPOINT=<name>
 
 ---
 
-## 10. TIER MANAGEMENT
+## 10. BULK DELETE MODE
+
+**Trigger:** `/memory:manage bulk-delete <tier> [--older-than <days>] [--folder <spec>]`
+**⚠️ GATE 5 MUST BE PASSED**
+
+### Workflow
+
+1. **Parse:** Extract tier (required), `--older-than` days (optional), `--folder` spec (optional)
+2. **Validate:** Tier must be valid. Constitutional/critical require `--folder` scope.
+3. **Preview:** `memory_list({ limit: 100, sortBy: "created_at" })` → filter by tier, age, and folder
+4. **Display:**
+
+```
+MEMORY:BULK-DELETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Tier        <tier>
+  Scope       <all | folder: <spec>>
+  Age Filter  <all | older than <N> days>
+  Affected    <N> memories
+
+─────────────────────────────────────────────────────
+[y] delete all    [n] cancel
+```
+
+5. **Execute:**
+
+```javascript
+spec_kit_memory_memory_bulk_delete({
+  tier: "<tier>",
+  confirm: true,
+  specFolder: "<spec>",       // omit if not specified
+  olderThanDays: <N>,         // omit if not specified
+  skipCheckpoint: false
+})
+```
+
+6. **Confirm:**
+
+```
+MEMORY:BULK-DELETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Tier        <tier>
+  Removed     <N>
+  Checkpoint  auto-pre-bulk-delete-<timestamp>
+
+  Undo: /memory:manage checkpoint restore auto-pre-bulk-delete-<timestamp>
+
+STATUS=OK REMOVED=<N> TIER=<tier>
+```
+
+**Notes:**
+- `memory_bulk_delete` auto-creates a checkpoint before deletion (unless `skipCheckpoint: true`)
+- The tool refuses unscoped deletion of constitutional/critical tiers at the MCP level as well
+- For fine-grained per-item review, use `/memory:manage cleanup` instead
+
+---
+
+## 11. TIER MANAGEMENT
 
 **Trigger:** `/memory:manage tier <id> <tier>`
 
@@ -437,7 +517,7 @@ STATUS=OK ID=<id> TIER=<tier>
 
 ---
 
-## 11. TRIGGER EDIT
+## 12. TRIGGER EDIT
 
 **Trigger:** `/memory:manage triggers <id>`
 
@@ -464,7 +544,7 @@ STATUS=OK ID=<id> TRIGGERS=<N>
 
 ---
 
-## 12. VALIDATE MODE
+## 13. VALIDATE MODE
 
 **Trigger:** `/memory:manage validate <id> useful` or `/memory:manage validate <id> not`
 
@@ -487,7 +567,7 @@ STATUS=OK ID=<id> USEFUL=<true|false>
 
 ---
 
-## 13. DELETE MODE
+## 14. DELETE MODE
 
 **Trigger:** `/memory:manage delete <id>`
 **⚠️ GATE 2 MUST BE PASSED**
@@ -541,7 +621,7 @@ STATUS=OK DELETED=<id>
 
 ---
 
-## 14. HEALTH CHECK
+## 15. HEALTH CHECK
 
 **Trigger:** `/memory:manage health`
 
@@ -581,7 +661,7 @@ STATUS=OK HEALTH=<healthy|degraded|error> SCHEMA=v13
 
 ---
 
-## 15. CHECKPOINT OPERATIONS
+## 16. CHECKPOINT OPERATIONS
 
 ### Checkpoint Create
 
@@ -716,45 +796,47 @@ STATUS=OK CHECKPOINT=<name> ACTION=delete
 
 ---
 
-## 16. QUICK REFERENCE
+## 17. QUICK REFERENCE
 
-| Command                                    | Result                 |
-| ------------------------------------------ | ---------------------- |
-| `/memory:manage`                           | Stats dashboard        |
-| `/memory:manage scan`                      | Index new files        |
-| `/memory:manage scan --force`              | Re-index all files     |
-| `/memory:manage cleanup`                   | Cleanup old memories   |
-| `/memory:manage tier 42 critical`          | Change tier            |
-| `/memory:manage triggers 42`              | Edit triggers          |
-| `/memory:manage validate 42 useful`        | Mark as useful         |
-| `/memory:manage validate 42 not`           | Mark as not useful     |
-| `/memory:manage delete 42`                 | Delete memory          |
-| `/memory:manage health`                    | System health check    |
-| `/memory:manage checkpoint create "name"`  | Save memory state      |
-| `/memory:manage checkpoint restore "name"` | Restore to saved state |
-| `/memory:manage checkpoint list`           | Show all checkpoints   |
-| `/memory:manage checkpoint delete "name"`  | Remove checkpoint      |
-
----
-
-## 17. ERROR HANDLING
-
-| Condition               | Response                                     |
-| ----------------------- | -------------------------------------------- |
-| Unknown subcommand      | `STATUS=FAIL` — list valid subcommands       |
-| Memory ID not found     | `STATUS=FAIL ERROR="Memory #<id> not found"` |
-| Invalid tier            | `STATUS=FAIL ERROR="Invalid tier: <tier>"`   |
-| Database locked         | `STATUS=FAIL ERROR="Database locked"`        |
-| Permission denied       | `STATUS=FAIL ERROR="Cannot access database"` |
-| Scan failed             | `STATUS=FAIL ERROR="Scan failed: <reason>"`  |
-| Checkpoint not found    | `STATUS=FAIL ERROR="Checkpoint not found"`   |
-| Max checkpoints reached | Auto-delete oldest, warn user                |
-| MCP tool unavailable    | `STATUS=FAIL ERROR="MCP tool unavailable. Verify the Spec Kit Memory MCP server is running."` — Do NOT fall back to Bash/sqlite3 |
-| Database not initialized | `STATUS=FAIL ERROR="Database not initialized. Run memory_index_scan() to create schema, or restart the MCP server."` |
+| Command                                                | Result                    |
+| ------------------------------------------------------ | ------------------------- |
+| `/memory:manage`                                       | Stats dashboard           |
+| `/memory:manage scan`                                  | Index new files           |
+| `/memory:manage scan --force`                          | Re-index all files        |
+| `/memory:manage cleanup`                               | Cleanup old memories      |
+| `/memory:manage bulk-delete deprecated`                | Delete all deprecated     |
+| `/memory:manage bulk-delete temporary --older-than 30` | Delete temporary >30 days |
+| `/memory:manage tier 42 critical`                      | Change tier               |
+| `/memory:manage triggers 42`                           | Edit triggers             |
+| `/memory:manage validate 42 useful`                    | Mark as useful            |
+| `/memory:manage validate 42 not`                       | Mark as not useful        |
+| `/memory:manage delete 42`                             | Delete memory             |
+| `/memory:manage health`                                | System health check       |
+| `/memory:manage checkpoint create "name"`              | Save memory state         |
+| `/memory:manage checkpoint restore "name"`             | Restore to saved state    |
+| `/memory:manage checkpoint list`                       | Show all checkpoints      |
+| `/memory:manage checkpoint delete "name"`              | Remove checkpoint         |
 
 ---
 
-## 18. RELATED COMMANDS
+## 18. ERROR HANDLING
+
+| Condition                | Response                                                                                                                         |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Unknown subcommand       | `STATUS=FAIL` — list valid subcommands                                                                                           |
+| Memory ID not found      | `STATUS=FAIL ERROR="Memory #<id> not found"`                                                                                     |
+| Invalid tier             | `STATUS=FAIL ERROR="Invalid tier: <tier>"`                                                                                       |
+| Database locked          | `STATUS=FAIL ERROR="Database locked"`                                                                                            |
+| Permission denied        | `STATUS=FAIL ERROR="Cannot access database"`                                                                                     |
+| Scan failed              | `STATUS=FAIL ERROR="Scan failed: <reason>"`                                                                                      |
+| Checkpoint not found     | `STATUS=FAIL ERROR="Checkpoint not found"`                                                                                       |
+| Max checkpoints reached  | Auto-delete oldest, warn user                                                                                                    |
+| MCP tool unavailable     | `STATUS=FAIL ERROR="MCP tool unavailable. Verify the Spec Kit Memory MCP server is running."` — Do NOT fall back to Bash/sqlite3 |
+| Database not initialized | `STATUS=FAIL ERROR="Database not initialized. Run memory_index_scan() to create schema, or restart the MCP server."`             |
+
+---
+
+## 189. RELATED COMMANDS
 
 - `/memory:context` — Intent-aware context retrieval (read-only)
 - `/memory:save` — Save current conversation context
@@ -763,7 +845,7 @@ STATUS=OK CHECKPOINT=<name> ACTION=delete
 
 ---
 
-## 19. CONSTITUTIONAL TIER HANDLING
+## 20. CONSTITUTIONAL TIER HANDLING
 
 Constitutional tier memories receive special treatment across all operations:
 
@@ -778,6 +860,6 @@ Constitutional tier memories receive special treatment across all operations:
 
 ---
 
-## 20. FULL DOCUMENTATION
+## 21. FULL DOCUMENTATION
 
 For comprehensive memory system documentation: `.opencode/skill/system-spec-kit/SKILL.md`

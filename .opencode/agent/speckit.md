@@ -165,10 +165,14 @@ OUTPUT: Deliver spec folder → Report artifacts → List next steps
 | L1    | `memory_context`                                                                   | Unified entry point   |
 | L2    | `memory_search`, `memory_match_triggers`, `memory_save`                            | Core operations       |
 | L3    | `memory_list`, `memory_stats`, `memory_health`                                     | Discovery & browse    |
-| L4    | `memory_delete`, `memory_update`, `memory_validate`                                | Mutation              |
+| L4    | `memory_delete`, `memory_update`, `memory_validate`, `memory_bulk_delete`           | Mutation              |
 | L5    | `checkpoint_create/list/restore/delete`                                            | Lifecycle checkpoints |
-| L6    | `task_preflight/postflight`, `memory_drift_why`, `memory_causal_link/stats/unlink` | Analysis & lineage    |
+| L6    | `task_preflight/postflight`, `memory_drift_why`, `memory_causal_link/stats/unlink`, `eval_run_ablation`, `eval_reporting_dashboard` | Analysis, lineage & eval |
 | L7    | `memory_index_scan`, `memory_get_learning_history`                                 | Maintenance           |
+
+> **memory_context modes:** `auto` (default, detects intent), `quick` (trigger-based), `deep` (comprehensive), `focused` (intent-optimized), `resume` (session recovery).
+
+> **Save-time behaviors (memory_save):** Runs quality gate rejecting below 0.4 signal density (`SPECKIT_SAVE_QUALITY_GATE`). Auto-merges similar memories at >=0.88 similarity (`SPECKIT_RECONSOLIDATION`). Verify-fix-verify loop auto-corrects triggers, anchors, and token budget (3 retries). See SKILL.md §4 for full feature flag list.
 
 ---
 

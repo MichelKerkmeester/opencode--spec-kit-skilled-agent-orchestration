@@ -106,7 +106,7 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-'));
       try {
         const canonicalSpecs = path.join(root, '.opencode', 'specs');
-        const specFolder = path.join(canonicalSpecs, '003-system-spec-kit', '900-dedup-check');
+        const specFolder = path.join(canonicalSpecs, '02--system-spec-kit', '900-dedup-check');
         fs.mkdirSync(specFolder, { recursive: true });
         fs.writeFileSync(path.join(specFolder, 'spec.md'), '# Spec');
 
@@ -132,8 +132,8 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       const root = fs.mkdtempSync(path.join(os.tmpdir(), 'test-spec-docs-filter-'));
       try {
         const canonicalSpecs = path.join(root, '.opencode', 'specs');
-        const targetFolder = path.join(canonicalSpecs, '003-system-spec-kit', '910-target');
-        const otherFolder = path.join(canonicalSpecs, '003-system-spec-kit', '911-other');
+        const targetFolder = path.join(canonicalSpecs, '02--system-spec-kit', '910-target');
+        const otherFolder = path.join(canonicalSpecs, '02--system-spec-kit', '911-other');
         fs.mkdirSync(targetFolder, { recursive: true });
         fs.mkdirSync(otherFolder, { recursive: true });
         fs.writeFileSync(path.join(targetFolder, 'spec.md'), '# Target Spec');
@@ -143,12 +143,12 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         try {
           fs.symlinkSync(canonicalSpecs, linkedSpecs, 'dir');
         } catch {
-          const fallbackResult = handler.findSpecDocuments(root, { specFolder: '003-system-spec-kit/910-target' });
+          const fallbackResult = handler.findSpecDocuments(root, { specFolder: '02--system-spec-kit/910-target' });
           expect(Array.isArray(fallbackResult)).toBe(true);
           return;
         }
 
-        const result = handler.findSpecDocuments(root, { specFolder: '003-system-spec-kit/910-target' });
+        const result = handler.findSpecDocuments(root, { specFolder: '02--system-spec-kit/910-target' });
         expect(result).toHaveLength(1);
         expect(result[0].includes('910-target')).toBe(true);
       } finally {
@@ -161,11 +161,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
     it('T520-9d: detects identical-hash alias groups', () => {
       const summary = handler.summarizeAliasConflicts([
         {
-          file_path: '/workspace/specs/003-system-spec-kit/200-test/memory/a.md',
+          file_path: '/workspace/specs/02--system-spec-kit/200-test/memory/a.md',
           content_hash: 'hash-1',
         },
         {
-          file_path: '/workspace/.opencode/specs/003-system-spec-kit/200-test/memory/a.md',
+          file_path: '/workspace/.opencode/specs/02--system-spec-kit/200-test/memory/a.md',
           content_hash: 'hash-1',
         },
       ]);
@@ -181,11 +181,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
     it('T520-9e: detects divergent-hash alias groups', () => {
       const summary = handler.summarizeAliasConflicts([
         {
-          file_path: '/workspace/specs/003-system-spec-kit/201-test/memory/b.md',
+          file_path: '/workspace/specs/02--system-spec-kit/201-test/memory/b.md',
           content_hash: 'hash-1',
         },
         {
-          file_path: '/workspace/.opencode/specs/003-system-spec-kit/201-test/memory/b.md',
+          file_path: '/workspace/.opencode/specs/02--system-spec-kit/201-test/memory/b.md',
           content_hash: 'hash-2',
         },
       ]);
@@ -199,11 +199,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
     it('T520-9f: ignores rows that are not cross-root aliases', () => {
       const summary = handler.summarizeAliasConflicts([
         {
-          file_path: '/workspace/specs/003-system-spec-kit/300-test/memory/c.md',
+          file_path: '/workspace/specs/02--system-spec-kit/300-test/memory/c.md',
           content_hash: 'hash-1',
         },
         {
-          file_path: '/workspace/specs/003-system-spec-kit/301-test/memory/c.md',
+          file_path: '/workspace/specs/02--system-spec-kit/301-test/memory/c.md',
           content_hash: 'hash-1',
         },
       ]);
@@ -274,11 +274,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
         unknownHashGroups: 0,
         samples: [
           {
-            normalizedPath: '/workspace/specs/003-system-spec-kit/777-test/memory/a.md',
+            normalizedPath: '/workspace/specs/02--system-spec-kit/777-test/memory/a.md',
             hashState: 'divergent' as const,
             variants: [
-              '/workspace/specs/003-system-spec-kit/777-test/memory/a.md',
-              '/workspace/.opencode/specs/003-system-spec-kit/777-test/memory/a.md',
+              '/workspace/specs/02--system-spec-kit/777-test/memory/a.md',
+              '/workspace/.opencode/specs/02--system-spec-kit/777-test/memory/a.md',
             ],
           },
         ],
@@ -317,11 +317,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
           unknownHashGroups: 0,
           samples: [
             {
-              normalizedPath: '/workspace/specs/003-system-spec-kit/778-test/memory/b.md',
+              normalizedPath: '/workspace/specs/02--system-spec-kit/778-test/memory/b.md',
               hashState: 'identical',
               variants: [
-                '/workspace/specs/003-system-spec-kit/778-test/memory/b.md',
-                '/workspace/.opencode/specs/003-system-spec-kit/778-test/memory/b.md',
+                '/workspace/specs/02--system-spec-kit/778-test/memory/b.md',
+                '/workspace/.opencode/specs/02--system-spec-kit/778-test/memory/b.md',
               ],
             },
           ],
@@ -344,12 +344,12 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
     it('T520-9i: expands beyond sample cap when divergent group count is higher', () => {
       const calledPaths: string[] = [];
       const rows = [
-        { file_path: '/workspace/specs/003-system-spec-kit/801-a/memory/x.md', content_hash: 'hash-a' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/801-a/memory/x.md', content_hash: 'hash-b' },
-        { file_path: '/workspace/specs/003-system-spec-kit/802-b/memory/y.md', content_hash: 'hash-c' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/802-b/memory/y.md', content_hash: 'hash-d' },
-        { file_path: '/workspace/specs/003-system-spec-kit/803-c/memory/z.md', content_hash: 'hash-e' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/803-c/memory/z.md', content_hash: 'hash-f' },
+        { file_path: '/workspace/specs/02--system-spec-kit/801-a/memory/x.md', content_hash: 'hash-a' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/801-a/memory/x.md', content_hash: 'hash-b' },
+        { file_path: '/workspace/specs/02--system-spec-kit/802-b/memory/y.md', content_hash: 'hash-c' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/802-b/memory/y.md', content_hash: 'hash-d' },
+        { file_path: '/workspace/specs/02--system-spec-kit/803-c/memory/z.md', content_hash: 'hash-e' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/803-c/memory/z.md', content_hash: 'hash-f' },
       ];
 
       const fakeDb = {
@@ -367,11 +367,11 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
           unknownHashGroups: 2,
           samples: [
             {
-              normalizedPath: '/workspace/specs/003-system-spec-kit/801-a/memory/x.md',
+              normalizedPath: '/workspace/specs/02--system-spec-kit/801-a/memory/x.md',
               hashState: 'divergent',
               variants: [
-                '/workspace/specs/003-system-spec-kit/801-a/memory/x.md',
-                '/workspace/.opencode/specs/003-system-spec-kit/801-a/memory/x.md',
+                '/workspace/specs/02--system-spec-kit/801-a/memory/x.md',
+                '/workspace/.opencode/specs/02--system-spec-kit/801-a/memory/x.md',
               ],
             },
           ],
@@ -402,9 +402,9 @@ describe('Handler Memory Index (T520) [deferred - requires DB test fixtures]', (
       expect(summary.escalated).toBe(0);
       expect(summary.errors).toHaveLength(0);
       expect(calledPaths).toEqual([
-        '/workspace/specs/003-system-spec-kit/801-a/memory/x.md',
-        '/workspace/specs/003-system-spec-kit/802-b/memory/y.md',
-        '/workspace/specs/003-system-spec-kit/803-c/memory/z.md',
+        '/workspace/specs/02--system-spec-kit/801-a/memory/x.md',
+        '/workspace/specs/02--system-spec-kit/802-b/memory/y.md',
+        '/workspace/specs/02--system-spec-kit/803-c/memory/z.md',
       ]);
     });
   });

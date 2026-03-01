@@ -79,7 +79,7 @@ If creating a sub-folder, the user (with AI guidance):
 
 ```bash
 .opencode/skill/system-spec-kit/scripts/spec/create.sh \
-  --subfolder specs/003-system-spec-kit \
+  --subfolder specs/02--system-spec-kit \
   --topic memory-overhaul \
   --level 3+ \
   "Wave 1 follow-up"
@@ -225,7 +225,7 @@ If a child name like `121-audit` exists under multiple parents, the script requi
 
 ```
 Error: Ambiguous child folder "121-audit" found in multiple parents:
-  - specs/003-system-spec-kit/121-audit/
+  - specs/02--system-spec-kit/121-audit/
   - specs/005-anobel/121-audit/
 Please specify the full path: parent/child
 ```

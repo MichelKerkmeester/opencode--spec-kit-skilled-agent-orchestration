@@ -202,13 +202,17 @@ export async function executeMerge(
 
   try {
     // Update the existing memory with merged content and boosted importance
-    db.prepare(`
+    const mergeResult = db.prepare(`
       UPDATE memory_index
       SET content_text = ?,
           importance_weight = ?,
           updated_at = datetime('now')
       WHERE id = ?
     `).run(mergedContent, boostedWeight, existingMemory.id);
+
+    if (mergeResult.changes === 0) {
+      throw new Error(`executeMerge: target memory ${existingMemory.id} no longer exists`);
+    }
 
     // Optionally regenerate embedding for merged content
     if (generateEmbedding) {

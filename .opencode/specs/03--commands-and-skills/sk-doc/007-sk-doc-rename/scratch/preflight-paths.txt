@@ -1,0 +1,17 @@
+./.claude/skills/sk-documentation
+./.claude/skills/sk-visual-explainer
+./.gemini/skills/sk-documentation
+./.gemini/skills/sk-visual-explainer
+./.opencode/changelog/11--sk-documentation
+./.opencode/changelog/12--sk-visual-explainer
+./.opencode/skill/sk-documentation
+./.opencode/skill/sk-visual-explainer
+./.opencode/specs/03--commands-and-skills/002-skill-rename/004-sk-documentation
+./.opencode/specs/03--commands-and-skills/002-skill-rename/004-sk-documentation/memory/21-02-26_12-29__sk-documentation.md
+./.opencode/specs/03--commands-and-skills/002-skill-rename/006-sk-visual-explainer
+./.opencode/specs/03--commands-and-skills/002-skill-rename/006-sk-visual-explainer/memory/21-02-26_12-30__sk-visual-explainer.md
+./.opencode/specs/03--commands-and-skills/040-sk-visual-explainer-hardening
+./.opencode/specs/03--commands-and-skills/040-sk-visual-explainer-hardening/001-online-visual-upgrade/scratch/sk-visual-explainer.zip
+./.opencode/specs/03--commands-and-skills/042-sk-visual-explainer-refinement
+./.opencode/specs/03--commands-and-skills/044-sk-visual-explainer-template-improvement
+./.opencode/specs/03--commands-and-skills/044-sk-visual-explainer-template-improvement/memory/23-02-26_09-05__sk-visual-explainer-template-improvement.md

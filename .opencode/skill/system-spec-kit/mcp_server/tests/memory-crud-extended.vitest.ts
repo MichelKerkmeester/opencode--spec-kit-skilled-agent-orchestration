@@ -1055,8 +1055,8 @@ describe('handleMemoryHealth - Happy Path', () => {
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
-        { file_path: '/workspace/specs/003-system-spec-kit/001-test/memory/a.md', content_hash: 'hash-1' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/001-test/memory/a.md', content_hash: 'hash-1' },
+        { file_path: '/workspace/specs/02--system-spec-kit/001-test/memory/a.md', content_hash: 'hash-1' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/001-test/memory/a.md', content_hash: 'hash-1' },
       ],
     });
     const result = await handler.handleMemoryHealth({});
@@ -1072,8 +1072,8 @@ describe('handleMemoryHealth - Happy Path', () => {
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
-        { file_path: '/workspace/specs/003-system-spec-kit/002-test/memory/b.md', content_hash: 'hash-1' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/002-test/memory/b.md', content_hash: 'hash-2' },
+        { file_path: '/workspace/specs/02--system-spec-kit/002-test/memory/b.md', content_hash: 'hash-1' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/002-test/memory/b.md', content_hash: 'hash-2' },
       ],
     });
     const result = await handler.handleMemoryHealth({});
@@ -1088,8 +1088,8 @@ describe('handleMemoryHealth - Happy Path', () => {
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
-        { file_path: '/workspace/specs/003-system-spec-kit/010-test/memory/a.md', content_hash: 'hash-1', spec_folder: '003-system-spec-kit/010-test' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/010-test/memory/a.md', content_hash: 'hash-2', spec_folder: '003-system-spec-kit/010-test' },
+        { file_path: '/workspace/specs/02--system-spec-kit/010-test/memory/a.md', content_hash: 'hash-1', spec_folder: '02--system-spec-kit/010-test' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/010-test/memory/a.md', content_hash: 'hash-2', spec_folder: '02--system-spec-kit/010-test' },
       ],
     });
     const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 20 });
@@ -1097,7 +1097,7 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.reportMode).toBe('divergent_aliases');
     expect(parsed?.data?.totalDivergentGroups).toBe(1);
     expect(parsed?.data?.returnedGroups).toBe(1);
-    expect(parsed?.data?.groups?.[0]?.normalizedPath).toContain('/workspace/specs/003-system-spec-kit/010-test/memory/a.md');
+    expect(parsed?.data?.groups?.[0]?.normalizedPath).toContain('/workspace/specs/02--system-spec-kit/010-test/memory/a.md');
     expect(parsed?.data?.embeddingProvider).toBeUndefined();
   });
 
@@ -1107,10 +1107,10 @@ describe('handleMemoryHealth - Happy Path', () => {
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
-        { file_path: '/workspace/specs/003-system-spec-kit/020-test/memory/a.md', content_hash: 'hash-1', spec_folder: '003-system-spec-kit/020-test' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/020-test/memory/a.md', content_hash: 'hash-2', spec_folder: '003-system-spec-kit/020-test' },
-        { file_path: '/workspace/specs/003-system-spec-kit/021-test/memory/b.md', content_hash: 'hash-3', spec_folder: '003-system-spec-kit/021-test' },
-        { file_path: '/workspace/.opencode/specs/003-system-spec-kit/021-test/memory/b.md', content_hash: 'hash-4', spec_folder: '003-system-spec-kit/021-test' },
+        { file_path: '/workspace/specs/02--system-spec-kit/020-test/memory/a.md', content_hash: 'hash-1', spec_folder: '02--system-spec-kit/020-test' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/020-test/memory/a.md', content_hash: 'hash-2', spec_folder: '02--system-spec-kit/020-test' },
+        { file_path: '/workspace/specs/02--system-spec-kit/021-test/memory/b.md', content_hash: 'hash-3', spec_folder: '02--system-spec-kit/021-test' },
+        { file_path: '/workspace/.opencode/specs/02--system-spec-kit/021-test/memory/b.md', content_hash: 'hash-4', spec_folder: '02--system-spec-kit/021-test' },
       ],
     });
     const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 1 });

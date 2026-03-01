@@ -654,7 +654,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/*.md specs/###-name/
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-feature-name>/
 
 # Generate for nested phase folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-system-spec-kit/121-child-name
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/121-child-name
 ```
 
 ---

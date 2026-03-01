@@ -414,7 +414,7 @@ describe('encoding_intent persistence integration', () => {
     const embeddingDim = vectorIndex.getEmbeddingDim();
 
     const memoryId = vectorIndex.indexMemory({
-      specFolder: 'specs/003-system-spec-kit/test-r16',
+      specFolder: 'specs/02--system-spec-kit/test-r16',
       filePath: path.join(tempDir, 'embedded.md'),
       title: 'Embedded row',
       triggerPhrases: [],
@@ -445,7 +445,7 @@ describe('encoding_intent persistence integration', () => {
     vectorIndex.initializeDb(dbPath);
 
     const memoryId = vectorIndex.indexMemoryDeferred({
-      specFolder: 'specs/003-system-spec-kit/test-r16',
+      specFolder: 'specs/02--system-spec-kit/test-r16',
       filePath: path.join(tempDir, 'deferred.md'),
       title: 'Deferred row',
       triggerPhrases: [],

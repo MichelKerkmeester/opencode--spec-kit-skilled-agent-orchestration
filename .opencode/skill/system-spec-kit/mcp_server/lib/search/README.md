@@ -18,11 +18,16 @@ importance_tier: "normal"
 <!-- ANCHOR:table-of-contents -->
 
 - [1. OVERVIEW](#1--overview)
-- [2. KEY CONCEPTS]](#2--key-concepts)
-- [3. MODULE STRUCTURE]](#3--module-structure)
+  - [4-Stage Pipeline Architecture](#4-stage-pipeline-architecture)
+- [2. KEY CONCEPTS](#2--key-concepts)
+- [3. MODULE STRUCTURE](#3--module-structure)
 - [4. FEATURES](#4--features)
+  - [Graph Signal Features](#graph-signal-features)
+  - [Save-Time Processing Pipeline](#save-time-processing-pipeline)
+  - [Scoring Enhancements](#scoring-enhancements)
 - [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. RELATED RESOURCES](#6--related-resources)
+- [6. RECENT CHANGES (SPRINT 8)](#6--recent-changes-sprint-8)
+- [7. RELATED RESOURCES](#7--related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -68,6 +73,50 @@ Final Results
 
 **Architecture Note:**
 `vector-index.ts` is a typed facade that delegates operations to `vector-index-impl.ts` (the full implementation). Both files are TypeScript. See [Module Structure](#3-module-structure) for details.
+
+<a id="4-stage-pipeline-architecture"></a>
+### 4-Stage Pipeline Architecture
+
+The search pipeline (R6, `SPECKIT_PIPELINE_V2`) decomposes retrieval into four bounded stages with strict responsibilities. Each stage has clear input/output contracts defined in `pipeline/types.ts`.
+
+```
+Stage 1                Stage 2                 Stage 3              Stage 4
+CANDIDATE GEN    -->   FUSION + SIGNALS   -->  RERANK + AGGREGATE  -->  FILTER + ANNOTATE
+(no score changes)     (single scoring point)  (score changes: YES)    (score changes: NO)
+```
+
+**Stage 1 — Candidate Generation** (`stage1-candidate-gen.ts`):
+Executes 5 search channels in parallel and collects raw candidates with no scoring modifications.
+
+| Channel | Source | Description |
+|---------|--------|-------------|
+| Vector | `vector-index-impl.ts` | Semantic similarity via sqlite-vec |
+| BM25 | `bm25-index.ts` | Pure TypeScript keyword matching |
+| FTS5 | `sqlite-fts.ts` | SQLite FTS5 BM25 weighted scoring |
+| Graph | `graph-search-fn.ts` | Causal edge traversal + typed-weighted degree (R4) |
+| Degree | `graph-search-fn.ts` | Structural graph discovery via typed-weighted degree |
+
+Post-channel: constitutional memory injection, quality score filtering, tier/contextType filtering.
+
+**Stage 2 — Fusion + Signal Integration** (`stage2-fusion.ts`):
+Single authoritative point for ALL scoring signals. Signal application order is fixed:
+
+1. Session boost — working-memory attention amplification
+2. Causal boost — graph-traversal neighbor amplification
+3. Community co-retrieval (N2c) — inject community co-members
+4. Graph signals (N2a + N2b) — momentum + causal depth
+5. Testing effect — FSRS strengthening write-back (opt-in via `trackAccess`)
+6. Intent weights — non-hybrid only (G2 double-weighting prevention: `isHybrid` boolean guard)
+7. Artifact routing — class-based weight boosts
+8. Feedback signals — learned trigger boosts (0.7x weight) + negative demotions
+9. Anchor metadata — extract named ANCHOR sections (annotation only)
+10. Validation signals — quality scoring multiplier (clamped 0.8-1.2)
+
+**Stage 3 — Rerank + Aggregate** (`stage3-rerank.ts`):
+Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memory aggregation. Aggregation formula: `parentScore = sMax + 0.3 * Sum(rest) / sqrt(N)` where `sMax` is the best chunk score and N is the remaining chunk count. Chunk ordering preserves `chunk_index` document order (B2 guarantee). `contentSource` metadata marks provenance (`reassembled_chunks` or `file_read_fallback`).
+
+**Stage 4 — Filter + Annotate** (`stage4-filter.ts`):
+**Score immutability invariant**: Stage 4 MUST NOT modify scores. Enforced via compile-time `Stage4ReadonlyRow` readonly fields and runtime `captureScoreSnapshot` / `verifyScoreInvariant` defence-in-depth. Applies memory-state filtering (HOT/WARM/COLD/DORMANT/ARCHIVED with per-tier limits), evidence gap detection (Z-score confidence check), quality floor (`QUALITY_FLOOR=0.005`), and token budget truncation.
 
 <!-- /ANCHOR:overview -->
 
@@ -314,6 +363,15 @@ vector-index-impl.ts     (3333 LOC)
 | `EMBEDDING_DIM`          | `768`    | Fallback embedding dimension        |
 | `SPECKIT_MEMORY_SUMMARIES`| `true`  | Enable memory summary generation and search channel (R8) |
 | `SPECKIT_ENTITY_LINKING`  | `true`  | Enable cross-document entity linking (S5, requires R10) |
+| `SPECKIT_SAVE_QUALITY_GATE`| `true` | Enable 3-layer pre-storage quality gate (TM-04) |
+| `SPECKIT_RECONSOLIDATION` | `true`  | Enable similarity-based merge/conflict routing on save (TM-06) |
+| `SPECKIT_NEGATIVE_FEEDBACK`| `true` | Enable negative feedback demotion multiplier (A4) |
+| `SPECKIT_LEARN_FROM_SELECTION`| `false` | Enable learned relevance feedback from selections (R11) |
+| `SPECKIT_EMBEDDING_EXPANSION`| `true` | Enable R12 embedding-based query expansion |
+| `SPECKIT_AUTO_ENTITIES`   | `true`  | Enable auto entity extraction at save time (R10) |
+| `SPECKIT_PIPELINE_V2`     | `true`  | Enable 4-stage retrieval pipeline (R6) |
+| `SPECKIT_GRAPH_SIGNALS`   | `true`  | Enable N2a momentum + N2b causal depth scoring |
+| `SPECKIT_COMMUNITY_DETECTION`| `true`| Enable N2c BFS/Louvain community detection |
 
 **RRF Parameters** (hardcoded, REQ-011):
 ```javascript
@@ -521,6 +579,111 @@ hybridSearch("authentication", { specFolder: "specs/<###-spec-name>" })
 | `hasEntityInfrastructure` | `(db) => boolean` | Check if required tables exist |
 | `runEntityLinking` | `(db) => EntityLinkResult` | Run full entity linking pipeline |
 
+<a id="graph-signal-features"></a>
+### Graph Signal Features
+
+Graph-based scoring signals applied during Stage 2 fusion. Gated via `SPECKIT_GRAPH_SIGNALS` (N2a + N2b) and `SPECKIT_COMMUNITY_DETECTION` (N2c).
+
+**R4: Typed-Weighted Degree** (`graph-search-fn.ts`):
+The 5th RRF channel computes degree centrality with per-edge-type weights:
+
+| Edge Type | Weight | Description |
+|-----------|--------|-------------|
+| `caused` | 1.0 | Strongest causal signal |
+| `derived_from` | 0.9 | Derivation relationship |
+| `enabled` | 0.8 | Enablement relationship |
+| `contradicts` | 0.7 | Contradiction signal |
+| `supersedes` | 0.6 | Version supersession |
+| `supports` | 0.5 | Supporting evidence |
+
+Hub caps prevent high-degree nodes from dominating: `MAX_TYPED_DEGREE=15` (default max before normalization), `MAX_TOTAL_DEGREE=50` (hard cap on raw degree). Normalized boost capped at `DEGREE_BOOST_CAP=0.15`.
+
+**A7: Co-Activation Boost** (`causal-boost.ts`):
+Top-ranked results seed a 2-hop BFS traversal over causal edges. Discovered neighbors receive a score boost with `SEED_FRACTION=0.25` strength. A `1/sqrt(neighbor_count)` fan-effect divisor (R17) prevents hub nodes from appearing in every co-activation result.
+
+**N2a: Graph Momentum** (`graph-signals.ts`):
+Tracks degree change over a 7-day rolling window using the `degree_snapshots` table. Momentum = currentDegree - pastDegree. Nodes gaining connections receive a score bonus: `clamp(momentum * 0.01, 0, 0.05)` — additive cap of +0.05.
+
+**N2b: Causal Depth** (`graph-signals.ts`):
+BFS traversal from root nodes (in-degree = 0) computes depth for each node. Depth is normalized by graph diameter (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
+
+**N2c: Community Detection** (`community-detection.ts`):
+BFS connected-component labelling assigns community IDs. When the largest component contains >50% of all nodes, escalates to Louvain modularity optimization for finer-grained communities. Community co-members are injected into Stage 2 results before graph signal scoring. Gated via `SPECKIT_COMMUNITY_DETECTION`.
+
+**Edge Density Monitoring** (`edge-density.ts`):
+Measures graph density and reports metrics used for R10 entity extraction escalation decisions.
+
+<a id="save-time-processing-pipeline"></a>
+### Save-Time Processing Pipeline
+
+Processing steps applied during `memory_save` before a memory is persisted.
+
+**PI-A5: Verify-Fix-Verify Loop** (`memory-save.ts`):
+3-retry quality loop that validates, auto-fixes (triggers, anchors, token budget), and re-validates before committing. Rejected memories receive detailed feedback on what failed.
+
+**TM-04: Quality Gate** (`save-quality-gate.ts`):
+3-layer pre-storage validation gated via `SPECKIT_SAVE_QUALITY_GATE` (default ON, graduated Sprint 4):
+
+| Layer | Check | Details |
+|-------|-------|---------|
+| 1. Structural | Title, content length, spec folder format | Min content: 50 chars |
+| 2. Content Quality | 5-dimension weighted signal density | Dimensions: title (0.25), triggers (0.20), length (0.20), anchors (0.15), metadata (0.20) |
+| 3. Semantic Dedup | Cosine similarity against existing memories | Threshold: 0.92 rejects near-duplicates |
+
+Signal density threshold: **0.4** — below this, content quality is too low. 14-day warn-only period (MR12 mitigation): logs scores but does not block saves during ramp-up.
+
+**TM-06: Reconsolidation** (`reconsolidation.ts`):
+Similarity-based merge/conflict/complement routing gated via `SPECKIT_RECONSOLIDATION` (default ON):
+
+| Similarity | Action | Behavior |
+|-----------|--------|----------|
+| >= 0.88 | **Merge** | Append unique content lines, boost importance_weight +0.1 |
+| 0.75 - 0.88 | **Conflict** | Supersede: deprecate existing, create `supersedes` causal edge |
+| < 0.75 | **Complement** | Store as new memory unchanged |
+
+Checks top-3 most similar memories in the spec folder.
+
+**R7: Chunk Thinning** (`chunk-thinning.ts`):
+Scores chunks by anchor presence + content density. Composite score: `anchorScore * ANCHOR_WEIGHT + densityScore * DENSITY_WEIGHT`. Chunks below the `DEFAULT_THINNING_THRESHOLD=0.3` are dropped before indexing.
+
+**R16: Encoding-Intent Classification** (`encoding-intent.ts`):
+Heuristic classification of memory content intent at index time. Stored in the `encoding_intent` column for retrieval-time filtering. Gated via `SPECKIT_ENCODING_INTENT`.
+
+**R10: Auto Entity Extraction** (`extraction/`):
+NER + key-phrase rules extract entities at save time and populate the `memory_entities` table. Density guard limits extraction volume. Gated via `SPECKIT_AUTO_ENTITIES`. Upstream dependency for S5 entity linking.
+
+**PI-A3: Token Budget Validation**:
+Pre-save check validates content fits within tier-specific token budgets. Greedy truncation strategy applied when content overflows.
+
+<a id="scoring-enhancements"></a>
+### Scoring Enhancements
+
+**Score Normalization** (`composite-scoring.ts`):
+Min-max normalization maps composite scores to [0,1], fixing 15:1 magnitude mismatches between scoring dimensions. Gated via `SPECKIT_SCORE_NORMALIZATION` (default ON, graduated Sprint 4). Single-result sets normalize to 1.0; equal scores normalize to 1.0.
+
+**TM-01: Interference Scoring** (`interference-scoring.ts`):
+Counts similar memories in the same spec folder using Jaccard word-overlap similarity. Threshold: **0.75**. Penalty: **-0.08** per interfering memory (additive, clamped to [0,1]). Gated via `SPECKIT_INTERFERENCE_SCORE` (default ON).
+
+**TM-03: Classification-Based Decay** (`composite-scoring.ts`):
+FSRS stability is adjusted by a 2D multiplier matrix of context type x importance tier:
+
+| | constitutional | critical | important | normal | temporary | deprecated |
+|---|---|---|---|---|---|---|
+| **decision** | Inf | Inf | 1.5x | 1.0x | 0.5x | 0.25x |
+| **research** | Inf | Inf | 3.0x | 2.0x | 1.0x | 0.5x |
+| **implementation** | Inf | Inf | 1.5x | 1.0x | 0.5x | 0.25x |
+
+`Infinity` strategy: constitutional and critical tiers with decision/research context never decay. Gated via `SPECKIT_CLASSIFICATION_DECAY` (default ON).
+
+**A4: Negative Feedback** (`negative-feedback.ts`):
+`wasUseful=false` validations apply a demotion multiplier to composite scores. Penalty: -0.1 per negative validation, floor at 0.3 (never suppress below 30%). 30-day half-life recovery: penalty halves over time if no further negative feedback. Gated via `SPECKIT_NEGATIVE_FEEDBACK` (default ON).
+
+**T002a: Auto-Promotion** (`auto-promotion.ts`):
+Validation-count-based tier promotion engine. Thresholds: **5** positive validations = normal -> important, **10** = important -> critical. Throttle safeguard: max **3** promotions per **8-hour** rolling window. `NON_PROMOTABLE_TIERS`: critical, constitutional, temporary, deprecated. Promotion audit logged to `memory_promotion_audit` table.
+
+**R11: Learned Relevance Feedback** (`learned-feedback.ts`):
+Selection tracking writes to a separate `learned_triggers` column (NOT FTS5 index). 10 safeguards: separate column, 30-day TTL, 100+ stop words denylist, rate cap (3 terms/selection, 8 terms/memory), top-3 exclusion, 1-week shadow period, <72h memory exclusion, sprint gate review, rollback mechanism, provenance audit log. Query weight: **0.7x** of organic triggers. Gated via `SPECKIT_LEARN_FROM_SELECTION` (default OFF).
+
 <!-- /ANCHOR:features -->
 
 ---
@@ -627,7 +790,39 @@ console.log(`Schema version: ${version}`);
 
 ---
 
-## 6. RELATED RESOURCES
+## 6. RECENT CHANGES (SPRINT 8)
+<!-- ANCHOR:recent-changes -->
+
+Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
+
+**Bug Fixes (15 items):**
+- SQL operator precedence fixes in scoring and reconsolidation queries (B3)
+- Guard clauses added for missing data, null embeddings, and edge cases (B4)
+- Composite score overflow clamped to [0,1] — doc-type multipliers could push above 1.0 (C1)
+- Causal-boost cycle amplification fix prevents unbounded score growth (C3)
+- Ablation binomial overflow fix for n>50 via log-space computation (C4)
+- FTS5 double-tokenization fix in learned feedback isolation (D2)
+- Quality floor corrected from 0.2 to 0.005 (D3) — aligns with RRF score range
+- Temporal contiguity double-counting eliminated (E1)
+- Divergent `normalizeEntityName` implementations consolidated (A1)
+- Duplicate `computeEdgeDensity` implementations consolidated (A2)
+- Dead code removal: ~360 lines across scoring, search, and graph modules
+
+**Performance Improvements (13 items):**
+- `Math.max(...spread)` replaced with iterative loop for large arrays
+- LIMIT clauses added to unbounded SQL queries
+- Batch query consolidation in interference scoring
+- WeakMap caching for spec folder hierarchy lookups (S4)
+
+**Test Quality:**
+- 226 test files, 7,008 tests passing
+- Deterministic test isolation improved (no shared mutable state leaks)
+
+<!-- /ANCHOR:recent-changes -->
+
+---
+
+## 7. RELATED RESOURCES
 <!-- ANCHOR:related -->
 
 ### Internal Dependencies
@@ -685,8 +880,8 @@ console.log(`Schema version: ${version}`);
 
 ---
 
-**Version**: 1.9.0
-**Last Updated**: 2026-02-28
+**Version**: 2.0.0
+**Last Updated**: 2026-03-01
 **Maintainer**: system-spec-kit MCP server
 
 **Migration Status**:
@@ -694,4 +889,5 @@ console.log(`Schema version: ${version}`);
 - `vector-index.ts` is a typed facade. `vector-index-impl.ts` is the full implementation
 - `rrf-fusion.ts` and `rsf-fusion.ts` provide RRF and Relative Score Fusion algorithms
 - Query pipeline additions: query complexity routing, channel representation, confidence truncation, dynamic token budgets, folder discovery
-- Deferred features: TF-IDF memory summaries (R8), cross-document entity linking (S5)
+- Implemented: TF-IDF memory summaries (R8), cross-document entity linking (S5), graph signals (N2a/N2b/N2c), 4-stage pipeline (R6)
+- Sprint 8 remediation: 15 bug fixes, ~360 lines dead code removed, 13 performance improvements
