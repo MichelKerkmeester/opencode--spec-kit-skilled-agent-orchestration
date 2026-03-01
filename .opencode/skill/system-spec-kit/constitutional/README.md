@@ -5,7 +5,6 @@ trigger_phrases:
   - "constitutional memory"
   - "always-surface rules"
   - "constitutional tier"
-importance_tier: "normal"
 ---
 
 # Constitutional Memory System

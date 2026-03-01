@@ -5,7 +5,6 @@ trigger_phrases:
   - "core workflow"
   - "memory workflow"
   - "subfolder resolution"
-importance_tier: "normal"
 ---
 
 

@@ -615,7 +615,6 @@ description: "Brief description of this document"
 trigger_phrases:
   - "phrase that should surface this document"
   - "another trigger phrase"
-importance_tier: "normal"  # constitutional | critical | important | normal | temporary
 ---
 ```
 
@@ -626,17 +625,6 @@ importance_tier: "normal"  # constitutional | critical | important | normal | te
 | `title` | Yes | string | Human-readable title for document discovery and display |
 | `description` | Yes | string | Brief summary (1-2 sentences) for quick scanning |
 | `trigger_phrases` | No | string[] | Optional phrases that improve retrieval and routing |
-| `importance_tier` | No | enum | Optional priority hint for downstream tooling (default: `normal`) |
-
-### Importance Tiers
-
-| Tier | Weight | Use When |
-|------|--------|----------|
-| `constitutional` | Highest | Core rules and constraints that must always surface |
-| `critical` | High | Key decisions, architectural patterns |
-| `important` | Medium-High | Significant features, important references |
-| `normal` | Medium | Standard documentation (default for READMEs) |
-| `temporary` | Low | Ephemeral content, session-specific notes |
 
 ### When Frontmatter is Needed
 
@@ -661,7 +649,6 @@ trigger_phrases:
   - "chrome devtools"
   - "inspect element"
   - "console errors"
-importance_tier: "important"
 ---
 
 # Chrome DevTools Workflow

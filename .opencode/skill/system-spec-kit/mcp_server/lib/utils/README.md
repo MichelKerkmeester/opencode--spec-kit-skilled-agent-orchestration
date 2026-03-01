@@ -5,7 +5,6 @@ trigger_phrases:
   - "utility functions"
   - "format helpers"
   - "path security"
-importance_tier: "normal"
 ---
 
 # Utils

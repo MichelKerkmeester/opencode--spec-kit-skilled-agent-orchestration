@@ -5,7 +5,6 @@ trigger_phrases:
   - "session management"
   - "session deduplication"
   - "crash recovery"
-importance_tier: "normal"
 ---
 
 # Session Layer

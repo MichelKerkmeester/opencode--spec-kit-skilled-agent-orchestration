@@ -7,7 +7,6 @@ trigger_phrases:
   - "DEPTH processing framework"
   - "prompt framework selection"
   - "RCAF CRAFT prompt structure"
-importance_tier: "normal"
 ---
 
 # Prompt Engineering Specialist

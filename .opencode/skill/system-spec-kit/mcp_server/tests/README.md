@@ -5,7 +5,6 @@ trigger_phrases:
   - "test suite"
   - "vitest"
   - "mcp tests"
-importance_tier: "normal"
 ---
 
 # MCP Server Test Suite

@@ -5,7 +5,6 @@ trigger_phrases:
   - "mcp library"
   - "lib modules"
   - "cognitive memory"
-importance_tier: "normal"
 ---
 
 # MCP Server Library

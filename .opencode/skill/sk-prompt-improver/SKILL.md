@@ -2,6 +2,7 @@
 name: sk-prompt-improver
 description: "Prompt engineering specialist that transforms vague requests into structured, scored AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR scoring across text modes."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+version: 1.1.0.0
 ---
 
 <!-- Keywords: prompt-engineering, prompt-improvement, DEPTH, RICCE, CLEAR-scoring, framework-selection, RCAF, COSTAR, CRAFT, TIDD-EC, CRISPE -->

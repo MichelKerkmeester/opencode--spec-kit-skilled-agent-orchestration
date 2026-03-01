@@ -5,7 +5,6 @@ trigger_phrases:
   - "web development workflow"
   - "webflow code orchestrator"
   - "frontend implementation debugging verification"
-importance_tier: "normal"
 ---
 
 # Code Workflows - Web Development Orchestrator

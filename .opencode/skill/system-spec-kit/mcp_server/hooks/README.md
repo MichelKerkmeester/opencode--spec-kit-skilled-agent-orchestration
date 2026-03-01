@@ -5,7 +5,6 @@ trigger_phrases:
   - "hooks"
   - "memory surfacing"
   - "context injection"
-importance_tier: "normal"
 ---
 
 

@@ -5,7 +5,6 @@ trigger_phrases:
   - "session types"
   - "type definitions"
   - "session data interface"
-importance_tier: "normal"
 ---
 
 # Types

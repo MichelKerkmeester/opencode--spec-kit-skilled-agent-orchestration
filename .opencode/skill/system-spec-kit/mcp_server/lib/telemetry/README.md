@@ -5,7 +5,6 @@ trigger_phrases:
   - "retrieval telemetry"
   - "latency metrics"
   - "quality metrics"
-importance_tier: "normal"
 ---
 
 # Telemetry

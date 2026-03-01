@@ -5,7 +5,6 @@ trigger_phrases:
   - "MCP utilities"
   - "input validation"
   - "batch processing"
-importance_tier: "normal"
 ---
 
 

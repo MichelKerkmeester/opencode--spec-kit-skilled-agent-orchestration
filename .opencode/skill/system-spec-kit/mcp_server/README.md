@@ -6,7 +6,6 @@ trigger_phrases:
   - "spec kit memory"
   - "hybrid search"
   - "cognitive memory"
-importance_tier: "normal"
 ---
 
 # Spec Kit Memory - MCP Server

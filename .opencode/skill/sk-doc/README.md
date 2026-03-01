@@ -5,7 +5,6 @@ trigger_phrases:
   - "documentation quality enforcement"
   - "opencode component creation workflow"
   - "markdown DQI scoring validation"
-importance_tier: "normal"
 ---
 
 # Workflows Documentation

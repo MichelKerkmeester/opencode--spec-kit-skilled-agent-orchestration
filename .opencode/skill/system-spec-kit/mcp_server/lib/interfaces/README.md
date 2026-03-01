@@ -5,7 +5,6 @@ trigger_phrases:
   - "interfaces"
   - "embedding provider interface"
   - "vector store interface"
-importance_tier: "normal"
 ---
 
 # Interfaces

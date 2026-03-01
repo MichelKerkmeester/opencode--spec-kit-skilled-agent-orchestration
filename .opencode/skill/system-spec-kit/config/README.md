@@ -5,7 +5,6 @@ trigger_phrases:
   - "spec kit config"
   - "memory system configuration"
   - "config jsonc settings"
-importance_tier: "normal"
 ---
 
 # Config

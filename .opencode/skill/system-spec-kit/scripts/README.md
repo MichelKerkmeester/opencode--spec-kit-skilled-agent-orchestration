@@ -6,7 +6,6 @@ trigger_phrases:
   - "validation scripts"
   - "memory save script"
   - "upgrade level workflow"
-importance_tier: "normal"
 ---
 
 

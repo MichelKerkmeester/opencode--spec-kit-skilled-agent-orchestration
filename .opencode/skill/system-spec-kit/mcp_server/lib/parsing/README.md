@@ -5,7 +5,6 @@ trigger_phrases:
   - "memory parser"
   - "trigger matcher"
   - "anchor extraction"
-importance_tier: "normal"
 ---
 
 # Parsing Modules

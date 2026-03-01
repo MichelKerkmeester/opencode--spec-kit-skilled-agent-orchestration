@@ -5,7 +5,6 @@ trigger_phrases:
   - "memory types"
   - "half-life configuration"
   - "type inference"
-importance_tier: "normal"
 ---
 
 # Memory and Document Type Configuration

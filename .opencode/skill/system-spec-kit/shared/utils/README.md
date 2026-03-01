@@ -5,7 +5,6 @@ trigger_phrases:
   - "shared utilities"
   - "path security validation"
   - "retry with backoff"
-importance_tier: "normal"
 ---
 
 # Shared Utilities

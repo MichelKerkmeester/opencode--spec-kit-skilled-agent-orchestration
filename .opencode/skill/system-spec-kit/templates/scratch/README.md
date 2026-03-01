@@ -6,7 +6,6 @@ trigger_phrases:
   - "scratch directory"
   - "temporary files"
   - "disposable workspace"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Scratch

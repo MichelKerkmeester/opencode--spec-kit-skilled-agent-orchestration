@@ -5,7 +5,6 @@ trigger_phrases:
   - "response envelope"
   - "MCP response"
   - "tool response format"
-importance_tier: "normal"
 ---
 
 # Response Module

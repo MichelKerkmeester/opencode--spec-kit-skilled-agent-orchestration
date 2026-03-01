@@ -6,7 +6,6 @@ trigger_phrases:
   - "generate context"
   - "rank memories"
   - "cleanup orphaned vectors"
-importance_tier: "normal"
 ---
 
 

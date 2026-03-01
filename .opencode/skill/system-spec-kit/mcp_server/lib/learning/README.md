@@ -5,7 +5,6 @@ trigger_phrases:
   - "learning corrections"
   - "memory stability"
   - "correction tracking"
-importance_tier: "normal"
 ---
 
 # Learning

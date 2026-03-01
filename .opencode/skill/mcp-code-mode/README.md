@@ -5,7 +5,6 @@ trigger_phrases:
   - "code mode"
   - "call_tool_chain"
   - "utcp"
-importance_tier: "normal"
 ---
 
 # Code Mode MCP - TypeScript Tool Execution

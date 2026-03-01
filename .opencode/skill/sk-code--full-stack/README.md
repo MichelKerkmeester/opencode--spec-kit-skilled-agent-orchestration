@@ -5,7 +5,6 @@ trigger_phrases:
   - "full stack development workflow"
   - "multi-stack code orchestrator"
   - "stack detection marker files"
-importance_tier: "normal"
 ---
 
 # sk-code--full-stack

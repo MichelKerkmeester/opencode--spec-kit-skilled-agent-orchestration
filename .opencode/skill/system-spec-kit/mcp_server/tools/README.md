@@ -5,7 +5,6 @@ trigger_phrases:
   - "tool dispatch"
   - "MCP tools"
   - "dispatch layer"
-importance_tier: "normal"
 ---
 
 

@@ -5,7 +5,6 @@ trigger_phrases:
   - "level 2"
   - "checklist"
   - "verification"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Level 2 Templates

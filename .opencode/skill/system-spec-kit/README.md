@@ -7,7 +7,6 @@ trigger_phrases:
   - "memory system"
   - "hybrid search"
   - "context preservation"
-importance_tier: "normal"
 ---
 
 # System Spec Kit

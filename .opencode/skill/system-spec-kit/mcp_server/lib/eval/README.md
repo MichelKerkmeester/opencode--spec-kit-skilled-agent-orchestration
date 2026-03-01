@@ -6,7 +6,6 @@ trigger_phrases:
   - "bm25 baseline"
   - "edge density"
   - "ground truth"
-importance_tier: "normal"
 ---
 
 # Evaluation Modules

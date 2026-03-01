@@ -5,7 +5,6 @@ trigger_phrases:
   - "shared library modules"
   - "embeddings trigger extractor shared"
   - "shared TypeScript modules"
-importance_tier: "normal"
 ---
 
 # Shared Library Modules

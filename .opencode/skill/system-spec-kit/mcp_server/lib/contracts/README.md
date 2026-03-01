@@ -5,7 +5,6 @@ trigger_phrases:
   - "retrieval contracts"
   - "context envelope"
   - "retrieval trace"
-importance_tier: "normal"
 ---
 
 # Contracts

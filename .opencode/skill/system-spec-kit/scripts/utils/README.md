@@ -5,7 +5,6 @@ trigger_phrases:
   - "spec kit utilities"
   - "data validator path utils"
   - "script utility modules"
-importance_tier: "normal"
 ---
 
 # System Spec Kit Utilities

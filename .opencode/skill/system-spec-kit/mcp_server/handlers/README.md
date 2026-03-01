@@ -5,7 +5,6 @@ trigger_phrases:
   - "MCP handlers"
   - "memory handlers"
   - "request handlers"
-importance_tier: "normal"
 ---
 
 

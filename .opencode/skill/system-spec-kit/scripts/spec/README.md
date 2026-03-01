@@ -6,7 +6,6 @@ trigger_phrases:
   - "upgrade spec level"
   - "validate spec folder"
   - "check placeholders"
-importance_tier: "normal"
 ---
 
 

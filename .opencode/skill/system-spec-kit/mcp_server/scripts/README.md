@@ -5,7 +5,6 @@ trigger_phrases:
   - "scripts"
   - "reindex embeddings"
   - "database maintenance"
-importance_tier: "normal"
 ---
 
 # Scripts

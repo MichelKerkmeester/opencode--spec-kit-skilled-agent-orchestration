@@ -5,7 +5,6 @@ trigger_phrases:
   - "embeddings factory"
   - "embedding provider selection"
   - "multi-provider embeddings fallback"
-importance_tier: "normal"
 ---
 
 # Embeddings Factory

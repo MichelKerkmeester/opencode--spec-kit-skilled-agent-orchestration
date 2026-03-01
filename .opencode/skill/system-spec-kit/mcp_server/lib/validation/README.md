@@ -5,7 +5,6 @@ trigger_phrases:
   - "validation"
   - "preflight"
   - "anchor format"
-importance_tier: "normal"
 ---
 
 # Validation

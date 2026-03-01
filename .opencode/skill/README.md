@@ -9,7 +9,6 @@ trigger_phrases:
   - "skill routing"
   - "skill advisor"
   - "available scripts"
-importance_tier: "normal"
 ---
 
 # Skills Library

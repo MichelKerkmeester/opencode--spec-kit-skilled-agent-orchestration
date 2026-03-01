@@ -5,7 +5,6 @@ trigger_phrases:
   - "extraction pipeline"
   - "extraction adapter"
   - "redaction gate"
-importance_tier: "normal"
 ---
 
 # Extraction

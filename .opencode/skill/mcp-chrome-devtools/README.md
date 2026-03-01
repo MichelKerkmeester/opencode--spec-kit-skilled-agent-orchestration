@@ -5,7 +5,6 @@ trigger_phrases:
   - "chrome devtools"
   - "browser debugging"
   - "bdg"
-importance_tier: "normal"
 ---
 
 # mcp-chrome-devtools

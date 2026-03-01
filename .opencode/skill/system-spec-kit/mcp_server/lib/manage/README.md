@@ -5,7 +5,6 @@ trigger_phrases:
   - "memory management"
   - "pagerank"
   - "graph authority"
-importance_tier: "normal"
 ---
 
 # Memory Management Library

@@ -6,7 +6,6 @@ trigger_phrases:
   - "create architecture diagram"
   - "visual artifact from spec"
   - "mermaid flowchart HTML"
-importance_tier: "normal"
 ---
 
 # Styled HTML Visual Generator

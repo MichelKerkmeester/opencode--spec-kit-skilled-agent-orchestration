@@ -5,7 +5,6 @@ trigger_phrases:
   - "folder scoring"
   - "composite relevance score"
   - "memory folder ranking"
-importance_tier: "normal"
 ---
 
 # Folder Scoring

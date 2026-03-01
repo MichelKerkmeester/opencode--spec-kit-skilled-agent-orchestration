@@ -5,7 +5,6 @@ trigger_phrases:
   - "addendum"
   - "composition"
   - "level extension"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Addendum Templates

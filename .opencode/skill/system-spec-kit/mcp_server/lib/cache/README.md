@@ -5,7 +5,6 @@ trigger_phrases:
   - "tool cache"
   - "cache TTL"
   - "LRU eviction"
-importance_tier: "normal"
 ---
 
 # Cache Module

@@ -5,7 +5,6 @@ trigger_phrases:
   - "data extractors"
   - "collect session data"
   - "decision extraction"
-importance_tier: "normal"
 ---
 
 

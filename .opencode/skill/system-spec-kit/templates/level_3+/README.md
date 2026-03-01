@@ -5,7 +5,6 @@ trigger_phrases:
   - "level 3+"
   - "governance"
   - "compliance"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Level 3+ Templates

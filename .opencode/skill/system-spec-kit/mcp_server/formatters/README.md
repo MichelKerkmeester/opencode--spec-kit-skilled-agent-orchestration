@@ -5,7 +5,6 @@ trigger_phrases:
   - "formatters"
   - "search results"
   - "token metrics"
-importance_tier: "normal"
 ---
 
 

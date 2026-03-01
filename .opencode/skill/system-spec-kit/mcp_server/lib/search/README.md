@@ -5,7 +5,6 @@ trigger_phrases:
   - "search subsystem"
   - "hybrid search"
   - "vector search"
-importance_tier: "normal"
 ---
 
 # Search Subsystem

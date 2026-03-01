@@ -5,7 +5,6 @@ trigger_phrases:
   - "cognitive memory"
   - "FSRS decay"
   - "memory classification"
-importance_tier: "normal"
 ---
 
 # Cognitive Subsystem

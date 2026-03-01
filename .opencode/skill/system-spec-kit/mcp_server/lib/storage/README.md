@@ -5,7 +5,6 @@ trigger_phrases:
   - "storage layer"
   - "memory indexing"
   - "checkpoints"
-importance_tier: "normal"
 ---
 
 # Storage Layer

@@ -5,7 +5,6 @@ trigger_phrases:
   - "setup scripts"
   - "check prerequisites"
   - "spec folder setup"
-importance_tier: "normal"
 ---
 
 # Setup Scripts

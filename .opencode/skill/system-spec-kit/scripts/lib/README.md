@@ -5,7 +5,6 @@ trigger_phrases:
   - "scripts library"
   - "anchor generator"
   - "shell common"
-importance_tier: "normal"
 ---
 
 

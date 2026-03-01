@@ -5,7 +5,6 @@ trigger_phrases:
   - "test fixtures"
   - "validation fixtures"
   - "spec folder test scenarios"
-importance_tier: "normal"
 ---
 
 # SpecKit Validation Test Fixtures

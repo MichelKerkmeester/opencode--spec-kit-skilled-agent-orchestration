@@ -5,7 +5,6 @@ trigger_phrases:
   - "database"
   - "sqlite"
   - "vector embeddings"
-importance_tier: "normal"
 ---
 
 

@@ -5,7 +5,6 @@ trigger_phrases:
   - "architecture"
   - "layer definitions"
   - "token budgets"
-importance_tier: "normal"
 ---
 
 # Architecture Module

@@ -5,7 +5,6 @@ trigger_phrases:
   - "git workflow orchestrator"
   - "conventional commits worktree"
   - "git workspace commit finish"
-importance_tier: "normal"
 ---
 
 # sk-git

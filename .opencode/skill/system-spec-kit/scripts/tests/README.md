@@ -5,7 +5,6 @@ trigger_phrases:
   - "spec kit tests"
   - "test validation"
   - "upgrade-level tests"
-importance_tier: "normal"
 ---
 
 

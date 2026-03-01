@@ -6,7 +6,6 @@ trigger_phrases:
   - "self-healing scripts"
   - "index drift remediation"
   - "telemetry drift drill"
-importance_tier: "normal"
 ---
 
 # Ops Self-Healing Scripts

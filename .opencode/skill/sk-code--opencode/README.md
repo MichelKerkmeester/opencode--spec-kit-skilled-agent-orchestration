@@ -5,7 +5,6 @@ trigger_phrases:
   - "opencode system code standards"
   - "multi-language code quality"
   - "opencode javascript typescript python shell"
-importance_tier: "normal"
 ---
 
 # sk-code--opencode

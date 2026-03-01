@@ -5,7 +5,6 @@ trigger_phrases:
   - "validation rules"
   - "check spec folder"
   - "spec validation scripts"
-importance_tier: "normal"
 ---
 
 # Validation Rules

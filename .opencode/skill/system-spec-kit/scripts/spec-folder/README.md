@@ -5,7 +5,6 @@ trigger_phrases:
   - "spec folder detection"
   - "alignment validation"
   - "folder utilities"
-importance_tier: "normal"
 ---
 
 # Spec Folder Utilities

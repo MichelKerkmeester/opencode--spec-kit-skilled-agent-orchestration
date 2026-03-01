@@ -5,7 +5,6 @@ trigger_phrases:
   - "template renderer"
   - "populate template"
   - "spec template rendering"
-importance_tier: "normal"
 ---
 
 

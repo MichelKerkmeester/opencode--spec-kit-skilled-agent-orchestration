@@ -5,7 +5,6 @@ trigger_phrases:
   - "embedding providers"
   - "retry manager"
   - "backoff retry"
-importance_tier: "normal"
 ---
 
 # Providers Modules

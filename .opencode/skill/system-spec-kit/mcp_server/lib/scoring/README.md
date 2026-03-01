@@ -5,7 +5,6 @@ trigger_phrases:
   - "scoring algorithms"
   - "importance tiers"
   - "composite scoring"
-importance_tier: "normal"
 ---
 
 # Scoring Algorithms

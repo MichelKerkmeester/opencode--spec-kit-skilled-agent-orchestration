@@ -5,7 +5,6 @@ trigger_phrases:
   - "search weights"
   - "mcp config"
   - "ranking configuration"
-importance_tier: "normal"
 ---
 
 

@@ -5,7 +5,6 @@ trigger_phrases:
   - "examples"
   - "reference folders"
   - "level comparison"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Template Examples

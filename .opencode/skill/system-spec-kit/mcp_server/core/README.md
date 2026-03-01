@@ -5,7 +5,6 @@ trigger_phrases:
   - "core modules"
   - "mcp config"
   - "database state"
-importance_tier: "normal"
 ---
 
 

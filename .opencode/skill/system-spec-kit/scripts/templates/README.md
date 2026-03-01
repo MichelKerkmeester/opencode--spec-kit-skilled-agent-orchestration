@@ -5,7 +5,6 @@ trigger_phrases:
   - "template composer"
   - "compose templates"
   - "template composition"
-importance_tier: "normal"
 ---
 
 # SpecKit Template Composer

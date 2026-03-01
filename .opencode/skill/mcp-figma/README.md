@@ -5,7 +5,6 @@ trigger_phrases:
   - "figma"
   - "design files"
   - "figma mcp"
-importance_tier: "normal"
 ---
 
 # Figma MCP

@@ -5,7 +5,6 @@ trigger_phrases:
   - "error handling"
   - "recovery hints"
   - "error codes"
-importance_tier: "normal"
 ---
 
 # Errors

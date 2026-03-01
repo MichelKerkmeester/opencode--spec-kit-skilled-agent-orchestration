@@ -5,7 +5,6 @@ trigger_phrases:
   - "level 3"
   - "architecture"
   - "decision record"
-importance_tier: "normal"
 contextType: "general"
 ---
 # Level 3 Templates
