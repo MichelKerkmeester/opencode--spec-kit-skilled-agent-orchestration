@@ -331,6 +331,7 @@ $ARGUMENTS
 | 2    | Planning      | ☐      | Filename, sections     | File spec determined       |
 | 3    | Template Load | ☐      | Structure patterns     | Template loaded            |
 | 4    | Content       | ☐      | [asset_name].md        | Asset file created         |
+| 5    | Validation    | ☐      | SKILL.md updated       | Integration verified       |
 | 6    | Save Context  | ☐      | Memory file            | Context preserved          |
 
 

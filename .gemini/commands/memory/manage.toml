@@ -837,7 +837,7 @@ STATUS=OK CHECKPOINT=<name> ACTION=delete
 
 ---
 
-## 189. RELATED COMMANDS
+## 19. RELATED COMMANDS
 
 - `/memory:context` — Intent-aware context retrieval (read-only)
 - `/memory:save` — Save current conversation context

@@ -1,6 +1,6 @@
 description = "Create a comprehensive AI-first installation guide with step-by-step setup instructions, requirements, and troubleshooting - supports :auto and :confirm modes"
 prompt = """---
-description: Create a comprehensive AI-first installation guide with step-by-step setup instructions, requirements, and troubleshooting - supports :auto and :confirm modes
+description: "Create a comprehensive AI-first installation guide with step-by-step setup instructions, requirements, and troubleshooting - supports :auto and :confirm modes"
 argument-hint: "<project-name> [--platforms <list>] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---
@@ -269,11 +269,10 @@ Confirm you have these values from the unified setup phase:
 
 ### Step 5: Load & Execute Workflow
 
-Load and execute the workflow definition:
+Load and execute the appropriate workflow definition based on execution mode:
 
-```
-.opencode/command/create/assets/create_install_guide.yaml
-```
+- **AUTONOMOUS (`:auto`)**: `.opencode/command/create/assets/create_install_guide_auto.yaml`
+- **INTERACTIVE (`:confirm`)**: `.opencode/command/create/assets/create_install_guide_confirm.yaml`
 
 The YAML file contains:
 - Detailed step-by-step activities

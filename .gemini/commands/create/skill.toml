@@ -128,9 +128,6 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    B) Load all recent files, up to 3                            │
    │    C) Skip (start fresh)                                       │
    │                                                                │
-   │    A) No (default — SKILL.md + assets/ + references/ only)    │
-   │       (recommended for complex skills, 5+ topics)              │
-   │                                                                │
    │ Reply with answers, e.g.: "B, A, C, A" or "pdf-editor, B, A"   │
    └────────────────────────────────────────────────────────────────┘
 
