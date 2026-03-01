@@ -110,8 +110,9 @@ describe('T002: Degree as 5th RRF Channel', () => {
       expect(fusedIds).toEqual([1, 2, 3, 4]);
 
       // Each result should have RRF score and sources
+      // With graduated-ON normalization, scores are [0,1] — min becomes 0.0
       for (const r of fused) {
-        expect(r.rrfScore).toBeGreaterThan(0);
+        expect(r.rrfScore).toBeGreaterThanOrEqual(0);
         expect(r.sources.length).toBeGreaterThanOrEqual(1);
       }
     });
@@ -130,12 +131,17 @@ describe('T002: Degree as 5th RRF Channel', () => {
       const fusedWith = fuseResultsMulti(withDegree);
       const fusedWithout = fuseResultsMulti(withoutDegree);
 
-      const scoreWith = fusedWith.find(r => r.id === 1)!.rrfScore;
-      const scoreWithout = fusedWithout.find(r => r.id === 1)!.rrfScore;
+      // With graduated-ON normalization, single-result sets normalize to 1.0
+      // so we verify via convergenceBonus and source count instead of raw score comparison
+      const itemWith = fusedWith.find(r => r.id === 1)!;
+      const itemWithout = fusedWithout.find(r => r.id === 1)!;
 
-      expect(scoreWith).toBeGreaterThan(scoreWithout);
-      // Convergence bonus should be applied
-      expect(fusedWith.find(r => r.id === 1)!.convergenceBonus).toBeGreaterThan(0);
+      // Convergence bonus should be applied when appearing in multiple channels
+      expect(itemWith.convergenceBonus).toBeGreaterThan(0);
+      // Item without degree has no convergence bonus (single channel)
+      expect(itemWithout.convergenceBonus ?? 0).toBe(0);
+      // Multiple sources confirms degree channel contributed
+      expect(itemWith.sources.length).toBeGreaterThan(itemWithout.sources.length);
     });
 
     it('Degree source appears in result.sources', () => {

@@ -180,6 +180,7 @@ function resolveSessionId(result: unknown): string {
   return 'auto-extraction';
 }
 
+// E2 FIX: Returns null on resolution failure instead of falling back to most-recent memory ID
 function resolveMemoryIdFromText(sourceText: string): number | null {
   if (!db) return null;
 

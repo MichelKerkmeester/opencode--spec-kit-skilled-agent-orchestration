@@ -150,7 +150,7 @@ describe('RRF Score Normalization (T004)', () => {
       expect(results[results.length - 1].rrfScore).toBeCloseTo(0.0, 5);
     });
 
-    it('normalization disabled when flag is false', () => {
+    it('normalization enabled by default (graduated-ON)', () => {
       delete process.env.SPECKIT_SCORE_NORMALIZATION;
 
       const lists: RankedList[] = [
@@ -160,12 +160,9 @@ describe('RRF Score Normalization (T004)', () => {
 
       const results = fuseResultsMulti(lists);
 
-      // Without normalization, raw RRF scores are typically small fractions
-      // and may exceed 1.0 with convergence bonuses, or at least won't be
-      // a neat [0,1] min-max normalized range
+      // Graduated-ON: normalization is active when env var is unset
       expect(results.length).toBeGreaterThan(0);
-      // Verify normalization is not applied: the flag should be off
-      expect(isScoreNormalizationEnabled()).toBe(false);
+      expect(isScoreNormalizationEnabled()).toBe(true);
     });
 
     it('normalization disabled when flag is explicitly "false"', () => {

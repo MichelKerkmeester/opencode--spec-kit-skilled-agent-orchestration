@@ -38,6 +38,9 @@ const DEFAULT_B = 0.75;
  * each field's token scores by the appropriate weight before
  * accumulating the total document score.
  *
+ * AI-WHY: These weights are consumed by the FTS5 path in sqlite-fts.ts,
+ * not the in-memory BM25 engine in this file. Exported for shared access.
+ *
  * title:           10.0 — exact title matches are the strongest signal
  * trigger_phrases:  5.0 — curated keywords next most important
  * content_generic:  2.0 — generic textual content (file_path, tags, etc.)

@@ -155,6 +155,7 @@ const CLASSIFICATION_TIER_STABILITY_MULTIPLIER: Readonly<Record<string, number>>
   critical: Infinity,
   important: 1.5,
   normal: 1.0,
+  scratch: 0.5,
   temporary: 0.5,
   deprecated: 0.25,
 };
@@ -253,8 +254,9 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
   const tier = typeof row.importance_tier === 'string'
     ? row.importance_tier.toLowerCase()
     : 'normal';
-  const classificationDecayEnabled = process.env.SPECKIT_CLASSIFICATION_DECAY === 'true'
-    || process.env.SPECKIT_CLASSIFICATION_DECAY === '1';
+  // AI-WHY: Graduated-ON semantics — classification decay is active unless explicitly disabled.
+  // Aligned with fsrs-scheduler.ts:337 which uses the same !== 'false' convention.
+  const classificationDecayEnabled = process.env.SPECKIT_CLASSIFICATION_DECAY !== 'false';
 
   // AI-GUARD: Return neutral 0.5 when no timestamp — prevents NaN propagation
   if (!lastReview) {

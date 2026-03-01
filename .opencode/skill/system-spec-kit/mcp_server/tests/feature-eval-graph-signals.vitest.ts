@@ -215,7 +215,6 @@ describe('T002: RRF 5th degree channel integration', () => {
     ];
 
     const fusedWithout = fuseResultsMulti(baseLists);
-    const scoreWithoutDegree = fusedWithout.find(r => r.id === 1)!.rrfScore;
 
     // Add degree channel with memory 1 ranked first
     const withDegree: RankedList[] = [
@@ -223,26 +222,35 @@ describe('T002: RRF 5th degree channel integration', () => {
       { source: SOURCE_TYPES.DEGREE, results: [{ id: 1 }, { id: 2 }], weight: 0.4 },
     ];
     const fusedWith = fuseResultsMulti(withDegree);
-    const scoreWithDegree = fusedWith.find(r => r.id === 1)!.rrfScore;
 
-    expect(scoreWithDegree).toBeGreaterThan(scoreWithoutDegree);
+    // With graduated-ON normalization, compare source counts and convergence
+    // since normalized scores can both be 1.0 for top results
+    const itemWith = fusedWith.find(r => r.id === 1)!;
+    const itemWithout = fusedWithout.find(r => r.id === 1)!;
+
+    // Degree channel adds an extra source for memory 1
+    expect(itemWith.sources.length).toBeGreaterThan(itemWithout.sources.length);
+    expect(itemWith.sources).toContain('degree');
   });
 
   it('T002.2 — degree channel weight 0.4 produces expected RRF contribution', () => {
-    const K = 60; // default RRF k
     const DEGREE_WEIGHT = 0.4;
 
-    // Single degree channel, single item at rank 1
+    // Single degree channel, two items to verify relative ordering
     const lists: RankedList[] = [
-      { source: SOURCE_TYPES.DEGREE, results: [{ id: 42 }], weight: DEGREE_WEIGHT },
+      { source: SOURCE_TYPES.DEGREE, results: [{ id: 42 }, { id: 43 }], weight: DEGREE_WEIGHT },
     ];
 
     const fused = fuseResultsMulti(lists);
-    const result = fused.find(r => r.id === 42)!;
+    const result42 = fused.find(r => r.id === 42)!;
+    const result43 = fused.find(r => r.id === 43)!;
 
-    // RRF score = weight * 1/(k + rank) where rank is 1-indexed = weight * 1/(60+1)
-    const expectedScore = DEGREE_WEIGHT * (1 / (K + 1));
-    expect(result.rrfScore).toBeCloseTo(expectedScore, 6);
+    // With graduated-ON normalization, scores are min-max normalized to [0,1]
+    // Top-ranked item gets 1.0, bottom gets 0.0
+    expect(result42.rrfScore).toBeCloseTo(1.0, 5);
+    expect(result43.rrfScore).toBeCloseTo(0.0, 5);
+    // Degree channel should be recorded as source
+    expect(result42.sources).toContain('degree');
   });
 
   it('T002.3 — degree channel triggers convergence bonus when memory appears in multiple channels', () => {

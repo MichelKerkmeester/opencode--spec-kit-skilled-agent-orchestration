@@ -82,9 +82,6 @@ export const LEARNED_TERM_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 /** TTL for learned terms in seconds: 30 days */
 export const LEARNED_TERM_TTL_SECONDS = 30 * 24 * 60 * 60;
 
-/** Shadow period duration in milliseconds: 1 week (Safeguard #6) */
-export const SHADOW_PERIOD_MS = 7 * 24 * 60 * 60 * 1000;
-
 /** Minimum memory age in milliseconds: 72 hours (Safeguard #7) */
 export const MIN_MEMORY_AGE_MS = 72 * 60 * 60 * 1000;
 

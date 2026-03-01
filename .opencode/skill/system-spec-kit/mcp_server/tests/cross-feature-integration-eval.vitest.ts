@@ -525,9 +525,10 @@ describe('Cross-Sprint Integration', () => {
         // console.log(`Kendall tau: ${tau}, concordant: ${concordant}, discordant: ${discordant}`);
       }
 
-      // Core invariant: both methods produce scores > 0 for shared items
+      // Core invariant: both methods produce scores >= 0 for shared items
+      // With graduated-ON normalization, min-ranked result normalizes to 0.0
       for (const result of rrfResults) {
-        expect(result.rrfScore).toBeGreaterThan(0);
+        expect(result.rrfScore).toBeGreaterThanOrEqual(0);
       }
       for (const result of rsfResults) {
         expect(result.rsfScore).toBeGreaterThanOrEqual(0);

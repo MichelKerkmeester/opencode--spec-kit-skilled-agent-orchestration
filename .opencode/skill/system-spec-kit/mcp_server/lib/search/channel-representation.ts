@@ -76,7 +76,7 @@ export function isChannelMinRepEnabled(): boolean {
  * Rules:
  *  - Only checks channels that actually returned results (no phantom penalties).
  *  - A channel is under-represented when it has 0 results in topK.
- *  - Promotion only occurs for results with score >= QUALITY_FLOOR (0.2).
+ *  - Promotion only occurs for results with score >= QUALITY_FLOOR (0.005).
  *  - When the flag is disabled the function returns topK unchanged (no-op).
  *  - The `source` field of each topK item is the authoritative channel label.
  *    Items that carry a `sources` array (multi-channel convergence) are counted

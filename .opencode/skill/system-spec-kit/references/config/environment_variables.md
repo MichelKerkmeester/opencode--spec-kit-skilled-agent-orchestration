@@ -150,6 +150,8 @@ VOYAGE_EMBEDDINGS_MODEL=voyage-4-large VOYAGE_API_KEY=your-key node mcp_server/c
 
 Feature flags control experimental and optional functionality. All flags default to production-safe values.
 
+### 8.1 Core System Flags (SPEC_KIT_ prefix)
+
 | Flag | Default | Purpose |
 |------|---------|---------|
 | `SPEC_KIT_ENABLE_DEDUP` | `true` | Session deduplication (removes redundant memory entries) |
@@ -164,54 +166,129 @@ Feature flags control experimental and optional functionality. All flags default
 | `SPEC_KIT_OFFLINE_MODE` | `false` | Offline-first operation (no external API calls) |
 | `SPEC_KIT_LAZY_EMBEDDING` | `true` | Lazy embedding model loading (reduces startup time) |
 | `SPEC_KIT_PROVIDER_FALLBACK` | `true` | Auto-switch embedding providers on failure |
-| `SPECKIT_ADAPTIVE_FUSION` | `true` | Enables intent-aware weighted RRF with 7 task-type profiles in `memory_search()` (set `false` to disable) |
-| `SPECKIT_EXTENDED_TELEMETRY` | `true` | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) per search operation |
-| `SPECKIT_INDEX_SPEC_DOCS` | `true` | Gates spec document indexing in `memory_index_scan()` (discovers and indexes spec folder documents with document-type scoring multipliers) |
+
+### 8.2 Graduated Search Pipeline Flags (SPECKIT_ prefix)
+
+All graduated flags use `!== 'false'` semantics: **enabled by default**, set to `false` to disable.
+These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100% rollout.
+
+#### Search & Ranking
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_PIPELINE_V2` | ON | S3 | 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant). When OFF, legacy postSearchPipeline path is used |
+| `SPECKIT_RRF` | ON | S0 | Reciprocal Rank Fusion for multi-channel result merging |
+| `SPECKIT_SCORE_NORMALIZATION` | ON | S1 | Min-max normalization of scores to [0,1] range (both RRF and composite) |
+| `SPECKIT_MMR` | ON | S1 | Graph-guided MMR diversity reranking |
+| `SPECKIT_CROSS_ENCODER` | ON | S1 | Cross-encoder reranking gate |
+| `SPECKIT_MULTI_QUERY` | ON | S1 | Multi-query expansion for deep-mode retrieval |
+| `SPECKIT_SEARCH_FALLBACK` | ON | S2 | Quality-aware 3-tier search fallback chain (PI-A2) |
+| `SPECKIT_EMBEDDING_EXPANSION` | ON | S3 | Query expansion for embedding retrieval. Suppressed when classification = "simple" |
+| `SPECKIT_CONFIDENCE_TRUNCATION` | ON | S4 | Confidence-based result truncation |
+| `SPECKIT_DYNAMIC_TOKEN_BUDGET` | ON | S4 | Dynamic token budget allocation based on query complexity |
+| `SPECKIT_COMPLEXITY_ROUTER` | ON | S4 | Query complexity classification and routing |
+| `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles |
+| `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
+
+#### Scoring & Feedback
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_DOCSCORE_AGGREGATION` | ON | S3 | Document-level chunk-to-memory score aggregation (R1 MPAB) |
+| `SPECKIT_INTERFERENCE_SCORE` | ON | S5 | Interference scoring for conflicting memory detection |
+| `SPECKIT_CLASSIFICATION_DECAY` | ON | S6 | Context-type-aware decay rates in FSRS scheduling |
+| `SPECKIT_NEGATIVE_FEEDBACK` | ON | S6 | Negative-feedback confidence demotion in ranking (T002b/A4) |
+
+#### Cognitive & Graph
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_COACTIVATION` | ON | S1 | Spreading activation for related memory co-retrieval |
+| `SPECKIT_COACTIVATION_STRENGTH` | `0.25` | S1 | Numeric boost factor for co-activation (default 0.25) |
+| `SPECKIT_CAUSAL_BOOST` | ON | S3 | Causal-neighbor boost (2-hop traversal on causal_edges) |
+| `SPECKIT_SESSION_BOOST` | ON | S3 | Session-based score boost from working_memory attention signals |
+| `SPECKIT_EVENT_DECAY` | ON | S3 | Event-driven attention decay in working memory (requires sessionId) |
+| `SPECKIT_WORKING_MEMORY` | ON | S2 | Working memory subsystem (session-scoped attention tracking) |
+| `SPECKIT_ARCHIVAL` | ON | S2 | Archival manager for memory lifecycle transitions |
+| `SPECKIT_GRAPH_SIGNALS` | ON | S5 | Graph momentum scoring and causal depth signals (N2a+N2b) |
+| `SPECKIT_COMMUNITY_DETECTION` | ON | S5 | Community detection via BFS connected components + Louvain (N2c) |
+| `SPECKIT_CONSOLIDATION` | ON | S4 | Consolidation engine: contradiction scan, Hebbian strengthening, staleness detection |
+
+#### Indexing & Extraction
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_SAVE_QUALITY_GATE` | ON | S4 | Pre-storage quality gate for memory saves (TM-04) |
+| `SPECKIT_RECONSOLIDATION` | ON | S4 | Reconsolidation-on-save for memory deduplication (TM-06) |
+| `SPECKIT_ENCODING_INTENT` | ON | S5 | Encoding-intent capture at index time (document, code, structured_data) |
+| `SPECKIT_AUTO_ENTITIES` | ON | S6 | Rule-based noun-phrase entity extraction at save time (R10) |
+| `SPECKIT_ENTITY_LINKING` | ON | S6 | Cross-document entity linking via entity-based edges (S5). Requires R10 |
+| `SPECKIT_MEMORY_SUMMARIES` | ON | S5 | TF-IDF extractive summary generation as search channel (R8) |
+| `SPECKIT_INDEX_SPEC_DOCS` | ON | S7 | Spec document indexing in `memory_index_scan()` with document-type scoring |
+| `SPECKIT_SIGNAL_VOCAB` | ON | S5 | Signal vocabulary expansion in trigger matching |
+
+#### Retrieval & Discovery
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_FOLDER_DISCOVERY` | ON | S2 | Automatic spec folder discovery via description cache (PI-B3) |
+| `SPECKIT_FOLDER_SCORING` | ON | S3 | Folder relevance scoring and two-phase retrieval |
+| `SPECKIT_FOLDER_TOP_K` | `5` | S3 | Numeric: top-K folder candidates for folder-scoped retrieval |
+| `SPECKIT_DEGREE_BOOST` | ON | S3 | Degree-centrality boost for highly-connected memories |
+| `SPECKIT_CHANNEL_MIN_REP` | ON | S4 | Channel minimum representation: promotes best result from under-represented channels |
+| `SPECKIT_LEARN_FROM_SELECTION` | OFF | S6 | Learned feedback from user result selections (requires 28-day R13 evaluation) |
+| `SPECKIT_AUTO_RESUME` | ON | S7 | Auto-resume session detection in `memory_context()` |
+| `SPECKIT_PRESSURE_POLICY` | ON | S7 | Context pressure policy for token budget management |
+
+#### Observability & Evaluation
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_EXTENDED_TELEMETRY` | ON | S5 | 4-dimension retrieval metrics (latency, mode, fallback, quality) |
+| `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
+| `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
+| `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
+| `SPECKIT_QUALITY_LOOP` | OFF | S7 | Quality feedback loop in save handler (opt-in) |
+| `SPECKIT_SKIP_API_VALIDATION` | OFF | S0 | Skip API key validation at startup (development only) |
+| `SPECKIT_DEBUG_INDEX_SCAN` | OFF | S7 | Debug logging for index scan operations (opt-in) |
+| `SPECKIT_ROLLOUT_PERCENT` | `100` | S3 | Numeric: graduated rollout percentage (0-100) for deterministic feature bucketing |
 
 ### Usage Examples
 
 ```bash
+# Disable a graduated feature
+SPECKIT_PIPELINE_V2=false node mcp_server/context-server.ts
+
+# Enable an opt-in feature
+SPECKIT_ABLATION=true node mcp_server/context-server.ts
+
+# Adjust numeric parameters
+SPECKIT_COACTIVATION_STRENGTH=0.3 SPECKIT_FOLDER_TOP_K=10 node mcp_server/context-server.ts
+
 # Disable deduplication for testing
 SPEC_KIT_ENABLE_DEDUP=false node mcp_server/context-server.ts
-
-# Enable experimental causal memory graph
-SPEC_KIT_ENABLE_CAUSAL=true node mcp_server/context-server.ts
 
 # Verbose logging for debugging
 SPEC_KIT_VERBOSE_LOGGING=true node scripts/dist/memory/generate-context.js specs/001/
 
 # Offline mode (no API calls, local embeddings only)
 SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-server.ts
-
-# Disable trigger matching
-SPEC_KIT_ENABLE_TRIGGERS=false node mcp_server/context-server.ts
-
-# Enable adaptive fusion (intent-aware search weighting)
-SPECKIT_ADAPTIVE_FUSION=true node mcp_server/context-server.ts
-
-# Disable spec document indexing
-SPECKIT_INDEX_SPEC_DOCS=false node mcp_server/context-server.ts
 ```
 
 ### Production Recommendations
 
-**Always Enabled:**
-- `SPEC_KIT_ENABLE_DEDUP` - Prevents memory bloat
-- `SPEC_KIT_ENABLE_DECAY` - Prioritizes recent context
-- `SPEC_KIT_ENABLE_EMBEDDING` - Core semantic search
-- `SPEC_KIT_ENABLE_VALIDATION` - Catches errors early
-- `SPEC_KIT_ENABLE_INDEXING` - Keeps search up to date
-- `SPEC_KIT_ENABLE_TRIGGERS` - Proactive context surfacing
-- `SPEC_KIT_PROVIDER_FALLBACK` - Resilience against API failures
+**Always Enabled (graduated defaults):** All `SPECKIT_*` graduated-ON flags should remain at their defaults in production.
 
 **Development/Testing:**
-- `SPEC_KIT_VERBOSE_LOGGING=true` - Detailed diagnostics
-- `SPEC_KIT_ENABLE_CAUSAL=true` - Test experimental features
+- `SPEC_KIT_VERBOSE_LOGGING=true` — Detailed diagnostics
+- `SPECKIT_ABLATION=true` — A/B testing framework
+- `SPECKIT_EVAL_LOGGING=true` — Retrieval quality metrics
+- `SPECKIT_DEBUG_INDEX_SCAN=true` — Index scan diagnostics
 
 **Disable Only If:**
-- `SPEC_KIT_ENABLE_CHECKPOINT=false` - Manual checkpoint control needed
-- `SPEC_KIT_OFFLINE_MODE=true` - No network access
-- `SPEC_KIT_LAZY_EMBEDDING=false` - Faster first query (slower startup)
+- `SPECKIT_PIPELINE_V2=false` — Revert to legacy search pipeline
+- `SPEC_KIT_OFFLINE_MODE=true` — No network access
+- `SPEC_KIT_LAZY_EMBEDDING=false` — Faster first query (slower startup)
 
 ---
 

@@ -73,6 +73,25 @@ interface SearchFunction {
   weight?: number;
 }
 
+/** Canonical key for cross-channel deduplication (`42`, `"42"`, `"mem:42"` -> `"42"`). */
+function canonicalRrfId(id: number | string): string {
+  if (typeof id === 'number') {
+    return String(id);
+  }
+
+  const raw = String(id).trim();
+  const memPrefixed = /^mem:(\d+)$/i.exec(raw);
+  if (memPrefixed) {
+    return String(Number(memPrefixed[1]));
+  }
+
+  if (/^\d+$/.test(raw)) {
+    return String(Number(raw));
+  }
+
+  return raw;
+}
+
 /* ─── 3. CORE FUNCTIONS ─── */
 
 /**
@@ -91,18 +110,19 @@ function fuseResults(
   sourceA: string = SOURCE_TYPES.VECTOR,
   sourceB: string = SOURCE_TYPES.FTS,
 ): FusionResult[] {
-  const scoreMap = new Map<number | string, FusionResult>();
+  const scoreMap = new Map<string, FusionResult>();
 
   // Process list A
   for (let i = 0; i < listA.length; i++) {
     const item = listA[i];
     const rrfScore = 1 / (k + i + 1);
-    const existing = scoreMap.get(item.id);
+    const key = canonicalRrfId(item.id);
+    const existing = scoreMap.get(key);
     if (existing) {
       existing.rrfScore += rrfScore;
       existing.sources.push(sourceA);
     } else {
-      scoreMap.set(item.id, {
+      scoreMap.set(key, {
         ...item,
         rrfScore,
         sources: [sourceA],
@@ -116,14 +136,15 @@ function fuseResults(
   for (let i = 0; i < listB.length; i++) {
     const item = listB[i];
     const rrfScore = 1 / (k + i + 1);
-    const existing = scoreMap.get(item.id);
+    const key = canonicalRrfId(item.id);
+    const existing = scoreMap.get(key);
     if (existing) {
       existing.rrfScore += rrfScore;
       existing.sources.push(sourceB);
       existing.convergenceBonus = CONVERGENCE_BONUS;
       existing.rrfScore += CONVERGENCE_BONUS;
     } else {
-      scoreMap.set(item.id, {
+      scoreMap.set(key, {
         ...item,
         rrfScore,
         sources: [sourceB],
@@ -152,7 +173,7 @@ function fuseResultsMulti(
   const convergenceBonus = options.convergenceBonus ?? CONVERGENCE_BONUS;
   const graphWeightBoost = options.graphWeightBoost ?? GRAPH_WEIGHT_BOOST;
 
-  const scoreMap = new Map<number | string, FusionResult>();
+  const scoreMap = new Map<string, FusionResult>();
 
   for (const list of lists) {
     // AI-WHY: Use ?? so explicit weight=0 is honoured (|| would treat 0 as falsy).
@@ -162,13 +183,14 @@ function fuseResultsMulti(
     for (let i = 0; i < list.results.length; i++) {
       const item = list.results[i];
       const rrfScore = weight * (1 / (k + i + 1));
-      const existing = scoreMap.get(item.id);
+      const key = canonicalRrfId(item.id);
+      const existing = scoreMap.get(key);
       if (existing) {
         existing.rrfScore += rrfScore;
         existing.sources.push(list.source);
         existing.sourceScores[list.source] = rrfScore;
       } else {
-        scoreMap.set(item.id, {
+        scoreMap.set(key, {
           ...item,
           rrfScore,
           sources: [list.source],
@@ -303,23 +325,25 @@ function fuseResultsCrossVariant(
   );
 
   // Step 2: Track which variants each ID appeared in
-  const variantAppearances = new Map<number | string, Set<number>>();
+  const variantAppearances = new Map<string, Set<number>>();
   for (let vi = 0; vi < perVariantFused.length; vi++) {
     for (const result of perVariantFused[vi]) {
-      let variants = variantAppearances.get(result.id);
+      const key = canonicalRrfId(result.id);
+      let variants = variantAppearances.get(key);
       if (!variants) {
         variants = new Set<number>();
-        variantAppearances.set(result.id, variants);
+        variantAppearances.set(key, variants);
       }
       variants.add(vi);
     }
   }
 
   // Step 3: Merge all variant results, accumulating RRF scores
-  const mergedMap = new Map<number | string, FusionResult>();
+  const mergedMap = new Map<string, FusionResult>();
   for (const variantResults of perVariantFused) {
     for (const result of variantResults) {
-      const existing = mergedMap.get(result.id);
+      const key = canonicalRrfId(result.id);
+      const existing = mergedMap.get(key);
       if (existing) {
         // Accumulate scores from additional variants
         existing.rrfScore += result.rrfScore;
@@ -332,7 +356,7 @@ function fuseResultsCrossVariant(
           existing.sourceScores[key] = (existing.sourceScores[key] || 0) + val;
         }
       } else {
-        mergedMap.set(result.id, { ...result });
+        mergedMap.set(key, { ...result });
       }
     }
   }
@@ -368,13 +392,13 @@ function isRrfEnabled(): boolean {
 
 /**
  * Check if score normalization is enabled.
- * AI-WHY: Gated behind SPECKIT_SCORE_NORMALIZATION env var (default: disabled) because
- * normalization can distort relative RRF ranking for downstream consumers that expect
- * raw reciprocal-rank sums. Enabled only when eval infrastructure needs [0,1] comparisons.
- * @returns True only when SPECKIT_SCORE_NORMALIZATION is explicitly 'true'.
+ * AI-WHY: Graduated-ON semantics — normalization is active unless explicitly disabled.
+ * Aligned with composite-scoring.ts which uses the same !== 'false' convention.
+ * Normalizes RRF scores to [0,1] range for consistent downstream comparison.
+ * @returns True unless SPECKIT_SCORE_NORMALIZATION is explicitly 'false'.
  */
 function isScoreNormalizationEnabled(): boolean {
-  return process.env.SPECKIT_SCORE_NORMALIZATION === 'true';
+  return process.env.SPECKIT_SCORE_NORMALIZATION !== 'false';
 }
 
 /**

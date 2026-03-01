@@ -46,7 +46,6 @@ import {
   MAX_TERMS_PER_SELECTION,
   MAX_TERMS_PER_MEMORY,
   LEARNED_TERM_TTL_MS,
-  SHADOW_PERIOD_MS,
   MIN_MEMORY_AGE_MS,
   TOP_N_EXCLUSION,
 } from '../lib/search/learned-feedback';

@@ -463,7 +463,7 @@ Memory content contains implicit entities — technology names, architectural co
 
 Auto entity extraction runs at save time using five pure-TypeScript regex rules with no external NLP dependencies. Rule 1 captures capitalized multi-word sequences (proper nouns like "Claude Code" or "Spec Kit Memory"). Rule 2 extracts technology names from code fence language annotations. Rule 3 identifies nouns following key phrases ("using", "with", "via", "implements"). Rule 4 pulls content from markdown headings. Rule 5 captures quoted strings.
 
-Extracted entities pass through a denylist filter (`entity-denylist.ts`) containing approximately 65 combined stop words across three categories: common nouns ("the", "this", "example"), technology stop words ("function", "class", "const") and generic modifiers ("new", "old", "simple"). Single-character entities and entities shorter than 2 characters are also filtered.
+Extracted entities pass through a denylist filter (`entity-denylist.ts`) containing 64 combined stop words across three categories: common nouns (29 words like "thing", "time", "example"), technology stop words (20 words like "api", "json", "npm") and generic modifiers (15 words like "new", "old", "simple"). Single-character entities and entities shorter than 2 characters are also filtered.
 
 Deduplicated entities are stored in the `memory_entities` table with a UNIQUE constraint on `(memory_id, entity_text)`. The `entity_catalog` table maintains canonical names with Unicode-aware alias normalization (`/[^\p{L}\p{N}\s]/gu` — preserving letters and numbers from all scripts) and a `memory_count` field tracking how many memories reference each entity. An `edge_density` check (`totalEdges / totalMemories`) provides a diagnostic metric.
 
@@ -733,7 +733,7 @@ Originally deferred at Sprint 6b pending a feasibility spike. Three graph capabi
 
 Originally deferred at Sprint 6b pending a feasibility spike alongside N2. Rule-based heuristics would extract entities from memory content, gated on edge density.
 
-**Now implemented.** Five regex extraction rules with a 65-word denylist, stored in a dedicated `memory_entities` table (not causal_edges) with an `entity_catalog` for canonical name resolution. Runs at save time behind `SPECKIT_AUTO_ENTITIES` (default ON). Schema migration v20 added `memory_entities` and `entity_catalog` tables. Zero external NLP dependencies. See [Auto entity extraction (R10)](#auto-entity-extraction-r10) for the full description. Unblocks S5 (cross-document entity linking).
+**Now implemented.** Five regex extraction rules with a 64-word denylist, stored in a dedicated `memory_entities` table (not causal_edges) with an `entity_catalog` for canonical name resolution. Runs at save time behind `SPECKIT_AUTO_ENTITIES` (default ON). Schema migration v20 added `memory_entities` and `entity_catalog` tables. Zero external NLP dependencies. See [Auto entity extraction (R10)](#auto-entity-extraction-r10) for the full description. Unblocks S5 (cross-document entity linking).
 
 ### Implemented: memory summary generation (R8)
 

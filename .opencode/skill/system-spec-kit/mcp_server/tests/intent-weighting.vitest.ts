@@ -206,10 +206,10 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
 
     // Verify RRF scores are rank-based, NOT derived from similarity/score values
     for (const r of fused) {
-      // RRF scores should be small fractions from 1/(k+rank+1) formula
-      // They should NOT be anywhere near the raw similarity values (70-95)
-      expect(r.rrfScore).toBeLessThan(1.0);
-      expect(r.rrfScore).toBeGreaterThan(0);
+      // With graduated-ON normalization, scores are in [0, 1] range
+      // Bottom-ranked result normalizes to 0.0, top to 1.0
+      expect(r.rrfScore).toBeLessThanOrEqual(1.0);
+      expect(r.rrfScore).toBeGreaterThanOrEqual(0);
     }
 
     // Item 2 appears in both lists, so should get convergence bonus
@@ -335,17 +335,16 @@ describe('T017-G2: Score Distribution Characteristics', () => {
     restoreEnv();
   });
 
-  it('RRF scores are in expected range (small fractions)', () => {
+  it('RRF scores are in expected range (normalized [0,1])', () => {
     const semantic = makeItems(10, 'vec');
     const keyword = makeItems(10, 'kw');
 
     const result = hybridAdaptiveFuse(semantic, keyword, 'understand');
 
     for (const r of result.results) {
-      // RRF scores with k=60: max single-list score = 1/61 ≈ 0.0164
-      // With 2 lists + convergence: max ≈ 0.0164 * 2 + 0.10 ≈ 0.133
-      expect(r.rrfScore).toBeGreaterThan(0);
-      expect(r.rrfScore).toBeLessThan(0.5); // Well below 1.0
+      // With graduated-ON normalization, scores are min-max normalized to [0,1]
+      expect(r.rrfScore).toBeGreaterThanOrEqual(0);
+      expect(r.rrfScore).toBeLessThanOrEqual(1.0);
     }
   });
 
