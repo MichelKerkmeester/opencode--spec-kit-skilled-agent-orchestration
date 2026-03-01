@@ -10,6 +10,11 @@
 
 const MAX_VARIANTS = 3;
 
+/** Escape special regex characters in user input to prevent ReDoS (P1-6). */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 /**
  * Domain vocabulary map for server-side synonym expansion.
  * No LLM calls — purely rule-based template substitution.
@@ -75,7 +80,7 @@ export function expandQuery(query: string): string[] {
       // Keep one expansion per matched word to avoid over-expanding simple queries.
       for (const synonym of synonyms) {
         if (variants.size >= MAX_VARIANTS) break;
-        const expanded = query.replace(new RegExp(`\\b${word}\\b`, 'i'), synonym);
+        const expanded = query.replace(new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i'), synonym);
         const beforeSize = variants.size;
         variants.add(expanded);
         if (variants.size > beforeSize) {

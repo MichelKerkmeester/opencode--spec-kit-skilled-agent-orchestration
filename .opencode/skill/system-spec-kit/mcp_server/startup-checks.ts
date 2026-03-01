@@ -79,7 +79,7 @@ export function checkSqliteVersion(db: { prepare: (sql: string) => { get: () => 
     } else {
       console.log(`[spec-kit] SQLite version: ${version} (meets 3.35.0+ requirement)`);
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.warn(`[spec-kit] Could not determine SQLite version: ${(e as Error).message}`);
   }
 }

@@ -192,6 +192,10 @@ function getEntries(db: Database.Database, opts: GetEntriesOptions = {}): Mutati
   }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+  // AI-WHY: String interpolation in LIMIT/OFFSET is safe here because both values
+  // are coerced to non-negative integers via Math.floor + Math.max before use —
+  // Math.floor guarantees no decimal component, Math.max(1,…)/Math.max(0,…)
+  // guarantees no negative value. No user-supplied string reaches the SQL directly.
   const limit = opts.limit ? `LIMIT ${Math.max(1, Math.floor(opts.limit))}` : '';
   const offset = opts.offset ? `OFFSET ${Math.max(0, Math.floor(opts.offset))}` : '';
 

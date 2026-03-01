@@ -61,8 +61,11 @@ export function extractEntities(content: string): ExtractedEntity[] {
     raw.push({ text: match[1], type: 'technology' });
   }
 
-  // Rule 3: Words after key phrases
-  const keyPhraseRe = /\b(?:using|with|via|implements)\s+([A-Z][\w.-]+(?:\s+[A-Z][\w.-]+)*)/g;
+  // Rule 3: Words after key phrases — keywords are case-insensitive via explicit
+  // alternation (no `i` flag, since continuation words must require uppercase start
+  // to avoid capturing common English words like "and", "the"). First captured word
+  // allows lowercase for "using react"; continuation words require uppercase start.
+  const keyPhraseRe = /\b(?:[Uu]sing|[Ww]ith|[Vv]ia|[Ii]mplements)\s+([A-Za-z][\w.-]+(?:\s+[A-Z][\w.-]+)*)/g;
   while ((match = keyPhraseRe.exec(content)) !== null) {
     raw.push({ text: match[1], type: 'key_phrase' });
   }

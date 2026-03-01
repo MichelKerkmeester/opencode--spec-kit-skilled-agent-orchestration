@@ -26,6 +26,17 @@ function isExtendedTelemetryEnabled(): boolean {
 }
 
 /* ---------------------------------------------------------------
+   1b. QUALITY PROXY CONSTANTS
+--------------------------------------------------------------- */
+
+/** Maximum latency value (ms) for quality proxy normalization.
+ *  Latencies at or above this ceiling map to a 0.0 quality score component. */
+const QUALITY_PROXY_LATENCY_CEILING_MS = 5000;
+
+/** Result count at which the count-saturation component reaches 1.0. */
+const QUALITY_PROXY_COUNT_SATURATION_THRESHOLD = 10;
+
+/* ---------------------------------------------------------------
    2. TYPES
 --------------------------------------------------------------- */
 
@@ -208,12 +219,12 @@ function computeQualityProxy(t: RetrievalTelemetry): number {
   const avgNorm = Math.max(0, Math.min(1, t.quality.avgRelevanceScore));
   const topNorm = Math.max(0, Math.min(1, t.quality.topResultScore));
 
-  // Result count saturation: 10+ results = 1.0
-  const countNorm = Math.min(1, t.quality.resultCount / 10);
+  // Result count saturation: reaches 1.0 at QUALITY_PROXY_COUNT_SATURATION_THRESHOLD results
+  const countNorm = Math.min(1, t.quality.resultCount / QUALITY_PROXY_COUNT_SATURATION_THRESHOLD);
 
-  // Latency component: 0ms = 1.0, 5000ms+ = 0.0
-  const latencyClamped = Math.max(0, Math.min(5000, t.latency.totalLatencyMs));
-  const latencyNorm = 1 - latencyClamped / 5000;
+  // Latency component: 0ms = 1.0, QUALITY_PROXY_LATENCY_CEILING_MS+ = 0.0
+  const latencyClamped = Math.max(0, Math.min(QUALITY_PROXY_LATENCY_CEILING_MS, t.latency.totalLatencyMs));
+  const latencyNorm = 1 - latencyClamped / QUALITY_PROXY_LATENCY_CEILING_MS;
 
   const raw =
     avgNorm * 0.40 +
@@ -305,3 +316,5 @@ export type {
   QualityMetrics,
   LatencyStage,
 };
+
+// Self-governance: Opus-F agent, TCB=9, 3 findings addressed (A6-P2-2, A6-P2-3, A10-P2-3)

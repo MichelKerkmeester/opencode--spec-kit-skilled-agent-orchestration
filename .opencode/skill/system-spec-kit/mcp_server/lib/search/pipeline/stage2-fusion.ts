@@ -2,6 +2,17 @@
 // MODULE: Stage 2 — Fusion + Signal Integration
 // Sprint 5 (R6): 4-Stage Retrieval Pipeline
 //
+// I/O CONTRACT:
+//   Input:  Stage2Input { candidates: PipelineRow[], config, stage1Metadata }
+//   Output: Stage2Output { scored: PipelineRow[], metadata }
+//   Key invariants:
+//     - Every score modification in the pipeline happens exactly once here
+//     - Intent weights are NEVER applied to hybrid results (G2 double-weighting guard)
+//     - scored is sorted descending by effective composite score on exit
+//   Side effects:
+//     - FSRS write-back to memory_index (when trackAccess=true) — DB write
+//     - Learned trigger and negative-feedback reads from DB
+//
 // PURPOSE: Single point for ALL scoring signals. Intent weights are
 // applied ONCE here only — this is the architectural guard against
 // the G2 double-weighting recurrence bug.
@@ -23,6 +34,13 @@
 // internally (RRF / RSF fusion). Post-search intent weighting is
 // therefore ONLY applied for non-hybrid search types (vector,
 // multi-concept). Applying it to hybrid results would double-count.
+//
+// SCORE IMMUTABILITY INVARIANT: Once a score field is written during
+// fusion (steps 1–7 above), it must not be overwritten by later stages.
+// Stage 3 (rerank) and Stage 4 (post-processing) MUST introduce new
+// score fields (e.g. rerankScore, finalScore) rather than mutating the
+// existing `score` produced here. This preserves auditability and
+// prevents silent ranking regressions caused by in-place score mutation.
 // ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
@@ -31,6 +49,8 @@ import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, Artif
 
 import * as sessionBoost from '../session-boost';
 import * as causalBoost from '../causal-boost';
+import { isEnabled as isCoActivationEnabled, spreadActivation, CO_ACTIVATION_CONFIG } from '../../cache/cognitive/co-activation';
+import type { SpreadResult } from '../../cache/cognitive/co-activation';
 import * as fsrsScheduler from '../../cache/cognitive/fsrs-scheduler';
 import { queryLearnedTriggers } from '../learned-feedback';
 import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback';
@@ -67,6 +87,9 @@ interface ValidationMetadataLike {
 
 /** Weight applied to learned-trigger score boosts (0.7x of organic triggers). */
 const LEARNED_TRIGGER_WEIGHT = 0.7;
+
+/** Number of top results used as seeds for co-activation spreading. */
+const SPREAD_ACTIVATION_TOP_N = 5;
 
 const MIN_VALIDATION_MULTIPLIER = 0.8;
 const MAX_VALIDATION_MULTIPLIER = 1.2;
@@ -503,6 +526,45 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] causal boost failed: ${message}`);
+    }
+  }
+
+  // ── 2a. Co-activation spreading ──
+  // Gated behind SPECKIT_COACTIVATION flag. Takes the top-N results as seeds,
+  // performs spreading activation traversal, and boosts scores of results that
+  // appear in the co-activation graph. Matches V1 hybrid-search behavior.
+  if (isCoActivationEnabled()) {
+    try {
+      const topIds = results
+        .slice(0, SPREAD_ACTIVATION_TOP_N)
+        .map(r => r.id)
+        .filter((id): id is number => typeof id === 'number');
+
+      if (topIds.length > 0) {
+        const spreadResults: SpreadResult[] = spreadActivation(topIds);
+        if (spreadResults.length > 0) {
+          const spreadMap = new Map(spreadResults.map(sr => [sr.id, sr.activationScore]));
+          results = results.map((row) => {
+            const boost = spreadMap.get(row.id);
+            if (boost !== undefined) {
+              const baseScore = resolveBaseScore(row);
+              return {
+                ...row,
+                score: baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor,
+              };
+            }
+            return row;
+          });
+          // Re-sort after co-activation boost to ensure boosted results
+          // are promoted to their correct position in the ranking
+          results.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
+          (metadata as Record<string, unknown>).coActivationApplied = true;
+        }
+      }
+    } catch (err: unknown) {
+      // AI-GUARD: Non-critical enrichment — co-activation failure does not affect core ranking
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`[stage2-fusion] co-activation spreading failed: ${message}`);
     }
   }
 

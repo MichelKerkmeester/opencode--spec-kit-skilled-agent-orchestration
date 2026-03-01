@@ -4,6 +4,7 @@
    IMPORTS
 --------------------------------------------------------------- */
 
+import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -161,6 +162,8 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
 /** Handle memory_health tool -- returns system health status and diagnostics. */
 async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   const startTime = Date.now();
+  // A7-P2-1: Generate requestId for incident correlation in error responses
+  const requestId = randomUUID();
   await checkDatabaseUpdated();
 
   const {
@@ -214,14 +217,16 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   } catch (err: unknown) {
     const message = toErrorMessage(err);
     if (message.includes('no such table')) {
+      console.error(`[memory-health] Schema missing [requestId=${requestId}]:`, message);
       return createMCPErrorResponse({
         tool: 'memory_health',
         error: `Schema missing: ${message}. Run memory_index_scan() to create the database schema, or restart the MCP server.`,
         code: 'E_SCHEMA_MISSING',
+        details: { requestId },
         startTime,
       });
     }
-    console.warn('[memory-health] Failed to get memory count:', message);
+    console.warn(`[memory-health] Failed to get memory count [requestId=${requestId}]:`, message);
   }
 
   if (reportMode === DIVERGENT_ALIAS_REPORT_MODE) {
@@ -281,7 +286,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
           `Run memory_index_scan with force:true to rebuild FTS5 index.`
         );
       }
-    } catch (e) {
+    } catch (e: unknown) {
       hints.push(`FTS5 consistency check failed: ${(e as Error).message}`);
     }
   }

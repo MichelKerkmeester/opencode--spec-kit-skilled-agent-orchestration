@@ -1,5 +1,11 @@
 // ---------------------------------------------------------------
 // MODULE: Dynamic Token Budget
+//
+// ADVISORY-ONLY: This module computes a token budget for a query
+// based on its complexity tier, but does NOT enforce that budget
+// downstream. The returned BudgetResult is handed to callers who
+// are solely responsible for respecting it (e.g. by trimming
+// result sets or truncating content before sending to the LLM).
 // ---------------------------------------------------------------
 import { type QueryComplexityTier } from './query-classifier';
 

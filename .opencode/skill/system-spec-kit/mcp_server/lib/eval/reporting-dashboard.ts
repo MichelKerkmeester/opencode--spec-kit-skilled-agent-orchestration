@@ -200,6 +200,9 @@ function queryMetricSnapshots(
   if (config.limit && config.limit > 0) {
     sql += ` LIMIT ?`;
     params.push(config.limit * 20); // Over-fetch to allow grouping
+  } else {
+    // Default LIMIT to prevent unbounded result sets on large eval databases
+    sql += ` LIMIT 1000`;
   }
 
   return db.prepare(sql).all(...params) as SnapshotRow[];
@@ -226,6 +229,9 @@ function queryChannelResults(
     sql += ` AND channel IN (${chPlaceholders})`;
     params.push(...channelFilter);
   }
+
+  // Default LIMIT to prevent unbounded result sets on large eval databases
+  sql += ` LIMIT 1000`;
 
   return db.prepare(sql).all(...params) as ChannelResultRow[];
 }

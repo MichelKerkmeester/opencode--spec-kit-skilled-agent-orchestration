@@ -121,6 +121,35 @@ function ensureAuditTable(db: Database): void {
   }
 }
 
+/**
+ * SQL for partial covering index on learned_triggers (A2-P2-4).
+ * Avoids full-table scan in queryLearnedTriggers / expireLearnedTerms / clearAll.
+ * Only indexes rows that actually have learned trigger data.
+ */
+const LEARNED_TRIGGERS_INDEX_SQL = `
+  CREATE INDEX IF NOT EXISTS idx_memory_learned_triggers
+  ON memory_index(id, learned_triggers)
+  WHERE learned_triggers IS NOT NULL AND learned_triggers != '[]'
+`;
+
+let _learnedTriggersIndexEnsured = false;
+
+/**
+ * Ensure the partial index on learned_triggers exists (idempotent, once per process).
+ *
+ * @param db - SQLite database connection
+ */
+function ensureLearnedTriggersIndex(db: Database): void {
+  if (_learnedTriggersIndexEnsured) return;
+  try {
+    db.exec(LEARNED_TRIGGERS_INDEX_SQL);
+    _learnedTriggersIndexEnsured = true;
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(`[learned-feedback] Failed to create learned_triggers index: ${msg}`);
+  }
+}
+
 /* ---------------------------------------------------------------
    4. FEATURE FLAG & GATING
    --------------------------------------------------------------- */
@@ -416,7 +445,10 @@ export function queryLearnedTriggers(
 
     if (queryTerms.length === 0) return [];
 
-    // Fetch all memories that have learned triggers
+    // Ensure partial index exists to avoid full-table scan (A2-P2-4)
+    ensureLearnedTriggersIndex(db);
+
+    // Fetch memories that have learned triggers (uses idx_memory_learned_triggers partial index)
     const rows = db.prepare(
       `SELECT id, learned_triggers FROM memory_index WHERE learned_triggers IS NOT NULL AND learned_triggers != '[]'`
     ).all() as Array<{ id: number; learned_triggers: string }>;
@@ -463,6 +495,7 @@ export function queryLearnedTriggers(
  */
 export function expireLearnedTerms(db: Database): number {
   try {
+    ensureLearnedTriggersIndex(db);
     const rows = db.prepare(
       `SELECT id, learned_triggers FROM memory_index WHERE learned_triggers IS NOT NULL AND learned_triggers != '[]'`
     ).all() as Array<{ id: number; learned_triggers: string }>;
@@ -517,6 +550,7 @@ export function expireLearnedTerms(db: Database): number {
 export function clearAllLearnedTriggers(db: Database): number {
   try {
     ensureAuditTable(db);
+    ensureLearnedTriggersIndex(db);
 
     // Log the rollback to audit (Safeguard #10)
     const rows = db.prepare(

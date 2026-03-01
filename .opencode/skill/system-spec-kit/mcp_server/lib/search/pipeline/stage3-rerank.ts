@@ -4,26 +4,48 @@
 //
 // Responsibilities (in execution order):
 //   1. Cross-encoder reranking   — re-scores results via neural model
-//   2. MPAB chunk collapse        — dedup chunks, reassemble parents
+//   2. MMR diversity pruning     — maximal marginal relevance (SPECKIT_MMR flag)
+//   3. MPAB chunk collapse        — dedup chunks, reassemble parents
 //
 // Pipeline position constraint (Sprint 4):
 //   MPAB MUST remain AFTER RRF fusion (Stage 2).
 //   Stage 3 is the only stage that may change scores after Stage 2.
+//
+// I/O CONTRACT:
+//   Input:  Stage3Input { scored: PipelineRow[], config }
+//   Output: Stage3Output { reranked: PipelineRow[], metadata }
+//   Key invariants:
+//     - reranked is sorted descending by effective score after all steps
+//     - Chunk rows (parent_id != null) are collapsed; only parent rows exit
+//     - contentSource is set to 'reassembled_chunks' or 'file_read_fallback'
+//   Side effects:
+//     - Cross-encoder model inference (external call, when SPECKIT_CROSS_ENCODER on)
+//     - DB reads to fetch parent content during MPAB reassembly
 //
 // Score changes: YES
 // ---------------------------------------------------------------
 
 import type { Stage3Input, Stage3Output, PipelineRow } from './types';
 import * as crossEncoder from '../cross-encoder';
-import { isCrossEncoderEnabled } from '../search-flags';
+import { isCrossEncoderEnabled, isMMREnabled } from '../search-flags';
+import { applyMMR } from '../mmr-reranker';
+import type { MMRCandidate } from '../mmr-reranker';
+import { INTENT_LAMBDA_MAP } from '../intent-classifier';
 import { addTraceEntry } from '../../contracts/retrieval-trace';
 import { requireDb } from '../../../utils';
 import { toErrorMessage } from '../../../utils';
+import type Database from 'better-sqlite3';
 
 // ── Constants ──────────────────────────────────────────────────
 
 /** Minimum number of results required before cross-encoder is worth invoking. */
 const MIN_RESULTS_FOR_RERANK = 2;
+
+/** Minimum number of candidates required before MMR diversity pruning is worthwhile. */
+const MMR_MIN_CANDIDATES = 2;
+
+/** Fallback lambda (diversity vs relevance) when intent is not in INTENT_LAMBDA_MAP. */
+const MMR_DEFAULT_LAMBDA = 0.7;
 
 /** Column order priority for assembling display text sent to cross-encoder. */
 const TEXT_FIELD_PRIORITY = ['content', 'file_path'] as const;
@@ -92,13 +114,15 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   const rerankStart = Date.now();
   const beforeRerank = results.length;
 
-  results = await applyCrossEncoderReranking(config.query, results, {
+  // AI-WHY: Destructure { rows, applied } — dedicated boolean flag replaces
+  //         fragile reference inequality check `results !== scored` (A1-P2-3)
+  const rerankResult = await applyCrossEncoderReranking(config.query, results, {
     rerank: config.rerank,
     applyLengthPenalty: config.applyLengthPenalty,
     limit: config.limit,
   });
-
-  rerankApplied = results !== scored && config.rerank && isCrossEncoderEnabled();
+  results = rerankResult.rows;
+  rerankApplied = rerankResult.applied;
 
   if (config.trace) {
     addTraceEntry(
@@ -111,7 +135,68 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     );
   }
 
-  // ── Step 2: MPAB chunk collapse + parent reassembly ───────────
+  // ── Step 2: MMR diversity pruning ────────────────────────────
+  // Gated behind SPECKIT_MMR feature flag. Retrieves embeddings from
+  // vec_memories and applies Maximal Marginal Relevance to diversify
+  // the result set, matching the V1 hybrid-search behavior.
+  if (isMMREnabled() && results.length >= MMR_MIN_CANDIDATES) {
+    try {
+      const db = requireDb() as Database.Database;
+      const numericIds = results
+        .map(r => r.id)
+        .filter((id): id is number => typeof id === 'number');
+
+      if (numericIds.length >= MMR_MIN_CANDIDATES) {
+        const placeholders = numericIds.map(() => '?').join(', ');
+        const embRows = (db.prepare(
+          `SELECT rowid, embedding FROM vec_memories WHERE rowid IN (${placeholders})`
+        ) as Database.Statement).all(...numericIds) as Array<{ rowid: number; embedding: Buffer }>;
+
+        const embeddingMap = new Map<number, Float32Array>();
+        for (const row of embRows) {
+          if (Buffer.isBuffer(row.embedding)) {
+            embeddingMap.set(
+              row.rowid,
+              new Float32Array(row.embedding.buffer, row.embedding.byteOffset, row.embedding.byteLength / 4)
+            );
+          }
+        }
+
+        const mmrCandidates: MMRCandidate[] = [];
+        for (const r of results) {
+          const emb = embeddingMap.get(r.id);
+          if (emb) {
+            mmrCandidates.push({
+              id: r.id,
+              score: (r.score as number) ?? (r.similarity as number ?? 0) / 100,
+              embedding: emb,
+            });
+          }
+        }
+
+        if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
+          const intent = config.detectedIntent ?? '';
+          const mmrLambda = (INTENT_LAMBDA_MAP as Record<string, number>)[intent] ?? MMR_DEFAULT_LAMBDA;
+          const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit: config.limit });
+
+          // Rebuild PipelineRow[] from diversified candidates, preserving all original fields
+          const rowMap = new Map<number | string, PipelineRow>();
+          for (const r of results) rowMap.set(r.id, r);
+
+          results = diversified.map((candidate): PipelineRow => {
+            const existing = rowMap.get(candidate.id);
+            if (existing) return existing;
+            return { id: candidate.id as number, score: candidate.score };
+          });
+        }
+      }
+    } catch (mmrErr: unknown) {
+      // AI-GUARD: Non-critical — MMR failure does not block pipeline
+      console.warn(`[stage3-rerank] MMR diversity pruning failed: ${toErrorMessage(mmrErr)}`);
+    }
+  }
+
+  // ── Step 3: MPAB chunk collapse + parent reassembly ───────────
   //
   // MPAB must remain AFTER RRF (Stage 2 constraint). This step runs
   // here in Stage 3 — never move it upstream.
@@ -165,7 +250,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
  * @param query       - The user's search query string.
  * @param results     - Pipeline rows from Stage 2 fusion.
  * @param options     - Rerank configuration flags.
- * @returns Reranked pipeline rows (or original results on skip/error).
+ * @returns Object with reranked rows and boolean indicating whether reranking was applied.
  */
 async function applyCrossEncoderReranking(
   query: string,
@@ -175,15 +260,15 @@ async function applyCrossEncoderReranking(
     applyLengthPenalty: boolean;
     limit: number;
   }
-): Promise<PipelineRow[]> {
+): Promise<{ rows: PipelineRow[]; applied: boolean }> {
   // Feature-flag guard
   if (!options.rerank || !isCrossEncoderEnabled()) {
-    return results;
+    return { rows: results, applied: false };
   }
 
   // Minimum-document guard
   if (results.length < MIN_RESULTS_FOR_RERANK) {
-    return results;
+    return { rows: results, applied: false };
   }
 
   // Build a lookup map so we can restore all original PipelineRow fields
@@ -230,13 +315,13 @@ async function applyCrossEncoderReranking(
       });
     }
 
-    return rerankedRows;
-  } catch (err) {
+    return { rows: rerankedRows, applied: true };
+  } catch (err: unknown) {
     // Graceful degradation — return original results on any reranker failure
     console.warn(
       `[stage3-rerank] Cross-encoder reranking failed: ${toErrorMessage(err)} — returning original results`
     );
-    return results;
+    return { rows: results, applied: false };
   }
 }
 
@@ -321,6 +406,13 @@ async function collapseAndReassembleChunkResults(
   const chunkGroups: ChunkGroup[] = [];
   for (const [parentId, chunks] of chunksByParent) {
     const bestChunk = electBestChunk(chunks);
+    // AI-WHY: Sort chunks by chunk_index (document order) for correct reassembly,
+    //         not by score order which is the default from upstream stages (A8-P2-1)
+    chunks.sort((a, b) => {
+      const aIdx = ((a.chunk_index ?? a.chunkIndex) as number | undefined) ?? 0;
+      const bIdx = ((b.chunk_index ?? b.chunkIndex) as number | undefined) ?? 0;
+      return aIdx - bIdx;
+    });
     chunkGroups.push({ parentId, chunks, bestChunk });
     // All chunks beyond the best one are collapsed
     stats.collapsedChunkHits += chunks.length - 1;
@@ -354,13 +446,17 @@ function electBestChunk(chunks: PipelineRow[]): PipelineRow {
 /**
  * Compute the effective numeric score for a pipeline row.
  * Prefers `score`, falls back to `similarity`, then 0.
+ * Always clamped to [0, 1] to ensure normalized comparisons.
  *
  * @param row - A pipeline result row.
- * @returns Numeric score value for comparison.
+ * @returns Numeric score value in [0, 1] for comparison.
  */
 function effectiveScore(row: PipelineRow): number {
-  if (typeof row.score === 'number' && isFinite(row.score)) return row.score;
-  if (typeof row.similarity === 'number' && isFinite(row.similarity)) return row.similarity / 100;
+  // AI-WHY: Clamp to [0,1] — raw scores/similarity may exceed normalized range (A1-P2-2)
+  if (typeof row.score === 'number' && isFinite(row.score))
+    return Math.max(0, Math.min(1, row.score));
+  if (typeof row.similarity === 'number' && isFinite(row.similarity))
+    return Math.max(0, Math.min(1, row.similarity / 100));
   return 0;
 }
 
@@ -431,7 +527,7 @@ async function reassembleParentRow(
 
     stats.reassembled++;
     return reassembled;
-  } catch (err) {
+  } catch (err: unknown) {
     // DB error — gracefully fall back to best-chunk content
     console.warn(
       `[stage3-rerank] MPAB DB reassembly failed for parent ${parentId}: ${toErrorMessage(err)} — using chunk fallback`

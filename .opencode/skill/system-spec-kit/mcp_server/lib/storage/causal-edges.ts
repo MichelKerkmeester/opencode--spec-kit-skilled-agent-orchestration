@@ -108,6 +108,17 @@ function invalidateDegreeCache(): void {
 
 function init(database: Database.Database): void {
   db = database;
+
+  // A4-P2-2: Defensive traversal indexes — the canonical creation lives in
+  // vector-index-impl.ts migration v8 (CHK-062).  These IF NOT EXISTS guards
+  // ensure the indexes are present even when the module is initialised outside
+  // the normal migration path (e.g. tests, standalone scripts).
+  try {
+    database.exec('CREATE INDEX IF NOT EXISTS idx_causal_source ON causal_edges(source_id)');
+    database.exec('CREATE INDEX IF NOT EXISTS idx_causal_target ON causal_edges(target_id)');
+  } catch (_e: unknown) {
+    // Best-effort: table may not exist yet during early startup sequencing
+  }
 }
 
 /* -------------------------------------------------------------

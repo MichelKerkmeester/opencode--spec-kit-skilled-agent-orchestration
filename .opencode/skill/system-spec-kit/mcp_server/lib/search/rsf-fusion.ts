@@ -320,6 +320,8 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
     variantCount: number;
     sourceScoreSums: Record<string, number>;
     sourceScoreCounts: Record<string, number>;
+    /** O(1) dedup tracking for sources (A3-P2-2) */
+    sourcesSet: Set<string>;
   }>();
 
   for (const variantResults of perVariantFused) {
@@ -328,9 +330,10 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
       if (existing) {
         existing.scoreSum += result.rsfScore;
         existing.variantCount++;
-        // Merge sources (deduplicate)
+        // Merge sources (deduplicate via Set for O(1) lookup)
         for (const src of result.sources) {
-          if (!existing.result.sources.includes(src)) {
+          if (!existing.sourcesSet.has(src)) {
+            existing.sourcesSet.add(src);
             existing.result.sources.push(src);
           }
         }
@@ -346,6 +349,7 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
           variantCount: 1,
           sourceScoreSums: { ...result.sourceScores },
           sourceScoreCounts: Object.fromEntries(Object.keys(result.sourceScores).map(k => [k, 1])),
+          sourcesSet: new Set(result.sources),
         });
       }
     }

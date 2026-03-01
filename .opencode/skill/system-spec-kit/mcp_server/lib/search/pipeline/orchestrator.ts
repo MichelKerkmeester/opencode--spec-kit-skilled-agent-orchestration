@@ -1,6 +1,16 @@
 // ---------------------------------------------------------------
 // MODULE: Pipeline Orchestrator
 // Sprint 5 (R6): 4-stage pipeline execution behind SPECKIT_PIPELINE_V2
+//
+// I/O CONTRACT:
+//   Input:  PipelineConfig (query, embedding, limits, flags, intent, session)
+//   Output: PipelineResult { results: Stage4ReadonlyRow[], metadata, annotations, trace }
+//   Key invariants:
+//     - results are scored by Stage 2, reranked by Stage 3, filtered by Stage 4
+//     - Score fields are frozen after Stage 3; Stage 4 output scores == Stage 3 output scores
+//     - Stage metadata for all four stages is included for observability
+//   Side effects:
+//     - Delegates to each stage; see individual stage modules for their side effects
 // ---------------------------------------------------------------
 
 import type {

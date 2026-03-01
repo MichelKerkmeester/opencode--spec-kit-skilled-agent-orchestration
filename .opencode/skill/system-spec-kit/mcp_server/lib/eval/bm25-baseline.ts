@@ -352,8 +352,8 @@ export function computeBootstrapCI(
   bootstrapMeans.sort((a, b) => a - b);
 
   // 95% CI = 2.5th and 97.5th percentiles
-  const lowerIdx = Math.floor(iterations * 0.025);
-  const upperIdx = Math.floor(iterations * 0.975);
+  const lowerIdx = Math.ceil(iterations * 0.025) - 1;
+  const upperIdx = Math.ceil(iterations * 0.975) - 1;
   const ciLower = bootstrapMeans[lowerIdx];
   const ciUpper = bootstrapMeans[upperIdx];
 

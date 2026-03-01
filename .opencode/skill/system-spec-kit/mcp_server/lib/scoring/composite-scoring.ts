@@ -37,7 +37,7 @@ try {
   /* AI-GUARD: fsrs-scheduler optional dep — fallback to inline FSRS formula */
 }
 
-// ─── 1. TYPES ───
+// --- 1. TYPES ---
 
 export interface FiveFactorWeights {
   temporal: number;
@@ -105,7 +105,7 @@ export interface PatternAlignmentBonuses {
   type_match: number;
 }
 
-// ─── 2. CONFIGURATION ───
+// --- 2. CONFIGURATION ---
 
 // REQ-017: 5-Factor Decay Composite weights
 export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
@@ -214,7 +214,7 @@ export const PATTERN_ALIGNMENT_BONUSES: PatternAlignmentBonuses = {
 // TM-01: Re-export interference penalty coefficient for test access
 export { INTERFERENCE_PENALTY_COEFFICIENT } from './interference-scoring';
 
-// ─── 3. SCORE CALCULATIONS ───
+// --- 3. SCORE CALCULATIONS ---
 
 /**
  * Parse last_accessed value that may be:
@@ -445,11 +445,16 @@ export function calculateRecencyScore(timestamp: string | undefined, tier: strin
   return computeRecencyScore(timestamp || '', tier, DECAY_RATE);
 }
 
-// ─── 3a. NOVELTY BOOST ───
+// --- 3a. NOVELTY BOOST ---
 
-// N4: Cold-start boost constants (exported for observability tests)
+/**
+ * N4: Cold-start boost constants (exported for observability tests).
+ * @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility.
+ */
 export const NOVELTY_BOOST_MAX = 0.15;
+/** @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility. */
 export const NOVELTY_BOOST_HALF_LIFE_HOURS = 12;
+/** @deprecated Novelty boost disabled (Sprint 7 audit). Retained for test compatibility. */
 export const NOVELTY_BOOST_SCORE_CAP = 0.95;
 
 /**
@@ -475,7 +480,7 @@ export function getTierBoost(tier: string): number {
   return tierConfig.value;
 }
 
-// ─── 3b. SHARED POST-PROCESSING ───
+// --- 3b. SHARED POST-PROCESSING ---
 
 /**
  * Apply doc-type multiplier, novelty boost, interference penalty, and
@@ -532,7 +537,7 @@ function applyPostProcessingAndObserve(
   return finalScore;
 }
 
-// ─── 4. COMPOSITE SCORING FUNCTIONS ───
+// --- 4. COMPOSITE SCORING FUNCTIONS ---
 
 /**
  * T032: Calculate 5-factor composite score (REQ-017)
@@ -606,7 +611,7 @@ export function calculateCompositeScore(row: ScoringInput, options: ScoringOptio
   return applyPostProcessingAndObserve(composite, row, 'cs');
 }
 
-// ─── 5. BATCH OPERATIONS ───
+// --- 5. BATCH OPERATIONS ---
 
 /**
  * T032: Apply 5-factor scoring to a batch of results.
@@ -748,7 +753,7 @@ export function getScoreBreakdown(row: ScoringInput, options: ScoringOptions = {
   };
 }
 
-// ─── 7. SCORE NORMALIZATION ───
+// --- 7. SCORE NORMALIZATION ---
 
 /**
  * Check if composite score normalization is enabled.

@@ -64,6 +64,7 @@ function computeContentDensity(content: string): number {
 
   // Count meaningful content markers (headings, code blocks, lists)
   const headings = (content.match(/^#{1,6}\s/gm) || []).length;
+  // Divide by 2: each code block has an opening and closing ```, so pair count = match count / 2
   const codeBlocks = (content.match(/```/g) || []).length / 2;
   const listItems = (content.match(/^[-*]\s/gm) || []).length;
   const structureBonus = Math.min(0.2, (headings + codeBlocks + listItems) * 0.05);

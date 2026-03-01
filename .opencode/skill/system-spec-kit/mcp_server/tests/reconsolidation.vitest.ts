@@ -88,7 +88,6 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         title TEXT,
         content_text TEXT,
         content_hash TEXT DEFAULT '',
-        frequency_counter INTEGER DEFAULT 0,
         importance_weight REAL DEFAULT 0.5,
         importance_tier TEXT DEFAULT 'normal',
         created_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -387,8 +386,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     it('MP3: Merge with embedding regeneration callback', async () => {
       testDb.prepare(`
-        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, frequency_counter, created_at, updated_at)
-        VALUES (102, 'test-spec', '/test/102.md', 'With emb', 'Original', 0, datetime('now'), datetime('now'))
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, created_at, updated_at)
+        VALUES (102, 'test-spec', '/test/102.md', 'With emb', 'Original', datetime('now'), datetime('now'))
       `).run();
       testDb.prepare(`
         INSERT INTO vec_memories (rowid, embedding) VALUES (102, ?)

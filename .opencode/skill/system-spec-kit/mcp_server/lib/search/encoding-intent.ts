@@ -60,9 +60,11 @@ function computeCodeScore(content: string): number {
   codeIndicators += (importLines / totalLines) * 0.8;
 
   // Programming punctuation density (braces, semicolons, arrows)
+  // Threshold: typical prose has <1% punctuation density; code exceeds 3%
+  const CODE_PUNCTUATION_DENSITY_THRESHOLD = 0.03;
   const codePunctuation = (content.match(/[{}();=>\[\]]/g) || []).length;
   const punctDensity = codePunctuation / content.length;
-  codeIndicators += punctDensity > 0.03 ? 0.3 : punctDensity * 10;
+  codeIndicators += punctDensity > CODE_PUNCTUATION_DENSITY_THRESHOLD ? 0.3 : punctDensity * 10;
 
   return Math.min(1.0, codeIndicators);
 }

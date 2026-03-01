@@ -16,7 +16,6 @@ import { fts5Bm25Search } from './sqlite-fts';
 import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled, isDegreeBoostEnabled } from './search-flags';
 import { computeDegreeScores } from './graph-search-fn';
 
-// Sprint 3 modules — all flag-gated, disabled by default
 import { routeQuery } from './query-router';
 import { enforceChannelRepresentation } from './channel-enforcement';
 import { truncateByConfidence } from './confidence-truncation';
@@ -29,7 +28,6 @@ import {
   twoPhaseRetrieval,
 } from './folder-relevance';
 
-// Sprint 4 modules — all flag-gated, disabled by default
 import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
 
 // Type-only
@@ -737,6 +735,7 @@ async function hybridSearchEnhanced(
           }
         } catch (_mpabErr: unknown) {
           // AI-GUARD: Non-critical — MPAB failure does not block pipeline
+          console.debug('[hybrid-search] MPAB error (non-fatal):', (_mpabErr as Error).message);
         }
       }
 

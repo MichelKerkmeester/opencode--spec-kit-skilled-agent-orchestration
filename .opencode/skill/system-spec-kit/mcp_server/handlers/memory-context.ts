@@ -2,11 +2,12 @@
 // MODULE: Memory Context
 // ---------------------------------------------------------------
 
+import { randomUUID } from 'crypto';
+
 // Layer definitions
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import { checkDatabaseUpdated } from '../core';
 import { toErrorMessage } from '../utils';
-import { randomUUID } from 'crypto';
 
 // Intent classifier
 import * as intentClassifier from '../lib/search/intent-classifier';
@@ -402,13 +403,16 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     anchors
   } = args;
 
+  // A7-P2-1: Generate requestId for incident correlation in error responses
+  const requestId = randomUUID();
+
   // Validate input
   if (!input || typeof input !== 'string' || input.trim().length === 0) {
     return createMCPErrorResponse({
       tool: 'memory_context',
       error: 'Input is required and must be a non-empty string',
       code: 'E_VALIDATION',
-      details: { layer: 'L1:Orchestration' },
+      details: { requestId, layer: 'L1:Orchestration' },
       recovery: {
         hint: 'Provide a query, prompt, or context description'
       }
@@ -576,11 +580,13 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         break;
     }
   } catch (error: unknown) {
+    console.error(`[memory-context] Strategy execution failed [requestId=${requestId}]:`, toErrorMessage(error));
     return createMCPErrorResponse({
       tool: 'memory_context',
       error: toErrorMessage(error),
       code: 'E_STRATEGY',
       details: {
+        requestId,
         layer: 'L1:Orchestration',
         mode: effectiveMode,
         alternativeLayers: layerDefs.getRecommendedLayers('search')

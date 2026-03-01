@@ -8,6 +8,21 @@
 // via captureScoreSnapshot / verifyScoreInvariant provides a second
 // defence-in-depth layer.
 //
+// I/O CONTRACT:
+//   Input:  Stage4Input { results: Stage4ReadonlyRow[], config }
+//   Output: Stage4Output { final: Stage4ReadonlyRow[], metadata, annotations }
+//   Key invariants:
+//     - No score field (similarity, score, rrfScore, intentAdjustedScore,
+//       attentionScore, importance_weight) may change between input and output
+//     - Ordering from Stage 3 is preserved for all surviving rows
+//     - final contains only rows at or above config.minState priority
+//   Side effects:
+//     - None — this stage is read-only with respect to the database
+//
+// FILTER APPLICATION ORDER (within filterByMemoryState):
+//   1. memoryState priority filter — rows below minState are removed
+//   2. Per-tier hard limits        — STATE_LIMITS caps applied when applyStateLimits=true
+//
 // Responsibilities (in execution order):
 //   1. Capture score snapshot BEFORE any operations (runtime invariant)
 //   2. Apply memory-state filtering (filterByMemoryState)

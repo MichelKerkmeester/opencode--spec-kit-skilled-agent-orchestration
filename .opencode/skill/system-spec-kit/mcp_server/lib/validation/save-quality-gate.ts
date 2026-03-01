@@ -203,23 +203,18 @@ export function validateStructural(params: {
 }): StructuralValidationResult {
   const reasons: string[] = [];
 
-  // Title check
   if (!params.title || params.title.trim().length === 0) {
     reasons.push('Title is missing or empty');
   }
 
-  // Content check: non-empty
   if (!params.content || params.content.trim().length === 0) {
     reasons.push('Content is empty');
-  }
-  // Content check: minimum length
-  else if (params.content.trim().length < MIN_CONTENT_LENGTH) {
+  } else if (params.content.trim().length < MIN_CONTENT_LENGTH) {
     reasons.push(
       `Content too short: ${params.content.trim().length} chars (min: ${MIN_CONTENT_LENGTH})`
     );
   }
 
-  // Spec folder format check
   if (!params.specFolder || params.specFolder.trim().length === 0) {
     reasons.push('Spec folder is missing or empty');
   } else if (!SPEC_FOLDER_PATTERN.test(params.specFolder)) {
@@ -375,8 +370,8 @@ export function scoreContentQuality(params: {
   // Compute weighted average signal density
   let weightedSum = 0;
   let totalWeight = 0;
-  for (const [dim, weight] of Object.entries(DIMENSION_WEIGHTS)) {
-    const score = dimensions[dim as keyof ContentQualityDimensions];
+  for (const [dim, weight] of Object.entries(DIMENSION_WEIGHTS) as [keyof ContentQualityDimensions, number][]) {
+    const score = dimensions[dim];
     weightedSum += score * weight;
     totalWeight += weight;
   }

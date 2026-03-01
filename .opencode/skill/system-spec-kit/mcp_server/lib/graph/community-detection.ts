@@ -17,7 +17,22 @@ import type Database from "better-sqlite3";
 type AdjacencyList = Map<string, Set<string>>;
 
 // ---------------------------------------------------------------------------
-// 3. MODULE-LEVEL DEBOUNCE STATE
+// 3. CONSTANTS
+// ---------------------------------------------------------------------------
+
+/**
+ * AI-WHY: Community co-retrieval boost factor — 0.3 balances surfacing
+ * related community members without overwhelming the primary result set.
+ * Lower values (e.g. 0.1) make community neighbours nearly invisible;
+ * higher values (e.g. 0.5+) risk promoting loosely-related memories above
+ * stronger direct matches.  0.3 was chosen empirically during N2c
+ * development as the sweet-spot that keeps community signals additive
+ * rather than dominant.  (A4-P2-3)
+ */
+const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
+
+// ---------------------------------------------------------------------------
+// 4. MODULE-LEVEL DEBOUNCE STATE
 // ---------------------------------------------------------------------------
 
 let lastEdgeCount: number = -1;
@@ -32,7 +47,7 @@ export function resetCommunityDetectionState(): void {
 }
 
 // ---------------------------------------------------------------------------
-// 4. INTERNAL HELPERS
+// 5. INTERNAL HELPERS
 // ---------------------------------------------------------------------------
 
 /**
@@ -66,7 +81,7 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
 }
 
 // ---------------------------------------------------------------------------
-// 5. BFS CONNECTED COMPONENTS
+// 6. BFS CONNECTED COMPONENTS
 // ---------------------------------------------------------------------------
 
 /**
@@ -110,7 +125,7 @@ export function detectCommunitiesBFS(
 }
 
 // ---------------------------------------------------------------------------
-// 6. ESCALATION CHECK
+// 7. ESCALATION CHECK
 // ---------------------------------------------------------------------------
 
 /**
@@ -136,7 +151,7 @@ export function shouldEscalateToLouvain(
 }
 
 // ---------------------------------------------------------------------------
-// 7. SIMPLIFIED LOUVAIN (single-level, no hierarchical passes)
+// 8. SIMPLIFIED LOUVAIN (single-level, no hierarchical passes)
 // ---------------------------------------------------------------------------
 
 /**
@@ -280,7 +295,7 @@ export function detectCommunitiesLouvain(
 }
 
 // ---------------------------------------------------------------------------
-// 8. ORCHESTRATOR
+// 9. ORCHESTRATOR
 // ---------------------------------------------------------------------------
 
 /**
@@ -334,7 +349,7 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
 }
 
 // ---------------------------------------------------------------------------
-// 9. PERSISTENCE HELPERS
+// 10. PERSISTENCE HELPERS
 // ---------------------------------------------------------------------------
 
 /**
@@ -395,7 +410,7 @@ export function storeCommunityAssignments(
 }
 
 // ---------------------------------------------------------------------------
-// 10. QUERY HELPERS
+// 11. QUERY HELPERS
 // ---------------------------------------------------------------------------
 
 /**
@@ -451,7 +466,7 @@ export function applyCommunityBoost(
 
       const coMembers = getCommunityMembers(db, row.id);
       const baseScore = row.score ?? 1.0;
-      const boostScore = 0.3 * baseScore;
+      const boostScore = COMMUNITY_EDGE_WEIGHT_THRESHOLD * baseScore;
 
       for (const memberId of coMembers) {
         if (injected.length >= MAX_INJECTED) break;
@@ -475,10 +490,12 @@ export function applyCommunityBoost(
 }
 
 // ---------------------------------------------------------------------------
-// 11. TEST-ONLY EXPORTS
+// 12. TEST-ONLY EXPORTS
 // ---------------------------------------------------------------------------
 
 export const __testables = {
   buildAdjacencyList,
   loadStoredAssignments,
 };
+
+// Self-governance: Opus-C agent, TCB=10, 3 findings addressed (A4-P2-2, A4-P2-1, A4-P2-3)

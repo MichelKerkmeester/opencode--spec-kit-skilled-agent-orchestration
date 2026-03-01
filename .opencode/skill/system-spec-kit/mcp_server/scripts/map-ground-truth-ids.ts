@@ -208,6 +208,10 @@ function loadGroundTruthQueries(): GroundTruthQuery[] {
     }
   }
 
+  if (queries.length === 0) {
+    console.warn('[loadGroundTruthQueries] WARNING: Regex parsing yielded 0 queries from ground-truth-data.ts — file format may have changed');
+  }
+
   return queries;
 }
 
@@ -242,14 +246,18 @@ function extractSpecificTerms(description: string): {
   specFolders: string[];
   concepts: string[];
 } {
-  // Extract file names (*.ts, *.json, *.md, *.js)
-  const fileNames = [...description.matchAll(/[\w-]+\.\w{2,4}/g)].map(m => m[0]);
+  // Extract file names (*.ts, *.json, *.md, *.js) — \b boundaries prevent partial matches
+  const fileNames = [...description.matchAll(/\b[\w-]+\.\w{2,4}\b/g)].map(m => m[0]);
 
-  // Extract spec folder references (spec NNN, sprint-N, T0xx)
-  const specRefs = [...description.matchAll(/(?:spec\s*)?(\d{3})-[\w-]+|sprint[- ]?\d+|T\d{3}[a-z]?/gi)].map(m => m[0]);
+  // Extract spec folder references (spec NNN, sprint-N, T0xx) — \b boundaries prevent mid-word matches
+  const specRefs = [...description.matchAll(/\b(?:spec\s*)?(\d{3})-[\w-]+\b|\bsprint[- ]?\d+\b|\bT\d{3}[a-z]?\b/gi)].map(m => m[0]);
 
-  // Extract key concepts (technical terms, hyphenated words)
-  const concepts = [...description.matchAll(/[A-Z][a-z]*[A-Z]\w+|[\w]+-[\w]+-?[\w]*/g)].map(m => m[0]);
+  // Extract key concepts (technical terms, hyphenated words) — \b boundaries for precise matching
+  const concepts = [...description.matchAll(/\b[A-Z][a-z]*[A-Z]\w+\b|\b[\w]+-[\w]+-?[\w]*\b/g)].map(m => m[0]);
+
+  if (VERBOSE && fileNames.length === 0 && specRefs.length === 0 && concepts.length === 0) {
+    console.warn(`[extractSpecificTerms] WARNING: No structured terms extracted from description (${description.substring(0, 80)}...)`);
+  }
 
   return { fileNames, specFolders: specRefs, concepts };
 }

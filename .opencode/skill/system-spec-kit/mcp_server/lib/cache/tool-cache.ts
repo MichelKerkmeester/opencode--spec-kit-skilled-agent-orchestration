@@ -206,7 +206,7 @@ function invalidateByPattern(pattern: RegExp | string): number {
   let regex: RegExp;
   try {
     regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
-  } catch (error) {
+  } catch (error: unknown) {
     console.warn(`[tool-cache] Invalid regex pattern: ${error instanceof Error ? error.message : String(error)}`);
     return 0;
   }

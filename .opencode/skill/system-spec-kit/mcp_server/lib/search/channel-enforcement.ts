@@ -73,7 +73,9 @@ export interface EnforcementResult {
  *
  * @param fusedResults      - Post-fusion results, ordered by score descending.
  * @param channelResultSets - Map of channel name → raw results from that channel.
- * @param topK              - Window size to inspect (defaults to fusedResults.length).
+ * @param topK              - Window size to inspect. When omitted, defaults to
+ *                            fusedResults.length (i.e. the entire result list is
+ *                            used as the inspection window).
  * @returns EnforcementResult with the (potentially extended) result list and metadata.
  */
 export function enforceChannelRepresentation(

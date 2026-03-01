@@ -4,6 +4,7 @@
 /* --- 1. DEPENDENCIES --- */
 
 // Node built-ins
+import { randomUUID } from 'node:crypto';
 import fs from 'fs';
 import path from 'path';
 
@@ -39,7 +40,6 @@ import { thinChunks } from '../lib/chunking/chunk-thinning';
 import type { MCPResponse } from './types';
 import { clearConstitutionalCache } from '../hooks/memory-surface';
 
-// Sprint 4: Quality gate + reconsolidation — all flag-gated, disabled by default
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
 import { reconsolidate, isReconsolidationEnabled } from '../lib/storage/reconsolidation';
 import type { ReconsolidationResult } from '../lib/storage/reconsolidation';
@@ -188,6 +188,92 @@ interface SaveArgs {
 }
 
 /* --- 3. SQL HELPER FUNCTIONS --- */
+
+/**
+ * Columns that may be set on a memory_index row after an INSERT via
+ * vectorIndex.indexMemory / indexMemoryDeferred.  All fields are optional;
+ * only the ones supplied are included in the generated UPDATE.
+ *
+ * `encoding_intent` receives special COALESCE treatment so a NULL value
+ * does not overwrite a previously stored intent.
+ *
+ * `last_review` is always set to `datetime('now')` and `review_count` defaults
+ * to 0 unless explicitly provided.
+ */
+interface PostInsertMetadataFields {
+  content_hash?: string;
+  context_type?: string;
+  importance_tier?: string;
+  memory_type?: string;
+  type_inference_source?: string;
+  stability?: number;
+  difficulty?: number;
+  review_count?: number;
+  file_mtime_ms?: number | null;
+  embedding_status?: string;
+  encoding_intent?: string | null;
+  document_type?: string;
+  spec_level?: number | null;
+  quality_score?: number;
+  quality_flags?: string;          // pre-stringified JSON
+  parent_id?: number;
+  chunk_index?: number;
+  chunk_label?: string;
+}
+
+/** Allowed column names for the dynamic UPDATE builder (injection guard). */
+const ALLOWED_POST_INSERT_COLUMNS = new Set<string>([
+  'content_hash', 'context_type', 'importance_tier', 'memory_type',
+  'type_inference_source', 'stability', 'difficulty', 'review_count',
+  'file_mtime_ms', 'embedding_status', 'encoding_intent', 'document_type',
+  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
+  'chunk_index', 'chunk_label',
+]);
+
+/**
+ * Build and execute a dynamic `UPDATE memory_index SET ... WHERE id = ?`
+ * from the supplied field map.  Reduces the five near-identical post-insert
+ * UPDATE blocks to a single helper call.
+ *
+ * Special handling:
+ * - `encoding_intent` → `COALESCE(?, encoding_intent)` (preserves existing value when NULL)
+ * - `last_review` is always appended as `datetime('now')`
+ * - `review_count` defaults to `0` when not explicitly supplied
+ */
+function applyPostInsertMetadata(
+  db: BetterSqlite3.Database,
+  memoryId: number,
+  fields: PostInsertMetadataFields,
+): void {
+  const setClauses: string[] = [];
+  const values: unknown[] = [];
+
+  for (const [col, val] of Object.entries(fields)) {
+    if (val === undefined) continue;                      // skip unset fields
+    if (!ALLOWED_POST_INSERT_COLUMNS.has(col)) continue;  // injection guard
+
+    if (col === 'encoding_intent') {
+      setClauses.push('encoding_intent = COALESCE(?, encoding_intent)');
+    } else {
+      setClauses.push(`${col} = ?`);
+    }
+    values.push(val);
+  }
+
+  // Always set last_review; default review_count to 0 when caller omitted it
+  setClauses.push("last_review = datetime('now')");
+  if (!Object.prototype.hasOwnProperty.call(fields, 'review_count')) {
+    setClauses.push('review_count = 0');
+  }
+
+  values.push(memoryId);
+
+  db.prepare(`
+    UPDATE memory_index
+    SET ${setClauses.join(',\n        ')}
+    WHERE id = ?
+  `).run(...values);
+}
 
 /** Escape special SQL LIKE pattern characters (% and _) for safe queries */
 function escapeLikePattern(str: string): string {
@@ -796,35 +882,19 @@ async function indexChunkedMemoryFile(
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-      database.prepare(`
-        UPDATE memory_index
-        SET content_hash = ?,
-            context_type = ?,
-            importance_tier = ?,
-            memory_type = ?,
-            type_inference_source = ?,
-            stability = ?,
-            difficulty = ?,
-            last_review = datetime('now'),
-            review_count = 0,
-            file_mtime_ms = ?,
-            embedding_status = 'partial',
-            quality_score = ?,
-            quality_flags = ?
-        WHERE id = ?
-      `).run(
-        parsed.contentHash,
-        parsed.contextType,
-        parsed.importanceTier,
-        parsed.memoryType,
-        parsed.memoryTypeSource,
-        fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-        fileMtimeMs,
-        parsed.qualityScore ?? 0,
-        JSON.stringify(parsed.qualityFlags ?? []),
-        pid
-      );
+      applyPostInsertMetadata(database, pid, {
+        content_hash: parsed.contentHash,
+        context_type: parsed.contextType,
+        importance_tier: parsed.importanceTier,
+        memory_type: parsed.memoryType,
+        type_inference_source: parsed.memoryTypeSource,
+        stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+        difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+        file_mtime_ms: fileMtimeMs,
+        embedding_status: 'partial',
+        quality_score: parsed.qualityScore ?? 0,
+        quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+      });
 
       return { parentId: pid, isUpdate: false };
     }
@@ -915,34 +985,18 @@ async function indexChunkedMemoryFile(
       }
 
       // Set parent_id, chunk_index, chunk_label on the child
-      database.prepare(`
-        UPDATE memory_index
-        SET parent_id = ?,
-            chunk_index = ?,
-            chunk_label = ?,
-            content_hash = ?,
-            context_type = ?,
-            importance_tier = ?,
-            embedding_status = ?,
-            encoding_intent = COALESCE(?, encoding_intent),
-            stability = ?,
-            difficulty = ?,
-            last_review = datetime('now'),
-            review_count = 0
-        WHERE id = ?
-      `).run(
-        parentId,
-        i,
-        chunk.label,
-        parsed.contentHash,
-        parsed.contextType,
-        parsed.importanceTier,
-        chunkEmbeddingStatus,
-        chunkEncodingIntent,
-        fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-        childId
-      );
+      applyPostInsertMetadata(database, childId, {
+        parent_id: parentId,
+        chunk_index: i,
+        chunk_label: chunk.label,
+        content_hash: parsed.contentHash,
+        context_type: parsed.contextType,
+        importance_tier: parsed.importanceTier,
+        embedding_status: chunkEmbeddingStatus,
+        encoding_intent: chunkEncodingIntent,
+        stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+        difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+      });
 
       childIds.push(childId);
 
@@ -1414,40 +1468,21 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
               const fileMetadata = incrementalIndex.getFileMetadata(memory.filePath);
               const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-              database.prepare(`
-                UPDATE memory_index
-                SET content_hash = ?,
-                    context_type = ?,
-                    importance_tier = ?,
-                    memory_type = ?,
-                    type_inference_source = ?,
-                    stability = ?,
-                    difficulty = ?,
-                    last_review = datetime('now'),
-                    review_count = 0,
-                    file_mtime_ms = ?,
-                    encoding_intent = COALESCE(?, encoding_intent),
-                    document_type = ?,
-                    spec_level = ?,
-                    quality_score = ?,
-                    quality_flags = ?
-                WHERE id = ?
-              `).run(
-                parsed.contentHash,
-                parsed.contextType,
-                parsed.importanceTier,
-                parsed.memoryType,
-                parsed.memoryTypeSource,
-                fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-                fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-                fileMtimeMs,
-                memoryEncodingIntent,
-                parsed.documentType || 'memory',
-                callbackSpecLevel,
-                parsed.qualityScore ?? 0,
-                JSON.stringify(parsed.qualityFlags ?? []),
-                memoryId
-              );
+              applyPostInsertMetadata(database, memoryId, {
+                content_hash: parsed.contentHash,
+                context_type: parsed.contextType,
+                importance_tier: parsed.importanceTier,
+                memory_type: parsed.memoryType,
+                type_inference_source: parsed.memoryTypeSource,
+                stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+                difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+                file_mtime_ms: fileMtimeMs,
+                encoding_intent: memoryEncodingIntent,
+                document_type: parsed.documentType || 'memory',
+                spec_level: callbackSpecLevel,
+                quality_score: parsed.qualityScore ?? 0,
+                quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+              });
 
               if (bm25Index.isBm25Enabled()) {
                 try {
@@ -1547,40 +1582,21 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-      database.prepare(`
-        UPDATE memory_index
-        SET content_hash = ?,
-            context_type = ?,
-            importance_tier = ?,
-            memory_type = ?,
-            type_inference_source = ?,
-            stability = ?,
-            difficulty = ?,
-            last_review = datetime('now'),
-            review_count = 0,
-            file_mtime_ms = ?,
-            encoding_intent = COALESCE(?, encoding_intent),
-            document_type = ?,
-            spec_level = ?,
-            quality_score = ?,
-            quality_flags = ?
-        WHERE id = ?
-      `).run(
-        parsed.contentHash,
-        parsed.contextType,
-        parsed.importanceTier,
-        parsed.memoryType,
-        parsed.memoryTypeSource,
-        fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-        fileMtimeMs,
-        encodingIntent,
-        parsed.documentType || 'memory',
-        specLevel,
-        parsed.qualityScore ?? 0,
-        JSON.stringify(parsed.qualityFlags ?? []),
-        memory_id
-      );
+      applyPostInsertMetadata(database, memory_id, {
+        content_hash: parsed.contentHash,
+        context_type: parsed.contextType,
+        importance_tier: parsed.importanceTier,
+        memory_type: parsed.memoryType,
+        type_inference_source: parsed.memoryTypeSource,
+        stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+        difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+        file_mtime_ms: fileMtimeMs,
+        encoding_intent: encodingIntent,
+        document_type: parsed.documentType || 'memory',
+        spec_level: specLevel,
+        quality_score: parsed.qualityScore ?? 0,
+        quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+      });
 
       if (peDecision.action === predictionErrorGate.ACTION.CREATE_LINKED && peDecision.existingMemoryId != null) {
         try {
@@ -1634,40 +1650,21 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-      database.prepare(`
-        UPDATE memory_index
-        SET content_hash = ?,
-            context_type = ?,
-            importance_tier = ?,
-            memory_type = ?,
-            type_inference_source = ?,
-            stability = ?,
-            difficulty = ?,
-            last_review = datetime('now'),
-            review_count = 0,
-            file_mtime_ms = ?,
-            encoding_intent = COALESCE(?, encoding_intent),
-            document_type = ?,
-            spec_level = ?,
-            quality_score = ?,
-            quality_flags = ?
-        WHERE id = ?
-      `).run(
-        parsed.contentHash,
-        parsed.contextType,
-        parsed.importanceTier,
-        parsed.memoryType,
-        parsed.memoryTypeSource,
-        fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-        fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-        fileMtimeMs,
-        encodingIntent,
-        parsed.documentType || 'memory',
-        specLevel,
-        parsed.qualityScore ?? 0,
-        JSON.stringify(parsed.qualityFlags ?? []),
-        memory_id
-      );
+      applyPostInsertMetadata(database, memory_id, {
+        content_hash: parsed.contentHash,
+        context_type: parsed.contextType,
+        importance_tier: parsed.importanceTier,
+        memory_type: parsed.memoryType,
+        type_inference_source: parsed.memoryTypeSource,
+        stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+        difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+        file_mtime_ms: fileMtimeMs,
+        encoding_intent: encodingIntent,
+        document_type: parsed.documentType || 'memory',
+        spec_level: specLevel,
+        quality_score: parsed.qualityScore ?? 0,
+        quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+      });
 
       if (bm25Index.isBm25Enabled()) {
         try {
@@ -1859,6 +1856,8 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
 /** Handle memory_save tool - validates, indexes, and persists a memory file to the database */
 async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
+  // A7-P2-1: Generate requestId for incident correlation in error responses
+  const requestId = randomUUID();
   await checkDatabaseUpdated();
 
   const { filePath: file_path, force = false, dryRun = false, skipPreflight = false, asyncEmbedding = false } = args;
@@ -2056,7 +2055,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   if (result.embeddingStatus === 'success') {
     retryManager.processRetryQueue(2).catch((err: unknown) => {
       const message = err instanceof Error ? err.message : String(err);
-      console.warn('[memory-save] Opportunistic retry failed:', message);
+      console.warn(`[memory-save] Opportunistic retry failed [requestId=${requestId}]:`, message);
     });
   }
 
@@ -2072,7 +2071,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
-    console.warn(`[memory-save] N3-lite consolidation skipped after save: ${message}`);
+    console.warn(`[memory-save] N3-lite consolidation skipped after save [requestId=${requestId}]: ${message}`);
   }
 
   return createMCPSuccessResponse({
@@ -2199,7 +2198,19 @@ function isQualityLoopEnabled(): boolean {
 
 /**
  * Compute trigger phrase quality sub-score.
- * 0 triggers → 0, 1-3 → 0.5, 4+ → 1.0
+ *
+ * Evaluates whether the memory metadata declares enough trigger phrases for
+ * reliable retrieval via the `memory_match_triggers` tool. The scoring
+ * thresholds are:
+ *   - 0 phrases  → score 0.0  (memory will never surface via trigger matching)
+ *   - 1–3 phrases → score 0.5  (below the recommended minimum of four)
+ *   - 4+ phrases  → score 1.0  (meets or exceeds the recommended minimum)
+ *
+ * @param metadata - Raw metadata record extracted from the memory file. Expected
+ *   to contain a `triggerPhrases` key whose value is an array of strings.
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range [0, 1].
+ *   - `issues` — Human-readable issue strings when the count is below 4.
  */
 function scoreTriggerPhrases(metadata: Record<string, unknown>): { score: number; issues: string[] } {
   const triggers = Array.isArray(metadata.triggerPhrases) ? metadata.triggerPhrases : [];
@@ -2219,8 +2230,21 @@ function scoreTriggerPhrases(metadata: Record<string, unknown>): { score: number
 
 /**
  * Compute anchor format quality sub-score.
- * Checks that ANCHOR tags are properly opened and closed.
- * No anchors (and no broken ones) → 0.5 (neutral).
+ *
+ * Scans `content` for HTML comment–style ANCHOR tags in the forms
+ * `<!-- ANCHOR: name -->` and `<!-- /ANCHOR: name -->`, then verifies that
+ * every opening tag has a matching closing tag and vice-versa.
+ *
+ * Scoring rules:
+ *   - No anchors present at all → score 0.5 (neutral; anchors are optional)
+ *   - All anchors properly paired  → score 1.0
+ *   - Mismatches present → proportional deduction: `1 - brokenCount / totalUniqueNames`
+ *     (minimum 0.0)
+ *
+ * @param content - Full text content of the memory file to inspect.
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range [0, 1].
+ *   - `issues` — Descriptions of any unclosed or unopened ANCHOR tags found.
  */
 function scoreAnchorFormat(content: string): { score: number; issues: string[] } {
   const issues: string[] = [];
@@ -2270,7 +2294,25 @@ function scoreAnchorFormat(content: string): { score: number; issues: string[] }
 
 /**
  * Compute token budget quality sub-score.
- * Under budget → 1.0, over → budget/actual (proportionally less).
+ *
+ * Approximates token count from character length using the constant ratio
+ * `CHARS_PER_TOKEN` (4 chars ≈ 1 token) and compares the result against
+ * `charBudget`. Memories that exceed the budget are penalised proportionally
+ * so that callers can surface oversized files before indexing.
+ *
+ * Scoring rules:
+ *   - `content.length <= charBudget` → score 1.0 (within budget)
+ *   - `content.length > charBudget`  → score `charBudget / content.length`
+ *     (always > 0 because `charBudget > 0`)
+ *
+ * @param content    - Full text content of the memory file.
+ * @param charBudget - Maximum allowed character count before penalisation.
+ *   Defaults to `DEFAULT_CHAR_BUDGET` (`DEFAULT_TOKEN_BUDGET * CHARS_PER_TOKEN`,
+ *   i.e. 2000 tokens × 4 = 8000 characters).
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range (0, 1].
+ *   - `issues` — A single message describing the overage when the budget is
+ *     exceeded, including the approximate token count.
  */
 function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUDGET): { score: number; issues: string[] } {
   const issues: string[] = [];
@@ -2287,7 +2329,23 @@ function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUD
 
 /**
  * Compute coherence quality sub-score.
- * Basic checks: non-empty, >50 chars, has sections, >200 chars.
+ *
+ * Applies four additive structural checks, each worth 0.25 points, to
+ * assess whether `content` represents a well-formed memory document:
+ *
+ *   1. Non-empty (trimmed length > 0)        → +0.25
+ *   2. Minimal length (> 50 chars)            → +0.25
+ *   3. Has at least one Markdown heading
+ *      (`# …`, `## …`, or `### …`)           → +0.25
+ *   4. Substantial content (> 200 chars)      → +0.25
+ *
+ * Each failing check contributes a descriptive string to `issues`.
+ * An entirely empty content string short-circuits to score 0.0.
+ *
+ * @param content - Full text content of the memory file.
+ * @returns An object with:
+ *   - `score`  — Additive sub-score in the range [0, 1] (multiples of 0.25).
+ *   - `issues` — One entry per failed structural check.
  */
 function scoreCoherence(content: string): { score: number; issues: string[] } {
   const issues: string[] = [];
@@ -2322,10 +2380,27 @@ function scoreCoherence(content: string): { score: number; issues: string[] } {
 
 /**
  * Compute composite quality score for a memory file.
- * Weighted combination of trigger phrase coverage, anchor format,
- * token budget compliance, and content coherence.
  *
- * @returns QualityScore with total (0-1), per-dimension breakdown, and issues list
+ * Aggregates the four dimension sub-scores into a single weighted total using
+ * the weights defined in `QUALITY_WEIGHTS`:
+ *   - triggers  × 0.25
+ *   - anchors   × 0.30
+ *   - budget    × 0.20
+ *   - coherence × 0.25
+ *
+ * The total is rounded to three decimal places before being returned.
+ *
+ * @param content  - Full text content of the memory file.
+ * @param metadata - Raw metadata record extracted from the memory file. Passed
+ *   through to `scoreTriggerPhrases`; must contain a `triggerPhrases` key
+ *   whose value is an array of strings.
+ * @returns A `QualityScore` object containing:
+ *   - `total`     — Weighted composite score in the range [0, 1], rounded to
+ *     three decimal places.
+ *   - `breakdown` — Per-dimension raw sub-scores (`triggers`, `anchors`,
+ *     `budget`, `coherence`), each in [0, 1].
+ *   - `issues`    — Concatenated issue strings from all four dimension scorers,
+ *     in order: triggers → anchors → budget → coherence.
  */
 function computeMemoryQualityScore(
   content: string,

@@ -20,6 +20,17 @@
 //   - Quality score filtering
 //   - Tier and contextType filtering
 //
+// I/O CONTRACT:
+//   Input:  Stage1Input { config: PipelineConfig }
+//   Output: Stage1Output { candidates: PipelineRow[], metadata }
+//   Key invariants:
+//     - candidates contains raw scores assigned by the search channel (unchanged)
+//     - Constitutional rows are always present when includeConstitutional=true and no tier filter
+//     - All rows pass qualityThreshold (if set) and tier/contextType filters
+//   Side effects:
+//     - Generates query embeddings via the embeddings provider (external call)
+//     - Reads from the vector index and FTS5 / BM25 index (DB reads only)
+//
 // ---------------------------------------------------------------
 
 import type { Stage1Input, Stage1Output, PipelineRow } from './types';

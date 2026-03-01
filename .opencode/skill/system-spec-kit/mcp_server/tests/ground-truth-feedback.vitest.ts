@@ -16,7 +16,7 @@ import {
   saveLlmJudgeLabels,
   computeJudgeAgreement,
   getGroundTruthCorpusSize,
-  _resetFeedbackSchemaFlag,
+  resetFeedbackSchemaFlag,
   type SelectionContext,
   type LlmJudgeLabel,
   type ManualLabel,
@@ -34,13 +34,13 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gt-feedback-test-'));
     process.env.SPEC_KIT_DB_DIR = tmpDir;
     closeEvalDb();
-    _resetFeedbackSchemaFlag();
+    resetFeedbackSchemaFlag();
     initEvalDb(tmpDir);
   });
 
   afterEach(() => {
     closeEvalDb();
-    _resetFeedbackSchemaFlag();
+    resetFeedbackSchemaFlag();
     if (originalDbDir === undefined) {
       delete process.env.SPEC_KIT_DB_DIR;
     } else {

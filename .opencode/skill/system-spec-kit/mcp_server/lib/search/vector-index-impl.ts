@@ -47,7 +47,7 @@ try {
   search_weights = JSON.parse(
     fs.readFileSync(search_weights_path, 'utf-8')
   ) as SearchWeightsConfig;
-} catch (error) {
+} catch (error: unknown) {
   console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
   search_weights = {};
 }
@@ -355,7 +355,8 @@ function resolve_database_path() {
 // v18: Sprint 6 — weight_history table + causal_edges provenance + encoding_intent column
 // v19: degree_snapshots + community_assignments (N2 graph centrality)
 // v20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
-const SCHEMA_VERSION = 20;
+// v21: Add learned_triggers column (R11 learned feedback)
+const SCHEMA_VERSION = 21;
 
 /* ─────────────────────────────────────────────────────────────
    2. SECURITY HELPERS
@@ -1314,6 +1315,18 @@ function run_migrations(database: Database.Database, from_version: number, to_ve
     }
   };
 
+  // v20 -> v21: Add learned_triggers column (R11 learned feedback)
+  migrations[21] = () => {
+    try {
+      database.exec("ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]'");
+      logger.info('Migration v21: Added learned_triggers column (R11)');
+    } catch (e: unknown) {
+      if (!get_error_message(e).includes('duplicate column') && !get_error_message(e).includes('already exists')) {
+        console.warn('[VectorIndex] Migration v21 warning (learned_triggers):', get_error_message(e));
+      }
+    }
+  };
+
   // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
   // If any migration fails, all changes are rolled back preventing partial schema corruption
   const run_all_migrations = database.transaction(() => {
@@ -1886,6 +1899,8 @@ function create_schema(database: Database.Database) {
       chunk_index INTEGER,
       chunk_label TEXT,
       encoding_intent TEXT DEFAULT 'document',
+      learned_triggers TEXT DEFAULT '[]',
+      interference_score REAL DEFAULT 0,
       UNIQUE(spec_folder, file_path, anchor_id)
     )
   `);

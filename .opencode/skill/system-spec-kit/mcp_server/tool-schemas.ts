@@ -5,9 +5,7 @@
 // Extracted from context-server.ts for maintainability (T303).
 // ---------------------------------------------------------------
 
-/* ---------------------------------------------------------------
-   1. TYPES
---------------------------------------------------------------- */
+// --- 1. TYPES ---
 
 export interface ToolDefinition {
   name: string;
@@ -15,9 +13,7 @@ export interface ToolDefinition {
   inputSchema: Record<string, unknown>;
 }
 
-/* ---------------------------------------------------------------
-   2. TOOL DEFINITIONS
---------------------------------------------------------------- */
+// --- 2. TOOL DEFINITIONS ---
 
 // T061: L1 Orchestration - Unified entry point (Token Budget: 2000)
 const memoryContext: ToolDefinition = {
@@ -344,9 +340,7 @@ const memoryGetLearningHistory: ToolDefinition = {
   inputSchema: { type: 'object', properties: { specFolder: { type: 'string', description: 'Spec folder path to get learning history for (required)' }, sessionId: { type: 'string', description: 'Filter by session ID (optional)' }, limit: { type: 'number', default: 10, description: 'Maximum records to return (default: 10, max: 100)' }, onlyComplete: { type: 'boolean', default: false, description: 'Only return records with both PREFLIGHT and POSTFLIGHT (complete learning cycles)' }, includeSummary: { type: 'boolean', default: true, description: 'Include summary statistics (averages, trends) in response' } }, required: ['specFolder'] },
 };
 
-/* ---------------------------------------------------------------
-   3. AGGREGATED DEFINITIONS
---------------------------------------------------------------- */
+// --- 3. AGGREGATED DEFINITIONS ---
 
 export const TOOL_DEFINITIONS: ToolDefinition[] = [
   // L1: Orchestration

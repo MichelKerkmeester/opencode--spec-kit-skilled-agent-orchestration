@@ -4,6 +4,7 @@
    IMPORTS
 --------------------------------------------------------------- */
 
+import { randomUUID } from 'node:crypto';
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import type { UpdateMemoryParams } from '../lib/search/vector-index';
@@ -29,6 +30,8 @@ import type { UpdateArgs } from './memory-crud-types';
 
 /** Handle memory_update tool -- updates metadata fields and optionally regenerates embeddings. */
 async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
+  // A7-P2-1: Generate requestId for incident correlation in error responses
+  const requestId = randomUUID();
   await checkDatabaseUpdated();
 
   const {
@@ -78,7 +81,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   let embeddingMarkedForReindex = false;
 
   if (title !== undefined && title !== existing.title) {
-    console.error(`[memory-update] Title changed, regenerating embedding for memory ${id}`);
+    console.error(`[memory-update] Title changed, regenerating embedding for memory ${id} [requestId=${requestId}]`);
     let newEmbedding: Float32Array | null = null;
 
     try {
@@ -87,11 +90,11 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     } catch (err: unknown) {
       const message = toErrorMessage(err);
       if (allowPartialUpdate) {
-        console.warn(`[memory-update] Embedding regeneration failed, marking for re-index: ${message}`);
+        console.warn(`[memory-update] Embedding regeneration failed, marking for re-index [requestId=${requestId}]: ${message}`);
         vectorIndex.updateEmbeddingStatus(id, 'pending');
         embeddingMarkedForReindex = true;
       } else {
-        console.error(`[memory-update] Embedding regeneration failed, rolling back update: ${message}`);
+        console.error(`[memory-update] Embedding regeneration failed, rolling back update [requestId=${requestId}]: ${message}`);
         throw new MemoryError(
           ErrorCodes.EMBEDDING_FAILED,
           'Embedding regeneration failed, update rolled back. No changes were made.',
@@ -144,8 +147,8 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
           }
         }
       }
-    } catch (e) {
-      console.warn(`[memory-crud-update] BM25 re-index after title change failed: ${e instanceof Error ? e.message : String(e)}`);
+    } catch (e: unknown) {
+      console.warn(`[memory-crud-update] BM25 re-index after title change failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
     }
   }
 

@@ -198,7 +198,7 @@ async function populateRelatedMemories(
     }
     const embedding = new Float32Array(uint8.buffer, uint8.byteOffset, uint8.byteLength / 4);
     const similar = vectorSearchFn(embedding, {
-      limit: CO_ACTIVATION_CONFIG.maxRelated + 1,
+      limit: 2 * CO_ACTIVATION_CONFIG.maxRelated,
       minSimilarity: CO_ACTIVATION_CONFIG.minSimilarity,
     });
 

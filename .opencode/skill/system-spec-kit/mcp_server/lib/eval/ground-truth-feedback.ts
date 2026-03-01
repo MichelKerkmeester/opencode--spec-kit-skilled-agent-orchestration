@@ -205,7 +205,7 @@ function ensureFeedbackSchema(): void {
 /**
  * Reset the schema-ensured flag (for testing only).
  */
-export function _resetFeedbackSchemaFlag(): void {
+export function resetFeedbackSchemaFlag(): void {
   _feedbackSchemaEnsured = false;
 }
 

@@ -252,6 +252,24 @@ function queryCausalEdgesLikeFallback(
 /**
  * In-memory degree cache. Keys are stringified memory IDs.
  * Invalidated via clearDegreeCache() on causal edge mutations.
+ *
+ * A4-P2-1: Edge materialization optimization — investigated and found adequate.
+ * Degree scores are cached per-session via this Map and invalidated on edge
+ * mutations (insert/update/delete) through clearDegreeCache() called from
+ * causal-edges.ts.  Community detection in community-detection.ts uses a
+ * separate debounce (lastEdgeCount + computedThisSession) to skip
+ * re-computation when the graph is unchanged.  No additional optimization
+ * is needed at this time.
+ *
+ * Cache warmup strategy:
+ *   - The cache is populated lazily: entries are written on first access via
+ *     computeDegreeScores() as each memory ID is encountered during a search.
+ *   - Cold-start (empty cache): every ID in a batch triggers a DB query
+ *     (computeTypedDegree SQL). The global max degree is recomputed per-batch
+ *     since it is not cached separately.
+ *   - Subsequent requests: hits are served from the Map without touching the DB.
+ *   - Invalidation: clearDegreeCache() wipes all entries on causal edge
+ *     insert/update/delete so the next batch recomputes from current DB state.
  */
 const degreeCache = new Map<string, number>();
 

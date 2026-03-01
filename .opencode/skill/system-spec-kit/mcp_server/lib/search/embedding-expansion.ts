@@ -9,9 +9,10 @@
 //   rather than semantic broadening.
 //
 // Feature Flag:
-//   Controlled by SPECKIT_EMBEDDING_EXPANSION=true (opt-in, default off).
-//   If the flag is off, expandQueryWithEmbeddings() returns immediately
-//   with an identity result (original query only, no expanded terms).
+//   Controlled by SPECKIT_EMBEDDING_EXPANSION (default: ON, graduated).
+//   Set to 'false' to disable. If disabled, expandQueryWithEmbeddings()
+//   returns immediately with an identity result (original query only,
+//   no expanded terms).
 // ---------------------------------------------------------------
 
 import { isEmbeddingExpansionEnabled } from './search-flags';
