@@ -165,7 +165,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 - **NFR-S01**: Constitutional memories excluded from degree boost (prevents artificial inflation)
 
 ### Reliability
-- **NFR-R01**: R4 behind feature flag `SPECKIT_DEGREE_BOOST` — disabled by default
+- **NFR-R01**: R4 behind feature flag `SPECKIT_DEGREE_BOOST` — graduated to ON by default (set `SPECKIT_DEGREE_BOOST=false` to disable)
 - **NFR-R02**: R4 gracefully returns 0 if graph has no edges for a memory
 <!-- /ANCHOR:nfr -->
 

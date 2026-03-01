@@ -103,7 +103,7 @@
 - `memory-parser.ts` — Added `/z_archive/` exclusion to `isMemoryFile()` spec doc detection
 - `tests/README.md` — Updated statistics (196→226 files, 5797→7003 tests)
 
-## Verification Evidence
+## Phase 1 Verification Evidence
 
 | Check | Result |
 |-------|--------|
@@ -118,7 +118,7 @@
 | `getSubgraphWeights` in lib/ | 0 hits |
 | `logCoActivationEvent` in lib/ | 0 hits |
 
-## Files Modified
+## Phase 1 Files Modified
 
 ### Production (~35 files)
 - `handlers/memory-save.ts`, `handlers/memory-index-discovery.ts`
@@ -145,3 +145,147 @@
 - `tests/rsf-fusion.vitest.ts`, `session-cleanup.vitest.ts`
 - `tests/shadow-scoring.vitest.ts`, `working-memory.vitest.ts`
 - `tests/README.md`
+
+---
+
+## Phase 2: 25-Agent Review Remediation (2026-03-01)
+
+A comprehensive 25-agent review of the full MCP server codebase identified ~65 additional issues: 5 P0 blockers, ~33 P1 required fixes, and ~25 P2 suggestions. All issues were fixed in 5 parallel waves.
+
+### Phase 2 Results
+
+| Metric | Before | After |
+|--------|--------|-------|
+| TypeScript errors | 0 | 0 |
+| Test files | 226 | 226 |
+| Tests passing | 7,003/7,003 | 7,008/7,008 |
+| P0 blockers fixed | — | 5 |
+| P1 code fixes | — | 26 |
+| P1 code standard fixes | — | 6 (109 files) |
+| P2 suggestions | — | ~25 |
+| Documentation fixes | — | 6 |
+
+> Note: Test count increased from 7,003 to 7,008 because new eval metrics (Precision@K, F1@K) and updated test coverage were added.
+
+### Wave 1: P0 Blockers (5 fixes, 4 files)
+
+- **P0-1:** `prediction-error-gate.ts` — Removed double `/100` similarity normalization (data already 0-1 scale)
+- **P0-2:** `memory-save.ts` — Moved chunking check inside `withSpecFolderLock` callback (was outside serialization)
+- **P0-3:** `rrf-fusion.ts` — Populated `sourceScores` in two-list `fuseResults` (field was always empty)
+- **P0-4:** `pipeline/types.ts` — Removed `[key: string]: unknown` index signature escape hatch from `Stage4ReadonlyRow`
+- **P0-6:** `memory-save.ts` — Replaced await-and-proceed `withSpecFolderLock` with promise-chain pattern (TOCTOU race fix)
+
+### Wave 2: P1 Code Fixes (26 fixes, ~20 files)
+
+#### Scoring & Pipeline (P1-A1, A2, A4)
+- `rrf-fusion.ts` — Used `new Set(result.sources).size` for unique source count in convergence bonus
+- `rsf-fusion.ts` — Added `sim > 1 ? sim / 100 : sim` normalization guard
+- `stage3-rerank.ts` — Preserved original cosine `similarity`; stored reranker output in separate `rerankerScore`
+
+#### Feature Flags & Guards (P1-A5, A7, A8)
+- `search-flags.ts` + `hybrid-search.ts` — Added `isDegreeBoostEnabled()` function, replaced inline check
+- `entity-linker.ts` + `memory-summaries.ts` — Added self-enforcing feature flag guards at top of public APIs
+- `learned-feedback.ts` — Added audit-table-based `isInShadowPeriod()` with 7-day shadow period
+
+#### Mutation & Storage (P1-B1–B5)
+- `memory-save.ts` — Cache invalidation after chunked indexing; persisted mutated content from quality loop
+- `reconsolidation.ts` — Added `content_hash` to UPDATE SET clause with SHA-256 recompute
+- `memory-crud-update.ts` — Added BM25 re-index when title changes
+- `memory-triggers.ts` — Clamped `attentionScore` to [0,1] before `Math.min` with retrievability
+
+#### Cache & Transactions (P1-B6, B8)
+- `tool-cache.ts` — Added `'memory_context'` and `'memory_list'` to `affectedTools` array
+- `transaction-manager.ts` — Added AI-WHY comment documenting file-system-only atomicity
+
+#### Cognitive Subsystem (P1-C1, C4, C5)
+- `causal-edges.ts` — Fixed WHERE clause to proper disjunctive form for `last_accessed` null handling
+- `co-activation.ts` — Changed to pure fan-effect formula (1/sqrt(n) decay, no `relatedCount/maxRelated` multiplier)
+- `ablation-framework.ts` — Fixed inverted variable names: `queriesHurt`→`queriesChannelHelped`, `queriesHelped`→`queriesChannelHurt`
+
+#### Eval Module (P1-D1, D2, D3)
+- `eval-metrics.ts` — Added `computePrecision()` and `computeF1()` functions; updated `AllMetrics` interface
+- `shadow-scoring.ts` — Cleaned header, added `@deprecated` to dead functions
+
+### Wave 3: P1 Code Standards (6 fixes, ~80 files)
+
+- **P1-E1:** Converted `// ─── MODULE:` headers to standard 3-line format across 71 files; converted `/* ─── N. SECTION ─── */` to `/* --- N. SECTION --- */` across 38 files (109 files total)
+- **P1-E2:** Removed commented-out imports in 6 test files
+- **P1-E3:** Added `AI-` prefix to 5 bare comments in production files
+- **P1-E4:** `hybrid-search.ts` — Added IMPORTS section, renumbered all 15 sections sequentially
+- **P1-E5:** `working-memory.ts` + `attention-decay.ts` — Normalized multi-line dividers to `/* --- N. SECTION --- */`
+- **P1-E6:** `trigger-matcher.ts` — Removed redundant `module.exports` block; added `export` to `CORRECTION_KEYWORDS` and `PREFERENCE_KEYWORDS`
+
+### Wave 4: P2 Suggestions (~25 fixes, ~15 files)
+
+#### Performance (P2-01 through P2-06)
+- `rrf-fusion.ts` — Replaced `Math.max(...scores)` with `for`-loop (stack overflow prevention)
+- `consolidation.ts` — Added 5s timeout guard to O(n^2) contradiction scans
+- `temporal-contiguity.ts` — Added `MAX_TOTAL_BOOST = 0.5` cap per result
+- `working-memory.ts` — Added `MAX_MENTION_COUNT = 100` cap to prevent unbounded growth
+- `tool-cache.ts` — Replaced O(n) eviction with O(1) Map insertion-order eviction
+
+#### Safety & Config (P2-05 through P2-cross)
+- `search-weights.json` — Removed dead `rrfFusion` and `crossEncoder` config sections
+- `embedding-cache.ts` — Added `MAX_CACHE_ENTRIES = 10000` with LRU auto-eviction
+- `vector-index-impl.ts` — Wrapped `readFileSync` in try-catch; added `CONSTITUTIONAL_CACHE_MAX_KEYS = 50`
+- `errors/core.ts` — Generic message in `userFriendlyError` (no internal detail leakage)
+- `content-normalizer.ts` — Updated misleading comment for `normalizeContentForBM25`
+- `path-security.ts` — Added AI-WHY explaining fallback safety
+- `tool-cache.ts` — Added try-catch for regex validation in `invalidateByPattern`
+- `transaction-manager.ts` — Added `encoding: 'utf-8'` to both `readdirSync` calls
+- `trigger-matcher.ts` — Added AI-WHY for `initializeDb()` side effect
+
+### Wave 5: Documentation (6 fixes, 13 files)
+
+- Created `checklist.md` for Sprint 009 and Sprint 010
+- Cross-referenced 5 implementation-summary "Known Limitations" against current code; marked stale items as RESOLVED/SUPERSEDED
+- Updated Sprint 1 flag documentation to reflect graduated-ON default state
+- Added deprecation notes to Sprint 2 checklist for N4 novelty boost
+- Updated `lib/eval/README.md` with 5 missing modules (channel-attribution, ground-truth-feedback, reporting-dashboard, shadow-scoring, ablation-framework)
+- Added AI-WHY comment to `channel-representation.ts` documenting QUALITY_FLOOR change from 0.2 to 0.005
+
+### Phase 2 Execution
+
+- **5 waves** of parallel agent delegation (up to 16 agents)
+- **Wave 1:** 4 parallel agents (P0 blockers — independent files)
+- **Wave 2:** 6 parallel agents (P1 code fixes — independent files)
+- **Wave 3:** 3 parallel agents (P1 standards — headers, cleanup, structural)
+- **Wave 4:** 2 parallel agents (P2 suggestions — performance, safety)
+- **Wave 5:** 1 agent (documentation fixes)
+- **Test fixups:** 7 test failures found and fixed across waves (similarity scale, co-activation formula, shadow period, content_hash, module exports, error message format)
+
+### Phase 2 Verification Evidence
+
+| Check | Result |
+|-------|--------|
+| `npx tsc --noEmit` | 0 errors |
+| `npx vitest run` | 226 passed, 7,008 tests, 0 failures |
+| Unicode MODULE headers remaining | 0 |
+| Unicode section dividers remaining | 0 |
+| `withSpecFolderLock` uses promise-chain | Confirmed |
+| `fuseResults` populates `sourceScores` | Confirmed |
+| `Stage4ReadonlyRow` has no index signature | Confirmed |
+| Prediction-error-gate no `/100` | Confirmed |
+
+### Phase 2 Files Modified
+
+#### Production (~50 files)
+- `handlers/memory-save.ts`, `memory-crud-update.ts`, `memory-triggers.ts`
+- `lib/cache/tool-cache.ts`, `embedding-cache.ts`
+- `lib/cognitive/attention-decay.ts`, `co-activation.ts`, `prediction-error-gate.ts`, `temporal-contiguity.ts`, `working-memory.ts`
+- `lib/errors/core.ts`
+- `lib/eval/ablation-framework.ts`, `eval-metrics.ts`, `shadow-scoring.ts`, `README.md`
+- `lib/parsing/content-normalizer.ts`, `trigger-matcher.ts`
+- `lib/search/channel-representation.ts`, `entity-linker.ts`, `hybrid-search.ts`, `learned-feedback.ts`, `memory-summaries.ts`, `pipeline/stage3-rerank.ts`, `pipeline/types.ts`, `rrf-fusion.ts`, `rsf-fusion.ts`, `search-flags.ts`, `vector-index-impl.ts`
+- `lib/storage/causal-edges.ts`, `consolidation.ts`, `reconsolidation.ts`, `transaction-manager.ts`
+- `shared/utils/path-security.ts`
+- `configs/search-weights.json`
+- 109 files with header/divider format changes (Wave 3)
+
+#### Tests (~12 files)
+- `tests/co-activation.vitest.ts`, `cross-feature-integration-eval.vitest.ts`
+- `tests/errors-comprehensive.vitest.ts`, `feature-eval-graph-signals.vitest.ts`
+- `tests/fsrs-scheduler.vitest.ts`, `learned-feedback.vitest.ts`
+- `tests/prediction-error-gate.vitest.ts`, `reconsolidation.vitest.ts`
+- `tests/rrf-degree-channel.vitest.ts`, `signal-vocab.vitest.ts`
+- 6 test files with commented-import removal (Wave 3)

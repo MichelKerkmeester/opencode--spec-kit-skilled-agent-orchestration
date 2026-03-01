@@ -1,9 +1,11 @@
-// ─── MODULE: MPAB Aggregation ───
+// ---------------------------------------------------------------
+// MODULE: MPAB Aggregation
+// ---------------------------------------------------------------
 // Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation.
 // Pipeline position: after RRF fusion, before state filtering.
 // Feature flag: SPECKIT_DOCSCORE_AGGREGATION (default OFF)
 
-/* ─── 1. TYPES ─── */
+/* --- 1. TYPES --- */
 
 /**
  * Result of MPAB aggregation for a single parent memory.
@@ -47,7 +49,7 @@ export interface CollapsedResult extends MpabResult {
   chunks: ChunkResult[];
 }
 
-/* ─── 2. CONFIGURATION ─── */
+/* --- 2. CONFIGURATION --- */
 
 /**
  * Bonus coefficient for MPAB aggregation.
@@ -55,7 +57,7 @@ export interface CollapsedResult extends MpabResult {
  */
 export const MPAB_BONUS_COEFFICIENT = 0.3;
 
-/* ─── 3. FEATURE FLAG ─── */
+/* --- 3. FEATURE FLAG --- */
 
 /**
  * Check if MPAB chunk-to-memory aggregation is enabled.
@@ -67,7 +69,7 @@ export function isMpabEnabled(): boolean {
   return process.env.SPECKIT_DOCSCORE_AGGREGATION?.toLowerCase() !== 'false';
 }
 
-/* ─── 4. CORE ALGORITHM ─── */
+/* --- 4. CORE ALGORITHM --- */
 
 /**
  * Compute the Multi-Parent Aggregated Bonus (MPAB) score from an array
@@ -116,7 +118,7 @@ export function computeMPAB(scores: number[]): number {
   return sMax + bonus;
 }
 
-/* ─── 5. CHUNK COLLAPSE & REASSEMBLY ─── */
+/* --- 5. CHUNK COLLAPSE & REASSEMBLY --- */
 
 /**
  * Collapse chunk-level retrieval results into parent-memory-level results

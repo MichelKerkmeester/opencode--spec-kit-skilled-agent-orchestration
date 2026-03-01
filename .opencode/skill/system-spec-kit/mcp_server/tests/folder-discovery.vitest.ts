@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Folder Discovery ───
+// ---------------------------------------------------------------
+// MODULE: Test — Folder Discovery
+// ---------------------------------------------------------------
 // Tests: extractDescription, extractKeywords, findRelevantFolders,
 //        generateFolderDescriptions, loadDescriptionCache,
 //        saveDescriptionCache

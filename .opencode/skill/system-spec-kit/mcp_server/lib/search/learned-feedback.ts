@@ -363,12 +363,49 @@ export function applyLearnedTriggers(
  * @param db - SQLite database connection
  * @returns Array of matching memories with 0.7x weighted scores
  */
+/** Shadow period duration: 7 days in milliseconds (Safeguard #6). */
+const SHADOW_PERIOD_MS = 7 * 24 * 60 * 60 * 1000;
+
+/**
+ * Check if the system is still within the 1-week shadow period (Safeguard #6).
+ * Computes the earliest audit timestamp; if the system is less than 7 days old,
+ * learned feedback should be logged but not applied.
+ *
+ * @param db - SQLite database connection
+ * @returns true if still in shadow period (boosts should NOT be applied)
+ */
+function isInShadowPeriod(db: Database): boolean {
+  try {
+    ensureAuditTable(db);
+    const row = db.prepare(
+      'SELECT MIN(timestamp) AS earliest FROM learned_feedback_audit'
+    ).get() as { earliest: number | null } | undefined;
+
+    if (!row?.earliest) {
+      // No audit entries yet — system is brand new, treat as shadow period
+      return true;
+    }
+
+    const ageMs = Date.now() - row.earliest;
+    return ageMs < SHADOW_PERIOD_MS;
+  } catch (_error: unknown) {
+    // On error, be conservative: assume shadow period to avoid premature boosting
+    return true;
+  }
+}
+
 export function queryLearnedTriggers(
   query: string,
   db: Database
 ): LearnedTriggerMatch[] {
   try {
     if (!isLearnedFeedbackEnabled()) {
+      return [];
+    }
+
+    // AI-WHY: Safeguard #6 — 1-week shadow period. Compute earliest audit timestamp;
+    // if system is less than 7 days old, log but don't apply learned feedback.
+    if (isInShadowPeriod(db)) {
       return [];
     }
 

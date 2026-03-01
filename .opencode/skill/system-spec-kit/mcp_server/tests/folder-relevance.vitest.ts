@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Folder Relevance ───
+// ---------------------------------------------------------------
+// MODULE: Test — Folder Relevance
+// ---------------------------------------------------------------
 // Validates FolderScore formula, damping, enrichment, two-phase
 // retrieval, and feature flag gating.
 

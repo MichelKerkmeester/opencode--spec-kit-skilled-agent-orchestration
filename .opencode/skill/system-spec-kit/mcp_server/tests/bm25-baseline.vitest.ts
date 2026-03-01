@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — BM25 Baseline ───
+// ---------------------------------------------------------------
+// MODULE: Test — BM25 Baseline
+// ---------------------------------------------------------------
 //
 // Validates:
 //   T008.1  — evaluateContingency: PAUSE for MRR >= 0.80

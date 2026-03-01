@@ -156,6 +156,12 @@ function deleteFileIfExists(filePath: string): boolean {
  * 1. Write to pending path
  * 2. Execute database operations
  * 3. Rename pending to final
+ *
+ * AI-WHY: This function provides file-system-level atomicity (write-to-pending + rename),
+ * NOT database transaction isolation. Callers needing transactional guarantees for
+ * dbOperation() must wrap it in their own db.transaction() call. The rename step
+ * ensures the file is either fully written or not present, but the DB operation
+ * is not rolled back if the rename fails (extremely rare on local filesystems).
  */
 function executeAtomicSave(
   filePath: string,
@@ -217,7 +223,7 @@ function listFilesRecursive(dirPath: string): string[] {
     const current = stack.pop();
     if (!current) continue;
 
-    const entries = fs.readdirSync(current, { withFileTypes: true });
+    const entries = fs.readdirSync(current, { withFileTypes: true, encoding: 'utf-8' });
     for (const entry of entries) {
       const fullPath = path.join(current, entry.name);
       if (entry.isDirectory()) {
@@ -237,7 +243,7 @@ function findPendingFiles(dirPath: string): string[] {
 
     let files: string[];
     try {
-      files = (fs.readdirSync(dirPath, { recursive: true }) as string[]).map((f) => path.join(dirPath, f));
+      files = (fs.readdirSync(dirPath, { recursive: true, encoding: 'utf-8' }) as string[]).map((f) => path.join(dirPath, f));
     } catch {
       // Node 18 compatibility fallback when recursive readdir is unavailable.
       files = listFilesRecursive(dirPath);

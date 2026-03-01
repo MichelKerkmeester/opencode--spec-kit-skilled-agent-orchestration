@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Quality Loop ───
+// ---------------------------------------------------------------
+// MODULE: Test — Quality Loop
+// ---------------------------------------------------------------
 // Quality Loop
 //
 // Verify-fix-verify memory quality loop:

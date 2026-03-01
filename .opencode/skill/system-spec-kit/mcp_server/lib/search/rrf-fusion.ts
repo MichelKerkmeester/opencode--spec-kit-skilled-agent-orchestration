@@ -1,8 +1,10 @@
-// ─── MODULE: RRF Fusion (Reciprocal Rank Fusion) ───
+// ---------------------------------------------------------------
+// MODULE: RRF Fusion (Reciprocal Rank Fusion)
+// ---------------------------------------------------------------
 // Reciprocal Rank Fusion for combining search results
 // P3-11: TypeScript source (previously orphaned .js only)
 
-/* ─── 1. CONSTANTS ─── */
+/* --- 1. CONSTANTS --- */
 
 const SOURCE_TYPES = {
   VECTOR: 'vector',
@@ -25,7 +27,7 @@ const GRAPH_WEIGHT_BOOST = 1.5;
 /** Minimum character length for a query term to be considered for term matching. */
 const MIN_QUERY_TERM_LENGTH = 2;
 
-/* ─── 2. INTERFACES ─── */
+/* --- 2. INTERFACES --- */
 
 /** A single item from a ranked retrieval list, identified by its unique ID. */
 interface RrfItem {
@@ -92,7 +94,7 @@ function canonicalRrfId(id: number | string): string {
   return raw;
 }
 
-/* ─── 3. CORE FUNCTIONS ─── */
+/* --- 3. CORE FUNCTIONS --- */
 
 /**
  * Fuse two ranked result lists using Reciprocal Rank Fusion.
@@ -120,13 +122,14 @@ function fuseResults(
     const existing = scoreMap.get(key);
     if (existing) {
       existing.rrfScore += rrfScore;
+      existing.sourceScores[sourceA] = rrfScore;
       existing.sources.push(sourceA);
     } else {
       scoreMap.set(key, {
         ...item,
         rrfScore,
         sources: [sourceA],
-        sourceScores: {},
+        sourceScores: { [sourceA]: rrfScore },
         convergenceBonus: 0,
       });
     }
@@ -140,6 +143,7 @@ function fuseResults(
     const existing = scoreMap.get(key);
     if (existing) {
       existing.rrfScore += rrfScore;
+      existing.sourceScores[sourceB] = rrfScore;
       existing.sources.push(sourceB);
       existing.convergenceBonus = CONVERGENCE_BONUS;
       existing.rrfScore += CONVERGENCE_BONUS;
@@ -148,7 +152,7 @@ function fuseResults(
         ...item,
         rrfScore,
         sources: [sourceB],
-        sourceScores: {},
+        sourceScores: { [sourceB]: rrfScore },
         convergenceBonus: 0,
       });
     }
@@ -203,8 +207,11 @@ function fuseResultsMulti(
 
   // Apply convergence bonus for multi-source matches
   for (const result of scoreMap.values()) {
-    if (result.sources.length >= 2) {
-      const bonus = convergenceBonus * (result.sources.length - 1);
+    // AI-WHY: Deduplicate sources before counting — a source can appear multiple
+    // times when the same channel contributes via different code paths.
+    const uniqueSourceCount = new Set(result.sources).size;
+    if (uniqueSourceCount >= 2) {
+      const bonus = convergenceBonus * (uniqueSourceCount - 1);
       result.convergenceBonus = bonus;
       result.rrfScore += bonus;
     }
@@ -414,9 +421,15 @@ function isScoreNormalizationEnabled(): boolean {
 function normalizeRrfScores(results: FusionResult[]): void {
   if (results.length === 0) return;
 
-  const scores = results.map(r => r.rrfScore);
-  const maxScore = Math.max(...scores);
-  const minScore = Math.min(...scores);
+  // AI-WHY: Avoid Math.max(...scores) / Math.min(...scores) — spread on large
+  // arrays can exceed the JS engine call-stack argument limit and throw
+  // "Maximum call stack size exceeded". A simple for-loop is O(n) and safe.
+  let maxScore = -Infinity;
+  let minScore = Infinity;
+  for (const r of results) {
+    if (r.rrfScore > maxScore) maxScore = r.rrfScore;
+    if (r.rrfScore < minScore) minScore = r.rrfScore;
+  }
   const range = maxScore - minScore;
 
   if (range > 0) {
@@ -431,7 +444,7 @@ function normalizeRrfScores(results: FusionResult[]): void {
   }
 }
 
-/* ─── 4. EXPORTS ─── */
+/* --- 4. EXPORTS --- */
 
 export {
   SOURCE_TYPES,

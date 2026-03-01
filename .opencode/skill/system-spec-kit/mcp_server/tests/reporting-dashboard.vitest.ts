@@ -151,7 +151,7 @@ afterEach(() => {
 
 describe('Reporting Dashboard (R13-S3)', () => {
 
-  /* ─── S7-RD-8: Empty database ─── */
+  /* --- S7-RD-8: Empty database --- */
 
   describe('S7-RD-8: Empty database returns report with zero eval runs', () => {
     it('returns a valid DashboardReport with all zeroed fields', async () => {
@@ -174,7 +174,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-1: Valid DashboardReport structure ─── */
+  /* --- S7-RD-1: Valid DashboardReport structure --- */
 
   describe('S7-RD-1: generateDashboardReport() returns valid DashboardReport structure', () => {
     beforeEach(() => {
@@ -242,7 +242,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-2: Sprint-level metric aggregation ─── */
+  /* --- S7-RD-2: Sprint-level metric aggregation --- */
 
   describe('S7-RD-2: Sprint-level metric aggregation (mean, min, max, latest)', () => {
     beforeEach(() => {
@@ -323,7 +323,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-3: Channel performance data ─── */
+  /* --- S7-RD-3: Channel performance data --- */
 
   describe('S7-RD-3: Report includes channel performance data', () => {
     beforeEach(() => {
@@ -375,7 +375,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-4: Trend entries with direction ─── */
+  /* --- S7-RD-4: Trend entries with direction --- */
 
   describe('S7-RD-4: Trend entries with direction (improved/regressed/unchanged)', () => {
     beforeEach(() => {
@@ -519,7 +519,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-5: formatReportText ─── */
+  /* --- S7-RD-5: formatReportText --- */
 
   describe('S7-RD-5: formatReportText() produces non-empty string with expected sections', () => {
     it('formats an empty report with header sections', async () => {
@@ -601,7 +601,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-6: formatReportJSON ─── */
+  /* --- S7-RD-6: formatReportJSON --- */
 
   describe('S7-RD-6: formatReportJSON() produces valid JSON matching DashboardReport shape', () => {
     it('produces valid JSON for an empty report', async () => {
@@ -654,7 +654,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── S7-RD-7: Sprint filter ─── */
+  /* --- S7-RD-7: Sprint filter --- */
 
   describe('S7-RD-7: Filter by sprint works correctly', () => {
     beforeEach(() => {
@@ -725,7 +725,7 @@ describe('Reporting Dashboard (R13-S3)', () => {
     });
   });
 
-  /* ─── Additional edge cases ─── */
+  /* --- Additional edge cases --- */
 
   describe('Edge cases and fallback behavior', () => {
     it('uses "run-{id}" fallback label when metadata has no sprint field', async () => {

@@ -19,7 +19,7 @@
 //   8.  Anchor metadata         — extract named ANCHOR sections (annotation)
 //   9.  Validation metadata     — spec quality signals enrichment + quality scoring
 //
-// INVARIANT: Hybrid search already applies intent-aware scoring
+// AI-INVARIANT: Hybrid search already applies intent-aware scoring
 // internally (RRF / RSF fusion). Post-search intent weighting is
 // therefore ONLY applied for non-hybrid search types (vector,
 // multi-concept). Applying it to hybrid results would double-count.

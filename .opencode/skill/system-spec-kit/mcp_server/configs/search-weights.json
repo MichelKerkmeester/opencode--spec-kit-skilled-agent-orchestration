@@ -25,25 +25,5 @@
     "relevanceWeight": 0.5
   },
 
-  "_note_rrfFusion": "DEAD CONFIG - no .ts module loads this section. rrf-fusion.ts does not exist. Audit: agent-14, 2026-02-08.",
-  "rrfFusion": {
-    "_comment": "Reciprocal Rank Fusion configuration (REQ-011). Set env ENABLE_RRF_FUSION=false to disable.",
-    "k": 60,
-    "convergenceBonus": 0.10,
-    "graphWeightBoost": 1.5
-  },
-
-  "_note_crossEncoder": "DEAD CONFIG - cross-encoder.ts hardcodes its own values and never reads this section. Config model differs fundamentally from code. Audit: agent-14, 2026-02-08.",
-  "crossEncoder": {
-    "_comment": "Cross-encoder reranking configuration (REQ-013). Set env ENABLE_CROSS_ENCODER=true to enable.",
-    "maxCandidates": 20,
-    "p95ThresholdMs": 500,
-    "cacheTtlMs": 300000,
-    "cacheMaxSize": 1000,
-    "lengthPenalty": {
-      "threshold": 100,
-      "minPenalty": 0.8,
-      "maxPenalty": 1.0
-    }
-  }
+  "_note_removedDeadConfig": "rrfFusion and crossEncoder sections removed (P2-05). Neither was referenced by any .ts module — rrf-fusion.ts reads its own defaults, cross-encoder.ts hardcodes values. Audit: agent-14, 2026-02-08."
 }

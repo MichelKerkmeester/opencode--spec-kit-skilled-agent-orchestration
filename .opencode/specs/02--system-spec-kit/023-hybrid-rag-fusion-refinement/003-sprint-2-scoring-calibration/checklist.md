@@ -47,7 +47,7 @@ contextType: "implementation"
 - [x] CHK-S2-012 [P1] G2 resolved: fixed (if bug) or documented as intentional design with rationale
 - [x] CHK-S2-013 [P1] Score distributions normalized to [0,1] — 15:1 magnitude mismatch eliminated
 - [x] CHK-S2-014 [P1] N4 formula has no conflict with FSRS temporal decay — applied BEFORE FSRS, capped at 0.95
-- [x] CHK-S2-015 [P2] N4 feature flag `SPECKIT_NOVELTY_BOOST` defaults to disabled
+- [x] CHK-S2-015 [P2] N4 feature flag `SPECKIT_NOVELTY_BOOST` defaults to disabled — **DEPRECATION NOTE**: N4 novelty boost (`calculateNoveltyBoost`) was deprecated in Sprint 10 remediation and now always returns 0. The `SPECKIT_NOVELTY_BOOST` env var is inert. Marginal value confirmed during Sprint 7 flag audit.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -104,7 +104,7 @@ contextType: "implementation"
 ## Sprint 2 Exit Gate
 
 - [x] CHK-S2-060 [P1] R18 embedding cache hit rate >90% on re-index of unchanged content
-- [x] CHK-S2-061 [P1] N4 dark-run: new memories (<48h) surface when relevant without displacing highly relevant older results (implementation verified; live dark-run deferred)
+- [x] CHK-S2-061 [P1] N4 dark-run: new memories (<48h) surface when relevant without displacing highly relevant older results (implementation verified; live dark-run deferred) — **DEPRECATED**: N4 novelty boost superseded; `calculateNoveltyBoost()` always returns 0 as of Sprint 10
 - [x] CHK-S2-062 [P1] G2 double intent weighting resolved — fixed or documented as intentional
 - [x] CHK-S2-063 [P1] Score distributions normalized — both RRF and composite in [0,1] range
 - [x] CHK-S2-064 [P1] `embedding_cache` migration follows protocol (backup, nullable, atomic)

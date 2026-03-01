@@ -1,4 +1,6 @@
-// ─── MODULE: Fsrs Scheduler ───
+// ---------------------------------------------------------------
+// MODULE: Fsrs Scheduler
+// ---------------------------------------------------------------
 // CANONICAL FSRS CONSTANTS & ALGORITHM
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //
@@ -22,7 +24,7 @@
 // factor), tier-classifier.ts (state classification),
 // vector-index-impl.js (SQL search ranking).
 
-/* ─── 1. CONSTANTS ─── */
+/* --- 1. CONSTANTS --- */
 
 /** FSRS v4 algorithm constants */
 const FSRS_FACTOR = 19 / 81;
@@ -49,7 +51,7 @@ const MAX_DIFFICULTY = 10.0;
 /** Stability bounds */
 const MIN_STABILITY = 0.1;
 
-/* ─── 2. INTERFACES ─── */
+/* --- 2. INTERFACES --- */
 
 interface FsrsParams {
   stability: number;
@@ -67,7 +69,7 @@ interface ReviewResult {
   retrievability: number;
 }
 
-/* ─── 3. CORE FUNCTIONS ─── */
+/* --- 3. CORE FUNCTIONS --- */
 
 /**
  * Calculate retrievability (probability of recall) using FSRS v4 formula.
@@ -205,7 +207,7 @@ function processReview(params: FsrsParams, grade: number): ReviewResult {
   };
 }
 
-/* ─── 4. EXPORTS ─── */
+/* --- 4. EXPORTS --- */
 
 /** Bundled constants object for test/external consumption */
 const FSRS_CONSTANTS = {
@@ -245,7 +247,7 @@ const TIER_MULTIPLIER: Readonly<Record<string, number>> = {
   scratch: 3.0,
 } as const;
 
-/* ─── 4a. CLASSIFICATION-BASED DECAY (TM-03) ───
+/* --- 4a. CLASSIFICATION-BASED DECAY (TM-03) ---
    Gated by SPECKIT_CLASSIFICATION_DECAY env var.
    Multiplies FSRS stability so that:
      - Infinity stability → R(t) = 1.0 always (no decay)

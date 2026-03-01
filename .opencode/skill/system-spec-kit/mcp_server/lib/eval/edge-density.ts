@@ -1,4 +1,6 @@
-// ─── MODULE: Edge Density (Sprint 1 T003) ───
+// ---------------------------------------------------------------
+// MODULE: Edge Density (Sprint 1 T003)
+// ---------------------------------------------------------------
 //
 // Measures the edge density of the causal graph:
 //   density = edge_count / total_memories
@@ -17,7 +19,7 @@
 
 import type Database from 'better-sqlite3';
 
-/* ─── 1. TYPES ─── */
+/* --- 1. TYPES --- */
 
 /** Density classification label. */
 export type DensityClassification = 'dense' | 'moderate' | 'sparse';
@@ -43,14 +45,14 @@ export interface EdgeDensityResult {
   r10Recommendation?: string;
 }
 
-/* ─── 2. CONSTANTS ─── */
+/* --- 2. CONSTANTS --- */
 
 /** Lower boundary for "moderate" classification. */
 const MODERATE_THRESHOLD = 0.5;
 /** Lower boundary for "dense" classification. */
 const DENSE_THRESHOLD = 1.0;
 
-/* ─── 3. CORE FUNCTION ─── */
+/* --- 3. CORE FUNCTION --- */
 
 /**
  * Measure the edge density of the causal graph stored in `database`.
@@ -127,7 +129,7 @@ export function measureEdgeDensity(database: Database.Database): EdgeDensityResu
   }
 }
 
-/* ─── 4. REPORT FORMATTER ─── */
+/* --- 4. REPORT FORMATTER --- */
 
 /**
  * Format an EdgeDensityResult into a human-readable multi-line report.
@@ -158,7 +160,7 @@ export function formatDensityReport(result: EdgeDensityResult): string {
   return lines.join('\n');
 }
 
-/* ─── 5. INTERNAL HELPERS ─── */
+/* --- 5. INTERNAL HELPERS --- */
 
 /**
  * Classify a density value into a DensityClassification label.

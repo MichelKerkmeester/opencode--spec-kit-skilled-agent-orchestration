@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Eval Metrics ───
+// ---------------------------------------------------------------
+// MODULE: Test — Eval Metrics
+// ---------------------------------------------------------------
 // 9 evaluation metrics: 4 core + 5 diagnostic.
 // All functions are pure computation — no DB access.
 
@@ -435,6 +437,8 @@ describe('computeAllMetrics (convenience wrapper)', () => {
       'mrr',
       'ndcg',
       'recall',
+      'precision',
+      'f1',
       'hitRate',
       'inversionRate',
       'constitutionalSurfacingRate',

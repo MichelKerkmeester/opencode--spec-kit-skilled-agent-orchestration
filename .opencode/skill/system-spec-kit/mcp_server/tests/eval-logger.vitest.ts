@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Eval Logger ───
+// ---------------------------------------------------------------
+// MODULE: Test — Eval Logger
+// ---------------------------------------------------------------
 // Verifies that logSearchQuery, logChannelResult, and
 // logFinalResult correctly insert records into the eval DB,
 // are no-ops when SPECKIT_EVAL_LOGGING=false, and never throw.

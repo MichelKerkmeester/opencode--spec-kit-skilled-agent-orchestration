@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '../../shared/normalization';
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Normalization — Round-Trip Edge Cases', () => {
 

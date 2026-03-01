@@ -1,4 +1,6 @@
-// ─── MODULE: Test — RSF Fusion ───
+// ---------------------------------------------------------------
+// MODULE: Test — RSF Fusion
+// ---------------------------------------------------------------
 // Relative Score Fusion — Single-Pair Variant
 // Hybrid RAG Fusion Refinement
 

@@ -1,4 +1,6 @@
-// ─── MODULE: Reconsolidation ───
+// ---------------------------------------------------------------
+// MODULE: Reconsolidation
+// ---------------------------------------------------------------
 // ---------------------------------------------------------------
 // TM-06: Reconsolidation-on-Save
 //
@@ -14,6 +16,7 @@
 // REQUIRES: checkpoint created before first enable
 // ---------------------------------------------------------------
 
+import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import * as causalEdges from './causal-edges';
 
@@ -201,14 +204,19 @@ export async function executeMerge(
   const boostedWeight = Math.min(1.0, currentWeight + 0.1);
 
   try {
+    // AI-WHY: Include content_hash in UPDATE so change-detection and dedup
+    // use the merged content's hash, not the stale pre-merge value.
+    const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
+
     // Update the existing memory with merged content and boosted importance
     const mergeResult = db.prepare(`
       UPDATE memory_index
       SET content_text = ?,
           importance_weight = ?,
+          content_hash = ?,
           updated_at = datetime('now')
       WHERE id = ?
-    `).run(mergedContent, boostedWeight, existingMemory.id);
+    `).run(mergedContent, boostedWeight, mergedHash, existingMemory.id);
 
     if (mergeResult.changes === 0) {
       throw new Error(`executeMerge: target memory ${existingMemory.id} no longer exists`);

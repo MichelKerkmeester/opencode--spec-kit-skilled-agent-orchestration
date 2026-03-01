@@ -10,10 +10,6 @@ import * as errors from '../lib/errors/index';
 const { MemoryError, ErrorCodes } = errors;
 
 describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/memory-crud';
-  // import * as errors from '../lib/errors/index';
-
   describe('Exports Validation', () => {
     const expectedExports = [
       'handleMemoryDelete',

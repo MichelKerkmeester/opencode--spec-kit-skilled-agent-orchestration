@@ -15,7 +15,7 @@ import {
   DECAY_RATE,
 } from '../../shared/scoring/folder-scoring';
 
-/* ─── Helpers ────────────────────────────────────────────────── */
+/* --- Helpers --- */
 
 const now = Date.now();
 
@@ -47,7 +47,7 @@ function makeSnakeCaseMemory(overrides: Record<string, unknown> = {}) {
   };
 }
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Folder Scoring — Type Unification (FolderMemoryInput)', () => {
 

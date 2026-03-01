@@ -14,7 +14,7 @@ import {
   applyCompositeScoring,
 } from '../lib/scoring/composite-scoring';
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Composite Scoring — Type Unification (ScoringInput)', () => {
 

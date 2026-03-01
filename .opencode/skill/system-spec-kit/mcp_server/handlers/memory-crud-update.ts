@@ -9,6 +9,7 @@ import * as vectorIndex from '../lib/search/vector-index';
 import type { UpdateMemoryParams } from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
+import * as bm25Index from '../lib/search/bm25-index';
 import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers';
 import { MemoryError, ErrorCodes } from '../lib/errors';
 import * as toolCache from '../lib/cache/tool-cache';
@@ -121,6 +122,32 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   triggerMatcher.clearCache();
   toolCache.invalidateOnWrite('update', { memoryId: id });
   clearConstitutionalCache();
+
+  // AI-WHY: BM25 index stores title text; must re-index when title changes
+  // so keyword search reflects the updated title.
+  if (updateParams.title !== undefined && bm25Index.isBm25Enabled()) {
+    try {
+      const db = vectorIndex.getDb();
+      if (db) {
+        const row = db.prepare(
+          'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
+        ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
+        if (row) {
+          const textParts: string[] = [];
+          if (row.title) textParts.push(row.title);
+          if (row.content_text) textParts.push(row.content_text);
+          if (row.trigger_phrases) textParts.push(row.trigger_phrases);
+          if (row.file_path) textParts.push(row.file_path);
+          const text = textParts.join(' ');
+          if (text.trim()) {
+            bm25Index.getIndex().addDocument(String(id), text);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn(`[memory-crud-update] BM25 re-index after title change failed: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
 
   const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
 

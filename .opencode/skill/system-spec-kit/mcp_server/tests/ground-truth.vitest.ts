@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Ground Truth ───
+// ---------------------------------------------------------------
+// MODULE: Test — Ground Truth
+// ---------------------------------------------------------------
 //
 // Validates:
 //   T007.1  — generateGroundTruth() returns ≥100 queries

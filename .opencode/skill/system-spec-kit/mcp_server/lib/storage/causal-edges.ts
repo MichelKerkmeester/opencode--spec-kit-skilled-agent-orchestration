@@ -653,8 +653,8 @@ function getStaleEdges(thresholdDays: number = STALENESS_THRESHOLD_DAYS): Causal
   try {
     return (db.prepare(`
       SELECT * FROM causal_edges
-      WHERE last_accessed IS NULL AND (extracted_at < datetime('now', '-' || ? || ' days')
-         OR last_accessed < datetime('now', '-' || ? || ' days'))
+      WHERE (last_accessed IS NULL AND extracted_at < datetime('now', '-' || ? || ' days'))
+         OR (last_accessed IS NOT NULL AND last_accessed < datetime('now', '-' || ? || ' days'))
       ORDER BY COALESCE(last_accessed, extracted_at) ASC
     `) as Database.Statement).all(thresholdDays, thresholdDays) as CausalEdge[];
   } catch (error: unknown) {

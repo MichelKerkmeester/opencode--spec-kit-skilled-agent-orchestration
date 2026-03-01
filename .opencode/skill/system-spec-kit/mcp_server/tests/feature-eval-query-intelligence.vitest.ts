@@ -1,5 +1,6 @@
-// ─── MODULE: Test — Feature Evaluation — Query Intelligence ───
-
+// ---------------------------------------------------------------
+// MODULE: Test — Feature Evaluation — Query Intelligence
+// ---------------------------------------------------------------
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // T001: Query complexity classifier
@@ -45,7 +46,7 @@ import {
   DEFAULT_TOKEN_BUDGET_CONFIG,
 } from '../lib/search/dynamic-token-budget';
 
-/* ─── HELPER: set env vars and restore after each test ─── */
+/* --- HELPER: set env vars and restore after each test --- */
 
 let envBackup: Record<string, string | undefined>;
 

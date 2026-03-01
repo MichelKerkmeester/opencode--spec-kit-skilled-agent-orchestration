@@ -13,7 +13,7 @@ import {
   CONFIG,
 } from '../../shared/trigger-extractor';
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Trigger Extractor (T515)', () => {
 

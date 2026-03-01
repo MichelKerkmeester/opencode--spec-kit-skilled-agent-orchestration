@@ -484,7 +484,7 @@ process.on('uncaughtException', (err: Error) => {
 process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
   console.error('[context-server] Unhandled rejection at:', promise, 'reason:', reason);
   // P1-10 FIX: Exit after flush to avoid running in undefined state
-  // WHY: Short delay allows pending stderr writes to flush before exit
+  // AI-WHY: Short delay allows pending stderr writes to flush before exit
   setTimeout(() => process.exit(1), EXIT_FLUSH_DELAY_MS);
 });
 

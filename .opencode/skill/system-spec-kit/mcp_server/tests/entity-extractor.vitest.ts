@@ -25,7 +25,7 @@ import {
   ENTITY_DENYLIST,
 } from '../lib/extraction/entity-denylist.js';
 
-/* ─── Helper: In-memory test database ─── */
+/* --- Helper: In-memory test database --- */
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');

@@ -13,9 +13,7 @@
 import type Database from 'better-sqlite3';
 import { isFeatureEnabled } from './rollout-policy';
 
-/* -------------------------------------------------------------
-   1. CONFIGURATION
-----------------------------------------------------------------*/
+/* --- 1. CONFIGURATION --- */
 
 interface WorkingMemoryConfigType {
   enabled: boolean;
@@ -34,10 +32,12 @@ const MENTION_BOOST_FACTOR = 0.05;
 const DECAY_FLOOR = 0.05;
 const DELETE_THRESHOLD = 0.01;
 const EVENT_COUNTER_MODULUS = 2 ** 31;
+// AI-WHY: Cap mention_count to prevent unbounded integer growth in long-lived
+// sessions. The mention boost formula (mention_count * MENTION_BOOST_FACTOR)
+// would produce unreasonably large scores without a ceiling.
+const MAX_MENTION_COUNT = 100;
 
-/* -------------------------------------------------------------
-   2. SCHEMA SQL
-----------------------------------------------------------------*/
+/* --- 2. SCHEMA SQL --- */
 
 const SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS working_memory (
@@ -65,9 +65,7 @@ const INDEX_SQL = `
   CREATE INDEX IF NOT EXISTS idx_wm_added ON working_memory(added_at)
 `;
 
-/* -------------------------------------------------------------
-   3. INTERFACES
-----------------------------------------------------------------*/
+/* --- 3. INTERFACES --- */
 
 interface WorkingMemoryEntry {
   id: number;
@@ -119,16 +117,12 @@ interface SessionPromptContextEntry {
   attentionScore: number;
 }
 
-/* -------------------------------------------------------------
-   4. MODULE STATE
-----------------------------------------------------------------*/
+/* --- 4. MODULE STATE --- */
 
 let db: Database.Database | null = null;
 let schemaEnsured = false;
 
-/* -------------------------------------------------------------
-   5. INITIALIZATION
-----------------------------------------------------------------*/
+/* --- 5. INITIALIZATION --- */
 
 function init(database: Database.Database): void {
   db = database;
@@ -171,9 +165,7 @@ function ensureSchema(): void {
   }
 }
 
-/* -------------------------------------------------------------
-   6. SESSION MANAGEMENT
-----------------------------------------------------------------*/
+/* --- 6. SESSION MANAGEMENT --- */
 
 function getOrCreateSession(sessionId: string | null = null): string {
   if (sessionId) return sessionId;
@@ -217,9 +209,7 @@ function cleanupOldSessions(): number {
   }
 }
 
-/* -------------------------------------------------------------
-   7. WORKING MEMORY OPERATIONS
-----------------------------------------------------------------*/
+/* --- 7. WORKING MEMORY OPERATIONS --- */
 
 function getWorkingMemory(sessionId: string): WorkingMemoryEntry[] {
   if (!db) return [];
@@ -330,7 +320,7 @@ function setAttentionScore(
         SET attention_score = ?,
             last_focused = CURRENT_TIMESTAMP,
             focus_count = focus_count + 1,
-            mention_count = mention_count + 1,
+            mention_count = MIN(mention_count + 1, ${MAX_MENTION_COUNT}),
             event_counter = ?
         WHERE session_id = ? AND memory_id = ?
       `) as Database.Statement).run(clampedScore, currentEventCounter, sessionId, memoryId);
@@ -395,7 +385,7 @@ function upsertExtractedEntry(input: ExtractedEntryInput): boolean {
         END,
         last_focused = CURRENT_TIMESTAMP,
         focus_count = working_memory.focus_count + 1,
-        mention_count = working_memory.mention_count + 1,
+        mention_count = MIN(working_memory.mention_count + 1, ${MAX_MENTION_COUNT}),
         event_counter = excluded.event_counter,
         source_tool = excluded.source_tool,
         source_call_id = excluded.source_call_id,
@@ -517,7 +507,7 @@ function batchUpdateScores(sessionId: string): number {
     for (const entry of entries) {
       const eventsElapsed = calculateEventDistance(currentEventCounter, entry.event_counter);
       const decayBase = entry.attention_score * Math.pow(EVENT_DECAY_FACTOR, eventsElapsed);
-      const mentionBoost = entry.mention_count * MENTION_BOOST_FACTOR;
+      const mentionBoost = Math.min(entry.mention_count, MAX_MENTION_COUNT) * MENTION_BOOST_FACTOR;
       const rawScore = decayBase + mentionBoost;
 
       if (rawScore < DELETE_THRESHOLD) {
@@ -572,9 +562,7 @@ function calculateEventDistance(currentCounter: number, entryCounter: number): n
   return (normalizedCurrent - normalizedEntry + EVENT_COUNTER_MODULUS) % EVENT_COUNTER_MODULUS;
 }
 
-/* -------------------------------------------------------------
-   8. UTILITY FUNCTIONS
-----------------------------------------------------------------*/
+/* --- 8. UTILITY FUNCTIONS --- */
 
 function isEnabled(): boolean {
   return WORKING_MEMORY_CONFIG.enabled;
@@ -623,9 +611,7 @@ function getSessionStats(sessionId: string): SessionStats | null {
   }
 }
 
-/* -------------------------------------------------------------
-   9. EXPORTS
-----------------------------------------------------------------*/
+/* --- 9. EXPORTS --- */
 
 export {
   WORKING_MEMORY_CONFIG,
@@ -657,6 +643,7 @@ export {
   EVENT_DECAY_FACTOR,
   MENTION_BOOST_FACTOR,
   EVENT_COUNTER_MODULUS,
+  MAX_MENTION_COUNT,
 
   // Utilities
   isEnabled,

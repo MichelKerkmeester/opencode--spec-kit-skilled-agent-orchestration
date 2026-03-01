@@ -152,7 +152,7 @@ async function getTieredContent(
     const canonicalPath = validateTieredFilePath(fs.realpathSync(validatedPath));
     const content = fs.readFileSync(canonicalPath, 'utf-8');
     if (tier === 'HOT') return content;
-    // WARM: return truncated summary
+    // AI-WHY: WARM tier returns truncated summary
     return content.substring(0, 150) + (content.length > 150 ? '...' : '');
   } catch {
     return '';
@@ -332,6 +332,10 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         attentionScore = baseScore * turnDecayFactor;
         tier = tierClassifier.classifyState(attentionScore);
       }
+
+      // AI-WHY: Clamp to [0,1] — retrievability * decay or wmEntry scores
+      // can drift outside the valid range due to floating-point arithmetic.
+      attentionScore = Math.max(0, Math.min(1, attentionScore));
 
       return {
         ...match,

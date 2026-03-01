@@ -1,4 +1,6 @@
-// ─── MODULE: Retrieval Directives ───
+// ---------------------------------------------------------------
+// MODULE: Retrieval Directives
+// ---------------------------------------------------------------
 // PI-A4: Constitutional memory as retrieval directives (Sprint 5, deferred from Sprint 4 REC-07)
 //
 // Adds a `retrieval_directive` metadata field to constitutional-tier memories.

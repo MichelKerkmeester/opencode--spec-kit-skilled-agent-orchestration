@@ -1,5 +1,6 @@
-// ─── MODULE: Test — Ceiling Quality ───
-
+// ---------------------------------------------------------------
+// MODULE: Test — Ceiling Quality
+// ---------------------------------------------------------------
 import { describe, it, expect } from 'vitest';
 
 import {

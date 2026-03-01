@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Search Fallback Tiered ───
+// ---------------------------------------------------------------
+// MODULE: Test — Search Fallback Tiered
+// ---------------------------------------------------------------
 // Tests: Feature flag gating, tier progression, structuralSearch,
 //        degradation metadata, result merging, R15 invariant
 
@@ -18,7 +20,7 @@ import { isSearchFallbackEnabled } from '../lib/search/search-flags';
 
 import Database from 'better-sqlite3';
 
-/* ─── HELPER: env var backup/restore ─── */
+/* --- HELPER: env var backup/restore --- */
 
 let envBackup: Record<string, string | undefined>;
 
@@ -42,7 +44,7 @@ afterEach(() => {
   }
 });
 
-/* ─── HELPER: in-memory DB with memory_index table ─── */
+/* --- HELPER: in-memory DB with memory_index table --- */
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');

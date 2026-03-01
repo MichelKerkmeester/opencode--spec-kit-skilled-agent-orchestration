@@ -43,7 +43,13 @@ export function validateFilePath(filePath: string, allowedBasePaths: string[]): 
         const parentReal = fs.realpathSync(path.dirname(resolved));
         realResolved = path.join(parentReal, path.basename(resolved));
       } catch {
-        // Fall back to resolved path when neither target nor parent can be canonicalized.
+        // AI-WHY: When neither the target file nor its parent directory exist on disk
+        // (e.g. a new file in a not-yet-created directory), realpathSync cannot
+        // canonicalize the path. Falling back to path.resolve() is safe here because
+        // the subsequent path.relative() containment check still prevents traversal —
+        // resolve() normalises away ".." segments, so a malicious path like
+        // "/allowed/../etc/passwd" becomes "/etc/passwd" which will correctly fail
+        // the containment test against allowedBasePaths.
         realResolved = resolved;
       }
     }

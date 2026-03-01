@@ -1,5 +1,9 @@
-// ─── MODULE: Hybrid Search ───
+// ---------------------------------------------------------------
+// MODULE: Hybrid Search
+// ---------------------------------------------------------------
 // Combines vector, FTS, and BM25 search with fallback
+
+/* --- 1. IMPORTS --- */
 
 // Local
 import { getIndex } from './bm25-index';
@@ -9,7 +13,7 @@ import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cache/cognitive/co-ac
 import { applyMMR } from './mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
-import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled } from './search-flags';
+import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled, isDegreeBoostEnabled } from './search-flags';
 import { computeDegreeScores } from './graph-search-fn';
 
 // Sprint 3 modules — all flag-gated, disabled by default
@@ -37,7 +41,7 @@ import type { ChannelName } from './query-router';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
 
-/* ─── 1. INTERFACES ─── */
+/* --- 2. INTERFACES --- */
 
 type VectorSearchFn = (
   embedding: Float32Array | number[],
@@ -97,7 +101,7 @@ function toHybridResult(result: FusionResult): HybridSearchResult {
   };
 }
 
-/* ─── 1b. SPRINT 3 PIPELINE METADATA ─── */
+/* --- 3. SPRINT 3 PIPELINE METADATA --- */
 
 /**
  * Optional metadata about Sprint 3 pipeline stages attached to enhanced search results.
@@ -116,7 +120,7 @@ interface Sprint3PipelineMeta {
   tokenBudget?: { tier: string; budget: number; applied: boolean };
 }
 
-/* ─── 1c. PI-A2: DEGRADATION TYPES ─── */
+/* --- 4. PI-A2: DEGRADATION TYPES --- */
 
 /** Fallback tier in the 3-tier degradation chain. */
 type FallbackTier = 1 | 2 | 3;
@@ -152,7 +156,7 @@ const DEGRADATION_MIN_RELATIVE_GAP = 0.2;
 /** Minimum result count: must have >= this many results to stay at current tier. */
 const DEGRADATION_MIN_RESULTS = 3;
 
-/* ─── 2. MODULE STATE ─── */
+/* --- 5. MODULE STATE --- */
 
 /** Default result limit when none is specified by the caller. */
 const DEFAULT_LIMIT = 20;
@@ -170,7 +174,7 @@ let db: Database.Database | null = null;
 let vectorSearchFn: VectorSearchFn | null = null;
 let graphSearchFn: GraphSearchFn | null = null;
 
-/* ─── 2b. GRAPH CHANNEL METRICS (T008) ─── */
+/* --- 6. GRAPH CHANNEL METRICS (T008) --- */
 
 interface GraphChannelMetrics {
   totalQueries: number;
@@ -207,7 +211,7 @@ function resetGraphMetrics(): void {
   graphMetrics.multiSourceResults = 0;
 }
 
-/* ─── 3. INITIALIZATION ─── */
+/* --- 7. INITIALIZATION --- */
 
 /**
  * Initialize hybrid search with database, vector search, and optional graph search dependencies.
@@ -225,7 +229,7 @@ function init(
   graphSearchFn = graphFn;
 }
 
-/* ─── 4. BM25 SEARCH ─── */
+/* --- 8. BM25 SEARCH --- */
 
 /**
  * Search the BM25 index with optional spec folder filtering.
@@ -275,7 +279,7 @@ function isBm25Available(): boolean {
   }
 }
 
-/* ─── 5. FTS SEARCH ─── */
+/* --- 9. FTS SEARCH --- */
 
 /**
  * Check whether the FTS5 full-text search table exists in the database.
@@ -329,7 +333,7 @@ function ftsSearch(
   }
 }
 
-/* ─── 6. COMBINED LEXICAL SEARCH ─── */
+/* --- 10. COMBINED LEXICAL SEARCH --- */
 
 /**
  * Merge FTS and BM25 search results, deduplicating by ID and preferring FTS scores.
@@ -362,7 +366,7 @@ function combinedLexicalSearch(
     .slice(0, options.limit || DEFAULT_LIMIT);
 }
 
-/* ─── 7. HYBRID SEARCH ─── */
+/* --- 11. HYBRID SEARCH --- */
 
 /**
  * Run multi-channel hybrid search combining vector, FTS, BM25, and graph results with per-source normalization.
@@ -619,7 +623,7 @@ async function hybridSearchEnhanced(
     // AI-WHY: Degree channel re-ranks based on causal-edge connectivity.
     // Graduated: default-ON. Set SPECKIT_DEGREE_BOOST=false to disable.
     // Degree channel (T002: 5th RRF channel) — also gated by Sprint 3 routing
-    if (activeChannels.has('degree') && db && process.env.SPECKIT_DEGREE_BOOST?.toLowerCase() !== 'false') {
+    if (activeChannels.has('degree') && db && isDegreeBoostEnabled()) {
       try {
         // Collect all numeric IDs from existing channels
         const allResultIds = new Set<number>();
@@ -1008,7 +1012,7 @@ async function searchWithFallback(
   return [];
 }
 
-/* ─── 7a. STRUCTURAL SEARCH (PI-A2 Tier 3) ─── */
+/* --- 12. STRUCTURAL SEARCH (PI-A2 Tier 3) --- */
 
 /**
  * PI-A2: Last-resort structural search against the memory_index table.
@@ -1138,7 +1142,7 @@ function calibrateTier3Scores(
   });
 }
 
-/* ─── 7a. TIERED FALLBACK (PI-A2) — continued ─── */
+/* --- 13. TIERED FALLBACK (PI-A2) --- */
 
 /**
  * Evaluate whether results meet quality thresholds.
@@ -1296,7 +1300,7 @@ async function searchWithFallbackTiered(
   return limitedResults;
 }
 
-/* ─── 7b. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007) ─── */
+/* --- 14. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007) --- */
 
 /** Default token budget — configurable via SPECKIT_TOKEN_BUDGET env var. */
 const DEFAULT_TOKEN_BUDGET = 2000;
@@ -1460,7 +1464,7 @@ function truncateToBudget(
   return { results: accepted, truncated: true, overflow };
 }
 
-/* ─── 8. EXPORTS ─── */
+/* --- 15. EXPORTS --- */
 
 export const __testables = {
   canonicalResultId,

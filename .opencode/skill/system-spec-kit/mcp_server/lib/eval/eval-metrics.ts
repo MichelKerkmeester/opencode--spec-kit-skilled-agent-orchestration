@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Metrics
-// T006a-e: Pure computation functions for 9 evaluation metrics
-// (4 core + 5 diagnostic). No DB access, no side effects.
+// T006a-e: Pure computation functions for 11 evaluation metrics
+// (6 core + 5 diagnostic). No DB access, no side effects.
 // ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
@@ -48,6 +48,8 @@ export interface AllMetrics {
   constitutionalSurfacingRate: number;
   importanceWeightedRecall: number;
   coldStartDetectionRate: number;
+  precision: number;
+  f1: number;
   intentWeightedNdcg: number;
 }
 
@@ -191,6 +193,42 @@ export function computeRecall(
   }
 
   return hits / relevantIds.size;
+}
+
+/**
+ * Compute Precision@K — fraction of retrieved results that are relevant.
+ * Precision = |relevant ∩ retrieved@K| / K
+ */
+export function computePrecision(
+  results: Array<{ id: number; [key: string]: unknown }>,
+  groundTruth: Set<number> | number[],
+  k: number = 20
+): number {
+  if (k <= 0) return 0;
+  const gtSet = groundTruth instanceof Set ? groundTruth : new Set(groundTruth);
+  const topK = results.slice(0, k);
+  if (topK.length === 0) return 0;
+  const hits = topK.filter(r => gtSet.has(r.id)).length;
+  return hits / k;
+}
+
+/**
+ * Compute F1@K — harmonic mean of Precision@K and Recall@K.
+ * F1 = 2 * (P * R) / (P + R), or 0 if both are 0.
+ */
+export function computeF1(
+  results: Array<{ id: number; [key: string]: unknown }>,
+  groundTruth: Set<number> | number[],
+  k: number = 20
+): number {
+  const gtSet = groundTruth instanceof Set ? groundTruth : new Set(groundTruth);
+  if (gtSet.size === 0 || k <= 0) return 0;
+  const topK = results.slice(0, k);
+  const hits = topK.filter(r => gtSet.has(r.id)).length;
+  const p = topK.length === 0 ? 0 : hits / k;
+  const r = hits / gtSet.size;
+  if (p + r === 0) return 0;
+  return 2 * (p * r) / (p + r);
 }
 
 /**
@@ -458,7 +496,7 @@ export function computeIntentWeightedNDCG(
 --------------------------------------------------------------- */
 
 /**
- * Compute all 9 metrics (4 core + 5 diagnostic) in one call.
+ * Compute all 11 metrics (6 core + 5 diagnostic) in one call.
  *
  * @param params.results             Retrieved results for the query.
  * @param params.groundTruth         Ground truth relevance judgments.
@@ -486,6 +524,14 @@ export function computeAllMetrics(params: {
     mrr: computeMRR(results, groundTruth),
     ndcg: computeNDCG(results, groundTruth),
     recall: computeRecall(results, groundTruth),
+    precision: computePrecision(
+      results.map(r => ({ id: r.memoryId, ...r })),
+      groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
+    ),
+    f1: computeF1(
+      results.map(r => ({ id: r.memoryId, ...r })),
+      groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
+    ),
     hitRate: computeHitRate(results, groundTruth),
     inversionRate: computeInversionRate(results, groundTruth),
     constitutionalSurfacingRate: computeConstitutionalSurfacingRate(results, constitutionalIds),

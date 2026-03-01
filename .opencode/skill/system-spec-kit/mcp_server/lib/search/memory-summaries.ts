@@ -5,6 +5,7 @@
 
 import type Database from 'better-sqlite3';
 import { generateSummary } from './tfidf-summarizer';
+import { isMemorySummariesEnabled } from './search-flags';
 
 // ---------------------------------------------------------------------------
 // 1. INTERFACES
@@ -99,6 +100,10 @@ export async function generateAndStoreSummary(
   content: string,
   embeddingFn: (text: string) => Promise<Float32Array | null>
 ): Promise<{ stored: boolean; summary: string }> {
+  if (!isMemorySummariesEnabled()) {
+    return { stored: false, summary: '' };
+  }
+
   try {
     const { summary, keySentences } = generateSummary(content);
 

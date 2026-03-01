@@ -10,9 +10,6 @@ import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as evalLogger from '../lib/eval/eval-logger';
 
 describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/memory-triggers';
-
   describe('Exports Validation', () => {
     it('T517-1: handleMemoryMatchTriggers exported', () => {
       expect(typeof handler.handleMemoryMatchTriggers).toBe('function');

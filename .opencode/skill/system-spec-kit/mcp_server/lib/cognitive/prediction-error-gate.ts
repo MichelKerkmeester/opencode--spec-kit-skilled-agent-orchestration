@@ -235,7 +235,7 @@ function evaluateMemory(
 
   // Take the top candidate
   const topCandidate = relevant[0];
-  const similarity = topCandidate.similarity / 100; // Normalize to 0-1
+  const similarity = topCandidate.similarity; // Already normalized to 0-1 by findSimilarMemories
 
   // Check for contradiction
   const existingContent = (topCandidate.content || '') as string;
@@ -270,7 +270,7 @@ function evaluateMemory(
       action,
       newContentHash,
       topCandidate.id,
-      similarity * 100,
+      similarity,
       reason,
       contradiction,
       truncateContent(newContent),
@@ -282,7 +282,7 @@ function evaluateMemory(
 
   return {
     action,
-    similarity: similarity * 100,
+    similarity,
     existingMemoryId: topCandidate.id,
     contradiction,
     reason,
@@ -296,7 +296,7 @@ function filterRelevantCandidates(
   candidates: Array<{ id: number; similarity: number; [key: string]: unknown }>
 ): Array<{ id: number; similarity: number; [key: string]: unknown }> {
   return candidates
-    .filter(c => c.similarity >= THRESHOLD.LOW_MATCH * 100)
+    .filter(c => c.similarity >= THRESHOLD.LOW_MATCH)
     .sort((a, b) => b.similarity - a.similarity);
 }
 

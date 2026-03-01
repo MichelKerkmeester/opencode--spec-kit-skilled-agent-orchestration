@@ -15,7 +15,7 @@ import {
   getMetrics,
 } from '../lib/storage/transaction-manager';
 
-/* ─── Helpers ────────────────────────────────────────────────── */
+/* --- Helpers --- */
 
 let TEST_DIR: string | null = null;
 
@@ -37,7 +37,7 @@ function cleanup(): void {
   TEST_DIR = null;
 }
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('deleteFileIfExists (transaction-manager extended)', () => {
   afterEach(() => {

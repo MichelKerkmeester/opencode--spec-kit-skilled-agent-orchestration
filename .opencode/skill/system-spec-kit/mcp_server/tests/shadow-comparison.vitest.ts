@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Shadow Comparison ───
+// ---------------------------------------------------------------
+// MODULE: Test — Shadow Comparison
+// ---------------------------------------------------------------
 // Verifies that tier-based channel routing produces results comparable
 // to full pipeline (all 5 channels) while reducing simulated latency.
 //

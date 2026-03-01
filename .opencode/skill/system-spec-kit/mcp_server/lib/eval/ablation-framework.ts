@@ -1,4 +1,6 @@
-// ─── MODULE: Ablation Framework (R13-S3) ───
+// ---------------------------------------------------------------
+// MODULE: Ablation Framework (R13-S3)
+// ---------------------------------------------------------------
 //
 // Controlled ablation studies for search channel contribution analysis.
 // Selectively disables one search channel at a time, measures Recall@20
@@ -27,7 +29,7 @@ import {
 } from './ground-truth-data';
 import type { GroundTruthQuery } from './ground-truth-data';
 
-/* ─── 1. FEATURE FLAG ─── */
+/* --- 1. FEATURE FLAG --- */
 
 /**
  * Returns true only when SPECKIT_ABLATION=true (case-insensitive).
@@ -37,7 +39,7 @@ export function isAblationEnabled(): boolean {
   return process.env.SPECKIT_ABLATION?.toLowerCase() === 'true';
 }
 
-/* ─── 2. TYPES ─── */
+/* --- 2. TYPES --- */
 
 /** Known search channels that can be ablated. */
 export type AblationChannel = 'vector' | 'bm25' | 'fts5' | 'graph' | 'trigger';
@@ -88,10 +90,10 @@ export interface AblationResult {
   delta: number;
   /** Two-sided sign-test p-value for statistical significance (null if insufficient data). */
   pValue: number | null;
-  /** Number of queries where removing this channel decreased recall. */
-  queriesHurt: number;
-  /** Number of queries where removing this channel increased recall. */
-  queriesHelped: number;
+  /** Number of queries where removing this channel decreased recall (channel was helpful). */
+  queriesChannelHelped: number;
+  /** Number of queries where removing this channel increased recall (channel was harmful). */
+  queriesChannelHurt: number;
   /** Number of queries unaffected by removing this channel. */
   queriesUnchanged: number;
   /** Total queries evaluated. */
@@ -114,7 +116,7 @@ export interface AblationReport {
   durationMs: number;
 }
 
-/* ─── 3. INTERNAL HELPERS ─── */
+/* --- 3. INTERNAL HELPERS --- */
 
 /**
  * Get the eval DB instance. Prefers the already-initialized singleton
@@ -217,7 +219,7 @@ function meanRecall(recalls: number[]): number {
   return sum / recalls.length;
 }
 
-/* ─── 4. PUBLIC API ─── */
+/* --- 4. PUBLIC API --- */
 
 /**
  * Run a controlled ablation study over the ground truth query set.
@@ -285,8 +287,8 @@ export async function runAblation(
       }
 
       // ── Step 3: Compute deltas ──
-      let queriesHurt = 0;   // ablated < baseline (removing channel decreased quality)
-      let queriesHelped = 0;  // ablated > baseline (removing channel increased quality)
+      let queriesChannelHelped = 0;   // ablated < baseline (removing channel decreased quality — channel was helpful)
+      let queriesChannelHurt = 0;    // ablated > baseline (removing channel increased quality — channel was harmful)
       let queriesUnchanged = 0;
       const queryDeltas: number[] = [];
 
@@ -298,17 +300,17 @@ export async function runAblation(
         queryDeltas.push(delta);
 
         // Use small epsilon for floating-point comparison
-        if (delta < -1e-9) queriesHurt++;
-        else if (delta > 1e-9) queriesHelped++;
+        if (delta < -1e-9) queriesChannelHelped++;
+        else if (delta > 1e-9) queriesChannelHurt++;
         else queriesUnchanged++;
       }
 
       const meanAblatedRecall = meanRecall([...ablatedRecalls.values()]);
       const meanDelta = meanAblatedRecall - overallBaselineRecall;
 
-      // queriesHurt = channel was helping (removing it hurt quality)
-      // queriesHelped = channel was hurting (removing it helped quality)
-      const pValue = signTestPValue(queriesHurt, queriesHelped);
+      // queriesChannelHelped = channel was helping (removing it hurt quality)
+      // queriesChannelHurt = channel was harmful (removing it helped quality)
+      const pValue = signTestPValue(queriesChannelHelped, queriesChannelHurt);
 
       ablationResults.push({
         channel,
@@ -316,8 +318,8 @@ export async function runAblation(
         ablatedRecall20: meanAblatedRecall,
         delta: meanDelta,
         pValue,
-        queriesHurt,
-        queriesHelped,
+        queriesChannelHelped,
+        queriesChannelHurt,
         queriesUnchanged,
         queryCount: queryDeltas.length,
       });
@@ -401,8 +403,8 @@ export function storeAblationResults(report: AblationReport): boolean {
             baselineRecall20: result.baselineRecall20,
             ablatedRecall20: result.ablatedRecall20,
             pValue: result.pValue,
-            queriesHurt: result.queriesHurt,
-            queriesHelped: result.queriesHelped,
+            queriesChannelHelped: result.queriesChannelHelped,
+            queriesChannelHurt: result.queriesChannelHurt,
             queriesUnchanged: result.queriesUnchanged,
           }),
           report.timestamp,
@@ -445,8 +447,8 @@ export function formatAblationReport(report: AblationReport): string {
     (a, b) => Math.abs(b.delta) - Math.abs(a.delta),
   );
 
-  lines.push(`| Channel | Baseline | Ablated | Delta | p-value | Hurt | Helped | Unchanged | Verdict |`);
-  lines.push(`|---------|----------|---------|-------|---------|------|--------|-----------|---------|`);
+  lines.push(`| Channel | Baseline | Ablated | Delta | p-value | Ch. Helped | Ch. Hurt | Unchanged | Verdict |`);
+  lines.push(`|---------|----------|---------|-------|---------|------------|----------|-----------|---------|`);
 
   for (const r of sorted) {
     const sig = r.pValue !== null && r.pValue < 0.05 ? '*' : '';
@@ -459,8 +461,8 @@ export function formatAblationReport(report: AblationReport): string {
       `| ${r.ablatedRecall20.toFixed(4)} ` +
       `| ${r.delta >= 0 ? '+' : ''}${r.delta.toFixed(4)}${sig} ` +
       `| ${pStr} ` +
-      `| ${r.queriesHurt} ` +
-      `| ${r.queriesHelped} ` +
+      `| ${r.queriesChannelHelped} ` +
+      `| ${r.queriesChannelHurt} ` +
       `| ${r.queriesUnchanged} ` +
       `| ${verdict} |`,
     );
@@ -468,7 +470,7 @@ export function formatAblationReport(report: AblationReport): string {
 
   lines.push(``);
   lines.push(`**Legend:** Delta = ablated - baseline. Negative delta = channel contributes positively.`);
-  lines.push(`Hurt = queries where removing channel decreased recall. * = significant at p<0.05.`);
+  lines.push(`Ch. Helped = queries where channel was helpful (removing it decreased recall). * = significant at p<0.05.`);
   lines.push(``);
 
   // Channel contribution ranking
@@ -485,7 +487,7 @@ export function formatAblationReport(report: AblationReport): string {
   return lines.join('\n');
 }
 
-/* ─── 5. INTERNAL HELPERS (VERDICT) ─── */
+/* --- 5. INTERNAL HELPERS (VERDICT) --- */
 
 /**
  * Generate a human-readable verdict for a channel ablation result.
@@ -511,7 +513,7 @@ function getVerdict(result: AblationResult): string {
   }
 }
 
-/* ─── 6. CONVENIENCE: CHANNEL DISABLE MAP ─── */
+/* --- 6. CONVENIENCE: CHANNEL DISABLE MAP --- */
 
 /**
  * Convert an AblationChannel set to HybridSearchOptions flags.

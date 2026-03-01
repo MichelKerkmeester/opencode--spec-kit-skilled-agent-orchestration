@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Query Classifier ───
+// ---------------------------------------------------------------
+// MODULE: Test — Query Classifier
+// ---------------------------------------------------------------
 // Query Intelligence: complexity classification and routing
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';

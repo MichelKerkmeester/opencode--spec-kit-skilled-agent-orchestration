@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Token Budget ───
+// ---------------------------------------------------------------
+// MODULE: Test — Token Budget
+// ---------------------------------------------------------------
 // Verifies token estimation, greedy truncation, single-result
 // summary fallback, overflow logging, and env var configuration.
 

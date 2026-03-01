@@ -1,17 +1,20 @@
-// ─── MODULE: Channel Representation (R2) ───
-
-/* ─── 1. CONSTANTS ─── */
+// ---------------------------------------------------------------
+// MODULE: Channel Representation (R2)
+// ---------------------------------------------------------------
+/* --- 1. CONSTANTS --- */
 
 /** Minimum similarity / relevance score for a result to qualify for promotion.
- * AI-WHY: 0.005 floor prevents promoting irrelevant results while remaining compatible
- * with raw RRF scores (~0.01-0.03). Previous value of 0.2 filtered out ALL RRF results.
- * Works with both normalized [0,1] scores and raw RRF scores. */
+ * AI-WHY: QUALITY_FLOOR changed from 0.2 to 0.005 (Sprint 10, D3). The original 0.2
+ * assumed normalized [0,1] scores, but raw RRF scores (~0.01-0.03) never exceeded that
+ * threshold, causing channel-representation promotion to silently reject ALL RRF results.
+ * The 0.005 floor prevents promoting genuinely irrelevant results while remaining
+ * compatible with both raw RRF scores and normalized [0,1] scores. */
 export const QUALITY_FLOOR = 0.005;
 
 /** Env-var name for the feature flag. */
 const FEATURE_FLAG = 'SPECKIT_CHANNEL_MIN_REP';
 
-/* ─── 2. INTERFACES ─── */
+/* --- 2. INTERFACES --- */
 
 /** A single item that may appear in a top-k result set. */
 interface TopKItem {
@@ -53,7 +56,7 @@ export interface ChannelRepresentationResult {
   channelCounts: Record<string, number>;
 }
 
-/* ─── 3. FEATURE FLAG ─── */
+/* --- 3. FEATURE FLAG --- */
 
 /**
  * Return true when the channel min-representation feature is enabled.
@@ -66,7 +69,7 @@ export function isChannelMinRepEnabled(): boolean {
   return raw !== 'false';
 }
 
-/* ─── 4. CORE FUNCTION ─── */
+/* --- 4. CORE FUNCTION --- */
 
 /**
  * Analyse a post-fusion top-k result set and, when the feature flag is
@@ -179,7 +182,7 @@ export function analyzeChannelRepresentation(
   };
 }
 
-/* ─── 5. HELPERS ─── */
+/* --- 5. HELPERS --- */
 
 /**
  * Count how many items in an array belong to each channel.

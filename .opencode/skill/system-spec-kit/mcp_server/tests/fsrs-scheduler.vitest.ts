@@ -169,7 +169,7 @@ describe('Prediction Error Gate (T034-T037)', () => {
 
   it('T034: High similarity (>= 0.95) returns REINFORCE', () => {
     if (!predictionErrorGate?.evaluateMemory) return;
-    const candidates = [{ similarity: 96, id: 1, content: 'Existing content' }];
+    const candidates = [{ similarity: 0.96, id: 1, content: 'Existing content' }];
     const result = predictionErrorGate.evaluateMemory(dummyHash, newContent, candidates);
     expect(result).toBeDefined();
     expect(result.action).toBe('REINFORCE');
@@ -178,7 +178,7 @@ describe('Prediction Error Gate (T034-T037)', () => {
   it('T035: Medium similarity (0.90-0.94) triggers check', () => {
     if (!predictionErrorGate?.evaluateMemory) return;
     const candidates = [{
-      similarity: 92,
+      similarity: 0.92,
       id: 2,
       content: 'You should always validate user input before processing.'
     }];
@@ -190,7 +190,7 @@ describe('Prediction Error Gate (T034-T037)', () => {
 
   it('T036: Low similarity (< 0.70) returns CREATE', () => {
     if (!predictionErrorGate?.evaluateMemory) return;
-    const candidates = [{ similarity: 60, id: 3, content: 'Existing content' }];
+    const candidates = [{ similarity: 0.60, id: 3, content: 'Existing content' }];
     const result = predictionErrorGate.evaluateMemory(dummyHash, newContent, candidates);
     expect(result).toBeDefined();
     expect(result.action).toBe('CREATE');
@@ -224,7 +224,7 @@ describe('PE Gate Threshold Boundaries', () => {
     if (!predictionErrorGate?.evaluateMemory) return;
     const existingContent = 'You should always validate user input before processing data in the system.';
     const resultAt = predictionErrorGate.evaluateMemory('test-hash-boundary', 'Test content', [
-      { similarity: 95, id: 1, content: existingContent }
+      { similarity: 0.95, id: 1, content: existingContent }
     ]);
     // At 0.95 should be REINFORCE (some implementations may use > instead of >=)
     expect(resultAt).toBeDefined();
@@ -236,7 +236,7 @@ describe('PE Gate Threshold Boundaries', () => {
   it('Boundary at 0.70 correctly triggers CREATE below', () => {
     if (!predictionErrorGate?.evaluateMemory) return;
     const resultBelow = predictionErrorGate.evaluateMemory('test-hash-boundary', 'Test content', [
-      { similarity: 69, id: 1, content: 'Old' }
+      { similarity: 0.69, id: 1, content: 'Old' }
     ]);
     expect(resultBelow).toBeDefined();
     expect(resultBelow.action).toBe('CREATE');

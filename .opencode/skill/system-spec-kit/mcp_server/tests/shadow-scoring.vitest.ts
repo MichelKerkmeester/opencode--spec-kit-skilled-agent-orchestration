@@ -30,7 +30,7 @@ import {
 
 import { initEvalDb, closeEvalDb } from '../lib/eval/eval-db';
 
-/* ─── Test Fixtures ─── */
+/* --- Test Fixtures --- */
 
 function makeResults(ids: number[]): ScoredResult[] {
   return ids.map((id, idx) => ({
@@ -40,7 +40,7 @@ function makeResults(ids: number[]): ScoredResult[] {
   }));
 }
 
-/* ─── Shadow Scoring Tests ─── */
+/* --- Shadow Scoring Tests --- */
 
 describe('Shadow Scoring (R13-S2)', () => {
   describe('compareShadowResults', () => {
@@ -354,7 +354,7 @@ describe('Shadow Scoring (R13-S2)', () => {
   });
 });
 
-/* ─── Channel Attribution Tests ─── */
+/* --- Channel Attribution Tests --- */
 
 describe('Channel Attribution (R13-S2)', () => {
   describe('attributeChannels', () => {

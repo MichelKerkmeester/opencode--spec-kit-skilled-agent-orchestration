@@ -16,7 +16,7 @@ import {
   atomicWriteFile,
 } from '../lib/storage/transaction-manager';
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Transaction Manager — TransactionMetrics Types', () => {
 

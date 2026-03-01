@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Intent Weighting ───
+// ---------------------------------------------------------------
+// MODULE: Test — Intent Weighting
+// ---------------------------------------------------------------
 // Verifies that intent weights are applied correctly (not double-counted)
 // across the two independent weight systems:
 //   System A: Channel fusion weights (adaptive-fusion.ts INTENT_WEIGHT_PROFILES)

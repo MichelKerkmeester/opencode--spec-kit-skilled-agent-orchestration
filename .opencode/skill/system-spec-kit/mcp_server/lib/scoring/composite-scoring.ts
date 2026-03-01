@@ -1,5 +1,6 @@
-// ─── MODULE: Composite Scoring ───
-
+// ---------------------------------------------------------------
+// MODULE: Composite Scoring
+// ---------------------------------------------------------------
 import { getTierConfig } from './importance-tiers';
 import { calculatePopularityScore } from '../storage/access-tracker';
 // HIGH-003 FIX: Import unified recency scoring from folder-scoring

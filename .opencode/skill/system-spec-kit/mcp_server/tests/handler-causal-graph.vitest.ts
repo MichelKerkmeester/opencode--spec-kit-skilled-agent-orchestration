@@ -7,9 +7,6 @@ import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/causal-graph';
 
 describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/causal-graph';
-
   describe('Exports Validation', () => {
     const expectedExports = [
       'handleMemoryDriftWhy',

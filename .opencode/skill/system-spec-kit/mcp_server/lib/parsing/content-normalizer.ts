@@ -254,9 +254,11 @@ export function normalizeContentForEmbedding(content: string): string {
  *   bm25-index.ts ~line 245 where `content_text` is used for token building.
  */
 export function normalizeContentForBM25(content: string): string {
-  // BM25 pipeline is identical to the embedding pipeline at present.
-  // A separate function is provided so that BM25-specific adjustments
-  // (e.g. keeping backtick inline code, stemming hints) can diverge
-  // in the future without touching the embedding path.
+  // The BM25 pipeline currently delegates to the same normalization
+  // steps as the embedding pipeline (frontmatter, anchors, HTML
+  // comments, code fences, tables, lists, headings, whitespace).
+  // A separate entry point exists so BM25-specific adjustments
+  // (e.g. preserving backtick inline code, adding stemming hints)
+  // can diverge in the future without modifying the embedding path.
   return normalizeContentForEmbedding(content);
 }

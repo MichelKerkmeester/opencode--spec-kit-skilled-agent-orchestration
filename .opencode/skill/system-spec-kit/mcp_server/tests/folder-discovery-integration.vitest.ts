@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Folder Discovery Integration ───
+// ---------------------------------------------------------------
+// MODULE: Test — Folder Discovery Integration
+// ---------------------------------------------------------------
 // Tests: ensureDescriptionCache, isCacheStale, discoverSpecFolder,
 //        getSpecsBasePaths, graceful degradation
 
@@ -18,7 +20,7 @@ import {
 import type { DescriptionCache } from '../lib/search/folder-discovery';
 import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
 
-/* ─── HELPER: env var backup/restore ─── */
+/* --- HELPER: env var backup/restore --- */
 
 let envBackup: Record<string, string | undefined>;
 
@@ -38,7 +40,7 @@ afterEach(() => {
   }
 });
 
-/* ─── HELPER: temp directory with spec folders ─── */
+/* --- HELPER: temp directory with spec folders --- */
 
 function createTempWorkspace(): string {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-t046-'));

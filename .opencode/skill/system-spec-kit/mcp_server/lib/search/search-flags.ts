@@ -172,3 +172,8 @@ export function isAutoEntitiesEnabled(): boolean {
 export function isEntityLinkingEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_ENTITY_LINKING');
 }
+
+/** Whether causal-edge degree-based re-ranking is enabled (SPECKIT_DEGREE_BOOST). */
+export function isDegreeBoostEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_DEGREE_BOOST');
+}

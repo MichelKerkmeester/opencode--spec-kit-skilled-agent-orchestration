@@ -1,8 +1,9 @@
-// ─── MODULE: RSF Fusion (Relative Score Fusion) ───
-
+// ---------------------------------------------------------------
+// MODULE: RSF Fusion (Relative Score Fusion)
+// ---------------------------------------------------------------
 import type { RrfItem, RankedList } from './rrf-fusion';
 
-/* ─── 1. INTERFACES ─── */
+/* --- 1. INTERFACES --- */
 
 /** Result of RSF fusion: an RrfItem augmented with normalized fused score and source tracking. */
 interface RsfResult extends RrfItem {
@@ -14,7 +15,7 @@ interface RsfResult extends RrfItem {
   sourceScores: Record<string, number>;
 }
 
-/* ─── 2. HELPERS ─── */
+/* --- 2. HELPERS --- */
 
 /**
  * Extract a raw score from an RrfItem.
@@ -31,7 +32,8 @@ function extractScore(item: RrfItem, rank: number, total: number): number {
     return item.score;
   }
   if (typeof item.similarity === 'number' && isFinite(item.similarity)) {
-    return item.similarity;
+    // AI-WHY: Normalize similarity to 0-1; some sources provide 0-100 scale
+    return item.similarity > 1 ? item.similarity / 100 : item.similarity;
   }
   // AI-WHY: Rank-based fallback ensures items without explicit scores still participate
   if (total <= 1) return 1.0;
@@ -65,7 +67,7 @@ function clamp01(value: number): number {
   return value;
 }
 
-/* ─── 3. CORE FUNCTION ─── */
+/* --- 3. CORE FUNCTION --- */
 
 /**
  * Fuse two ranked result lists using Relative Score Fusion (single-pair).
@@ -171,7 +173,7 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
     .sort((a, b) => b.rsfScore - a.rsfScore);
 }
 
-/* ─── 4. MULTI-LIST VARIANT ─── */
+/* --- 4. MULTI-LIST VARIANT --- */
 
 /**
  * Fuse multiple ranked result lists using Relative Score Fusion (multi-list variant).
@@ -272,7 +274,7 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
   return results.sort((a, b) => b.rsfScore - a.rsfScore);
 }
 
-/* ─── 5. CROSS-VARIANT VARIANT ─── */
+/* --- 5. CROSS-VARIANT VARIANT --- */
 
 /**
  * Fuse multiple query variants' result sets using Relative Score Fusion (cross-variant).
@@ -381,7 +383,7 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
   return finalResults.sort((a, b) => b.rsfScore - a.rsfScore);
 }
 
-/* ─── 6. EXPORTS ─── */
+/* --- 6. EXPORTS --- */
 
 export {
   fuseResultsRsf,

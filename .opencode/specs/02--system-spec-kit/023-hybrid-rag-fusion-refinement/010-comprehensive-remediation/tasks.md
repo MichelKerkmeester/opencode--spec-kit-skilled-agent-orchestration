@@ -84,12 +84,40 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:wave-4 -->
+## Wave 4 - Phase 2 Remediation (25-Agent Review)
+
+- [x] T026 [P] P0 blockers: withSpecFolderLock race, double normalization, sourceScores, index signature, chunking lock
+- [x] T027 [P] P1 scoring: convergence bonus unique count, similarity normalization, preserve cosine similarity
+- [x] T028 [P] P1 feature flags: isDegreeBoostEnabled, entity-linker/memory-summaries guards, shadow period
+- [x] T029 [P] P1 mutation: cache invalidation, quality loop content, reconsolidation hash, BM25 re-index, attention clamp
+- [x] T030 [P] P1 cache/transactions: affectedTools, AI-WHY documentation
+- [x] T031 [P] P1 cognitive: causal-edges WHERE clause, co-activation fan-effect, ablation variable names
+- [x] T032 [P] P1 eval: Precision@K, F1@K, shadow-scoring @deprecated
+- [x] T033 [P] P1 standards: header conversion (109 files), comment prefixes, structural fixes, module.exports removal
+- [x] T034 [P] P2 performance: Math.max loop, timeout guard, boost cap, mention cap, O(1) eviction
+- [x] T035 [P] P2 safety: dead config removal, cache bounds, readFileSync try-catch, generic error, AI-WHY comments
+- [x] T036 Documentation: checklists, impl-summary updates, flag docs, eval README, deprecation notes
+<!-- /ANCHOR:wave-4 -->
+
+---
+
+<!-- ANCHOR:wave-5 -->
+## Wave 5 - Phase 2 Verification
+
+- [x] T037 TypeScript compile check (0 errors)
+- [x] T038 Full test suite passes (226 files, 7,008/7,008 tests)
+- [x] T039 Test fixups for changed behavior (7 failures fixed across waves)
+<!-- /ANCHOR:wave-5 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All required validation-blocking documentation issues are resolved
-- [ ] Recursive spec validation exits with code 0 or 1
-- [ ] Any remaining warnings are non-blocking and documented
+- [x] All required validation-blocking documentation issues are resolved
+- [x] Recursive spec validation exits with code 0 or 1
+- [x] Any remaining warnings are non-blocking and documented
 <!-- /ANCHOR:completion -->
 
 ---

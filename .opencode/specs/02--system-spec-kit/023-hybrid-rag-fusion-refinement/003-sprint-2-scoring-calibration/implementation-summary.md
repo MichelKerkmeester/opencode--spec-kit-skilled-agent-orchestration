@@ -76,8 +76,9 @@ Sprint 2 resolved the 15:1 magnitude mismatch between RRF and composite scoring 
 ## Known Limitations
 - Score normalization is batch-relative (min-max per result set), meaning the same memory can have different normalized scores across different queries
 - TM-01 interference scores are computed at index time; changes to nearby memories require re-indexing to update scores
-- R18 cache has no automatic eviction policy by default; `evictOldEntries()` must be called explicitly
+- ~~R18 cache has no automatic eviction policy by default; `evictOldEntries()` must be called explicitly~~ **RESOLVED** (Sprint 10, P2-07): `MAX_CACHE_ENTRIES = 10000` added to `embedding-cache.ts` with automatic LRU eviction on store; `evictOldEntries()` still available for manual cleanup
 - G2 double intent weighting investigation and FUT-5 K-value sensitivity are tracked in requirements but not detailed in implementation files reviewed
+- ~~N4 novelty boost (`SPECKIT_NOVELTY_BOOST`) default disabled~~ **SUPERSEDED** (Sprint 10): N4 `calculateNoveltyBoost()` is now `@deprecated` and always returns 0. Marginal value confirmed during Sprint 7 flag audit; the env var is inert
 
 ## Exit Gate Status
 | Gate | Criterion | Result |

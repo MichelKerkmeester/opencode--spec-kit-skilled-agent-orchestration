@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Dynamic Token Budget ───
+// ---------------------------------------------------------------
+// MODULE: Test — Dynamic Token Budget
+// ---------------------------------------------------------------
 // Query Intelligence
 // 16 tests covering:
 //   budget per tier, flag disabled, custom config, edge cases

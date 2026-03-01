@@ -76,7 +76,6 @@ export interface Stage4ReadonlyRow extends Readonly<Pick<PipelineRow,
   // Annotation fields (Stage 4 may add these)
   channelAttribution?: string[];
   evidenceGap?: { gapDetected: boolean; warning?: string };
-  [key: string]: unknown;
 }
 
 // ── Pipeline Configuration ──

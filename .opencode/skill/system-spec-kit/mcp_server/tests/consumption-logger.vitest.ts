@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Consumption Logger ───
+// ---------------------------------------------------------------
+// MODULE: Test — Consumption Logger
+// ---------------------------------------------------------------
 // Tests for lib/telemetry/consumption-logger.ts
 // Covers: table creation, event logging, stats aggregation,
 //         pattern detection, fail-safe behavior, latency tracking.

@@ -1,4 +1,6 @@
-// ─── MODULE: Test — RRF Degree Channel ───
+// ---------------------------------------------------------------
+// MODULE: Test — RRF Degree Channel
+// ---------------------------------------------------------------
 // T002 (degree as 5th RRF channel) + T003a (co-activation boost)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -384,7 +386,7 @@ describe('T003a: Co-Activation Boost Strength', () => {
       expect(boostScore(0.7, 0, 90)).toBe(0.7);
     });
 
-    it('boostScore boost is proportional to relatedCount', async () => {
+    it('boostScore exhibits fan-effect: more relations = less total boost', async () => {
       const { boostScore } = await import('../lib/cache/cognitive/co-activation');
       const base = 0.5;
       const avgSim = 80;
@@ -393,8 +395,10 @@ describe('T003a: Co-Activation Boost Strength', () => {
       const boost3 = boostScore(base, 3, avgSim) - base;
       const boost5 = boostScore(base, 5, avgSim) - base;
 
-      expect(boost3).toBeGreaterThan(boost1);
-      expect(boost5).toBeGreaterThan(boost3);
+      // AI-WHY: Pure fan-effect — hub nodes get diluted boost (1/sqrt(n))
+      expect(boost1).toBeGreaterThan(boost3);
+      expect(boost3).toBeGreaterThan(boost5);
+      expect(boost5).toBeGreaterThan(0); // still positive
     });
   });
 

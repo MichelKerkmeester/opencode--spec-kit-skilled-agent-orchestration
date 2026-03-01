@@ -1,5 +1,6 @@
-// ─── MODULE: Adaptive Fusion ───
-
+// ---------------------------------------------------------------
+// MODULE: Adaptive Fusion
+// ---------------------------------------------------------------
 // Local
 import { fuseResultsMulti } from './rrf-fusion';
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
@@ -8,7 +9,7 @@ import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 import type { IntentType } from './intent-classifier';
 import type { RrfItem, FusionResult, RankedList } from './rrf-fusion';
 
-/* ─── 1. INTERFACES ─── */
+/* --- 1. INTERFACES --- */
 
 export interface FusionWeights {
   /** Weight for semantic/vector search results (0-1) */
@@ -48,7 +49,7 @@ export interface DarkRunDiff {
   topResultChanged: boolean;
 }
 
-/* ─── 2. WEIGHT PROFILES ─── */
+/* --- 2. WEIGHT PROFILES --- */
 
 const INTENT_WEIGHT_PROFILES: Record<string, FusionWeights> = {
   understand:      { semanticWeight: 0.7, keywordWeight: 0.2, recencyWeight: 0.1, graphWeight: 0.15, graphCausalBias: 0.10 },
@@ -68,7 +69,7 @@ const DEFAULT_WEIGHTS: FusionWeights = {
   graphCausalBias: 0.10,
 };
 
-/* ─── 3. FEATURE FLAG ─── */
+/* --- 3. FEATURE FLAG --- */
 
 const FEATURE_FLAG = 'SPECKIT_ADAPTIVE_FUSION';
 
@@ -88,7 +89,7 @@ export function isAdaptiveFusionEnabled(identity?: string): boolean {
   return isFeatureEnabled(FEATURE_FLAG, identity);
 }
 
-/* ─── 4. WEIGHT COMPUTATION ─── */
+/* --- 4. WEIGHT COMPUTATION --- */
 
 /**
  * Compute adaptive fusion weights based on intent and optional document type.
@@ -131,7 +132,7 @@ export function getAdaptiveWeights(
   return weights;
 }
 
-/* ─── 5. ADAPTIVE FUSION ─── */
+/* --- 5. ADAPTIVE FUSION --- */
 
 /**
  * Weighted RRF fusion. Applies FusionWeights to source lists before
@@ -212,7 +213,7 @@ function applyRecencyBoost(results: FusionResult[], recencyWeight: number): void
   }
 }
 
-/* ─── 6. STANDARD FALLBACK ─── */
+/* --- 6. STANDARD FALLBACK --- */
 
 /**
  * Standard RRF fusion without adaptive weighting (deterministic fallback).
@@ -241,7 +242,7 @@ export function standardFuse(
   return fuseResultsMulti(lists);
 }
 
-/* ─── 7. DARK-RUN MODE ─── */
+/* --- 7. DARK-RUN MODE --- */
 
 function computeDarkRunDiff(
   standardResults: FusionResult[],
@@ -271,7 +272,7 @@ function computeDarkRunDiff(
   };
 }
 
-/* ─── 8. MAIN ENTRY POINT ─── */
+/* --- 8. MAIN ENTRY POINT --- */
 
 /**
  * Adaptive hybrid fusion entry point.
@@ -363,7 +364,7 @@ export function hybridAdaptiveFuse(
   };
 }
 
-/* ─── 9. EXPORTS ─── */
+/* --- 9. EXPORTS --- */
 
 // Named exports above via `export` keyword. Re-export for convenience:
 export {

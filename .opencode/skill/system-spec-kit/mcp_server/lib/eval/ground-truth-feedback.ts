@@ -1,4 +1,6 @@
-// ─── MODULE: Ground Truth Feedback ───
+// ---------------------------------------------------------------
+// MODULE: Ground Truth Feedback
+// ---------------------------------------------------------------
 //
 // Ground Truth Expansion via Feedback + LLM-Judge
 //
@@ -20,7 +22,7 @@
 
 import { initEvalDb, getEvalDb } from './eval-db';
 
-/* ─── 1. TYPES ─── */
+/* --- 1. TYPES --- */
 
 /** Context about how a user selected a memory. */
 export interface SelectionContext {
@@ -114,7 +116,7 @@ export interface GroundTruthCorpusSummary {
   totalPairs: number;
 }
 
-/* ─── 2. SCHEMA DDL ─── */
+/* --- 2. SCHEMA DDL --- */
 
 const FEEDBACK_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS eval_user_selections (
@@ -142,7 +144,7 @@ const FEEDBACK_SCHEMA_SQL = `
   );
 `;
 
-/* ─── 3. INTERNAL HELPERS ─── */
+/* --- 3. INTERNAL HELPERS --- */
 
 let _feedbackSchemaEnsured = false;
 
@@ -207,7 +209,7 @@ export function _resetFeedbackSchemaFlag(): void {
   _feedbackSchemaEnsured = false;
 }
 
-/* ─── 4. PHASE B: USER SELECTION TRACKING ─── */
+/* --- 4. PHASE B: USER SELECTION TRACKING --- */
 
 /**
  * Record a user's selection of a memory from search results.
@@ -317,7 +319,7 @@ export function getSelectionHistory(
   }
 }
 
-/* ─── 5. PHASE C: LLM-JUDGE LABELING ─── */
+/* --- 5. PHASE C: LLM-JUDGE LABELING --- */
 
 /**
  * Generate LLM-judge relevance labels for query-selection pairs.
@@ -428,7 +430,7 @@ export function saveLlmJudgeLabels(labels: LlmJudgeLabel[]): number {
   }
 }
 
-/* ─── 6. AGREEMENT COMPUTATION ─── */
+/* --- 6. AGREEMENT COMPUTATION --- */
 
 /**
  * Compute agreement rate between LLM-judge labels and manual labels.
@@ -497,7 +499,7 @@ export function computeJudgeAgreement(
   };
 }
 
-/* ─── 7. CORPUS SIZE ─── */
+/* --- 7. CORPUS SIZE --- */
 
 /**
  * Count the total ground truth pairs across all sources.

@@ -33,7 +33,7 @@ Sprint 1 activated the causal graph's structural connectivity as a 5th RRF chann
 ### R4: Typed-Weighted Degree as 5th RRF Channel (REQ-S1-001)
 - **What:** Computes a connectivity score for each memory based on its causal graph edges, weighted by edge type (caused=1.0, derived_from=0.9, enabled=0.8, contradicts=0.7, supersedes=0.6, supports=0.5)
 - **How:** Single SQL query (UNION ALL of source/target edges) computes raw degree; logarithmic normalization (`log(1+raw)/log(1+max)`) maps to [0, DEGREE_BOOST_CAP=0.15]; constitutional memories excluded; results cached in-memory with explicit invalidation on graph mutations
-- **Flag:** `SPECKIT_DEGREE_BOOST` (default: disabled)
+- **Flag:** `SPECKIT_DEGREE_BOOST` (graduated to ON by default; set `SPECKIT_DEGREE_BOOST=false` to disable)
 
 ### Edge Density Measurement (REQ-S1-002)
 - **What:** Measures the edges-per-node ratio of the causal graph to determine if graph signals are meaningful
@@ -48,7 +48,7 @@ Sprint 1 activated the causal graph's structural connectivity as a 5th RRF chann
 ### TM-08: Signal Vocabulary Expansion (REQ-S1-005)
 - **What:** Added CORRECTION and PREFERENCE signal categories to the trigger matcher for importance signal detection
 - **How:** Two keyword arrays matched via word-boundary regex; correction signals boost by +0.2, preference signals by +0.1; applied additively to trigger match importance weights, capped at 1.0; gated behind SPECKIT_SIGNAL_VOCAB env var
-- **Flag:** `SPECKIT_SIGNAL_VOCAB` (default: disabled)
+- **Flag:** `SPECKIT_SIGNAL_VOCAB` (graduated to ON by default; set `SPECKIT_SIGNAL_VOCAB=false` to disable)
 
 ## Test Coverage
 - New test files: `t010-degree-computation.vitest.ts`, `t010b-rrf-degree-channel.vitest.ts`, `t011-edge-density.vitest.ts`, `t012-signal-vocab.vitest.ts`, `t040-sprint1-feature-eval.vitest.ts`, `co-activation.vitest.ts`
@@ -63,7 +63,7 @@ Sprint 1 activated the causal graph's structural connectivity as a 5th RRF chann
 ## Known Limitations
 - Edge density is expected to be sparse at current corpus scale, limiting R4's measurable MRR@5 impact until R10 (graph enrichment) is completed in Sprint 6
 - R4 degree computation recomputes global max per batch (not cached across batches) to ensure correctness after graph mutations
-- Signal vocabulary detection (TM-08) requires explicit opt-in via env var and is not integrated into the main scoring pipeline
+- ~~Signal vocabulary detection (TM-08) requires explicit opt-in via env var and is not integrated into the main scoring pipeline~~ **RESOLVED** (Sprint 7 flag audit): `SPECKIT_SIGNAL_VOCAB` graduated to default-ON. Signal detection now active by default; set `SPECKIT_SIGNAL_VOCAB=false` to disable
 
 ## Exit Gate Status
 | Gate | Criterion | Result |

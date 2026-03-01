@@ -1,4 +1,6 @@
-// ─── MODULE: Shadow Scoring ───
+// ---------------------------------------------------------------
+// MODULE: Shadow Scoring
+// ---------------------------------------------------------------
 //
 // Runs a parallel scoring path alongside production results WITHOUT affecting
 // production output. Logs both production and shadow scores for A/B comparison.
@@ -11,13 +13,13 @@
 // - Exclusive Contribution Rate metric
 //
 // CRITICAL: Shadow scoring must NEVER affect production search results.
-// Every public function is wrapped in try-catch and is a no-op
-// when SPECKIT_SHADOW_SCORING is not set to "true".
+// Every public function is wrapped in try-catch. The shadow write path
+// (runShadowScoring, logShadowComparison) was permanently disabled in Sprint 7.
 // ---------------------------------------------------------------
 
 import { initEvalDb, getEvalDb } from './eval-db';
 
-/* ─── 2. TYPES ─── */
+/* --- 2. TYPES --- */
 
 /** A single scored result from either production or shadow path. */
 export interface ScoredResult {
@@ -112,7 +114,7 @@ export interface ShadowStats {
   timeRange: { earliest: string; latest: string };
 }
 
-/* ─── 3. SCHEMA DDL ─── */
+/* --- 3. SCHEMA DDL --- */
 
 const SHADOW_SCHEMA_SQL = `
   CREATE TABLE IF NOT EXISTS eval_shadow_comparisons (
@@ -132,7 +134,7 @@ const SHADOW_SCHEMA_SQL = `
   );
 `;
 
-/* ─── 4. INTERNAL HELPERS ─── */
+/* --- 4. INTERNAL HELPERS --- */
 
 let _schemaEnsured = false;
 
@@ -231,18 +233,18 @@ function computeRankCorrelation(
   return (concordant - discordant) / totalPairs;
 }
 
-/* ─── 5. PUBLIC API ─── */
+/* --- 5. PUBLIC API --- */
 
 /**
  * Run an alternative scoring algorithm in shadow mode alongside production results.
  *
- * IMPORTANT: This function never modifies the production results. It creates a
- * deep copy before passing to the shadow scoring function.
+ * @deprecated Shadow scoring was permanently disabled in Sprint 7. This function
+ * always returns null. Retained for interface compatibility.
  *
  * @param query - The search query.
  * @param productionResults - The production scoring results (will NOT be modified).
  * @param shadowConfig - Configuration including the shadow scoring function.
- * @returns ShadowComparison with detailed deltas, or null if shadow scoring is disabled.
+ * @returns Always null (shadow scoring disabled).
  */
 export async function runShadowScoring(
   _query: string,
@@ -255,6 +257,10 @@ export async function runShadowScoring(
 
 /**
  * Compute comparison metrics between production and shadow results.
+ *
+ * @deprecated Shadow scoring was permanently disabled in Sprint 7. This
+ * comparison function still works but has no production callers. Retained
+ * for interface compatibility. Use channel-attribution.ts instead.
  *
  * @param query - The original search query.
  * @param production - Production scored results.
@@ -333,10 +339,11 @@ export function compareShadowResults(
 /**
  * Persist a shadow comparison to the eval database.
  *
- * Fail-safe: never throws. Returns true if successfully logged, false otherwise.
+ * @deprecated Shadow scoring write path was permanently disabled in Sprint 7.
+ * This function always returns false. Retained for interface compatibility.
  *
  * @param comparison - The ShadowComparison to persist.
- * @returns true if successfully logged.
+ * @returns Always false (logging disabled).
  */
 export function logShadowComparison(_comparison: ShadowComparison): boolean {
   // Shadow scoring eval complete (Sprint 7 audit) — permanently disabled.

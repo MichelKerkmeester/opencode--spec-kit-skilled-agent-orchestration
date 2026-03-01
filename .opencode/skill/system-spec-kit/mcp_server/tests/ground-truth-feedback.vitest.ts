@@ -24,7 +24,7 @@ import {
 
 import { initEvalDb, closeEvalDb } from '../lib/eval/eval-db';
 
-/* ─── Test Setup ─── */
+/* --- Test Setup --- */
 
 let tmpDir: string;
 const originalDbDir = process.env.SPEC_KIT_DB_DIR;
@@ -53,7 +53,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     }
   });
 
-  /* ─── Phase B: User Selection Tracking ─── */
+  /* --- Phase B: User Selection Tracking --- */
 
   describe('Phase B: recordUserSelection', () => {
     it('records a user selection and returns a positive ID', () => {
@@ -165,7 +165,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     });
   });
 
-  /* ─── Phase C: LLM-Judge ─── */
+  /* --- Phase C: LLM-Judge --- */
 
   describe('Phase C: generateLlmJudgeLabels (deterministic heuristic)', () => {
     it('returns operational labels with bounded relevance and confidence', () => {
@@ -217,7 +217,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     });
   });
 
-  /* ─── Agreement Computation ─── */
+  /* --- Agreement Computation --- */
 
   describe('computeJudgeAgreement', () => {
     it('computes 100% agreement for identical labels', () => {
@@ -376,7 +376,7 @@ describe('Ground Truth Feedback (R13-S2)', () => {
     });
   });
 
-  /* ─── Ground Truth Corpus Size ─── */
+  /* --- Ground Truth Corpus Size --- */
 
   describe('getGroundTruthCorpusSize', () => {
     it('returns zeroes when DB is empty', () => {

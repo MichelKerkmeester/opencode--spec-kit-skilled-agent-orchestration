@@ -46,42 +46,42 @@ describe('Prediction Error Gate Module', () => {
   /* ─────────────────────────────────────────────────────────────
      T105-T112: evaluateMemory()
      Production signature: evaluateMemory(contentHash, content, candidates, options)
-     Candidates have similarity in 0-100 scale; production normalizes to 0-1
+     Candidates have similarity in 0-1 scale (normalized by findSimilarMemories)
   ──────────────────────────────────────────────────────────────── */
 
   describe('T105-T112: evaluateMemory()', () => {
     it('T105: sim>=95 returns REINFORCE', () => {
-      const r = peGate.evaluateMemory('hash1', 'New content', [{ id: 1, similarity: 96, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash1', 'New content', [{ id: 1, similarity: 0.96, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.REINFORCE);
     });
 
     it('T106: sim 85-94 returns UPDATE for compatible content', () => {
-      const r = peGate.evaluateMemory('hash2', 'Use feature X with improvements', [{ id: 1, similarity: 92, content: 'Use feature X' }]);
+      const r = peGate.evaluateMemory('hash2', 'Use feature X with improvements', [{ id: 1, similarity: 0.92, content: 'Use feature X' }]);
       expect(r.action).toBe(peGate.ACTION.UPDATE);
     });
 
     it('T107: sim 70-84 returns CREATE_LINKED', () => {
-      const r = peGate.evaluateMemory('hash3', 'New related', [{ id: 1, similarity: 80, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash3', 'New related', [{ id: 1, similarity: 0.80, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.CREATE_LINKED);
     });
 
     it('T108: sim < 50 returns CREATE', () => {
-      const r = peGate.evaluateMemory('hash4', 'Brand new', [{ id: 1, similarity: 30, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash4', 'Brand new', [{ id: 1, similarity: 0.30, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.CREATE);
     });
 
     it('T109: Boundary - exactly 95 returns REINFORCE', () => {
-      const r = peGate.evaluateMemory('hash5', 'Test', [{ id: 1, similarity: 95, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash5', 'Test', [{ id: 1, similarity: 0.95, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.REINFORCE);
     });
 
     it('T110: Boundary - exactly 85 returns UPDATE', () => {
-      const r = peGate.evaluateMemory('hash6', 'Test', [{ id: 1, similarity: 85, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash6', 'Test', [{ id: 1, similarity: 0.85, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.UPDATE);
     });
 
     it('T111: Boundary - exactly 70 returns CREATE_LINKED', () => {
-      const r = peGate.evaluateMemory('hash7', 'Test', [{ id: 1, similarity: 70, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash7', 'Test', [{ id: 1, similarity: 0.70, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.CREATE_LINKED);
     });
 
@@ -187,18 +187,18 @@ describe('Prediction Error Gate Module', () => {
 
   describe('T126-T132: Action Constants & Decision Logic', () => {
     it('T126: REINFORCE for near-duplicates', () => {
-      const r = peGate.evaluateMemory('hash', 'Same content', [{ id: 1, similarity: 97, content: 'Same content' }]);
+      const r = peGate.evaluateMemory('hash', 'Same content', [{ id: 1, similarity: 0.97, content: 'Same content' }]);
       expect(r.action).toBe(peGate.ACTION.REINFORCE);
     });
 
     it('T127: UPDATE for compatible high matches', () => {
-      const r = peGate.evaluateMemory('hash', 'Use async/await with error handling', [{ id: 1, similarity: 93, content: 'Use async/await' }]);
+      const r = peGate.evaluateMemory('hash', 'Use async/await with error handling', [{ id: 1, similarity: 0.93, content: 'Use async/await' }]);
       expect(r.action).toBe(peGate.ACTION.UPDATE);
     });
 
     it('T128: SUPERSEDE for contradictions in high match range', () => {
       // "not...but" in combined text triggers negation pattern
-      const r = peGate.evaluateMemory('hash', 'Not use var but use let', [{ id: 1, similarity: 92, content: 'Always use var' }]);
+      const r = peGate.evaluateMemory('hash', 'Not use var but use let', [{ id: 1, similarity: 0.92, content: 'Always use var' }]);
       expect(r.action).toBe(peGate.ACTION.SUPERSEDE);
       expect(r.contradiction).toBeTruthy();
       expect(r.contradiction!.detected).toBe(true);
@@ -211,15 +211,15 @@ describe('Prediction Error Gate Module', () => {
     });
 
     it('T130: existingMemoryId set for matched candidate', () => {
-      const r = peGate.evaluateMemory('hash', 'Related', [{ id: 42, similarity: 85, content: 'Test' }]);
+      const r = peGate.evaluateMemory('hash', 'Related', [{ id: 42, similarity: 0.85, content: 'Test' }]);
       expect(r.existingMemoryId).toBe(42);
     });
 
     it('T131: Best candidate selected (highest similarity)', () => {
       const r = peGate.evaluateMemory('hash', 'New', [
-        { id: 1, similarity: 80, content: 'A' },
-        { id: 2, similarity: 96, content: 'B' },
-        { id: 3, similarity: 85, content: 'C' },
+        { id: 1, similarity: 0.80, content: 'A' },
+        { id: 2, similarity: 0.96, content: 'B' },
+        { id: 3, similarity: 0.85, content: 'C' },
       ]);
       expect(r.existingMemoryId).toBe(2);
     });
@@ -247,13 +247,13 @@ describe('Prediction Error Gate Module', () => {
       expect(r.action).toBe(peGate.ACTION.CREATE);
     });
 
-    it('T138: sim=100 returns REINFORCE', () => {
-      const r = peGate.evaluateMemory('hash', 'Test', [{ id: 1, similarity: 100, content: 'Test' }]);
+    it('T138: sim=1.0 returns REINFORCE', () => {
+      const r = peGate.evaluateMemory('hash', 'Test', [{ id: 1, similarity: 1.0, content: 'Test' }]);
       expect(r.action).toBe(peGate.ACTION.REINFORCE);
     });
 
     it('T139: Result always has action', () => {
-      const r = peGate.evaluateMemory('hash', '', [{ id: 1, similarity: 80, content: '' }]);
+      const r = peGate.evaluateMemory('hash', '', [{ id: 1, similarity: 0.80, content: '' }]);
       expect(r.action).toBeTruthy();
     });
 
@@ -270,14 +270,14 @@ describe('Prediction Error Gate Module', () => {
   describe('T146-T155: Helper Functions', () => {
     it('T146: calculateSimilarityStats correct', () => {
       const stats = peGate.calculateSimilarityStats([
-        { similarity: 90 },
-        { similarity: 80 },
-        { similarity: 70 },
+        { similarity: 0.90 },
+        { similarity: 0.80 },
+        { similarity: 0.70 },
       ]);
-      expect(stats.max).toBe(90);
-      expect(stats.min).toBe(70);
+      expect(stats.max).toBe(0.90);
+      expect(stats.min).toBe(0.70);
       expect(stats.count).toBe(3);
-      expect(stats.avg).toBeCloseTo(80, 2);
+      expect(stats.avg).toBeCloseTo(0.80, 2);
     });
 
     it('T147: calculateSimilarityStats empty => zeros', () => {
@@ -290,19 +290,19 @@ describe('Prediction Error Gate Module', () => {
 
     it('T148: filterRelevantCandidates filters correctly', () => {
       const filtered = peGate.filterRelevantCandidates([
-        { id: 1, similarity: 90 },
-        { id: 2, similarity: 40 },
-        { id: 3, similarity: 75 },
+        { id: 1, similarity: 0.90 },
+        { id: 2, similarity: 0.40 },
+        { id: 3, similarity: 0.75 },
       ]);
       expect(filtered).toHaveLength(2);
-      expect(filtered.every((c: unknown) => (c as { similarity: number }).similarity >= 50)).toBe(true);
+      expect(filtered.every((c: unknown) => (c as { similarity: number }).similarity >= 0.50)).toBe(true);
     });
 
     it('T149: filterRelevantCandidates sorted desc', () => {
       const filtered = peGate.filterRelevantCandidates([
-        { id: 1, similarity: 90 },
-        { id: 2, similarity: 40 },
-        { id: 3, similarity: 75 },
+        { id: 1, similarity: 0.90 },
+        { id: 2, similarity: 0.40 },
+        { id: 3, similarity: 0.75 },
       ]);
       expect(filtered[0].similarity).toBeGreaterThanOrEqual(filtered[1].similarity);
     });
@@ -434,7 +434,7 @@ describe('Prediction Error Gate Module', () => {
   describe('T162-T165: batchEvaluate()', () => {
     it('T162: batchEvaluate returns results + stats', () => {
       const batch = peGate.batchEvaluate([
-        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 96, content: 'Old' }] },
+        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 0.96, content: 'Old' }] },
         { contentHash: 'h2', content: 'New memory 2', candidates: [] },
       ]);
       expect(batch.results).toHaveLength(2);
@@ -443,7 +443,7 @@ describe('Prediction Error Gate Module', () => {
 
     it('T163: Stats track creates and reinforces', () => {
       const batch = peGate.batchEvaluate([
-        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 96, content: 'Old' }] },
+        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 0.96, content: 'Old' }] },
         { contentHash: 'h2', content: 'New memory 2', candidates: [] },
       ]);
       expect(batch.stats.creates).toBeGreaterThanOrEqual(1);
@@ -458,7 +458,7 @@ describe('Prediction Error Gate Module', () => {
 
     it('T165: Stats has all expected fields', () => {
       const batch = peGate.batchEvaluate([
-        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 96, content: 'Old' }] },
+        { contentHash: 'h1', content: 'New memory 1', candidates: [{ id: 1, similarity: 0.96, content: 'Old' }] },
         { contentHash: 'h2', content: 'New memory 2', candidates: [] },
       ]);
       const statFields = ['total', 'creates', 'updates', 'supersedes', 'reinforces', 'contradictions'];

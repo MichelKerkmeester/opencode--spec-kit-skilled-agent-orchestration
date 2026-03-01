@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Degree Computation ───
+// ---------------------------------------------------------------
+// MODULE: Test — Degree Computation
+// ---------------------------------------------------------------
 // Tests for the R4 5th RRF channel: degree-based scoring
 
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';

@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Query Router ───
+// ---------------------------------------------------------------
+// MODULE: Test — Query Router
+// ---------------------------------------------------------------
 // Tier-to-Channel-Subset Routing + Pipeline Integration
 // 22 tests covering:
 //   channel subset per tier, minimum invariant, custom config,

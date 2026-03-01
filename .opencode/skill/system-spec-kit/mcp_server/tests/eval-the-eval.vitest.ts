@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Eval the Eval ───
+// ---------------------------------------------------------------
+// MODULE: Test — Eval the Eval
+// ---------------------------------------------------------------
 // Eval-the-Eval Validation (Hand-Calculate MRR@5 & NDCG@10)
 //
 // PURPOSE: Validate that computeMRR and computeNDCG produce correct

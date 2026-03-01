@@ -225,7 +225,8 @@ async function applyCrossEncoderReranking(
       rerankedRows.push({
         ...original,
         score: rerankResult.rerankerScore ?? rerankResult.score ?? original.score,
-        similarity: rerankResult.rerankerScore ?? rerankResult.score ?? original.similarity,
+        similarity: original.similarity,
+        rerankerScore: rerankResult.rerankerScore ?? rerankResult.score ?? original.score,
       });
     }
 

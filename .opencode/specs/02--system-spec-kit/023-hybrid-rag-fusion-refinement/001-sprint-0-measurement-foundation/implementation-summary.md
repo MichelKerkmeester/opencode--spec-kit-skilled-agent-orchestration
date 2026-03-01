@@ -57,7 +57,7 @@ Sprint 0 delivered the measurement foundation for the Hybrid RAG Fusion Refineme
 
 - 3 exit gates remain PARTIAL pending live-DB execution (gates 3, 5, 6 in T009)
 - Ground truth memory IDs are placeholders (`-1`); must be mapped against production DB before baseline metrics are meaningful
-- `relevanceWeight=0.2` anomaly in `search-weights.json` is flagged but unresolved; may skew BM25 comparison results
+- ~~`relevanceWeight=0.2` anomaly in `search-weights.json` is flagged but unresolved; may skew BM25 comparison results~~ **RESOLVED** (Sprint 10): `relevanceWeight` is now 0.5 in `search-weights.json`; dead `rrfFusion` and `crossEncoder` config sections removed (P2-05)
 - T004b observer-effect mitigation not yet implemented (deferred to Sprint 1)
 - B8 signal ceiling at 12/12; Sprint 1 must retire a signal before adding a new one
 

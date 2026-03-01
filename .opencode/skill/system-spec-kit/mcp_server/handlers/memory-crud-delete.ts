@@ -140,7 +140,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       }
     }
 
-    // WHY: snapshot-then-delete is safe under single-process better-sqlite3; re-evaluate if multi-process support is added
+    // AI-WHY: snapshot-then-delete is safe under single-process better-sqlite3; re-evaluate if multi-process support is added
     if (database) {
       causalEdges.init(database);
       const bulkDeleteTx = database.transaction(() => {

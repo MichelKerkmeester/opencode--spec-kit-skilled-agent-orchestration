@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Edge Density ───
+// ---------------------------------------------------------------
+// MODULE: Test — Edge Density
+// ---------------------------------------------------------------
 // T003 acceptance tests for lib/eval/edge-density.ts
 //
 // Test cases:

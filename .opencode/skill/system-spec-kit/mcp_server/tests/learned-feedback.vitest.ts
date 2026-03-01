@@ -416,9 +416,24 @@ describe('Learned Feedback Core Operations', () => {
     // Add learned_triggers column
     migrateLearnedTriggers(testDb);
 
-    // Enable feature, past shadow period
+    // Enable feature
     process.env[FEATURE_FLAG] = 'true';
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 8 * 24 * 60 * 60 * 1000);
+
+    // Pre-populate audit table with an old entry to bypass the 7-day shadow period (Safeguard #6)
+    testDb.exec(`
+      CREATE TABLE IF NOT EXISTS learned_feedback_audit (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        memory_id INTEGER NOT NULL,
+        action TEXT NOT NULL,
+        terms TEXT NOT NULL,
+        source TEXT NOT NULL,
+        timestamp INTEGER NOT NULL,
+        shadow_mode INTEGER NOT NULL DEFAULT 0
+      )
+    `);
+    testDb.prepare(
+      'INSERT INTO learned_feedback_audit (memory_id, action, terms, timestamp, source, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(0, 'bootstrap', '[]', Date.now() - 8 * 24 * 60 * 60 * 1000, 'test-setup', 0);
 
     // Insert test memories (7 days old by default = past 72h threshold)
     insertMemory(testDb, 1, { title: 'Auth Module', triggerPhrases: ['login', 'oauth'] });
@@ -465,12 +480,10 @@ describe('Learned Feedback Core Operations', () => {
     expect(result.reason).toBe('memory_too_new');
   });
 
-  it('R11-CO04: shadow period is REMOVED — selection applies normally regardless of start time', () => {
-    // Shadow period env var no longer triggers shadow behavior (isInShadowPeriod always false)
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 1 * 24 * 60 * 60 * 1000);
-
+  it('R11-CO04: recordSelection applies normally even during shadow period (shadow only affects queries)', () => {
+    // AI-WHY: Shadow period (Safeguard #6) only blocks queryLearnedTriggers, not recordSelection.
+    // Selections are always recorded so terms accumulate during the shadow window.
     const result = recordSelection('q1', 1, ['authentication'], 5, testDb);
-    // Shadow period is REMOVED — selection applies normally
     expect(result.applied).toBe(true);
     expect(result.terms.length).toBeGreaterThan(0);
   });
@@ -518,12 +531,17 @@ describe('Learned Feedback Core Operations', () => {
     expect(matches).toEqual([]);
   });
 
-  it('R11-CO09: shadow period REMOVED — queryLearnedTriggers returns results regardless of start time', () => {
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 1 * 24 * 60 * 60 * 1000);
+  it('R11-CO09: shadow period enforced — queryLearnedTriggers returns empty during first 7 days', () => {
+    // Replace the old audit entry with a very recent one to trigger shadow period
+    testDb.exec('DELETE FROM learned_feedback_audit');
+    testDb.prepare(
+      'INSERT INTO learned_feedback_audit (memory_id, action, terms, timestamp, source, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(0, 'bootstrap', '[]', Date.now() - 1 * 24 * 60 * 60 * 1000, 'test-setup', 0);
+
     applyLearnedTriggers(1, ['authentication'], testDb, 'test');
     const matches = queryLearnedTriggers('authentication', testDb);
-    // Shadow period is REMOVED — queries now return results normally
-    expect(matches.length).toBeGreaterThan(0);
+    // AI-WHY: Safeguard #6 — shadow period enforced for first 7 days
+    expect(matches.length).toBe(0);
   });
 });
 

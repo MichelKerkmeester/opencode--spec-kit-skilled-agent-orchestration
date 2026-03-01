@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Channel Enforcement ───
+// ---------------------------------------------------------------
+// MODULE: Test — Channel Enforcement
+// ---------------------------------------------------------------
 // Channel Enforcement + Precision Verification (T003b + T003c)
 //
 // Coverage:

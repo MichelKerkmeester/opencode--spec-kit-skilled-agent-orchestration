@@ -1,8 +1,9 @@
-// ─── MODULE: Dynamic Token Budget ───
-
+// ---------------------------------------------------------------
+// MODULE: Dynamic Token Budget
+// ---------------------------------------------------------------
 import { type QueryComplexityTier } from './query-classifier';
 
-/* ─── 1. TYPES & CONSTANTS ─── */
+/* --- 1. TYPES & CONSTANTS --- */
 
 /** Budget (in tokens) allocated per complexity tier. */
 interface TokenBudgetConfig {
@@ -36,7 +37,7 @@ const DEFAULT_TOKEN_BUDGET_CONFIG: TokenBudgetConfig = {
   complex: 4000,
 };
 
-/* ─── 2. FEATURE FLAG ─── */
+/* --- 2. FEATURE FLAG --- */
 
 /**
  * Check whether dynamic token budget allocation is enabled.
@@ -49,7 +50,7 @@ function isDynamicTokenBudgetEnabled(): boolean {
   return raw !== 'false';
 }
 
-/* ─── 3. BUDGET RESOLUTION ─── */
+/* --- 3. BUDGET RESOLUTION --- */
 
 /**
  * Get the token budget for a given query complexity tier.
@@ -89,7 +90,7 @@ function getDynamicTokenBudget(
   };
 }
 
-/* ─── 4. EXPORTS ─── */
+/* --- 4. EXPORTS --- */
 
 export {
   // Types

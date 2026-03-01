@@ -1,6 +1,7 @@
-// ─── MODULE: Memory Save Handler ───
-
-/* ─── 1. DEPENDENCIES ─── */
+// ---------------------------------------------------------------
+// MODULE: Memory Save Handler
+// ---------------------------------------------------------------
+/* --- 1. DEPENDENCIES --- */
 
 // Node built-ins
 import fs from 'fs';
@@ -64,25 +65,20 @@ const specFolderLocks = new Map<string, Promise<unknown>>();
 
 async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): Promise<T> {
   const normalizedFolder = specFolder || '__global__';
-  // Wait for any existing operation on this folder
-  const existing = specFolderLocks.get(normalizedFolder);
-  if (existing) {
-    await existing.catch(() => {}); // Don't propagate previous errors
-  }
-  // Create new lock
-  const promise = fn();
-  specFolderLocks.set(normalizedFolder, promise);
+  const chain = (specFolderLocks.get(normalizedFolder) ?? Promise.resolve())
+    .catch(() => {})
+    .then(() => fn());
+  specFolderLocks.set(normalizedFolder, chain);
   try {
-    return await promise;
+    return await chain;
   } finally {
-    // Only clean up if this is still the current lock
-    if (specFolderLocks.get(normalizedFolder) === promise) {
+    if (specFolderLocks.get(normalizedFolder) === chain) {
       specFolderLocks.delete(normalizedFolder);
     }
   }
 }
 
-/* ─── 2. TYPES ─── */
+/* --- 2. TYPES --- */
 
 interface ParsedMemory {
   specFolder: string;
@@ -191,7 +187,7 @@ interface SaveArgs {
   asyncEmbedding?: boolean; // T306: When true, embedding generation is deferred (non-blocking)
 }
 
-/* ─── 3. SQL HELPER FUNCTIONS ─── */
+/* --- 3. SQL HELPER FUNCTIONS --- */
 
 /** Escape special SQL LIKE pattern characters (% and _) for safe queries */
 function escapeLikePattern(str: string): string {
@@ -228,7 +224,7 @@ function hasReconsolidationCheckpoint(database: BetterSqlite3.Database, specFold
   }
 }
 
-/* ─── 4. PE GATING HELPER FUNCTIONS ─── */
+/* --- 4. PE GATING HELPER FUNCTIONS --- */
 
 /**
  * Calculate importance weight based on file path and document type.
@@ -506,7 +502,7 @@ function logPeDecision(decision: PeDecision, contentHash: string, specFolder: st
   }
 }
 
-/* ─── 5. CAUSAL LINKS PROCESSING ─── */
+/* --- 5. CAUSAL LINKS PROCESSING --- */
 
 const CAUSAL_LINK_MAPPINGS: Record<string, CausalLinkMapping> = {
   caused_by: { relation: causalEdges.RELATION_TYPES.CAUSED, reverse: true },
@@ -637,7 +633,7 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
   return result;
 }
 
-/* ─── 6. SPEC LEVEL DETECTION (Spec 126) ─── */
+/* --- 6. SPEC LEVEL DETECTION (Spec 126) --- */
 
 /**
  * Detect spec documentation level for a file by checking its parent spec.md.
@@ -680,7 +676,7 @@ function detectSpecLevelFromParsed(filePath: string): number | null {
   }
 }
 
-/* ─── 7. CHUNKED INDEXING FOR LARGE FILES ─── */
+/* --- 7. CHUNKED INDEXING FOR LARGE FILES --- */
 
 /**
  * Index a large memory file by splitting it into chunks.
@@ -991,6 +987,11 @@ async function indexChunkedMemoryFile(
     actor: 'mcp:memory_save',
   });
 
+  // AI-WHY: Chunked path must invalidate caches just like the single-record path;
+  // otherwise stale trigger/tool-cache entries persist until next non-chunked save.
+  triggerMatcher.clearCache();
+  toolCache.invalidateOnWrite('chunked-save', { filePath });
+
   return {
     status: existing ? 'updated' : 'indexed',
     id: parentId,
@@ -1005,7 +1006,7 @@ async function indexChunkedMemoryFile(
   };
 }
 
-/* ─── 8. INDEX MEMORY FILE ─── */
+/* --- 8. INDEX MEMORY FILE --- */
 
 /** Parse, validate, and index a memory file with PE gating, FSRS scheduling, and causal links */
 async function indexMemoryFile(filePath: string, { force = false, parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null, asyncEmbedding = false } = {}): Promise<IndexResult> {
@@ -1037,6 +1038,12 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
   if (qualityLoopResult.fixes.length > 0) {
     console.info(`[memory-save] Quality loop applied ${qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(filePath)}`);
+    // AI-WHY: Persist mutated content from quality loop; recompute content_hash
+    // so downstream dedup and change-detection use the post-fix content.
+    if (qualityLoopResult.fixedContent) {
+      parsed.content = qualityLoopResult.fixedContent;
+      parsed.contentHash = memoryParser.computeContentHash(parsed.content);
+    }
   }
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
@@ -1055,14 +1062,15 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     };
   }
 
+  // Per-spec-folder lock to prevent TOCTOU race conditions on concurrent saves
+  return withSpecFolderLock(parsed.specFolder, async () => {
+
   // CHUNKING BRANCH: Large files get split into parent + child records
+  // AI-WHY: Must be inside withSpecFolderLock to serialize chunked saves too
   if (needsChunking(parsed.content)) {
     console.info(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
     return indexChunkedMemoryFile(filePath, parsed, { force });
   }
-
-  // Per-spec-folder lock to prevent TOCTOU race conditions on concurrent saves
-  return withSpecFolderLock(parsed.specFolder, async () => {
 
   const database = requireDb();
   const canonicalFilePath = getCanonicalPathKey(filePath);
@@ -1847,7 +1855,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   }); // end withSpecFolderLock
 }
 
-/* ─── 9. MEMORY SAVE HANDLER ─── */
+/* --- 9. MEMORY SAVE HANDLER --- */
 
 /** Handle memory_save tool - validates, indexes, and persists a memory file to the database */
 async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
@@ -2075,7 +2083,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   });
 }
 
-/* ─── 10. ATOMIC MEMORY SAVE ─── */
+/* --- 10. ATOMIC MEMORY SAVE --- */
 
 /**
  * Write content to disk and index atomically with rollback on failure.
@@ -2136,7 +2144,7 @@ function getAtomicityMetrics(): Record<string, unknown> {
   return transactionManager.getMetrics();
 }
 
-/* ─── 11. QUALITY LOOP (T008) ───
+/* --- 11. QUALITY LOOP (T008) ---
    Post-save quality verification with auto-fix and rejection.
    Gated behind SPECKIT_QUALITY_LOOP env var.
    NOT integrated into save flow yet (Wave 3 will do integration). */
@@ -2163,6 +2171,8 @@ interface QualityLoopResult {
   fixes: string[];
   rejected: boolean;
   rejectionReason?: string;
+  /** Content after auto-fix mutations (present only when fixes were applied) */
+  fixedContent?: string;
 }
 
 // --- Quality Loop Constants ---
@@ -2531,6 +2541,8 @@ function runQualityLoop(
         attempts: attempt + 1,
         fixes: allFixes,
         rejected: false,
+        // AI-WHY: Return mutated content so caller can persist it and recompute content_hash
+        fixedContent: allFixes.length > 0 ? currentContent : undefined,
       };
     }
 
@@ -2552,6 +2564,8 @@ function runQualityLoop(
     fixes: allFixes,
     rejected: true,
     rejectionReason,
+    // AI-WHY: Return mutated content even on rejection so callers that soft-reject can persist
+    fixedContent: allFixes.length > 0 ? currentContent : undefined,
   };
 }
 
@@ -2599,7 +2613,7 @@ function logQualityMetrics(
   }
 }
 
-/* ─── 12. EXPORTS ─── */
+/* --- 12. EXPORTS --- */
 
 export {
   // Primary exports

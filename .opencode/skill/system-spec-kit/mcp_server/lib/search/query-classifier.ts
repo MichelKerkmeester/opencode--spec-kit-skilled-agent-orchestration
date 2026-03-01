@@ -1,6 +1,7 @@
-// ─── MODULE: Query Complexity Classifier ───
-
-/* ─── 1. TYPES & CONSTANTS ─── */
+// ---------------------------------------------------------------
+// MODULE: Query Complexity Classifier
+// ---------------------------------------------------------------
+/* --- 1. TYPES & CONSTANTS --- */
 
 type QueryComplexityTier = 'simple' | 'moderate' | 'complex';
 
@@ -31,7 +32,7 @@ const STOP_WORDS: ReadonlySet<string> = new Set([
   'will', 'would', 'can', 'could', 'should', 'may', 'might',
 ]);
 
-/* ─── 2. FEATURE FLAG ─── */
+/* --- 2. FEATURE FLAG --- */
 
 /**
  * Check if the complexity router feature flag is enabled.
@@ -44,7 +45,7 @@ function isComplexityRouterEnabled(): boolean {
   return raw !== 'false';
 }
 
-/* ─── 3. FEATURE EXTRACTION ─── */
+/* --- 3. FEATURE EXTRACTION --- */
 
 /**
  * Split query into terms by whitespace, filtering empty strings.
@@ -82,7 +83,7 @@ function hasTriggerMatch(query: string, triggerPhrases: string[]): boolean {
   return triggerPhrases.some(tp => tp.trim().toLowerCase() === normalized);
 }
 
-/* ─── 4. CLASSIFICATION ─── */
+/* --- 4. CLASSIFICATION --- */
 
 /**
  * Determine confidence label based on how clearly the query fits its tier.
@@ -197,7 +198,7 @@ function classifyQueryComplexity(
   }
 }
 
-/* ─── 5. EXPORTS ─── */
+/* --- 5. EXPORTS --- */
 
 export {
   // Types

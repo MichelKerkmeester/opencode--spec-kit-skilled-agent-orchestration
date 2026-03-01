@@ -1,9 +1,10 @@
-// ─── MODULE: Folder Discovery (PI-B3) ───
-
+// ---------------------------------------------------------------
+// MODULE: Folder Discovery (PI-B3)
+// ---------------------------------------------------------------
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-/* ─── 1. TYPES ─── */
+/* --- 1. TYPES --- */
 
 /**
  * Describes a single spec folder with its cached description
@@ -26,7 +27,7 @@ export interface DescriptionCache {
   folders: FolderDescription[];
 }
 
-/* ─── 2. STOP WORDS ─── */
+/* --- 2. STOP WORDS --- */
 
 const STOP_WORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to',
@@ -43,7 +44,7 @@ const STOP_WORDS = new Set([
   'your', 'their', 'his', 'her', 'its', 'which', 'who', 'what',
 ]);
 
-/* ─── 3. DESCRIPTION EXTRACTION ─── */
+/* --- 3. DESCRIPTION EXTRACTION --- */
 
 /**
  * Extract a short 1-sentence description from spec.md content.
@@ -116,7 +117,7 @@ export function extractDescription(specContent: string): string {
   return '';
 }
 
-/* ─── 4. KEYWORD EXTRACTION ─── */
+/* --- 4. KEYWORD EXTRACTION --- */
 
 /**
  * Extract significant keywords from a description string.
@@ -152,7 +153,7 @@ export function extractKeywords(description: string): string[] {
   return keywords;
 }
 
-/* ─── 5. RELEVANCE SCORING / LOOKUP ─── */
+/* --- 5. RELEVANCE SCORING / LOOKUP --- */
 
 /**
  * Find the most relevant spec folders for a given query using
@@ -217,7 +218,7 @@ export function findRelevantFolders(
   return results.slice(0, limit);
 }
 
-/* ─── 6. CACHE GENERATION ─── */
+/* --- 6. CACHE GENERATION --- */
 
 /**
  * Scan spec base paths for spec.md files and generate a
@@ -352,7 +353,7 @@ function _processSpecFolder(
   };
 }
 
-/* ─── 7. CACHE I/O ─── */
+/* --- 7. CACHE I/O --- */
 
 /**
  * Load a DescriptionCache from a JSON file on disk.
@@ -391,7 +392,7 @@ export function saveDescriptionCache(cache: DescriptionCache, cachePath: string)
   fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2), 'utf-8');
 }
 
-/* ─── 8. INTEGRATION HELPERS (PI-B3) ─── */
+/* --- 8. INTEGRATION HELPERS (PI-B3) --- */
 
 /**
  * Resolve the standard specs base paths for a workspace.

@@ -203,7 +203,13 @@ function invalidateByTool(toolName: string): number {
 }
 
 function invalidateByPattern(pattern: RegExp | string): number {
-  const regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
+  let regex: RegExp;
+  try {
+    regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
+  } catch (error) {
+    console.warn(`[tool-cache] Invalid regex pattern: ${error instanceof Error ? error.message : String(error)}`);
+    return 0;
+  }
   const keysToDelete: string[] = [];
 
   for (const [key, entry] of cache.entries()) {
@@ -231,6 +237,8 @@ function invalidateOnWrite(operation: string, _context: Record<string, unknown> 
   const affectedTools = [
     'memory_search',
     'memory_match_triggers',
+    'memory_context',
+    'memory_list',
     'memory_list_folders',
     'memory_read',
   ];
@@ -252,18 +260,11 @@ function invalidateOnWrite(operation: string, _context: Record<string, unknown> 
    7. EVICTION & CLEANUP
 --------------------------------------------------------------- */
 
+// AI-WHY: Maps maintain insertion order; the first key is always the oldest
+// entry. This replaces an O(n) full-scan with O(1) eviction.
 function evictOldest(): void {
-  let oldestKey: string | null = null;
-  let oldestTime = Infinity;
-
-  for (const [key, entry] of cache.entries()) {
-    if (entry.createdAt < oldestTime) {
-      oldestTime = entry.createdAt;
-      oldestKey = key;
-    }
-  }
-
-  if (oldestKey) {
+  const oldestKey = cache.keys().next().value;
+  if (oldestKey !== undefined) {
     cache.delete(oldestKey);
     stats.evictions++;
   }

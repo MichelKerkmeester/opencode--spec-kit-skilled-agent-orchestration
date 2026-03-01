@@ -68,7 +68,7 @@ contextType: "implementation"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-S1-030 [P0] R4 behind feature flag `SPECKIT_DEGREE_BOOST` — disabled by default
+- [x] CHK-S1-030 [P0] R4 behind feature flag `SPECKIT_DEGREE_BOOST` — graduated to ON by default (set `SPECKIT_DEGREE_BOOST=false` to disable)
 - [x] CHK-S1-031 [P1] No degree boost applied to constitutional tier memories
 <!-- /ANCHOR:security -->
 

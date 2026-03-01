@@ -1,5 +1,6 @@
-// ─── MODULE: Test — Cross-Feature Integration Evaluation ───
-
+// ---------------------------------------------------------------
+// MODULE: Test — Cross-Feature Integration Evaluation
+// ---------------------------------------------------------------
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // ── Query Classifier ──
@@ -84,7 +85,7 @@ import {
   GAP_THRESHOLD_MULTIPLIER,
 } from '../lib/search/confidence-truncation';
 
-/* ─── ENV HELPERS ─── */
+/* --- ENV HELPERS --- */
 
 /** Save and restore env vars around tests */
 const savedEnv: Record<string, string | undefined> = {};
@@ -110,7 +111,7 @@ function restoreEnv(): void {
   Object.keys(savedEnv).forEach(k => delete savedEnv[k]);
 }
 
-/* ─── TEST DATA FACTORIES ─── */
+/* --- TEST DATA FACTORIES --- */
 
 function makeRrfItem(id: number, extra: Record<string, unknown> = {}): RrfItem {
   return { id, ...extra };
@@ -821,8 +822,8 @@ describe('Cross-Sprint Integration', () => {
       expect(rep.topK.length).toBe(4);
     });
 
-    it('19. Co-activation R17 fan-effect: boost scales sublinearly with relation count', () => {
-      // Test fan-effect: boost(n) / sqrt(n) prevents hub inflation
+    it('19. Co-activation R17 fan-effect: pure fan-effect dilutes boost with more relations', () => {
+      // AI-WHY: Pure fan-effect — more connections dilute each relationship's contribution
       const base = 0.5;
       const avgSim = 80;
 
@@ -830,19 +831,19 @@ describe('Cross-Sprint Integration', () => {
       const boost3 = boostScore(base, 3, avgSim);
       const boost5 = boostScore(base, 5, avgSim);
 
-      // Scores increase with more relations
-      expect(boost3).toBeGreaterThan(boost1);
-      expect(boost5).toBeGreaterThan(boost3);
+      // All boosts are positive (above base)
+      expect(boost1).toBeGreaterThan(base);
+      expect(boost3).toBeGreaterThan(base);
+      expect(boost5).toBeGreaterThan(base);
 
-      // But the incremental gain diminishes (sublinear)
-      const gain1to3 = boost3 - boost1;
-      const gain3to5 = boost5 - boost3;
-      expect(gain3to5).toBeLessThan(gain1to3);
+      // Fan-effect: more relations = less total boost (1/sqrt(n) decay)
+      expect(boost3).toBeLessThan(boost1);
+      expect(boost5).toBeLessThan(boost3);
 
       // Verify formula manually for 3 relations
-      const rawBoost = DEFAULT_COACTIVATION_STRENGTH * (3 / CO_ACTIVATION_CONFIG.maxRelated) * (avgSim / 100);
+      const perNeighborBoost = DEFAULT_COACTIVATION_STRENGTH * (avgSim / 100);
       const fanDivisor = Math.sqrt(3);
-      const expected = base + rawBoost / fanDivisor;
+      const expected = base + perNeighborBoost / fanDivisor;
       expect(boost3).toBeCloseTo(expected, 6);
     });
 

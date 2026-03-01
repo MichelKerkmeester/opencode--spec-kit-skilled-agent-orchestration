@@ -5,6 +5,7 @@
 // ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
+import { isEntityLinkingEnabled } from './search-flags';
 
 // ---------------------------------------------------------------------------
 // 1. CONSTANTS
@@ -490,6 +491,10 @@ export function hasEntityInfrastructure(db: Database.Database): boolean {
  */
 export function runEntityLinking(db: Database.Database): EntityLinkResult {
   const emptyResult: EntityLinkResult = { linksCreated: 0, entitiesProcessed: 0, crossDocMatches: 0 };
+
+  if (!isEntityLinkingEnabled()) {
+    return emptyResult;
+  }
 
   if (!hasEntityInfrastructure(db)) {
     return emptyResult;

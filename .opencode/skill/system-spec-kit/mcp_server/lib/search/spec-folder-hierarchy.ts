@@ -1,4 +1,6 @@
-// ─── MODULE: Spec Folder Hierarchy ───
+// ---------------------------------------------------------------
+// MODULE: Spec Folder Hierarchy
+// ---------------------------------------------------------------
 // Builds a spec folder hierarchy from stored spec_folder paths
 // and enables hierarchy-aware retrieval (REQ-S6-006).
 //

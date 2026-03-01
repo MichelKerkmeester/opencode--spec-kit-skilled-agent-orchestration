@@ -8,9 +8,6 @@ import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/memory-search';
 
 describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/memory-search';
-
   describe('Exports Validation', () => {
     it('T516-1: handleMemorySearch is exported as a function', () => {
       expect(typeof handler.handleMemorySearch).toBe('function');

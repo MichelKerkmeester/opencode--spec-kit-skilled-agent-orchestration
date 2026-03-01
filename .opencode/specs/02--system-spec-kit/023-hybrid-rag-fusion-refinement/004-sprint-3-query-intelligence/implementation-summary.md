@@ -71,8 +71,8 @@ Sprint 3 added query-level intelligence to the retrieval pipeline: a 3-tier comp
 
 ## Known Limitations
 - R15 classifier has no confidence score -- downstream consumers cannot use classification certainty for weighted decisions (KL-S3-001)
-- R2 quality floor (0.2) assumes normalized scores; raw RRF scores will never qualify for promotion without score normalization enabled
-- RSF shadow comparison infrastructure (Kendall tau) is in test files but not yet integrated into the live eval pipeline
+- ~~R2 quality floor (0.2) assumes normalized scores; raw RRF scores will never qualify for promotion without score normalization enabled~~ **RESOLVED** (Sprint 10, D3): QUALITY_FLOOR changed from 0.2 to 0.005 in `channel-representation.ts`, making it compatible with raw RRF scores (~0.01-0.03) without requiring score normalization
+- ~~RSF shadow comparison infrastructure (Kendall tau) is in test files but not yet integrated into the live eval pipeline~~ **SUPERSEDED** (Sprint 10, WS2): RSF fusion (`rsf-fusion.ts`) dead code paths removed; `isRsfEnabled()` flag function deleted. RSF was evaluated via shadow scoring and is no longer an active fusion strategy
 - Dynamic token budget sets limits but does not enforce them at the result assembly layer -- enforcement requires integration with the search pipeline
 - PI-A2 (search strategy degradation with fallback chain) was deferred from Sprint 3 scope due to effort/scale concerns at corpus <500 memories
 

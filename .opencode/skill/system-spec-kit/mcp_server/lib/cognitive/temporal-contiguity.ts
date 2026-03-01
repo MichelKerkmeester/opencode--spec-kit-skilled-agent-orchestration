@@ -14,6 +14,9 @@ export const DEFAULT_WINDOW = 3600;   // 1 hour in seconds
 export const MAX_WINDOW = 86400;      // 24 hours in seconds
 
 const BOOST_FACTOR = 0.15;
+// AI-WHY: Cap the cumulative contiguity boost per result so that a cluster of
+// many temporally-close memories cannot inflate a score unboundedly.
+const MAX_TOTAL_BOOST = 0.5;
 
 /* -------------------------------------------------------------
    2. MODULE STATE
@@ -59,14 +62,28 @@ export function vectorSearchWithContiguity(
     _ts: new Date(r.created_at).getTime(),
   }));
 
+  // Track cumulative boost per result so we can enforce MAX_TOTAL_BOOST
+  const cumulativeBoost = new Array<number>(boosted.length).fill(0);
+
   for (let i = 0; i < boosted.length; i++) {
     for (let j = i + 1; j < boosted.length; j++) {
       const timeDelta = Math.abs(boosted[i]._ts - boosted[j]._ts) / 1000; // seconds
       if (timeDelta > windowSeconds) continue;
 
-      const boost = (1 - timeDelta / windowSeconds) * BOOST_FACTOR;
-      boosted[i].similarity = boosted[i].similarity * (1 + boost);
-      boosted[j].similarity = boosted[j].similarity * (1 + boost);
+      const rawBoost = (1 - timeDelta / windowSeconds) * BOOST_FACTOR;
+
+      // Clamp each result's cumulative boost to MAX_TOTAL_BOOST
+      const boostI = Math.min(rawBoost, MAX_TOTAL_BOOST - cumulativeBoost[i]);
+      const boostJ = Math.min(rawBoost, MAX_TOTAL_BOOST - cumulativeBoost[j]);
+
+      if (boostI > 0) {
+        boosted[i].similarity = boosted[i].similarity * (1 + boostI);
+        cumulativeBoost[i] += boostI;
+      }
+      if (boostJ > 0) {
+        boosted[j].similarity = boosted[j].similarity * (1 + boostJ);
+        cumulativeBoost[j] += boostJ;
+      }
     }
   }
 

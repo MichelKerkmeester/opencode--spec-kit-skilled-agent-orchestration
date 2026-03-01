@@ -1,9 +1,10 @@
-// ─── MODULE: Embedding Cache ───
-
+// ---------------------------------------------------------------
+// MODULE: Embedding Cache
+// ---------------------------------------------------------------
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 
-/* ─── 1. INTERFACES ─── */
+/* --- 1. INTERFACES --- */
 
 interface EmbeddingCacheEntry {
   contentHash: string;
@@ -21,7 +22,7 @@ interface EmbeddingCacheStats {
   newestEntry: string | null;
 }
 
-/* ─── 2. TABLE INITIALIZATION ─── */
+/* --- 2. TABLE INITIALIZATION --- */
 
 /**
  * Create the embedding_cache table if it does not exist.
@@ -43,7 +44,7 @@ function initEmbeddingCache(db: Database.Database): void {
   `);
 }
 
-/* ─── 3. CACHE LOOKUP ─── */
+/* --- 3. CACHE LOOKUP --- */
 
 /**
  * Look up a cached embedding by content hash and model ID.
@@ -76,12 +77,22 @@ function lookupEmbedding(
   return row.embedding;
 }
 
-/* ─── 4. CACHE STORE ─── */
+/* --- 4. CACHE STORE --- */
+
+// AI-WHY: 10 000 is ~2× the expected upper-bound memory count (~5 000 memories
+// × model variants). Prevents unbounded SQLite table growth in long-running
+// server processes. Eviction uses LRU (oldest last_used_at first).
+const MAX_CACHE_ENTRIES = 10000;
 
 /**
  * Store an embedding in the cache.
  * Uses INSERT OR REPLACE so duplicate (content_hash, model_id) pairs
  * are overwritten with the latest embedding.
+ *
+ * NOTE: The count-then-delete below is a non-transactional read-then-update
+ * pattern. Under concurrent writers the cache may briefly exceed
+ * MAX_CACHE_ENTRIES, but this is acceptable for a performance cache — the
+ * next store call will trim the overshoot.
  *
  * @param db - better-sqlite3 database instance
  * @param contentHash - SHA-256 hex digest of the content
@@ -96,6 +107,20 @@ function storeEmbedding(
   embedding: Buffer,
   dimensions: number,
 ): void {
+  // Auto-evict oldest entries when cache exceeds size limit
+  const countRow = (db.prepare(
+    'SELECT COUNT(*) AS cnt FROM embedding_cache',
+  ) as Database.Statement).get() as { cnt: number };
+
+  if (countRow.cnt >= MAX_CACHE_ENTRIES) {
+    const excess = countRow.cnt - MAX_CACHE_ENTRIES + 1; // +1 to make room for the new entry
+    (db.prepare(
+      `DELETE FROM embedding_cache WHERE rowid IN (
+         SELECT rowid FROM embedding_cache ORDER BY last_used_at ASC LIMIT ?
+       )`,
+    ) as Database.Statement).run(excess);
+  }
+
   (db.prepare(
     `INSERT OR REPLACE INTO embedding_cache
        (content_hash, model_id, embedding, dimensions, last_used_at)
@@ -103,7 +128,7 @@ function storeEmbedding(
   ) as Database.Statement).run(contentHash, modelId, embedding, dimensions);
 }
 
-/* ─── 5. LRU EVICTION ─── */
+/* --- 5. LRU EVICTION --- */
 
 /**
  * Evict cache entries whose last_used_at is older than maxAgeDays.
@@ -121,7 +146,7 @@ function evictOldEntries(db: Database.Database, maxAgeDays: number): number {
   return (result as { changes: number }).changes;
 }
 
-/* ─── 6. STATISTICS ─── */
+/* --- 6. STATISTICS --- */
 
 /**
  * Return aggregate statistics about the embedding cache.
@@ -152,7 +177,7 @@ function getCacheStats(db: Database.Database): EmbeddingCacheStats {
   };
 }
 
-/* ─── 7. CLEAR ─── */
+/* --- 7. CLEAR --- */
 
 /**
  * Remove all entries from the embedding cache.
@@ -163,7 +188,7 @@ function clearCache(db: Database.Database): void {
   db.exec('DELETE FROM embedding_cache');
 }
 
-/* ─── 8. CONTENT HASHING ─── */
+/* --- 8. CONTENT HASHING --- */
 
 /**
  * Compute a SHA-256 hex digest of the given content string.
@@ -177,7 +202,7 @@ function computeContentHash(content: string): string {
   return createHash('sha256').update(content, 'utf-8').digest('hex');
 }
 
-/* ─── 9. EXPORTS ─── */
+/* --- 9. EXPORTS --- */
 
 export {
   initEmbeddingCache,
@@ -187,6 +212,7 @@ export {
   getCacheStats,
   clearCache,
   computeContentHash,
+  MAX_CACHE_ENTRIES,
 };
 
 export type {

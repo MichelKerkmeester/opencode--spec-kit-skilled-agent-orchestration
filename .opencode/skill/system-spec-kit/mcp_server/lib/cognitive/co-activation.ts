@@ -1,9 +1,11 @@
-// ─── MODULE: Co-Activation ───
+// ---------------------------------------------------------------
+// MODULE: Co-Activation
+// ---------------------------------------------------------------
 // Spreading activation for related memory retrieval
 
 import type Database from 'better-sqlite3';
 
-/* ─── 1. CONFIGURATION ─── */
+/* --- 1. CONFIGURATION --- */
 
 /**
  * Default co-activation boost strength when SPECKIT_COACTIVATION_STRENGTH is not set.
@@ -25,7 +27,7 @@ const CO_ACTIVATION_CONFIG = {
   maxSpreadResults: 20,
 } as const;
 
-/* ─── 2. INTERFACES ─── */
+/* --- 2. INTERFACES --- */
 
 interface RelatedMemory {
   id: number;
@@ -42,7 +44,7 @@ interface SpreadResult {
   path: number[];
 }
 
-/* ─── 3. MODULE STATE ─── */
+/* --- 3. MODULE STATE --- */
 
 let db: Database.Database | null = null;
 
@@ -63,7 +65,7 @@ function clearRelatedCache(): void {
   RELATED_CACHE.clear();
 }
 
-/* ─── 4. INITIALIZATION ─── */
+/* --- 4. INITIALIZATION --- */
 
 function init(database: Database.Database): void {
   db = database;
@@ -74,7 +76,7 @@ function isEnabled(): boolean {
   return CO_ACTIVATION_CONFIG.enabled;
 }
 
-/* ─── 5. CORE FUNCTIONS ─── */
+/* --- 5. CORE FUNCTIONS --- */
 
 /**
  * Boost a search result's score based on co-activation with related memories.
@@ -88,10 +90,10 @@ function boostScore(
     return baseScore;
   }
 
-  const rawBoost = CO_ACTIVATION_CONFIG.boostFactor * (relatedCount / CO_ACTIVATION_CONFIG.maxRelated) * (avgSimilarity / 100);
-  // AI-WHY: R17 fan-effect — sqrt divisor prevents hub nodes from dominating; sublinear scaling keeps high-connectivity nodes in check
+  const perNeighborBoost = CO_ACTIVATION_CONFIG.boostFactor * (avgSimilarity / 100);
+  // AI-WHY: Pure fan-effect scaling — each additional neighbor contributes less (sublinear)
   const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
-  const boost = Math.max(0, rawBoost / fanDivisor);
+  const boost = Math.max(0, perNeighborBoost / fanDivisor);
   return baseScore + boost;
 }
 
@@ -362,7 +364,7 @@ function spreadActivation(
   return results.sort((a, b) => b.activationScore - a.activationScore);
 }
 
-/* ─── 6. EXPORTS ─── */
+/* --- 6. EXPORTS --- */
 
 export {
   CO_ACTIVATION_CONFIG,

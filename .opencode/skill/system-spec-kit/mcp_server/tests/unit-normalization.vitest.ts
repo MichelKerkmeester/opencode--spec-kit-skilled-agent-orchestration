@@ -7,7 +7,7 @@
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '../../shared/normalization';
 
-/* ─── Fixtures ──────────────────────────────────────────────── */
+/* --- Fixtures --- */
 
 function makeFullDbRow(): Record<string, unknown> {
   return {
@@ -85,7 +85,7 @@ function makeFullMemory(): Record<string, unknown> {
   };
 }
 
-/* ─── Tests ─────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Normalization Layer (T001-T007)', () => {
   it('T001: dbRowToMemory converts snake_case to camelCase', () => {

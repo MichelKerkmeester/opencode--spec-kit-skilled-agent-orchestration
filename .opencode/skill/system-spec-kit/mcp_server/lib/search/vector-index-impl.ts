@@ -1,4 +1,6 @@
-// ─── MODULE: Vector Index Implementation ───
+// ---------------------------------------------------------------
+// MODULE: Vector Index Implementation
+// ---------------------------------------------------------------
 // SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
 // DECAY STRATEGY (ADR-004): Search-time temporal decay uses an
@@ -40,9 +42,15 @@ type SearchWeightsConfig = {
   };
 };
 
-const search_weights = JSON.parse(
-  fs.readFileSync(search_weights_path, 'utf-8')
-) as SearchWeightsConfig;
+let search_weights: SearchWeightsConfig;
+try {
+  search_weights = JSON.parse(
+    fs.readFileSync(search_weights_path, 'utf-8')
+  ) as SearchWeightsConfig;
+} catch (error) {
+  console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
+  search_weights = {};
+}
 const MAX_TRIGGERS_PER_MEMORY = search_weights.maxTriggersPerMemory || 10;
 
 type EmbeddingInput = Float32Array | number[];
@@ -431,6 +439,9 @@ let sqlite_vec_available = true;
 
 const constitutional_cache = new Map<string, { data: MemoryRow[]; timestamp: number }>();
 const CONSTITUTIONAL_CACHE_TTL = 300000;
+// AI-WHY: Bound the map size to prevent unbounded memory growth if many distinct
+// cache keys are generated (e.g. per-folder constitutional lookups).
+const CONSTITUTIONAL_CACHE_MAX_KEYS = 50;
 
 // BUG-012 FIX: Track which cache keys are currently being loaded
 // This prevents thundering herd when multiple concurrent calls hit cache expiry
@@ -545,6 +556,14 @@ function get_constitutional_memories(
       row.isConstitutional = true;
       return row;
     });
+
+    // Evict oldest entries when cache exceeds max key count
+    if (constitutional_cache.size >= CONSTITUTIONAL_CACHE_MAX_KEYS) {
+      const oldestKey = constitutional_cache.keys().next().value;
+      if (oldestKey !== undefined) {
+        constitutional_cache.delete(oldestKey);
+      }
+    }
 
     constitutional_cache.set(cache_key, { data: results, timestamp: now });
 

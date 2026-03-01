@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Interference Scoring ───
+// ---------------------------------------------------------------
+// MODULE: Test — Interference Scoring
+// ---------------------------------------------------------------
 // Tests for interference score computation and penalty application.
 // Covers: zero interference, penalty reduces score, score floor at 0,
 // env var gating, batch computation, text similarity heuristic,

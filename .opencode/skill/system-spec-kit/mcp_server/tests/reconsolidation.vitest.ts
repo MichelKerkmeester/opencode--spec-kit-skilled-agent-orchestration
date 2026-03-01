@@ -87,6 +87,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         file_path TEXT NOT NULL DEFAULT '',
         title TEXT,
         content_text TEXT,
+        content_hash TEXT DEFAULT '',
         frequency_counter INTEGER DEFAULT 0,
         importance_weight REAL DEFAULT 0.5,
         importance_tier TEXT DEFAULT 'normal',

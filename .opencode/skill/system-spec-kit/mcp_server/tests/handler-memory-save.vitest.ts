@@ -13,9 +13,6 @@ import * as handler from '../handlers/memory-save';
 const MEMORY_SAVE_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'handlers', 'memory-save.ts'), 'utf8');
 
 describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/memory-save';
-
   describe('Exports Validation', () => {
     it('T518-1: handleMemorySave exported', () => {
       expect(typeof handler.handleMemorySave).toBe('function');

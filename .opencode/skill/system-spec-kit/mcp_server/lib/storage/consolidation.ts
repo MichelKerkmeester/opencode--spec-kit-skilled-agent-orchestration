@@ -134,9 +134,18 @@ function scanContradictionsVector(
     embedding: Buffer;
   }>;
 
+  // AI-WHY: O(n^2) pairwise scan capped at 500 memories (up to 124,750 pairs).
+  // A 5-second deadline prevents runaway CPU when embeddings are large or the
+  // machine is slow, keeping the consolidation cycle non-blocking.
+  const deadline = Date.now() + 5000;
+
   // Pairwise similarity check (O(n^2) but capped at 500 memories)
   for (let i = 0; i < memories.length; i++) {
     for (let j = i + 1; j < memories.length; j++) {
+      if (Date.now() > deadline) {
+        console.warn('[consolidation] Contradiction scan timed out after 5s');
+        return pairs;
+      }
       const similarity = computeCosineSimilarity(
         new Float32Array(memories[i].embedding.buffer, memories[i].embedding.byteOffset, memories[i].embedding.byteLength / 4),
         new Float32Array(memories[j].embedding.buffer, memories[j].embedding.byteOffset, memories[j].embedding.byteLength / 4),
@@ -185,9 +194,17 @@ function scanContradictionsHeuristic(
     content_text: string | null;
   }>;
 
+  // AI-WHY: Same 5-second timeout guard as the vector-based scan to prevent
+  // unbounded CPU usage in the heuristic O(n^2) fallback path.
+  const deadline = Date.now() + 5000;
+
   // Simple word-overlap heuristic for candidate generation
   for (let i = 0; i < memories.length; i++) {
     for (let j = i + 1; j < memories.length; j++) {
+      if (Date.now() > deadline) {
+        console.warn('[consolidation] Contradiction scan (heuristic) timed out after 5s');
+        return pairs;
+      }
       const contentA = memories[i].content_text || '';
       const contentB = memories[j].content_text || '';
 

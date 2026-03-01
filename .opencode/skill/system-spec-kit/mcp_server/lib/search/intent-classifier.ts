@@ -1,6 +1,7 @@
-// ─── MODULE: Intent Classifier ───
-
-/* ─── 1. TYPES & CONSTANTS ─── */
+// ---------------------------------------------------------------
+// MODULE: Intent Classifier
+// ---------------------------------------------------------------
+/* --- 1. TYPES & CONSTANTS --- */
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';
 
@@ -196,7 +197,7 @@ const INTENT_WEIGHT_ADJUSTMENTS: Record<IntentType, IntentWeights> = {
 
 const INTENT_CENTROIDS: IntentCentroids = buildIntentCentroids();
 
-/* ─── 2. SCORING FUNCTIONS ─── */
+/* --- 2. SCORING FUNCTIONS --- */
 
 /**
  * Score a query against an intent's keyword list, returning normalized score and matched keywords.
@@ -366,7 +367,7 @@ function calculateCentroidScore(query: string, intent: IntentType): number {
   return Math.max(0, dotProduct(queryEmb, centroid));
 }
 
-/* ─── 3. CLASSIFICATION ─── */
+/* --- 3. CLASSIFICATION --- */
 
 /**
  * Classify a query string into one of 7 intent types with confidence and keyword evidence.
@@ -545,7 +546,7 @@ function getIntentDescription(intent: IntentType): string {
   return descriptions[intent] || 'Unknown intent';
 }
 
-/* ─── 4. EXPORTS ─── */
+/* --- 4. EXPORTS --- */
 
 /**
  * C138: Intent-to-MMR-lambda mapping.

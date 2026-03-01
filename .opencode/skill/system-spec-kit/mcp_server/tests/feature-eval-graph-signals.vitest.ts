@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Feature Evaluation — Graph Signals ───
+// ---------------------------------------------------------------
+// MODULE: Test — Feature Evaluation — Graph Signals
+// ---------------------------------------------------------------
 // Rigorous cross-feature evaluation tests for T001, T002, T003a, T005a, T007
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -306,44 +308,44 @@ describe('T002: RRF 5th degree channel integration', () => {
 
 describe('T003a: Co-activation sublinear scaling (R17 fan-effect)', () => {
 
-  it('T003a.1 — doubling relatedCount does NOT double the boost (sublinear)', () => {
+  it('T003a.1 — doubling relatedCount does NOT double the boost (pure fan-effect)', () => {
     const base = 0.5;
     const sim = 80;
 
     const boost2 = boostScore(base, 2, sim) - base;
     const boost4 = boostScore(base, 4, sim) - base;
 
-    // If linear, boost4 would be exactly 2x boost2. With sqrt divisor it should be less.
-    expect(boost4).toBeLessThan(boost2 * 2);
-    expect(boost4).toBeGreaterThan(boost2); // still monotonically increasing
+    // AI-WHY: Pure fan-effect — more connections dilute each relationship's contribution.
+    // Total boost DECREASES as relatedCount increases (1/sqrt(n) decay).
+    expect(boost4).toBeLessThan(boost2);
+    expect(boost4).toBeGreaterThan(0); // still positive
   });
 
-  it('T003a.2 — sublinear scaling verified across 5 data points', () => {
+  it('T003a.2 — fan-effect decay verified across 5 data points', () => {
     const base = 0.0;
     const sim = 100;
     const counts = [1, 2, 3, 4, 5];
     const boosts = counts.map(c => boostScore(base, c, sim));
 
-    // Each increment should add less than the previous one
+    // AI-WHY: Each step's magnitude of change decreases (diminishing impact)
     for (let i = 2; i < boosts.length; i++) {
-      const delta_i = boosts[i] - boosts[i - 1];
-      const delta_prev = boosts[i - 1] - boosts[i - 2];
-      expect(delta_i).toBeLessThanOrEqual(delta_prev + 1e-10); // diminishing returns
+      const delta_i = Math.abs(boosts[i] - boosts[i - 1]);
+      const delta_prev = Math.abs(boosts[i - 1] - boosts[i - 2]);
+      expect(delta_i).toBeLessThanOrEqual(delta_prev + 1e-10); // diminishing magnitude
     }
   });
 
-  it('T003a.3 — boost formula matches expected sqrt-divisor calculation', () => {
+  it('T003a.3 — boost formula matches expected pure fan-effect calculation', () => {
     const base = 0.5;
     const relatedCount = 3;
     const avgSim = 80;
 
     const result = boostScore(base, relatedCount, avgSim);
 
-    const rawBoost = CO_ACTIVATION_CONFIG.boostFactor
-      * (relatedCount / CO_ACTIVATION_CONFIG.maxRelated)
-      * (avgSim / 100);
+    // AI-WHY: New formula removes relatedCount/maxRelated linear multiplier
+    const perNeighborBoost = CO_ACTIVATION_CONFIG.boostFactor * (avgSim / 100);
     const fanDivisor = Math.sqrt(Math.max(1, relatedCount));
-    const expectedBoost = Math.max(0, rawBoost / fanDivisor);
+    const expectedBoost = Math.max(0, perNeighborBoost / fanDivisor);
 
     expect(result).toBeCloseTo(base + expectedBoost, 10);
   });

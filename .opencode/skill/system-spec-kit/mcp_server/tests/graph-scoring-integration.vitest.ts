@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Graph-Scoring Integration ───
+// ---------------------------------------------------------------
+// MODULE: Test — Graph-Scoring Integration
+// ---------------------------------------------------------------
 // Verifies that graph signal activation and scoring calibration
 // changes to shared files are correctly integrated and do not conflict.
 

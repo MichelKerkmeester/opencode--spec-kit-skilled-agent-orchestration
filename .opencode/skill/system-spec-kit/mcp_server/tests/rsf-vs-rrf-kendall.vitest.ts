@@ -1,4 +1,6 @@
-// ─── MODULE: Test — RSF vs RRF Kendall Tau ───
+// ---------------------------------------------------------------
+// MODULE: Test — RSF vs RRF Kendall Tau
+// ---------------------------------------------------------------
 // Verification: measure rank correlation between RRF and RSF
 // fusion to determine whether RSF is a safe replacement for RRF.
 //

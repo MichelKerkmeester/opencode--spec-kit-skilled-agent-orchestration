@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Score Normalization ───
+// ---------------------------------------------------------------
+// MODULE: Test — Score Normalization
+// ---------------------------------------------------------------
 // Score Normalization & K-Value Analysis
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';

@@ -1,6 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Cold Start (N4) ───
-
+// ---------------------------------------------------------------
+// MODULE: Test — Cold Start (N4)
+// ---------------------------------------------------------------
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   calculateNoveltyBoost,

@@ -10,10 +10,6 @@ import * as handler from '../handlers/session-learning';
 import { MemoryError, ErrorCodes } from '../lib/errors/index';
 
 describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]', () => {
-  // DB-dependent imports would go here when unskipped
-  // import * as handler from '../handlers/session-learning';
-  // import { MemoryError, ErrorCodes } from '../lib/errors/index';
-
   // ─────────────────────────────────────────────────────────────
   // SUITE: Exports Validation
   // ─────────────────────────────────────────────────────────────

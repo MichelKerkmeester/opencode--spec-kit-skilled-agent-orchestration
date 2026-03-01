@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Confidence Truncation ───
+// ---------------------------------------------------------------
+// MODULE: Test — Confidence Truncation
+// ---------------------------------------------------------------
 // Query Intelligence
 // 24 tests covering:
 //   basic truncation, minimum result count, no-truncation, flag disabled,

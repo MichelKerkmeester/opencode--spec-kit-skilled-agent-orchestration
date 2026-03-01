@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Channel Representation ───
+// ---------------------------------------------------------------
+// MODULE: Test — Channel Representation
+// ---------------------------------------------------------------
 // 15 tests covering:
 //   all-represented, one-missing, floor-boundary, multi-missing,
 //   no-results-not-penalised, empty-topk, flag-disabled,

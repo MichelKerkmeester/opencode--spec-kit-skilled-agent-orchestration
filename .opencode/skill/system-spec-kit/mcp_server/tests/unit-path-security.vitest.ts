@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import { validateFilePath } from '../../shared/utils/path-security';
 
-/* ─── Tests ──────────────────────────────────────────────────── */
+/* --- Tests --- */
 
 describe('Path Security (T001-T007)', () => {
 

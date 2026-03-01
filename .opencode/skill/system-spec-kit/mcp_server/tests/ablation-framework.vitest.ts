@@ -1,4 +1,6 @@
-// ─── MODULE: Test — Ablation Framework ───
+// ---------------------------------------------------------------
+// MODULE: Test — Ablation Framework
+// ---------------------------------------------------------------
 //
 // Unit and integration tests for the ablation study framework.
 // Verifies feature flag gating, channel-to-flag mapping, ablation runner
@@ -81,8 +83,8 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       ablatedRecall20: 0.5,
       delta: -0.3,
       pValue: 0.01,
-      queriesHurt: 8,
-      queriesHelped: 1,
+      queriesChannelHelped: 8,
+      queriesChannelHurt: 1,
       queriesUnchanged: 1,
       queryCount: 10,
     },
@@ -92,8 +94,8 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       ablatedRecall20: 0.75,
       delta: -0.05,
       pValue: 0.12,
-      queriesHurt: 4,
-      queriesHelped: 2,
+      queriesChannelHelped: 4,
+      queriesChannelHurt: 2,
       queriesUnchanged: 4,
       queryCount: 10,
     },
@@ -103,8 +105,8 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       ablatedRecall20: 0.82,
       delta: 0.02,
       pValue: 0.45,
-      queriesHurt: 2,
-      queriesHelped: 3,
+      queriesChannelHelped: 2,
+      queriesChannelHurt: 3,
       queriesUnchanged: 5,
       queryCount: 10,
     },
@@ -377,7 +379,7 @@ describe('Ablation Framework (R13-S3)', () => {
         expect(result.ablatedRecall20).toBeLessThan(1.0);
         expect(result.delta).toBeLessThan(0);
         expect(result.queryCount).toBe(1);
-        expect(result.queriesHurt).toBeGreaterThanOrEqual(0);
+        expect(result.queriesChannelHelped).toBeGreaterThanOrEqual(0);
       }
     });
 
@@ -561,8 +563,8 @@ describe('Ablation Framework (R13-S3)', () => {
             ablatedRecall20: 0.6,
             delta: -0.2,
             pValue: null, // insufficient data
-            queriesHurt: 2,
-            queriesHelped: 1,
+            queriesChannelHelped: 2,
+            queriesChannelHurt: 1,
             queriesUnchanged: 0,
             queryCount: 3,
           },

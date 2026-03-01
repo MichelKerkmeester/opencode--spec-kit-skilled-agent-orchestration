@@ -1,4 +1,6 @@
-// ─── MODULE: Unified Graph Search Function ───
+// ---------------------------------------------------------------
+// MODULE: Unified Graph Search Function
+// ---------------------------------------------------------------
 // Causal graph search channel — uses FTS5 for node matching
 
 import { sanitizeFTS5Query } from './bm25-index';

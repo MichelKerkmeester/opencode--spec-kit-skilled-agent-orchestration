@@ -143,9 +143,10 @@ export function userFriendlyError(error: Error): string {
     if (pattern.test(error.message)) return message;
   }
 
-  // BUG-029 FIX: Generic fallback instead of raw error
-  console.error('[errors] Unmatched error:', error.message);
-  return `Unexpected error: ${error instanceof Error ? error.message : String(error)}`;
+  // P2-09: Return generic message to avoid leaking internal details.
+  // Raw error is logged for debugging but not returned to the caller.
+  console.error('[errors] Unmatched error (debug):', error.message);
+  return 'An unexpected error occurred. Please check logs for details.';
 }
 
 // ---------------------------------------------------------------

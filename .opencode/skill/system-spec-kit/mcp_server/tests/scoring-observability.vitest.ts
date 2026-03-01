@@ -1,5 +1,7 @@
 // @ts-nocheck
-// ─── MODULE: Test — Scoring Observability ───
+// ---------------------------------------------------------------
+// MODULE: Test — Scoring Observability
+// ---------------------------------------------------------------
 // Tests:
 //   1. Table creation (initScoringObservability)
 //   2. Sampling rate (~5% over 1000 calls)

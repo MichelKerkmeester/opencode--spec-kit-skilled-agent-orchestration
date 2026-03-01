@@ -153,7 +153,7 @@ The recommended S4a/S4b sub-sprint split is preserved: R1, R13-S2, TM-04, and TM
 2. **MPAB bonus coefficient is provisional.** The 0.3 coefficient must be validated against MRR@5 measurements from S4a shadow data before S4b begins. Exported as `MPAB_BONUS_COEFFICIENT` for easy tuning.
 3. **R11 query weight is provisional.** The 0.7x weight for learned triggers should be derived from channel attribution data (R13-S2) during the idle window.
 4. **TM-04 warn-only mode requires manual enablement after 14 days.** No automatic transition from warn-only to enforcement mode.
-5. **G-NEW-3 Phase C LLM-judge is a stub.** The `generateLlmJudgeLabels()` function returns zero-valued labels as a type contract. Actual LLM integration is out of scope for Sprint 4.
+5. ~~**G-NEW-3 Phase C LLM-judge is a stub.** The `generateLlmJudgeLabels()` function returns zero-valued labels as a type contract. Actual LLM integration is out of scope for Sprint 4.~~ **RESOLVED** (Sprint 4 follow-up): `generateLlmJudgeLabels()` now implements a deterministic heuristic judge using token overlap scoring with 4-band relevance classification (0/1/2/3). Not model-backed, but functional and tested.
 6. **Startup migration/isolation is now conditional on R11 enablement.** `migrateLearnedTriggers(db)` and `verifyFts5Isolation(db)` now run at startup when `SPECKIT_LEARN_FROM_SELECTION=true`.
 <!-- /ANCHOR:limitations -->
 

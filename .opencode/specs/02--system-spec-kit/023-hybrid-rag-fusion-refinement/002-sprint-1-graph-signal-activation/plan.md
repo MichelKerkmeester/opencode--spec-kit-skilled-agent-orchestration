@@ -63,7 +63,7 @@ Channel extension — adding a 5th signal to existing RRF fusion pipeline
 - **Degree computation** (`graph-search-fn.ts`): SQL query to compute typed-weighted degree per memory ID from `causal_edges` table. Formula: `typed_degree(node) = SUM(weight_t * count_t)`. Edge type weights: caused=1.0, derived_from=0.9, enabled=0.8, contradicts=0.7, supersedes=0.6, supports=0.5.
 - **Normalization**: `log(1 + typed_degree) / log(1 + MAX_TYPED_DEGREE)`. MAX_TYPED_DEGREE=15 (computed global with fallback). Capped at DEGREE_BOOST_CAP=0.15.
 - **RRF integration** (`rrf-fusion.ts`): Degree scores fed as 5th channel into Reciprocal Rank Fusion.
-- **Feature flag**: `SPECKIT_DEGREE_BOOST` — disabled by default; dark-run comparison before enabling.
+- **Feature flag**: `SPECKIT_DEGREE_BOOST` — graduated to ON by default (dark-run comparison completed; set `SPECKIT_DEGREE_BOOST=false` to disable).
 - **Degree cache**: Computed once per graph mutation, not per query. Invalidated when `causal_edges` table changes.
 
 ### Data Flow
@@ -218,7 +218,7 @@ Phase 6 (PI-A3) ─── (independent, no blockers from Phase 5)
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Feature flag `SPECKIT_DEGREE_BOOST` configured and defaults to disabled
+- [x] Feature flag `SPECKIT_DEGREE_BOOST` configured — graduated to ON by default
 - [ ] Dark-run comparison baseline captured before enabling R4
 - [ ] Degree cache invalidation tested
 

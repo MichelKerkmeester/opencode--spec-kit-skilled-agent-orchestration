@@ -1,8 +1,10 @@
-// ─── MODULE: Temporal-Structural Coherence (FSRS + Graph Centrality) ───
+// ---------------------------------------------------------------
+// MODULE: Temporal-Structural Coherence (FSRS + Graph Centrality)
+// ---------------------------------------------------------------
 // Augments FSRS stability scores with graph centrality so that
 // central nodes decay slower and peripheral nodes decay faster.
 
-/* ─── 1. INTERFACES ─── */
+/* --- 1. INTERFACES --- */
 
 /**
  * Minimal graph interface required by `computeGraphCentrality`.
@@ -17,7 +19,7 @@ interface MemoryGraphLike {
   outbound: Map<string, string[]>;
 }
 
-/* ─── 2. CORE FUNCTIONS ─── */
+/* --- 2. CORE FUNCTIONS --- */
 
 /**
  * Compute structural freshness by augmenting an FSRS stability score

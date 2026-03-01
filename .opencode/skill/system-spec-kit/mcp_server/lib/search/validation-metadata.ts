@@ -11,7 +11,7 @@
 //   3. content          → SPECKIT_LEVEL marker extraction
 //   4. content          → validation completion markers
 //
-// INVARIANT: This module is metadata-only. It NEVER modifies score
+// AI-INVARIANT: This module is metadata-only. It NEVER modifies score
 // fields (score, rrfScore, similarity, intentAdjustedScore). It only
 // adds the `validationMetadata` key to enriched rows.
 // ---------------------------------------------------------------

@@ -1,4 +1,6 @@
-// ─── MODULE: Channel Attribution ───
+// ---------------------------------------------------------------
+// MODULE: Channel Attribution
+// ---------------------------------------------------------------
 //
 // Tags each search result with its source channel(s) for evaluation analysis.
 // Computes Exclusive Contribution Rate: how often each channel is the SOLE
@@ -12,7 +14,7 @@
 //     (see rrf-fusion.ts SOURCE_TYPES and eval-logger.ts channel parameter).
 // ---------------------------------------------------------------
 
-/* ─── 1. TYPES ─── */
+/* --- 1. TYPES --- */
 
 /** Known retrieval channels (extensible — any lowercase string accepted). */
 export type ChannelName = 'vector' | 'fts' | 'bm25' | 'graph' | 'trigger' | string;
@@ -72,7 +74,7 @@ export interface ChannelAttributionReport {
   channelCoverage: Record<ChannelName, number>;
 }
 
-/* ─── 2. INTERNAL HELPERS ─── */
+/* --- 2. INTERNAL HELPERS --- */
 
 /** Sort results by rank ascending, return first k items. */
 function topK<T extends { rank: number }>(results: T[], k: number): T[] {
@@ -81,7 +83,7 @@ function topK<T extends { rank: number }>(results: T[], k: number): T[] {
     .slice(0, k);
 }
 
-/* ─── 3. PUBLIC API ─── */
+/* --- 3. PUBLIC API --- */
 
 /**
  * Tag each result with its contributing channel(s).

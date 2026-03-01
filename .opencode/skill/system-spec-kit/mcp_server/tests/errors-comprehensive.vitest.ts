@@ -219,10 +219,11 @@ describe('D. userFriendlyError', () => {
     expect(msg).toContain('embedding');
   });
 
-  it('D8: Unknown error -> "Unexpected error: ..."', () => {
+  it('D8: Unknown error -> generic message (no internal details leaked)', () => {
     const msg = userFriendlyError(new Error('something totally unknown'));
-    expect(msg).toContain('Unexpected error');
-    expect(msg).toContain('something totally unknown');
+    expect(msg.toLowerCase()).toContain('unexpected error');
+    // P2-09: raw error details must NOT leak to the caller
+    expect(msg).not.toContain('something totally unknown');
   });
 });
 

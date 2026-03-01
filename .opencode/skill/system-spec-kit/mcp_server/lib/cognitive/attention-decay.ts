@@ -17,9 +17,7 @@
 // External packages
 import type Database from 'better-sqlite3';
 
-/* -------------------------------------------------------------
-   1. DEPENDENCIES (lazy-loaded to avoid circular imports)
-----------------------------------------------------------------*/
+/* --- 1. DEPENDENCIES --- */
 
 // Internal modules
 import * as fsrsScheduler from './fsrs-scheduler';
@@ -35,9 +33,7 @@ import {
 } from '../scoring/composite-scoring';
 import type { FiveFactorWeights } from '../scoring/composite-scoring';
 
-/* -------------------------------------------------------------
-   2. CONFIGURATION
-----------------------------------------------------------------*/
+/* --- 2. CONFIGURATION --- */
 
 interface DecayRateByTier {
   constitutional: number;
@@ -69,15 +65,11 @@ const DECAY_CONFIG: DecayConfigType = {
   minScoreThreshold: 0.001,
 };
 
-/* -------------------------------------------------------------
-   3. STATE
-----------------------------------------------------------------*/
+/* --- 3. STATE --- */
 
 let db: Database.Database | null = null;
 
-/* -------------------------------------------------------------
-   4. INITIALIZATION
-----------------------------------------------------------------*/
+/* --- 4. INITIALIZATION --- */
 
 function init(database: Database.Database): void {
   if (!database) {
@@ -90,9 +82,7 @@ function getDb(): Database.Database | null {
   return db;
 }
 
-/* -------------------------------------------------------------
-   5. DECAY RATE FUNCTIONS
-----------------------------------------------------------------*/
+/* --- 5. DECAY RATE FUNCTIONS --- */
 
 function getDecayRate(importanceTier: string | null | undefined): number {
   if (!importanceTier || typeof importanceTier !== 'string') {
@@ -221,9 +211,7 @@ function activateMemoryWithFsrs(memoryId: number, grade: number = 3): boolean {
   }
 }
 
-/* -------------------------------------------------------------
-   6. COMPOSITE ATTENTION SCORING
-----------------------------------------------------------------*/
+/* --- 6. COMPOSITE ATTENTION SCORING --- */
 
 interface AttentionBreakdown {
   temporal: number;
@@ -351,9 +339,7 @@ function clearSession(): void {
   db = null;
 }
 
-/* -------------------------------------------------------------
-   7. EXPORTS
-----------------------------------------------------------------*/
+/* --- 7. EXPORTS --- */
 
 export {
   // Configuration
