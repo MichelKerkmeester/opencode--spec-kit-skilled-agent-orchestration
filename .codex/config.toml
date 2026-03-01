@@ -56,6 +56,10 @@ config_file = "agents/review.toml"
 description = "Spec-folder documentation specialist (template-enforced)."
 config_file = "agents/speckit.toml"
 
+[agents.ultra-think]
+description = "Multi-strategy planning architect for diverse reasoning and optimal plans."
+config_file = "agents/ultra-think.toml"
+
 [agents.write]
 description = "Documentation specialist for project-level docs and guides."
 config_file = "agents/write.toml"
