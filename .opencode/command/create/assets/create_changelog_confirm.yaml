@@ -1,0 +1,577 @@
+# ─────────────────────────────────────────────────────────────────
+# OPENCODE CREATE: CHANGELOG CREATION WORKFLOW (CONFIRM MODE)
+# ─────────────────────────────────────────────────────────────────
+# Mode: interactive (user approval at each step)
+# Note: This workflow pauses at each step for user confirmation.
+#       User can Approve, Review, Modify, or Skip at each gate.
+# ─────────────────────────────────────────────────────────────────
+role: Expert Changelog Creator with dynamic work detection
+purpose: Create properly formatted changelog entries by analyzing recent work and resolving components
+action: Detect work context, resolve component folder, calculate version, generate formatted changelog
+
+# ─────────────────────────────────────────────────────────────────
+# PREREQUISITE: @write AGENT VERIFICATION
+# ─────────────────────────────────────────────────────────────────
+# This workflow REQUIRES the @write agent for:
+#   - Template-first workflow (loads format before generating)
+#   - Changelog format validation
+#   - Version number verification
+#
+# PHASE 0 in the command markdown verifies @write agent BEFORE
+# this YAML workflow loads. If you're executing this workflow,
+# @write verification has already passed.
+#
+# To invoke correctly: @write /create:changelog [source] :confirm
+# ─────────────────────────────────────────────────────────────────
+
+operating_mode:
+  workflow: sequential_7_step
+  workflow_compliance: MANDATORY
+  workflow_execution: interactive
+  approvals: step_by_step
+  tracking: progressive_task_checklists
+  validation: checkpoint_based
+
+development_philosophy:
+  principle: "Detect accurately, format consistently"
+  approach: "Analyze -> Resolve -> Calculate -> Generate -> Validate -> Write"
+  mandate: "Dynamic detection with human-quality output matching 370+ existing changelogs"
+
+# ─────────────────────────────────────────────────────────────────
+# CONFIDENCE & CLARIFICATION FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
+confidence_framework:
+  thresholds:
+    high: { range: "80-100%", action: "Proceed with citable source" }
+    medium: { range: "40-79%", action: "Proceed with caution, document assumptions" }
+    low: { range: "0-39%", action: "STOP - Ask clarification with A/B/C options" }
+
+  scoring_weights:
+    work_context_availability: 0.30
+    component_resolution_confidence: 0.25
+    version_calculation_certainty: 0.25
+    content_completeness: 0.20
+
+  clarification_format: |
+    "I need clarity (confidence: [NN%]). Which approach:
+    - A) [option with brief rationale]
+    - B) [option with brief rationale]
+    - C) [option with brief rationale]"
+
+  escalation:
+    timebox_minutes: 10
+    failed_attempts_threshold: 2
+    action: "Present options to user with current findings"
+
+# ─────────────────────────────────────────────────────────────────
+# REQUEST ANALYSIS FRAMEWORK
+# ─────────────────────────────────────────────────────────────────
+request_analysis_framework:
+  solution_flow:
+  - "Parse input: spec folder path, component name, or auto-detect mode"
+  - "Gather context: Read spec artifacts or git history"
+  - "Resolve component: Map changed files to changelog folder"
+  - "Calculate version: Scan existing files, determine next version"
+  - "Generate content: Format per established template"
+  - "Validate: Check format, version sequencing, completeness"
+  - "Write: Create file in correct location"
+
+  pre_change_validation:
+    items:
+    - "Source identified? (spec folder, component, or git history)"
+    - "Component folder resolved?"
+    - "Version number calculated?"
+    - "Content generated with all required sections?"
+    - "Confidence >=80%? (if not: ask)"
+    stop_conditions: [ "Any item unchecked", "Component unresolved" ]
+    stop_action: "STOP and address before proceeding"
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS (From Setup Phase outputs)
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  source_type: |
+    [SOURCE_TYPE]
+    One of: spec_folder, component, git_history
+    FROM UNIFIED SETUP PHASE (Q0 or $ARGUMENTS).
+
+  spec_folder: |
+    [SPEC_FOLDER]
+    Path to spec folder (if source_type = spec_folder).
+    FROM UNIFIED SETUP PHASE (Q0 choice A).
+
+  component_hint: |
+    [COMPONENT_HINT]
+    Component name hint (if source_type = component).
+    FROM UNIFIED SETUP PHASE (Q0 choice B).
+
+  version_bump: |
+    [VERSION_BUMP]
+    One of: major, minor, patch, build, auto
+    FROM UNIFIED SETUP PHASE (--bump flag or Q1).
+
+# ─────────────────────────────────────────────────────────────────
+# FIELD HANDLING
+# ─────────────────────────────────────────────────────────────────
+field_handling:
+  source_type:
+    validation: "must be one of: spec_folder, component, git_history"
+    required: true
+
+  version_bump:
+    validation: "must be one of: major, minor, patch, build, auto"
+    default: "auto"
+
+  defaults:
+    changelog_root: ".opencode/changelog/"
+    date_format: "YYYY-MM-DD"
+    version_format: "v{MAJOR}.{MINOR}.{PATCH}.{BUILD}"
+    initial_version: "v1.0.0.0"
+    project_url: "https://github.com/MichelKerkmeester/opencode-spec-kit-framework"
+
+# ─────────────────────────────────────────────────────────────────
+# DOCUMENTATION LEVEL
+# ─────────────────────────────────────────────────────────────────
+documentation_level:
+  default: "Level 1 (Baseline)"
+  required_files:
+  - spec.md
+  - plan.md
+  - tasks.md
+  note: "Changelog creation is typically Level 1 unless multi-component"
+
+# ─────────────────────────────────────────────────────────────────
+# COMPONENT MAPPING TABLE
+# ─────────────────────────────────────────────────────────────────
+component_mapping:
+  # ─────────────────────────────────────────────────────────────────
+  # DYNAMIC DISCOVERY — scan .opencode/changelog/ at runtime
+  # ─────────────────────────────────────────────────────────────────
+  # Component folders are NOT hardcoded. The workflow discovers them:
+  #
+  #   $ ls -d .opencode/changelog/*/
+  #
+  # Folder naming convention: NN--component-name (zero-padded index)
+  # Example: 04--commands, 11--sk-doc, 00--opencode-environment
+  #
+  # RESOLUTION STRATEGY (most specific first):
+  #   1. Extract component name from folder (strip NN-- prefix)
+  #   2. Match changed file paths against component names:
+  #      - .opencode/skill/{name}/**  → folder containing {name}
+  #      - .opencode/command/**       → folder containing "commands"
+  #      - .opencode/agent/**         → folder containing "agents"
+  #   3. Match component_hint keyword against folder names
+  #   4. Fallback: first folder starting with "00--" (umbrella/cross-component)
+  #
+  # The agent MUST run the discovery scan in Step 2 of the workflow
+  # and build the mapping dynamically from the actual folder contents.
+  # ─────────────────────────────────────────────────────────────────
+
+  discovery:
+    scan_command: "ls -d .opencode/changelog/*/ 2>/dev/null | sort"
+    folder_pattern: "^(\\d+)--(.*)"
+    fallback_prefix: "00--"
+    note: "Always use the first 00-- folder as default for unmatched paths"
+
+  resolution_rules:
+    - source: "file_path"
+      strategy: "Match changed file paths against discovered folder names using substring/keyword matching"
+    - source: "component_hint"
+      strategy: "Match user-provided hint against discovered folder names"
+    - source: "spec_folder"
+      strategy: "Extract spec path segments and match against discovered folder names"
+    - source: "fallback"
+      strategy: "Use the 00-- prefixed folder (umbrella/cross-component)"
+
+# ─────────────────────────────────────────────────────────────────
+# VERSION BUMP RULES
+# ─────────────────────────────────────────────────────────────────
+version_bump_rules:
+  auto_detection:
+    major:
+      triggers: ["BREAKING", "overhaul", "rewrite", "migration", "v2", "v3"]
+      description: "Architectural overhaul or platform-level change"
+    minor:
+      triggers: ["feat", "add", "new", "feature", "implement", "create"]
+      description: "Significant new feature or subsystem addition"
+    patch:
+      triggers: ["fix", "bug", "refactor", "chore", "docs", "update", "improve", "cleanup"]
+      description: "Incremental improvement, bug fix, or refactor"
+    build:
+      triggers: ["hotfix", "typo", "same-day"]
+      description: "Hotfix on already-published version"
+
+  detection_order:
+    - "Check user-provided --bump flag first (highest priority)"
+    - "Check spec.md title and purpose for change type keywords"
+    - "Check git commit messages for conventional commit prefixes"
+    - "Default to patch if no clear signal"
+
+  calculation:
+    major: "{MAJOR+1}.0.0.0"
+    minor: "{MAJOR}.{MINOR+1}.0.0"
+    patch: "{MAJOR}.{MINOR}.{PATCH+1}.0"
+    build: "{MAJOR}.{MINOR}.{PATCH}.{BUILD+1}"
+
+# ─────────────────────────────────────────────────────────────────
+# CHANGELOG CONTENT TEMPLATE
+# ─────────────────────────────────────────────────────────────────
+changelog_template: |
+  # v{VERSION}
+
+  > Part of [OpenCode Dev Environment](https://github.com/MichelKerkmeester/opencode-spec-kit-framework)
+
+  ---
+
+  ## [**{VERSION_NO_V}**] - {DATE}
+
+  {SUMMARY}
+
+  > Spec folder: `{SPEC_FOLDER}` ({LEVEL})
+
+  ---
+
+  ## Highlights
+
+  {HIGHLIGHTS}
+
+  ## Files Changed
+
+  {FILES_CHANGED}
+
+  ## Upgrade
+
+  {UPGRADE_NOTE}
+
+# ─────────────────────────────────────────────────────────────────
+# HIGHLIGHT CATEGORIES
+# ─────────────────────────────────────────────────────────────────
+highlight_categories:
+  new: "### New"
+  changed: "### Changed"
+  fixed: "### Fixed"
+  architecture: "### Architecture"
+  removed: "### Removed"
+  deprecated: "### Deprecated"
+  category_named: "### Category: {name}"
+  note: |
+    Use "### Category: {name}" for domain-specific groupings.
+    Use standard categories (New/Changed/Fixed) for general changes.
+    Match the style used in recent changelogs of the target component.
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW ENFORCEMENT
+# ─────────────────────────────────────────────────────────────────
+workflow_enforcement:
+  mode: strict
+  step_order: sequential_mandatory
+  skip_allowed: false
+  critical_steps:
+    step_2_component_resolution:
+      enforcement: "MUST resolve to a valid changelog subfolder"
+      verification: "Folder exists at .opencode/changelog/{resolved_folder}/"
+    step_3_version_determination:
+      enforcement: "MUST calculate a sequential version number"
+      verification: "No file with same version exists in target folder"
+    step_5_quality_validation:
+      enforcement: "MUST verify format compliance before writing"
+      verification: "All required sections present in generated content"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  step_1_context_analysis:
+    purpose: Detect what was worked on and gather work context
+    activities:
+    - "Determine source type from Setup Phase outputs"
+    - |
+      IF source_type = spec_folder:
+        Read {spec_folder}/implementation-summary.md (primary source)
+        Read {spec_folder}/tasks.md (completed tasks)
+        Read {spec_folder}/spec.md (title, purpose, requirements)
+        Extract: work_summary, files_changed, change_type, spec_level
+    - |
+      IF source_type = component:
+        Use component_hint to identify target folder
+        Run: git log --oneline --since="7 days ago" -- {component_file_patterns}
+        Extract: recent_commits, files_changed
+    - |
+      IF source_type = git_history:
+        Run: git log --oneline --since="7 days ago"
+        Run: git diff --stat HEAD~10
+        Extract: recent_commits, files_changed, commit_messages
+    - "Compile work_context object with: summary, files_changed[], change_type, source"
+    outputs:
+    - work_context: "Object containing summary, files, change type"
+    - files_changed: "List of changed file paths"
+    - change_type_hint: "Feature / fix / refactor / architecture"
+    validation: context_gathered
+    checkpoint:
+      question: "Work context detected. Source: {source_type}. Found {files_count} changed files. Proceed with component resolution?"
+      options:
+        - label: "A) Approve - continue to component resolution"
+        - label: "B) Review - show full work context details"
+        - label: "C) Modify - change source or add context"
+        - label: "D) Abort - cancel changelog creation"
+
+  step_2_component_resolution:
+    purpose: Discover changelog folders and map detected work to the correct subfolder
+    activities:
+    - |
+      DISCOVER available changelog folders:
+        $ ls -d .opencode/changelog/*/ 2>/dev/null | sort
+        Parse folder names using NN--component-name pattern
+        Build runtime component list from actual directory contents
+    - |
+      FOR EACH file in files_changed:
+        Match file path segments against discovered component names
+        Record matched component folder
+    - |
+      Count matches per component:
+        IF single component dominates (>60% of files) -> primary_component = that component
+        IF multiple components roughly equal -> list all, pick primary by file count
+        IF no matches -> default to first 00-- prefixed folder (umbrella/cross-component)
+    - |
+      IF source_type = spec_folder:
+        Extract spec path segments and match against discovered folder names
+        Use as tiebreaker when file analysis is ambiguous
+    - |
+      IF source_type = component:
+        Match component_hint against discovered folder names (substring match)
+        Direct resolution without file analysis
+    - "Verify target folder exists: ls .opencode/changelog/{resolved_folder}/"
+    outputs:
+    - primary_component: "Resolved changelog subfolder name"
+    - secondary_components: "Other affected components (if cross-component)"
+    - resolution_confidence: "Percentage confidence in mapping"
+    validation: component_resolved
+    checkpoint:
+      question: "Component resolved to: {primary_component} (confidence: {resolution_confidence}%). Is this correct?"
+      options:
+        - label: "A) Approve - correct component"
+        - label: "B) Change - select different component"
+        - label: "C) Review - show mapping analysis"
+        - label: "D) Abort - cancel"
+
+  step_3_version_determination:
+    purpose: Calculate the next version number for the changelog entry
+    activities:
+    - "List existing changelog files in target folder"
+    - "Parse the latest version file: extract MAJOR.MINOR.PATCH.BUILD"
+    - |
+      Determine bump type:
+        IF version_bump != "auto" -> use user-specified bump type
+        IF version_bump == "auto":
+          Check change_type_hint against version_bump_rules.auto_detection
+          Check work_context.summary for trigger keywords
+          Default to "patch" if no clear signal
+    - "Calculate next version using version_bump_rules.calculation"
+    - "Verify no collision with existing files"
+    outputs:
+    - next_version: "Calculated version string (e.g., v2.1.0.0)"
+    - bump_type_used: "major/minor/patch/build"
+    - latest_existing_version: "Previous version for reference"
+    validation: version_calculated
+    checkpoint:
+      question: "Version calculated: {latest_existing_version} -> {next_version} ({bump_type_used} bump). Approve?"
+      options:
+        - label: "A) Approve - use this version"
+        - label: "B) Override - specify different version or bump type"
+        - label: "C) Review - show version history"
+        - label: "D) Abort - cancel"
+
+  step_4_content_generation:
+    purpose: Generate changelog content following established format
+    activities:
+    - "Set DATE to today's date in YYYY-MM-DD format"
+    - "Generate SUMMARY from spec artifacts or git history"
+    - "Generate HIGHLIGHTS grouped by category"
+    - "Generate FILES_CHANGED table"
+    - "Generate UPGRADE_NOTE based on change type"
+    - "Assemble full content using changelog_template"
+    outputs:
+    - changelog_content: "Complete formatted changelog markdown"
+    - section_count: "Number of highlight sections generated"
+    validation: content_generated
+    checkpoint:
+      question: "Changelog content generated with {section_count} highlight sections. Review before validation?"
+      options:
+        - label: "A) Approve - proceed to validation"
+        - label: "B) Review - show full changelog preview"
+        - label: "C) Modify - edit content before validation"
+        - label: "D) Regenerate - regenerate with different approach"
+
+  step_5_quality_validation:
+    purpose: Verify the generated changelog meets format and quality standards
+    activities:
+    - "Run FORMAT CHECKS (H1, backlink, version+date, summary, highlights, files, upgrade)"
+    - "Run VERSION CHECKS (sequential, 4-segment, no duplicates)"
+    - "Run CONTENT CHECKS (concise summary, formatted highlights, valid paths)"
+    - "Auto-fix minor issues if possible"
+    outputs:
+    - validation_passed: "true/false"
+    - checks_passed: "N/N total"
+    - auto_fixes_applied: "List of automatic corrections"
+    validation: quality_verified
+    checkpoint:
+      question: "Validation complete: {checks_passed} checks passed. {auto_fixes_applied_count} auto-fixes applied. Proceed to write?"
+      options:
+        - label: "A) Approve - write the file"
+        - label: "B) Review - show validation details"
+        - label: "C) Fix - address remaining issues"
+        - label: "D) Abort - cancel without writing"
+
+  step_6_write_file:
+    purpose: Write the changelog file to the correct location
+    activities:
+    - "Construct output path: .opencode/changelog/{primary_component}/v{next_version}.md"
+    - "Write changelog_content to output path using Write tool"
+    - "Verify file was created by reading first 5 lines"
+    outputs:
+    - output_path: "Full path to created changelog file"
+    - file_verified: "true/false"
+    validation: file_written
+    checkpoint:
+      question: "Changelog written to {output_path}. File verified: {file_verified}. Proceed to completion?"
+      options:
+        - label: "A) Approve - complete workflow"
+        - label: "B) Review - show created file"
+        - label: "C) Undo - delete the file and restart"
+
+  step_7_save_context:
+    purpose: Report completion and preserve context
+    activities:
+    - "Display completion report"
+    - "Suggest memory save if spec folder exists"
+    outputs:
+    - status: "OK or FAIL"
+    - changelog_path: "Path to created file"
+    validation: context_saved
+
+# ─────────────────────────────────────────────────────────────────
+# CIRCUIT BREAKER
+# ─────────────────────────────────────────────────────────────────
+circuit_breaker:
+  enabled: true
+  thresholds:
+    failures: 3
+    recovery_s: 60
+    success_to_close: 1
+  states:
+    CLOSED: "normal operation"
+    OPEN: "skip optional steps, complete with warnings"
+    HALF_OPEN: "test single operation"
+
+# ─────────────────────────────────────────────────────────────────
+# QUALITY STANDARDS
+# ─────────────────────────────────────────────────────────────────
+quality_standards:
+  format_compliance:
+    minimum: "All required sections present"
+    enforcement: "Step 5 validates before Step 6 writes"
+  version_integrity:
+    minimum: "Sequential, no duplicates"
+    enforcement: "Step 3 validates before Step 4 generates"
+  content_quality:
+    minimum: "Summary + highlights + files changed"
+    enforcement: "Step 5 verifies non-empty content sections"
+
+# ─────────────────────────────────────────────────────────────────
+# INTERACTIVE EXECUTION
+# ─────────────────────────────────────────────────────────────────
+interactive_execution:
+  principle: "Pause at each step for user approval"
+  checkpoint_options:
+    approve: "Continue to next step"
+    review: "Show detailed output from this step"
+    modify: "Allow user to adjust outputs before proceeding"
+    abort: "Cancel workflow with STATUS=CANCELLED"
+    skip: "Skip optional step (only for non-critical steps)"
+  user_override: "User can override any automated decision at checkpoints"
+
+# ─────────────────────────────────────────────────────────────────
+# COMPLETION REPORT
+# ─────────────────────────────────────────────────────────────────
+completion_report:
+  template: |
+    Changelog Created
+
+    Component: {primary_component}
+    Version: {next_version} ({bump_type_used} bump)
+    File: {output_path}
+
+    Summary: {summary_first_sentence}
+
+    Sections: {section_count} highlight categories
+    Files Tracked: {files_changed_count}
+
+    STATUS=OK PATH={output_path}
+
+  on_failure: |
+    Changelog Creation Failed
+
+    Error: {error_description}
+    Step: {failed_step}
+    Component: {primary_component} (if resolved)
+
+    STATUS=FAIL ERROR="{error_message}"
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  no_spec_artifacts:
+    action: "Fall back to git history analysis"
+    fallback: "If no git history either, prompt user for manual input"
+
+  component_ambiguous:
+    action: "Present all matched components to user for selection"
+    fallback: "User selects from list"
+
+  version_conflict:
+    action: "Show conflict to user, suggest BUILD increment"
+    fallback: "User provides manual version"
+
+  empty_content:
+    action: "Show available data, ask user to supplement"
+    fallback: "User provides summary and highlights"
+
+  write_failure:
+    action: "Check permissions, show error to user"
+    fallback: "Display content for manual save"
+
+# ─────────────────────────────────────────────────────────────────
+# TERMINATION
+# ─────────────────────────────────────────────────────────────────
+termination:
+  after_step: 7
+  message: "Changelog creation workflow complete."
+  next_steps:
+  - "Review the generated changelog at {output_path}"
+  - "Create additional changelogs for secondary components if needed"
+  - "Consider creating an umbrella release in the 00-- prefixed folder if applicable"
+  - "Run /memory:save to preserve context"
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+  - "Follow the 7-step workflow in sequence"
+  - "Validate version is sequential before writing"
+  - "Match the established changelog format (370+ existing files)"
+  - "Include all required sections: title, backlink, version+date, summary, highlights"
+  - "Use the component mapping table for resolution"
+  - "Pause at each checkpoint for user approval"
+  - "Report STATUS=OK or STATUS=FAIL at completion"
+
+  NEVER:
+  - "Never skip version validation (Step 3)"
+  - "Never write a changelog with empty summary or highlights"
+  - "Never overwrite an existing changelog file"
+  - "Never guess component folder without file path analysis"
+  - "Never use a version number that already exists"
+  - "Never create changelog folders that don't already exist"
+  - "Never skip a checkpoint in interactive mode"

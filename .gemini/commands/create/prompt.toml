@@ -1,0 +1,4 @@
+description = "Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-prompt-improver - supports :auto and :confirm modes"
+prompt = """@{../../.opencode/command/create/prompt.md}
+
+User request: {{args}}"""

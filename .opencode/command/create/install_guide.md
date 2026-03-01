@@ -51,7 +51,7 @@ SELF-CHECK: Are you operating as the @write agent?
     │   │ This command requires the @write agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • DQI scoring (target: 75+ Good)                         │
-    │   │   • sk-doc skill integration               │
+    │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
     │   │   @write /create:install_guide [project-name]              │

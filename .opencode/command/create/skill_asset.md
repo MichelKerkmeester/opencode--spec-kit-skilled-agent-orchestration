@@ -51,7 +51,7 @@ SELF-CHECK: Are you operating as the @write agent?
     │   │ This command requires the @write agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • DQI scoring (target: 75+ Good)                         │
-    │   │   • sk-doc skill integration               │
+    │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
     │   │   @write /create:skill_asset [skill-name] [type]           │
@@ -324,13 +324,13 @@ $ARGUMENTS
 
 ## WORKFLOW TRACKING
 
-| STEP | NAME          | STATUS | REQUIRED OUTPUT                | VERIFICATION                       |
-| ---- | ------------- | ------ | ------------------------------ | ---------------------------------- |
-| 1    | Analysis      | ☐      | Skill path, asset type         | Skill verified, type valid         |
-| 2    | Planning      | ☐      | Filename, sections             | File spec determined               |
-| 3    | Template Load | ☐      | Structure patterns             | Template loaded                    |
-| 4    | Content       | ☐      | [asset_name].md                | Asset file created                 |
-| 6    | Save Context  | ☐      | Memory file                    | Context preserved                  |
+| STEP | NAME          | STATUS | REQUIRED OUTPUT        | VERIFICATION               |
+| ---- | ------------- | ------ | ---------------------- | -------------------------- |
+| 1    | Analysis      | ☐      | Skill path, asset type | Skill verified, type valid |
+| 2    | Planning      | ☐      | Filename, sections     | File spec determined       |
+| 3    | Template Load | ☐      | Structure patterns     | Template loaded            |
+| 4    | Content       | ☐      | [asset_name].md        | Asset file created         |
+| 6    | Save Context  | ☐      | Memory file            | Context preserved          |
 
 
 ---
@@ -343,12 +343,12 @@ $ARGUMENTS
 
 ### Asset Types & Naming Conventions
 
-| Type       | Naming Pattern           | Example                    | Purpose                                                                 |
-| ---------- | ------------------------ | -------------------------- | ----------------------------------------------------------------------- |
-| Template   | `[content]_templates.md` | `frontmatter_templates.md` | Copy-paste starting points                                              |
-| Reference  | `[topic]_reference.md`   | `status_reference.md`      | Lookup tables, decisions                                                |
-| Example    | `[topic]_examples.md`    | `optimization_examples.md` | Working code examples                                                   |
-| Guide      | `[process]_guide.md`     | `packaging_guide.md`       | Step-by-step how-tos                                                    |
+| Type      | Naming Pattern           | Example                    | Purpose                    |
+| --------- | ------------------------ | -------------------------- | -------------------------- |
+| Template  | `[content]_templates.md` | `frontmatter_templates.md` | Copy-paste starting points |
+| Reference | `[topic]_reference.md`   | `status_reference.md`      | Lookup tables, decisions   |
+| Example   | `[topic]_examples.md`    | `optimization_examples.md` | Working code examples      |
+| Guide     | `[process]_guide.md`     | `packaging_guide.md`       | Step-by-step how-tos       |
 
 ### When to Create Assets
 - Templates users apply repeatedly

@@ -51,7 +51,7 @@ SELF-CHECK: Are you operating as the @write agent?
     │   │ This command requires the @write agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • DQI scoring (target: 75+ Good)                         │
-    │   │   • sk-doc skill integration               │
+    │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
     │   │   @write /create:folder_readme [target-path]               │
@@ -389,13 +389,13 @@ $ARGUMENTS
 
 ## 3. REFERENCE (See YAML for Details)
 
-| Section           | Location in YAML                                   |
-| ----------------- | -------------------------------------------------- |
-| README Types      | `readme_types`                                     |
-| Key Patterns      | `template_references`                              |
-| Section Templates | `templates`                                        |
-| Failure Recovery  | `error_recovery`                                   |
-| Completion Report | `completion_report`                                |
+| Section           | Location in YAML      |
+| ----------------- | --------------------- |
+| README Types      | `readme_types`        |
+| Key Patterns      | `template_references` |
+| Section Templates | `templates`           |
+| Failure Recovery  | `error_recovery`      |
+| Completion Report | `completion_report`   |
 
 **Reference READMEs:**
 - `.opencode/skill/system-spec-kit/README.md` (SpecKit + Memory pattern)

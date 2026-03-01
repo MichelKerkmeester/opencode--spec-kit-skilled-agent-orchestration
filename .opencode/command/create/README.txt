@@ -8,6 +8,7 @@ trigger_phrases:
   - "create skill"
   - "create readme"
   - "create visual html"
+  - "create changelog"
 ---
 
 # Create Commands
@@ -51,6 +52,7 @@ Most commands run Phase 0 (@write agent self-verification). The `visual_html` co
 | **skill** | `/create:skill <name> [description] [:auto\|:confirm]` | Create a new skill with SKILL.md, references, assets, and scripts |
 | **skill_asset** | `/create:skill_asset <skill> <type> [--chained] [:auto\|:confirm]` | Create an asset file (templates, lookups, examples, guides) for an existing skill |
 | **skill_reference** | `/create:skill_reference <skill> <type> [--chained] [:auto\|:confirm]` | Create a reference file (deep-dive technical docs, patterns, debugging guides) for an existing skill |
+| **changelog** | `/create:changelog <spec-folder-or-component> [--bump <major\|minor\|patch\|build>] [:auto\|:confirm]` | Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a formatted changelog file |
 | **visual_html** | `/create:visual_html <target-or-source> [--mode <auto\|create\|analyze\|verify\|custom>] [:auto\|:confirm]` | Unified visual HTML command with broad intent-based routing |
 | **phase (via spec_kit)** | `/spec_kit:phase <feature> [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition used when create workflows detect large multi-domain scope |
 
@@ -74,6 +76,7 @@ The `folder_readme` command accepts a `--type` flag:
 ```
 create/
 ├── agent.md              # /create:agent command
+├── changelog.md          # /create:changelog command
 ├── folder_readme.md      # /create:folder_readme command
 ├── install_guide.md      # /create:install_guide command
 ├── skill.md              # /create:skill command
@@ -83,6 +86,8 @@ create/
 └── assets/               # YAML workflow definitions
     ├── create_agent_auto.yaml
     ├── create_agent_confirm.yaml
+    ├── create_changelog_auto.yaml
+    ├── create_changelog_confirm.yaml
     ├── create_folder_readme_auto.yaml
     ├── create_folder_readme_confirm.yaml
     ├── create_install_guide_auto.yaml
@@ -139,6 +144,12 @@ The `--chained` flag on `skill_asset` and `skill_reference` indicates the comman
 # Create an install guide for multiple platforms
 /create:install_guide my-tool --platforms opencode,claude-code :confirm
 
+# Create a changelog from a completed spec folder
+/create:changelog .opencode/specs/01--system-spec-kit/042-memory-upgrade :auto
+
+# Create a changelog for a specific component
+/create:changelog sk-doc --bump minor :confirm
+
 # Generate a visual HTML artifact from a spec plan
 /create:visual_html specs/007-auth/plan.md --mode analyze :auto
 ```
@@ -156,6 +167,8 @@ The `--chained` flag on `skill_asset` and `skill_reference` indicates the comman
 | YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for your mode |
 | Skill not found for asset/reference | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
 | `--chained` has no effect | Only meaningful during skill creation pipeline | Remove flag when running standalone |
+| `changelog` wrong component | File path mapping mismatch | Use `--component` override or select manually in :confirm mode |
+| `changelog` version conflict | File already exists | Command auto-increments BUILD segment; or specify `--bump` |
 
 ---
 

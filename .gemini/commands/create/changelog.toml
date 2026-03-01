@@ -1,0 +1,4 @@
+description = "Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a properly formatted changelog file - supports :auto and :confirm modes"
+prompt = """@{../../.opencode/command/create/changelog.md}
+
+User request: {{args}}"""

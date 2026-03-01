@@ -51,7 +51,7 @@ SELF-CHECK: Are you operating as the @write agent?
     │   │ This command requires the @write agent for:                │
     │   │   • Template-first workflow (loads before creating)          │
     │   │   • Frontmatter validation                                 │
-    │   │   • sk-doc skill integration               │
+    │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
     │   │   @write /create:agent [agent-name]                        │
@@ -343,18 +343,18 @@ permission:
 
 All tool permissions are defined in a single `permission:` object with `allow/deny/ask` values.
 
-| Permission          | Values         | Purpose                         | Default |
-| ------------------- | -------------- | ------------------------------- | ------- |
-| read                | allow/deny     | Read files                      | allow   |
-| write               | allow/deny     | Create files                    | allow   |
-| edit                | allow/deny/ask | Modify files                    | allow   |
-| bash                | allow/deny/ask | Execute commands                | allow   |
-| grep                | allow/deny     | Search content                  | allow   |
-| glob                | allow/deny     | Find files                      | allow   |
-| webfetch            | allow/deny/ask | Fetch URLs                      | deny    |
-| memory              | allow/deny     | Spec Kit Memory                 | allow   |
-| chrome_devtools     | allow/deny     | Browser debugging               | deny    |
-| external_directory  | allow/deny     | Access files outside project    | allow   |
+| Permission         | Values         | Purpose                      | Default |
+| ------------------ | -------------- | ---------------------------- | ------- |
+| read               | allow/deny     | Read files                   | allow   |
+| write              | allow/deny     | Create files                 | allow   |
+| edit               | allow/deny/ask | Modify files                 | allow   |
+| bash               | allow/deny/ask | Execute commands             | allow   |
+| grep               | allow/deny     | Search content               | allow   |
+| glob               | allow/deny     | Find files                   | allow   |
+| webfetch           | allow/deny/ask | Fetch URLs                   | deny    |
+| memory             | allow/deny     | Spec Kit Memory              | allow   |
+| chrome_devtools    | allow/deny     | Browser debugging            | deny    |
+| external_directory | allow/deny     | Access files outside project | allow   |
 
 **Permission Values:**
 - `allow`: Allow all operations without approval
@@ -499,10 +499,10 @@ FOR WORKFLOW VIOLATIONS:
 
 ## 10. RELATED RESOURCES
 
-| Resource | Path |
-|---|---|
-| Agent template | `sk-doc/assets/agents/agent_template.md` |
-| sk-doc skill | `.opencode/skill/sk-doc/SKILL.md` |
-| system-spec-kit skill | `.opencode/skill/system-spec-kit/SKILL.md` |
-| Scripts: validate_document.py, extract_structure.py | `sk-doc/scripts/` |
-| Core standards reference | `sk-doc/references/core_standards.md` |
+| Resource                                            | Path                                       |
+| --------------------------------------------------- | ------------------------------------------ |
+| Agent template                                      | `sk-doc/assets/agents/agent_template.md`   |
+| sk-doc skill                                        | `.opencode/skill/sk-doc/SKILL.md`          |
+| system-spec-kit skill                               | `.opencode/skill/system-spec-kit/SKILL.md` |
+| Scripts: validate_document.py, extract_structure.py | `sk-doc/scripts/`                          |
+| Core standards reference                            | `sk-doc/references/core_standards.md`      |
