@@ -62,7 +62,7 @@ Two custom-built systems fix this: a **spec-kit documentation framework** and a 
          ▼                            ▼
 ┌─────────────────┐        ┌─────────────────────┐
 │  AGENT NETWORK  │        │  SKILLS LIBRARY     │
-│  10 specialized │        │  10 domain skills   │
+│  10 specialized │        │  13 domain skills   │
 │  agents with    │◄──────►│  auto-loaded by     │
 │  routing logic  │        │  task keywords      │
 └────────┬────────┘        └──────────┬──────────┘
@@ -145,7 +145,7 @@ opencode
 
 # Test skill routing
 # Ask: "What skills are available?"
-# Expected: 11 skills listed
+# Expected: 13 skills listed
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -529,7 +529,7 @@ All support `:auto` and `:confirm` mode suffixes.
 ## 7. 🧩 SKILLS LIBRARY
 <!-- ANCHOR:skills-library -->
 
-11 domain skills, auto-loaded by task keywords.
+13 domain skills, auto-loaded by task keywords.
 
 Skills are domain expertise on demand. The AI loads the right skill and already knows your conventions.
 
@@ -546,7 +546,9 @@ Skills are domain expertise on demand. The AI loads the right skill and already 
 | `sk-code--web`        | Web Dev       | Webflow, vanilla JS: implementation, debugging, verification                           |
 | `sk-code--review`     | Review        | Findings-first review baseline with security/correctness minimums and baseline+overlay contract |
 | `sk-doc`              | Docs          | Document quality scoring, skill creation and install guides                            |
+| `sk-doc-visual`       | Docs          | HTML visual artifacts, Mermaid diagrams, Chart.js dashboards                           |
 | `sk-git`              | Git           | Commits, branches, PRs, worktrees                                                      |
+| `sk-prompt-improver`  | Prompt Eng    | Prompt optimization with 7 frameworks and CLEAR scoring                                |
 | `mcp-gemini-cli`      | Cross-AI     | Gemini CLI orchestration for web research, code review, architecture analysis          |
 
 ### Auto-Detection
