@@ -209,13 +209,13 @@ vector-index-impl.ts     (3333 LOC)
 | -------------------------- | ------ | ---------- | --------------------------------------------------- |
 | `vector-index.ts`          | ~700   | TypeScript | Typed facade: interfaces, type exports, delegation  |
 | `vector-index-impl.ts`     | ~3333  | TypeScript | Full implementation: schema, CRUD, search, caching  |
-| `hybrid-search.ts`         | ~900   | TypeScript | Orchestrates vector/BM25/graph fusion via RRF/RSF   |
+| `hybrid-search.ts`         | ~900   | TypeScript | Orchestrates vector/FTS/BM25/graph/degree fusion via adaptive RRF |
 | `cross-encoder.ts`         | ~433   | TypeScript | Reranking with Voyage/Cohere providers              |
 | `intent-classifier.ts`     | ~500   | TypeScript | 7 intent types with keyword patterns                |
 | `bm25-index.ts`            | ~280   | TypeScript | Pure TypeScript BM25 (REQ-028, v1.2.0)              |
 | `reranker.ts`              | -      | TypeScript | Score-based reranking utility (sort + truncate)     |
 | `rrf-fusion.ts`            | -      | TypeScript | Reciprocal Rank Fusion scoring logic                |
-| `rsf-fusion.ts`            | -      | TypeScript | Relative Score Fusion — normalized score-based alternative to RRF (Sprint 3) |
+| `rsf-fusion.ts`            | -      | TypeScript | Relative Score Fusion used for evaluation and comparison runs |
 | `artifact-routing.ts`      | -      | TypeScript | 9 artifact classes with per-type retrieval strategy routing |
 | `adaptive-fusion.ts`       | -      | TypeScript | Intent-aware weighted RRF with dark-run mode, feature flag SPECKIT_ADAPTIVE_FUSION |
 | `causal-boost.ts`          | -      | TypeScript | Causal-neighbor score boosting for graph traversal  |
@@ -224,7 +224,7 @@ vector-index-impl.ts     (3333 LOC)
 | `query-classifier.ts`      | -      | TypeScript | Routes queries by complexity tier (simple ≤3 tokens, moderate, complex >8) (Sprint 3) |
 | `query-router.ts`          | -      | TypeScript | Tier-to-channel-subset routing for selective pipeline execution (Sprint 3) |
 | `query-expander.ts`        | -      | TypeScript | Rule-based synonym expansion for mode="deep" multi-query RAG |
-| `channel-representation.ts`| -      | TypeScript | Ensures minimum channel representation in top-k results (QUALITY_FLOOR=0.2) (Sprint 3) |
+| `channel-representation.ts`| -      | TypeScript | Ensures minimum channel representation in top-k results (QUALITY_FLOOR=0.005) (Sprint 3) |
 | `channel-enforcement.ts`   | -      | TypeScript | Pipeline-ready wrapper around channel min-representation check (Sprint 3) |
 | `confidence-truncation.ts` | -      | TypeScript | Removes low-confidence tail using 2x median gap heuristic (min 3 results) (Sprint 3) |
 | `dynamic-token-budget.ts`  | -      | TypeScript | Per-tier token budgets: simple=1500, moderate=2500, complex=4000 (Sprint 3) |

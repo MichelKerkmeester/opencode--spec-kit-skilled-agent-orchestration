@@ -8,6 +8,7 @@ import {
   searchWithFallback,
   structuralSearch,
   hybridSearchEnhanced,
+  __testables,
   init,
   DEGRADATION_QUALITY_THRESHOLD,
   DEGRADATION_MIN_RESULTS,
@@ -129,7 +130,7 @@ describe('PI-A2: Tier progression', () => {
   });
 
   it('T045-06: constants are exported with correct values', () => {
-    expect(DEGRADATION_QUALITY_THRESHOLD).toBe(0.4);
+    expect(DEGRADATION_QUALITY_THRESHOLD).toBe(0.02);
     expect(DEGRADATION_MIN_RESULTS).toBe(3);
   });
 });
@@ -289,7 +290,66 @@ describe('PI-A2: Result merging', () => {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   6. Export Verification
+   6. Regression Guards (Hybrid Fusion Refinement)
+   ═══════════════════════════════════════════════════════════════ */
+
+describe('PI-A2: Regression guards', () => {
+  it('T045-17a: mergeResults deduplicates mixed ID types', () => {
+    const merged = __testables.mergeResults(
+      [{ id: 42, score: 0.12, source: 'vector' } as HybridSearchResult],
+      [{ id: '42', score: 0.18, source: 'bm25' } as HybridSearchResult]
+    );
+
+    expect(merged).toHaveLength(1);
+    expect(merged[0].score).toBeCloseTo(0.18);
+  });
+
+  it('T045-17b: quality degradation uses absolute+relative confidence checks', () => {
+    const healthy = __testables.checkDegradation([
+      { id: 1, score: 0.03, source: 'vector' } as HybridSearchResult,
+      { id: 2, score: 0.005, source: 'bm25' } as HybridSearchResult,
+      { id: 3, score: 0.004, source: 'fts' } as HybridSearchResult,
+    ]);
+    expect(healthy).toBeNull();
+
+    const weak = __testables.checkDegradation([
+      { id: 1, score: 0.01, source: 'vector' } as HybridSearchResult,
+      { id: 2, score: 0.0095, source: 'bm25' } as HybridSearchResult,
+      { id: 3, score: 0.009, source: 'fts' } as HybridSearchResult,
+    ]);
+
+    expect(weak).toBeTruthy();
+    expect(['low_quality', 'both']).toContain(weak?.reason);
+  });
+
+  it('T045-17c: tier-3 structural scores are calibrated below existing top score', () => {
+    const existing = [{ id: 1, score: 0.13, source: 'vector' } as HybridSearchResult];
+    const structural = [
+      { id: 100, score: 1.0, source: 'structural' } as HybridSearchResult,
+      { id: 101, score: 0.95, source: 'structural' } as HybridSearchResult,
+    ];
+
+    const calibrated = __testables.calibrateTier3Scores(existing, structural);
+
+    expect(calibrated[0].score).toBeLessThan(existing[0].score);
+    expect(calibrated[1].score).toBeLessThan(calibrated[0].score);
+  });
+
+  it('T045-17d: applyResultLimit enforces cap after merges', () => {
+    const rows = [1, 2, 3, 4, 5].map((id, index) => ({
+      id,
+      score: 1 - index * 0.1,
+      source: 'vector',
+    })) as HybridSearchResult[];
+
+    const limited = __testables.applyResultLimit(rows, 3);
+    expect(limited).toHaveLength(3);
+    expect(limited.map(r => r.id)).toEqual([1, 2, 3]);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   7. Export Verification
    ═══════════════════════════════════════════════════════════════ */
 
 describe('PI-A2: Export verification', () => {

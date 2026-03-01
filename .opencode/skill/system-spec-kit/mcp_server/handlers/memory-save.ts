@@ -44,6 +44,7 @@ import { reconsolidate, isReconsolidationEnabled } from '../lib/storage/reconsol
 import type { ReconsolidationResult } from '../lib/storage/reconsolidation';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent';
 import { isEncodingIntentEnabled, isSaveQualityGateEnabled, isReconsolidationEnabled as isReconsolidationFlagEnabled } from '../lib/search/search-flags';
+import { initEvalDb } from '../lib/eval/eval-db';
 
 import { getMemoryHashSnapshot, appendMutationLedgerSafe } from './memory-crud-utils';
 import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache';
@@ -2570,7 +2571,6 @@ function logQualityMetrics(
     // Use eval logger's feature flag check
     if (process.env.SPECKIT_EVAL_LOGGING?.toLowerCase() !== 'true') return;
 
-    const { initEvalDb } = require('../lib/eval/eval-db');
     const db = initEvalDb();
 
     const metadata = JSON.stringify({

@@ -76,9 +76,6 @@ import {
    HELPERS
    --------------------------------------------------------------- */
 
-let db: any = null;
-let dbPath: string = '';
-
 /** Create a fresh test database with memory_index table + FTS5. */
 function createTestDb(): any {
   const tmpPath = path.join(os.tmpdir(), `learned-feedback-test-${Date.now()}-${Math.random().toString(36).slice(2)}.sqlite`);

@@ -24,7 +24,6 @@ import { fts5Bm25Search, isFts5Available } from '../lib/search/sqlite-fts';
 import {
   runBM25Baseline,
   recordBaselineMetrics,
-  evaluateContingency,
   type BM25SearchFn,
   type BM25SearchResult,
   type BM25BaselineResult,

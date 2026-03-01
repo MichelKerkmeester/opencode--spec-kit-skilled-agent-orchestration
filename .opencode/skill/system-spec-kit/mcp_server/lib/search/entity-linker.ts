@@ -161,7 +161,7 @@ function getEdgeCount(db: Database.Database, nodeId: string): number {
       `SELECT COUNT(*) AS cnt FROM causal_edges WHERE source_id = ? OR target_id = ?`,
     ) as Database.Statement).get(nodeId, nodeId) as { cnt: number } | undefined;
     return row?.cnt ?? 0;
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return 0;
   }
 }
@@ -175,7 +175,7 @@ function getSpecFolder(db: Database.Database, memoryId: number): string | null {
       `SELECT spec_folder FROM memory_index WHERE id = ?`,
     ) as Database.Statement).get(memoryId) as { spec_folder: string } | undefined;
     return row?.spec_folder ?? null;
-  } catch (error: unknown) {
+  } catch (_error: unknown) {
     return null;
   }
 }

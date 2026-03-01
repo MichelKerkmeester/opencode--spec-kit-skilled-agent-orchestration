@@ -11,6 +11,8 @@
 //   - extractRetrievalDirective is deterministic and synchronous.
 //   - enrichWithRetrievalDirectives is a map over results; it never filters or reorders.
 
+import * as fs from 'fs';
+
 /* ---------------------------------------------------------------
    1. TYPES
 --------------------------------------------------------------- */
@@ -319,9 +321,6 @@ export function enrichWithRetrievalDirectives(
     let content = '';
     if (result.filePath) {
       try {
-        // Dynamic require to avoid bundler issues in test environments
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const fs = require('fs') as typeof import('fs');
         if (fs.existsSync(result.filePath)) {
           content = fs.readFileSync(result.filePath, 'utf-8');
         }

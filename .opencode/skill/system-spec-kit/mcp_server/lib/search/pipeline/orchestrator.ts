@@ -6,7 +6,6 @@
 import type {
   PipelineConfig,
   PipelineResult,
-  PipelineRow,
   Stage4ReadonlyRow,
 } from './types';
 

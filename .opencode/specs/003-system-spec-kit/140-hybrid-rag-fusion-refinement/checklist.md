@@ -205,7 +205,7 @@ contextType: "implementation"
 ### Sprint 5: Pipeline Refactor [P1]
 
 - [x] CHK-S50 [P1] Checkpoint created before R6 (`pre-pipeline-refactor`) — verified in Sprint 5 child CHK-S5-002 [x] (checkpoint "pre-pipeline-refactor" created)
-- [x] CHK-S51 [P2-CONDITIONAL] R6 dark-run: 0 ordering differences on full eval corpus. **Conditional: required only if Sprint 2 normalization fails OR Stage 4 invariant mandatory.** — verified in Sprint 5 child CHK-S5-021 [x] (PIPELINE_V2 path tested with 27 tests passing)
+- [x] CHK-S51 [P2] R6 dark-run: 0 ordering differences on full eval corpus. **Conditional: required only if Sprint 2 normalization fails OR Stage 4 invariant mandatory.** — verified in Sprint 5 child CHK-S5-021 [x] (PIPELINE_V2 path tested with 27 tests passing)
 - [x] CHK-S52 [P1] All 158+ existing tests pass with `SPECKIT_PIPELINE_V2` enabled — verified in Sprint 5 child CHK-S5-022 [x] (212 test files, 6419 tests pass)
 - [x] CHK-S53 [P1] Stage 4 "no score changes" invariant verified — prevents G2 recurrence — verified in Sprint 5 child CHK-S5-023 [x] (verifyScoreInvariant + Stage4ReadonlyRow enforced)
 - [x] CHK-S54 [P1] Intent weights applied exactly ONCE in pipeline (Stage 2 only) (covers DIP-002: intent weight × adaptive fusion weight) — verified in Sprint 5 child CHK-S5-024 [x] (intent weights applied only in Stage 2 for non-hybrid searchType)

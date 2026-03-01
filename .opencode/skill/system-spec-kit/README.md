@@ -81,7 +81,7 @@ Cross-workflow alignment is mandatory:
 | --- | --- |
 | **Hybrid Search + Post-Fusion** | Primary scatter-gather across vector, FTS5/BM25, graph and degree; co-activation/session/causal signals are applied post-fusion |
 | **Adaptive RRF Fusion** | Intent-weighted profiles replace fixed-weight RRF when `SPECKIT_ADAPTIVE_FUSION=true` |
-| **RSF Fusion** | Reciprocal Similarity Fusion as alternative to RRF with single-pair, multi-list and cross-variant modes (`SPECKIT_RSF_FUSION=true`) |
+| **RSF Fusion (Eval Path)** | Reciprocal Similarity Fusion kept for offline/evaluation comparison, not live ranking |
 | **Degree Channel + Co-Activation** | 5th RRF channel with typed-weighted degree scoring and fan-effect sqrt divisor |
 | **Embedding Cache** | Persistent SQLite cache with LRU eviction for embedding reuse |
 | **Query Complexity Routing** | Classifier routes simple/moderate/complex queries to optimal pipeline |
@@ -357,9 +357,9 @@ Vector (1.0x) + FTS5/BM25 (1.0x) + Graph (1.5x) + Degree (1.0x)
          |
          v
 Adaptive RRF Fusion (intent-weighted profiles, k=60)
-── or RSF Fusion (reciprocal similarity, when SPECKIT_RSF_FUSION=true) ──
-         |
-         v
+── RSF retained for evaluation-only comparisons (not live ranking) ──
+          |
+          v
 Query Complexity Routing (simple → fast path, complex → full pipeline)
          |
          v

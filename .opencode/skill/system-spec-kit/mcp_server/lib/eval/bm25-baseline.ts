@@ -358,7 +358,6 @@ export function computeBootstrapCI(
   const ciUpper = bootstrapMeans[upperIdx];
 
   // Determine nearest threshold boundary and test significance
-  const boundaries = [0.80, 0.50];
   let testedBoundary = 0;
   let isSignificant = false;
 

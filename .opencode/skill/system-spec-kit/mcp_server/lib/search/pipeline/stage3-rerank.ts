@@ -390,7 +390,7 @@ async function reassembleParentRow(
     // Query the parent memory row for content and metadata
     const parentRow = db
       .prepare(
-        `SELECT id, file_path, content, importance_tier, importance_weight,
+        `SELECT id, file_path, content_text, importance_tier, importance_weight,
                 quality_score, created_at, context_type
          FROM memory_index
          WHERE id = ?
@@ -416,7 +416,7 @@ async function reassembleParentRow(
       created_at: (parentRow.created_at as string | undefined) ?? bestChunk.created_at,
       context_type: (parentRow.context_type as string | undefined) ?? bestChunk.context_type,
       // Use parent content if available; otherwise keep best-chunk content
-      content: (parentRow.content as string | undefined) ?? bestChunk.content,
+      content: (parentRow.content_text as string | undefined) ?? bestChunk.content,
       contentSource: 'reassembled_chunks',
       // Clear chunk-specific fields on the reassembled parent
       parent_id: null,

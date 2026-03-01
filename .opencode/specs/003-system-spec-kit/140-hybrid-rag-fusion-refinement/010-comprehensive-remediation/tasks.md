@@ -1,44 +1,103 @@
+---
+title: "Tasks: Comprehensive MCP Server Remediation"
+description: "Task Format: T### [P?] Description (file path)"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child-header | v2.2
+trigger_phrases:
+  - "phase 010 tasks"
+  - "remediation tasks"
+  - "wave tracking"
+importance_tier: "important"
+contextType: "implementation"
+---
 # Tasks: Comprehensive MCP Server Remediation
+
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child-header | v2.2 -->
 
 ---
 
-## Wave 1 — Parallel Execution
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] **WS1-B** Database & Schema Safety (Agent 1, opus) — B1-B4
-- [x] **WS1-C+1c** Scoring & Ranking + novelty cleanup (Agent 2, opus) — C1, C2, 1c
-- [x] **WS1-C2** Causal-boost + Ablation (Agent 3, opus) — C3, C4
-- [x] **WS1-D** Search Pipeline Safety (Agent 4, opus) — D1-D3
-- [x] **WS1-E** Guards & Edge Cases (Agent 5, opus) — E1, E2
-- [x] **WS2-1** Dead hot-path branches (Agent 6, sonnet) — 1a, 1b
-- [x] **WS2-3** Dead module-level state (Agent 7, sonnet) — 3a-3e
-- [x] **WS2-4** Dead functions & exports (Agent 8, sonnet) — 4a-4e (skip 4f: fsrs.ts planned features)
-- [x] **WS3-P1** Quick wins performance (Agent 9, sonnet) — P1a-P1c
-- [x] **WS3-P2** Test quality (Agent 10, sonnet) — P2a-P2d (P2d: no duplicate found in current file)
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-## Wave 2 — Dependent Work
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-- [x] **WS1-A** Entity normalization (Agent 11, opus) — A1, A2
-- [x] **WS2-2** Dead flag functions (Agent 12, sonnet) — 2a-2c
-- [x] **WS3-P4** SQL-level performance (Agent 13, sonnet) — P4a, P4b
-- [x] **WS3-P3** Entity linker performance (Agent 14, sonnet) — P3a, P3b
+---
 
-## Wave 2.5 — Test Fixups (4 parallel agents)
+<!-- ANCHOR:wave-1 -->
+## Wave 1 - Parallel Execution
 
-- [x] Reconsolidation tests: `frequency_counter` → `importance_weight` (5 tests)
-- [x] Five-factor scoring tests: citation fallback chain removed (3 tests)
-- [x] Working-memory + session-cleanup tests: dead config fields removed (2 tests)
-- [x] Channel/quality floor tests: QUALITY_FLOOR 0.2→0.005 (7 tests)
-- [x] Entity-extractor tests: Unicode-aware normalization (2 tests)
-- [x] Extraction-adapter tests: fallback removal (1 test)
-- [x] Intent-routing tests: placeholder after getSubgraphWeights removal (1 test)
-- [x] Memory-parser fix: isMemoryFile z_archive exclusion (1 test + source fix)
+- [x] T001 [P] WS1-B Database and schema safety
+- [x] T002 [P] WS1-C and 1c scoring and ranking corrections
+- [x] T003 [P] WS1-C2 causal-boost and ablation fixes
+- [x] T004 [P] WS1-D search pipeline safety
+- [x] T005 [P] WS1-E guards and edge cases
+- [x] T006 [P] WS2-1 dead hot-path branch cleanup
+- [x] T007 [P] WS2-3 dead module-state cleanup
+- [x] T008 [P] WS2-4 dead function and export cleanup
+- [x] T009 [P] WS3-P1 quick performance wins
+- [x] T010 [P] WS3-P2 test-quality corrections
+<!-- /ANCHOR:wave-1 -->
 
-## Wave 3 — Verification
+---
 
-- [x] TypeScript compilation clean (`npx tsc --noEmit` — 0 errors)
-- [x] Full test suite passes (226 files, 7003/7003 tests)
-- [x] Spot-check critical fixes (all 8 checks pass)
-- [x] Dead code verification grep (0 hits for all removed functions)
-- [x] Implementation summary written
-- [x] README updated (test counts 196→226 files, 5797→7003 tests)
-- [x] Memory saved (memory #5103)
+<!-- ANCHOR:wave-2 -->
+## Wave 2 - Dependent Work
+
+- [x] T011 WS1-A entity normalization
+- [x] T012 WS2-2 dead flag-function removal
+- [x] T013 WS3-P4 SQL-level performance work
+- [x] T014 WS3-P3 entity-linker performance work
+<!-- /ANCHOR:wave-2 -->
+
+---
+
+<!-- ANCHOR:wave-2-5 -->
+## Wave 2.5 - Test Fixups
+
+- [x] T015 Reconsolidation test updates for `importance_weight`
+- [x] T016 Scoring test updates for citation fallback removal
+- [x] T017 Working-memory/session-cleanup test updates
+- [x] T018 Channel quality-floor test updates
+- [x] T019 Entity extraction and adapter behavior updates
+- [x] T020 Routing/parser cleanup tests
+<!-- /ANCHOR:wave-2-5 -->
+
+---
+
+<!-- ANCHOR:wave-3 -->
+## Wave 3 - Verification
+
+- [x] T021 TypeScript compile check complete
+- [x] T022 Full test suite passes
+- [x] T023 Critical fix spot checks complete
+- [x] T024 Dead code verification checks complete
+- [x] T025 Implementation summary captured
+<!-- /ANCHOR:wave-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All required validation-blocking documentation issues are resolved
+- [ ] Recursive spec validation exits with code 0 or 1
+- [ ] Any remaining warnings are non-blocking and documented
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

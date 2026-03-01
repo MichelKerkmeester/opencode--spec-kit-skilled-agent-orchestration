@@ -22,7 +22,7 @@ import { applyNegativeFeedback, getNegativeFeedbackStats } from '../lib/scoring/
 import { isMultiQueryEnabled, isTRMEnabled, isNegativeFeedbackEnabled, isPipelineV2Enabled } from '../lib/search/search-flags';
 // Sprint 5 (R6): 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline';
-import type { PipelineConfig, PipelineResult, Stage4ReadonlyRow } from '../lib/search/pipeline';
+import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
 import { getExtractionMetrics } from '../lib/extraction/extraction-adapter';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';

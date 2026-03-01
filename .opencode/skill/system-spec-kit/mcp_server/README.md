@@ -90,11 +90,11 @@ This MCP server gives your AI assistant persistent memory with intelligence buil
 
 | Category                | Count                                                    |
 | ----------------------- | -------------------------------------------------------- |
-| **MCP Tools**           | 23                                                       |
+| **MCP Tools**           | 25                                                       |
 | **Library Modules**     | 99                                                                               |
 | **Handler Modules**     | 21                                                                               |
 | **Embedding Providers** | 3                                                                                |
-| **Feature Flags**       | 26 (12 default enabled; 14 dark-run flags from Sprint 1-3, default disabled)     |
+| **Feature Flags**       | See `references/config/environment_variables.md` for canonical defaults           |
 | **Test Coverage**       | 196 test files, 5,797 tests                                                      |
 | **Last Verified**       | 2026-02-27                                                                       |
 
@@ -251,7 +251,7 @@ dist/context-server.js     (compiled output, executed at runtime by node)
 
 | Tool                    | Purpose                                                                         | Latency |
 | ----------------------- | ------------------------------------------------------------------------------- | ------- |
-| `memory_search`         | Semantic vector search with a 3-channel hybrid pipeline and adaptive RRF fusion | ~500ms  |
+| `memory_search`         | Hybrid retrieval with adaptive RRF across vector/FTS/BM25/graph/degree channels | ~500ms  |
 | `memory_match_triggers` | Fast trigger phrase matching with cognitive features                            | <50ms   |
 | `memory_list`           | Browse memories with pagination                                                 | <50ms   |
 | `memory_stats`          | System statistics and folder rankings                                           | <10ms   |
@@ -371,15 +371,15 @@ Query
                       |
                       v
        +--------------+--------------+
-       |  RSF FUSION (Sprint 3)      |
-       |  Reciprocal Similarity      |
-       |  Fusion for diversity       |
+       |  RSF EVALUATION PATH        |
+       |  retained for offline eval  |
+       |  not used in live ranking   |
        +--------------+--------------+
                       |
                       v
        +--------------+--------------+
        |  CHANNEL MIN-REP (Sprint 3) |
-       |  QUALITY_FLOOR = 0.2        |
+       |  QUALITY_FLOOR = 0.005      |
        |  R2 representation guard    |
        +--------------+--------------+
                       |
@@ -441,10 +441,10 @@ These processing stages are applied after the 5 primary channels are fused via R
 | Co-activation          | Working memory patterns        | +0.25 boost               | Related memory surfacing                      |
 | Recency Boost          | `working_memory` table         | Hard cap 0.20             | Session context recency                       |
 | Causal 2-hop           | Causal edge traversal          | Injected                  | Transitively related memories                 |
-| RSF Fusion (S3)        | Reciprocal Similarity Fusion   | Diversity-aware fusion    | Complement RRF with similarity-based ranking  |
+| RSF (offline eval)     | Reciprocal Similarity Fusion   | Evaluation-only           | Compare against RRF; not in live ranking path |
 | Interference (S2)      | TM-01 interference penalty     | -0.08 * score             | Penalize competing/contradictory memories     |
 | Cold-start N4 (S2)     | Novelty boost                  | 0.15 * exp(-elapsed/12)  | Boost recently indexed memories               |
-| Channel min-rep (S3)   | R2 representation guard        | QUALITY_FLOOR = 0.2       | Ensure all channels contribute to results     |
+| Channel min-rep (S3)   | R2 representation guard        | QUALITY_FLOOR = 0.005     | Ensure all channels contribute to results     |
 | Confidence trunc. (S3) | 2x median gap cutoff           | Tail removal              | Remove low-confidence trailing results        |
 | Dynamic budget (S3)    | Query complexity classification | 1500/2500/4000 tokens     | Scale token budget to query complexity        |
 
@@ -716,26 +716,25 @@ All flags are evaluated via `isFeatureEnabled()`. After specs 137-139, the 12 or
 | `SPECKIT_ADAPTIVE_FUSION`    | `true`  | Enable intent-aware weighted RRF fusion                                               |
 | `SPECKIT_PRESSURE_POLICY`    | `true`  | Enable token-pressure mode override in `memory_context` (set `false` to disable)      |
 
-#### Dark-Run Flags (Sprint 1-3, spec 140 — default disabled)
+#### Runtime Search Flags (current defaults)
 
-These flags gate new Sprint 1-3 features. All default to disabled (opt-in). Set `FLAG=true` to enable:
+Graduated search flags are default-on and use `FLAG=false` to disable. Evaluation-only flags remain opt-in.
+Canonical source of truth: `../references/config/environment_variables.md`.
 
-| Flag                              | Default | Sprint | Description                                                                   |
-| --------------------------------- | ------- | ------ | ----------------------------------------------------------------------------- |
-| `SPECKIT_DEGREE_BOOST`            | `false` | S1     | 5th RRF channel: typed-weighted graph degree computation                     |
-| `SPECKIT_NOVELTY_BOOST`           | `false` | S2     | N4 cold-start boost: `0.15 * exp(-elapsed/12)` for recently indexed memories |
-| `SPECKIT_INTERFERENCE_SCORE`      | `false` | S2     | TM-01 interference penalty: `-0.08 * score` for competing memories           |
-| `SPECKIT_CLASSIFICATION_DECAY`    | `false` | S2     | TM-03 classification-based FSRS decay multipliers                            |
-| `SPECKIT_SCORE_NORMALIZATION`     | `false` | S2     | Score normalization for composite scoring pipeline                           |
-| `SPECKIT_RSF_FUSION`              | `false` | S3     | Reciprocal Similarity Fusion (RSF) — diversity-aware complement to RRF       |
-| `SPECKIT_COMPLEXITY_ROUTER`       | `false` | S3     | Query complexity classifier (simple/moderate/complex) routing                |
-| `SPECKIT_CHANNEL_MIN_REP`         | `false` | S3     | Channel min-representation R2 guard (QUALITY_FLOOR=0.2)                      |
-| `SPECKIT_CONFIDENCE_TRUNCATION`   | `false` | S3     | Confidence truncation with 2x median gap cutoff                              |
-| `SPECKIT_DYNAMIC_TOKEN_BUDGET`    | `false` | S3     | Dynamic token budget scaled by query complexity (1500/2500/4000)             |
-| `SPECKIT_FOLDER_SCORING`          | `false` | S1     | Spec folder relevance scoring boost                                          |
-| `SPECKIT_CONSUMPTION_LOG`         | `true`  | S0     | Token consumption logging to eval database                                   |
-| `SPECKIT_EVAL_LOGGING`            | `false` | S0     | Eval framework logging (search metrics to eval DB)                           |
-| `SPECKIT_SIGNAL_VOCAB`            | `false` | S1     | Signal vocabulary detection (CORRECTION/PREFERENCE categories)               |
+| Flag                            | Default | Description |
+| ------------------------------- | ------- | ----------- |
+| `SPECKIT_SEARCH_FALLBACK`       | `true`  | PI-A2 3-tier fallback chain |
+| `SPECKIT_DEGREE_BOOST`          | `true`  | Typed-weighted degree channel |
+| `SPECKIT_INTERFERENCE_SCORE`    | `true`  | TM-01 interference penalty |
+| `SPECKIT_CLASSIFICATION_DECAY`  | `true`  | TM-03 FSRS tier/context decay |
+| `SPECKIT_SCORE_NORMALIZATION`   | `true`  | Normalize RRF/composite scores to [0,1] |
+| `SPECKIT_COMPLEXITY_ROUTER`     | `true`  | Query complexity routing |
+| `SPECKIT_CHANNEL_MIN_REP`       | `true`  | R2 min representation (QUALITY_FLOOR=0.005) |
+| `SPECKIT_CONFIDENCE_TRUNCATION` | `true`  | Low-confidence tail truncation |
+| `SPECKIT_DYNAMIC_TOKEN_BUDGET`  | `true`  | Complexity-tier token budgets |
+| `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |
+| `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
+| `SPECKIT_LEARN_FROM_SELECTION`  | `false` | Learned-feedback from selection events |
 
 ### Database Schema
 

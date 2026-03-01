@@ -270,15 +270,6 @@ function normalizeVariants(variants?: string[]): string[] {
   return Array.from(unique).sort((a, b) => a.localeCompare(b));
 }
 
-function readDecisionMetaNormalizedPath(decisionMetaJson: string): string | null {
-  try {
-    const parsed = JSON.parse(decisionMetaJson) as { normalizedPath?: unknown };
-    return typeof parsed.normalizedPath === 'string' ? normalizePath(parsed.normalizedPath) : null;
-  } catch {
-    return null;
-  }
-}
-
 function getDivergenceReconcileAttemptCount(db: Database.Database, normalizedPath: string): number {
   const targetPath = normalizePath(normalizedPath);
   if (targetPath.length === 0) {

@@ -62,6 +62,20 @@ interface RelevanceMapping {
   confidence: number;
 }
 
+interface CandidateRow {
+  id: number;
+  title?: string | null;
+  spec_folder?: string | null;
+  file_path?: string | null;
+  importance_tier?: string | null;
+  document_type?: string | null;
+  score?: number | null;
+}
+
+interface CountRow {
+  cnt: number;
+}
+
 // ── Query Dataset (imported dynamically) ────────────────────────
 
 // We can't import TS directly — load the ground truth from the
@@ -75,9 +89,6 @@ function loadGroundTruthQueries(): GroundTruthQuery[] {
   // Extract all query objects from the source using regex-based parsing
   // Each query block: { id: N, query: '...', ... }
   const queries: GroundTruthQuery[] = [];
-
-  // Match query objects - find all id: N patterns and extract surrounding blocks
-  const idPattern = /\{\s*id:\s*(\d+),\s*query:\s*'([^']*(?:\\.[^']*)*)',\s*intentType:\s*'([^']*)',\s*complexityTier:\s*'([^']*)',\s*category:\s*'([^']*)',\s*source:\s*'([^']*)',\s*expectedResultDescription:\s*\n?\s*'([^']*(?:\\.[^']*)*(?:\s*\+\s*\n?\s*'[^']*(?:\\.[^']*)*)*)',/g;
 
   // Simpler approach: use a state machine to parse query blocks
   const lines = src.split('\n');
@@ -282,7 +293,7 @@ function mapQueryToMemories(
           AND m.parent_id IS NULL
         ORDER BY bm25(memory_fts)
         LIMIT 20
-      `).all(fts5Query1) as any[];
+      `).all(fts5Query1) as CandidateRow[];
 
       for (const r of results) {
         candidates.push({
@@ -292,7 +303,7 @@ function mapQueryToMemories(
           filePath: r.file_path || '',
           importanceTier: r.importance_tier || 'normal',
           documentType: r.document_type || 'memory',
-          score: Math.abs(r.score),
+          score: Math.abs(r.score ?? 0),
           matchStrategy: 'fts5_query',
         });
       }
@@ -315,7 +326,7 @@ function mapQueryToMemories(
           AND m.parent_id IS NULL
         ORDER BY bm25(memory_fts)
         LIMIT 20
-      `).all(fts5Query2) as any[];
+      `).all(fts5Query2) as CandidateRow[];
 
       for (const r of results) {
         // Boost description match slightly (these are more targeted)
@@ -326,7 +337,7 @@ function mapQueryToMemories(
           filePath: r.file_path || '',
           importanceTier: r.importance_tier || 'normal',
           documentType: r.document_type || 'memory',
-          score: Math.abs(r.score) * 1.2,
+          score: Math.abs(r.score ?? 0) * 1.2,
           matchStrategy: 'fts5_description',
         });
       }
@@ -345,7 +356,7 @@ function mapQueryToMemories(
         WHERE parent_id IS NULL
           AND (file_path LIKE ? OR content_text LIKE ?)
         LIMIT 10
-      `).all(`%${fileName}%`, `%${fileName}%`) as any[];
+      `).all(`%${fileName}%`, `%${fileName}%`) as CandidateRow[];
 
       for (const r of results) {
         candidates.push({
@@ -406,7 +417,7 @@ function mapQueryToMemories(
                  document_type = 'spec' DESC,
                  document_type = 'decision_record' DESC
         LIMIT 5
-      `).all(pattern) as any[];
+      `).all(pattern) as CandidateRow[];
 
       for (const r of results) {
         candidates.push({
@@ -519,7 +530,7 @@ function main() {
   const queries = loadGroundTruthQueries();
   console.log(`Loaded ${queries.length} ground truth queries`);
 
-  const totalMemories = (db.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE parent_id IS NULL').get() as any).cnt;
+  const totalMemories = (db.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE parent_id IS NULL').get() as CountRow | undefined)?.cnt ?? 0;
   console.log(`Production DB has ${totalMemories} parent memories\n`);
 
   // Map each query

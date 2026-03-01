@@ -1,51 +1,118 @@
-# Plan: Comprehensive MCP Server Remediation
+---
+title: "Implementation Plan: Comprehensive MCP Server Remediation"
+description: "Execute remediation in controlled waves with explicit quality gates and validation checkpoints."
+# SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child-header | v2.2
+trigger_phrases:
+  - "phase 010 plan"
+  - "remediation waves"
+  - "validation checkpoints"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Implementation Plan: Comprehensive MCP Server Remediation
 
-> **Phase:** 010-comprehensive-remediation
-> **Approach:** 3-wave parallel agent delegation
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child-header | v2.2 -->
 
 ---
 
-## Execution Strategy
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Wave 1 (parallel — 10 agents)
+### Technical Context
 
-| Agent | Model | Batch | Files | Items |
-|-------|-------|-------|-------|-------|
-| 1 | opus | WS1-B: Database & Schema Safety | reconsolidation.ts, checkpoints.ts, causal-edges.ts, memory-save.ts | B1-B4 |
-| 2 | opus | WS1-C + 1c: Scoring & Ranking | composite-scoring.ts | C1, C2, 1c |
-| 3 | opus | WS1-C2: Causal-boost + Ablation | causal-boost.ts, ablation-framework.ts | C3, C4 |
-| 4 | opus | WS1-D: Search Pipeline Safety | stage1-candidate-gen.ts, sqlite-fts.ts, bm25-index.ts, channel-representation.ts | D1-D3 |
-| 5 | opus | WS1-E: Guards & Edge Cases | temporal-contiguity.ts, extraction-adapter.ts | E1, E2 |
-| 6 | sonnet | WS2-1: Dead hot-path branches | hybrid-search.ts | 1a, 1b |
-| 7 | sonnet | WS2-3: Dead module-level state | archival-manager.ts, community-detection.ts, cross-encoder.ts, access-tracker.ts, working-memory.ts | 3a-3e |
-| 8 | sonnet | WS2-4: Dead functions & exports | graph-signals.ts, graph-search-fn.ts, negative-feedback.ts, causal-edges.ts, co-activation.ts | 4a-4e |
-| 9 | sonnet | WS3-P1: Quick wins | tfidf-summarizer.ts, memory-summaries.ts, mutation-ledger.ts | P1a-P1c |
-| 10 | sonnet | WS3-P2: Test quality | memory-save-extended.vitest.ts, entity-linker.vitest.ts, integration-search-pipeline.vitest.ts, feature-eval-graph-signals.vitest.ts | P2a-P2d |
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown specification artifacts |
+| **Framework** | system-spec-kit phased documentation workflow |
+| **Storage** | Git-managed spec tree |
+| **Testing** | Recursive spec validator |
 
-### Wave 2 (after Wave 1 completes — 3 agents)
+### Overview
+This plan drives phase-010 remediation using wave-based execution and a verify-fix-verify cycle. Focus stays on blocking validation failures first, then on non-blocking quality improvements.
+<!-- /ANCHOR:summary -->
 
-| Agent | Model | Batch | Files | Depends On |
-|-------|-------|-------|-------|------------|
-| 11 | opus | WS1-A: Entity normalization | entity-extractor.ts, entity-linker.ts | WS2-4 (4b overlap) |
-| 12 | sonnet | WS2-2: Dead flag functions | shadow-scoring.ts, rsf-fusion.ts, learned-feedback.ts | WS2-1 (call site removal) |
-| 13 | sonnet | WS3-P4: SQL-level performance | causal-edges.ts, spec-folder-hierarchy.ts | WS1-B (B3 in same file) |
-| 14 | sonnet | WS3-P3: Entity linker perf | entity-linker.ts | WS1-A (same file) |
+---
 
-### Wave 3 (cleanup + verification)
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-1. Run full test suite: `npx vitest run`
-2. Run TypeScript check: `npx tsc --noEmit`
-3. Spot-check critical fixes
-4. Dead code verification grep
+### Definition of Ready
+- [x] Required phase documents are identified
+- [x] Validator command path is confirmed
+- [x] Scope boundaries are explicit (spec-tree markdown only)
 
-## Dead Code Analysis
+### Definition of Done
+- [ ] Recursive validation exit code is 0 or 1
+- [ ] All blocker-level doc issues in this phase are remediated
+- [ ] Remaining warnings are documented in final report
+<!-- /ANCHOR:quality-gates -->
 
-All items marked for removal were verified as truly dead:
-- Feature flags: `@deprecated Eval complete (Sprint 7 audit)` annotations
-- Shadow period: graduated to default-ON, function always returns false
-- Novelty boost: evaluated, confirmed marginal value, always returns 0
-- Module state: never populated/never read (verified via grep)
-- Functions: never called outside their own module (verified via grep)
+---
 
-**Exception — KEPT as planned features (not dead):**
-- `computeStructuralFreshness` / `computeGraphCentrality` in `fsrs.ts` — Module header says "Augments FSRS stability scores with graph centrality." These are unfinished architectural components, not concluded experiments.
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Wave-based remediation with strict scope lock and iterative validation.
+
+### Key Components
+- **Spec (`spec.md`)**: canonical requirements and acceptance scope.
+- **Plan (`plan.md`)**: execution order, gates, and rollback path.
+- **Tasks (`tasks.md`)**: completion tracking by wave.
+- **Implementation Summary (`implementation-summary.md`)**: post-execution evidence record.
+
+### Data Flow
+Validation errors are mapped to targeted document edits, then re-validated recursively until only warnings remain.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Blocker Remediation
+- [x] Create missing phase docs for `009-sprint-8-deferred-features`
+- [x] Add required anchors to 010 major docs
+- [x] Add missing template-source markers in 010 flagged files
+
+### Phase 2: Format Hardening
+- [x] Fix highest-priority checklist priority-tag format issue impacting validation signal quality
+- [ ] Optional follow-up warning cleanup (deferred)
+
+### Phase 3: Verification
+- [ ] Run recursive validator and confirm non-error exit state
+- [ ] Capture before/after error and warning counts
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Validation | Spec tree blocker and warning checks | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive` |
+| Structural | Required files/headers/anchors present | Validator rule set (FILE_EXISTS, ANCHORS_VALID, TEMPLATE_SOURCE) |
+| Manual | Confirm changed paths are in-scope only | Path review under `140-hybrid-rag-fusion-refinement/**` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Parent phase tree integrity | Internal | Required | Recursive validation fails or reports lineage issues |
+| Existing 010 docs content | Internal | Required | Missing context for remediation reporting |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Validation exit remains 2 after blocker edits.
+- **Procedure**: Revert latest phase-specific markdown changes, restore last passing subset, then re-apply edits in smaller batches.
+<!-- /ANCHOR:rollback -->

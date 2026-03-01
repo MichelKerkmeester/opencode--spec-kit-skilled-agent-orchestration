@@ -32,11 +32,10 @@ import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
 import type Database from 'better-sqlite3';
 import type { SpreadResult } from '../cache/cognitive/co-activation';
 import type { MMRCandidate } from './mmr-reranker';
-import type { FusionResult, RankedList } from './rrf-fusion';
+import type { FusionResult } from './rrf-fusion';
 import type { ChannelName } from './query-router';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
-import type { BudgetResult } from './dynamic-token-budget';
 
 /* ─── 1. INTERFACES ─── */
 
@@ -127,6 +126,7 @@ interface DegradationTrigger {
   reason: 'low_quality' | 'insufficient_results' | 'both';
   topScore: number;
   resultCount: number;
+  relativeGap?: number;
 }
 
 /** Record of a single degradation event during tiered fallback. */
@@ -137,8 +137,17 @@ interface DegradationEvent {
   resultCountAfter: number;
 }
 
-/** Quality threshold: top score must be >= this to stay at current tier. */
-const DEGRADATION_QUALITY_THRESHOLD = 0.4;
+/**
+ * Absolute quality floor for degradation checks.
+ *
+ * AI-WHY: Raw RRF scores are typically small decimals (often <0.05), so a
+ * high fixed threshold causes false degradations. Use a conservative floor and
+ * pair it with a relative-gap check to avoid score-scale coupling.
+ */
+const DEGRADATION_QUALITY_THRESHOLD = 0.02;
+
+/** Minimum relative separation between top-1 and top-2 scores. */
+const DEGRADATION_MIN_RELATIVE_GAP = 0.2;
 
 /** Minimum result count: must have >= this many results to stay at current tier. */
 const DEGRADATION_MIN_RESULTS = 3;
@@ -658,11 +667,12 @@ async function hybridSearchEnhanced(
 
     if (lists.length > 0) {
       // T008: Track multi-source and graph-only results
-      const sourceMap = new Map<number | string, Set<string>>();
+      const sourceMap = new Map<string, Set<string>>();
       for (const list of lists) {
         for (const r of list.results) {
-          if (!sourceMap.has(r.id)) sourceMap.set(r.id, new Set());
-          sourceMap.get(r.id)!.add(list.source); // non-null safe: has() guard above guarantees entry exists
+          const key = canonicalResultId(r.id);
+          if (!sourceMap.has(key)) sourceMap.set(key, new Set());
+          sourceMap.get(key)!.add(list.source); // non-null safe: has() guard above guarantees entry exists
         }
       }
       for (const [, sources] of sourceMap) {
@@ -1067,6 +1077,67 @@ function structuralSearch(
   }
 }
 
+/**
+ * Normalize result IDs to a canonical key used for deduplication and source tracking.
+ * Handles number-vs-string drift (`42` vs `"42"`) and legacy `mem:42` forms.
+ */
+function canonicalResultId(id: number | string): string {
+  if (typeof id === 'number') {
+    return String(id);
+  }
+
+  const raw = String(id).trim();
+  const memPrefixed = /^mem:(\d+)$/i.exec(raw);
+  if (memPrefixed) {
+    return String(Number(memPrefixed[1]));
+  }
+
+  if (/^\d+$/.test(raw)) {
+    return String(Number(raw));
+  }
+
+  return raw;
+}
+
+/** Apply caller limit after merges that can expand result count. */
+function applyResultLimit(results: HybridSearchResult[], limit?: number): HybridSearchResult[] {
+  if (typeof limit !== 'number' || !Number.isFinite(limit) || limit <= 0) {
+    return results;
+  }
+  return results.slice(0, limit);
+}
+
+/**
+ * Keep Tier 3 structural fallback scores below established Tier 1/2 confidence.
+ * Prevents structural placeholders from outranking stronger semantic/lexical hits.
+ */
+function calibrateTier3Scores(
+  existing: HybridSearchResult[],
+  tier3: HybridSearchResult[]
+): HybridSearchResult[] {
+  const topExisting = existing.reduce((max, row) => {
+    if (typeof row.score !== 'number' || !Number.isFinite(row.score)) {
+      return max;
+    }
+    return Math.max(max, row.score);
+  }, 0);
+
+  if (topExisting <= 0) {
+    return tier3;
+  }
+
+  const topCap = topExisting * 0.9;
+  const decayPerRank = topExisting * 0.08;
+
+  return tier3.map((row, index) => {
+    const calibrated = Math.max(0, topCap - (index * decayPerRank));
+    return {
+      ...row,
+      score: Math.min(row.score, calibrated),
+    };
+  });
+}
+
 /* ─── 7a. TIERED FALLBACK (PI-A2) — continued ─── */
 
 /**
@@ -1074,10 +1145,19 @@ function structuralSearch(
  * Returns null if thresholds are met, or a DegradationTrigger if not.
  */
 function checkDegradation(results: HybridSearchResult[]): DegradationTrigger | null {
-  const topScore = results.length > 0 ? Math.max(...results.map(r => r.score)) : 0;
+  const scores = results
+    .map(r => r.score)
+    .filter((score): score is number => typeof score === 'number' && Number.isFinite(score))
+    .sort((a, b) => b - a);
+
+  const topScore = scores[0] ?? 0;
+  const secondScore = scores[1] ?? 0;
+  const relativeGap = topScore > 0 ? (topScore - secondScore) / topScore : 0;
   const count = results.length;
 
-  const lowQuality = topScore < DEGRADATION_QUALITY_THRESHOLD;
+  const lowQuality =
+    topScore < DEGRADATION_QUALITY_THRESHOLD
+    && relativeGap < DEGRADATION_MIN_RELATIVE_GAP;
   const insufficientResults = count < DEGRADATION_MIN_RESULTS;
 
   if (!lowQuality && !insufficientResults) return null;
@@ -1088,6 +1168,7 @@ function checkDegradation(results: HybridSearchResult[]): DegradationTrigger | n
       : 'insufficient_results',
     topScore,
     resultCount: count,
+    relativeGap,
   };
 }
 
@@ -1098,15 +1179,16 @@ function mergeResults(
   existing: HybridSearchResult[],
   incoming: HybridSearchResult[]
 ): HybridSearchResult[] {
-  const byId = new Map<number | string, HybridSearchResult>();
+  const byId = new Map<string, HybridSearchResult>();
 
   for (const r of existing) {
-    byId.set(r.id, r);
+    byId.set(canonicalResultId(r.id), r);
   }
   for (const r of incoming) {
-    const prev = byId.get(r.id);
+    const key = canonicalResultId(r.id);
+    const prev = byId.get(key);
     if (!prev || r.score > prev.score) {
-      byId.set(r.id, r);
+      byId.set(key, r);
     }
   }
 
@@ -1117,15 +1199,15 @@ function mergeResults(
  * PI-A2: Quality-aware 3-tier search fallback chain.
  *
  * TIER 1: hybridSearchEnhanced at minSimilarity=0.3
- *   → Pass if topScore >= 0.4 AND count >= 3
+ *   → Pass if quality signal is healthy AND count >= 3
  *
  * TIER 2: hybridSearchEnhanced at minSimilarity=0.1, all channels forced
  *   → Merge with Tier 1, dedup by id
- *   → Pass if topScore >= 0.4 AND count >= 3
+ *   → Pass if quality signal is healthy AND count >= 3
  *
  * TIER 3: structuralSearch (pure SQL last-resort)
- *   → Merge with Tier 1+2 results
- *   → Return whatever we have
+ *   → Merge with Tier 1+2 results after score calibration
+ *   → Return capped set
  *
  * @param query - The search query string.
  * @param embedding - Optional embedding vector for semantic search.
@@ -1145,22 +1227,18 @@ async function searchWithFallbackTiered(
 
   const tier1Trigger = checkDegradation(results);
   if (!tier1Trigger) {
+    const limitedTier1 = applyResultLimit(results, options.limit);
     // Tier 1 passed quality thresholds — attach empty degradation metadata
-    Object.defineProperty(results, '_degradation', {
+    Object.defineProperty(limitedTier1, '_degradation', {
       value: degradationEvents,
       enumerable: false,
       configurable: true,
     });
-    return results;
+    return limitedTier1;
   }
 
   // TIER 2: Widen search — lower similarity, force all channels
-  degradationEvents.push({
-    tier: 1,
-    trigger: tier1Trigger,
-    resultCountBefore: results.length,
-    resultCountAfter: results.length,
-  });
+  const tier1CountBefore = results.length;
 
   console.debug(`[hybrid-search] Tier 1→2 degradation: ${tier1Trigger.reason} (topScore=${tier1Trigger.topScore.toFixed(3)}, count=${tier1Trigger.resultCount})`);
 
@@ -1174,37 +1252,48 @@ async function searchWithFallbackTiered(
   };
   const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
   results = mergeResults(results, tier2Results);
+  degradationEvents.push({
+    tier: 1,
+    trigger: tier1Trigger,
+    resultCountBefore: tier1CountBefore,
+    resultCountAfter: results.length,
+  });
 
   const tier2Trigger = checkDegradation(results);
   if (!tier2Trigger) {
-    Object.defineProperty(results, '_degradation', {
+    const limitedTier2 = applyResultLimit(results, options.limit);
+    Object.defineProperty(limitedTier2, '_degradation', {
       value: degradationEvents,
       enumerable: false,
       configurable: true,
     });
-    return results;
+    return limitedTier2;
   }
 
   // TIER 3: Structural search (pure SQL last-resort)
-  degradationEvents.push({
-    tier: 2,
-    trigger: tier2Trigger,
-    resultCountBefore: results.length,
-    resultCountAfter: results.length,
-  });
+  const tier2CountBefore = results.length;
 
   console.debug(`[hybrid-search] Tier 2→3 degradation: ${tier2Trigger.reason} (topScore=${tier2Trigger.topScore.toFixed(3)}, count=${tier2Trigger.resultCount})`);
 
   const tier3Results = structuralSearch({ specFolder: options.specFolder, limit: options.limit });
-  results = mergeResults(results, tier3Results);
+  const calibratedTier3 = calibrateTier3Scores(results, tier3Results);
+  results = mergeResults(results, calibratedTier3);
+  degradationEvents.push({
+    tier: 2,
+    trigger: tier2Trigger,
+    resultCountBefore: tier2CountBefore,
+    resultCountAfter: results.length,
+  });
 
-  Object.defineProperty(results, '_degradation', {
+  const limitedResults = applyResultLimit(results, options.limit);
+
+  Object.defineProperty(limitedResults, '_degradation', {
     value: degradationEvents,
     enumerable: false,
     configurable: true,
   });
 
-  return results;
+  return limitedResults;
 }
 
 /* ─── 7b. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007) ─── */
@@ -1372,6 +1461,14 @@ function truncateToBudget(
 }
 
 /* ─── 8. EXPORTS ─── */
+
+export const __testables = {
+  canonicalResultId,
+  applyResultLimit,
+  calibrateTier3Scores,
+  checkDegradation,
+  mergeResults,
+};
 
 export {
   init,

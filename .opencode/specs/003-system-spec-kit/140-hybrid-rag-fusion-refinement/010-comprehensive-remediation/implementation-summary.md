@@ -1,5 +1,8 @@
 # Implementation Summary: Comprehensive MCP Server Remediation
 
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + phase-child-header | v2.2 -->
+
 > **Phase:** 010-comprehensive-remediation
 > **Date:** 2026-02-28
 > **Status:** Complete

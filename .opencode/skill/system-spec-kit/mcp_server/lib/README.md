@@ -62,7 +62,7 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 | **Batch Processing** | Utilities for batch operations, retry logic and rate limiting |
 | **Embedding Cache** | Persistent SQLite cache for embedding reuse with LRU eviction |
 | **Query Routing** | Complexity classifier routes simple/moderate/complex queries to optimal pipelines |
-| **RSF Fusion** | Reciprocal Similarity Fusion as alternative to RRF (single-pair, multi-list, cross-variant) |
+| **RSF Fusion (Eval Path)** | Reciprocal Similarity Fusion retained for evaluation/comparison runs (single-pair, multi-list, cross-variant) |
 | **Interference Scoring** | TM-01 penalizes high-similarity near-duplicates in result sets |
 | **Confidence Truncation** | Removes low-confidence tail results using 2x median gap detection |
 | **Dynamic Token Budget** | Tier-aware budgets (1500/2500/4000) for result delivery |
@@ -130,7 +130,7 @@ lib/                            # TypeScript source files
 │   ├── vector-index-impl.ts    # Core vector index implementation
 │   ├── hybrid-search.ts        # Combined semantic + keyword search + token budget
 │   ├── rrf-fusion.ts           # Reciprocal Rank Fusion scoring (5 channels incl. degree)
-│   ├── rsf-fusion.ts           # Reciprocal Similarity Fusion (Sprint 3 alternative to RRF)
+│   ├── rsf-fusion.ts           # Reciprocal Similarity Fusion (evaluation/comparison path)
 │   ├── reranker.ts             # Result reranking
 │   ├── mmr-reranker.ts         # MMR diversity reranking
 │   ├── bm25-index.ts           # BM25 lexical indexing
@@ -148,7 +148,7 @@ lib/                            # TypeScript source files
 │   ├── graph-flags.ts          # Graph feature flags
 │   ├── search-flags.ts         # Search feature flags
 │   ├── channel-enforcement.ts  # Channel enforcement policies
-│   ├── channel-representation.ts # Min-representation R2 (QUALITY_FLOOR=0.2)
+│   ├── channel-representation.ts # Min-representation R2 (QUALITY_FLOOR=0.005)
 │   ├── confidence-truncation.ts # Confidence truncation (2x median gap, min 3 results)
 │   ├── dynamic-token-budget.ts # Dynamic token budget (1500/2500/4000 by tier)
 │   ├── context-budget.ts       # Context budget estimation
@@ -314,11 +314,11 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `scoring/importance-tiers.ts` | Six-tier importance classification system |
 | `scoring/interference-scoring.ts` | TM-01 interference penalty for near-duplicates |
 | `search/query-classifier.ts` | Query complexity routing (simple/moderate/complex) |
-| `search/rsf-fusion.ts` | Reciprocal Similarity Fusion alternative to RRF |
+| `search/rsf-fusion.ts` | Reciprocal Similarity Fusion evaluation/comparison module |
 | `search/confidence-truncation.ts` | Low-confidence tail removal (2x median gap) |
 | `search/dynamic-token-budget.ts` | Per-tier token budgets (1500/2500/4000) |
 | `search/graph-search-fn.ts` | Typed-weighted degree computation for RRF 5th channel |
-| `search/channel-representation.ts` | Min-representation R2 (QUALITY_FLOOR=0.2) |
+| `search/channel-representation.ts` | Min-representation R2 (QUALITY_FLOOR=0.005) |
 | `cache/embedding-cache.ts` | Persistent SQLite embedding cache with LRU eviction |
 | `eval/edge-density.ts` | Edge density measurement for graph analysis |
 | `parsing/entity-scope.ts` | Entity scope detection |

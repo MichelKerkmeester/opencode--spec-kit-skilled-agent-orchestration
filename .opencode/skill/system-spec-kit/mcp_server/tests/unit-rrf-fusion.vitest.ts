@@ -150,6 +150,19 @@ describe('RRF Fusion (T001-T006)', () => {
     expect(shared.sourceScores).toHaveProperty(SOURCE_TYPES.BM25);
     expect(shared.sourceScores[SOURCE_TYPES.BM25]).toEqual(expect.any(Number));
   });
+
+  it('T006b: canonical ID matching deduplicates numeric/string/mem-prefixed IDs', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 42, title: 'Numeric' }] },
+      { source: SOURCE_TYPES.BM25, results: [{ id: '42', title: 'String' }] },
+      { source: 'graph', results: [{ id: 'mem:42', title: 'Prefixed' }] },
+    ]);
+
+    expect(fused).toHaveLength(1);
+    expect(fused[0].sources).toContain(SOURCE_TYPES.VECTOR);
+    expect(fused[0].sources).toContain(SOURCE_TYPES.BM25);
+    expect(fused[0].sources).toContain('graph');
+  });
 });
 
 describe('C138: Cross-Variant RRF (Multi-Query)', () => {
