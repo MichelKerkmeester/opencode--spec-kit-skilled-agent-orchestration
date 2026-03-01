@@ -72,11 +72,11 @@ This command restores the most recent session state, loads relevant context, and
 
 **CRITICAL:** This command uses MCP tools directly. Native MCP only - NEVER Code Mode.
 
-| SCREEN     | REQUIRED MCP CALLS                                                                          | MODE   | ON FAILURE          |
-| ---------- | ------------------------------------------------------------------------------------------- | ------ | ------------------- |
+| SCREEN     | REQUIRED MCP CALLS                                                                            | MODE   | ON FAILURE                 |
+| ---------- | --------------------------------------------------------------------------------------------- | ------ | -------------------------- |
 | DETECTION  | `spec_kit_memory_memory_context({ input: "session", mode: "resume", includeContent: false })` | SINGLE | Fall back to memory_search |
-| STATE LOAD | `spec_kit_memory_memory_context({ input: "[query]", mode: "resume", includeContent: true })` | SINGLE | Use CONTINUE.md     |
-| STATS      | `spec_kit_memory_memory_stats`                                                               | SINGLE | Show error msg      |
+| STATE LOAD | `spec_kit_memory_memory_context({ input: "[query]", mode: "resume", includeContent: true })`  | SINGLE | Use CONTINUE.md            |
+| STATS      | `spec_kit_memory_memory_stats`                                                                | SINGLE | Show error msg             |
 
 **Tool Call Format:**
 ```
@@ -136,22 +136,12 @@ Auto mode attempts automatic recovery without user confirmation.
 
 ### Step 1: Detect Recovery Scenario
 
-**Priority order:**
+Match the current state against the Recovery Scenarios table (Section 5) using this priority order:
 
-1. **Check for CONTINUE_SESSION.md**:
-   - Find most recent `CONTINUE_SESSION.md` in specs (modified within last 24h)
-   - If found: `scenario = "crash"`, load this file
-
-2. **Check for compaction signal**:
-   - Scan system messages for "continue from where we left off"
-   - If found: `scenario = "compaction"`
-
-3. **Check for timeout**:
-   - Get most recent memory file
-   - If mtime >2h ago: `scenario = "timeout"`
-
-4. **Fallback**:
-   - If none detected: Switch to MANUAL mode, ask user
+1. **Crash** — Find most recent `CONTINUE_SESSION.md` in specs (modified within last 24h). If found, load it.
+2. **Compaction** — Scan system messages for "continue from where we left off".
+3. **Timeout** — Check most recent memory file mtime (>2h ago).
+4. **Fallback** — If none detected, switch to MANUAL mode and ask user.
 
 ### Step 2: Load Session State
 
@@ -178,12 +168,12 @@ Check `key_files` from memory metadata against the spec folder:
 
 **Mismatch Detection Signals:**
 
-| Signal | Meaning |
-|--------|---------|
-| `key_files` contain `.opencode/skill/` | Skill/infrastructure work |
-| `key_files` contain `.opencode/command/` | Command development work |
-| `key_files` contain `.opencode/agent/`, `.opencode/agent/chatgpt/`, or `/.claude/agents` | Agent development work |
-| `spec_folder` doesn't match patterns | Likely saved to wrong folder |
+| Signal                                                                                   | Meaning                      |
+| ---------------------------------------------------------------------------------------- | ---------------------------- |
+| `key_files` contain `.opencode/skill/`                                                   | Skill/infrastructure work    |
+| `key_files` contain `.opencode/command/`                                                 | Command development work     |
+| `key_files` contain `.opencode/agent/`, `.opencode/agent/chatgpt/`, or `/.claude/agents` | Agent development work       |
+| `spec_folder` doesn't match patterns                                                     | Likely saved to wrong folder |
 
 **On mismatch, present options:**
 - A) Search for infrastructure-related spec folder
@@ -354,33 +344,25 @@ Context will be automatically restored. Next action: Verify command structure.
 
 ---
 
-## 9. FAILURE RECOVERY
+## 9. ERROR HANDLING
 
-| Failure Type                     | Recovery Action                        |
-| -------------------------------- | -------------------------------------- |
-| CONTINUE_SESSION.md not found    | Fall back to memory file search        |
-| No memory files with state       | Ask user for manual context            |
-| Multiple sessions detected       | Ask user to select                     |
-| Session state corrupt/incomplete | Reconstruct from multiple memory files |
-| Spec folder not found            | List available, ask user to select     |
+| Condition                        | Action                                        |
+| -------------------------------- | --------------------------------------------- |
+| CONTINUE_SESSION.md not found    | Fall back to memory file search               |
+| Invalid CONTINUE_SESSION.md      | Use memory file fallback                      |
+| No session detected              | Ask user for spec folder or start new session |
+| Missing state anchor             | Load full memory content, extract manually    |
+| Multiple sessions detected       | Ask user to select                            |
+| Session state corrupt/incomplete | Reconstruct from multiple memory files        |
+| Spec folder not found            | List available, ask user to select            |
+| Stale session (>7 days)          | Warn about staleness, confirm recovery        |
+| Context compaction detected      | Show compaction message, load recent memory   |
 
 > **Adaptive Fusion in Recovery:** When `SPECKIT_ADAPTIVE_FUSION` is enabled, recovery context matching uses adaptive fusion weights tuned for the `resume` mode — recency and state-anchor relevance are boosted to improve hit rate on fragmented or post-compaction sessions. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, recovery success metrics (match confidence, anchor hit rate, reconstruction steps) are captured and appended to the telemetry log for post-session analysis.
 
 ---
 
-## 10. ERROR HANDLING
-
-| Condition                   | Action                                        |
-| --------------------------- | --------------------------------------------- |
-| No session detected         | Ask user for spec folder or start new session |
-| Stale session (>7 days)     | Warn about staleness, confirm recovery        |
-| Invalid CONTINUE_SESSION.md | Use memory file fallback                      |
-| Missing state anchor        | Load full memory content, extract manually    |
-| Context compaction detected | Show compaction message, load recent memory   |
-
----
-
-## 11. QUICK REFERENCE
+## 10. QUICK REFERENCE
 
 | Command                    | Result                            |
 | -------------------------- | --------------------------------- |
@@ -390,7 +372,7 @@ Context will be automatically restored. Next action: Verify command structure.
 
 ---
 
-## 12. USE CASES
+## 11. USE CASES
 
 ### Use Case 1: Crash Recovery
 
@@ -453,7 +435,7 @@ AI: MEMORY:CONTINUE
 
 ---
 
-## 13. RELATED COMMANDS
+## 12. RELATED COMMANDS
 
 - `/spec_kit:resume` - Resume work on spec folder (broader scope, includes planning)
 - `/spec_kit:handover` - Create handover for session continuity
@@ -462,7 +444,7 @@ AI: MEMORY:CONTINUE
 
 ---
 
-## 14. NEXT STEPS AFTER RECOVERY
+## 13. NEXT STEPS AFTER RECOVERY
 
 | Condition                 | Suggested Action                       |
 | ------------------------- | -------------------------------------- |
@@ -475,7 +457,7 @@ AI: MEMORY:CONTINUE
 
 ---
 
-## 15. RECOVERY PRIORITIES
+## 14. RECOVERY PRIORITIES
 
 **Priority order for context sources:**
 
@@ -487,7 +469,7 @@ AI: MEMORY:CONTINUE
 
 ---
 
-## 16. SESSION ISOLATION
+## 15. SESSION ISOLATION
 
 - Each recovery session is isolated; session IDs prevent cross-session data leakage
 - CONTINUE_SESSION.md contains no secrets

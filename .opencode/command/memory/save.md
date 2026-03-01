@@ -354,17 +354,17 @@ specs/{spec-folder}/memory/{timestamp}__{topic}.md
 
 ## 8. ERROR HANDLING
 
-| Condition              | Action                                          |
-| ---------------------- | ----------------------------------------------- |
-| No spec folder found   | Prompt user to create one                       |
-| Folder not found       | Show available folders, ask user                |
-| Topic-folder mismatch  | Warn, suggest alternatives, ask to confirm      |
-| Empty conversation     | Return `STATUS=FAIL ERROR="No context to save"` |
-| Script execution fails | Show error, suggest manual save                 |
-| Embedding fails        | File saved, will auto-index on MCP restart      |
-| MCP unavailable        | File saved, indexing deferred to restart         |
-| Duplicate session (<1h)| Warn, offer: Overwrite / Append / New / Cancel  |
-| "Stateless mode"       | JSON not loaded — check temp file path/content  |
+| Condition               | Action                                          |
+| ----------------------- | ----------------------------------------------- |
+| No spec folder found    | Prompt user to create one                       |
+| Folder not found        | Show available folders, ask user                |
+| Topic-folder mismatch   | Warn, suggest alternatives, ask to confirm      |
+| Empty conversation      | Return `STATUS=FAIL ERROR="No context to save"` |
+| Script execution fails  | Show error, suggest manual save                 |
+| Embedding fails         | File saved, will auto-index on MCP restart      |
+| MCP unavailable         | File saved, indexing deferred to restart        |
+| Duplicate session (<1h) | Warn, offer: Overwrite / Append / New / Cancel  |
+| "Stateless mode"        | JSON not loaded — check temp file path/content  |
 
 ---
 
@@ -401,13 +401,13 @@ specs/{spec-folder}/memory/{timestamp}__{topic}.md
 
 **Key Fields:**
 
-| Field                    | Type     | Description                             |
-| ------------------------ | -------- | --------------------------------------- |
-| `data.status`            | string   | "OK" or "FAIL"                          |
-| `data.file_path`         | string   | Path to saved memory file               |
+| Field                    | Type     | Description                              |
+| ------------------------ | -------- | ---------------------------------------- |
+| `data.status`            | string   | "OK" or "FAIL"                           |
+| `data.file_path`         | string   | Path to saved memory file                |
 | `data.memory_id`         | number   | Database ID (null if deferred indexing)  |
-| `data.indexing_status`   | string   | "indexed", "deferred", or "failed"      |
-| `data.anchors_created`   | string[] | List of anchor IDs in the file          |
+| `data.indexing_status`   | string   | "indexed", "deferred", or "failed"       |
+| `data.anchors_created`   | string[] | List of anchor IDs in the file           |
 | `meta.deferred_indexing` | boolean  | Whether indexing was deferred to restart |
 
 ### Human-Friendly Display
@@ -465,14 +465,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 ## 10. INDEXING OPTIONS
 
-| Method                         | When             | Use Case                          |
-| ------------------------------ | ---------------- | --------------------------------- |
-| **Auto-indexing on startup**   | MCP server start | Default — no action needed        |
-| **generate-context.js**        | Script execution | Standard /memory:save workflow    |
-| **memory_save MCP tool**       | On demand        | Immediate indexing of single file |
-| **memory_index_scan MCP tool** | On demand        | Bulk re-index of folder/all files |
-
-> **Note:** The indexing pipeline includes three sources: spec memories, constitutional files and spec documents.
+Four indexing methods are available: auto-indexing on MCP startup (default), `generate-context.js` (standard save workflow), `memory_save` (single file), and `memory_index_scan` (bulk). See full parameter references below.
 
 ### Normalization Before Bulk Rebuild
 
@@ -514,32 +507,32 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 
 **Recovery Options:**
 
-| Issue                  | Recovery                                                                       |
-| ---------------------- | ------------------------------------------------------------------------------ |
-| MCP server unreachable | Restart OpenCode to restart MCP server                                         |
-| Embedding timeout      | Use `memory_index_scan` with smaller batch                                     |
-| Corrupted file         | Read file, verify ANCHOR tags, re-save with corrections                        |
+| Issue                  | Recovery                                                                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| MCP server unreachable | Restart OpenCode to restart MCP server                                                                                         |
+| Embedding timeout      | Use `memory_index_scan` with smaller batch                                                                                     |
+| Corrupted file         | Read file, verify ANCHOR tags, re-save with corrections                                                                        |
 | Database locked        | Delete `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` (and `-wal` / `-shm` sidecars), restart |
 
 ### Full Parameter Reference: memory_save
 
-| Parameter       | Type    | Default    | Description                                             |
-| --------------- | ------- | ---------- | ------------------------------------------------------- |
-| `filePath`      | string  | *required* | Absolute path to the memory file                        |
-| `force`         | boolean | false      | Force re-index even if content hash unchanged           |
-| `dryRun`        | boolean | false      | Validate only without saving                            |
-| `skipPreflight` | boolean | false      | Skip pre-flight validation checks (not recommended)     |
-| `asyncEmbedding`| boolean | false      | Defer embedding generation for non-blocking saves       |
+| Parameter        | Type    | Default    | Description                                         |
+| ---------------- | ------- | ---------- | --------------------------------------------------- |
+| `filePath`       | string  | *required* | Absolute path to the memory file                    |
+| `force`          | boolean | false      | Force re-index even if content hash unchanged       |
+| `dryRun`         | boolean | false      | Validate only without saving                        |
+| `skipPreflight`  | boolean | false      | Skip pre-flight validation checks (not recommended) |
+| `asyncEmbedding` | boolean | false      | Defer embedding generation for non-blocking saves   |
 
 ### Full Parameter Reference: memory_index_scan
 
-| Parameter            | Type    | Default | Description                                       |
-| -------------------- | ------- | ------- | ------------------------------------------------- |
-| `force`              | boolean | false   | Force re-index all files                          |
-| `specFolder`         | string  | -       | Limit scan to specific spec folder                |
-| `includeSpecDocs`    | boolean | true    | Include spec folder documents                     |
-| `includeConstitutional` | boolean | true | Include constitutional rule files                 |
-| `incremental`        | boolean | true    | Skip unchanged files (mtime check)                |
+| Parameter               | Type    | Default | Description                        |
+| ----------------------- | ------- | ------- | ---------------------------------- |
+| `force`                 | boolean | false   | Force re-index all files           |
+| `specFolder`            | string  | -       | Limit scan to specific spec folder |
+| `includeSpecDocs`       | boolean | true    | Include spec folder documents      |
+| `includeConstitutional` | boolean | true    | Include constitutional rule files  |
+| `incremental`           | boolean | true    | Skip unchanged files (mtime check) |
 
 ---
 
@@ -608,11 +601,11 @@ Prevents redundant saves of the same conversation content (accidental duplicates
 
 ## 13. QUICK REFERENCE
 
-| Usage                                                  | Behavior                              |
-| ------------------------------------------------------ | ------------------------------------- |
+| Usage                                                  | Behavior                                                |
+| ------------------------------------------------------ | ------------------------------------------------------- |
 | `/memory:save`                                         | Ask for folder (or use active Gate 3 folder), then save |
-| `/memory:save 011-memory`                              | Save to specific spec folder          |
-| `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder            |
+| `/memory:save 011-memory`                              | Save to specific spec folder                            |
+| `/memory:save specs/006-semantic-memory/003-debugging` | Save to nested spec folder                              |
 
 ---
 
