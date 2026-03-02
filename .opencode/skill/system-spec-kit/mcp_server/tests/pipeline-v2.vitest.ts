@@ -253,9 +253,11 @@ describe('R6: Feature Flags', () => {
     expect(isPipelineV2Enabled()).toBe(true);
   });
 
-  it('R6-T20: SPECKIT_PIPELINE_V2=false disables pipeline V2', () => {
+  it('R6-T20: SPECKIT_PIPELINE_V2=false still returns true (deprecated, V2 always on)', () => {
     process.env.SPECKIT_PIPELINE_V2 = 'false';
-    expect(isPipelineV2Enabled()).toBe(false);
+    // AI-WHY: Legacy V1 pipeline removed in 017-refinement-phase-6.
+    // isPipelineV2Enabled() now always returns true regardless of env var.
+    expect(isPipelineV2Enabled()).toBe(true);
   });
 
   it('R6-T21: SPECKIT_EMBEDDING_EXPANSION defaults to true (graduated)', () => {
@@ -279,6 +281,7 @@ describe('R6: Stage Interface Contracts', () => {
         searchType: 'hybrid',
         channelCount: 5,
         candidateCount: 1,
+        constitutionalInjected: 0,
         durationMs: 42,
       },
     };
@@ -325,7 +328,7 @@ describe('R6: Stage Interface Contracts', () => {
       final: [{ id: 1, similarity: 85 }],
       metadata: {
         stateFiltered: 2,
-        sessionDeduped: 0,
+        // AI-WHY: sessionDeduped removed (Fix #14) — dedup is post-cache in main handler
         constitutionalInjected: 0,
         evidenceGapDetected: false,
         durationMs: 5,
@@ -335,7 +338,7 @@ describe('R6: Stage Interface Contracts', () => {
         featureFlags: { pipelineV2: true, trmEnabled: true },
       },
     };
-    expect(output.metadata.sessionDeduped).toBe(0); // Dedup is post-cache
+    expect(output.metadata.constitutionalInjected).toBe(0);
     expect(output.annotations.featureFlags.pipelineV2).toBe(true);
   });
 });

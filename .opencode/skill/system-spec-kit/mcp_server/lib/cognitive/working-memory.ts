@@ -516,7 +516,9 @@ function batchUpdateScores(sessionId: string): number {
         continue;
       }
 
-      const nextScore = Math.max(DECAY_FLOOR, rawScore);
+      // AI-WHY: Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
+      // Mention boost can push rawScore above 1.0 which breaks [0,1] score semantics.
+      const nextScore = Math.max(DECAY_FLOOR, Math.min(1.0, rawScore));
       const updateResult = updateStmt.run(nextScore, entry.id) as { changes: number };
       changedRows += updateResult.changes;
     }

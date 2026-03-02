@@ -353,7 +353,7 @@ Place agent definition files in `.gemini/agents/` to enable specialized Gemini a
 mkdir -p .gemini/agents/
 ```
 
-Available agents when using the `mcp-gemini-cli` skill:
+Available agents when using the `cli-gemini` skill:
 
 | Agent          | File                              | Purpose                               |
 | -------------- | --------------------------------- | ------------------------------------- |
@@ -746,11 +746,11 @@ gemini --version
 
 | Document             | Location                                                                    | Purpose                              |
 | -------------------- | --------------------------------------------------------------------------- | ------------------------------------ |
-| SKILL.md             | `.opencode/skill/mcp-gemini-cli/SKILL.md`                                   | Complete skill workflows             |
-| CLI Reference        | `.opencode/skill/mcp-gemini-cli/references/cli_reference.md`                | Full command and flag reference      |
-| Agent Delegation     | `.opencode/skill/mcp-gemini-cli/references/agent_delegation.md`             | Using Gemini agents                  |
-| Gemini Tools         | `.opencode/skill/mcp-gemini-cli/references/gemini_tools.md`                 | google_web_search, codebase_investigator |
-| Integration Patterns | `.opencode/skill/mcp-gemini-cli/references/integration_patterns.md`         | Patterns for cross-AI workflows      |
+| SKILL.md             | `.opencode/skill/cli-gemini/SKILL.md`                                   | Complete skill workflows             |
+| CLI Reference        | `.opencode/skill/cli-gemini/references/cli_reference.md`                | Full command and flag reference      |
+| Agent Delegation     | `.opencode/skill/cli-gemini/references/agent_delegation.md`             | Using Gemini agents                  |
+| Gemini Tools         | `.opencode/skill/cli-gemini/references/gemini_tools.md`                 | google_web_search, codebase_investigator |
+| Integration Patterns | `.opencode/skill/cli-gemini/references/integration_patterns.md`         | Patterns for cross-AI workflows      |
 
 ### Configuration Paths
 
@@ -845,4 +845,4 @@ gemini "..." -o text                  # Complex tasks, default (pro)
 
 ---
 
-**Need help?** See [Troubleshooting](#9-troubleshooting) or load the `mcp-gemini-cli` skill for detailed workflows.
+**Need help?** See [Troubleshooting](#9-troubleshooting) or load the `cli-gemini` skill for detailed workflows.

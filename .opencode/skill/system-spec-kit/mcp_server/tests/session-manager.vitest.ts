@@ -138,7 +138,8 @@ describe('Session Manager Tests (T001-T008)', () => {
       const memory1: MemoryObject = createMemory({ content_hash: 'abc123def456' });
       const hash1: string = sessionManager.generateMemoryHash(memory1);
       expect(typeof hash1).toBe('string');
-      expect(hash1).toHaveLength(16);
+      // AI-WHY: Fix #37 — hash now 128-bit (32 hex chars) instead of 64-bit (16)
+      expect(hash1).toHaveLength(32);
     });
 
     it('T002: Hash generated with id fallback', () => {
@@ -149,7 +150,7 @@ describe('Session Manager Tests (T001-T008)', () => {
       });
       const hash2: string = sessionManager.generateMemoryHash(memory2);
       expect(typeof hash2).toBe('string');
-      expect(hash2).toHaveLength(16);
+      expect(hash2).toHaveLength(32);
     });
 
     it('T002: Hash is deterministic', () => {
@@ -247,7 +248,7 @@ describe('Session Manager Tests (T001-T008)', () => {
         const result: MarkResult = sessionManager.markMemorySent(sessionId, memory);
         expect(result.success).toBe(true);
         expect(typeof result.hash).toBe('string');
-        expect(result.hash).toHaveLength(16);
+        expect(result.hash).toHaveLength(32);
       }
 
       for (const memory of memories) {

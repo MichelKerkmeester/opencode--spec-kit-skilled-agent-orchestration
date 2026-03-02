@@ -25,6 +25,7 @@
 // Score changes: YES
 // ---------------------------------------------------------------
 
+import { resolveEffectiveScore } from './types';
 import type { Stage3Input, Stage3Output, PipelineRow } from './types';
 import * as crossEncoder from '../cross-encoder';
 import { isCrossEncoderEnabled, isMMREnabled } from '../search-flags';
@@ -460,19 +461,9 @@ function electBestChunk(chunks: PipelineRow[]): PipelineRow {
  * @param row - A pipeline result row.
  * @returns Numeric score value in [0, 1] for comparison.
  */
-function effectiveScore(row: PipelineRow): number {
-  // AI-WHY: Clamp to [0,1] — raw scores/similarity may exceed normalized range (A1-P2-2)
-  // P1-015: Check enriched scores first, then base score, then raw similarity
-  if (typeof row.intentAdjustedScore === 'number' && isFinite(row.intentAdjustedScore))
-    return Math.max(0, Math.min(1, row.intentAdjustedScore));
-  if (typeof row.rrfScore === 'number' && isFinite(row.rrfScore))
-    return Math.max(0, Math.min(1, row.rrfScore));
-  if (typeof row.score === 'number' && isFinite(row.score))
-    return Math.max(0, Math.min(1, row.score));
-  if (typeof row.similarity === 'number' && isFinite(row.similarity))
-    return Math.max(0, Math.min(1, row.similarity / 100));
-  return 0;
-}
+// AI-WHY: Fix #11 (017-refinement-phase-6) — Replaced local implementation with
+// shared resolveEffectiveScore() from types.ts for consistency with Stage 2.
+const effectiveScore = resolveEffectiveScore;
 
 /**
  * Attempt to reassemble a full parent memory row from the database.

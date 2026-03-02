@@ -130,7 +130,7 @@ User invokes /create:changelog <spec-folder> [:auto|:confirm]
 | `.opencode/skill/mcp-chrome-devtools/**` | `14--mcp-chrome-devtools` |
 | `.opencode/skill/mcp-code-mode/**` | `15--mcp-code-mode` |
 | `.opencode/skill/mcp-figma/**` | `16--mcp-figma` |
-| `.opencode/skill/mcp-gemini-cli/**` | `17--mcp-gemini-cli` |
+| `.opencode/skill/cli-gemini/**` | `17--cli-gemini` |
 | Unmatched / cross-component | `00--opencode-environment` |
 <!-- /ANCHOR:architecture -->
 

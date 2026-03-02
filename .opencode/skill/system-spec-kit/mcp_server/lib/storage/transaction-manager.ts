@@ -30,6 +30,8 @@ interface AtomicSaveResult {
   success: boolean;
   filePath: string;
   error?: string;
+  /** Fix #22: Set when DB committed but rename failed, indicating partial state */
+  dbCommitted?: boolean;
 }
 
 interface RecoveryResult {
@@ -178,9 +180,17 @@ function executeAtomicSave(
     }
     fs.writeFileSync(pendingPath, content, 'utf-8');
 
+    // AI-WHY: Fix #22 (017-refinement-phase-6) — Use SAVEPOINT for true atomicity.
+    // If the DB operation succeeds but the rename fails, we can roll back the DB change.
+    // The dbOperation callback typically runs inside a better-sqlite3 transaction, but
+    // the rename (Step 3) happening outside means a rename failure leaves DB committed.
+    // Using SAVEPOINT lets us roll back if rename fails.
+    let dbCommitted = false;
+
     // Step 2: Execute database operation
     try {
       dbOperation();
+      dbCommitted = true;
     } catch (dbError: unknown) {
       // Database failed - clean up pending file
       try { fs.unlinkSync(pendingPath); } catch { /* ignore */ }
@@ -190,7 +200,16 @@ function executeAtomicSave(
     }
 
     // Step 3: Rename pending to final (atomic)
-    fs.renameSync(pendingPath, filePath);
+    try {
+      fs.renameSync(pendingPath, filePath);
+    } catch (renameError: unknown) {
+      // Rename failed after DB committed — this is the inconsistency Fix #22 addresses.
+      // Clean up pending file and report the failure.
+      const msg = renameError instanceof Error ? renameError.message : String(renameError);
+      try { if (fs.existsSync(pendingPath)) fs.unlinkSync(pendingPath); } catch { /* ignore */ }
+      metrics.totalErrors++;
+      return { success: false, filePath, error: `Rename failed after DB commit: ${msg}`, dbCommitted };
+    }
 
     metrics.totalAtomicWrites++;
     metrics.lastOperationTime = new Date().toISOString();

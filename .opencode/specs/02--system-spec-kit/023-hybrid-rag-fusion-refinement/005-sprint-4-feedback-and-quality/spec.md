@@ -27,8 +27,8 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Draft |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 5 of 8 |
 | **Predecessor** | ../004-sprint-3-query-intelligence/ |
 | **Successor** | ../006-sprint-5-pipeline-refactor/ |
@@ -113,7 +113,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 
 **Rationale for split**: R11 has CRITICAL severity — an FTS5 contamination mistake (adding `learned_triggers` to the FTS5 index) is irreversible without a full re-index of all memories. Isolating R11 into S4b means S4a's A/B infrastructure is operational before R11 mutations begin, enabling immediate detection of any regression. Risk concentration is eliminated by ensuring R1 and R13-S2 are verified clean before R11 is enabled.
 
-> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (`../spec.md` line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
+> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (`../000-feature-overview/spec.md` line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
 
 ### Files to Change
 
@@ -260,8 +260,8 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

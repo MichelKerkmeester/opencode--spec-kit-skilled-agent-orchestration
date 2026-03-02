@@ -551,7 +551,19 @@ function applyPostProcessingAndObserve(
  * @returns Composite score 0-1
  */
 export function calculateFiveFactorScore(row: ScoringInput, options: ScoringOptions = {}): number {
-  const weights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
+  const rawWeights: FiveFactorWeights = { ...FIVE_FACTOR_WEIGHTS, ...(options.weights as Partial<FiveFactorWeights>) };
+  // AI-WHY: Fix #6 (017-refinement-phase-6) — Normalize weights to sum 1.0 after
+  // merging partial overrides. Without this, partial overrides break weighted-average semantics.
+  const wSum = rawWeights.temporal + rawWeights.usage + rawWeights.importance + rawWeights.pattern + rawWeights.citation;
+  const weights: FiveFactorWeights = Math.abs(wSum - 1.0) > 0.001 && wSum > 0
+    ? {
+        temporal: rawWeights.temporal / wSum,
+        usage: rawWeights.usage / wSum,
+        importance: rawWeights.importance / wSum,
+        pattern: rawWeights.pattern / wSum,
+        citation: rawWeights.citation / wSum,
+      }
+    : rawWeights;
   const tier = row.importance_tier || 'normal';
 
   const temporalScore = calculateTemporalScore(row);
@@ -780,8 +792,15 @@ export function normalizeCompositeScores(scores: number[]): number[] {
   if (scores.length === 0) return [];
   if (!isCompositeNormalizationEnabled()) return scores;
 
-  const maxScore = Math.max(...scores);
-  const minScore = Math.min(...scores);
+  // AI-WHY: Fix #7 (017-refinement-phase-6) — Use loop-based min/max instead of
+  // Math.max(...scores) / Math.min(...scores) which causes stack overflow on arrays
+  // larger than ~100K elements (exceeds JS call-stack argument limit).
+  let maxScore = -Infinity;
+  let minScore = Infinity;
+  for (const s of scores) {
+    if (s > maxScore) maxScore = s;
+    if (s < minScore) minScore = s;
+  }
   const range = maxScore - minScore;
 
   if (range > 0) {

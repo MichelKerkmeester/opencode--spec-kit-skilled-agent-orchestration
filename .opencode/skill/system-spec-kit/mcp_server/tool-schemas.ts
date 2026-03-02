@@ -120,6 +120,23 @@ const memorySearch: ToolDefinition = {
         type: 'boolean',
         default: true,
         description: 'Auto-detect intent from query if not explicitly specified. When true, classifies query to apply task-specific scoring weights.'
+      },
+      // Fix #13 (017-refinement-phase-6): Expose previously hidden handler parameters
+      trackAccess: {
+        type: 'boolean',
+        default: false,
+        description: 'When true, writes FSRS strengthening updates to memory_index for each returned result. Off by default to avoid write-on-read side effects.'
+      },
+      includeArchived: {
+        type: 'boolean',
+        default: false,
+        description: 'Include archived memories in search results. Default: false (archived excluded).'
+      },
+      mode: {
+        type: 'string',
+        enum: ['auto', 'deep'],
+        default: 'auto',
+        description: 'Search mode. "auto" uses standard retrieval. "deep" enables multi-query expansion for broader recall.'
       }
     }
   },

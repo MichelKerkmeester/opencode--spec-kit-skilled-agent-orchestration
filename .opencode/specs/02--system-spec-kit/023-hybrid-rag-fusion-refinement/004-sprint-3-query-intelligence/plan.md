@@ -227,7 +227,7 @@ Phase 2 (R14/N1 RSF) ──────┘
 | **Total (P1 core)** | | **32-51h** |
 | **Total (incl. P2 PI-B3)** | | **36-59h** |
 
-> **Effort reconciliation note**: Parent plan (../plan.md) lists Sprint 3 core at 34-53h. This child plan's authoritative task-level sum is 32-51h (P1 core). The difference arises because the parent plan's R15 line (10-16h) includes buffer for classifier iteration, while this child plan's Phase 1 breakdown (8-14h) reflects specific subtask estimates. Phase 3b (T006, T007) was added during child plan decomposition for REQ-S3-004 and REQ-S3-005.
+> **Effort reconciliation note**: Parent plan (../000-feature-overview/plan.md) lists Sprint 3 core at 34-53h. This child plan's authoritative task-level sum is 32-51h (P1 core). The difference arises because the parent plan's R15 line (10-16h) includes buffer for classifier iteration, while this child plan's Phase 1 breakdown (8-14h) reflects specific subtask estimates. Phase 3b (T006, T007) was added during child plan decomposition for REQ-S3-004 and REQ-S3-005.
 <!-- /ANCHOR:effort -->
 
 ---

@@ -25,8 +25,8 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: spec-core + level2-veri
 | **Priority** | P1 (elevated from P2 — safety-critical NFRs: Stage 4 invariant, pipeline integrity) |
 | **Status** | Implemented |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 6 of 8 |
 | **Predecessor** | ../005-sprint-4-feedback-and-quality/ |
 | **Successor** | ../007-sprint-6-indexing-and-graph/ |
@@ -271,8 +271,8 @@ All auto-fixes are logged with before/after diffs as the primary mitigation agai
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

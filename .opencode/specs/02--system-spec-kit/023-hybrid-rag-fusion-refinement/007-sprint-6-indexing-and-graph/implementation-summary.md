@@ -165,4 +165,4 @@ Sprint 6b items remain pending, gated on feasibility spike (T-S6-SPIKE):
 - **Plan**: See `plan.md`
 - **Tasks**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../tasks.md`
+- **Parent Tasks**: See `../000-feature-overview/tasks.md`

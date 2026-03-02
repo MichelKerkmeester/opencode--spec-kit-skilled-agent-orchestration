@@ -82,7 +82,8 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     const embedding = await generateQueryEmbedding(query);
 
     const searchOptions = {
-      limit: 20,
+      // AI-WHY: Fix #33 (017-refinement-phase-6) — Use recallK, not hardcoded 20
+      limit: recallK,
       useVector: channelFlags.useVector,
       useBm25: channelFlags.useBm25,
       useFts: channelFlags.useFts,

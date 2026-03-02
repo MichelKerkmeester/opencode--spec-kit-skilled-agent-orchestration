@@ -303,7 +303,9 @@ function generateMemoryHash(memory: MemoryInput): string {
     });
   }
 
-  return crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 16);
+  // AI-WHY: Fix #37 (017-refinement-phase-6) — Use 128-bit (32 hex chars) instead of
+  // 64-bit (16 hex chars) to reduce collision probability.
+  return crypto.createHash('sha256').update(hashInput).digest('hex').slice(0, 32);
 }
 
 /* ---------------------------------------------------------------

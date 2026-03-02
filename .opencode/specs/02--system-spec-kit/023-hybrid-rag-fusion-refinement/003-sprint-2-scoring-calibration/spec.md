@@ -26,8 +26,8 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete (Conditional Proceed) |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 3 of 8 |
 | **Predecessor** | ../001-sprint-0-measurement-foundation/ (direct dependency — Sprint 1 is a parallel sibling, not a predecessor) |
 | **Successor** | ../004-sprint-3-query-intelligence/ |
@@ -256,8 +256,8 @@ where M is the number of memories in the folder. The damping factor `1/sqrt(M+1)
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 - **Predecessor**: See `../001-sprint-0-measurement-foundation/` (direct dependency — Sprint 1 is a parallel sibling)
 
 ---

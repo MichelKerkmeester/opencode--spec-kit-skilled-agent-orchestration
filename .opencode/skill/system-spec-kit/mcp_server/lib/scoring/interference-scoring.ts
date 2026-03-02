@@ -149,7 +149,10 @@ export function computeInterferenceScore(
  */
 export function computeInterferenceScoresBatch(
   database: Database.Database,
-  memoryIds: number[]
+  memoryIds: number[],
+  // AI-WHY: Fix #12 (017-refinement-phase-6) — Threshold was hardcoded to
+  // INTERFERENCE_SIMILARITY_THRESHOLD. Now configurable for testing/tuning.
+  threshold: number = INTERFERENCE_SIMILARITY_THRESHOLD
 ): Map<number, number> {
   const results = new Map<number, number>();
 
@@ -219,7 +222,7 @@ export function computeInterferenceScoresBatch(
         if (!siblingText) continue;
 
         const similarity = computeTextSimilarity(targetText, siblingText);
-        if (similarity >= INTERFERENCE_SIMILARITY_THRESHOLD) {
+        if (similarity >= threshold) {
           count++;
         }
       }

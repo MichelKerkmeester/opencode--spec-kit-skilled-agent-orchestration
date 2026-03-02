@@ -36,6 +36,7 @@ const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
 // ---------------------------------------------------------------------------
 
 let lastEdgeCount: number = -1;
+let lastDebounceHash: string = '';
 let computedThisSession: boolean = false;
 
 /**
@@ -309,15 +310,18 @@ export function detectCommunitiesLouvain(
  */
 export function detectCommunities(db: Database.Database): Map<string, number> {
   try {
-    // --- Debounce: check edge count ----------------------------------------
-    const edgeCountRow = db
-      .prepare("SELECT COUNT(*) AS cnt FROM causal_edges")
-      .get() as { cnt: number } | undefined;
-    const currentEdgeCount = edgeCountRow?.cnt ?? 0;
+    // AI-WHY: Fix #27 (017-refinement-phase-6) — Replace edge-count-only debounce
+    // with count:maxId hash. Edge count alone can't detect deletions followed by
+    // insertions that maintain the same count.
+    const edgeStatsRow = db
+      .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId FROM causal_edges")
+      .get() as { cnt: number; maxId: number | null } | undefined;
+    const currentEdgeCount = edgeStatsRow?.cnt ?? 0;
+    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}`;
 
     if (
       computedThisSession &&
-      currentEdgeCount === lastEdgeCount
+      currentDebounceHash === lastDebounceHash
     ) {
       // Graph unchanged and already computed — return stored assignments
       return loadStoredAssignments(db);
@@ -338,6 +342,7 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
 
     // --- Update debounce state -----------------------------------------------
     lastEdgeCount = currentEdgeCount;
+    lastDebounceHash = currentDebounceHash;
     computedThisSession = true;
 
     return finalResult;

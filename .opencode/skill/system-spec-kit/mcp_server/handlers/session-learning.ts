@@ -332,9 +332,13 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
 
   const now = new Date().toISOString();
 
+  // AI-WHY: Fix #35 (017-refinement-phase-6) — Allow re-correction by accepting
+  // both 'preflight' (first postflight) and 'complete' (re-posted postflight) records.
   const preflightRecord = database.prepare(`
     SELECT * FROM session_learning
-    WHERE spec_folder = ? AND task_id = ? AND phase = 'preflight'
+    WHERE spec_folder = ? AND task_id = ? AND phase IN ('preflight', 'complete')
+    ORDER BY CASE phase WHEN 'preflight' THEN 0 ELSE 1 END
+    LIMIT 1
   `).get(spec_folder, taskId) as PreflightRecord | undefined;
 
   if (!preflightRecord) {

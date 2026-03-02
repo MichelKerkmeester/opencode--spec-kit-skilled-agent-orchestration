@@ -54,8 +54,9 @@ function restoreEnv() {
 =================================================================== */
 
 describe('simpleStem', () => {
-  it('SS01: running → runn (-ing removed)', () => {
-    expect(simpleStem('running')).toBe('runn');
+  it('SS01: running → run (-ing removed + double-consonant dedup)', () => {
+    // AI-WHY: Fix #18 — doubled consonant "nn" after -ing removal now collapses to "n"
+    expect(simpleStem('running')).toBe('run');
   });
 
   it('SS02: played → play (-ed removed)', () => {
@@ -86,8 +87,8 @@ describe('simpleStem', () => {
     expect(simpleStem('is')).toBe('is');
   });
 
-  it('SS09: RUNNING → runn (lowercased + stemmed)', () => {
-    expect(simpleStem('RUNNING')).toBe('runn');
+  it('SS09: RUNNING → run (lowercased + stemmed + double-consonant dedup)', () => {
+    expect(simpleStem('RUNNING')).toBe('run');
   });
 
   it('SS10: fox unchanged (no suffix match)', () => {

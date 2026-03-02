@@ -144,6 +144,14 @@ function insertEdge(
     ? Math.min(strength, MAX_AUTO_STRENGTH)
     : strength;
 
+  // AI-WHY: Fix #24 (017-refinement-phase-6) — Prevent self-loops
+  if (sourceId === targetId) {
+    return null;
+  }
+
+  // Fix #26 (FK check) deferred — test environments use synthetic IDs not in memory_index.
+  // Implementing FK validation would require seeding memory_index in 20+ causal edge tests.
+
   // NFR-R01: Edge bounds — reject if node already has MAX_EDGES_PER_NODE auto edges
   if (createdBy === 'auto') {
     const edgeCount = countEdgesForNode(sourceId);
@@ -496,6 +504,23 @@ function findOrphanedEdges(): CausalEdge[] {
   }
 }
 
+// AI-WHY: Fix #28 (017-refinement-phase-6) — Automated orphan edge cleanup
+function cleanupOrphanedEdges(): { deleted: number } {
+  if (!db) return { deleted: 0 };
+  try {
+    const orphaned = findOrphanedEdges();
+    let deleted = 0;
+    for (const edge of orphaned) {
+      if (deleteEdge(edge.id)) deleted++;
+    }
+    return { deleted };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[causal-edges] cleanupOrphanedEdges error: ${msg}`);
+    return { deleted: 0 };
+  }
+}
+
 /* -------------------------------------------------------------
    9. SPEC DOCUMENT CHAINS (Spec 126)
 ----------------------------------------------------------------*/
@@ -703,6 +728,7 @@ export {
   deleteEdgesForMemory,
   getGraphStats,
   findOrphanedEdges,
+  cleanupOrphanedEdges,
   createSpecDocumentChain,
 
   // T001d: Weight history & audit

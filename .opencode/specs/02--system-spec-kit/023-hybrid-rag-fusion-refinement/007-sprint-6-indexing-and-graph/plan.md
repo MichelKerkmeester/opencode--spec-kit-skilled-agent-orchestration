@@ -285,7 +285,7 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

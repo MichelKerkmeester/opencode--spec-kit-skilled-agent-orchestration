@@ -8,7 +8,7 @@
 // when SPECKIT_EVAL_LOGGING is not set to "true".
 // ---------------------------------------------------------------
 
-import { initEvalDb } from './eval-db';
+import { initEvalDb, getEvalDb } from './eval-db';
 
 /* ---------------------------------------------------------------
    1. FEATURE FLAG
@@ -30,7 +30,9 @@ function isEvalLoggingEnabled(): boolean {
    provides global uniqueness.
 --------------------------------------------------------------- */
 
+// AI-WHY: Fix #34 (017-refinement-phase-6) — Initialize from DB MAX to survive restarts
 let _evalRunCounter = 0;
+let _evalRunCounterInitialized = false;
 
 /**
  * Generate a new eval_run_id for a single search invocation.
@@ -42,6 +44,19 @@ let _evalRunCounter = 0;
  */
 function generateEvalRunId(): number {
   if (!isEvalLoggingEnabled()) return 0;
+  // Lazy init from DB on first call to survive server restarts
+  if (!_evalRunCounterInitialized) {
+    _evalRunCounterInitialized = true;
+    try {
+      const db = getEvalDb?.();
+      if (db) {
+        const row = db.prepare('SELECT MAX(eval_run_id) as maxId FROM eval_channel_results').get() as { maxId: number | null } | undefined;
+        if (row?.maxId && row.maxId > _evalRunCounter) {
+          _evalRunCounter = row.maxId;
+        }
+      }
+    } catch { /* DB may not have eval tables yet — start from 0 */ }
+  }
   return ++_evalRunCounter;
 }
 

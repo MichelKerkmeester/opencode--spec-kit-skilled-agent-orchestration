@@ -240,7 +240,7 @@ Phase 6 (PI-A3) ─── (independent, no blockers from Phase 5)
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 - **Predecessor Plan**: See `../001-sprint-0-measurement-foundation/plan.md`
 
 ---

@@ -26,8 +26,8 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | In Progress |
 | **Created** | 2026-03-01 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 9 of 10 |
 | **Predecessor** | ../008-sprint-7-long-horizon/ |
 | **Successor** | ../010-comprehensive-remediation/ |

@@ -1929,8 +1929,14 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         typeof e === 'string' ? e : e.message
       ).join('; ');
 
+      // AI-WHY: Fix #23 (017-refinement-phase-6) — Use the actual error code from the
+      // first validation error instead of hardcoding ANCHOR_FORMAT_INVALID.
+      const firstError = preflightResult.errors[0];
+      const errorCode = (typeof firstError === 'object' && firstError?.code)
+        ? firstError.code
+        : preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID;
       throw new preflight.PreflightError(
-        preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID,
+        errorCode,
         `Pre-flight validation failed: ${errorMessages}`,
         {
           errors: preflightResult.errors,

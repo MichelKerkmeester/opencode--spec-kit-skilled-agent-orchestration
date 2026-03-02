@@ -456,9 +456,11 @@ describe('T017-G2: Normalization Method — RRF + Composite Score', () => {
     const applied = intentClassifier.applyIntentWeights(results, 'understand');
     const score = applied[0].intentAdjustedScore as number;
 
-    // understand: similarity=0.5, importance=0.3
-    // score = (100/100) * 0.5 + 1.0 * 0.3 = 0.5 + 0.3 = 0.8
-    expect(score).toBeCloseTo(0.8, 2);
+    // understand: similarity=0.5, importance=0.3, recency=0.2
+    // AI-WHY: Fix #5 (017-refinement-phase-6) — recency now included in score.
+    // Single result with no timestamp defaults recency to 0.5.
+    // score = (100/100) * 0.5 + 1.0 * 0.3 + 0.5 * 0.2 = 0.5 + 0.3 + 0.1 = 0.9
+    expect(score).toBeCloseTo(0.9, 2);
   });
 
   it('channel weight normalization does not require sum-to-1', () => {

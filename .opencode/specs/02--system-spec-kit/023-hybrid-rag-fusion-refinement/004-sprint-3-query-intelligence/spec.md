@@ -26,8 +26,8 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete (5 PASS / 2 Conditional) |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 4 of 8 |
 | **Predecessor** | ../002-sprint-1-graph-signal-activation/, ../003-sprint-2-scoring-calibration/ |
 | **Successor** | ../005-sprint-4-feedback-and-quality/ |
@@ -252,8 +252,8 @@ Transition thresholds: top result similarity < 0.4 OR result count < 3 triggers 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

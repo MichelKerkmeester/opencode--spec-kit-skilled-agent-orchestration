@@ -44,6 +44,28 @@ export interface PipelineRow extends Record<string, unknown> {
 }
 
 /**
+ * Shared score resolution function — canonical fallback chain for deriving the
+ * "best available score" from a PipelineRow. Used by Stage 2, Stage 3, and any
+ * code needing a consistent effective score.
+ *
+ * AI-WHY: Fix #11 (017-refinement-phase-6) — Previously Stage 2 and Stage 3 had
+ * separate implementations with different fallback orders and clamping. This shared
+ * function uses the correct chain: intentAdjustedScore → rrfScore → score → similarity/100,
+ * all clamped to [0,1] with isFinite guards.
+ */
+export function resolveEffectiveScore(row: PipelineRow): number {
+  if (typeof row.intentAdjustedScore === 'number' && Number.isFinite(row.intentAdjustedScore))
+    return Math.max(0, Math.min(1, row.intentAdjustedScore));
+  if (typeof row.rrfScore === 'number' && Number.isFinite(row.rrfScore))
+    return Math.max(0, Math.min(1, row.rrfScore));
+  if (typeof row.score === 'number' && Number.isFinite(row.score))
+    return Math.max(0, Math.min(1, row.score));
+  if (typeof row.similarity === 'number' && Number.isFinite(row.similarity))
+    return Math.max(0, Math.min(1, row.similarity / 100));
+  return 0;
+}
+
+/**
  * Stage 4 read-only row — compile-time enforcement that Stage 4 cannot modify scores.
  * OQ-S5-001 CLOSED: Primary enforcement via TypeScript read-only type guards.
  * All score-related fields are Readonly to prevent mutation in Stage 4.
@@ -158,6 +180,7 @@ export interface Stage1Output {
     searchType: string;
     channelCount: number;
     candidateCount: number;
+    constitutionalInjected: number;
     durationMs: number;
   };
 }
@@ -223,13 +246,14 @@ export interface Stage4Input {
   /** Results with read-only score fields — Stage 4 cannot modify scores */
   results: Stage4ReadonlyRow[];
   config: PipelineConfig;
+  /** Fix #15: Stage 1 metadata passed through for constitutional count */
+  stage1Metadata?: { constitutionalInjected?: number };
 }
 
 export interface Stage4Output {
   final: Stage4ReadonlyRow[];
   metadata: {
     stateFiltered: number;
-    sessionDeduped: number;
     constitutionalInjected: number;
     evidenceGapDetected: boolean;
     durationMs: number;

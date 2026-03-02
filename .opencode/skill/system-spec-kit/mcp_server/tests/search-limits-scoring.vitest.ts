@@ -216,11 +216,14 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     });
 
     it('T211-HI2: Length penalty applied even when reranking is off', () => {
-      const handlerSrc = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'handlers', 'memory-search.ts'),
+      // AI-WHY: Legacy applyCrossEncoderReranking (which contained calculateLengthPenalty)
+      // was removed in 017-refinement-phase-6. Length penalty is now handled by the V2
+      // pipeline's Stage 3 cross-encoder module. Verify the cross-encoder module instead.
+      const ceSrc = fs.readFileSync(
+        path.join(PROJECT_ROOT, 'lib', 'search', 'cross-encoder.ts'),
         'utf8'
       );
-      expect(handlerSrc).toContain('calculateLengthPenalty');
+      expect(ceSrc).toContain('calculateLengthPenalty');
     });
 
     it('T211-HI3: rerankResults conditionally applies length penalty', () => {
@@ -231,12 +234,15 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       expect(ceSrc).toContain('shouldApplyLengthPenalty');
     });
 
-    it('T211-HI4: rerankMetadata reports length_penalty_applied', () => {
-      const handlerSrc = fs.readFileSync(
-        path.join(PROJECT_ROOT, 'handlers', 'memory-search.ts'),
+    it('T211-HI4: rerankMetadata reports length penalty configuration', () => {
+      // AI-WHY: Legacy applyCrossEncoderReranking (which used snake_case length_penalty_applied)
+      // was removed in 017-refinement-phase-6. The V2 pipeline's Stage 3 passes length penalty
+      // config via applyLengthPenalty. Verify the pipeline stage instead.
+      const stage3Src = fs.readFileSync(
+        path.join(PROJECT_ROOT, 'lib', 'search', 'pipeline', 'stage3-rerank.ts'),
         'utf8'
       );
-      expect(handlerSrc).toContain('length_penalty_applied');
+      expect(stage3Src).toContain('applyLengthPenalty');
     });
   });
 });

@@ -242,11 +242,13 @@ function filterChainByRelations(
 async function handleMemoryDriftWhy(args: DriftWhyArgs): Promise<MCPResponse> {
   const {
     memoryId,
-    maxDepth = 3,
+    maxDepth: rawMaxDepth = 3,
     direction = 'both',
     relations = null,
     includeMemoryDetails = true
   } = args;
+  // AI-WHY: Fix #25 (017-refinement-phase-6) — Clamp maxDepth to [1, 10] server-side
+  const maxDepth = Math.min(Math.max(1, Math.floor(rawMaxDepth)), 10);
 
   const startTime = Date.now();
 

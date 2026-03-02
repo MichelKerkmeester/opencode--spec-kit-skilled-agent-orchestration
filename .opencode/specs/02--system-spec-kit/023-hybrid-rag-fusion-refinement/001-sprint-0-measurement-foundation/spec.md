@@ -26,8 +26,8 @@ contextType: "implementation"
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 1 of 8 |
 | **Predecessor** | None (first phase) |
 | **Successor** | ../002-sprint-1-graph-signal-activation/ |
@@ -249,8 +249,8 @@ Bounded quality loop after embedding generation: verify (cosine self-similarity 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

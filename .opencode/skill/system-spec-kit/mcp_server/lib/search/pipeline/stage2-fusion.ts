@@ -45,6 +45,7 @@
 
 import type Database from 'better-sqlite3';
 
+import { resolveEffectiveScore } from './types';
 import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, ArtifactRoutingConfig } from './types';
 
 import * as sessionBoost from '../session-boost';
@@ -145,22 +146,12 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
 // ── Internal helpers ──
 
 /**
- * Resolve the primary numeric score from a pipeline row, checking
- * `score`, `rrfScore`, and `similarity` (normalised to 0–1) in
- * precedence order. Returns 0 when none are present.
+ * AI-WHY: Fix #11 (017-refinement-phase-6) — Replaced with shared resolveEffectiveScore()
+ * from types.ts. The shared function uses the correct fallback chain:
+ * intentAdjustedScore → rrfScore → score → similarity/100, all clamped to [0,1].
+ * This alias ensures all call sites use the shared implementation.
  */
-function resolveBaseScore(row: PipelineRow): number {
-  if (typeof row.score === 'number' && Number.isFinite(row.score)) {
-    return row.score;
-  }
-  if (typeof row.rrfScore === 'number' && Number.isFinite(row.rrfScore)) {
-    return row.rrfScore;
-  }
-  if (typeof row.similarity === 'number' && Number.isFinite(row.similarity)) {
-    return row.similarity / 100;
-  }
-  return 0;
-}
+const resolveBaseScore = resolveEffectiveScore;
 
 /**
  * Write an FSRS strengthening update for a single memory access.

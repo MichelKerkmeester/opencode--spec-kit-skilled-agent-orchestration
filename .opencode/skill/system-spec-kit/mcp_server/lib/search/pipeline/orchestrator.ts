@@ -56,6 +56,8 @@ export async function executePipeline(config: PipelineConfig): Promise<PipelineR
   const stage4Result = await executeStage4({
     results: stage3Result.reranked as Stage4ReadonlyRow[],
     config,
+    // Fix #15: Pass Stage 1 constitutional count through to Stage 4 output
+    stage1Metadata: { constitutionalInjected: stage1Result.metadata.constitutionalInjected },
   });
 
   return {

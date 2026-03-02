@@ -339,10 +339,16 @@ INTENT_BOOSTERS = {
     "strict": ("sk-code--opencode", 0.5),
 
     # ─────────────────────────────────────────────────────────────────
-    # MCP-GEMINI-CLI: Cross-AI orchestration via Gemini CLI
+    # CLI-GEMINI: Cross-AI orchestration via Gemini CLI
     # ─────────────────────────────────────────────────────────────────
-    "gemini": ("mcp-gemini-cli", 2.0),
-    "grounding": ("mcp-gemini-cli", 1.0),
+    "gemini": ("cli-gemini", 2.0),
+    "grounding": ("cli-gemini", 1.0),
+
+    # ─────────────────────────────────────────────────────────────────────────────────
+    # CLI-CODEX: Cross-AI orchestration via OpenAI Codex CLI
+    # ─────────────────────────────────────────────────────────────────────────────────
+    "codex": ("cli-codex", 2.0),
+    "openai-cli": ("cli-codex", 1.5),
 
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
@@ -410,9 +416,9 @@ MULTI_SKILL_BOOSTERS = {
     "generate": [("sk-doc-visual", 0.4)],
     "table": [("sk-doc-visual", 0.3)],
     "review": [("sk-code--review", 0.8), ("sk-doc-visual", 0.3)],
-    "delegate": [("mcp-gemini-cli", 0.5)],
-    "opinion": [("mcp-gemini-cli", 0.3), ("sk-code--review", 0.2)],
-    "validate": [("mcp-gemini-cli", 0.2), ("sk-code--review", 0.3)],
+    "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5)],
+    "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("sk-code--review", 0.2)],
+    "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("sk-code--review", 0.3)],
     "improve": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
     "enhance": [("sk-prompt-improver", 0.8)],
     "refine": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
@@ -460,18 +466,28 @@ PHRASE_INTENT_BOOSTERS = {
     ".codex/skills/sk-doc-visual": [("sk-doc-visual", 2.8)],
     ".opencode/skill/sk-doc-visual": [("sk-doc-visual", 2.8)],
     # --- Gemini CLI cross-AI orchestration ---
-    "use gemini": [("mcp-gemini-cli", 2.5)],
-    "gemini cli": [("mcp-gemini-cli", 2.5)],
-    "gemini agent": [("mcp-gemini-cli", 2.0)],
-    "google search grounding": [("mcp-gemini-cli", 2.0)],
-    "second opinion": [("mcp-gemini-cli", 1.5)],
-    "cross-ai validation": [("mcp-gemini-cli", 2.0)],
-    "cross-ai review": [("mcp-gemini-cli", 2.0), ("sk-code--review", 0.4)],
-    "codebase investigator": [("mcp-gemini-cli", 2.0)],
-    "delegate to gemini": [("mcp-gemini-cli", 2.5)],
-    "mcp-gemini-cli": [("mcp-gemini-cli", 2.8)],
-    "/mcp-gemini-cli": [("mcp-gemini-cli", 2.8)],
-    ".opencode/skill/mcp-gemini-cli": [("mcp-gemini-cli", 3.0)],
+    "use gemini": [("cli-gemini", 2.5)],
+    "gemini cli": [("cli-gemini", 2.5)],
+    "gemini agent": [("cli-gemini", 2.0)],
+    "google search grounding": [("cli-gemini", 2.0)],
+    "second opinion": [("cli-gemini", 1.5)],
+    "cross-ai validation": [("cli-gemini", 2.0)],
+    "cross-ai review": [("cli-gemini", 2.0), ("sk-code--review", 0.4)],
+    "codebase investigator": [("cli-gemini", 2.0)],
+    "delegate to gemini": [("cli-gemini", 2.5)],
+    "cli-gemini": [("cli-gemini", 2.8)],
+    "/cli-gemini": [("cli-gemini", 2.8)],
+    ".opencode/skill/cli-gemini": [("cli-gemini", 3.0)],
+    # --- Codex CLI cross-AI orchestration ---
+    "use codex": [("cli-codex", 2.5)],
+    "codex cli": [("cli-codex", 2.5)],
+    "codex agent": [("cli-codex", 2.0)],
+    "codex review": [("cli-codex", 2.0), ("sk-code--review", 0.4)],
+    "cross-ai codex": [("cli-codex", 2.0)],
+    "delegate to codex": [("cli-codex", 2.5)],
+    "cli-codex": [("cli-codex", 2.8)],
+    "/cli-codex": [("cli-codex", 2.8)],
+    ".opencode/skill/cli-codex": [("cli-codex", 3.0)],
     # --- Prompt Improver: prompt engineering and enhancement ---
     "improve my prompt": [("sk-prompt-improver", 2.5)],
     "improve this prompt": [("sk-prompt-improver", 2.5)],

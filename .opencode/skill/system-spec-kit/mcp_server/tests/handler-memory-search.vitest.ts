@@ -163,12 +163,6 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
   });
 });
 
-describe('Sprint-0 intent weighting guard', () => {
-  it('does not apply post-search intent weighting for hybrid path', () => {
-    const { shouldApplyPostSearchIntentWeighting } = handler.__testables;
-    expect(typeof shouldApplyPostSearchIntentWeighting).toBe('function');
-
-    expect(shouldApplyPostSearchIntentWeighting('hybrid', { similarity: 1, importance: 1, recency: 1 }, 'fix_bug')).toBe(false);
-    expect(shouldApplyPostSearchIntentWeighting('vector', { similarity: 1, importance: 1, recency: 1 }, 'fix_bug')).toBe(true);
-  });
-});
+// AI-WHY: Sprint-0 intent weighting guard tests removed — shouldApplyPostSearchIntentWeighting
+// was part of legacy V1 pipeline, removed in 017-refinement-phase-6 Sprint 1.
+// V2 pipeline handles intent weighting in Stage 2.

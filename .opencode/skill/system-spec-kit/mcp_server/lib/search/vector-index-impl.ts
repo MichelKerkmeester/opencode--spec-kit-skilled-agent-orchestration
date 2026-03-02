@@ -2287,6 +2287,22 @@ function delete_memory(id: number) {
       }
     }
 
+    // AI-WHY: Fix #20 (017-refinement-phase-6) — Clean all ancillary records that
+    // reference this memory. Without this, orphaned records accumulate over time.
+    const ancillaryTables = [
+      'DELETE FROM degree_snapshots WHERE memory_id = ?',
+      'DELETE FROM community_assignments WHERE memory_id = ?',
+      'DELETE FROM memory_summaries WHERE memory_id = ?',
+      'DELETE FROM memory_entities WHERE memory_id = ?',
+    ];
+    for (const sql of ancillaryTables) {
+      try { database.prepare(sql).run(id); } catch { /* table may not exist */ }
+    }
+    // Causal edges reference source_id/target_id, not memory_id
+    try {
+      database.prepare('DELETE FROM causal_edges WHERE source_id = ? OR target_id = ?').run(id, id);
+    } catch { /* table may not exist */ }
+
     const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
 
     clear_search_cache();
@@ -2295,7 +2311,17 @@ function delete_memory(id: number) {
     return result.changes > 0;
   });
 
-  return delete_memory_tx();
+  // AI-WHY: Fix #21 (017-refinement-phase-6) — Clean BM25 index after successful delete.
+  const deleted = delete_memory_tx();
+  if (deleted) {
+    try {
+      const { isBm25Enabled, getIndex } = require('./bm25-index');
+      if (isBm25Enabled()) {
+        getIndex().removeDocument(String(id));
+      }
+    } catch { /* BM25 cleanup is best-effort */ }
+  }
+  return deleted;
 }
 
 function delete_memory_by_path(spec_folder: string, file_path: string, anchor_id: string | null = null) {
@@ -3824,14 +3850,57 @@ function verify_integrity(options: { autoClean?: boolean } = {}) {
 
   const orphaned_files = check_orphaned_files();
 
+  // AI-WHY: Detect orphaned chunks — child records whose parent has been deleted
+  // but the chunk wasn't cascaded (e.g., if FK enforcement was off during deletion).
+  // 017-refinement-phase-6 Sprint 1, P0-4.
+  const find_orphaned_chunks = () => {
+    try {
+      return database.prepare(`
+        SELECT id, parent_id, chunk_index, chunk_label
+        FROM memory_index
+        WHERE parent_id IS NOT NULL
+          AND NOT EXISTS (
+            SELECT 1 FROM memory_index parent
+            WHERE parent.id = memory_index.parent_id
+              AND parent.parent_id IS NULL
+          )
+      `).all() as Array<{ id: number; parent_id: number; chunk_index: number; chunk_label: string | null }>;
+    } catch (e: unknown) {
+      console.warn('[vector-index] Could not query orphaned chunks:', get_error_message(e));
+      return [];
+    }
+  };
+
+  const orphaned_chunks = find_orphaned_chunks();
+  let cleaned_chunks = 0;
+
+  if (autoClean && orphaned_chunks.length > 0) {
+    logger.info(`Auto-cleaning ${orphaned_chunks.length} orphaned chunks...`);
+    const delete_chunk_stmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
+    for (const chunk of orphaned_chunks) {
+      try {
+        delete_chunk_stmt.run(chunk.id);
+        cleaned_chunks++;
+      } catch (e: unknown) {
+        console.warn(`[vector-index] Failed to clean orphaned chunk ${chunk.id}: ${get_error_message(e)}`);
+      }
+    }
+    logger.info(`Cleaned ${cleaned_chunks} orphaned chunks`);
+  }
+
+  const effective_orphaned_chunks = autoClean ? orphaned_chunks.length - cleaned_chunks : orphaned_chunks.length;
+
   return {
     totalMemories: total_memories,
     totalVectors: total_vectors,
     orphanedVectors: autoClean ? orphaned_vectors - cleaned_vectors : orphaned_vectors,
     missingVectors: missing_vectors,
     orphanedFiles: orphaned_files,
-    isConsistent: (orphaned_vectors - cleaned_vectors) === 0 && missing_vectors === 0 && orphaned_files.length === 0,
-    cleaned: autoClean && cleaned_vectors > 0 ? { vectors: cleaned_vectors } : undefined
+    orphanedChunks: effective_orphaned_chunks,
+    isConsistent: (orphaned_vectors - cleaned_vectors) === 0 && missing_vectors === 0 && orphaned_files.length === 0 && effective_orphaned_chunks === 0,
+    cleaned: (autoClean && (cleaned_vectors > 0 || cleaned_chunks > 0))
+      ? { vectors: cleaned_vectors, chunks: cleaned_chunks }
+      : undefined
   };
 }
 

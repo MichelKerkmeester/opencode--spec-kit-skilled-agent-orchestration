@@ -487,12 +487,38 @@ function applyIntentWeights(
 ): Array<Record<string, unknown>> {
   const weights = getIntentWeights(intent);
 
-  return results.map(r => ({
-    ...r,
-    intentAdjustedScore:
-      (((r.similarity as number) || 0) / 100) * weights.similarity +
-      ((r.importance_weight as number) || 0.5) * weights.importance,
-  })).sort((a, b) =>
+  // AI-WHY: Fix #5 (017-refinement-phase-6) — recency was previously ignored.
+  // Parse timestamps, min/max normalize to [0,1], apply weights.recency.
+  // Use reduce instead of Math.max(...) to avoid stack overflow on large arrays.
+  let minTs = Infinity;
+  let maxTs = -Infinity;
+  const timestamps: number[] = results.map(r => {
+    const dateStr = r.created_at as string | undefined || r.last_accessed as string | undefined || r.last_review as string | undefined;
+    if (!dateStr) return 0;
+    const ts = typeof dateStr === 'string' ? new Date(dateStr).getTime() : Number(dateStr);
+    const valid = Number.isFinite(ts) ? ts : 0;
+    if (valid > 0) {
+      if (valid < minTs) minTs = valid;
+      if (valid > maxTs) maxTs = valid;
+    }
+    return valid;
+  });
+  if (!Number.isFinite(minTs)) minTs = 0;
+  if (!Number.isFinite(maxTs) || maxTs <= 0) maxTs = 1;
+  const tsRange = maxTs - minTs;
+
+  return results.map((r, i) => {
+    const recencyRaw = timestamps[i] > 0 && tsRange > 0
+      ? (timestamps[i] - minTs) / tsRange
+      : 0.5; // default mid-range if no timestamp
+    return {
+      ...r,
+      intentAdjustedScore:
+        (((r.similarity as number) || 0) / 100) * weights.similarity +
+        ((r.importance_weight as number) || 0.5) * weights.importance +
+        recencyRaw * weights.recency,
+    };
+  }).sort((a, b) =>
     ((b.intentAdjustedScore as number) || 0) - ((a.intentAdjustedScore as number) || 0)
   );
 }

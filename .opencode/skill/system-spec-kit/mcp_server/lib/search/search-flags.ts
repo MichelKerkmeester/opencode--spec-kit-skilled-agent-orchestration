@@ -94,11 +94,12 @@ export function isNegativeFeedbackEnabled(): boolean {
 
 /**
  * R6: 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant).
- * Default: TRUE (graduated). Set SPECKIT_PIPELINE_V2=false to disable.
- * When OFF, the legacy postSearchPipeline path is used (backward compatible).
+ * @deprecated Always returns true. Legacy V1 pipeline was removed in
+ * 017-refinement-phase-6 Sprint 1. The SPECKIT_PIPELINE_V2 env var is
+ * still accepted but ignored — V2 is the only code path.
  */
 export function isPipelineV2Enabled(): boolean {
-  return isFeatureEnabled('SPECKIT_PIPELINE_V2');
+  return true;
 }
 
 /**

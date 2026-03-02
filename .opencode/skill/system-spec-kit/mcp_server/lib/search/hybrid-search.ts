@@ -250,12 +250,22 @@ function bm25Search(
     const index = getIndex();
     const results = index.search(query, limit);
 
+    // AI-WHY: Fix #8 (017-refinement-phase-6) — BM25 document IDs are stringified
+    // numeric memory IDs (e.g., "42"), not spec folder paths. The old filter compared
+    // r.id against specFolder which never matched. Use DB lookup to resolve spec_folder.
     return results
       .filter((r: { id: string }) => {
         if (!specFolder) return true;
-        // P3-05: Use exact match or proper path-prefix with separator awareness
-        // IDs may be "<specFolder>/<rest>" or exactly "<specFolder>"
-        return r.id === specFolder || r.id.startsWith(specFolder + '/');
+        if (!db) return true;
+        try {
+          const row = db.prepare(
+            'SELECT spec_folder FROM memory_index WHERE id = ?'
+          ).get(Number(r.id)) as { spec_folder: string | null } | undefined;
+          if (!row?.spec_folder) return false;
+          return row.spec_folder === specFolder || row.spec_folder.startsWith(specFolder + '/');
+        } catch {
+          return true; // Fail open on DB errors
+        }
       })
       .map((r: { id: string; score: number }) => ({
         ...r,

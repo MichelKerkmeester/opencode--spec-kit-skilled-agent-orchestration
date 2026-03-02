@@ -193,6 +193,9 @@ function reset(): void {
    6. EXIT HANDLERS
 ----------------------------------------------------------------*/
 
+// AI-WHY: Fix #38 (017-refinement-phase-6) — Store handler refs for process.removeListener()
+let _exitFlushHandler: (() => void) | null = null;
+
 function initExitHandlers(): void {
   if (exitHandlersInstalled) return;
 
@@ -219,6 +222,7 @@ function initExitHandlers(): void {
     }
   };
 
+  _exitFlushHandler = flush;
   process.on('beforeExit', flush);
   process.on('SIGTERM', flush);
   process.on('SIGINT', flush);
@@ -227,7 +231,12 @@ function initExitHandlers(): void {
 }
 
 function cleanupExitHandlers(): void {
-  // Cannot easily remove listeners, but mark as cleaned up
+  if (_exitFlushHandler) {
+    process.removeListener('beforeExit', _exitFlushHandler);
+    process.removeListener('SIGTERM', _exitFlushHandler);
+    process.removeListener('SIGINT', _exitFlushHandler);
+    _exitFlushHandler = null;
+  }
   exitHandlersInstalled = false;
 }
 

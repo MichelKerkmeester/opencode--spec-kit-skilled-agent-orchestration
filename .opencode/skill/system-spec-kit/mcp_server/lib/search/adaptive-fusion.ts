@@ -127,6 +127,17 @@ export function getAdaptiveWeights(
         break;
       // No default adjustment needed
     }
+
+    // AI-WHY: Fix #10 (017-refinement-phase-6) — Normalize core weights (semantic +
+    // keyword + recency) to sum 1.0 after doc-type adjustments. Only applied when
+    // doc-type shifts alter the balance. graphWeight and graphCausalBias are separate
+    // boosts, not part of the weighted average.
+    const coreSum = weights.semanticWeight + weights.keywordWeight + weights.recencyWeight;
+    if (coreSum > 0 && Math.abs(coreSum - 1.0) > 0.001) {
+      weights.semanticWeight /= coreSum;
+      weights.keywordWeight /= coreSum;
+      weights.recencyWeight /= coreSum;
+    }
   }
 
   return weights;

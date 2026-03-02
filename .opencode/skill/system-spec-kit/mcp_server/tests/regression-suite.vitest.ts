@@ -1,9 +1,9 @@
 // @ts-nocheck
 // ---------------------------------------------------------------
-// TEST: Regression Suite (013-post-review-remediation)
+// TEST: Regression Suite (013-refinement-phase-2)
 // ---------------------------------------------------------------
 // Guards against regressions for the P0/P1 fixes applied in
-// 013-post-review-remediation. Each describe block maps to a
+// 013-refinement-phase-2. Each describe block maps to a
 // specific finding from the 25-agent comprehensive review.
 //
 // Covers:
@@ -278,7 +278,7 @@ describe('Regression Suite (013 fixes)', () => {
 // This regression suite was authored by Opus-I (TCB 10+).
 //
 // Audit trail:
-// - Spec reference: 013-post-review-remediation (P0-1, P1-6, P1-7, P1-9)
+// - Spec reference: 013-refinement-phase-2 (P0-1, P1-6, P1-7, P1-9)
 // - Each test maps 1:1 to a specific finding from the 25-agent review
 // - Tests are intentionally lightweight (invariant checks, not full integration)
 // - No mocks of production dependencies — tests use real modules or source analysis

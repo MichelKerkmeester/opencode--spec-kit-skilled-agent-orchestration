@@ -322,7 +322,9 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         effectiveRetrievability *= turnDecayFactor;
 
         if (wmEntry) {
-          effectiveRetrievability = Math.min(effectiveRetrievability, wmEntry.attentionScore * turnDecayFactor);
+          // AI-WHY: Fix #30 (017-refinement-phase-6) — WM already applies its own decay.
+          // Multiplying by turnDecayFactor again causes double-decay.
+          effectiveRetrievability = Math.min(effectiveRetrievability, wmEntry.attentionScore);
         }
 
         attentionScore = effectiveRetrievability;

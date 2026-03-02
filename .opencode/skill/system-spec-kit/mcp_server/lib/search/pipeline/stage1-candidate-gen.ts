@@ -155,6 +155,9 @@ async function buildDeepQueryVariants(query: string): Promise<string[]> {
 export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   const startTime = Date.now();
   const { config } = input;
+  // Fix #16: Cache embedding at function scope for reuse in constitutional injection
+  let cachedEmbedding: Float32Array | number[] | null = null;
+  let constitutionalInjectedCount = 0;
 
   const {
     query,
@@ -214,8 +217,11 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   else if (searchType === 'hybrid') {
     // Resolve the query embedding — either pre-computed in config or generate now
+    // AI-WHY: Fix #16 — Cache this embedding for reuse in constitutional injection path
+    // to avoid a duplicate generateQueryEmbedding() call.
     const effectiveEmbedding: Float32Array | number[] | null =
       queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
+    cachedEmbedding = effectiveEmbedding;
 
     if (!effectiveEmbedding) {
       throw new Error('[stage1-candidate-gen] Failed to generate embedding for hybrid search query');
@@ -462,9 +468,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
 
     if (existingConstitutional.length === 0) {
-      // Resolve embedding for constitutional fetch
+      // AI-WHY: Fix #16 — Reuse cached embedding instead of generating a new one
       const constitutionalEmbedding: Float32Array | number[] | null =
-        queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
+        cachedEmbedding ?? queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
 
       if (constitutionalEmbedding) {
         const constitutionalResults = vectorIndex.vectorSearch(
@@ -484,6 +490,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         );
 
         candidates = [...candidates, ...uniqueConstitutional];
+        constitutionalInjectedCount = uniqueConstitutional.length;
       }
     }
   } else if (!includeConstitutional) {
@@ -584,6 +591,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       searchType,
       channelCount,
       candidateCount: candidates.length,
+      constitutionalInjected: constitutionalInjectedCount,
       durationMs,
     },
   };

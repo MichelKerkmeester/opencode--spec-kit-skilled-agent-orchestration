@@ -346,14 +346,17 @@ function fuseResultsCrossVariant(
   }
 
   // Step 3: Merge all variant results, accumulating RRF scores
+  // AI-WHY: Fix #9 (017-refinement-phase-6) — Each per-variant result already includes
+  // an intra-variant convergence bonus from fuseResultsMulti(). When merging, we subtract
+  // that per-variant bonus so Step 4's cross-variant bonus doesn't double-count.
   const mergedMap = new Map<string, FusionResult>();
   for (const variantResults of perVariantFused) {
     for (const result of variantResults) {
       const key = canonicalRrfId(result.id);
       const existing = mergedMap.get(key);
       if (existing) {
-        // Accumulate scores from additional variants
-        existing.rrfScore += result.rrfScore;
+        // Accumulate base RRF scores (minus per-variant convergence bonus to avoid double-count)
+        existing.rrfScore += (result.rrfScore - result.convergenceBonus);
         for (const src of result.sources) {
           if (!existing.sources.includes(src)) {
             existing.sources.push(src);
@@ -368,12 +371,12 @@ function fuseResultsCrossVariant(
     }
   }
 
-  // Step 4: Apply cross-variant convergence bonus
+  // Step 4: Apply cross-variant convergence bonus (clean, no double-counting)
   for (const [id, result] of mergedMap) {
     const variantCount = variantAppearances.get(id)?.size || 1;
     if (variantCount >= 2) {
       const crossVariantBonus = convergenceBonusPerVariant * (variantCount - 1);
-      result.convergenceBonus += crossVariantBonus;
+      result.convergenceBonus = crossVariantBonus;
       result.rrfScore += crossVariantBonus;
     }
   }

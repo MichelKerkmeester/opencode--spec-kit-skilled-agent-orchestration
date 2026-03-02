@@ -214,7 +214,7 @@ Sprint 7 is the final sprint. No successor sprint exists. Items deferred from Sp
 - **Plan**: See `plan.md`
 - **Tasks**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../tasks.md`
+- **Parent Tasks**: See `../000-feature-overview/tasks.md`
 - **Decisions**: See `scratch/w2-a9-decisions.md`
 - **Flag Audit**: See `scratch/w2-a10-flag-audit.md`
 - **R5 Analysis**: See `scratch/w1-a5-r5-decision.md`

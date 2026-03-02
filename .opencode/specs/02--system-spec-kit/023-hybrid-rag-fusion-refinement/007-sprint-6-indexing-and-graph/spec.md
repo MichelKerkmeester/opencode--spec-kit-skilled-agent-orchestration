@@ -27,8 +27,8 @@ contextType: "implementation"
 | **Priority** | P2 |
 | **Status** | Draft |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
+| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 7 of 8 |
 | **Predecessor** | ../006-sprint-5-pipeline-refactor/ |
 | **Successor** | ../008-sprint-7-long-horizon/ |
@@ -282,8 +282,8 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../spec.md`
-- **Parent Plan**: See `../plan.md`
+- **Parent Spec**: See `../000-feature-overview/spec.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md`
 
 ---
 

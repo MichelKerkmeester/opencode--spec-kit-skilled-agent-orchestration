@@ -78,6 +78,15 @@ function simpleStem(word: string): string {
   else if (stem.endsWith('ly') && stem.length > 4) stem = stem.slice(0, -2);
   else if (stem.endsWith('es') && stem.length > 4) stem = stem.slice(0, -2);
   else if (stem.endsWith('s') && stem.length > 3) stem = stem.slice(0, -1);
+  // AI-WHY: Fix #18 (017-refinement-phase-6) — Handle doubled consonants after suffix
+  // removal. "running"→"runn"→"run", "stopped"→"stopp"→"stop". Check if last two chars
+  // are identical consonants and deduplicate.
+  if (stem.length >= 3) {
+    const last = stem[stem.length - 1];
+    if (last === stem[stem.length - 2] && !/[aeiou]/.test(last)) {
+      stem = stem.slice(0, -1);
+    }
+  }
   return stem;
 }
 

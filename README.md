@@ -549,7 +549,8 @@ Skills are domain expertise on demand. The AI loads the right skill and already 
 | `sk-doc-visual`       | Docs          | HTML visual artifacts, Mermaid diagrams, Chart.js dashboards                           |
 | `sk-git`              | Git           | Commits, branches, PRs, worktrees                                                      |
 | `sk-prompt-improver`  | Prompt Eng    | Prompt optimization with 7 frameworks and CLEAR scoring                                |
-| `mcp-gemini-cli`      | Cross-AI     | Gemini CLI orchestration for web research, code review, architecture analysis          |
+| `cli-gemini`          | Cross-AI     | Gemini CLI orchestration for web research, code review, architecture analysis          |
+| `cli-codex`           | Cross-AI     | Codex CLI orchestrator for OpenAI cross-AI tasks                                       |
 
 ### Auto-Detection
 
@@ -1022,7 +1023,7 @@ A: Minimal. SQLite databases are compact. A project with 100+ memories typically
 | [Workflows: Doc Visual](.opencode/changelog/12--sk-doc-visual/)              | 4 files   |
 | [MCP: Code Mode](.opencode/changelog/13--mcp-code-mode/)                     | 8 files   |
 | [MCP: Chrome DevTools](.opencode/changelog/14--mcp-chrome-devtools/)         | 5 files   |
-| [MCP: Gemini CLI](.opencode/changelog/15--mcp-gemini-cli/)                   | 1 file    |
+| [CLI: Gemini](.opencode/changelog/17--cli-gemini/)                            | 1 file    |
 | [MCP: Figma](.opencode/changelog/16--mcp-figma/)                             | 6 files   |
 
 ### External Resources

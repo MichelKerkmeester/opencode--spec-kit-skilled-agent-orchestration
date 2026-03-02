@@ -150,7 +150,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -175,7 +175,7 @@ Child tasks use local IDs; parent `../tasks.md` uses global IDs. Cross-reference
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../tasks.md`
+- **Parent Tasks**: See `../000-feature-overview/tasks.md`
 - **Predecessor Tasks**: See `../001-sprint-0-measurement-foundation/tasks.md`
 <!-- /ANCHOR:cross-refs -->
 
