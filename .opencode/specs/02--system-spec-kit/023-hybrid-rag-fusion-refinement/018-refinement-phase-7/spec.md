@@ -1,15 +1,15 @@
 ---
-title: "Feature Specification: Review Audit of Hybrid RAG Fusion Refinement [template:level_2/spec.md]"
+title: "Feature Specification: Refinement Phase 7 — Cross-AI Review Audit [template:level_2/spec.md]"
 description: "Comprehensive review of all work in 023-hybrid-rag-fusion-refinement for bugs, misalignments, script location correctness, documentation accuracy, and code standards compliance."
 trigger_phrases:
-  - "review audit"
+  - "refinement phase 7"
   - "script location"
   - "hybrid rag review"
   - "code standards check"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Feature Specification: Review Audit of Hybrid RAG Fusion Refinement
+# Feature Specification: Refinement Phase 7 — Cross-AI Review Audit
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->

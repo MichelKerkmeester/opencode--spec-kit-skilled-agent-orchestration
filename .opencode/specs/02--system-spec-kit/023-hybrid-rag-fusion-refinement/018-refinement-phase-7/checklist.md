@@ -1,8 +1,8 @@
 ---
-title: "Checklist: Review Audit"
+title: "Checklist: Refinement Phase 7 — Cross-AI Review Audit"
 description: "Verification checklist for audit completeness"
 ---
-# Checklist: Review Audit
+# Checklist: Refinement Phase 7 — Cross-AI Review Audit
 
 <!-- SPECKIT_LEVEL: 2 -->
 

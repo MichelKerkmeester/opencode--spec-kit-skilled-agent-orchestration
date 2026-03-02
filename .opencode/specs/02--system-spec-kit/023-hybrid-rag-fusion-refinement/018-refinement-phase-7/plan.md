@@ -1,8 +1,8 @@
 ---
-title: "Implementation Plan: Review Audit"
+title: "Implementation Plan: Refinement Phase 7 — Cross-AI Review Audit"
 description: "Wave-based multi-model audit using cli-gemini, cli-codex, and Opus sub-agents"
 ---
-# Implementation Plan: Review Audit
+# Implementation Plan: Refinement Phase 7
 
 <!-- SPECKIT_LEVEL: 2 -->
 

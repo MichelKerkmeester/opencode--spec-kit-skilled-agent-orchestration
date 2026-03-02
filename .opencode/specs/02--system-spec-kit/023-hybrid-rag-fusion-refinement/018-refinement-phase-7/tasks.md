@@ -1,8 +1,8 @@
 ---
-title: "Tasks: Review Audit"
+title: "Tasks: Refinement Phase 7 — Cross-AI Review Audit"
 description: "Tracking review findings and their resolution status"
 ---
-# Tasks: Review Audit
+# Tasks: Refinement Phase 7 — Cross-AI Review Audit
 
 <!-- SPECKIT_LEVEL: 2 -->
 
