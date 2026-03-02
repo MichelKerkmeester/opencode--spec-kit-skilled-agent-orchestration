@@ -57,10 +57,10 @@ trigger_phrases:
 | Component | Count | Description |
 |-----------|-------|-------------|
 | Stop Words | 106 | Filtered from queries for cleaner matching |
-| Synonym Mappings | 86 | Expand user intent to technical terms |
-| Intent Boosters | 129 | Direct keyword-to-skill mappings |
-| Multi-Skill Boosters | 29 | Ambiguous keywords mapped to multiple skills |
-| Phrase Intent Boosters | 14 | Multi-token phrases with high-signal routing boosts |
+| Synonym Mappings | 89 | Expand user intent to technical terms |
+| Intent Boosters | 152 | Direct keyword-to-skill mappings |
+| Multi-Skill Boosters | 36 | Ambiguous keywords mapped to multiple skills |
+| Phrase Intent Boosters | 73 | Multi-token phrases with high-signal routing boosts |
 | Command Bridges | 2 | Slash commands exposed as pseudo-skills |
 
 ### Requirements

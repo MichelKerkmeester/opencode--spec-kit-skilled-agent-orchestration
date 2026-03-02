@@ -38,7 +38,7 @@ This folder now has 13 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 13           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 14           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
 
