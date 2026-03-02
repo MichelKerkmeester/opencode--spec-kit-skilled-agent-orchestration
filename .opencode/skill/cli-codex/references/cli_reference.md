@@ -115,11 +115,12 @@ codex logout
 | `--oss` | | (none) | Use local open-source models via Ollama instead of OpenAI |
 | `--search` | | (none) | Enable live web browsing during the session |
 
-### Session & Agent Flags
+### Profile & Review Flags
 
 | Flag | Description |
 |------|-------------|
-| `--agent <name>` | Invoke a named agent from `.codex/agents/<name>.toml` |
+| `--profile <name>` / `-p` | Load a named configuration profile from `[profiles.<name>]` in config.toml |
+| `exec review` | Built-in subcommand for git diff-aware code review (supports `--commit`, `--base`, `--uncommitted`) |
 
 ### Approval Mode Values
 
@@ -388,26 +389,41 @@ You are a specialized agent for [purpose].
 """
 ```
 
-### Invocation with Named Agent
+### Invocation with Named Profile
 
 ```bash
-# Named agent via --agent flag
-codex exec --agent review "Review src/auth.ts for security issues" --model gpt-5.3-codex
+# Named profile via -p / --profile flag
+codex exec -p review "Review src/auth.ts for security issues" --model gpt-5.3-codex
 
-# In interactive mode
-codex --agent debug
+# Git diff review via built-in subcommand
+codex exec review "Focus on security issues" --commit HEAD --model gpt-5.3-codex
+codex review --uncommitted  # top-level shorthand
+
+# Profile with sandbox override
+codex exec -p debug "Fix the auth bug" -s workspace-write --model gpt-5.3-codex
 ```
 
 ### Profile Configuration
 
-Named profiles allow switching between preset configurations:
+Named profiles allow switching between preset configurations. Profiles are defined in `config.toml` under `[profiles.<name>]` sections:
+
+```toml
+# ~/.codex/config.toml or .codex/config.toml
+[profiles.review]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.debug]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+```
 
 ```bash
 # Use a named profile
-codex exec "Audit this codebase" --profile security --model gpt-5.3-codex
+codex exec -p review "Audit this codebase" --model gpt-5.3-codex
 ```
 
-Profiles are defined in `config.toml` or as separate profile files in `.codex/profiles/`.
+**Note:** The `.codex/agents/*.toml` files define agent personas for the interactive multi-agent TUI feature (requires `multi_agent` feature flag). They are NOT loaded by the `-p` profile flag. To use agent-specific settings in `codex exec`, define corresponding `[profiles.<name>]` sections in config.toml.
 
 <!-- /ANCHOR:configuration-files -->
 

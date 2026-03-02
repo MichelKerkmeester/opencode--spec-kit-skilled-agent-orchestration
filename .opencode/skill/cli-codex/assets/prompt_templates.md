@@ -455,8 +455,8 @@ codex exec "Based on best practices for [topic], implement [description] in @./[
 Use the ultra-think agent for multi-strategy planning.
 
 ```bash
-codex exec --agent ultra-think "Plan the implementation of [feature]. Generate and evaluate at least 3 different approaches. Score each on: correctness, maintainability, performance, and implementation effort. Recommend the best approach with detailed rationale." \
-  --model gpt-5.3-codex --sandbox read-only
+codex exec -p ultra-think "Plan the implementation of [feature]. Generate and evaluate at least 3 different approaches. Score each on: correctness, maintainability, performance, and implementation effort. Recommend the best approach with detailed rationale." \
+  --model gpt-5.3-codex -s read-only
 ```
 
 ---

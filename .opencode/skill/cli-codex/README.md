@@ -92,8 +92,8 @@ codex exec "Create a rate limiter middleware for Express" --model gpt-5.3-codex 
 # Web research
 codex exec "What's new in Next.js 15?" --model gpt-5.3-codex --search --sandbox read-only
 
-# Agent-delegated task
-codex exec --agent research "Research latest Express.js security advisories" --model gpt-5.3-codex --search
+# Profile-based task delegation
+codex exec -p research "Research latest Express.js security advisories" --model gpt-5.3-codex --search
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -226,9 +226,9 @@ codex exec "Search the web for the latest security advisories for Express.js as 
   --model gpt-5.3-codex --search --sandbox read-only
 ```
 
-**Agent-delegated architecture analysis:**
+**Profile-based architecture analysis:**
 ```bash
-codex exec --agent context "Map all authentication-related files and their dependencies" \
+codex exec -p context "Map all authentication-related files and their dependencies" \
   --model gpt-5.3-codex
 ```
 

@@ -287,20 +287,23 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 ### Codex Agent Delegation
 
-Claude Code acts as the **conductor** that delegates tasks to Codex CLI. Codex CLI has specialized agents in `.codex/agents/` that provide domain expertise. Route tasks to the right agent for best results.
+Claude Code acts as the **conductor** that delegates tasks to Codex CLI. Codex CLI has specialized agent profiles configured in `config.toml` that provide domain expertise. Route tasks to the right profile for best results.
 
-**Agent Routing Table:**
+**Agent Profile Routing Table:**
 
-| Task Type | Codex Agent | Invocation Pattern |
-|-----------|------------|-------------------|
-| Code review / security audit | context (read-only) then review | `codex exec --agent review "Review @./src/auth.ts for security issues" --model gpt-5.3-codex` |
-| Architecture exploration | context | `codex exec --agent context "Analyze the architecture of this project" --model gpt-5.3-codex` |
-| Technical research | research | `codex exec --agent research "Research latest Express.js security advisories" --model gpt-5.3-codex --search` |
-| Documentation generation | write | `codex exec --agent write "Generate README for this project" --model gpt-5.3-codex` |
-| Fresh-perspective debugging | debug | `codex exec --agent debug "Debug this error: [error]" --model gpt-5.3-codex` |
-| Multi-strategy planning | ultra-think | `codex exec --agent ultra-think "Plan the authentication redesign" --model gpt-5.3-codex` |
+| Task Type | Profile | Invocation Pattern |
+|-----------|---------|-------------------|
+| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.3-codex` |
+| Git diff review | (built-in) | `codex exec review "Focus on security" --commit HEAD` |
+| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.3-codex` |
+| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.3-codex --search` |
+| Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.3-codex` |
+| Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.3-codex` |
+| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.3-codex` |
 
-**Orchestration principle**: Claude Code decides WHAT to delegate. The Codex agent TOML definition shapes HOW Codex processes it (sandbox mode, reasoning effort, developer instructions). Claude Code always validates and integrates the output.
+**Profile setup**: Profiles are defined in `.codex/config.toml` under `[profiles.<name>]` sections. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
+
+**Orchestration principle**: Claude Code decides WHAT to delegate. The profile configuration shapes HOW Codex processes it (sandbox mode, reasoning effort). Claude Code always validates and integrates the output.
 
 See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster and invocation patterns.
 
@@ -327,6 +330,9 @@ codex exec "Create [description] with [features]. Output complete file." --model
 # Code review (read-only — no file modifications)
 codex exec "Review @./src/auth.ts for security vulnerabilities" --model gpt-5.3-codex --sandbox read-only
 
+# Git diff review (built-in review subcommand)
+codex exec review "Focus on security vulnerabilities" --commit HEAD --model gpt-5.3-codex
+
 # Web research (live web browsing enabled)
 codex exec "What's new in [topic]? Search the web for current information." --model gpt-5.3-codex --search --sandbox read-only
 
@@ -339,8 +345,8 @@ codex exec "[long task]" --model gpt-5.3-codex --sandbox workspace-write 2>&1 &
 # With image input
 codex exec "Implement this UI component based on the attached design" --model gpt-5.3-codex -i design.png --sandbox workspace-write
 
-# Agent-delegated task
-codex exec --agent research "Research latest security advisories for Express.js" --model gpt-5.3-codex --search
+# Profile-based task delegation
+codex exec -p research "Research latest security advisories for Express.js" --model gpt-5.3-codex --search
 ```
 
 ### Error Handling
@@ -383,8 +389,9 @@ codex exec --agent research "Research latest security advisories for Express.js"
 6. **ALWAYS use `gpt-5.3-codex`** as the model — it is the only supported model
    - Invoke with `--model gpt-5.3-codex` on every `codex exec` call
 
-7. **ALWAYS route to the appropriate Codex agent** when the task matches an agent specialization
-   - See agent routing table in Section 3
+7. **ALWAYS route to the appropriate Codex profile** when the task matches a profile specialization
+   - Use `-p <profile>` flag; see profile routing table in Section 3
+   - Use `codex exec review` (built-in subcommand) for git diff reviews
 
 ### ❌ NEVER
 
@@ -459,7 +466,7 @@ codex exec --agent research "Research latest security advisories for Express.js"
 - Output captured, validated, and integrated appropriately
 - No security vulnerabilities introduced from generated code
 - Rate limits handled gracefully (retry or fallback strategy)
-- Appropriate Codex agent routed for specialized tasks
+- Appropriate Codex profile routed for specialized tasks
 - Sandbox level matched to task type (read-only for review, workspace-write for generation)
 
 ### Skill Quality

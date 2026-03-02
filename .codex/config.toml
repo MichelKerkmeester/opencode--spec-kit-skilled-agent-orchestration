@@ -28,6 +28,32 @@ UTCP_CONFIG_FILE = ".utcp_config.toml"
 multi_agent = true
 child_agents_md = true
 
+# Profiles for codex exec -p <name> (non-interactive delegation)
+[profiles.context]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.debug]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.research]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.review]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.ultra-think]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.write]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+# Agents for interactive multi-agent TUI (codex with multi_agent feature)
 [agents.context]
 description = "Production context retrieval specialist (memory-first, read-only)."
 config_file = "agents/context.toml"

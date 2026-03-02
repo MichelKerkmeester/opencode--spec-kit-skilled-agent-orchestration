@@ -41,15 +41,15 @@ Documents the 9 specialized Codex agents in `.codex/agents/` and how Claude Code
 ```
 Claude Code (CONDUCTOR)
   |
-  |-- Analyzes task, selects Codex agent
-  |-- Constructs codex CLI command with --agent flag
+  |-- Analyzes task, selects Codex profile
+  |-- Constructs codex CLI command with -p <profile> flag
   |-- Delegates via Bash tool
   |
   v
 Codex CLI (EXECUTOR)
   |
-  |-- Routes to specified agent (loads .codex/agents/<name>.toml)
-  |-- Agent executes with its sandbox mode and instructions
+  |-- Loads profile config (sandbox mode, model, reasoning effort)
+  |-- Executes with profile settings
   |-- Returns output to stdout
   |
   v
@@ -62,32 +62,65 @@ Claude Code (CONDUCTOR)
 
 ### Invocation Pattern
 
-Codex CLI agents are invoked using the `--agent` flag with the agent name. Agent definitions live in `.codex/agents/` as TOML files.
+Codex CLI tasks are routed using the `-p` / `--profile` flag with a profile name. Profiles are defined in `config.toml` under `[profiles.<name>]` sections. For git diff reviews, use the built-in `codex exec review` subcommand.
 
 ```bash
-# Basic agent delegation via exec (non-interactive)
-codex exec --agent review "Review src/auth.ts for security issues" \
+# Profile-based delegation via exec (non-interactive)
+codex exec -p review "Review src/auth.ts for security issues" \
   --model gpt-5.3-codex
 
+# Git diff review via built-in subcommand
+codex exec review "Focus on security" --commit HEAD --model gpt-5.3-codex
+
 # With sandbox override
-codex exec --agent debug --sandbox workspace-write \
+codex exec -p debug -s workspace-write \
   "Fix the authentication bug in src/auth/handler.ts" --model gpt-5.3-codex
 
 # With file context
-codex exec --agent review "@src/utils.ts @src/auth.ts Review these files for bugs" \
+codex exec -p review "@src/utils.ts @src/auth.ts Review these files for bugs" \
   --model gpt-5.3-codex
 
 # With web search enabled
-codex exec --agent research --search \
+codex exec -p research --search \
   "Research and document the best OAuth2 PKCE patterns" --model gpt-5.3-codex
 
 # Capture output to file
-codex exec --agent context "Map the dependency graph for src/" \
+codex exec -p context "Map the dependency graph for src/" \
   --model gpt-5.3-codex > /tmp/context-map.txt
-
-# Interactive TUI with a named agent
-codex --agent debug
 ```
+
+### Profile Setup
+
+Profiles must be defined in `config.toml`. Example configuration matching the agent catalog below:
+
+```toml
+# .codex/config.toml
+[profiles.review]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.context]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+
+[profiles.debug]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.research]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.write]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.ultra-think]
+sandbox_mode = "read-only"
+model_reasoning_effort = "xhigh"
+```
+
+**Note:** The `.codex/agents/*.toml` files define agent personas for the interactive multi-agent TUI feature. They are NOT loaded by the `-p` profile flag. To use agent-specific behavior in `codex exec`, define corresponding `[profiles.<name>]` sections in config.toml and include context in the prompt.
 
 ### Conductor Rules
 
@@ -120,9 +153,9 @@ codex --agent debug
 **Delegate when:** You need a second perspective on codebase structure, want to cross-validate your understanding, or need comprehensive exploration of an unfamiliar area.
 
 ```bash
-codex exec --agent context \
+codex exec -p context \
   "Map all authentication-related files and their dependencies" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/context-map.txt
+  -s read-only --model gpt-5.3-codex > /tmp/context-map.txt
 ```
 
 ---
@@ -143,7 +176,7 @@ codex exec --agent context \
 **Methodology:** Observe -> Analyze -> Hypothesize -> Fix (4-phase)
 
 ```bash
-codex exec --agent debug --sandbox workspace-write \
+codex exec -p debug -s workspace-write \
   "Login returns 401 despite valid credentials. Error at src/auth/handler.ts:45. Prior attempts: verified token expiry, checked DB connection, confirmed env vars." \
   --model gpt-5.3-codex
 ```
@@ -164,7 +197,7 @@ codex exec --agent debug --sandbox workspace-write \
 **Delegate when:** You need Codex to summarize its own session state or create continuation artifacts from a Codex-side workflow.
 
 ```bash
-codex exec --agent handover --sandbox workspace-write \
+codex exec -p handover -s workspace-write \
   "Create handover document for the authentication refactor in specs/042-auth-refactor/" \
   --model gpt-5.3-codex
 ```
@@ -187,9 +220,9 @@ codex exec --agent handover --sandbox workspace-write \
 **Note:** Avoid double-orchestration. If Claude Code is already decomposing tasks, delegate directly to leaf agents instead of routing through @orchestrate.
 
 ```bash
-codex exec --agent orchestrate \
+codex exec -p orchestrate \
   "Analyze this codebase: explore structure, review code quality, and produce a research document" \
-  --sandbox read-only --model gpt-5.3-codex
+  -s read-only --model gpt-5.3-codex
 ```
 
 ---
@@ -210,7 +243,7 @@ codex exec --agent orchestrate \
 **Unique capability:** `--search` flag enables real-time web browsing.
 
 ```bash
-codex exec --agent research --search --sandbox workspace-write \
+codex exec -p research --search -s workspace-write \
   "Research the latest Next.js 15 App Router migration patterns. Compare with current Remix approach in this codebase." \
   --model gpt-5.3-codex
 ```
@@ -231,9 +264,9 @@ codex exec --agent research --search --sandbox workspace-write \
 **Delegate when:** You want a second perspective on code quality, or need to validate Claude Code's own implementation from a different model's viewpoint.
 
 ```bash
-codex exec --agent review \
+codex exec -p review \
   "@src/auth/handler.ts @src/auth/middleware.ts Review these files for security vulnerabilities and code quality" \
-  --sandbox read-only --model gpt-5.3-codex > /tmp/review-output.txt
+  -s read-only --model gpt-5.3-codex > /tmp/review-output.txt
 ```
 
 ---
@@ -252,7 +285,7 @@ codex exec --agent review \
 **Delegate when:** You need Codex to create or update spec documentation following the CORE + ADDENDUM template architecture. Useful for parallel documentation generation.
 
 ```bash
-codex exec --agent speckit --sandbox workspace-write \
+codex exec -p speckit -s workspace-write \
   "Create Level 2 spec folder documentation for the authentication refactor at specs/042-auth-refactor/" \
   --model gpt-5.3-codex
 ```
@@ -273,7 +306,7 @@ codex exec --agent speckit --sandbox workspace-write \
 **Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Codex's architectural thinking with Claude Code's plan.
 
 ```bash
-codex exec --agent ultra-think --sandbox read-only \
+codex exec -p ultra-think -s read-only \
   "Design the caching strategy for this API. Consider Redis, in-memory, and CDN approaches." \
   --model gpt-5.3-codex > /tmp/ultra-think-output.txt
 ```
@@ -294,7 +327,7 @@ codex exec --agent ultra-think --sandbox read-only \
 **Delegate when:** You need documentation generated from a different model's perspective, or want Codex's web search capability to enrich documentation with external references.
 
 ```bash
-codex exec --agent write --sandbox workspace-write \
+codex exec -p write -s workspace-write \
   "Generate a comprehensive README.md for this project based on the codebase structure" \
   --model gpt-5.3-codex
 ```
@@ -350,11 +383,11 @@ codex exec --agent write --sandbox workspace-write \
 
 ```bash
 # Capture to file
-codex exec --agent review "@src/auth.ts Review for issues" \
+codex exec -p review "@src/auth.ts Review for issues" \
   --model gpt-5.3-codex > /tmp/review.txt
 
 # Capture to variable
-RESULT=$(codex exec --agent context "List all exported functions" \
+RESULT=$(codex exec -p context "List all exported functions" \
   --model gpt-5.3-codex)
 
 # Check result
@@ -369,7 +402,7 @@ fi
 
 ```bash
 # Ask for JSON in the prompt (no native --output flag)
-codex exec --agent review \
+codex exec -p review \
   "@src/auth.ts Review and return JSON: {score: number, issues: [{line, severity, description}]}" \
   --model gpt-5.3-codex > /tmp/review.json
 
@@ -382,7 +415,7 @@ jq '.issues[] | select(.severity == "critical")' /tmp/review.json
 | Scenario            | Detection                           | Recovery                                              |
 | ------------------- | ----------------------------------- | ----------------------------------------------------- |
 | Auth failure        | Non-zero exit, auth error in output | Re-run `codex login` or check `OPENAI_API_KEY`        |
-| Agent not found     | Error: agent TOML not found         | Verify agent name matches `.codex/agents/<name>.toml` |
+| Profile not found   | Error: profile not defined          | Verify profile name matches `[profiles.<name>]` in config.toml |
 | Sandbox restriction | Permission denied in output         | Upgrade sandbox mode or adjust task scope             |
 | Timeout / hung      | No output within expected time      | Simplify task scope; break into smaller steps         |
 | Low-quality output  | Claude Code validation fails        | Retry with refined prompt; use different agent        |
