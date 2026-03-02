@@ -1,0 +1,318 @@
+---
+name: cli-copilot
+description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
+allowed-tools: [Bash, Read, Glob, Grep]
+version: 1.0.0
+---
+
+<!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
+
+# GitHub Copilot CLI Orchestrator - Cross-AI Task Delegation
+
+Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Codex CLI, Claude Code, etc.) for tasks that benefit from its deep GitHub ecosystem integration, multi-model flexibility, autonomous autopilot mode, and cloud-delegated coding agents.
+
+**Core Principle**: The calling AI stays the conductor. Delegate to Copilot CLI for what it does best — collaborative planning, ecosystem-aware generation, and cloud-powered agent execution. Validate and integrate the output.
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## 1. WHEN TO USE
+
+### Activation Triggers
+
+**Collaborative Planning** - Use when:
+- Complex features require a dedicated planning phase before implementation
+- Architecture mapping needs "Explore" agent codebase analysis
+- Multi-step workflows benefit from Copilot's "Plan" mode logic
+- Cross-file dependency mapping is required for a large refactor
+
+**Cloud Delegation** - Use when:
+- Tasks benefit from GitHub's cloud-hosted coding agents (`/delegate` or `&prompt`)
+- Offloading heavy compute or complex reasoning to the cloud is preferred
+- Remote repository context is needed beyond the local workspace
+- Scaling execution beyond local machine resources
+
+**Versatile Generation** - Use when:
+- Code generation benefits from specific models (GPT-5.3-Codex, Claude 4.6, Gemini 3 Pro)
+- Rapid prototyping is needed using "Autopilot" for autonomous execution
+- Boilerplate or unit test generation needs to match repo-specific conventions
+- Multi-language support is required across a diverse stack
+
+**Code Review** - Use when:
+- GitHub-native perspective is needed for PR readiness
+- Cross-AI validation to catch blind spots using different underlying models
+- Security audits benefit from Copilot's specific training data
+- Quality gate verification before pushing to a remote
+
+**Agent-Delegated Tasks** - Use when:
+- Task matches specialized "Explore" or "Task" agents
+- Custom agent profiles (Markdown-based) are available for the project
+- Session continuity is required with persistent repo memory
+- MCP servers are used for extended tool capabilities
+
+### When NOT to Use
+
+- Simple, quick tasks where local execution is faster
+- When GitHub authentication is unavailable or expired
+- When already running inside a Copilot CLI session (to avoid nesting)
+- Real-time web search (use Gemini CLI or specialized search tools instead)
+- Tasks where precise diff-based surgical editing is the only requirement
+
+---
+
+<!-- /ANCHOR:when-to-use -->
+<!-- ANCHOR:smart-routing -->
+## 2. SMART ROUTING
+
+### Prerequisite Detection
+
+```bash
+# Verify Copilot CLI is available before routing
+command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
+
+# Check for active session/nesting if applicable
+# [ -n "$COPILOT_SESSION" ] && echo "ERROR: Already inside Copilot session."
+```
+
+### Phase Detection
+
+```text
+TASK CONTEXT
+    |
+    +- STEP 0: Verify copilot binary installed
+    +- STEP 1: Score intents (top-2 when ambiguity is small)
+    +- Phase 1: Construct prompt with model selection and --allow-all-tools
+    +- Phase 2: Execute via Bash tool (non-interactive -p flag)
+    +- Phase 3: Validate and integrate output
+```
+
+### Resource Domains
+
+The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_SIGNALS`.
+
+```text
+references/cli_reference.md          — CLI flags, commands, models, auth, config
+references/integration_patterns.md   — Cross-AI orchestration patterns
+references/copilot_tools.md           — Unique capabilities (Autopilot, Cloud, Models)
+references/agent_delegation.md       — Explore/Task agent routing and invocation
+assets/prompt_templates.md           — Copy-paste ready templates
+```
+
+### Resource Loading Levels
+
+| Level       | When to Load            | Resources                      |
+| ----------- | ----------------------- | ------------------------------ |
+| ALWAYS      | Every skill invocation  | `references/cli_reference.md`  |
+| CONDITIONAL | If intent signals match | Intent-mapped reference docs   |
+| ON_DEMAND   | Only on explicit request| Extended templates and patterns |
+
+### Smart Router Pseudocode
+
+```python
+from pathlib import Path
+
+SKILL_ROOT = Path(__file__).resolve().parent
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
+DEFAULT_RESOURCE = "references/cli_reference.md"
+
+INTENT_SIGNALS = {
+    "PLANNING":          {"weight": 4, "keywords": ["plan", "architecture", "explore", "dependency", "structure", "roadmap"]},
+    "CLOUD_DELEGATE":    {"weight": 4, "keywords": ["delegate", "cloud", "remote", "offload", "github agent", "&prompt"]},
+    "GENERATION":        {"weight": 4, "keywords": ["generate", "write", "create", "build", "autopilot", "autonomous", "code"]},
+    "REVIEW":            {"weight": 4, "keywords": ["review", "audit", "security", "pr", "quality", "second opinion"]},
+    "AGENT_DELEGATION":  {"weight": 4, "keywords": ["agent", "explore agent", "task agent", "custom agent", "mcp"]},
+    "TEMPLATES":         {"weight": 3, "keywords": ["template", "prompt", "how to ask", "copilot prompt"]},
+    "PATTERNS":          {"weight": 3, "keywords": ["pattern", "workflow", "orchestrate", "session", "memory"]},
+}
+
+RESOURCE_MAP = {
+    "PLANNING":          ["references/cli_reference.md", "references/copilot_tools.md"],
+    "CLOUD_DELEGATE":    ["references/cli_reference.md", "references/integration_patterns.md"],
+    "GENERATION":        ["references/cli_reference.md", "assets/prompt_templates.md"],
+    "REVIEW":            ["references/integration_patterns.md", "references/agent_delegation.md"],
+    "AGENT_DELEGATION":  ["references/agent_delegation.md", "references/integration_patterns.md"],
+    "TEMPLATES":         ["assets/prompt_templates.md", "references/cli_reference.md"],
+    "PATTERNS":          ["references/integration_patterns.md", "references/cli_reference.md"],
+}
+
+def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
+    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    if not ranked or ranked[0][1] <= 0:
+        return ["GENERATION"]  # zero-score fallback
+    selected = [ranked[0][0]]
+    if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
+        selected.append(ranked[1][0])
+    return selected[:max_intents]
+```
+
+---
+
+<!-- /ANCHOR:smart-routing -->
+<!-- ANCHOR:how-it-works -->
+## 3. HOW IT WORKS
+
+### Prerequisites
+
+Copilot CLI must be installed and authenticated:
+
+```bash
+# Verify installation
+command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
+
+# Authentication - OAuth flow
+copilot login
+
+# Authentication - Non-interactive (CI/CD or automation)
+export GH_TOKEN=your-github-pat
+```
+
+### Core Invocation Pattern
+
+All non-interactive Copilot CLI calls use the `-p` (prompt) flag:
+
+```bash
+copilot -p "prompt" --allow-all-tools 2>&1
+```
+
+| Flag / Option | Purpose |
+|---------------|---------|
+| `-p "prompt"` | Non-interactive mode — send prompt and get response |
+| `--allow-all-tools` | Enable Autopilot/Autonomous mode (no approval prompts) |
+| `/model <id>` | Mid-session or initial model selection |
+| `/delegate` | Push task to GitHub Cloud Coding Agent |
+| `&prompt` | Inline shorthand for cloud delegation |
+
+### Model Selection
+
+Copilot CLI supports 7+ models across 3 providers (GA Feb 2026):
+
+| Model | ID | Provider |
+|-------|----|----------|
+| **Claude 4.6 Opus** | `claude-opus-4.6` | Anthropic |
+| **Claude 4.6 Sonnet** | `claude-sonnet-4.6` | Anthropic |
+| **Claude 4.5 Haiku** | `claude-haiku-4.5` | Anthropic |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI |
+| **GPT-5 mini** | `gpt-5-mini` | OpenAI |
+| **GPT-4.1** | `gpt-4.1` | OpenAI |
+| **Gemini 3 Pro** | `gemini-3-pro` | Google |
+
+### Copilot CLI Agent Delegation
+
+The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
+
+| Task Type | Agent | Invocation Pattern |
+|-----------|-------|-------------------|
+| Codebase Exploration | `Explore` | `copilot -p "Explain the data flow in src/" --agent explore 2>&1` |
+| Task Execution | `Task` | `copilot -p "Refactor the login module" --agent task --allow-all-tools 2>&1` |
+| Cloud Delegation | Cloud | `copilot -p "/delegate Analyze this repo for security hot-spots" 2>&1` |
+| Autonomous Build | Autopilot | `copilot -p "Implement the feature in spec.md" --allow-all-tools 2>&1` |
+
+### Unique Copilot Capabilities
+
+| Capability | Purpose |
+|------------|---------|
+| Autopilot | Fully autonomous execution without approval prompts |
+| Repo Memory | Remembers conventions and prior decisions across sessions |
+| Cloud Delegation | Offloads tasks to GitHub's high-performance coding agents |
+| Multi-Model | Toggle between Anthropic, OpenAI, and Google models mid-session |
+| MCP Support | Connect to Model Context Protocol servers for external data |
+
+---
+
+<!-- /ANCHOR:how-it-works -->
+<!-- ANCHOR:rules -->
+## 4. RULES
+
+### ALWAYS
+
+1. **ALWAYS verify the `copilot` binary is installed** before invocation.
+2. **ALWAYS use the `-p` flag** for non-interactive execution from the calling AI.
+3. **ALWAYS include `--allow-all-tools`** when the task requires autonomous execution (Autopilot).
+4. **ALWAYS capture stderr** (`2>&1`) to ensure errors are surfaced to the conductor.
+5. **ALWAYS specify the model** if the task benefits from a specific provider's strength (e.g., Opus for reasoning).
+6. **ALWAYS validate output** against the local filesystem to ensure consistency.
+
+### NEVER
+
+1. **NEVER use interactive mode** (omit `-p`) as it will hang the conductor's shell.
+2. **NEVER expose `GH_TOKEN`** in logs or printed output.
+3. **NEVER assume Autopilot is perfect**; always verify the structural integrity of generated code.
+4. **NEVER ignore repository memory**; check for existing conventions before overriding.
+
+### ESCALATE IF
+
+1. **ESCALATE IF `copilot login` is required** (authentication failure).
+2. **ESCALATE IF a model conflict occurs** (requested model not available in current plan).
+3. **ESCALATE IF Autopilot hits a safety block** or tool execution failure that it cannot resolve.
+4. **ESCALATE IF cloud delegation times out** or returns a service error.
+
+---
+
+<!-- /ANCHOR:rules -->
+<!-- ANCHOR:references -->
+## 5. REFERENCES
+
+### Core References
+- [cli_reference.md](./references/cli_reference.md) - CLI flags, commands, model IDs, and auth config.
+- [agent_delegation.md](./references/agent_delegation.md) - Explore vs. Task agent details and custom agent creation.
+- [copilot_tools.md](./references/copilot_tools.md) - Deep dive into Autopilot, Repo Memory, and MCP integration.
+- [integration_patterns.md](./references/integration_patterns.md) - Orchestration patterns for multi-AI workflows.
+
+### Templates and Assets
+- [prompt_templates.md](./assets/prompt_templates.md) - Optimized prompts for planning, delegation, and generation.
+
+---
+
+<!-- /ANCHOR:references -->
+<!-- ANCHOR:success-criteria -->
+## 6. SUCCESS CRITERIA
+
+### Task Completion
+- Copilot CLI invoked successfully with the `-p` flag.
+- Autopilot executed the requested changes autonomously (if `--allow-all-tools` used).
+- Cloud delegation returned results from GitHub coding agents.
+- Repo-specific conventions were respected (Repo Memory).
+- All changes verified via local tests or syntax checks.
+
+### Skill Quality
+- Zero-score fallback correctly routes to `GENERATION`.
+- Proper model selection matched to task complexity.
+- Clear error handling for missing binary or auth issues.
+
+---
+
+<!-- /ANCHOR:success-criteria -->
+<!-- ANCHOR:integration-points -->
+## 7. INTEGRATION POINTS
+
+### Framework Integration
+This skill follows the [AGENTS.md](../../../AGENTS.md) orchestration protocol.
+
+### Tool Usage
+- **Bash**: Core tool for executing `copilot -p` commands.
+- **Read/Glob/Grep**: Used for validating Copilot's output and auditing changes.
+
+### Related Skills
+- **cli-claude-code**: Delegate to Claude Code for surgical diff-based edits.
+- **cli-gemini**: Delegate to Gemini for Google Search grounded research.
+- **sk-git**: Use Copilot to generate commit messages or review diffs.
+
+---
+
+<!-- /ANCHOR:integration-points -->
+<!-- ANCHOR:related-resources -->
+## 8. RELATED RESOURCES
+
+### Reference Files
+- `references/cli_reference.md`
+- `references/agent_delegation.md`
+- `references/copilot_tools.md`
+- `references/integration_patterns.md`
+
+### External
+- [GitHub Copilot CLI Documentation](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-cli)
+- [GitHub Models Directory](https://github.com/marketplace/models)
+
+---
+
+<!-- /ANCHOR:related-resources -->
