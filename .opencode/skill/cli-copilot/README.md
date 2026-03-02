@@ -1,4 +1,3 @@
-```markdown
 ---
 title: "cli-copilot"
 description: "GitHub Copilot CLI orchestrator for cross-AI task delegation via GitHub's Copilot CLI."
@@ -293,4 +292,3 @@ For detailed troubleshooting, see `references/cli_reference.md` Section 10.
 - **External** — [GitHub Copilot Documentation](https://docs.github.com/en/copilot) | [GitHub CLI Repository](https://github.com/github/copilot-cli)
 
 <!-- /ANCHOR:related -->
-```

@@ -54,7 +54,7 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Servers | 3 | Memory Engine, Code Mode, Sequential Thinking |
 | MCP Tools | 32 | 25 memory + 7 code mode |
 | Agents | 10 | 8 custom + 2 built-in (`@general`, `@explore`) |
-| Skills | 15 | Skill modules in `.opencode/skill/` |
+| Skills | 16 | Skill modules in `.opencode/skill/` |
 | Commands | 25 | `spec_kit`, `memory`, `create`, `visual_explainer`, `agent_router` |
 | Templates | 79 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 27 | Command execution YAML files |
@@ -74,7 +74,7 @@ Together, these systems enable context-aware development with traceability, hard
 ├── command/         — 25 slash commands for workflow automation (spec_kit, memory, create, visual_explainer)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
-├── skill/           — 15 domain expertise skill modules with bundled resources
+├── skill/           — 16 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for documentation and memory files
 ```
 
@@ -137,7 +137,9 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `cli-gemini` | Gemini CLI orchestration for cross-AI tasks, web research via Google Search, architecture analysis (v1.1) |
 | `cli-codex` | Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch (v1.0) |
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
+| `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.0) |
 | `sk-doc-visual` | Converts terminal output and technical concepts into styled HTML pages with diagrams and visualizations (v1.0) |
+| `sk-prompt-improver` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
 
 **Skill Structure:** Each skill contains `SKILL.md` (entry point), `references/` (documentation), `scripts/` (automation) and `assets/` (templates/checklists).
 

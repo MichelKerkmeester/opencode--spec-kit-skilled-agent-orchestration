@@ -34,11 +34,11 @@ trigger_phrases:
 
 The Skills Library contains the current skill set under `.opencode/skill/`. Skills load on demand through Gate 2 routing or explicit invocation.
 
-This folder now has 15 skill folders and one shared scripts folder:
+This folder now has 16 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 15           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 16           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
 
@@ -83,18 +83,20 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 
 ```text
 .opencode/skill/
+├── cli-claude-code/
+├── cli-codex/
+├── cli-copilot/
+├── cli-gemini/
 ├── mcp-chrome-devtools/
 ├── mcp-code-mode/
 ├── mcp-figma/
-├── cli-gemini/
-├── cli-codex/
-├── cli-claude-code/
 ├── scripts/
-├── sk-code/                # Baseline code workflow (optional by repo)
-├── sk-code--*/             # Overlay code workflow skills (repo-specific)
-├── sk-git/
+├── sk-code/                # Baseline code workflow skill
+├── sk-code--*/             # Overlay code workflow skills (optional by repo)
 ├── sk-doc/
 ├── sk-doc-visual/
+├── sk-git/
+├── sk-prompt-improver/
 ├── system-spec-kit/
 └── README.md
 ```
@@ -141,9 +143,17 @@ Portable code workflow contract:
 - Review flow: baseline + one overlay
 - Overlay examples: `sk-code--opencode` | `sk-code--web` | `sk-code--full-stack`
 
+#### `sk-code--review` (v1.0.0)
+
+Findings-first code review baseline with security/correctness minimums and baseline+overlay contract.
+
 #### `sk-git` (v1.0.8.0)
 
 Git workflows for workspace setup, clean commits and branch completion.
+
+#### `sk-prompt-improver` (v1.0.0)
+
+Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring.
 
 ### Documentation
 
@@ -181,6 +191,10 @@ Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel 
 
 Claude Code CLI orchestration enabling external AIs to invoke Anthropic's Claude Code for deep reasoning, code editing, structured output, agent delegation, and extended thinking.
 
+#### `cli-copilot` (v1.0.0)
+
+Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for multi-model tasks, cloud delegation, collaborative planning, autopilot execution, and repository memory.
+
 <!-- /ANCHOR:skills-catalog -->
 
 <!-- ANCHOR:skill-structure -->
@@ -209,6 +223,7 @@ Claude Code CLI orchestration enabling external AIs to invoke Anthropic's Claude
 | `cli-gemini`              | Yes           | Yes       | No         |
 | `cli-codex`               | Yes           | Yes       | No         |
 | `cli-claude-code`         | Yes           | Yes       | No         |
+| `cli-copilot`             | Yes           | Yes       | No         |
 | `system-spec-kit`         | Yes           | Yes       | Yes        |
 
 <!-- /ANCHOR:skill-structure -->
@@ -282,5 +297,6 @@ Skill folders:
 - [cli-gemini](cli-gemini/)
 - [cli-codex](cli-codex/)
 - [cli-claude-code](cli-claude-code/)
+- [cli-copilot](cli-copilot/)
 
 <!-- /ANCHOR:related -->

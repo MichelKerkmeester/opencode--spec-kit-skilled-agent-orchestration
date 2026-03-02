@@ -357,6 +357,13 @@ INTENT_BOOSTERS = {
     "claude-cli": ("cli-claude-code", 1.5),
     "extended-thinking": ("cli-claude-code", 1.0),
 
+    # ─────────────────────────────────────────────────────────────────────────────────
+    # CLI-COPILOT: Cross-AI orchestration via GitHub Copilot CLI
+    # ─────────────────────────────────────────────────────────────────────────────────
+    "copilot": ("cli-copilot", 2.0),
+    "copilot-cli": ("cli-copilot", 1.5),
+    "cloud-delegation": ("cli-copilot", 1.0),
+
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
     # ─────────────────────────────────────────────────────────────────
@@ -423,9 +430,9 @@ MULTI_SKILL_BOOSTERS = {
     "generate": [("sk-doc-visual", 0.4)],
     "table": [("sk-doc-visual", 0.3)],
     "review": [("sk-code--review", 0.8), ("sk-doc-visual", 0.3)],
-    "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5), ("cli-claude-code", 0.5)],
-    "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("cli-claude-code", 0.3), ("sk-code--review", 0.2)],
-    "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("cli-claude-code", 0.2), ("sk-code--review", 0.3)],
+    "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5), ("cli-claude-code", 0.5), ("cli-copilot", 0.5)],
+    "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("cli-claude-code", 0.3), ("cli-copilot", 0.3), ("sk-code--review", 0.2)],
+    "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("cli-claude-code", 0.2), ("cli-copilot", 0.2), ("sk-code--review", 0.3)],
     "improve": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
     "enhance": [("sk-prompt-improver", 0.8)],
     "refine": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
@@ -506,6 +513,17 @@ PHRASE_INTENT_BOOSTERS = {
     "cli-claude-code": [("cli-claude-code", 2.8)],
     "/cli-claude-code": [("cli-claude-code", 2.8)],
     ".opencode/skill/cli-claude-code": [("cli-claude-code", 3.0)],
+    # --- Copilot CLI cross-AI orchestration ---
+    "use copilot": [("cli-copilot", 2.5)],
+    "copilot cli": [("cli-copilot", 2.5)],
+    "delegate to copilot": [("cli-copilot", 2.5)],
+    "cloud delegation": [("cli-copilot", 2.0)],
+    "copilot plan mode": [("cli-copilot", 2.0)],
+    "copilot agent": [("cli-copilot", 2.0)],
+    "copilot autopilot": [("cli-copilot", 2.0)],
+    "cli-copilot": [("cli-copilot", 2.8)],
+    "/cli-copilot": [("cli-copilot", 2.8)],
+    ".opencode/skill/cli-copilot": [("cli-copilot", 3.0)],
     # --- Prompt Improver: prompt engineering and enhancement ---
     "improve my prompt": [("sk-prompt-improver", 2.5)],
     "improve this prompt": [("sk-prompt-improver", 2.5)],

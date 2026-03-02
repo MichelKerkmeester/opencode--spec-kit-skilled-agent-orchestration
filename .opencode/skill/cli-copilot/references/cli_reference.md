@@ -1,5 +1,3 @@
-I will generate the `cli_reference.md` content for the `cli-copilot` skill by adapting the structural template from the `cli-claude-code` reference with the provided GitHub Copilot CLI specifications.
-
 ---
 title: "Copilot CLI - Complete Command Reference"
 description: "Comprehensive reference for GitHub Copilot CLI flags, commands, models, configuration, authentication, and autonomous execution."
