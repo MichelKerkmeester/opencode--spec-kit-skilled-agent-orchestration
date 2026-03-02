@@ -142,22 +142,81 @@ P2 cosmetic violations (header format, comment style) should be addressed in a d
 
 ---
 
+## 6. Gemini Deep-Dive Findings (gemini-3.1-pro-preview)
+
+5 additional Gemini deep-dive agents ran after the initial 4 waves, providing line-number precision.
+
+### Documentation Issues — All 12 Confirmed with Line Numbers
+- C-1: Stage 2 has **12 signals** (not 9) — `stage2-fusion.ts` lines 335-515
+- C-2: `postSearchPipeline` completely removed — only comments remain (lines 390-394)
+- C-3: `isPipelineV2Enabled()` hardcoded true — `search-flags.ts` lines 51-56
+- D-1: `resolveEffectiveScore()` at `pipeline/types.ts` lines 42-52, absent from existing_features
+- C-4: memory_update embeds `title + "\n\n" + content_text` — `memory-crud-update.ts` lines 90-91
+- C-5: memory_delete cleans **8 tables** — `vector-index-impl.ts` + `memory-crud-delete.ts`
+- D-4: Five-factor auto-normalize at `composite-scoring.ts` lines 538-548
+- I-1: R8 summary channel runs at `stage1-candidate-gen.ts` lines 507-565, undocumented
+
+### Feature Flag Audit — 1 New Finding
+- **SPECKIT_ADAPTIVE_FUSION** exists in code (`lib/search/adaptive-fusion.ts`) but is **missing from documentation** flag table (P1)
+- All other 20 flags in `search-flags.ts`: defaults match between code and doc
+- SPECKIT_PIPELINE_V2: confirmed deprecated in code, active in doc (already tracked as C-3)
+
+### SQL Safety Audit — 3 New Finding Categories
+
+**P1 — Template literal SQL (not injection, but bypasses parameterization):**
+- `memory-crud-list.ts` (L75, L79): `${whereClause}`, `${sortColumn}`
+- `consumption-logger.ts` (L190, L218): `${whereClause}`
+- `prediction-error-gate.ts` (L375-387): `${folderFilter}`
+- `mutation-ledger.ts` (L202): `${where}`, `${limit}`, `${offset}`
+- `causal-edges.ts` (L394): `${parts.join(', ')}`
+
+**P1 — Missing transaction boundaries:**
+- `memory-save.ts`: Child chunks insert outside parent tx
+- `memory-crud-delete.ts` (single): No tx wrapper
+- `memory-bulk-delete.ts`: Ledger append outside delete tx
+- `memory-crud-update.ts`: Update + ledger not in single tx
+
+**P1 — Remaining Math.max/min spread patterns (stack overflow >100K):**
+- `rsf-fusion.ts` (L101-104, L210-211)
+- `causal-boost.ts` (L227)
+- `evidence-gap-detector.ts` (L157)
+- `prediction-error-gate.ts` (L484-485)
+- `retrieval-telemetry.ts` (L184)
+- `reporting-dashboard.ts` (L303-304)
+
+### Phase 015-016 — All 5 Fixes VERIFIED
+- Quality gate timer persistence: SQLite config table, lazy-load, non-fatal fallback
+- effectiveScore fallback chain: 4-step chain, [0,1] clamping, isFinite guards
+- Canonical ID dedup: `canonicalResultId()` handles number/"42"/"mem:42"
+- forceAllChannels: tier-2 fallback overrides all 5 channels
+- Config table ensure hardening: tracks DB handle, re-runs DDL on change
+
+### Previously Fixed — Confirmed Clean
+- DDL-in-transaction (Phase 012 B2): CLEAN
+- UNION vs UNION ALL in recursive CTEs (Phase 012 C3): CLEAN
+
+---
+
 ## Models Used
 
 | Model | Tasks | Findings |
 |-------|-------|----------|
-| Gemini (gemini-3.1-pro-review) | Architecture review, New features verification, MCP standards review | Architecture boundaries, 15/15 MATCH, P1 standards |
-| Codex (gpt-5.3-codex) | Build system review, Tool schema verification, Scripts standards review | Build system issues, 7/7 MATCH, P2 standards |
-| Opus (claude-opus-4-6) | Import mapping, Cross-reference audit, Phase 017 + Bug hunt | 12 doc contradictions, 10/10 fixes verified, no critical bugs |
+| Gemini (gemini-3.1-pro-review) | 3 tasks: Architecture, new features, MCP standards | Architecture boundaries, 15/15 MATCH, P1 standards |
+| Gemini (gemini-3.1-pro-preview) | 5 deep-dive tasks: Doc issues, flags, SQL, Phase 015-016, tools | 12 doc issues confirmed, 1 missing flag, SQL safety findings, Phase 015-016 verified |
+| Codex (gpt-5.3-codex) | 3 tasks: Build system, tool schemas, scripts standards | Build issues, 7/7 MATCH, P2 standards |
+| Opus (claude-opus-4-6) | 4 tasks: Import map, cross-ref, Phase 017, bug hunt | 12 contradictions, 10/10 verified, 6 P2 minor |
 
 ## Metrics
 
-- **Total review tasks**: 10
-- **Total files analyzed**: 33+ (across all waves)
+- **Total review tasks**: 15 (10 initial + 5 deep-dive)
+- **Total files analyzed**: 50+ (across all waves + deep-dives)
 - **Features verified against code**: 22 (15 new + 7 existing)
+- **Phase 015-016 fixes verified**: 5/5
 - **Phase 017 fixes verified**: 10/10
-- **Documentation issues found**: 12
+- **Documentation issues found**: 13 (12 original + 1 missing flag)
 - **Code standards violations**: 19/20 files (P2 cosmetic)
+- **SQL safety findings**: 5 files with template SQL, 4 files missing tx boundaries
+- **Math spread overflow risk**: 6 files with remaining patterns
 - **Critical bugs found**: 0
-- **Important bugs found**: 0
-- **Minor observations**: 6
+- **Important (P1) findings**: 16
+- **Minor (P2) observations**: 12
