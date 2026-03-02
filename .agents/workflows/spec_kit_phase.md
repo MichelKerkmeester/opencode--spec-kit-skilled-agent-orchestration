@@ -1,0 +1,1 @@
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/spec_kit/phase.md

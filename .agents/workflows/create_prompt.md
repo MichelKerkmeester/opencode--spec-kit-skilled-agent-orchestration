@@ -1,0 +1,1 @@
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/prompt.md
