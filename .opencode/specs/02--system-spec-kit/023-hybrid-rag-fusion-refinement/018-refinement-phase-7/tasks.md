@@ -29,38 +29,40 @@ description: "Tracking review findings and their resolution status"
 - [x] Final synthesis (implementation-summary.md)
 - [ ] Apply P0 fixes (summary_of_existing_features.md updates)
 
-## Findings Summary
+## Findings Summary (Recalibrated by Ultra-Think Meta-Review)
 
-### P0 — Must Fix
-1. [W2] summary_of_existing_features.md Stage 2 signal count wrong (9 → 11)
-2. [W2] summary_of_existing_features.md Legacy V1 pipeline described as available
-3. [W2] summary_of_existing_features.md SPECKIT_PIPELINE_V2 described as active toggle
-4. [W2] summary_of_existing_features.md resolveEffectiveScore() not documented
+### P0 — Must Fix (4 items — all documentation)
+1. summary_of_existing_features.md Stage 2 signal count wrong (should be "12 steps, 9 score-affecting")
+2. summary_of_existing_features.md Legacy V1 pipeline described as available (removed Phase 017)
+3. summary_of_existing_features.md SPECKIT_PIPELINE_V2 described as active toggle (deprecated, always true)
+4. summary_of_existing_features.md resolveEffectiveScore() not documented at all
 
-### P0 (Deep Dive additions)
-5. [DD] Stage 2 signal count is actually **12** (not 9 or 11) — confirmed in stage2-fusion.ts L335-515
-6. [DD] Tool count is **25** in code, doc claims 23 — 2 undocumented tools
-7. [DD] SPECKIT_ADAPTIVE_FUSION missing from feature flag documentation
+### P1 — Should Fix (11 items)
+5. SPECKIT_ADAPTIVE_FUSION missing from feature flag documentation
+6. Math.max/min spread patterns in 6 files — **most dangerous latent defect** (stack overflow >100K)
+7. summary_of_existing_features.md memory_update embedding wrong (title-only → title+content)
+8. summary_of_existing_features.md memory_delete cleanup scope wrong (1 table → 8 tables)
+9. summary_of_existing_features.md Five-factor normalization not documented
+10. summary_of_existing_features.md R8 summary channel missing from Stage 1 description
+11. Mixed import patterns in scripts/ (10 files use relative paths instead of aliases)
+12. Missing workspace deps in scripts/package.json
+13. Hardcoded DB path in cleanup-orphaned-vectors.ts
+14. specFolderLocks constant naming (camelCase → UPPER_SNAKE)
+15. memory-indexer.ts import ordering + AI-TRACE tags
 
-### P1 — Should Fix
-8. [W1] Mixed import patterns in scripts/ (10 files use relative paths instead of aliases)
-9. [W1] Missing workspace deps in scripts/package.json
-10. [W1] Hardcoded DB path in cleanup-orphaned-vectors.ts
-11. [W2] summary_of_existing_features.md memory_update embedding description wrong
-12. [W2] summary_of_existing_features.md memory_delete cleanup scope wrong
-13. [W2] summary_of_existing_features.md Five-factor normalization missing
-14. [W2] summary_of_existing_features.md R8 summary channel missing from Stage 1
-15. [W3] specFolderLocks constant naming (camelCase → UPPER_SNAKE)
-16. [W3] memory-indexer.ts import ordering
-17. [W3] Task tokens missing AI-TRACE prefix
-18. [DD] Template literal SQL in 5 files (not injection, but bypasses parameterization)
-19. [DD] Missing transaction wrappers in 4 handlers (memory-save chunks, single delete, update, bulk delete ledger)
-20. [DD] Math.max/min spread patterns in 6 files (stack overflow risk >100K elements)
+### P2 — Low Priority (11 items — recalibrated)
+16. SQL template literals in 5 files (FALSE POSITIVE per Codex — fixed fragments, not user input)
+17. Transaction wrappers for 3 handlers (low risk — single-process, self-healing)
+18. stage2-fusion.ts internal docblock inconsistency (header=11, docblock=9, code=12)
+19. spec.md metadata tool count stale (23 → 25)
+20. "89 feature flags" claim unverified
+21. Duplicate deps in scripts/package.json
+22. quality-scorer, topic-extractor could move to shared/
+23. File header format (19/20 files — consistent internal convention)
+24. Narrative comments (19/20 files)
+25. isFeatureEnabled() treats "1" as disabled
+26. Co-activation spreading may be missing from new_features.md signal list
 
-### P2 — Low Priority (Future Spec)
-21. [W1] Duplicate deps in scripts/package.json
-22. [W1] quality-scorer, topic-extractor could move to shared/
-23. [W3] File header format (19/20 files)
-24. [W3] Narrative comments (19/20 files)
-25. [W4] isFeatureEnabled() treats "1" as disabled
-26. [W4] Missing transactions on single-item update/delete
+### RESOLVED (downgraded after cross-verification)
+- ~~Tool count 25 vs 23~~ — Codex proved doc actually has 25. Only spec.md metadata stale (P2).
+- ~~SQL template literals P1~~ — Codex proved 3/5 false positive. Downgraded to P2.
