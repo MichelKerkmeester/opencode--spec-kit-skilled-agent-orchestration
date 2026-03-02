@@ -16,6 +16,9 @@
       "AGENTS.md"
     ]
   },
+  "tools": {
+    "sandbox": false
+  },
   "mcpServers": {
     "sequential_thinking": {
       "command": "npx",
@@ -30,6 +33,7 @@
       "args": [
         ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
+      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
         "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
@@ -41,6 +45,7 @@
       "args": [
         ".opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
       ],
+      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
         "UTCP_CONFIG_FILE": ".utcp_config.json"
       },
