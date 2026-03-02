@@ -1,7 +1,7 @@
 # Agent: orchestrate
 # Converted from: .opencode/agent/chatgpt/orchestrate.md
 sandbox_mode = "read-only"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 
 developer_instructions = '''
 # The Orchestrator: Senior Task Commander

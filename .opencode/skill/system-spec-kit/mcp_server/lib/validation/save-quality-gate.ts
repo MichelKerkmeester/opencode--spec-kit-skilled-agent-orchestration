@@ -141,17 +141,17 @@ const SPEC_FOLDER_PATTERN = /^[\w][\w\-/.]*$/;
 /** SQLite config key for persisted activation timestamp */
 const ACTIVATION_CONFIG_KEY = 'quality_gate_activated_at';
 
-/** Track whether config table DDL has run this process */
-let configTableEnsured = false;
+/** Track which DB handle has had config-table DDL ensured */
+let configTableEnsuredForDb: { exec: (sql: string) => void } | null = null;
 
 /**
- * Ensure the config table exists (idempotent, runs DDL at most once per process).
- * Follows the pattern from db-state.ts.
+ * Ensure the config table exists for the active DB handle.
+ * Re-runs DDL when the DB handle changes (for example, after reinitialization).
  */
 function ensureConfigTable(db: { exec: (sql: string) => void }): void {
-  if (configTableEnsured) return;
+  if (configTableEnsuredForDb === db) return;
   db.exec('CREATE TABLE IF NOT EXISTS config (key TEXT PRIMARY KEY, value TEXT)');
-  configTableEnsured = true;
+  configTableEnsuredForDb = db;
 }
 
 /**
@@ -267,7 +267,25 @@ export function setActivationTimestamp(timestamp?: number): void {
  */
 export function resetActivationTimestamp(): void {
   qualityGateActivatedAt = null;
+  configTableEnsuredForDb = null;
   clearActivationTimestampFromDb();
+}
+
+/**
+ * Ensure activation timestamp is initialized without resetting persisted state.
+ *
+ * If in-memory state is empty, first trigger the lazy DB load path. Only when no
+ * persisted value exists do we create a new activation timestamp.
+ */
+function ensureActivationTimestampInitialized(): void {
+  if (qualityGateActivatedAt !== null) return;
+
+  // Triggers lazy-load from SQLite (if present) via existing path.
+  isWarnOnlyMode();
+
+  if (qualityGateActivatedAt === null) {
+    setActivationTimestamp();
+  }
 }
 
 /* ---------------------------------------------------------------
@@ -631,10 +649,8 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
     };
   }
 
-  // Track activation for warn-only mode
-  if (qualityGateActivatedAt === null) {
-    setActivationTimestamp();
-  }
+  // Initialize activation tracking without clobbering persisted state on restart.
+  ensureActivationTimestampInitialized();
 
   const warnOnly = isWarnOnlyMode();
   const allReasons: string[] = [];

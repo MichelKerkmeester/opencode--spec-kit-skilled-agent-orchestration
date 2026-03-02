@@ -3,7 +3,7 @@ name: handover
 description: Session handover specialist for creating continuation documents with context preservation and seamless session branching
 mode: subagent
 model: openai/gpt-5.3-codex
-reasoningEffort: high
+reasoningEffort: medium
 temperature: 0.1
 permission:
   read: allow
@@ -38,6 +38,7 @@ Session handover specialist responsible for creating continuation documents that
 ## 0. ILLEGAL NESTING (HARD BLOCK)
 
 This agent is LEAF-only. Nested sub-agent dispatch is illegal.
+
 - NEVER create sub-tasks or dispatch sub-agents.
 - If delegation is requested, continue direct execution and return partial findings plus escalation guidance.
 
@@ -267,6 +268,7 @@ ELSE:
 ❌ **NEVER assume** context without reading files
 
 **If context cannot be gathered:**
+
 - Return `status: FAIL` with specific error
 - DO NOT attempt to create partial handover
 - Let main agent handle fallback
@@ -276,22 +278,27 @@ ELSE:
 ## 8. ANTI-PATTERNS
 
 ❌ **Never fabricate context**
+
 - ALWAYS read actual files, never guess or assume state
 - If information is missing, note it as "Not found" rather than inventing
 
 ❌ **Never skip context gathering**
+
 - Read spec.md, plan.md, tasks.md at minimum
 - Memory files provide critical session-specific context
 
 ❌ **Never leave placeholders**
+
 - All template placeholders must be filled with actual values
 - `[extracted from context]` MUST be replaced with real content
 
 ❌ **Never ignore existing handover**
+
 - Always check for existing handover.md
 - Increment attempt number correctly for continuity
 
 ❌ **Never return unstructured output**
+
 - Always return the JSON format expected by main agent
 - Main agent relies on structured response for display
 

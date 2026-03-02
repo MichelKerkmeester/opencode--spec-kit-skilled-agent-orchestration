@@ -173,9 +173,9 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 
 ### Agent consumption instrumentation (G-NEW-2)
 
-The retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`) now log consumption patterns: what queries agents send, how many results come back, which results get selected and which get ignored.
+Instrumentation wiring remains present in retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`), but the runtime logger is currently inert/deprecated (`isConsumptionLogEnabled()` hardcoded `false`). Calls remain fail-safe no-ops for compatibility while telemetry paths stay structurally available.
 
-An initial pattern report identified at least five distinct consumption categories across the agent ecosystem. These patterns are more revealing than you might expect. They expose mismatches between what the system returns and what agents actually use, which directly informs ground truth design and optimization priorities.
+The earlier pattern-analysis outcome from this workstream still informed ground-truth design, but current production runtime does not actively write new consumption-log rows unless instrumentation is reactivated.
 
 ### Scoring observability (T010)
 
@@ -199,7 +199,7 @@ Full A/B comparison infrastructure ran alternative scoring algorithms in paralle
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
 
-Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function, `isInShadowPeriod()` function and all shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. Channel attribution logic remains active within the 4-stage pipeline.
+Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function and shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. This shadow-scoring cleanup is independent from R11 learned-feedback safeguards, where `isInShadowPeriod()` remains active. Channel attribution logic remains active within the 4-stage pipeline.
 
 ---
 
@@ -515,11 +515,11 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 
 The system learns from user result selections. When a user marks a search result as useful via `memory_validate` with a `queryId`, query terms are extracted and stored in a separate `learned_triggers` column. This column is explicitly isolated from the FTS5 index to prevent contamination, which would be irreversible without a full re-index.
 
-Nine safeguards protect against noise: a 100+ stop-word denylist, rate cap of 3 terms per selection and 8 per memory, 30-day TTL decay, FTS5 isolation verified by 5 critical tests, noise floor (top-3 exclusion), rollback mechanism, provenance audit log, 72-hour minimum memory age and sprint gate review.
+Ten safeguards protect against noise: a 100+ stop-word denylist, rate cap of 3 terms per selection and 8 per memory, 30-day TTL decay, FTS5 isolation verified by 5 critical tests, noise floor (top-3 exclusion), 1-week shadow period (log-but-don't-apply), rollback mechanism, provenance audit log, 72-hour minimum memory age and sprint gate review.
 
-**Sprint 8 update:** The `isInShadowPeriod()` function (which always returned `false` because the shadow period had graduated) was removed as dead code. The shadow-mode guard in `recordSelection()` and `queryLearnedTriggers()` was also removed, simplifying the code path. The safeguard count decreased from ten to nine with the shadow period removal.
+**Sprint 8 update:** The R11 shadow-period safeguard remains active in runtime. `isInShadowPeriod()` and its guards in `recordSelection()` / `queryLearnedTriggers()` were retained as Safeguard #6 (1-week shadow mode: log-but-don't-apply). Sprint 8 dead-code cleanup removed other retired flag helpers (`isShadowScoringEnabled`, `isRsfEnabled`), but not the R11 shadow-period guard.
 
-Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default OFF, requires 28 calendar days of R13 evaluation logging before activation).
+Learned triggers boost future searches via a 0.7x weight applied during the feedback signals step in Stage 2. The boost applies alongside the query, not replacing it. Runs behind the `SPECKIT_LEARN_FROM_SELECTION` flag (default ON; set to `false` to disable).
 
 ---
 
@@ -527,9 +527,9 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 
 ### Dual-scope memory auto-surface (TM-05)
 
-Memory auto-surface hooks fire at two lifecycle points beyond explicit search: tool dispatch (when an agent calls a memory-aware tool, relevant memories surface automatically) and session compaction (when context is compressed, critical memories are re-injected).
+Memory auto-surface hooks fire at two lifecycle points beyond explicit search: tool dispatch for non-memory-aware tools (using extracted context hints), and session compaction (when context is compressed, critical memories are re-injected).
 
-Each hook point has a per-point token budget of 4,000 tokens maximum. The tool dispatch hook checks incoming tool arguments for context hints (input, query, prompt, specFolder, filePath or concepts) and surfaces constitutional-tier and trigger-matched memories. Constitutional memories are cached for 1 minute via an in-memory cache. The compaction hook routes `memory_context` resume-mode calls through the auto-surface path. Both hooks are scoped to six memory-aware tools: `memory_context`, `memory_search`, `memory_match_triggers`, `memory_list`, `memory_save` and `memory_index_scan`.
+Each hook point has a per-point token budget of 4,000 tokens maximum. The tool dispatch hook checks incoming tool arguments for context hints (input, query, prompt, specFolder, filePath or concepts) and surfaces constitutional-tier and trigger-matched memories, but skips memory-aware tools to avoid recursive surfacing loops. Memory-aware tools are handled in-band by the context-server pre-dispatch branch (`autoSurfaceMemories` / `autoSurfaceAtCompaction`). Constitutional memories are cached for 1 minute via an in-memory cache.
 
 ### Constitutional memory as expert knowledge injection (PI-A4)
 
@@ -579,7 +579,7 @@ An infrastructure gate checks that the `entity_catalog` has entries before runni
 
 **Sprint 8 update:** Two performance improvements were applied to `entity-linker.ts`: (1) a parallel `Set` was added for `catalogSets` providing O(1) `.has()` lookups instead of O(n) `.includes()` in inner loops, and (2) a `batchGetEdgeCounts()` function replaced N+1 individual `getEdgeCount` queries with a single batch query.
 
-A density guard prevents runaway edge creation: global edge density is computed as `total_edges / total_memories`. When this density exceeds the configured threshold, new entity links are skipped to avoid overwhelming the graph. The threshold is controlled by `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`), and invalid or negative values fall back to `1.0`. Runs behind the `SPECKIT_ENTITY_LINKING` flag (default ON). Requires `SPECKIT_AUTO_ENTITIES` to also be enabled.
+A density guard prevents runaway edge creation: current global edge density is computed as `total_edges / total_memories` and checked before link generation begins. The linker also checks projected post-insert global density before creating links. If either check exceeds the configured threshold, new entity links are skipped to avoid overwhelming the graph. The threshold is controlled by `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`), and invalid or negative values fall back to `1.0`. Runs behind the `SPECKIT_ENTITY_LINKING` flag (default ON). Depends on a populated `entity_catalog` (typically produced by R10 auto-entities).
 
 ---
 
@@ -613,9 +613,9 @@ The B8 signal ceiling limits active scoring signals to 12 until automated evalua
 
 A comprehensive audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
 
-The current active flag inventory stands at 19 flags in `search-flags.ts`. Four Sprint 0 core flags (MMR, TRM, MULTI_QUERY, CROSS_ENCODER) default ON. Ten graduated flags from Sprints 3-6 default ON. Five deferred-feature flags (GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES, ENTITY_LINKING) graduated to default ON. One flag (SPECKIT_SHADOW_SCORING) is hardcoded OFF and scheduled for removal. The `SPECKIT_ABLATION` flag defaults OFF as an opt-in evaluation tool.
+The current active flag inventory stands at 20 flags in `search-flags.ts`. Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. One flag (`SPECKIT_SHADOW_SCORING`) is hardcoded OFF and scheduled for removal, while `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 
-**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed ~360 lines of dead code including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`, `isInShadowPeriod`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`), and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). See [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8) for the full accounting.
+**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed ~360 lines of dead code including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`), and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8) for the full accounting.
 
 ---
 
@@ -679,7 +679,7 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Hot-path dead branches (~80 lines):** Dead RSF branch and dead shadow-scoring branch removed from `hybrid-search.ts`. Both were guarded by feature flag functions that always returned `false`.
 
-**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` removed from `learned-feedback.ts` along with its shadow-mode guards in `recordSelection()` and `queryLearnedTriggers()`.
+**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
 **Dead module-level state:** `stmtCache` Map (archival-manager.ts — never populated), `lastComputedAt` (community-detection.ts — set but never read), `activeProvider` cache (cross-encoder.ts — never populated), `flushCount` (access-tracker.ts — never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
@@ -693,7 +693,7 @@ Thirteen performance improvements were applied:
 
 **Quick wins:** `Math.max(...spread)` replaced with `reduce`-based max in `tfidf-summarizer.ts` (prevents RangeError on large arrays). Unbounded query in `memory-summaries.ts` gained a `LIMIT` clause. O(n) full scan in `mutation-ledger.ts` replaced with SQL `COUNT(*)` query using `json_extract`.
 
-**Entity linker:** `mergedEntities` array lookups converted to `Set` for O(1) `.has()` checks. N+1 `getEdgeCount` queries replaced with a single batch `WHERE (src, tgt) IN (...)` query.
+**Entity linker:** `mergedEntities` array lookups converted to `Set` for O(1) `.has()` checks. N+1 `getEdgeCount` queries replaced with a single batch query that combines `source_id IN (...)` and `target_id IN (...)` branches via `UNION ALL` before aggregation.
 
 **SQL-level:** Causal edge upsert reduced from 3 DB round-trips to 2 by eliminating the post-upsert SELECT via `lastInsertRowid`. Spec folder hierarchy tree cached with a 60-second WeakMap TTL keyed by database instance.
 
@@ -745,4 +745,4 @@ Originally skipped at Sprint 7 because the scale gate measured 2,411 active memo
 
 Originally skipped at Sprint 7 because zero entities existed in the system. R10 had not been built, so there was no entity catalog to link against.
 
-**Now implemented.** With R10 providing extracted entities, S5 scans the `entity_catalog` for entities appearing in two or more spec folders and creates `supports` causal edges with `strength=0.7` and `created_by='entity_linker'`. A density guard prevents runaway edge creation by using global edge density (`total_edges / total_memories`) and skipping link creation when density exceeds `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`, invalid or negative values fall back to `1.0`). Runs behind `SPECKIT_ENTITY_LINKING` (default ON), requires `SPECKIT_AUTO_ENTITIES` to also be enabled. See [Cross-document entity linking (S5)](#cross-document-entity-linking-s5) for the full description.
+**Now implemented.** With R10 providing extracted entities, S5 scans the `entity_catalog` for entities appearing in two or more spec folders and creates `supports` causal edges with `strength=0.7` and `created_by='entity_linker'`. A density guard prevents runaway edge creation by running both a current-global-density precheck (`total_edges / total_memories`) and a projected post-insert global density check against `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`, invalid or negative values fall back to `1.0`). Runs behind `SPECKIT_ENTITY_LINKING` (default ON) and depends on a populated `entity_catalog` (typically produced by R10 auto-entities). See [Cross-document entity linking (S5)](#cross-document-entity-linking-s5) for the full description.

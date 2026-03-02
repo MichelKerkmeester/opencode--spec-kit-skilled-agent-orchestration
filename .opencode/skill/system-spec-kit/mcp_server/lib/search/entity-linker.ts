@@ -242,17 +242,6 @@ function getGlobalEdgeDensityStats(
 }
 
 /**
- * Create causal_edges for cross-document entity matches.
- *
- * For each match, creates edges between pairs of memoryIds from different
- * spec folders. Uses INSERT OR IGNORE to skip existing edges and respects
- * the MAX_EDGES_PER_NODE limit.
- *
- * @param db - SQLite database instance
- * @param matches - Array of cross-document entity matches to link
- * @returns Result with counts of links created, entities processed, and matches
- */
-/**
  * Batch-fetch edge counts for a set of node IDs in a single query.
  * Returns a map of nodeId -> edge count (source OR target).
  * Uses UNION ALL to count both directions per node in one round-trip.

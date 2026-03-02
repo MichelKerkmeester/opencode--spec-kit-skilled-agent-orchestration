@@ -219,6 +219,15 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
       expect(ids.length).toBe(uniqueIds.length);
     });
 
+    it('T031-LEX-05: combined_lexical_search() deduplicates canonical IDs', () => {
+      const results = hybridSearch.combinedLexicalSearch('authentication module', { limit: 10 });
+      const canonicalIds = results.map((r: Record<string, unknown>) =>
+        hybridSearch.__testables.canonicalResultId(r.id as number | string)
+      );
+      const uniqueCanonicalIds = Array.from(new Set(canonicalIds));
+      expect(canonicalIds.length).toBe(uniqueCanonicalIds.length);
+    });
+
     it('T031-LEX-05: combined_lexical_search() results sorted by score', () => {
       const results = hybridSearch.combinedLexicalSearch('authentication', { limit: 10 });
       let isSorted = true;
@@ -402,6 +411,25 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
       expect(() => {
         hybridSearch.hybridSearch('authentication', mockEmbedding, { limit: 5 });
       }).not.toThrow();
+    });
+
+    it('T031-BASIC-04: hybridSearch() deduplicates canonical IDs across channels', async () => {
+      bm25Index.resetIndex();
+      const bm25 = bm25Index.getIndex();
+      for (const doc of MOCK_DOCS) {
+        bm25.addDocument(String(doc.id), doc.content);
+      }
+
+      const results = await hybridSearch.hybridSearch('authentication module', null, {
+        limit: 20,
+        useVector: false,
+        useFts: true,
+        useBm25: true,
+      });
+
+      const canonicalIds = results.map((r) => hybridSearch.__testables.canonicalResultId(r.id));
+      const uniqueCanonicalIds = Array.from(new Set(canonicalIds));
+      expect(canonicalIds.length).toBe(uniqueCanonicalIds.length);
     });
   });
 
@@ -631,6 +659,50 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
     const results = await hybridSearch.searchWithFallback('authentication', null, { limit: 5 });
     // Should get results from FTS at minimum (via mock DB)
     expect(Array.isArray(results)).toBe(true);
+  });
+
+  it('C138-P0-FB-T2: tier-2 fallback forces all channels for simple-routed queries', async () => {
+    const savedFallback = process.env.SPECKIT_SEARCH_FALLBACK;
+    const savedRouter = process.env.SPECKIT_COMPLEXITY_ROUTER;
+    process.env.SPECKIT_SEARCH_FALLBACK = 'true';
+    process.env.SPECKIT_COMPLEXITY_ROUTER = 'true';
+
+    let graphSearchCallCount = 0;
+    const lowRecallVectorSearch = () => [{ id: 1, similarity: 0.01, content: 'vector low confidence' }];
+    const trackingGraphSearch = (_query: string, _options: Record<string, unknown>) => {
+      graphSearchCallCount++;
+      return [{ id: 999, score: 0.6, content: 'graph fallback candidate' }];
+    };
+
+    try {
+      const mockDb = createMockDb();
+      hybridSearch.init(mockDb, lowRecallVectorSearch as any, trackingGraphSearch as any);
+
+      bm25Index.resetIndex();
+      const bm25 = bm25Index.getIndex();
+      for (const doc of MOCK_DOCS) {
+        bm25.addDocument(String(doc.id), doc.content);
+      }
+
+      // "auth" is a simple query; Tier 1 routes to a subset of channels.
+      // limit=1 guarantees degradation (count < 3), so Tier 2 should run and
+      // force-enable all channels, including graph.
+      const embedding = new Float32Array(384).fill(0.1);
+      await hybridSearch.searchWithFallback('auth', embedding, { limit: 1 });
+
+      expect(graphSearchCallCount).toBeGreaterThanOrEqual(1);
+    } finally {
+      if (savedFallback === undefined) {
+        delete process.env.SPECKIT_SEARCH_FALLBACK;
+      } else {
+        process.env.SPECKIT_SEARCH_FALLBACK = savedFallback;
+      }
+      if (savedRouter === undefined) {
+        delete process.env.SPECKIT_COMPLEXITY_ROUTER;
+      } else {
+        process.env.SPECKIT_COMPLEXITY_ROUTER = savedRouter;
+      }
+    }
   });
 });
 

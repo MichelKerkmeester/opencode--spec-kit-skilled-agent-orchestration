@@ -65,6 +65,11 @@ interface HybridSearchOptions {
   intent?: string;
   /** Optional trigger phrases for query-classifier trigger-match routing path. */
   triggerPhrases?: string[];
+  /**
+   * Internal fallback override: when true, bypass complexity routing and
+   * enable all retrieval channels for this search call.
+   */
+  forceAllChannels?: boolean;
 }
 
 interface HybridSearchResult {
@@ -346,16 +351,19 @@ function combinedLexicalSearch(
   const ftsResults = ftsSearch(query, options);
   const bm25Results = bm25Search(query, options);
 
-  // Merge by ID, prefer FTS scores
-  const merged = new Map<number | string, HybridSearchResult>();
+  // Merge by canonical ID, prefer FTS scores.
+  // AI-WHY: canonicalResultId() prevents duplicate rows when one channel emits
+  // numeric IDs (42) and another emits string IDs ("42" or "mem:42").
+  const merged = new Map<string, HybridSearchResult>();
 
   for (const r of ftsResults) {
-    merged.set(r.id, r);
+    merged.set(canonicalResultId(r.id), r);
   }
 
   for (const r of bm25Results) {
-    if (!merged.has(r.id)) {
-      merged.set(r.id, r);
+    const canonicalId = canonicalResultId(r.id);
+    if (!merged.has(canonicalId)) {
+      merged.set(canonicalId, r);
     }
   }
 
@@ -477,11 +485,12 @@ async function hybridSearch(
   // only the highest-scoring entry's `source` is preserved. Multi-source provenance
   // is lost here. To fix properly, HybridSearchResult would need a `sources: string[]`
   // field and downstream consumers would need to be updated accordingly.
-  const deduped = new Map<number | string, HybridSearchResult>();
+  const deduped = new Map<string, HybridSearchResult>();
   for (const r of normalized) {
-    const existing = deduped.get(r.id);
+    const canonicalId = canonicalResultId(r.id);
+    const existing = deduped.get(canonicalId);
     if (!existing || r.score > existing.score) {
-      deduped.set(r.id, r);
+      deduped.set(canonicalId, r);
     }
   }
 
@@ -514,7 +523,10 @@ async function hybridSearchEnhanced(
     // AI-WHY: When enabled, classifies query complexity and restricts channels to a
     // subset (e.g., simple queries skip graph+degree). When disabled, all channels run.
     const routeResult = routeQuery(query, options.triggerPhrases);
-    const activeChannels = new Set<ChannelName>(routeResult.channels);
+    const allPossibleChannels: ChannelName[] = ['vector', 'fts', 'bm25', 'graph', 'degree'];
+    const activeChannels = options.forceAllChannels
+      ? new Set<ChannelName>(allPossibleChannels)
+      : new Set<ChannelName>(routeResult.channels);
 
     // ── Ablation override: allow callers to force-disable channels (BUG-1 fix) ──
     // AI-WHY: The ablation framework passes useVector/useBm25/useFts=false to disable
@@ -524,7 +536,6 @@ async function hybridSearchEnhanced(
     if (options.useBm25 === false) activeChannels.delete('bm25');
     if (options.useFts === false) activeChannels.delete('fts');
 
-    const allPossibleChannels: ChannelName[] = ['vector', 'fts', 'bm25', 'graph', 'degree'];
     const skippedChannels = allPossibleChannels.filter(ch => !activeChannels.has(ch));
 
     if (skippedChannels.length > 0) {
@@ -1252,6 +1263,7 @@ async function searchWithFallbackTiered(
     useFts: true,
     useVector: true,
     useGraph: true,
+    forceAllChannels: true,
   };
   const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
   results = mergeResults(results, tier2Results);

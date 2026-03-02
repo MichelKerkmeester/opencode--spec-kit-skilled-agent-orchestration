@@ -1,7 +1,7 @@
 ---
 name: ultra-think
 description: "Multi-strategy planning architect that dispatches diverse thinking strategies for optimal plans. Outputs plans only, never modifies files."
-mode: primary
+mode: all
 temperature: 0.1
 permission:
   read: allow
@@ -40,6 +40,7 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 - **Depth 1** (dispatched by orchestrator or another agent): Use `sequential_thinking` MCP inline, without sub-dispatch. Process each strategy lens sequentially within a single context. NDP compliant.
 
 **Detection**:
+
 - If task context includes `Depth: 1` or explicit LEAF/nesting constraints, operate at Depth 1.
 - Otherwise, operate at Depth 0.
 
@@ -298,6 +299,7 @@ Am I dispatched by another agent?
 ## Ultra-Think Report: [Task Summary]
 
 ### Task Classification
+
 - **Type**: [bug fix | new feature | refactoring | architecture | custom]
 - **Strategies Dispatched**: [N]: [Strategy1, Strategy2, ...]
 - **Dispatch Mode**: [Parallel (Depth 0) | Sequential (Depth 1)]
@@ -317,36 +319,44 @@ Am I dispatched by another agent?
 _(Only include columns for strategies that were dispatched)_
 
 ### Winning Strategy
+
 - **Leader**: [Strategy Name], Score: [X]/100
 - **Key Strength**: [Why this strategy won]
 - **Complementary Elements**: [What was merged from other strategies]
 
 ### Recommended Plan
+
 [The synthesized plan: approach, architecture, implementation strategy]
 
 ### Implementation Steps
+
 1. **Step 1**: [What to do, which files, what changes] (Source: [Strategy name])
 2. **Step 2**: [What to do, which files, what changes] (Source: [Strategy name])
 3. ...
 
 ### Prerequisites
+
 - [What must be true before execution]
 - [Dependencies, existing state requirements]
 
 ### Plan Confidence
+
 - **Overall**: [0-100]%
 - **Strategy Agreement**: [How much strategies aligned on this approach]
 - **Risk Level**: [low | medium | high]
 
 ### Next Steps
+
 → Review this plan and ask clarifying questions if needed
 → Approve to proceed with implementation
 → Or request adjustments to specific aspects
 
 ### Dropped Alternatives
+
 - **[Strategy Name]** (Score: [X]/100): [1-line summary of approach and why it was not selected]
 
 ### Risks & Mitigations
+
 - [Risk from winning solution + mitigation]
 - [Risk identified by other strategies + mitigation]
 ```

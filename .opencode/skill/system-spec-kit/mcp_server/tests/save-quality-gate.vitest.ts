@@ -24,6 +24,7 @@ import {
   MIN_CONTENT_LENGTH,
   WARN_ONLY_PERIOD_MS,
 } from '../lib/validation/save-quality-gate';
+import * as vectorIndex from '../lib/search/vector-index';
 
 // ───────────────────────────────────────────────────────────────
 // TEST HELPERS
@@ -45,6 +46,46 @@ function makeContentWithFrontmatter(fields: Record<string, string>, body: string
 /** Create a simple embedding vector of given dimension */
 function makeEmbedding(dim: number, fill: number = 1.0): number[] {
   return Array(dim).fill(fill);
+}
+
+/** Create a mock config-table DB with minimal SQL behavior needed by quality-gate persistence. */
+function makeMockConfigDb(initial: Record<string, string> = {}) {
+  const store = new Map(Object.entries(initial));
+  const db = {
+    exec: vi.fn(),
+    prepare: vi.fn((sql: string) => {
+      if (sql === 'SELECT value FROM config WHERE key = ?') {
+        return {
+          get: (key: string) => {
+            const value = store.get(key);
+            return value === undefined ? undefined : { value };
+          },
+        };
+      }
+
+      if (sql === 'INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)') {
+        return {
+          run: (key: string, value: string) => {
+            store.set(key, value);
+            return { changes: 1 };
+          },
+        };
+      }
+
+      if (sql === 'DELETE FROM config WHERE key = ?') {
+        return {
+          run: (key: string) => {
+            store.delete(key);
+            return { changes: 1 };
+          },
+        };
+      }
+
+      throw new Error(`Unexpected SQL in save-quality-gate test mock: ${sql}`);
+    }),
+  };
+
+  return { db, store };
 }
 
 /** Create a mock findSimilar function that returns preset results */
@@ -159,6 +200,52 @@ describe('Save Quality Gate (TM-04)', () => {
 
     it('WO5: WARN_ONLY_PERIOD_MS is 14 days', () => {
       expect(WARN_ONLY_PERIOD_MS).toBe(14 * 24 * 60 * 60 * 1000);
+    });
+
+    it('WO6: Config-table ensure reruns when DB handle changes', () => {
+      const getDbSpy = vi.spyOn(vectorIndex, 'getDb');
+
+      const dbA = makeMockConfigDb();
+      const dbB = makeMockConfigDb();
+
+      getDbSpy
+        .mockReturnValueOnce(dbA.db as any)
+        .mockReturnValueOnce(dbB.db as any);
+
+      setActivationTimestamp(Date.now() - 2000);
+      setActivationTimestamp(Date.now() - 1000);
+
+      expect(dbA.db.exec).toHaveBeenCalledTimes(1);
+      expect(dbB.db.exec).toHaveBeenCalledTimes(1);
+      expect(dbA.store.get('quality_gate_activated_at')).toBeDefined();
+      expect(dbB.store.get('quality_gate_activated_at')).toBeDefined();
+
+      getDbSpy.mockRestore();
+    });
+
+    it('WO7: runQualityGate does not reset persisted activation window on restart', () => {
+      const fifteenDaysAgo = Date.now() - (15 * 24 * 60 * 60 * 1000);
+      const persistedDb = makeMockConfigDb({
+        quality_gate_activated_at: String(fifteenDaysAgo),
+      });
+      const getDbSpy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(persistedDb.db as any);
+
+      const result = runQualityGate({
+        title: null,
+        content: makeContent(10),
+        specFolder: '003-memory',
+      });
+
+      // Persisted timestamp is older than 14 days, so gate should enforce (not warn-only).
+      expect(result.warnOnly).toBe(false);
+      expect(result.pass).toBe(false);
+
+      // No reset write should occur when persisted activation already exists.
+      const insertCalls = persistedDb.db.prepare.mock.calls
+        .filter(([sql]: [string]) => sql === 'INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)');
+      expect(insertCalls.length).toBe(0);
+
+      getDbSpy.mockRestore();
     });
   });
 
