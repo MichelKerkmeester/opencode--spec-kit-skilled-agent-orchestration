@@ -9,7 +9,7 @@ trigger_phrases:
 
 # cli-codex
 
-> Codex CLI orchestrator enabling Claude Code and OpenCode to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing.
+> Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing.
 
 > **Navigation**:
 > - New to Codex CLI? Start with [Quick Start](#2--quick-start)
@@ -36,7 +36,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-This skill orchestrates OpenAI's Codex CLI from Claude Code or OpenCode for tasks that benefit from a second AI perspective, sandbox-controlled code generation, built-in code review workflows, live web search, or parallel task processing. Claude Code acts as the conductor (planner, validator, integrator) while Codex CLI executes targeted tasks.
+This skill orchestrates OpenAI's Codex CLI for tasks that benefit from a second AI perspective, sandbox-controlled code generation, built-in code review workflows, live web search, or parallel task processing. The calling AI acts as the conductor (planner, validator, integrator) while Codex CLI executes targeted tasks.
 
 ### Key Statistics
 
@@ -53,7 +53,7 @@ This skill orchestrates OpenAI's Codex CLI from Claude Code or OpenCode for task
 - **Cross-AI Validation** — Second perspective on code review, security audit, bug detection
 - **Built-in Code Review** — `/review` command for diff-aware review of staged changes
 - **Web Research** — `--search` flag enables live web browsing during tasks
-- **Parallel Task Processing** — Background generation while Claude Code continues other work
+- **Parallel Task Processing** — Background generation while the calling AI continues other work
 - **Agent-Delegated Tasks** — Route to specialized Codex agents via `.codex/agents/*.toml`
 - **Visual Input** — `--image` flag for screenshot-to-code and design implementation
 
@@ -244,7 +244,7 @@ codex exec "Generate comprehensive Jest tests for @./src/utils.ts" \
 codex exec "Create a rate limiter middleware for Express" \
   --model gpt-5.3-codex --sandbox workspace-write > /tmp/rate-limiter.ts
 
-# Step 2: Claude Code reviews (within session), writes review to /tmp/review.md
+# Step 2: Calling AI reviews (within session), writes review to /tmp/review.md
 
 # Step 3: Codex fixes
 codex exec "Fix these issues: $(cat /tmp/review.md). Source: $(cat /tmp/rate-limiter.ts)" \

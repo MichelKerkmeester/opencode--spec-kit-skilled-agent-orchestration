@@ -479,9 +479,9 @@ codex resume abc123
 | **Review PR** | `/review` (TUI) or `read-only` exec | Diff-aware analysis |
 | **Multi-session task** | Initial exec → `resume` → `fork` alternatives | Start, continue, branch |
 
-### Orchestration from Claude Code
+### Orchestration from the Calling AI
 
-When calling Codex CLI from Claude Code, choose capabilities strategically:
+When calling Codex CLI from any AI assistant, choose capabilities strategically:
 
 ```bash
 # Use --search for current information

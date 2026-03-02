@@ -224,7 +224,8 @@ function applyCausalBoost(results: RankedSearchResult[]): { results: RankedSearc
   }
 
   const existingIds = new Set(results.map((item) => item.id));
-  const lowestScore = Math.max(0.0001, Math.min(...results.map((item) => resolveBaseScore(item))));
+  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  const lowestScore = Math.max(0.0001, results.map((item) => resolveBaseScore(item)).reduce((a, b) => Math.min(a, b), Infinity));
 
   const boosted = results.map((item) => {
     const causalBoost = neighborBoosts.get(item.id) ?? 0;

@@ -5,9 +5,9 @@
 
 const fs = require('fs');
 const { execFileSync } = require('child_process');
+const { parseMemoryFile } = require('@spec-kit/mcp-server/lib/parsing/memory-parser');
 const { validateMemoryQualityContent } = require('../memory/validate-memory-quality.ts');
 const { scoreMemoryQuality } = require('../extractors/quality-scorer.ts');
-const { parseMemoryFile } = require('../../mcp_server/lib/parsing/memory-parser.ts');
 
 type DbRow = { id: number; file_path: string };
 type QualityScoreResult = { qualityScore: number; qualityFlags: string[] };

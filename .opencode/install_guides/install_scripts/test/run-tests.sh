@@ -92,7 +92,6 @@ run_all_tests() {
         "code-mode"
         # Skip spec-kit-memory - requires bundled files
         # Skip chrome-devtools - requires Chrome
-        # Skip figma - interactive
     )
     
     echo ""

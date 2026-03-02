@@ -98,10 +98,11 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
   const scoresB = itemsB.map((item, i) => extractScore(item, i, itemsB.length));
 
   // --- Step 2: Compute min/max per source ---
-  const minA = scoresA.length > 0 ? Math.min(...scoresA) : 0;
-  const maxA = scoresA.length > 0 ? Math.max(...scoresA) : 0;
-  const minB = scoresB.length > 0 ? Math.min(...scoresB) : 0;
-  const maxB = scoresB.length > 0 ? Math.max(...scoresB) : 0;
+  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  const minA = scoresA.length > 0 ? scoresA.reduce((a, b) => Math.min(a, b), Infinity) : 0;
+  const maxA = scoresA.length > 0 ? scoresA.reduce((a, b) => Math.max(a, b), -Infinity) : 0;
+  const minB = scoresB.length > 0 ? scoresB.reduce((a, b) => Math.min(a, b), Infinity) : 0;
+  const maxB = scoresB.length > 0 ? scoresB.reduce((a, b) => Math.max(a, b), -Infinity) : 0;
 
   // --- Step 3: Normalize and collect into maps ---
   const normalizedMapA = new Map<number | string, { item: RrfItem; normalizedScore: number }>();
@@ -207,8 +208,9 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
   for (const list of nonEmptyLists) {
     const items = list.results;
     const rawScores = items.map((item, i) => extractScore(item, i, items.length));
-    const minScore = Math.min(...rawScores);
-    const maxScore = Math.max(...rawScores);
+    // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+    const minScore = rawScores.reduce((a, b) => Math.min(a, b), Infinity);
+    const maxScore = rawScores.reduce((a, b) => Math.max(a, b), -Infinity);
 
     const normalizedMap = new Map<number | string, { item: RrfItem; normalizedScore: number }>();
     for (let i = 0; i < items.length; i++) {

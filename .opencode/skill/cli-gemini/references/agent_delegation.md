@@ -5,7 +5,7 @@ description: "Reference for delegating tasks to 9 specialized Gemini agents via 
 
 # Gemini Agent Delegation Reference
 
-Routing reference for delegating tasks from Claude Code to specialized Gemini CLI agents.
+Routing reference for delegating tasks to specialized Gemini CLI agents.
 
 ---
 
@@ -14,18 +14,18 @@ Routing reference for delegating tasks from Claude Code to specialized Gemini CL
 
 ### Core Principle
 
-Claude Code decides WHAT to do, Gemini CLI decides HOW to do it within the delegated scope.
+The calling AI decides WHAT to do, Gemini CLI decides HOW to do it within the delegated scope.
 
 ### Purpose
 
-Documents the 9 specialized Gemini agents in `.gemini/agents/` and how Claude Code orchestrates them. Claude Code acts as the **conductor** (planner, validator, integrator) while Gemini CLI executes targeted tasks through its agent system.
+Documents the 9 specialized Gemini agents in `.gemini/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Gemini CLI executes targeted tasks through its agent system.
 
 ### When to Use
 
 - Delegating supplementary tasks to Gemini CLI agents
 - Cross-AI code review or architectural second opinion
 - Web research via Google Search grounding (`@research`)
-- Fresh-perspective debugging after Claude Code attempts fail (`@debug`)
+- Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
 - Multi-agent Gemini-side workflows (`@orchestrate`)
 
 <!-- /ANCHOR:overview -->
@@ -36,7 +36,7 @@ Documents the 9 specialized Gemini agents in `.gemini/agents/` and how Claude Co
 ## 2. ORCHESTRATION MODEL
 
 ```
-Claude Code (CONDUCTOR)
+Calling AI (CONDUCTOR)
   |
   |-- Analyzes task, selects Gemini agent
   |-- Constructs gemini CLI command with @agent
@@ -50,7 +50,7 @@ Gemini CLI (EXECUTOR)
   |-- Returns structured output
   |
   v
-Claude Code (CONDUCTOR)
+Calling AI (CONDUCTOR)
   |
   |-- Validates output quality
   |-- Integrates into workflow
@@ -80,11 +80,11 @@ gemini "As @context agent: Explore the authentication module" --include-director
 
 ### Conductor Rules
 
-1. Claude Code always **decomposes** complex tasks before delegating
-2. Claude Code always **validates** Gemini output before integrating
-3. Claude Code never **blindly forwards** user requests to Gemini
+1. The calling AI always **decomposes** complex tasks before delegating
+2. The calling AI always **validates** Gemini output before integrating
+3. The calling AI never **blindly forwards** user requests to Gemini
 4. Gemini agents operate within their declared tool/scope boundaries
-5. If an agent returns low-quality output, Claude Code retries with refined instructions or uses a different approach
+5. If an agent returns low-quality output, The calling AI retries with refined instructions or uses a different approach
 
 <!-- /ANCHOR:orchestration-model -->
 
@@ -125,7 +125,7 @@ gemini "As @context agent: Map all authentication-related files and their depend
 
 **Best for:** Bugs that resist initial debugging (3+ failed attempts), root cause analysis, reproducing elusive errors.
 
-**Delegate when:** Claude Code's own debug attempts have failed. The fresh perspective (no prior conversation context) avoids inheriting wrong assumptions.
+**Delegate when:** The calling AI's own debug attempts have failed. The fresh perspective (no prior conversation context) avoids inheriting wrong assumptions.
 
 **Methodology:** Observe -> Analyze -> Hypothesize -> Fix (4-phase)
 
@@ -167,9 +167,9 @@ gemini "As @handover agent: Create handover document for the current authenticat
 
 **Best for:** Complex multi-step Gemini-side tasks requiring coordination between multiple Gemini agents.
 
-**Delegate when:** The task is too complex for a single Gemini agent and requires Gemini-internal orchestration. Claude Code remains the top-level conductor.
+**Delegate when:** The task is too complex for a single Gemini agent and requires Gemini-internal orchestration. The calling AI remains the top-level conductor.
 
-**Note:** Avoid double-orchestration. If Claude Code is already decomposing tasks, delegate directly to leaf agents instead of routing through @orchestrate.
+**Note:** Avoid double-orchestration. If the calling AI is already decomposing tasks, delegate directly to leaf agents instead of routing through @orchestrate.
 
 ```bash
 gemini "As @orchestrate agent: Analyze this codebase: explore structure, review code quality, and produce a research document" -o text
@@ -189,7 +189,7 @@ gemini "As @orchestrate agent: Analyze this codebase: explore structure, review 
 
 **Best for:** Technology comparison, API research, architecture exploration, external documentation lookup (via Google Search grounding).
 
-**Delegate when:** You need Google Search grounding for real-time web information, framework documentation, or external API details that Claude Code cannot access directly.
+**Delegate when:** You need Google Search grounding for real-time web information, framework documentation, or external API details that the calling AI cannot access directly.
 
 **Unique capability:** `google_web_search` tool provides real-time web access.
 
@@ -211,7 +211,7 @@ gemini "As @research agent: Research the latest Next.js 15 App Router migration 
 
 **Best for:** Cross-AI code review (second opinion), security audits, quality scoring with P0/P1/P2 severity classification.
 
-**Delegate when:** You want a second perspective on code quality, or need to validate Claude Code's own implementation from a different model's viewpoint.
+**Delegate when:** You want a second perspective on code quality, or need to validate the calling AI's own implementation from a different model's viewpoint.
 
 ```bash
 gemini "As @review agent: Review these files for security vulnerabilities and code quality" @src/auth/handler.go @src/auth/middleware.go -o json
@@ -251,7 +251,7 @@ gemini "As @speckit agent: Create Level 2 spec folder documentation for the auth
 
 **Best for:** Architecture decisions, complex planning requiring multiple perspectives (Analytical, Creative, Critical, Pragmatic, Holistic lenses).
 
-**Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Gemini's architectural thinking with Claude Code's plan.
+**Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Gemini's architectural thinking with the calling AI's plan.
 
 ```bash
 gemini "As @ultra-think agent: Design the caching strategy for this API. Consider Redis, in-memory, and CDN approaches." -o json
@@ -307,12 +307,12 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 
 | Anti-Pattern | Why It Fails | Correct Approach |
 |-------------|-------------|-----------------|
-| Double orchestration | Claude Code orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents |
+| Double orchestration | The calling AI orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents |
 | Blind forwarding | Passing user request verbatim to Gemini without decomposition | Decompose, add context, specify output format |
 | Ignoring output validation | Using Gemini output without checking quality | Always validate before integrating |
 | Wrong agent for task | Using @write for code review, @debug for exploration | Follow the routing table above |
 | Stateful assumptions | Assuming Gemini remembers prior delegations | Each invocation is stateless; include all context |
-| Interactive mode delegation | Starting Gemini in REPL mode from Claude Code | Always use non-interactive mode with prompt as argument |
+| Interactive mode delegation | Starting Gemini in REPL mode from the calling AI | Always use non-interactive mode with prompt as argument |
 
 <!-- /ANCHOR:anti-patterns -->
 
@@ -344,6 +344,6 @@ Suitable when the output will be presented to the user directly.
 | Rate limit hit | Exit code non-zero, 429 in output | Wait and retry, or use `flash` model |
 | Agent not found | Error message in output | Verify agent name matches `.gemini/agents/` |
 | Timeout | No output within timeout_mins | Simplify task scope, break into smaller pieces |
-| Low-quality output | Claude Code validation fails | Retry with refined prompt, or use different agent |
+| Low-quality output | Calling AI validation fails | Retry with refined prompt, or use different agent |
 
 <!-- /ANCHOR:output-handling -->

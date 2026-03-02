@@ -139,9 +139,14 @@ export function detectEvidenceGap(rrfScores: number[]): TRMResult {
     return { gapDetected: true, zScore: 0, mean: 0, stdDev: 0 };
   }
 
-  if (rrfScores.length === 1) {
+  const finiteScores = rrfScores.filter((score) => Number.isFinite(score));
+  if (finiteScores.length === 0) {
+    return { gapDetected: true, zScore: 0, mean: 0, stdDev: 0 };
+  }
+
+  if (finiteScores.length === 1) {
     // Single score: can't compute a meaningful Z-score, fall back to absolute threshold.
-    const score = rrfScores[0];
+    const score = finiteScores[0];
     return {
       gapDetected: score < MIN_ABSOLUTE_SCORE,
       zScore: 0,
@@ -150,11 +155,15 @@ export function detectEvidenceGap(rrfScores: number[]): TRMResult {
     };
   }
 
-  const mean = rrfScores.reduce((acc, s) => acc + s, 0) / rrfScores.length;
-  const variance = rrfScores.reduce((acc, s) => acc + (s - mean) ** 2, 0) / rrfScores.length;
+  const mean = finiteScores.reduce((acc, s) => acc + s, 0) / finiteScores.length;
+  const variance = finiteScores.reduce((acc, s) => acc + (s - mean) ** 2, 0) / finiteScores.length;
   const stdDev = Math.sqrt(variance);
 
-  const topScore = Math.max(...rrfScores);
+  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+  const topScore = finiteScores.reduce((a, b) => Math.max(a, b), -Infinity);
+  if (!Number.isFinite(mean) || !Number.isFinite(stdDev) || !Number.isFinite(topScore)) {
+    return { gapDetected: true, zScore: 0, mean: 0, stdDev: 0 };
+  }
 
   // Avoid division by zero when all scores are identical (stdDev === 0 → Z = 0).
   const zScore = stdDev === 0 ? 0 : (topScore - mean) / stdDev;

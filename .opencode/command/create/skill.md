@@ -1,5 +1,5 @@
 ---
-description: "Create a new skill with SKILL.md, references, assets, and scripts - supports :auto and :confirm modes"
+description: Create a new skill with SKILL.md, references, assets, and scripts - supports :auto and :confirm modes
 argument-hint: "<skill_name> [skill_description] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---

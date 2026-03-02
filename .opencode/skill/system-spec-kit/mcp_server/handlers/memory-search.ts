@@ -25,14 +25,14 @@ import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
 import { getExtractionMetrics } from '../lib/extraction/extraction-adapter';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
-// C138-P1: Evidence gap detection (TRM — Z-score confidence check on RRF scores)
+// AI-TRACE:C138-P1: Evidence gap detection (TRM — Z-score confidence check on RRF scores)
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../lib/search/evidence-gap-detector';
-// C138-P3: Query expansion for mode="deep" multi-query RAG
+// AI-TRACE:C138-P3: Query expansion for mode="deep" multi-query RAG
 import { expandQuery } from '../lib/search/query-expander';
-// C136-09: Artifact-class routing (spec/plan/tasks/checklist/memory)
+// AI-TRACE:C136-09: Artifact-class routing (spec/plan/tasks/checklist/memory)
 import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
 
-// T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// AI-TRACE:T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 
 // Core utilities
@@ -159,13 +159,13 @@ interface SearchArgs {
   applyStateLimits?: boolean;
   rerank?: boolean;
   applyLengthPenalty?: boolean;
-  trackAccess?: boolean; // P3-09: opt-in access tracking (default false)
+  trackAccess?: boolean; // AI-TRACE:P3-09: opt-in access tracking (default false)
   includeArchived?: boolean; // REQ-206: include archived memories in search (default false)
   enableSessionBoost?: boolean;
   enableCausalBoost?: boolean;
   minQualityScore?: number;
   min_quality_score?: number;
-  mode?: string; // C138-P3: "deep" mode enables query expansion for multi-query RAG
+  mode?: string; // AI-TRACE:C138-P3: "deep" mode enables query expansion for multi-query RAG
 }
 
 function resolveRowContextType(row: MemorySearchRow): string | undefined {
@@ -629,9 +629,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     autoDetectIntent: autoDetectIntent = true,
     minState: minState = 'WARM',
     applyStateLimits: applyStateLimits = false,
-    rerank = true, // C138-P2: Enable reranking by default for better result quality
+    rerank = true, // AI-TRACE:C138-P2: Enable reranking by default for better result quality
     applyLengthPenalty: applyLengthPenalty = true,
-    trackAccess: trackAccess = false, // P3-09: opt-in, off by default
+    trackAccess: trackAccess = false, // AI-TRACE:P3-09: opt-in, off by default
     includeArchived: includeArchived = false, // REQ-206: exclude archived by default
     enableSessionBoost: enableSessionBoost = isSessionBoostEnabled(),
     enableCausalBoost: enableCausalBoost = isCausalBoostEnabled(),
@@ -642,7 +642,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   const qualityThreshold = resolveQualityThreshold(minQualityScore, min_quality_score);
 
-  // T120: Validate numeric limit parameter
+  // AI-TRACE:T120: Validate numeric limit parameter
   const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
     ? Math.min(Math.floor(rawLimit), 100)
     : 10;
@@ -696,7 +696,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     });
   }
 
-  // T005: Eval logger — capture query at pipeline entry (fail-safe)
+  // AI-TRACE:T005: Eval logger — capture query at pipeline entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -715,7 +715,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   );
   const artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder);
 
-  // T039: Intent-aware retrieval
+  // AI-TRACE:T039: Intent-aware retrieval
   let detectedIntent: string | null = null;
   let intentConfidence = 0;
   let intentWeights: IntentWeights | null = null;
@@ -743,22 +743,14 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
-  // C136-08: Create retrieval trace at pipeline entry
+  // AI-TRACE:C136-08: Create retrieval trace at pipeline entry
   const trace = createTrace(
     normalizedQuery || (concepts ? concepts.join(', ') : ''),
     sessionId,
     detectedIntent || undefined
   );
 
-  // P1-CODE-003: Wait for embedding model to be ready
-  if (!isEmbeddingModelReady()) {
-    const modelReady = await waitForEmbeddingModel(30000);
-    if (!modelReady) {
-      throw new Error('Embedding model not ready after 30s timeout. Try again later.');
-    }
-  }
-
-  // T012-T015: Build cache key args
+  // AI-TRACE:T012-T015: Build cache key args
   const cacheArgs = buildCacheArgs({
     normalizedQuery,
     hasValidConcepts,
@@ -785,11 +777,19 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     enableCausalBoost,
   });
 
-  // T012-T015: Use cache wrapper for search execution
+  // AI-TRACE:T012-T015: Use cache wrapper for search execution
   const cachedResult = await toolCache.withCache(
     'memory_search',
     cacheArgs,
     async () => {
+      // AI-TRACE:P1-CODE-003: Wait for embedding model only on cache miss
+      if (!isEmbeddingModelReady()) {
+        const modelReady = await waitForEmbeddingModel(30000);
+        if (!modelReady) {
+          throw new Error('Embedding model not ready after 30s timeout. Try again later.');
+        }
+      }
+
       // AI-WHY: V2 pipeline is the only path (legacy V1 removed in 017-refinement-phase-6)
       {
         const pipelineConfig: PipelineConfig = {
@@ -915,7 +915,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   let responseToReturn: MCPResponse = cachedResult;
 
-  // T123: Apply session deduplication AFTER cache
+  // AI-TRACE:T123: Apply session deduplication AFTER cache
   if (sessionId && enableDedup && sessionManager.isEnabled()) {
     let resultsData: Record<string, unknown> | null = null;
     if (responseToReturn?.content?.[0]?.text && typeof responseToReturn.content[0].text === 'string') {
@@ -981,7 +981,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   }
 
-  // T004: Consumption instrumentation — log search event (fail-safe, never throws)
+  // AI-TRACE:T004: Consumption instrumentation — log search event (fail-safe, never throws)
   try {
     const db = (() => { try { return requireDb(); } catch { return null; } })();
     if (db) {
@@ -1010,7 +1010,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     }
   } catch { /* instrumentation must never cause search to fail */ }
 
-  // T005: Eval logger — capture final results at pipeline exit (fail-safe)
+  // AI-TRACE:T005: Eval logger — capture final results at pipeline exit (fail-safe)
   try {
     if (_evalRunId && _evalQueryId) {
       let finalMemoryIds: number[] = [];

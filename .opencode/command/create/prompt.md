@@ -1,5 +1,5 @@
 ---
-description: "Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-prompt-improver - supports :auto and :confirm modes"
+description: Create or improve AI prompts using proven frameworks, DEPTH thinking, and CLEAR scoring via sk-prompt-improver - supports :auto and :confirm modes
 argument-hint: "<prompt_or_topic> [$mode] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---

@@ -1,4 +1,6 @@
-// ------- MODULE: Memory CRUD Update Handler -------
+// ---------------------------------------------------------------
+// MODULE: Memory CRUD Update Handler
+// ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
    IMPORTS
@@ -79,6 +81,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
 
   let embeddingRegenerated = false;
   let embeddingMarkedForReindex = false;
+  let embeddingStatusNeedsPendingWrite = false;
 
   if (title !== undefined && title !== existing.title) {
     console.error(`[memory-update] Title changed, regenerating embedding for memory ${id} [requestId=${requestId}]`);
@@ -94,7 +97,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       const message = toErrorMessage(err);
       if (allowPartialUpdate) {
         console.warn(`[memory-update] Embedding regeneration failed, marking for re-index [requestId=${requestId}]: ${message}`);
-        vectorIndex.updateEmbeddingStatus(id, 'pending');
+        embeddingStatusNeedsPendingWrite = true;
         embeddingMarkedForReindex = true;
       } else {
         console.error(`[memory-update] Embedding regeneration failed, rolling back update [requestId=${requestId}]: ${message}`);
@@ -112,7 +115,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     } else if (!embeddingMarkedForReindex) {
       if (allowPartialUpdate) {
         console.warn('[memory-update] Embedding returned null, marking for re-index');
-        vectorIndex.updateEmbeddingStatus(id, 'pending');
+        embeddingStatusNeedsPendingWrite = true;
         embeddingMarkedForReindex = true;
       } else {
         throw new MemoryError(
@@ -124,60 +127,122 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     }
   }
 
-  vectorIndex.updateMemory(updateParams);
+  // AI-WHY: T2-5 transaction wrapper — wraps all synchronous mutation steps (DB update,
+  // cache invalidation, BM25 re-index, ledger append) in a single transaction for atomicity.
+  // AI-WHY: Embedding generation (async) runs before this block; its result feeds into updateParams.
+  const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
+
+  if (database) {
+    database.transaction(() => {
+      if (embeddingStatusNeedsPendingWrite) {
+        vectorIndex.updateEmbeddingStatus(id, 'pending');
+      }
+
+      vectorIndex.updateMemory(updateParams);
+
+      // AI-WHY: T2-6 — BM25 index stores title + trigger phrases; must re-index when either changes
+      // so keyword search reflects the updated content.
+      if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled()) {
+        try {
+          const row = database.prepare(
+            'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
+          ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
+          if (row) {
+            const textParts: string[] = [];
+            if (row.title) textParts.push(row.title);
+            if (row.content_text) textParts.push(row.content_text);
+            if (row.trigger_phrases) textParts.push(row.trigger_phrases);
+            if (row.file_path) textParts.push(row.file_path);
+            const text = textParts.join(' ');
+            if (text.trim()) {
+              bm25Index.getIndex().addDocument(String(id), text);
+            }
+          }
+        } catch (e: unknown) {
+          console.warn(`[memory-crud-update] BM25 re-index failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
+        }
+      }
+
+      appendMutationLedgerSafe(database, {
+        mutationType: 'update',
+        reason: 'memory_update: metadata update',
+        priorHash: priorSnapshot?.content_hash ?? existing.content_hash ?? null,
+        newHash: mutationLedger.computeHash(JSON.stringify({
+          id,
+          title: updateParams.title ?? existing.title ?? null,
+          triggerPhrases: updateParams.triggerPhrases ?? null,
+          importanceWeight: updateParams.importanceWeight ?? null,
+          importanceTier: updateParams.importanceTier ?? null,
+        })),
+        linkedMemoryIds: [id],
+        decisionMeta: {
+          tool: 'memory_update',
+          fields,
+          embeddingRegenerated,
+          embeddingMarkedForReindex,
+          allowPartialUpdate,
+        },
+        actor: 'mcp:memory_update',
+      });
+    })();
+  } else {
+    // AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
+    if (embeddingStatusNeedsPendingWrite) {
+      vectorIndex.updateEmbeddingStatus(id, 'pending');
+    }
+
+    vectorIndex.updateMemory(updateParams);
+
+    if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled()) {
+      try {
+        const db = vectorIndex.getDb();
+        if (db) {
+          const row = db.prepare(
+            'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
+          ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
+          if (row) {
+            const textParts: string[] = [];
+            if (row.title) textParts.push(row.title);
+            if (row.content_text) textParts.push(row.content_text);
+            if (row.trigger_phrases) textParts.push(row.trigger_phrases);
+            if (row.file_path) textParts.push(row.file_path);
+            const text = textParts.join(' ');
+            if (text.trim()) {
+              bm25Index.getIndex().addDocument(String(id), text);
+            }
+          }
+        }
+      } catch (e: unknown) {
+        console.warn(`[memory-crud-update] BM25 re-index failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
+
+    appendMutationLedgerSafe(database, {
+      mutationType: 'update',
+      reason: 'memory_update: metadata update',
+      priorHash: priorSnapshot?.content_hash ?? existing.content_hash ?? null,
+      newHash: mutationLedger.computeHash(JSON.stringify({
+        id,
+        title: updateParams.title ?? existing.title ?? null,
+        triggerPhrases: updateParams.triggerPhrases ?? null,
+        importanceWeight: updateParams.importanceWeight ?? null,
+        importanceTier: updateParams.importanceTier ?? null,
+      })),
+      linkedMemoryIds: [id],
+      decisionMeta: {
+        tool: 'memory_update',
+        fields,
+        embeddingRegenerated,
+        embeddingMarkedForReindex,
+        allowPartialUpdate,
+      },
+      actor: 'mcp:memory_update',
+    });
+  }
+
   triggerMatcher.clearCache();
   toolCache.invalidateOnWrite('update', { memoryId: id });
   clearConstitutionalCache();
-
-  // AI-WHY: BM25 index stores title text; must re-index when title changes
-  // so keyword search reflects the updated title.
-  if (updateParams.title !== undefined && bm25Index.isBm25Enabled()) {
-    try {
-      const db = vectorIndex.getDb();
-      if (db) {
-        const row = db.prepare(
-          'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
-        ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
-        if (row) {
-          const textParts: string[] = [];
-          if (row.title) textParts.push(row.title);
-          if (row.content_text) textParts.push(row.content_text);
-          if (row.trigger_phrases) textParts.push(row.trigger_phrases);
-          if (row.file_path) textParts.push(row.file_path);
-          const text = textParts.join(' ');
-          if (text.trim()) {
-            bm25Index.getIndex().addDocument(String(id), text);
-          }
-        }
-      }
-    } catch (e: unknown) {
-      console.warn(`[memory-crud-update] BM25 re-index after title change failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
-    }
-  }
-
-  const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
-
-  appendMutationLedgerSafe(database, {
-    mutationType: 'update',
-    reason: 'memory_update: metadata update',
-    priorHash: priorSnapshot?.content_hash ?? existing.content_hash ?? null,
-    newHash: mutationLedger.computeHash(JSON.stringify({
-      id,
-      title: updateParams.title ?? existing.title ?? null,
-      triggerPhrases: updateParams.triggerPhrases ?? null,
-      importanceWeight: updateParams.importanceWeight ?? null,
-      importanceTier: updateParams.importanceTier ?? null,
-    })),
-    linkedMemoryIds: [id],
-    decisionMeta: {
-      tool: 'memory_update',
-      fields,
-      embeddingRegenerated,
-      embeddingMarkedForReindex,
-      allowPartialUpdate,
-    },
-    actor: 'mcp:memory_update',
-  });
 
   const summary = embeddingMarkedForReindex
     ? `Memory ${id} updated (embedding pending re-index)`

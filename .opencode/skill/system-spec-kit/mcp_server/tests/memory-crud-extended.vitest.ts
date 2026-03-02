@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest';
 
 // ───────────────────────────────────────────────────────────────
@@ -11,7 +10,7 @@ import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest';
 // Mock modules at the vi.mock level so handler's internal imports are intercepted.
 // vi.mock is hoisted to the top of the file by vitest.
 vi.mock('../core/db-state', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
@@ -19,7 +18,7 @@ vi.mock('../core/db-state', async (importOriginal) => {
 });
 
 vi.mock('../core', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
@@ -27,7 +26,7 @@ vi.mock('../core', async (importOriginal) => {
 });
 
 vi.mock('../lib/search/vector-index', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     deleteMemory: vi.fn((...args: any[]) => actual.deleteMemory?.(...args)),
@@ -42,7 +41,7 @@ vi.mock('../lib/search/vector-index', async (importOriginal) => {
 });
 
 vi.mock('../lib/storage/checkpoints', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     createCheckpoint: vi.fn((...args: any[]) => actual.createCheckpoint?.(...args)),
@@ -50,7 +49,7 @@ vi.mock('../lib/storage/checkpoints', async (importOriginal) => {
 });
 
 vi.mock('../lib/storage/causal-edges', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     init: vi.fn((...args: any[]) => actual.init?.(...args)),
@@ -59,7 +58,7 @@ vi.mock('../lib/storage/causal-edges', async (importOriginal) => {
 });
 
 vi.mock('../lib/parsing/trigger-matcher', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     clearCache: vi.fn((...args: any[]) => actual.clearCache?.(...args)),
@@ -67,7 +66,7 @@ vi.mock('../lib/parsing/trigger-matcher', async (importOriginal) => {
 });
 
 vi.mock('../lib/cache/tool-cache', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     invalidateOnWrite: vi.fn((...args: any[]) => actual.invalidateOnWrite?.(...args)),
@@ -75,7 +74,7 @@ vi.mock('../lib/cache/tool-cache', async (importOriginal) => {
 });
 
 vi.mock('../hooks/memory-surface', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     clearConstitutionalCache: vi.fn((...args: any[]) => actual.clearConstitutionalCache?.(...args)),
@@ -92,7 +91,7 @@ vi.mock('../lib/storage/mutation-ledger', async () => {
 
 // Mock the embeddings barrel that the handler actually imports
 vi.mock('../lib/providers/embeddings', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     generateDocumentEmbedding: vi.fn((...args: any[]) => actual.generateDocumentEmbedding?.(...args)),
@@ -103,7 +102,7 @@ vi.mock('../lib/providers/embeddings', async (importOriginal) => {
 
 // Mock the folder-scoring barrel that the handler actually imports
 vi.mock('../lib/scoring/folder-scoring', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as any;
   return {
     ...actual,
     isArchived: vi.fn((...args: any[]) => actual.isArchived?.(...args)),
@@ -132,19 +131,8 @@ function parseResponse(result: any): any {
 }
 
 beforeAll(async () => {
-  try {
-    handler = await import('../handlers/memory-crud');
-  } catch {
-    handler = null;
-    return;
-  }
-
-  try {
-    vectorIndex = await import('../lib/search/vector-index');
-  } catch {
-    vectorIndex = null;
-    return;
-  }
+  handler = await import('../handlers/memory-crud');
+  vectorIndex = await import('../lib/search/vector-index');
 
   try { checkpointsMod = await import('../lib/storage/checkpoints'); } catch { /* optional */ }
   try { embeddingsMod = await import('../lib/providers/embeddings'); } catch { /* optional */ }
@@ -479,7 +467,9 @@ function installMutationLedgerMocks() {
 
 describe('handleMemoryDelete - Happy Path', () => {
   it('EXT-D1: Single ID delete returns deleted=1', async () => {
-    if (!handler?.handleMemoryDelete || !vectorIndex) return;
+    if (!handler?.handleMemoryDelete || !vectorIndex) {
+      throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable');
+    }
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true });
     const result = await handler.handleMemoryDelete({ id: 42 });
     const parsed = parseResponse(result);
@@ -533,12 +523,10 @@ describe('handleMemoryDelete - Causal Edge Cleanup', () => {
     expect(calls.causalDeleteEdges[0]).toBe('5');
   });
 
-  it('EXT-CE2: Causal edge cleanup failure is non-fatal', async () => {
+  it('EXT-CE2: Causal edge cleanup failure aborts delete transaction', async () => {
     if (!handler?.handleMemoryDelete || !vectorIndex || !causalEdgesMod) return;
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true, edgeCleanupThrows: true });
-    const result = await handler.handleMemoryDelete({ id: 3 });
-    const parsed = parseResponse(result);
-    expect(parsed?.data?.deleted).toBe(1);
+    await expect(handler.handleMemoryDelete({ id: 3 })).rejects.toThrow('Mock edge cleanup error');
   });
 
   it('EXT-CE3: No edge cleanup when delete fails', async () => {
@@ -674,10 +662,11 @@ describe('handleMemoryUpdate - Happy Path', () => {
       // If no throw, fail
       expect(true).toBe(false);
     } catch (error: unknown) {
-      const isExpected = error.name === 'MemoryError' ||
-                         (error.code && error.code.startsWith('E')) ||
-                         error.message.includes('not found') ||
-                         error.message.includes('Memory');
+      const err = error as any;
+      const isExpected = err.name === 'MemoryError' ||
+                         (err.code && err.code.startsWith('E')) ||
+                         err.message.includes('not found') ||
+                         err.message.includes('Memory');
       expect(isExpected).toBe(true);
     }
   });
@@ -695,9 +684,10 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
       await handler.handleMemoryUpdate({ id: 1, title: 'New Title', allowPartialUpdate: false });
       expect(true).toBe(false); // should have thrown
     } catch (error: unknown) {
-      const isExpected = error.name === 'MemoryError' ||
-                         error.message.includes('rolled back') ||
-                         error.message.includes('Embedding');
+      const err = error as any;
+      const isExpected = err.name === 'MemoryError' ||
+                         err.message.includes('rolled back') ||
+                         err.message.includes('Embedding');
       expect(isExpected).toBe(true);
     }
   });
@@ -718,10 +708,11 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
       await handler.handleMemoryUpdate({ id: 3, title: 'New Title', allowPartialUpdate: false });
       expect(true).toBe(false);
     } catch (error: unknown) {
-      const isExpected = error.message.includes('null') ||
-                         error.message.includes('rolled back') ||
-                         error.message.includes('Embedding') ||
-                         error.name === 'MemoryError';
+      const err = error as any;
+      const isExpected = err.message.includes('null') ||
+                         err.message.includes('rolled back') ||
+                         err.message.includes('Embedding') ||
+                         err.name === 'MemoryError';
       expect(isExpected).toBe(true);
     }
   });
@@ -821,7 +812,9 @@ describe('handleMemoryList - Happy Path', () => {
   });
 
   it('EXT-L8: parent-only listing is default, includeChunks bypasses filter', async () => {
-    if (!handler?.handleMemoryList || !vectorIndex) return;
+    if (!handler?.handleMemoryList || !vectorIndex) {
+      throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable');
+    }
 
     const dbDefault = installListMocks({ rows: [], total: 0 });
     await handler.handleMemoryList({});
@@ -882,8 +875,12 @@ describe('handleMemoryStats - Happy Path', () => {
     installStatsMocks({ statusCounts: { success: 5, pending: 3, failed: 0 } });
     const result = await handler.handleMemoryStats({});
     const parsed = parseResponse(result);
-    expect(parsed).toBeDefined();
-    expect(parsed?.data).toBeDefined();
+    expect(parsed).not.toBeNull();
+    expect(parsed?.data).toEqual(expect.objectContaining({
+      totalMemories: expect.any(Number),
+      byStatus: expect.any(Object),
+      topFolders: expect.any(Array),
+    }));
   });
 
   it('EXT-S6: Stats returns without error (no vector)', async () => {
@@ -940,7 +937,7 @@ describe('handleMemoryStats - Folder Scoring', () => {
     installStatsMocks({ computeScoresThrows: true });
     const result = await handler.handleMemoryStats({ folderRanking: 'recency' });
     const parsed = parseResponse(result);
-    expect(parsed?.data?.topFolders).toBeDefined();
+    expect(Array.isArray(parsed?.data?.topFolders)).toBe(true);
   });
 
   it('EXT-FS3: Archived folders filtered out', async () => {
@@ -1043,8 +1040,12 @@ describe('handleMemoryHealth - Happy Path', () => {
     installHealthMocks({ dbAvailable: true, vectorSearchAvailable: false });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
-    expect(parsed).toBeDefined();
-    expect(parsed?.data).toBeDefined();
+    expect(parsed).not.toBeNull();
+    expect(parsed?.data).toEqual(expect.objectContaining({
+      embeddingModelReady: expect.any(Boolean),
+      databaseConnected: expect.any(Boolean),
+      vectorSearchAvailable: false,
+    }));
     // Reset
     handler.setEmbeddingModelReady(false);
   });
@@ -1225,6 +1226,7 @@ describe('Mutation ledger wiring', () => {
       prepare: (_sql: string) => ({
         get: (_id: number) => ({ id: 7, content_hash: 'old-hash', spec_folder: 'specs/test', file_path: '/tmp/memory.md' }),
       }),
+      transaction: (fn: Function) => fn,
     }));
     const ledgerCalls = installMutationLedgerMocks();
 

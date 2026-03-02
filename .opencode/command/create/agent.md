@@ -1,5 +1,5 @@
 ---
-description: "Create a new OpenCode agent with proper frontmatter, tool permissions, and behavioral rules - supports :auto and :confirm modes"
+description: Create a new OpenCode agent with proper frontmatter, tool permissions, and behavioral rules - supports :auto and :confirm modes
 argument-hint: "<agent_name> [agent_description] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---

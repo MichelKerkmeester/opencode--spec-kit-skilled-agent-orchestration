@@ -17,9 +17,10 @@
 // applied ONCE here only — this is the architectural guard against
 // the G2 double-weighting recurrence bug.
 //
-// SIGNAL APPLICATION ORDER (must not be reordered):
+// SIGNAL APPLICATION ORDER (must not be reordered — 12 steps):
 //   1.  Session boost           — working-memory attention amplification
 //   2.  Causal boost            — graph-traversal neighbor amplification
+//   2a. Co-activation spreading — spreading activation from top-N seeds
 //   2b. Community co-retrieval  — N2c inject community co-members
 //   2c. Graph signals           — N2a momentum + N2b causal depth
 //   3.  Testing effect          — FSRS strengthening write-back (trackAccess)
@@ -458,9 +459,10 @@ function applyTestingEffect(
  * applied. The ordering is fixed and must not be changed without updating
  * the architectural documentation (see types.ts Stage2 comment block).
  *
- * Signal application order:
+ * Signal application order (12 steps):
  *   1.  Session boost      (hybrid only — working memory attention)
  *   2.  Causal boost       (hybrid only — graph-traversal amplification)
+ *   2a. Co-activation      (spreading activation from top-N seeds)
  *   2b. Community boost    (N2c — inject co-members)
  *   2c. Graph signals      (N2a+N2b — momentum + depth)
  *   3.  Testing effect     (all types, when trackAccess = true)
@@ -468,6 +470,8 @@ function applyTestingEffect(
  *   5.  Artifact routing   (all types, when routing confidence > 0)
  *   6.  Feedback signals   (all types — learned triggers + negative feedback)
  *   7.  Artifact limiting  (trim to strategy.maxResults if routing active)
+ *   8.  Anchor metadata    (annotation — no score mutation)
+ *   9.  Validation metadata (spec quality signals + quality scoring)
  *
  * @param input - Stage 2 input containing candidates and pipeline config
  * @returns Stage 2 output with scored results and per-signal metadata
@@ -648,6 +652,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // ── 7. Artifact-based result limiting ──
   // The routing strategy may specify a maxResults count stricter than the
   // overall pipeline limit. Apply it here so Stage 3 reranks a pre-trimmed set.
+  results.sort((a, b) => resolveEffectiveScore(b) - resolveEffectiveScore(a));
   if (
     config.artifactRouting &&
     config.artifactRouting.confidence > 0 &&

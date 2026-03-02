@@ -5,9 +5,8 @@
 # Orchestrates installation of all MCP servers in dependency order:
 #   1. Sequential Thinking (no dependencies)
 #   2. Spec Kit Memory (no dependencies)
-#   3. Code Mode (no dependencies, but needed by Figma)
+#   3. Code Mode (no dependencies)
 #   4. Chrome DevTools (no dependencies)
-#   5. Figma (requires Code Mode for Option B)
 
 set -euo pipefail
 
@@ -19,13 +18,12 @@ source "${SCRIPT_DIR}/_utils.sh"
 # ───────────────────────────────────────────────────────────────
 
 # MCP definitions using parallel arrays (bash 3.2 compatible)
-# Index: 0=sequential-thinking, 1=spec-kit-memory, 2=code-mode, 3=chrome-devtools, 4=figma
+# Index: 0=sequential-thinking, 1=spec-kit-memory, 2=code-mode, 3=chrome-devtools
 readonly MCP_NAMES=(
     "sequential-thinking"
     "spec-kit-memory"
     "code-mode"
     "chrome-devtools"
-    "figma"
 )
 
 readonly MCP_SCRIPTS=(
@@ -33,7 +31,6 @@ readonly MCP_SCRIPTS=(
     "install-spec-kit-memory.sh"
     "install-code-mode.sh"
     "install-chrome-devtools.sh"
-    "install-figma.sh"
 )
 
 readonly MCP_DISPLAY_NAMES=(
@@ -41,7 +38,6 @@ readonly MCP_DISPLAY_NAMES=(
     "Spec Kit Memory"
     "Code Mode"
     "Chrome DevTools"
-    "Figma"
 )
 
 # Dependencies (empty string = no deps, otherwise MCP name)
@@ -50,11 +46,10 @@ readonly MCP_DEPS=(
     ""
     ""
     ""
-    "code-mode"
 )
 
 # Installation order indices
-readonly INSTALL_ORDER=(0 1 2 3 4)
+readonly INSTALL_ORDER=(0 1 2 3)
 
 # Counters
 INSTALLED=0
@@ -221,20 +216,18 @@ MCP Names (for --skip/--only):
     spec-kit-memory        Semantic vector search for conversation context
     code-mode              UTCP orchestration for external MCP tools
     chrome-devtools        Browser debugging via DevTools Protocol
-    figma                  Figma design file access
 
 Installation Order (dependency-based):
     1. Sequential Thinking (no dependencies)
     2. Spec Kit Memory (no dependencies)
-    3. Code Mode (needed by Figma)
+    3. Code Mode (no dependencies)
     4. Chrome DevTools (no dependencies)
-    5. Figma (requires Code Mode)
 
 Examples:
     $(basename "$0")                          # Install all MCPs
-    $(basename "$0") --skip figma             # Install all except Figma
+    $(basename "$0") --skip chrome-devtools   # Install all except Chrome DevTools
     $(basename "$0") --only code-mode         # Install only Code Mode
-    $(basename "$0") --only code-mode --only figma   # Install Code Mode and Figma
+    $(basename "$0") --only code-mode --only spec-kit-memory   # Install Code Mode and Spec Kit Memory
     $(basename "$0") --dry-run                # Preview without installing
 
 EOF
@@ -340,13 +333,6 @@ run_installer() {
     if [[ "$NO_VERIFY" == "true" ]]; then
         args="$args --skip-verify"
     fi
-    
-    # Add non-interactive flags for specific scripts
-    case "$name" in
-        figma)
-            args="$args -a"  # Use official Figma MCP (non-interactive)
-            ;;
-    esac
     
     # Run the installer
     # shellcheck disable=SC2086 # Word splitting is intentional for args

@@ -480,9 +480,10 @@ function calculateSimilarityStats(
   const similarities = candidates.map(c => c.similarity);
   const sum = similarities.reduce((a, b) => a + b, 0);
 
+  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   return {
-    min: Math.min(...similarities),
-    max: Math.max(...similarities),
+    min: similarities.reduce((a, b) => Math.min(a, b), Infinity),
+    max: similarities.reduce((a, b) => Math.max(a, b), -Infinity),
     avg: Math.round((sum / similarities.length) * 100) / 100,
     count: similarities.length,
   };

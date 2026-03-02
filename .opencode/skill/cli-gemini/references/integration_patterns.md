@@ -1,11 +1,11 @@
 ---
 title: "Cross-AI Orchestration Patterns"
-description: "Proven patterns for orchestrating Gemini CLI from Claude Code sessions, including implementation templates and practical considerations."
+description: "Proven patterns for orchestrating Gemini CLI from any AI assistant session, including implementation templates and practical considerations."
 ---
 
-# Cross-AI Orchestration Patterns: Claude Code + Gemini CLI
+# Cross-AI Orchestration Patterns: Calling AI + Gemini CLI
 
-Proven patterns for orchestrating Gemini CLI from within Claude Code sessions.
+Proven patterns for orchestrating Gemini CLI from any AI assistant session.
 
 ---
 
@@ -15,17 +15,17 @@ Proven patterns for orchestrating Gemini CLI from within Claude Code sessions.
 
 ### Core Principle
 
-Claude Code acts as the orchestrator (planner, validator, integrator) while Gemini CLI executes targeted tasks. The value comes from combining different model perspectives, not from redundant execution.
+The calling AI acts as the orchestrator (planner, validator, integrator) while Gemini CLI executes targeted tasks. The value comes from combining different model perspectives, not from redundant execution.
 
 ### Purpose
 
-Each pattern documented here includes the rationale, implementation template, and practical considerations for combining Claude Code with Gemini CLI effectively.
+Each pattern documented here includes the rationale, implementation template, and practical considerations for combining the calling AI with Gemini CLI effectively.
 
 ### When to Use
 
 - You need a second AI perspective on generated code, architecture, or security
-- Gemini's strengths (speed via Flash models, 1M+ context window, native web search) complement Claude Code's strengths (deep codebase context, built-in tools)
-- You want to run parallel AI tasks while Claude Code continues working
+- Gemini's strengths (speed via Flash models, 1M+ context window, native web search) complement the calling AI's strengths
+- You want to run parallel AI tasks while the calling AI continues working
 - Complex workflows benefit from structured, multi-stage generation and validation
 
 <!-- /ANCHOR:overview -->
@@ -39,7 +39,7 @@ Each pattern documented here includes the rationale, implementation template, an
 ### Flow
 
 ```
-Claude Code (plan) --> Gemini CLI (generate) --> Claude Code (review) --> Gemini CLI (fix)
+Calling AI (plan) --> Gemini CLI (generate) --> Calling AI (review) --> Gemini CLI (fix)
 ```
 
 ### Implementation
@@ -49,7 +49,7 @@ Claude Code (plan) --> Gemini CLI (generate) --> Claude Code (review) --> Gemini
 echo "Create a rate limiter middleware for Express with sliding window algorithm. \
 Output only the code, no explanation." | gemini -o text -m gemini-3.1-pro-preview > /tmp/rate-limiter.ts
 
-# Step 2: Claude reviews (done within Claude Code session)
+# Step 2: Calling AI reviews (done within the calling AI session)
 # Read /tmp/rate-limiter.ts, identify issues, write review to /tmp/review.md
 
 # Step 3: Gemini fixes based on review
@@ -75,7 +75,7 @@ echo "Fix these issues in the rate limiter: $(cat /tmp/review.md)" | \
 
 ## 3. JSON OUTPUT PROCESSING
 
-**Extract structured data from Gemini for programmatic use in Claude Code workflows.**
+**Extract structured data from Gemini for programmatic use in the calling AI's workflows.**
 
 ### Implementation
 
@@ -123,7 +123,7 @@ parsed.issues.filter(i => i.severity === 'high').forEach(i => {
 ### When to Use
 
 - Extracting metrics, function signatures, or dependency lists
-- Feeding Gemini analysis into Claude Code decision logic
+- Feeding Gemini analysis into the calling AI's decision logic
 - Building automated pipelines that branch on structured output
 
 ### Considerations
@@ -138,7 +138,7 @@ parsed.issues.filter(i => i.severity === 'high').forEach(i => {
 
 ## 4. BACKGROUND EXECUTION
 
-**Run Gemini tasks in parallel while Claude Code continues working.**
+**Run Gemini tasks in parallel while the calling AI continues working.**
 
 ### Implementation
 
@@ -152,7 +152,7 @@ echo "Generate unit tests for src/utils.ts" | \
   gemini -o text -m gemini-3.1-pro-preview > /tmp/generated-tests.ts 2>&1 &
 PID2=$!
 
-# Claude Code continues other work...
+# Calling AI continues other work...
 # ... then checks results when needed
 
 # Wait for specific task
@@ -180,7 +180,7 @@ tail -f /tmp/generated-tests.ts
 ### When to Use
 
 - Independent tasks that do not depend on each other
-- Long-running analysis while Claude Code handles quick edits
+- Long-running analysis while the calling AI handles quick edits
 - Generating multiple artifacts simultaneously (tests, docs, types)
 
 ### Considerations
@@ -307,7 +307,7 @@ Create a `GEMINI.md` in the project root to persist context across all Gemini in
 ### Explicit Context Injection
 
 ```bash
-# Inject Claude Code's analysis as context
+# Inject the calling AI's analysis as context
 CLAUDE_ANALYSIS="The bug is in the token refresh logic. The refresh token
 is not being rotated on use, allowing token replay attacks."
 
@@ -319,7 +319,7 @@ echo "Fix this security issue. Context from prior analysis: $CLAUDE_ANALYSIS" | 
 
 - Always provide relevant file context; Gemini performs significantly better with it
 - Use GEMINI.md for project-wide conventions that apply to every request
-- Inject Claude Code's findings when Gemini is doing follow-up work
+- Inject the calling AI's findings when Gemini is doing follow-up work
 
 <!-- /ANCHOR:context-enrichment -->
 
@@ -350,8 +350,8 @@ injection attacks, authentication bypasses. Return JSON: \
 {issues: [{severity, line, description, fix}]}" | \
   gemini -o json @/tmp/webhook.ts -m gemini-3.1-pro-preview > /tmp/security-scan.json
 
-# Stage 4: Functional check (Claude Code reviews the result)
-# Read /tmp/webhook.ts and /tmp/security-scan.json within Claude Code
+# Stage 4: Functional check (calling AI reviews the result)
+# Read /tmp/webhook.ts and /tmp/security-scan.json within the calling AI
 
 # Stage 5: Style check
 echo "Reformat to match project conventions. Use functional style, \
@@ -366,7 +366,7 @@ Result<T,E> error handling, JSDoc on exports." | \
 | 1. Generate | Create initial artifact | Gemini (`gemini-3.1-pro-preview`) |
 | 2. Syntax | Verify it compiles/parses | Language toolchain (tsc, eslint) |
 | 3. Security | Check for vulnerabilities | Gemini (`gemini-3.1-pro-preview`) or dedicated scanner |
-| 4. Functional | Verify correctness | Claude Code review or tests |
+| 4. Functional | Verify correctness | Calling AI review or tests |
 | 5. Style | Match project conventions | Gemini (`gemini-3.1-pro-preview`) or formatter |
 
 ### When to Use
@@ -436,7 +436,7 @@ npx jest src/task-queue/__tests__/queue.test.ts
 ### Claude Generates, Gemini Reviews
 
 ```bash
-# Claude Code generates code (within the session)
+# Calling AI generates code (within the session)
 # Then Gemini reviews it:
 echo "Review this code for: correctness, edge cases, performance issues, \
 and adherence to SOLID principles. Be critical." | \
@@ -450,12 +450,12 @@ and adherence to SOLID principles. Be critical." | \
 echo "Create a caching layer with TTL support and LRU eviction" | \
   gemini -o text -m gemini-3.1-pro-preview > /tmp/cache.ts
 
-# Claude Code reviews within the session (read /tmp/cache.ts and analyze)
+# Calling AI reviews within the session (read /tmp/cache.ts and analyze)
 ```
 
 ### Strength Comparison for Task Routing
 
-| Strength Area | Claude Code | Gemini CLI |
+| Strength Area | Calling AI | Gemini CLI |
 |---------------|-------------|------------|
 | Codebase context | Deep (built-in tools) | Good (with @ references) |
 | Web search | Via tool | Native google_web_search |
@@ -524,7 +524,7 @@ fi
 
 - Sessions consume storage; clean up with `--delete-session` when done
 - Session context has limits; very long sessions may lose early context
-- For Claude Code orchestration, it is often simpler to re-provide context than manage sessions
+- For cross-AI orchestration, it is often simpler to re-provide context than manage sessions
 
 <!-- /ANCHOR:session-continuity -->
 
@@ -532,7 +532,7 @@ fi
 
 ## 12. ANTI-PATTERNS
 
-**What NOT to do when orchestrating Gemini CLI from Claude Code.**
+**What NOT to do when orchestrating Gemini CLI from the calling AI.**
 
 ### 1. Expecting Immediate Execution with YOLO
 

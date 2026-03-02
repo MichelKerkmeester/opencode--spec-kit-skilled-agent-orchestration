@@ -9,7 +9,7 @@ trigger_phrases:
 
 # cli-gemini
 
-> Gemini CLI orchestrator enabling Claude Code and OpenCode to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search grounding, codebase architecture analysis, cross-AI validation, and parallel task processing.
+> Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search grounding, codebase architecture analysis, cross-AI validation, and parallel task processing.
 
 > **Navigation**:
 > - New to Gemini CLI? Start with [Quick Start](#2--quick-start)
@@ -36,7 +36,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-This skill orchestrates Google's Gemini CLI from Claude Code or OpenCode for tasks that benefit from a second AI perspective, real-time web search, deep codebase architecture analysis, or parallel code generation. Claude Code acts as the conductor (planner, validator, integrator) while Gemini CLI executes targeted tasks.
+This skill orchestrates Google's Gemini CLI for tasks that benefit from a second AI perspective, real-time web search, deep codebase architecture analysis, or parallel code generation. The calling AI acts as the conductor (planner, validator, integrator) while Gemini CLI executes targeted tasks.
 
 ### Key Statistics
 
@@ -53,7 +53,7 @@ This skill orchestrates Google's Gemini CLI from Claude Code or OpenCode for tas
 - **Cross-AI Validation** — Second perspective on code review, security audit, bug detection
 - **Google Search Grounding** — Current internet information, latest versions, API changes
 - **Codebase Architecture Analysis** — Dependency mapping, architecture documentation
-- **Parallel Task Processing** — Background generation while Claude Code continues other work
+- **Parallel Task Processing** — Background generation while the calling AI continues other work
 - **Agent-Delegated Tasks** — Route to specialized Gemini agents for domain expertise
 
 <!-- /ANCHOR:overview -->
@@ -221,7 +221,7 @@ gemini "Generate comprehensive Jest tests for @./src/utils.ts" --yolo -o text > 
 # Step 1: Gemini generates
 gemini "Create a rate limiter middleware for Express" -o text -m gemini-3.1-pro-preview > /tmp/rate-limiter.ts
 
-# Step 2: Claude Code reviews (within session), writes review to /tmp/review.md
+# Step 2: Calling AI reviews (within session), writes review to /tmp/review.md
 
 # Step 3: Gemini fixes
 gemini "Fix these issues: $(cat /tmp/review.md)" @/tmp/rate-limiter.ts -o text > /tmp/rate-limiter-v2.ts
@@ -257,7 +257,6 @@ For detailed troubleshooting, see `references/cli_reference.md` Section 12.
 - **cli-codex skill** — Parallel cross-AI validation via OpenAI's Codex CLI
 - **sk-code--web** — Web development where Gemini provides second opinions
 - **sk-code--full-stack** — Full-stack tasks with Gemini architecture analysis
-- **Install Guide** — [MCP - Gemini CLI.md](../../install_guides/MCP%20-%20Gemini%20CLI.md)
 - **External** — [Gemini CLI GitHub](https://github.com/google-gemini/gemini-cli) | [Google AI Studio](https://aistudio.google.com/apikey)
 
 <!-- /ANCHOR:related -->

@@ -10,7 +10,6 @@ Comprehensive reference for all Codex CLI commands, flags, models, configuration
 ---
 
 <!-- ANCHOR:overview -->
-
 ## 1. OVERVIEW
 
 ### Core Principle

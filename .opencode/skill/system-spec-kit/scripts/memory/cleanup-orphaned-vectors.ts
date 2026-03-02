@@ -3,12 +3,12 @@
 // Database maintenance — removes orphaned vector embeddings and history entries
 // ---------------------------------------------------------------
 
-// Node stdlib
-import * as path from 'path';
-
 // External packages
 import Database from 'better-sqlite3';
 import { load as loadSqliteVec } from 'sqlite-vec';
+
+// Shared config
+import { DB_PATH } from '@spec-kit/shared/config';
 
 /* -----------------------------------------------------------------
    1. INTERFACES
@@ -30,7 +30,7 @@ interface OrphanedVector {
    2. CONFIGURATION
 ------------------------------------------------------------------*/
 
-const dbPath: string = path.join(__dirname, '../../../mcp_server/database/context-index.sqlite');
+const dbPath: string = DB_PATH;
 
 /* -----------------------------------------------------------------
    2.1 HELP TEXT

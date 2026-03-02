@@ -350,6 +350,13 @@ INTENT_BOOSTERS = {
     "codex": ("cli-codex", 2.0),
     "openai-cli": ("cli-codex", 1.5),
 
+    # ─────────────────────────────────────────────────────────────────────────────────
+    # CLI-CLAUDE-CODE: Cross-AI orchestration via Anthropic Claude Code CLI
+    # ─────────────────────────────────────────────────────────────────────────────────
+    "claude-code": ("cli-claude-code", 2.0),
+    "claude-cli": ("cli-claude-code", 1.5),
+    "extended-thinking": ("cli-claude-code", 1.0),
+
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
     # ─────────────────────────────────────────────────────────────────
@@ -416,9 +423,9 @@ MULTI_SKILL_BOOSTERS = {
     "generate": [("sk-doc-visual", 0.4)],
     "table": [("sk-doc-visual", 0.3)],
     "review": [("sk-code--review", 0.8), ("sk-doc-visual", 0.3)],
-    "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5)],
-    "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("sk-code--review", 0.2)],
-    "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("sk-code--review", 0.3)],
+    "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5), ("cli-claude-code", 0.5)],
+    "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("cli-claude-code", 0.3), ("sk-code--review", 0.2)],
+    "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("cli-claude-code", 0.2), ("sk-code--review", 0.3)],
     "improve": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
     "enhance": [("sk-prompt-improver", 0.8)],
     "refine": [("sk-prompt-improver", 0.6), ("sk-code--web", 0.2)],
@@ -488,6 +495,17 @@ PHRASE_INTENT_BOOSTERS = {
     "cli-codex": [("cli-codex", 2.8)],
     "/cli-codex": [("cli-codex", 2.8)],
     ".opencode/skill/cli-codex": [("cli-codex", 3.0)],
+    # --- Claude Code CLI cross-AI orchestration ---
+    "use claude code": [("cli-claude-code", 2.5)],
+    "claude code cli": [("cli-claude-code", 2.5)],
+    "delegate to claude code": [("cli-claude-code", 2.5)],
+    "extended thinking": [("cli-claude-code", 2.0)],
+    "deep reasoning": [("cli-claude-code", 1.5)],
+    "claude code review": [("cli-claude-code", 2.0), ("sk-code--review", 0.4)],
+    "cross-ai claude": [("cli-claude-code", 2.0)],
+    "cli-claude-code": [("cli-claude-code", 2.8)],
+    "/cli-claude-code": [("cli-claude-code", 2.8)],
+    ".opencode/skill/cli-claude-code": [("cli-claude-code", 3.0)],
     # --- Prompt Improver: prompt engineering and enhancement ---
     "improve my prompt": [("sk-prompt-improver", 2.5)],
     "improve this prompt": [("sk-prompt-improver", 2.5)],

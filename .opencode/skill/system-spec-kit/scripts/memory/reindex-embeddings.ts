@@ -14,16 +14,15 @@ import fs from 'fs';
    2. TYPES
 --------------------------------------------------------------- */
 
-import type { EmbeddingProfile } from '../../shared/types';
-import type { MCPResponse } from '../../shared/types';
+import type { EmbeddingProfile, MCPResponse } from '@spec-kit/shared/types';
 
-type VectorIndexModule = typeof import('../../mcp_server/lib/search/vector-index');
-type EmbeddingsModule = typeof import('../../mcp_server/lib/providers/embeddings');
-type CheckpointsModule = typeof import('../../mcp_server/lib/storage/checkpoints');
-type AccessTrackerModule = typeof import('../../mcp_server/lib/storage/access-tracker');
-type HybridSearchModule = typeof import('../../mcp_server/lib/search/hybrid-search');
-type CoreModule = typeof import('../../mcp_server/core');
-type HandlersModule = typeof import('../../mcp_server/handlers');
+type VectorIndexModule = typeof import('@spec-kit/mcp-server/lib/search/vector-index');
+type EmbeddingsModule = typeof import('@spec-kit/mcp-server/lib/providers/embeddings');
+type CheckpointsModule = typeof import('@spec-kit/mcp-server/lib/storage/checkpoints');
+type AccessTrackerModule = typeof import('@spec-kit/mcp-server/lib/storage/access-tracker');
+type HybridSearchModule = typeof import('@spec-kit/mcp-server/lib/search/hybrid-search');
+type CoreModule = typeof import('@spec-kit/mcp-server/core');
+type HandlersModule = typeof import('@spec-kit/mcp-server/handlers');
 
 interface ScanData {
   status: string;
@@ -42,7 +41,6 @@ interface ScanData {
 
 function resolveMcpServerDistRoot(): string {
   const candidates: string[] = [
-    path.resolve(__dirname, '../../mcp_server/dist'),
     path.resolve(__dirname, '../../../mcp_server/dist'),
   ];
 

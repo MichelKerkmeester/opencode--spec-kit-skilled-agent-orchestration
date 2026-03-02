@@ -529,7 +529,7 @@ All support `:auto` and `:confirm` mode suffixes.
 ## 7. 🧩 SKILLS LIBRARY
 <!-- ANCHOR:skills-library -->
 
-13 domain skills, auto-loaded by task keywords.
+15 domain skills, auto-loaded by task keywords.
 
 Skills are domain expertise on demand. The AI loads the right skill and already knows your conventions.
 
@@ -551,6 +551,7 @@ Skills are domain expertise on demand. The AI loads the right skill and already 
 | `sk-prompt-improver`  | Prompt Eng    | Prompt optimization with 7 frameworks and CLEAR scoring                                |
 | `cli-gemini`          | Cross-AI     | Gemini CLI orchestration for web research, code review, architecture analysis          |
 | `cli-codex`           | Cross-AI     | Codex CLI orchestrator for OpenAI cross-AI tasks                                       |
+| `cli-claude-code`     | Cross-AI     | Claude Code CLI orchestrator for deep reasoning, extended thinking, structured output  |
 
 ### Auto-Detection
 

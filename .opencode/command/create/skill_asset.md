@@ -1,5 +1,5 @@
 ---
-description: "Create an asset file for an existing skill - templates, lookups, examples, or guides - supports :auto and :confirm modes"
+description: Create an asset file for an existing skill - templates, lookups, examples, or guides - supports :auto and :confirm modes
 argument-hint: "<skill-name> <asset-type> [--chained] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---

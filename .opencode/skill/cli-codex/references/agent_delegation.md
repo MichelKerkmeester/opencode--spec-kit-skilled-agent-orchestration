@@ -5,28 +5,27 @@ description: "Reference for delegating tasks to 9 specialized Codex agents via t
 
 # Codex Agent Delegation Reference
 
-Routing reference for delegating tasks from Claude Code to specialized Codex CLI agents.
+Routing reference for delegating tasks to specialized Codex CLI agents.
 
 ---
 
 <!-- ANCHOR:overview -->
-
 ## 1. OVERVIEW
 
 ### Core Principle
 
-Claude Code decides WHAT to do, Codex CLI decides HOW to do it within the delegated scope.
+The calling AI decides WHAT to do, Codex CLI decides HOW to do it within the delegated scope.
 
 ### Purpose
 
-Documents the 9 specialized Codex agents in `.codex/agents/` and how Claude Code orchestrates them. Claude Code acts as the **conductor** (planner, validator, integrator) while Codex CLI executes targeted tasks through its agent system.
+Documents the 9 specialized Codex agents in `.codex/agents/` and how any AI assistant orchestrates them. The calling AI acts as the **conductor** (planner, validator, integrator) while Codex CLI executes targeted tasks through its agent system.
 
 ### When to Use
 
 - Delegating supplementary implementation or analysis tasks to Codex CLI agents
 - Cross-AI code review or architectural second opinion
 - Web research via `--search` flag (`@research`)
-- Fresh-perspective debugging after Claude Code attempts fail (`@debug`)
+- Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
 - Spec folder documentation generation (`@speckit`)
 - Multi-agent Codex-side workflows (`@orchestrate`)
 
@@ -39,7 +38,7 @@ Documents the 9 specialized Codex agents in `.codex/agents/` and how Claude Code
 ## 2. ORCHESTRATION MODEL
 
 ```
-Claude Code (CONDUCTOR)
+Calling AI (CONDUCTOR)
   |
   |-- Analyzes task, selects Codex profile
   |-- Constructs codex CLI command with -p <profile> flag
@@ -53,7 +52,7 @@ Codex CLI (EXECUTOR)
   |-- Returns output to stdout
   |
   v
-Claude Code (CONDUCTOR)
+Calling AI (CONDUCTOR)
   |
   |-- Validates output quality
   |-- Integrates into workflow
@@ -124,11 +123,11 @@ model_reasoning_effort = "xhigh"
 
 ### Conductor Rules
 
-1. Claude Code always **decomposes** complex tasks before delegating.
-2. Claude Code always **validates** Codex output before integrating.
-3. Claude Code never **blindly forwards** user requests to Codex.
+1. The calling AI always **decomposes** complex tasks before delegating.
+2. The calling AI always **validates** Codex output before integrating.
+3. The calling AI never **blindly forwards** user requests to Codex.
 4. Codex agents operate within their declared `sandbox_mode` boundaries.
-5. If an agent returns low-quality output, Claude Code retries with refined instructions or uses a different approach.
+5. If an agent returns low-quality output, the calling AI retries with refined instructions or uses a different approach.
 6. Each `codex exec` invocation is **stateless** by default; include all necessary context in the prompt.
 
 <!-- /ANCHOR:orchestration-model -->
@@ -171,7 +170,7 @@ codex exec -p context \
 
 **Best for:** Bugs that resist initial debugging (3+ failed attempts), root cause analysis, reproducing elusive errors.
 
-**Delegate when:** Claude Code's own debug attempts have failed. The fresh perspective (no prior conversation context) avoids inheriting wrong assumptions.
+**Delegate when:** The calling AI's own debug attempts have failed. The fresh perspective (no prior conversation context) avoids inheriting wrong assumptions.
 
 **Methodology:** Observe -> Analyze -> Hypothesize -> Fix (4-phase)
 
@@ -215,9 +214,9 @@ codex exec -p handover -s workspace-write \
 
 **Best for:** Complex multi-step Codex-side tasks requiring coordination between multiple Codex agents.
 
-**Delegate when:** The task is too complex for a single Codex agent and requires Codex-internal orchestration. Claude Code remains the top-level conductor.
+**Delegate when:** The task is too complex for a single Codex agent and requires Codex-internal orchestration. The calling AI remains the top-level conductor.
 
-**Note:** Avoid double-orchestration. If Claude Code is already decomposing tasks, delegate directly to leaf agents instead of routing through @orchestrate.
+**Note:** Avoid double-orchestration. If the calling AI is already decomposing tasks, delegate directly to leaf agents instead of routing through @orchestrate.
 
 ```bash
 codex exec -p orchestrate \
@@ -261,7 +260,7 @@ codex exec -p research --search -s workspace-write \
 
 **Best for:** Cross-AI code review (second opinion), security audits, quality scoring with P0/P1/P2 severity classification.
 
-**Delegate when:** You want a second perspective on code quality, or need to validate Claude Code's own implementation from a different model's viewpoint.
+**Delegate when:** You want a second perspective on code quality, or need to validate the calling AI's own implementation from a different model's viewpoint.
 
 ```bash
 codex exec -p review \
@@ -303,7 +302,7 @@ codex exec -p speckit -s workspace-write \
 
 **Best for:** Architecture decisions, complex planning requiring multiple perspectives (Analytical, Creative, Critical, Pragmatic, Holistic lenses).
 
-**Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Codex's architectural thinking with Claude Code's plan.
+**Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Codex's architectural thinking with the calling AI's plan.
 
 ```bash
 codex exec -p ultra-think -s read-only \
@@ -362,12 +361,12 @@ codex exec -p write -s workspace-write \
 
 | Anti-Pattern                   | Why It Fails                                                                       | Correct Approach                                                 |
 | ------------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Double orchestration           | Claude Code orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents                                 |
+| Double orchestration           | The calling AI orchestrates, then delegates to @orchestrate, which orchestrates again | Delegate directly to leaf agents                                 |
 | Blind forwarding               | Passing user request verbatim to Codex without decomposition                       | Decompose, add context, specify expected output                  |
 | Ignoring output validation     | Using Codex output without checking quality                                        | Always validate before integrating                               |
 | Wrong agent for task           | Using @write for code review, @debug for exploration                               | Follow the routing table above                                   |
 | Stateful assumptions           | Assuming Codex remembers prior exec invocations                                    | Each `exec` is stateless; include all context in the prompt      |
-| Interactive mode delegation    | Starting Codex TUI from Claude Code                                                | Always use `codex exec` for non-interactive delegation           |
+| Interactive mode delegation    | Starting Codex TUI from the calling AI                                                | Always use `codex exec` for non-interactive delegation           |
 | Over-permissive sandbox        | Using `danger-full-access` when `workspace-write` suffices                         | Use the least-permissive mode that works                         |
 | Missing approval for risky ops | Using `--ask-for-approval never` with `danger-full-access`                         | Always pair elevated sandbox with `--ask-for-approval untrusted` |
 
@@ -418,6 +417,6 @@ jq '.issues[] | select(.severity == "critical")' /tmp/review.json
 | Profile not found   | Error: profile not defined          | Verify profile name matches `[profiles.<name>]` in config.toml |
 | Sandbox restriction | Permission denied in output         | Upgrade sandbox mode or adjust task scope             |
 | Timeout / hung      | No output within expected time      | Simplify task scope; break into smaller steps         |
-| Low-quality output  | Claude Code validation fails        | Retry with refined prompt; use different agent        |
+| Low-quality output  | Calling AI validation fails        | Retry with refined prompt; use different agent        |
 
 <!-- /ANCHOR:output-handling -->

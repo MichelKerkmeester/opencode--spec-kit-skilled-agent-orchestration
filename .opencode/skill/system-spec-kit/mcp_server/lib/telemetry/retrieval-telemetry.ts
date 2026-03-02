@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Captures latency, mode selection, fallback, and quality-proxy
 // dimensions for governance review and Wave 2 gate decisions.
-// Feature flag: SPECKIT_EXTENDED_TELEMETRY (default true)
+// Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
 // ---------------------------------------------------------------
 
 import {
@@ -18,11 +18,11 @@ import type {
 --------------------------------------------------------------- */
 
 /**
- * @deprecated Sprint eval complete (Sprint 7 audit). Overhead not justified.
- * SPECKIT_EXTENDED_TELEMETRY env var is inert. Hardcoded to false.
+ * AI-WHY: Extended telemetry controlled by env var (default: disabled for performance).
+ * Set SPECKIT_EXTENDED_TELEMETRY=true to enable detailed retrieval metrics collection.
  */
 function isExtendedTelemetryEnabled(): boolean {
-  return false;
+  return process.env.SPECKIT_EXTENDED_TELEMETRY === 'true';
 }
 
 /* ---------------------------------------------------------------
@@ -181,7 +181,8 @@ function recordQualityProxy(
       if (typeof r.similarity === 'number' && Number.isFinite(r.similarity)) return r.similarity / 100;
       return 0;
     });
-    t.quality.topResultScore = Math.max(...scores);
+    // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
+    t.quality.topResultScore = scores.reduce((a, b) => Math.max(a, b), -Infinity);
     t.quality.avgRelevanceScore = scores.reduce((sum, s) => sum + s, 0) / count;
   }
 

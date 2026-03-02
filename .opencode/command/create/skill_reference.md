@@ -1,5 +1,5 @@
 ---
-description: "Create a reference file for an existing skill - deep-dive technical documentation with workflows, patterns, or debugging guides - supports :auto and :confirm modes"
+description: Create a reference file for an existing skill - deep-dive technical documentation with workflows, patterns, or debugging guides - supports :auto and :confirm modes
 argument-hint: "<skill-name> <reference-type> [--chained] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---

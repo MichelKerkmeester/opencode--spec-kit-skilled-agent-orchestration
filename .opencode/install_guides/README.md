@@ -55,7 +55,7 @@ The `install_guides/` directory is the central hub for all OpenCode setup and in
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Guide files | 11 | 6 MCP/CLI guides, 4 SET-UP guides, 1 index guide |
+| Guide files | 9 | 4 MCP/CLI guides, 4 SET-UP guides, 1 index guide |
 | Install scripts | 1 | `install_scripts/` directory |
 | MCP servers covered | 3 | Code Mode, Spec Kit Memory, Sequential Thinking |
 | Platforms supported | 3 | macOS, Linux, Windows WSL |
@@ -79,9 +79,7 @@ All guides in this directory, sorted by recommended reading order:
 | **[MCP - Code Mode.md](./MCP%20-%20Code%20Mode.md)** | Code Mode MCP server: external tool orchestration (Webflow, Figma, ClickUp, GitHub) | All users (foundation component) |
 | **[MCP - Spec Kit Memory.md](./MCP%20-%20Spec%20Kit%20Memory.md)** | Spec Kit Memory MCP server: conversation context preservation with vector search | All users (core component) |
 | **[MCP - Sequential Thinking.md](./MCP%20-%20Sequential%20Thinking.md)** | Sequential Thinking MCP server: complex reasoning chains | Users needing advanced reasoning |
-| **[MCP - Figma.md](./MCP%20-%20Figma.md)** | Figma MCP integration: design file access, image export, component extraction | Frontend/design users |
 | **[MCP - Chrome Dev Tools.md](./MCP%20-%20Chrome%20Dev%20Tools.md)** | Chrome DevTools MCP: browser debugging and automation | Frontend/debugging users |
-| **[MCP - Gemini CLI.md](./MCP%20-%20Gemini%20CLI.md)** | Gemini CLI: cross-AI validation, Google Search grounding, architecture analysis | All users (optional CLI tool) |
 | **[SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md)** | AGENTS.md customization: AI agent behavior configuration | All users (post-install) |
 | **[SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)** | Agent system: specialized AI personas and routing | All users (post-install) |
 | **[SET-UP - Skill Advisor.md](./SET-UP%20-%20Skill%20Advisor.md)** | Skill Advisor setup: Gate 2 skill routing configuration | All users (post-install) |
@@ -600,7 +598,7 @@ Code Mode enables access to external MCP tools. Each provider has its own detail
 
 | Provider | Tools | Install Guide |
 |----------|-------|---------------|
-| **Figma** | 18 | [MCP - Figma.md](./MCP%20-%20Figma.md) - Design file access, image export |
+| **Figma** | 18 | [mcp-figma INSTALL_GUIDE.md](../skill/mcp-figma/INSTALL_GUIDE.md) - Design file access, image export |
 | **Chrome DevTools** | 26 | [MCP - Chrome Dev Tools.md](./MCP%20-%20Chrome%20Dev%20Tools.md) - Browser debugging (MCP mode) |
 | **Webflow** | 42 | [MCP - Code Mode.md](./MCP%20-%20Code%20Mode.md) - CMS management, site operations |
 | **ClickUp** | 21 | [MCP - Code Mode.md](./MCP%20-%20Code%20Mode.md) - Task management, project tracking |

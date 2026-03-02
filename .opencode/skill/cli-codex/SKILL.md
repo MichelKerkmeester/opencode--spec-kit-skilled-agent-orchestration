@@ -1,6 +1,6 @@
 ---
 name: cli-codex
-description: "Codex CLI orchestrator enabling Claude Code and OpenCode to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
+description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
 version: 1.0.0
 ---
@@ -9,9 +9,9 @@ version: 1.0.0
 
 # Codex CLI Orchestrator - Cross-AI Task Delegation
 
-Orchestrate OpenAI's Codex CLI from Claude Code or OpenCode for tasks that benefit from a second AI perspective, real-time web search, deep codebase analysis, built-in code review workflows, or parallel code generation.
+Orchestrate OpenAI's Codex CLI for tasks that benefit from a second AI perspective, real-time web search, deep codebase analysis, built-in code review workflows, or parallel code generation.
 
-**Core Principle**: Use Codex for what it does best. Delegate, validate, integrate. Claude Code stays the conductor.
+**Core Principle**: Use Codex for what it does best. Delegate, validate, integrate. The calling AI stays the conductor.
 
 ---
 
@@ -287,7 +287,7 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 ### Codex Agent Delegation
 
-Claude Code acts as the **conductor** that delegates tasks to Codex CLI. Codex CLI has specialized agent profiles configured in `config.toml` that provide domain expertise. Route tasks to the right profile for best results.
+The calling AI acts as the **conductor** that delegates tasks to Codex CLI. Codex CLI has specialized agent profiles configured in `config.toml` that provide domain expertise. Route tasks to the right profile for best results.
 
 **Agent Profile Routing Table:**
 
@@ -303,7 +303,7 @@ Claude Code acts as the **conductor** that delegates tasks to Codex CLI. Codex C
 
 **Profile setup**: Profiles are defined in `.codex/config.toml` under `[profiles.<name>]` sections. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
 
-**Orchestration principle**: Claude Code decides WHAT to delegate. The profile configuration shapes HOW Codex processes it (sandbox mode, reasoning effort). Claude Code always validates and integrates the output.
+**Orchestration principle**: The calling AI decides WHAT to delegate. The profile configuration shapes HOW Codex processes it (sandbox mode, reasoning effort). The calling AI always validates and integrates the output.
 
 See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster and invocation patterns.
 

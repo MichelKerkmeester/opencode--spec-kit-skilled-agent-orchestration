@@ -1,11 +1,11 @@
 ---
-title: "Cross-AI Orchestration Patterns: Claude Code + Codex CLI"
-description: "Proven patterns for orchestrating Codex CLI from Claude Code sessions, including implementation templates and practical considerations."
+title: "Cross-AI Orchestration Patterns: Calling AI + Codex CLI"
+description: "Proven patterns for orchestrating Codex CLI from any AI assistant session, including implementation templates and practical considerations."
 ---
 
-# Cross-AI Orchestration Patterns: Claude Code + Codex CLI
+# Cross-AI Orchestration Patterns: Calling AI + Codex CLI
 
-Proven patterns for orchestrating Codex CLI from within Claude Code sessions.
+Proven patterns for orchestrating Codex CLI from any AI assistant session.
 
 ---
 
@@ -14,17 +14,17 @@ Proven patterns for orchestrating Codex CLI from within Claude Code sessions.
 
 ### Core Principle
 
-Claude Code acts as the orchestrator (planner, validator, integrator) while Codex CLI executes targeted tasks. The value comes from combining different model perspectives and leveraging Codex's sandbox-controlled execution, not from redundant work.
+The calling AI acts as the orchestrator (planner, validator, integrator) while Codex CLI executes targeted tasks. The value comes from combining different model perspectives and leveraging Codex's sandbox-controlled execution, not from redundant work.
 
 ### Purpose
 
-Each pattern documented here includes the rationale, implementation template, and practical considerations for combining Claude Code with Codex CLI effectively.
+Each pattern documented here includes the rationale, implementation template, and practical considerations for combining the calling AI with Codex CLI effectively.
 
 ### When to Use
 
 - You need a second AI perspective on generated code, architecture, or security
-- Codex's strengths (sandbox isolation, `xhigh` reasoning, web search via `--search`) complement Claude Code's strengths (deep codebase context, built-in tools, spec-kit memory)
-- You want to run parallel AI tasks while Claude Code continues working
+- Codex's strengths (sandbox isolation, `xhigh` reasoning, web search via `--search`) complement the calling AI's strengths
+- You want to run parallel AI tasks while the calling AI continues working
 - Complex workflows benefit from structured, multi-stage generation and validation
 - You need controlled file modification with sandbox-enforced safety boundaries
 
@@ -39,7 +39,7 @@ Each pattern documented here includes the rationale, implementation template, an
 ### Flow
 
 ```
-Claude Code (plan) --> Codex CLI (generate) --> Claude Code (review) --> Codex CLI (fix)
+Calling AI (plan) --> Codex CLI (generate) --> Calling AI (review) --> Codex CLI (fix)
 ```
 
 ### Implementation
@@ -50,7 +50,7 @@ codex exec \
   "Create a rate limiter middleware for Express with sliding window algorithm. Output only the code, no explanation." \
   --sandbox workspace-write --model gpt-5.3-codex > /tmp/rate-limiter.ts
 
-# Step 2: Claude Code reviews (done within Claude Code session)
+# Step 2: Calling AI reviews (done within the calling AI session)
 # Read /tmp/rate-limiter.ts, identify issues, write review to /tmp/review.md
 
 # Step 3: Codex fixes based on review
@@ -77,7 +77,7 @@ codex exec \
 
 ## 3. JSON OUTPUT PROCESSING
 
-**Extract structured data from Codex for programmatic use in Claude Code workflows.**
+**Extract structured data from Codex for programmatic use in the calling AI's workflows.**
 
 ### Implementation
 
@@ -125,7 +125,7 @@ jq '.issues' /tmp/analysis.json
 ### When to Use
 
 - Extracting metrics, function signatures, or dependency lists
-- Feeding Codex analysis into Claude Code decision logic
+- Feeding Codex analysis into the calling AI's decision logic
 - Building automated pipelines that branch on structured output
 
 <!-- /ANCHOR:json-output-processing -->
@@ -134,7 +134,7 @@ jq '.issues' /tmp/analysis.json
 
 ## 4. BACKGROUND EXECUTION
 
-**Run Codex tasks in parallel while Claude Code continues working.**
+**Run Codex tasks in parallel while the calling AI continues working.**
 
 ### Implementation
 
@@ -148,7 +148,7 @@ codex exec "Generate unit tests for src/utils.ts" \
   --sandbox workspace-write --model gpt-5.3-codex > /tmp/generated-tests.ts 2>&1 &
 PID2=$!
 
-# Claude Code continues other work...
+# Calling AI continues other work...
 
 # Wait for specific task
 wait $PID1
@@ -176,7 +176,7 @@ tail -f /tmp/generated-tests.ts
 ### When to Use
 
 - Independent tasks that do not depend on each other
-- Long-running analysis while Claude Code handles quick edits
+- Long-running analysis while the calling AI handles quick edits
 - Generating multiple artifacts simultaneously (tests, docs, types)
 
 ### Considerations
@@ -318,7 +318,7 @@ Create `.codex/instructions.md` to persist context across all Codex sessions:
 ### Explicit Context Injection
 
 ```bash
-# Inject Claude Code's analysis as context
+# Inject the calling AI's analysis as context
 CLAUDE_ANALYSIS="The bug is in the token refresh logic. The refresh token
 is not being rotated on use, allowing token replay attacks."
 
@@ -365,8 +365,8 @@ codex exec \
   "@/tmp/webhook.ts Audit this code for security issues. Focus on: input validation, injection attacks, authentication bypasses. Return JSON: {issues: [{severity, line, description, fix}]}" \
   --sandbox read-only --model gpt-5.3-codex > /tmp/security-scan.txt
 
-# Stage 4: Functional check (Claude Code reviews the result)
-# Read /tmp/webhook.ts and /tmp/security-scan.txt within Claude Code
+# Stage 4: Functional check (calling AI reviews the result)
+# Read /tmp/webhook.ts and /tmp/security-scan.txt within the calling AI
 
 # Stage 5: Style alignment
 codex exec \
@@ -381,7 +381,7 @@ codex exec \
 | 1. Generate | Create initial artifact | Codex (`gpt-5.3-codex`, `workspace-write`) |
 | 2. Syntax | Verify it compiles/parses | Language toolchain (tsc, eslint, etc.) |
 | 3. Security | Check for vulnerabilities | Codex (`gpt-5.3-codex`, `read-only`) |
-| 4. Functional | Verify correctness | Claude Code review or tests |
+| 4. Functional | Verify correctness | Calling AI review or tests |
 | 5. Style | Match project conventions | Codex (`gpt-5.3-codex`, `workspace-write`) |
 
 ### When to Use
@@ -450,7 +450,7 @@ npx jest src/task-queue/__tests__/queue.test.ts
 ### Claude Generates, Codex Reviews
 
 ```bash
-# Claude Code generates code (within the session)
+# Calling AI generates code (within the session)
 # Then Codex reviews it:
 codex exec \
   "@src/newly-generated-module.ts Review this code for: correctness, edge cases, performance issues, and adherence to SOLID principles. Be critical. Return findings as JSON." \
@@ -464,12 +464,12 @@ codex exec \
 codex exec "Create a caching layer with TTL support and LRU eviction" \
   --sandbox workspace-write --model gpt-5.3-codex > /tmp/cache.ts
 
-# Claude Code reviews within the session (read /tmp/cache.ts and analyze)
+# Calling AI reviews within the session (read /tmp/cache.ts and analyze)
 ```
 
 ### Strength Comparison for Task Routing
 
-| Strength Area | Claude Code | Codex CLI |
+| Strength Area | Calling AI | Codex CLI |
 |---------------|-------------|-----------|
 | Codebase context | Deep (built-in tools, spec-kit memory) | Good (with @file references) |
 | Web search | Via web search tool | Via `--search` flag |
@@ -549,7 +549,7 @@ codex exec --session-id "$FORK_ID" \
 
 ### Considerations
 
-- For Claude Code orchestration, it is often simpler to re-provide context via `@file` references than to manage session IDs across multiple `codex exec` calls.
+- For cross-AI orchestration, it is often simpler to re-provide context via `@file` references than to manage session IDs across multiple `codex exec` calls.
 - Use sessions when the task genuinely builds on prior Codex reasoning that would be costly to re-establish.
 - Fork before any operation that could leave the session in a broken state.
 
@@ -559,7 +559,7 @@ codex exec --session-id "$FORK_ID" \
 
 ## 12. ANTI-PATTERNS
 
-**What NOT to do when orchestrating Codex CLI from Claude Code.**
+**What NOT to do when orchestrating Codex CLI from the calling AI.**
 
 ### 1. Using --full-auto Without Review
 

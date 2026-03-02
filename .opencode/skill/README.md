@@ -34,11 +34,11 @@ trigger_phrases:
 
 The Skills Library contains the current skill set under `.opencode/skill/`. Skills load on demand through Gate 2 routing or explicit invocation.
 
-This folder now has 13 skill folders and one shared scripts folder:
+This folder now has 15 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 14           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 15           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
 
@@ -88,6 +88,7 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 ├── mcp-figma/
 ├── cli-gemini/
 ├── cli-codex/
+├── cli-claude-code/
 ├── scripts/
 ├── sk-code/                # Baseline code workflow (optional by repo)
 ├── sk-code--*/             # Overlay code workflow skills (repo-specific)
@@ -176,6 +177,10 @@ Gemini CLI orchestration for cross-AI task delegation, Google Search grounding, 
 
 Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch.
 
+#### `cli-claude-code` (v1.0.0)
+
+Claude Code CLI orchestration enabling external AIs to invoke Anthropic's Claude Code for deep reasoning, code editing, structured output, agent delegation, and extended thinking.
+
 <!-- /ANCHOR:skills-catalog -->
 
 <!-- ANCHOR:skill-structure -->
@@ -203,6 +208,7 @@ Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel 
 | `sk-doc-visual`           | Yes           | Yes       | Yes        |
 | `cli-gemini`              | Yes           | Yes       | No         |
 | `cli-codex`               | Yes           | Yes       | No         |
+| `cli-claude-code`         | Yes           | Yes       | No         |
 | `system-spec-kit`         | Yes           | Yes       | Yes        |
 
 <!-- /ANCHOR:skill-structure -->
@@ -275,5 +281,6 @@ Skill folders:
 - [mcp-figma](mcp-figma/)
 - [cli-gemini](cli-gemini/)
 - [cli-codex](cli-codex/)
+- [cli-claude-code](cli-claude-code/)
 
 <!-- /ANCHOR:related -->

@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 
 import type { DatabaseExtended as Database } from '../../../shared/types';
-// T302: Import working-memory for immediate cleanup on session end (GAP 2)
+// AI-TRACE T302: Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cache/cognitive/working-memory';
 
 /* ---------------------------------------------------------------
@@ -169,11 +169,11 @@ const SESSION_CONFIG: SessionConfig = {
 --------------------------------------------------------------- */
 
 let db: Database | null = null;
-// P4-18 FIX: Track periodic cleanup interval for expired sessions
+// AI-TRACE P4-18: Track periodic cleanup interval for expired sessions
 let cleanupInterval: ReturnType<typeof setInterval> | null = null;
 const CLEANUP_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
 
-// T302: Track stale session cleanup interval (runs hourly)
+// AI-TRACE T302: Track stale session cleanup interval (runs hourly)
 let staleCleanupInterval: ReturnType<typeof setInterval> | null = null;
 const STALE_CLEANUP_INTERVAL_MS = parseInt(process.env.STALE_CLEANUP_INTERVAL_MS as string, 10) || 60 * 60 * 1000; // 1 hour
 const STALE_SESSION_THRESHOLD_MS = parseInt(process.env.STALE_SESSION_THRESHOLD_MS as string, 10) || 24 * 60 * 60 * 1000; // 24 hours
@@ -192,8 +192,8 @@ function init(database: Database): InitResult {
 
   cleanupExpiredSessions();
 
-  // P4-18 FIX: Set up periodic cleanup instead of only running once at init.
-  // Clear any existing interval first (in case of reinitializeDatabase).
+  // AI-WHY: Set up periodic cleanup instead of only running once at init (P4-18).
+  // AI-GUARD: Clear any existing interval first (in case of reinitializeDatabase).
   if (cleanupInterval) {
     clearInterval(cleanupInterval);
   }
@@ -205,12 +205,12 @@ function init(database: Database): InitResult {
       console.warn(`[session-manager] Periodic cleanup failed: ${message}`);
     }
   }, CLEANUP_INTERVAL_MS);
-  // Ensure interval doesn't prevent process exit
+  // AI-GUARD: Ensure interval doesn't prevent process exit (unref allows GC on idle)
   if (cleanupInterval && typeof cleanupInterval === 'object' && 'unref' in cleanupInterval) {
     cleanupInterval.unref();
   }
 
-  // T302: Run stale session cleanup on startup and set up hourly interval
+  // AI-TRACE T302: Run stale session cleanup on startup and set up hourly interval
   try {
     cleanupStaleSessions();
   } catch (err: unknown) {
@@ -291,12 +291,11 @@ function generateMemoryHash(memory: MemoryInput): string {
   if (memory.content_hash) {
     hashInput = memory.content_hash;
   } else if (memory.id !== undefined) {
-    // P4-16 FIX: Use both anchor_id (snake_case) and anchorId (camelCase)
-    // since callers may pass either form.
+    // AI-WHY: Support both anchor_id (snake_case) and anchorId (camelCase) — callers may pass either form (P4-16).
     hashInput = `${memory.id}:${memory.anchor_id || memory.anchorId || ''}:${memory.file_path || ''}`;
   } else {
     hashInput = JSON.stringify({
-      // P4-16 FIX: Prefer anchor_id, fall back to anchorId
+      // AI-WHY: Prefer anchor_id (canonical), fall back to anchorId for legacy callers (P4-16)
       anchor: memory.anchor_id || memory.anchorId,
       path: memory.file_path,
       title: memory.title,
@@ -339,18 +338,26 @@ function shouldSendMemory(sessionId: string, memory: MemoryInput | number): bool
   }
 }
 
-function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Map<number | undefined, boolean> {
-  const result = new Map<number | undefined, boolean>();
+function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Map<number, boolean> {
+  const result = new Map<number, boolean>();
 
   if (!SESSION_CONFIG.enabled || !sessionId || !Array.isArray(memories)) {
-    memories.forEach((m) => result.set(m.id, true));
+    memories.forEach((m) => {
+      if (m.id != null) {
+        result.set(m.id, true);
+      }
+    });
     return result;
   }
 
   if (!db) {
     const allow = SESSION_CONFIG.dbUnavailableMode === 'allow';
     console.warn(`[session-manager] Database not initialized for batch dedup. dbUnavailableMode=${SESSION_CONFIG.dbUnavailableMode}. ${allow ? 'Allowing' : 'Blocking'} batch.`);
-    memories.forEach((m) => result.set(m.id, allow));
+    memories.forEach((m) => {
+      if (m.id != null) {
+        result.set(m.id, allow);
+      }
+    });
     return result;
   }
 
@@ -367,8 +374,8 @@ function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Ma
       if (shouldSend) {
         existingHashes.add(hash);
       }
-      // Preserve first occurrence decision for the same memory ID.
-      if (!result.has(memory.id)) {
+      // AI-GUARD: Preserve first-occurrence decision for the same memory ID — prevents double-counting.
+      if (memory.id != null && !result.has(memory.id)) {
         result.set(memory.id, shouldSend);
       }
     }
@@ -378,7 +385,11 @@ function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Ma
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[session-manager] shouldSendMemoriesBatch failed: ${message}`);
     const allow = SESSION_CONFIG.dbUnavailableMode === 'allow';
-    memories.forEach((m) => result.set(m.id, allow));
+    memories.forEach((m) => {
+      if (m.id != null) {
+        result.set(m.id, allow);
+      }
+    });
     return result;
   }
 }
@@ -399,9 +410,14 @@ function markMemorySent(sessionId: string, memory: MemoryInput | number): MarkRe
       INSERT OR IGNORE INTO session_sent_memories (session_id, memory_hash, memory_id, sent_at)
       VALUES (?, ?, ?, ?)
     `);
-    stmt.run(sessionId, hash, memoryId, new Date().toISOString());
 
-    enforceEntryLimit(sessionId);
+    // AI-WHY: transaction ensures atomic insert + limit enforcement, preventing concurrent race past entry limit.
+    db.transaction(() => {
+      stmt.run(sessionId, hash, memoryId, new Date().toISOString());
+      // AI-WHY: enforceEntryLimit inside tx — atomic with insert to prevent row count races.
+      enforceEntryLimit(sessionId);
+    })();
+
     return { success: true, hash };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -434,10 +450,11 @@ function markMemoriesSentBatch(sessionId: string, memories: MemoryInput[]): Mark
           markedCount++;
         }
       }
+      // AI-WHY: enforceEntryLimit inside tx — atomic with inserts to prevent row count races.
+      enforceEntryLimit(sessionId);
     });
 
     runBatch();
-    enforceEntryLimit(sessionId);
 
     return { success: true, markedCount };
   } catch (error: unknown) {
@@ -595,7 +612,7 @@ function clearSession(sessionId: string): CleanupResult {
     `);
     const result = stmt.run(sessionId);
 
-    // T302: Immediately clear working memory for cleared session (GAP 2)
+    // AI-TRACE T302: Immediately clear working memory for cleared session (GAP 2).
     try {
       workingMemory.clearSession(sessionId);
     } catch (wmErr: unknown) {
@@ -652,7 +669,7 @@ function filterSearchResults(sessionId: string, results: MemoryInput[]): FilterR
   const shouldSendMap = shouldSendMemoriesBatch(sessionId, results);
   const seenBatchHashes = new Set<string>();
   const filtered = results.filter((r) => {
-    if (shouldSendMap.get(r.id) === false) {
+    if (r.id != null && shouldSendMap.get(r.id) === false) {
       return false;
     }
     try {
@@ -795,7 +812,7 @@ function completeSession(sessionId: string): InitResult {
     `);
     stmt.run(new Date().toISOString(), sessionId);
 
-    // T302: Immediately clear working memory for completed session (GAP 2)
+    // AI-TRACE T302: Immediately clear working memory for completed session (GAP 2).
     try {
       workingMemory.clearSession(sessionId);
     } catch (wmErr: unknown) {
@@ -1057,7 +1074,7 @@ function checkpointSession(
    11. SHUTDOWN
 --------------------------------------------------------------- */
 
-// T302: Clear all background intervals on shutdown (GAP 1)
+// AI-TRACE T302: Clear all background intervals on shutdown (GAP 1).
 function shutdown(): void {
   if (cleanupInterval) {
     clearInterval(cleanupInterval);
@@ -1118,6 +1135,6 @@ export {
   getConfig,
   SESSION_CONFIG as CONFIG,
 
-  // T302: Shutdown (GAP 1)
+  // AI-TRACE T302: Shutdown (GAP 1)
   shutdown,
 };

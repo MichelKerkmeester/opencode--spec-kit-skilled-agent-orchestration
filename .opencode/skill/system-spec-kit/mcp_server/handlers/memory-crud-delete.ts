@@ -1,4 +1,6 @@
-// ------- MODULE: Memory CRUD Delete Handler -------
+// ---------------------------------------------------------------
+// MODULE: Memory CRUD Delete Handler
+// ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
    IMPORTS
@@ -61,34 +63,55 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
   if (numericId !== null) {
     const singleSnapshot = getMemoryHashSnapshot(database, numericId);
-    deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
 
-    if (deletedCount > 0) {
-      try {
-        if (database) {
+    // AI-WHY: T2-5 transaction wrapper — wraps single-delete path (memory delete, causal edge
+    // cleanup, ledger append) in a transaction for atomicity on error.
+    if (database) {
+      database.transaction(() => {
+        deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
+
+        if (deletedCount > 0) {
           causalEdges.init(database);
           causalEdges.deleteEdgesForMemory(String(numericId));
-        }
-      } catch (edgeErr: unknown) {
-        const msg = toErrorMessage(edgeErr);
-        console.warn(`[memory-delete] Failed to clean up causal edges for memory ${numericId}: ${msg}`);
-      }
 
-      appendMutationLedgerSafe(database, {
-        mutationType: 'delete',
-        reason: 'memory_delete: single memory delete',
-        priorHash: singleSnapshot?.content_hash ?? null,
-        newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
-        linkedMemoryIds: [numericId],
-        decisionMeta: {
-          tool: 'memory_delete',
-          bulk: false,
-          memoryId: numericId,
-          specFolder: singleSnapshot?.spec_folder ?? null,
-          filePath: singleSnapshot?.file_path ?? null,
-        },
-        actor: 'mcp:memory_delete',
-      });
+          appendMutationLedgerSafe(database, {
+            mutationType: 'delete',
+            reason: 'memory_delete: single memory delete',
+            priorHash: singleSnapshot?.content_hash ?? null,
+            newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
+            linkedMemoryIds: [numericId],
+            decisionMeta: {
+              tool: 'memory_delete',
+              bulk: false,
+              memoryId: numericId,
+              specFolder: singleSnapshot?.spec_folder ?? null,
+              filePath: singleSnapshot?.file_path ?? null,
+            },
+            actor: 'mcp:memory_delete',
+          });
+        }
+      })();
+    } else {
+      // AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
+      deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
+
+      if (deletedCount > 0) {
+        appendMutationLedgerSafe(database, {
+          mutationType: 'delete',
+          reason: 'memory_delete: single memory delete',
+          priorHash: singleSnapshot?.content_hash ?? null,
+          newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
+          linkedMemoryIds: [numericId],
+          decisionMeta: {
+            tool: 'memory_delete',
+            bulk: false,
+            memoryId: numericId,
+            specFolder: singleSnapshot?.spec_folder ?? null,
+            filePath: singleSnapshot?.file_path ?? null,
+          },
+          actor: 'mcp:memory_delete',
+        });
+      }
     }
   } else {
     const memories: { id: number }[] = vectorIndex.getMemoriesByFolder(specFolder as string);
@@ -107,7 +130,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           hashById.set(row.id, row);
         }
       } catch (_err: unknown) {
-        // Non-fatal: bulk delete still proceeds without per-memory hash snapshots
+        // AI-RISK: Non-fatal — bulk delete proceeds without per-memory hash snapshots; ledger entries will lack prior hashes.
       }
     }
 
@@ -134,7 +157,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       } catch (cpErr: unknown) {
         const message = toErrorMessage(cpErr);
         console.error(`[memory-delete] Failed to create checkpoint: ${message}`);
-        // confirm is always true here (validated at function entry)
+        // AI-GUARD: confirm is always true here (validated at function entry) — safe to proceed without checkpoint.
         console.warn('[memory-delete] Proceeding without backup (user confirmed)');
         checkpointName = null;
       }
@@ -148,16 +171,11 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           if (vectorIndex.deleteMemory(memory.id)) {
             deletedCount++;
             deletedIds.push(memory.id);
-            try {
-              causalEdges.deleteEdgesForMemory(String(memory.id));
-            } catch (edgeErr: unknown) {
-              const msg = toErrorMessage(edgeErr);
-              console.warn(`[memory-delete] Failed to clean up causal edges for memory ${memory.id}: ${msg}`);
-            }
+            causalEdges.deleteEdgesForMemory(String(memory.id));
           }
         }
 
-        // Mutation ledger entries inside transaction for atomicity
+        // AI-WHY: Mutation ledger entries written inside bulk transaction for atomicity with deletes.
         for (const deletedId of deletedIds) {
           const snapshot = hashById.get(deletedId) ?? null;
           appendMutationLedgerSafe(database, {

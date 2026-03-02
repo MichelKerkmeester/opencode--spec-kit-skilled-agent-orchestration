@@ -8,11 +8,11 @@ import { randomUUID } from 'node:crypto';
 import fs from 'fs';
 import path from 'path';
 
-// Shared packages
-import { validateFilePath } from '@spec-kit/shared/utils/path-security';
-
 // Third-party types
 import type BetterSqlite3 from 'better-sqlite3';
+
+// Shared packages
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 
 // Internal modules
 import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
@@ -51,7 +51,7 @@ import { getMemoryHashSnapshot, appendMutationLedgerSafe } from './memory-crud-u
 import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer';
 
-// R10, R8, S5: Entity extraction, memory summaries, entity linking — default-ON via flags
+// AI-TRACE:R10, AI-TRACE:R8, AI-TRACE:S5: Entity extraction, memory summaries, entity linking — default-ON via flags
 import { isAutoEntitiesEnabled, isMemorySummariesEnabled, isEntityLinkingEnabled } from '../lib/search/search-flags';
 import { extractEntities, filterEntities, storeEntities, updateEntityCatalog } from '../lib/extraction/entity-extractor';
 import { generateAndStoreSummary } from '../lib/search/memory-summaries';
@@ -61,19 +61,19 @@ import { runEntityLinking } from '../lib/search/entity-linker';
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 
 /** Per-spec-folder save mutex to prevent concurrent indexing races (TOCTOU) */
-const specFolderLocks = new Map<string, Promise<unknown>>();
+const SPEC_FOLDER_LOCKS = new Map<string, Promise<unknown>>();
 
 async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): Promise<T> {
   const normalizedFolder = specFolder || '__global__';
-  const chain = (specFolderLocks.get(normalizedFolder) ?? Promise.resolve())
+  const chain = (SPEC_FOLDER_LOCKS.get(normalizedFolder) ?? Promise.resolve())
     .catch(() => {})
     .then(() => fn());
-  specFolderLocks.set(normalizedFolder, chain);
+  SPEC_FOLDER_LOCKS.set(normalizedFolder, chain);
   try {
     return await chain;
   } finally {
-    if (specFolderLocks.get(normalizedFolder) === chain) {
-      specFolderLocks.delete(normalizedFolder);
+    if (SPEC_FOLDER_LOCKS.get(normalizedFolder) === chain) {
+      SPEC_FOLDER_LOCKS.delete(normalizedFolder);
     }
   }
 }
@@ -184,7 +184,7 @@ interface SaveArgs {
   force?: boolean;
   dryRun?: boolean;
   skipPreflight?: boolean;
-  asyncEmbedding?: boolean; // T306: When true, embedding generation is deferred (non-blocking)
+  asyncEmbedding?: boolean; // AI-TRACE:T306: When true, embedding generation is deferred (non-blocking)
 }
 
 /* --- 3. SQL HELPER FUNCTIONS --- */
@@ -412,7 +412,7 @@ function reinforceExistingMemory(memoryId: number, parsed: ParsedMemory): IndexR
     // Spec 126: Keep document-type-aware weighting on reinforcement
     const importanceWeight = calculateDocumentWeight(parsed.filePath, parsed.documentType);
 
-    // P4-05 FIX: Check result.changes to detect no-op updates (e.g., deleted memory)
+    // AI-TRACE:P4-05 FIX: Check result.changes to detect no-op updates (e.g., deleted memory)
     const updateResult = database.prepare(`
       UPDATE memory_index
       SET stability = ?,
@@ -1077,7 +1077,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     validation.warnings.forEach((w: string) => console.warn(`[memory]   - ${w}`));
   }
 
-  // T008: Integrate verify-fix-verify quality loop into the save pipeline.
+  // AI-TRACE:T008: Integrate verify-fix-verify quality loop into the save pipeline.
   // Feature behavior remains gated by SPECKIT_QUALITY_LOOP inside runQualityLoop().
   const qualityLoopResult = runQualityLoop(parsed.content, {
     title: parsed.title ?? '',
@@ -1131,6 +1131,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   const existing = database.prepare(`
     SELECT id, content_hash FROM memory_index
     WHERE spec_folder = ?
+      AND parent_id IS NULL
       AND (canonical_file_path = ? OR file_path = ?)
     ORDER BY id DESC
     LIMIT 1
@@ -1149,7 +1150,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     };
   }
 
-  // T054: SHA256 CONTENT-HASH FAST-PATH DEDUP (TM-02)
+  // AI-TRACE:T054: SHA256 CONTENT-HASH FAST-PATH DEDUP (TM-02)
   // Before calling the embedding API, check if identical content already exists
   // under ANY file path within this spec_folder. This short-circuits embedding
   // generation for duplicate content saved under a different path (e.g., renamed files).
@@ -1158,6 +1159,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       SELECT id, file_path, title FROM memory_index
       WHERE spec_folder = ?
         AND content_hash = ?
+        AND parent_id IS NULL
         AND embedding_status != 'pending'
       ORDER BY id DESC
       LIMIT 1
@@ -1699,7 +1701,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     }
   }
 
-  // ── R10: Auto Entity Extraction ──
+  // ── AI-TRACE:R10: Auto Entity Extraction ──
   if (isAutoEntitiesEnabled()) {
     try {
       const rawEntities = extractEntities(parsed.content);

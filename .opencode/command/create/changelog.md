@@ -1,5 +1,5 @@
 ---
-description: "Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a properly formatted changelog file - supports :auto and :confirm modes"
+description: Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a properly formatted changelog file - supports :auto and :confirm modes
 argument-hint: "<spec-folder-or-component> [--bump <major|minor|patch|build>] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ---

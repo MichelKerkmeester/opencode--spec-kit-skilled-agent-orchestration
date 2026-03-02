@@ -19,6 +19,9 @@ import type Database from 'better-sqlite3';
 // Internal modules
 import { initEvalDb } from './eval-db';
 
+// AI-WHY: Configurable limit prevents silent data loss at scale (was hardcoded 1000)
+const DASHBOARD_ROW_LIMIT = Math.max(1, parseInt(process.env.SPECKIT_DASHBOARD_LIMIT ?? '10000', 10) || 10000);
+
 /* ---------------------------------------------------------------
    1. TYPES
 --------------------------------------------------------------- */
@@ -202,7 +205,7 @@ function queryMetricSnapshots(
     params.push(config.limit * 20); // Over-fetch to allow grouping
   } else {
     // Default LIMIT to prevent unbounded result sets on large eval databases
-    sql += ` LIMIT 1000`;
+    sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
   }
 
   return db.prepare(sql).all(...params) as SnapshotRow[];
@@ -231,7 +234,7 @@ function queryChannelResults(
   }
 
   // Default LIMIT to prevent unbounded result sets on large eval databases
-  sql += ` LIMIT 1000`;
+  sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
 
   return db.prepare(sql).all(...params) as ChannelResultRow[];
 }
@@ -298,10 +301,11 @@ function computeMetricSummary(values: number[], latest: number): MetricSummary {
     return { mean: 0, min: 0, max: 0, latest: 0, count: 0 };
   }
   const sum = values.reduce((a, b) => a + b, 0);
+  // AI-WHY: reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
   return {
     mean: Math.round((sum / values.length) * 10000) / 10000,
-    min: Math.round(Math.min(...values) * 10000) / 10000,
-    max: Math.round(Math.max(...values) * 10000) / 10000,
+    min: Math.round(values.reduce((a, b) => Math.min(a, b), Infinity) * 10000) / 10000,
+    max: Math.round(values.reduce((a, b) => Math.max(a, b), -Infinity) * 10000) / 10000,
     latest: Math.round(latest * 10000) / 10000,
     count: values.length,
   };

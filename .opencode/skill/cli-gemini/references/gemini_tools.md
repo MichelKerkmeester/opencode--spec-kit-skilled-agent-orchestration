@@ -437,9 +437,9 @@ In `settings.json`:
 | **Document architecture** | codebase_investigator -> save_memory -> write_file | Analyze, persist, document |
 | **Security review** | search_file_content -> google_web_search -> read_file | Find patterns, check CVEs, verify |
 
-### Orchestration from Claude Code
+### Orchestration from the Calling AI
 
-When calling Gemini CLI from Claude Code, choose tools strategically:
+When calling Gemini CLI from any AI assistant, choose tools strategically:
 
 ```bash
 # Use codebase_investigator for broad analysis

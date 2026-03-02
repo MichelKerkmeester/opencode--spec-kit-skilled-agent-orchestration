@@ -32,7 +32,7 @@ These scripts automate installation and configuration of OpenCode components (MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Install Scripts | 6 | 5 component installers + 1 master installer |
+| Install Scripts | 5 | 4 component installers + 1 master installer |
 | Shared Utilities | 36 | Functions in `_utils.sh` |
 | Platforms | 3 | macOS, Linux, Windows (WSL) |
 | Install Time | 2-10 min | Per component, depending on complexity |
@@ -110,7 +110,6 @@ install_scripts/
 ├── install-spec-kit-memory.sh     # Spec Kit Memory MCP
 ├── install-code-mode.sh           # Code Mode MCP
 ├── install-chrome-devtools.sh     # Chrome DevTools MCP (bdg CLI)
-├── install-figma.sh               # Figma MCP (Official or Framelink)
 ├── install-all.sh                 # Master installer with --skip/--only flags
 ├── logs/                          # Installation logs
 ├── test/                          # Docker test environment
@@ -142,7 +141,6 @@ install_scripts/
 | `install-spec-kit-memory.sh` | Spec Kit Memory MCP | Semantic vector search for conversation context | Node.js 18+, npm |
 | `install-code-mode.sh` | Code Mode MCP | MCP orchestration via TypeScript execution | Node.js 18+ |
 | `install-chrome-devtools.sh` | Chrome DevTools CLI | Browser debugging via CDP (bdg CLI) | Node.js 18+, Chrome |
-| `install-figma.sh` | Figma MCP | Design file access (Official or Framelink) | Node.js 18+ |
 
 ### Shared Utilities (_utils.sh)
 
@@ -165,7 +163,7 @@ install_scripts/
 ./install-all.sh
 
 # Skip specific MCPs
-./install-all.sh --skip figma
+./install-all.sh --skip chrome-devtools
 
 # Install only specific MCPs
 ./install-all.sh --only code-mode --only spec-kit-memory
@@ -188,7 +186,7 @@ install_scripts/
 | File | Purpose | Modified By |
 |------|---------|-------------|
 | `opencode.json` | MCP server definitions | All scripts |
-| `.utcp_config.json` | Code Mode provider configs | Code Mode, Figma (Framelink) |
+| `.utcp_config.json` | Code Mode provider configs | Code Mode |
 | `.env` | API keys and secrets | Code Mode |
 | `.env.example` | API key templates | Code Mode |
 
@@ -204,12 +202,6 @@ All scripts support these standard options:
 | `--dry-run` | Preview changes without making them |
 
 ### Script-Specific Options
-
-**install-figma.sh**:
-| Option | Description |
-|--------|-------------|
-| `-a, --official` | Install Official Figma MCP (HTTP, OAuth) |
-| `-b, --framelink` | Install Framelink third-party (API key) |
 
 **install-chrome-devtools.sh**:
 | Option | Description |
@@ -235,16 +227,7 @@ All scripts support these standard options:
 
 **Result**: Core MCPs configured in `opencode.json`, ready for use.
 
-### Example 2: Install Figma (Official)
-
-```bash
-# Install Official Figma MCP (HTTP, OAuth - no API key needed)
-./install-figma.sh -a
-```
-
-**Result**: HTTP server config added to `opencode.json`, OAuth login on first use.
-
-### Example 3: CI/CD Installation
+### Example 2: CI/CD Installation
 
 ```bash
 # Dry-run to preview installation
@@ -370,7 +353,7 @@ bdg --version
 
 **Q: What order should I install MCPs?**
 
-A: Install Code Mode first if you plan to use Framelink (Figma). Otherwise, order doesn't matter. Recommended: Code Mode → Spec Kit Memory → Sequential Thinking → others.
+A: Install Code Mode first (foundation). Otherwise, order doesn't matter. Recommended: Code Mode → Spec Kit Memory → Sequential Thinking → others.
 
 ---
 
@@ -380,11 +363,11 @@ A: Yes. All scripts are idempotent. They detect existing installations and skip 
 
 ---
 
-**Q: Do I need all 5 component installers?**
+**Q: Do I need all 4 component installers?**
 
 A: No. Install based on your needs:
 - **Core**: Code Mode MCP, Spec Kit Memory MCP, Sequential Thinking MCP
-- **Optional**: Figma MCP (design), Chrome DevTools CLI (debugging)
+- **Optional**: Chrome DevTools CLI (debugging)
 
 ---
 
@@ -424,7 +407,6 @@ cd test/
 docker build -t mcp-install-test .
 docker run -it mcp-install-test
 ```
-Note: The master installer (`install-all.sh`) automatically uses non-interactive flags for Figma (`-a`) when running.
 
 <!-- /ANCHOR:faq -->
 
@@ -438,7 +420,6 @@ Note: The master installer (`install-all.sh`) automatically uses non-interactive
 | Document | Purpose |
 |----------|---------|
 | [MCP - Code Mode.md](../MCP%20-%20Code%20Mode.md) | Code Mode installation guide |
-| [MCP - Figma.md](../MCP%20-%20Figma.md) | Figma installation guide |
 | [MCP - Sequential Thinking.md](../MCP%20-%20Sequential%20Thinking.md) | Sequential Thinking guide |
 | [MCP - Spec Kit Memory.md](../MCP%20-%20Spec%20Kit%20Memory.md) | Spec Kit Memory guide |
 | [MCP - Chrome Dev Tools.md](../MCP%20-%20Chrome%20Dev%20Tools.md) | Chrome DevTools guide |

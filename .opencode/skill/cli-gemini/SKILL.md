@@ -1,6 +1,6 @@
 ---
 name: cli-gemini
-description: "Gemini CLI orchestrator enabling Claude Code and OpenCode to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing."
+description: "Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
 version: 1.1.0
 ---
@@ -9,9 +9,9 @@ version: 1.1.0
 
 # Gemini CLI Orchestrator - Cross-AI Task Delegation
 
-Orchestrate Google's Gemini CLI from Claude Code or OpenCode for tasks that benefit from a second AI perspective, real-time web search via Google Search grounding, deep codebase architecture analysis, or parallel code generation.
+Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspective, real-time web search via Google Search grounding, deep codebase architecture analysis, or parallel code generation.
 
-**Core Principle**: Use Gemini for what it does best. Delegate, validate, integrate. Claude Code stays the conductor.
+**Core Principle**: Use Gemini for what it does best. Delegate, validate, integrate. The calling AI stays the conductor.
 
 ---
 
@@ -275,7 +275,7 @@ gemini "[prompt]" -o text 2>&1
 
 ### Gemini Agent Delegation
 
-Claude Code acts as the **conductor** that delegates tasks to Gemini CLI. Gemini CLI has specialized agents in `.gemini/agents/` that provide domain expertise. Route tasks to the right agent for best results.
+The calling AI acts as the **conductor** that delegates tasks to Gemini CLI. Gemini CLI has specialized agents in `.gemini/agents/` that provide domain expertise. Route tasks to the right agent for best results.
 
 **Agent Routing Table:**
 
@@ -288,7 +288,7 @@ Claude Code acts as the **conductor** that delegates tasks to Gemini CLI. Gemini
 | Fresh-perspective debugging | `@debug` | `gemini "As @debug agent: Debug this error: [error]" -o text` |
 | Multi-strategy planning | `@ultra-think` | `gemini "As @ultra-think agent: Plan the authentication redesign" -m gemini-3.1-pro-preview -o text` |
 
-**Orchestration principle**: Claude Code decides WHAT to delegate. The Gemini agent definition shapes HOW Gemini processes it. Claude Code always validates and integrates the output.
+**Orchestration principle**: The calling AI decides WHAT to delegate. The Gemini agent definition shapes HOW Gemini processes it. The calling AI always validates and integrates the output.
 
 See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster and invocation patterns.
 
@@ -502,9 +502,6 @@ Key integrations:
 - `sk-doc` - Documentation generation that Gemini can supplement
 - `sk-code--web` - Web development where Gemini provides second opinions
 - `sk-code--full-stack` - Full-stack tasks with Gemini architecture analysis
-
-### Install Guide
-- [MCP - Gemini CLI.md](../../install_guides/MCP%20-%20Gemini%20CLI.md) - Installation, authentication, and configuration
 
 ### External
 - [Gemini CLI GitHub](https://github.com/google-gemini/gemini-cli) - Official repository
