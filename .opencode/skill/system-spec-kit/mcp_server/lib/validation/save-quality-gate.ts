@@ -15,7 +15,13 @@
 // MR12 mitigation: warn-only mode for first 2 weeks after
 // activation. When in warn-only mode, log quality scores and
 // would-reject decisions but do NOT block saves.
+//
+// P1-015: Activation timestamp is persisted to SQLite config
+// table so the 14-day graduation countdown survives server
+// restarts.
 // ---------------------------------------------------------------
+
+import * as vectorIndex from '../search/vector-index';
 
 /* ---------------------------------------------------------------
    1. TYPES
@@ -132,10 +138,77 @@ const SPEC_FOLDER_PATTERN = /^[\w][\w\-/.]*$/;
    3. FEATURE FLAG & WARN-ONLY MODE
    --------------------------------------------------------------- */
 
+/** SQLite config key for persisted activation timestamp */
+const ACTIVATION_CONFIG_KEY = 'quality_gate_activated_at';
+
+/** Track whether config table DDL has run this process */
+let configTableEnsured = false;
+
+/**
+ * Ensure the config table exists (idempotent, runs DDL at most once per process).
+ * Follows the pattern from db-state.ts.
+ */
+function ensureConfigTable(db: { exec: (sql: string) => void }): void {
+  if (configTableEnsured) return;
+  db.exec('CREATE TABLE IF NOT EXISTS config (key TEXT PRIMARY KEY, value TEXT)');
+  configTableEnsured = true;
+}
+
+/**
+ * Load the activation timestamp from SQLite config table.
+ * Returns null if DB is unavailable or no stored value exists.
+ */
+function loadActivationTimestampFromDb(): number | null {
+  try {
+    const db = vectorIndex.getDb();
+    if (!db) return null;
+    ensureConfigTable(db);
+    const row = db.prepare('SELECT value FROM config WHERE key = ?')
+      .get(ACTIVATION_CONFIG_KEY) as { value: string } | undefined;
+    return row ? parseInt(row.value, 10) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Persist the activation timestamp to SQLite config table.
+ * Non-fatal: persistence failure does not block operation.
+ */
+function persistActivationTimestampToDb(timestamp: number): void {
+  try {
+    const db = vectorIndex.getDb();
+    if (!db) return;
+    ensureConfigTable(db);
+    db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)')
+      .run(ACTIVATION_CONFIG_KEY, timestamp.toString());
+  } catch {
+    // Non-fatal: in-memory value still works
+  }
+}
+
+/**
+ * Clear the activation timestamp from SQLite config table.
+ * Used in testing alongside resetActivationTimestamp().
+ */
+function clearActivationTimestampFromDb(): void {
+  try {
+    const db = vectorIndex.getDb();
+    if (!db) return;
+    ensureConfigTable(db);
+    db.prepare('DELETE FROM config WHERE key = ?').run(ACTIVATION_CONFIG_KEY);
+  } catch {
+    // Non-fatal
+  }
+}
+
 /**
  * Activation timestamp for warn-only mode tracking.
  * Set when the feature flag is first enabled.
  * Exported for testing purposes.
+ *
+ * P1-015: Also persisted to SQLite config table. On access, lazy-loads
+ * from DB if in-memory value is null.
  */
 export let qualityGateActivatedAt: number | null = null;
 
@@ -154,9 +227,20 @@ export function isQualityGateEnabled(): boolean {
  * For the first 14 days after activation, the gate logs scores but
  * does not block saves.
  *
+ * P1-015: Lazy-loads from SQLite if in-memory value is null, so the
+ * 14-day countdown survives server restarts.
+ *
  * @returns true if in warn-only period
  */
 export function isWarnOnlyMode(): boolean {
+  // P1-015: Lazy-load from DB on first access after restart
+  if (qualityGateActivatedAt === null) {
+    const persisted = loadActivationTimestampFromDb();
+    if (persisted !== null) {
+      qualityGateActivatedAt = persisted;
+    }
+  }
+
   if (qualityGateActivatedAt === null) {
     return false;
   }
@@ -168,17 +252,22 @@ export function isWarnOnlyMode(): boolean {
  * Record the activation timestamp for warn-only mode tracking.
  * Called when the quality gate is first enabled.
  *
+ * P1-015: Persists to SQLite config table for restart survival.
+ *
  * @param timestamp - Unix timestamp in milliseconds. If not provided, uses Date.now()
  */
 export function setActivationTimestamp(timestamp?: number): void {
   qualityGateActivatedAt = timestamp ?? Date.now();
+  persistActivationTimestampToDb(qualityGateActivatedAt);
 }
 
 /**
  * Reset the activation timestamp. Used in testing.
+ * P1-015: Also clears the persisted value from SQLite.
  */
 export function resetActivationTimestamp(): void {
   qualityGateActivatedAt = null;
+  clearActivationTimestampFromDb();
 }
 
 /* ---------------------------------------------------------------

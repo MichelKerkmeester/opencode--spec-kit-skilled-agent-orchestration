@@ -168,7 +168,8 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
           if (emb) {
             mmrCandidates.push({
               id: r.id,
-              score: (r.score as number) ?? (r.similarity as number ?? 0) / 100,
+              // P1-015: Use effectiveScore() for consistent fallback chain
+              score: effectiveScore(r),
               embedding: emb,
             });
           }
@@ -279,10 +280,11 @@ async function applyCrossEncoderReranking(
   }
 
   // Map PipelineRow → RerankDocument (uses `content` field per cross-encoder interface)
+  // P1-015: Use effectiveScore() for consistent fallback chain
   const documents: RerankDocument[] = results.map((row) => ({
     id: row.id,
     content: resolveDisplayText(row),
-    score: row.score ?? row.similarity,
+    score: effectiveScore(row),
   }));
 
   try {
@@ -307,11 +309,14 @@ async function applyCrossEncoderReranking(
         // Defensive: reranker returned an unknown id — skip it
         continue;
       }
+      const rerankScore = rerankResult.rerankerScore ?? rerankResult.score ?? original.score;
       rerankedRows.push({
         ...original,
-        score: rerankResult.rerankerScore ?? rerankResult.score ?? original.score,
+        // P1-015: Preserve Stage 2 composite score for auditability
+        stage2Score: original.score,
+        score: rerankScore,
         similarity: original.similarity,
-        rerankerScore: rerankResult.rerankerScore ?? rerankResult.score ?? original.score,
+        rerankerScore: rerankScore,
       });
     }
 
@@ -445,14 +450,23 @@ function electBestChunk(chunks: PipelineRow[]): PipelineRow {
 
 /**
  * Compute the effective numeric score for a pipeline row.
- * Prefers `score`, falls back to `similarity`, then 0.
- * Always clamped to [0, 1] to ensure normalized comparisons.
+ * Checks all score fields in priority order to avoid silently
+ * discarding Stage 2 signal enrichment.
+ *
+ * P1-015: Fallback chain expanded to include intentAdjustedScore
+ * and rrfScore before raw score/similarity, matching Stage 2's
+ * resolveBaseScore() pattern for defensive correctness.
  *
  * @param row - A pipeline result row.
  * @returns Numeric score value in [0, 1] for comparison.
  */
 function effectiveScore(row: PipelineRow): number {
   // AI-WHY: Clamp to [0,1] — raw scores/similarity may exceed normalized range (A1-P2-2)
+  // P1-015: Check enriched scores first, then base score, then raw similarity
+  if (typeof row.intentAdjustedScore === 'number' && isFinite(row.intentAdjustedScore))
+    return Math.max(0, Math.min(1, row.intentAdjustedScore));
+  if (typeof row.rrfScore === 'number' && isFinite(row.rrfScore))
+    return Math.max(0, Math.min(1, row.rrfScore));
   if (typeof row.score === 'number' && isFinite(row.score))
     return Math.max(0, Math.min(1, row.score));
   if (typeof row.similarity === 'number' && isFinite(row.similarity))

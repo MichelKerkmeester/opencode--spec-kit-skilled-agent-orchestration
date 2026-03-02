@@ -39,6 +39,8 @@ export interface PipelineRow extends Record<string, unknown> {
   importance_weight?: number;
   rrfScore?: number;
   intentAdjustedScore?: number;
+  /** P1-015: Stage 2 composite score preserved for auditability when Stage 3 overwrites score */
+  stage2Score?: number;
 }
 
 /**
