@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: RSF Fusion (Relative Score Fusion)
 // ---------------------------------------------------------------
-import type { RrfItem, RankedList } from './rrf-fusion';
+import type { RrfItem, RankedList } from '../../../shared/algorithms/rrf-fusion';
 
 /* --- 1. INTERFACES --- */
 

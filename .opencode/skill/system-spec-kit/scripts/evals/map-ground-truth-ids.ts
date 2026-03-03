@@ -7,7 +7,7 @@
 // in the production context-index.sqlite database.
 //
 // Usage:
-//   npx tsx scripts/map-ground-truth-ids.ts [--dry-run] [--verbose]
+//   npx tsx scripts/evals/map-ground-truth-ids.ts [--dry-run] [--verbose]
 //
 // Output:
 //   - Prints mapping summary to stdout
@@ -21,7 +21,7 @@ import * as fs from 'fs';
 
 // ── Config ──────────────────────────────────────────────────────
 
-const DB_DIR = path.resolve(__dirname, '../database');
+const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/ground-truth-id-mapping.json';
 

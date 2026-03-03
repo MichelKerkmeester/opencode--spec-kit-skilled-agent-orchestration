@@ -43,7 +43,10 @@ trigger_phrases:
 
 | Script | Language | Purpose |
 |--------|----------|---------|
-| `skill_advisor.py` | Python 3.6+ | Analyzes user requests, recommends skills via keyword matching, synonym expansion, intent detection and confidence scoring. Powers Gate 2. |
+| `skill_advisor.py` | Python 3.6+ | Main advisor engine with intent normalization, dual-threshold filtering, command-bridge separation, and batch mode. |
+| `skill_advisor_runtime.py` | Python 3.6+ | Runtime helpers for cached skill discovery, mtime invalidation, and fast frontmatter parsing. |
+| `skill_advisor_regression.py` | Python 3.6+ | Permanent regression harness with routing quality and safety gates. |
+| `skill_advisor_bench.py` | Python 3.6+ | Latency and throughput benchmark harness for one-shot, warm, and batch modes. |
 
 ### Supporting Files
 
@@ -79,9 +82,14 @@ trigger_phrases:
 
 ```
 .opencode/skill/scripts/
-├── skill_advisor.py          # Skill routing engine (Gate 2)
-├── SET-UP_GUIDE.md           # Customization guide
-└── README.md                 # This file
+├── skill_advisor.py                            # Skill routing engine (Gate 2)
+├── skill_advisor_runtime.py                    # Cache + metadata runtime helpers
+├── skill_advisor_regression.py                 # Quality regression harness
+├── skill_advisor_bench.py                      # Performance benchmark harness
+├── fixtures/
+│   └── skill_advisor_regression_cases.jsonl    # Versioned routing fixture set
+├── SET-UP_GUIDE.md                             # Customization guide
+└── README.md                                   # This file
 ```
 
 ### How It Fits in the Framework
@@ -150,9 +158,10 @@ RESULT=$(python .opencode/skill/scripts/skill_advisor.py "$USER_REQUEST")
 # Parse first recommendation
 SKILL=$(echo $RESULT | python -c "import sys,json; r=json.load(sys.stdin); print(r[0]['skill'] if r else '')")
 CONFIDENCE=$(echo $RESULT | python -c "import sys,json; r=json.load(sys.stdin); print(r[0]['confidence'] if r else 0)")
+UNCERTAINTY=$(echo $RESULT | python -c "import sys,json; r=json.load(sys.stdin); print(r[0]['uncertainty'] if r else 1)")
 
-# Route based on confidence
-if (( $(echo "$CONFIDENCE > 0.8" | bc -l) )); then
+# Route based on dual threshold
+if (( $(echo "$CONFIDENCE >= 0.8" | bc -l) )) && (( $(echo "$UNCERTAINTY <= 0.35" | bc -l) )); then
     echo "Invoking skill: $SKILL"
 fi
 ```
@@ -191,7 +200,7 @@ fi
 │  └────────────────────┬────────────────────┘                     │
 │                       │                                          │
 │                       ▼                                          │
-│  IF confidence > 0.8 → MUST invoke skill                          │
+│  IF confidence >= 0.8 AND uncertainty <= 0.35 → invoke skill      │
 │  ELSE → Proceed with manual tool selection                       │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
@@ -228,9 +237,9 @@ fi
 │  ┌──────────────────────────────────────────────────────────────┐ │
 │  │                    get_skills()                              │ │
 │  │                                                              │ │
-│  │  • Scans .opencode/skill/*/SKILL.md                          │ │
-│  │  • Parses YAML frontmatter (name, description)               │ │
-│  │  • Adds hardcoded command bridges                            │ │
+│  │  • Uses runtime cache + mtime invalidation                   │ │
+│  │  • Parses frontmatter-only metadata (fast path)              │ │
+│  │  • Adds command bridges with kind separation                 │ │
 │  └──────────────────────────────────────────────────────────────┘ │
 │                                                                   │
 └───────────────────────────────────────────────────────────────────┘
@@ -327,26 +336,32 @@ User Input: "help me fix the authentication bug"
 
 | Feature | Description |
 |---------|-------------|
-| **Dynamic Skill Discovery** | Automatically scans `.opencode/skill/` for available skills |
+| **Cached Skill Discovery** | Discovers skills once per process, invalidates by SKILL.md mtime changes |
+| **Fast Frontmatter Parsing** | Reads only frontmatter block instead of full SKILL.md contents |
+| **Precomputed Metadata** | Stores normalized name/corpus/variant sets for faster matching |
 | **Synonym Expansion** | Maps user language to technical terms |
+| **Intent Normalization** | Lightweight canonical intent boosts before detailed scoring |
 | **Intent Boosting** | High-confidence keywords directly map to specific skills |
 | **Multi-Skill Boosters** | Ambiguous keywords boost multiple skills simultaneously |
-| **Confidence Scoring** | Returns 0-0.95 confidence score for each recommendation |
-| **Command Bridges** | Slash commands exposed as pseudo-skills for routing |
+| **Confidence Calibration** | Applies margin-aware and ambiguity-aware confidence adjustment |
+| **Dual-Threshold Default** | Confidence + uncertainty gating is default, even when `--threshold` is set |
+| **Explicit Confidence Override** | `--confidence-only` opt-in bypasses uncertainty checks |
+| **Command Bridge Separation** | Command bridges are tagged as `kind: command` and deprioritized unless slash intent is explicit |
+| **Batch Structural Mode** | `--batch-file` and `--batch-stdin` reduce repeated subprocess overhead |
 | **JSON Output** | Machine-readable output for automation |
 
-### Dynamic Skill Discovery
+### Cached Skill Discovery
 
-The script automatically discovers skills by scanning the `.opencode/skill/` directory:
+The script loads skill metadata via runtime helpers with cache invalidation:
 
 ```python
-for skill_file in glob.glob(os.path.join(SKILLS_DIR, "*/SKILL.md")):
-    meta = parse_frontmatter(skill_file)
-    if meta and 'name' in meta:
-        skills[meta['name']] = {
-            "description": meta.get('description', ''),
-            "weight": 1.0
-        }
+skills = get_cached_skill_records(
+    skills_dir=SKILLS_DIR,
+    stop_words=STOP_WORDS,
+    force_refresh=False,
+)
+
+# Runtime cache refreshes automatically when any SKILL.md mtime changes.
 ```
 
 **SKILL.md Frontmatter Format:**
@@ -397,33 +412,38 @@ These boost multiple skills simultaneously when the keyword is detected. The `(m
 
 ### Confidence Scoring
 
-The script uses a **two-tiered confidence formula** based on whether intent boosters matched:
+The script uses a two-stage approach:
+
+1. Base confidence formula (intent-boost aware)
+2. Margin-aware + ambiguity-aware calibration
 
 | Condition | Formula | Purpose |
 |-----------|---------|---------|
 | Intent booster matched | `min(0.50 + score * 0.15, 0.95)` | Higher confidence for explicit signals |
 | No intent booster | `min(0.25 + score * 0.15, 0.95)` | Conservative for corpus-only matches |
 
-**Score to confidence mapping (with intent boost):**
+After base confidence, calibration adjusts values when ranking margins are weak or ambiguity is high.
 
-| Score | Confidence | Meaning |
-|-------|------------|---------|
-| 1.0 | 0.65 | Single keyword match |
-| 2.0 | 0.80 | Threshold for auto-invoke |
-| 3.0 | 0.95 | Strong multi-keyword match |
+### Threshold Behavior
 
-**Confidence thresholds:**
+| Mode | Behavior |
+|------|----------|
+| Default | Dual threshold (`confidence >= --threshold` AND `uncertainty <= --uncertainty`) |
+| `--confidence-only` | Confidence-only filtering (explicit opt-in) |
 
-| Score Range | Meaning | Action |
-|-------------|---------|--------|
-| 0.80 - 0.95 | High confidence | MUST invoke skill |
-| 0.50 - 0.79 | Medium confidence | Consider skill, may proceed manually |
-| 0.25 - 0.49 | Low confidence | Skill might be relevant |
-| < 0.25 | No match | No recommendation |
+Default values:
+- `--threshold 0.8`
+- `--uncertainty 0.35`
+
+This keeps uncertainty guarding active unless confidence-only mode is explicitly requested.
 
 ### Command Bridges
 
-Slash commands exposed as pseudo-skills for routing:
+Slash commands are exposed as command-bridge recommendations (`kind: command`) and ranked separately from real skills (`kind: skill`).
+
+Rules:
+- Non-slash natural language prompts prefer real skills.
+- Explicit slash markers (for example `/spec_kit:` or `/memory:save`) allow command bridges to rank first.
 
 | Command Bridge | Description |
 |----------------|-------------|
@@ -510,7 +530,8 @@ $ python skill_advisor.py "help me commit my changes and push to remote"
 [
   {
     "skill": "sk-git",
-    "confidence": 0.92,
+    "kind": "skill",
+    "confidence": 0.95,
     "reason": "Matched: !commit, !push, git(name), changes"
   }
 ]
@@ -552,13 +573,9 @@ $ python skill_advisor.py "save this conversation context for later"
 [
   {
     "skill": "system-spec-kit",
-    "confidence": 0.85,
-    "reason": "Matched: !session, context, save"
-  },
-  {
-    "skill": "command-memory-save",
-    "confidence": 0.62,
-    "reason": "Matched: save, context"
+    "kind": "skill",
+    "confidence": 0.87,
+    "reason": "Matched: !intent:memory, !memory, !save(multi), context"
   }
 ]
 ```
@@ -581,6 +598,49 @@ $ python skill_advisor.py "call figma api"
 # → mcp-code-mode (0.95) - !figma + api(multi) boost
 ```
 
+### Example 7: Explicit confidence-only override
+
+```bash
+$ python skill_advisor.py "api chain mcp" --threshold 0.8
+[]
+
+$ python skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
+[
+  {
+    "skill": "mcp-code-mode",
+    "kind": "skill",
+    "confidence": 0.85,
+    "uncertainty": 0.39,
+    "passes_threshold": false
+  }
+]
+```
+
+### Example 8: Batch mode (structural)
+
+```bash
+$ cat prompts.txt
+create a pull request on github
+save this conversation context to memory
+/spec_kit:plan create docs
+
+$ python3 .opencode/skill/scripts/skill_advisor.py --batch-file prompts.txt
+# => JSON array with per-prompt recommendation lists
+```
+
+### Example 9: Regression and benchmark harnesses
+
+```bash
+python3 .opencode/skill/scripts/skill_advisor_regression.py \
+  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --out .opencode/skill/scripts/out/regression-report.json
+
+python3 .opencode/skill/scripts/skill_advisor_bench.py \
+  --dataset .opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl \
+  --runs 7 \
+  --out .opencode/skill/scripts/out/benchmark-report.json
+```
+
 ### Common Patterns
 
 | User Intent | Expected Skill | Key Terms |
@@ -590,7 +650,7 @@ $ python skill_advisor.py "call figma api"
 | Documentation | sk-doc | markdown, flowchart, diagram, readme |
 | Code implementation | sk-code--web | implement, fix, bug, refactor, verification |
 | Memory/context | system-spec-kit | remember, save, context, checkpoint |
-| Specifications | system-spec-kit | spec, checklist, plan, specification |
+| Specifications | system-spec-kit (or command bridge for explicit slash) | spec, checklist, plan, specification, /spec_kit |
 | External MCP tools | mcp-code-mode | webflow, figma, clickup, notion |
 
 <!-- /ANCHOR:usage-examples -->
@@ -628,17 +688,17 @@ head -10 .opencode/skill/sk-git/SKILL.md
 
 ### Low Confidence Scores
 
-**Symptom:** Correct skill recommended but confidence < 0.8
+**Symptom:** Correct skill recommended but default mode returns no result
 
 **Causes:**
-1. Missing synonyms for user's vocabulary
-2. Missing intent booster for key terms
-3. Skill description doesn't contain relevant keywords
+1. Confidence below `--threshold` (default `0.8`)
+2. Uncertainty above `--uncertainty` (default `0.35`)
+3. Missing synonyms/intent boosters for user vocabulary
 
 **Solution:**
-1. Add synonyms to `SYNONYM_MAP`
-2. Add intent boosters for domain-specific terms
-3. Update skill descriptions in SKILL.md files
+1. Inspect rejected candidates with `--show-rejections`
+2. Compare with explicit override using `--confidence-only`
+3. Add synonyms/intent boosters and improve skill descriptions
 
 ### Wrong Skill Recommended
 
@@ -692,7 +752,7 @@ A: An empty array `[]` is returned. The AI agent should proceed with manual tool
 
 **Q: Can I have multiple skills recommended?**
 
-A: Yes, the script returns all matching skills sorted by confidence. The AI agent typically uses the top recommendation if confidence > 0.8.
+A: Yes, the script returns ranked recommendations. In default mode, downstream routing should enforce both confidence and uncertainty gates.
 
 ---
 

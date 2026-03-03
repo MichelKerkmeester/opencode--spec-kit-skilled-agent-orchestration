@@ -8,7 +8,7 @@
 // PROCEED) with bootstrap 95% CI for statistical significance.
 //
 // Usage:
-//   npx tsx scripts/run-bm25-baseline.ts [--skip-hard-negatives] [--verbose]
+//   npx tsx scripts/evals/run-bm25-baseline.ts [--skip-hard-negatives] [--verbose]
 //
 // Output:
 //   - Prints metrics, contingency decision, and bootstrap CI
@@ -20,20 +20,16 @@ import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import { fts5Bm25Search, isFts5Available } from '../lib/search/sqlite-fts';
 import {
-  runBM25Baseline,
-  recordBaselineMetrics,
-  type BM25SearchFn,
-  type BM25SearchResult,
-  type BM25BaselineResult,
-} from '../lib/eval/bm25-baseline';
-import { loadGroundTruth } from '../lib/eval/ground-truth-generator';
-import { initEvalDb } from '../lib/eval/eval-db';
+  fts5Bm25Search, isFts5Available,
+  runBM25Baseline, recordBaselineMetrics,
+  loadGroundTruth, initEvalDb,
+  type BM25SearchFn, type BM25SearchResult, type BM25BaselineResult,
+} from '../../mcp_server/api';
 
 // ── Config ──────────────────────────────────────────────────────
 
-const DB_DIR = path.resolve(__dirname, '../database');
+const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/bm25-baseline-result.json';
 

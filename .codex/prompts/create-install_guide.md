@@ -1,1 +1,0 @@
-../../.opencode/command/create/install_guide.md

@@ -20,17 +20,17 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 
 // Known large modules with extended thresholds (technical debt tracking)
 // These modules contain complex business logic justifying larger size
-// 2026-02-28: Thresholds updated to match feature growth.
+// 2026-03-03: Thresholds audited — memory-crud.js tightened from 760→40 after decomposition into sub-modules.
 // TODO: Extract quality gate, reconsolidation, chunked-indexing from memory-save (2,553 LOC source).
 const EXTENDED_LIMITS: Record<string, number> = {
-  'context-server.js': 750,         // Main entry point (tool defs extracted to tool-schemas.ts)
-  'tool-schemas.js': 360,           // Expanded MCP schema set and runtime flag metadata wiring
-  'handlers/memory-search.js': 1450, // Complex search logic with multiple strategies + chunk reassembly paths + Pipeline V2 integration
-  'handlers/memory-triggers.js': 400, // Trigger matching with cognitive features
-  'handlers/memory-crud.js': 760,   // CRUD operations with validation + checkpoint/ledger/graph metrics wiring
-  'handlers/memory-save.js': 2200,  // Save logic with parsing, validation, indexing + quality gate + reconsolidation + embedding cache
-  'handlers/memory-index.js': 700,  // Index operations with scanning + spec document discovery (Spec 126)
-  'handlers/checkpoints.js': 400,   // Checkpoint operations
+  'context-server.js': 750,         // actual: 717 — Main entry point (tool defs extracted to tool-schemas.ts)
+  'tool-schemas.js': 370,           // actual: 362 — Expanded MCP schema set and runtime flag metadata wiring
+  'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration
+  'handlers/memory-triggers.js': 400, // actual: 374 — Trigger matching with cognitive features
+  'handlers/memory-crud.js': 40,    // actual: 32 — Re-export barrel (decomposed into memory-crud-{health,update,delete,stats,list,utils,types}.js)
+  'handlers/memory-save.js': 2200,  // actual: 1210 — Save logic with parsing, validation, indexing + quality gate + reconsolidation
+  'handlers/memory-index.js': 700,  // actual: 421 — Index operations with scanning + spec document discovery (Spec 126)
+  'handlers/checkpoints.js': 400,   // actual: 359 — Checkpoint operations
 };
 
 function countLines(filePath: string): number {

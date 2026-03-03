@@ -6,7 +6,7 @@
 // excluded from canonical payloads.
 // ---------------------------------------------------------------
 
-import type { RetrievalStage } from '../contracts/retrieval-trace';
+import type { RetrievalStage } from '../../../shared/contracts/retrieval-trace';
 
 const RETRIEVAL_TRACE_STAGES: RetrievalStage[] = [
   'candidate',

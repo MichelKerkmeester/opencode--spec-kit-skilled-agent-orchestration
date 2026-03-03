@@ -5,6 +5,7 @@
     "rootDir": ".",
     "outDir": "./dist",
     "allowJs": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@spec-kit/shared/*": ["../shared/*"]

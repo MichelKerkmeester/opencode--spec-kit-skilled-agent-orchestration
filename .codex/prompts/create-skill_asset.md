@@ -1,1 +1,0 @@
-../../.opencode/command/create/skill_asset.md

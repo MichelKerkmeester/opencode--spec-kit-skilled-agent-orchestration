@@ -4,8 +4,8 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
-import type { FusionResult } from '../lib/search/rrf-fusion';
-import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES } from '../lib/search/rrf-fusion';
+import type { FusionResult } from '../../shared/algorithms/rrf-fusion';
+import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES } from '../../shared/algorithms/rrf-fusion';
 
 function requireResult<T>(value: T | undefined): T {
   expect(value).toBeDefined();

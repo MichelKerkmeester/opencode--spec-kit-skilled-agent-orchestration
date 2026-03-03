@@ -8,7 +8,7 @@ import Database from 'better-sqlite3';
 import { load as loadSqliteVec } from 'sqlite-vec';
 
 // Shared config
-import { DB_PATH } from '@spec-kit/shared/config';
+import { DB_PATH } from '@spec-kit/shared/paths';
 
 /* -----------------------------------------------------------------
    1. INTERFACES

@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
-import * as rrfFusion from '../lib/search/rrf-fusion';
+import * as rrfFusion from '../../shared/algorithms/rrf-fusion';
 
 /* ─────────────────────────────────────────────────────────────
    MOCK DATABASE & SEARCH FUNCTIONS

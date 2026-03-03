@@ -4,8 +4,8 @@
 // This is a measurement/analysis tool, not production code.
 // ---------------------------------------------------------------
 
-import { fuseResultsMulti } from '../search/rrf-fusion';
-import type { RankedList, FusionResult } from '../search/rrf-fusion';
+import { fuseResultsMulti } from '../../../shared/algorithms/rrf-fusion';
+import type { RankedList, FusionResult } from '../../../shared/algorithms/rrf-fusion';
 
 /* ---------------------------------------------------------------
    1. TYPES

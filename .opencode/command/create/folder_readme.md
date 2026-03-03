@@ -1,6 +1,6 @@
 ---
-description: Create an AI-optimized README.md file with proper structure, table of contents, and comprehensive documentation - supports :auto and :confirm modes
-argument-hint: "<target-path> [--type <project|component|feature|skill>] [:auto|:confirm]"
+description: Unified documentation command for folder README and install guide creation with sk-doc quality standards - supports :auto and :confirm modes
+argument-hint: "[readme|install] <target> [--type <project|component|feature|skill>] [--platforms <list>] [--output <path>] [:auto|:confirm]"
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 ---
 
@@ -10,11 +10,12 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
 >
 > **YOUR FIRST ACTION:**
 > 1. Run Phase 0: @write agent self-verification (below)
-> 2. Run Setup Phase: consolidated prompt to gather inputs
+> 2. Run Setup Phase: consolidated prompt to gather inputs (including operation detection)
 > 3. Determine execution mode from user input (`:auto` or `:confirm`)
 > 4. Load the corresponding YAML file from `assets/`:
 >    - Auto mode → `create_folder_readme_auto.yaml`
 >    - Confirm mode → `create_folder_readme_confirm.yaml`
+>    (Both YAMLs contain readme AND install operations — skip to the detected operation section)
 > 5. Execute the YAML workflow step by step
 >
 > The @write references below are self-verification checks — not dispatch instructions.
@@ -54,7 +55,7 @@ SELF-CHECK: Are you operating as the @write agent?
     │   │   • sk-doc skill integration                               │
     │   │                                                            │
     │   │ To proceed, restart with:                                  │
-    │   │   @write /create:folder_readme [target-path]               │
+    │   │   @write /create:folder_readme [operation] [target]        │
     │   │                                                            │
     │   │ Reference: [runtime_agent_path]/write.md                   │
     │   └────────────────────────────────────────────────────────────┘
@@ -75,78 +76,140 @@ SELF-CHECK: Are you operating as the @write agent?
 
 This workflow uses a SINGLE consolidated prompt to gather ALL required inputs in ONE user interaction.
 
-**Round-trip optimization:** This workflow requires only 1 user interaction (all questions asked together), with an optional follow-up only if README already exists.
+**Round-trip optimization:** This workflow requires only 1 user interaction (all questions asked together), with an optional follow-up only if target file already exists.
 
 ```
 EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
+0. DETECT OPERATION from $ARGUMENTS or command invocation:
+   ├─ First positional token is "readme" → operation = "readme", remove token from args
+   ├─ First positional token is "install" → operation = "install", remove token from args
+   ├─ "--operation readme" flag → operation = "readme"
+   ├─ "--operation install" flag → operation = "install"
+   └─ No operation detected → operation = "ASK" (include Q_OP in prompt)
+   NOTE: When no operation is detected and $ARGUMENTS contains a path-like value, default to "readme".
+
 1. CHECK for mode suffix in $ARGUMENTS or command invocation:
-   ├─ ":auto" suffix detected → execution_mode = "AUTONOMOUS" (pre-set, omit Q2)
-   ├─ ":confirm" suffix detected → execution_mode = "INTERACTIVE" (pre-set, omit Q2)
-   └─ No suffix → execution_mode = "ASK" (include Q2 in prompt)
+   ├─ ":auto" suffix detected → execution_mode = "AUTONOMOUS" (pre-set, omit Q_MODE)
+   ├─ ":confirm" suffix detected → execution_mode = "INTERACTIVE" (pre-set, omit Q_MODE)
+   └─ No suffix → execution_mode = "ASK" (include Q_MODE in prompt)
 
-2. CHECK if $ARGUMENTS contains target path:
-   ├─ IF $ARGUMENTS has path content (ignoring flags) → target_path = $ARGUMENTS, omit Q0
-   └─ IF $ARGUMENTS is empty → include Q0 in prompt
+── README BRANCH (operation = "readme") ──────────────────────────────
 
-3. CHECK if $ARGUMENTS contains --type flag:
-   ├─ IF --type flag present → readme_type = [parsed value], omit Q1
-   └─ IF no --type flag → include Q1 in prompt
+2R. CHECK if $ARGUMENTS contains target path:
+    ├─ IF $ARGUMENTS has path content (ignoring flags) → target_path = $ARGUMENTS, omit Q_R1
+    └─ IF $ARGUMENTS is empty → include Q_R1 in prompt
 
-4. ASK user with SINGLE CONSOLIDATED prompt (include only applicable questions):
+3R. CHECK if $ARGUMENTS contains --type flag:
+    ├─ IF --type flag present → readme_type = [parsed value], omit Q_R2
+    └─ IF no --type flag → include Q_R2 in prompt
+
+── INSTALL BRANCH (operation = "install") ────────────────────────────
+
+2I. CHECK if $ARGUMENTS contains a project name:
+    ├─ IF $ARGUMENTS has content (ignoring flags/suffixes) → project_name = $ARGUMENTS, omit Q_I1
+    └─ IF $ARGUMENTS is empty → include Q_I1 in prompt
+
+3I. CHECK for --platforms flag in $ARGUMENTS:
+    ├─ IF --platforms flag present with valid values → platforms = [values], omit Q_I2
+    └─ IF no --platforms flag → include Q_I2 in prompt
+
+4I. Check for existing installation guides:
+    $ ls -la ./install_guides/*.md ./INSTALL.md ./docs/INSTALL.md 2>/dev/null
+    - Will inform conflict handling in Q_I3 if files exist
+
+──────────────────────────────────────────────────────────────────────
+
+5. ASK user with SINGLE CONSOLIDATED prompt (include only applicable questions):
 
    ┌────────────────────────────────────────────────────────────────┐
    │ **Before proceeding, please answer:**                          │
    │                                                                │
-   │ **Q0. Target Path** (if not provided in command):              │
+   │ **Q_OP. Operation** (if not detected from args):              │
+   │    A) README - Create/update folder documentation              │
+   │    B) Install Guide - Create/update installation guide         │
+   │                                                                │
+   │ ── README Questions (if operation = readme) ──                │
+   │                                                                │
+   │ **Q_R1. Target Path** (if not provided in command):            │
    │    Where should the README be created?                         │
    │    (e.g., .opencode/skill/my-skill, src/components, ./)        │
    │                                                                │
-   │ **Q1. README Type** (if not provided via --type):              │
+   │ **Q_R2. README Type** (if not provided via --type):            │
    │    A) Project - Main project documentation at root level       │
    │    B) Component - Documentation for a module/package/skill     │
    │    C) Feature - Documentation for a specific feature/system     │
    │    D) Skill - Documentation for an OpenCode skill              │
    │                                                                │
-   │ **Q2. Execution Mode** (if no :auto/:confirm suffix):            │
+   │ ── Install Guide Questions (if operation = install) ──        │
+   │                                                                │
+   │ **Q_I1. Project Name** (if not provided in command):           │
+   │    What project/tool needs an installation guide?              │
+   │                                                                │
+   │ **Q_I2. Target Platforms** (required):                         │
+   │    A) All platforms (macOS, Linux, Windows, Docker)            │
+   │    B) macOS only                                               │
+   │    C) Linux only                                               │
+   │    D) Custom (specify: macos,linux,windows,docker)             │
+   │                                                                │
+   │ **Q_I3. Output Location** (required):                          │
+   │    A) install_guides/[Type] - [Name].md (Recommended)          │
+   │    B) INSTALL.md at project root                               │
+   │    C) docs/INSTALL.md                                          │
+   │    D) Custom path (specify)                                    │
+   │    [If existing file found: E) Overwrite | F) Merge | G) Cancel]│
+   │                                                                │
+   │ ── Common ──                                                   │
+   │                                                                │
+   │ **Q_MODE. Execution Mode** (if no :auto/:confirm suffix):     │
    │    A) Interactive - Confirm at each step (Recommended)          │
    │    B) Autonomous - Execute without prompts                     │
    │                                                                │
-   │ Reply with answers, e.g.: "B, A" or "src/components, B, A"     │
+   │ Reply with answers for applicable questions only.               │
    └────────────────────────────────────────────────────────────────┘
 
-5. WAIT for user response (DO NOT PROCEED)
+6. WAIT for user response (DO NOT PROCEED)
 
-6. Parse response and store ALL results:
-   - target_path = [from Q0 or $ARGUMENTS]
-   - readme_type = [A/B/C/D from Q1 or --type flag → project/component/feature/skill]
-   - execution_mode = [AUTONOMOUS/INTERACTIVE from suffix or Q2]
+7. Parse response and store ALL results:
+   - operation = [readme/install]
 
-7. VERIFY target and check for existing README:
-   ├─ Check if target path exists:
-   │   $ ls -la [target_path] 2>/dev/null
-   │
-   ├─ IF target path does not exist:
-   │   └─ Create directory: mkdir -p [target_path]
-   │
-   ├─ Check for existing README:
-   │   $ ls -la [target_path]/README.md 2>/dev/null
-   │
-   └─ IF README.md already exists:
-       ├─ ASK user (ONLY conditional follow-up):
-       │   ┌────────────────────────────────────────────────────────────┐
-       │   │ **README.md already exists at [path].**                    │
-       │   │                                                            │
-       │   │ **Q3. How should we proceed?**                             │
-       │   │    A) Overwrite existing file                               │
-       │   │    B) Create backup and overwrite                          │
-       │   │    C) Merge/update existing content                        │
-       │   │    D) Cancel                                               │
-       │   └────────────────────────────────────────────────────────────┘
-       ├─ WAIT for user response
-       └─ Process based on choice (D = RETURN STATUS=CANCELLED)
+   IF readme:
+     - target_path = [from Q_R1 or $ARGUMENTS]
+     - readme_type = [A/B/C/D from Q_R2 or --type flag → project/component/feature/skill]
 
-8. SET STATUS: ✅ PASSED
+   IF install:
+     - project_name = [from Q_I1 or $ARGUMENTS]
+     - platforms = [from Q_I2 or --platforms flag: all/macos/linux/windows/docker]
+     - output_path = [derived from Q_I3 choice]
+     - existing_file = [yes/no based on check]
+     - conflict_resolution = [if existing: overwrite/merge/cancel]
+
+   - execution_mode = [AUTONOMOUS/INTERACTIVE from suffix or Q_MODE]
+
+8. VERIFY target and check for existing output:
+   ├─ README operation:
+   │   ├─ Check if target path exists: $ ls -la [target_path] 2>/dev/null
+   │   ├─ IF target path does not exist: Create directory: mkdir -p [target_path]
+   │   ├─ Check for existing README: $ ls -la [target_path]/README.md 2>/dev/null
+   │   └─ IF README.md already exists:
+   │       ├─ ASK user (ONLY conditional follow-up):
+   │       │   ┌────────────────────────────────────────────────────────────┐
+   │       │   │ **README.md already exists at [path].**                    │
+   │       │   │                                                            │
+   │       │   │ **How should we proceed?**                                 │
+   │       │   │    A) Overwrite existing file                               │
+   │       │   │    B) Create backup and overwrite                          │
+   │       │   │    C) Merge/update existing content                        │
+   │       │   │    D) Cancel                                               │
+   │       │   └────────────────────────────────────────────────────────────┘
+   │       ├─ WAIT for user response
+   │       └─ Process based on choice (D = RETURN STATUS=CANCELLED)
+   │
+   └─ Install operation:
+       └─ IF output location has conflict AND conflict_resolution not set:
+           └─ Handle inline based on Q_I3 response (E/F/G options)
+
+9. SET STATUS: ✅ PASSED
 
 **STOP HERE** - Wait for user to answer ALL applicable questions before continuing.
 
@@ -154,45 +217,59 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 ⛔ NEVER auto-create directories without user confirmation
 ⛔ NEVER auto-select execution mode without suffix or explicit choice
 ⛔ NEVER split these questions into multiple prompts
-⛔ NEVER infer README location from context
+⛔ NEVER infer target path or project name from context
+⛔ NEVER assume platforms without confirmation
 ```
 
 **Phase Output:**
 - `write_agent_verified = ________________`
-- `target_path = ________________`
-- `readme_type = ________________`
+- `operation = ________________`
+- `target_path = ________________` (readme only)
+- `readme_type = ________________` (readme only)
+- `project_name = ________________` (install only)
+- `platforms = ________________` (install only)
+- `output_path = ________________` (install only)
+- `existing_file = ________________` (install only)
 - `execution_mode = ________________`
-- `existing_readme_action = ________________` (if applicable)
+- `existing_file_action = ________________` (if applicable)
 
 ---
 
 ## PHASE STATUS VERIFICATION (BLOCKING)
 
-**Before continuing to the workflow, verify ALL values are set:**
+**Before continuing to the workflow, verify ALL required values are set:**
 
-| FIELD                  | REQUIRED      | YOUR VALUE | SOURCE                |
-| ---------------------- | ------------- | ---------- | --------------------- |
-| write_agent_verified   | ✅ Yes         | ______     | Automatic check       |
-| target_path            | ✅ Yes         | ______     | Q0 or $ARGUMENTS      |
-| readme_type            | ✅ Yes         | ______     | Q1 or --type flag     |
-| execution_mode         | ✅ Yes         | ______     | Suffix or Q2          |
-| existing_readme_action | ○ Conditional | ______     | Q3 (if README exists) |
+| FIELD                  | REQUIRED       | YOUR VALUE | SOURCE                |
+| ---------------------- | -------------- | ---------- | --------------------- |
+| write_agent_verified   | ✅ Yes          | ______     | Automatic check       |
+| operation              | ✅ Yes          | ______     | Detection or Q_OP     |
+| target_path            | ○ readme only  | ______     | Q_R1 or $ARGUMENTS    |
+| readme_type            | ○ readme only  | ______     | Q_R2 or --type flag   |
+| project_name           | ○ install only | ______     | Q_I1 or $ARGUMENTS    |
+| platforms              | ○ install only | ______     | Q_I2 or --platforms   |
+| output_path            | ○ install only | ______     | Derived from Q_I3     |
+| execution_mode         | ✅ Yes          | ______     | Suffix or Q_MODE      |
+| existing_file_action   | ○ Conditional  | ______     | If file exists        |
 
 ```
 VERIFICATION CHECK:
-├─ ALL required fields have values?
-│   ├─ YES → Proceed to "⚡ INSTRUCTIONS" section below
+├─ ALL required fields (for detected operation) have values?
+│   ├─ YES → Proceed to "1. INSTRUCTIONS" section below
 │   └─ NO  → Re-prompt for missing values only
 ```
 
 ---
 
-## INSTRUCTIONS
+## 1. INSTRUCTIONS
 
 After Phase 0 and Setup Phase pass, load and execute the appropriate YAML workflow:
 
-- **AUTONOMOUS (`:auto`)**: `.opencode/command/create/assets/create_folder_readme_auto.yaml`
-- **INTERACTIVE (`:confirm`)**: `.opencode/command/create/assets/create_folder_readme_confirm.yaml`
+| Mode | YAML Workflow |
+| ---- | ------------- |
+| `:auto` | `.opencode/command/create/assets/create_folder_readme_auto.yaml` |
+| `:confirm` | `.opencode/command/create/assets/create_folder_readme_confirm.yaml` |
+
+Each YAML contains both **README** and **Install Guide** operation sections. Skip to the section matching the detected operation from the Setup Phase.
 
 The YAML contains: detailed step activities, checkpoints, confidence scoring, error recovery, validation gates, resource routing, and completion reporting.
 
@@ -226,9 +303,28 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 
 | Property        | Value                                                       |
 | --------------- | ----------------------------------------------------------- |
-| **Location**    | User-specified path (`install_guides/` or target directory) |
+| **Location**    | User-specified path (target directory or `install_guides/`) |
 | **Reason**      | The created file IS the documentation                       |
-| **Spec Folder** | Not required - the guide/README serves as its own spec      |
+| **Spec Folder** | Not required — the output serves as its own spec            |
+
+---
+
+## OPERATION ROUTING
+
+### Input Normalization
+
+- `folder_readme` alias normalizes to `readme`
+- `install_guide` alias normalizes to `install`
+- `--operation` flag has precedence over positional token
+- When no operation is detected and args look like a path, default to `readme`
+- Unknown operation values must hard-stop with a re-prompt
+
+### Backward Compatibility
+
+| Legacy Invocation | Normalized Route |
+| --- | --- |
+| `/create:folder_readme <path> [--type ...] [:mode]` | operation=readme (default) |
+| `/create:folder_readme install <project> [--platforms ...] [:mode]` | operation=install (explicit) |
 
 ---
 
@@ -240,13 +336,13 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 - Executed command without @write agent verification
 - Asked questions in MULTIPLE separate prompts instead of ONE consolidated prompt
 - Started reading the workflow section before all fields are set
-- Proceeded without explicit target path
-- Overwrote existing README without confirmation
-- Inferred README location from context instead of explicit user input
+- Proceeded without explicit target path or project name
+- Overwrote existing file without confirmation
+- Inferred location from context instead of explicit user input
 
 **Workflow Violations (Steps 1-5):**
 - Skipped content discovery and jumped to generation
-- Generated README without identifying key features first
+- Generated output without identifying key features first
 - Did not validate structure before claiming complete
 
 **VIOLATION RECOVERY PROTOCOL:**
@@ -289,6 +385,8 @@ FOR WORKFLOW VIOLATIONS:
 
 ## WORKFLOW TRACKING
 
+### README Operation
+
 | STEP | NAME       | STATUS | REQUIRED OUTPUT     | VERIFICATION                |
 | ---- | ---------- | ------ | ------------------- | --------------------------- |
 | 1    | Analysis   | ☐      | README type, path   | Type and location confirmed |
@@ -296,6 +394,16 @@ FOR WORKFLOW VIOLATIONS:
 | 3    | Structure  | ☐      | Section structure   | Template selected           |
 | 4    | Generation | ☐      | README.md           | Complete README written     |
 | 5    | Validation | ☐      | Validated README    | Structure verified          |
+
+### Install Guide Operation
+
+| STEP | NAME       | STATUS | REQUIRED OUTPUT       | VERIFICATION                 |
+| ---- | ---------- | ------ | --------------------- | ---------------------------- |
+| 1    | Analysis   | ☐      | Guide type, platforms | Type and platforms confirmed |
+| 2    | Discovery  | ☐      | Requirements, deps    | Project info gathered        |
+| 3    | Structure  | ☐      | Section structure     | Template selected            |
+| 4    | Generation | ☐      | Install guide         | Complete guide written       |
+| 5    | Validation | ☐      | Validated guide       | Structure verified           |
 
 ---
 
@@ -311,34 +419,48 @@ flowchart TD
     START(["/create:folder_readme"]) --> SETUP
 
     subgraph SETUP["UNIFIED SETUP PHASE"]
-        S1[@write check] --> S2[Parse mode suffix] --> S3[Check $ARGUMENTS] --> S4{{"Q0-Q2<br/>(consolidated)"}}
+        S1[@write check] --> S2[Detect operation] --> S3[Parse mode suffix]
+        S3 --> S4{{"Consolidated prompt<br/>(only missing fields)"}}
         S4 --> S5[Parse response]
     end
 
     SETUP --> WRITE_CHECK{@write<br/>agent?}
     WRITE_CHECK -->|No| BLOCK[/"⛔ HARD BLOCK<br/>Restart with @write"/]
     BLOCK --> END_FAIL([End - User Action Required])
-    WRITE_CHECK -->|Yes| README_CHECK{README<br/>exists?}
-    README_CHECK -->|Yes| CONFLICT[/"Q3: Overwrite?<br/>(A-D options)"/]
-    README_CHECK -->|No| WORKFLOW
-    CONFLICT --> WAIT_Q3{{Wait for User}}
-    WAIT_Q3 --> WORKFLOW
+    WRITE_CHECK -->|Yes| OP_CHECK{Operation?}
 
-    subgraph WORKFLOW["Steps 1-5: README Creation"]
-        W1[Step 1: Analysis<br/>Confirm type + path]
-        W2[Step 2: Discovery<br/>Gather project info]
-        W3[Step 3: Structure<br/>Select template]
-        W4[Step 4: Generation<br/>Write README.md]
-        W5[Step 5: Validation<br/>Verify structure]
+    OP_CHECK -->|readme| README_CHECK{README<br/>exists?}
+    OP_CHECK -->|install| INSTALL_CHECK{Guide<br/>exists?}
 
-        W1 --> W2 --> W3 --> W4 --> W5
-        W5 --> DONE([/"✅ README Complete"/])
+    README_CHECK -->|Yes| R_CONFLICT[/"Overwrite?<br/>(A-D options)"/]
+    README_CHECK -->|No| R_WORKFLOW
+    R_CONFLICT --> R_WAIT{{Wait for User}}
+    R_WAIT --> R_WORKFLOW
+
+    INSTALL_CHECK -->|Yes| I_CONFLICT[/"Overwrite?<br/>(E-G options)"/]
+    INSTALL_CHECK -->|No| I_WORKFLOW
+    I_CONFLICT --> I_WAIT{{Wait for User}}
+    I_WAIT --> I_WORKFLOW
+
+    subgraph R_WORKFLOW["README: Steps 1-5"]
+        RW1[Step 1: Analysis] --> RW2[Step 2: Discovery]
+        RW2 --> RW3[Step 3: Structure] --> RW4[Step 4: Generation]
+        RW4 --> RW5[Step 5: Validation]
     end
 
-    class WRITE_CHECK,README_CHECK gate
+    subgraph I_WORKFLOW["Install Guide: Steps 1-5"]
+        IW1[Step 1: Analysis] --> IW2[Step 2: Discovery]
+        IW2 --> IW3[Step 3: Structure] --> IW4[Step 4: Generation]
+        IW4 --> IW5[Step 5: Validation]
+    end
+
+    R_WORKFLOW --> DONE([/"✅ Documentation Complete"/])
+    I_WORKFLOW --> DONE
+
+    class WRITE_CHECK,OP_CHECK,README_CHECK,INSTALL_CHECK gate
     class DONE verify
-    class S1,S2,S3,S5,W1,W2,W3,W4,W5 phase
-    class S4,WAIT_Q3 wait
+    class S1,S2,S3,S5,RW1,RW2,RW3,RW4,RW5,IW1,IW2,IW3,IW4,IW5 phase
+    class S4,R_WAIT,I_WAIT wait
 ```
 
 ---
@@ -346,38 +468,48 @@ flowchart TD
 ## CRITICAL ENFORCEMENT RULES
 
 ```
-STEP 2 (Discovery) REQUIREMENTS:
+README STEP 2 (Discovery) REQUIREMENTS:
 ├─ MUST gather project information before writing
 ├─ MUST identify key features and structure
 ├─ MUST determine appropriate sections for type
 └─ MUST NOT proceed without content to document
 
-STEP 4 (Generation) REQUIREMENTS:
+README STEP 4 (Generation) REQUIREMENTS:
 ├─ MUST include title + tagline
 ├─ MUST include TABLE OF CONTENTS
 ├─ MUST use numbered sections
 ├─ MUST include tables for structured data
 └─ MUST NOT leave placeholder content
 
-STEP 5 (Validation) REQUIREMENTS:
+README STEP 5 (Validation) REQUIREMENTS:
 ├─ MUST verify all sections are linked in TOC
 ├─ MUST check no placeholders remain
 ├─ MUST validate horizontal rules present
 └─ MUST NOT claim "complete" without structure check
+
+INSTALL GUIDE REQUIREMENTS:
+├─ MUST include AI-First copy-paste prompt
+├─ MUST include platform-specific prerequisites
+├─ MUST include step-by-step commands
+├─ MUST include troubleshooting section
+└─ MUST NOT leave untested commands
 ```
 
 ---
 
-## 1. PURPOSE
+## 2. PURPOSE
 
-Create a comprehensive README.md following the documentation patterns from SpecKit, Memory System, and Code Environment READMEs. The README will use numbered sections, table of contents, tables for data, and proper progressive disclosure.
+Create comprehensive documentation following sk-doc quality standards:
+
+- **README operation**: AI-optimized README.md with proper structure, table of contents, and comprehensive documentation following the patterns from SpecKit, Memory System, and Code Environment READMEs.
+- **Install guide operation**: AI-first installation guide with clear prerequisites, step-by-step instructions, copy-paste AI prompt, and thorough troubleshooting.
 
 ---
 
-## 2. CONTRACT
+## 3. CONTRACT
 
-**Inputs:** `$ARGUMENTS` — Target path with optional --type flag (project|component|feature|skill)
-**Outputs:** README.md file at target path + `STATUS=<OK|FAIL|CANCELLED>`
+**Inputs:** `$ARGUMENTS` — Operation + target with optional flags
+**Outputs:** Documentation file at target path + `STATUS=<OK|FAIL|CANCELLED>`
 
 ### User Input
 
@@ -385,9 +517,17 @@ Create a comprehensive README.md following the documentation patterns from SpecK
 $ARGUMENTS
 ```
 
+### Status Patterns
+
+- Success: `STATUS=OK PATH=<output-file>`
+- Failure: `STATUS=FAIL ERROR="<reason>"`
+- Cancelled: `STATUS=CANCELLED ACTION=cancelled`
+
 ---
 
-## 3. REFERENCE (See YAML for Details)
+## 4. REFERENCE (See YAML for Details)
+
+### README Operation
 
 | Section           | Location in YAML      |
 | ----------------- | --------------------- |
@@ -400,64 +540,102 @@ $ARGUMENTS
 **Reference READMEs:**
 - `.opencode/skill/system-spec-kit/README.md` (SpecKit + Memory pattern)
 
+### Install Guide Operation
+
+| Section             | Location in YAML                |
+| ------------------- | ------------------------------- |
+| Type Prefixes       | `notes.type_prefix_conventions` |
+| Required Sections   | `notes.required_sections`       |
+| AI-First Philosophy | `notes.ai_first_philosophy`     |
+| Failure Recovery    | `failure_recovery`              |
+| Completion Report   | `completion_report_template`    |
+
+**Reference Guides:**
+- `.opencode/install_guides/MCP - Code Mode.md`
+- `.opencode/install_guides/MCP - Spec Kit Memory.md`
+- `.opencode/install_guides/MCP - Chrome Dev Tools.md`
+
 ---
 
-## 4. EXAMPLES
+## 5. EXAMPLES
 
-**Example 1: Project README**
+### README Examples
+
+**Project README:**
 ```
 /create:folder_readme ./ --type project
 ```
 → Creates comprehensive project README at root
 
-**Example 2: Skill README**
+**Skill README:**
 ```
 /create:folder_readme .opencode/skill/my-skill --type skill
 ```
 → Creates skill documentation with triggers, commands, MCP tools
 
-**Example 3: Component README**
+**Component README:**
 ```
 /create:folder_readme ./src/auth --type component
 ```
 → Creates component README with API, usage, integration
 
-**Example 4: Auto mode (no prompts)**
+**Auto mode (no prompts):**
 ```
 /create:folder_readme ./ --type project :auto
 ```
 → Creates README without approval prompts, only stops for errors
 
-**Example 5: Confirm mode (step-by-step approval)**
+**Confirm mode (step-by-step approval):**
 ```
 /create:folder_readme .opencode/skill/my-skill --type skill :confirm
 ```
 → Pauses at each step for user confirmation
 
+### Install Guide Examples
+
+**MCP Server Guide:**
+```
+/create:folder_readme install semantic-search-mcp
+```
+→ Creates `install_guides/MCP - Semantic Search.md`
+
+**CLI Tool Guide:**
+```
+/create:folder_readme install chrome-devtools-cli --platforms macos,linux
+```
+→ Creates `install_guides/CLI - Chrome DevTools.md`
+
+**Auto mode:**
+```
+/create:folder_readme install semantic-search-mcp :auto
+```
+→ Creates install guide without approval prompts
+
 ---
 
-## 5. COMMAND CHAIN
+## 6. COMMAND CHAIN
 
 This command creates standalone documentation:
 
 ```
-/create:folder_readme → [Verify README]
+/create:folder_readme → [Verify output]
 ```
 
 **Related commands:**
-- Create install guide: `/create:install_guide [project]`
+- `/create:sk-skill` — Unified skill creation/update workflows
 
 ---
 
-## 6. NEXT STEPS
+## 7. NEXT STEPS
 
-After README creation completes, suggest relevant next steps:
+After documentation creation completes, suggest relevant next steps:
 
-| Condition             | Suggested Command                 | Reason                         |
-| --------------------- | --------------------------------- | ------------------------------ |
-| README created        | Review and verify links work      | Confirm TOC links correctly    |
-| Need install guide    | `/create:install_guide [project]` | Add installation documentation |
-| Create another README | `/create:folder_readme [path]`    | Document related component     |
-| Want to save context  | `/memory:save [spec-folder-path]` | Preserve documentation context |
+| Condition               | Suggested Command                  | Reason                         |
+| ----------------------- | ---------------------------------- | ------------------------------ |
+| README created          | Review and verify links work       | Confirm TOC links correctly    |
+| Install guide created   | Test AI-First prompt               | Verify installation works      |
+| Need the other type     | `/create:folder_readme [op] ...`   | Create companion documentation |
+| Create another document | `/create:folder_readme [op] ...`   | Document related component     |
+| Want to save context    | `/memory:save [spec-folder-path]`  | Preserve documentation context |
 
 **ALWAYS** end with: "What would you like to do next?"

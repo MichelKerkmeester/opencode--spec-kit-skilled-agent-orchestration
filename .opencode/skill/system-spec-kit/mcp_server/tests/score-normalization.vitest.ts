@@ -28,8 +28,8 @@ import {
   fuseResultsCrossVariant,
   isScoreNormalizationEnabled,
   normalizeRrfScores,
-} from '../lib/search/rrf-fusion';
-import type { FusionResult, RankedList } from '../lib/search/rrf-fusion';
+} from '../../shared/algorithms/rrf-fusion';
+import type { FusionResult, RankedList } from '../../shared/algorithms/rrf-fusion';
 import {
   normalizeCompositeScores,
   isCompositeNormalizationEnabled,

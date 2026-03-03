@@ -1,0 +1,555 @@
+// ---------------------------------------------------------------
+// MODULE: Quality Loop (T008)
+// ---------------------------------------------------------------
+
+import { initEvalDb } from '../lib/eval/eval-db';
+
+interface QualityScoreBreakdown {
+  triggers: number;
+  anchors: number;
+  budget: number;
+  coherence: number;
+}
+
+interface QualityScore {
+  total: number;
+  breakdown: QualityScoreBreakdown;
+  issues: string[];
+}
+
+interface QualityLoopResult {
+  passed: boolean;
+  score: QualityScore;
+  attempts: number;
+  fixes: string[];
+  rejected: boolean;
+  rejectionReason?: string;
+  /** Content after auto-fix mutations (present only when fixes were applied) */
+  fixedContent?: string;
+}
+
+const QUALITY_WEIGHTS = {
+  triggers: 0.25,
+  anchors: 0.30,
+  budget: 0.20,
+  coherence: 0.25,
+} as const;
+
+/** Rough token-to-char ratio: 1 token ~ 4 chars */
+const DEFAULT_TOKEN_BUDGET = 2000;
+const CHARS_PER_TOKEN = 4;
+const DEFAULT_CHAR_BUDGET = DEFAULT_TOKEN_BUDGET * CHARS_PER_TOKEN;
+
+function isQualityLoopEnabled(): boolean {
+  return process.env.SPECKIT_QUALITY_LOOP?.toLowerCase() === 'true';
+}
+
+/**
+ * Compute trigger phrase quality sub-score.
+ *
+ * Evaluates whether the memory metadata declares enough trigger phrases for
+ * reliable retrieval via the `memory_match_triggers` tool. The scoring
+ * thresholds are:
+ *   - 0 phrases  → score 0.0  (memory will never surface via trigger matching)
+ *   - 1–3 phrases → score 0.5  (below the recommended minimum of four)
+ *   - 4+ phrases  → score 1.0  (meets or exceeds the recommended minimum)
+ *
+ * @param metadata - Raw metadata record extracted from the memory file. Expected
+ *   to contain a `triggerPhrases` key whose value is an array of strings.
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range [0, 1].
+ *   - `issues` — Human-readable issue strings when the count is below 4.
+ */
+function scoreTriggerPhrases(metadata: Record<string, unknown>): { score: number; issues: string[] } {
+  const triggers = Array.isArray(metadata.triggerPhrases) ? metadata.triggerPhrases : [];
+  const count = triggers.length;
+  const issues: string[] = [];
+
+  if (count === 0) {
+    issues.push('No trigger phrases found');
+    return { score: 0, issues };
+  }
+  if (count < 4) {
+    issues.push(`Only ${count} trigger phrase(s) — 4+ recommended`);
+    return { score: 0.5, issues };
+  }
+  return { score: 1.0, issues };
+}
+
+/**
+ * Compute anchor format quality sub-score.
+ *
+ * Scans `content` for HTML comment–style ANCHOR tags in the forms
+ * `<!-- ANCHOR: name -->` and `<!-- /ANCHOR: name -->`, then verifies that
+ * every opening tag has a matching closing tag and vice-versa.
+ *
+ * Scoring rules:
+ *   - No anchors present at all → score 0.5 (neutral; anchors are optional)
+ *   - All anchors properly paired  → score 1.0
+ *   - Mismatches present → proportional deduction: `1 - brokenCount / totalUniqueNames`
+ *     (minimum 0.0)
+ *
+ * @param content - Full text content of the memory file to inspect.
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range [0, 1].
+ *   - `issues` — Descriptions of any unclosed or unopened ANCHOR tags found.
+ */
+function scoreAnchorFormat(content: string): { score: number; issues: string[] } {
+  const issues: string[] = [];
+
+  // Match opening anchors: <!-- ANCHOR: name -->
+  const openPattern = /<!--\s*ANCHOR:\s*([\w-]+)\s*-->/g;
+  // Match closing anchors: <!-- /ANCHOR: name -->
+  const closePattern = /<!--\s*\/ANCHOR:\s*([\w-]+)\s*-->/g;
+
+  const openAnchors: string[] = [];
+  const closeAnchors: string[] = [];
+
+  let match: RegExpExecArray | null;
+  while ((match = openPattern.exec(content)) !== null) {
+    openAnchors.push(match[1]);
+  }
+  while ((match = closePattern.exec(content)) !== null) {
+    closeAnchors.push(match[1]);
+  }
+
+  // No anchors at all — neutral score
+  if (openAnchors.length === 0 && closeAnchors.length === 0) {
+    return { score: 0.5, issues: [] };
+  }
+
+  // Check for unclosed anchors
+  const unclosed = openAnchors.filter(name => !closeAnchors.includes(name));
+  const unopened = closeAnchors.filter(name => !openAnchors.includes(name));
+
+  if (unclosed.length > 0) {
+    issues.push(`Unclosed ANCHOR tag(s): ${unclosed.join(', ')}`);
+  }
+  if (unopened.length > 0) {
+    issues.push(`Closing ANCHOR without opening: ${unopened.join(', ')}`);
+  }
+
+  if (issues.length === 0) {
+    return { score: 1.0, issues };
+  }
+
+  // Proportional: correct pairs / total unique anchors
+  const allNames = new Set([...openAnchors, ...closeAnchors]);
+  const brokenCount = unclosed.length + unopened.length;
+  const score = Math.max(0, 1 - brokenCount / allNames.size);
+  return { score, issues };
+}
+
+/**
+ * Compute token budget quality sub-score.
+ *
+ * Approximates token count from character length using the constant ratio
+ * `CHARS_PER_TOKEN` (4 chars ≈ 1 token) and compares the result against
+ * `charBudget`. Memories that exceed the budget are penalised proportionally
+ * so that callers can surface oversized files before indexing.
+ *
+ * Scoring rules:
+ *   - `content.length <= charBudget` → score 1.0 (within budget)
+ *   - `content.length > charBudget`  → score `charBudget / content.length`
+ *     (always > 0 because `charBudget > 0`)
+ *
+ * @param content    - Full text content of the memory file.
+ * @param charBudget - Maximum allowed character count before penalisation.
+ *   Defaults to `DEFAULT_CHAR_BUDGET` (`DEFAULT_TOKEN_BUDGET * CHARS_PER_TOKEN`,
+ *   i.e. 2000 tokens × 4 = 8000 characters).
+ * @returns An object with:
+ *   - `score`  — Sub-score in the range (0, 1].
+ *   - `issues` — A single message describing the overage when the budget is
+ *     exceeded, including the approximate token count.
+ */
+function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUDGET): { score: number; issues: string[] } {
+  const issues: string[] = [];
+  const charCount = content.length;
+
+  if (charCount <= charBudget) {
+    return { score: 1.0, issues };
+  }
+
+  const ratio = charBudget / charCount;
+  issues.push(`Content exceeds token budget: ~${Math.ceil(charCount / CHARS_PER_TOKEN)} tokens (budget: ${DEFAULT_TOKEN_BUDGET})`);
+  return { score: Math.max(0, ratio), issues };
+}
+
+/**
+ * Compute coherence quality sub-score.
+ *
+ * Applies four additive structural checks, each worth 0.25 points, to
+ * assess whether `content` represents a well-formed memory document:
+ *
+ *   1. Non-empty (trimmed length > 0)        → +0.25
+ *   2. Minimal length (> 50 chars)            → +0.25
+ *   3. Has at least one Markdown heading
+ *      (`# …`, `## …`, or `### …`)           → +0.25
+ *   4. Substantial content (> 200 chars)      → +0.25
+ *
+ * Each failing check contributes a descriptive string to `issues`.
+ * An entirely empty content string short-circuits to score 0.0.
+ *
+ * @param content - Full text content of the memory file.
+ * @returns An object with:
+ *   - `score`  — Additive sub-score in the range [0, 1] (multiples of 0.25).
+ *   - `issues` — One entry per failed structural check.
+ */
+function scoreCoherence(content: string): { score: number; issues: string[] } {
+  const issues: string[] = [];
+  let score = 0;
+
+  if (!content || content.trim().length === 0) {
+    issues.push('Content is empty');
+    return { score: 0, issues };
+  }
+  score += 0.25; // non-empty
+
+  if (content.length > 50) {
+    score += 0.25; // >50 chars
+  } else {
+    issues.push('Content is very short (<50 chars)');
+  }
+
+  if (/^#{1,3}\s+.+/m.test(content)) {
+    score += 0.25; // has markdown headings
+  } else {
+    issues.push('No section headings found');
+  }
+
+  if (content.length > 200) {
+    score += 0.25; // substantial content
+  } else {
+    issues.push('Content lacks substance (<200 chars)');
+  }
+
+  return { score, issues };
+}
+
+/**
+ * Compute composite quality score for a memory file.
+ *
+ * Aggregates the four dimension sub-scores into a single weighted total using
+ * the weights defined in `QUALITY_WEIGHTS`:
+ *   - triggers  × 0.25
+ *   - anchors   × 0.30
+ *   - budget    × 0.20
+ *   - coherence × 0.25
+ *
+ * The total is rounded to three decimal places before being returned.
+ *
+ * @param content  - Full text content of the memory file.
+ * @param metadata - Raw metadata record extracted from the memory file. Passed
+ *   through to `scoreTriggerPhrases`; must contain a `triggerPhrases` key
+ *   whose value is an array of strings.
+ * @returns A `QualityScore` object containing:
+ *   - `total`     — Weighted composite score in the range [0, 1], rounded to
+ *     three decimal places.
+ *   - `breakdown` — Per-dimension raw sub-scores (`triggers`, `anchors`,
+ *     `budget`, `coherence`), each in [0, 1].
+ *   - `issues`    — Concatenated issue strings from all four dimension scorers,
+ *     in order: triggers → anchors → budget → coherence.
+ */
+function computeMemoryQualityScore(
+  content: string,
+  metadata: Record<string, unknown>,
+): QualityScore {
+  const triggerResult = scoreTriggerPhrases(metadata);
+  const anchorResult = scoreAnchorFormat(content);
+  const budgetResult = scoreTokenBudget(content);
+  const coherenceResult = scoreCoherence(content);
+
+  const total =
+    triggerResult.score * QUALITY_WEIGHTS.triggers +
+    anchorResult.score * QUALITY_WEIGHTS.anchors +
+    budgetResult.score * QUALITY_WEIGHTS.budget +
+    coherenceResult.score * QUALITY_WEIGHTS.coherence;
+
+  return {
+    total: Math.round(total * 1000) / 1000, // 3 decimal places
+    breakdown: {
+      triggers: triggerResult.score,
+      anchors: anchorResult.score,
+      budget: budgetResult.score,
+      coherence: coherenceResult.score,
+    },
+    issues: [
+      ...triggerResult.issues,
+      ...anchorResult.issues,
+      ...budgetResult.issues,
+      ...coherenceResult.issues,
+    ],
+  };
+}
+
+/**
+ * Attempt automatic fixes for quality issues.
+ *
+ * Strategies:
+ * - Re-extract trigger phrases from content headings/title
+ * - Close unclosed ANCHOR tags
+ * - Trim content to token budget
+ *
+ * Returns the (possibly modified) content, metadata, and list of applied fixes.
+ */
+function attemptAutoFix(
+  content: string,
+  metadata: Record<string, unknown>,
+  issues: string[],
+): { content: string; metadata: Record<string, unknown>; fixed: string[] } {
+  let fixedContent = content;
+  const fixedMetadata = { ...metadata };
+  const fixed: string[] = [];
+
+  // Fix 1: Re-extract trigger phrases if missing/insufficient
+  const hasTriggerIssue = issues.some(i => /trigger phrase/i.test(i));
+  if (hasTriggerIssue) {
+    const existingTriggers = Array.isArray(fixedMetadata.triggerPhrases)
+      ? (fixedMetadata.triggerPhrases as string[])
+      : [];
+
+    const extracted = extractTriggersFromContent(fixedContent, fixedMetadata.title as string | undefined);
+    if (extracted.length > existingTriggers.length) {
+      fixedMetadata.triggerPhrases = extracted;
+      fixed.push(`Re-extracted ${extracted.length} trigger phrases from content`);
+    }
+  }
+
+  // Fix 2: Close unclosed ANCHOR tags
+  const hasAnchorIssue = issues.some(i => /unclosed anchor/i.test(i));
+  if (hasAnchorIssue) {
+    fixedContent = normalizeAnchors(fixedContent);
+    fixed.push('Normalized unclosed ANCHOR tags');
+  }
+
+  // Fix 3: Trim content to budget
+  const hasBudgetIssue = issues.some(i => /token budget/i.test(i));
+  if (hasBudgetIssue) {
+    if (fixedContent.length > DEFAULT_CHAR_BUDGET) {
+      // Trim to budget, preserving the last newline boundary
+      const trimmed = fixedContent.substring(0, DEFAULT_CHAR_BUDGET);
+      const lastNewline = trimmed.lastIndexOf('\n');
+      fixedContent = lastNewline > 0 ? trimmed.substring(0, lastNewline) : trimmed;
+      fixed.push(`Trimmed content from ${content.length} to ${fixedContent.length} chars`);
+    }
+  }
+
+  return { content: fixedContent, metadata: fixedMetadata, fixed };
+}
+
+/**
+ * Extract trigger phrases from content by scanning headings and the title.
+ */
+function extractTriggersFromContent(content: string, title?: string): string[] {
+  const triggers: string[] = [];
+
+  // Add title as a trigger if present
+  if (title && title.trim().length > 0) {
+    triggers.push(title.trim().toLowerCase());
+  }
+
+  // Extract markdown headings as triggers
+  const headingPattern = /^#{1,3}\s+(.+)$/gm;
+  let match: RegExpExecArray | null;
+  while ((match = headingPattern.exec(content)) !== null) {
+    const heading = match[1].trim().toLowerCase();
+    if (heading.length > 3 && heading.length < 80 && !triggers.includes(heading)) {
+      triggers.push(heading);
+    }
+  }
+
+  return triggers.slice(0, 8); // Cap at 8 triggers
+}
+
+/**
+ * Normalize ANCHOR tags by closing any unclosed ones.
+ * Appends <!-- /ANCHOR: name --> at the end of content for unclosed anchors.
+ */
+function normalizeAnchors(content: string): string {
+  const openPattern = /<!--\s*ANCHOR:\s*([\w-]+)\s*-->/g;
+  const closePattern = /<!--\s*\/ANCHOR:\s*([\w-]+)\s*-->/g;
+
+  const openAnchors: string[] = [];
+  const closeAnchors: string[] = [];
+
+  let match: RegExpExecArray | null;
+  while ((match = openPattern.exec(content)) !== null) {
+    openAnchors.push(match[1]);
+  }
+  while ((match = closePattern.exec(content)) !== null) {
+    closeAnchors.push(match[1]);
+  }
+
+  const unclosed = openAnchors.filter(name => !closeAnchors.includes(name));
+
+  if (unclosed.length === 0) return content;
+
+  // Append closing tags for unclosed anchors
+  let result = content;
+  for (const name of unclosed) {
+    result += `\n<!-- /ANCHOR: ${name} -->`;
+  }
+  return result;
+}
+
+/**
+ * Run the verify-fix-verify quality loop on memory content.
+ *
+ * Gated behind SPECKIT_QUALITY_LOOP env var.
+ * Computes quality score, attempts auto-fix if below threshold,
+ * rejects after maxRetries failures.
+ *
+ * @param content - Memory file content
+ * @param metadata - Parsed memory metadata (must include triggerPhrases)
+ * @param options - threshold (default 0.6), maxRetries (default 2)
+ * @returns QualityLoopResult with pass/fail, scores, fixes, rejection info
+ */
+function runQualityLoop(
+  content: string,
+  metadata: Record<string, unknown>,
+  options?: { maxRetries?: number; threshold?: number },
+): QualityLoopResult {
+  const threshold = options?.threshold ?? 0.6;
+  const maxRetries = options?.maxRetries ?? 2;
+
+  // Feature gate check
+  if (!isQualityLoopEnabled()) {
+    // When disabled, compute score but always pass
+    const score = computeMemoryQualityScore(content, metadata);
+    return {
+      passed: true,
+      score,
+      attempts: 1,
+      fixes: [],
+      rejected: false,
+    };
+  }
+
+  // First evaluation
+  let currentContent = content;
+  let currentMetadata = { ...metadata };
+  let score = computeMemoryQualityScore(currentContent, currentMetadata);
+  const allFixes: string[] = [];
+
+  if (score.total >= threshold) {
+    logQualityMetrics(score, 1, true, false);
+    return {
+      passed: true,
+      score,
+      attempts: 1,
+      fixes: [],
+      rejected: false,
+    };
+  }
+
+  // Auto-fix loop
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    const fixResult = attemptAutoFix(currentContent, currentMetadata, score.issues);
+    currentContent = fixResult.content;
+    currentMetadata = fixResult.metadata;
+    allFixes.push(...fixResult.fixed);
+
+    // Re-evaluate after fix
+    score = computeMemoryQualityScore(currentContent, currentMetadata);
+
+    if (score.total >= threshold) {
+      logQualityMetrics(score, attempt + 1, true, false);
+      return {
+        passed: true,
+        score,
+        attempts: attempt + 1,
+        fixes: allFixes,
+        rejected: false,
+        // AI-WHY: Return mutated content so caller can persist it and recompute content_hash
+        fixedContent: allFixes.length > 0 ? currentContent : undefined,
+      };
+    }
+
+    // If no fixes were applied, further retries won't help
+    if (fixResult.fixed.length === 0) {
+      break;
+    }
+  }
+
+  // Rejected after all retries
+  const rejectionReason = `Quality score ${score.total.toFixed(3)} below threshold ${threshold} after ${maxRetries} auto-fix attempts. Issues: ${score.issues.join('; ')}`;
+
+  logQualityMetrics(score, maxRetries + 1, false, true);
+
+  return {
+    passed: false,
+    score,
+    attempts: maxRetries + 1,
+    fixes: allFixes,
+    rejected: true,
+    rejectionReason,
+    // AI-WHY: Return mutated content even on rejection so callers that soft-reject can persist
+    fixedContent: allFixes.length > 0 ? currentContent : undefined,
+  };
+}
+
+/**
+ * Log quality metrics to the eval infrastructure (eval_metric_snapshots table).
+ * Fail-safe: never throws. No-op when eval logging is disabled.
+ */
+function logQualityMetrics(
+  score: QualityScore,
+  attempts: number,
+  passed: boolean,
+  rejected: boolean,
+): void {
+  try {
+    // Use eval logger's feature flag check
+    if (process.env.SPECKIT_EVAL_LOGGING?.toLowerCase() !== 'true') return;
+
+    const db = initEvalDb();
+
+    const metadata = JSON.stringify({
+      breakdown: score.breakdown,
+      issues: score.issues,
+      attempts,
+      passed,
+      rejected,
+    });
+
+    db.prepare(`
+      INSERT INTO eval_metric_snapshots
+        (eval_run_id, metric_name, metric_value, channel, query_count, metadata)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      0, // No eval run for quality metrics
+      'memory_quality_score',
+      score.total,
+      'quality_loop',
+      attempts,
+      metadata,
+    );
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn('[quality-loop] logQualityMetrics failed (non-fatal):', msg);
+  }
+}
+
+export {
+  computeMemoryQualityScore,
+  scoreTriggerPhrases,
+  scoreAnchorFormat,
+  scoreTokenBudget,
+  scoreCoherence,
+  attemptAutoFix,
+  extractTriggersFromContent,
+  normalizeAnchors,
+  runQualityLoop,
+  logQualityMetrics,
+  isQualityLoopEnabled,
+  QUALITY_WEIGHTS,
+  DEFAULT_TOKEN_BUDGET,
+  CHARS_PER_TOKEN,
+  DEFAULT_CHAR_BUDGET,
+};
+
+export type {
+  QualityScore,
+  QualityScoreBreakdown,
+  QualityLoopResult,
+};

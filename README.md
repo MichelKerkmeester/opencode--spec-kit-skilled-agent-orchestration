@@ -505,14 +505,13 @@ All support `:auto` and `:confirm` mode suffixes.
 | `/memory:learn`    | Explicit learning capture (`correct` subcommand for mistakes) |
 | `/memory:manage`   | Database ops: stats, health, cleanup, checkpoints             |
 
-### create/ (4 commands)
+### create/ (3 commands)
 
-| Command                   | Purpose                                      |
-| ------------------------- | -------------------------------------------- |
-| `/create:sk-skill`        | Unified skill workflows (create/update/file) |
-| `/create:agent`           | Scaffold a new agent definition              |
-| `/create:folder_readme`   | AI-optimized README.md with proper structure |
-| `/create:install_guide`   | Generate a 5-phase install guide             |
+| Command                   | Purpose                                       |
+| ------------------------- | --------------------------------------------- |
+| `/create:sk-skill`        | Unified skill workflows (create/update/file)  |
+| `/create:agent`           | Scaffold a new agent definition               |
+| `/create:folder_readme`   | Unified README + install guide creation        |
 
 ### Utility (1 command)
 

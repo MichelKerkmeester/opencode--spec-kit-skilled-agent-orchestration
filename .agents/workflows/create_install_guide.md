@@ -1,1 +1,0 @@
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/command/create/install_guide.md

@@ -41,7 +41,7 @@ import {
   extractFileChanges,
 } from '../lib/semantic-summarizer';
 import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
-import * as retryManager from '../lib/retry-manager';
+import * as retryManager from '@spec-kit/mcp-server/lib/providers/retry-manager';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';

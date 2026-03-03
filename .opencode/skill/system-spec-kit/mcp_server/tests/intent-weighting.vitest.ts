@@ -15,10 +15,10 @@ import {
   INTENT_WEIGHT_PROFILES,
   DEFAULT_WEIGHTS,
   FEATURE_FLAG,
-} from '../lib/search/adaptive-fusion';
-import { fuseResultsMulti } from '../lib/search/rrf-fusion';
-import type { RrfItem, FusionResult, RankedList } from '../lib/search/rrf-fusion';
-import type { FusionWeights } from '../lib/search/adaptive-fusion';
+} from '../../shared/algorithms/adaptive-fusion';
+import { fuseResultsMulti } from '../../shared/algorithms/rrf-fusion';
+import type { RrfItem, FusionResult, RankedList } from '../../shared/algorithms/rrf-fusion';
+import type { FusionWeights } from '../../shared/algorithms/adaptive-fusion';
 
 /* ---------------------------------------------------------------
    HELPERS

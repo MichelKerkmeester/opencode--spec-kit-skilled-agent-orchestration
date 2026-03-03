@@ -22,7 +22,7 @@ vi.mock('../lib/search/bm25-index', () => ({
 }));
 
 // Mock the RRF fusion so we can control its output.
-vi.mock('../lib/search/rrf-fusion', () => ({
+vi.mock('../../shared/algorithms/rrf-fusion', () => ({
   fuseResultsMulti: vi.fn((lists) => {
     // Flatten all results from all lists, deduplicate by id, return sorted.
     const seen = new Map();
@@ -38,7 +38,7 @@ vi.mock('../lib/search/rrf-fusion', () => ({
 }));
 
 // Mock adaptive fusion to return fixed weights.
-vi.mock('../lib/search/adaptive-fusion', () => ({
+vi.mock('../../shared/algorithms/adaptive-fusion', () => ({
   hybridAdaptiveFuse: vi.fn(() => ({
     results: [],
     weights: { semanticWeight: 1.0, keywordWeight: 0.8 },
@@ -142,7 +142,7 @@ describe('Suite 1 — Module wiring: all exports are accessible', () => {
   });
 
   it('mmr-reranker exports: applyMMR, computeCosine', async () => {
-    const mod = await import('../lib/search/mmr-reranker');
+    const mod = await import('../../shared/algorithms/mmr-reranker');
     expect(typeof mod.applyMMR).toBe('function');
     expect(typeof mod.computeCosine).toBe('function');
   });

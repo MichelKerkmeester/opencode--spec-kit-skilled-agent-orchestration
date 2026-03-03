@@ -175,8 +175,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 
 - `/create:agent`: Generate new agent definition file
 - `/create:sk-skill`: Unified skill command (full-create, full-update, reference-only, asset-only)
-- `/create:folder_readme`: Generate README for any directory
-- `/create:install_guide`: Create installation/setup guide
+- `/create:folder_readme`: Unified documentation command (`readme` and `install` operations)
 
 ### Utility Commands
 

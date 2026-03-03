@@ -3,10 +3,8 @@
 // ---------------------------------------------------------------
 // Local
 import { fuseResultsMulti } from './rrf-fusion';
-import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
 // Type-only
-import type { IntentType } from './intent-classifier';
 import type { RrfItem, FusionResult, RankedList } from './rrf-fusion';
 
 /* --- 1. INTERFACES --- */
@@ -79,6 +77,32 @@ const DOC_TYPE_WEIGHT_SHIFT = 0.1;
 /** Scaling factor applied to recency freshness before adding to RRF score. */
 const RECENCY_BOOST_SCALE = 0.1;
 
+function isFeatureEnabled(flagName: string, identity?: string): boolean {
+  const rawFlag = process.env[flagName]?.toLowerCase();
+  if (rawFlag === 'false') return false;
+
+  const flagEnabled = rawFlag === undefined || rawFlag.trim().length === 0 || rawFlag === 'true';
+  if (!flagEnabled) return false;
+
+  const rawRollout = process.env.SPECKIT_ROLLOUT_PERCENT;
+  const rolloutPercent = typeof rawRollout === 'string' && rawRollout.trim().length > 0
+    ? Number.parseInt(rawRollout, 10)
+    : 100;
+  const clampedRollout = Number.isFinite(rolloutPercent)
+    ? Math.max(0, Math.min(100, rolloutPercent))
+    : 100;
+
+  if (clampedRollout >= 100) return true;
+  if (clampedRollout <= 0) return false;
+  if (!identity || identity.trim().length === 0) return true;
+
+  let hash = 0;
+  for (let i = 0; i < identity.length; i += 1) {
+    hash = (hash * 31 + identity.charCodeAt(i)) >>> 0;
+  }
+  return (hash % 100) < clampedRollout;
+}
+
 /**
  * Check whether adaptive fusion is enabled via the feature flag and rollout policy.
  *
@@ -101,7 +125,7 @@ export function isAdaptiveFusionEnabled(identity?: string): boolean {
  * @returns Computed fusion weights
  */
 export function getAdaptiveWeights(
-  intent: IntentType | string,
+  intent: string,
   documentType?: string
 ): FusionWeights {
   const base = INTENT_WEIGHT_PROFILES[intent] ?? { ...DEFAULT_WEIGHTS };

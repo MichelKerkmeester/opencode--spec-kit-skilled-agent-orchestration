@@ -1,0 +1,1263 @@
+// ---------------------------------------------------------------
+// MODULE: Vector Index Queries — Read operations + search
+// ---------------------------------------------------------------
+// Split from vector-index-store.ts — contains ALL query/search functions,
+// content extraction, ranking, stats, cleanup, and integrity checks.
+
+import Database from 'better-sqlite3';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as crypto from 'crypto';
+import { formatAgeString as format_age_string } from '../utils/format-helpers';
+import { createLogger } from '../utils/logger';
+import * as embeddingsProvider from '../providers/embeddings';
+import {
+  to_embedding_buffer,
+  parse_trigger_phrases,
+  get_error_message,
+} from './vector-index-types';
+import {
+  initialize_db,
+  get_embedding_dim,
+  get_constitutional_memories,
+  init_prepared_statements,
+  validate_file_path_local,
+  safe_read_file_async,
+  safe_parse_json,
+  search_weights,
+  sqlite_vec_available as get_sqlite_vec_available,
+} from './vector-index-store';
+
+const logger = createLogger('VectorIndex');
+
+type EmbeddingInput = Float32Array | number[];
+type MemoryRow = {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title?: string | null;
+  trigger_phrases?: string | string[];
+  importance_tier?: string;
+  importance_weight?: number;
+  created_at?: string;
+  access_count?: number;
+  last_accessed?: number;
+  confidence?: number;
+  keyword_score?: number;
+  similarity?: number;
+  avg_similarity?: number;
+  concept_similarities?: number[];
+  smartScore?: number;
+  relationSimilarity?: number;
+  isConstitutional?: boolean;
+  [key: string]: unknown;
+};
+type VectorSearchOptions = {
+  limit?: number;
+  specFolder?: string | null;
+  minSimilarity?: number;
+  useDecay?: boolean;
+  tier?: string | null;
+  contextType?: string | null;
+  includeConstitutional?: boolean;
+  includeArchived?: boolean;
+};
+type EnrichedSearchResult = {
+  rank: number;
+  similarity?: number;
+  avgSimilarity?: number;
+  conceptSimilarities?: number[];
+  title: string;
+  specFolder: string;
+  filePath: string;
+  date: string | null;
+  tags: string[];
+  snippet: string;
+  id: number;
+  importanceWeight: number;
+  created_at?: string;
+  access_count?: number;
+  smartScore?: number;
+  spec_folder?: string;
+  searchMethod?: string;
+  isConstitutional: boolean;
+  [key: string]: unknown;
+};
+type RelatedMemoryLink = { id: number; similarity: number };
+type UsageStatsOptions = { sortBy?: string; order?: string; limit?: number };
+type CleanupOptions = {
+  maxAgeDays?: number;
+  maxAccessCount?: number;
+  maxConfidence?: number;
+  limit?: number;
+};
+
+/* ─────────────────────────────────────────────────────────────
+   SIMPLE QUERIES
+────────────────────────────────────────────────────────────────*/
+
+export function get_memory(id: number): MemoryRow | null {
+  const database = initialize_db();
+
+  const stmts = init_prepared_statements(database);
+  const row = stmts.get_by_id.get(id);
+
+  if (row) {
+    row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+    row.isConstitutional = row.importance_tier === 'constitutional';
+  }
+
+  return row || null;
+}
+
+export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
+  const database = initialize_db();
+
+  const rows = database.prepare(`
+    SELECT * FROM memory_index WHERE spec_folder = ? ORDER BY created_at DESC
+  `).all(spec_folder) as MemoryRow[];
+
+  return rows.map((row: MemoryRow) => {
+    row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+    row.isConstitutional = row.importance_tier === 'constitutional';
+    return row;
+  });
+}
+
+export function get_memory_count() {
+  const database = initialize_db();
+  const stmts = init_prepared_statements(database);
+  const result = stmts.count_all.get();
+  return result?.count ?? 0;
+}
+
+export function get_status_counts() {
+  const database = initialize_db();
+
+  const rows = database.prepare(`
+    SELECT embedding_status, COUNT(*) as count
+    FROM memory_index
+    GROUP BY embedding_status
+  `).all();
+
+  const counts = { pending: 0, success: 0, failed: 0, retry: 0 };
+  for (const row of rows as Array<{ embedding_status: keyof typeof counts; count: number }>) {
+    counts[row.embedding_status] = row.count;
+  }
+
+  return counts;
+}
+
+export function get_stats() {
+  const counts = get_status_counts();
+  const total = counts.pending + counts.success + counts.failed + counts.retry;
+
+  return {
+    total,
+    ...counts
+  };
+}
+
+/* ─────────────────────────────────────────────────────────────
+   VECTOR SEARCH
+────────────────────────────────────────────────────────────────*/
+
+export function vector_search(query_embedding: EmbeddingInput, options: VectorSearchOptions = {}): MemoryRow[] {
+  const sqlite_vec = get_sqlite_vec_available();
+  if (!sqlite_vec) {
+    console.warn('[vector-index] Vector search unavailable - sqlite-vec not loaded');
+    return [];
+  }
+
+  const database = initialize_db();
+
+  const {
+    limit = 10,
+    specFolder = null,
+    minSimilarity = 0,
+    useDecay = true,
+    tier = null,
+    contextType = null,
+    includeConstitutional = true,
+    includeArchived = false
+  } = options;
+
+  const query_buffer = to_embedding_buffer(query_embedding);
+  const max_distance = 2 * (1 - minSimilarity / 100);
+
+  // ADR-004: FSRS-preferred decay with half-life fallback
+  const decay_expr = useDecay
+    ? `CASE
+         WHEN m.is_pinned = 1 THEN m.importance_weight
+         WHEN m.last_review IS NOT NULL AND m.review_count > 0 THEN
+           m.importance_weight * POWER(
+             1.0 + (19.0/81.0) * (julianday('now') - julianday(m.last_review)) / COALESCE(NULLIF(m.stability, 0), 1.0),
+             -0.5
+           )
+         ELSE m.importance_weight * POWER(0.5, (julianday('now') - julianday(m.updated_at)) / COALESCE(NULLIF(m.decay_half_life_days, 0), 90.0))
+       END`
+    : 'm.importance_weight';
+
+  let constitutional_results: MemoryRow[] = [];
+
+  if (includeConstitutional && tier !== 'constitutional') {
+    constitutional_results = get_constitutional_memories(database, specFolder, includeArchived);
+  }
+
+  const where_clauses = ['m.embedding_status = \'success\''];
+  const params: unknown[] = [query_buffer];
+
+  where_clauses.push('(m.expires_at IS NULL OR m.expires_at > datetime(\'now\'))');
+
+  if (!includeArchived) {
+    where_clauses.push('(m.is_archived IS NULL OR m.is_archived = 0)');
+  }
+  if (tier === 'deprecated') {
+    where_clauses.push('m.importance_tier = ?');
+    params.push('deprecated');
+  } else if (tier === 'constitutional') {
+    where_clauses.push('m.importance_tier = ?');
+    params.push('constitutional');
+  } else if (tier) {
+    where_clauses.push('m.importance_tier = ?');
+    params.push(tier);
+  } else {
+    where_clauses.push('(m.importance_tier IS NULL OR m.importance_tier NOT IN (\'deprecated\', \'constitutional\'))');
+  }
+
+  if (specFolder) {
+    where_clauses.push('m.spec_folder = ?');
+    params.push(specFolder);
+  }
+
+  if (contextType) {
+    where_clauses.push('m.context_type = ?');
+    params.push(contextType);
+  }
+
+  const adjusted_limit = Math.max(1, limit - constitutional_results.length);
+  params.push(max_distance, adjusted_limit);
+
+  const sql = `
+    SELECT sub.*,
+           ROUND((1 - sub.distance / 2) * 100, 2) as similarity
+    FROM (
+      SELECT m.*, vec_distance_cosine(v.embedding, ?) as distance,
+             ${decay_expr} as effective_importance
+      FROM memory_index m
+      JOIN vec_memories v ON m.id = v.rowid
+      WHERE ${where_clauses.join(' AND ')}
+    ) sub
+    WHERE sub.distance <= ?
+    ORDER BY (sub.distance - (sub.effective_importance * 0.1)) ASC
+    LIMIT ?
+  `;
+
+  const rows = database.prepare(sql).all(...params);
+
+  const regular_results = (rows as MemoryRow[]).map((row: MemoryRow) => {
+    row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+    row.isConstitutional = row.importance_tier === 'constitutional';
+    return row;
+  });
+
+  return [...constitutional_results, ...regular_results];
+}
+
+export function get_constitutional_memories_public(
+  options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {}
+): MemoryRow[] {
+  const database = initialize_db();
+  const { specFolder = null, maxTokens = 2000, includeArchived = false } = options;
+
+  let results = get_constitutional_memories(database, specFolder, includeArchived);
+
+  const TOKENS_PER_MEMORY = 100;
+  const max_count = Math.floor(maxTokens / TOKENS_PER_MEMORY);
+  if (results.length > max_count) {
+    results = results.slice(0, max_count);
+  }
+
+  return results;
+}
+
+export function multi_concept_search(
+  concept_embeddings: EmbeddingInput[],
+  options: { limit?: number; specFolder?: string | null; minSimilarity?: number; includeArchived?: boolean } = {}
+): MemoryRow[] {
+  const sqlite_vec = get_sqlite_vec_available();
+  if (!sqlite_vec) {
+    console.warn('[vector-index] Multi-concept search unavailable - sqlite-vec not loaded');
+    return [];
+  }
+
+  const database = initialize_db();
+
+  const concepts = concept_embeddings;
+  if (!Array.isArray(concepts) || concepts.length < 2 || concepts.length > 5) {
+    throw new Error('Multi-concept search requires 2-5 concepts');
+  }
+
+  const expected_dim = get_embedding_dim();
+  for (const emb of concepts) {
+    if (!emb || emb.length !== expected_dim) {
+      throw new Error(`Invalid embedding dimension: expected ${expected_dim}, got ${emb?.length}`);
+    }
+  }
+
+  const { limit = 10, specFolder = null, minSimilarity = 50, includeArchived = false } = options;
+
+  const concept_buffers = concepts.map(c => to_embedding_buffer(c));
+  const max_distance = 2 * (1 - minSimilarity / 100);
+
+  const distance_expressions = concept_buffers.map((_, i) =>
+    `vec_distance_cosine(v.embedding, ?) as dist_${i}`
+  ).join(', ');
+
+  const distance_filters = concept_buffers.map((_, _i) =>
+    `vec_distance_cosine(v.embedding, ?) <= ?`
+  ).join(' AND ');
+
+  const folder_filter = specFolder ? 'AND m.spec_folder = ?' : '';
+  const archival_filter = !includeArchived ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)' : '';
+
+  const similarity_select = concept_buffers.map((_, i) =>
+    `ROUND((1 - sub.dist_${i} / 2) * 100, 2) as similarity_${i}`
+  ).join(', ');
+
+  const avg_distance_expr = concept_buffers.map((_, i) => `sub.dist_${i}`).join(' + ');
+
+  const sql = `
+    SELECT
+      sub.*,
+      ${similarity_select},
+      (${avg_distance_expr}) / ${concepts.length} as avg_distance
+    FROM (
+      SELECT
+        m.*,
+        ${distance_expressions}
+      FROM memory_index m
+      JOIN vec_memories v ON m.id = v.rowid
+      WHERE m.embedding_status = 'success'
+        ${folder_filter}
+        ${archival_filter}
+        AND ${distance_filters}
+    ) sub
+    ORDER BY avg_distance ASC
+    LIMIT ?
+  `;
+
+  const params = [
+    ...concept_buffers,
+    ...(specFolder ? [specFolder] : []),
+    ...concept_buffers.flatMap(b => [b, max_distance]),
+    limit
+  ];
+
+  const rows = database.prepare(sql).all(...params);
+
+  return (rows as MemoryRow[]).map((row: MemoryRow) => {
+    row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+    row.concept_similarities = concept_buffers.map((_, i) => Number(row[`similarity_${i}`] ?? 0));
+    row.avg_similarity = (row.concept_similarities as number[]).reduce((a, b) => a + b, 0) / concepts.length;
+    row.isConstitutional = row.importance_tier === 'constitutional';
+    return row;
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CONTENT EXTRACTION HELPERS
+────────────────────────────────────────────────────────────────*/
+
+export function extract_title(content: unknown, filename?: string) {
+  if (!content || typeof content !== 'string') {
+    return filename ? path.basename(filename, path.extname(filename)) : 'Untitled';
+  }
+
+  const h1_match = content.match(/^#\s+(.+)$/m);
+  if (h1_match && h1_match[1]) {
+    return h1_match[1].trim();
+  }
+
+  const h2_match = content.match(/^##\s+(.+)$/m);
+  if (h2_match && h2_match[1]) {
+    return h2_match[1].trim();
+  }
+
+  const yaml_match = content.match(/^---[\s\S]*?^title:\s*(.+)$/m);
+  if (yaml_match && yaml_match[1]) {
+    return yaml_match[1].trim().replace(/^["']|["']$/g, '');
+  }
+
+  const lines = content.split('\n').filter(l => l.trim().length > 0);
+  if (lines.length > 0) {
+    const first_line = lines[0].trim();
+    return first_line.replace(/^#+\s*/, '').substring(0, 100);
+  }
+
+  return filename ? path.basename(filename, path.extname(filename)) : 'Untitled';
+}
+
+export function extract_snippet(content: unknown, max_length = 200) {
+  if (!content || typeof content !== 'string') {
+    return '';
+  }
+
+  const text = content.replace(/^---[\s\S]*?---\n*/m, '');
+  const lines = text.split('\n');
+  const snippet_lines: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+
+    if (!trimmed || /^#+\s/.test(trimmed)) {
+      if (snippet_lines.length > 0) {
+        break;
+      }
+      continue;
+    }
+
+    if (/^[a-z_-]+:\s/i.test(trimmed) && snippet_lines.length === 0) {
+      continue;
+    }
+
+    snippet_lines.push(trimmed);
+
+    const current_length = snippet_lines.join(' ').length;
+    if (current_length >= max_length) {
+      break;
+    }
+  }
+
+  let snippet = snippet_lines.join(' ');
+
+  if (snippet.length > max_length) {
+    snippet = snippet.substring(0, max_length);
+    const last_space = snippet.lastIndexOf(' ');
+    if (last_space > max_length * 0.7) {
+      snippet = snippet.substring(0, last_space);
+    }
+    snippet += '...';
+  }
+
+  return snippet;
+}
+
+export function extract_tags(content: unknown): string[] {
+  if (!content || typeof content !== 'string') {
+    return [];
+  }
+
+  const tags = new Set<string>();
+
+  const yaml_tags_match = content.match(/^---[\s\S]*?^tags:\s*\[([^\]]+)\]/m);
+  if (yaml_tags_match && yaml_tags_match[1]) {
+    yaml_tags_match[1].split(',').forEach(tag => {
+      const cleaned = tag.trim().replace(/^["']|["']$/g, '');
+      if (cleaned) tags.add(cleaned.toLowerCase());
+    });
+  }
+
+  const yaml_list_match = content.match(/^---[\s\S]*?^tags:\s*\n((?:\s*-\s*.+\n?)+)/m);
+  if (yaml_list_match && yaml_list_match[1]) {
+    yaml_list_match[1].match(/-\s*(.+)/g)?.forEach(match => {
+      const tag = match.replace(/^-\s*/, '').trim().replace(/^["']|["']$/g, '');
+      if (tag) tags.add(tag.toLowerCase());
+    });
+  }
+
+  const hashtag_matches = content.match(/(?:^|\s)#([a-zA-Z][a-zA-Z0-9_-]*)/g);
+  if (hashtag_matches) {
+    hashtag_matches.forEach(match => {
+      const tag = match.trim().replace(/^#/, '');
+      if (tag && !tag.match(/^[0-9]+$/)) {
+        tags.add(tag.toLowerCase());
+      }
+    });
+  }
+
+  return Array.from(tags);
+}
+
+export function extract_date(content: unknown, file_path?: string) {
+  if (content && typeof content === 'string') {
+    const date_match = content.match(/^---[\s\S]*?^date:\s*(.+)$/m);
+    if (date_match && date_match[1]) {
+      const date_str = date_match[1].trim().replace(/^["']|["']$/g, '');
+      try {
+        const parsed = new Date(date_str);
+        if (!isNaN(parsed.getTime())) {
+          return parsed.toISOString().split('T')[0];
+        }
+      } catch (_e: unknown) {
+      }
+    }
+  }
+
+  if (file_path) {
+    const filename = path.basename(file_path);
+
+    const iso_match = filename.match(/(\d{4}-\d{2}-\d{2})/);
+    if (iso_match) {
+      return iso_match[1];
+    }
+
+    const ddmmyy_match = filename.match(/(\d{2})-(\d{2})-(\d{2})/);
+    if (ddmmyy_match) {
+      const [, day, month, year] = ddmmyy_match;
+      const full_year = parseInt(year) > 50 ? `19${year}` : `20${year}`;
+      return `${full_year}-${month}-${day}`;
+    }
+  }
+
+  return null;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   EMBEDDING GENERATION WRAPPER
+────────────────────────────────────────────────────────────────*/
+
+export async function generate_query_embedding(query: string): Promise<Float32Array | null> {
+  if (!query || typeof query !== 'string' || query.trim().length === 0) {
+    console.warn('[vector-index] Empty query provided for embedding');
+    return null;
+  }
+
+  try {
+    const embeddings = embeddingsProvider;
+    const embedding = await embeddings.generateQueryEmbedding(query.trim());
+    return embedding;
+  } catch (error: unknown) {
+    console.warn(`[vector-index] Query embedding failed: ${get_error_message(error)}`);
+    return null;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   KEYWORD SEARCH FALLBACK
+────────────────────────────────────────────────────────────────*/
+
+export function keyword_search(
+  query: string,
+  options: { limit?: number; specFolder?: string | null; includeArchived?: boolean } = {}
+): MemoryRow[] {
+  const database = initialize_db();
+  const { limit = 20, specFolder = null, includeArchived = false } = options;
+
+  if (!query || typeof query !== 'string') {
+    return [];
+  }
+
+  const search_terms = query.toLowerCase().trim().split(/\s+/).filter(t => t.length >= 2);
+  if (search_terms.length === 0) {
+    return [];
+  }
+
+  let where_clause = '1=1';
+  const params: unknown[] = [];
+
+  if (specFolder) {
+    where_clause += ' AND spec_folder = ?';
+    params.push(specFolder);
+  }
+
+  if (!includeArchived) {
+    where_clause += ' AND (is_archived IS NULL OR is_archived = 0)';
+  }
+
+  const sql = `
+    SELECT * FROM memory_index
+    WHERE ${where_clause}
+    ORDER BY importance_weight DESC, created_at DESC
+  `;
+
+  const rows = database.prepare(sql).all(...params);
+
+  const scored = (rows as MemoryRow[]).map((row: MemoryRow) => {
+    let score = 0;
+    const searchable_text = [
+      row.title || '',
+      parse_trigger_phrases(row.trigger_phrases).join(' '),
+      row.spec_folder || '',
+      row.file_path || ''
+    ].join(' ').toLowerCase();
+
+    for (const term of search_terms) {
+      if (searchable_text.includes(term)) {
+        score += 1;
+        if ((row.title || '').toLowerCase().includes(term)) {
+          score += 2;
+        }
+        if (parse_trigger_phrases(row.trigger_phrases).join(' ').toLowerCase().includes(term)) {
+          score += 1.5;
+        }
+      }
+    }
+
+    score *= (0.5 + (row.importance_weight ?? 0));
+    return { ...row, keyword_score: score };
+  });
+
+  const filtered = scored
+    .filter((row: MemoryRow) => Number(row.keyword_score ?? 0) > 0)
+    .sort((a: MemoryRow, b: MemoryRow) => Number(b.keyword_score ?? 0) - Number(a.keyword_score ?? 0))
+    .slice(0, limit);
+
+  return filtered.map((row: MemoryRow) => {
+    row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+    row.isConstitutional = row.importance_tier === 'constitutional';
+    return row;
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────
+   ENRICHED VECTOR SEARCH
+────────────────────────────────────────────────────────────────*/
+
+export async function vector_search_enriched(
+  query: string,
+  limit = 20,
+  options: { specFolder?: string | null; minSimilarity?: number } = {}
+): Promise<EnrichedSearchResult[]> {
+  const start_time = Date.now();
+  const { specFolder = null, minSimilarity = 30 } = options;
+
+  const query_embedding = await generate_query_embedding(query);
+
+  let raw_results;
+  let search_method = 'vector';
+
+  const sqlite_vec = get_sqlite_vec_available();
+  if (query_embedding && sqlite_vec) {
+    raw_results = vector_search(query_embedding, {
+      limit,
+      specFolder,
+      minSimilarity
+    });
+  } else {
+    console.warn('[vector-index] Falling back to keyword search');
+    search_method = 'keyword';
+    raw_results = keyword_search(query, { limit, specFolder });
+  }
+
+  // HIGH-004 FIX: Read all files concurrently
+  const file_contents = await Promise.all(
+    raw_results.map((row: MemoryRow) => safe_read_file_async(row.file_path))
+  );
+
+  const enriched_results = raw_results.map((row: MemoryRow, i: number) => {
+    const content = file_contents[i];
+    const title = row.title || extract_title(content, row.file_path);
+    const snippet = extract_snippet(content);
+    const tags = extract_tags(content);
+    const date = extract_date(content, row.file_path) || row.created_at?.split('T')[0] || null;
+
+    const similarity = search_method === 'vector'
+      ? (row.similarity || 0)
+      : Math.min(100, (row.keyword_score || 0) * 20);
+
+    return {
+      rank: i + 1,
+      similarity: Math.round(similarity * 100) / 100,
+      title,
+      specFolder: row.spec_folder,
+      filePath: row.file_path,
+      date,
+      tags,
+      snippet,
+      id: row.id,
+      importanceWeight: row.importance_weight ?? 0.5,
+      searchMethod: search_method,
+      isConstitutional: row.isConstitutional || row.importance_tier === 'constitutional'
+    };
+  });
+
+  const elapsed = Date.now() - start_time;
+  if (elapsed > 500) {
+    console.warn(`[vector-index] Enriched search took ${elapsed}ms (target <500ms)`);
+  }
+
+  return enriched_results;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   MULTI-CONCEPT ENRICHED SEARCH
+────────────────────────────────────────────────────────────────*/
+
+export async function multi_concept_search_enriched(
+  concepts: Array<string | EmbeddingInput>,
+  limit = 20,
+  options: { specFolder?: string | null; minSimilarity?: number } = {}
+): Promise<EnrichedSearchResult[]> {
+  const start_time = Date.now();
+
+  if (!Array.isArray(concepts) || concepts.length < 2 || concepts.length > 5) {
+    throw new Error('Multi-concept search requires 2-5 concepts');
+  }
+
+  const { specFolder = null, minSimilarity = 50 } = options;
+
+  const concept_embeddings: EmbeddingInput[] = [];
+  for (const concept of concepts) {
+    if (typeof concept === 'string') {
+      const embedding = await generate_query_embedding(concept);
+      if (!embedding) {
+        console.warn(`[vector-index] Failed to embed concept: "${concept}"`);
+        return await multi_concept_keyword_search(concepts.filter(c => typeof c === 'string'), limit, options);
+      }
+      concept_embeddings.push(embedding);
+    } else {
+      concept_embeddings.push(concept);
+    }
+  }
+
+  const sqlite_vec = get_sqlite_vec_available();
+  if (!sqlite_vec) {
+    console.warn('[vector-index] Falling back to keyword multi-concept search');
+    return await multi_concept_keyword_search(concepts.filter(c => typeof c === 'string'), limit, options);
+  }
+
+  const raw_results = multi_concept_search(concept_embeddings, { limit, specFolder, minSimilarity });
+
+  const file_contents = await Promise.all(
+    raw_results.map((row: MemoryRow) => safe_read_file_async(row.file_path))
+  );
+
+  const enriched_results = raw_results.map((row: MemoryRow, i: number) => {
+    const content = file_contents[i];
+    const title = row.title || extract_title(content, row.file_path);
+    const snippet = extract_snippet(content);
+    const tags = extract_tags(content);
+    const date = extract_date(content, row.file_path) || row.created_at?.split('T')[0] || null;
+
+    return {
+      rank: i + 1,
+      avgSimilarity: Math.round((row.avg_similarity || 0) * 100) / 100,
+      conceptSimilarities: (row.concept_similarities as number[] | undefined) || [],
+      title,
+      specFolder: row.spec_folder,
+      filePath: row.file_path,
+      date,
+      tags,
+      snippet,
+      id: row.id,
+      importanceWeight: row.importance_weight ?? 0.5,
+      isConstitutional: row.isConstitutional || row.importance_tier === 'constitutional'
+    };
+  });
+
+  const elapsed = Date.now() - start_time;
+  if (elapsed > 500) {
+    console.warn(`[vector-index] Multi-concept search took ${elapsed}ms (target <500ms)`);
+  }
+
+  return enriched_results;
+}
+
+export async function multi_concept_keyword_search(
+  concepts: string[],
+  limit = 20,
+  options: { specFolder?: string | null } = {}
+): Promise<EnrichedSearchResult[]> {
+  const { specFolder = null } = options;
+
+  if (!concepts.length) return [];
+
+  const concept_results = concepts.map((concept: string) =>
+    keyword_search(concept, { limit: 100, specFolder })
+  );
+
+  const id_counts = new Map<number, number>();
+  const id_to_row = new Map<number, MemoryRow>();
+
+  for (const results of concept_results) {
+    for (const row of results) {
+      const count = id_counts.get(row.id) || 0;
+      id_counts.set(row.id, count + 1);
+      if (!id_to_row.has(row.id)) {
+        id_to_row.set(row.id, row);
+      }
+    }
+  }
+
+  const matching_ids: number[] = [];
+  for (const [id, count] of id_counts) {
+    if (count === concepts.length) {
+      matching_ids.push(id);
+    }
+  }
+
+  const limited_ids = matching_ids.slice(0, limit);
+  const rows = limited_ids.map(id => id_to_row.get(id)).filter((row): row is MemoryRow => Boolean(row));
+
+  const file_contents = await Promise.all(
+    rows.map(row => safe_read_file_async(row.file_path))
+  );
+
+  const enriched_results = rows.map((row, i) => {
+    const content = file_contents[i];
+    const title = row.title || extract_title(content, row.file_path);
+    const snippet = extract_snippet(content);
+    const tags = extract_tags(content);
+    const date = extract_date(content, row.file_path) || row.created_at?.split('T')[0] || null;
+
+    return {
+      rank: i + 1,
+      avgSimilarity: Math.min(100, (row.keyword_score || 1) * 15),
+      conceptSimilarities: concepts.map(() => row.keyword_score || 1),
+      title,
+      specFolder: row.spec_folder,
+      filePath: row.file_path,
+      date,
+      tags,
+      snippet,
+      id: row.id,
+      importanceWeight: row.importance_weight ?? 0.5,
+      searchMethod: 'keyword',
+      isConstitutional: row.importance_tier === 'constitutional'
+    };
+  });
+
+  return enriched_results;
+}
+
+export function parse_quoted_terms(query: string): string[] {
+  if (!query || typeof query !== 'string') {
+    return [];
+  }
+
+  const quoted: string[] = [];
+  const regex = /"([^"]+)"/g;
+  let match;
+
+  while ((match = regex.exec(query)) !== null) {
+    if (match[1] && match[1].trim()) {
+      quoted.push(match[1].trim());
+    }
+  }
+
+  return quoted;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SMART RANKING AND DIVERSITY
+────────────────────────────────────────────────────────────────*/
+
+// BUG-012 FIX: Weights read from config instead of hardcoded
+export function apply_smart_ranking(results: EnrichedSearchResult[]): EnrichedSearchResult[] {
+  if (!results || results.length === 0) return results;
+
+  const recency_weight = search_weights.smartRanking?.recencyWeight || 0.3;
+  const access_weight = search_weights.smartRanking?.accessWeight || 0.2;
+  const relevance_weight = search_weights.smartRanking?.relevanceWeight || 0.5;
+
+  const now = Date.now();
+  const week_ms = 7 * 24 * 60 * 60 * 1000;
+  const month_ms = 30 * 24 * 60 * 60 * 1000;
+
+  return results.map((r: EnrichedSearchResult) => {
+    const created_at = r.created_at ? new Date(r.created_at).getTime() : now;
+    const age = now - created_at;
+    let recency_factor;
+    if (age < week_ms) {
+      recency_factor = 1.0;
+    } else if (age < month_ms) {
+      recency_factor = 0.8;
+    } else {
+      recency_factor = 0.5;
+    }
+
+    const usage_factor = Math.min(1.0, (r.access_count || 0) / 10);
+    const similarity_factor = (r.similarity || 0) / 100;
+
+    r.smartScore = (similarity_factor * relevance_weight) + (recency_factor * recency_weight) + (usage_factor * access_weight);
+    r.smartScore = Math.round(r.smartScore * 100) / 100;
+
+    return r;
+  }).sort((a, b) => Number(b.smartScore ?? 0) - Number(a.smartScore ?? 0));
+}
+
+// Apply diversity filtering using MMR (Maximal Marginal Relevance)
+export function apply_diversity(results: EnrichedSearchResult[], diversity_factor = 0.3): EnrichedSearchResult[] {
+  if (!results || results.length <= 3) return results;
+
+  const selected = [results[0]];
+  const remaining = [...results.slice(1)];
+
+  while (selected.length < results.length && remaining.length > 0) {
+    let best_idx = 0;
+    let best_score = -Infinity;
+
+    for (let i = 0; i < remaining.length; i++) {
+      const candidate = remaining[i];
+      const relevance = candidate.smartScore || ((candidate.similarity ?? 0) / 100) || 0;
+
+      let max_similarity_to_selected = 0;
+      for (const sel of selected) {
+        if (sel.specFolder === candidate.specFolder || sel.spec_folder === candidate.spec_folder) {
+          max_similarity_to_selected = Math.max(max_similarity_to_selected, 0.8);
+        }
+        if (sel.date === candidate.date) {
+          max_similarity_to_selected = Math.max(max_similarity_to_selected, 0.5);
+        }
+      }
+
+      const mmr_score = relevance - (diversity_factor * max_similarity_to_selected);
+
+      if (mmr_score > best_score) {
+        best_score = mmr_score;
+        best_idx = i;
+      }
+    }
+
+    selected.push(remaining.splice(best_idx, 1)[0]);
+  }
+
+  return selected;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RELATED MEMORIES AND USAGE TRACKING
+────────────────────────────────────────────────────────────────*/
+
+export function get_related_memories(memory_id: number): MemoryRow[] {
+  try {
+    const database = initialize_db();
+
+    const memory = database.prepare(`
+      SELECT related_memories FROM memory_index WHERE id = ?
+    `).get(memory_id) as { related_memories?: string | null } | undefined;
+
+    if (!memory || !memory.related_memories) {
+      return [];
+    }
+
+    const related = safe_parse_json(memory.related_memories, []);
+
+    return (related as RelatedMemoryLink[]).map((rel: RelatedMemoryLink): MemoryRow | null => {
+      const full_memory = get_memory(rel.id);
+      if (full_memory) {
+        return {
+          ...full_memory,
+          relationSimilarity: rel.similarity
+        };
+      }
+      return null;
+    }).filter((relatedMemory): relatedMemory is MemoryRow => Boolean(relatedMemory));
+  } catch (error: unknown) {
+    console.warn(`[vector-index] Failed to get related memories for ${memory_id}: ${get_error_message(error)}`);
+    return [];
+  }
+}
+
+export function get_usage_stats(options: UsageStatsOptions = {}) {
+  const {
+    sortBy = 'access_count',
+    order = 'DESC',
+    limit = 20
+  } = options;
+
+  const valid_sort_fields = ['access_count', 'last_accessed', 'confidence'];
+  const sort_field = valid_sort_fields.includes(sortBy) ? sortBy : 'access_count';
+  const sort_order = order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+  const database = initialize_db();
+
+  const rows = database.prepare(`
+    SELECT id, title, spec_folder, file_path, access_count,
+           last_accessed, confidence, created_at
+    FROM memory_index
+    WHERE access_count > 0
+    ORDER BY ${sort_field} ${sort_order}
+    LIMIT ?
+  `).all(limit);
+
+  return rows;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   CLEANUP FUNCTIONS
+────────────────────────────────────────────────────────────────*/
+
+export function find_cleanup_candidates(options: CleanupOptions = {}) {
+  const database = initialize_db();
+
+  const {
+    maxAgeDays = 90,
+    maxAccessCount = 2,
+    maxConfidence = 0.4,
+    limit = 50
+  } = options;
+
+  const cutoff_date = new Date();
+  cutoff_date.setDate(cutoff_date.getDate() - maxAgeDays);
+  const cutoff_iso = cutoff_date.toISOString();
+
+  const sql = `
+    SELECT
+      id,
+      spec_folder,
+      file_path,
+      title,
+      created_at,
+      last_accessed,
+      access_count,
+      confidence,
+      importance_weight
+    FROM memory_index
+    WHERE
+      created_at < ?
+      OR access_count <= ?
+      OR confidence <= ?
+      OR (last_accessed IS NULL AND created_at < ?)
+    ORDER BY
+      last_accessed ASC NULLS FIRST,
+      access_count ASC,
+      confidence ASC
+    LIMIT ?
+  `;
+
+  let rows;
+  try {
+    rows = database.prepare(sql).all(
+      cutoff_iso,
+      maxAccessCount,
+      maxConfidence,
+      cutoff_iso,
+      limit
+    );
+  } catch (e: unknown) {
+    console.warn(`[vector-index] find_cleanup_candidates error: ${get_error_message(e)}`);
+    return [];
+  }
+
+  return (rows as MemoryRow[]).map((row: MemoryRow) => {
+    const age_string = format_age_string(row.created_at ?? null);
+    const last_access_string = format_age_string(
+      typeof row.last_accessed === 'number' ? new Date(row.last_accessed).toISOString() : null
+    );
+
+    const reasons: string[] = [];
+    if (row.created_at && new Date(row.created_at) < cutoff_date) {
+      reasons.push(`created ${age_string}`);
+    }
+    if ((row.access_count || 0) <= maxAccessCount) {
+      const count = row.access_count || 0;
+      reasons.push(`accessed ${count} time${count !== 1 ? 's' : ''}`);
+    }
+    if ((row.confidence || 0.5) <= maxConfidence) {
+      reasons.push(`low importance (${Math.round((row.confidence || 0.5) * 100)}%)`);
+    }
+
+    return {
+      id: row.id,
+      specFolder: row.spec_folder,
+      filePath: row.file_path,
+      title: row.title || 'Untitled',
+      createdAt: row.created_at,
+      lastAccessedAt: row.last_accessed,
+      accessCount: row.access_count || 0,
+      confidence: row.confidence || 0.5,
+      ageString: age_string,
+      lastAccessString: last_access_string,
+      reasons
+    };
+  });
+}
+
+export function get_memory_preview(memory_id: number, max_lines = 50) {
+  const database = initialize_db();
+
+  let memory: MemoryRow | undefined;
+  try {
+    memory = database.prepare(`
+      SELECT * FROM memory_index WHERE id = ?
+    `).get(memory_id) as MemoryRow | undefined;
+  } catch (e: unknown) {
+    console.warn(`[vector-index] get_memory_preview query error: ${get_error_message(e)}`);
+    return null;
+  }
+
+  if (!memory) return null;
+
+  let content = '';
+  try {
+    // SEC-002: Validate DB-stored file paths before reading
+    if (memory.file_path) {
+      const valid_path = validate_file_path_local(memory.file_path);
+      if (valid_path && fs.existsSync(valid_path)) {
+        const full_content = fs.readFileSync(valid_path, 'utf-8');
+        const lines = full_content.split('\n');
+        content = lines.slice(0, max_lines).join('\n');
+        if (lines.length > max_lines) {
+          content += `\n... (${lines.length - max_lines} more lines)`;
+        }
+      }
+    }
+  } catch (_e: unknown) {
+    content = '(Unable to read file content)';
+  }
+
+  return {
+    id: memory.id,
+    specFolder: memory.spec_folder,
+    filePath: memory.file_path,
+    title: memory.title || 'Untitled',
+    createdAt: memory.created_at,
+    lastAccessedAt: memory.last_accessed,
+    accessCount: memory.access_count || 0,
+    confidence: memory.confidence || 0.5,
+    ageString: format_age_string(memory.created_at ?? null),
+    lastAccessString: format_age_string(
+      typeof memory.last_accessed === 'number' ? new Date(memory.last_accessed).toISOString() : null
+    ),
+    content
+  };
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DATABASE INTEGRITY
+────────────────────────────────────────────────────────────────*/
+
+// BUG-013 FIX: Added autoClean option for automatic orphan cleanup
+export function verify_integrity(options: { autoClean?: boolean } = {}) {
+  const { autoClean = false } = options;
+  const database = initialize_db();
+  const sqlite_vec = get_sqlite_vec_available();
+
+  const find_orphaned_vector_ids = () => {
+    if (!sqlite_vec) return [];
+    try {
+      return (database.prepare(`
+        SELECT v.rowid FROM vec_memories v
+        WHERE NOT EXISTS (SELECT 1 FROM memory_index m WHERE m.id = v.rowid)
+      `).all() as Array<{ rowid: number }>).map((r) => r.rowid);
+    } catch (e: unknown) {
+      console.warn('[vector-index] Could not query orphaned vectors:', get_error_message(e));
+      return [];
+    }
+  };
+
+  const orphaned_vector_ids = find_orphaned_vector_ids();
+  const orphaned_vectors = orphaned_vector_ids.length;
+
+  let cleaned_vectors = 0;
+  if (autoClean && orphaned_vectors > 0 && sqlite_vec) {
+    logger.info(`Auto-cleaning ${orphaned_vectors} orphaned vectors...`);
+    const delete_stmt = database.prepare('DELETE FROM vec_memories WHERE rowid = ?');
+    for (const rowid of orphaned_vector_ids) {
+      try {
+        delete_stmt.run(BigInt(rowid));
+        cleaned_vectors++;
+      } catch (e: unknown) {
+        console.warn(`[vector-index] Failed to clean orphaned vector ${rowid}: ${get_error_message(e)}`);
+      }
+    }
+    logger.info(`Cleaned ${cleaned_vectors} orphaned vectors`);
+  }
+
+  const missing_vectors = (database.prepare(`
+    SELECT COUNT(*) as count FROM memory_index m
+    WHERE m.embedding_status = 'success'
+    AND NOT EXISTS (SELECT 1 FROM vec_memories v WHERE v.rowid = m.id)
+  `).get() as { count: number }).count;
+
+  const total_memories = (database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as { count: number }).count;
+  const total_vectors = (database.prepare('SELECT COUNT(*) as count FROM vec_memories').get() as { count: number }).count;
+
+  const check_orphaned_files = () => {
+    const memories = database.prepare('SELECT id, file_path FROM memory_index').all() as Array<{ id: number; file_path?: string | null }>;
+    const orphaned: Array<{ id: number; file_path: string; reason: string }> = [];
+
+    for (const memory of memories) {
+      if (memory.file_path && !fs.existsSync(memory.file_path)) {
+        orphaned.push({
+          id: memory.id,
+          file_path: memory.file_path,
+          reason: 'File no longer exists on filesystem'
+        });
+      }
+    }
+
+    return orphaned;
+  };
+
+  const orphaned_files = check_orphaned_files();
+
+  const find_orphaned_chunks = () => {
+    try {
+      return database.prepare(`
+        SELECT id, parent_id, chunk_index, chunk_label
+        FROM memory_index
+        WHERE parent_id IS NOT NULL
+          AND NOT EXISTS (
+            SELECT 1 FROM memory_index parent
+            WHERE parent.id = memory_index.parent_id
+              AND parent.parent_id IS NULL
+          )
+      `).all() as Array<{ id: number; parent_id: number; chunk_index: number; chunk_label: string | null }>;
+    } catch (e: unknown) {
+      console.warn('[vector-index] Could not query orphaned chunks:', get_error_message(e));
+      return [];
+    }
+  };
+
+  const orphaned_chunks = find_orphaned_chunks();
+  let cleaned_chunks = 0;
+
+  if (autoClean && orphaned_chunks.length > 0) {
+    logger.info(`Auto-cleaning ${orphaned_chunks.length} orphaned chunks...`);
+    const delete_chunk_stmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
+    for (const chunk of orphaned_chunks) {
+      try {
+        delete_chunk_stmt.run(chunk.id);
+        cleaned_chunks++;
+      } catch (e: unknown) {
+        console.warn(`[vector-index] Failed to clean orphaned chunk ${chunk.id}: ${get_error_message(e)}`);
+      }
+    }
+    logger.info(`Cleaned ${cleaned_chunks} orphaned chunks`);
+  }
+
+  const effective_orphaned_chunks = autoClean ? orphaned_chunks.length - cleaned_chunks : orphaned_chunks.length;
+
+  return {
+    totalMemories: total_memories,
+    totalVectors: total_vectors,
+    orphanedVectors: autoClean ? orphaned_vectors - cleaned_vectors : orphaned_vectors,
+    missingVectors: missing_vectors,
+    orphanedFiles: orphaned_files,
+    orphanedChunks: effective_orphaned_chunks,
+    isConsistent: (orphaned_vectors - cleaned_vectors) === 0 && missing_vectors === 0 && orphaned_files.length === 0 && effective_orphaned_chunks === 0,
+    cleaned: (autoClean && (cleaned_vectors > 0 || cleaned_chunks > 0))
+      ? { vectors: cleaned_vectors, chunks: cleaned_chunks }
+      : undefined
+  };
+}
+
+// camelCase aliases
+export { get_memory as getMemory };
+export { get_memories_by_folder as getMemoriesByFolder };
+export { get_memory_count as getMemoryCount };
+export { get_status_counts as getStatusCounts };
+export { get_stats as getStats };
+export { vector_search as vectorSearch };
+export { get_constitutional_memories_public as getConstitutionalMemories };
+export { multi_concept_search as multiConceptSearch };
+export { extract_title as extractTitle };
+export { extract_snippet as extractSnippet };
+export { extract_tags as extractTags };
+export { extract_date as extractDate };
+export { generate_query_embedding as generateQueryEmbedding };
+export { keyword_search as keywordSearch };
+export { vector_search_enriched as vectorSearchEnriched };
+export { multi_concept_search_enriched as multiConceptSearchEnriched };
+export { multi_concept_keyword_search as multiConceptKeywordSearch };
+export { parse_quoted_terms as parseQuotedTerms };
+export { apply_smart_ranking as applySmartRanking };
+export { apply_diversity as applyDiversity };
+export { get_related_memories as getRelatedMemories };
+export { get_usage_stats as getUsageStats };
+export { find_cleanup_candidates as findCleanupCandidates };
+export { get_memory_preview as getMemoryPreview };
+export { verify_integrity as verifyIntegrity };

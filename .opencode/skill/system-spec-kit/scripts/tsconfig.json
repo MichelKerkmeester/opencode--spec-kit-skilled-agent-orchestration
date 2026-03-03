@@ -14,6 +14,18 @@
     { "path": "../shared" },
     { "path": "../mcp_server" }
   ],
-  "include": ["**/*.ts"],
+  "include": [
+    "*.ts",
+    "core/**/*.ts",
+    "evals/**/*.ts",
+    "extractors/**/*.ts",
+    "lib/**/*.ts",
+    "loaders/**/*.ts",
+    "memory/**/*.ts",
+    "renderers/**/*.ts",
+    "spec-folder/**/*.ts",
+    "types/**/*.ts",
+    "utils/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist", "tests/**/*.vitest.ts"]
 }

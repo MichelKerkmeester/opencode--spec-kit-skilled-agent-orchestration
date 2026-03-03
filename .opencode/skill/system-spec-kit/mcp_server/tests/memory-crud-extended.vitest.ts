@@ -515,25 +515,28 @@ describe('handleMemoryDelete - Happy Path', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryDelete - Causal Edge Cleanup', () => {
-  it('EXT-CE1: Causal edges cleaned up on single delete', async () => {
+  it('EXT-CE1: Causal edges cleaned up on single delete', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!causalEdgesMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true });
     await handler.handleMemoryDelete({ id: 5 });
     expect(calls.causalDeleteEdges.length).toBeGreaterThan(0);
     expect(calls.causalDeleteEdges[0]).toBe('5');
   });
 
-  it('EXT-CE2: Causal edge cleanup failure aborts delete transaction', async () => {
+  it('EXT-CE2: Causal edge cleanup failure aborts delete transaction', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!causalEdgesMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installDeleteMocks({ deleteResult: true, dbAvailable: true, edgeCleanupThrows: true });
     await expect(handler.handleMemoryDelete({ id: 3 })).rejects.toThrow('Mock edge cleanup error');
   });
 
-  it('EXT-CE3: No edge cleanup when delete fails', async () => {
+  it('EXT-CE3: No edge cleanup when delete fails', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!causalEdgesMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installDeleteMocks({ deleteResult: false, dbAvailable: true });
     await handler.handleMemoryDelete({ id: 999 });
     expect(calls.causalDeleteEdges).toHaveLength(0);
@@ -554,18 +557,20 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
     expect(calls.clearConstitutionalCache.length).toBeGreaterThan(0);
   });
 
-  it('EXT-BD2: Bulk delete creates checkpoint', async () => {
+  it('EXT-BD2: Bulk delete creates checkpoint', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!checkpointsMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installBulkDeleteMocks({ memories: [{ id: 20 }] });
     await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
     expect(calls.createCheckpoint.length).toBeGreaterThan(0);
     expect(calls.createCheckpoint[0].name).toMatch(/^pre-cleanup-/);
   });
 
-  it('EXT-BD3: Response includes checkpoint name', async () => {
+  it('EXT-BD3: Response includes checkpoint name', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!checkpointsMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installBulkDeleteMocks({ memories: [{ id: 30 }] });
     const result = await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
     const parsed = parseResponse(result);
@@ -583,9 +588,10 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
     expect(succeeded).toBe(true);
   });
 
-  it('EXT-BD5: Bulk delete cleans causal edges for each memory', async () => {
+  it('EXT-BD5: Bulk delete cleans causal edges for each memory', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when causalEdgesMod unavailable
+    if (!causalEdgesMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!causalEdgesMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installBulkDeleteMocks({ memories: [{ id: 50 }, { id: 51 }] });
     await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
     expect(calls.causalDeleteEdges).toHaveLength(2);
@@ -601,9 +607,10 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
     expect(parsed?.data?.deleted).toBe(0);
   });
 
-  it('EXT-BD7: Null checkpoint response omits restore metadata', async () => {
+  it('EXT-BD7: Null checkpoint response omits restore metadata', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when checkpointsMod unavailable
+    if (!checkpointsMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!checkpointsMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installBulkDeleteMocks({ memories: [{ id: 60 }], checkpointReturnsNull: true });
     const result = await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
     const parsed = parseResponse(result);
@@ -627,9 +634,10 @@ describe('handleMemoryUpdate - Happy Path', () => {
     expect(parsed?.data?.embeddingRegenerated).toBe(false);
   });
 
-  it('EXT-U2: Changed title triggers embedding regen', async () => {
+  it('EXT-U2: Changed title triggers embedding regen', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 1, title: 'Old Title' } });
     const result = await handler.handleMemoryUpdate({ id: 1, title: 'New Title' });
     const parsed = parseResponse(result);
@@ -685,9 +693,10 @@ describe('handleMemoryUpdate - Happy Path', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryUpdate - Embedding Regeneration', () => {
-  it('EXT-ER1: Embedding failure without partial rolls back', async () => {
+  it('EXT-ER1: Embedding failure without partial rolls back', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 1, title: 'Old' }, embeddingThrows: true });
     try {
       await handler.handleMemoryUpdate({ id: 1, title: 'New Title', allowPartialUpdate: false });
@@ -701,9 +710,10 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
     }
   });
 
-  it('EXT-ER2: Partial update marks embedding pending', async () => {
+  it('EXT-ER2: Partial update marks embedding pending', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 2, title: 'Old' }, embeddingThrows: true });
     const result = await handler.handleMemoryUpdate({ id: 2, title: 'New Title', allowPartialUpdate: true });
     const parsed = parseResponse(result);
@@ -711,9 +721,10 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
     expect(hasPending).toBeTruthy();
   });
 
-  it('EXT-ER3: Null embedding without partial throws', async () => {
+  it('EXT-ER3: Null embedding without partial throws', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 3, title: 'Old' }, embeddingResult: null });
     try {
       await handler.handleMemoryUpdate({ id: 3, title: 'New Title', allowPartialUpdate: false });
@@ -728,9 +739,10 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
     }
   });
 
-  it('EXT-ER4: Null embedding + partial marks pending', async () => {
+  it('EXT-ER4: Null embedding + partial marks pending', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 4, title: 'Old' }, embeddingResult: null });
     const result = await handler.handleMemoryUpdate({ id: 4, title: 'New Title', allowPartialUpdate: true });
     const parsed = parseResponse(result);
@@ -739,9 +751,10 @@ describe('handleMemoryUpdate - Embedding Regeneration', () => {
     expect(hasPending).toBeTruthy();
   });
 
-  it('EXT-ER5: Embedding regen completes successfully', async () => {
+  it('EXT-ER5: Embedding regen completes successfully', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const calls = installUpdateMocks({ existingMemory: { id: 5, title: 'Old' }, embeddingResult: new Float32Array(768) });
     const result = await handler.handleMemoryUpdate({ id: 5, title: 'Brand New Title' });
     const parsed = parseResponse(result);
@@ -933,9 +946,10 @@ describe('handleMemoryStats - Happy Path', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('handleMemoryStats - Folder Scoring', () => {
-  it('EXT-FS1: Composite ranking returns scored folders', async () => {
+  it('EXT-FS1: Composite ranking returns scored folders', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!folderScoringSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     const scoredFolders = [
       { folder: 'specs/001-top', simplified: '001-top', count: 5, score: 0.95, recencyScore: 0.9, importanceScore: 0.8, activityScore: 0.7, validationScore: 0.6, lastActivity: '2025-06-01', isArchived: false, topTier: 'critical' },
     ];
@@ -946,18 +960,20 @@ describe('handleMemoryStats - Folder Scoring', () => {
     expect(parsed?.data?.topFolders[0].score).toBeDefined();
   });
 
-  it('EXT-FS2: Scoring failure falls back gracefully', async () => {
+  it('EXT-FS2: Scoring failure falls back gracefully', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!folderScoringSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installStatsMocks({ computeScoresThrows: true });
     const result = await handler.handleMemoryStats({ folderRanking: 'recency' });
     const parsed = parseResponse(result);
     expect(Array.isArray(parsed?.data?.topFolders)).toBe(true);
   });
 
-  it('EXT-FS3: Archived folders filtered out', async () => {
+  it('EXT-FS3: Archived folders filtered out', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!folderScoringSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installStatsMocks({
       folderRows: [
         { spec_folder: 'specs/001-active', count: 5 },
@@ -970,9 +986,10 @@ describe('handleMemoryStats - Folder Scoring', () => {
     expect(hasArchived).toBeFalsy();
   });
 
-  it('EXT-FS4: excludePatterns filters scratch folder', async () => {
+  it('EXT-FS4: excludePatterns filters scratch folder', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when folderScoringSourceMod unavailable
+    if (!folderScoringSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryStats || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!folderScoringSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installStatsMocks({
       folderRows: [
         { spec_folder: 'specs/001-feature', count: 5 },
@@ -1018,9 +1035,10 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.status).toBe('degraded');
   });
 
-  it('EXT-H4: Health includes provider info', async () => {
+  it('EXT-H4: Health includes provider info', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when embeddingsSourceMod unavailable
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!embeddingsSourceMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
@@ -1212,9 +1230,10 @@ describe('MCP Response Envelope Structure', () => {
 });
 
 describe('Mutation ledger wiring', () => {
-  it('EXT-ML1: single delete logs a delete mutation', async () => {
+  it('EXT-ML1: single delete logs a delete mutation', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!mutationLedgerMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installDeleteMocks({ deleteResult: true, dbAvailable: true });
     const ledgerCalls = installMutationLedgerMocks();
 
@@ -1226,9 +1245,10 @@ describe('Mutation ledger wiring', () => {
     expect(ledgerCalls.appendEntry[0].linked_memory_ids).toEqual([42]);
   });
 
-  it('EXT-ML2: bulk delete logs one ledger entry per deleted memory', async () => {
+  it('EXT-ML2: bulk delete logs one ledger entry per deleted memory', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!mutationLedgerMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installBulkDeleteMocks({ memories: [{ id: 90 }, { id: 91 }], dbAvailable: true });
     const ledgerCalls = installMutationLedgerMocks();
 
@@ -1239,9 +1259,10 @@ describe('Mutation ledger wiring', () => {
     expect(ledgerCalls.appendEntry[1].mutation_type).toBe('delete');
   });
 
-  it('EXT-ML3: memory update logs an update mutation', async () => {
+  it('EXT-ML3: memory update logs an update mutation', async (ctx) => {
+    // AI-WHY: Optional module — test skipped at runtime when mutationLedgerMod unavailable
+    if (!mutationLedgerMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryUpdate || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    if (!mutationLedgerMod) return; // AI-WHY: Optional module — skip is intentional, not a false-pass
     installUpdateMocks({ existingMemory: { id: 7, title: 'Old title', content_hash: 'old-hash' } });
     vi.mocked(vectorIndex.getDb).mockImplementation(() => ({
       prepare: (_sql: string) => ({

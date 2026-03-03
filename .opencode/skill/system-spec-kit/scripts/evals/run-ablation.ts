@@ -7,7 +7,7 @@
 // a time, measuring Recall@20 delta against a full-pipeline baseline.
 //
 // Usage:
-//   SPECKIT_ABLATION=true npx tsx scripts/run-ablation.ts [--channels vector,bm25,fts5] [--verbose]
+//   SPECKIT_ABLATION=true npx tsx scripts/evals/run-ablation.ts [--channels vector,bm25,fts5] [--verbose]
 //
 // Output:
 //   - Prints formatted ablation report (markdown table)
@@ -19,24 +19,16 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 import {
-  runAblation,
-  storeAblationResults,
-  formatAblationReport,
-  toHybridSearchFlags,
-  isAblationEnabled,
-  ALL_CHANNELS,
-  type AblationChannel,
-  type AblationSearchFn,
-  type AblationReport,
-} from '../lib/eval/ablation-framework';
-import { initEvalDb } from '../lib/eval/eval-db';
-import { generateQueryEmbedding } from '../lib/providers/embeddings';
-import { init as initHybridSearch, hybridSearchEnhanced } from '../lib/search/hybrid-search';
-import * as vectorIndex from '../lib/search/vector-index';
+  runAblation, storeAblationResults, formatAblationReport,
+  toHybridSearchFlags, isAblationEnabled, ALL_CHANNELS,
+  initEvalDb, generateQueryEmbedding,
+  initHybridSearch, hybridSearchEnhanced, vectorIndex,
+  type AblationChannel, type AblationSearchFn, type AblationReport,
+} from '../../mcp_server/api';
 
 // ── Config ──────────────────────────────────────────────────────
 
-const DB_DIR = path.resolve(__dirname, '../database');
+const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
 const OUTPUT_PATH = '/tmp/ablation-result.json';
 
@@ -80,7 +72,7 @@ async function main(): Promise<void> {
   // 1. Check flag
   if (!isAblationEnabled()) {
     console.error('ERROR: SPECKIT_ABLATION=true is required to run ablation studies.');
-    console.error('Usage: SPECKIT_ABLATION=true npx tsx scripts/run-ablation.ts');
+    console.error('Usage: SPECKIT_ABLATION=true npx tsx scripts/evals/run-ablation.ts');
     process.exit(1);
   }
 

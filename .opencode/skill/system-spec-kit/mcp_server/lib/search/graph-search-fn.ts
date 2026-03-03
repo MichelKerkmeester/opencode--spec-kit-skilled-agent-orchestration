@@ -7,7 +7,7 @@ import { sanitizeFTS5Query } from './bm25-index';
 import { queryHierarchyMemories } from './spec-folder-hierarchy';
 
 import type Database from 'better-sqlite3';
-import type { GraphSearchFn } from './hybrid-search';
+import type { GraphSearchFn } from './search-types';
 
 // ─── 1. TYPES ───
 

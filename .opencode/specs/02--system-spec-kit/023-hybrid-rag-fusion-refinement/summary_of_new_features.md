@@ -1,6 +1,6 @@
 ---
 title: Summary of new and updated features
-description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-8 complete; deferred features (N2, R10, R8, S5) implemented. Phases 015-017 applied P1 fixes (timer persistence, effectiveScore fallback), alignment remediation (dedup, fallback forcing), and Opus review remediation (35 fixes, legacy V1 pipeline removed, 7085 tests passing).
+description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-8 complete; deferred features (N2, R10, R8, S5) implemented. Phases 015-018 applied P1 fixes (timer persistence, effectiveScore fallback), alignment remediation (dedup, fallback forcing), Opus review remediation (35 fixes, legacy V1 pipeline removed, 7085 tests passing), and multi-agent deep review remediation (Math.max stack overflow elimination, transaction hardening, cross-AI validation with 14 fixes, sk-code alignment).
 ---
 
 # Summary of new and updated features
@@ -103,6 +103,14 @@ description: Every improvement delivered in the Hybrid RAG Fusion Refinement pro
   - [Pipeline and mutation hardening](#pipeline-and-mutation-hardening)
   - [Graph and cognitive memory fixes](#graph-and-cognitive-memory-fixes)
   - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
+- [Multi-agent deep review remediation (Phase 018)](#multi-agent-deep-review-remediation-phase-018)
+  - [Math.max/min stack overflow elimination](#mathmaxmin-stack-overflow-elimination)
+  - [Session-manager transaction gap fixes](#session-manager-transaction-gap-fixes)
+  - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
+  - [BM25 trigger phrase re-index gate](#bm25-trigger-phrase-re-index-gate)
+  - [DB_PATH extraction and import standardization](#db_path-extraction-and-import-standardization)
+  - [Cross-AI validation fixes (Tier 4)](#cross-ai-validation-fixes-tier-4)
+  - [Code standards alignment](#code-standards-alignment)
 - [Decisions and deferrals](#decisions-and-deferrals)
   - [INT8 quantization evaluation (R5)](#int8-quantization-evaluation-r5)
   - [Implemented: graph centrality and community detection (N2)](#implemented-graph-centrality-and-community-detection-n2)
@@ -826,6 +834,62 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 - **parseArgs guard (#36):** `parseArgs<T>()` returns `{} as T` for null/undefined/non-object input at the protocol boundary.
 - **128-bit dedup hash (#37):** Session dedup hash extended from `.slice(0, 16)` (64-bit) to `.slice(0, 32)` (128-bit) to reduce collision probability.
 - **Exit handler cleanup (#38):** `_exitFlushHandler` reference stored; `cleanupExitHandlers()` now calls `process.removeListener()` for `beforeExit`, `SIGTERM`, and `SIGINT`.
+
+---
+
+## Multi-agent deep review remediation (Phase 018)
+
+An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Spec folder: `018-refinement-phase-7` (Level 3). Test count after: 7,085/7,085 (230 files).
+
+### Math.max/min stack overflow elimination
+
+`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
+
+- `rsf-fusion.ts` — 6 instances (4 + 2)
+- `causal-boost.ts` — 1 instance
+- `evidence-gap-detector.ts` — 1 instance
+- `prediction-error-gate.ts` — 2 instances
+- `retrieval-telemetry.ts` — 1 instance
+- `reporting-dashboard.ts` — 2 instances
+
+Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
+
+### Session-manager transaction gap fixes
+
+Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks in `session-manager.ts` were moved inside. In `runBatch()` (line ~437) and `markMemorySent()` (line ~403), concurrent MCP requests could both pass the limit check then both insert, exceeding the entry limit. Both now run check-and-insert atomically inside the transaction.
+
+### Transaction wrappers on mutation handlers
+
+`memory-crud-update.ts` gained a `database.transaction(() => {...})()` wrapper around its mutation steps (vectorIndex.updateMemory, BM25 re-index, mutation ledger). `memory-crud-delete.ts` gained the same for its single-delete path (memory delete, vector delete, causal edge delete, mutation ledger). Cache invalidation operations remain outside the transaction as in-memory-only operations. Both include null-database fallbacks.
+
+### BM25 trigger phrase re-index gate
+
+The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-only to title OR trigger phrases: `if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled())`. The BM25 corpus includes trigger phrases, so changes to either field must trigger re-indexing.
+
+### DB_PATH extraction and import standardization
+
+`shared/config.ts` gained an exported `getDbDir()` function reading `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` env vars. `shared/paths.ts` exports `DB_PATH` using this config. Scripts that hardcoded database paths (`cleanup-orphaned-vectors.ts`) now import from shared. Fourteen relative cross-boundary imports across scripts were converted to `@spec-kit/` workspace aliases.
+
+### Cross-AI validation fixes (Tier 4)
+
+Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
+
+- **CR-P0-1:** Test suite false-pass patterns — 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
+- **CR-P1-1:** Deletion exception propagation — causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
+- **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
+- **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
+- **CR-P1-5:** Cache lookup moved before embedding readiness gate in search handler.
+- **CR-P1-6:** Partial-update DB mutations wrapped inside transaction.
+- **CR-P1-8:** Config env var fallback chain (`SPEC_KIT_DB_DIR || SPECKIT_DB_DIR`).
+- **CR-P2-3:** Dashboard row limit configurable via `SPECKIT_DASHBOARD_LIMIT` (default 10000) with NaN guard.
+- **CR-P2-5:** `Number.isFinite` guards on evidence gap detector scores.
+
+All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed, Claude final-reviewed.
+
+### Code standards alignment
+
+All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
 ---
 

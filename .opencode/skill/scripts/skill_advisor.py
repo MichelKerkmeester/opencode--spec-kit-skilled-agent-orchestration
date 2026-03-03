@@ -12,15 +12,15 @@ Output: JSON array of skill recommendations with confidence scores
 
 Options:
     --health      Run health check diagnostics
-    --threshold   Filter results to only show recommendations >= threshold (default: 0.0)
+    --threshold   Confidence threshold used by default dual-threshold filtering (default: 0.8)
+    --confidence-only  Explicitly bypass uncertainty filtering
 """
 import sys
 import json
 import os
 import re
-import glob
 import argparse
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 
 # ───────────────────────────────────────────────────────────────
@@ -31,6 +31,26 @@ from typing import Any, Dict, List, Optional
 # This script lives in .opencode/skill/scripts/, so skills are in the parent dir.
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
 SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
+
+RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
+_RUNTIME_SPEC = None
+_runtime_module = None
+try:
+    import importlib.util
+
+    _RUNTIME_SPEC = importlib.util.spec_from_file_location("skill_advisor_runtime", RUNTIME_PATH)
+    if _RUNTIME_SPEC and _RUNTIME_SPEC.loader:
+        _runtime_module = importlib.util.module_from_spec(_RUNTIME_SPEC)
+        _RUNTIME_SPEC.loader.exec_module(_runtime_module)
+except Exception as _runtime_exc:  # pragma: no cover - startup safety
+    _runtime_module = None
+
+if _runtime_module is None:
+    raise RuntimeError(f"Failed to load runtime helpers from {RUNTIME_PATH}")
+
+get_cache_status = _runtime_module.get_cache_status
+get_cached_skill_records = _runtime_module.get_cached_skill_records
+parse_frontmatter_fast = _runtime_module.parse_frontmatter_fast
 
 # Comprehensive stop words - filtered from BOTH query AND corpus
 # These words have no semantic meaning for skill matching
@@ -542,59 +562,120 @@ PHRASE_INTENT_BOOSTERS = {
     ".opencode/skill/sk-prompt-improver": [("sk-prompt-improver", 3.0)],
 }
 
+DEFAULT_CONFIDENCE_THRESHOLD = 0.8
+DEFAULT_UNCERTAINTY_THRESHOLD = 0.35
+
+COMMAND_BRIDGES = {
+    "command-spec-kit": {
+        "description": "Create specifications and plans using /spec_kit slash command for new features or complex changes.",
+        "slash_markers": ["/spec_kit", "spec_kit:"],
+    },
+    "command-memory-save": {
+        "description": "Save conversation context to memory using /memory:save.",
+        "slash_markers": ["/memory:save", "memory:save"],
+    },
+}
+
+INTENT_NORMALIZATION_RULES = {
+    "review": {
+        "phrases": ["code review", "pr review", "security review", "quality gate", "request changes"],
+        "tokens": {"review", "audit", "regression", "findings", "readiness", "vulnerability"},
+        "boosts": [("sk-code--review", 0.8)],
+    },
+    "implementation": {
+        "phrases": ["implement feature", "fix bug", "refactor module", "build feature"],
+        "tokens": {"implement", "fix", "refactor", "build", "bug", "feature"},
+        "boosts": [("sk-code--web", 0.35), ("sk-code--full-stack", 0.35)],
+    },
+    "documentation": {
+        "phrases": ["create documentation", "write readme", "install guide", "markdown docs"],
+        "tokens": {"documentation", "document", "readme", "markdown", "guide", "flowchart", "diagram"},
+        "boosts": [("sk-doc", 0.45), ("sk-doc-visual", 0.25)],
+    },
+    "memory": {
+        "phrases": ["save context", "save memory", "remember this", "restore checkpoint"],
+        "tokens": {"memory", "context", "checkpoint", "remember", "restore", "session", "preserve"},
+        "boosts": [("system-spec-kit", 0.6)],
+    },
+    "tooling": {
+        "phrases": ["use mcp", "code mode", "chrome devtools", "use figma", "use webflow"],
+        "tokens": {"mcp", "devtools", "chrome", "figma", "webflow", "clickup", "notion", "toolchain"},
+        "boosts": [("mcp-code-mode", 0.3), ("mcp-chrome-devtools", 0.3)],
+    },
+}
+
 
 # ───────────────────────────────────────────────────────────────
 # 2. SKILL LOADING
 # ───────────────────────────────────────────────────────────────
 
 def parse_frontmatter(file_path: str) -> Optional[Dict[str, str]]:
-    """Extract name and description fields from SKILL.md frontmatter."""
+    """Extract frontmatter using fast parser (frontmatter-only reads)."""
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
-            if match:
-                yaml_block = match.group(1)
-                data = {}
-                for line in yaml_block.split('\n'):
-                    if ':' in line:
-                        key, val = line.split(':', 1)
-                        val = val.strip()
-                        # Remove one matching pair of quotes (preserves inner content)
-                        if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
-                            val = val[1:-1]
-                        data[key.strip()] = val
-                return data
-    except (OSError, UnicodeDecodeError, ValueError) as exc:
+        return parse_frontmatter_fast(file_path)
+    except Exception as exc:  # pragma: no cover - safety fallback
         print(
             f"Warning: Failed to parse frontmatter from {file_path} "
             f"({type(exc).__name__}: {exc})",
             file=sys.stderr,
         )
         return None
-    return None
 
 
-def get_skills() -> Dict[str, Dict[str, Any]]:
-    """Scan the skills directory and return discovered skill configurations."""
-    skills = {}
-    
-    if os.path.exists(SKILLS_DIR):
-        for skill_file in glob.glob(os.path.join(SKILLS_DIR, "*/SKILL.md")):
-            meta = parse_frontmatter(skill_file)
-            if meta and 'name' in meta:
-                skills[meta['name']] = {
-                    "description": meta.get('description', ''),
-                }
-    
-    # Hardcoded command bridges (slash commands)
-    skills["command-spec-kit"] = {
-        "description": "Create specifications and plans using /spec_kit slash command for new features or complex changes.",
+def _normalize_terms(text: str) -> Set[str]:
+    terms = re.findall(r'\b\w+\b', text.lower())
+    return {term for term in terms if len(term) > 2 and term not in STOP_WORDS}
+
+
+def _build_variants(skill_name: str) -> Set[str]:
+    lowered = skill_name.lower()
+    return {
+        lowered,
+        f"${lowered}",
+        f"/{lowered}",
+        lowered.replace('-', ' '),
+        lowered.replace('-', '_'),
     }
 
-    skills["command-memory-save"] = {
-        "description": "Save conversation context to memory using /memory:save.",
+
+def _build_inline_record(
+    name: str,
+    description: str,
+    kind: str,
+    source: str,
+    path: Optional[str] = None,
+    extra_variants: Optional[Set[str]] = None,
+) -> Dict[str, Any]:
+    variants = _build_variants(name)
+    if extra_variants:
+        variants.update(extra_variants)
+
+    return {
+        "name": name,
+        "description": description,
+        "kind": kind,
+        "source": source,
+        "path": path,
+        "name_terms": _normalize_terms(name.replace('-', ' ')),
+        "corpus_terms": _normalize_terms(description),
+        "variants": variants,
     }
+
+
+def get_skills(force_refresh: bool = False) -> Dict[str, Dict[str, Any]]:
+    """Return skill + command records with cached discovery metadata."""
+    skills = get_cached_skill_records(SKILLS_DIR, STOP_WORDS, force_refresh=force_refresh)
+
+    for command_name, command_config in COMMAND_BRIDGES.items():
+        markers = set(command_config.get("slash_markers", []))
+        skills[command_name] = _build_inline_record(
+            name=command_name,
+            description=command_config["description"],
+            kind="command",
+            source="bridge",
+            path=None,
+            extra_variants=markers,
+        )
 
     return skills
 
@@ -606,6 +687,38 @@ def expand_query(prompt_tokens: List[str]) -> List[str]:
         if token in SYNONYM_MAP:
             expanded.update(SYNONYM_MAP[token])
     return list(expanded)
+
+
+def detect_explicit_command_intent(prompt_lower: str) -> Optional[str]:
+    """Return targeted command bridge when explicit slash markers are present."""
+    for command_name, command_config in COMMAND_BRIDGES.items():
+        for marker in command_config.get("slash_markers", []):
+            if marker and marker in prompt_lower:
+                return command_name
+    return None
+
+
+def apply_intent_normalization(
+    prompt_lower: str,
+    tokens: List[str],
+    skill_boosts: Dict[str, float],
+    boost_reasons: Dict[str, List[str]],
+) -> List[str]:
+    """Apply lightweight canonical intent boosts before main scoring."""
+    detected: List[str] = []
+    token_set = set(tokens)
+
+    for intent_name, config in INTENT_NORMALIZATION_RULES.items():
+        matched = any(phrase in prompt_lower for phrase in config["phrases"]) or bool(token_set.intersection(config["tokens"]))
+        if not matched:
+            continue
+
+        detected.append(intent_name)
+        for skill_name, boost in config["boosts"]:
+            skill_boosts[skill_name] = skill_boosts.get(skill_name, 0.0) + boost
+            boost_reasons.setdefault(skill_name, []).append(f"!intent:{intent_name}")
+
+    return detected
 
 
 # ───────────────────────────────────────────────────────────────
@@ -723,7 +836,7 @@ def passes_dual_threshold(
 
     Note on thresholds:
     - AGENTS.md Gate 1 defines READINESS as: (confidence >= 0.70) AND (uncertainty <= 0.35)
-    - Gate 3 skill routing uses conf_threshold=0.8 (stricter for routing decisions)
+    - Gate 2 skill routing typically uses conf_threshold=0.8 (stricter for routing decisions)
     - The uncertainty threshold of 0.35 matches AGENTS.md exactly
 
     Args:
@@ -738,6 +851,65 @@ def passes_dual_threshold(
     return confidence >= conf_threshold and uncertainty <= uncert_threshold
 
 
+def apply_confidence_calibration(recommendations: List[Dict[str, Any]]) -> None:
+    """Adjust confidence using score margin and ambiguity pressure."""
+    if not recommendations:
+        return
+
+    ordered = sorted(recommendations, key=lambda item: item["_score"], reverse=True)
+    score_map: Dict[str, float] = {}
+    for index, current in enumerate(ordered):
+        next_score = ordered[index + 1]["_score"] if index + 1 < len(ordered) else 0.0
+        score_map[current["skill"]] = current["_score"] - next_score
+
+    for recommendation in recommendations:
+        confidence = recommendation["confidence"]
+        num_matches = max(1, recommendation.get("_num_matches", 1))
+        num_ambiguous = recommendation.get("_num_ambiguous", 0)
+        margin = score_map.get(recommendation["skill"], 0.0)
+
+        margin_penalty = 0.0
+        if margin < 0.6:
+            margin_penalty = min((0.6 - margin) * 0.2, 0.12)
+
+        ambiguity_ratio = num_ambiguous / num_matches
+        ambiguity_penalty = min(ambiguity_ratio * 0.1, 0.1)
+        evidence_bonus = min(max(num_matches - 3, 0) * 0.01, 0.05)
+
+        calibrated = confidence - margin_penalty - ambiguity_penalty + evidence_bonus
+        recommendation["confidence"] = round(max(0.0, min(0.95, calibrated)), 2)
+
+
+def filter_recommendations(
+    recommendations: List[Dict[str, Any]],
+    confidence_threshold: float,
+    uncertainty_threshold: float,
+    confidence_only: bool,
+    show_rejections: bool,
+) -> List[Dict[str, Any]]:
+    """Filter recommendations under default dual-threshold or explicit confidence-only mode."""
+    filtered: List[Dict[str, Any]] = []
+
+    for recommendation in recommendations:
+        passes = passes_dual_threshold(
+            recommendation["confidence"],
+            recommendation["uncertainty"],
+            conf_threshold=confidence_threshold,
+            uncert_threshold=uncertainty_threshold,
+        )
+        recommendation["passes_threshold"] = passes
+
+        if confidence_only:
+            if recommendation["confidence"] >= confidence_threshold:
+                filtered.append(recommendation)
+            continue
+
+        if show_rejections or passes:
+            filtered.append(recommendation)
+
+    return filtered
+
+
 # ───────────────────────────────────────────────────────────────
 # 4. ANALYSIS
 # ───────────────────────────────────────────────────────────────
@@ -750,11 +922,20 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
     prompt_lower = prompt.lower()
     all_tokens = re.findall(r'\b\w+\b', prompt_lower)
     skills = get_skills()
+    explicit_command_intent = detect_explicit_command_intent(prompt_lower)
 
     # Intent boosts calculated BEFORE stop word filtering - question words (how, why, what)
     # are important signals for semantic search but would otherwise be filtered
     skill_boosts = {}
     boost_reasons = {}
+
+    apply_intent_normalization(
+        prompt_lower=prompt_lower,
+        tokens=all_tokens,
+        skill_boosts=skill_boosts,
+        boost_reasons=boost_reasons,
+    )
+
     for token in all_tokens:
         if token in INTENT_BOOSTERS:
             skill, boost = INTENT_BOOSTERS[token]
@@ -780,15 +961,8 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
 
     # Strongly prefer the explicitly named skill when users mention it directly.
     # This protects routing in mixed prompts that also contain broad terms like "opencode".
-    for skill_name in skills:
-        skill_lower = skill_name.lower()
-        variants = {
-            skill_lower,
-            f"${skill_lower}",
-            f"/{skill_lower}",
-            skill_lower.replace('-', ' '),
-            skill_lower.replace('-', '_'),
-        }
+    for skill_name, config in skills.items():
+        variants = set(config.get("variants", set())) or _build_variants(skill_name)
         matched_variants = sorted({v for v in variants if v in prompt_lower})
         if not matched_variants:
             continue
@@ -809,14 +983,12 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
     search_terms = expand_query(tokens) if tokens else []
     recommendations = []
     for name, config in skills.items():
-        score = skill_boosts.get(name, 0)
+        score = skill_boosts.get(name, 0.0)
         matches = boost_reasons.get(name, []).copy()
 
-        name_parts = name.replace('-', ' ').split()
-        desc_parts = re.findall(r'\b\w+\b', config['description'].lower())
-        corpus = set(desc_parts)
-        corpus = {k for k in corpus if len(k) > 2 and k not in STOP_WORDS}
-        name_parts_filtered = [p for p in name_parts if p not in STOP_WORDS and len(p) > 2]
+        name_parts_filtered = set(config.get("name_terms", set())) or _normalize_terms(name.replace('-', ' '))
+        corpus = set(config.get("corpus_terms", set())) or _normalize_terms(config["description"])
+        kind = config.get("kind", "skill")
 
         for term in search_terms:
             if term in name_parts_filtered:
@@ -832,37 +1004,67 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
                         matches.append(f"{term}~")
                         break
 
-        if score > 0:
-            total_intent_boost = skill_boosts.get(name, 0)
-            has_boost = total_intent_boost > 0
-            confidence = calculate_confidence(
-                score=score,
-                has_intent_boost=has_boost,
-            )
+        if kind == "command" and explicit_command_intent != name:
+            score -= 0.35
+            if score > 0:
+                matches.append("command_penalty")
 
-            num_matches = len(matches)
-            num_ambiguous = sum(1 for m in matches if '(multi)' in m)
-            uncertainty = calculate_uncertainty(
-                num_matches=num_matches,
-                has_intent_boost=has_boost,
-                num_ambiguous_matches=num_ambiguous
-            )
+        if score <= 0:
+            continue
 
-            passes = passes_dual_threshold(confidence, uncertainty)
+        total_intent_boost = skill_boosts.get(name, 0.0)
+        has_boost = total_intent_boost > 0
+        confidence = calculate_confidence(
+            score=score,
+            has_intent_boost=has_boost,
+        )
 
-            recommendations.append({
-                "skill": name,
-                "confidence": round(confidence, 2),
-                "uncertainty": uncertainty,
-                "passes_threshold": passes,
-                "reason": f"Matched: {', '.join(list(set(matches))[:5])}",
-                "_score": round(score, 4),
-                "_explicit_skill_match": any('(explicit)' in m for m in matches),
-            })
+        num_matches = len(matches)
+        num_ambiguous = sum(1 for m in matches if '(multi)' in m)
+        uncertainty = calculate_uncertainty(
+            num_matches=num_matches,
+            has_intent_boost=has_boost,
+            num_ambiguous_matches=num_ambiguous
+        )
+
+        if explicit_command_intent:
+            kind_priority = 2 if name == explicit_command_intent else (1 if kind == "command" else 0)
+        else:
+            kind_priority = 1 if kind == "skill" else 0
+
+        recommendations.append({
+            "skill": name,
+            "kind": kind,
+            "confidence": round(confidence, 2),
+            "uncertainty": uncertainty,
+            "passes_threshold": False,
+            "reason": f"Matched: {', '.join(sorted(set(matches))[:5])}",
+            "_score": round(score, 4),
+            "_explicit_skill_match": any('(explicit)' in m for m in matches),
+            "_kind_priority": kind_priority,
+            "_num_matches": num_matches,
+            "_num_ambiguous": num_ambiguous,
+        })
+
+    apply_confidence_calibration(recommendations)
+
+    for recommendation in recommendations:
+        recommendation["passes_threshold"] = passes_dual_threshold(
+            recommendation["confidence"],
+            recommendation["uncertainty"],
+            conf_threshold=DEFAULT_CONFIDENCE_THRESHOLD,
+            uncert_threshold=DEFAULT_UNCERTAINTY_THRESHOLD,
+        )
 
     ranked = sorted(
         recommendations,
-        key=lambda x: (x['_explicit_skill_match'], x['confidence'], x['_score']),
+        key=lambda x: (
+            x['_kind_priority'],
+            x['_explicit_skill_match'],
+            x['passes_threshold'],
+            x['confidence'],
+            x['_score'],
+        ),
         reverse=True,
     )
 
@@ -870,6 +1072,9 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
     for rec in ranked:
         rec.pop('_score', None)
         rec.pop('_explicit_skill_match', None)
+        rec.pop('_kind_priority', None)
+        rec.pop('_num_matches', None)
+        rec.pop('_num_ambiguous', None)
 
     return ranked
 
@@ -880,25 +1085,75 @@ def analyze_request(prompt: str) -> List[Dict[str, Any]]:
 
 def load_all_skills() -> List[Dict[str, Any]]:
     """Load all skills for diagnostics."""
-    skills = []
-    if os.path.exists(SKILLS_DIR):
-        for skill_file in glob.glob(os.path.join(SKILLS_DIR, "*/SKILL.md")):
-            meta = parse_frontmatter(skill_file)
-            if meta:
-                skills.append(meta)
-    return skills
+    loaded = []
+    for name, config in get_skills(force_refresh=True).items():
+        loaded.append({
+            "name": name,
+            "description": config.get("description", ""),
+            "kind": config.get("kind", "skill"),
+        })
+    return loaded
 
 
 def health_check() -> Dict[str, Any]:
     """Return skill count and status for diagnostics."""
     skills = load_all_skills()
+    real_skills = [s for s in skills if s.get("kind") == "skill"]
+    command_bridges = [s for s in skills if s.get("kind") == "command"]
     return {
-        "status": "ok" if skills else "error",
-        "skills_found": len(skills),
-        "skill_names": [s.get('name', 'unknown') for s in skills],
+        "status": "ok" if real_skills else "error",
+        "skills_found": len(real_skills),
+        "command_bridges_found": len(command_bridges),
+        "skill_names": [s.get('name', 'unknown') for s in real_skills],
+        "command_bridge_names": [s.get('name', 'unknown') for s in command_bridges],
         "skills_dir": SKILLS_DIR,
-        "skills_dir_exists": os.path.exists(SKILLS_DIR)
+        "skills_dir_exists": os.path.exists(SKILLS_DIR),
+        "cache": get_cache_status(),
     }
+
+
+def analyze_prompt(
+    prompt: str,
+    confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
+    uncertainty_threshold: float = DEFAULT_UNCERTAINTY_THRESHOLD,
+    confidence_only: bool = False,
+    show_rejections: bool = False,
+) -> List[Dict[str, Any]]:
+    """Analyze one prompt and apply requested filtering mode."""
+    recommendations = analyze_request(prompt)
+    return filter_recommendations(
+        recommendations=recommendations,
+        confidence_threshold=confidence_threshold,
+        uncertainty_threshold=uncertainty_threshold,
+        confidence_only=confidence_only,
+        show_rejections=show_rejections,
+    )
+
+
+def analyze_batch(
+    prompts: List[str],
+    confidence_threshold: float,
+    uncertainty_threshold: float,
+    confidence_only: bool,
+    show_rejections: bool,
+) -> List[Dict[str, Any]]:
+    """Analyze multiple prompts in a single process for lower overhead."""
+    results = []
+    for prompt in prompts:
+        trimmed = prompt.strip()
+        if not trimmed:
+            continue
+        results.append({
+            "prompt": trimmed,
+            "recommendations": analyze_prompt(
+                prompt=trimmed,
+                confidence_threshold=confidence_threshold,
+                uncertainty_threshold=uncertainty_threshold,
+                confidence_only=confidence_only,
+                show_rejections=show_rejections,
+            ),
+        })
+    return results
 
 
 # ───────────────────────────────────────────────────────────────
@@ -913,6 +1168,9 @@ if __name__ == "__main__":
 Examples:
   python skill_advisor.py "how does authentication work"
   python skill_advisor.py "create a git commit" --threshold 0.8
+  python skill_advisor.py "api chain mcp" --threshold 0.8 --confidence-only
+  python skill_advisor.py --batch-file prompts.txt
+  cat prompts.txt | python skill_advisor.py --batch-stdin
   python skill_advisor.py --health
         '''
     )
@@ -920,40 +1178,72 @@ Examples:
                         help='User request to analyze')
     parser.add_argument('--health', action='store_true',
                         help='Run health check diagnostics')
-    parser.add_argument('--threshold', type=float, default=None,
-                        help='Confidence threshold for recommendations (typical: 0.8). When explicitly set, uses confidence-only filtering (bypasses dual-threshold uncertainty check).')
-    parser.add_argument('--uncertainty', type=float, default=1.0,
-                        help='Maximum uncertainty threshold for recommendations (default: 1.0, typical: 0.5)')
+    parser.add_argument('--threshold', type=float, default=DEFAULT_CONFIDENCE_THRESHOLD,
+                        help='Confidence threshold for recommendations (default: 0.8).')
+    parser.add_argument('--uncertainty', type=float, default=DEFAULT_UNCERTAINTY_THRESHOLD,
+                        help='Maximum uncertainty threshold for recommendations in dual-threshold mode (default: 0.35).')
+    parser.add_argument('--confidence-only', action='store_true',
+                        help='Use confidence-only filtering and bypass uncertainty checks explicitly.')
     parser.add_argument('--show-rejections', action='store_true',
                         help='Include recommendations that failed dual-threshold validation')
+    parser.add_argument('--batch-file', type=str, default='',
+                        help='Analyze prompts from file (one prompt per line) in one process.')
+    parser.add_argument('--batch-stdin', action='store_true',
+                        help='Analyze prompts from stdin (one prompt per line) in one process.')
+    parser.add_argument('--force-refresh', action='store_true',
+                        help='Force refresh of skill discovery cache before analysis.')
 
     args = parser.parse_args()
-    
+
+    if args.force_refresh:
+        get_skills(force_refresh=True)
+
     if args.health:
         print(json.dumps(health_check(), indent=2))
         sys.exit(0)
-    
+
+    if args.batch_file and args.batch_stdin:
+        print(json.dumps({"error": "Use either --batch-file or --batch-stdin, not both."}, indent=2))
+        sys.exit(2)
+
+    if args.batch_file:
+        try:
+            with open(args.batch_file, 'r', encoding='utf-8') as handle:
+                batch_prompts = [line.rstrip('\n') for line in handle]
+        except OSError as exc:
+            print(json.dumps({"error": f"Failed to read --batch-file: {exc}"}, indent=2))
+            sys.exit(2)
+
+        print(json.dumps(analyze_batch(
+            prompts=batch_prompts,
+            confidence_threshold=args.threshold,
+            uncertainty_threshold=args.uncertainty,
+            confidence_only=args.confidence_only,
+            show_rejections=args.show_rejections,
+        ), indent=2))
+        sys.exit(0)
+
+    if args.batch_stdin:
+        batch_prompts = [line.rstrip('\n') for line in sys.stdin]
+        print(json.dumps(analyze_batch(
+            prompts=batch_prompts,
+            confidence_threshold=args.threshold,
+            uncertainty_threshold=args.uncertainty,
+            confidence_only=args.confidence_only,
+            show_rejections=args.show_rejections,
+        ), indent=2))
+        sys.exit(0)
+
     if not args.prompt:
         print(json.dumps([]))
         sys.exit(0)
-    
-    results = analyze_request(args.prompt)
 
-    # Determine filtering mode based on whether --threshold was explicitly passed.
-    # When explicit: confidence-only filtering (user override — matches AGENTS.md Gate 2:
-    #   "confidence >= 0.8 → MUST invoke"). The dual-threshold uncertainty check is bypassed.
-    # When implicit (None): use dual-threshold passes_threshold field as the filter.
-    explicit_threshold = args.threshold is not None
-
-    if explicit_threshold:
-        # User explicitly set --threshold: filter by confidence alone
-        results = [r for r in results if r['confidence'] >= args.threshold]
-    elif not args.show_rejections:
-        # No explicit threshold: use dual-threshold (confidence + uncertainty)
-        results = [r for r in results if r.get('passes_threshold', True)]
-
-    # Apply uncertainty threshold filtering (only when explicitly set below 1.0)
-    if args.uncertainty < 1.0:
-        results = [r for r in results if r['uncertainty'] <= args.uncertainty]
+    results = analyze_prompt(
+        prompt=args.prompt,
+        confidence_threshold=args.threshold,
+        uncertainty_threshold=args.uncertainty,
+        confidence_only=args.confidence_only,
+        show_rejections=args.show_rejections,
+    )
 
     print(json.dumps(results, indent=2))

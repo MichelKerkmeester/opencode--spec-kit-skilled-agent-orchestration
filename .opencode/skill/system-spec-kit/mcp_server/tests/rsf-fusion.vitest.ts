@@ -12,7 +12,7 @@ import {
   clamp01,
 } from '../lib/search/rsf-fusion';
 import type { RsfResult } from '../lib/search/rsf-fusion';
-import type { RankedList, RrfItem } from '../lib/search/rrf-fusion';
+import type { RankedList, RrfItem } from '../../shared/algorithms/rrf-fusion';
 
 /* ═══════════════════════════════════════════════════════════════
    HELPERS

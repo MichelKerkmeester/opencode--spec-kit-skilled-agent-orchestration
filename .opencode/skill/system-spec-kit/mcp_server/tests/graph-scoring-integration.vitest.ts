@@ -10,7 +10,7 @@ import {
   fuseResultsMulti,
   fuseResultsCrossVariant,
   normalizeRrfScores,
-} from '../lib/search/rrf-fusion';
+} from '../../shared/algorithms/rrf-fusion';
 
 import {
   normalizeCompositeScores,

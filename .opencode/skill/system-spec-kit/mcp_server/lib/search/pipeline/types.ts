@@ -3,7 +3,7 @@
 // Sprint 5 (R6): Stage interfaces with Stage 4 immutability invariant
 // ---------------------------------------------------------------
 
-import type { RetrievalTrace } from '../../contracts/retrieval-trace';
+import type { RetrievalTrace } from '../../../../shared/contracts/retrieval-trace';
 
 /**
  * Memory search row — the canonical internal result type flowing through the pipeline.

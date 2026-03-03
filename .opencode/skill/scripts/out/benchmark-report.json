@@ -1,0 +1,45 @@
+{
+  "dataset": ".opencode/skill/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+  "runs": 7,
+  "prompts": 34,
+  "threshold": 0.8,
+  "uncertainty": 0.35,
+  "subprocess_one_shot": {
+    "count": 238,
+    "p50_ms": 37.9208,
+    "p95_ms": 46.9855,
+    "min_ms": 35.8485,
+    "max_ms": 98.391,
+    "mean_ms": 38.9233,
+    "throughput_prompts_per_sec": 25.6892,
+    "total_prompts": 238
+  },
+  "inprocess_warm": {
+    "count": 238,
+    "p50_ms": 0.3867,
+    "p95_ms": 0.6081,
+    "min_ms": 0.1448,
+    "max_ms": 1.257,
+    "mean_ms": 0.3896,
+    "throughput_prompts_per_sec": 2564.7093,
+    "total_prompts": 238
+  },
+  "batch_mode": {
+    "count": 7,
+    "p50_ms": 51.1868,
+    "p95_ms": 52.7988,
+    "min_ms": 50.0548,
+    "max_ms": 52.7988,
+    "mean_ms": 51.1866,
+    "throughput_prompts_per_sec": 664.1628,
+    "total_prompts": 238,
+    "batch_size": 34
+  },
+  "throughput_multiplier": 25.8538,
+  "gates": {
+    "warm_p95": true,
+    "cold_p95": true,
+    "throughput_multiplier": true
+  },
+  "overall_pass": true
+}

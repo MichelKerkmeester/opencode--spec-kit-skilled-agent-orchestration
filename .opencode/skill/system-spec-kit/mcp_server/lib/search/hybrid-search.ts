@@ -7,14 +7,15 @@
 
 // Local
 import { getIndex } from './bm25-index';
-import { fuseResultsMulti } from './rrf-fusion';
-import { hybridAdaptiveFuse } from './adaptive-fusion';
+import { fuseResultsMulti } from '../../../shared/algorithms/rrf-fusion';
+import { hybridAdaptiveFuse } from '../../../shared/algorithms/adaptive-fusion';
 import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cache/cognitive/co-activation';
-import { applyMMR } from './mmr-reranker';
+import { applyMMR } from '../../../shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
 import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled, isDegreeBoostEnabled } from './search-flags';
 import { computeDegreeScores } from './graph-search-fn';
+export type { GraphSearchFn } from './search-types';
 
 import { routeQuery } from './query-router';
 import { enforceChannelRepresentation } from './channel-enforcement';
@@ -33,8 +34,8 @@ import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
 // Type-only
 import type Database from 'better-sqlite3';
 import type { SpreadResult } from '../cache/cognitive/co-activation';
-import type { MMRCandidate } from './mmr-reranker';
-import type { FusionResult } from './rrf-fusion';
+import type { MMRCandidate } from '../../../shared/algorithms/mmr-reranker';
+import type { FusionResult } from '../../../shared/algorithms/rrf-fusion';
 import type { ChannelName } from './query-router';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
@@ -43,11 +44,6 @@ import type { TruncationResult } from './confidence-truncation';
 
 type VectorSearchFn = (
   embedding: Float32Array | number[],
-  options: Record<string, unknown>
-) => Array<Record<string, unknown>>;
-
-export type GraphSearchFn = (
-  query: string,
   options: Record<string, unknown>
 ) => Array<Record<string, unknown>>;
 

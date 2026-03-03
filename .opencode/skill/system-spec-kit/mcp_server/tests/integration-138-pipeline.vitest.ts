@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { applyMMR } from '../lib/search/mmr-reranker';
+import { applyMMR } from '../../shared/algorithms/mmr-reranker';
 import { detectEvidenceGap } from '../lib/search/evidence-gap-detector';
 
 /* ---------------------------------------------------------------
@@ -295,7 +295,7 @@ describe('C138 Integration Pipeline', () => {
 
 describe('C138 Stage: Adaptive Fusion Weights', () => {
   it('getAdaptiveWeights returns different profiles per intent', async () => {
-    const { getAdaptiveWeights } = await import('../lib/search/adaptive-fusion');
+    const { getAdaptiveWeights } = await import('../../shared/algorithms/adaptive-fusion');
     const understand = getAdaptiveWeights('understand');
     const fixBug = getAdaptiveWeights('fix_bug');
 
@@ -306,7 +306,7 @@ describe('C138 Stage: Adaptive Fusion Weights', () => {
   });
 
   it('getAdaptiveWeights returns default for unknown intent', async () => {
-    const { getAdaptiveWeights, DEFAULT_WEIGHTS } = await import('../lib/search/adaptive-fusion');
+    const { getAdaptiveWeights, DEFAULT_WEIGHTS } = await import('../../shared/algorithms/adaptive-fusion');
     const unknown = getAdaptiveWeights('totally_unknown_intent');
 
     expect(unknown.semanticWeight).toBe(DEFAULT_WEIGHTS.semanticWeight);
@@ -314,7 +314,7 @@ describe('C138 Stage: Adaptive Fusion Weights', () => {
   });
 
   it('all 7 intent profiles include graphWeight and graphCausalBias', async () => {
-    const { INTENT_WEIGHT_PROFILES } = await import('../lib/search/adaptive-fusion');
+    const { INTENT_WEIGHT_PROFILES } = await import('../../shared/algorithms/adaptive-fusion');
     const intents = Object.keys(INTENT_WEIGHT_PROFILES);
 
     expect(intents.length).toBe(7);
@@ -452,7 +452,7 @@ describe('C138 Stage: Query Expander Production', () => {
 
 describe('C138 Regression: Flags OFF Baseline', () => {
   it('hybridAdaptiveFuse returns standard results when SPECKIT_ADAPTIVE_FUSION is off', async () => {
-    const { hybridAdaptiveFuse } = await import('../lib/search/adaptive-fusion');
+    const { hybridAdaptiveFuse } = await import('../../shared/algorithms/adaptive-fusion');
     // With flag off, should return standard RRF results (equal weights)
     const semantic = [{ id: 1, score: 0.8 }, { id: 2, score: 0.5 }];
     const keyword = [{ id: 3, score: 0.7 }, { id: 1, score: 0.6 }];

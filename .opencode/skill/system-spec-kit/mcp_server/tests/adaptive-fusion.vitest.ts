@@ -14,9 +14,9 @@ import {
   INTENT_WEIGHT_PROFILES,
   DEFAULT_WEIGHTS,
   FEATURE_FLAG,
-} from '../lib/search/adaptive-fusion';
-import type { FusionWeights, DegradedModeContract, AdaptiveFusionResult } from '../lib/search/adaptive-fusion';
-import type { RrfItem } from '../lib/search/rrf-fusion';
+} from '../../shared/algorithms/adaptive-fusion';
+import type { FusionWeights, DegradedModeContract, AdaptiveFusionResult } from '../../shared/algorithms/adaptive-fusion';
+import type { RrfItem } from '../../shared/algorithms/rrf-fusion';
 
 /* ---------------------------------------------------------------
    HELPERS

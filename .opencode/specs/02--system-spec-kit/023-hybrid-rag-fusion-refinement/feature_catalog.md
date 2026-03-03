@@ -139,6 +139,14 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Pipeline and mutation hardening](#pipeline-and-mutation-hardening)
   - [Graph and cognitive memory fixes](#graph-and-cognitive-memory-fixes)
   - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
+- [Multi-agent deep review remediation (Phase 018)](#multi-agent-deep-review-remediation-phase-018)
+  - [Math.max/min stack overflow elimination](#mathmaxmin-stack-overflow-elimination)
+  - [Session-manager transaction gap fixes](#session-manager-transaction-gap-fixes)
+  - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
+  - [BM25 trigger phrase re-index gate](#bm25-trigger-phrase-re-index-gate)
+  - [DB_PATH extraction and import standardization](#db_path-extraction-and-import-standardization)
+  - [Cross-AI validation fixes (Tier 4)](#cross-ai-validation-fixes-tier-4)
+  - [Code standards alignment](#code-standards-alignment)
 - [Decisions and deferrals](#decisions-and-deferrals)
   - [INT8 quantization evaluation (R5)](#int8-quantization-evaluation-r5)
   - [Implemented: graph centrality and community detection (N2)](#implemented-graph-centrality-and-community-detection-n2)
@@ -264,7 +272,7 @@ A pre-update hash snapshot is captured for the mutation ledger. Every update rec
 
 Two deletion modes in one tool. Pass a numeric `id` for single delete or a `specFolder` string (with `confirm: true`) for bulk folder delete.
 
-Single deletes are straightforward: remove the memory record, clean up associated causal graph edges and record a mutation ledger entry. If causal edge cleanup fails, the deletion still succeeds. The edge cleanup is non-fatal because a dangling edge is a minor inconsistency while a failed delete that leaves stale data is a bigger problem.
+Single deletes run inside a database transaction: remove the memory record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
 
 Bulk deletes by spec folder are more involved. The system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching memories inside a database transaction with per-memory causal edge cleanup and per-memory mutation ledger entries. The entire operation is atomic: either all memories in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint.
 
@@ -1175,6 +1183,62 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 ---
 
+## Multi-agent deep review remediation (Phase 018)
+
+An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Spec folder: `018-refinement-phase-7` (Level 3). Test count after: 7,085/7,085 (230 files).
+
+### Math.max/min stack overflow elimination
+
+`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
+
+- `rsf-fusion.ts` — 6 instances (4 + 2)
+- `causal-boost.ts` — 1 instance
+- `evidence-gap-detector.ts` — 1 instance
+- `prediction-error-gate.ts` — 2 instances
+- `retrieval-telemetry.ts` — 1 instance
+- `reporting-dashboard.ts` — 2 instances
+
+Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
+
+### Session-manager transaction gap fixes
+
+Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks in `session-manager.ts` were moved inside. In `runBatch()` (line ~437) and `markMemorySent()` (line ~403), concurrent MCP requests could both pass the limit check then both insert, exceeding the entry limit. Both now run check-and-insert atomically inside the transaction.
+
+### Transaction wrappers on mutation handlers
+
+`memory-crud-update.ts` gained a `database.transaction(() => {...})()` wrapper around its mutation steps (vectorIndex.updateMemory, BM25 re-index, mutation ledger). `memory-crud-delete.ts` gained the same for its single-delete path (memory delete, vector delete, causal edge delete, mutation ledger). Cache invalidation operations remain outside the transaction as in-memory-only operations. Both include null-database fallbacks.
+
+### BM25 trigger phrase re-index gate
+
+The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-only to title OR trigger phrases: `if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled())`. The BM25 corpus includes trigger phrases, so changes to either field must trigger re-indexing.
+
+### DB_PATH extraction and import standardization
+
+`shared/config.ts` gained an exported `getDbDir()` function reading `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` env vars. `shared/paths.ts` exports `DB_PATH` using this config. Scripts that hardcoded database paths (`cleanup-orphaned-vectors.ts`) now import from shared. Fourteen relative cross-boundary imports across scripts were converted to `@spec-kit/` workspace aliases.
+
+### Cross-AI validation fixes (Tier 4)
+
+Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
+
+- **CR-P0-1:** Test suite false-pass patterns — 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
+- **CR-P1-1:** Deletion exception propagation — causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
+- **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
+- **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
+- **CR-P1-5:** Cache lookup moved before embedding readiness gate in search handler.
+- **CR-P1-6:** Partial-update DB mutations wrapped inside transaction.
+- **CR-P1-8:** Config env var fallback chain (`SPEC_KIT_DB_DIR || SPECKIT_DB_DIR`).
+- **CR-P2-3:** Dashboard row limit configurable via `SPECKIT_DASHBOARD_LIMIT` (default 10000) with NaN guard.
+- **CR-P2-5:** `Number.isFinite` guards on evidence gap detector scores.
+
+All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed, Claude final-reviewed.
+
+### Code standards alignment
+
+All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+
+---
+
 ## Decisions and deferrals
 
 ### INT8 quantization evaluation (R5)
@@ -1240,6 +1304,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect; the function always returns `false`. |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
+| `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
@@ -1267,7 +1332,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |
 | `SPECKIT_NEGATIVE_FEEDBACK` | `true` | boolean | `lib/search/search-flags.ts` | T002b/A4 negative-feedback confidence demotion. Applies a confidence multiplier (starts at 1.0, decreases 0.1 per negative validation, floors at 0.3) with 30-day half-life recovery. |
 | `SPECKIT_NOVELTY_BOOST` | inert | boolean | `lib/scoring/composite-scoring.ts` | **Inert.** N4 cold-start novelty boost was evaluated and removed. The env var is read in tests only; the production function always returns 0. |
-| `SPECKIT_PIPELINE_V2` | `true` | boolean | `lib/search/search-flags.ts` | R6: activates the 4-stage pipeline architecture (Stage 1 candidate generation, Stage 2 fusion, Stage 3 reranking, Stage 4 filtering with score-immutability invariant). When disabled, the legacy `postSearchPipeline` single-function path is used. |
+| `SPECKIT_PIPELINE_V2` | `true` | boolean | `lib/search/search-flags.ts` | **Deprecated (always true).** `isPipelineV2Enabled()` is hardcoded to `return true` at `search-flags.ts:101`. The V2 pipeline is the only pipeline. The legacy `postSearchPipeline` was removed in Phase 017. This flag is retained for backward compatibility but has no effect. |
 | `SPECKIT_PRESSURE_POLICY` | `true` | boolean | `handlers/memory-context.ts` | Enables context-pressure-based mode downgrading in `memory_context`. Above 0.60 token usage ratio, switches to focused mode. Above 0.80, switches to quick mode. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
 | `SPECKIT_QUALITY_LOOP` | `false` | boolean | `handlers/memory-save.ts` | **Default OFF.** Enables the quality loop which re-evaluates low-quality memories after save. Must be explicitly set to `'true'`. Used for iterative quality improvement workflows. |
 | `SPECKIT_RECONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. After embedding generation, checks top-3 similar memories in the same folder. Above 0.88 similarity triggers merge; 0.75–0.88 triggers supersede + causal edge. Requires a checkpoint to exist for the spec folder. |
@@ -1321,6 +1386,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `MEMORY_BASE_PATH` | _(cwd)_ | string | `core/config.ts` | Base path prepended to relative file paths when resolving memory file locations. Defaults to `process.cwd()` when not set. Determines the root of the allowed path tree. |
 | `MEMORY_DB_DIR` | _(legacy fallback)_ | string | `lib/search/vector-index-impl.ts` | Legacy fallback for the database directory. Superseded by `SPEC_KIT_DB_DIR`. Precedence order: `SPEC_KIT_DB_DIR` > `MEMORY_DB_DIR` > default `database/` directory adjacent to the server root. |
 | `MEMORY_DB_PATH` | _(derived)_ | string | `lib/search/vector-index-impl.ts` | Full path to the SQLite database file. When set, overrides the derived path from `SPEC_KIT_DB_DIR` or `MEMORY_DB_DIR`. Use for pointing at a provider-specific or non-default database location. |
+| `SPECKIT_DB_DIR` | _(fallback)_ | string | `shared/config.ts` | Fallback env var for the database directory, checked after `SPEC_KIT_DB_DIR`. Added in Phase 018 (CR-P1-8) to support the underscore-less naming convention. Precedence: `SPEC_KIT_DB_DIR` > `SPECKIT_DB_DIR` > default path. |
 | `SPEC_KIT_BATCH_DELAY_MS` | `100` | number | `core/config.ts` | Delay in milliseconds between processing batches during `memory_index_scan`. Prevents exhausting I/O resources on large workspaces by introducing a small pause between embedding generation batches. |
 | `SPEC_KIT_BATCH_SIZE` | `5` | number | `core/config.ts` | Number of files processed per batch during `memory_index_scan`. Lower values reduce peak memory usage and API concurrency at the cost of longer scan times. |
 | `SPEC_KIT_DB_DIR` | _(server root)_ | string | `core/config.ts` | Directory where the SQLite database file is stored. Takes precedence over `MEMORY_DB_DIR`. Resolved relative to `process.cwd()` when set. Defaults to a `database/` directory adjacent to the server root. |

@@ -181,17 +181,17 @@ All template files follow this consistent structure:
 
 ### Command Integration
 
-| Mode                       | Related Commands          | Description                            |
-| -------------------------- | ------------------------- | -------------------------------------- |
-| **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows |
-| **Mode 4: Install Guides** | `/create:install_guide`   | Generate 5-phase install documentation |
-| **General**                | `/create:folder_readme`   | Create folder README with structure    |
+| Mode                       | Related Commands          | Description                                 |
+| -------------------------- | ------------------------- | ------------------------------------------- |
+| **Mode 1: README**         | `/create:folder_readme`   | Unified README creation (default operation) |
+| **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows      |
+| **Mode 4: Install Guides** | `/create:folder_readme install` | Install guide creation via unified command |
 
 **Command → Mode Mapping:**
 ```
-/create:sk-skill        → Mode 2 (full-create/full-update/reference-only/asset-only)
-/create:install_guide   → Mode 4 (5-phase template)
-/create:folder_readme   → Mode 1 (README quality standards)
+/create:folder_readme            → Mode 1 (README quality standards, default)
+/create:folder_readme install    → Mode 4 (5-phase install workflow)
+/create:sk-skill                 → Mode 2 (full-create/full-update/reference-only/asset-only)
 ```
 
 ---

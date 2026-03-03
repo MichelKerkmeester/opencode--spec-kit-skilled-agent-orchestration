@@ -29,7 +29,7 @@ describe('Regression Suite (013 fixes)', () => {
       const path = await import('node:path');
       const schemaFilePath = path.resolve(
         __dirname,
-        '../lib/search/vector-index-impl.ts'
+        '../lib/search/vector-index-schema.ts'
       );
       const source = fs.readFileSync(schemaFilePath, 'utf8');
 
@@ -44,7 +44,7 @@ describe('Regression Suite (013 fixes)', () => {
       const path = await import('node:path');
       const schemaFilePath = path.resolve(
         __dirname,
-        '../lib/search/vector-index-impl.ts'
+        '../lib/search/vector-index-schema.ts'
       );
       const source = fs.readFileSync(schemaFilePath, 'utf8');
 
@@ -58,7 +58,7 @@ describe('Regression Suite (013 fixes)', () => {
       const path = await import('node:path');
       const schemaFilePath = path.resolve(
         __dirname,
-        '../lib/search/vector-index-impl.ts'
+        '../lib/search/vector-index-schema.ts'
       );
       const source = fs.readFileSync(schemaFilePath, 'utf8');
 

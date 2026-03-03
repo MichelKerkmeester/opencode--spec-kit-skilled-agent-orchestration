@@ -47,18 +47,15 @@ Most commands run Phase 0 (@write agent self-verification). The `visual_html` co
 | Command | Invocation | Description |
 |---------|------------|-------------|
 | **agent** | `/create:agent <name> [description] [:auto\|:confirm]` | Create a new OpenCode agent with frontmatter, tool permissions, and behavioral rules |
-| **folder_readme** | `/create:folder_readme <path> [--type <type>] [:auto\|:confirm]` | Create an AI-optimized README.md with TOC, structure, and comprehensive documentation |
-| **install_guide** | `/create:install_guide <name> [--platforms <list>] [:auto\|:confirm]` | Create a comprehensive installation guide with step-by-step setup, requirements, and troubleshooting |
-| **skill** | `/create:skill <name> [description] [:auto\|:confirm]` | Create a new skill with SKILL.md, references, assets, and scripts |
-| **skill_asset** | `/create:skill_asset <skill> <type> [--chained] [:auto\|:confirm]` | Create an asset file (templates, lookups, examples, guides) for an existing skill |
-| **skill_reference** | `/create:skill_reference <skill> <type> [--chained] [:auto\|:confirm]` | Create a reference file (deep-dive technical docs, patterns, debugging guides) for an existing skill |
+| **folder_readme** | `/create:folder_readme [readme\|install] <target> [flags] [:auto\|:confirm]` | Unified README + install guide creation |
+| **sk-skill** | `/create:sk-skill <name> <operation> [type] [--chained] [:auto\|:confirm]` | Unified skill workflow (full-create, full-update, reference-only, asset-only) |
 | **changelog** | `/create:changelog <spec-folder-or-component> [--bump <major\|minor\|patch\|build>] [:auto\|:confirm]` | Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a formatted changelog file |
 | **visual_html** | `/create:visual_html <target-or-source> [--mode <auto\|create\|analyze\|verify\|custom>] [:auto\|:confirm]` | Unified visual HTML command with broad intent-based routing |
 | **phase (via spec_kit)** | `/spec_kit:phase <feature> [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition used when create workflows detect large multi-domain scope |
 
 ### README Types
 
-The `folder_readme` command accepts a `--type` flag:
+The `readme` operation in `/create:folder_readme` accepts a `--type` flag:
 
 | Type | Use Case |
 |------|----------|
@@ -77,11 +74,8 @@ The `folder_readme` command accepts a `--type` flag:
 create/
 ├── agent.md              # /create:agent command
 ├── changelog.md          # /create:changelog command
-├── folder_readme.md      # /create:folder_readme command
-├── install_guide.md      # /create:install_guide command
-├── skill.md              # /create:skill command
-├── skill_asset.md        # /create:skill_asset command
-├── skill_reference.md    # /create:skill_reference command
+├── folder_readme.md      # /create:folder_readme — unified README + install guide command
+├── sk-skill.md           # /create:sk-skill command
 ├── visual_html.md        # /create:visual_html command
 └── assets/               # YAML workflow definitions
     ├── create_agent_auto.yaml
@@ -90,14 +84,8 @@ create/
     ├── create_changelog_confirm.yaml
     ├── create_folder_readme_auto.yaml
     ├── create_folder_readme_confirm.yaml
-    ├── create_install_guide_auto.yaml
-    ├── create_install_guide_confirm.yaml
-    ├── create_skill_auto.yaml
-    ├── create_skill_confirm.yaml
-    ├── create_skill_asset_auto.yaml
-    ├── create_skill_asset_confirm.yaml
-    ├── create_skill_reference_auto.yaml
-    ├── create_skill_reference_confirm.yaml
+    ├── create_sk_skill_auto.yaml
+    ├── create_sk_skill_confirm.yaml
     ├── create_visual_html_auto.yaml
     └── create_visual_html_confirm.yaml
 ```
@@ -117,7 +105,7 @@ Each mode loads a separate YAML workflow from `assets/`:
 - Auto: `create_<command>_auto.yaml`
 - Confirm: `create_<command>_confirm.yaml`
 
-The `--chained` flag on `skill_asset` and `skill_reference` indicates the command was invoked as part of a larger skill creation workflow.
+The `--chained` flag on `/create:sk-skill` doc-only operations indicates parent workflow handoff.
 
 ---
 
@@ -130,19 +118,16 @@ The `--chained` flag on `skill_asset` and `skill_reference` indicates the comman
 /create:agent my-analyzer "Code analysis specialist" :auto
 
 # Create a README for a specific folder
-/create:folder_readme .opencode/skill/my-skill --type skill :confirm
+/create:folder_readme readme .opencode/skill/my-skill --type skill :confirm
 
-# Create a full skill with references and assets
-/create:skill my-new-skill "Handles database migrations" :auto
-
-# Add an asset to an existing skill
-/create:skill_asset my-skill lookup-table :confirm
+# Create a full skill
+/create:sk-skill my-new-skill full-create :auto
 
 # Add a reference doc to an existing skill
-/create:skill_reference my-skill debugging-guide :auto
+/create:sk-skill my-skill reference-only debugging :confirm
 
 # Create an install guide for multiple platforms
-/create:install_guide my-tool --platforms opencode,claude-code :confirm
+/create:folder_readme install my-tool --platforms opencode,claude-code :confirm
 
 # Create a changelog from a completed spec folder
 /create:changelog .opencode/specs/01--system-spec-kit/042-memory-upgrade :auto
@@ -164,9 +149,9 @@ The `--chained` flag on `skill_asset` and `skill_reference` indicates the comman
 |---------|-------|-----|
 | Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.opencode/agent/chatgpt/`, or `.opencode/agent/claude/`) |
 | `visual_html` Phase 0 fails | @general agent routing unavailable | Re-run as `@general /create:visual_html ...` |
-| YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for your mode |
-| Skill not found for asset/reference | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
-| `--chained` has no effect | Only meaningful during skill creation pipeline | Remove flag when running standalone |
+| YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for operation + mode |
+| Skill not found for sk-skill operation | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
+| `--chained` has no effect | Only meaningful for chained sk-skill doc-only operations | Remove flag when running standalone |
 | `changelog` wrong component | File path mapping mismatch | Use `--component` override or select manually in :confirm mode |
 | `changelog` version conflict | File already exists | Command auto-increments BUILD segment; or specify `--bump` |
 

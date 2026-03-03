@@ -7,7 +7,7 @@
 // Decision criterion: tau < 0.4 = REJECT RSF (rankings too different)
 
 import { describe, it, expect, beforeAll } from 'vitest';
-import { fuseResultsMulti, type RankedList, type RrfItem } from '../lib/search/rrf-fusion';
+import { fuseResultsMulti, type RankedList, type RrfItem } from '../../shared/algorithms/rrf-fusion';
 import { fuseResultsRsfMulti, type RsfResult } from '../lib/search/rsf-fusion';
 
 /* ---------------------------------------------------------------

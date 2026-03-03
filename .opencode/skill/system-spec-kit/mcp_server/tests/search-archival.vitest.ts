@@ -68,9 +68,9 @@ describe('T206 - getConstitutionalMemories accepts includeArchived [deferred - D
 ------------------------------------------------------------------- */
 
 describe('T206 - Source code contains is_archived filter', () => {
-  it('T206-SRC1: vector-index-impl.ts has is_archived filters (>= 3)', () => {
+  it('T206-SRC1: vector-index-queries.ts has is_archived filters (>= 3)', () => {
     const viSource = fs.readFileSync(
-      path.join(SRC_LIB_PATH, 'search', 'vector-index-impl.ts'),
+      path.join(SRC_LIB_PATH, 'search', 'vector-index-queries.ts'),
       'utf-8'
     );
     const vsFilterCount = (viSource.match(/is_archived IS NULL OR.*is_archived\s*=\s*0/g) || []).length;
@@ -79,7 +79,7 @@ describe('T206 - Source code contains is_archived filter', () => {
 
   it('T206-SRC2: multi_concept_search uses archival_filter', () => {
     const viSource = fs.readFileSync(
-      path.join(SRC_LIB_PATH, 'search', 'vector-index-impl.ts'),
+      path.join(SRC_LIB_PATH, 'search', 'vector-index-queries.ts'),
       'utf-8'
     );
     expect(viSource).toContain('archival_filter');
@@ -123,7 +123,7 @@ describe('T206 - Source code contains is_archived filter', () => {
 
   it('T206-SRC6: Filter is NULL-safe (IS NULL OR = 0 pattern)', () => {
     const viSource = fs.readFileSync(
-      path.join(SRC_LIB_PATH, 'search', 'vector-index-impl.ts'),
+      path.join(SRC_LIB_PATH, 'search', 'vector-index-queries.ts'),
       'utf-8'
     );
     expect(viSource).toContain('is_archived IS NULL OR is_archived = 0');

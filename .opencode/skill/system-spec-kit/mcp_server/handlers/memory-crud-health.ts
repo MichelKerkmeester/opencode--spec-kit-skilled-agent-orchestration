@@ -14,7 +14,7 @@ import * as embeddings from '../lib/providers/embeddings';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
-import { isEmbeddingModelReady } from './memory-crud';
+import { isEmbeddingModelReady } from '../core';
 import { summarizeAliasConflicts } from './memory-index';
 
 import type { MCPResponse, EmbeddingProfile } from './types';

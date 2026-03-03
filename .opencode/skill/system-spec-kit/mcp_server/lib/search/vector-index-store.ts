@@ -1,0 +1,736 @@
+// ---------------------------------------------------------------
+// MODULE: Vector Index Store — Core DB singleton, init, constitutional cache
+// ---------------------------------------------------------------
+// SEARCH: VECTOR INDEX
+// TypeScript port of the vector index implementation.
+// DECAY STRATEGY (ADR-004): Search-time temporal decay uses an
+// FSRS-preferred strategy. Memories with FSRS review data (last_review
+// IS NOT NULL, review_count > 0) use the FSRS v4 power-law formula:
+//   R(t) = (1 + 0.2346 * t / S)^(-0.5)
+// Memories without review data fall back to half-life exponential:
+//   weight * 0.5^(days / half_life_days)
+// This ensures backward compatibility while aligning reviewed
+// memories with the canonical FSRS algorithm.
+
+
+import Database from 'better-sqlite3';
+import * as sqliteVec from 'sqlite-vec';
+import * as path from 'path';
+import * as os from 'os';
+import * as fs from 'fs';
+import { validateFilePath } from '../utils/path-security';
+import { createLogger } from '../utils/logger';
+import { SERVER_DIR } from '../../core/config';
+import { IVectorStore } from '../interfaces/vector-store';
+import * as embeddingsProvider from '../providers/embeddings';
+import { computeInterferenceScoresBatch } from '../scoring/interference-scoring';
+import {
+  to_embedding_buffer,
+  parse_trigger_phrases,
+  get_error_message,
+  get_error_code,
+} from './vector-index-types';
+import {
+  create_schema,
+  ensure_schema_version,
+} from './vector-index-schema';
+
+// MCP-safe logger — all output goes to stderr (stdout reserved for JSON-RPC)
+const logger = createLogger('VectorIndex');
+
+const search_weights_path = path.join(SERVER_DIR, 'configs', 'search-weights.json');
+type SearchWeightsConfig = {
+  maxTriggersPerMemory?: number;
+  smartRanking?: {
+    recencyWeight?: number;
+    accessWeight?: number;
+    relevanceWeight?: number;
+  };
+};
+
+let _search_weights: SearchWeightsConfig;
+try {
+  _search_weights = JSON.parse(
+    fs.readFileSync(search_weights_path, 'utf-8')
+  ) as SearchWeightsConfig;
+} catch (error: unknown) {
+  console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
+  _search_weights = {};
+}
+export const search_weights = _search_weights;
+
+type EmbeddingInput = Float32Array | number[];
+type MemoryRow = {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title?: string | null;
+  trigger_phrases?: string | string[];
+  importance_tier?: string;
+  importance_weight?: number;
+  created_at?: string;
+  access_count?: number;
+  last_accessed?: number;
+  confidence?: number;
+  keyword_score?: number;
+  similarity?: number;
+  avg_similarity?: number;
+  concept_similarities?: number[];
+  smartScore?: number;
+  relationSimilarity?: number;
+  isConstitutional?: boolean;
+  [key: string]: unknown;
+};
+type IndexMemoryParams = {
+  specFolder: string;
+  filePath: string;
+  anchorId?: string | null;
+  title?: string | null;
+  triggerPhrases?: string[];
+  importanceWeight?: number;
+  embedding: EmbeddingInput;
+  encodingIntent?: string;
+  documentType?: string;
+  specLevel?: number | null;
+  contentText?: string | null;
+  qualityScore?: number;
+  qualityFlags?: string[];
+};
+type VectorSearchOptions = {
+  limit?: number;
+  specFolder?: string | null;
+  minSimilarity?: number;
+  useDecay?: boolean;
+  tier?: string | null;
+  contextType?: string | null;
+  includeConstitutional?: boolean;
+  includeArchived?: boolean;
+};
+type EnhancedSearchOptions = {
+  specFolder?: string | null;
+  minSimilarity?: number;
+  diversityFactor?: number;
+  noDiversity?: boolean;
+};
+type JsonObject = Record<string, unknown>;
+
+/* ─────────────────────────────────────────────────────────────
+   1. CONFIGURATION — Embedding Dimension
+────────────────────────────────────────────────────────────────*/
+
+export const EMBEDDING_DIM = 768;
+
+export function get_embedding_dim() {
+  try {
+    const embeddings = embeddingsProvider;
+
+    if (embeddings.isProviderInitialized && embeddings.isProviderInitialized()) {
+      const profile = embeddings.getEmbeddingProfile();
+      if (profile && profile.dim) {
+        return profile.dim;
+      }
+    }
+
+    if (process.env.VOYAGE_API_KEY || process.env.EMBEDDINGS_PROVIDER === 'voyage') {
+      return 1024;
+    }
+    if (process.env.OPENAI_API_KEY || process.env.EMBEDDINGS_PROVIDER === 'openai') {
+      return 1536;
+    }
+  } catch (e: unknown) {
+    console.warn('[vector-index] Could not get embedding dimension from profile:', get_error_message(e));
+  }
+  return EMBEDDING_DIM;
+}
+
+export async function get_confirmed_embedding_dimension(timeout_ms = 5000) {
+  const start = Date.now();
+  while (Date.now() - start < timeout_ms) {
+    const dim = get_embedding_dim();
+    if (dim !== 768 || process.env.EMBEDDING_DIM === '768') {
+      return dim;
+    }
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  console.warn('[vector-index] Using default dimension 768 after timeout');
+  return 768;
+}
+
+export function validate_embedding_dimension() {
+  if (!db || !sqlite_vec_available_flag) {
+    return { valid: true, stored: null, current: null, reason: 'No database or sqlite-vec unavailable' };
+  }
+
+  try {
+    const meta_table = db.prepare(`
+      SELECT name FROM sqlite_master WHERE type='table' AND name='vec_metadata'
+    `).get();
+
+    if (!meta_table) {
+      return { valid: true, stored: null, current: get_embedding_dim(), reason: 'No metadata table (legacy DB)' };
+    }
+
+    const stored_row = db.prepare(`
+      SELECT value FROM vec_metadata WHERE key = 'embedding_dim'
+    `).get() as { value: string } | undefined;
+
+    if (!stored_row) {
+      return { valid: true, stored: null, current: get_embedding_dim(), reason: 'No stored dimension' };
+    }
+
+    const stored_dim = parseInt(stored_row.value, 10);
+    const current_dim = get_embedding_dim();
+
+    if (stored_dim !== current_dim) {
+      const warning = `DIMENSION MISMATCH: Database has ${stored_dim}-dim vectors, but provider expects ${current_dim}. ` +
+        `Vector search will fail. Solutions: 1) Delete database and re-index, 2) Set EMBEDDINGS_PROVIDER to match original, ` +
+        `3) Use MEMORY_DB_PATH for provider-specific databases.`;
+      console.error(`[vector-index] WARNING: ${warning}`);
+      return { valid: false, stored: stored_dim, current: current_dim, warning };
+    }
+
+    return { valid: true, stored: stored_dim, current: current_dim };
+  } catch (e: unknown) {
+    console.warn('[vector-index] Dimension validation error:', get_error_message(e));
+    return { valid: true, stored: null, current: get_embedding_dim(), reason: get_error_message(e) };
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. DATABASE PATH AND SECURITY
+────────────────────────────────────────────────────────────────*/
+
+// P1-05 FIX: Unified env var precedence
+const DEFAULT_DB_DIR = process.env.SPEC_KIT_DB_DIR ||
+  process.env.MEMORY_DB_DIR ||
+  path.resolve(__dirname, '../../database');
+export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH ||
+  path.join(DEFAULT_DB_DIR, 'context-index.sqlite');
+const DB_PERMISSIONS = 0o600;
+
+function resolve_database_path() {
+  if (process.env.MEMORY_DB_PATH) {
+    return process.env.MEMORY_DB_PATH;
+  }
+
+  const embeddings = embeddingsProvider;
+  const profile = embeddings.getEmbeddingProfile();
+
+  if (!profile || !('getDatabasePath' in profile)) {
+    return DEFAULT_DB_PATH;
+  }
+
+  return (profile as { getDatabasePath: (dir: string) => string }).getDatabasePath(DEFAULT_DB_DIR);
+}
+
+// P1-06 FIX: Unified allowed paths
+const ALLOWED_BASE_PATHS = [
+  path.join(process.cwd(), 'specs'),
+  path.join(process.cwd(), '.opencode'),
+  path.join(os.homedir(), '.claude'),
+  process.cwd(),
+  ...(process.env.MEMORY_ALLOWED_PATHS ? process.env.MEMORY_ALLOWED_PATHS.split(path.delimiter) : [])
+].filter(Boolean).map(p => path.resolve(p));
+
+export function validate_file_path_local(file_path: unknown) {
+  if (typeof file_path !== 'string') {
+    return null;
+  }
+
+  return validateFilePath(file_path, ALLOWED_BASE_PATHS);
+}
+
+// HIGH-004 FIX: Async version for non-blocking concurrent file reads
+export async function safe_read_file_async(file_path: unknown) {
+  const valid_path = validate_file_path_local(file_path);
+  if (!valid_path) {
+    return '';
+  }
+
+  try {
+    return await fs.promises.readFile(valid_path, 'utf-8');
+  } catch (err: unknown) {
+    if (!(err instanceof Error && 'code' in err && get_error_code(err) === 'ENOENT')) {
+      console.warn(`[vector-index] Could not read file ${valid_path}: ${get_error_message(err)}`);
+    }
+    return '';
+  }
+}
+
+// Safely parse JSON with validation (CWE-502: Deserialization mitigation)
+export function safe_parse_json(json_string: unknown, default_value = []) {
+  if (!json_string || typeof json_string !== 'string') {
+    return default_value;
+  }
+
+  try {
+    const parsed = JSON.parse(json_string);
+
+    if (Array.isArray(parsed)) {
+      return parsed.filter(item =>
+        item && typeof item === 'object' &&
+        !Array.isArray(item) &&
+        !('__proto__' in item) &&
+        !('constructor' in item) &&
+        !('prototype' in item)
+      );
+    }
+
+    if (typeof parsed === 'object' && parsed !== null) {
+      if ('__proto__' in parsed || 'constructor' in parsed || 'prototype' in parsed) {
+        console.warn('[vector-index] Blocked potential prototype pollution in JSON');
+        return default_value;
+      }
+    }
+
+    return parsed;
+  } catch (err: unknown) {
+    console.warn(`[vector-index] JSON parse error: ${get_error_message(err)}`);
+    return default_value;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. DATABASE SINGLETON
+────────────────────────────────────────────────────────────────*/
+
+let db: Database.Database | null = null;
+let db_path = DEFAULT_DB_PATH;
+let sqlite_vec_available_flag = true;
+
+/** Accessor for sqlite_vec_available (used by other modules) */
+export function sqlite_vec_available(): boolean {
+  return sqlite_vec_available_flag;
+}
+
+const constitutional_cache = new Map<string, { data: MemoryRow[]; timestamp: number }>();
+const CONSTITUTIONAL_CACHE_TTL = 300000;
+const CONSTITUTIONAL_CACHE_MAX_KEYS = 50;
+
+// BUG-012 FIX: Track which cache keys are currently being loaded
+const constitutional_cache_loading = new Map<string, boolean>();
+
+let last_db_mod_time = 0;
+
+function is_constitutional_cache_valid() {
+  if (constitutional_cache.size === 0) return false;
+
+  try {
+    const current_db_path = resolve_database_path();
+    if (fs.existsSync(current_db_path)) {
+      const stats = fs.statSync(current_db_path);
+      if (stats.mtimeMs > last_db_mod_time) {
+        last_db_mod_time = stats.mtimeMs;
+        return false;
+      }
+    }
+  } catch (e: unknown) {
+    console.warn('[vector-index] Cache validation error:', get_error_message(e));
+  }
+
+  return true;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. PREPARED STATEMENT CACHING
+────────────────────────────────────────────────────────────────*/
+
+type PreparedStatements = {
+  count_all: Database.Statement<[], { count: number }>;
+  count_by_folder: Database.Statement<[string], { count: number }>;
+  get_by_id: Database.Statement<[number], MemoryRow | undefined>;
+  get_by_path: Database.Statement<[string], MemoryRow | undefined>;
+  get_by_folder_and_path: Database.Statement<[string, string, string, string | null, string | null], { id: number } | undefined>;
+  get_stats: Database.Statement<[], { total: number; complete: number; pending: number; failed: number }>;
+  list_base: Database.Statement<[number, number], MemoryRow[]>;
+};
+let prepared_statements: PreparedStatements | null = null;
+
+export function init_prepared_statements(database: Database.Database): PreparedStatements {
+  if (prepared_statements) return prepared_statements;
+
+  prepared_statements = {
+    count_all: database.prepare('SELECT COUNT(*) as count FROM memory_index'),
+    count_by_folder: database.prepare('SELECT COUNT(*) as count FROM memory_index WHERE spec_folder = ?'),
+    get_by_id: database.prepare('SELECT * FROM memory_index WHERE id = ?'),
+    get_by_path: database.prepare('SELECT * FROM memory_index WHERE file_path = ?'),
+    get_by_folder_and_path: database.prepare('SELECT id FROM memory_index WHERE spec_folder = ? AND (canonical_file_path = ? OR file_path = ?) AND (anchor_id = ? OR (anchor_id IS NULL AND ? IS NULL)) ORDER BY id DESC LIMIT 1'),
+    get_stats: database.prepare(`
+      SELECT
+        COUNT(*) as total,
+        SUM(CASE WHEN embedding_status = 'success' THEN 1 ELSE 0 END) as complete,
+        SUM(CASE WHEN embedding_status = 'pending' THEN 1 ELSE 0 END) as pending,
+        SUM(CASE WHEN embedding_status = 'failed' THEN 1 ELSE 0 END) as failed
+      FROM memory_index
+    `),
+    list_base: database.prepare('SELECT * FROM memory_index ORDER BY created_at DESC LIMIT ? OFFSET ?')
+  };
+
+  return prepared_statements;
+}
+
+export function clear_prepared_statements() {
+  prepared_statements = null;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. CONSTITUTIONAL MEMORIES CACHE
+────────────────────────────────────────────────────────────────*/
+
+// BUG-004 FIX: Checks external DB modifications before using cache
+// BUG-012 FIX: Prevent thundering herd when cache expires
+export function get_constitutional_memories(
+  database: Database.Database,
+  spec_folder: string | null = null,
+  includeArchived = false
+): MemoryRow[] {
+  const cache_key = spec_folder || 'global';
+  const now = Date.now();
+  const cached = constitutional_cache.get(cache_key);
+
+  if (cached && (now - cached.timestamp) < CONSTITUTIONAL_CACHE_TTL && is_constitutional_cache_valid()) {
+    return cached.data;
+  }
+
+  if (constitutional_cache_loading.get(cache_key)) {
+    return cached?.data || [];
+  }
+
+  constitutional_cache_loading.set(cache_key, true);
+
+  try {
+    const constitutional_sql = `
+      SELECT m.*, 100.0 as similarity, 1.0 as effective_importance,
+             'constitutional' as source_type
+      FROM memory_index m
+      WHERE m.importance_tier = 'constitutional'
+        AND m.embedding_status = 'success'
+        ${!includeArchived ? 'AND (m.is_archived IS NULL OR m.is_archived = 0)' : ''}
+        ${spec_folder ? 'AND m.spec_folder = ?' : ''}
+      ORDER BY m.importance_weight DESC, m.created_at DESC
+    `;
+
+    const params = spec_folder ? [spec_folder] : [];
+    let results = database.prepare(constitutional_sql).all(...params) as MemoryRow[];
+
+    const MAX_CONSTITUTIONAL_TOKENS = 2000;
+    const TOKENS_PER_MEMORY = 100;
+    const max_constitutional_count = Math.floor(MAX_CONSTITUTIONAL_TOKENS / TOKENS_PER_MEMORY);
+    results = results.slice(0, max_constitutional_count);
+
+    results = results.map((row: MemoryRow) => {
+      row.trigger_phrases = parse_trigger_phrases(row.trigger_phrases);
+      row.isConstitutional = true;
+      return row;
+    });
+
+    if (constitutional_cache.size >= CONSTITUTIONAL_CACHE_MAX_KEYS) {
+      const oldestKey = constitutional_cache.keys().next().value;
+      if (oldestKey !== undefined) {
+        constitutional_cache.delete(oldestKey);
+      }
+    }
+
+    constitutional_cache.set(cache_key, { data: results, timestamp: now });
+
+    return results;
+  } finally {
+    constitutional_cache_loading.delete(cache_key);
+  }
+}
+
+export function clear_constitutional_cache(spec_folder: string | null = null) {
+  if (spec_folder) {
+    constitutional_cache.delete(spec_folder);
+  } else {
+    constitutional_cache.clear();
+  }
+}
+
+export function refresh_interference_scores_for_folder(database: Database.Database, specFolder: string): void {
+  if (!specFolder) return;
+
+  try {
+    const rows = database.prepare(
+      'SELECT id FROM memory_index WHERE spec_folder = ? AND parent_id IS NULL'
+    ).all(specFolder) as Array<{ id: number }>;
+
+    if (rows.length === 0) return;
+
+    const memoryIds = rows.map(r => r.id);
+    const scores = computeInterferenceScoresBatch(database, memoryIds);
+    const updateStmt = database.prepare('UPDATE memory_index SET interference_score = ? WHERE id = ?');
+    for (const id of memoryIds) {
+      updateStmt.run(scores.get(id) ?? 0, id);
+    }
+  } catch (error: unknown) {
+    console.warn(`[vector-index] interference score refresh failed for '${specFolder}': ${get_error_message(error)}`);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. DATABASE INITIALIZATION
+────────────────────────────────────────────────────────────────*/
+
+export function initialize_db(custom_path: string | null = null): Database.Database {
+  if (db && !custom_path) {
+    return db;
+  }
+
+  const target_path = custom_path || resolve_database_path();
+
+  const dir = path.dirname(target_path);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
+  }
+
+  try {
+    db = new Database(target_path);
+  } catch (db_error: unknown) {
+    const errMsg = get_error_message(db_error);
+    const errCode = get_error_code(db_error);
+    if (errCode === 'ERR_DLOPEN_FAILED' || errMsg.includes('NODE_MODULE_VERSION') || errMsg.includes('was compiled against a different Node.js version')) {
+      console.error('[vector-index] FATAL: better-sqlite3 native module failed to load');
+      console.error(`[vector-index] ${errMsg}`);
+      console.error(`[vector-index] Running: Node ${process.version} (MODULE_VERSION ${process.versions.modules})`);
+      try {
+        const marker_path = path.resolve(__dirname, '../../../.node-version-marker');
+        if (fs.existsSync(marker_path)) {
+          const marker = JSON.parse(fs.readFileSync(marker_path, 'utf8'));
+          console.error(`[vector-index] Marker recorded: Node ${marker.nodeVersion} (MODULE_VERSION ${marker.moduleVersion})`);
+        }
+      } catch (_: unknown) { /* ignore marker read errors */ }
+      console.error('[vector-index] This usually means Node.js was updated without rebuilding native modules.');
+      console.error('[vector-index] Fix: Run \'bash scripts/setup/rebuild-native-modules.sh\' from the spec-kit root');
+      console.error('[vector-index] Or manually: npm rebuild better-sqlite3');
+    }
+    throw db_error;
+  }
+
+  try {
+    sqliteVec.load(db);
+    sqlite_vec_available_flag = true;
+  } catch (vec_error: unknown) {
+    sqlite_vec_available_flag = false;
+    console.warn(`[vector-index] sqlite-vec extension not available: ${get_error_message(vec_error)}`);
+    console.warn('[vector-index] Falling back to anchor-only mode (no vector search)');
+    console.warn('[vector-index] Install sqlite-vec: brew install sqlite-vec (macOS)');
+  }
+
+  db.pragma('journal_mode = WAL');
+  db.pragma('busy_timeout = 10000');
+  db.pragma('foreign_keys = ON');
+  db.pragma('cache_size = -64000');
+  db.pragma('mmap_size = 268435456');
+  db.pragma('synchronous = NORMAL');
+  db.pragma('temp_store = MEMORY');
+
+  create_schema(db, { sqlite_vec_available: sqlite_vec_available_flag, get_embedding_dim });
+  ensure_schema_version(db);
+
+  if (!custom_path) {
+    try {
+      fs.chmodSync(target_path, DB_PERMISSIONS);
+    } catch (err: unknown) {
+      console.warn(`[vector-index] Could not set permissions on ${target_path}: ${get_error_message(err)}`);
+    }
+  }
+
+  db_path = target_path;
+  return db;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. DATABASE UTILITIES
+────────────────────────────────────────────────────────────────*/
+
+export function close_db() {
+  clear_prepared_statements();
+  if (db) {
+    db.close();
+    db = null;
+  }
+}
+
+export function get_db_path() {
+  return db_path;
+}
+
+export function get_db(): Database.Database {
+  return initialize_db();
+}
+
+// Check if vector search is available (sqlite-vec loaded)
+export function is_vector_search_available() {
+  return sqlite_vec_available_flag;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. IVECTORSTORE IMPLEMENTATION
+────────────────────────────────────────────────────────────────*/
+
+export class SQLiteVectorStore extends IVectorStore {
+  dbPath: string | null;
+  _initialized: boolean;
+
+  constructor(options: { dbPath?: string } = {}) {
+    super();
+    this.dbPath = options.dbPath || null;
+    this._initialized = false;
+  }
+
+  _ensureInitialized() {
+    if (!this._initialized) {
+      initialize_db(this.dbPath);
+      this._initialized = true;
+    }
+  }
+
+  async search(embedding: EmbeddingInput, topK: number, options: VectorSearchOptions = {}) {
+    this._ensureInitialized();
+
+    const expected_dim = get_embedding_dim();
+    if (!embedding || embedding.length !== expected_dim) {
+      throw new Error(`Invalid embedding dimension: expected ${expected_dim}, got ${embedding?.length}`);
+    }
+
+    const search_options = {
+      limit: topK,
+      specFolder: options.specFolder,
+      minSimilarity: options.minSimilarity || 0,
+      useDecay: options.useDecay !== false,
+      tier: options.tier,
+      contextType: options.contextType,
+      includeConstitutional: options.includeConstitutional !== false
+    };
+
+    // Lazy import to avoid circular dependency at module load time
+    const { vector_search } = await import('./vector-index-queries');
+    return vector_search(embedding, search_options);
+  }
+
+  async upsert(_id: string, embedding: EmbeddingInput, metadata: JsonObject) {
+    this._ensureInitialized();
+
+    const expected_dim = get_embedding_dim();
+    if (!embedding || embedding.length !== expected_dim) {
+      throw new Error(`Embedding dimension mismatch: expected ${expected_dim}, got ${embedding?.length}`);
+    }
+
+    const metadata_alias = metadata as JsonObject & {
+      spec_folder?: string;
+      specFolder?: string;
+      file_path?: string;
+      filePath?: string;
+      anchor_id?: string;
+      anchorId?: string;
+      title?: string;
+      trigger_phrases?: string[];
+      triggerPhrases?: string[];
+      importance_weight?: number;
+      importanceWeight?: number;
+    };
+
+    const params: IndexMemoryParams = {
+      specFolder: metadata_alias.spec_folder || metadata_alias.specFolder || '',
+      filePath: metadata_alias.file_path || metadata_alias.filePath || '',
+      anchorId: metadata_alias.anchor_id || metadata_alias.anchorId || null,
+      title: metadata_alias.title || null,
+      triggerPhrases: metadata_alias.trigger_phrases || metadata_alias.triggerPhrases || [],
+      importanceWeight: metadata_alias.importance_weight || metadata_alias.importanceWeight || 0.5,
+      embedding: embedding
+    };
+
+    if (!params.specFolder || !params.filePath) {
+      throw new Error('metadata must include spec_folder and file_path');
+    }
+
+    const { index_memory } = await import('./vector-index-mutations');
+    return index_memory(params);
+  }
+
+  async delete(id: number) {
+    this._ensureInitialized();
+    const { delete_memory } = await import('./vector-index-mutations');
+    return delete_memory(id);
+  }
+
+  async get(id: number) {
+    this._ensureInitialized();
+    const { get_memory } = await import('./vector-index-queries');
+    return get_memory(id);
+  }
+
+  async getStats() {
+    this._ensureInitialized();
+    const { get_stats } = await import('./vector-index-queries');
+    return get_stats();
+  }
+
+  isAvailable(): boolean {
+    return sqlite_vec_available_flag;
+  }
+
+  getEmbeddingDimension() {
+    return get_embedding_dim();
+  }
+
+  async close() {
+    if (this._initialized) {
+      close_db();
+      this._initialized = false;
+    }
+  }
+
+  async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null) {
+    this._ensureInitialized();
+    const { delete_memory_by_path } = await import('./vector-index-mutations');
+    return delete_memory_by_path(specFolder, filePath, anchorId);
+  }
+
+  async getByFolder(specFolder: string) {
+    this._ensureInitialized();
+    const { get_memories_by_folder } = await import('./vector-index-queries');
+    return get_memories_by_folder(specFolder);
+  }
+
+  async searchEnriched(embedding: string, options: { specFolder?: string | null; minSimilarity?: number } = {}) {
+    this._ensureInitialized();
+    const { vector_search_enriched } = await import('./vector-index-queries');
+    return vector_search_enriched(embedding, undefined, options);
+  }
+
+  async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}) {
+    this._ensureInitialized();
+    const { enhanced_search } = await import('./vector-index-aliases');
+    return enhanced_search(embedding, undefined, options);
+  }
+
+  async getConstitutionalMemories(options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {}) {
+    this._ensureInitialized();
+    const { get_constitutional_memories_public } = await import('./vector-index-queries');
+    return get_constitutional_memories_public(options);
+  }
+
+  async verifyIntegrity(options: { autoClean?: boolean } = {}) {
+    this._ensureInitialized();
+    const { verify_integrity } = await import('./vector-index-queries');
+    return verify_integrity(options);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. CAMELCASE ALIASES
+────────────────────────────────────────────────────────────────*/
+
+// camelCase aliases for backward compatibility (functions already exported above)
+export { initialize_db as initializeDb };
+export { close_db as closeDb };
+export { get_db as getDb };
+export { get_db_path as getDbPath };
+export { get_confirmed_embedding_dimension as getConfirmedEmbeddingDimension };
+export { get_embedding_dim as getEmbeddingDim };
+export { validate_embedding_dimension as validateEmbeddingDimension };
+export { validate_file_path_local as validateFilePath };
+export { clear_constitutional_cache as clearConstitutionalCache };
+export { is_vector_search_available as isVectorSearchAvailable };

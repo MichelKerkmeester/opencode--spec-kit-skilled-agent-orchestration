@@ -51,8 +51,8 @@ import { formatSearchResults } from '../formatters';
 import type { Database, MCPResponse, EmbeddingProfile, IntentClassification } from './types';
 
 // Retrieval trace contracts (C136-08)
-import { createTrace, addTraceEntry } from '../lib/contracts/retrieval-trace';
-import type { RetrievalTrace } from '../lib/contracts/retrieval-trace';
+import { createTrace, addTraceEntry } from '../../shared/contracts/retrieval-trace';
+import type { RetrievalTrace } from '../../shared/contracts/retrieval-trace';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';

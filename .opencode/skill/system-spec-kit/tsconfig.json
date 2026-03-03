@@ -13,6 +13,7 @@
     "sourceMap": true,
     "composite": true
   },
+  "files": [],
   "references": [
     { "path": "./shared" },
     { "path": "./mcp_server" },

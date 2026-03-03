@@ -3,9 +3,10 @@
 // TEST: HANDLER HELPERS
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import path from 'path';
 import os from 'os';
+import * as dbHelpers from '../utils/db-helpers';
 
 // ───────────────────────────────────────────────────────────────
 // TEST: HANDLER HELPERS (Vitest)
@@ -681,6 +682,28 @@ describe('processCausalLinks', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('logPeDecision', () => {
+  beforeEach(() => {
+    const db = createTestDb();
+    db?.exec(`
+      CREATE TABLE IF NOT EXISTS memory_conflicts (
+        id INTEGER PRIMARY KEY,
+        new_memory_hash TEXT,
+        existing_memory_id INTEGER,
+        similarity REAL,
+        action TEXT,
+        contradiction_detected INTEGER,
+        reason TEXT,
+        spec_folder TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+      )
+    `);
+    vi.spyOn(dbHelpers, 'requireDb').mockReturnValue(db);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('has arity 3', () => {
     if (!memorySave?.logPeDecision) return;
     // TypeScript compilation may change arity, but function should exist
@@ -705,6 +728,14 @@ describe('logPeDecision', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('DB-dependent helpers', () => {
+  beforeEach(() => {
+    vi.spyOn(dbHelpers, 'requireDb').mockReturnValue(createTestDb());
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('reinforceExistingMemory: error status for missing ID', () => {
     if (!memorySave?.reinforceExistingMemory) return;
     const parsed = {

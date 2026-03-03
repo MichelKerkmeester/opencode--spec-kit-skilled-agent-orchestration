@@ -33,7 +33,7 @@ import {
   type RrfItem,
   type FusionResult,
   type RankedList,
-} from '../lib/search/rrf-fusion';
+} from '../../shared/algorithms/rrf-fusion';
 
 // ── RSF Fusion ──
 import {
