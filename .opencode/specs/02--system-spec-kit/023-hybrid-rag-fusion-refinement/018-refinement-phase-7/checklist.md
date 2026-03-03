@@ -194,11 +194,11 @@
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
 - [x] **CR-P1-7** Cross-document contradictions resolved (0 conflicts)
-  - Evidence: `spec.md:7` status updated to "Tier 1+2 Complete; Tier 4 Documented". `checklist.md:119` test evidence normalized. `implementation-summary.md:52,:642` standards wording corrected.
+  - Evidence: `spec.md:7` status updated to "Tier 1-2 Complete; Tier 4 Complete (14/14); Tier 5 Complete (9/9) — ALL TIERS COMPLETE". `checklist.md:119` test evidence normalized. `implementation-summary.md:52,:642` standards wording corrected.
   - Reviewed by: Gemini (CONCERN — checklist boxes unchecked, now fixed) + Claude (PASS)
 
 - [x] **CR-P1-8** Config DB path resolution unified across scripts and runtime
-  - Evidence: `shared/config.ts:22` fallback chain: `SPEC_KIT_DB_DIR ?? SPECKIT_DB_DIR ?? defaultPath`.
+  - Evidence: `shared/config.ts:22` fallback chain: `SPEC_KIT_DB_DIR || SPECKIT_DB_DIR || defaultPath` (uses `||` not `??` — empty strings fall through to default).
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
 ### P2 — Nice to Have

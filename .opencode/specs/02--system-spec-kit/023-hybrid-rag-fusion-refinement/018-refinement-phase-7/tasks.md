@@ -383,7 +383,7 @@
 ## Tier 4: Cross-AI Validation Review Findings (2026-03-02)
 
 **Source:** Independent reviews by Gemini 3.1 Pro (Grade: A) and Codex gpt-5.3-codex (Grade: C+)
-**Effort:** 8-12h optimistic / 16-24h realistic | **Status:** Not started — awaiting next agent
+**Effort:** 8-12h optimistic / 16-24h realistic | **Status:** Complete (14/14 implemented)
 **Note:** Codex was significantly more critical than Gemini. Findings below are deduplicated; source attribution preserved.
 
 ### CR-P0-1: Fix test suite false-pass risk [P0] [Codex]
@@ -402,9 +402,9 @@
 
 **File:** `mcp_server/handlers/memory-crud-delete.ts` | **Effort:** 0.5h
 
-- [ ] Ensure `deleteEdgesForMemory` failure rolls back transaction OR is logged/tracked
-- [ ] Currently: causal edge cleanup errors caught and ignored → orphaned edges possible
-- [ ] Verify: force `deleteEdgesForMemory` to throw → parent deletion must not succeed silently
+- [x] Ensure `deleteEdgesForMemory` failure rolls back transaction OR is logged/tracked
+- [x] Currently: causal edge cleanup errors caught and ignored → orphaned edges possible
+- [x] Verify: force `deleteEdgesForMemory` to throw → parent deletion must not succeed silently
 
 **Acceptance:** Edge deletion failure either rolls back or is explicitly logged. No silent swallowing.
 
@@ -412,9 +412,9 @@
 
 **File:** `mcp_server/lib/search/pipeline/stage2-fusion.ts` L638, L662 | **Effort:** 0.5h
 
-- [ ] Add explicit `sort()` by effective score after feedback mutations, before any top-K `slice()`
-- [ ] Currently: feedback score updates may reorder results, but no re-sort before slice
-- [ ] Verify: create test with N results where feedback changes ordering → correct top-K returned
+- [x] Add explicit `sort()` by effective score after feedback mutations, before any top-K `slice()`
+- [x] Currently: feedback score updates may reorder results, but no re-sort before slice
+- [x] Verify: create test with N results where feedback changes ordering → correct top-K returned
 
 **Acceptance:** Results are always sorted by final effective score before any slice operation.
 
@@ -422,9 +422,9 @@
 
 **File:** `mcp_server/handlers/memory-save.ts` L992, L1157, L1162 | **Effort:** 1.0h opt / 2h real
 
-- [ ] Add `WHERE parent_id IS NULL` or equivalent to dedup-by-hash queries
-- [ ] Currently: chunks share parent's `content_hash` → query may return chunk child instead of canonical parent
-- [ ] Verify: create parent+chunk with same hash → dedup returns parent, not chunk
+- [x] Add `WHERE parent_id IS NULL` or equivalent to dedup-by-hash queries
+- [x] Currently: chunks share parent's `content_hash` → query may return chunk child instead of canonical parent
+- [x] Verify: create parent+chunk with same hash → dedup returns parent, not chunk
 
 **Acceptance:** Dedup queries always return canonical parent memory, never chunk children.
 
@@ -432,9 +432,9 @@
 
 **File:** `mcp_server/lib/session/session-manager.ts` L341, L370, L660 | **Effort:** 0.5h
 
-- [ ] Guard dedup map insertion: skip dedup for entries with no `id`, or use composite key
-- [ ] Currently: `Map` keyed by optional `id` → multiple `undefined` entries collapse to one
-- [ ] Verify: batch with 3 entries where `id` is undefined → all 3 preserved, not collapsed
+- [x] Guard dedup map insertion: skip dedup for entries with no `id`, or use composite key
+- [x] Currently: `Map` keyed by optional `id` → multiple `undefined` entries collapse to one
+- [x] Verify: batch with 3 entries where `id` is undefined → all 3 preserved, not collapsed
 
 **Acceptance:** Batch dedup correctly handles entries with undefined IDs without data loss.
 
@@ -442,9 +442,9 @@
 
 **File:** `mcp_server/handlers/memory-search.ts` L753, L789 | **Effort:** 0.5h
 
-- [ ] Move cache lookup before embedding readiness gate
-- [ ] Currently: readiness gate blocks cache hits when model is unavailable (rate-limited/down)
-- [ ] Verify: disable embedding model → cached queries still return results
+- [x] Move cache lookup before embedding readiness gate
+- [x] Currently: readiness gate blocks cache hits when model is unavailable (rate-limited/down)
+- [x] Verify: disable embedding model → cached queries still return results
 
 **Acceptance:** Cache hits succeed regardless of embedding model availability.
 
@@ -452,9 +452,9 @@
 
 **File:** `mcp_server/handlers/memory-crud-update.ts` L97, L99, L135 | **Effort:** 0.5h
 
-- [ ] Move all state mutations (including embedding status) inside transaction boundary
-- [ ] Currently: `allowPartialUpdate` path mutates embedding status outside transaction
-- [ ] Verify: force transaction failure → embedding status unchanged
+- [x] Move all state mutations (including embedding status) inside transaction boundary
+- [x] Currently: `allowPartialUpdate` path mutates embedding status outside transaction
+- [x] Verify: force transaction failure → embedding status unchanged
 
 **Acceptance:** No state mutations occur outside transaction, even in partial-update mode.
 
@@ -462,10 +462,10 @@
 
 **Files:** `spec.md`, `checklist.md`, `implementation-summary.md`, `handover.md` | **Effort:** 1.0h
 
-- [ ] Fix `spec.md:7` status ("In Progress" vs handover "complete") — set to actual state
-- [ ] Fix `checklist.md:117-119` — test pass marked but evidence says "results pending"
-- [ ] Fix agent count: `handover.md:15` (15 agents) vs `implementation-summary.md:33` (17 agents)
-- [ ] Fix standards claim: `implementation-summary.md:52` ("all aligned") vs `:642` ("19/20 fail")
+- [x] Fix `spec.md:7` status ("In Progress" vs handover "complete") — set to actual state
+- [x] Fix `checklist.md:117-119` — test pass marked but evidence says "results pending"
+- [x] Fix agent count: `handover.md:15` (15 agents) vs `implementation-summary.md:33` (17 agents)
+- [x] Fix standards claim: `implementation-summary.md:52` ("all aligned") vs `:642` ("19/20 fail")
 
 **Acceptance:** All spec docs reflect a single consistent truth. Zero contradictions on status, counts, and claims.
 
@@ -473,9 +473,9 @@
 
 **Files:** `shared/config.ts:21`, `mcp_server/lib/search/vector-index.ts:170` | **Effort:** 0.5h
 
-- [ ] Unify DB path resolution: new config uses `SPEC_KIT_DB_DIR`, core still uses legacy env vars
-- [ ] Risk: scripts and runtime could target different DB files
-- [ ] Verify: set only legacy env var → both scripts and runtime resolve to same DB
+- [x] Unify DB path resolution: new config uses `SPEC_KIT_DB_DIR`, core still uses legacy env vars
+- [x] Risk: scripts and runtime could target different DB files
+- [x] Verify: set only legacy env var → both scripts and runtime resolve to same DB
 
 **Acceptance:** Single env var priority chain used by all consumers. No split DB targeting.
 
@@ -483,9 +483,9 @@
 
 **File:** `mcp_server/tests/memory-crud-extended.vitest.ts` | **Effort:** 2.0h opt / 4h real
 
-- [ ] Remove `@ts-nocheck` directive
-- [ ] Fix all resulting TypeScript errors (mock types, fixture types)
-- [ ] Verify: `tsc --noEmit` passes on test file
+- [x] Remove `@ts-nocheck` directive
+- [x] Fix all resulting TypeScript errors (mock types, fixture types)
+- [x] Verify: `tsc --noEmit` passes on test file
 
 **Acceptance:** No `@ts-nocheck` in test files. All types resolve correctly.
 
@@ -493,8 +493,8 @@
 
 **File:** `mcp_server/lib/telemetry/retrieval-telemetry.ts:24` | **Effort:** 0.25h
 
-- [ ] `isExtendedTelemetryEnabled` hardcoded to `false` — entire module is dead code
-- [ ] Either connect to env var/config OR document as intentionally disabled
+- [x] `isExtendedTelemetryEnabled` hardcoded to `false` — entire module is dead code
+- [x] Either connect to env var/config OR document as intentionally disabled
 
 **Acceptance:** Flag is configurable OR explicitly documented as intentionally disabled.
 
@@ -502,8 +502,8 @@
 
 **File:** `mcp_server/lib/eval/reporting-dashboard.ts` L233, L350 | **Effort:** 0.25h
 
-- [ ] Hardcoded `LIMIT 1000` will silently drop data at scale
-- [ ] Make configurable, add pagination, or increase with truncation warning
+- [x] Hardcoded `LIMIT 1000` will silently drop data at scale
+- [x] Make configurable, add pagination, or increase with truncation warning
 
 **Acceptance:** Dashboard does not silently discard data. Either configurable limit or logged warning.
 
@@ -511,11 +511,11 @@
 
 **File:** `mcp_server/handlers/memory-save.ts` | **Effort:** 4.0h opt / 8h real
 
-- [ ] Extract chunking logic into separate module
-- [ ] Extract quality loops into separate module
-- [ ] Extract duplicate detection into separate module
-- [ ] Extract embedding orchestration into separate module
-- [ ] Currently 2,700+ LOC — largest single file
+- [x] Extract chunking logic into separate module
+- [x] Extract quality loops into separate module
+- [x] Extract duplicate detection into separate module
+- [x] Extract embedding orchestration into separate module
+- [x] Currently 2,700+ LOC — largest single file
 
 **Acceptance:** `memory-save.ts` reduced to orchestration layer. Extracted modules independently testable.
 
@@ -523,8 +523,8 @@
 
 **File:** `mcp_server/lib/search/evidence-gap-detector.ts` L153, L158 | **Effort:** 0.25h
 
-- [ ] Add `Number.isFinite()` guards before score comparisons/aggregations
-- [ ] Currently: NaN/Infinity can propagate through gap analysis
+- [x] Add `Number.isFinite()` guards before score comparisons/aggregations
+- [x] Currently: NaN/Infinity can propagate through gap analysis
 
 **Acceptance:** Non-finite scores filtered before any comparison or aggregation.
 
@@ -533,7 +533,7 @@
 ## Tier 5: Architecture Scan — Code Placement & Boundaries (2026-03-02)
 
 **Source:** Codex 5.3 architecture scan (181K tokens, read-only full codebase analysis)
-**Effort:** 12-20h optimistic / 30-50h realistic | **Status:** Not started — requires dedicated refactoring spec
+**Effort:** 12-20h optimistic / 30-50h realistic | **Status:** Complete (9/9 implemented)
 **Scope:** 6 misplacements, 6 boundary violations, 2 circular deps, 7 god files
 
 ### ARCH-1: Create stable indexing API [HIGH] [Codex scan]
@@ -551,10 +551,10 @@
 
 **Files:** `mcp_server/scripts/run-bm25-baseline.ts`, `run-ablation.ts`, `map-ground-truth-ids.ts` | **Effort:** 1h opt / 2h real
 
-- [ ] Move `mcp_server/scripts/run-bm25-baseline.ts` → `scripts/evals/`
-- [ ] Move `mcp_server/scripts/run-ablation.ts` → `scripts/evals/`
-- [ ] Move `mcp_server/scripts/map-ground-truth-ids.ts` → `scripts/evals/`
-- [ ] Update `mcp_server/scripts/README.md` references
+- [x] Move `mcp_server/scripts/run-bm25-baseline.ts` → `scripts/evals/`
+- [x] Move `mcp_server/scripts/run-ablation.ts` → `scripts/evals/`
+- [x] Move `mcp_server/scripts/map-ground-truth-ids.ts` → `scripts/evals/`
+- [x] Update `mcp_server/scripts/README.md` references
 
 **Acceptance:** `mcp_server/scripts/` contains only server-essential scripts. All eval CLIs in `scripts/evals/`.
 
@@ -575,11 +575,11 @@
 
 **Files:** `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts`, `retrieval-trace.ts` | **Effort:** 2h opt / 4h real
 
-- [ ] Move `mcp_server/lib/search/rrf-fusion.ts` → `shared/algorithms/`
-- [ ] Move `mcp_server/lib/search/adaptive-fusion.ts` → `shared/algorithms/`
-- [ ] Move `mcp_server/lib/search/mmr-reranker.ts` → `shared/algorithms/`
-- [ ] Move `mcp_server/lib/contracts/retrieval-trace.ts` → `shared/contracts/`
-- [ ] Update all import paths in mcp_server consumers
+- [x] Move `mcp_server/lib/search/rrf-fusion.ts` → `shared/algorithms/`
+- [x] Move `mcp_server/lib/search/adaptive-fusion.ts` → `shared/algorithms/`
+- [x] Move `mcp_server/lib/search/mmr-reranker.ts` → `shared/algorithms/`
+- [x] Move `mcp_server/lib/contracts/retrieval-trace.ts` → `shared/contracts/`
+- [x] Update all import paths in mcp_server consumers
 
 **Acceptance:** Algorithms importable from `@spec-kit/shared` without mcp_server dependency.
 
@@ -587,10 +587,10 @@
 
 **File:** `shared/config.ts` | **Effort:** 1h opt / 2h real
 
-- [ ] Split into pure config (`shared/config.ts` — env var reading, abstract defaults)
-- [ ] Create `mcp_server/core/paths.ts` — runtime path resolution
-- [ ] Create `scripts/core/paths.ts` — script path resolution
-- [ ] Remove hardcoded `../../mcp_server/database/` from shared layer
+- [x] Split into pure config (`shared/config.ts` — env var reading, abstract defaults)
+- [x] Create `mcp_server/core/paths.ts` — runtime path resolution
+- [x] Create `scripts/core/paths.ts` — script path resolution
+- [x] Remove hardcoded `../../mcp_server/database/` from shared layer
 
 **Acceptance:** `shared/` has zero path references to `mcp_server/` directory structure.
 
@@ -598,10 +598,10 @@
 
 **Files:** 4 files >1000 LOC | **Effort:** 8h opt / 16h real
 
-- [ ] `memory-save.ts` (2,788 LOC): extract chunking, quality loop, PE gating, eval logging
-- [ ] `memory-search.ts` (1,064 LOC): move search orchestration into `lib/search`
-- [ ] `hybrid-search.ts` (1,539 LOC): split by stage/services
-- [ ] `session-manager.ts` (1,140 LOC): separate dedup, recovery, persistence
+- [x] `memory-save.ts` (2,788 LOC): extract chunking, quality loop, PE gating, eval logging
+- [x] `memory-search.ts` (1,064 LOC): move search orchestration into `lib/search`
+- [x] `hybrid-search.ts` (1,539 LOC): split by stage/services
+- [x] `session-manager.ts` (1,140 LOC): separate dedup, recovery, persistence
 
 **Acceptance:** No handler file >1000 LOC. Extracted services independently testable.
 
@@ -609,8 +609,8 @@
 
 **Circular deps:** 2 identified | **Effort:** 1h opt / 2h real
 
-- [ ] `hybrid-search.ts` ↔ `graph-search-fn.ts` — extract shared types to `types.ts`
-- [ ] `memory-crud.ts` ↔ `memory-crud-health.ts` — merge or introduce shared interface file
+- [x] `hybrid-search.ts` ↔ `graph-search-fn.ts` — extract shared types to `types.ts`
+- [x] `memory-crud.ts` ↔ `memory-crud-health.ts` — merge or introduce shared interface file
 
 **Acceptance:** `tsc --noEmit` passes. No circular import warnings.
 
@@ -618,8 +618,8 @@
 
 **File:** `scripts/lib/retry-manager.ts` | **Effort:** 0.5h
 
-- [ ] Remove re-export shim
-- [ ] Update consumers to use indexing API (ARCH-1) or direct documented import
+- [x] Remove re-export shim
+- [x] Update consumers to use indexing API (ARCH-1) or direct documented import
 
 **Acceptance:** `scripts/lib/retry-manager.ts` deleted. No broken imports.
 
@@ -627,8 +627,8 @@
 
 **File:** `mcp_server/lib/eval/ground-truth-data.ts` (1,690 LOC) | **Effort:** 1h
 
-- [ ] Extract dataset to `mcp_server/lib/eval/data/ground-truth.json`
-- [ ] Replace file with thin JSON loader
+- [x] Extract dataset to `mcp_server/lib/eval/data/ground-truth.json`
+- [x] Replace file with thin JSON loader
 
 **Acceptance:** `ground-truth-data.ts` <100 LOC. Data in JSON file.
 
@@ -735,7 +735,7 @@
 
 **Source:** Codex 5.3 architecture scan (181K tokens, read-only full codebase analysis)
 
-**NOT YET ADDRESSED (9):**
+**ALL COMPLETE (9/9):**
 
 | ID | Title | Severity | Category | Key Files |
 |----|-------|:--------:|:--------:|-----------|
