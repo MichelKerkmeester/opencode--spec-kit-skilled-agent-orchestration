@@ -589,20 +589,18 @@ Gate 2 routes tasks to skills via `skill_advisor.py`. When confidence > 0.8, you
 
 ### 4.4 Commands
 
-#### All Available Commands (19 total)
+#### All Available Commands (17 total)
 
 Commands are slash-prefixed shortcuts for common workflows.
 
-**Create Commands (6)**
+**Create Commands (4)**
 
 | Command                   | Description                  | Output                         |
 | ------------------------- | ---------------------------- | ------------------------------ |
 | `/create:agent`           | Create new agent             | Agent file in .opencode/agent/ |
 | `/create:folder_readme`   | Generate README for a folder | README.md in target folder     |
 | `/create:install_guide`   | Create installation guide    | Install guide document         |
-| `/create:skill`           | Scaffold new skill           | Skill folder structure         |
-| `/create:skill_asset`     | Create skill asset file      | Asset in skill/assets/         |
-| `/create:skill_reference` | Create skill reference doc   | Reference in skill/references/ |
+| `/create:sk-skill`        | Unified skill command        | Skill create/update/file flows |
 
 **Memory Commands (4)**
 

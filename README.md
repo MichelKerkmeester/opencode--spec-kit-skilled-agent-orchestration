@@ -505,15 +505,13 @@ All support `:auto` and `:confirm` mode suffixes.
 | `/memory:learn`    | Explicit learning capture (`correct` subcommand for mistakes) |
 | `/memory:manage`   | Database ops: stats, health, cleanup, checkpoints             |
 
-### create/ (6 commands)
+### create/ (4 commands)
 
 | Command                   | Purpose                                      |
 | ------------------------- | -------------------------------------------- |
-| `/create:skill`           | Scaffold a new skill with structure          |
+| `/create:sk-skill`        | Unified skill workflows (create/update/file) |
 | `/create:agent`           | Scaffold a new agent definition              |
 | `/create:folder_readme`   | AI-optimized README.md with proper structure |
-| `/create:skill_asset`     | Create a skill asset file                    |
-| `/create:skill_reference` | Create a skill reference file                |
 | `/create:install_guide`   | Generate a 5-phase install guide             |
 
 ### Utility (1 command)
@@ -693,7 +691,7 @@ Custom skills, agents, commands and templates.
 
 Every component follows standardized patterns for customization:
 
-**Custom Skills**: `/create:skill my-skill` or `init_skill.py`. Auto-detected by `skill_advisor.py`. Structure: SKILL.md + references/ + assets/ + scripts/.
+**Custom Skills**: `/create:sk-skill my-skill full-create` or `init_skill.py`. Auto-detected by `skill_advisor.py`. Structure: SKILL.md + references/ + assets/ + scripts/.
 
 **Custom Agents**: `/create:agent my-agent`. Define constraints, tool access, delegation rules. Integrate with gate system and orchestration.
 
@@ -779,7 +777,7 @@ Real workflows, not toy examples.
 | Debug a stuck issue        | `/spec_kit:debug`                 | Spawns fresh-perspective sub-agent with model selection       |
 | Plan without implementing  | `/spec_kit:plan "refactor API"`   | Creates spec + plan, stops before code changes                |
 | Hand off to next session   | `/spec_kit:handover`              | Creates continuation doc (`:quick` = 15 lines, `:full` = 150) |
-| Create a new skill         | `/create:skill my-skill`          | Scaffolds complete skill structure with templates             |
+| Create a new skill         | `/create:sk-skill my-skill full-create` | Scaffolds complete skill structure with templates      |
 
 ### End-to-End Example: Feature Development
 
@@ -974,7 +972,7 @@ A: Each provider uses a separate database, so switching is safe. Your old embedd
 
 **Q: How do I create a custom skill?**
 
-A: Run `/create:skill my-skill-name` or use the init script:
+A: Run `/create:sk-skill my-skill-name full-create` or use the init script:
 
 ```bash
 python3 .opencode/skill/sk-doc/scripts/init_skill.py my-skill

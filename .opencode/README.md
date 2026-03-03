@@ -174,9 +174,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 ### Create Commands (`/create:*`)
 
 - `/create:agent`: Generate new agent definition file
-- `/create:skill`: Create new skill module with template structure
-- `/create:skill_reference`: Add reference documentation to existing skill
-- `/create:skill_asset`: Add asset (template/checklist) to existing skill
+- `/create:sk-skill`: Unified skill command (full-create, full-update, reference-only, asset-only)
 - `/create:folder_readme`: Generate README for any directory
 - `/create:install_guide`: Create installation/setup guide
 

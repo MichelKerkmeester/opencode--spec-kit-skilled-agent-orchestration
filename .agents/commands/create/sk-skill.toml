@@ -1,0 +1,29 @@
+description = "Create or update OpenCode skills through one unified command with explicit operation routing and mode support (:auto | :confirm)"
+prompt = """---
+description: Create or update OpenCode skills through one unified command with explicit operation routing and mode support (:auto | :confirm)
+argument-hint: "<skill-name> [operation] [type] [--path <dir>] [--chained] [:auto|:confirm]"
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+---
+
+# Create Skill (TOML Runtime Wrapper)
+
+This TOML command is a runtime wrapper for the canonical markdown command.
+
+## Source of Truth
+
+- `.opencode/command/create/sk-skill.md`
+
+## Execution Rules
+
+1. Read `.opencode/command/create/sk-skill.md`.
+2. Execute its phases, gates, setup flow, mode routing, and operation routing exactly as written.
+3. Use this request as the command input (`$ARGUMENTS`).
+4. Do not route to deprecated command variants (`/create:skill`, `/create:skill_reference`, `/create:skill_asset`).
+5. Return the canonical status format from the source command.
+
+## Notes
+
+- This wrapper intentionally avoids duplicating the full command body to prevent drift.
+- Any future updates should be made in `.opencode/command/create/sk-skill.md`.
+
+User request: {{args}}"""

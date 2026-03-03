@@ -167,17 +167,13 @@ All template files follow this consistent structure:
 
 | Mode                       | Related Commands          | Description                            |
 | -------------------------- | ------------------------- | -------------------------------------- |
-| **Mode 2: Skill Creation** | `/create:skill`           | Scaffold complete skill structure      |
-|                            | `/create:skill_reference` | Create reference file from template    |
-|                            | `/create:skill_asset`     | Create asset file from template        |
+| **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows |
 | **Mode 4: Install Guides** | `/create:install_guide`   | Generate 5-phase install documentation |
 | **General**                | `/create:folder_readme`   | Create folder README with structure    |
 
 **Command → Mode Mapping:**
 ```
-/create:skill           → Mode 2 (init_skill.py + templates)
-/create:skill_reference → Mode 2 (reference template)
-/create:skill_asset     → Mode 2 (asset template)
+/create:sk-skill        → Mode 2 (full-create/full-update/reference-only/asset-only)
 /create:install_guide   → Mode 4 (5-phase template)
 /create:folder_readme   → Mode 1 (README quality standards)
 ```
