@@ -30,5 +30,7 @@ Reported orchestration in output:
 1. Probe runtime capacity at start.
 2. Reserve one coordinator.
 3. Saturate remaining worker slots.
-4. Run in waves until all scenarios are complete.
-5. Record utilization table and evidence paths in final report.
+4. Pre-assign explicit scenario IDs and ranges to each wave before execution.
+5. Run destructive scenarios (`EX-008`, `EX-009`, `EX-018`, `EX-021`) in dedicated sandbox-only waves.
+6. After each wave, execute playbook `M-003` (save + index), then begin the next wave via `M-001` continuation.
+7. Record utilization table and evidence paths in final report.

@@ -31,22 +31,19 @@ Hard rule:
 Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
-3. Coverage remains 128/128.
+3. Coverage is 100% of features currently defined in `manual-test-playbooks.md` (`COVERED_FEATURES == TOTAL_FEATURES`).
 4. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
 
+Deterministic coverage check (run from repository root):
+- `TOTAL_FEATURES=$(rg -n '^\| (EX|NEW)-[0-9]{3} \|' specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement/manual_testing_playbook/manual-test-playbooks.md | wc -l | tr -d ' ')`
+- Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
+
 ## Memory/Spec-Kit Mandatory Flows
-### Context recovery and continuation
-- `/memory:continue specs/<target-spec>`
-- `memory_search({ query: "state next-steps blockers decisions", specFolder: "specs/<target-spec>", anchors: ["state", "next-steps", "blockers", "decisions"] })`
-
-### Targeted lookup
-- `memory_search({ query: "<specific decision rationale>", specFolder: "specs/<target-spec>", anchors: ["decision-record", "rationale"] })`
-
-### Save + index update
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
-- `memory_index_scan({ specFolder: "specs/<target-spec>" })`
-
-### Review handoff
-- `@review findings-first review with severity ranking and final verdict`
+Use `manual-test-playbooks.md` as the single source of truth:
+- `M-001 Context Recovery and Continuation`
+- `M-002 Targeted Memory Lookup`
+- `M-003 Context Save + Index Update`
+- `M-004 Main-Agent Review and Verdict Handoff`
+Rule: do not duplicate or restate command text in this protocol; update playbook scenarios when commands change.

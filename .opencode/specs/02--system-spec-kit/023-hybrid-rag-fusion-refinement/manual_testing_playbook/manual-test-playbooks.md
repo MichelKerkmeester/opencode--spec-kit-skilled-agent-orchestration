@@ -13,6 +13,8 @@ Canonical source artifacts:
 2. Feature summary files are accessible.
 3. Spec/memory commands are available in the runtime.
 4. Manual execution logging is enabled (terminal transcript capture).
+5. Destructive scenarios (`EX-008`, `EX-009`, `EX-018`, `EX-021`) MUST run only in a disposable sandbox spec folder (for example `specs/test-sandbox`), never in active project folders.
+6. Before each destructive scenario, create and record a named checkpoint for rollback evidence.
 
 ## Global Evidence Requirements
 - Command transcript
@@ -20,6 +22,11 @@ Canonical source artifacts:
 - Output snippets
 - Artifact path or output reference
 - Scenario verdict with rationale
+
+## Deterministic Command Notation
+- Replace placeholders before execution: `<target-spec>`, `<sandbox-spec>`, `<memory-id>`, `<checkpoint-name>`.
+- Do not execute literal ellipsis (`...`) or omitted-argument forms; transcripts must contain fully resolved commands.
+- For shorthand tool syntax, execute with explicit argument keys in runtime calls.
 
 ## Existing Features (`EX-001..EX-034`)
 
@@ -32,8 +39,8 @@ Canonical source artifacts:
 | EX-005 | 4-stage pipeline architecture | Stage invariant verification | `Search Stage4Invariant score snapshot verifyScoreInvariant` | `memory_search(query,intent:understand)` | No invariant errors; stable final scoring | Output + logs | PASS if no score-mutation symptoms | Inspect stage metadata and flags |
 | EX-006 | Memory indexing (memory_save) | New memory ingestion | `Index memory file and report action` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; searchable result appears | Save output + follow-up search | PASS if indexed and retrievable | Validate file path/type and content quality |
 | EX-007 | Memory metadata update (memory_update) | Metadata + re-embed update | `Update memory title and triggers` | `memory_update(id,title,triggers)` -> `memory_search(new title)` | Updated metadata reflected in retrieval | Update output + search | PASS if updated title retrievable | Retry with allowPartialUpdate if embedding fails |
-| EX-008 | Single and folder delete (memory_delete) | Atomic single delete | `Delete memory ID and verify removal` | `memory_delete(id)` -> `memory_search(old title)` | Deleted item absent from retrieval | Delete output + search | PASS if deleted item not found | Restore from checkpoint if accidental delete |
-| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `Delete deprecated tier in scoped folder` | `memory_bulk_delete(tier,specFolder)` -> `checkpoint_list()` | Deletion count + checkpoint created | Bulk delete output | PASS if scoped deletions and checkpoint present | Re-run with confirm/scope; restore if needed |
+| EX-008 | Single and folder delete (memory_delete) | Atomic single delete | `Delete memory ID and verify removal` | `checkpoint_create(name:"pre-ex008-delete",specFolder:"<sandbox-spec>")` -> `memory_delete(id)` -> `memory_search(old title)` | Deleted item absent from retrieval | Delete output + search | PASS if deleted item not found and checkpoint exists | Restore `pre-ex008-delete`; verify sandbox folder |
+| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | Tier cleanup with safety | `Delete deprecated tier in scoped folder` | `checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>")` -> `memory_bulk_delete(tier,specFolder:"<sandbox-spec>")` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Deletion count + checkpoint created | Bulk delete output | PASS if scoped deletions in sandbox and checkpoint present | Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed |
 | EX-010 | Validation feedback (memory_validate) | Feedback learning loop | `Record positive validation with queryId` | `memory_validate(memoryId,helpful:true,queryId)` | Confidence/promotion metadata updates | Validation response | PASS if feedback persisted and metadata returned | Retry with valid memoryId/queryId |
 | EX-011 | Memory browser (memory_list) | Folder inventory audit | `List memories in target spec folder` | `memory_list(specFolder,limit,offset)` | Paginated list and totals | List output | PASS if browsable inventory returned | Reduce filters; verify specFolder path |
 | EX-012 | System statistics (memory_stats) | System baseline snapshot | `Return stats with composite ranking` | `memory_stats(ranking:composite,includeScores:true)` | Counts, tiers, folder ranking present | Stats output | PASS if dashboard fields populated | Retry with default ranking on scoring error |
@@ -42,10 +49,10 @@ Canonical source artifacts:
 | EX-015 | Checkpoint creation (checkpoint_create) | Pre-destructive backup | `Create checkpoint pre-bulk-delete` | `checkpoint_create(name,specFolder)` -> `checkpoint_list()` | New checkpoint listed | Create/list outputs | PASS if checkpoint discoverable | Validate folder and naming rules |
 | EX-016 | Checkpoint listing (checkpoint_list) | Recovery asset discovery | `List checkpoints newest first` | `checkpoint_list(specFolder,limit)` | Available restore points displayed | List output | PASS if checkpoints returned | Remove spec filter if empty |
 | EX-017 | Checkpoint restore (checkpoint_restore) | Rollback restore drill | `Restore checkpoint with merge mode` | `checkpoint_restore(name,clearExisting:false)` -> `memory_health()` | Restored data + healthy state | Restore output + search proof | PASS if known record restored | Retry with clearExisting based on conflict |
-| EX-018 | Checkpoint deletion (checkpoint_delete) | Old snapshot cleanup | `Delete stale checkpoint by name` | `checkpoint_list()` -> `checkpoint_delete(name)` | Removed checkpoint absent from list | Before/after list outputs | PASS if checkpoint removed | Validate name; retry |
+| EX-018 | Checkpoint deletion (checkpoint_delete) | Old snapshot cleanup | `Delete stale checkpoint by name` | `checkpoint_list(specFolder:"<sandbox-spec>")` -> `checkpoint_delete(name)` -> `checkpoint_list(specFolder:"<sandbox-spec>")` | Removed checkpoint absent from list | Before/after list outputs | PASS if checkpoint removed from sandbox list | Validate name and sandbox scope; retry |
 | EX-019 | Causal edge creation (memory_causal_link) | Causal provenance linking | `Link source->target supports strength 0.8` | `memory_causal_link(...)` -> `memory_drift_why(...)` | Edge appears in chain trace | Link + trace outputs | PASS if relation visible in trace | Validate IDs/relation type |
 | EX-020 | Causal graph statistics (memory_causal_stats) | Graph coverage review | `Return causal stats and coverage` | `memory_causal_stats()` | Coverage and edge metrics present | Stats output | PASS if metrics returned | Rebuild causal edges if empty |
-| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `Delete edge and re-trace` | `memory_causal_unlink(edgeId)` -> `memory_drift_why(...)` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed | Verify edgeId exists |
+| EX-021 | Causal edge deletion (memory_causal_unlink) | Edge correction | `Delete edge and re-trace` | `checkpoint_create(name:"pre-ex021-causal-unlink",specFolder:"<sandbox-spec>")` -> `memory_causal_unlink(edgeId)` -> `memory_drift_why(...)` | Removed edge absent in trace | Unlink + trace outputs | PASS if edge removed and checkpoint exists | Verify edgeId exists; restore `pre-ex021-causal-unlink` if wrong edge removed |
 | EX-022 | Causal chain tracing (memory_drift_why) | Decision why-trace | `Trace both directions to depth 4` | `memory_drift_why(memoryId,direction:both,maxDepth:4)` | Chain includes expected relations | Trace output | PASS if causal path returned | Lower depth/rel filters if empty |
 | EX-023 | Epistemic baseline capture (task_preflight) | Pre-task baseline logging | `Create preflight for pipeline-v2-audit` | `task_preflight(specFolder,taskId,knowledge,uncertainty,contextCompleteness)` | Baseline record created | Preflight output | PASS if baseline persisted | Retry with complete fields |
 | EX-024 | Post-task learning measurement (task_postflight) | Learning closeout | `Complete postflight for pipeline-v2-audit` | `task_postflight(...)` | Delta/learning record saved | Postflight output | PASS if completion recorded | Verify taskId matches preflight |
@@ -105,7 +112,7 @@ Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 | NEW-034 | Relative score fusion in shadow mode (R14/N1) | Confirm RSF inert in live ranking | `Check RSF shadow behavior post-cleanup.` | 1) Inspect branch conditions 2) Run queries 3) Confirm RRF live ranking |
 | NEW-035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2).` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor |
 | NEW-036 | Confidence-based result truncation (R15-ext) | Confirm relevance-cliff cutoff | `Verify confidence-based truncation (R15-ext).` | 1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee |
-| NEW-037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `Verify dynamic token budgets (FUT-7).` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback 4000 |
+| NEW-037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `Verify dynamic token budgets (FUT-7).` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback |
 | NEW-038 | Query expansion (R12) | Confirm parallel expansion + dedup | `Validate query expansion (R12).` | 1) Complex query expansion 2) Parallel baseline+expanded 3) dedup + simple-query skip |
 | NEW-039 | Verify-fix-verify memory quality loop (PI-A5) | Confirm retry then reject path | `Verify PI-A5 quality loop behavior.` | 1) Submit low-quality memory 2) Observe retries 3) Confirm final reject |
 | NEW-040 | Signal vocabulary expansion (TM-08) | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories |
