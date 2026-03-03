@@ -1,5 +1,5 @@
 {
-  "timestamp": "03-03-26 09-10",
+  "timestamp": "03-03-26 17-09",
   "messageCount": 1,
   "decisionCount": 5,
   "diagramCount": 0,
@@ -9,7 +9,7 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 50,
+    "qualityScore": 60,
     "filtered": {
       "noise": 0,
       "empty": 0,
@@ -35,7 +35,7 @@
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 24,
-    "generatedAt": "2026-03-03T08:10:49.281Z"
+    "memoryId": 3,
+    "generatedAt": "2026-03-03T16:09:38.640Z"
   }
 }
