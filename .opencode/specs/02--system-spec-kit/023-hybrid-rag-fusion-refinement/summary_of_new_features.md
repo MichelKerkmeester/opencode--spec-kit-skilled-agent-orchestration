@@ -1,6 +1,6 @@
 ---
 title: Summary of new and updated features
-description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-8 complete; deferred features (N2, R10, R8, S5) implemented. Phases 015-018 applied P1 fixes (timer persistence, effectiveScore fallback), alignment remediation (dedup, fallback forcing), Opus review remediation (35 fixes, legacy V1 pipeline removed, 7085 tests passing), and multi-agent deep review remediation (Math.max stack overflow elimination, transaction hardening, cross-AI validation with 14 fixes, sk-code alignment).
+description: Every improvement delivered in the Hybrid RAG Fusion Refinement program, grouped by functional area with expanded descriptions. Sprints 0-8 complete; deferred features (N2, R10, R8, S5) implemented. Phases 015-018 applied P1 fixes (timer persistence, effectiveScore fallback), alignment remediation (dedup, fallback forcing), Opus review remediation (35 fixes, legacy V1 pipeline removed, 7085 tests passing), and multi-agent deep review remediation (Math.max stack overflow elimination, transaction hardening, cross-AI validation with 14 fixes, sk-code alignment). Sprint 019 (extra features) planned: 12 features (3 P0, 4 P1, 5 P2 deferred) covering schema validation, response envelopes, async ingestion, contextual trees, GGUF reranking, dynamic init, and filesystem watching.
 ---
 
 # Summary of new and updated features
@@ -111,6 +111,19 @@ description: Every improvement delivered in the Hybrid RAG Fusion Refinement pro
   - [DB_PATH extraction and import standardization](#db_path-extraction-and-import-standardization)
   - [Cross-AI validation fixes (Tier 4)](#cross-ai-validation-fixes-tier-4)
   - [Code standards alignment](#code-standards-alignment)
+- [Planned: Extra features (Sprint 019)](#planned-extra-features-sprint-019)
+  - [Strict Zod schema validation (P0-1)](#strict-zod-schema-validation-p0-1)
+  - [Provenance-rich response envelopes (P0-2)](#provenance-rich-response-envelopes-p0-2)
+  - [Async ingestion job lifecycle (P0-3)](#async-ingestion-job-lifecycle-p0-3)
+  - [Contextual tree injection (P1-4)](#contextual-tree-injection-p1-4)
+  - [Local GGUF reranker via node-llama-cpp (P1-5)](#local-gguf-reranker-via-node-llama-cpp-p1-5)
+  - [Dynamic server instructions at MCP initialization (P1-6)](#dynamic-server-instructions-at-mcp-initialization-p1-6)
+  - [Real-time filesystem watching with chokidar (P1-7)](#real-time-filesystem-watching-with-chokidar-p1-7)
+  - [Warm server / daemon mode (P2-8)](#warm-server--daemon-mode-p2-8)
+  - [Backend storage adapter abstraction (P2-9)](#backend-storage-adapter-abstraction-p2-9)
+  - [Namespace management CRUD tools (P2-10)](#namespace-management-crud-tools-p2-10)
+  - [ANCHOR tags as graph nodes (P2-11)](#anchor-tags-as-graph-nodes-p2-11)
+  - [AST-level section retrieval tool (P2-12)](#ast-level-section-retrieval-tool-p2-12)
 - [Decisions and deferrals](#decisions-and-deferrals)
   - [INT8 quantization evaluation (R5)](#int8-quantization-evaluation-r5)
   - [Implemented: graph centrality and community detection (N2)](#implemented-graph-centrality-and-community-detection-n2)
@@ -890,6 +903,60 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 ### Code standards alignment
 
 All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+
+---
+
+## Planned: Extra features (Sprint 019)
+
+A 6-agent cross-AI research effort identified 12 remaining gaps after the 023 refinement program: 7 partial implementations needing completion, 5 genuinely new features. Spec folder: `019-sprint-9-extra-features` (Level 3+). 3 P0, 4 P1, 5 P2 (deferred).
+
+### Strict Zod schema validation (P0-1)
+
+**PLANNED (Sprint 019).** All 24 MCP tool inputs (L1-L7) move to Zod runtime schemas in `mcp_server/tool-schemas.ts`, controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors. Adds `zod` dependency.
+
+### Provenance-rich response envelopes (P0-2)
+
+**PLANNED (Sprint 019).** Search results gain optional provenance envelopes (default `includeTrace: false`) exposing internal pipeline scoring that is currently dropped at Stage 4 exit. When enabled, responses include `scores` (semantic, lexical, fusion, intentAdjusted, composite, rerank, attention), `source` (file, anchorIds, anchorTypes, lastModified, memoryState), and `trace` (channelsUsed, pipelineStages, fallbackTier, queryComplexity, expansionTerms, budgetTruncated, scoreResolution).
+
+### Async ingestion job lifecycle (P0-3)
+
+**PLANNED (Sprint 019).** Ingestion moves to a SQLite-persisted job queue (`lib/ops/job-queue.ts`) with lifecycle states `queued → parsing → embedding → indexing → complete/failed/cancelled`, max 10 concurrent jobs, and three new tools: `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`. Supersedes the current lightweight `asyncEmbedding` path in `memory_save`.
+
+### Contextual tree injection (P1-4)
+
+**PLANNED (Sprint 019).** Returned chunks are prefixed with hierarchical context headers in the format `[parent > child — description]` (max 100 chars), using existing PI-B3 cached spec folder descriptions. Gated by `SPECKIT_CONTEXT_HEADERS` (default `true`) and injected after Stage 4 token-budget truncation.
+
+### Local GGUF reranker via node-llama-cpp (P1-5)
+
+**PLANNED (Sprint 019).** Implements the `RERANKER_LOCAL` flag with `node-llama-cpp` in Stage 3 using `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB). Requires 4GB free memory, targets <500ms for top-20 candidates. Falls back to existing RRF scoring when local execution is unavailable. New file: `lib/search/local-reranker.ts`.
+
+### Dynamic server instructions at MCP initialization (P1-6)
+
+**PLANNED (Sprint 019).** Startup in `context-server.ts` uses `server.setInstructions()` to inject a dynamic memory-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload. Reuses existing `memory_stats` logic. Gated by `SPECKIT_DYNAMIC_INIT` (default `true`).
+
+### Real-time filesystem watching with chokidar (P1-7)
+
+**PLANNED (Sprint 019).** Adds `chokidar`-based push indexing in `lib/ops/file-watcher.ts` with 2-second debounce, TM-02 SHA-256 content-hash deduplication, SQLite WAL mode enforcement, and exponential backoff retries for `SQLITE_BUSY`. Gated by `SPECKIT_FILE_WATCHER` (default `false`).
+
+### Warm server / daemon mode (P2-8)
+
+**PLANNED (Sprint 019) — DEFERRED.** HTTP daemon transport for warm, persistent server execution is deferred while MCP SDK HTTP transport conventions continue evolving. Current transport remains stdio. Estimated effort: L (2-3 weeks).
+
+### Backend storage adapter abstraction (P2-9)
+
+**PLANNED (Sprint 019) — DEFERRED.** Vector/graph/document storage abstractions (`IVectorStore`, `IGraphStore`, `IDocumentStore`) are deferred to avoid premature abstraction while SQLite coupling handles current scale. Estimated effort: M-L (1-2 weeks).
+
+### Namespace management CRUD tools (P2-10)
+
+**PLANNED (Sprint 019) — DEFERRED.** Namespace CRUD (`list/create/switch/delete`) remains deferred pending demonstrated multi-tenant demand. Current scoping relies on logical `specFolder` filtering. Estimated effort: S-M (3-5 days).
+
+### ANCHOR tags as graph nodes (P2-11)
+
+**PLANNED (Sprint 019) — DEFERRED.** Promoting parsed ANCHOR markers into typed graph nodes (most creative insight from cross-AI research, Gemini-2) is deferred behind a dedicated 2-day feasibility spike. Estimated effort: S-M (3-5 days).
+
+### AST-level section retrieval tool (P2-12)
+
+**PLANNED (Sprint 019) — DEFERRED.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is deferred until spec docs routinely exceed ~1000 lines. Existing R7 anchor-aware thinning remains the current approach. Estimated effort: M (5-7 days).
 
 ---
 
