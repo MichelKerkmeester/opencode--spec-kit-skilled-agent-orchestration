@@ -125,11 +125,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    ┌────────────────────────────────────────────────────────────────┐
    │ **Before proceeding, please answer:**                          │
    │                                                                │
-   │ **Q_OP. Operation** (if not detected from args):              │
+   │ **Q_OP. Operation** (if not detected from args):               │
    │    A) README - Create/update folder documentation              │
    │    B) Install Guide - Create/update installation guide         │
    │                                                                │
-   │ ── README Questions (if operation = readme) ──                │
+   │ ── README Questions (if operation = readme) ──                 │
    │                                                                │
    │ **Q_R1. Target Path** (if not provided in command):            │
    │    Where should the README be created?                         │
@@ -141,7 +141,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │    C) Feature - Documentation for a specific feature/system     │
    │    D) Skill - Documentation for an OpenCode skill              │
    │                                                                │
-   │ ── Install Guide Questions (if operation = install) ──        │
+   │ ── Install Guide Questions (if operation = install) ──         │
    │                                                                │
    │ **Q_I1. Project Name** (if not provided in command):           │
    │    What project/tool needs an installation guide?              │
@@ -161,11 +161,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    │                                                                │
    │ ── Common ──                                                   │
    │                                                                │
-   │ **Q_MODE. Execution Mode** (if no :auto/:confirm suffix):     │
+   │ **Q_MODE. Execution Mode** (if no :auto/:confirm suffix):        │
    │    A) Interactive - Confirm at each step (Recommended)          │
    │    B) Autonomous - Execute without prompts                     │
    │                                                                │
-   │ Reply with answers for applicable questions only.               │
+   │ Reply with answers for applicable questions only.              │
    └────────────────────────────────────────────────────────────────┘
 
 6. WAIT for user response (DO NOT PROCEED)
@@ -404,64 +404,6 @@ FOR WORKFLOW VIOLATIONS:
 | 3    | Structure  | ☐      | Section structure     | Template selected            |
 | 4    | Generation | ☐      | Install guide         | Complete guide written       |
 | 5    | Validation | ☐      | Validated guide       | Structure verified           |
-
----
-
-## WORKFLOW DIAGRAM
-
-```mermaid
-flowchart TD
-    classDef phase fill:#1e3a5f,stroke:#3b82f6,color:#fff
-    classDef gate fill:#7c2d12,stroke:#ea580c,color:#fff
-    classDef verify fill:#065f46,stroke:#10b981,color:#fff
-    classDef wait fill:#4a1d6b,stroke:#a855f7,color:#fff
-
-    START(["/create:folder_readme"]) --> SETUP
-
-    subgraph SETUP["UNIFIED SETUP PHASE"]
-        S1[@write check] --> S2[Detect operation] --> S3[Parse mode suffix]
-        S3 --> S4{{"Consolidated prompt<br/>(only missing fields)"}}
-        S4 --> S5[Parse response]
-    end
-
-    SETUP --> WRITE_CHECK{@write<br/>agent?}
-    WRITE_CHECK -->|No| BLOCK[/"⛔ HARD BLOCK<br/>Restart with @write"/]
-    BLOCK --> END_FAIL([End - User Action Required])
-    WRITE_CHECK -->|Yes| OP_CHECK{Operation?}
-
-    OP_CHECK -->|readme| README_CHECK{README<br/>exists?}
-    OP_CHECK -->|install| INSTALL_CHECK{Guide<br/>exists?}
-
-    README_CHECK -->|Yes| R_CONFLICT[/"Overwrite?<br/>(A-D options)"/]
-    README_CHECK -->|No| R_WORKFLOW
-    R_CONFLICT --> R_WAIT{{Wait for User}}
-    R_WAIT --> R_WORKFLOW
-
-    INSTALL_CHECK -->|Yes| I_CONFLICT[/"Overwrite?<br/>(E-G options)"/]
-    INSTALL_CHECK -->|No| I_WORKFLOW
-    I_CONFLICT --> I_WAIT{{Wait for User}}
-    I_WAIT --> I_WORKFLOW
-
-    subgraph R_WORKFLOW["README: Steps 1-5"]
-        RW1[Step 1: Analysis] --> RW2[Step 2: Discovery]
-        RW2 --> RW3[Step 3: Structure] --> RW4[Step 4: Generation]
-        RW4 --> RW5[Step 5: Validation]
-    end
-
-    subgraph I_WORKFLOW["Install Guide: Steps 1-5"]
-        IW1[Step 1: Analysis] --> IW2[Step 2: Discovery]
-        IW2 --> IW3[Step 3: Structure] --> IW4[Step 4: Generation]
-        IW4 --> IW5[Step 5: Validation]
-    end
-
-    R_WORKFLOW --> DONE([/"✅ Documentation Complete"/])
-    I_WORKFLOW --> DONE
-
-    class WRITE_CHECK,OP_CHECK,README_CHECK,INSTALL_CHECK gate
-    class DONE verify
-    class S1,S2,S3,S5,RW1,RW2,RW3,RW4,RW5,IW1,IW2,IW3,IW4,IW5 phase
-    class S4,R_WAIT,I_WAIT wait
-```
 
 ---
 
