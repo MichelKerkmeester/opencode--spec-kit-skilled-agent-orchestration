@@ -12,6 +12,4 @@ The combined multiplier uses `Infinity` for never-decay cases, which produces `R
 
 - Group: Scoring and calibration
 - Source feature title: Classification-based decay
-- Summary match found: Yes
-- Summary source feature title: Classification-based decay
 - Current reality source: feature_catalog.md

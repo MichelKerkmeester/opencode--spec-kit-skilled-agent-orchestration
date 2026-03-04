@@ -18,5 +18,4 @@ Retrieval telemetry records mode selection and pressure-override fallbacks for o
 
 - Group: Retrieval
 - Source feature title: Unified context retrieval (memory_context)
-- Summary match found: No
 - Current reality source: feature_catalog.md

@@ -12,6 +12,4 @@ Overflow events are logged with query ID, candidate count, total tokens, budget 
 
 - Group: Memory quality and indexing
 - Source feature title: Pre-flight token budget validation
-- Summary match found: Yes
-- Summary source feature title: Pre-flight token budget validation
 - Current reality source: feature_catalog.md

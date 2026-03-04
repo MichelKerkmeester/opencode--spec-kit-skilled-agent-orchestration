@@ -12,6 +12,4 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 
 - Group: Scoring and calibration
 - Source feature title: Negative feedback confidence signal
-- Summary match found: Yes
-- Summary source feature title: Negative feedback confidence signal
 - Current reality source: feature_catalog.md

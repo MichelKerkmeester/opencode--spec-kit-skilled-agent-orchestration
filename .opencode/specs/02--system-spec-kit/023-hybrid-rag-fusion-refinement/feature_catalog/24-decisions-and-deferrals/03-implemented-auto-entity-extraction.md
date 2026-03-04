@@ -10,6 +10,4 @@ Originally deferred at Sprint 6b pending a feasibility spike alongside N2. Rule-
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: auto entity extraction
-- Summary match found: Yes
-- Summary source feature title: Implemented: auto entity extraction
 - Current reality source: feature_catalog.md

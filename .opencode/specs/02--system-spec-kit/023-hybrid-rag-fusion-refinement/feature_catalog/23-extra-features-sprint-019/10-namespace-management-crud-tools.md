@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Namespace management CRUD tools
-- Summary match found: Yes
-- Summary source feature title: Namespace management CRUD tools
 - Current reality source: feature_catalog.md

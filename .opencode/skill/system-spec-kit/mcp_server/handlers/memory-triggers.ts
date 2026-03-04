@@ -347,7 +347,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
       };
     });
 
-    const tieredResults = tierClassifier.filterAndLimitByState(enrichedResults);
+    const tieredResults = tierClassifier.filterAndLimitByState(enrichedResults, null, limit);
 
     formattedResults = await Promise.all(tieredResults.map(async (r: EnrichedTriggerMatch) => {
       const content: string = await getTieredContent({

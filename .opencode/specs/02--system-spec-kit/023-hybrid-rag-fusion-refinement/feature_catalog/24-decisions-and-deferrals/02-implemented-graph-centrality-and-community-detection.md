@@ -10,6 +10,4 @@ Originally deferred at Sprint 6b pending a feasibility spike. Three graph capabi
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: graph centrality and community detection
-- Summary match found: Yes
-- Summary source feature title: Implemented: graph centrality and community detection
 - Current reality source: feature_catalog.md

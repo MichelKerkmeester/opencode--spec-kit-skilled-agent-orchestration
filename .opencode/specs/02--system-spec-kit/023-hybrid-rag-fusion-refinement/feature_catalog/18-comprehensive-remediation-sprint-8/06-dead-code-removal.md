@@ -18,6 +18,4 @@ Approximately 360 lines of dead code were removed across four categories:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal
-- Summary match found: Yes
-- Summary source feature title: Dead code removal
 - Current reality source: feature_catalog.md

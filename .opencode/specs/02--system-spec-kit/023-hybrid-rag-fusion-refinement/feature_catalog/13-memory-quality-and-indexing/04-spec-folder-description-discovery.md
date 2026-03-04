@@ -10,6 +10,4 @@ If the target folder can be identified from the description alone, the system sk
 
 - Group: Memory quality and indexing
 - Source feature title: Spec folder description discovery
-- Summary match found: Yes
-- Summary source feature title: Spec folder description discovery
 - Current reality source: feature_catalog.md

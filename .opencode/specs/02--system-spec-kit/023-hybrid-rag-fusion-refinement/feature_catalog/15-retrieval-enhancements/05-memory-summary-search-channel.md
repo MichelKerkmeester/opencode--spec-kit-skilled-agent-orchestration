@@ -18,6 +18,4 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 
 - Group: Retrieval enhancements
 - Source feature title: Memory summary search channel
-- Summary match found: Yes
-- Summary source feature title: Memory summary search channel
 - Current reality source: feature_catalog.md

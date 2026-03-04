@@ -10,6 +10,4 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Code standards alignment
-- Summary match found: Yes
-- Summary source feature title: Code standards alignment
 - Current reality source: feature_catalog.md

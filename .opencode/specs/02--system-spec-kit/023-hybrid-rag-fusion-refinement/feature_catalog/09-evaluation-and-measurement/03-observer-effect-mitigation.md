@@ -8,6 +8,4 @@ Measurement infrastructure should not degrade the system it measures. A health c
 
 - Group: Evaluation and measurement
 - Source feature title: Observer effect mitigation
-- Summary match found: Yes
-- Summary source feature title: Observer effect mitigation
 - Current reality source: feature_catalog.md

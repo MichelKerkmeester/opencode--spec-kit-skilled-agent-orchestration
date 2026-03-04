@@ -33,7 +33,7 @@ import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
 // T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
-import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
+import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
 import * as vectorIndex from '../lib/search/vector-index';
 
 // Shared handler types
@@ -495,7 +495,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     sessionId: effectiveSessionId,
     enableDedup: enableDedup,
     includeContent: include_content,
-    includeTrace: (args as Record<string, unknown>).includeTrace === true, // CHK-040
+    includeTrace: (args as unknown as Record<string, unknown>).includeTrace === true, // CHK-040
     anchors
   };
 
@@ -729,6 +729,19 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         resultMemoryIds: finalMemoryIds,
         scores: finalScores,
         fusionMethod: effectiveMode,
+        latencyMs: Date.now() - _contextStartTime,
+      });
+
+      const strategy = typeof budgetedResult?.strategy === 'string' && budgetedResult.strategy.length > 0
+        ? budgetedResult.strategy
+        : effectiveMode;
+      logChannelResult({
+        evalRunId: _evalRunId,
+        queryId: _evalQueryId,
+        channel: `context_${strategy}`,
+        resultMemoryIds: finalMemoryIds,
+        scores: finalScores,
+        hitCount: finalMemoryIds.length,
         latencyMs: Date.now() - _contextStartTime,
       });
     }

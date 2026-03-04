@@ -12,5 +12,4 @@ This is the starting point for any manual memory management workflow. Need to de
 
 - Group: Discovery
 - Source feature title: Memory browser (memory_list)
-- Summary match found: No
 - Current reality source: feature_catalog.md

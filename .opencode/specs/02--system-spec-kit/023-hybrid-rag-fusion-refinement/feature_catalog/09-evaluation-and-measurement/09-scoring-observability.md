@@ -12,6 +12,4 @@ The 5% sample rate keeps storage costs low while still catching calibration drif
 
 - Group: Evaluation and measurement
 - Source feature title: Scoring observability
-- Summary match found: Yes
-- Summary source feature title: Scoring observability
 - Current reality source: feature_catalog.md

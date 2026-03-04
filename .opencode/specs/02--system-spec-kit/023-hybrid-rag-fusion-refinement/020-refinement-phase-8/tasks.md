@@ -159,6 +159,12 @@ Adds the complete remediation plan from the phase-wide implementation audit acro
 - [ ] T067 Remove stale implementation-detail claims (line-count and call-site attribution drift) across phase snippet markdowns under `.opencode/specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement/feature_catalog/` - WHY: outdated details reduce trust in documentation - Acceptance: no stale implementation-detail mismatches remain.
 - [ ] T068 Ensure all phase snippet “Current reality source” metadata points to canonical `feature_catalog.md` and no legacy summary-source references remain - WHY: enforce single source of truth - Acceptance: zero references to deprecated summary files; all snippet metadata consistent.
 
+### Memory Quality Gates (Generation-Time Prevention)
+
+- [x] T071 Create `scripts/utils/slug-utils.ts` with content-aware slug generation (`slugify`, `truncateSlugAtWordBoundary`, `generateContentSlug`) - WHY: all memory filenames use generic spec-folder-name slug, producing 51 identically-named files - Acceptance: `generateContentSlug(task, fallback)` returns task-based slug when available, falls back to folder name. [DONE: slug-utils.ts created with GENERIC_SLUGS blocklist, 8-char minimum, 50-char word-boundary truncation]
+- [x] T072 Add empty content gate (`validateContentSubstance`) and duplicate detection (`checkForDuplicateContent`) to `scripts/core/file-writer.ts` - WHY: 21 SGQS-template duplicates and 5 empty sessions were written to disk unchecked - Acceptance: files with <200 chars substance or matching SHA-256 hash throw before write. [DONE: both functions added to writeFilesAtomically; strips frontmatter/anchors/headings before measuring substance]
+- [x] T073 Integrate content slug in `scripts/core/workflow.ts` (line 580-581) - WHY: filename generation uses `folderBase` ignoring available `implSummary.task` - Acceptance: `ctxFilename` uses `generateContentSlug(implSummary.task, folderBase)` instead of `folderBase`. [DONE: import added, slug swap at line 581]
+
 ### Re-Verification and Closure
 
 - [ ] T069 Re-run 5-agent audit across feature catalog groups 01-18 and capture severity-ordered findings in this phase folder scratch artifacts - WHY: verify remediation completeness objectively - Acceptance: no unresolved HIGH findings and all MEDIUM findings either fixed or explicitly accepted.

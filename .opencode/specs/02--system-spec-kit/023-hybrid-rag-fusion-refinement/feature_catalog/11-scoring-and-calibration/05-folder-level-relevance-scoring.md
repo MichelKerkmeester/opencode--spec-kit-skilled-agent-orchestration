@@ -10,6 +10,4 @@ This scoring enables two-phase retrieval: first rank folders by aggregated score
 
 - Group: Scoring and calibration
 - Source feature title: Folder-level relevance scoring
-- Summary match found: Yes
-- Summary source feature title: Folder-level relevance scoring
 - Current reality source: feature_catalog.md

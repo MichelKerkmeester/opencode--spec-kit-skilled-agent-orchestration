@@ -16,5 +16,4 @@ When contradictions are found, the response includes warning hints. Two memories
 
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)
-- Summary match found: No
 - Current reality source: feature_catalog.md

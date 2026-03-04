@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: ANCHOR tags as graph nodes
-- Summary match found: Yes
-- Summary source feature title: ANCHOR tags as graph nodes
 - Current reality source: feature_catalog.md

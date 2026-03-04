@@ -21,6 +21,7 @@ import * as memoryParser from '../lib/parsing/memory-parser';
 import * as embeddings from '../lib/providers/embeddings';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as incrementalIndex from '../lib/storage/incremental-index';
+import * as vectorIndex from '../lib/search/vector-index';
 import {
   findConstitutionalFiles,
   findSpecDocuments,
@@ -70,6 +71,8 @@ interface ScanResults {
   skipped_mtime: number;
   skipped_hash: number;
   mtimeUpdates: number;
+  staleDeleted: number;
+  staleDeleteFailed: number;
   files: { file: string; filePath?: string; status?: string; specFolder?: string; id?: number; isConstitutional?: boolean; error?: string; errorDetail?: string }[];
   constitutional: {
     found: number;
@@ -197,7 +200,44 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     console.error(`[memory-index-scan] Canonical dedup skipped ${dedupDuplicatesSkipped} alias path(s) (${mergedFiles.length} -> ${files.length})`);
   }
 
+  const deleteStaleIndexedRecords = (paths: string[]): { deleted: number; failed: number } => {
+    if (paths.length === 0) {
+      return { deleted: 0, failed: 0 };
+    }
+
+    const staleRecordIds = incrementalIndex.listIndexedRecordIdsForDeletedPaths(paths);
+    let deleted = 0;
+    let failed = 0;
+
+    for (const staleRecordId of staleRecordIds) {
+      try {
+        if (vectorIndex.deleteMemory(staleRecordId)) {
+          deleted++;
+        } else {
+          failed++;
+        }
+      } catch {
+        failed++;
+      }
+    }
+
+    return { deleted, failed };
+  };
+
   if (files.length === 0) {
+    let staleDeleted = 0;
+    let staleDeleteFailed = 0;
+
+    if (incremental && !force) {
+      const categorized: CategorizedFiles = incrementalIndex.categorizeFilesForIndexing([]);
+      const staleDeleteResult = deleteStaleIndexedRecords(categorized.toDelete);
+      staleDeleted = staleDeleteResult.deleted;
+      staleDeleteFailed = staleDeleteResult.failed;
+      if (staleDeleted > 0) {
+        triggerMatcher.clearCache();
+      }
+    }
+
     await setLastScanTime(now);
     return createMCPSuccessResponse({
       tool: 'memory_index_scan',
@@ -208,9 +248,12 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
         indexed: 0,
         updated: 0,
         unchanged: 0,
-        failed: 0
+        failed: 0,
+        staleDeleted,
+        staleDeleteFailed,
       },
       hints: [
+        ...(staleDeleted > 0 ? [`Removed ${staleDeleted} stale index record(s) for deleted files`] : []),
         'Memory files should be in specs/**/memory/ directories',
         'Constitutional files go in .opencode/skill/*/constitutional/'
       ]
@@ -228,6 +271,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     skipped_mtime: 0,
     skipped_hash: 0,
     mtimeUpdates: 0,
+    staleDeleted: 0,
+    staleDeleteFailed: 0,
     files: [],
     constitutional: {
       found: constitutionalFiles.length,
@@ -249,12 +294,14 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   };
 
   let filesToIndex: string[] = files;
+  let filesToDelete: string[] = [];
 
   if (incremental && !force) {
     const startCategorize = Date.now();
     const categorized: CategorizedFiles = incrementalIndex.categorizeFilesForIndexing(files);
 
     filesToIndex = [...categorized.toIndex, ...categorized.toUpdate];
+    filesToDelete = categorized.toDelete;
 
     results.unchanged = categorized.toSkip.length;
     results.skipped_mtime = categorized.toSkip.length;
@@ -271,6 +318,12 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     const categorizeTime = Date.now() - startCategorize;
     console.error(`[memory-index-scan] Incremental mode: ${filesToIndex.length}/${files.length} files need indexing (categorized in ${categorizeTime}ms)`);
     console.error(`[memory-index-scan] Fast-path skips: ${results.incremental.fast_path_skips}, Hash checks: ${results.incremental.hash_checks}`);
+  }
+
+  if (filesToDelete.length > 0) {
+    const staleDeleteResult = deleteStaleIndexedRecords(filesToDelete);
+    results.staleDeleted = staleDeleteResult.deleted;
+    results.staleDeleteFailed = staleDeleteResult.failed;
   }
 
   // T106/P0-09: Track successfully indexed files for post-indexing mtime update.
@@ -420,18 +473,24 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     }
   }
 
-  if (results.indexed > 0 || results.updated > 0) {
+  if (results.indexed > 0 || results.updated > 0 || results.staleDeleted > 0) {
     triggerMatcher.clearCache();
   }
 
   results.aliasConflicts = detectAliasConflictsFromIndex();
   results.divergenceReconcile = runDivergenceReconcileHooks(results.aliasConflicts);
 
-  const summary = `Scan complete: ${results.indexed} indexed, ${results.updated} updated, ${results.unchanged} unchanged, ${results.failed} failed`;
+  const summary = `Scan complete: ${results.indexed} indexed, ${results.updated} updated, ${results.unchanged} unchanged, ${results.staleDeleted} deleted, ${results.failed} failed`;
 
   const hints: string[] = [];
   if (results.failed > 0) {
     hints.push(`${results.failed} files failed to index - check file format`);
+  }
+  if (results.staleDeleted > 0) {
+    hints.push(`Removed ${results.staleDeleted} stale index record(s) for deleted files`);
+  }
+  if (results.staleDeleteFailed > 0) {
+    hints.push(`${results.staleDeleteFailed} stale index record(s) could not be removed`);
   }
   if (results.dedup.duplicatesSkipped > 0) {
     hints.push(`Canonical dedup skipped ${results.dedup.duplicatesSkipped} alias path(s)`);

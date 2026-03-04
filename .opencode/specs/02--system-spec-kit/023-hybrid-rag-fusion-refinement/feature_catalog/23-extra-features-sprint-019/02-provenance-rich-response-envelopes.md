@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Provenance-rich response envelopes
-- Summary match found: Yes
-- Summary source feature title: Provenance-rich response envelopes
 - Current reality source: feature_catalog.md

@@ -8,6 +8,4 @@ Duplicate chunk rows appeared in default search mode because the deduplication l
 
 - Group: Bug fixes and data integrity
 - Source feature title: Chunk collapse deduplication
-- Summary match found: Yes
-- Summary source feature title: Chunk collapse deduplication
 - Current reality source: feature_catalog.md

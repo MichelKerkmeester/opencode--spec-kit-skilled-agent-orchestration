@@ -12,6 +12,4 @@ Two cross-cutting normalization issues were resolved:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Entity normalization consolidation
-- Summary match found: Yes
-- Summary source feature title: Entity normalization consolidation
 - Current reality source: feature_catalog.md

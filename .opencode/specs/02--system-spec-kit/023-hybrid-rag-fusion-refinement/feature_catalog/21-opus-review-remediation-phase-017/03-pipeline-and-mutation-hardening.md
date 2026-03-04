@@ -19,6 +19,4 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Pipeline and mutation hardening
-- Summary match found: Yes
-- Summary source feature title: Pipeline and mutation hardening
 - Current reality source: feature_catalog.md

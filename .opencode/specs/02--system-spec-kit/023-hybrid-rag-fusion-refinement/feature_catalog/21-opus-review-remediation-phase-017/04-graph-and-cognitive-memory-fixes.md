@@ -18,6 +18,4 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Graph and cognitive memory fixes
-- Summary match found: Yes
-- Summary source feature title: Graph and cognitive memory fixes
 - Current reality source: feature_catalog.md

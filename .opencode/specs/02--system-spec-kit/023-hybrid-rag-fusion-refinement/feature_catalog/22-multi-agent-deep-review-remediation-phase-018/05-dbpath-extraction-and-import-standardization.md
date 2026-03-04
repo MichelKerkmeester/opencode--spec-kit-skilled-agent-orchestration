@@ -8,6 +8,4 @@
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: DB_PATH extraction and import standardization
-- Summary match found: Yes
-- Summary source feature title: DB_PATH extraction and import standardization
 - Current reality source: feature_catalog.md

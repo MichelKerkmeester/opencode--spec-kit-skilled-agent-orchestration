@@ -12,6 +12,4 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 
 - Group: Evaluation and measurement
 - Source feature title: Quality proxy formula
-- Summary match found: Yes
-- Summary source feature title: Quality proxy formula
 - Current reality source: feature_catalog.md

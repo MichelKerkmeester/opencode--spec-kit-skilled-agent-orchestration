@@ -44,7 +44,7 @@ const memorySearch: ToolDefinition = {
         description: 'Multiple concepts for AND search (requires 2-5 concepts). Results must match ALL concepts.'
       },
       specFolder: { type: 'string', description: 'Limit search to a specific spec folder (e.g., "011-spec-kit-memory-upgrade")' },
-      limit: { type: 'number', default: 10, description: 'Maximum number of results to return' },
+      limit: { type: 'number', default: 10, minimum: 1, maximum: 100, description: 'Maximum number of results to return (1-100)' },
       sessionId: {
         type: 'string',
         description: 'Session identifier for working memory and session deduplication (REQ-001). When provided with enableDedup=true, prevents duplicate memories from being returned in the same session (~50% token savings on follow-up queries).'

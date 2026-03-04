@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Strict Zod schema validation
-- Summary match found: Yes
-- Summary source feature title: Strict Zod schema validation
 - Current reality source: feature_catalog.md

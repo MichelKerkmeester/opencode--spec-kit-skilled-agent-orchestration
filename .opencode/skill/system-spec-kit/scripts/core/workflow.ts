@@ -21,6 +21,7 @@ import { scoreMemoryQuality } from './quality-scorer';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
+import { generateContentSlug } from '../utils/slug-utils';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
@@ -578,7 +579,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   const specFolderBasename: string = path.basename(sessionData.SPEC_FOLDER || specFolderName);
   const folderBase: string = specFolderBasename.replace(/^\d+-/, '');
-  const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${folderBase}.md`;
+  const contentSlug: string = generateContentSlug(implSummary.task || '', folderBase);
+  const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);

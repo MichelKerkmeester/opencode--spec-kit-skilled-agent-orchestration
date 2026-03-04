@@ -10,5 +10,4 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 
 - Group: Lifecycle
 - Source feature title: Checkpoint deletion (checkpoint_delete)
-- Summary match found: No
 - Current reality source: feature_catalog.md

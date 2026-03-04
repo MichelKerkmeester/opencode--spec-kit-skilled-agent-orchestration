@@ -12,6 +12,4 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 - Group: Tooling and scripts
 - Source feature title: Progressive validation for spec documents
-- Summary match found: Yes
-- Summary source feature title: Progressive validation for spec documents
 - Current reality source: feature_catalog.md

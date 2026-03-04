@@ -12,6 +12,4 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 
 - Group: Query intelligence
 - Source feature title: Query expansion
-- Summary match found: Yes
-- Summary source feature title: Query expansion
 - Current reality source: feature_catalog.md

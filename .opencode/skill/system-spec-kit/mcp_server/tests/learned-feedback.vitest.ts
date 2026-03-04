@@ -480,12 +480,28 @@ describe('Learned Feedback Core Operations', () => {
     expect(result.reason).toBe('memory_too_new');
   });
 
-  it('R11-CO04: recordSelection applies normally even during shadow period (shadow only affects queries)', () => {
-    // AI-WHY: Shadow period (Safeguard #6) only blocks queryLearnedTriggers, not recordSelection.
-    // Selections are always recorded so terms accumulate during the shadow window.
-    const result = recordSelection('q1', 1, ['authentication'], 5, testDb);
-    expect(result.applied).toBe(true);
+  it('R11-CO04: recordSelection is log-only during shadow period (no learned trigger persistence)', () => {
+    // Force shadow mode by replacing the bootstrap entry with a recent timestamp.
+    testDb.exec('DELETE FROM learned_feedback_audit');
+    testDb.prepare(
+      'INSERT INTO learned_feedback_audit (memory_id, action, terms, timestamp, source, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(0, 'bootstrap', '[]', Date.now() - 1 * 24 * 60 * 60 * 1000, 'test-setup', 0);
+
+    const result = recordSelection('q-shadow-core', 1, ['authentication'], 5, testDb);
+    expect(result.applied).toBe(false);
+    expect(result.reason).toBe('shadow_period');
     expect(result.terms.length).toBeGreaterThan(0);
+
+    // No write/apply effect: learned_triggers must remain empty.
+    const row = testDb.prepare('SELECT learned_triggers FROM memory_index WHERE id = 1').get() as { learned_triggers?: string };
+    const entries = parseLearnedTriggers(row.learned_triggers);
+    expect(entries.length).toBe(0);
+
+    // Audit still records the event and marks it as shadow mode.
+    const audit = getAuditLog(testDb, 1);
+    const shadowEntry = audit.find((a) => a.source === 'q-shadow-core');
+    expect(shadowEntry).toBeDefined();
+    expect(shadowEntry!.shadowMode).toBe(true);
   });
 
   it('R11-CO05: recordSelection applies terms when all safeguards pass', () => {
@@ -674,15 +690,13 @@ describe('Learned Feedback Audit Log (Safeguard #10)', () => {
     expect(audit.length).toBeGreaterThan(0);
   });
 
-  it('R11-AL04: audit entries have shadow mode false (shadow period REMOVED)', () => {
-    // Shadow period env var has no effect (isInShadowPeriod always false)
-    process.env.SPECKIT_LEARN_FROM_SELECTION_START = String(Date.now() - 1 * 24 * 60 * 60 * 1000);
+  it('R11-AL04: audit entries set shadow mode true during shadow period', () => {
     recordSelection('q-shadow', 1, ['authentication'], 5, testDb);
 
     const audit = getAuditLog(testDb, 1);
     const entry = audit.find((a) => a.source === 'q-shadow');
     expect(entry).toBeDefined();
-    expect(entry!.shadowMode).toBe(false); // Shadow period REMOVED
+    expect(entry!.shadowMode).toBe(true);
   });
 });
 

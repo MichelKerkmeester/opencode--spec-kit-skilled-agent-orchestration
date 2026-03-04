@@ -12,6 +12,4 @@ The normalization is batch-relative (the same memory can score differently acros
 
 - Group: Scoring and calibration
 - Source feature title: Score normalization
-- Summary match found: Yes
-- Summary source feature title: Score normalization
 - Current reality source: feature_catalog.md

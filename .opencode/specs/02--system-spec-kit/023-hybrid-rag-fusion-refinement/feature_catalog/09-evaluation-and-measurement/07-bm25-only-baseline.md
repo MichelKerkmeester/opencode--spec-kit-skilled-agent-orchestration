@@ -10,6 +10,4 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 
 - Group: Evaluation and measurement
 - Source feature title: BM25-only baseline
-- Summary match found: Yes
-- Summary source feature title: BM25-only baseline
 - Current reality source: feature_catalog.md

@@ -8,7 +8,22 @@ const mocks = vi.hoisted(() => ({
   mockGetLastScanTime: vi.fn(),
   mockSetLastScanTime: vi.fn(),
   mockCheckDatabaseUpdated: vi.fn(),
-  mockFindMemoryFiles: vi.fn(() => []),
+  mockFindMemoryFiles: vi.fn((): string[] => []),
+  mockRequireDb: vi.fn(() => ({
+    prepare: vi.fn(() => ({
+      all: vi.fn(() => []),
+      get: vi.fn(() => undefined),
+    })),
+  })),
+  mockCategorizeFilesForIndexing: vi.fn((files: string[]) => ({
+    toIndex: files,
+    toUpdate: [] as string[],
+    toSkip: [] as string[],
+    toDelete: [] as string[],
+  })),
+  mockBatchUpdateMtimes: vi.fn(() => ({ updated: 0 })),
+  mockListIndexedRecordIdsForDeletedPaths: vi.fn((): number[] => []),
+  mockDeleteMemory: vi.fn((): boolean => true),
 }));
 
 vi.mock('../core', () => ({
@@ -26,6 +41,7 @@ vi.mock('../core/config', () => ({
 
 vi.mock('../utils', () => ({
   processBatches: async (files: string[], worker: (file: string) => Promise<unknown>) => Promise.all(files.map(worker)),
+  requireDb: mocks.mockRequireDb,
   toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
 }));
 
@@ -42,13 +58,13 @@ vi.mock('../lib/parsing/trigger-matcher', () => ({
 }));
 
 vi.mock('../lib/storage/incremental-index', () => ({
-  categorizeFilesForIndexing: vi.fn((files: string[]) => ({
-    toIndex: files,
-    toUpdate: [],
-    toSkip: [],
-    toDelete: [],
-  })),
-  batchUpdateMtimes: vi.fn(() => ({ updated: 0 })),
+  categorizeFilesForIndexing: mocks.mockCategorizeFilesForIndexing,
+  batchUpdateMtimes: mocks.mockBatchUpdateMtimes,
+  listIndexedRecordIdsForDeletedPaths: mocks.mockListIndexedRecordIdsForDeletedPaths,
+}));
+
+vi.mock('../lib/search/vector-index', () => ({
+  deleteMemory: mocks.mockDeleteMemory,
 }));
 
 vi.mock('../lib/response/envelope', () => ({
@@ -72,11 +88,31 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockSetLastScanTime.mockReset();
     mocks.mockCheckDatabaseUpdated.mockReset();
     mocks.mockFindMemoryFiles.mockReset();
+    mocks.mockRequireDb.mockReset();
+    mocks.mockCategorizeFilesForIndexing.mockReset();
+    mocks.mockBatchUpdateMtimes.mockReset();
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReset();
+    mocks.mockDeleteMemory.mockReset();
 
     mocks.mockGetLastScanTime.mockResolvedValue(0);
     mocks.mockSetLastScanTime.mockResolvedValue(undefined);
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
     mocks.mockFindMemoryFiles.mockReturnValue([]);
+    mocks.mockRequireDb.mockReturnValue({
+      prepare: vi.fn(() => ({
+        all: vi.fn(() => []),
+        get: vi.fn(() => undefined),
+      })),
+    });
+    mocks.mockCategorizeFilesForIndexing.mockImplementation((files: string[]) => ({
+      toIndex: files,
+      toUpdate: [],
+      toSkip: [],
+      toDelete: [],
+    }));
+    mocks.mockBatchUpdateMtimes.mockReturnValue({ updated: 0 });
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([]);
+    mocks.mockDeleteMemory.mockReturnValue(true);
   });
 
   it('does not set cooldown timestamp when request is rate-limited', async () => {
@@ -105,5 +141,82 @@ describe('handler-memory-index cooldown behavior', () => {
 
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.summary).toBe('No memory files found');
+  });
+
+  it('removes stale index records even when discovery finds zero files', async () => {
+    mocks.mockFindMemoryFiles.mockReturnValue([]);
+    mocks.mockCategorizeFilesForIndexing.mockReturnValue({
+      toIndex: [],
+      toUpdate: [],
+      toSkip: [],
+      toDelete: ['/tmp/deleted-only.md'],
+    });
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([901]);
+    mocks.mockDeleteMemory.mockReturnValue(true);
+
+    const result = await handler.handleMemoryIndexScan({
+      includeConstitutional: false,
+      includeSpecDocs: false,
+    });
+
+    expect(mocks.mockCategorizeFilesForIndexing).toHaveBeenCalledWith([]);
+    expect(mocks.mockListIndexedRecordIdsForDeletedPaths).toHaveBeenCalledWith(['/tmp/deleted-only.md']);
+    expect(mocks.mockDeleteMemory).toHaveBeenCalledWith(901);
+
+    const envelope = JSON.parse(result.content[0].text);
+    expect(envelope.summary).toBe('No memory files found');
+    expect(envelope.data.staleDeleted).toBe(1);
+    expect(envelope.data.staleDeleteFailed).toBe(0);
+  });
+
+  it('consumes incremental toDelete and removes stale indexed records', async () => {
+    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/active.md']);
+    mocks.mockCategorizeFilesForIndexing.mockReturnValue({
+      toIndex: [],
+      toUpdate: [],
+      toSkip: ['/tmp/active.md'],
+      toDelete: ['/tmp/deleted.md'],
+    });
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([101, 202]);
+    mocks.mockDeleteMemory.mockReturnValue(true);
+
+    const result = await handler.handleMemoryIndexScan({
+      includeConstitutional: false,
+      includeSpecDocs: false,
+    });
+
+    expect(mocks.mockListIndexedRecordIdsForDeletedPaths).toHaveBeenCalledWith(['/tmp/deleted.md']);
+    expect(mocks.mockDeleteMemory).toHaveBeenCalledTimes(2);
+    expect(mocks.mockDeleteMemory).toHaveBeenNthCalledWith(1, 101);
+    expect(mocks.mockDeleteMemory).toHaveBeenNthCalledWith(2, 202);
+
+    const envelope = JSON.parse(result.content[0].text);
+    expect(envelope.data.staleDeleted).toBe(2);
+    expect(envelope.data.staleDeleteFailed).toBe(0);
+  });
+
+  it('tracks stale delete failures without aborting scan', async () => {
+    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/active.md']);
+    mocks.mockCategorizeFilesForIndexing.mockReturnValue({
+      toIndex: [],
+      toUpdate: [],
+      toSkip: ['/tmp/active.md'],
+      toDelete: ['/tmp/deleted.md'],
+    });
+    mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([301, 302]);
+    mocks.mockDeleteMemory
+      .mockReturnValueOnce(true)
+      .mockImplementationOnce(() => {
+        throw new Error('delete failed');
+      });
+
+    const result = await handler.handleMemoryIndexScan({
+      includeConstitutional: false,
+      includeSpecDocs: false,
+    });
+
+    const envelope = JSON.parse(result.content[0].text);
+    expect(envelope.data.staleDeleted).toBe(1);
+    expect(envelope.data.staleDeleteFailed).toBe(1);
   });
 });

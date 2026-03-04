@@ -10,6 +10,4 @@ The earlier pattern-analysis outcome from this workstream still informed ground-
 
 - Group: Evaluation and measurement
 - Source feature title: Agent consumption instrumentation
-- Summary match found: Yes
-- Summary source feature title: Agent consumption instrumentation
 - Current reality source: feature_catalog.md

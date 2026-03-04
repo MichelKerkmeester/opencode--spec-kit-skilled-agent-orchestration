@@ -14,5 +14,4 @@ This is a read-only module. It queries the eval database and produces reports. N
 
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)
-- Summary match found: No
 - Current reality source: feature_catalog.md

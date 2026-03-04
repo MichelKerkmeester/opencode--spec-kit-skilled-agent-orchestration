@@ -15,5 +15,4 @@
 
 - Group: Feature Flag Reference
 - Source feature title: 5. Embedding and API
-- Summary match found: No
 - Current reality source: feature_catalog.md

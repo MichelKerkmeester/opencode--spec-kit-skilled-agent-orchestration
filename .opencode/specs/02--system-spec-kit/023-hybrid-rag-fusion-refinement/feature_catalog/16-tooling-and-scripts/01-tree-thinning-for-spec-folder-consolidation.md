@@ -10,6 +10,4 @@ Memory file thresholds differ: under 100 tokens for content-as-summary, 100-300 
 
 - Group: Tooling and scripts
 - Source feature title: Tree thinning for spec folder consolidation
-- Summary match found: Yes
-- Summary source feature title: Tree thinning for spec folder consolidation
 - Current reality source: feature_catalog.md

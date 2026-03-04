@@ -10,6 +10,4 @@ Originally skipped at Sprint 7 because zero entities existed in the system. R10 
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: cross-document entity linking
-- Summary match found: Yes
-- Summary source feature title: Implemented: cross-document entity linking
 - Current reality source: feature_catalog.md

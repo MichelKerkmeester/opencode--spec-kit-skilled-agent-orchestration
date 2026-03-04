@@ -14,5 +14,4 @@ You can track gaps closed during the task and new gaps discovered. Both are stor
 
 - Group: Analysis
 - Source feature title: Post-task learning measurement (task_postflight)
-- Summary match found: No
 - Current reality source: feature_catalog.md

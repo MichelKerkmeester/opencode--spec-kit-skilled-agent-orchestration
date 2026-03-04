@@ -12,6 +12,4 @@ All weight modifications are logged to the `weight_history` table. The cycle fir
 
 - Group: Retrieval enhancements
 - Source feature title: Lightweight consolidation
-- Summary match found: Yes
-- Summary source feature title: Lightweight consolidation
 - Current reality source: feature_catalog.md

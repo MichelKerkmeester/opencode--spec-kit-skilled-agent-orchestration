@@ -15,5 +15,4 @@
 
 - Group: Feature Flag Reference
 - Source feature title: 6. Debug and Telemetry
-- Summary match found: No
 - Current reality source: feature_catalog.md

@@ -422,6 +422,67 @@ describe('Ablation Framework (R13-S3)', () => {
       expect(report!.results).toHaveLength(1);
     });
 
+    it('continues when one channel ablation fails and returns partial results', async () => {
+      const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
+        '../lib/eval/ground-truth-data'
+      );
+
+      const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
+        GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
+      );
+
+      if (!queryWithGT) return;
+
+      const relevances = GROUND_TRUTH_RELEVANCES.filter(
+        r => r.queryId === queryWithGT.id && r.relevance > 0,
+      );
+      const relevantIds = relevances.map(r => r.memoryId);
+      if (relevantIds.length === 0) return;
+
+      const conditionalFailSearchFn: AblationSearchFn = (
+        query: string,
+        disabledChannels: Set<AblationChannel>,
+      ) => {
+        if (disabledChannels.has('vector')) {
+          throw new Error('vector channel outage');
+        }
+        return relevantIds.map((id, idx) => ({
+          memoryId: id,
+          score: 1.0 - idx * 0.01,
+          rank: idx + 1,
+        }));
+      };
+
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      const report = await runAblation(conditionalFailSearchFn, {
+        channels: ['vector', 'bm25'],
+        groundTruthQueryIds: [queryWithGT.id],
+      });
+
+      expect(report).not.toBeNull();
+      if (!report) {
+        warnSpy.mockRestore();
+        return;
+      }
+
+      // vector fails, bm25 still succeeds (partial report)
+      expect(report.results).toHaveLength(1);
+      expect(report.results[0].channel).toBe('bm25');
+      expect(report.channelFailures).toHaveLength(1);
+      expect(report.channelFailures![0]).toMatchObject({
+        channel: 'vector',
+        error: 'vector channel outage',
+        queryId: queryWithGT.id,
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[ablation] Channel "vector" failed'),
+        expect.stringContaining('vector channel outage'),
+      );
+
+      warnSpy.mockRestore();
+    });
+
     it('returns null gracefully on search function error', async () => {
       const throwingFn: AblationSearchFn = () => {
         throw new Error('Search failed!');
@@ -572,6 +633,22 @@ describe('Ablation Framework (R13-S3)', () => {
       });
       const md = formatAblationReport(report);
       expect(md).toContain('n/a');
+    });
+
+    it('includes channel failure details when present', () => {
+      const report = buildMockReport({
+        channelFailures: [
+          {
+            channel: 'graph',
+            error: 'Graph timeout',
+            queryId: 42,
+          },
+        ],
+      });
+
+      const md = formatAblationReport(report);
+      expect(md).toContain('### Channel Failures');
+      expect(md).toContain('`graph` (queryId=42): Graph timeout');
     });
   });
 

@@ -487,6 +487,114 @@ describe('categorizeFilesForIndexing()', () => {
     removeTempFile(tmpFile);
     db.close();
   });
+
+  it('adds stale indexed rows to toDelete even when missing from scan input', () => {
+    const db = createTestDb();
+    mod.init(db);
+
+    const liveFile = createTempFile('live file');
+    const liveStats = fs.statSync(liveFile);
+    insertRow(db, { file_path: liveFile, file_mtime_ms: liveStats.mtimeMs, embedding_status: 'success' });
+
+    const stalePath = '/tmp/stale-only-in-db-' + Date.now() + '.md';
+    insertRow(db, { file_path: stalePath, file_mtime_ms: 1700000000000, embedding_status: 'success' });
+
+    const result = mod.categorizeFilesForIndexing([liveFile]);
+    expect(result.toDelete).toContain(stalePath);
+    expect(result.toSkip).toContain(liveFile);
+
+    removeTempFile(liveFile);
+    db.close();
+  });
+
+  it('does not mark alias rows as stale when canonical path is still present in scan', () => {
+    const db = createTestDb();
+    db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
+    mod.init(db);
+
+    const canonicalDir = fs.mkdtempSync(path.join(os.tmpdir(), 'inc-idx-canonical-present-'));
+    const canonicalFile = path.join(canonicalDir, 'doc.md');
+    fs.writeFileSync(canonicalFile, 'canonical content', 'utf-8');
+
+    const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-present-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    try {
+      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
+    } catch {
+      fs.rmSync(canonicalDir, { recursive: true, force: true });
+      db.close();
+      expect(true).toBe(true);
+      return;
+    }
+
+    const aliasFile = path.join(aliasDir, 'doc.md');
+    const canonicalKey = fs.realpathSync(canonicalFile);
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, canonical_file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run('specs/test', aliasFile, canonicalKey, 1700000000000, 'alias-hash', 'success');
+
+    const result = mod.categorizeFilesForIndexing([canonicalFile]);
+    expect(result.toDelete).not.toContain(aliasFile);
+
+    fs.rmSync(aliasDir, { recursive: true, force: true });
+    fs.rmSync(canonicalDir, { recursive: true, force: true });
+    db.close();
+  });
+});
+
+describe('listIndexedRecordIdsForDeletedPaths()', () => {
+  it('returns ids only for records that are still missing on disk', () => {
+    const db = createTestDb();
+    mod.init(db);
+
+    const stalePath = '/tmp/stale-id-test-' + Date.now() + '.md';
+    const staleId = insertRow(db, { file_path: stalePath, file_mtime_ms: 1700000000000, embedding_status: 'success' });
+
+    const liveFile = createTempFile('still on disk');
+    const liveStats = fs.statSync(liveFile);
+    const liveId = insertRow(db, { file_path: liveFile, file_mtime_ms: liveStats.mtimeMs, embedding_status: 'success' });
+
+    const ids = mod.listIndexedRecordIdsForDeletedPaths([stalePath, liveFile]);
+    expect(ids).toContain(staleId);
+    expect(ids).not.toContain(liveId);
+
+    removeTempFile(liveFile);
+    db.close();
+  });
+
+  it('skips deletion ids when canonical path still exists', () => {
+    const db = createTestDb();
+    db.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
+    mod.init(db);
+
+    const canonicalDir = fs.mkdtempSync(path.join(os.tmpdir(), 'inc-idx-canonical-id-'));
+    const canonicalFile = path.join(canonicalDir, 'doc.md');
+    fs.writeFileSync(canonicalFile, 'canonical-id content', 'utf-8');
+
+    const aliasDir = path.join(os.tmpdir(), `inc-idx-alias-id-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    try {
+      fs.symlinkSync(canonicalDir, aliasDir, 'dir');
+    } catch {
+      fs.rmSync(canonicalDir, { recursive: true, force: true });
+      db.close();
+      expect(true).toBe(true);
+      return;
+    }
+
+    const aliasFile = path.join(aliasDir, 'doc.md');
+    const canonicalKey = fs.realpathSync(canonicalFile);
+    db.prepare(`
+      INSERT INTO memory_index (spec_folder, file_path, canonical_file_path, file_mtime_ms, content_hash, embedding_status)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run('specs/test', aliasFile, canonicalKey, 1700000000000, 'canonical-live', 'success');
+
+    const ids = mod.listIndexedRecordIdsForDeletedPaths([aliasFile]);
+    expect(ids).toEqual([]);
+
+    fs.rmSync(aliasDir, { recursive: true, force: true });
+    fs.rmSync(canonicalDir, { recursive: true, force: true });
+    db.close();
+  });
 });
 
 describe('batchUpdateMtimes()', () => {

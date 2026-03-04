@@ -12,6 +12,4 @@ Rejection rates are logged per spec folder so you can spot folders that consiste
 
 - Group: Memory quality and indexing
 - Source feature title: Verify-fix-verify memory quality loop
-- Summary match found: Yes
-- Summary source feature title: Verify-fix-verify memory quality loop
 - Current reality source: feature_catalog.md

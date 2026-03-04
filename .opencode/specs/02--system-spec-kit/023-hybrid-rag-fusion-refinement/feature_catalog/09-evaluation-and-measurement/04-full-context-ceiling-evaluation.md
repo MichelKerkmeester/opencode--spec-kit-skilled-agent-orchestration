@@ -8,6 +8,4 @@ How good could retrieval be if the system had perfect recall? To answer that, an
 
 - Group: Evaluation and measurement
 - Source feature title: Full-context ceiling evaluation
-- Summary match found: Yes
-- Summary source feature title: Full-context ceiling evaluation
 - Current reality source: feature_catalog.md

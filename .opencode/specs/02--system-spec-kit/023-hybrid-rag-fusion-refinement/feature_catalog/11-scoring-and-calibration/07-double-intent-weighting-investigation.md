@@ -12,6 +12,4 @@ A minor inefficiency exists (recency boost from System A is discarded when Syste
 
 - Group: Scoring and calibration
 - Source feature title: Double intent weighting investigation
-- Summary match found: Yes
-- Summary source feature title: Double intent weighting investigation
 - Current reality source: feature_catalog.md

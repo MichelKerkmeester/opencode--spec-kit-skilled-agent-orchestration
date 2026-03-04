@@ -10,6 +10,4 @@ The fix applies a `1 / sqrt(neighbor_count)` divisor that scales down score cont
 
 - Group: Bug fixes and data integrity
 - Source feature title: Co-activation fan-effect divisor
-- Summary match found: Yes
-- Summary source feature title: Co-activation fan-effect divisor
 - Current reality source: feature_catalog.md

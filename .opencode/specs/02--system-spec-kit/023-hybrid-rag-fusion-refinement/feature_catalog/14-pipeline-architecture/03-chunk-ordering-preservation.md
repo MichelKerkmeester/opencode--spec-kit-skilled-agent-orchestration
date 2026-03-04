@@ -8,6 +8,4 @@ When multi-chunk results collapse back into a single memory during MPAB aggregat
 
 - Group: Pipeline architecture
 - Source feature title: Chunk ordering preservation
-- Summary match found: Yes
-- Summary source feature title: Chunk ordering preservation
 - Current reality source: feature_catalog.md

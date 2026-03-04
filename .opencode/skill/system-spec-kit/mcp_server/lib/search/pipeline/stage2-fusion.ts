@@ -87,9 +87,6 @@ interface ValidationMetadataLike {
 
 // ── Constants ──
 
-/** Weight applied to learned-trigger score boosts (0.7x of organic triggers). */
-const LEARNED_TRIGGER_WEIGHT = 0.7;
-
 /** Number of top results used as seeds for co-activation spreading. */
 const SPREAD_ACTIVATION_TOP_N = 5;
 
@@ -321,8 +318,9 @@ function applyArtifactRouting(
  * Apply feedback signals — learned trigger boosts and negative feedback demotions.
  *
  * Learned triggers: each memory that matches the query's learned terms receives
- * a proportional boost to its score (capped at 1.0). The boost magnitude is
- * LEARNED_TRIGGER_WEIGHT × the weight from the LearnedTriggerMatch object.
+ * a proportional boost to its score (capped at 1.0). The boost magnitude uses
+ * `match.weight` directly because queryLearnedTriggers already applies the
+ * configured learned-trigger weighting (0.7x).
  *
  * Negative feedback: memories with wasUseful=false validations receive a
  * confidence-multiplier demotion. The multiplier is batch-loaded from the DB
@@ -352,7 +350,7 @@ function applyFeedbackSignals(
   try {
     const learnedMatches = queryLearnedTriggers(query, db as Parameters<typeof queryLearnedTriggers>[1]);
     for (const match of learnedMatches) {
-      const boost = LEARNED_TRIGGER_WEIGHT * match.weight;
+      const boost = match.weight;
       const existing = learnedBoostMap.get(match.memoryId) ?? 0;
       learnedBoostMap.set(match.memoryId, Math.max(existing, boost));
     }

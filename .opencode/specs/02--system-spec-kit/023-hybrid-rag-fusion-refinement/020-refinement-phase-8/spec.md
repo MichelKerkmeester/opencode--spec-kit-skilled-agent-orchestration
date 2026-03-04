@@ -106,6 +106,8 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-006 | README coverage assessed | README inventory includes scope statement and gaps |
 | REQ-007 | Config relationships documented | package/tsconfig/eslint relationships captured with evidence |
 | REQ-008 | Dependency-direction concerns identified | Circular and cross-layer concerns listed with concrete file paths |
+| REQ-009 | Content-aware memory filename generation | Memory filenames reflect task content, not just spec folder name |
+| REQ-010 | Generation-time quality gates (empty + duplicate prevention) | Empty templates and duplicate content rejected before file write |
 <!-- /ANCHOR:requirements -->
 
 <!-- ANCHOR:success-criteria -->

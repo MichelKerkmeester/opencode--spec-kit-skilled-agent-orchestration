@@ -14,5 +14,4 @@ Graph channel metrics from hybrid search and a `vectorSearchEnabled` flag round 
 
 - Group: Discovery
 - Source feature title: System statistics (memory_stats)
-- Summary match found: No
 - Current reality source: feature_catalog.md

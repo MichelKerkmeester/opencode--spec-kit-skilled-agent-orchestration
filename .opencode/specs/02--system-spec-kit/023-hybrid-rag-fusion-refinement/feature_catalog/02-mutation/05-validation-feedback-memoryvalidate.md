@@ -20,5 +20,4 @@ The read-compute-write cycle runs within a single SQLite transaction to prevent 
 
 - Group: Mutation
 - Source feature title: Validation feedback (memory_validate)
-- Summary match found: No
 - Current reality source: feature_catalog.md

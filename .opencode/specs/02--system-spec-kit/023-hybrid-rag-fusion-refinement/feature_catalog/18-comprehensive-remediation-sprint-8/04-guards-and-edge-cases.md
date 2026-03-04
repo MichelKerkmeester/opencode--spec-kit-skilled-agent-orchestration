@@ -12,6 +12,4 @@ Two guard/edge-case issues were fixed:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Guards and edge cases
-- Summary match found: Yes
-- Summary source feature title: Guards and edge cases
 - Current reality source: feature_catalog.md

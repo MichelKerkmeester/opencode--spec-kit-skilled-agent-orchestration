@@ -15,5 +15,4 @@ These variables are read at runtime to annotate checkpoint and evaluation record
 
 - Group: Feature Flag Reference
 - Source feature title: 7. CI and Build (informational)
-- Summary match found: No
 - Current reality source: feature_catalog.md

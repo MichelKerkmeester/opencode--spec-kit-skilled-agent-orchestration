@@ -10,6 +10,4 @@ Rule patterns are extracted from content using a ranked list of imperative verbs
 
 - Group: Retrieval enhancements
 - Source feature title: Constitutional memory as expert knowledge injection
-- Summary match found: Yes
-- Summary source feature title: Constitutional memory as expert knowledge injection
 - Current reality source: feature_catalog.md

@@ -12,6 +12,4 @@ The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5
 
 - Group: Decisions and deferrals
 - Source feature title: INT8 quantization evaluation
-- Summary match found: Yes
-- Summary source feature title: INT8 quantization evaluation
 - Current reality source: feature_catalog.md

@@ -10,6 +10,4 @@ The gate starts in warn-only mode for 14 days after activation per the MR12 miti
 
 - Group: Memory quality and indexing
 - Source feature title: Pre-storage quality gate
-- Summary match found: Yes
-- Summary source feature title: Pre-storage quality gate
 - Current reality source: feature_catalog.md

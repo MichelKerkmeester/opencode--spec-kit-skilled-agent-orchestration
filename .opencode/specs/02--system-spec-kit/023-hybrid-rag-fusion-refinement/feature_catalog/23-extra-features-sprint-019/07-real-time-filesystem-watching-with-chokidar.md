@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Real-time filesystem watching with chokidar
-- Summary match found: Yes
-- Summary source feature title: Real-time filesystem watching with chokidar
 - Current reality source: feature_catalog.md

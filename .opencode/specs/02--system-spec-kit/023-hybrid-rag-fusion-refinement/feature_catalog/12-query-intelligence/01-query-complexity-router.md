@@ -14,6 +14,4 @@ The router's classification tier (`routeResult.tier`) is propagated into `traceM
 
 - Group: Query intelligence
 - Source feature title: Query complexity router
-- Summary match found: Yes
-- Summary source feature title: Query complexity router
 - Current reality source: feature_catalog.md

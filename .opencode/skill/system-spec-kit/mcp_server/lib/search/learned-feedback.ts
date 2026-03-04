@@ -299,6 +299,7 @@ export function recordSelection(
     }
 
     const now = Date.now();
+    const shadowMode = isInShadowPeriod(db);
 
     // Ensure audit table exists (Safeguard #10)
     ensureAuditTable(db);
@@ -306,7 +307,12 @@ export function recordSelection(
     // Log to audit (Safeguard #10)
     db.prepare(
       'INSERT INTO learned_feedback_audit (memory_id, action, terms, source, timestamp, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(memoryId, 'add', JSON.stringify(terms), queryId, now, 0);
+    ).run(memoryId, 'add', JSON.stringify(terms), queryId, now, shadowMode ? 1 : 0);
+
+    // Safeguard #6: Shadow period is log-only end-to-end (no persistence/apply effects)
+    if (shadowMode) {
+      return { terms, applied: false, reason: 'shadow_period' };
+    }
 
     // Apply learned triggers (Safeguard #1 -- separate column, NOT FTS5)
     applyLearnedTriggers(memoryId, terms, db, queryId);

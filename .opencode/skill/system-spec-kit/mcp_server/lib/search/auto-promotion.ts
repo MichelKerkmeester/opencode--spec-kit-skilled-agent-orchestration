@@ -64,6 +64,26 @@ export const NON_PROMOTABLE_TIERS: ReadonlySet<string> = new Set([
   'deprecated',
 ]);
 
+function getNegativeValidationCount(db: Database, memoryId: number): number {
+  try {
+    const row = db.prepare(`
+      SELECT COUNT(*) AS count
+      FROM negative_feedback_events
+      WHERE memory_id = ?
+    `).get(memoryId) as { count?: number } | undefined;
+
+    return typeof row?.count === 'number' && Number.isFinite(row.count)
+      ? Math.max(0, Math.floor(row.count))
+      : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function resolvePositiveValidationCount(totalValidationCount: number, negativeValidationCount: number): number {
+  return Math.max(0, totalValidationCount - Math.max(0, negativeValidationCount));
+}
+
 /* ---------------------------------------------------------------
    3. PROMOTION THROTTLE SAFEGUARD
    --------------------------------------------------------------- */
@@ -96,7 +116,7 @@ function countRecentPromotions(db: Database, nowMs: number): number {
    --------------------------------------------------------------- */
 
 /**
- * Check if a memory qualifies for auto-promotion based on its validation count.
+ * Check if a memory qualifies for auto-promotion based on its positive validation count.
  * Does NOT modify the database -- read-only check.
  *
  * @param db - SQLite database connection
@@ -124,7 +144,9 @@ export function checkAutoPromotion(db: Database, memoryId: number): AutoPromotio
     }
 
     const tier = (memory.importance_tier || 'normal').toLowerCase();
-    const validationCount = memory.validation_count ?? 0;
+    const totalValidationCount = memory.validation_count ?? 0;
+    const negativeValidationCount = getNegativeValidationCount(db, memoryId);
+    const validationCount = resolvePositiveValidationCount(totalValidationCount, negativeValidationCount);
 
     // Non-promotable tiers
     if (NON_PROMOTABLE_TIERS.has(tier)) {
@@ -156,7 +178,7 @@ export function checkAutoPromotion(db: Database, memoryId: number): AutoPromotio
         previousTier: tier,
         newTier: tier,
         validationCount,
-        reason: `below_threshold: ${validationCount}/${path.threshold}`,
+        reason: `below_threshold: positive_validation_count=${validationCount}/${path.threshold}`,
       };
     }
 
@@ -165,7 +187,7 @@ export function checkAutoPromotion(db: Database, memoryId: number): AutoPromotio
       previousTier: tier,
       newTier: path.target,
       validationCount,
-      reason: `threshold_met: ${validationCount}>=${path.threshold}`,
+      reason: `threshold_met: positive_validation_count=${validationCount}>=${path.threshold}`,
     };
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -185,8 +207,8 @@ export function checkAutoPromotion(db: Database, memoryId: number): AutoPromotio
  * Promotes the memory's importance tier in the database.
  *
  * Promotion rules (upward only, never demotes):
- * - >=5 validations: normal -> important
- * - >=10 validations: important -> critical
+ * - >=5 positive validations: normal -> important
+ * - >=10 positive validations: important -> critical
  *
  * @param db - SQLite database connection
  * @param memoryId - ID of the memory to potentially promote
@@ -264,22 +286,38 @@ export function scanForPromotions(db: Database): AutoPromotionResult[] {
       SELECT id, importance_tier, validation_count
       FROM memory_index
       WHERE importance_tier IN ('normal', 'important')
-        AND (
-          (importance_tier = 'normal' AND validation_count >= ?)
-          OR (importance_tier = 'important' AND validation_count >= ?)
-        )
-    `).all(
-      PROMOTE_TO_IMPORTANT_THRESHOLD,
-      PROMOTE_TO_CRITICAL_THRESHOLD
-    ) as Array<{ id: number; importance_tier: string; validation_count: number }>;
+        AND validation_count >= ?
+    `).all(PROMOTE_TO_IMPORTANT_THRESHOLD) as Array<{
+      id: number;
+      importance_tier: string;
+      validation_count: number;
+    }>;
 
-    return rows.map((row) => ({
-      promoted: true,
-      previousTier: row.importance_tier,
-      newTier: PROMOTION_PATHS[row.importance_tier]?.target || row.importance_tier,
-      validationCount: row.validation_count,
-      reason: `threshold_met: ${row.validation_count}>=${PROMOTION_PATHS[row.importance_tier]?.threshold}`,
-    }));
+    const eligible: AutoPromotionResult[] = [];
+
+    for (const row of rows) {
+      const tier = row.importance_tier?.toLowerCase() || 'normal';
+      const path = PROMOTION_PATHS[tier];
+      if (!path) continue;
+
+      const negativeValidationCount = getNegativeValidationCount(db, row.id);
+      const positiveValidationCount = resolvePositiveValidationCount(
+        row.validation_count ?? 0,
+        negativeValidationCount
+      );
+
+      if (positiveValidationCount < path.threshold) continue;
+
+      eligible.push({
+        promoted: true,
+        previousTier: tier,
+        newTier: path.target,
+        validationCount: positiveValidationCount,
+        reason: `threshold_met: positive_validation_count=${positiveValidationCount}>=${path.threshold}`,
+      });
+    }
+
+    return eligible;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error(`[auto-promotion] scanForPromotions failed: ${msg}`);

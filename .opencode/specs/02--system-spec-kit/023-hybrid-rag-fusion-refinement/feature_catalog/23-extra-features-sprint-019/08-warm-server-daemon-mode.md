@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Warm server / daemon mode
-- Summary match found: Yes
-- Summary source feature title: Warm server / daemon mode
 - Current reality source: feature_catalog.md

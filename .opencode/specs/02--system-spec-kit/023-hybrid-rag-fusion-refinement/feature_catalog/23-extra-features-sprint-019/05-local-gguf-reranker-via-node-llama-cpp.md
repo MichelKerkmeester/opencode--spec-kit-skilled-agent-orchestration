@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Local GGUF reranker via node-llama-cpp
-- Summary match found: Yes
-- Summary source feature title: Local GGUF reranker via node-llama-cpp
 - Current reality source: feature_catalog.md

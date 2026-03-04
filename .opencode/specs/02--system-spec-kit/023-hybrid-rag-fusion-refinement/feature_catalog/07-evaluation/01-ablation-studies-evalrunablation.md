@@ -12,5 +12,4 @@ Results are stored in `eval_metric_snapshots` with negative timestamp IDs to dis
 
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)
-- Summary match found: No
 - Current reality source: feature_catalog.md

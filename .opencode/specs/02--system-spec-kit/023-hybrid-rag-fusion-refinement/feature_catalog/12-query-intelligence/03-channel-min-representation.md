@@ -12,6 +12,4 @@ Promoted items are appended to the result list and the entire set is re-sorted b
 
 - Group: Query intelligence
 - Source feature title: Channel min-representation
-- Summary match found: Yes
-- Summary source feature title: Channel min-representation
 - Current reality source: feature_catalog.md

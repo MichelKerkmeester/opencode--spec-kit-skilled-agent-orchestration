@@ -10,6 +10,4 @@
 
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Stage 3 effectiveScore fallback chain
-- Summary match found: Yes
-- Summary source feature title: Stage 3 effectiveScore fallback chain
 - Current reality source: feature_catalog.md

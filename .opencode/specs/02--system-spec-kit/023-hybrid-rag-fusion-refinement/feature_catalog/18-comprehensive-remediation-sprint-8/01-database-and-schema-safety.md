@@ -16,6 +16,4 @@ Four database-layer bugs were fixed:
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Database and schema safety
-- Summary match found: Yes
-- Summary source feature title: Database and schema safety
 - Current reality source: feature_catalog.md

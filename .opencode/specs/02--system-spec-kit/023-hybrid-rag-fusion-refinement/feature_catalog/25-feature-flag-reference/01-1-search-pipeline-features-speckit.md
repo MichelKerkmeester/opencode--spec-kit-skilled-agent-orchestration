@@ -76,5 +76,4 @@
 
 - Group: Feature Flag Reference
 - Source feature title: 1. Search Pipeline Features (SPECKIT_*)
-- Summary match found: No
 - Current reality source: feature_catalog.md

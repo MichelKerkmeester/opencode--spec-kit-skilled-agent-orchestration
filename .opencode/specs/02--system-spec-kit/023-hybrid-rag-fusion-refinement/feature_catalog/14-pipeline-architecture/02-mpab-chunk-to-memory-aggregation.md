@@ -10,6 +10,4 @@ Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 a
 
 - Group: Pipeline architecture
 - Source feature title: MPAB chunk-to-memory aggregation
-- Summary match found: Yes
-- Summary source feature title: MPAB chunk-to-memory aggregation
 - Current reality source: feature_catalog.md

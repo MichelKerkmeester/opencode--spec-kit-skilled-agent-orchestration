@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Async ingestion job lifecycle
-- Summary match found: Yes
-- Summary source feature title: Async ingestion job lifecycle
 - Current reality source: feature_catalog.md

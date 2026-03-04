@@ -12,6 +12,4 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 - Group: Scoring and calibration
 - Source feature title: Auto-promotion on validation
-- Summary match found: Yes
-- Summary source feature title: Auto-promotion on validation
 - Current reality source: feature_catalog.md

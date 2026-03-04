@@ -14,6 +14,4 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 
 - Group: Evaluation and measurement
 - Source feature title: Shadow scoring and channel attribution
-- Summary match found: Yes
-- Summary source feature title: Shadow scoring and channel attribution
 - Current reality source: feature_catalog.md

@@ -14,5 +14,4 @@ The `divergent_aliases` report mode narrows the focus. It finds files that exist
 
 - Group: Discovery
 - Source feature title: Health diagnostics (memory_health)
-- Summary match found: No
 - Current reality source: feature_catalog.md

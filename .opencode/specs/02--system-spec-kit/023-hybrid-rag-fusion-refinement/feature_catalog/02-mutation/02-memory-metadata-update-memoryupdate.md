@@ -14,5 +14,4 @@ A pre-update hash snapshot is captured for the mutation ledger. Every update rec
 
 - Group: Mutation
 - Source feature title: Memory metadata update (memory_update)
-- Summary match found: No
 - Current reality source: feature_catalog.md

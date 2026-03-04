@@ -100,6 +100,18 @@ export interface AblationResult {
   queryCount: number;
 }
 
+/** Failure captured for a single channel ablation run. */
+export interface AblationChannelFailure {
+  /** Channel that failed during ablation. */
+  channel: AblationChannel;
+  /** Error message returned by the failing search call. */
+  error: string;
+  /** Query ID being processed when failure occurred (if known). */
+  queryId?: number;
+  /** Query text being processed when failure occurred (if known). */
+  query?: string;
+}
+
 /** Full ablation study report. */
 export interface AblationReport {
   /** ISO timestamp of the study. */
@@ -110,6 +122,8 @@ export interface AblationReport {
   config: AblationConfig;
   /** Per-channel ablation results. */
   results: AblationResult[];
+  /** Channel ablations that failed while the overall run continued. */
+  channelFailures?: AblationChannelFailure[];
   /** Baseline Recall@K across all queries (all channels enabled). */
   overallBaselineRecall: number;
   /** Total wall-clock duration in milliseconds. */
@@ -272,57 +286,81 @@ export async function runAblation(
 
     // ── Step 2: Ablate each channel ──
     const ablationResults: AblationResult[] = [];
+    const channelFailures: AblationChannelFailure[] = [];
 
     for (const channel of config.channels) {
       const disabledSet = new Set<AblationChannel>([channel]);
       const ablatedRecalls: Map<number, number> = new Map();
+      let failedQuery: GroundTruthQuery | null = null;
 
-      for (const q of queries) {
-        const gt = getGroundTruthForQuery(q.id);
-        if (gt.length === 0) continue;
+      try {
+        for (const q of queries) {
+          const gt = getGroundTruthForQuery(q.id);
+          if (gt.length === 0) continue;
 
-        const results = await Promise.resolve(searchFn(q.query, disabledSet));
-        const recall = computeRecall(results, gt, recallK);
-        ablatedRecalls.set(q.id, recall);
+          failedQuery = q;
+          const results = await Promise.resolve(searchFn(q.query, disabledSet));
+          const recall = computeRecall(results, gt, recallK);
+          ablatedRecalls.set(q.id, recall);
+        }
+
+        // ── Step 3: Compute deltas ──
+        let queriesChannelHelped = 0;   // ablated < baseline (removing channel decreased quality — channel was helpful)
+        let queriesChannelHurt = 0;    // ablated > baseline (removing channel increased quality — channel was harmful)
+        let queriesUnchanged = 0;
+        const queryDeltas: number[] = [];
+
+        for (const [queryId, baselineR] of baselineRecalls) {
+          const ablatedR = ablatedRecalls.get(queryId);
+          if (ablatedR === undefined) continue;
+
+          const delta = ablatedR - baselineR;
+          queryDeltas.push(delta);
+
+          // Use small epsilon for floating-point comparison
+          if (delta < -1e-9) queriesChannelHelped++;
+          else if (delta > 1e-9) queriesChannelHurt++;
+          else queriesUnchanged++;
+        }
+
+        const meanAblatedRecall = meanRecall([...ablatedRecalls.values()]);
+        const meanDelta = meanAblatedRecall - overallBaselineRecall;
+
+        // queriesChannelHelped = channel was helping (removing it hurt quality)
+        // queriesChannelHurt = channel was harmful (removing it helped quality)
+        const pValue = signTestPValue(queriesChannelHelped, queriesChannelHurt);
+
+        ablationResults.push({
+          channel,
+          baselineRecall20: overallBaselineRecall,
+          ablatedRecall20: meanAblatedRecall,
+          delta: meanDelta,
+          pValue,
+          queriesChannelHelped,
+          queriesChannelHurt,
+          queriesUnchanged,
+          queryCount: queryDeltas.length,
+        });
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const failure: AblationChannelFailure = {
+          channel,
+          error: msg,
+          ...(failedQuery
+            ? {
+              queryId: failedQuery.id,
+              query: failedQuery.query,
+            }
+            : {}),
+        };
+        channelFailures.push(failure);
+
+        const querySuffix = failedQuery ? ` (queryId=${failedQuery.id})` : '';
+        console.warn(
+          `[ablation] Channel "${channel}" failed${querySuffix}; continuing with remaining channels:`,
+          msg,
+        );
       }
-
-      // ── Step 3: Compute deltas ──
-      let queriesChannelHelped = 0;   // ablated < baseline (removing channel decreased quality — channel was helpful)
-      let queriesChannelHurt = 0;    // ablated > baseline (removing channel increased quality — channel was harmful)
-      let queriesUnchanged = 0;
-      const queryDeltas: number[] = [];
-
-      for (const [queryId, baselineR] of baselineRecalls) {
-        const ablatedR = ablatedRecalls.get(queryId);
-        if (ablatedR === undefined) continue;
-
-        const delta = ablatedR - baselineR;
-        queryDeltas.push(delta);
-
-        // Use small epsilon for floating-point comparison
-        if (delta < -1e-9) queriesChannelHelped++;
-        else if (delta > 1e-9) queriesChannelHurt++;
-        else queriesUnchanged++;
-      }
-
-      const meanAblatedRecall = meanRecall([...ablatedRecalls.values()]);
-      const meanDelta = meanAblatedRecall - overallBaselineRecall;
-
-      // queriesChannelHelped = channel was helping (removing it hurt quality)
-      // queriesChannelHurt = channel was harmful (removing it helped quality)
-      const pValue = signTestPValue(queriesChannelHelped, queriesChannelHurt);
-
-      ablationResults.push({
-        channel,
-        baselineRecall20: overallBaselineRecall,
-        ablatedRecall20: meanAblatedRecall,
-        delta: meanDelta,
-        pValue,
-        queriesChannelHelped,
-        queriesChannelHurt,
-        queriesUnchanged,
-        queryCount: queryDeltas.length,
-      });
     }
 
     const report: AblationReport = {
@@ -330,6 +368,7 @@ export async function runAblation(
       runId,
       config,
       results: ablationResults,
+      ...(channelFailures.length > 0 ? { channelFailures } : {}),
       overallBaselineRecall,
       durationMs: Date.now() - startTime,
     };
@@ -386,6 +425,7 @@ export function storeAblationResults(report: AblationReport): boolean {
           runId: report.runId,
           config: report.config,
           durationMs: report.durationMs,
+          channelFailures: report.channelFailures ?? [],
         }),
         report.timestamp,
       );
@@ -472,6 +512,16 @@ export function formatAblationReport(report: AblationReport): string {
   lines.push(`**Legend:** Delta = ablated - baseline. Negative delta = channel contributes positively.`);
   lines.push(`Ch. Helped = queries where channel was helpful (removing it decreased recall). * = significant at p<0.05.`);
   lines.push(``);
+
+  if (report.channelFailures && report.channelFailures.length > 0) {
+    lines.push(`### Channel Failures`);
+    lines.push(``);
+    for (const failure of report.channelFailures) {
+      const queryInfo = failure.queryId !== undefined ? ` (queryId=${failure.queryId})` : '';
+      lines.push(`- \`${failure.channel}\`${queryInfo}: ${failure.error}`);
+    }
+    lines.push(``);
+  }
 
   // Channel contribution ranking
   lines.push(`### Channel Contribution Ranking`);

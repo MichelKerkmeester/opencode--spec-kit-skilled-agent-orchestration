@@ -12,6 +12,4 @@ A checkpoint must exist for the spec folder before reconsolidation can run. When
 
 - Group: Memory quality and indexing
 - Source feature title: Reconsolidation-on-save
-- Summary match found: Yes
-- Summary source feature title: Reconsolidation-on-save
 - Current reality source: feature_catalog.md

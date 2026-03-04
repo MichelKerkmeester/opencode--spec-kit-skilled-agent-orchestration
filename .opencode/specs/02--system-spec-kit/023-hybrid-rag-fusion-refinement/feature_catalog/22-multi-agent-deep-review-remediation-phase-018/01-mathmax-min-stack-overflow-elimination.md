@@ -17,6 +17,4 @@ Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with 
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Math.max/min stack overflow elimination
-- Summary match found: Yes
-- Summary source feature title: Math.max/min stack overflow elimination
 - Current reality source: feature_catalog.md

@@ -149,6 +149,12 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 - [ ] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: updated sections]
 - [ ] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: JSON findings artifacts in `scratch/`]
 
+### Memory Quality Gates
+
+- [x] CHK-430 [P1] Content-aware slug generation produces task-based filenames instead of generic folder-name slugs. [EVIDENCE: `slug-utils.ts` created with `generateContentSlug()`, integrated in `workflow.ts:581`]
+- [x] CHK-431 [P1] Empty/template-only content is rejected before file write (200-char minimum after stripping boilerplate). [EVIDENCE: `validateContentSubstance()` added to `file-writer.ts`, called in `writeFilesAtomically()`]
+- [x] CHK-432 [P1] Duplicate content detected via SHA-256 hash comparison before file write. [EVIDENCE: `checkForDuplicateContent()` added to `file-writer.ts`, checks existing *.md files in memory dir]
+
 ### P2 Nice-to-Have
 
 - [ ] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `feature_catalog.md`. [EVIDENCE: grep + manual spot-check]

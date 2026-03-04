@@ -158,6 +158,12 @@ Derived from the 5-agent phase audit of `feature_catalog` groups 01-18.
 - [ ] Align eval logging docs (sync vs async, and per-channel event coverage).
 - [ ] Remove stale implementation-detail claims (line-count and call-site drift) across phase snippets.
 
+#### Memory Quality Gates (Generation-Time Prevention)
+- [x] Create `slug-utils.ts` with content-aware slug generation (task → slug, fallback to folder name).
+- [x] Add empty content gate (200-char minimum after stripping boilerplate) to `file-writer.ts`.
+- [x] Add duplicate detection (SHA-256 hash check against existing memory files) to `file-writer.ts`.
+- [x] Integrate content slug in `workflow.ts` (replace `folderBase` with `generateContentSlug(implSummary.task, folderBase)`).
+
 #### Validation
 - [ ] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
 <!-- /ANCHOR:phases -->

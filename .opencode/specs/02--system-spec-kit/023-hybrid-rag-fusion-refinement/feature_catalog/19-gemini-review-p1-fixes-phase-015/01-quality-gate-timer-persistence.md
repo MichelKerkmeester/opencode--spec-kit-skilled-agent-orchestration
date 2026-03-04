@@ -8,6 +8,4 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Quality gate timer persistence
-- Summary match found: Yes
-- Summary source feature title: Quality gate timer persistence
 - Current reality source: feature_catalog.md

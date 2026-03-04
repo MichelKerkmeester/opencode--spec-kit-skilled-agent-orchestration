@@ -10,6 +10,4 @@ Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix:
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Legacy V1 pipeline removal
-- Summary match found: Yes
-- Summary source feature title: Legacy V1 pipeline removal
 - Current reality source: feature_catalog.md

@@ -46,6 +46,15 @@ interface CategorizedFiles {
   toDelete: string[];
 }
 
+interface IndexedPathRow {
+  file_path: string;
+  canonical_file_path?: string | null;
+}
+
+interface IndexedRecordRow extends IndexedPathRow {
+  id: number;
+}
+
 /* -------------------------------------------------------------
    3. MODULE STATE
 ----------------------------------------------------------------*/
@@ -232,7 +241,130 @@ function categorizeFilesForIndexing(filePaths: string[]): CategorizedFiles {
     }
   }
 
+  // Include stale indexed paths that are no longer discovered on disk.
+  // Without this pass, removed files never enter toDelete during normal scans
+  // because discovery only returns files that currently exist.
+  const staleIndexedPaths = listStaleIndexedPaths(filePaths);
+  if (staleIndexedPaths.length > 0) {
+    const seenDeleteKeys = new Set<string>(result.toDelete.map((filePath) => getCanonicalPathKey(filePath)));
+    for (const stalePath of staleIndexedPaths) {
+      const staleKey = getCanonicalPathKey(stalePath);
+      if (!seenDeleteKeys.has(staleKey)) {
+        result.toDelete.push(stalePath);
+        seenDeleteKeys.add(staleKey);
+      }
+    }
+  }
+
   return result;
+}
+
+function listStaleIndexedPaths(scannedFilePaths: string[]): string[] {
+  if (!db) return [];
+
+  const scannedCanonicalPaths = new Set(scannedFilePaths.map((filePath) => getCanonicalPathKey(filePath)));
+  const stalePaths = new Set<string>();
+
+  try {
+    const rows = hasCanonicalPathColumn()
+      ? (db.prepare(`
+          SELECT DISTINCT file_path, canonical_file_path
+          FROM memory_index
+          WHERE file_path IS NOT NULL AND file_path != ''
+        `) as Database.Statement).all() as IndexedPathRow[]
+      : (db.prepare(`
+          SELECT DISTINCT file_path
+          FROM memory_index
+          WHERE file_path IS NOT NULL AND file_path != ''
+        `) as Database.Statement).all() as IndexedPathRow[];
+
+    for (const row of rows) {
+      if (!row || typeof row.file_path !== 'string' || row.file_path.length === 0) {
+        continue;
+      }
+
+      const rowCanonicalPath = typeof row.canonical_file_path === 'string' && row.canonical_file_path.length > 0
+        ? row.canonical_file_path
+        : getCanonicalPathKey(row.file_path);
+
+      if (scannedCanonicalPaths.has(rowCanonicalPath)) {
+        continue;
+      }
+
+      const filePathExists = getFileMetadata(row.file_path).exists;
+      const canonicalPathExists = typeof row.canonical_file_path === 'string' && row.canonical_file_path.length > 0
+        ? getFileMetadata(row.canonical_file_path).exists
+        : false;
+
+      if (!filePathExists && !canonicalPathExists) {
+        stalePaths.add(row.file_path);
+      }
+    }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[incremental-index] listStaleIndexedPaths error: ${msg}`);
+  }
+
+  return Array.from(stalePaths);
+}
+
+function listIndexedRecordIdsForDeletedPaths(filePaths: string[]): number[] {
+  if (!db || filePaths.length === 0) return [];
+
+  const ids = new Set<number>();
+  const seenLookupKeys = new Set<string>();
+
+  try {
+    for (const filePath of filePaths) {
+      if (typeof filePath !== 'string' || filePath.length === 0) {
+        continue;
+      }
+
+      const canonicalPath = getCanonicalPathKey(filePath);
+      const lookupKey = `${canonicalPath}::${filePath}`;
+      if (seenLookupKeys.has(lookupKey)) {
+        continue;
+      }
+      seenLookupKeys.add(lookupKey);
+
+      const rows = hasCanonicalPathColumn()
+        ? (db.prepare(`
+            SELECT id, file_path, canonical_file_path
+            FROM memory_index
+            WHERE canonical_file_path = ? OR file_path = ?
+          `) as Database.Statement).all(canonicalPath, filePath) as IndexedRecordRow[]
+        : (db.prepare(`
+            SELECT id, file_path
+            FROM memory_index
+            WHERE file_path = ?
+          `) as Database.Statement).all(filePath) as IndexedRecordRow[];
+
+      for (const row of rows) {
+        if (!row || typeof row.id !== 'number') {
+          continue;
+        }
+
+        const rowFileExists = typeof row.file_path === 'string' && row.file_path.length > 0
+          ? getFileMetadata(row.file_path).exists
+          : false;
+        const rowCanonicalExists = typeof row.canonical_file_path === 'string' && row.canonical_file_path.length > 0
+          ? getFileMetadata(row.canonical_file_path).exists
+          : false;
+
+        if (rowFileExists || rowCanonicalExists) {
+          continue;
+        }
+
+        ids.add(row.id);
+      }
+    }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[incremental-index] listIndexedRecordIdsForDeletedPaths error: ${msg}`);
+    return [];
+  }
+
+  return Array.from(ids).sort((a, b) => a - b);
 }
 
 function batchUpdateMtimes(filePaths: string[]): { updated: number; failed: number } {
@@ -275,6 +407,8 @@ export {
   updateFileMtime,
   setIndexedMtime,
   categorizeFilesForIndexing,
+  listStaleIndexedPaths,
+  listIndexedRecordIdsForDeletedPaths,
   batchUpdateMtimes,
 };
 

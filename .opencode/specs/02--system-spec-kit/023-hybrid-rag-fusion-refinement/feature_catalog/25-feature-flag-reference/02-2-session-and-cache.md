@@ -20,5 +20,4 @@
 
 - Group: Feature Flag Reference
 - Source feature title: 2. Session and Cache
-- Summary match found: No
 - Current reality source: feature_catalog.md

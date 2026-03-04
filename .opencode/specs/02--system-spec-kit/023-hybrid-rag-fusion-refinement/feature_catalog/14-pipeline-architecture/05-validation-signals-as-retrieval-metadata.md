@@ -10,6 +10,4 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 
 - Group: Pipeline architecture
 - Source feature title: Validation signals as retrieval metadata
-- Summary match found: Yes
-- Summary source feature title: Validation signals as retrieval metadata
 - Current reality source: feature_catalog.md

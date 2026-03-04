@@ -10,6 +10,4 @@ The new multiplier targets 15% or higher contribution, which is enough to matter
 
 - Group: Graph signal activation
 - Source feature title: Co-activation boost strength increase
-- Summary match found: Yes
-- Summary source feature title: Co-activation boost strength increase
 - Current reality source: feature_catalog.md

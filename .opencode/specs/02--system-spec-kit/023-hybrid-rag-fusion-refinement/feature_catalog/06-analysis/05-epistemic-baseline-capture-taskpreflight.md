@@ -12,5 +12,4 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 
 - Group: Analysis
 - Source feature title: Epistemic baseline capture (task_preflight)
-- Summary match found: No
 - Current reality source: feature_catalog.md

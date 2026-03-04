@@ -10,6 +10,4 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 
 - Group: Retrieval enhancements
 - Source feature title: Dual-scope memory auto-surface
-- Summary match found: Yes
-- Summary source feature title: Dual-scope memory auto-surface
 - Current reality source: feature_catalog.md

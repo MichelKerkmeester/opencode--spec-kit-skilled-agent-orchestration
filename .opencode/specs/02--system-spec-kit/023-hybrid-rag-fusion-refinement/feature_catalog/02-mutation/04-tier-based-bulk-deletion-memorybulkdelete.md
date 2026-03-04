@@ -12,5 +12,4 @@ Each deleted memory gets its causal graph edges removed. A single consolidated m
 
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)
-- Summary match found: No
 - Current reality source: feature_catalog.md

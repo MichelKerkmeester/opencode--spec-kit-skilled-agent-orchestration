@@ -6,8 +6,14 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-triggers';
+import * as core from '../core';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as evalLogger from '../lib/eval/eval-logger';
+import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
+import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
+import * as coActivation from '../lib/cache/cognitive/co-activation';
+import * as consumptionLogger from '../lib/telemetry/consumption-logger';
 
 describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
@@ -110,5 +116,67 @@ describe('Sprint-0 reliability fixes', () => {
     expect(Array.isArray(payload.data.results)).toBe(true);
     expect(payload.data.results[0].importanceWeight).toBe(0.8);
     expect(payload.meta.triggerSignals.length).toBe(1);
+  });
+
+  it('enforces caller limit on cognitive path responses', async () => {
+    const requestedLimit = 2;
+    const matches = Array.from({ length: 5 }, (_, index) => ({
+      memoryId: index + 1,
+      specFolder: 'specs/test',
+      filePath: `/tmp/test-${index + 1}.md`,
+      title: `Memory ${index + 1}`,
+      matchedPhrases: ['test'],
+      importanceWeight: 0.9,
+    }));
+
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(undefined);
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue({
+      matches,
+      stats: {
+        promptLength: 4,
+        cacheSize: 5,
+        matchCount: 5,
+        totalMatchedPhrases: 5,
+        matchTimeMs: 0,
+        signals: [],
+      },
+    } as unknown as ReturnType<typeof triggerMatcher.matchTriggerPhrasesWithStats>);
+
+    vi.spyOn(evalLogger, 'logSearchQuery').mockReturnValue({ queryId: 31, evalRunId: 32 });
+    vi.spyOn(evalLogger, 'logFinalResult').mockImplementation(() => undefined);
+
+    vi.spyOn(workingMemory, 'isEnabled').mockReturnValue(true);
+    vi.spyOn(workingMemory, 'batchUpdateScores').mockReturnValue(0);
+    vi.spyOn(workingMemory, 'setAttentionScore').mockImplementation(() => undefined);
+    vi.spyOn(workingMemory, 'getSessionMemories').mockReturnValue([]);
+
+    vi.spyOn(attentionDecay, 'getDb').mockReturnValue({
+      prepare: vi.fn(() => ({
+        get: vi.fn(() => undefined),
+      })),
+    } as unknown as ReturnType<typeof attentionDecay.getDb>);
+    vi.spyOn(attentionDecay, 'activateMemory').mockImplementation(() => undefined);
+
+    vi.spyOn(coActivation, 'isEnabled').mockReturnValue(false);
+
+    const tierLimitSpy = vi.spyOn(tierClassifier, 'filterAndLimitByState')
+      .mockImplementation((memories: any[], _state: any = null, limit: number = 20) => memories.slice(0, limit));
+
+    vi.spyOn(tierClassifier, 'classifyState').mockReturnValue('HOT');
+    vi.spyOn(consumptionLogger, 'initConsumptionLog').mockImplementation(() => undefined);
+    vi.spyOn(consumptionLogger, 'logConsumptionEvent').mockImplementation(() => undefined);
+
+    const response = await handler.handleMemoryMatchTriggers({
+      prompt: 'test',
+      limit: requestedLimit,
+      session_id: 'session-1',
+      include_cognitive: true,
+    });
+    const payload = JSON.parse(response.content[0].text);
+
+    expect(payload.data.matchType).toBe('trigger-phrase-cognitive');
+    expect(tierLimitSpy).toHaveBeenCalledWith(expect.any(Array), null, requestedLimit);
+    expect(payload.data.count).toBeLessThanOrEqual(requestedLimit);
+    expect(payload.data.results).toHaveLength(requestedLimit);
   });
 });

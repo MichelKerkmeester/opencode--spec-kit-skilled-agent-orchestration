@@ -14,5 +14,4 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 
 - Group: Analysis
 - Source feature title: Learning history (memory_get_learning_history)
-- Summary match found: No
 - Current reality source: feature_catalog.md

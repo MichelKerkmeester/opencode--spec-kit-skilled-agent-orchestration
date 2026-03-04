@@ -14,6 +14,4 @@ Kendall tau correlation between RSF and RRF rankings is computed at sprint exit 
 
 - Group: Query intelligence
 - Source feature title: Relative score fusion in shadow mode
-- Summary match found: Yes
-- Summary source feature title: Relative score fusion in shadow mode
 - Current reality source: feature_catalog.md

@@ -17,6 +17,4 @@ Eight scoring issues were fixed:
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Scoring and fusion corrections
-- Summary match found: Yes
-- Summary source feature title: Scoring and fusion corrections
 - Current reality source: feature_catalog.md

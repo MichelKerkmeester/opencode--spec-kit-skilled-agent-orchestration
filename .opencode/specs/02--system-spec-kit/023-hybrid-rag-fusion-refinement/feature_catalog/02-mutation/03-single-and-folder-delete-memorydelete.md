@@ -12,5 +12,4 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 
 - Group: Mutation
 - Source feature title: Single and folder delete (memory_delete)
-- Summary match found: No
 - Current reality source: feature_catalog.md

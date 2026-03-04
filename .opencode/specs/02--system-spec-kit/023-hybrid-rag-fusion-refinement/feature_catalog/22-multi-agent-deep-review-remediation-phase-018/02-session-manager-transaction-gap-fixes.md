@@ -8,6 +8,4 @@ Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks 
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Session-manager transaction gap fixes
-- Summary match found: Yes
-- Summary source feature title: Session-manager transaction gap fixes
 - Current reality source: feature_catalog.md

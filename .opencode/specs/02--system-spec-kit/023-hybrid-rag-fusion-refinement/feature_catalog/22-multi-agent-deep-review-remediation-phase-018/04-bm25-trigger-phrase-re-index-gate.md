@@ -8,6 +8,4 @@ The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-o
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: BM25 trigger phrase re-index gate
-- Summary match found: Yes
-- Summary source feature title: BM25 trigger phrase re-index gate
 - Current reality source: feature_catalog.md

@@ -4,7 +4,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { TOOL_DEFINITIONS } from '../tool-schemas';
+import { TOOL_DEFINITIONS, validateToolArgs } from '../tool-schemas';
 import { validateToolInputSchema } from '../utils/tool-input-schema';
 
 /* ---------------------------------------------------------------
@@ -117,5 +117,23 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', { id: true }, TOOL_DEFINITIONS);
     }).toThrow(/expected number/);
+  });
+});
+
+/* ---------------------------------------------------------------
+   4. memory_search LIMIT CONTRACT (schema + runtime alignment)
+--------------------------------------------------------------- */
+
+describe('memory_search limit contract', () => {
+  it('accepts limit up to 100', () => {
+    expect(() => {
+      validateToolArgs('memory_search', { query: 'ab', limit: 100 });
+    }).not.toThrow();
+  });
+
+  it('rejects limit above 100', () => {
+    expect(() => {
+      validateToolArgs('memory_search', { query: 'ab', limit: 101 });
+    }).toThrow();
   });
 });

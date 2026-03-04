@@ -78,7 +78,7 @@ const memorySearchSchema = getSchema({
   query: z.string().min(2).max(1000).optional(),
   concepts: z.array(z.string().min(1)).min(2).max(5).optional(),
   specFolder: z.string().optional(),
-  limit: positiveIntMax(50).optional(),
+  limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
   tier: importanceTierEnum.optional(),

@@ -33,7 +33,7 @@ import { expandQuery } from '../lib/search/query-expander';
 import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
 
 // AI-TRACE:T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
-import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
+import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
 
 // Core utilities
 import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core';
@@ -138,6 +138,12 @@ interface ChunkReassemblyResult {
 
 type IntentWeights = IntentClassifierWeights;
 
+interface EvalChannelPayload {
+  channel: string;
+  resultMemoryIds: number[];
+  scores: number[];
+}
+
 interface SearchArgs {
   query?: string;
   concepts?: string[];
@@ -177,6 +183,91 @@ function resolveRowContextType(row: MemorySearchRow): string | undefined {
     return row.context_type;
   }
   return undefined;
+}
+
+function resolveEvalScore(row: Record<string, unknown>): number {
+  const score = row.score;
+  if (typeof score === 'number' && Number.isFinite(score)) {
+    return score;
+  }
+
+  const similarity = row.similarity;
+  if (typeof similarity === 'number' && Number.isFinite(similarity)) {
+    return similarity;
+  }
+
+  const rrfScore = row.rrfScore;
+  if (typeof rrfScore === 'number' && Number.isFinite(rrfScore)) {
+    return rrfScore;
+  }
+
+  return 0;
+}
+
+function collectEvalChannelsFromRow(row: Record<string, unknown>): string[] {
+  const channels = new Set<string>();
+
+  if (Array.isArray(row.sources)) {
+    for (const source of row.sources) {
+      if (typeof source === 'string' && source.trim().length > 0) {
+        channels.add(source.trim());
+      }
+    }
+  }
+
+  if (typeof row.source === 'string' && row.source.trim().length > 0) {
+    channels.add(row.source.trim());
+  }
+
+  if (Array.isArray(row.channelAttribution)) {
+    for (const source of row.channelAttribution) {
+      if (typeof source === 'string' && source.trim().length > 0) {
+        channels.add(source.trim());
+      }
+    }
+  }
+
+  if (channels.size === 0) {
+    channels.add('hybrid');
+  }
+
+  return Array.from(channels);
+}
+
+function buildEvalChannelPayloads(rows: Array<Record<string, unknown>>): EvalChannelPayload[] {
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return [];
+  }
+
+  const byChannel = new Map<string, Map<number, number>>();
+
+  for (const row of rows) {
+    const rawId = row.id;
+    if (typeof rawId !== 'number' || !Number.isInteger(rawId) || rawId <= 0) {
+      continue;
+    }
+
+    const score = resolveEvalScore(row);
+    const channels = collectEvalChannelsFromRow(row);
+
+    for (const channel of channels) {
+      const bucket = byChannel.get(channel) ?? new Map<number, number>();
+      const existing = bucket.get(rawId);
+      if (existing === undefined || score > existing) {
+        bucket.set(rawId, score);
+      }
+      byChannel.set(channel, bucket);
+    }
+  }
+
+  return Array.from(byChannel.entries()).map(([channel, idToScore]): EvalChannelPayload => {
+    const entries = Array.from(idToScore.entries());
+    return {
+      channel,
+      resultMemoryIds: entries.map(([id]) => id),
+      scores: entries.map(([, score]) => score),
+    };
+  });
 }
 
 function filterByMinQualityScore(results: MemorySearchRow[], minQualityScore?: number): MemorySearchRow[] {
@@ -785,6 +876,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     includeTrace,
   });
 
+  let _evalChannelPayloads: EvalChannelPayload[] = [];
+
   // AI-TRACE:T012-T015: Use cache wrapper for search execution
   const cachedResult = await toolCache.withCache(
     'memory_search',
@@ -884,6 +977,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         if (pipelineResult.trace) {
           extraData.retrievalTrace = pipelineResult.trace;
         }
+
+        _evalChannelPayloads = buildEvalChannelPayloads(
+          pipelineResult.results as unknown as Array<Record<string, unknown>>
+        );
 
         const appliedBoosts = {
           session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },
@@ -1041,6 +1138,17 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         fusionMethod: 'rrf',
         latencyMs: Date.now() - _searchStartTime,
       });
+
+      for (const payload of _evalChannelPayloads) {
+        logChannelResult({
+          evalRunId: _evalRunId,
+          queryId: _evalQueryId,
+          channel: payload.channel,
+          resultMemoryIds: payload.resultMemoryIds,
+          scores: payload.scores,
+          hitCount: payload.resultMemoryIds.length,
+        });
+      }
     }
   } catch { /* eval logging must never break search */ }
 
@@ -1063,6 +1171,8 @@ export const __testables = {
   resolveArtifactRoutingQuery,
   applyArtifactRouting,
   collapseAndReassembleChunkResults,
+  collectEvalChannelsFromRow,
+  buildEvalChannelPayloads,
 };
 
 // Backward-compatible aliases (snake_case)

@@ -13,6 +13,7 @@ export type { Database };
 export interface ValidationResult {
   confidence: number;
   validationCount: number;
+  positiveValidationCount: number;
   promotionEligible: boolean;
   wasPromoted: boolean;
 }
@@ -28,6 +29,7 @@ export interface ConfidenceInfo {
   memoryId: number;
   confidence: number;
   validationCount: number;
+  positiveValidationCount: number;
   importanceTier: string;
   promotionEligible: boolean;
   promotionProgress: PromotionProgress;
@@ -38,6 +40,40 @@ interface MemoryConfidenceRow {
   validation_count?: number;
   validationCount?: number;
   importance_tier?: string;
+}
+
+function getNegativeValidationCount(db: Database, memoryId: number): number {
+  try {
+    const row = db.prepare(`
+      SELECT COUNT(*) AS count
+      FROM negative_feedback_events
+      WHERE memory_id = ?
+    `).get(memoryId) as { count?: number } | undefined;
+
+    return typeof row?.count === 'number' && Number.isFinite(row.count)
+      ? Math.max(0, Math.floor(row.count))
+      : 0;
+  } catch {
+    // Table may not exist on older DB snapshots; treat as no negatives.
+    return 0;
+  }
+}
+
+function resolvePositiveValidationCount(totalValidationCount: number, negativeValidationCount: number): number {
+  return Math.max(0, totalValidationCount - Math.max(0, negativeValidationCount));
+}
+
+function isPromotionEligible(
+  importanceTier: string | undefined,
+  confidence: number,
+  positiveValidationCount: number
+): boolean {
+  if (importanceTier === 'critical' || importanceTier === 'constitutional') {
+    return false;
+  }
+
+  return confidence >= PROMOTION_CONFIDENCE_THRESHOLD &&
+    positiveValidationCount >= PROMOTION_VALIDATION_THRESHOLD;
 }
 
 // ---------------------------------------------------------------
@@ -67,7 +103,7 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
     return db.transaction(() => {
       // Read first so this update derives from the latest persisted values.
       const memory = db.prepare(`
-        SELECT confidence, validation_count FROM memory_index WHERE id = ?
+        SELECT confidence, validation_count, importance_tier FROM memory_index WHERE id = ?
       `).get(memoryId) as MemoryConfidenceRow | undefined;
 
       if (!memory) {
@@ -92,12 +128,26 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
         WHERE id = ?
       `).run(newConfidence, newValidationCount, new Date().toISOString(), memoryId);
 
+      const priorNegativeValidationCount = getNegativeValidationCount(db, memoryId);
+      const effectiveNegativeValidationCount = wasUseful
+        ? priorNegativeValidationCount
+        : priorNegativeValidationCount + 1;
+      const positiveValidationCount = resolvePositiveValidationCount(
+        newValidationCount,
+        effectiveNegativeValidationCount
+      );
+
       // Report eligibility only; promotion is intentionally explicit and separate.
-      const promotionEligible = checkPromotionEligible(db, memoryId);
+      const promotionEligible = isPromotionEligible(
+        memory.importance_tier,
+        newConfidence,
+        positiveValidationCount
+      );
 
       return {
         confidence: newConfidence,
         validationCount: newValidationCount,
+        positiveValidationCount,
         promotionEligible,
         wasPromoted: false,
       };
@@ -107,6 +157,7 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
     return {
       confidence: CONFIDENCE_BASE,
       validationCount: 0,
+      positiveValidationCount: 0,
       promotionEligible: false,
       wasPromoted: false,
     };
@@ -154,9 +205,10 @@ export function checkPromotionEligible(db: Database, memoryId: number): boolean 
 
     const confidence = memory.confidence ?? CONFIDENCE_BASE;
     const validationCount = memory.validationCount ?? memory.validation_count ?? 0;
+    const negativeValidationCount = getNegativeValidationCount(db, memoryId);
+    const positiveValidationCount = resolvePositiveValidationCount(validationCount, negativeValidationCount);
 
-    return confidence >= PROMOTION_CONFIDENCE_THRESHOLD &&
-           validationCount >= PROMOTION_VALIDATION_THRESHOLD;
+    return isPromotionEligible(memory.importance_tier, confidence, positiveValidationCount);
   } catch (error: unknown) {
     console.error(`[confidence-tracker] checkPromotionEligible failed for memory ${memoryId}:`, error);
     return false;
@@ -181,10 +233,13 @@ export function promoteToCritical(db: Database, memoryId: number): boolean {
         return false;
       }
 
+      const validationCount = memory.validationCount ?? memory.validation_count ?? 0;
+      const negativeValidationCount = getNegativeValidationCount(db, memoryId);
+      const positiveValidationCount = resolvePositiveValidationCount(validationCount, negativeValidationCount);
       throw new Error(
         `Memory ${memoryId} not eligible for promotion. ` +
         `Requires confidence >= ${PROMOTION_CONFIDENCE_THRESHOLD} (current: ${memory.confidence ?? CONFIDENCE_BASE}) ` +
-        `and validation_count >= ${PROMOTION_VALIDATION_THRESHOLD} (current: ${(memory.validationCount ?? memory.validation_count ?? 0)})`
+        `and positive_validation_count >= ${PROMOTION_VALIDATION_THRESHOLD} (current: ${positiveValidationCount})`
       );
     }
 
@@ -219,18 +274,21 @@ export function getConfidenceInfo(db: Database, memoryId: number): ConfidenceInf
 
     const confidence = memory.confidence ?? CONFIDENCE_BASE;
     const validationCount = memory.validationCount ?? memory.validation_count ?? 0;
+    const negativeValidationCount = getNegativeValidationCount(db, memoryId);
+    const positiveValidationCount = resolvePositiveValidationCount(validationCount, negativeValidationCount);
 
     return {
       memoryId,
       confidence,
       validationCount,
+      positiveValidationCount,
       importanceTier: memory.importance_tier || 'normal',
-      promotionEligible: checkPromotionEligible(db, memoryId),
+      promotionEligible: isPromotionEligible(memory.importance_tier, confidence, positiveValidationCount),
       promotionProgress: {
         confidenceRequired: PROMOTION_CONFIDENCE_THRESHOLD,
         validationsRequired: PROMOTION_VALIDATION_THRESHOLD,
         confidenceMet: confidence >= PROMOTION_CONFIDENCE_THRESHOLD,
-        validationsMet: validationCount >= PROMOTION_VALIDATION_THRESHOLD,
+        validationsMet: positiveValidationCount >= PROMOTION_VALIDATION_THRESHOLD,
       },
     };
   } catch (error: unknown) {
@@ -239,6 +297,7 @@ export function getConfidenceInfo(db: Database, memoryId: number): ConfidenceInf
       memoryId,
       confidence: CONFIDENCE_BASE,
       validationCount: 0,
+      positiveValidationCount: 0,
       importanceTier: 'normal',
       promotionEligible: false,
       promotionProgress: {

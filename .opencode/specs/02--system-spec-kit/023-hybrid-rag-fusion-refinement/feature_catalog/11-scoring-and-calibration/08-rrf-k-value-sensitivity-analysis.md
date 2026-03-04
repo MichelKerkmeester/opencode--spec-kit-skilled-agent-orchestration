@@ -10,6 +10,4 @@ A grid search over K values {20, 40, 60, 80, 100} measured MRR@5 delta per value
 
 - Group: Scoring and calibration
 - Source feature title: RRF K-value sensitivity analysis
-- Summary match found: Yes
-- Summary source feature title: RRF K-value sensitivity analysis
 - Current reality source: feature_catalog.md

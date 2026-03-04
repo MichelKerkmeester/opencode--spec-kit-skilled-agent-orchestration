@@ -10,6 +10,4 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Tier-2 fallback channel forcing
-- Summary match found: Yes
-- Summary source feature title: Tier-2 fallback channel forcing
 - Current reality source: feature_catalog.md

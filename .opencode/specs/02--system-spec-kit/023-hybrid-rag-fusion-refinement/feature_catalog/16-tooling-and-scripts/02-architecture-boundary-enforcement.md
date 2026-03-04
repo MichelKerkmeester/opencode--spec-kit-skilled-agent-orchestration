@@ -12,6 +12,4 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 
 - Group: Tooling and scripts
 - Source feature title: Architecture boundary enforcement
-- Summary match found: Yes
-- Summary source feature title: Architecture boundary enforcement
 - Current reality source: feature_catalog.md

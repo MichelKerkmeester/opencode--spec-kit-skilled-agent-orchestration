@@ -8,5 +8,4 @@ Returns a paginated list of available checkpoints with metadata: name, creation 
 
 - Group: Lifecycle
 - Source feature title: Checkpoint listing (checkpoint_list)
-- Summary match found: No
 - Current reality source: feature_catalog.md

@@ -64,6 +64,7 @@ interface MemoryValidateArgs {
 interface ValidationResult {
   confidence: number;
   validationCount: number;
+  positiveValidationCount: number;
   promotionEligible: boolean;
 }
 
@@ -416,6 +417,7 @@ async function handleMemoryValidate(args: MemoryValidateArgs): Promise<MCPRespon
       wasUseful: wasUseful,
       confidence: result.confidence,
       validationCount: result.validationCount,
+      positiveValidationCount: result.positiveValidationCount,
       promotionEligible: result.promotionEligible,
       autoPromotion,
       learnedFeedback,

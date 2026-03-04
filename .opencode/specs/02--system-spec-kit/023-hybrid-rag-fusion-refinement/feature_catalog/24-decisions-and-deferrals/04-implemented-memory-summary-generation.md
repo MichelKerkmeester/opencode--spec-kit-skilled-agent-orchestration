@@ -10,6 +10,4 @@ Originally skipped at Sprint 7 because the scale gate measured 2,411 active memo
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: memory summary generation
-- Summary match found: Yes
-- Summary source feature title: Implemented: memory summary generation
 - Current reality source: feature_catalog.md

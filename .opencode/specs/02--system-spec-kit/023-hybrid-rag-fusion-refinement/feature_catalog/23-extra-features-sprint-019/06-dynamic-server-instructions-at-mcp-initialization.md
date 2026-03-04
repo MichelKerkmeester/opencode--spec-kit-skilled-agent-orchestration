@@ -8,6 +8,4 @@
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Dynamic server instructions at MCP initialization
-- Summary match found: Yes
-- Summary source feature title: Dynamic server instructions at MCP initialization
 - Current reality source: feature_catalog.md

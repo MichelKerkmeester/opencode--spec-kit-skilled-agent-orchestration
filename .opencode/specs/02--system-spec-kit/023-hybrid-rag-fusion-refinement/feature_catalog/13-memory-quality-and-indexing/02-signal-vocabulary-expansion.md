@@ -10,6 +10,4 @@ Correction signals matter because they indicate the user is fixing a prior misun
 
 - Group: Memory quality and indexing
 - Source feature title: Signal vocabulary expansion
-- Summary match found: Yes
-- Summary source feature title: Signal vocabulary expansion
 - Current reality source: feature_catalog.md
