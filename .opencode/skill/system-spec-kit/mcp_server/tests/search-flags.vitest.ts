@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import * as crossEncoder from '../lib/search/cross-encoder';
 import {
   isCrossEncoderEnabled,
+  isContextHeadersEnabled,
   isMMREnabled,
   isMultiQueryEnabled,
   isTRMEnabled,
@@ -17,6 +18,7 @@ const FLAG_NAMES = [
   'SPECKIT_TRM',
   'SPECKIT_MULTI_QUERY',
   'SPECKIT_CROSS_ENCODER',
+  'SPECKIT_CONTEXT_HEADERS',
   'VOYAGE_API_KEY',
 ] as const;
 
@@ -53,6 +55,7 @@ describe('Search Feature Flags (default-on)', () => {
     expect(isTRMEnabled()).toBe(true);
     expect(isMultiQueryEnabled()).toBe(true);
     expect(isCrossEncoderEnabled()).toBe(true);
+    expect(isContextHeadersEnabled()).toBe(true);
   });
 
   it('disables each gate only when explicitly set to false', () => {
@@ -60,11 +63,13 @@ describe('Search Feature Flags (default-on)', () => {
     process.env.SPECKIT_TRM = 'false';
     process.env.SPECKIT_MULTI_QUERY = 'false';
     process.env.SPECKIT_CROSS_ENCODER = 'false';
+    process.env.SPECKIT_CONTEXT_HEADERS = 'false';
 
     expect(isMMREnabled()).toBe(false);
     expect(isTRMEnabled()).toBe(false);
     expect(isMultiQueryEnabled()).toBe(false);
     expect(isCrossEncoderEnabled()).toBe(false);
+    expect(isContextHeadersEnabled()).toBe(false);
   });
 
   it('keeps gates enabled when explicitly set to true', () => {
@@ -72,11 +77,13 @@ describe('Search Feature Flags (default-on)', () => {
     process.env.SPECKIT_TRM = 'true';
     process.env.SPECKIT_MULTI_QUERY = 'true';
     process.env.SPECKIT_CROSS_ENCODER = 'true';
+    process.env.SPECKIT_CONTEXT_HEADERS = 'true';
 
     expect(isMMREnabled()).toBe(true);
     expect(isTRMEnabled()).toBe(true);
     expect(isMultiQueryEnabled()).toBe(true);
     expect(isCrossEncoderEnabled()).toBe(true);
+    expect(isContextHeadersEnabled()).toBe(true);
   });
 
   it('cross-encoder provider resolution is blocked when SPECKIT_CROSS_ENCODER=false', () => {

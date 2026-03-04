@@ -744,6 +744,22 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
 | `SPECKIT_LEARN_FROM_SELECTION`  | `true`  | Learned-feedback from selection events (R11 — 9 safeguards, 0.7x boost weight) |
 
+#### Local GGUF Reranker Setup (Sprint 9 P1-5)
+
+When `RERANKER_LOCAL=true`, Stage 3 reranking uses `node-llama-cpp` with a local GGUF model.
+
+1. Install runtime:
+   - `cd .opencode/skill/system-spec-kit`
+   - `npm install node-llama-cpp`
+2. Verify platform (Apple Silicon):
+   - `uname -sm` should report `Darwin arm64`
+   - `node -p "process.platform + ' ' + process.arch"` should report `darwin arm64`
+3. Place model file:
+   - `models/bge-reranker-v2-m3.Q4_K_M.gguf` (about `350MB`)
+4. Configure environment:
+   - `RERANKER_LOCAL=true`
+   - `SPECKIT_RERANKER_MODEL=models/bge-reranker-v2-m3.Q4_K_M.gguf`
+
 #### Save-Time and Feedback Flags
 
 Flags governing save-time processing and feedback-driven scoring. All default-on after Sprint 7.
@@ -789,6 +805,7 @@ Flags governing save-time processing and feedback-driven scoring. All default-on
 | `@modelcontextprotocol/sdk` | ^1.24.3        | MCP protocol             |
 | `@huggingface/transformers` | ^3.8.1         | Local embeddings         |
 | `better-sqlite3`            | ^12.6.2        | SQLite database          |
+| `node-llama-cpp`            | ^3.15.1        | Local GGUF reranker runtime (optional) |
 | `sqlite-vec`                | ^0.1.7-alpha.2 | Vector similarity search |
 | `zod`                       | ^4.1.12        | Schema validation        |
 

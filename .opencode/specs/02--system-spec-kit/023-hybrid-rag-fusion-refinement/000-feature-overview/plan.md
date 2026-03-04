@@ -884,6 +884,27 @@ Implement during or after Sprint 4-5. These require more invasive changes.
 - **Feature flag count**: PI-A2 (`SPECKIT_SEARCH_FALLBACK`), PI-A4 (`SPECKIT_CONSTITUTIONAL_INJECT`), PI-B2 (`SPECKIT_PROGRESSIVE_VALIDATION`), PI-A5 (`SPECKIT_VERIFY_FIX_VERIFY`), PI-A1 (`SPECKIT_FOLDER_SCORE`) = 5 additional flags; must be managed within the 6-flag operative limit (8-flag absolute ceiling per NFR-O01)
 - **PI-B3 LLM dependency**: `folder_description` generation requires an LLM call at index time; cache aggressively and only regenerate on spec folder content change
 
+## Documentation Addendum Plan (DOC-01)
+
+### Objective
+- Generate one per-feature artifact file (`feature.md`) inside every numbered feature folder under `feature_catalog/`, using canonical content from `feature_catalog.md` plus optional enrichment from `summary_of_new_features.md`.
+
+### Execution Strategy
+1. Parse canonical inventory from `feature_catalog/feature_catalog.md` (`##` group + `###` feature hierarchy).
+2. Normalize feature titles with trailing ticket-parenthetical stripping (only when parenthetical includes digits) for folder mapping parity.
+3. Resolve each feature to its numbered target folder (`NN-group/NN-feature`), then write `feature.md` with:
+   - H1 feature title
+   - canonical documentation section
+   - new/updated context section
+   - source metadata block
+4. Run coverage validation:
+   - canonical features count == feature folders count
+   - each feature folder contains `feature.md`
+   - missing target folders = 0 and extra unmapped folders = 0
+
+### Tooling Note
+- Use `cli-gemini` workflow with `gemini-3.1-pro-preview` for request alignment and generation support; keep deterministic local validation as the source of truth for final mapping correctness.
+
 <!--
 LEVEL 3+ PLAN
 - Core + L2 + L3 + L3+ addendums

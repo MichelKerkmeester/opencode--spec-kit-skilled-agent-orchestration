@@ -4,6 +4,9 @@
 // Optional local reranker for Stage 3. This module is fully gated by
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any
 // precondition or runtime failure.
+//
+// TODO(CHK-069): Document eval comparison — local GGUF MRR@5 vs remote Cohere/Voyage MRR@5.
+// Deferred: requires eval infrastructure with ground truth queries and remote API access.
 
 import os from 'os';
 import path from 'path';
@@ -228,6 +231,9 @@ export async function rerankLocal<T extends LocalRerankRow>(
     // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
     // allocating multiple sequence states simultaneously in VRAM, which
     // can trigger OOM or context mixing on local LLM inference.
+    // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
+    // model size and hardware. On Apple Silicon with small GGUF (~100MB), expect 200-400ms.
+    // Future optimization: batch inference via node-llama-cpp's evaluateBatch API.
     const scored: Array<{ candidate: T; rerankScore: number }> = [];
     for (const candidate of candidates.slice(0, rerankCount)) {
       const content = resolveRowText(candidate);

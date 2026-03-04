@@ -40,11 +40,13 @@ The plan prioritizes high-value low-risk changes first: architecture contract do
 - [x] Recommended actions include effort/risk/impact assessment.
 
 ### Definition of Done
-- [ ] Boundary docs and API contract docs merged.
-- [ ] Import-policy enforcement active.
-- [ ] Handler cycle reduced/removed and verified.
-- [ ] Duplicate helper ownership clarified and consolidated.
-- [ ] Checklist P0 items verified with command/file evidence.
+- [x] Boundary docs and API contract docs merged.
+- [x] Import-policy enforcement active.
+- [x] Handler cycle reduced/removed and verified.
+- [x] Duplicate helper ownership clarified and consolidated.
+- [x] Checklist P0 items verified with command/file evidence.
+- [ ] Triple ultra-think review P0 blockers resolved (Phase 4).
+- [ ] Review remediation checklist items verified.
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -66,8 +68,29 @@ Contract-first layered architecture.
 4. Enforcement checks prevent new inward dependency drift.
 <!-- /ANCHOR:architecture -->
 
+<!-- ANCHOR:effort -->
+## EFFORT ESTIMATION
+
+| Phase | Tasks | Estimated LOC | Effort | Risk |
+|-------|-------|---------------|--------|------|
+| Phase 0: Pipeline Infrastructure | T000 | ~20 | Low (1-2h) | Low |
+| Phase 1: Contract & Discoverability | T001-T006 | ~300 (docs) | Medium (4-6h) | Low |
+| Phase 2: Structural Cleanup | T007-T014 | ~200 (code) | Medium-High (6-8h) | Medium |
+| Phase 2b: Cleanup & Doc Gaps | T018-T020 | ~100 (docs+code) | Low (2-3h) | Low |
+| Phase 3: Enforcement | T015-T017 | ~150 (code) | Medium (3-4h) | Medium |
+| Phase 4: Review Remediation | T021-T045 | ~300 (code+docs) | Medium-High (6-10h) | Medium |
+| **Total** | **49 tasks** | **~1070** | **~22-33h** | **Medium** |
+
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 (sequential dependency).
+Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
+Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
+<!-- /ANCHOR:effort -->
+
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
+
+### Phase 0: Pipeline Infrastructure (Prerequisite)
+- [ ] Establish lint/check scripts in `scripts/package.json` (required by Phase 3 enforcement).
 
 ### Phase 1: Publish Boundary Contract (documentation-first)
 - [ ] Create canonical boundary document and API consumer guidance.
@@ -83,6 +106,30 @@ Contract-first layered architecture.
 - [ ] Add automated import-policy checks for scripts.
 - [ ] Add temporary exception allowlist with owner and removal criteria.
 - [ ] Validate no new violations and update checklist evidence.
+
+### Phase 4: Review Remediation (Post-Review)
+Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 + Gemini 3.1 Pro + Codex 5.3).
+
+#### P0 Blockers
+- [ ] Integrate `check-api-boundary.sh` into `npm run check` pipeline for bidirectional enforcement.
+- [ ] Add missing `reindex-embeddings.ts` exception to `ARCHITECTURE_BOUNDARIES.md`.
+- [ ] Expand `PROHIBITED_PATTERNS` to cover `@spec-kit/mcp-server/core/*` paths.
+
+#### P1 Should-Fix
+- [ ] Add dynamic `import()` expression detection to enforcement script.
+- [ ] Add additional relative path variant patterns (3+ depth levels).
+- [ ] Update `shared/README.md` structure tree with Phase 8 modules.
+- [ ] Add allowlist governance fields (`approvedBy`, `createdAt`, `expiresAt`).
+- [ ] Ban or sunset wildcard exceptions with explicit module lists.
+- [ ] Update `evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
+
+#### P2 Nice-to-Have
+- [ ] Add block comment tracking to import checker.
+- [ ] Add behavioral tests for `quality-extractors.ts` edge cases.
+- [ ] Add bidirectional cross-links in `ARCHITECTURE_BOUNDARIES.md`.
+- [ ] Define growth policy for `handler-utils.ts`.
+- [ ] Consider AST-based parsing upgrade for enforcement script.
+- [ ] Add transitive dependency checks for re-export evasion.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -96,6 +143,7 @@ Contract-first layered architecture.
 | Documentation checks | README cross-links and boundary clarity | markdown review + validation scripts |
 <!-- /ANCHOR:testing -->
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -104,6 +152,9 @@ Contract-first layered architecture.
 | Existing tests around parser/index paths | Internal | Yellow | Higher refactor risk |
 | CI pipeline hook for import-policy check | Internal | Yellow | Rules remain advisory only |
 
+<!-- /ANCHOR:dependencies -->
+
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Behavior regressions or broken operational workflows after boundary refactors.
@@ -111,6 +162,8 @@ Contract-first layered architecture.
 1. Revert structural code changes in helper/cycle refactors.
 2. Keep docs and ADR decisions as accepted intent.
 3. Switch import-policy checks to warning mode until gaps are addressed.
+
+<!-- /ANCHOR:rollback -->
 
 ## L3: DEPENDENCY GRAPH
 
@@ -125,6 +178,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 1. Boundary contract + API docs (critical).
 2. Handler cycle removal and helper consolidation (critical).
 3. Import-policy enforcement in pipeline (critical).
+4. Review remediation P0 blockers (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.
@@ -137,6 +191,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M1 | Boundary clarity | Contract and API docs published | Phase 1 |
 | M2 | Drift reduction | Duplicate helpers and cycle concerns addressed | Phase 2 |
 | M3 | Guardrail active | Import-policy checks enforced in default workflow | Phase 3 |
+| M4 | Review remediation | P0 blockers resolved, enforcement hardened, doc drift fixed | Phase 4 |
 
 ## AI Execution Protocol
 

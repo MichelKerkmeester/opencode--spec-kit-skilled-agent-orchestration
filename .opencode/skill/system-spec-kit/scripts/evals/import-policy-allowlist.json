@@ -1,0 +1,65 @@
+{
+  "description": "Allowlist for scripts importing from @spec-kit/mcp-server/{lib,core}/* internals. Each exception requires: owner, reason, removeWhen, createdAt, lastReviewedAt. Wildcard (lib/*) entries MUST include expiresAt; specific-path entries SHOULD include expiresAt.",
+  "exceptions": [
+    {
+      "file": "scripts/core/workflow.ts",
+      "import": "@spec-kit/mcp-server/lib/providers/retry-manager",
+      "owner": "spec-kit-maintainers",
+      "reason": "Retry logic not yet available in shared/",
+      "removeWhen": "shared retry module created",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-09-04"
+    },
+    {
+      "file": "scripts/core/memory-indexer.ts",
+      "import": "@spec-kit/mcp-server/lib/search/vector-index",
+      "owner": "spec-kit-maintainers",
+      "reason": "Vector indexing not exposed via api/",
+      "removeWhen": "api/ surface covers vector indexing",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-09-04"
+    },
+    {
+      "file": "scripts/core/memory-indexer.ts",
+      "import": "@spec-kit/mcp-server/core/config",
+      "owner": "spec-kit-maintainers",
+      "reason": "DB_UPDATED_FILE constant needed",
+      "removeWhen": "constant moved to shared/",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-09-04"
+    },
+    {
+      "file": "scripts/evals/run-performance-benchmarks.ts",
+      "import": "@spec-kit/mcp-server/lib/*",
+      "owner": "spec-kit-maintainers",
+      "reason": "Benchmark needs direct access to internal metrics",
+      "removeWhen": "metrics API exposed via api/",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-06-04"
+    },
+    {
+      "file": "scripts/evals/run-chk210-quality-backfill.ts",
+      "import": "@spec-kit/mcp-server/lib/*",
+      "owner": "spec-kit-maintainers",
+      "reason": "Quality backfill accesses internal parsing",
+      "removeWhen": "quality API exposed via api/",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-06-04"
+    },
+    {
+      "file": "scripts/memory/reindex-embeddings.ts",
+      "import": "@spec-kit/mcp-server/lib/*",
+      "owner": "spec-kit-maintainers",
+      "reason": "Reindex script needs direct access to vector-index, embeddings, checkpoints, access-tracker, and hybrid-search",
+      "removeWhen": "reindex operations exposed via api/",
+      "createdAt": "2026-02-21",
+      "lastReviewedAt": "2026-03-04",
+      "expiresAt": "2026-06-04"
+    }
+  ]
+}

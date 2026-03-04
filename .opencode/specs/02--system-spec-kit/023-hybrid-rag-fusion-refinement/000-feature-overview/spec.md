@@ -82,6 +82,7 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 | **Indexing** | R7, R8, R18 | S2, S6, S7 |
 | **Spec-Kit logic** | S1, S2, S3, S4, S5 | S5-S7 |
 | **Memory quality** (NEW) | TM-01, TM-02, TM-03, TM-04, TM-05, TM-06, TM-08 | S0, S1, S2, S4, S5 |
+| **Documentation artifacts** (NEW) | DOC-01 (per-feature markdown extraction from feature catalogs) | Cross-cutting |
 
 ### Out of Scope
 
@@ -106,6 +107,7 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 | Indexing | `memory_index` schema, embedding pipeline | Modify |
 | Spec-Kit logic | Template processing, validation handlers | Modify |
 | Memory quality (NEW) | `memory-save.ts`, `composite-scoring.ts`, `fsrs-scheduler.ts`, `trigger-matcher.ts` | Modify |
+| Documentation artifacts (NEW) | `feature_catalog/**/**/feature.md` (generated from `feature_catalog.md` + `summary_of_new_features.md`) | Create/Update |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -296,6 +298,15 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | S4 | (none) | — |
 | S5 | PI-A4, PI-B1, PI-B2 | +34-50h |
 | **Total** | **8 items** | **+70-104h** |
+
+### Documentation Addendum (DOC-01)
+
+> User-requested addendum for feature-catalog decomposition. This item is tracked alongside the core sprint program but does not alter the recommendation-count baseline (43 + PageIndex + sprint-derived).
+
+| ID | Requirement | Acceptance Criteria | Sprint/Placement |
+|----|-------------|---------------------|------------------|
+| DOC-01 | Extract each canonical feature into per-folder markdown artifacts — parse all `###` features from `feature_catalog/feature_catalog.md`, enrich with optional matching content from `feature_catalog/summary_of_new_features.md`, and write `feature.md` in each corresponding numbered feature folder under `feature_catalog/` | 1) One `feature.md` per canonical feature folder (`feature_catalog/**/**/feature.md`), 2) each artifact contains canonical section + new/updated context section + source metadata, 3) folder mapping uses numbered group/feature ordering from the canonical catalog, 4) coverage check passes with missing=0 and extra=0 | Cross-cutting |
+
 ### 4.1 R13 Evaluation Schema Definition
 
 The `speckit-eval.db` 5-table schema referenced by REQ-003:

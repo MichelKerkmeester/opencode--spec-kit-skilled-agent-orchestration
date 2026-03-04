@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 import { handleMemoryContext } from '../handlers';
-import { validateToolArgs } from '../tool-schemas';
+import { validateToolArgs } from '../schemas/tool-input-schemas';
 import { MCPResponse, parseArgs, ContextArgs } from './types';
 
 /** Tool names handled by this module */

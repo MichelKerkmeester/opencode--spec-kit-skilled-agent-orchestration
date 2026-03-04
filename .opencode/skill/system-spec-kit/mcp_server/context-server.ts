@@ -196,18 +196,25 @@ async function getMemoryStats(): Promise<DynamicMemoryStats> {
     const success = typeof byStatus.success === 'number' ? byStatus.success : 0;
     const pending = typeof byStatus.pending === 'number' ? byStatus.pending : 0;
     const failed = typeof byStatus.failed === 'number' ? byStatus.failed : 0;
+    const retry = typeof byStatus.retry === 'number' ? byStatus.retry : 0;
+    const totalSpecFolders = typeof data.totalSpecFolders === 'number'
+      ? data.totalSpecFolders
+      : topFolders.length;
 
     return {
       totalMemories: typeof data.totalMemories === 'number' ? data.totalMemories : 0,
-      specFolderCount: topFolders.length,
+      specFolderCount: totalSpecFolders,
       activeCount: success,
-      staleCount: pending + failed,
+      staleCount: pending + failed + retry,
     };
   } catch {
     return { totalMemories: 0, specFolderCount: 0, activeCount: 0, staleCount: 0 };
   }
 }
 
+// AI-WHY(CHK-076): Instructions are computed once at startup and NOT refreshed during the session.
+// This is by design — instruction updates require MCP protocol re-negotiation which most clients
+// don't support. If index changes significantly, restart the server to refresh instructions.
 async function buildServerInstructions(): Promise<string> {
   if (process.env.SPECKIT_DYNAMIC_INIT === 'false') {
     return '';

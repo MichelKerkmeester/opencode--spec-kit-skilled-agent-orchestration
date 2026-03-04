@@ -450,11 +450,6 @@
         "name": "simulation-factory",
         "path": "scripts/dist/lib/simulation-factory.js",
         "description": "Fallback data generation"
-      },
-      {
-        "name": "retry-manager",
-        "path": "scripts/dist/lib/retry-manager.js",
-        "description": "Embedding retry logic"
       }
     ]
   },
@@ -464,7 +459,7 @@
     "optionalScripts": 6,
     "totalRules": 14,
     "essentialRules": 3,
-    "totalLibraries": 13,
+    "totalLibraries": 12,
     "categories": {
       "memory": ["generate-context", "cleanup-orphaned-vectors", "test-embeddings-factory"],
       "validation": ["validate-spec", "check-completion", "check-prerequisites", "test-validation"],

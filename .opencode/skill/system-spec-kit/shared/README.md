@@ -106,6 +106,17 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 
 ---
 
+## Boundary & Import Policy
+
+`shared/` is the canonical source for modules consumed by **both** `scripts/` and `mcp_server/`.
+
+- **Import convention**: Consumers should import via `@spec-kit/shared/*` path alias
+- **Stability**: Shared modules must be stable — breaking changes require coordination with both consumers
+- **New modules**: Document purpose and consumer expectations before adding
+- **Ownership**: See [Architecture Boundaries](../ARCHITECTURE_BOUNDARIES.md) for the full dependency matrix
+
+---
+
 <!-- ANCHOR:quick-start -->
 ## 2. QUICK START
 
@@ -179,7 +190,10 @@ shared/
 │   ├── path-security.ts        # Path validation and containment checks
 │   ├── retry.ts                # Retry/backoff classification logic
 │   ├── jsonc-strip.ts          # JSONC comment stripping helper
+│   ├── token-estimate.ts       # Shared token count estimation
 │   └── README.md
+├── parsing/
+│   └── quality-extractors.ts   # Quality score/flags extraction
 ├── dist/                       # Compiled JS output
 └── README.md
 ```
@@ -192,6 +206,8 @@ shared/
 | `trigger-extractor.ts` | Trigger phrase extraction for memory indexing |
 | `normalization.ts` | Canonical DB row <-> app object conversion |
 | `scoring/folder-scoring.ts` | Composite folder scoring and ranking |
+| `utils/token-estimate.ts` | Shared token count estimation (chars/4 heuristic) |
+| `parsing/quality-extractors.ts` | Quality score and flags extraction from frontmatter |
 
 <!-- /ANCHOR:structure -->
 
@@ -222,6 +238,14 @@ shared/
 | `getEmbeddingDimension()`         | Current dimensions | number           |
 | `getProviderMetadata()`           | Provider info      | Object           |
 | `preWarmModel()`                  | Pre-load model     | Promise<boolean> |
+
+### Consumer Shims
+
+Two re-export shims exist for path convenience:
+- `scripts/lib/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
+- `mcp_server/lib/providers/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
+
+The canonical source is `shared/embeddings/`. These shims are thin re-exports with no implementation — no consolidation needed. Future consumers may import directly from `@spec-kit/shared/embeddings`.
 
 ---
 

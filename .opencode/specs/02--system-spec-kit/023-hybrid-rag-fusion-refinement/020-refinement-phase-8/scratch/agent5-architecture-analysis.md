@@ -61,6 +61,13 @@ Assessment: each side has its own registry/control-plane concept; no single cont
 
 Risk: different trigger phrase derivation logic depending on pathway (scripts workflow vs MCP parser/quality loop).
 
+> **CORRECTION (review pass):** These 3 implementations serve fundamentally different purposes and are NOT near-duplicates:
+> - `shared/trigger-extractor.ts` — NLP content-based generation (canonical, creates new triggers)
+> - `mcp_server/lib/parsing/memory-parser.ts` — YAML/markdown metadata parser (reads existing trigger phrases from frontmatter)
+> - `mcp_server/handlers/quality-loop.ts` — Heading-based heuristic for quality fallback (lightweight approximation)
+>
+> Consolidation tasks (if any) should respect these distinct purposes rather than treating them as duplicates.
+
 5. Token estimation helpers (chars/4) repeated in multiple places
 - Scripts tree-thinning: `scripts/core/tree-thinning.ts:70-75`.
 - Scripts chunker constant: `scripts/lib/structure-aware-chunker.ts:41-43`.
@@ -68,6 +75,16 @@ Risk: different trigger phrase derivation logic depending on pathway (scripts wo
 - MCP quality loop: `mcp_server/handlers/quality-loop.ts:38-41`.
 
 Risk: silent drift in token-budget behavior.
+
+> **CORRECTION (review pass):** Only 2 of these 4 are genuine standalone function duplicates suitable for consolidation:
+> - `scripts/core/tree-thinning.ts:70-75` — standalone estimator function (genuine duplicate)
+> - `mcp_server/formatters/token-metrics.ts:33-37` — standalone estimator function (genuine duplicate)
+>
+> The other 2 are context-specific constant declarations, not reusable estimator functions:
+> - `scripts/lib/structure-aware-chunker.ts:41-43` — local constant for chunk sizing
+> - `mcp_server/handlers/quality-loop.ts:38-41` — local constant for quality budget
+>
+> Tasks T007-T009 should scope consolidation to the 2 genuine function duplicates only.
 
 6. Logger utility families
 - Scripts structured JSON logger (stdout + stderr mix): `scripts/utils/logger.ts:25-44`.

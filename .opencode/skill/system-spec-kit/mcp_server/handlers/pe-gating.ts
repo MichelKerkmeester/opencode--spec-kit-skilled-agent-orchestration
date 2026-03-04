@@ -11,7 +11,7 @@ import * as incrementalIndex from '../lib/storage/incremental-index';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent';
 import { isEncodingIntentEnabled } from '../lib/search/search-flags';
 import { requireDb, toErrorMessage } from '../utils';
-import { detectSpecLevelFromParsed } from './causal-links-processor';
+import { detectSpecLevelFromParsed } from './handler-utils';
 
 interface ParsedMemory {
   specFolder: string;
@@ -115,14 +115,17 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
       includeConstitutional: false
     });
 
-    return results.map((r: Record<string, unknown>) => ({
-      id: r.id as number,
-      similarity: (r.similarity as number) / 100,
-      content: (r.content as string) || '',
-      stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-      difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-      file_path: r.file_path as string
-    }));
+    return results.map((r: Record<string, unknown>) => {
+      const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;
+      return {
+        id: r.id as number,
+        similarity: Number.isFinite(rawSim) ? Math.min(1, Math.max(0, rawSim)) : 0,
+        content: (r.content as string) || '',
+        stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+        difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+        file_path: r.file_path as string,
+      };
+    });
   } catch (err: unknown) {
     const message = toErrorMessage(err);
     console.warn('[PE-Gate] Vector search failed:', message);

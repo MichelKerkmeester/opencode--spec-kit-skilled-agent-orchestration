@@ -139,6 +139,9 @@ describe('Context Server', () => {
       'eval_reporting_dashboard',
       'memory_index_scan',
       'memory_get_learning_history',
+      'memory_ingest_start',
+      'memory_ingest_status',
+      'memory_ingest_cancel',
     ]
 
     // T11: TOOL_DEFINITIONS export exists
@@ -214,6 +217,7 @@ describe('Context Server', () => {
       'checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete',
       'memory_validate', 'memory_save', 'memory_index_scan', 'memory_health',
       'task_preflight', 'task_postflight', 'memory_get_learning_history',
+      'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel',
       'memory_drift_why', 'memory_causal_link', 'memory_causal_stats', 'memory_causal_unlink',
       'eval_run_ablation', 'eval_reporting_dashboard',
     ]
@@ -1197,9 +1201,10 @@ describe('Context Server', () => {
       expect(validationOrder.test(sourceCode)).toBe(true)
     })
 
-    it('T32a: validateToolInputSchema called before dispatchTool', () => {
-      const schemaValidationOrder = /validateToolInputSchema\(name,\s*args,\s*TOOL_DEFINITIONS\)[\s\S]*?dispatchTool\(name/
-      expect(schemaValidationOrder.test(sourceCode)).toBe(true)
+    it('T32a: Schema validation delegated to tool modules', () => {
+      // T303: context-server now validates input length only; per-tool schema validation
+      // is handled via validateToolArgs(...) inside dispatch modules.
+      expect(sourceCode).toMatch(/T304:\s*Zod validation is applied per-tool inside each dispatch module/)
     })
 
     // T33: validateInputLengths direct tests
@@ -1522,6 +1527,9 @@ describe('Context Server', () => {
       'eval_reporting_dashboard': '[L6:Analysis]',
       'memory_index_scan': '[L7:Maintenance]',
       'memory_get_learning_history': '[L7:Maintenance]',
+      'memory_ingest_start': '[L7:Maintenance]',
+      'memory_ingest_status': '[L7:Maintenance]',
+      'memory_ingest_cancel': '[L7:Maintenance]',
     }
 
     // T61: Tool descriptions include layer prefix

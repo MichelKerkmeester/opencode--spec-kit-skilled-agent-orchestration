@@ -96,18 +96,18 @@ Artifacts:
 - Risk: Low
 - DX Impact: High
 
-2. Enforce API-first imports for scripts
-- WHY: Internal `lib/*` imports from scripts create brittle coupling and refactor risk.
-- WHAT: Add scripts import-policy checker and allowlist (`scripts/evals/check-no-mcp-lib-imports.ts`, `scripts/evals/import-policy-allowlist.json`), wire into checks.
-- Effort: Medium
-- Risk: Medium
-- DX Impact: High
-
-3. Document public API consumer contract
+2. Document public API consumer contract
 - WHY: `mcp_server/api/*` is intended as boundary but insufficiently discoverable.
 - WHAT: Create `.opencode/skill/system-spec-kit/mcp_server/api/README.md` and `.opencode/skill/system-spec-kit/scripts/evals/README.md` policy section.
 - Effort: Low
 - Risk: Low
+- DX Impact: High
+
+3. Enforce API-first imports for scripts
+- WHY: Internal `lib/*` imports from scripts create brittle coupling and refactor risk.
+- WHAT: Add scripts import-policy checker and allowlist (`.opencode/skill/system-spec-kit/scripts/evals/check-no-mcp-lib-imports.ts`, `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json`), then wire it into `.opencode/skill/system-spec-kit/scripts/package.json` checks.
+- Effort: Medium
+- Risk: Medium
 - DX Impact: High
 
 4. Clarify compatibility-wrapper ownership
@@ -126,14 +126,14 @@ Artifacts:
 
 6. Consolidate duplicate helper logic
 - WHY: Duplicate token/quality helper logic increases behavior drift risk.
-- WHAT: Move shared helper concerns to shared modules and update scripts/runtime callsites.
+- WHAT: Create `.opencode/skill/system-spec-kit/shared/utils/token-estimate.ts` and `.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.ts`; update callsites in `.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts`, `.opencode/skill/system-spec-kit/mcp_server/formatters/token-metrics.ts`, `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts`, and `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts`.
 - Effort: Medium
 - Risk: Medium
 - DX Impact: High
 
 7. Break handler cycle
 - WHY: Cycle increases maintenance risk and hidden orchestration coupling.
-- WHAT: Extract orchestration common module and remove one dependency edge from cycle.
+- WHAT: Create `.opencode/skill/system-spec-kit/mcp_server/handlers/orchestration-common.ts` and refactor `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` / `.opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts` / `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` / `.opencode/skill/system-spec-kit/mcp_server/handlers/pe-gating.ts` so the documented cycle is broken.
 - Effort: Medium
 - Risk: High
 - DX Impact: High

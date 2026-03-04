@@ -21,7 +21,7 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 import { requireDb, toErrorMessage } from '../utils';
 import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating';
-import { detectSpecLevelFromParsed } from './causal-links-processor';
+import { detectSpecLevelFromParsed } from './handler-utils';
 
 interface ParsedMemory {
   specFolder: string;
@@ -81,17 +81,30 @@ interface ChunkingOptions {
   ) => void;
 }
 
+const ALLOWED_METADATA_COLUMNS = new Set([
+  'content_hash', 'context_type', 'importance_tier', 'memory_type',
+  'type_inference_source', 'stability', 'difficulty', 'review_count',
+  'file_mtime_ms', 'embedding_status', 'encoding_intent', 'document_type',
+  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
+  'chunk_index', 'chunk_label',
+]);
+
 function applyPostInsertMetadataFallback(
   db: BetterSqlite3.Database,
   memoryId: number,
   fields: PostInsertMetadataFields,
 ): void {
-  const entries = Object.entries(fields).filter(([, value]) => value !== undefined);
+  const entries = Object.entries(fields).filter(
+    ([col, value]) => ALLOWED_METADATA_COLUMNS.has(col) && value !== undefined
+  );
   if (entries.length === 0) {
     return;
   }
 
-  const setClause = entries.map(([column]) => `${column} = ?`).join(', ');
+  // Use COALESCE for encoding_intent to preserve existing value when new value is null
+  const setClause = entries.map(([column]) =>
+    column === 'encoding_intent' ? `${column} = COALESCE(?, ${column})` : `${column} = ?`
+  ).join(', ');
   const values = entries.map(([, value]) => value);
   db.prepare(`UPDATE memory_index SET ${setClause} WHERE id = ?`).run(...values, memoryId);
 }
@@ -116,6 +129,11 @@ async function indexChunkedMemoryFile(
   const chunkResult = chunkLargeFile(parsed.content);
   const thinningResult = thinChunks(chunkResult.chunks);
   const retainedChunks = thinningResult.retained;
+  if (retainedChunks.length === 0) {
+    console.warn(`[memory-save] No chunks retained after thinning for ${filePath}`);
+    return { status: 'warning', id: 0, specFolder: parsed.specFolder ?? '',
+             title: parsed.title ?? '', message: 'Zero chunks retained after thinning' };
+  }
   const droppedChunkCount = thinningResult.dropped.length;
   const parentEncodingIntent = isEncodingIntentEnabled()
     ? classifyEncodingIntent(parsed.content)

@@ -7,9 +7,16 @@ trigger_phrases:
   - "database maintenance"
 ---
 
-# Scripts
+# Compatibility Wrappers (mcp_server/scripts)
+
+This directory contains **only** compatibility wrappers that delegate to canonical implementations in `scripts/`. These are NOT canonical scripts.
 
 > Operational entry points for maintenance tasks that run outside the normal MCP request lifecycle, such as forced full-reindex of embeddings.
+
+## Canonical Locations
+
+- **Reindex operations:** [`scripts/memory/README.md`](../../scripts/memory/README.md)
+- **Other operational scripts:** [`scripts/README.md`](../../scripts/README.md)
 
 ---
 

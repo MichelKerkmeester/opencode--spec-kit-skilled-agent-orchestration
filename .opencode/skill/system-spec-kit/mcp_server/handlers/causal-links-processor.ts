@@ -2,14 +2,12 @@
 // MODULE: Causal Links Processor
 // ---------------------------------------------------------------
 
-import fs from 'fs';
-import path from 'path';
 import type BetterSqlite3 from 'better-sqlite3';
 
 import type { CausalLinks } from '../lib/parsing/memory-parser';
 import * as causalEdges from '../lib/storage/causal-edges';
 import { toErrorMessage } from '../utils';
-import { escapeLikePattern } from './memory-save';
+import { escapeLikePattern, detectSpecLevelFromParsed } from './handler-utils';
 
 interface CausalLinkMapping {
   relation: typeof causalEdges.RELATION_TYPES[keyof typeof causalEdges.RELATION_TYPES];
@@ -22,6 +20,10 @@ interface CausalLinksResult {
   resolved: number;
   unresolved: { type: string; reference: string }[];
   errors: { type: string; reference: string; error: string }[];
+}
+
+interface MemoryIdRow {
+  id: number;
 }
 
 const CAUSAL_LINK_MAPPINGS: Record<string, CausalLinkMapping> = {
@@ -56,34 +58,34 @@ function resolveMemoryReference(database: BetterSqlite3.Database, reference: str
 
   if (normalizedLower.includes('session') || normalizedReference.match(/^\d{4}-\d{2}-\d{2}/)) {
     const bySession = database.prepare(`
-      SELECT id FROM memory_index WHERE file_path LIKE ? ESCAPE '\\'
-    `).get(`%${escapeLikePattern(normalizedReference)}%`) as Record<string, unknown> | undefined;
+      SELECT id FROM memory_index WHERE file_path LIKE ? ESCAPE '\\' ORDER BY id DESC LIMIT 1
+    `).get(`%${escapeLikePattern(normalizedReference)}%`) as MemoryIdRow | undefined;
     if (bySession) {
-      return bySession.id as number;
+      return bySession.id;
     }
   }
 
   if (normalizedLower.includes('specs/') || normalizedLower.includes('memory/')) {
     const byPath = database.prepare(`
-      SELECT id FROM memory_index WHERE file_path LIKE ? ESCAPE '\\'
-    `).get(`%${escapeLikePattern(normalizedReference)}%`) as Record<string, unknown> | undefined;
+      SELECT id FROM memory_index WHERE file_path LIKE ? ESCAPE '\\' ORDER BY id DESC LIMIT 1
+    `).get(`%${escapeLikePattern(normalizedReference)}%`) as MemoryIdRow | undefined;
     if (byPath) {
-      return byPath.id as number;
+      return byPath.id;
     }
   }
 
   const byTitleExact = database.prepare(`
     SELECT id FROM memory_index WHERE title = ?
-  `).get(trimmed) as Record<string, unknown> | undefined;
+  `).get(trimmed) as MemoryIdRow | undefined;
   if (byTitleExact) {
-    return byTitleExact.id as number;
+    return byTitleExact.id;
   }
 
   const byTitlePartial = database.prepare(`
-    SELECT id FROM memory_index WHERE title LIKE ? ESCAPE '\\'
-  `).get(`%${escapeLikePattern(trimmed)}%`) as Record<string, unknown> | undefined;
+    SELECT id FROM memory_index WHERE title LIKE ? ESCAPE '\\' ORDER BY id DESC LIMIT 1
+  `).get(`%${escapeLikePattern(trimmed)}%`) as MemoryIdRow | undefined;
   if (byTitlePartial) {
-    return byTitlePartial.id as number;
+    return byTitlePartial.id;
   }
 
   return null;
@@ -122,7 +124,15 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
     for (const reference of references) {
       result.processed++;
 
-      const resolvedId = resolveMemoryReference(database, reference);
+      let resolvedId: number | null;
+      try {
+        resolvedId = resolveMemoryReference(database, reference);
+      } catch (err: unknown) {
+        const message = toErrorMessage(err);
+        result.errors.push({ type: link_type, reference, error: `Resolution failed: ${message}` });
+        console.warn(`[causal-links] Failed to resolve reference "${reference}": ${message}`);
+        continue;
+      }
 
       if (!resolvedId) {
         result.unresolved.push({ type: link_type, reference });
@@ -153,53 +163,14 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
   return result;
 }
 
-/**
- * Detect spec documentation level for a file by checking its parent spec.md.
- * Delegates to the spec.md file in the same directory (or returns null).
- */
-function detectSpecLevelFromParsed(filePath: string): number | null {
-  const dir = path.dirname(filePath);
-  const specMdPath = path.join(dir, 'spec.md');
-
-  try {
-    if (!fs.existsSync(specMdPath)) return null;
-
-    // Read first 2KB for SPECKIT_LEVEL marker
-    const fd = fs.openSync(specMdPath, 'r');
-    let bytesRead = 0;
-    const buffer = Buffer.alloc(2048);
-    try {
-      bytesRead = fs.readSync(fd, buffer, 0, 2048, 0);
-    } finally {
-      fs.closeSync(fd);
-    }
-
-    const header = buffer.toString('utf-8', 0, bytesRead);
-    const levelMatch = header.match(/<!--\s*SPECKIT_LEVEL:\s*(\d\+?)\s*-->/i);
-    if (levelMatch) {
-      const levelStr = levelMatch[1];
-      if (levelStr === '3+') return 4;
-      const level = parseInt(levelStr, 10);
-      if (level >= 1 && level <= 3) return level;
-    }
-
-    // Heuristic: check sibling files
-    const siblings = fs.readdirSync(dir).map(f => f.toLowerCase());
-    if (siblings.includes('decision-record.md')) return 3;
-    if (siblings.includes('checklist.md')) return 2;
-    return 1;
-  } catch (_err: unknown) {
-    // AI-GUARD: Spec level detection is best-effort; null signals unknown level to caller
-    return null;
-  }
-}
-
 export {
   processCausalLinks,
   resolveMemoryReference,
   CAUSAL_LINK_MAPPINGS,
-  detectSpecLevelFromParsed,
 };
+
+// Re-export from handler-utils for backward compatibility
+export { detectSpecLevelFromParsed } from './handler-utils';
 
 export type {
   CausalLinkMapping,

@@ -5,10 +5,15 @@
   "type": "commonjs",
   "main": "dist/memory/generate-context.js",
   "scripts": {
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "lint": "tsc --noEmit",
+    "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.6.2",
     "sqlite-vec": "^0.1.7-alpha.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
   }
 }

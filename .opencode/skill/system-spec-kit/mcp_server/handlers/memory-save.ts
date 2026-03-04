@@ -58,8 +58,8 @@ import {
   processCausalLinks,
   resolveMemoryReference,
   CAUSAL_LINK_MAPPINGS,
-  detectSpecLevelFromParsed,
 } from './causal-links-processor';
+import { detectSpecLevelFromParsed, escapeLikePattern } from './handler-utils';
 import { indexChunkedMemoryFile, needsChunking } from './chunking-orchestrator';
 import {
   computeMemoryQualityScore,
@@ -302,13 +302,7 @@ function applyPostInsertMetadata(
   `).run(...values);
 }
 
-/** Escape special SQL LIKE pattern characters (% and _) for safe queries */
-function escapeLikePattern(str: string): string {
-  if (typeof str !== 'string') {
-    throw new TypeError(`escapeLikePattern expects string, got ${typeof str}`);
-  }
-  return str.replace(/%/g, '\\%').replace(/_/g, '\\_');
-}
+// escapeLikePattern moved to handler-utils.ts
 
 /**
  * TM-06 safety gate: verify a pre-reconsolidation checkpoint exists.

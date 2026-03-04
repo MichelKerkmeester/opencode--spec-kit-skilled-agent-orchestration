@@ -9,7 +9,7 @@ export type { MCPResponse } from '@spec-kit/shared/types';
 
 // Import for extension
 import type { MCPResponse } from '@spec-kit/shared/types';
-import { validateToolArgs } from '../tool-schemas';
+import { validateToolArgs } from '../schemas/tool-input-schemas';
 
 /** Extended MCP response with auto-surfaced context (SK-004) */
 export interface MCPResponseWithContext extends MCPResponse {

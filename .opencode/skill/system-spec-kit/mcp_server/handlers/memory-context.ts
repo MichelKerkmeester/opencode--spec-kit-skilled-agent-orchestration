@@ -60,6 +60,7 @@ interface ContextOptions {
   sessionId?: string;
   enableDedup?: boolean;
   includeContent?: boolean;
+  includeTrace?: boolean; // CHK-040: Forward to internal memory_search calls
   anchors?: string[];
 }
 
@@ -90,6 +91,7 @@ interface ContextArgs {
   sessionId?: string;
   enableDedup?: boolean;
   includeContent?: boolean;
+  includeTrace?: boolean; // CHK-040: Forward to internal memory_search calls
   tokenUsage?: number;
   anchors?: string[];
 }
@@ -320,6 +322,7 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
     limit: options.limit || 10,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
+    includeTrace: options.includeTrace || false, // CHK-040
     anchors: options.anchors,
     sessionId: options.sessionId,
     enableDedup: options.enableDedup !== false,
@@ -341,6 +344,7 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
     limit: options.limit || 8,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
+    includeTrace: options.includeTrace || false, // CHK-040
     anchors: options.anchors,
     sessionId: options.sessionId,
     enableDedup: options.enableDedup !== false,
@@ -367,6 +371,7 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
     limit: options.limit || 5,
     includeConstitutional: false,
     includeContent: true,
+    includeTrace: options.includeTrace || false, // CHK-040
     anchors: resumeAnchors,
     sessionId: options.sessionId,
     enableDedup: false,
@@ -490,6 +495,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     sessionId: effectiveSessionId,
     enableDedup: enableDedup,
     includeContent: include_content,
+    includeTrace: (args as Record<string, unknown>).includeTrace === true, // CHK-040
     anchors
   };
 

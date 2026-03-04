@@ -62,17 +62,9 @@ export interface ThinningResult {
    2. HELPERS
 ------------------------------------------------------------------*/
 
-/**
- * Rough token estimation: chars / 4 (standard approximation).
- * Does not call an LLM — this is intentionally a fast, cheap estimate
- * for pre-pipeline thinning decisions.
- */
-export function estimateTokenCount(text: string): number {
-  if (!text || text.length === 0) {
-    return 0;
-  }
-  return Math.ceil(text.length / 4);
-}
+// Canonical shared implementation — imported and re-exported for backward compatibility
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+export { estimateTokenCount };
 
 /**
  * Determine whether a file path is a memory file.

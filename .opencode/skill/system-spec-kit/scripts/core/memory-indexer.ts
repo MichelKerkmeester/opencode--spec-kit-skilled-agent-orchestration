@@ -14,42 +14,7 @@ import * as vectorIndex from '@spec-kit/mcp-server/lib/search/vector-index';
 import { DB_UPDATED_FILE } from '@spec-kit/mcp-server/core/config';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
-
-/* -----------------------------------------------------------------
-   UTILITY FUNCTIONS
-------------------------------------------------------------------*/
-
-function extractQualityScore(content: string): number {
-  const match = content.match(/quality_score:\s*([0-9.]+)/i);
-  if (!match) {
-    return 0;
-  }
-
-  const parsed = Number.parseFloat(match[1]);
-  if (!Number.isFinite(parsed)) {
-    return 0;
-  }
-
-  return Math.max(0, Math.min(1, parsed));
-}
-
-function extractQualityFlags(content: string): string[] {
-  const blockMatch = content.match(/quality_flags:\s*\n([\s\S]*?)(?:\n\S|$)/i);
-  if (!blockMatch) {
-    return [];
-  }
-
-  const lines = blockMatch[1].split('\n');
-  const flags: string[] = [];
-  for (const line of lines) {
-    const flagMatch = line.match(/^\s*-\s*['"]?([^'"]+)['"]?\s*$/);
-    if (flagMatch) {
-      flags.push(flagMatch[1].trim());
-    }
-  }
-
-  return flags;
-}
+import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsing/quality-extractors';
 
 function notifyDatabaseUpdated(): void {
   try {

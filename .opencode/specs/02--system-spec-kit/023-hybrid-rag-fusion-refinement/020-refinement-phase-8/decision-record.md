@@ -59,6 +59,14 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 **What it costs**:
 - Migration and enforcement effort. Mitigation: allowlist with expiry criteria.
 
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — scripts already import `lib/*` internals in 4+ files, creating active coupling risk.
+2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — policy + allowlist is lighter than rewriting all imports immediately.
+4. **On critical path?** Yes — boundary clarity is prerequisite for Phase 2 structural cleanup and Phase 3 enforcement.
+5. **No tech debt?** Controlled — allowlist creates temporary tech debt with explicit owner and expiry criteria.
+
 ### Implementation
 
 - Publish boundary contract and API README.
@@ -110,6 +118,14 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 **What it costs**:
 - Short-term documentation maintenance. Mitigation: explicit deprecation and removal criteria.
 
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — reindex runbook is split across 3 locations, causing active documentation drift.
+2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — pointer docs + canonical location is minimal change with maximum clarity.
+4. **On critical path?** Partially — not blocking code changes, but blocking accurate contributor onboarding.
+5. **No tech debt?** Yes — transitional wrappers have explicit deprecation criteria; no hidden cost.
+
 ### Implementation
 
 - Reframe wrapper README scope to compatibility-only.
@@ -129,7 +145,7 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 
 ### Context
 
-Audit found duplicated concerns in token estimation and quality extraction logic across scripts and runtime modules. Duplicate implementations increase drift and inconsistent behavior risk.
+Audit found duplicated concerns in **token estimation** (`estimateTokenCount` / `estimateTokens` — `Math.ceil(text.length/4)` heuristic in tree-thinning.ts and token-metrics.ts) and **quality extraction** (`extractQualityScore` / `extractQualityFlags` in memory-indexer.ts and memory-parser.ts) logic across scripts and runtime modules. Duplicate implementations increase drift and inconsistent behavior risk.
 
 ### Constraints
 
@@ -161,8 +177,91 @@ Audit found duplicated concerns in token estimation and quality extraction logic
 **What it costs**:
 - Refactor effort and test updates. Mitigation: parity tests and staged rollout.
 
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — both token estimation (`estimateTokenCount`/`estimateTokens`, now consolidated in `shared/utils/token-estimate.ts`) and quality extraction (`extractQualityScore`/`extractQualityFlags`) had duplicate implementations, creating active drift risk.
+2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — shared module with stable exports; existing call sites change only import paths.
+4. **On critical path?** Yes — prerequisite for consistent behavior across scripts and runtime parser paths.
+5. **No tech debt?** Controlled — parity tests required to prevent regression during migration.
+
 ### Implementation
 
 - Create shared helper modules with stable exports.
 - Migrate scripts and runtime call sites in small validated increments.
+
+### Review Addendum (2026-03-04)
+
+Triple ultra-think review (Claude Opus) noted that ADR-003 Five Checks item 1 only names `extractQualityScore`/`extractQualityFlags` but omits `estimateTokenCount` which was also consolidated into `shared/utils/token-estimate.ts`. The context section above has been updated to reflect both concerns. See T036 for Five Checks update.
 <!-- /ANCHOR:adr-003 -->
+
+<!-- ANCHOR:adr-004 -->
+## ADR-004: Enforcement Script Hardening Based on Cross-AI Review
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Proposed |
+| **Date** | 2026-03-04 |
+| **Deciders** | System-spec-kit maintainers |
+| **Source** | Triple ultra-think review (Codex 5.3 adversarial analysis, confidence 93/100) |
+
+### Context
+
+The triple ultra-think cross-AI review identified 4 CRITICAL evasion vectors in the import-policy enforcement script (`check-no-mcp-lib-imports.ts`):
+1. Dynamic `import()` expressions completely undetected
+2. Relative path variants: only `../../mcp_server/lib/` matched; other depths bypass
+3. Multi-line imports/requires bypass line-by-line scanning
+4. Boundary narrower than architecture intent: only `lib/*` blocked, `core/*` paths pass through
+
+Additionally, allowlist governance gaps were identified: no TTL/expiry enforcement, broad wildcard exceptions, and missing approval metadata.
+
+### Constraints
+
+- Enforcement script must remain fast (<2s for full scan) per NFR-P01.
+- Changes must not break existing CI pipeline integration.
+- Must handle allowlist backward compatibility (existing entries without new governance fields).
+
+### Decision
+
+**We propose**: Incremental hardening in 3 tiers:
+
+1. **Immediate (P0)**: Expand `PROHIBITED_PATTERNS` to cover `core/*`, integrate `check-api-boundary.sh` into pipeline, fix documentation drift.
+2. **Short-term (P1)**: Add dynamic import detection, path variant coverage, and allowlist governance schema.
+3. **Long-term (P2)**: Evaluate AST-based parsing upgrade for comprehensive detection including multi-line, re-exports, and computed paths.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Incremental hardening (Proposed)** | Low risk per increment, immediate P0 wins | Full coverage delayed | 8/10 |
+| Immediate AST rewrite | Complete coverage now | High effort, risk of breaking pipeline, blocks P0 fixes | 5/10 |
+| Accept current limitations | Zero effort | Known evasion vectors persist | 2/10 |
+
+**Why this one**: Delivers immediate P0 safety while building toward comprehensive coverage.
+
+### Consequences
+
+**What improves**:
+- Enforcement coverage expands from ~60% to ~85% of import evasion vectors (P0+P1).
+- Allowlist governance prevents unbounded exception growth.
+- Documentation drift eliminated.
+
+**What it costs**:
+- ~4-6h additional implementation effort across P0/P1/P2.
+- P2 AST upgrade requires dependency evaluation.
+
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — 4 CRITICAL evasion vectors confirmed by adversarial analysis.
+2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated above.
+3. **Simplest sufficient?** Yes — incremental approach delivers safety without over-engineering.
+4. **On critical path?** P0 items are critical; P1/P2 are important but not blocking.
+5. **No tech debt?** Controlled — P2 AST upgrade is planned, not deferred indefinitely.
+
+### Implementation
+
+- Phase 4 tasks T021-T038 in `tasks.md`.
+- Verification via checklist items CHK-200 through CHK-225 in `checklist.md`.
+<!-- /ANCHOR:adr-004 -->

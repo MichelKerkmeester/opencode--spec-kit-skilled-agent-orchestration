@@ -239,6 +239,14 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     fallbackTier = fallbackTier ?? 2;
   }
 
+  // CHK-038: Fallback — read queryComplexity from traceMetadata if not found in stages
+  if (!queryComplexity) {
+    const tm = rawResult.traceMetadata as Record<string, unknown> | undefined;
+    if (typeof tm?.queryComplexity === 'string' && (tm.queryComplexity as string).length > 0) {
+      queryComplexity = tm.queryComplexity as string;
+    }
+  }
+
   return {
     channelsUsed: Array.from(channelsUsed),
     pipelineStages,

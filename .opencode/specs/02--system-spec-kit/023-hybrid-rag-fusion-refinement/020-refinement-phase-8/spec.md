@@ -31,7 +31,7 @@ This phase performs a full architecture audit of `.opencode/skill/system-spec-ki
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | In Review |
 | **Created** | 2026-03-04 |
 | **Branch** | `023-hybrid-rag-fusion-refinement/020-refinement-phase-8` |
 <!-- /ANCHOR:metadata -->
@@ -45,7 +45,7 @@ The current code organization mixes concerns across two major areas:
 - Runtime MCP server (`mcp_server/`) that serves tool requests at runtime.
 
 The audit baseline found:
-- `scripts/` + root-level sources: **152** source files.
+- `scripts/` + `shared/` + root-level sources: **175** source files (152 in scripts/root + 23 in shared/).
 - `mcp_server/` sources: **431** source files.
 - Known overlap and coupling in memory/index/eval logic, including direct `scripts` imports from `@spec-kit/mcp-server/lib/*` and a compatibility wrapper back-edge via `mcp_server/scripts/reindex-embeddings.ts`.
 
@@ -93,7 +93,7 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Complete source-file accounting across both scopes | Counts match filesystem scan: 152 root-scripts scope, 431 mcp scope |
+| REQ-001 | Complete source-file accounting across both scopes | Counts match filesystem scan: 175 root-scripts scope (including shared/), 431 mcp scope |
 | REQ-002 | Boundary classification runtime vs build/CLI is explicit | Documentation contains explicit belongs-here / does-not-belong-here matrix |
 | REQ-003 | Six evaluation criteria scored with evidence | Ratings table includes files/directories per criterion |
 | REQ-004 | Recommendations include WHY before WHAT with concrete paths | Each recommendation includes source/destination or target path and rationale |
@@ -128,6 +128,7 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | Dependency | Team alignment on API-first policy | Drift in future imports | Add automated guardrail in CI/lint pipeline |
 <!-- /ANCHOR:risks -->
 
+<!-- ANCHOR:questions -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -180,6 +181,63 @@ As a tooling owner, I need enforceable import policies so boundary violations ar
 - Should compatibility wrappers in `mcp_server/scripts/` be renamed now or only retitled during transition?
 - Should API-first migration be strict immediately, or staged with an allowlist expiry window?
 
+<!-- /ANCHOR:questions -->
+
+## 13. TRIPLE ULTRA-THINK REVIEW FINDINGS
+<!-- ANCHOR:review-findings -->
+
+On 2026-03-04, a **triple ultra-think cross-AI review** was performed by three independent agents analyzing Phase 8 from complementary perspectives:
+
+| Agent | Model | Lens | Verdict | Confidence |
+|-------|-------|------|---------|------------|
+| Agent 1 | Claude Opus 4.6 | Architectural Coherence | PASS WITH CONCERNS | 88/100 |
+| Agent 2 | Gemini 3.1 Pro Preview | Code Quality & Completeness | PASS | 98/100 |
+| Agent 3 | Codex 5.3 | Enforcement & Evasion | NEEDS REVISION | 93/100 |
+| Agent 4 | Codex 5.3 (ultra-think) | Code Quality & Completeness | PASS WITH CONCERNS | 84/100 |
+
+### Unified Verdict: PASS WITH CONCERNS — Enforcement Layer NEEDS REVISION
+
+**Code quality** is excellent — behavior parity confirmed at 98% confidence across all 12 migrated files, re-exports preserve backward compatibility perfectly, and the extraction is clean.
+
+**Architecture design** is sound — API-first boundary, shared module layer, and handler cycle break are correctly implemented.
+
+**Documentation** has 4 MAJOR drift issues — boundary contract exception table incomplete, shared/README.md missing new modules, checklist summary stale, cross-links partially unidirectional.
+
+**Enforcement** has 4 CRITICAL evasion vectors — dynamic imports undetected, relative path variants partially covered, multi-line imports bypass line-by-line scanning, boundary narrower than architecture intent (only `lib/*` blocked, not `core/*`).
+
+### Agent 4 Additional Findings (Codex Code Quality)
+
+Agent 4 was dispatched after Agents 1-3 to provide a second code-quality perspective (complementing Gemini). It found additional MAJOR issues not caught by the original 3 agents:
+
+| Severity | Finding | File:Line |
+|----------|---------|-----------|
+| **MAJOR** | `escapeLikePattern` doesn't escape backslash — with `ESCAPE '\'`, unescaped `\` can alter LIKE semantics | `handler-utils.ts:14` |
+| **MAJOR** | `extractQualityScore` is not frontmatter-scoped — `quality_score:` in body text/code blocks can be parsed as metadata | `quality-extractors.ts:6` |
+| **MAJOR** | `extractQualityFlags` block capture can overrun into unintended content when subsequent keys are indented | `quality-extractors.ts:17` |
+| **MAJOR** | Causal reference resolution uses ambiguous `LIKE` without deterministic ordering — wrong memory can be linked | `causal-links-processor.ts:46-56` |
+| **MAJOR** | Chunking fallback metadata updater builds SQL column list from object keys without allowlist guard | `chunking-orchestrator.ts:94-96` |
+| **MAJOR** | No guard for `retainedChunks.length === 0` — can produce parent-only partial records | `chunking-orchestrator.ts:118,257` |
+| **MAJOR** | `similarity / 100` has no finite guard — invalid provider output can propagate NaN | `pe-gating.ts:124` |
+
+### Cross-Validated Findings (2+ agents agree)
+
+| ID | Severity | Finding | Sources |
+|----|----------|---------|---------|
+| CV-1 | MINOR | Block comment handling gap — only `//` skipped, `/* */` can trigger false positives | Gemini + Codex (x2) |
+| CV-2 | CRITICAL | Enforcement boundary narrower than architecture intent — `core/*` not blocked, `check-api-boundary.sh` not in pipeline | Codex (Agents 3+4) + Claude |
+| CV-3 | MAJOR | Exception table documentation drift — ARCHITECTURE_BOUNDARIES.md missing `reindex-embeddings.ts` entry | Claude + Codex |
+| CV-4 | MAJOR | Quality extraction not frontmatter-bounded — body text can influence metadata | Codex (Agent 4) + Gemini (flagged regex rigidity) |
+| CV-5 | MAJOR | Relative `require` paths for `mcp_server/lib/` not detected by enforcement | Codex (Agents 3+4) |
+
+### Action Items Summary
+
+- **P0 Blockers (4)**: Integrate `check-api-boundary.sh` into pipeline, add missing exception to boundary doc, expand prohibited patterns to cover `core/*`, fix `escapeLikePattern` backslash escaping
+- **P1 Should-Fix (11)**: Dynamic import detection, path variant coverage, shared/README.md update, allowlist governance fields, wildcard sunset, evals/README.md update, frontmatter-scope quality extraction, causal reference ordering, chunking empty-set guard, pe-gating NaN guard
+- **P2 Nice-to-Have (8)**: Block comment tracking, behavioral tests, bidirectional cross-links, handler-utils growth policy, AST-based parsing upgrade, transitive dependency checks
+
+All remediation items are tracked as Phase 4 tasks (T021-T045) in `tasks.md`.
+<!-- /ANCHOR:review-findings -->
+
 ## RELATED DOCUMENTS
 
 - **Implementation Plan**: `plan.md`
@@ -195,9 +253,9 @@ As a tooling owner, I need enforceable import policies so boundary violations ar
 - Predecessor: `019-sprint-9-extra-features`
 
 ## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+1. **Given** a filesystem scan of root scripts scope, **When** the source file inventory is compared, **Then** the count matches the actual file total (REQ-001) and every file appears in the inventory artifact.
+2. **Given** the boundary contract document exists, **When** a new contributor reads it, **Then** they can determine runtime-vs-CLI ownership and allowed dependency directions without reading source code (REQ-002).
+3. **Given** the six evaluation criteria table is populated, **When** each rating is reviewed, **Then** every score has at least one concrete file or directory path as evidence (REQ-003).
+4. **Given** the recommendations list, **When** each recommendation is checked, **Then** it includes a source/destination path and a rationale statement (REQ-004).
+5. **Given** the import-policy enforcement script, **When** it scans scripts for `@spec-kit/mcp-server/lib/*` imports, **Then** it reports violations not in the allowlist and exits non-zero (REQ-008).
+6. **Given** the handler cycle documented in the audit, **When** static import analysis is run after Phase 2 refactors, **Then** no circular dependency path exists through the handler modules (plan Phase 2).

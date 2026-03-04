@@ -60,6 +60,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   let dates: Record<string, unknown> = { oldest: null, newest: null };
   let triggerCount = 0;
   let topFolders: Record<string, unknown>[];
+  let totalSpecFolders = 0;
   const tierBreakdown: Record<string, number> = {};
   let lastIndexedAt: string | null = null;
 
@@ -131,6 +132,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
         }
       }
 
+      totalSpecFolders = filteredFolders.length;
       topFolders = filteredFolders.slice(0, safeLimit).map((folder) => ({
         folder: folder.spec_folder,
         count: folder.count,
@@ -208,6 +210,8 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
           isArchived: folder.isArchived,
         }));
       }
+
+      totalSpecFolders = scoredFolders.length;
     }
   } catch (dbErr: unknown) {
     const message = toErrorMessage(dbErr);
@@ -239,6 +243,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       oldestMemory: dates.oldest || null,
       newestMemory: dates.newest || null,
       topFolders,
+      totalSpecFolders,
       totalTriggerPhrases: triggerCount,
       vectorSearchEnabled: vectorIndex.isVectorSearchAvailable(),
       graphChannelMetrics: getGraphMetrics(),

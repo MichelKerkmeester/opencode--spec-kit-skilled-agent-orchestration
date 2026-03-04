@@ -36,7 +36,7 @@ TypeScript modules:
 - `decision-tree-generator.ts`
 - `embeddings.ts`
 - `flowchart-generator.ts`
-- `retry-manager.ts`
+- ~~`retry-manager.ts`~~ — moved to `mcp_server/lib/providers/retry-manager.ts`
 - `semantic-summarizer.ts`
 - `simulation-factory.ts`
 - `structure-aware-chunker.ts`

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Sprint 9 - Extra Features"
-description: "Current implementation status snapshot for Sprint 9 extra feature workstream."
+description: "Implementation summary for 7 Sprint 019 features: Zod schema validation, response envelopes, async ingestion, contextual trees, GGUF reranker, dynamic init, filesystem watching."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "sprint 9 implementation summary"
@@ -21,9 +21,9 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | `023-hybrid-rag-fusion-refinement/019-sprint-9-extra-features` |
-| **Completed** | 2026-03-04 |
+| **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
-| **Status** | In Progress |
+| **Status** | Implementation Complete (runtime tests pending) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,8 +31,110 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Sprint 9 planning artifacts are established for schema hardening, response provenance envelopes, async ingestion lifecycle, dynamic instructions, local reranker support, and filesystem watch automation. This summary exists to satisfy required post-implementation artifact presence while the implementation tasks are still open.
+Seven features spanning schema hardening, retrieval observability, operational reliability, and retrieval quality. All implementation tasks (T001-T092) are complete. Test tasks (T012-T098 testing subset) and eval/doc tasks remain open.
+
+### P0-1: Strict Zod Schema Validation
+
+27+ Zod schemas in `mcp_server/schemas/tool-input-schemas.ts` covering all MCP tool inputs (L1-L7). `getSchema()` helper gates `.strict()` vs `.passthrough()` via `SPECKIT_STRICT_SCHEMAS` env var. `validateToolArgs()` wraps all 29 handler entry points across 5 tool dispatch files. `formatZodError()` produces LLM-actionable error messages with ALLOWED_PARAMETERS lookup. Complex schemas use `superRefine` for discriminated unions (e.g., `memory_delete`).
+
+**Key files:** `schemas/tool-input-schemas.ts`, `tools/memory-tools.ts`, `tools/context-tools.ts`, `tools/causal-tools.ts`, `tools/checkpoint-tools.ts`, `tools/lifecycle-tools.ts`
+
+### P0-2: Provenance-Rich Response Envelopes
+
+Optional `includeTrace: true` parameter on `memory_search` exposes pipeline internals via three objects: `scores` (7 fields), `source` (5 fields), `trace` (7 fields via `extractTrace()`). Default `false` preserves byte-identical backward compatibility. Threaded from handler through `formatSearchResults()`.
+
+**Key files:** `formatters/search-results.ts`, `handlers/memory-search.ts`, `lib/search/hybrid-search.ts`
+
+### P0-3: Async Ingestion Job Lifecycle
+
+SQLite-persisted job queue in `lib/ops/job-queue.ts` (497 lines). State machine with 7 states and validated transitions (`ALLOWED_TRANSITIONS` map). Three new MCP tools: `memory_ingest_start` (returns jobId <100ms), `memory_ingest_status` (progress percentage), `memory_ingest_cancel`. Sequential file processing with crash recovery on restart.
+
+**Key files:** `lib/ops/job-queue.ts`, `handlers/memory-ingest.ts`, `schemas/tool-input-schemas.ts`
+
+### P1-4: Contextual Tree Injection
+
+`injectContextualTree()` in `hybrid-search.ts` prepends hierarchical context headers `[parent > child — description]` (max 100 chars) to returned chunks. Uses `extractSpecSegments()` for memory-aware path splitting. Gated by `SPECKIT_CONTEXT_HEADERS` (default `true`). Injected in Stage 4 after token-budget truncation.
+
+**Key files:** `lib/search/hybrid-search.ts`, `lib/search/search-flags.ts`
+
+### P1-5: Local GGUF Reranker
+
+`lib/search/local-reranker.ts` implements `RERANKER_LOCAL` flag with `node-llama-cpp`. `canUseLocalReranker()` checks flag, model existence, and 4GB free memory. `rerankLocal()` scores candidates sequentially (avoids VRAM OOM). Model lazy-loaded, cached at module level, disposed on shutdown. Falls back to RRF on any failure.
+
+**Key files:** `lib/search/local-reranker.ts`, `models/` (model storage directory)
+
+### P1-6: Dynamic Server Instructions
+
+`buildServerInstructions()` in `context-server.ts` generates memory-system overview (total memories, spec folders, channels, stale count) using existing `getMemoryStats()` handler. Injected via `server.setInstructions()` after DB initialization. Gated by `SPECKIT_DYNAMIC_INIT` (default `true`).
+
+**Key files:** `context-server.ts`
+
+### P1-7: Real-Time Filesystem Watching
+
+`lib/ops/file-watcher.ts` (165 lines) implements chokidar-based push indexing. Features: 2s debounce per file, SHA-256 content-hash dedup, `.md`-only filter, dotfile exclusion, ENOENT grace handling. Exponential backoff retry for SQLITE_BUSY (1s→2s→4s, 3 attempts). Gated by `SPECKIT_FILE_WATCHER` (default `false`). Cleanup on server shutdown.
+
+**Key files:** `lib/ops/file-watcher.ts`, `context-server.ts`
 <!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:feature-flags -->
+## Feature Flags and Rollback
+
+All 7 features are independently controllable via environment variables. To rollback any feature, set its flag to the disabled value and restart the MCP server.
+
+| Flag | Default | Rollback Value | Effect of Rollback |
+|------|---------|----------------|-------------------|
+| `SPECKIT_STRICT_SCHEMAS` | `true` | `false` | Unknown params accepted via `.passthrough()` instead of rejected |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | `false` | No hierarchical context headers prepended to search results |
+| `SPECKIT_DYNAMIC_INIT` | `true` | `false` | No dynamic memory-system instructions at MCP startup |
+| `SPECKIT_FILE_WATCHER` | `false` | `false` (default) | No filesystem watching; rely on manual `memory_index_scan` |
+| `RERANKER_LOCAL` | `false` | `false` (default) | No local GGUF reranking; use existing RRF/remote reranking |
+| `SPECKIT_RERANKER_MODEL` | (built-in path) | (unset) | Uses default model path |
+
+**Rollback notes:**
+- P0-2 (Response envelopes): No flag needed — `includeTrace` defaults to `false`; existing callers are unaffected
+- P0-3 (Async ingestion): No flag needed — tools are additive; existing `memory_save` path unchanged
+- All flags are independent — disabling one does not affect others
+- No database migrations to reverse — all schema changes are additive (new tables, not modified tables)
+<!-- /ANCHOR:feature-flags -->
+
+---
+
+<!-- ANCHOR:files-changed -->
+## Files Changed
+
+| File | Action | Feature |
+|------|--------|---------|
+| `mcp_server/schemas/tool-input-schemas.ts` | CREATED | P0-1 Zod schemas |
+| `mcp_server/handlers/memory-ingest.ts` | CREATED | P0-3 Async ingestion |
+| `mcp_server/lib/ops/job-queue.ts` | CREATED | P0-3 Job queue |
+| `mcp_server/lib/search/local-reranker.ts` | CREATED | P1-5 GGUF reranker |
+| `mcp_server/lib/ops/file-watcher.ts` | CREATED | P1-7 File watcher |
+| `mcp_server/lib/search/search-flags.ts` | MODIFIED | P1-4 Context headers flag |
+| `mcp_server/lib/search/hybrid-search.ts` | MODIFIED | P0-2 Envelopes, P1-4 Context trees |
+| `mcp_server/formatters/search-results.ts` | MODIFIED | P0-2 Response envelopes |
+| `mcp_server/context-server.ts` | MODIFIED | P1-6 Dynamic init, P1-7 Watcher init |
+| `mcp_server/tool-schemas.ts` | MODIFIED | P0-1 Schema registration |
+| `mcp_server/tools/*.ts` | MODIFIED | P0-1 validateToolArgs integration |
+| `references/config/environment_variables.md` | MODIFIED | Flag documentation |
+<!-- /ANCHOR:files-changed -->
+
+---
+
+<!-- ANCHOR:deferred -->
+## Deferred (Phase 4)
+
+Five features explicitly deferred with documented blocking conditions:
+
+| Feature | Blocker | Effort |
+|---------|---------|--------|
+| Warm server / daemon mode | MCP SDK HTTP transport standardization | L (2-3 weeks) |
+| Backend storage adapters | Corpus >100K or multi-node demand | M-L (1-2 weeks) |
+| Namespace management | Multi-tenant demand | S-M (3-5 days) |
+| ANCHOR tags as graph nodes | 2-day feasibility spike | S-M (3-5 days) |
+| AST-level section retrieval | Spec docs >1000 lines | M (5-7 days) |
+<!-- /ANCHOR:deferred -->
 
 ---
 
@@ -42,5 +144,13 @@ Sprint 9 planning artifacts are established for schema hardening, response prove
 | Check | Result |
 |-------|--------|
 | Spec artifacts exist | PASS |
-| Recursive validator error gate | Pending final validation run |
+| `tsc --noEmit` (mcp_server/) | PASS |
+| `tsc --noEmit` (scripts/) | PASS |
+| `npm run check` (4-stage pipeline) | PASS |
+| Zod schema tests (15 tests) | PASS |
+| Envelope tests (37 tests) | PASS |
+| Context header tests (2 tests) | PASS |
+| Search flags tests (5 tests) | PASS |
+| MCP input validation tests (32 tests) | PASS |
+| Checklist verification | 26/88 (implementation items verified; runtime tests pending) |
 <!-- /ANCHOR:verification -->

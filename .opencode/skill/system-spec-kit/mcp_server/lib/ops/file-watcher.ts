@@ -19,6 +19,19 @@ export interface FSWatcher {
 
 const DEFAULT_DEBOUNCE_MS = 2000;
 const RETRY_DELAYS_MS = [1000, 2000, 4000];
+const MAX_BUSY_RETRIES = RETRY_DELAYS_MS.length;
+
+// CHK-087: Watcher metrics counters
+let filesReindexed = 0;
+let totalReindexTimeMs = 0;
+
+/** Return accumulated watcher metrics for diagnostics. */
+export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs: number } {
+  return {
+    filesReindexed,
+    avgReindexTimeMs: filesReindexed > 0 ? Math.round(totalReindexTimeMs / filesReindexed) : 0,
+  };
+}
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -40,16 +53,18 @@ async function hashFileContent(filePath: string): Promise<string> {
 }
 
 async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
-  for (let attempt = 0; attempt < RETRY_DELAYS_MS.length; attempt += 1) {
+  let retryCount = 0;
+  while (true) {
     try {
       await operation();
       return;
     } catch (error: unknown) {
-      const shouldRetry = isSqliteBusyError(error) && attempt < RETRY_DELAYS_MS.length - 1;
+      const shouldRetry = isSqliteBusyError(error) && retryCount < MAX_BUSY_RETRIES;
       if (!shouldRetry) {
         throw error;
       }
-      await sleep(RETRY_DELAYS_MS[attempt]);
+      await sleep(RETRY_DELAYS_MS[retryCount]);
+      retryCount += 1;
     }
   }
 }
@@ -110,9 +125,14 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
             return;
           }
 
+          const reindexStart = Date.now();
           await withBusyRetry(async () => {
             await config.reindexFn(filePath);
           });
+          const reindexElapsed = Date.now() - reindexStart;
+          filesReindexed++;
+          totalReindexTimeMs += reindexElapsed;
+          console.error(`[file-watcher] Reindexed ${filePath} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
 
           contentHashes.set(filePath, nextHash);
         } catch (error: unknown) {

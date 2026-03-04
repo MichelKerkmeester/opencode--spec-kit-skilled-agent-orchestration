@@ -27,6 +27,9 @@ These variables control memory system behavior, token budgets, script execution,
 | `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` | Additional allowed paths (colon-separated) |
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
 | `ENABLE_RERANKER` | `false` | Enable experimental ML reranking (requires Python) |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation (`false` allows unknown passthrough keys) |
+| `RERANKER_LOCAL` | `false` | Enable local GGUF reranker path in Stage 3 (`node-llama-cpp`) |
+| `SPECKIT_RERANKER_MODEL` | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional model path override for local reranker |
 
 ---
 
@@ -181,6 +184,8 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_SCORE_NORMALIZATION` | ON | S1 | Min-max normalization of scores to [0,1] range (both RRF and composite) |
 | `SPECKIT_MMR` | ON | S1 | Graph-guided MMR diversity reranking |
 | `SPECKIT_CROSS_ENCODER` | ON | S1 | Cross-encoder reranking gate |
+| `RERANKER_LOCAL` | OFF | S9 | Route Stage 3 reranking to local GGUF model instead of remote provider |
+| `SPECKIT_RERANKER_MODEL` | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | S9 | Relative or absolute model path for local reranker |
 | `SPECKIT_MULTI_QUERY` | ON | S1 | Multi-query expansion for deep-mode retrieval |
 | `SPECKIT_SEARCH_FALLBACK` | ON | S2 | Quality-aware 3-tier search fallback chain (PI-A2) |
 | `SPECKIT_EMBEDDING_EXPANSION` | ON | S3 | Query expansion for embedding retrieval. Suppressed when classification = "simple" |

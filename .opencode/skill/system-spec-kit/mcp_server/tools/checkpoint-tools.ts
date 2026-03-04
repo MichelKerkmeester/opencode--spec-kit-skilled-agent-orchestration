@@ -11,7 +11,7 @@ import {
   handleCheckpointRestore,
   handleCheckpointDelete,
 } from '../handlers';
-import { validateToolArgs } from '../tool-schemas';
+import { validateToolArgs } from '../schemas/tool-input-schemas';
 
 import {
   MCPResponse, parseArgs,

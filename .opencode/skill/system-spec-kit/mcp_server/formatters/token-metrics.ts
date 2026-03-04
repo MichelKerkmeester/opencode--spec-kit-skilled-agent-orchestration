@@ -30,11 +30,9 @@ export interface TokenMetrics {
    2. TOKEN ESTIMATION
    --------------------------------------------------------------- */
 
-export function estimateTokens(text: string | null | undefined): number {
-  if (!text || typeof text !== 'string') return 0;
-  // Average ~4 chars per token for English, ~2 for code
-  return Math.ceil(text.length / 4);
-}
+// Canonical implementation in shared — re-exported with original name for backward compatibility
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+export const estimateTokens = estimateTokenCount;
 
 /* ---------------------------------------------------------------
    3. TOKEN METRICS CALCULATION

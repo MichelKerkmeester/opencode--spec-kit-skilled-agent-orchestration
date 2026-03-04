@@ -954,7 +954,10 @@ async function hybridSearchEnhanced(
       const degradationMeta = (reranked as unknown as Record<string, unknown>)['_degradation'];
 
       // Sprint 3/4: Apply token budget truncation before returning live results
-      const budgeted = truncateToBudget(reranked, budgetResult.budget, {
+      // CHK-060: Reserve token overhead for contextual tree headers (~12 tokens per result)
+      const headerOverhead = isContextHeadersEnabled() ? reranked.length * 12 : 0;
+      const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
+      const budgeted = truncateToBudget(reranked, adjustedBudget, {
         includeContent: options.includeContent ?? false,
         queryId: `hybrid-${Date.now()}`,
       });
@@ -988,6 +991,8 @@ async function hybridSearchEnhanced(
             degradation: degradationMeta ?? null,
             budgetTruncated: budgeted.truncated,
             budgetLimit: budgetResult.budget,
+            // CHK-038: Wire queryComplexity from router classification into trace
+            queryComplexity: routeResult.tier,
           },
         }));
       }
@@ -1178,10 +1183,14 @@ function extractSpecSegments(filePath: string): { left: string; right: string; t
 
   const relative = normalized.slice(splitIdx + splitToken.length).replace(/^\/+/, '');
   const parts = relative.split('/').filter(Boolean);
-  if (parts.length < 3) return null;
+  if (parts.length < 2) return null;
 
-  const folderParts = parts.slice(0, -1);
-  const tailParts = folderParts.slice(-2);
+  // Prefer spec-folder extraction up to /memory/ so we get [parent > child]
+  // for canonical memory paths like:
+  //   .../specs/<parent>/<child>/memory/<file>.md
+  const memoryIdx = parts.indexOf('memory');
+  const scopeParts = memoryIdx >= 0 ? parts.slice(0, memoryIdx) : parts.slice(0, -1);
+  const tailParts = scopeParts.slice(-2);
   if (tailParts.length < 2) return null;
 
   return {
@@ -1615,6 +1624,9 @@ function truncateToBudget(
 
 export const __testables = {
   canonicalResultId,
+  truncateChars,
+  extractSpecSegments,
+  injectContextualTree,
   applyResultLimit,
   calibrateTier3Scores,
   checkDegradation,
