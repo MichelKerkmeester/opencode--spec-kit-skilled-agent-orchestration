@@ -45,9 +45,9 @@ The plan prioritizes high-value low-risk changes first: architecture contract do
 - [x] Handler cycle reduced/removed and verified.
 - [x] Duplicate helper ownership clarified and consolidated.
 - [x] Checklist P0 items verified with command/file evidence.
-- [ ] Triple ultra-think review P0 blockers resolved (Phase 4).
-- [ ] Review remediation checklist items verified.
-- [ ] Feature catalog implementation-doc parity remediation completed (Phase 6).
+- [x] Triple ultra-think review P0 blockers resolved (Phase 4).
+- [x] Review remediation checklist items verified.
+- [x] Feature catalog implementation-doc parity remediation completed (Phase 6).
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -81,8 +81,8 @@ Contract-first layered architecture.
 | Phase 3: Enforcement | T015-T017 | ~150 (code) | Medium (3-4h) | Medium |
 | Phase 4: Review Remediation | T021-T045 | ~300 (code+docs) | Medium-High (6-10h) | Medium |
 | Phase 5: Enforcement Gaps | T046-T049 | ~80 (code+docs) | Low (1-2h) | Low |
-| Phase 6: Feature Catalog Parity | T050-T070 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
-| **Total** | **70 tasks** | **~1500** | **~31-45h** | **Medium** |
+| Phase 6: Feature Catalog Parity | T050-T073 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
+| **Total** | **76 task entries** | **~1500** | **~31-45h** | **Medium** |
 
 **Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
@@ -93,70 +93,70 @@ Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 0: Pipeline Infrastructure (Prerequisite)
-- [ ] Establish lint/check scripts in `scripts/package.json` (required by Phase 3 enforcement).
+- [x] Establish lint/check scripts in `scripts/package.json` (required by Phase 3 enforcement).
 
 ### Phase 1: Publish Boundary Contract (documentation-first)
-- [ ] Create canonical boundary document and API consumer guidance.
-- [ ] Clarify compatibility-wrapper posture and canonical reindex runbook location.
-- [ ] Align README coverage for runtime vs scripts ownership.
+- [x] Create canonical boundary document and API consumer guidance.
+- [x] Clarify compatibility-wrapper posture and canonical reindex runbook location.
+- [x] Align README coverage for runtime vs scripts ownership.
 
 ### Phase 2: Reduce Structural Drift
-- [ ] Consolidate duplicate utility concerns (token estimation, quality extraction).
-- [ ] Replace direct duplicate implementations with shared modules.
-- [ ] Break handler cycle with minimal orchestration extraction.
+- [x] Consolidate duplicate utility concerns (token estimation, quality extraction).
+- [x] Replace direct duplicate implementations with shared modules.
+- [x] Break handler cycle with minimal orchestration extraction.
 
 ### Phase 3: Enforce and Verify
-- [ ] Add automated import-policy checks for scripts.
-- [ ] Add temporary exception allowlist with owner and removal criteria.
-- [ ] Validate no new violations and update checklist evidence.
+- [x] Add automated import-policy checks for scripts.
+- [x] Add temporary exception allowlist with owner and removal criteria.
+- [x] Validate no new violations and update checklist evidence.
 
 ### Phase 4: Review Remediation (Post-Review)
 Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 + Gemini 3.1 Pro + Codex 5.3).
 
 #### P0 Blockers
-- [ ] Integrate `check-api-boundary.sh` into `npm run check` pipeline for bidirectional enforcement.
-- [ ] Add missing `reindex-embeddings.ts` exception to `ARCHITECTURE_BOUNDARIES.md`.
-- [ ] Expand `PROHIBITED_PATTERNS` to cover `@spec-kit/mcp-server/core/*` paths.
+- [x] Integrate `check-api-boundary.sh` into `npm run check` pipeline for bidirectional enforcement.
+- [x] Add missing `reindex-embeddings.ts` exception to `ARCHITECTURE_BOUNDARIES.md`.
+- [x] Expand `PROHIBITED_PATTERNS` to cover `@spec-kit/mcp-server/core/*` paths.
 
 #### P1 Should-Fix
-- [ ] Add dynamic `import()` expression detection to enforcement script.
-- [ ] Add additional relative path variant patterns (3+ depth levels).
-- [ ] Update `shared/README.md` structure tree with Phase 8 modules.
-- [ ] Add allowlist governance fields (`approvedBy`, `createdAt`, `expiresAt`).
-- [ ] Ban or sunset wildcard exceptions with explicit module lists.
-- [ ] Update `evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
+- [x] Add dynamic `import()` expression detection to enforcement script.
+- [x] Add additional relative path variant patterns (3+ depth levels).
+- [x] Update `shared/README.md` structure tree with Phase 8 modules.
+- [x] Add allowlist governance fields (`approvedBy`, `createdAt`, `expiresAt`).
+- [x] Ban or sunset wildcard exceptions with explicit module lists.
+- [x] Update `evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
 
 #### P2 Nice-to-Have
-- [ ] Add block comment tracking to import checker.
-- [ ] Add behavioral tests for `quality-extractors.ts` edge cases.
-- [ ] Add bidirectional cross-links in `ARCHITECTURE_BOUNDARIES.md`.
-- [ ] Define growth policy for `handler-utils.ts`.
-- [ ] Consider AST-based parsing upgrade for enforcement script.
-- [ ] Add transitive dependency checks for re-export evasion.
+- [x] Add block comment tracking to import checker.
+- [x] Add behavioral tests for `quality-extractors.ts` edge cases.
+- [x] Add bidirectional cross-links in `ARCHITECTURE_BOUNDARIES.md`.
+- [x] Define growth policy for `handler-utils.ts`.
+- [x] Consider AST-based parsing upgrade for enforcement script.
+- [x] Add transitive dependency checks for re-export evasion.
 
 ### Phase 6: Feature Catalog Parity (Implementation vs Documentation)
 Derived from the 5-agent phase audit of `feature_catalog` groups 01-18.
 
 #### Code Fixes First (behavioral)
-- [ ] Fix `memory_match_triggers` cognitive-path limit leak so final output never exceeds caller limit.
-- [ ] Add per-channel failure isolation in `eval_run_ablation` so one channel error does not abort the full run.
-- [ ] Enforce learned-feedback shadow-period semantics end-to-end (record + query paths).
-- [ ] Remove learned-feedback double scaling (0.7x applied twice).
-- [ ] Process incremental `toDelete` paths in `memory_index_scan` flow.
-- [ ] Align auto-promotion thresholds with positive-validation semantics (not total validation count).
-- [ ] Wire per-channel eval logging if retained in current telemetry contract.
-- [ ] Finalize and enforce one `memory_search.limit` contract (50 or 100) across schema + docs.
+- [x] Fix `memory_match_triggers` cognitive-path limit leak so final output never exceeds caller limit.
+- [x] Add per-channel failure isolation in `eval_run_ablation` so one channel error does not abort the full run.
+- [x] Enforce learned-feedback shadow-period semantics end-to-end (record + query paths).
+- [x] Remove learned-feedback double scaling (0.7x applied twice).
+- [x] Process incremental `toDelete` paths in `memory_index_scan` flow.
+- [x] Align auto-promotion thresholds with positive-validation semantics (not total validation count).
+- [x] Wire per-channel eval logging if retained in current telemetry contract.
+- [x] Finalize and enforce one `memory_search.limit` contract (50 or 100) across schema + docs.
 
 #### Documentation Alignment Sweep
-- [ ] Remove stale fallback narrative for `SPECKIT_PIPELINE_V2` (V2-only runtime).
-- [ ] Align MPAB documentation with actual runtime stage placement.
-- [ ] Align content-normalization docs with current embedding/BM25 behavior.
-- [ ] Align checkpoint docs with real `skipCheckpoint` and restore semantics.
-- [ ] Align evaluation metrics count and edge-density denominator wording.
-- [ ] Align graph/community docs with runtime wiring and cache invalidation behavior.
-- [ ] Align governance docs (flag caps, active knobs, inventory counts) to current code.
-- [ ] Align eval logging docs (sync vs async, and per-channel event coverage).
-- [ ] Remove stale implementation-detail claims (line-count and call-site drift) across phase snippets.
+- [x] Remove stale fallback narrative for `SPECKIT_PIPELINE_V2` (V2-only runtime).
+- [x] Align MPAB documentation with actual runtime stage placement.
+- [x] Align content-normalization docs with current embedding/BM25 behavior.
+- [x] Align checkpoint docs with real `skipCheckpoint` and restore semantics.
+- [x] Align evaluation metrics count and edge-density denominator wording.
+- [x] Align graph/community docs with runtime wiring and cache invalidation behavior.
+- [x] Align governance docs (flag caps, active knobs, inventory counts) to current code.
+- [x] Align eval logging docs (sync vs async, and per-channel event coverage).
+- [x] Remove stale implementation-detail claims (line-count and call-site drift) across phase snippets.
 
 #### Memory Quality Gates (Generation-Time Prevention)
 - [x] Create `slug-utils.ts` with content-aware slug generation (task → slug, fallback to folder name).
@@ -165,7 +165,7 @@ Derived from the 5-agent phase audit of `feature_catalog` groups 01-18.
 - [x] Integrate content slug in `workflow.ts` (replace `folderBase` with `generateContentSlug(implSummary.task, folderBase)`).
 
 #### Validation
-- [ ] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
+- [x] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->

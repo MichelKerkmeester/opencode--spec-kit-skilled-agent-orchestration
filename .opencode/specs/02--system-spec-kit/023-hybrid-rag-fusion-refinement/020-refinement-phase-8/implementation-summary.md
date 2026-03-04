@@ -15,7 +15,7 @@ contextType: "architecture"
 
 ## Overview
 
-Implemented all 24 tasks (T000-T020, including T013a/b/c) across 5 phases for the scripts-vs-mcp_server boundary audit. The implementation establishes architectural boundaries, consolidates duplicated code, breaks handler dependency cycles, and adds automated import-policy enforcement.
+This phase now reflects end-to-end closure through Phase 6: all 76 task entries are completed (T000-T073 plus split tasks T013a/T013b/T013c). Initial delivery covered T000-T020 (core architecture refinement), then follow-up remediation/parity waves closed T021-T073 with enforcement hardening, feature-catalog parity, memory-quality gates, and re-audit verification.
 
 ## Approach
 
@@ -38,7 +38,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `scripts/evals/import-policy-allowlist.json` | Import exception registry |
 | `scripts/evals/check-no-mcp-lib-imports.ts` | Import-policy enforcement script |
 
-### Modified Files (13)
+### Modified Files (15)
 | File | Change |
 |------|--------|
 | `scripts/package.json` | Added lint, check scripts with import-policy integration |
@@ -65,10 +65,11 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 
 ## Verification Results
 
-- `tsc --noEmit` passes in scripts/ and mcp_server/ workspaces (zero errors)
-- `npm run check` passes (lint + import-policy)
-- Handler cycle broken: causal-links-processor.ts no longer imports from memory-save.ts
-- All import-policy violations either resolved or registered in allowlist with owner + removal criteria
+- Verification artifact: `scratch/verification-log-2026-03-04.md` (includes timed check and targeted Phase 6 test run output).
+- `npm run check --workspace=scripts` passes (lint + import-policy + boundary checks), timed at `real 1.73s`.
+- Targeted Phase 6 vitest run passes: 10 files, 199 tests, 0 failures.
+- Handler cycle broken: causal-links-processor.ts no longer imports from memory-save.ts.
+- Import-policy violations resolved or explicitly governed via allowlist entries.
 
 ## Triple Ultra-Think Cross-AI Review (2026-03-04)
 
@@ -131,3 +132,27 @@ A fourth agent was dispatched to provide a complementary code-quality perspectiv
 
 ADR-004 proposed for enforcement hardening approach.
 See `tasks.md` Phase 4, `checklist.md` CHK-200 through CHK-231.
+
+## Phase 6 Parity Closure (2026-03-04)
+
+Phase 6 (`T050-T073`) is now closed with code-contract verification, documentation parity fixes, memory-quality gate rollout, and a 5-agent re-audit trail.
+
+### What Was Closed
+
+- `T057`: `memory_search.limit` contract aligned at 1-100 across schema, runtime clamp, and tool docs.
+- `T058`: targeted regression suites for `T050-T057` confirmed in test set.
+- `T059-T068`: canonical `feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
+- `T069`: 5-agent parity re-audit artifacts captured in `scratch/` with no unresolved HIGH findings and no unresolved MEDIUM findings.
+- `T070`: phase docs (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) updated with closure evidence.
+- `T071-T073`: generation-time memory quality gates added (content-aware slugging, empty-content prevention, duplicate-content prevention).
+
+### Verification Evidence
+
+- Targeted Phase 6 tests run (10 suites) for: triggers limit, ablation isolation, learned-feedback shadow semantics, stage2 fusion weighting, incremental delete consumption, promotion semantics, eval channel logging, and schema limit contracts.
+- Audit artifacts:
+  - `scratch/t069-audit-agent-1-planck.md`
+  - `scratch/t069-audit-agent-2-ampere.md`
+  - `scratch/t069-audit-agent-3-gauss.md`
+  - `scratch/t069-audit-agent-4-nash.md`
+  - `scratch/t069-audit-agent-5-aristotle.md`
+  - `scratch/t069-audit-summary.md`

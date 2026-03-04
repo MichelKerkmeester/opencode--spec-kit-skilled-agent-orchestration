@@ -50,7 +50,7 @@ contextType: "architecture"
 - [x] CHK-020 [P0] Import-policy check runs in default lint/check workflow. [EVIDENCE: `scripts/package.json` check script = `npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts`; `npm run check` passes]
 - [x] CHK-021 [P1] Helper consolidation parity tests pass. [EVIDENCE: `tsc --noEmit` passes in scripts/ and mcp_server/ workspaces; re-exports preserve backward compatibility]
 - [x] CHK-022 [P1] Reindex compatibility path remains operational. [EVIDENCE: `mcp_server/scripts/reindex-embeddings.ts` wrapper unchanged; allowlist covers `scripts/memory/reindex-embeddings.ts` lib imports]
-- [ ] CHK-023 [P2] Lint/check runtime overhead increase remains within target.
+- [x] CHK-023 [P2] Lint/check runtime overhead increase remains within target. [EVIDENCE: fresh timed `npm run check --workspace=scripts` run captured in `scratch/verification-log-2026-03-04.md` (`real 1.73s`)]
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:docs -->
@@ -75,7 +75,7 @@ contextType: "architecture"
 <!-- ANCHOR:docs-verify -->
 ## L3+: DOCUMENTATION VERIFICATION
 
-- [x] CHK-110 [P1] All README cross-links between boundary contract and consumer docs are bidirectional. [EVIDENCE: ARCHITECTURE_BOUNDARIES.md → scripts/evals/README.md, mcp_server/api/README.md; reverse links present in both READMEs] **[REVIEW NOTE: Claude Opus found links are unidirectional — consumer READMEs link TO boundary doc but ARCHITECTURE_BOUNDARIES.md lacks navigable links back. See T032.]**
+- [x] CHK-110 [P1] All README cross-links between boundary contract and consumer docs are bidirectional. [EVIDENCE: ARCHITECTURE_BOUNDARIES.md → scripts/evals/README.md, mcp_server/api/README.md; reverse links present in both READMEs]
 - [x] CHK-111 [P1] Canonical runbook location is consistent across all pointer docs. [EVIDENCE: `scripts/memory/README.md` = canonical; `mcp_server/scripts/README.md` and `mcp_server/database/README.md` point to it]
 - [x] CHK-112 [P2] Spec folder docs pass recursive validation (`validate.sh --recursive`). [EVIDENCE: T038 completed; `validate.sh --recursive 020-refinement-phase-8` passed with 0 errors and 0 warnings]
 <!-- /ANCHOR:docs-verify -->
@@ -143,11 +143,11 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 ### P1 Required (complete or approved deferral)
 
 - [x] CHK-410 [P1] Runtime emits per-channel eval events when eval logging is enabled (or docs explicitly scope why not). [EVIDENCE: `handlers/memory-search.ts` + `handlers/memory-context.ts` call `logChannelResult`; validated by `tests/memory-search-eval-channels.vitest.ts` and `tests/memory-context-eval-channels.vitest.ts`]
-- [ ] CHK-411 [P1] `memory_search.limit` contract is consistent across schema, runtime behavior, and docs. [EVIDENCE: schema lines + tool docs + tests]
-- [ ] CHK-412 [P1] `feature_catalog.md` parity sweep completed for pipeline fallback, MPAB placement, normalization semantics, and lifecycle checkpoint behavior. [EVIDENCE: updated sections]
-- [ ] CHK-413 [P1] Evaluation/graph sections match code for metric count, edge-density denominator, graph-cache invalidation, and community-runtime wiring. [EVIDENCE: updated sections]
-- [ ] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: updated sections]
-- [ ] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: JSON findings artifacts in `scratch/`]
+- [x] CHK-411 [P1] `memory_search.limit` contract is consistent across schema, runtime behavior, and docs. [EVIDENCE: `schemas/tool-input-schemas.ts` (`positiveIntMax(100)`), `handlers/memory-search.ts` runtime clamp (`Math.min(..., 100)`), `tool-schemas.ts` (`minimum:1, maximum:100`), `tests/tool-input-schema.vitest.ts` limit 100/101 contract tests]
+- [x] CHK-412 [P1] `feature_catalog.md` parity sweep completed for pipeline fallback, MPAB placement, normalization semantics, and lifecycle checkpoint behavior. [EVIDENCE: canonical + snippets updated in `feature_catalog.md`, `01-retrieval/04-hybrid-search-pipeline.md`, `14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`, `02-mutation/01-memory-indexing-memorysave.md`, `05-lifecycle/01-checkpoint-creation-checkpointcreate.md`, `05-lifecycle/03-checkpoint-restore-checkpointrestore.md`]
+- [x] CHK-413 [P1] Evaluation/graph sections match code for metric count, edge-density denominator, graph-cache invalidation, and community-runtime wiring. [EVIDENCE: metric count aligned to 11 and density denominator aligned to `total_edges/total_memories` in canonical + snippets; community docs now state Stage 2 consumes precomputed assignments and does not auto-run detect/store helpers]
+- [x] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: governance text aligned to process targets + 23 active `is*` helpers in `search-flags.ts`; eval logging semantics updated to fail-safe sync writes and precise channel coverage]
+- [x] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: `scratch/t069-audit-agent-1-planck.md`, `scratch/t069-audit-agent-2-ampere.md`, `scratch/t069-audit-agent-3-gauss.md`, `scratch/t069-audit-agent-4-nash.md`, `scratch/t069-audit-agent-5-aristotle.md`, `scratch/t069-audit-summary.md`]
 
 ### Memory Quality Gates
 
@@ -157,7 +157,7 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 ### P2 Nice-to-Have
 
-- [ ] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `feature_catalog.md`. [EVIDENCE: grep + manual spot-check]
+- [x] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `feature_catalog.md`. [EVIDENCE: stale `~550 lines` + stale `line ~...` call-site references removed; `rg` over feature_catalog confirms no legacy summary-source references and canonical metadata consistency]
 <!-- /ANCHOR:phase-6-parity -->
 
 <!-- ANCHOR:summary -->
@@ -166,20 +166,21 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 | Category | Total | Verified | Notes |
 |----------|-------|----------|-------|
 | P0 Items (Phases 0-3) | 8 | 8/8 | All original P0 items verified |
-| P1 Items (Phases 0-3) | 14 | 14/14 | All marked [x]; CHK-110 has review note (see T032) |
-| P2 Items (Phases 0-3) | 4 | 3/4 | CHK-042, CHK-103, CHK-112 completed; CHK-023 deferred |
+| P1 Items (Phases 0-3) | 14 | 14/14 | All verified complete |
+| P2 Items (Phases 0-3) | 4 | 4/4 | CHK-023, CHK-042, CHK-103, CHK-112 completed |
 | P0 Items (Phase 4 Review) | 4 | 4/4 | All P0 blockers resolved |
 | P1 Items (Phase 4 Review) | 12 | 12/12 | All P1 should-fix items resolved |
 | P2 Items (Phase 4 Review) | 6 | 6/6 | All P2 nice-to-have review items completed |
 | P0 Items (Phase 5 Enforcement) | 3 | 3/3 | CHK-300 through CHK-302 completed |
 | P1 Items (Phase 5 Enforcement) | 2 | 2/2 | CHK-303 and CHK-304 completed |
 | P0 Items (Phase 6 Parity) | 5 | 5/5 | Core behavioral parity fixes implemented and verified |
-| P1 Items (Phase 6 Parity) | 6 | 1/6 | Eval-channel runtime wiring complete; docs/contract alignment pending |
-| P2 Items (Phase 6 Parity) | 1 | 0/1 | Planned, pending execution |
+| P1 Items (Phase 6 Parity) | 6 | 6/6 | Contract + parity + governance + 5-agent re-audit verification complete |
+| P2 Items (Phase 6 Parity) | 1 | 1/1 | Stale implementation-detail + metadata consistency checks complete |
 
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
 **Phase 4 Remediation Completed**: 2026-03-04
 **Phase 6 Parity Plan Added**: 2026-03-04
 **Phase 6 P0 Code Fixes Completed**: 2026-03-04
+**Phase 6 Parity Closure Completed**: 2026-03-04
 <!-- /ANCHOR:summary -->
