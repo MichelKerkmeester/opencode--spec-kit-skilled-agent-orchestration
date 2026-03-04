@@ -151,9 +151,9 @@ Findings-first code review baseline with security/correctness minimums and basel
 
 Git workflows for workspace setup, clean commits and branch completion.
 
-#### `sk-prompt-improver` (v1.0.0)
+#### `sk-prompt-improver` (v1.2.0.0)
 
-Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring.
+Prompt optimization with 7 text frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology and CLEAR scoring.
 
 ### Documentation
 
@@ -220,6 +220,7 @@ Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for mul
 | `sk-git`                  | Yes           | Yes       | No         |
 | `sk-doc`                  | Yes           | Yes       | Yes        |
 | `sk-doc-visual`           | Yes           | Yes       | Yes        |
+| `sk-prompt-improver`      | Yes           | Yes       | No         |
 | `cli-gemini`              | Yes           | Yes       | No         |
 | `cli-codex`               | Yes           | Yes       | No         |
 | `cli-claude-code`         | Yes           | Yes       | No         |
@@ -291,6 +292,7 @@ Skill folders:
 - [sk-doc](sk-doc/)
 - [sk-git](sk-git/)
 - [sk-doc-visual](sk-doc-visual/)
+- [sk-prompt-improver](sk-prompt-improver/)
 - [mcp-chrome-devtools](mcp-chrome-devtools/)
 - [mcp-code-mode](mcp-code-mode/)
 - [mcp-figma](mcp-figma/)

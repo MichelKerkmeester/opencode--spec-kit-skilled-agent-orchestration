@@ -270,10 +270,74 @@ enhancement_mode (from Setup Phase)
 
 - Based on `enhancement_mode`, load conditional references:
   - **TEXT/IMPROVE/REFINE/SHORT**: Load `references/depth_framework.md` + `references/patterns_evaluation.md`
-  - **INTERACTIVE/auto**: Additionally load `references/interactive_mode.md`
-  - **JSON**: Additionally load `references/format_guides.md`
-  - **YAML**: Additionally load `references/format_guides.md`
+  - **INTERACTIVE/auto**: Use the interactive behavior reference below (Section 4a)
+  - **JSON**: Additionally load `assets/format_guide_json.md`
+  - **YAML**: Additionally load `assets/format_guide_yaml.md`
   - **RAW**: No additional references needed
+
+### Step 1a: Interactive Behavior (INTERACTIVE/auto modes only)
+
+When `execution_mode = INTERACTIVE` or the mode is auto-detected, apply these conversation patterns:
+
+**Response Templates:**
+
+Use when prompting the user for framework or complexity choices during INTERACTIVE mode pauses:
+
+```markdown
+# Framework Choice (Complexity 5-6)
+**Complexity Level: [5-6]/10**
+
+I can optimise your prompt using different frameworks:
+**Option A: RCAF** - 92% success | General tasks, clarity focus | Baseline tokens
+**Option B: COSTAR** - 94% success | Content creation, audience-specific | +5% tokens
+**Option C: TIDD-EC** - 93% success | Precision-critical tasks | +8% tokens
+
+Your choice? (A, B, or C)
+```
+
+```markdown
+# Simplification Choice (Complexity 7+)
+**High Complexity Detected (Level [X]/10)**
+
+**Option A: Streamline** - Simplify to core essentials, clearer focused result
+**Option B: Comprehensive** - Keep all complexity, detailed but longer
+
+Your preference? (A or B)
+```
+
+**Error Recovery:**
+
+| Situation | Response |
+|---|---|
+| No prompt provided | "I need a prompt or request to enhance. What would you like me to improve?" |
+| Ambiguous intent | "Are you looking to improve an existing prompt, or create a new one from scratch?" |
+| Invalid command | "Available commands: $improve, $refine, $short, $deep, $raw, $text" |
+| Pasted content, no context | "What should I do with this? Improve clarity, restructure, change format, or full enhancement?" |
+| Conflicting signals | "You mentioned both [A] and [B]. Which mode should I use?" |
+
+**Smart Defaults** (when context is missing after max interactions):
+
+| Missing | Default | Override |
+|---|---|---|
+| Energy Level | Standard | $raw, $deep, $short |
+| Format | Standard Markdown | $json, $yaml, $markdown |
+| Framework | RCAF (92% success) | Complexity 5-6: choice |
+| Perspectives | 3-5 (std), 0 (raw) | Per energy level |
+
+**Formatting Rules:**
+- Use markdown dashes `-` for bullets (never emoji bullets)
+- Each bullet on separate line (never compress to single line)
+- Bold headers followed by content: **Header:**
+- No emojis in questions
+- Defaults in brackets: [default: Markdown]
+
+**Maximum Question Interactions:**
+- Standard flow: Max 3 interactions (welcome + framework/simplification + format)
+- Command flow: Max 1 interaction (format question)
+- Raw mode: 0 interactions (enhance immediately)
+- After max interactions: use smart defaults, flag assumptions in output
+
+---
 
 ### Step 2: Execute Enhancement Pipeline
 

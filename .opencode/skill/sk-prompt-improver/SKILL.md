@@ -2,7 +2,7 @@
 name: sk-prompt-improver
 description: "Prompt engineering specialist that transforms vague requests into structured, scored AI prompts using 7 proven frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH thinking methodology, and CLEAR scoring across text modes."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
-version: 1.1.0.0
+version: 1.2.0.0
 ---
 
 <!-- Keywords: prompt-engineering, prompt-improvement, DEPTH, RICCE, CLEAR-scoring, framework-selection, RCAF, COSTAR, CRAFT, TIDD-EC, CRISPE -->
@@ -51,29 +51,21 @@ Transform vague requests into structured prompts using RCAF, COSTAR, RACE, CIDI,
 <!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
+<!-- CRITICAL: Keep one authoritative Smart Router Pseudocode block in this section.
+     Detection context may appear before pseudocode. Do NOT duplicate routing logic in separate lookup tables. -->
+
 ### Primary Detection Signal
 
-Mode detection from command prefix or content keywords:
-
-```bash
-# Command prefix detection (highest priority)
-[[ "$INPUT" == \$text* ]] && MODE="TEXT"
-[[ "$INPUT" == \$improve* ]] && MODE="IMPROVE"
-[[ "$INPUT" == \$refine* ]] && MODE="REFINE"
-[[ "$INPUT" == \$short* ]] && MODE="SHORT"
-[[ "$INPUT" == \$json* ]] && MODE="JSON"
-[[ "$INPUT" == \$yaml* ]] && MODE="YAML"
-[[ "$INPUT" == \$raw* ]] && MODE="RAW"
-```
+The primary routing signal is the **command prefix** (`$improve`, `$text`, `$refine`, `$short`, `$json`, `$yaml`, `$raw`). When present, the prefix determines the operating mode directly. When absent, the router falls back to **keyword-weighted intent scoring** against the request text, selecting the top-scoring intent (or top-2 when scores are close). A zero-score fallback defaults to `TEXT_ENHANCE` with a disambiguation checklist.
 
 ### Phase Detection
 
 ```text
 USER REQUEST
     |
-    +- STEP 0: Detect mode ($command or keyword signals)
+    +- STEP 0: Detect mode ($command prefix or keyword signals)
     +- STEP 1: Score intents (top-2 when ambiguity is small)
-    +- Phase 1: Framework Selection (8 frameworks evaluated)
+    +- Phase 1: Framework Selection (7 frameworks evaluated)
     +- Phase 2: DEPTH Processing (3-10 rounds based on mode)
     +- Phase 3: Scoring & Validation (CLEAR)
     +- Phase 4: Output Delivery (formatted prompt)
@@ -81,13 +73,14 @@ USER REQUEST
 
 ### Resource Domains
 
-The router discovers markdown resources recursively from `references/` and `assets/` and applies intent scoring.
+The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_MODEL`.
+
+- `references/` for DEPTH methodology, framework definitions, and CLEAR scoring.
+- `assets/` for format-specific deep-dives (Markdown, JSON, YAML).
 
 ```text
 references/depth_framework.md     - DEPTH methodology, RICCE integration
-references/patterns_evaluation.md - 10 frameworks, CLEAR scoring
-references/interactive_mode.md    - Conversation flow, state management
-references/format_guides.md       - Markdown/JSON/YAML format specs (consolidated)
+references/patterns_evaluation.md - 7 frameworks, CLEAR scoring
 assets/format_guide_markdown.md   - Markdown format deep-dive
 assets/format_guide_json.md       - JSON format deep-dive
 assets/format_guide_yaml.md       - YAML format deep-dive
@@ -95,12 +88,11 @@ assets/format_guide_yaml.md       - YAML format deep-dive
 
 ### Resource Loading Levels
 
-| Level | When to Load | Resources |
-|-------|-------------|-----------|
-| ALWAYS | Every invocation | SKILL.md (this file) |
-| CONDITIONAL | If text/improve/refine mode | references/depth_framework.md, references/patterns_evaluation.md |
-| CONDITIONAL | If interactive/ambiguous | references/interactive_mode.md |
-| ON_DEMAND | If format specified | references/format_guides.md |
+| Level       | When to Load             | Resources                                                                  |
+| ----------- | ------------------------ | -------------------------------------------------------------------------- |
+| ALWAYS      | Every skill invocation   | SKILL.md (this file)                                                       |
+| CONDITIONAL | If intent signals match  | references/depth_framework.md, references/patterns_evaluation.md           |
+| ON_DEMAND   | Only on explicit request | assets/format_guide_markdown.md, assets/format_guide_json.md, assets/format_guide_yaml.md |
 
 ### Smart Router Pseudocode
 
@@ -108,20 +100,27 @@ assets/format_guide_yaml.md       - YAML format deep-dive
 from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent
-RESOURCE_BASES = (SKILL_ROOT / "references",)
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
 DEFAULT_RESOURCE = "references/depth_framework.md"
 
 INTENT_MODEL = {
     "TEXT_ENHANCE": {"keywords": [("improve", 4), ("enhance", 4), ("prompt", 3), ("text", 3), ("refine", 4)]},
     "FRAMEWORK": {"keywords": [("framework", 4), ("rcaf", 5), ("costar", 5), ("tidd-ec", 5), ("scoring", 3)]},
-    "FORMAT": {"keywords": [("json", 4), ("yaml", 4), ("markdown", 3), ("format", 3)]},
 }
 
 RESOURCE_MAP = {
     "TEXT_ENHANCE": ["references/depth_framework.md", "references/patterns_evaluation.md"],
     "FRAMEWORK": ["references/patterns_evaluation.md"],
-    "FORMAT": ["references/format_guides.md"],
 }
+
+ON_DEMAND_KEYWORDS = ["deep dive", "full template", "all frameworks", "format guide"]
+
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Is this a prompt enhancement request or a different task?",
+    "Does the user want a specific framework applied?",
+    "Is the user asking about scoring or evaluation?",
+    "Should this route to sk-doc or sk-code instead?",
+]
 
 AMBIGUITY_DELTA = 1
 
@@ -139,25 +138,37 @@ def discover_markdown_resources() -> set[str]:
             docs.extend(path for path in base.rglob("*.md") if path.is_file())
     return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
 
-def classify_intents(user_request):
-    text = (user_request or "").lower()
+def _task_text(task) -> str:
+    if isinstance(task, str):
+        return task.lower()
+    return " ".join(
+        str(task.get(f, "")) for f in ("text", "query", "description", "keywords")
+    ).lower()
+
+def score_intents(task) -> dict[str, float]:
+    text = _task_text(task)
     scores = {intent: 0 for intent in INTENT_MODEL}
     for intent, cfg in INTENT_MODEL.items():
         for keyword, weight in cfg["keywords"]:
             if keyword in text:
                 scores[intent] += weight
+    return scores
+
+def select_intents(scores, ambiguity_delta=AMBIGUITY_DELTA, max_intents=2):
     ranked = sorted(scores.items(), key=lambda pair: pair[1], reverse=True)
     primary, primary_score = ranked[0]
     if primary_score == 0:
-        return ("TEXT_ENHANCE", None, scores)
+        return ("TEXT_ENHANCE", None)
     secondary, secondary_score = ranked[1]
-    if secondary_score > 0 and (primary_score - secondary_score) <= AMBIGUITY_DELTA:
-        return (primary, secondary, scores)
-    return (primary, None, scores)
+    if secondary_score > 0 and (primary_score - secondary_score) <= ambiguity_delta:
+        return (primary, secondary)
+    return (primary, None)
 
-def route_prompt_improver_resources(user_request):
+def route_prompt_improver_resources(task):
     inventory = discover_markdown_resources()
-    primary, secondary, scores = classify_intents(user_request)
+    text = _task_text(task)
+    scores = score_intents(task)
+    primary, secondary = select_intents(scores)
     intents = [primary] + ([secondary] if secondary else [])
     loaded = []
     seen = set()
@@ -169,10 +180,29 @@ def route_prompt_improver_resources(user_request):
             loaded.append(guarded)
             seen.add(guarded)
 
+    # Unknown fallback: when no keywords match at all
+    if scores[primary] == 0:
+        load_if_available(DEFAULT_RESOURCE)
+        return {
+            "intents": intents,
+            "intent_scores": scores,
+            "resources": loaded,
+            "needs_disambiguation": True,
+            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
+        }
+
+    # Standard routing: default + intent-mapped resources
     load_if_available(DEFAULT_RESOURCE)
     for intent in intents:
         for relative_path in RESOURCE_MAP.get(intent, []):
             load_if_available(relative_path)
+
+    # ON_DEMAND: load all resource map paths when trigger keywords are present
+    if any(kw in text for kw in ON_DEMAND_KEYWORDS):
+        for paths in RESOURCE_MAP.values():
+            for relative_path in paths:
+                load_if_available(relative_path)
+
     return {"intents": intents, "intent_scores": scores, "resources": loaded}
 ```
 
@@ -193,7 +223,7 @@ STEP 1: Mode Detection
        └─ Ambiguous? Ask ONE comprehensive question
        ↓
 STEP 2: Framework Selection
-       ├─ Evaluate 8+ frameworks against request characteristics
+       ├─ Evaluate 7 frameworks against request characteristics
        ├─ Score: complexity, urgency, audience, creativity, precision
        └─ Select primary framework + alternative
        ↓
@@ -308,15 +338,7 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 ### Core References
 
 - [depth_framework.md](./references/depth_framework.md) - DEPTH methodology (Discover, Engineer, Prototype, Test, Harmonize), RICCE integration
-- [patterns_evaluation.md](./references/patterns_evaluation.md) - 10 framework definitions, CLEAR scoring, design directions
-
-### Mode-Specific References
-
-- [interactive_mode.md](./references/interactive_mode.md) - Conversation flow, state management, smart routing
-
-### Format References
-
-- [format_guides.md](./references/format_guides.md) - Markdown, JSON, YAML format specifications and optimization (consolidated)
+- [patterns_evaluation.md](./references/patterns_evaluation.md) - 7 framework definitions, CLEAR scoring
 
 ### Asset Files
 

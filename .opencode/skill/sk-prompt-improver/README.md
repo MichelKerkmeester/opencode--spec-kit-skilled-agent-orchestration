@@ -45,7 +45,7 @@ trigger_phrases:
 
 This skill takes vague or incomplete prompts and produces structured, high-quality output through a four-phase pipeline: **Mode Detection** (command prefix or keyword analysis), **Framework Selection** (scoring 7 frameworks against task characteristics), **DEPTH Processing** (3-10 rounds of iterative refinement) and **CLEAR Scoring** (50-point quality validation).
 
-The core approach is prompt-first: every enhancement starts with understanding what the user needs, selects the right structural framework, then applies iterative thinking rounds to produce a prompt that scores above threshold. Output can be delivered in Markdown, JSON or YAML format.
+The core approach is prompt-first: every enhancement starts with understanding what the user needs, selects the right structural framework, then applies iterative thinking rounds to produce a prompt that scores above threshold.
 
 Use this skill when enhancing AI prompts, evaluating prompt quality, selecting the right framework for a task or converting prompts between formats. If the request is for code implementation, route to `sk-code` skills instead. If the request is for documentation, route to `sk-doc`. Simple text editing without prompt structure needs also falls outside scope.
 
@@ -73,7 +73,7 @@ Use this skill when enhancing AI prompts, evaluating prompt quality, selecting t
 
 | Requirement           | Details                                                         |
 | --------------------- | --------------------------------------------------------------- |
-| Skill files           | `SKILL.md`, `references/`, `assets/` present in skill directory |
+| Skill files           | `SKILL.md`, `references/` present in skill directory            |
 | External dependencies | None                                                            |
 
 <!-- /ANCHOR:overview -->
@@ -130,9 +130,7 @@ sk-prompt-improver/
 │   └── format_guide_yaml.md          # YAML format deep-dive
 └── references/
     ├── depth_framework.md            # DEPTH methodology, RICCE integration
-    ├── patterns_evaluation.md        # 7 framework definitions, CLEAR scoring
-    ├── interactive_mode.md           # Conversation flow, state management
-    └── format_guides.md             # Consolidated Markdown/JSON/YAML specs
+    └── patterns_evaluation.md        # 7 framework definitions, CLEAR scoring
 ```
 
 ### Key Files
@@ -142,7 +140,6 @@ sk-prompt-improver/
 | `SKILL.md`                          | AI entry point with mode detection, smart routing and processing pipeline                 |
 | `references/depth_framework.md`     | DEPTH methodology (Discover, Engineer, Prototype, Test, Harmonize) with RICCE integration |
 | `references/patterns_evaluation.md` | Framework definitions, selection matrix and CLEAR scoring criteria                        |
-| `references/format_guides.md`       | Consolidated format rules for Markdown, JSON and YAML output                              |
 | `assets/format_guide_*.md`          | Individual format-specific deep-dives for targeted loading                                |
 
 <!-- /ANCHOR:structure -->
@@ -179,12 +176,6 @@ sk-prompt-improver/
 - 50-point scale across 5 dimensions with a minimum threshold of 40
 - Correctness (10), Logic (10), Expression (15), Arrangement (10), Reusability (5)
 - Applied to every output except `$raw` mode
-
-**Multi-Format Output:**
-- Markdown (default): Human-readable, natural language flow
-- JSON (`$json`): API-ready, schema-consistent structure
-- YAML (`$yaml`): Configuration-style, human-editable hierarchy
-- Each format has dedicated validation rules and delivery standards
 
 <!-- /ANCHOR:features -->
 
@@ -284,6 +275,6 @@ Runs 3 DEPTH rounds instead of 10 for faster turnaround. Uses RCAF framework for
 - [SKILL.md](./SKILL.md) - AI entry point with full routing logic and processing pipeline
 - [depth_framework.md](./references/depth_framework.md) - DEPTH methodology reference
 - [patterns_evaluation.md](./references/patterns_evaluation.md) - Framework library and CLEAR scoring
-- [format_guides.md](./references/format_guides.md) - Consolidated format specifications
+
 
 <!-- /ANCHOR:related -->

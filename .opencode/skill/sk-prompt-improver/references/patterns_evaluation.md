@@ -1,6 +1,6 @@
 ---
 title: "Patterns and Evaluation - Framework Library and CLEAR Scoring"
-description: "Framework library, enhancement patterns, and CLEAR evaluation methodology for systematic prompt engineering. Covers 11 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT, VIBE, VIBE-MP, FRAME, MOTION), the CLEAR 50-point scoring system, EVOKE/EVOKE-MP scoring, VISUAL scoring, power combinations, and enhancement priority protocols."
+description: "Framework library, enhancement patterns, and CLEAR evaluation methodology for systematic prompt engineering. Covers 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), the CLEAR 50-point scoring system, power combinations, and enhancement priority protocols."
 ---
 
 # Prompt Patterns & Evaluation Reference
@@ -12,12 +12,12 @@ Comprehensive framework library, enhancement patterns, and CLEAR evaluation meth
 
 ### Core Principle
 
-Systematic prompt engineering requires matching the right framework to each task, applying structured enhancement patterns, and evaluating quality through calibrated scoring systems (CLEAR, EVOKE, VISUAL) to achieve consistent, measurable excellence.
+Systematic prompt engineering requires matching the right framework to each task, applying structured enhancement patterns, and evaluating quality through CLEAR scoring to achieve consistent, measurable excellence.
 
 ### When to Use
 
-- Selecting the optimal framework for a prompt task (RCAF, COSTAR, RACE, TIDD-EC, CRAFT, VIBE, VIBE-MP, FRAME, MOTION, etc.)
-- Evaluating prompt quality using CLEAR, EVOKE, EVOKE-MP, or VISUAL scoring
+- Selecting the optimal framework for a prompt task (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT)
+- Evaluating prompt quality using CLEAR scoring
 - Applying enhancement patterns and refinement techniques
 - Combining frameworks for advanced use cases
 - Optimizing token usage across frameworks
@@ -39,10 +39,6 @@ Systematic prompt engineering requires matching the right framework to each task
 | **TIDD-EC** | Task, Instructions, Do's, Don'ts, Examples, Context          | Quality-critical, compliance     | Brainstorming            | 93%          |
 | **CRISPE**  | Capacity, Insight, Statement, Personality, Experiment        | Strategy, exploration            | Routine tasks            | 87%          |
 | **CRAFT**   | Context, Role, Action, Format, Target                        | Complex projects, planning       | Simple queries           | 91%          |
-| **VIBE**    | Vision, Inspiration, Behavior, Experience                    | Visual UI concepting, design     | Precision/specification  | 90%          |
-| **VIBE-MP** | VIBE + MagicPath calibration                                 | MagicPath.ai UI design           | Non-MagicPath platforms  | 92%          |
-| **FRAME**   | Focus, Rendering, Atmosphere, Modifiers, Exclusions          | Image generation optimization    | Precision/text prompts   | 90%          |
-| **MOTION**  | Movement, Origin, Temporal, Intention, Orchestration, Nuance | Video generation                 | Static/image prompts     | 90%          |
 
 ### Framework Selection Algorithm
 
@@ -85,20 +81,6 @@ select_optimal_framework:
         - if: "precision_critical" then add: 7
         - if: "compliance_needs" then add: 5
 
-    vibe:
-      base_score: 2
-      modifiers:
-        - if: "visual_ui_concepting" then add: 10
-        - if: "precision_critical" then subtract: 10
-
-    vibe_mp:
-      base_score: 2
-      modifiers:
-        - if: "magicpath_detected" then add: 12
-        - if: "multi_page_flow" then add: 5
-        - if: "user_journey_design" then add: 3
-        - if: "precision_critical" then subtract: 10
-
   select_best:
     method: highest_score
     output: [primary, confidence, alternative, reasoning]
@@ -113,25 +95,6 @@ select_optimal_framework:
 | Any        | No      | Yes      | Yes      | No        | **COSTAR**  |
 | 6+         | No      | No       | No       | Yes       | **TIDD-EC** |
 | 7-10       | No      | Yes      | No       | Yes       | **CRAFT**   |
-| Visual UI  | -       | -        | Yes      | No        | **VIBE**    |
-| MagicPath  | -       | -        | Yes      | No        | **VIBE-MP** |
-| Image gen  | -       | -        | Yes      | No        | **FRAME**   |
-| Video gen  | -       | -        | Yes      | No        | **MOTION**  |
-
-### Design Directions (8 Total)
-
-Apply these directions with the VIBE framework for UI concepting:
-
-| Direction                    | Reference Products        | Emotional Core                   |
-| ---------------------------- | ------------------------- | -------------------------------- |
-| **Precision & Density**      | Linear, Raycast           | Efficiency, power, mastery       |
-| **Warmth & Approachability** | Notion, Coda              | Comfort, collaboration           |
-| **Sophistication & Trust**   | Stripe, Mercury           | Trust, security, professionalism |
-| **Boldness & Clarity**       | Vercel                    | Decisiveness, modernity          |
-| **Utility & Function**       | GitHub, VS Code           | Focus, productivity              |
-| **Data & Analysis**          | Mixpanel, Amplitude       | Understanding, insight           |
-| **Journey & Flow**           | Duolingo, Headspace       | Progress, achievement, discovery |
-| **Narrative & Story**        | Apple Pages, Stripe Atlas | Storytelling, revelation         |
 
 <!-- /ANCHOR:framework-library -->
 <!-- ANCHOR:framework-deep-dives -->
@@ -190,119 +153,193 @@ layered_rcaf:
 | Edge Case    | Unusual scenario | Special handling considerations |
 | Anti-Pattern | What to avoid    | Why to avoid (explanation)      |
 
-### FRAME Framework (Image Generation)
+### RACE Urgency Patterns
 
-| Element        | Focus                 | Core Question                    |
-| -------------- | --------------------- | -------------------------------- |
-| **F**ocus      | Subject & Composition | "What is the viewer looking at?" |
-| **R**endering  | Medium & Style        | "How should it be visualized?"   |
-| **A**tmosphere | Lighting & Mood       | "What feeling does it evoke?"    |
-| **M**odifiers  | Technical Parameters  | "What constraints apply?"        |
-| **E**xclusions | Negative Prompts      | "What should be avoided?"        |
-
-**FRAME Structure:**
+**Rapid Action Template:**
 
 ```yaml
-frame_structure:
-  focus:
-    subject: "[Primary subject with descriptive adjectives]"
-    composition: "[Shot type, framing, perspective]"
-  rendering:
-    medium: "[Photography, digital art, oil painting, etc.]"
-    style: "[Art movement, aesthetic, technique]"
-  atmosphere:
-    lighting: "[Natural, studio, dramatic, etc.]"
-    mood: "[Emotional quality of the scene]"
-    color: "[Color palette, temperature]"
-  modifiers:
-    platform_specific: "[--ar, --s for MJ; weights for SD]"
-  exclusions:
-    negative: "[Elements to avoid]"
+rapid_race:
+  role:
+    identity: "[Specialist with time-critical expertise]"
+    authority: "[Decision-making level]"
+  action:
+    primary: "[Single clear directive]"
+    method: "[Fastest effective approach]"
+    deliverable: "[Concrete output in under N minutes]"
+  context:
+    urgency: "[Why speed matters now]"
+    constraints: "[Hard limits: time, resources, scope]"
+    prior_work: "[What already exists to build on]"
+  execute:
+    success_criteria: "[Measurable outcome]"
+    format: "[Output structure]"
+    fallback: "[If primary approach fails, do X]"
 ```
 
-**FRAME Vocabulary Banks (30 Sub-Categories):**
+**RACE Compression Table:**
 
-| Component          | Sub-Categories                                                                                                                 | Examples                                                              |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| **F - Focus**      | Shot Types, Camera Angles, Subject Hierarchy, Spatial Relationships, Composition Techniques, Subject Specificity               | Extreme wide, eye-level, primary/secondary/background, rule of thirds |
-| **R - Rendering**  | Photography Styles, Illustration Styles, 3D Rendering, Movement & Era Aesthetics, Anime Sub-Types, Fine Art                    | Editorial, cel-shaded, Pixar, cyberpunk, chibi, impressionist         |
-| **A - Atmosphere** | Lighting (Kelvin), Mood Vocabulary, Color Temperature, Weather/Environmental, Time of Day, Lighting Techniques, Depth of Field | Golden hour (2700K), ethereal, warm earth palette, volumetric fog     |
-| **M - Modifiers**  | Aspect Ratios, Quality Markers, Emphasis Syntax, Reference Parameters, Camera Settings, Render Settings                        | 16:9, --sref, (element:1.4), f/1.4                                    |
-| **E - Exclusions** | Negative Categories, Universal Foundation, Platform Handling, Positive Rephrasing, Style-Specific                              | Quality issues, anatomical flaws, DALL-E rephrasing                   |
+| Element   | Full Form                | Compressed (≤10 tokens) | When to Compress         |
+| --------- | ------------------------ | ----------------------- | ------------------------ |
+| **Role**  | Detailed expertise       | "[Domain] expert"       | Complexity ≤ 3           |
+| **Action** | Multi-step instructions | Single verb + object    | Single-output tasks      |
+| **Context** | Full background        | Key constraint only     | Context is self-evident  |
+| **Execute** | Criteria + format      | Output type only        | Format is obvious        |
 
-**Platform Modifiers:**
+**RACE Pattern Summary:**
 
-| Platform             | Key Parameters                                       | Negatives                |
-| -------------------- | ---------------------------------------------------- | ------------------------ |
-| **Midjourney**       | `--ar`, `--s`, `--chaos`, `--sref`, `--cref`, `--no` | Partial (`--no`)         |
-| **DALL-E 3**         | Size, Style (vivid/natural)                          | No (rephrase positively) |
-| **Stable Diffusion** | `(weight:1.5)`, CFG scale, steps                     | Yes (dedicated field)    |
-| **Flux**             | Guidance scale, HEX colors                           | No (ignored)             |
-| **Imagen 4**         | Aspect ratio, multi-reference                        | No                       |
-| **Ideogram**         | Text rendering focus                                 | No                       |
-| **Leonardo**         | Style presets                                        | Yes                      |
-| **Seedream**         | Speed optimization                                   | No                       |
+| Pattern            | Key Feature                  | When to Use                          |
+| ------------------ | ---------------------------- | ------------------------------------ |
+| Rapid RACE         | Minimal tokens, max speed    | Time-critical single-output tasks    |
+| RACE + Constraint  | Hard limits front-loaded     | Urgent tasks with non-negotiables    |
+| Iterative RACE     | Execute → feedback → re-RACE | Rapid prototyping cycles             |
 
-### MOTION Framework (Video Generation)
+### CIDI Process Documentation Patterns
 
-| Element           | Focus                    | Core Question                  |
-| ----------------- | ------------------------ | ------------------------------ |
-| **M**ovement      | Subject & Camera Motion  | "How does everything move?"    |
-| **O**rigin        | Starting Point/Reference | "What is the visual anchor?"   |
-| **T**emporal      | Duration & Pacing        | "How does time flow?"          |
-| **I**ntention     | Narrative Purpose        | "What story is being told?"    |
-| **O**rchestration | Scene Choreography       | "How do elements interact?"    |
-| **N**uance        | Subtle Details           | "What refinements are needed?" |
-
-**MOTION Structure:**
+**Layered Instructions Template:**
 
 ```yaml
-motion_structure:
-  movement:
-    camera: "[Static, pan, tilt, dolly, crane, handheld, drone]"
-    subject: "[Walking, running, floating, spinning, swaying]"
-    direction: "[Left to right, ascending, approaching, retreating]"
-  origin:
-    reference_type: "[Text-to-video, image-to-video]"
-    establishing: "[Opening shot description]"
-  temporal:
-    duration: "[5 sec, 10 sec - platform dependent]"
-    pacing: "[Slow motion, real-time, time-lapse]"
-  intention:
-    narrative: "[What story or feeling to convey]"
-    purpose: "[Commercial, artistic, documentary]"
-  orchestration:
-    choreography: "[How elements move together]"
-    transitions: "[Cut, dissolve, continuous shot]"
-  nuance:
-    details: "[Atmospheric effects, subtle movements]"
-    physics: "[Realistic, stylized, dream-like]"
+layered_cidi:
+  context:
+    domain: "[Knowledge area]"
+    audience_level: "[Beginner / Intermediate / Advanced]"
+    environment: "[Tools, platforms, prerequisites]"
+  instructions:
+    primary: "[Core task to accomplish]"
+    sequence:
+      step_1: "[First action with expected result]"
+      step_2: "[Next action building on step 1]"
+      step_3: "[Verification or checkpoint]"
+    style: "[Directive / Tutorial / Reference]"
+  details:
+    specifications: "[Exact values, thresholds, formats]"
+    exceptions: "[When to deviate from standard flow]"
+    troubleshooting: "[Common failure points and fixes]"
+  input:
+    required: "[What the user must provide]"
+    optional: "[What enhances the output]"
+    format: "[Expected input structure]"
 ```
 
-**Critical Video Principles:**
+**Input Specification Patterns:**
 
-1. Describe motion, not static scenes ("walks slowly" not "is walking").
-2. Avoid negative prompts (most video AI ignores them).
-3. Keep clips short (5-10 seconds for consistency).
-4. Specify camera movement first.
-5. Image-to-video: 20-40 words; Text-to-video: 50-80 words.
+| Input Type       | Specification Pattern                    | Example                                 |
+| ---------------- | ---------------------------------------- | --------------------------------------- |
+| **Structured**   | Schema + validation rules                | "JSON with required fields: name, type" |
+| **Freeform**     | Boundaries + examples                    | "1-3 paragraphs describing the issue"   |
+| **Conditional**  | If-then input requirements               | "If API: include endpoint; if CLI: include command" |
+| **Multi-source** | Priority ordering + merge rules          | "Primary: user data; Fallback: defaults" |
 
-**Platform Syntax (Top 5):**
+**CIDI Pattern Summary:**
 
-| Platform             | Max Duration | Key Features                                | Audio     |
-| -------------------- | ------------ | ------------------------------------------- | --------- |
-| **Runway Gen-4/4.5** | 10 sec       | 6 camera movement types, Motion Brush       | No        |
-| **Sora**             | 20 sec       | Natural language, physics simulation        | No        |
-| **Kling 2.5/2.6**    | 5 min        | Motion brush, reversed pan/tilt terminology | Yes (2.6) |
-| **Veo 3.1+**         | 148 sec      | Native audio, cinematography                | Yes       |
-| **Pika 2.5**         | 10 sec       | Pikaswaps, lip sync                         | No        |
+| Pattern          | Key Feature                     | When to Use                          |
+| ---------------- | ------------------------------- | ------------------------------------ |
+| Tutorial CIDI    | Step-by-step with checkpoints   | Teaching new processes               |
+| SOP CIDI         | Strict sequence, no deviation   | Compliance-critical procedures       |
+| Onboarding CIDI  | Progressive detail revelation   | New user or system introduction      |
 
-**Master Prompt Formula:**
+### CRISPE Strategic Exploration Patterns
 
-| Mode      | Formula                                                                   |
-| --------- | ------------------------------------------------------------------------- |
-| **Image** | Subject then Setting then Lighting then Style then Camera then Technical                 |
-| **Video** | Camera Movement then Subject then Action then Setting then Atmosphere then Style then Audio |
+**Strategy Exploration Template:**
+
+```yaml
+strategic_crispe:
+  capacity:
+    role: "[Strategic advisor with domain expertise]"
+    perspective: "[Industry / academic / cross-functional]"
+    thinking_style: "[First-principles / analogical / systems]"
+  insight:
+    background: "[Key data, trends, or observations]"
+    assumptions: "[What we believe to be true and why]"
+    unknowns: "[What we need to discover]"
+  statement:
+    challenge: "[Core question or problem to explore]"
+    scope: "[Boundaries of exploration]"
+    success: "[What a good answer looks like]"
+  personality:
+    tone: "[Analytical / visionary / pragmatic]"
+    risk_appetite: "[Conservative / balanced / aggressive]"
+    communication: "[Executive summary / detailed analysis / recommendation-first]"
+  experiment:
+    approach: "[How to test or validate findings]"
+    alternatives: "[Generate N distinct options]"
+    evaluation: "[Criteria for comparing options]"
+```
+
+**Experiment Design Patterns:**
+
+| Experiment Type    | Structure                          | When to Use                           |
+| ------------------ | ---------------------------------- | ------------------------------------- |
+| **A/B Comparison** | Two approaches, same criteria      | Clear binary choice                   |
+| **Multi-Option**   | 3-5 alternatives with trade-offs   | Complex decision with many variables  |
+| **Staged**         | Sequential experiments building on results | Uncertain problem space          |
+| **Constraint-First** | Define limits, then explore within | Resource-bounded exploration          |
+
+**CRISPE Pattern Summary:**
+
+| Pattern               | Key Feature                    | When to Use                          |
+| --------------------- | ------------------------------ | ------------------------------------ |
+| Market Analysis CRISPE | Data-driven insight focus     | Competitive analysis, market entry   |
+| Innovation CRISPE     | Divergent thinking emphasis    | New product ideation, blue-sky       |
+| Decision CRISPE       | Evaluation criteria up front   | Executive decisions, investment choices |
+
+### CRAFT Comprehensive Planning Patterns
+
+**Multi-Stakeholder Template:**
+
+```yaml
+comprehensive_craft:
+  context:
+    situation: "[Current state and background]"
+    stakeholders: "[Who is affected and their priorities]"
+    constraints: "[Budget, timeline, technical, regulatory]"
+    dependencies: "[What this relies on or blocks]"
+  role:
+    primary: "[Lead expertise area]"
+    secondary: "[Supporting perspective]"
+    authority: "[Decision scope and escalation path]"
+  action:
+    objective: "[Primary goal with measurable outcome]"
+    decomposition:
+      phase_1: "[Foundation work]"
+      phase_2: "[Core implementation]"
+      phase_3: "[Validation and delivery]"
+    methodology: "[Approach and reasoning]"
+  format:
+    structure: "[Document type and organization]"
+    detail_level: "[Executive / operational / technical]"
+    deliverables: "[List of concrete outputs]"
+  target:
+    audience: "[Primary and secondary consumers]"
+    success_metrics: "[Quantifiable outcomes]"
+    timeline: "[Key milestones and deadlines]"
+```
+
+**Nested Action Decomposition:**
+
+| Level       | Scope               | Detail                                   |
+| ----------- | -------------------- | ---------------------------------------- |
+| **Objective** | What to achieve    | Single measurable outcome                |
+| **Phase**   | Major work stream    | 2-4 phases with clear boundaries         |
+| **Task**    | Actionable item      | Specific deliverable with owner          |
+| **Step**    | Atomic instruction   | Single action, verifiable result         |
+
+**CRAFT vs RCAF Decision Guidance:**
+
+| Factor              | Choose RCAF           | Choose CRAFT              |
+| ------------------- | --------------------- | ------------------------- |
+| Stakeholders        | Single audience       | Multiple audiences        |
+| Complexity          | ≤ 6                   | 7-10                      |
+| Timeline            | Single deliverable    | Phased delivery           |
+| Success criteria    | Implicit or simple    | Multi-metric, measurable  |
+| Dependencies        | None or minimal       | Cross-functional          |
+
+**CRAFT Pattern Summary:**
+
+| Pattern           | Key Feature                       | When to Use                           |
+| ----------------- | --------------------------------- | ------------------------------------- |
+| Enterprise CRAFT  | Governance layers, approval gates | Organizational change, policy         |
+| Research CRAFT    | Hypothesis-driven, evidence-based | Technical investigation, feasibility  |
+| Product CRAFT     | User-centred, iterative phases    | Feature planning, roadmap items       |
 
 <!-- /ANCHOR:framework-deep-dives -->
 <!-- ANCHOR:pattern-combinations -->
@@ -551,8 +588,6 @@ repair_framework:
 <!-- ANCHOR:clear-evaluation -->
 ## 10. CLEAR Evaluation Mastery
 
-> For Visual UI Concepting (`$vibe`, `$v`), use **EVOKE scoring**. For Image/Video (`$image`, `$video`), use **VISUAL scoring**.
-
 ### CLEAR Dimensions (50 points)
 
 | Dimension       | Points | Weight | Assessment Criteria                                |
@@ -597,88 +632,67 @@ contextual_clear_scoring:
 | Arrangement / Reuse      | 0.6         | Good structure enables templates    |
 | Expression / Correctness | 0.5         | Clarity prevents misinterpretation  |
 
-### CLEAR vs EVOKE vs VISUAL
+### Per-Dimension Scoring Rubrics
 
-| Criteria         | CLEAR                | EVOKE                | EVOKE-MP                  | VISUAL                   |
-| ---------------- | -------------------- | -------------------- | ------------------------- | ------------------------ |
-| **Use When**     | Precision prompts    | Visual UI concepting | MagicPath.ai UI           | Image/video generation   |
-| **Modes**        | $improve, $refine    | $vibe, $v            | $vibe + magicpath context | $image, $video           |
-| **Philosophy**   | Completeness & logic | Evocativeness        | Creative Director brief   | Specificity & atmosphere |
-| **Total Points** | 50                   | 50                   | 50                        | 60 (image) / 70 (video)  |
-| **Threshold**    | 40+                  | 40+                  | 42+                       | 48+ / 56+                |
+**C - Correctness (0-10):**
 
-**Standard EVOKE Weights (50 points):**
+| Score | Criteria |
+|---|---|
+| 0-3 | Factual errors, contradictory instructions, invalid assumptions |
+| 4-6 | Mostly accurate but contains minor contradictions or unverified claims |
+| 7-8 | Accurate, internally consistent, valid assumptions throughout |
+| 9-10 | Flawless accuracy, all claims verified, zero contradictions, robust assumptions |
 
-- **Evocative:** 15pts - Creates vivid mental imagery
-- **Visual:** 10pts - Paints a picture AI can render
-- **Open:** 10pts - Leaves room for creativity
-- **Kinetic:** 10pts - Suggests motion and life
-- **Emotional:** 5pts - Conveys experiential goals
+**L - Logic (0-10):**
 
-**EVOKE-MP Weight Calibration (MagicPath.ai):**
+| Score | Criteria |
+|---|---|
+| 0-3 | Broken reasoning, missing cause-effect, illogical conditionals |
+| 4-6 | Basic reasoning present but gaps in cause-effect chains or edge cases |
+| 7-8 | Sound reasoning, clear cause-effect, conditionals handled properly |
+| 9-10 | Rigorous logic, all edge cases addressed, reasoning chains complete and verifiable |
 
-- **Kinetic:** 13pts (vs 10 standard) - Critical for pathfinding
-- **Visual:** 12pts (vs 10 standard) - Higher spatial clarity
-- **Evocative:** 12pts (vs 15 standard) - Clear directional language
-- **Open:** 8pts (vs 10 standard) - More structured flows
-- **Emotional:** 5pts (same)
+**E - Expression (0-15):**
+
+| Score | Criteria |
+|---|---|
+| 0-5 | Vague, ambiguous, imprecise language that invites misinterpretation |
+| 6-9 | Adequate clarity but contains jargon, redundancy, or imprecise phrasing |
+| 10-12 | Clear, specific, minimal ambiguity, well-chosen vocabulary |
+| 13-15 | Surgical precision, zero ambiguity, every word earns its place, exemplary clarity |
+
+**A - Arrangement (0-10):**
+
+| Score | Criteria |
+|---|---|
+| 0-3 | Disorganised, no clear structure, information scattered |
+| 4-6 | Basic structure but illogical ordering or inconsistent formatting |
+| 7-8 | Well-organised, logical flow, consistent formatting, clear hierarchy |
+| 9-10 | Optimal structure, information architecture serves comprehension perfectly |
+
+**R - Reusability (0-5):**
+
+| Score | Criteria |
+|---|---|
+| 0-1 | Hardcoded, single-use, no adaptability |
+| 2-3 | Some parameterisation but limited flexibility |
+| 4-5 | Fully templated, easily adapted to new contexts, parameters clearly marked |
+
+**Dimension Floor Thresholds:**
+
+| Dimension | Floor | Max | Weight |
+|---|---|---|---|
+| **C** - Correctness | 7 | 10 | 20% |
+| **L** - Logic | 7 | 10 | 20% |
+| **E** - Expression | 10 | 15 | 30% |
+| **A** - Arrangement | 7 | 10 | 20% |
+| **R** - Reusability | 3 | 5 | 10% |
+
+A deliverable scoring 40+ overall but failing a per-dimension floor must still be revised until the floor is met.
 
 <!-- /ANCHOR:clear-evaluation -->
-<!-- ANCHOR:visual-scoring -->
-## 11. Visual Scoring for Image & Video
-
-### VISUAL - Image Mode (60 points)
-
-| Dimension       | Points | Threshold | Criteria                                 |
-| --------------- | ------ | --------- | ---------------------------------------- |
-| **V**ivid       | 15     | 12+       | Clear mental imagery, specific details   |
-| **I**ntentional | 10     | 8+        | Clear purpose, defined composition       |
-| **S**tyled      | 10     | 8+        | Defined aesthetic, consistent references |
-| **U**nambiguous | 10     | 8+        | No conflicts, single interpretation      |
-| **A**tmospheric | 10     | 8+        | Lighting, mood, color defined            |
-| **L**ayered     | 5      | 4+        | Depth, foreground/background             |
-| **Total**       | **60** | **48+**   | Quality threshold                        |
-
-### VISUAL - Video Mode (70 points)
-
-Adds: **M**otion (10 points, 8+ threshold) - Camera and subject motion described.
-
-### VISUAL Scoring Algorithm
-
-```yaml
-calculate_visual_score:
-  input: [prompt, mode]  # mode: "image" or "video"
-
-  dimensions:
-    vivid: {weight: 15, checks: [specific_subject, concrete_details, sensory_elements]}
-    intentional: {weight: 10, checks: [defined_composition, clear_hierarchy, purpose_evident]}
-    styled: {weight: 10, checks: [art_style_defined, consistent_aesthetic, technique_mentioned]}
-    unambiguous: {weight: 10, checks: [no_conflicting_styles, single_interpretation, consistent_mood]}
-    atmospheric: {weight: 10, checks: [lighting_defined, mood_conveyed, color_palette_implied]}
-    layered: {weight: 5, checks: [foreground_background, depth_of_field, spatial_relationships]}
-    motion: {weight: 10, video_only: true, checks: [camera_movement, subject_motion, temporal_pacing]}
-
-  process:
-    - determine_mode
-    - score_each_dimension: [0-max_weight]
-    - calculate_total
-    - apply_threshold: 48 (image) or 56 (video)
-```
-
-### Common VISUAL Fixes
-
-| Issue             | Impact         | Fix                            |
-| ----------------- | -------------- | ------------------------------ |
-| Vague subject     | -5 Vivid       | Specify subject with details   |
-| No composition    | -4 Intentional | Add shot type + framing        |
-| Missing style     | -4 Styled      | Define art style or medium     |
-| Conflicting terms | -5 Unambiguous | Choose dominant style          |
-| No lighting       | -4 Atmospheric | Add lighting direction + quality |
-| No motion (video) | -6 Motion      | Add camera movement + action verbs |
-
-<!-- /ANCHOR:visual-scoring -->
 <!-- ANCHOR:advanced-scoring -->
-## 12. Advanced Scoring Techniques
+## 11. Advanced Scoring Techniques
 
 ### Multi-Pass Scoring
 
@@ -709,7 +723,7 @@ comparative_scoring:
 
 <!-- /ANCHOR:advanced-scoring -->
 <!-- ANCHOR:weakness-detection -->
-## 13. Weakness Detection & Analysis
+## 12. Weakness Detection & Analysis
 
 ```yaml
 detect_prompt_weaknesses:
@@ -744,7 +758,7 @@ detect_prompt_weaknesses:
 
 <!-- /ANCHOR:weakness-detection -->
 <!-- ANCHOR:use-case-templates -->
-## 14. Use Case Templates
+## 13. Use Case Templates
 
 ### Software Development
 
@@ -790,7 +804,7 @@ exploratory_data_analysis:
 
 <!-- /ANCHOR:use-case-templates -->
 <!-- ANCHOR:mastery-principles -->
-## 15. Mastery Principles
+## 14. Mastery Principles
 
 ### Ten Commandments of Prompt Excellence
 
@@ -837,7 +851,7 @@ excellence_formula:
 
 <!-- /ANCHOR:mastery-principles -->
 <!-- ANCHOR:quick-reference -->
-## 16. Quick Reference Card
+## 15. Quick Reference Card
 
 ### Framework Quick Select
 
@@ -850,10 +864,6 @@ excellence_formula:
 | 5-7, creative       | CRISPE    |
 | 6-8, precision      | TIDD-EC   |
 | 7-10, comprehensive | CRAFT     |
-| Visual UI           | VIBE      |
-| MagicPath.ai        | VIBE-MP   |
-| Image generation    | FRAME     |
-| Video generation    | MOTION    |
 
 ### Enhancement Priority Matrix
 
@@ -876,7 +886,6 @@ excellence_formula:
 | Missing metrics | Add success criteria          |
 | Poor expression | Simplify language             |
 | Not reusable    | Extract parameters            |
-| Visual UI       | Switch to VIBE                |
 
 ### Power Combinations
 
@@ -897,6 +906,6 @@ excellence_formula:
 | 60-69% | Adequate  | Targeted improvements   | Medium  |
 | <60%   | Weak      | Significant enhancement | High    |
 
-Applies to CLEAR (50pt), EVOKE (50pt), VISUAL Image (60pt), VISUAL Video (70pt).
+Applies to CLEAR (50pt).
 
 <!-- /ANCHOR:quick-reference -->

@@ -20,9 +20,9 @@ DEPTH is the single thinking system for all prompt improvement work. Five phases
 
 - Loaded automatically for all prompt improvement tasks within the sk-prompt-improver skill
 - Any prompt enhancement requiring structured multi-phase analysis (Discover, Engineer, Prototype, Test, Harmonize)
-- Energy-level routing: Raw passthrough, Quick concise, Standard default, Deep complex, Creative visual/image/video
+- Energy-level routing: Raw passthrough, Quick concise, Standard default, Deep complex
 - Multi-perspective analysis (min 3, target 5) with cognitive rigor techniques
-- CLEAR quality scoring (40+/50) and mode-specific scoring for Creative energy (EVOKE, VISUAL)
+- CLEAR quality scoring (40+/50)
 - Proof-through-output transparency for deliverables
 
 ### Core Definition
@@ -39,7 +39,6 @@ This table is the source of truth. Other files reference it.
 | **Quick** | D - P - H | 1-2 | Pick 1 | `$short`/`$s`: concise enhancement, quick refinements |
 | **Standard** | D - E - P - T - H | 3 minimum (BLOCKING), target 5 | Pick 1-2 relevant | Default for all standard modes |
 | **Deep** | D(extended) - E - P - T - H | All 5 (BLOCKING) | All 5 applied | `$deep`/`$d` or complex prompts |
-| **Creative** | D - E - P - T - H (abbreviated) | Mode-specific (5) | Pick 1-2 relevant | `$vibe`, `$image`, `$video` |
 
 ### Fundamental Principles
 
@@ -47,7 +46,7 @@ This table is the source of truth. Other files reference it.
 |---|---|
 | **Transparent Professional Excellence** | Apply professional depth automatically. Explain the technical process AFTER delivery. Guarantee quality with visibility. |
 | **Single-Point Interaction** | Ask one comprehensive question per task. Never answer own questions. Always wait for the user's response. |
-| **Energy-Appropriate Rigor** | Scale depth proportional to task. Raw for passthrough, Quick for concise, Standard by default, Deep for complexity, Creative for visual/image/video. |
+| **Energy-Appropriate Rigor** | Scale depth proportional to task. Raw for passthrough, Quick for concise, Standard by default, Deep for complexity. |
 | **Prove Through Output** | The deliverable must prove thinking happened: Mode, Framework, Perspectives used, score. |
 | **Format Compliance** | Use latest format guides (JSON, YAML, Markdown). Maintain consistent structure across deliverables. |
 
@@ -69,9 +68,6 @@ routing:
   deep:
     trigger: "$deep | $d | complex prompt detected"
     action: "Extended Discover. All 5 phases. All 5 perspectives (blocking). All 5 techniques."
-  creative:
-    trigger: "$vibe | $image | $video"
-    action: "Mode-specific enhancement. All 5 phases (abbreviated). Mode-specific 5 perspectives."
 ```
 
 ### DEPTH Round Configuration
@@ -81,9 +77,6 @@ Configure the maximum number of DEPTH improvement rounds per mode:
 | Mode | Max Rounds | Rationale |
 |---|---|---|
 | **Text** (standard, deep) | 10 | Text prompts benefit from iterative refinement |
-| **Visual** (`$vibe`) | 5 | Visual prompts converge faster |
-| **Image** (`$image`) | 5 | Image generation prompts converge faster |
-| **Video** (`$video`) | 5 | Video prompts converge faster |
 | **Short** (`$short`) | 3 | Quick refinements need fewer rounds |
 | **Raw** (`$raw`) | 0 | Passthrough mode; no enhancement rounds |
 
@@ -188,9 +181,9 @@ Final polish, format verification, delivery preparation.
 
 ```yaml
 system_state:
-  energy_level: [raw, quick, standard, deep, creative]
+  energy_level: [raw, quick, standard, deep]
   current_phase: [discover, engineer, prototype, test, harmonize]
-  perspectives_count: integer   # raw: 0, standard: MUST be >= 3, deep: MUST be 5, creative: mode-specific 5
+  perspectives_count: integer   # raw: 0, standard: MUST be >= 3, deep: MUST be 5
   perspectives_list: []         # MANDATORY: tracks WHICH perspectives were used
   clear_scores: {}              # Target: 40+/50, dimension floors enforced
   framework_selected: string
@@ -218,8 +211,6 @@ Analyse once during Discover, then let findings inform all subsequent enhancemen
 
 Standard: 3 minimum (BLOCKING), target 5. Deep: all 5 (BLOCKING). Quick: 1-2 recommended. Raw: 0.
 
-**Creative energy** uses mode-specific perspectives defined in template files (Image Mode, Video Mode, Visual Mode), 5 perspectives per mode, BLOCKING.
-
 ### Cognitive Techniques (Optional Toolkit)
 
 Five techniques are available as tools. Apply when they add value; the energy level guides usage.
@@ -230,7 +221,7 @@ Five techniques are available as tools. Apply when they add value; the energy le
 4. **Assumption Audit:** Surface hidden assumptions, classify as validated/questionable/unknown, challenge systematically. Flag with `[Assumes: X]`.
 5. **Mechanism First:** Explain WHY before WHAT. Present principle, explain why it works, then show tactics. Structure: WHY, HOW, WHAT.
 
-**Usage by energy level:** Raw = none. Quick = pick 1. Standard = 1-2 relevant. Deep = all 5 applied. Creative = 1-2 relevant.
+**Usage by energy level:** Raw = none. Quick = pick 1. Standard = 1-2 relevant. Deep = all 5 applied.
 
 ### Quality Gates (Pre-Delivery, Standard/Deep/Creative)
 
@@ -348,16 +339,6 @@ context_adjustments:
   template_creation: { reusability: +10%, arrangement: +5% }
 ```
 
-### Mode-Specific Scoring (Creative Energy)
-
-| Mode | Command | Framework | Max Score | Threshold |
-|---|---|---|---|---|
-| **Visual** | `$vibe`, `$v` | VIBE / VIBE-MP | 50 (EVOKE) | 40+/50 (42+ MagicPath) |
-| **Image** | `$image`, `$img` | FRAME | 60 (VISUAL) | 48+/60 |
-| **Video** | `$video`, `$vid` | MOTION | 70 (VISUAL) | 56+/70 |
-
-Refer to respective template files (Visual Mode, Image Mode, Video Mode) for full specifications. CLEAR scores 50 points for standard mode.
-
 ### Phase-to-Dimension Mapping
 
 | DEPTH Phase | CLEAR Dimension | Validation | Output |
@@ -397,7 +378,7 @@ Every deliverable must include these fields. If any field is missing, thinking h
 | Mode | Which mode produced this | Traceability |
 | Framework | Which framework was applied | Proves engineering happened |
 | Perspectives | Count and which ones were used | Proves multi-angle analysis |
-| CLEAR Score | Final score out of 50 (or mode-specific score) | Proves quality validation |
+| CLEAR Score | Final score out of 50 | Proves quality validation |
 
 ### Two-Layer Transparency Model
 
@@ -444,13 +425,13 @@ For structural recovery when enhancement fails validation repeatedly, reference 
 
 ### Energy Level Summary
 
-| | Raw | Quick | Standard | Deep | Creative |
-|---|---|---|---|---|---|
-| **Phases** | None | D - P - H | D - E - P - T - H | D(ext) - E - P - T - H | D - E - P - T - H (abbreviated) |
-| **Perspectives** | 0 | 1-2 | 3+ blocking | 5 blocking | Mode-specific (5) |
-| **Techniques** | None | Pick 1 | 1-2 relevant | All 5 | 1-2 relevant |
-| **Scoring** | None | CLEAR 40+/50 | CLEAR 40+/50 | CLEAR 40+/50 | EVOKE/VISUAL per mode |
-| **Trigger** | `$raw` | `$short`/`$s` | Default | `$deep`/`$d` or complex | `$vibe`, `$image`, `$video` |
+| | Raw | Quick | Standard | Deep |
+|---|---|---|---|---|
+| **Phases** | None | D - P - H | D - E - P - T - H | D(ext) - E - P - T - H |
+| **Perspectives** | 0 | 1-2 | 3+ blocking | 5 blocking |
+| **Techniques** | None | Pick 1 | 1-2 relevant | All 5 |
+| **Scoring** | None | CLEAR 40+/50 | CLEAR 40+/50 | CLEAR 40+/50 |
+| **Trigger** | `$raw` | `$short`/`$s` | Default | `$deep`/`$d` or complex |
 
 ### Phase Checklist
 
@@ -464,7 +445,7 @@ H -- HARMONIZE:   [ ] Output metadata  [ ] Perspectives confirmed  [ ] Format ve
 
 ### Must-Have Rules
 
-**Always:** DEPTH is the one thinking system. Apply perspectives per energy level. Use CLEAR scoring to validate quality (Standard/Deep). Use mode-specific scoring for Creative. Include output metadata to prove thinking. Apply format guides.
+**Always:** DEPTH is the one thinking system. Apply perspectives per energy level. Use CLEAR scoring to validate quality (Standard/Deep). Include output metadata to prove thinking. Apply format guides.
 
 **Never:** Skip perspectives at Standard/Deep (BLOCKING). Answer own questions. Expand scope. Overwhelm with internal detail. Claim done without output metadata.
 
