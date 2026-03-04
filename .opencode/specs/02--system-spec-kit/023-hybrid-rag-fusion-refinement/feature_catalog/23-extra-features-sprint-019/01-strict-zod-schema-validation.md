@@ -2,7 +2,7 @@
 
 ## Current Reality
 
-**IMPLEMENTED (Sprint 019).** All 24 MCP tool inputs (L1-L7) move to Zod runtime schemas in `mcp_server/tool-schemas.ts`, controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors. Adds `zod` dependency.
+**IMPLEMENTED (Sprint 019).** All 28 MCP tool inputs (L1-L7) have Zod runtime schemas defined in `mcp_server/schemas/tool-input-schemas.ts` (re-exported via `tool-schemas.ts`), controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors and logged to stderr for audit trail (CHK-029). Adds `zod` dependency.
 
 ## Source Metadata
 
