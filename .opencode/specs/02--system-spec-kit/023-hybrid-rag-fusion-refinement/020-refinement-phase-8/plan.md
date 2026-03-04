@@ -47,6 +47,7 @@ The plan prioritizes high-value low-risk changes first: architecture contract do
 - [x] Checklist P0 items verified with command/file evidence.
 - [ ] Triple ultra-think review P0 blockers resolved (Phase 4).
 - [ ] Review remediation checklist items verified.
+- [ ] Feature catalog implementation-doc parity remediation completed (Phase 6).
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -79,9 +80,11 @@ Contract-first layered architecture.
 | Phase 2b: Cleanup & Doc Gaps | T018-T020 | ~100 (docs+code) | Low (2-3h) | Low |
 | Phase 3: Enforcement | T015-T017 | ~150 (code) | Medium (3-4h) | Medium |
 | Phase 4: Review Remediation | T021-T045 | ~300 (code+docs) | Medium-High (6-10h) | Medium |
-| **Total** | **49 tasks** | **~1070** | **~22-33h** | **Medium** |
+| Phase 5: Enforcement Gaps | T046-T049 | ~80 (code+docs) | Low (1-2h) | Low |
+| Phase 6: Feature Catalog Parity | T050-T070 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
+| **Total** | **70 tasks** | **~1500** | **~31-45h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -130,6 +133,33 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 - [ ] Define growth policy for `handler-utils.ts`.
 - [ ] Consider AST-based parsing upgrade for enforcement script.
 - [ ] Add transitive dependency checks for re-export evasion.
+
+### Phase 6: Feature Catalog Parity (Implementation vs Documentation)
+Derived from the 5-agent phase audit of `feature_catalog` groups 01-18.
+
+#### Code Fixes First (behavioral)
+- [ ] Fix `memory_match_triggers` cognitive-path limit leak so final output never exceeds caller limit.
+- [ ] Add per-channel failure isolation in `eval_run_ablation` so one channel error does not abort the full run.
+- [ ] Enforce learned-feedback shadow-period semantics end-to-end (record + query paths).
+- [ ] Remove learned-feedback double scaling (0.7x applied twice).
+- [ ] Process incremental `toDelete` paths in `memory_index_scan` flow.
+- [ ] Align auto-promotion thresholds with positive-validation semantics (not total validation count).
+- [ ] Wire per-channel eval logging if retained in current telemetry contract.
+- [ ] Finalize and enforce one `memory_search.limit` contract (50 or 100) across schema + docs.
+
+#### Documentation Alignment Sweep
+- [ ] Remove stale fallback narrative for `SPECKIT_PIPELINE_V2` (V2-only runtime).
+- [ ] Align MPAB documentation with actual runtime stage placement.
+- [ ] Align content-normalization docs with current embedding/BM25 behavior.
+- [ ] Align checkpoint docs with real `skipCheckpoint` and restore semantics.
+- [ ] Align evaluation metrics count and edge-density denominator wording.
+- [ ] Align graph/community docs with runtime wiring and cache invalidation behavior.
+- [ ] Align governance docs (flag caps, active knobs, inventory counts) to current code.
+- [ ] Align eval logging docs (sync vs async, and per-channel event coverage).
+- [ ] Remove stale implementation-detail claims (line-count and call-site drift) across phase snippets.
+
+#### Validation
+- [ ] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -179,6 +209,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 2. Handler cycle removal and helper consolidation (critical).
 3. Import-policy enforcement in pipeline (critical).
 4. Review remediation P0 blockers (critical).
+5. Feature catalog parity code fixes + documentation sweep (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.
@@ -192,6 +223,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M2 | Drift reduction | Duplicate helpers and cycle concerns addressed | Phase 2 |
 | M3 | Guardrail active | Import-policy checks enforced in default workflow | Phase 3 |
 | M4 | Review remediation | P0 blockers resolved, enforcement hardened, doc drift fixed | Phase 4 |
+| M5 | Feature parity | Feature catalog and snippets align with implemented runtime behavior | Phase 6 |
 
 ## AI Execution Protocol
 

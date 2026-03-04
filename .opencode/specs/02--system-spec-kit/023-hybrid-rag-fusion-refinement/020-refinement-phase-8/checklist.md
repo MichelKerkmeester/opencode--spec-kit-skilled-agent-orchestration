@@ -127,6 +127,33 @@ Items added from triple ultra-think cross-AI review (2026-03-04).
 - [x] CHK-304 [P1] `scripts/evals/README.md` inventory includes new checker. [EVIDENCE: T049 completed; script inventory row added for `check-architecture-boundaries.ts`]
 <!-- /ANCHOR:phase-5-enforcement -->
 
+<!-- ANCHOR:phase-6-parity -->
+## Phase 6: Feature Catalog Parity Verification
+
+Validates implementation-vs-documentation parity for feature catalog groups 01-18.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-400 [P0] `memory_match_triggers` never returns more than requested `limit` in cognitive mode. [EVIDENCE: `tests/handler-memory-triggers.vitest.ts` ("enforces caller limit on cognitive path responses"), combined run passed on 2026-03-04]
+- [x] CHK-401 [P0] Ablation run survives single-channel failure with partial results and explicit channel error reporting. [EVIDENCE: `tests/ablation-framework.vitest.ts` includes per-channel failure isolation coverage, combined run passed on 2026-03-04]
+- [x] CHK-402 [P0] Learned-feedback shadow period is log-only end-to-end (no write/apply path effects). [EVIDENCE: `tests/learned-feedback.vitest.ts` shadow-mode write-path tests, combined run passed on 2026-03-04]
+- [x] CHK-403 [P0] Incremental `memory_index_scan` consumes `toDelete` and removes stale index records. [EVIDENCE: `tests/incremental-index-v2.vitest.ts` + `tests/handler-memory-index-cooldown.vitest.ts`, combined run passed on 2026-03-04]
+- [x] CHK-404 [P0] Auto-promotion threshold semantics are based on positive validations per contract. [EVIDENCE: `tests/promotion-positive-validation-semantics.vitest.ts`, combined run passed on 2026-03-04]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-410 [P1] Runtime emits per-channel eval events when eval logging is enabled (or docs explicitly scope why not). [EVIDENCE: `handlers/memory-search.ts` + `handlers/memory-context.ts` call `logChannelResult`; validated by `tests/memory-search-eval-channels.vitest.ts` and `tests/memory-context-eval-channels.vitest.ts`]
+- [ ] CHK-411 [P1] `memory_search.limit` contract is consistent across schema, runtime behavior, and docs. [EVIDENCE: schema lines + tool docs + tests]
+- [ ] CHK-412 [P1] `feature_catalog.md` parity sweep completed for pipeline fallback, MPAB placement, normalization semantics, and lifecycle checkpoint behavior. [EVIDENCE: updated sections]
+- [ ] CHK-413 [P1] Evaluation/graph sections match code for metric count, edge-density denominator, graph-cache invalidation, and community-runtime wiring. [EVIDENCE: updated sections]
+- [ ] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: updated sections]
+- [ ] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: JSON findings artifacts in `scratch/`]
+
+### P2 Nice-to-Have
+
+- [ ] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `feature_catalog.md`. [EVIDENCE: grep + manual spot-check]
+<!-- /ANCHOR:phase-6-parity -->
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
@@ -140,8 +167,13 @@ Items added from triple ultra-think cross-AI review (2026-03-04).
 | P2 Items (Phase 4 Review) | 6 | 6/6 | All P2 nice-to-have review items completed |
 | P0 Items (Phase 5 Enforcement) | 3 | 3/3 | CHK-300 through CHK-302 completed |
 | P1 Items (Phase 5 Enforcement) | 2 | 2/2 | CHK-303 and CHK-304 completed |
+| P0 Items (Phase 6 Parity) | 5 | 5/5 | Core behavioral parity fixes implemented and verified |
+| P1 Items (Phase 6 Parity) | 6 | 1/6 | Eval-channel runtime wiring complete; docs/contract alignment pending |
+| P2 Items (Phase 6 Parity) | 1 | 0/1 | Planned, pending execution |
 
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
 **Phase 4 Remediation Completed**: 2026-03-04
+**Phase 6 Parity Plan Added**: 2026-03-04
+**Phase 6 P0 Code Fixes Completed**: 2026-03-04
 <!-- /ANCHOR:summary -->

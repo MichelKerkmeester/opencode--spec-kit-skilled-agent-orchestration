@@ -129,6 +129,42 @@ Closes two documentation-only rules in ARCHITECTURE_BOUNDARIES.md that had no au
 - [x] T049 Update `scripts/evals/README.md` script inventory with new checker - WHY: eval script inventory must be complete - Acceptance: new script listed in inventory table. [DONE: script inventory updated with `check-architecture-boundaries.ts` entry]
 <!-- /ANCHOR:phase-5 -->
 
+<!-- ANCHOR:phase-6 -->
+## Phase 6: Feature Catalog Parity (Audit-Driven)
+
+Adds the complete remediation plan from the phase-wide implementation audit across feature catalog groups 01-18.
+
+### Code Fixes (Behavioral First)
+
+- [x] T050 Fix cognitive-limit leak in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts` - WHY: cognitive path can return more than requested `limit`, violating tool contract - Acceptance: response count never exceeds caller `limit` across cognitive/non-cognitive branches. [DONE: cognitive path now passes caller limit to state filter; covered by `tests/handler-memory-triggers.vitest.ts`]
+- [x] T051 Add per-channel try/catch isolation in `.opencode/skill/system-spec-kit/mcp_server/lib/eval/ablation-framework.ts` - WHY: one channel failure currently aborts full ablation run - Acceptance: failed channels are reported, successful channels still produce output. [DONE: per-channel isolation + `channelFailures` reporting; covered by `tests/ablation-framework.vitest.ts`]
+- [x] T052 Enforce shadow-period semantics in `.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts` for write path - WHY: shadow mode should be log-only end-to-end - Acceptance: no learned-trigger persistence/effect during shadow period. [DONE: shadow-mode write path is log-only; covered by `tests/learned-feedback.vitest.ts`]
+- [x] T053 Remove learned-feedback double weighting across `.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts` and `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` - WHY: 0.7x is effectively applied twice - Acceptance: single intended weighting is applied and covered by tests. [DONE: removed second scaling in Stage 2; covered by `tests/stage2-fusion.vitest.ts`]
+- [x] T054 Process `toDelete` category in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts` (with support in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts`) - WHY: deleted files are categorized but not consumed - Acceptance: removed files are purged from index state during incremental scan. [DONE: stale-path delete flow wired with success/failure counters; covered by `tests/incremental-index-v2.vitest.ts` and `tests/handler-memory-index-cooldown.vitest.ts`]
+- [x] T055 Align promotion thresholds to positive-validation semantics in `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/confidence-tracker.ts` and `.opencode/skill/system-spec-kit/mcp_server/lib/search/auto-promotion.ts` - WHY: thresholds are currently influenced by total validation count - Acceptance: threshold counters and docs consistently reflect positive validations only. [DONE: promotion eligibility now uses positive validations; covered by `tests/promotion-positive-validation-semantics.vitest.ts`]
+- [x] T056 Wire per-channel eval events using `.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-logger.ts` from runtime handlers - WHY: `logChannelResult` exists but has no runtime callsite - Acceptance: channel-level rows are emitted when eval logging is enabled. [DONE: runtime channel logging added in search/context handlers; covered by `tests/memory-search-eval-channels.vitest.ts` and `tests/memory-context-eval-channels.vitest.ts`]
+- [ ] T057 Finalize and enforce `memory_search.limit` contract in `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` (and corresponding runtime docs) - WHY: docs and schema disagree (100 vs 50) - Acceptance: one authoritative limit value is implemented and documented.
+- [ ] T058 Add targeted regression tests for T050-T057 in `.opencode/skill/system-spec-kit/mcp_server/tests/` - WHY: prevent contract regressions after parity fixes - Acceptance: new tests fail before and pass after fixes. [PARTIAL: tests added for T050-T056; T057 test pending limit-contract decision]
+
+### Documentation Alignment (Current Reality Sweep)
+
+- [ ] T059 Update `.opencode/specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement/feature_catalog/feature_catalog.md` and retrieval snippets to remove stale `SPECKIT_PIPELINE_V2` fallback wording - WHY: runtime is V2-only - Acceptance: docs no longer describe unavailable legacy fallback behavior.
+- [ ] T060 Align MPAB stage-placement docs in `feature_catalog.md` and relevant phase snippets - WHY: documented stage differs from runtime call path - Acceptance: stage placement description matches implemented path.
+- [ ] T061 Align normalization docs in `feature_catalog.md` and phase snippets with actual embedding/BM25 behavior - WHY: docs describe divergence not present in code - Acceptance: narrative reflects shared normalization pipeline as implemented.
+- [ ] T062 Align lifecycle docs in `feature_catalog.md` and phase snippets for `memory_bulk_delete`/checkpoint restore semantics - WHY: current text overstates unconditional checkpointing and full vec rebuild behavior - Acceptance: wording matches actual guarded/conditional behavior.
+- [ ] T063 Align evaluation docs (metric count and edge-density denominator) in `feature_catalog.md` and phase snippets - WHY: docs say 9 metrics and edges/node while code uses 11 metrics and total-memories denominator fallback - Acceptance: metric/denominator wording matches implementation.
+- [ ] T064 Align graph/community docs in `feature_catalog.md` and phase snippets with runtime wiring - WHY: docs imply runtime detect/store + graph-cache clear flows that are not wired as stated - Acceptance: docs reflect actual hot-path behavior and invalidation strategy.
+- [ ] T065 Align governance docs in `feature_catalog.md` and phase snippets to actual flag inventory/knobs/caps - WHY: documented caps and counts drift from runtime/tests - Acceptance: governance text matches enforceable behavior.
+- [ ] T066 Align eval-logging docs in `feature_catalog.md` and phase snippets - WHY: docs claim async/non-blocking and complete event coverage not fully represented in runtime flow - Acceptance: logging semantics and coverage claims are precise and verifiable.
+- [ ] T067 Remove stale implementation-detail claims (line-count and call-site attribution drift) across phase snippet markdowns under `.opencode/specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement/feature_catalog/` - WHY: outdated details reduce trust in documentation - Acceptance: no stale implementation-detail mismatches remain.
+- [ ] T068 Ensure all phase snippet “Current reality source” metadata points to canonical `feature_catalog.md` and no legacy summary-source references remain - WHY: enforce single source of truth - Acceptance: zero references to deprecated summary files; all snippet metadata consistent.
+
+### Re-Verification and Closure
+
+- [ ] T069 Re-run 5-agent audit across feature catalog groups 01-18 and capture severity-ordered findings in this phase folder scratch artifacts - WHY: verify remediation completeness objectively - Acceptance: no unresolved HIGH findings and all MEDIUM findings either fixed or explicitly accepted.
+- [ ] T070 Update this phase folder (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) with closure evidence for T050-T069 - WHY: maintain audit trail and handover quality - Acceptance: docs reflect final status with command/file evidence.
+<!-- /ANCHOR:phase-6 -->
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -140,6 +176,7 @@ Closes two documentation-only rules in ARCHITECTURE_BOUNDARIES.md that had no au
 - [x] Review P1 should-fix items completed or user-approved deferral (T024-T029, T040-T045). [DONE: all 12 P1 items implemented]
 - [x] Review P2 nice-to-have items completed or documented deferral (T030-T038). [DONE: all 9 P2 items completed — T030 block comments, T031 behavioral tests, T032 cross-links, T033 growth policy, T034 AST evaluation, T035 transitive deps, T036 ADR-003 update, T037 deprecation criteria, T038 validation]
 - [x] Phase 5 architecture enforcement gaps completed (T046-T049). [DONE: checker implemented, check pipeline extended to 4 stages, boundary enforcement table and eval inventory updated]
+- [ ] Phase 6 feature-catalog parity remediation completed (T050-T070). [PENDING]
 <!-- /ANCHOR:completion -->
 
 ## Cross-References
