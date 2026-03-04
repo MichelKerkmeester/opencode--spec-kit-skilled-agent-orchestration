@@ -10,7 +10,7 @@ import { applyInterferencePenalty, INTERFERENCE_PENALTY_COEFFICIENT } from './in
 // T010: Scoring observability (N4 + TM-01 logging, 5% sampled)
 import { shouldSample, logScoringObservation } from '../telemetry/scoring-observability';
 
-import type { MemoryDbRow } from '../../../shared/types';
+import type { MemoryDbRow } from '@spec-kit/shared/types';
 
 /**
  * Loose input type for scoring functions.

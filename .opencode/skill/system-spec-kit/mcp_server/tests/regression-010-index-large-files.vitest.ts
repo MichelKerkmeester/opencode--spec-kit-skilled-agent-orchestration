@@ -88,15 +88,12 @@ describe('Regression 010: index large files guardrails', () => {
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
-    const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((row: { name: string }) => row.name);
+    const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((row: unknown) => (row as { name: string }).name);
     expect(columns).toEqual(expect.arrayContaining(['parent_id', 'chunk_index', 'chunk_label']));
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
-    const indexes = db.prepare('PRAGMA index_list(memory_index)').all().map((row: { name: string }) => row.name);
+    const indexes = db.prepare('PRAGMA index_list(memory_index)').all().map((row: unknown) => (row as { name: string }).name);
     expect(indexes).toEqual(expect.arrayContaining(['idx_parent_id', 'idx_parent_chunk']));
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     const versionRow = db.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version: number } | undefined;
     expect(versionRow?.version ?? 0).toBeGreaterThanOrEqual(16);
 
@@ -137,10 +134,8 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare(`
       INSERT INTO memory_index
       (spec_folder, file_path, title, content_hash, importance_tier, created_at, updated_at, embedding_status)
@@ -181,10 +176,8 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare(`
       INSERT INTO memory_index
       (spec_folder, file_path, title, content_hash, importance_tier, created_at, updated_at, embedding_status)
@@ -226,10 +219,8 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare(`
       INSERT INTO memory_index
       (spec_folder, file_path, title, content_hash, importance_tier, created_at, updated_at, embedding_status)
@@ -276,10 +267,8 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare(`
       INSERT INTO memory_index
       (spec_folder, file_path, title, content_hash, importance_tier, created_at, updated_at, embedding_status)
@@ -323,29 +312,23 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     const beforeVersion = db.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version: number } | undefined;
     expect(beforeVersion?.version).toBeGreaterThanOrEqual(16);
 
     // Set schema to v16 for the v16→v15 downgrade test (v17+ migrations are independent of chunk columns)
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare('UPDATE schema_version SET version = 16 WHERE id = 1').run();
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     const result = downgrade.downgradeSchemaV16ToV15(db);
     expect(result.toVersion).toBe(15);
     expect(typeof result.checkpointName).toBe('string');
     expect(result.checkpointName.length).toBeGreaterThan(0);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     const afterVersion = db.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version: number } | undefined;
     expect(afterVersion?.version).toBe(15);
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
-    const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((row: { name: string }) => row.name);
+    const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((row: unknown) => (row as { name: string }).name);
     expect(columns).not.toContain('parent_id');
     expect(columns).not.toContain('chunk_index');
     expect(columns).not.toContain('chunk_label');
@@ -367,11 +350,9 @@ describe('Regression 010: index large files guardrails', () => {
     vectorIndex.initializeDb();
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     checkpoints.init(db);
     core.init({ vectorIndex, checkpoints });
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     db.prepare(`
       INSERT INTO memory_index
       (id, spec_folder, file_path, title, created_at, updated_at, embedding_status, content_text, importance_tier)
@@ -388,7 +369,6 @@ describe('Regression 010: index large files guardrails', () => {
       'normal'
     );
 
-    // @ts-expect-error -- db confirmed non-null by expect(db).toBeTruthy() above
     const insertChild = db.prepare(`
       INSERT INTO memory_index
       (id, spec_folder, file_path, anchor_id, title, created_at, updated_at, embedding_status, content_text, parent_id, chunk_index, chunk_label, importance_tier)

@@ -20,7 +20,7 @@
 // Feature flag: SPECKIT_LEARN_FROM_SELECTION (default OFF)
 // ---------------------------------------------------------------
 
-import type { DatabaseExtended as Database } from '../../../shared/types';
+import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 import { DENYLIST, isOnDenylist } from './feedback-denylist';
 import {
   parseLearnedTriggers,

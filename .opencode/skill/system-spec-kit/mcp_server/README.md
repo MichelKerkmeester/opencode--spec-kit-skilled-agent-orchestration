@@ -735,6 +735,11 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_CHANNEL_MIN_REP`       | `true`  | R2 min representation (QUALITY_FLOOR=0.005) |
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true`  | Low-confidence tail truncation |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET`  | `true`  | Complexity-tier token budgets |
+| `SPECKIT_STRICT_SCHEMAS`        | `true`  | Enforce strict Zod input validation for all MCP tools (`false` allows passthrough unknown keys) |
+| `SPECKIT_RESPONSE_TRACE`        | `false` | Include provenance-rich `scores` / `source` / `trace` response envelopes by default |
+| `SPECKIT_DYNAMIC_INIT`          | `true`  | Inject dynamic startup instructions with live memory/index counts |
+| `RERANKER_LOCAL`                | `false` | Use local GGUF reranker path (`node-llama-cpp`) instead of remote Cohere/Voyage in Stage 3 |
+| `SPECKIT_RERANKER_MODEL`        | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional custom model path override for local reranker |
 | `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |
 | `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
 | `SPECKIT_LEARN_FROM_SELECTION`  | `true`  | Learned-feedback from selection events (R11 — 9 safeguards, 0.7x boost weight) |

@@ -5,10 +5,11 @@
 // ---------------------------------------------------------------
 
 // Re-export canonical MCPResponse from shared
-export type { MCPResponse } from '../../shared/types';
+export type { MCPResponse } from '@spec-kit/shared/types';
 
 // Import for extension
-import type { MCPResponse } from '../../shared/types';
+import type { MCPResponse } from '@spec-kit/shared/types';
+import { validateToolArgs } from '../tool-schemas';
 
 /** Extended MCP response with auto-surfaced context (SK-004) */
 export interface MCPResponseWithContext extends MCPResponse {
@@ -24,6 +25,14 @@ export function parseArgs<T>(args: Record<string, unknown>): T {
     return {} as T;
   }
   return args as unknown as T;
+}
+
+/** Parse and validate tool arguments using Zod schema definitions. */
+export function parseValidatedArgs<T>(toolName: string, args: Record<string, unknown>): T {
+  if (args == null || typeof args !== 'object') {
+    return parseArgs<T>(validateToolArgs(toolName, {}));
+  }
+  return parseArgs<T>(validateToolArgs(toolName, args));
 }
 
 /* ---------------------------------------------------------------
@@ -64,6 +73,7 @@ export interface SearchArgs {
   enableCausalBoost?: boolean;
   minQualityScore?: number;
   min_quality_score?: number;
+  includeTrace?: boolean;
 }
 
 export interface TriggerArgs {
@@ -234,4 +244,17 @@ export interface EvalReportingDashboardArgs {
   metricFilter?: string[];
   limit?: number;
   format?: 'text' | 'json';
+}
+
+export interface IngestStartArgs {
+  paths: string[];
+  specFolder?: string;
+}
+
+export interface IngestStatusArgs {
+  jobId: string;
+}
+
+export interface IngestCancelArgs {
+  jobId: string;
 }

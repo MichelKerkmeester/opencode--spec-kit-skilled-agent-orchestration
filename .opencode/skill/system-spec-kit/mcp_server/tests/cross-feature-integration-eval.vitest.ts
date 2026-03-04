@@ -33,7 +33,7 @@ import {
   type RrfItem,
   type FusionResult,
   type RankedList,
-} from '../../shared/algorithms/rrf-fusion';
+} from '@spec-kit/shared/algorithms/rrf-fusion';
 
 // ── RSF Fusion ──
 import {

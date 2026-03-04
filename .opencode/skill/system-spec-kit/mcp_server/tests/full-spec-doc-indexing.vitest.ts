@@ -61,7 +61,7 @@ import { createSpecDocumentChain, RELATION_TYPES } from '../lib/storage/causal-e
 import { getDefaultTierForDocumentType } from '../lib/scoring/importance-tiers';
 
 // Normalization: round-trip converters
-import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '../../shared/normalization';
+import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
 
 /* ═══════════════════════════════════════════════════════════════
    PHASE 2: TYPE CONFIGURATION

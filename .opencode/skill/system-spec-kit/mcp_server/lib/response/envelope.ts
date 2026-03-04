@@ -61,8 +61,8 @@ export interface CreateErrorResponseOptions {
 }
 
 // Re-export canonical MCPResponse from shared (REC-010)
-export type { MCPResponse } from '../../../shared/types';
-import type { MCPResponse } from '../../../shared/types';
+export type { MCPResponse } from '@spec-kit/shared/types';
+import type { MCPResponse } from '@spec-kit/shared/types';
 
 export interface DefaultHints {
   empty_results: string[];

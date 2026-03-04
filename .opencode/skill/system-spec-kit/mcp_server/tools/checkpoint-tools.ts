@@ -11,6 +11,7 @@ import {
   handleCheckpointRestore,
   handleCheckpointDelete,
 } from '../handlers';
+import { validateToolArgs } from '../tool-schemas';
 
 import {
   MCPResponse, parseArgs,
@@ -29,10 +30,10 @@ export const TOOL_NAMES = new Set([
 /** Dispatch a tool call. Returns null if tool name not handled. */
 export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
   switch (name) {
-    case 'checkpoint_create':  return handleCheckpointCreate(parseArgs<CheckpointCreateArgs>(args));
-    case 'checkpoint_list':    return handleCheckpointList(parseArgs<CheckpointListArgs>(args));
-    case 'checkpoint_restore': return handleCheckpointRestore(parseArgs<CheckpointRestoreArgs>(args));
-    case 'checkpoint_delete':  return handleCheckpointDelete(parseArgs<CheckpointDeleteArgs>(args));
+    case 'checkpoint_create':  return handleCheckpointCreate(parseArgs<CheckpointCreateArgs>(validateToolArgs('checkpoint_create', args)));
+    case 'checkpoint_list':    return handleCheckpointList(parseArgs<CheckpointListArgs>(validateToolArgs('checkpoint_list', args)));
+    case 'checkpoint_restore': return handleCheckpointRestore(parseArgs<CheckpointRestoreArgs>(validateToolArgs('checkpoint_restore', args)));
+    case 'checkpoint_delete':  return handleCheckpointDelete(parseArgs<CheckpointDeleteArgs>(validateToolArgs('checkpoint_delete', args)));
     default: return null;
   }
 }

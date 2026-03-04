@@ -77,6 +77,40 @@ export interface FormattedSearchResult {
   contentSource?: 'reassembled_chunks' | 'file_read_fallback';
 }
 
+export interface MemoryResultScores {
+  semantic: number | null;
+  lexical: number | null;
+  fusion: number | null;
+  intentAdjusted: number | null;
+  composite: number | null;
+  rerank: number | null;
+  attention: number | null;
+}
+
+export interface MemoryResultSource {
+  file: string | null;
+  anchorIds: string[];
+  anchorTypes: string[];
+  lastModified: string | null;
+  memoryState: string | null;
+}
+
+export interface MemoryResultTrace {
+  channelsUsed: string[];
+  pipelineStages: string[];
+  fallbackTier: number | null;
+  queryComplexity: string | null;
+  expansionTerms: string[];
+  budgetTruncated: boolean;
+  scoreResolution: 'intentAdjusted' | 'fusion' | 'score' | 'semantic' | 'none';
+}
+
+export interface MemoryResultEnvelope extends FormattedSearchResult {
+  scores?: MemoryResultScores;
+  source?: MemoryResultSource;
+  trace?: MemoryResultTrace;
+}
+
 /** Memory parser interface (for optional override) */
 export interface MemoryParserLike {
   extractAnchors(content: string): Record<string, string>;
@@ -123,6 +157,99 @@ function toNullableNumber(value: unknown): number | null {
   return null;
 }
 
+function resolveCompositeScore(rawResult: RawSearchResult): number | null {
+  const intentAdjusted = toNullableNumber(rawResult.intentAdjustedScore);
+  if (intentAdjusted !== null) return intentAdjusted;
+  const fusion = toNullableNumber(rawResult.rrfScore);
+  if (fusion !== null) return fusion;
+  const score = toNullableNumber(rawResult.score);
+  if (score !== null) return score;
+  const similarity = toNullableNumber(rawResult.similarity ?? rawResult.averageSimilarity);
+  if (similarity !== null) return Math.max(0, Math.min(1, similarity / 100));
+  return null;
+}
+
+function resolveScoreResolution(rawResult: RawSearchResult): MemoryResultTrace['scoreResolution'] {
+  if (toNullableNumber(rawResult.intentAdjustedScore) !== null) return 'intentAdjusted';
+  if (toNullableNumber(rawResult.rrfScore) !== null) return 'fusion';
+  if (toNullableNumber(rawResult.score) !== null) return 'score';
+  if (toNullableNumber(rawResult.similarity ?? rawResult.averageSimilarity) !== null) return 'semantic';
+  return 'none';
+}
+
+function extractAnchorDetails(rawResult: RawSearchResult): { anchorIds: string[]; anchorTypes: string[] } {
+  const metadata = Array.isArray(rawResult.anchorMetadata)
+    ? rawResult.anchorMetadata as Array<Record<string, unknown>>
+    : [];
+  const anchorIds = metadata
+    .map((entry) => (typeof entry.id === 'string' ? entry.id : null))
+    .filter((entry): entry is string => entry !== null);
+  const anchorTypes = metadata
+    .map((entry) => (typeof entry.type === 'string' ? entry.type : null))
+    .filter((entry): entry is string => entry !== null);
+  return { anchorIds, anchorTypes };
+}
+
+function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unknown>): MemoryResultTrace {
+  const rootTrace = extraData?.retrievalTrace as { stages?: Array<{ stage?: string; metadata?: Record<string, unknown> }> } | undefined;
+  const retrievalTrace = (rawResult.retrievalTrace as { stages?: Array<{ stage?: string; metadata?: Record<string, unknown> }> } | undefined) ?? rootTrace;
+  const stages = Array.isArray(retrievalTrace?.stages) ? retrievalTrace.stages : [];
+  const pipelineStages = stages
+    .map((entry) => (typeof entry.stage === 'string' ? entry.stage : null))
+    .filter((entry): entry is string => entry !== null);
+
+  const channelsUsed = new Set<string>();
+  const expansionTerms = new Set<string>();
+  let fallbackTier: number | null = null;
+  let queryComplexity: string | null = null;
+  let budgetTruncated = false;
+
+  for (const stage of stages) {
+    const meta = stage.metadata ?? {};
+    const channel = typeof meta.channel === 'string' ? meta.channel : null;
+    if (channel) channelsUsed.add(channel);
+
+    if (Array.isArray(meta.channels)) {
+      for (const item of meta.channels) {
+        if (typeof item === 'string') channelsUsed.add(item);
+      }
+    }
+
+    if (Array.isArray(meta.expandedTerms)) {
+      for (const term of meta.expandedTerms) {
+        if (typeof term === 'string') expansionTerms.add(term);
+      }
+    }
+
+    if (typeof meta.tier === 'number' && Number.isFinite(meta.tier)) {
+      fallbackTier = meta.tier;
+    }
+    if (typeof meta.fallbackTier === 'number' && Number.isFinite(meta.fallbackTier)) {
+      fallbackTier = meta.fallbackTier;
+    }
+    if (typeof meta.queryComplexity === 'string' && meta.queryComplexity.length > 0) {
+      queryComplexity = meta.queryComplexity;
+    }
+    if (meta.budgetTruncated === true || meta.truncated === true) {
+      budgetTruncated = true;
+    }
+  }
+
+  if (rawResult.fallbackRetry === true) {
+    fallbackTier = fallbackTier ?? 2;
+  }
+
+  return {
+    channelsUsed: Array.from(channelsUsed),
+    pipelineStages,
+    fallbackTier,
+    queryComplexity,
+    expansionTerms: Array.from(expansionTerms),
+    budgetTruncated,
+    scoreResolution: resolveScoreResolution(rawResult),
+  };
+}
+
 /* ---------------------------------------------------------------
    4. SEARCH RESULTS FORMATTING
    --------------------------------------------------------------- */
@@ -134,7 +261,8 @@ export async function formatSearchResults(
   anchors: string[] | null = null,
   parserOverride: MemoryParserLike | null = null,
   startTime: number | null = null,
-  extraData: Record<string, unknown> = {}
+  extraData: Record<string, unknown> = {},
+  includeTrace: boolean = false
 ): Promise<MCPResponse> {
   const startMs = startTime || Date.now();
   const includeContent = include_content;
@@ -160,8 +288,8 @@ export async function formatSearchResults(
   // Count constitutional results
   const constitutionalCount = results.filter(rawResult => rawResult.isConstitutional).length;
 
-  const formatted: FormattedSearchResult[] = await Promise.all(results.map(async (rawResult: RawSearchResult) => {
-    const formattedResult: FormattedSearchResult = {
+  const formatted: MemoryResultEnvelope[] = await Promise.all(results.map(async (rawResult: RawSearchResult) => {
+    const formattedResult: MemoryResultEnvelope = {
       id: rawResult.id,
       specFolder: rawResult.spec_folder,
       filePath: rawResult.file_path,
@@ -183,6 +311,29 @@ export async function formatSearchResults(
         ? rawResult.contentSource
         : undefined,
     };
+
+    if (includeTrace) {
+      const anchorsInfo = extractAnchorDetails(rawResult);
+      formattedResult.scores = {
+        semantic: toNullableNumber(rawResult.similarity ?? rawResult.averageSimilarity),
+        lexical: toNullableNumber(rawResult.fts_score ?? rawResult.bm25_score),
+        fusion: toNullableNumber(rawResult.rrfScore),
+        intentAdjusted: toNullableNumber(rawResult.intentAdjustedScore),
+        composite: resolveCompositeScore(rawResult),
+        rerank: toNullableNumber(rawResult.rerankerScore),
+        attention: toNullableNumber(rawResult.attentionScore),
+      };
+      formattedResult.source = {
+        file: typeof rawResult.file_path === 'string' ? rawResult.file_path : null,
+        anchorIds: anchorsInfo.anchorIds,
+        anchorTypes: anchorsInfo.anchorTypes,
+        lastModified: typeof rawResult.updated_at === 'string'
+          ? rawResult.updated_at
+          : (typeof rawResult.created_at === 'string' ? rawResult.created_at : null),
+        memoryState: typeof rawResult.memoryState === 'string' ? rawResult.memoryState : null,
+      };
+      formattedResult.trace = extractTrace(rawResult, extraData);
+    }
 
     // Include file content if requested.
     // Prefer precomputed chunk reassembly from memory-search to avoid disk reads.

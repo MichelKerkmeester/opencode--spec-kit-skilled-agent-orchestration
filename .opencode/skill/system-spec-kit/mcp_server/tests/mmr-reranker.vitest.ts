@@ -5,8 +5,8 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
-import { applyMMR, computeCosine } from '../../shared/algorithms/mmr-reranker';
-import type { MMRCandidate, MMRConfig } from '../../shared/algorithms/mmr-reranker';
+import { applyMMR, computeCosine } from '@spec-kit/shared/algorithms/mmr-reranker';
+import type { MMRCandidate, MMRConfig } from '@spec-kit/shared/algorithms/mmr-reranker';
 
 /* ---------------------------------------------------------------
    HELPERS

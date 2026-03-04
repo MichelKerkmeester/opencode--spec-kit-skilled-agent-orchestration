@@ -9,7 +9,7 @@ import {
   createEnvelope,
   createDegradedContract,
   ENVELOPE_VERSION,
-} from '../../shared/contracts/retrieval-trace';
+} from '@spec-kit/shared/contracts/retrieval-trace';
 import {
   RETRIEVAL_TRACE_STAGES,
   isRetrievalTracePayload,
@@ -22,7 +22,7 @@ import type {
   ContextEnvelope,
   DegradedModeContract,
   EnvelopeMetadata,
-} from '../../shared/contracts/retrieval-trace';
+} from '@spec-kit/shared/contracts/retrieval-trace';
 
 describe('C136-08: Retrieval Trace Contracts', () => {
   // ---------------------------------------------------------------

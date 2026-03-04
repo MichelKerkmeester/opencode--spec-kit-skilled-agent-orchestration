@@ -7,7 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { describe, it, expect } from 'vitest';
-import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '../../shared/normalization';
+import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
 
 /* --- Tests --- */
 

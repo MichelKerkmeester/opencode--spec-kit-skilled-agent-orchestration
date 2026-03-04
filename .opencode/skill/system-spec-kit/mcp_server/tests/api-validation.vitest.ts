@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { validateApiKey } from '../../shared/embeddings/factory';
+import { validateApiKey } from '@spec-kit/shared/embeddings/factory';
 
 // ---------------------------------------------------------------
 // TEST: API Validation (T177-T184)

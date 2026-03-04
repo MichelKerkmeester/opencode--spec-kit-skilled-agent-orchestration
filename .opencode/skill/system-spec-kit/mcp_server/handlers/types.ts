@@ -13,7 +13,7 @@ export type {
   EmbeddingProfile,
   EmbeddingProfileExtended,
   MCPResponse,
-} from '../../shared/types';
+} from '@spec-kit/shared/types';
 
 /** Intent classification result from the intent classifier */
 export interface IntentClassification {

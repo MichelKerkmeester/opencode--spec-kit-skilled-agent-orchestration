@@ -4,8 +4,8 @@
 // T002 (degree as 5th RRF channel) + T003a (co-activation boost)
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { fuseResultsMulti, SOURCE_TYPES } from '../../shared/algorithms/rrf-fusion';
-import type { RankedList, FusionResult } from '../../shared/algorithms/rrf-fusion';
+import { fuseResultsMulti, SOURCE_TYPES } from '@spec-kit/shared/algorithms/rrf-fusion';
+import type { RankedList, FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 import {
   computeDegreeScores,
   computeTypedDegree,

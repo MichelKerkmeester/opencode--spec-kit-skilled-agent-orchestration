@@ -11,6 +11,7 @@ import {
   handleMemoryCausalStats,
   handleMemoryCausalUnlink,
 } from '../handlers';
+import { validateToolArgs } from '../tool-schemas';
 
 import {
   MCPResponse, parseArgs,
@@ -28,10 +29,10 @@ export const TOOL_NAMES = new Set([
 /** Dispatch a tool call. Returns null if tool name not handled. */
 export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
   switch (name) {
-    case 'memory_drift_why':     return handleMemoryDriftWhy(parseArgs<DriftWhyArgs>(args));
-    case 'memory_causal_link':   return handleMemoryCausalLink(parseArgs<CausalLinkArgs>(args));
-    case 'memory_causal_stats':  return handleMemoryCausalStats(parseArgs<CausalStatsArgs>(args));
-    case 'memory_causal_unlink': return handleMemoryCausalUnlink(parseArgs<CausalUnlinkArgs>(args));
+    case 'memory_drift_why':     return handleMemoryDriftWhy(parseArgs<DriftWhyArgs>(validateToolArgs('memory_drift_why', args)));
+    case 'memory_causal_link':   return handleMemoryCausalLink(parseArgs<CausalLinkArgs>(validateToolArgs('memory_causal_link', args)));
+    case 'memory_causal_stats':  return handleMemoryCausalStats(parseArgs<CausalStatsArgs>(validateToolArgs('memory_causal_stats', args)));
+    case 'memory_causal_unlink': return handleMemoryCausalUnlink(parseArgs<CausalUnlinkArgs>(validateToolArgs('memory_causal_unlink', args)));
     default: return null;
   }
 }

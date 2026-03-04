@@ -5,7 +5,7 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { applyMMR } from '../../shared/algorithms/mmr-reranker';
+import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { detectEvidenceGap } from '../lib/search/evidence-gap-detector';
 
 /* ---------------------------------------------------------------

@@ -11,7 +11,7 @@ import {
   extractTriggerPhrasesWithStats,
   removeMarkdown,
   CONFIG,
-} from '../../shared/trigger-extractor';
+} from '@spec-kit/shared/trigger-extractor';
 
 /* --- Tests --- */
 

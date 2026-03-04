@@ -11,7 +11,7 @@ import { generateDocumentEmbedding } from './embeddings';
 import { normalizeContentForEmbedding } from '../parsing/content-normalizer';
 
 // Type imports
-import type { MemoryDbRow } from '../../../shared/types';
+import type { MemoryDbRow } from '@spec-kit/shared/types';
 
 /* ---------------------------------------------------------------
    1. TYPES

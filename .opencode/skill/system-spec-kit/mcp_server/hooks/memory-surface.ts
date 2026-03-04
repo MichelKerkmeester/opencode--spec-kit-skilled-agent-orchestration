@@ -7,7 +7,7 @@ import * as vectorIndex from '../lib/search/vector-index';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives';
 
-import type { Database } from '../../shared/types';
+import type { Database } from '@spec-kit/shared/types';
 
 /* ---------------------------------------------------------------
    1. TYPES

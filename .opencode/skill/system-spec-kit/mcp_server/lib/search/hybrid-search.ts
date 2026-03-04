@@ -7,20 +7,31 @@
 
 // Local
 import { getIndex } from './bm25-index';
-import { fuseResultsMulti } from '../../../shared/algorithms/rrf-fusion';
-import { hybridAdaptiveFuse } from '../../../shared/algorithms/adaptive-fusion';
+import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
+import { hybridAdaptiveFuse } from '@spec-kit/shared/algorithms/adaptive-fusion';
 import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cache/cognitive/co-activation';
-import { applyMMR } from '../../../shared/algorithms/mmr-reranker';
+import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
-import { isMMREnabled, isSearchFallbackEnabled, isDocscoreAggregationEnabled, isDegreeBoostEnabled } from './search-flags';
+import {
+  isMMREnabled,
+  isCrossEncoderEnabled,
+  isLocalRerankerEnabled,
+  isSearchFallbackEnabled,
+  isDocscoreAggregationEnabled,
+  isDegreeBoostEnabled,
+  isContextHeadersEnabled,
+} from './search-flags';
+import { rerankLocal } from './local-reranker';
 import { computeDegreeScores } from './graph-search-fn';
+import type { GraphSearchFn } from './search-types';
 export type { GraphSearchFn } from './search-types';
 
 import { routeQuery } from './query-router';
 import { enforceChannelRepresentation } from './channel-enforcement';
 import { truncateByConfidence } from './confidence-truncation';
 import { getDynamicTokenBudget, isDynamicTokenBudgetEnabled } from './dynamic-token-budget';
+import { ensureDescriptionCache, getSpecsBasePaths } from './folder-discovery';
 import {
   isFolderScoringEnabled,
   lookupFolders,
@@ -34,8 +45,8 @@ import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
 // Type-only
 import type Database from 'better-sqlite3';
 import type { SpreadResult } from '../cache/cognitive/co-activation';
-import type { MMRCandidate } from '../../../shared/algorithms/mmr-reranker';
-import type { FusionResult } from '../../../shared/algorithms/rrf-fusion';
+import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
+import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { ChannelName } from './query-router';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
@@ -625,7 +636,7 @@ async function hybridSearchEnhanced(
         });
         if (graphResults.length > 0) {
           graphMetrics.graphHits++;
-          lists.push({ source: 'graph', results: graphResults.map(r => ({
+          lists.push({ source: 'graph', results: graphResults.map((r: Record<string, unknown>) => ({
             ...r,
             id: r.id as number | string,
           })), weight: 0.5 });
@@ -818,6 +829,16 @@ async function hybridSearchEnhanced(
       // Fused results don't carry embeddings through RRF, so we look them up from the
       // vec0 virtual table for the top-N numeric-ID results before running MMR.
       let reranked: HybridSearchResult[] = fusedHybridResults.slice(0, limit);
+
+      // P1-5: Optional local GGUF reranking path (RERANKER_LOCAL=true).
+      // Preserve cross-encoder gate semantics: when SPECKIT_CROSS_ENCODER=false, skip reranking.
+      if (isCrossEncoderEnabled() && isLocalRerankerEnabled() && reranked.length >= MMR_MIN_CANDIDATES) {
+        const localReranked = await rerankLocal(query, reranked, limit);
+        if (localReranked !== reranked) {
+          reranked = localReranked as HybridSearchResult[];
+        }
+      }
+
       if (db && isMMREnabled()) {
         const numericIds = reranked
           .map(r => r.id)
@@ -930,6 +951,7 @@ async function hybridSearchEnhanced(
       // Preserve non-enumerable Sprint 4 eval metadata across truncation reallocation.
       const s4shadowMeta = (reranked as unknown as Record<string, unknown>)['_s4shadow'];
       const s4attributionMeta = (reranked as unknown as Record<string, unknown>)['_s4attribution'];
+      const degradationMeta = (reranked as unknown as Record<string, unknown>)['_degradation'];
 
       // Sprint 3/4: Apply token budget truncation before returning live results
       const budgeted = truncateToBudget(reranked, budgetResult.budget, {
@@ -952,6 +974,29 @@ async function hybridSearchEnhanced(
           enumerable: false,
           configurable: true,
         });
+      }
+
+      // Preserve Stage 4 trace metadata as explicit result fields so downstream
+      // formatters can opt-in to provenance-rich envelopes without relying on
+      // non-enumerable array shadow properties.
+      if ((s4shadowMeta !== undefined || s4attributionMeta !== undefined || degradationMeta !== undefined) && reranked.length > 0) {
+        reranked = reranked.map((row): HybridSearchResult => ({
+          ...row,
+          traceMetadata: {
+            stage4: s4shadowMeta ?? null,
+            attribution: s4attributionMeta ?? null,
+            degradation: degradationMeta ?? null,
+            budgetTruncated: budgeted.truncated,
+            budgetLimit: budgetResult.budget,
+          },
+        }));
+      }
+
+      if (isContextHeadersEnabled() && reranked.length > 0) {
+        const descriptionCache = buildDescriptionTailMap();
+        if (descriptionCache.size > 0) {
+          reranked = reranked.map((row) => injectContextualTree(row, descriptionCache));
+        }
       }
 
       // Sprint 3: Attach pipeline metadata to results for eval/debugging
@@ -1117,6 +1162,91 @@ function canonicalResultId(id: number | string): string {
   }
 
   return raw;
+}
+
+function truncateChars(input: string, maxChars: number): string {
+  if (input.length <= maxChars) return input;
+  if (maxChars <= 1) return input.slice(0, maxChars);
+  return `${input.slice(0, maxChars - 1).trimEnd()}…`;
+}
+
+function extractSpecSegments(filePath: string): { left: string; right: string; tailKey: string } | null {
+  const normalized = filePath.replace(/\\/g, '/');
+  const splitToken = '/specs/';
+  const splitIdx = normalized.lastIndexOf(splitToken);
+  if (splitIdx < 0) return null;
+
+  const relative = normalized.slice(splitIdx + splitToken.length).replace(/^\/+/, '');
+  const parts = relative.split('/').filter(Boolean);
+  if (parts.length < 3) return null;
+
+  const folderParts = parts.slice(0, -1);
+  const tailParts = folderParts.slice(-2);
+  if (tailParts.length < 2) return null;
+
+  return {
+    left: tailParts[0],
+    right: tailParts[1],
+    tailKey: tailParts.join('/'),
+  };
+}
+
+// Sprint 9 fix: Memoize description map to avoid rebuilding on every search query.
+// Cache invalidates after 60 seconds so folder renames are eventually picked up.
+let descMapCache: { map: Map<string, string>; timestamp: number } | null = null;
+const DESC_MAP_TTL_MS = 60_000;
+
+function buildDescriptionTailMap(): Map<string, string> {
+  if (descMapCache && (Date.now() - descMapCache.timestamp) < DESC_MAP_TTL_MS) {
+    return descMapCache.map;
+  }
+
+  const descByTail = new Map<string, string>();
+  const cache = ensureDescriptionCache(getSpecsBasePaths());
+  if (!cache || !Array.isArray(cache.folders)) {
+    return descByTail;
+  }
+
+  for (const entry of cache.folders) {
+    const specFolder = typeof entry.specFolder === 'string' ? entry.specFolder : '';
+    const description = typeof entry.description === 'string' ? entry.description : '';
+    if (!specFolder || !description) continue;
+    const folderParts = specFolder.split('/').filter(Boolean);
+    if (folderParts.length < 2) continue;
+    const tailKey = folderParts.slice(-2).join('/');
+    if (!descByTail.has(tailKey)) {
+      descByTail.set(tailKey, description);
+    }
+  }
+
+  descMapCache = { map: descByTail, timestamp: Date.now() };
+  return descByTail;
+}
+
+function injectContextualTree(row: HybridSearchResult, descCache: Map<string, string>): HybridSearchResult {
+  const rowData = row as Record<string, unknown>;
+  const content = rowData.content;
+  const filePath = typeof rowData.file_path === 'string' ? rowData.file_path : null;
+
+  if (typeof content !== 'string' || content.length === 0 || !filePath) {
+    return row;
+  }
+
+  const segments = extractSpecSegments(filePath);
+  if (!segments) {
+    return row;
+  }
+
+  const descriptionRaw = descCache.get(segments.tailKey) ?? '';
+  const description = truncateChars(descriptionRaw, 60);
+  const base = `[${segments.left} > ${segments.right}`;
+  const withDesc = description.length > 0 ? `${base} — ${description}]` : `${base}]`;
+  const header = truncateChars(withDesc, 100);
+
+  return {
+    ...row,
+    content: `${header}\n${content}`,
+  };
 }
 
 /** Apply caller limit after merges that can expand result count. */

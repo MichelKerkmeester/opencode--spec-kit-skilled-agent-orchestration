@@ -38,7 +38,7 @@ import type { Stage4Input, Stage4Output, Stage4ReadonlyRow } from './types';
 import { captureScoreSnapshot, verifyScoreInvariant } from './types';
 import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
-import { addTraceEntry } from '../../../../shared/contracts/retrieval-trace';
+import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 
 /* ---------------------------------------------------------------
    1. CONSTANTS

@@ -9,7 +9,7 @@ import {
   getProviderInfo,
   resolveProvider,
   validateApiKey,
-} from '../../shared/embeddings/factory';
+} from '@spec-kit/shared/embeddings/factory';
 import * as embeddingsFacade from '../lib/providers/embeddings';
 
 const ENV_KEYS = [

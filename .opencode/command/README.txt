@@ -159,6 +159,7 @@ Structured workflows for the spec folder development lifecycle.
 
 ```
 # Route a request through intelligent agent selection
+# Use the exact command name (not /agents or /agents_router)
 /agent_router "Build a new authentication system"
 ```
 
@@ -192,6 +193,7 @@ The `spec_kit:complete` command supports two additional modes:
 | Problem | Cause | Fix |
 |---------|-------|-----|
 | Command not recognized | Wrong invocation format | Use `/<group>:<command>` format (e.g., `/memory:save`) |
+| Agent router command not found | Used `/agents` or `/agents_router` alias | Use `/agent_router "<request>"` |
 | Missing arguments error | Required argument not provided | Check the `argument-hint` in the command's frontmatter |
 | YAML workflow not found | Missing asset file | Verify `assets/` folder contains the corresponding YAML |
 | Tool permission denied | Command lacks required tool | Check `allowed-tools` in command frontmatter |

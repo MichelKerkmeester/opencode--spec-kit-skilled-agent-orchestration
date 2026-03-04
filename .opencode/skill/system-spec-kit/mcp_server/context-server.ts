@@ -32,10 +32,12 @@ import { dispatchTool } from './tools';
 // Handler modules (only indexSingleFile needed directly for startup scan)
 import {
   indexSingleFile,
+  indexMemoryFile,
+  handleMemoryStats,
 } from './handlers';
 
 // Utils
-import { validateInputLengths, validateToolInputSchema } from './utils';
+import { validateInputLengths } from './utils';
 
 // Hooks
 import {
@@ -64,6 +66,9 @@ import * as sessionBoost from './lib/search/session-boost';
 import * as causalBoost from './lib/search/causal-boost';
 import * as bm25Index from './lib/search/bm25-index';
 import * as memoryParser from './lib/parsing/memory-parser';
+import { getSpecsBasePaths } from './lib/search/folder-discovery';
+import { isFileWatcherEnabled } from './lib/search/search-flags';
+import { disposeLocalReranker } from './lib/search/local-reranker';
 import * as workingMemory from './lib/cache/cognitive/working-memory';
 import * as attentionDecay from './lib/cache/cognitive/attention-decay';
 import * as coActivation from './lib/cache/cognitive/co-activation';
@@ -85,6 +90,8 @@ import * as toolCache from './lib/cache/tool-cache';
 import { initExtractionAdapter } from './lib/extraction/extraction-adapter';
 import { migrateLearnedTriggers, verifyFts5Isolation } from './lib/storage/learned-triggers-schema';
 import { isLearnedFeedbackEnabled } from './lib/search/learned-feedback';
+import { initIngestJobQueue } from './lib/ops/job-queue';
+import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher';
 
 /* ---------------------------------------------------------------
    2. TYPES
@@ -119,6 +126,13 @@ interface ToolCallResponse {
   content: Array<{ type: string; text: string }>;
   isError?: boolean;
   [key: string]: unknown;
+}
+
+interface DynamicMemoryStats {
+  totalMemories: number;
+  specFolderCount: number;
+  activeCount: number;
+  staleCount: number;
 }
 
 type AfterToolCallback = (tool: string, callId: string, result: unknown) => Promise<void>;
@@ -163,6 +177,57 @@ function runAfterToolCallbacks(tool: string, callId: string, result: unknown): v
   });
 }
 
+async function getMemoryStats(): Promise<DynamicMemoryStats> {
+  try {
+    const response = await handleMemoryStats({
+      folderRanking: 'count',
+      includeArchived: true,
+      limit: 100,
+    });
+    const payload = response?.content?.[0]?.text;
+    if (typeof payload !== 'string' || payload.length === 0) {
+      return { totalMemories: 0, specFolderCount: 0, activeCount: 0, staleCount: 0 };
+    }
+
+    const parsed = JSON.parse(payload) as Record<string, unknown>;
+    const data = (parsed.data ?? {}) as Record<string, unknown>;
+    const byStatus = (data.byStatus ?? {}) as Record<string, unknown>;
+    const topFolders = Array.isArray(data.topFolders) ? data.topFolders : [];
+    const success = typeof byStatus.success === 'number' ? byStatus.success : 0;
+    const pending = typeof byStatus.pending === 'number' ? byStatus.pending : 0;
+    const failed = typeof byStatus.failed === 'number' ? byStatus.failed : 0;
+
+    return {
+      totalMemories: typeof data.totalMemories === 'number' ? data.totalMemories : 0,
+      specFolderCount: topFolders.length,
+      activeCount: success,
+      staleCount: pending + failed,
+    };
+  } catch {
+    return { totalMemories: 0, specFolderCount: 0, activeCount: 0, staleCount: 0 };
+  }
+}
+
+async function buildServerInstructions(): Promise<string> {
+  if (process.env.SPECKIT_DYNAMIC_INIT === 'false') {
+    return '';
+  }
+
+  const stats = await getMemoryStats();
+  const channels = 'vector, fts5, bm25, graph, degree';
+  const staleWarning = stats.staleCount > 10
+    ? ` Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
+    : '';
+
+  return [
+    `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
+    `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
+    `Search channels: ${channels}.`,
+    'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+    staleWarning.trim(),
+  ].filter(Boolean).join(' ');
+}
+
 /** Register a callback to be invoked asynchronously after each tool call completes. */
 export function registerAfterToolCallback(fn: AfterToolCallback): void {
   afterToolCallbacks.push(fn);
@@ -176,6 +241,7 @@ const server = new Server(
   { name: 'context-server', version: '1.7.2' },
   { capabilities: { tools: {} } }
 );
+const serverWithInstructions = server as unknown as { setInstructions?: (instructions: string) => void };
 
 /* ---------------------------------------------------------------
    4. TOOL DEFINITIONS (T303: from tool-schemas.ts)
@@ -198,8 +264,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   try {
     // SEC-003: Validate input lengths before processing (CWE-400 mitigation)
     validateInputLengths(args);
-    // T304: Enforce declared MCP tool schema contract before dispatch.
-    validateToolInputSchema(name, args, TOOL_DEFINITIONS);
+    // T304: Zod validation is applied per-tool inside each dispatch module
+    // (tools/*.ts) to avoid double-validation overhead at the server layer.
 
     // SK-004/TM-05: Auto-surface memories before dispatch (after validation)
     let autoSurfacedContext: AutoSurfaceResult | null = null;
@@ -264,9 +330,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
               // Remove from end (lowest-scored) until within budget
               while (innerResults.length > 1) {
                 innerResults.pop();
-                // P1-06 FIX: Recalculate token count from actual remaining content
-                // instead of decrementing, to avoid drift from the rough estimate
-                envelope.meta.tokenCount = Math.ceil(JSON.stringify(innerResults).length / CHARS_PER_TOKEN_ESTIMATE);
+                // P1-06 FIX: Recalculate token count from the full envelope
+                // (not just results) so trace metadata is included in the budget.
+                envelope.meta.tokenCount = Math.ceil(JSON.stringify(envelope).length / CHARS_PER_TOKEN_ESTIMATE);
                 if (envelope.meta.tokenCount <= budget) break;
               }
               if (envelope.data.count !== undefined) {
@@ -450,21 +516,42 @@ let shuttingDown = false;
 let transport: StdioServerTransport | null = null;
 // P1-11 FIX: Module-level guard to avoid redundant initializeDb() calls per tool invocation
 let dbInitialized = false;
+let fileWatcher: FSWatcher | null = null;
+
+/** Maximum time (ms) to wait for async cleanup before force-exiting. */
+const SHUTDOWN_DEADLINE_MS = 2000;
 
 /** P2-06 FIX: Shared graceful shutdown logic for signal handlers. */
 function gracefulShutdown(signal: string): void {
   if (shuttingDown) return;
   shuttingDown = true;
   console.error(`[context-server] Received ${signal}, shutting down...`);
+
+  // Synchronous cleanup
   sessionManager.shutdown(); // T302: Clear session cleanup intervals (GAP 1)
   archivalManager.cleanup(); // T059: Stop archival background job
   retryManager.stopBackgroundJob(); // T099: Stop retry background job
   accessTracker.reset();
   toolCache.shutdown(); // KL-4: Stop cleanup interval and clear cache
-  vectorIndex.closeDb();
-  // P1-09 FIX: Close MCP transport on shutdown
-  if (transport) { try { transport.close(); } catch { /* ignore */ } }
-  process.exit(0);
+
+  // Async cleanup with deadline — await disposal before exiting to prevent
+  // orphaned resources (Codex fix: void + immediate exit = disposal never completes).
+  const forceExitTimer = setTimeout(() => process.exit(0), SHUTDOWN_DEADLINE_MS);
+
+  void (async () => {
+    try {
+      if (fileWatcher) {
+        await fileWatcher.close().catch(() => {});
+        fileWatcher = null;
+      }
+      await disposeLocalReranker();
+    } catch { /* non-fatal cleanup */ }
+    vectorIndex.closeDb();
+    // P1-09 FIX: Close MCP transport on shutdown
+    if (transport) { try { transport.close(); } catch { /* ignore */ } }
+    clearTimeout(forceExitTimer);
+    process.exit(0);
+  })();
 }
 
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
@@ -477,6 +564,8 @@ process.on('uncaughtException', (err: Error) => {
   try { retryManager.stopBackgroundJob(); } catch (e: unknown) { console.error('[context-server] retryManager cleanup failed:', e); }
   try { accessTracker.reset(); } catch (e: unknown) { console.error('[context-server] accessTracker cleanup failed:', e); }
   try { toolCache.shutdown(); } catch (e: unknown) { console.error('[context-server] toolCache cleanup failed:', e); }
+  try { if (fileWatcher) { void fileWatcher.close(); fileWatcher = null; } } catch (e: unknown) { console.error('[context-server] fileWatcher cleanup failed:', e); }
+  try { void disposeLocalReranker(); } catch (e: unknown) { console.error('[context-server] local-reranker cleanup failed:', e); }
   try { vectorIndex.closeDb(); } catch (e: unknown) { console.error('[context-server] vectorIndex closeDb failed:', e); }
   process.exit(1);
 });
@@ -635,6 +724,14 @@ async function main(): Promise<void> {
     // Check SQLite version meets minimum requirement (3.35.0+)
     checkSqliteVersion(database);
 
+    // T076: Verify WAL mode is active for operational concurrency guarantees.
+    const walRow = database.prepare('PRAGMA journal_mode').get() as { journal_mode?: string } | undefined;
+    const journalMode = String(walRow?.journal_mode ?? '').toLowerCase();
+    if (journalMode !== 'wal') {
+      database.pragma('journal_mode = WAL');
+      console.warn('[context-server] journal_mode was not WAL; forcing WAL mode');
+    }
+
     const graphSearchFn = isGraphUnifiedEnabled()
       ? createUnifiedGraphSearchFn(database)
       : null;
@@ -737,12 +834,60 @@ async function main(): Promise<void> {
       const message = sessionErr instanceof Error ? sessionErr.message : String(sessionErr);
       console.warn('[context-server] Session manager failed:', message);
     }
+
+    // P0-3: Async ingestion job queue initialization + crash recovery reset.
+    try {
+      const ingestInit = initIngestJobQueue({
+        processFile: async (filePath: string) => {
+          await indexMemoryFile(filePath, { asyncEmbedding: true });
+        },
+      });
+      if (ingestInit.resetCount > 0) {
+        console.error(`[context-server] Ingest crash recovery reset ${ingestInit.resetCount} incomplete job(s) to queued`);
+      }
+    } catch (ingestInitErr: unknown) {
+      const message = ingestInitErr instanceof Error ? ingestInitErr.message : String(ingestInitErr);
+      console.warn('[context-server] Ingest queue init failed:', message);
+    }
+
+    // P1-7: Optional real-time markdown watcher for automatic re-indexing.
+    if (isFileWatcherEnabled()) {
+      try {
+        const watchPaths = getSpecsBasePaths(DEFAULT_BASE_PATH);
+        if (watchPaths.length > 0) {
+          fileWatcher = startFileWatcher({
+            paths: watchPaths,
+            reindexFn: async (filePath: string) => {
+              await indexMemoryFile(filePath, { asyncEmbedding: true });
+            },
+          });
+          console.error(`[context-server] File watcher started for ${watchPaths.length} path(s)`);
+        } else {
+          console.warn('[context-server] File watcher enabled, but no spec directories were found');
+        }
+      } catch (watchErr: unknown) {
+        const message = watchErr instanceof Error ? watchErr.message : String(watchErr);
+        console.warn('[context-server] File watcher startup failed:', message);
+      }
+    }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.error('[context-server] Integrity check failed:', message);
   }
 
   // P1-09: Assign to module-level transport (not const) so shutdown handlers can close it
+  if (process.env.SPECKIT_DYNAMIC_INIT !== 'false') {
+    try {
+      const dynamicInstructions = await buildServerInstructions();
+      if (dynamicInstructions.length > 0) {
+        serverWithInstructions.setInstructions?.(dynamicInstructions);
+      }
+    } catch (instructionErr: unknown) {
+      const message = instructionErr instanceof Error ? instructionErr.message : String(instructionErr);
+      console.warn('[context-server] Dynamic instructions init failed (non-fatal):', message);
+    }
+  }
+
   transport = new StdioServerTransport();
   await server.connect(transport);
   console.error('[context-server] Context MCP server running on stdio');

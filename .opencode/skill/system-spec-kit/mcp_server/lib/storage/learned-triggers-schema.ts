@@ -12,7 +12,7 @@
 // (SQLite 3.35.0+)
 // ---------------------------------------------------------------
 
-import type { DatabaseExtended as Database } from '../../../shared/types';
+import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 /* ---------------------------------------------------------------
    1. TYPES

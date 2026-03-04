@@ -22,8 +22,8 @@ import {
 import {
   fuseResultsMulti,
   SOURCE_TYPES,
-} from '../../shared/algorithms/rrf-fusion';
-import type { RankedList } from '../../shared/algorithms/rrf-fusion';
+} from '@spec-kit/shared/algorithms/rrf-fusion';
+import type { RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 // ─── T003a: Co-activation ───
 import {

@@ -57,7 +57,7 @@ import * as fsrsScheduler from '../../cache/cognitive/fsrs-scheduler';
 import { queryLearnedTriggers } from '../learned-feedback';
 import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback';
 import { isNegativeFeedbackEnabled, isCommunityDetectionEnabled, isGraphSignalsEnabled } from '../search-flags';
-import { addTraceEntry } from '../../../../shared/contracts/retrieval-trace';
+import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { computeRecencyScore } from '../../scoring/folder-scoring';
 import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';

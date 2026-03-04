@@ -178,3 +178,27 @@ export function isEntityLinkingEnabled(): boolean {
 export function isDegreeBoostEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_DEGREE_BOOST');
 }
+
+/**
+ * P1-4: Contextual tree headers for Stage 4 result enrichment.
+ * Default: TRUE. Set SPECKIT_CONTEXT_HEADERS=false to disable.
+ */
+export function isContextHeadersEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_CONTEXT_HEADERS');
+}
+
+/**
+ * P1-7: Real-time file watcher for markdown reindexing.
+ * Default: FALSE. Set SPECKIT_FILE_WATCHER=true to enable.
+ */
+export function isFileWatcherEnabled(): boolean {
+  return process.env.SPECKIT_FILE_WATCHER === 'true';
+}
+
+/**
+ * P1-5: Local GGUF reranker gate.
+ * Default: FALSE. Set RERANKER_LOCAL=true to enable.
+ */
+export function isLocalRerankerEnabled(): boolean {
+  return process.env.RERANKER_LOCAL === 'true';
+}

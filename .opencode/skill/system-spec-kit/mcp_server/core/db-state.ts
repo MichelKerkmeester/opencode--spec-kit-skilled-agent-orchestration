@@ -4,7 +4,7 @@
 
 import fs from 'fs/promises';
 import { DB_UPDATED_FILE } from './config';
-import type { DatabaseExtended } from '../../shared/types';
+import type { DatabaseExtended } from '@spec-kit/shared/types';
 
 /* ---------------------------------------------------------------
    1. TYPES

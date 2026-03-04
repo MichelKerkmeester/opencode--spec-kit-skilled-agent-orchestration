@@ -51,8 +51,8 @@ import { formatSearchResults } from '../formatters';
 import type { Database, MCPResponse, EmbeddingProfile, IntentClassification } from './types';
 
 // Retrieval trace contracts (C136-08)
-import { createTrace, addTraceEntry } from '../../shared/contracts/retrieval-trace';
-import type { RetrievalTrace } from '../../shared/contracts/retrieval-trace';
+import { createTrace, addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
+import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
@@ -166,6 +166,7 @@ interface SearchArgs {
   minQualityScore?: number;
   min_quality_score?: number;
   mode?: string; // AI-TRACE:C138-P3: "deep" mode enables query expansion for multi-query RAG
+  includeTrace?: boolean;
 }
 
 function resolveRowContextType(row: MemorySearchRow): string | undefined {
@@ -227,6 +228,7 @@ interface CacheArgsInput {
   sessionId?: string;
   enableSessionBoost: boolean;
   enableCausalBoost: boolean;
+  includeTrace?: boolean;
 }
 
 function buildCacheArgs({
@@ -253,6 +255,7 @@ function buildCacheArgs({
   sessionId,
   enableSessionBoost,
   enableCausalBoost,
+  includeTrace = false,
 }: CacheArgsInput): Record<string, unknown> {
   return {
     query: normalizedQuery,
@@ -277,6 +280,7 @@ function buildCacheArgs({
     sessionId,
     enableSessionBoost,
     enableCausalBoost,
+    includeTrace,
   };
 }
 
@@ -638,7 +642,10 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     minQualityScore,
     min_quality_score,
     mode,
+    includeTrace: includeTraceArg = false,
   } = args;
+  const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
+  const includeTrace = includeTraceByFlag || includeTraceArg === true;
 
   const qualityThreshold = resolveQualityThreshold(minQualityScore, min_quality_score);
 
@@ -775,6 +782,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     sessionId,
     enableSessionBoost,
     enableCausalBoost,
+    includeTrace,
   });
 
   // AI-TRACE:T012-T015: Use cache wrapper for search execution
@@ -891,7 +899,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           anchors,
           null,
           null,
-          extraData
+          extraData,
+          includeTrace
         );
 
         // Prepend evidence gap warning if present

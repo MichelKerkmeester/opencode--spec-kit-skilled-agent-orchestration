@@ -9,7 +9,7 @@ import {
   FSRS_HALF_LIFE_FACTOR,
   calculateRetrievability as calculateFsrsRetrievability
 } from './fsrs-scheduler';
-import type { MemoryDbRow } from '../../../../shared/types';
+import type { MemoryDbRow } from '@spec-kit/shared/types';
 
 /**
  * Loose input type for tier classification functions.

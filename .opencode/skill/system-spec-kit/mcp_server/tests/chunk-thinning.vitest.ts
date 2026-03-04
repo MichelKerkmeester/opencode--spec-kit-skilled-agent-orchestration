@@ -385,7 +385,6 @@ describe('R7 integration wiring', () => {
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
 
-    // @ts-expect-error db is non-null from assertion above
     const childCountRow = db.prepare('SELECT COUNT(*) as count FROM memory_index WHERE parent_id = ?').get(result.id) as { count: number };
     expect(childCountRow.count).toBe(thinning.retained.length);
 

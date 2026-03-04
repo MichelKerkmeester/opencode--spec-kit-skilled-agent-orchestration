@@ -166,7 +166,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       appendMutationLedgerSafe(database, {
         mutationType: 'update',
         reason: 'memory_update: metadata update',
-        priorHash: priorSnapshot?.content_hash ?? existing.content_hash ?? null,
+        priorHash: priorSnapshot?.content_hash ?? (existing.content_hash as string | null) ?? null,
         newHash: mutationLedger.computeHash(JSON.stringify({
           id,
           title: updateParams.title ?? existing.title ?? null,
@@ -220,7 +220,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     appendMutationLedgerSafe(database, {
       mutationType: 'update',
       reason: 'memory_update: metadata update',
-      priorHash: priorSnapshot?.content_hash ?? existing.content_hash ?? null,
+      priorHash: priorSnapshot?.content_hash ?? (existing.content_hash as string | null) ?? null,
       newHash: mutationLedger.computeHash(JSON.stringify({
         id,
         title: updateParams.title ?? existing.title ?? null,

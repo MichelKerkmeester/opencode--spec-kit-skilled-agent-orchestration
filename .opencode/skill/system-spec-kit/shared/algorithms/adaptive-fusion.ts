@@ -324,7 +324,7 @@ function computeDarkRunDiff(
 export function hybridAdaptiveFuse(
   semanticResults: RrfItem[],
   keywordResults: RrfItem[],
-  intent: IntentType | string,
+  intent: string,
   options: {
     documentType?: string;
     identity?: string;

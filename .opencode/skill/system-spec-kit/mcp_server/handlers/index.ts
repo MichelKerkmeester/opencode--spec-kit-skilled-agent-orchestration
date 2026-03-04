@@ -14,6 +14,7 @@ import * as causalGraph from './causal-graph';
 import * as evalReporting from './eval-reporting';
 // T061: L1 Orchestration - unified entry point
 import * as memoryContext from './memory-context';
+import * as memoryIngest from './memory-ingest';
 
 /* ---------------------------------------------------------------
    RE-EXPORTS: All handler functions
@@ -42,6 +43,16 @@ export {
   atomic_save_memory,
   get_atomicity_metrics,
 } from './memory-save';
+
+// Memory ingest handlers
+export {
+  handleMemoryIngestStart,
+  handleMemoryIngestStatus,
+  handleMemoryIngestCancel,
+  handle_memory_ingest_start,
+  handle_memory_ingest_status,
+  handle_memory_ingest_cancel,
+} from './memory-ingest';
 
 // Memory CRUD handlers
 export {
@@ -142,4 +153,5 @@ export {
   causalGraph,
   evalReporting,
   memoryContext,
+  memoryIngest,
 };

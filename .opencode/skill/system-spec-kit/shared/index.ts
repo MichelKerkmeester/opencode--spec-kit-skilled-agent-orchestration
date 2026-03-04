@@ -163,7 +163,20 @@ export { getDbDir } from './config';
 // 8. SHARED ALGORITHMS / CONTRACTS
 // ---------------------------------------------------------------
 export * from './algorithms';
-export * from './contracts/retrieval-trace';
+export {
+  createTrace,
+  addTraceEntry,
+  createEnvelope,
+  createDegradedContract,
+  ENVELOPE_VERSION,
+  type RetrievalStage,
+  type TraceEntry,
+  type RetrievalTrace,
+  type EnvelopeMetadata,
+  type ContextEnvelope,
+  // DegradedModeContract intentionally omitted — already exported by ./algorithms/adaptive-fusion
+  // The retrieval-trace variant adds degradedStages; import directly from contracts/retrieval-trace if needed
+} from './contracts/retrieval-trace';
 
 // ---------------------------------------------------------------
 // 9. UTILITIES

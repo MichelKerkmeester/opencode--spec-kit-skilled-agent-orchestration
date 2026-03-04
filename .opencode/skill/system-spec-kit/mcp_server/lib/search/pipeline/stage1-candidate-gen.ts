@@ -41,7 +41,7 @@ import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnab
 import { expandQuery } from '../query-expander';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
-import { addTraceEntry } from '../../../../shared/contracts/retrieval-trace';
+import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 
 // ── Constants ──

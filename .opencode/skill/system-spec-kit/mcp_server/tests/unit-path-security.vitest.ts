@@ -9,7 +9,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
-import { validateFilePath } from '../../shared/utils/path-security';
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 
 /* --- Tests --- */
 

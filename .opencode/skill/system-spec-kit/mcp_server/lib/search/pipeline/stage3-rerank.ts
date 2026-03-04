@@ -28,11 +28,12 @@
 import { resolveEffectiveScore } from './types';
 import type { Stage3Input, Stage3Output, PipelineRow } from './types';
 import * as crossEncoder from '../cross-encoder';
-import { isCrossEncoderEnabled, isMMREnabled } from '../search-flags';
-import { applyMMR } from '../../../../shared/algorithms/mmr-reranker';
-import type { MMRCandidate } from '../../../../shared/algorithms/mmr-reranker';
+import { rerankLocal } from '../local-reranker';
+import { isCrossEncoderEnabled, isMMREnabled, isLocalRerankerEnabled } from '../search-flags';
+import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
+import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP } from '../intent-classifier';
-import { addTraceEntry } from '../../../../shared/contracts/retrieval-trace';
+import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils';
 import { toErrorMessage } from '../../../utils';
 import type Database from 'better-sqlite3';
@@ -278,6 +279,41 @@ async function applyCrossEncoderReranking(
   const rowMap = new Map<string | number, PipelineRow>();
   for (const row of results) {
     rowMap.set(row.id, row);
+  }
+
+  // Local GGUF reranker path (P1-5): RERANKER_LOCAL=true
+  // On any failure/unavailable precondition, rerankLocal returns original rows unchanged.
+  if (isLocalRerankerEnabled()) {
+    try {
+      const localReranked = await rerankLocal(query, results, options.limit);
+      if (localReranked === results) {
+        return { rows: results, applied: false };
+      }
+
+      const localRows: PipelineRow[] = localReranked.map((row) => {
+        const original = rowMap.get(row.id);
+        const rerankScoreRaw = row.rerankerScore ?? row.score;
+        const rerankScore = typeof rerankScoreRaw === 'number'
+          ? rerankScoreRaw
+          : (original?.score ?? 0);
+
+        return {
+          ...(original ?? row),
+          ...row,
+          stage2Score: original?.score,
+          score: rerankScore,
+          similarity: original?.similarity ?? row.similarity,
+          rerankerScore: rerankScore,
+        };
+      });
+
+      return { rows: localRows, applied: true };
+    } catch (err: unknown) {
+      console.warn(
+        `[stage3-rerank] Local reranking failed: ${toErrorMessage(err)} — returning original results`
+      );
+      return { rows: results, applied: false };
+    }
   }
 
   // Map PipelineRow → RerankDocument (uses `content` field per cross-encoder interface)

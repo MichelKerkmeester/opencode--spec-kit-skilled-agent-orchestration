@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
   VALIDATION_TIMEOUT_MS,
   validateApiKey,
-} from '../../shared/embeddings/factory';
+} from '@spec-kit/shared/embeddings/factory';
 
 // ---------------------------------------------------------------
 // TEST: API Key Validation (T087-T090)

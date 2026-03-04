@@ -9,7 +9,7 @@
 // Decay: gradual recovery over time (30-day half-life)
 // ---------------------------------------------------------------
 
-import type { DatabaseExtended as Database } from '../../../shared/types';
+import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 /* ---------------------------------------------------------------
    1. CONSTANTS

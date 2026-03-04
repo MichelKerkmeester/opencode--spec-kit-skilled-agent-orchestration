@@ -426,7 +426,6 @@ describe('encoding_intent persistence integration', () => {
 
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error db is non-null from assertion above
     const row = db.prepare('SELECT encoding_intent FROM memory_index WHERE id = ?').get(memoryId) as { encoding_intent: string } | undefined;
 
     expect(row?.encoding_intent).toBe('code');
@@ -457,7 +456,6 @@ describe('encoding_intent persistence integration', () => {
 
     const db = vectorIndex.getDb();
     expect(db).toBeTruthy();
-    // @ts-expect-error db is non-null from assertion above
     const row = db.prepare('SELECT encoding_intent FROM memory_index WHERE id = ?').get(memoryId) as { encoding_intent: string } | undefined;
 
     expect(row?.encoding_intent).toBe('structured_data');

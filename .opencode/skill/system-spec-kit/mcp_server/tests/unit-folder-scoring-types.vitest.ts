@@ -13,7 +13,7 @@ import {
   ARCHIVE_PATTERNS,
   computeRecencyScore,
   DECAY_RATE,
-} from '../../shared/scoring/folder-scoring';
+} from '@spec-kit/shared/scoring/folder-scoring';
 
 /* --- Helpers --- */
 

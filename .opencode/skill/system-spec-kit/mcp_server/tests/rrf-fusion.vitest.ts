@@ -16,7 +16,7 @@ import {
   GRAPH_WEIGHT_BOOST,
   SOURCE_TYPES,
   isRrfEnabled,
-} from '../../shared/algorithms/rrf-fusion';
+} from '@spec-kit/shared/algorithms/rrf-fusion';
 
 describe('RRF Fusion Core Tests (T021-T030)', () => {
   it('T021: RRF fusion with default k=60 parameter', () => {
