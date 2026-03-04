@@ -1,6 +1,7 @@
 ---
 title: "Decision Record: Refinement Phase 6 — Opus Review Remediation"
 description: "Architecture decisions for legacy removal, score normalization, and stemmer improvements."
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "refinement phase 6 decisions"
   - "legacy removal decision"

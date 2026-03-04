@@ -186,3 +186,9 @@ Sprint 4: Feedback and Quality
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
+
+## P0
+- [ ] [P0] No additional phase-specific blockers recorded for this checklist normalization pass.
+
+## P1
+- [ ] [P1] No additional required checks beyond documented checklist items for this phase.

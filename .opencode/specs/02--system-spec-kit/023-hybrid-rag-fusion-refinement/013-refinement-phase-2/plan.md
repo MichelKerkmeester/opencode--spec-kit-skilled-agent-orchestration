@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: Post-Review Remediation"
 description: "2-wave parallel agent delegation strategy to remediate 21 P0/P1 findings from 25-agent comprehensive review of the Spec Kit Memory MCP server."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "remediation plan"
   - "wave 1 wave 2"
@@ -120,3 +121,10 @@ Wave 1 (5 Opus, parallel) ──► Wave 2 (5 Sonnet, parallel) ──► Verifi
 | Verification | Wave 2 complete | Finalize |
 | Finalize | Verification passes | None |
 <!-- /ANCHOR:phase-deps -->
+
+## Architecture
+No architecture changes are introduced by this normalization pass.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

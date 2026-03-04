@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: Refinement Phase 6 — Opus Review Remediation"
 description: "5-sprint plan implementing 37 remediation fixes (4 P0 + 33 P1) for spec-kit-memory MCP server."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "refinement phase 6 plan"
   - "opus remediation sprints"
@@ -274,3 +275,29 @@ Sprint 5 (Eval + Housekeeping)  ──> Independent (parallel with 2–4)
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## AI Execution Protocol
+
+### Pre-Task Checklist
+- Confirm scope lock for this phase folder before edits.
+- Confirm validator command and target path.
+
+### Execution Rules
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ | Execute fixes in warning-category order and re-validate after each pass. |
+| TASK-SCOPE | Do not modify files outside this phase folder unless explicitly required by parent-link checks. |
+
+### Status Reporting Format
+Status Reporting Format: `DONE | IN_PROGRESS | BLOCKED` with file path and validator evidence per update.
+
+### Blocked Task Protocol
+If BLOCKED, record blocker, attempted remediation, and next safe action before proceeding.

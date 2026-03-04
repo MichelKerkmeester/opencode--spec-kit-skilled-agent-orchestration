@@ -297,3 +297,11 @@ LEVEL 2 PLAN — Phase 8 of 8 (FINAL)
 - All items parallelizable — MEDIUM rollback difficulty
 - R5 INT8: custom quantized BLOB, NOT vec_quantize_i8
 -->
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

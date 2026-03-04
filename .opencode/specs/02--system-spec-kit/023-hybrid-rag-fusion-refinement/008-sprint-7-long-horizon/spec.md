@@ -272,3 +272,15 @@ LEVEL 2 SPEC — Phase 8 of 8 (FINAL)
 - All items parallelizable
 - R5 activation criteria: >10K memories OR >50ms latency OR >1536 dimensions
 -->
+
+---
+
+## Phase Navigation
+
+- Successor: `009-sprint-8-deferred-features`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

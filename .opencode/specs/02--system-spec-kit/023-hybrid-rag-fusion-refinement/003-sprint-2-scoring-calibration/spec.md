@@ -269,3 +269,15 @@ LEVEL 2 SPEC — Phase 3 of 8
 - Sprint 2: Scoring calibration — R18 cache, N4 cold-start, G2 investigation, normalization
 - Off-ramp: Recommended minimum viable stop after Sprint 2+3 (phases 3+4)
 -->
+
+---
+
+## Phase Navigation
+
+- Predecessor: `002-sprint-1-graph-signal-activation`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

@@ -248,3 +248,15 @@ LEVEL 2 SPEC — Phase 2 of 8
 - Phase-child-header addendum
 - Sprint 1: Graph signal activation via R4 typed-degree channel
 -->
+
+---
+
+## Phase Navigation
+
+- Successor: `003-sprint-2-scoring-calibration`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

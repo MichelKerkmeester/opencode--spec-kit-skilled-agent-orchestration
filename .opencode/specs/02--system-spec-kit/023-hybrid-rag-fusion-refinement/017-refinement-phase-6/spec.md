@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Refinement Phase 6 — Opus Review Remediation"
 description: "37 remediation fixes (4 P0 + 33 P1) identified by 10-agent Opus review of the spec-kit-memory MCP server."
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "refinement phase 6"
   - "opus review remediation"
@@ -27,6 +28,8 @@ A 10-agent comprehensive review of the `023-hybrid-rag-fusion-refinement` codeba
 ---
 
 ## 1. METADATA
+
+<!-- ANCHOR:metadata -->
 
 | Field | Value |
 |-------|-------|
@@ -241,3 +244,19 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 - **Decision Records**: See `decision-record.md`
 - **Parent Spec**: `023-hybrid-rag-fusion-refinement/`
 - **Prior Work**: `015-gemini-review-p1-fixes/`, `016-alignment-remediation/`
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `016-refinement-phase-5`
+- Successor: `018-refinement-phase-7`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

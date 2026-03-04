@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: Refinement Phase 7 — Multi-Agent Deep Review Remediation"
 description: "Complete remediation of 33 findings from the 8-agent orchestrated review (5 Gemini + 3 Opus) of the spec-kit-memory MCP server (50K+ LOC). Tier 1 + Tier 2 executed across 4 waves of 17 agents (6 Opus + 6 Sonnet + 5 mixed). All tests pass (7085/7085)."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "refinement phase 7 summary"
   - "018 implementation"

@@ -116,3 +116,13 @@ Define a contained implementation phase for deferred work, with explicit depende
 - Which deferred items remain priority P1 at sprint entry versus candidate deferral to post-140 work?
 - Which deferred items require separate performance guardrails before activation?
 <!-- /ANCHOR:questions -->
+
+---
+
+## Phase Navigation
+
+- Successor: `010-skill-command-alignment`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

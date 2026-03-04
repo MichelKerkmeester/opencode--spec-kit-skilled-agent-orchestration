@@ -1,4 +1,17 @@
+---
+title: "Plan: Refinement Phase 4"
+description: "Execution plan for persistence and scoring fallback corrections in Phase 4."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+importance_tier: "important"
+contextType: "implementation"
+---
+
 # Plan: Refinement Phase 4
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 ## P1 #1: Warn-Only Timer Persistence
 
@@ -30,3 +43,21 @@
 ## Verification
 - Run full test suite: `cd .opencode/skill/system-spec-kit && npm test`
 - Verify TypeScript compiles: `npx tsc --noEmit`
+<!-- /ANCHOR:summary -->
+
+## Technical Context
+Current plan scope remains documentation and validation normalization for this phase.
+
+## Architecture
+No architecture changes are introduced by this normalization pass.
+
+## Implementation
+Apply repeatable documentation updates, then validate recursively until clean.
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

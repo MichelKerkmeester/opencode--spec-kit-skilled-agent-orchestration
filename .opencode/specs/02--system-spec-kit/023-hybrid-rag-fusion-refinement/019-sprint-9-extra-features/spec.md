@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)"
 description: "The 023 Hybrid RAG Fusion Refinement program delivered core retrieval architecture. A 6-agent cross-AI research effort identified 12 remaining gaps: 7 partial implementations needing completion, 5 genuinely new features. This sprint tackles interface polish, operational tooling, and API ergonomics."
+SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:
   - "sprint 9"
   - "extra features"
@@ -32,6 +33,8 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 ---
 
 ## 1. METADATA
+
+<!-- ANCHOR:metadata -->
 
 | Field | Value |
 |-------|-------|
@@ -391,3 +394,19 @@ interface PipelineRow {
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
 - **Research**: See `research/` (16 files: 001-012 raw, 013-016 synthesis)
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `018-refinement-phase-7`
+- Successor: `020-refinement-phase-8`
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

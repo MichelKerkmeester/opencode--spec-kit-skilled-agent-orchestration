@@ -891,3 +891,21 @@ LEVEL 3+ PLAN
 - Full communication plan
 - 8 metric-gated sprints with ADRs
 -->
+
+## AI Execution Protocol
+
+### Pre-Task Checklist
+- Confirm scope lock for this phase folder before edits.
+- Confirm validator command and target path.
+
+### Execution Rules
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ | Execute fixes in warning-category order and re-validate after each pass. |
+| TASK-SCOPE | Do not modify files outside this phase folder unless explicitly required by parent-link checks. |
+
+### Status Reporting Format
+Status Reporting Format: `DONE | IN_PROGRESS | BLOCKED` with file path and validator evidence per update.
+
+### Blocked Task Protocol
+If BLOCKED, record blocker, attempted remediation, and next safe action before proceeding.

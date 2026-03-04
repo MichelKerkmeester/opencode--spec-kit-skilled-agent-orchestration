@@ -1,6 +1,7 @@
 ---
 title: "Tasks: Refinement Phase 6 — Opus Review Remediation"
 description: "35 completed tasks across 5 sprints for P0+P1 remediation fixes."
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "refinement phase 6 tasks"
   - "opus remediation tasks"

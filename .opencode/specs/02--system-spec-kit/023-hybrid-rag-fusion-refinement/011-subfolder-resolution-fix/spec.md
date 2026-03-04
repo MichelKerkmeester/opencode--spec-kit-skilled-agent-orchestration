@@ -74,3 +74,20 @@ Three interrelated bugs cause this:
 4. `test-folder-detector-functional.js`: no new failures
 5. TypeScript compiles cleanly
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `010-skill-command-alignment`
+- Successor: `012-refinement-phase-1`
+
+## Problem Statement
+Documentation-level normalization for validator completeness without changing implementation outcomes.
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

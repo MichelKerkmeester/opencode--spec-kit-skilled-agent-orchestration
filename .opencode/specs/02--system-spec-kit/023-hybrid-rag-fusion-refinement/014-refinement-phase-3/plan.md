@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: [NAME] [template:level_2/plan.md]"
 description: "[2-3 sentences: what this implements and the technical approach]"
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"

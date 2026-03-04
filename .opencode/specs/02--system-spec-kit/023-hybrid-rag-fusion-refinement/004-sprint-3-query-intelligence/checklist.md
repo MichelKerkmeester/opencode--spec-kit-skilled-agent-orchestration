@@ -31,10 +31,10 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-S3-001 [P0] Sprint 2 exit gate verified (predecessor complete)
-- [x] CHK-S3-002 [P0] Requirements documented in spec.md
-- [x] CHK-S3-003 [P0] Technical approach defined in plan.md
-- [x] CHK-S3-004 [P1] Dependencies identified and available (eval infrastructure operational)
+- [x] CHK-S3-001 [P0] Sprint 2 exit gate verified (predecessor complete) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-002 [P0] Requirements documented in spec.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-003 [P0] Technical approach defined in plan.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-004 [P1] Dependencies identified and available (eval infrastructure operational) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -42,10 +42,10 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-S3-010 [P0] Code passes lint/format checks
-- [x] CHK-S3-011 [P0] No console errors or warnings
-- [x] CHK-S3-012 [P1] Error handling implemented (R15 classifier fallback to "complex")
-- [x] CHK-S3-013 [P1] Code follows project patterns (feature flag gating, pipeline extension)
+- [x] CHK-S3-010 [P0] Code passes lint/format checks [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-011 [P0] No console errors or warnings [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-012 [P1] Error handling implemented (R15 classifier fallback to "complex") [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-013 [P1] Code follows project patterns (feature flag gating, pipeline extension) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -54,39 +54,39 @@ contextType: "implementation"
 ## Sprint 3 Specific Verification
 
 ### R15 — Query Complexity Router
-- [x] CHK-S3-020 [P1] R15 p95 latency for simple queries <30ms (conditional: simulated only — 20ms measured in simulation)
-- [x] CHK-S3-021 [P0] R15 minimum 2 channels even for simple queries (R2 compatibility)
-- [x] CHK-S3-022 [P1] R15 classification accuracy tested with 10+ queries per tier
-- [x] CHK-S3-023 [P1] R15 moderate-tier routing verified (3-4 channels selected)
-- [x] CHK-S3-024 [P1] R15 classifier fallback to "complex" on failure verified
-- [x] CHK-S3-025 [P1] R15+R2 interaction test: R15 minimum 2 channels preserves R2 channel diversity guarantee
+- [x] CHK-S3-020 [P1] R15 p95 latency for simple queries <30ms (conditional: simulated only — 20ms measured in simulation) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-021 [P0] R15 minimum 2 channels even for simple queries (R2 compatibility) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-022 [P1] R15 classification accuracy tested with 10+ queries per tier [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-023 [P1] R15 moderate-tier routing verified (3-4 channels selected) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-024 [P1] R15 classifier fallback to "complex" on failure verified [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-025 [P1] R15+R2 interaction test: R15 minimum 2 channels preserves R2 channel diversity guarantee [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ### R14/N1 — Relative Score Fusion
-- [x] CHK-S3-030 [P1] R14/N1 shadow comparison: minimum 100 queries executed
-- [x] CHK-S3-031 [P1] Kendall tau computed between RSF and RRF rankings
-- [x] CHK-S3-032 [P1] RSF decision documented (tau <0.4 = reject RSF)
-- [x] CHK-S3-033 [P1] All 3 fusion variants tested (single-pair, multi-list, cross-variant)
-- [x] CHK-S3-034 [P1] **Eval corpus sourcing strategy defined**: 100+ query corpus sourced with stratified tier distribution documented. Minimum 20 manually curated queries, synthetic query limitations acknowledged.
-- [x] CHK-S3-035 [P1] RSF numerical stability: output clamped to [0,1], no overflow on extreme inputs
+- [x] CHK-S3-030 [P1] R14/N1 shadow comparison: minimum 100 queries executed [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-031 [P1] Kendall tau computed between RSF and RRF rankings [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-032 [P1] RSF decision documented (tau <0.4 = reject RSF) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-033 [P1] All 3 fusion variants tested (single-pair, multi-list, cross-variant) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-034 [P1] **Eval corpus sourcing strategy defined**: 100+ query corpus sourced with stratified tier distribution documented. Minimum 20 manually curated queries, synthetic query limitations acknowledged. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-035 [P1] RSF numerical stability: output clamped to [0,1], no overflow on extreme inputs [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ### R2 — Channel Min-Representation
-- [x] CHK-S3-040 [P1] R2 dark-run: top-3 precision within 5% of baseline (conditional: unit tests only — live precision not measured)
-- [x] CHK-S3-041 [P1] R2 only enforces for channels that returned results
-- [x] CHK-S3-042 [P1] R2 quality floor 0.2 verified (below-threshold results not promoted)
+- [x] CHK-S3-040 [P1] R2 dark-run: top-3 precision within 5% of baseline (conditional: unit tests only — live precision not measured) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-041 [P1] R2 only enforces for channels that returned results [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-042 [P1] R2 quality floor 0.2 verified (below-threshold results not promoted) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ### REQ-S3-004 — Confidence-Based Result Truncation
-- [x] CHK-S3-043 [P1] Score confidence gap detection: truncation triggers when gap between rank N and N+1 exceeds 2x median gap
-- [x] CHK-S3-044 [P1] Minimum 3 results guaranteed regardless of confidence gap
-- [x] CHK-S3-045 [P1] Irrelevant tail results reduced by >30% vs untruncated baseline
+- [x] CHK-S3-043 [P1] Score confidence gap detection: truncation triggers when gap between rank N and N+1 exceeds 2x median gap [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-044 [P1] Minimum 3 results guaranteed regardless of confidence gap [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-045 [P1] Irrelevant tail results reduced by >30% vs untruncated baseline [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ### REQ-S3-005 — Dynamic Token Budget Allocation
-- [x] CHK-S3-046 [P1] Simple-tier queries allocated 1500 tokens
-- [x] CHK-S3-047 [P1] Moderate-tier queries allocated 2500 tokens
-- [x] CHK-S3-048 [P1] Complex-tier queries allocated 4000 tokens
-- [x] CHK-S3-049 [P1] Token budget applies to total returned content, not per-result
+- [x] CHK-S3-046 [P1] Simple-tier queries allocated 1500 tokens [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-047 [P1] Moderate-tier queries allocated 2500 tokens [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-048 [P1] Complex-tier queries allocated 4000 tokens [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-049 [P1] Token budget applies to total returned content, not per-result [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ### Cross-Cutting
-- [x] CHK-S3-027 [P1] Independent flag rollback testing: each of 5 flags (COMPLEXITY_ROUTER, RSF_FUSION, CHANNEL_MIN_REP, CONFIDENCE_TRUNCATION, DYNAMIC_TOKEN_BUDGET) can be independently disabled without breaking other features
+- [x] CHK-S3-027 [P1] Independent flag rollback testing: each of 5 flags (COMPLEXITY_ROUTER, RSF_FUSION, CHANNEL_MIN_REP, CONFIDENCE_TRUNCATION, DYNAMIC_TOKEN_BUDGET) can be independently disabled without breaking other features [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:sprint-3-verification -->
 
 ---
@@ -94,10 +94,10 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-S3-050 [P0] All acceptance criteria met (REQ-S3-001 through REQ-S3-005)
-- [x] CHK-S3-051 [P1] 22-28 new tests passing (600-900 LOC)
-- [x] CHK-S3-052 [P1] Edge cases tested (empty channels, all-empty, classifier failure)
-- [x] CHK-S3-053 [P1] Existing 158+ tests still pass
+- [x] CHK-S3-050 [P0] All acceptance criteria met (REQ-S3-001 through REQ-S3-005) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-051 [P1] 22-28 new tests passing (600-900 LOC) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-052 [P1] Edge cases tested (empty channels, all-empty, classifier failure) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-053 [P1] Existing 158+ tests still pass [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -120,11 +120,11 @@ contextType: "implementation"
 <!-- ANCHOR:off-ramp -->
 ## Off-Ramp Evaluation
 
-- [x] CHK-S3-060 [P1] Off-ramp evaluated: MRR@5 >= 0.7
-- [x] CHK-S3-061 [P1] Off-ramp evaluated: constitutional accuracy >= 95%
-- [x] CHK-S3-062 [P1] Off-ramp evaluated: cold-start recall >= 90%
-- [x] CHK-S3-063 [P1] Off-ramp decision documented (continue or stop)
-- [x] CHK-S3-064 [P1] **Sprint 2+3 hard scope cap**: If off-ramp thresholds met, Sprint 4-7 require NEW spec approval. Decision documented with metric evidence from Sprint 0-3 actuals. **PI-A2 deferred:** Re-evaluate using Sprint 0-3 frequency data on low-result queries.
+- [x] CHK-S3-060 [P1] Off-ramp evaluated: MRR@5 >= 0.7 [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-061 [P1] Off-ramp evaluated: constitutional accuracy >= 95% [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-062 [P1] Off-ramp evaluated: cold-start recall >= 90% [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-063 [P1] Off-ramp decision documented (continue or stop) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-064 [P1] **Sprint 2+3 hard scope cap**: If off-ramp thresholds met, Sprint 4-7 require NEW spec approval. Decision documented with metric evidence from Sprint 0-3 actuals. **PI-A2 deferred:** Re-evaluate using Sprint 0-3 frequency data on low-result queries. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:off-ramp -->
 
 ---
@@ -132,14 +132,14 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-S3-070 [P1] Spec/plan/tasks synchronized
-- [x] CHK-S3-071 [P1] Code comments adequate
-- [x] CHK-S3-072 [P1] Feature flags documented
+- [x] CHK-S3-070 [P1] Spec/plan/tasks synchronized [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-071 [P1] Code comments adequate [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-072 [P1] Feature flags documented [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ## Feature Flag Audit
 
-- [x] CHK-S3-073 [P1] **Feature flag count**: Active feature flag count at Sprint 3 exit is ≤6. Evidence: 5 active flags — `SPECKIT_COMPLEXITY_ROUTER`, `SPECKIT_RSF_FUSION`, `SPECKIT_CHANNEL_MIN_REP`, `SPECKIT_CONFIDENCE_TRUNCATION`, `SPECKIT_DYNAMIC_TOKEN_BUDGET` (5/6 limit)
-- [x] CHK-S3-074 [P1] **Flag sunset decisions documented**: Any flag retired or consolidated has metric evidence supporting the decision recorded.
+- [x] CHK-S3-073 [P1] **Feature flag count**: Active feature flag count at Sprint 3 exit is ≤6. Evidence: 5 active flags — `SPECKIT_COMPLEXITY_ROUTER`, `SPECKIT_RSF_FUSION`, `SPECKIT_CHANNEL_MIN_REP`, `SPECKIT_CONFIDENCE_TRUNCATION`, `SPECKIT_DYNAMIC_TOKEN_BUDGET` (5/6 limit) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-074 [P1] **Flag sunset decisions documented**: Any flag retired or consolidated has metric evidence supporting the decision recorded. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [ ] CHK-S3-075 [P2] **R12 mutual exclusion**: R12 (query expansion) flag is inactive at Sprint 3 exit gate. R12 is Sprint 5 scope; confirming it is not active prevents R12+R15 interaction.
 <!-- /ANCHOR:docs -->
 
@@ -148,9 +148,9 @@ contextType: "implementation"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-S3-080 [P1] Temp files in scratch/ only
-- [x] CHK-S3-081 [P1] scratch/ cleaned before completion
-- [x] CHK-S3-082 [P2] Findings saved to memory/
+- [x] CHK-S3-080 [P1] Temp files in scratch/ only [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-081 [P1] scratch/ cleaned before completion [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S3-082 [P2] Findings saved to memory/ [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -175,3 +175,9 @@ Sprint 3: Query Intelligence
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
+
+## P0
+- [ ] [P0] No additional phase-specific blockers recorded for this checklist normalization pass.
+
+## P1
+- [ ] [P1] No additional required checks beyond documented checklist items for this phase.

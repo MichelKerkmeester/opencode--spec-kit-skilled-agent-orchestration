@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: Sprint 9 — Extra Features (Productization & Operational Tooling)"
 description: "4-phase plan covering MCP schema hardening, response envelopes, async job lifecycle, contextual trees, GGUF reranking, file watching, and dynamic server init. All changes additive and feature-flagged."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "sprint 9 plan"
   - "019 plan"
@@ -549,3 +550,21 @@ Phase 1 (Hardening) ────────────────────
 - handlers/*.ts shared between W-A and W-B (W-A for input, W-B for output)
 - lib/ops/*.ts owned by W-C
 - lib/search/local-reranker.ts owned by W-D
+
+## AI Execution Protocol
+
+### Pre-Task Checklist
+- Confirm scope lock for this phase folder before edits.
+- Confirm validator command and target path.
+
+### Execution Rules
+| Rule | Requirement |
+|------|-------------|
+| TASK-SEQ | Execute fixes in warning-category order and re-validate after each pass. |
+| TASK-SCOPE | Do not modify files outside this phase folder unless explicitly required by parent-link checks. |
+
+### Status Reporting Format
+Status Reporting Format: `DONE | IN_PROGRESS | BLOCKED` with file path and validator evidence per update.
+
+### Blocked Task Protocol
+If BLOCKED, record blocker, attempted remediation, and next safe action before proceeding.

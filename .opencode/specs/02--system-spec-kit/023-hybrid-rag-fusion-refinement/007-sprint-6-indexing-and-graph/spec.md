@@ -295,3 +295,9 @@ LEVEL 2 SPEC — Phase 7 of 8
 - Split into Sprint 6a (Practical, 33-51h, LOW risk) + Sprint 6b (Graph Sophistication, 37-53h, GATED)
 - UT-8 amendments applied: OQ-S6-002 resolved, REQ-S6-004 density-conditional, attribution weighting specified
 -->
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

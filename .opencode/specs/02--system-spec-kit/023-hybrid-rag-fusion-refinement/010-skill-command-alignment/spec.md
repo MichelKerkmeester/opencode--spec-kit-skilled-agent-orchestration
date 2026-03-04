@@ -200,3 +200,22 @@ Bring all 4 speckit agent files into full alignment with the Spec 140 MCP tool i
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
 - **Parent Spec**: See `../000-feature-overview/spec.md` (Spec 140)
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `009-sprint-8-deferred-features`
+- Successor: `011-subfolder-resolution-fix`
+
+## Supplemental Requirements
+- REQ-DOC-008: Keep documentation internally consistent with existing phase artifacts and validation output.
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

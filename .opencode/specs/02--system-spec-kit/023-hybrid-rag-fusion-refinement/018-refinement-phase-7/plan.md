@@ -1,4 +1,17 @@
+---
+title: "Plan: 018 - Refinement Phase 7 Remediation"
+description: "Tiered execution plan for Phase 7 remediation and verification checkpoints."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+importance_tier: "critical"
+contextType: "implementation"
+---
+
 # Plan: 018 — Refinement Phase 7 Remediation
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 ## Approach
 
@@ -725,3 +738,15 @@ All Tier 1 and Tier 2 changes can be reverted via git:
 - Documentation changes: `git checkout -- summary_of_existing_features.md implementation-summary.md`
 - Code changes: `git checkout -- mcp_server/lib/` (Math.max and session-manager fixes)
 - No database migrations, no config changes, no infrastructure changes
+<!-- /ANCHOR:summary -->
+
+## Technical Context
+Current plan scope remains documentation and validation normalization for this phase.
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

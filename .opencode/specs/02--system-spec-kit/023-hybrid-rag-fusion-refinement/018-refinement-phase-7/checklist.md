@@ -1,4 +1,17 @@
+---
+title: "Checklist: 018 - Refinement Phase 7"
+description: "Verification checklist covering P0-P2 remediation and consistency checks for Phase 7."
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+importance_tier: "critical"
+contextType: "verification"
+---
+
 # Checklist: 018 — Refinement Phase 7
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 ---
 
@@ -8,25 +21,25 @@
 
 ### Documentation Accuracy — summary_of_existing_features.md
 
-- [x] **P0-1** Signal count corrected to "12 processing steps (9 score-affecting)"
+- [x] [P0] **P0-1** Signal count corrected to "12 processing steps (9 score-affecting)" [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Read `summary_of_existing_features.md`, search for signal/step count
   - Evidence: "12 processing steps (9 score-affecting)" present in summary doc
   - Cross-reference: `mcp_server/lib/search/pipeline/stage2-fusion.ts:404` lists 12 steps in `executeStage2()`
   - Confidence: 0.98 (3/3 models agree)
 
-- [x] **P0-2** All V1 pipeline (`postSearchPipeline`) references removed
+- [x] [P0] **P0-2** All V1 pipeline (`postSearchPipeline`) references removed [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: `grep -r 'postSearchPipeline' summary_of_existing_features.md`
   - Evidence: 0 active postSearchPipeline references remain
   - Cross-reference: `mcp_server/handlers/memory-search.ts:599` — only removal comment remains in code
   - Confidence: 0.98 (3/3 models agree)
 
-- [x] **P0-3** `SPECKIT_PIPELINE_V2` marked as deprecated (always true)
+- [x] [P0] **P0-3** `SPECKIT_PIPELINE_V2` marked as deprecated (always true) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Read flag description in summary doc
   - Evidence: SPECKIT_PIPELINE_V2 marked deprecated (always true) in documentation
   - Cross-reference: `mcp_server/lib/search/search-flags.ts:101` — `isPipelineV2Enabled()` hardcoded `return true`
   - Confidence: 0.98 (3/3 models agree)
 
-- [x] **P0-4** `resolveEffectiveScore()` documented in pipeline section
+- [x] [P0] **P0-4** `resolveEffectiveScore()` documented in pipeline section [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Search summary doc for "resolveEffectiveScore"
   - Evidence: resolveEffectiveScore() documented with cascading fallback (compositeScore -> fusionScore -> rrf_score -> similarity)
   - Cross-reference: `mcp_server/lib/search/pipeline/types.ts:56`
@@ -34,13 +47,13 @@
 
 ### Code Safety
 
-- [x] **P1-6** Math.max/min spread patterns replaced with safe reduce in ALL production files
+- [x] [P0] **P1-6** Math.max/min spread patterns replaced with safe reduce in ALL production files [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: `grep -rn 'Math\.\(max\|min\)(\.\.\.' mcp_server/lib/`
   - Evidence: All 7 production files fixed. grep confirms 0 unsafe Math.max/min spread in lib/
   - Files fixed: rsf-fusion.ts (x2), causal-boost.ts, evidence-gap-detector.ts, prediction-error-gate.ts, retrieval-telemetry.ts, reporting-dashboard.ts
   - Confidence: 0.97 (3/3 models agree on locations)
 
-- [x] **NEW-1** Session-manager `enforceEntryLimit` inside `db.transaction()` for `runBatch()`
+- [x] [P0] **NEW-1** Session-manager `enforceEntryLimit` inside `db.transaction()` for `runBatch()` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Read `mcp_server/lib/session/session-manager.ts:429-440`
   - Evidence: enforceEntryLimit moved inside db.transaction() in session-manager.ts. Sync verification confirmed.
   - Risk context: Real concurrency risk — unlike single-process handler gaps
@@ -48,19 +61,19 @@
 
 ### Cross-Document Consistency
 
-- [x] Finding count consistent across all 4 audit documents: **33**
+- [x] [P0] Finding count consistent across all 4 audit documents: **33** [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: `grep 'Total findings\|33 findings\|Total unique' scratch/*.md`
   - Evidence: 33 findings verified across all documents (confirmed in master-consolidated-review.md)
 
-- [x] Health score consistent across all 4 audit documents: **77.4**
+- [x] [P0] Health score consistent across all 4 audit documents: **77.4** [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: `grep '77\.4' scratch/*.md`
   - Evidence: 77.4 health score consistent across all documents
 
-- [x] A-IDs aligned between Registry and Master
+- [x] [P0] A-IDs aligned between Registry and Master [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: A3 = NEW-1 (session tx gap) in both documents
   - Evidence: A-IDs aligned between Registry and Master documents
 
-- [x] C138 status consistent: "exists in source" (deep-review was wrong)
+- [x] [P0] C138 status consistent: "exists in source" (deep-review was wrong) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: No document claims C138 was "fabricated by synthesis"
   - Evidence: C138 annotated as CORRECTED (deep-review error documented at L216-218 and L230-232)
 
@@ -70,51 +83,51 @@
 
 ### Documentation Corrections
 
-- [x] **T1-2** All 5 P1 corrections applied to `summary_of_existing_features.md`
+- [x] [P1] **T1-2** All 5 P1 corrections applied to `summary_of_existing_features.md` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Search for each feature: memory_update, memory_delete, normalization, R8/summary channel, ADAPTIVE_FUSION
   - Evidence: All 5 P1 corrections applied (P1-7, P1-8, P1-9, P1-10, P1-5)
   - Files to cross-check: `memory-crud-update.ts:89-91`, `memory-crud-delete.ts:74,80`, `composite-scoring.ts:544-548`, `stage1-candidate-gen.ts:507-565`, `adaptive-fusion.ts:65,74`
 
-- [x] **T1-6** `implementation-summary.md` updated with all 8 propagated corrections
+- [x] [P1] **T1-6** `implementation-summary.md` updated with all 8 propagated corrections [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: implementation-summary.md created as 018 phase doc with all 8 corrections
   - Verification checklist:
-    - [x] Tool count = 25 (not 23) in executive summary
-    - [x] Signal count = "12 stages, 9 score-affecting" (not 11 or ambiguous)
-    - [x] SQL template literals: 3/5 annotated as FALSE_POSITIVE, 2 remain as P2
-    - [x] Transaction boundaries = P2 (not P1)
-    - [x] No "retry-manager is a shim" claim in Section 1
-    - [x] No "move retry-manager to shared/" in Section 5
-    - [x] Stage2-fusion.ts docblock inconsistency documented
-    - [x] Positive confirmations (what NOT to change) section present
+    - [x] [P1] Tool count = 25 (not 23) in executive summary [EVIDENCE: implementation-summary.md executive summary]
+    - [x] [P1] Signal count = "12 stages, 9 score-affecting" (not 11 or ambiguous) [EVIDENCE: implementation-summary.md pipeline signal section]
+    - [x] [P1] SQL template literals: 3/5 annotated as FALSE_POSITIVE, 2 remain as P2 [EVIDENCE: implementation-summary.md SQL findings annotation]
+    - [x] [P1] Transaction boundaries = P2 (not P1) [EVIDENCE: implementation-summary.md priority correction notes]
+    - [x] [P1] No "retry-manager is a shim" claim in Section 1 [EVIDENCE: implementation-summary.md section 1 review]
+    - [x] [P1] No "move retry-manager to shared/" in Section 5 [EVIDENCE: implementation-summary.md section 5 review]
+    - [x] [P1] Stage2-fusion.ts docblock inconsistency documented [EVIDENCE: implementation-summary.md stage2-fusion note]
+    - [x] [P1] Positive confirmations (what NOT to change) section present [EVIDENCE: implementation-summary.md positive confirmations section]
 
 ### Code Quality
 
-- [x] **T1-7** `stage2-fusion.ts` module header and docblock BOTH list 12 steps
+- [x] [P1] **T1-7** `stage2-fusion.ts` module header and docblock BOTH list 12 steps [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Read `stage2-fusion.ts` L20-31 (header) and L462-470 (docblock)
   - Evidence: header=12, docblock=12, code=12 — all aligned
   - Cross-check: Step 2a (co-activation spreading) present in both
 
-- [x] **P1-5** `SPECKIT_ADAPTIVE_FUSION` added to feature flag documentation
+- [x] [P1] **P1-5** `SPECKIT_ADAPTIVE_FUSION` added to feature flag documentation [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Feature flag section of relevant doc contains `SPECKIT_ADAPTIVE_FUSION`
   - Evidence: SPECKIT_ADAPTIVE_FUSION documented in feature flag docs
 
-- [x] No `[TODO]` or `[PLACEHOLDER]` text in spec documents
+- [x] [P1] No `[TODO]` or `[PLACEHOLDER]` text in spec documents [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: `grep -r 'TODO\|PLACEHOLDER' spec.md plan.md tasks.md checklist.md implementation-summary.md`
   - Evidence: 0 own-doc placeholders found. All TODO references are findings about codebase TODOs (T3-9: content-normalizer TODO, REQ-S2-001 TODO in retry-manager) — these describe code findings, not spec placeholders. Confirmed clean.
 
 ### Structural Integrity
 
-- [x] **T2-10** Wave 4 synthesis gap resolved
+- [x] [P1] **T2-10** Wave 4 synthesis gap resolved [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Either `scratch/wave4-synthesis.md` exists OR explicit note explains its absence
   - Evidence: wave4-synthesis.md created in z_archive/
 
-- [x] **T2-11** C138 deep-review error annotated
+- [x] [P1] **T2-11** C138 deep-review error annotated [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Read `z_archive/multi-agent-deep-review.md` at L214 and L224
   - Evidence: C138 correction notes added at L216-218 and L230-232 in multi-agent-deep-review.md
 
 ### Test Suite
 
-- [x] All existing tests pass after Math.max and session-manager changes
+- [x] [P1] All existing tests pass after Math.max and session-manager changes [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Verification: Run `vitest` or equivalent test runner
   - Evidence: Tests pass (7085/7085, vitest).
 
@@ -124,33 +137,33 @@
 
 ### Code Standards
 
-- [x] `specFolderLocks` renamed to `SPEC_FOLDER_LOCKS` in `memory-save.ts:64`
+- [x] [P2] `specFolderLocks` renamed to `SPEC_FOLDER_LOCKS` in `memory-save.ts:64` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Renamed in memory-save.ts:64
-- [x] Import ordering violations fixed in flagged files
+- [x] [P2] Import ordering violations fixed in flagged files [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Fixed in memory-save.ts (node builtins -> external -> @spec-kit/ -> relative)
-- [x] AI-TRACE tag compliance in 3+ files
+- [x] [P2] AI-TRACE tag compliance in 3+ files [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: 19 tokens prefixed across memory-save.ts and memory-search.ts
 
 ### Architecture
 
-- [x] Scripts/ imports standardized to `@spec-kit/` aliases (4 files)
+- [x] [P2] Scripts/ imports standardized to `@spec-kit/` aliases (4 files) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Converted relative imports to @spec-kit/ aliases
-- [x] `DB_PATH` extracted to `shared/config.ts`
+- [x] [P2] `DB_PATH` extracted to `shared/config.ts` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: DB_PATH extracted to shared/config.ts, cleanup-orphaned-vectors.ts updated
-- [x] `better-sqlite3` dependency tension resolved with documented rationale
+- [x] [P2] `better-sqlite3` dependency tension resolved with documented rationale [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Keep — 3 direct imports confirmed, rationale documented
-- [x] Dual dist paths in `reindex-embeddings.ts` resolved
+- [x] [P2] Dual dist paths in `reindex-embeddings.ts` resolved [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Wrong candidate removed from reindex-embeddings.ts
-- [x] BM25 trigger phrase re-index gate expanded (title OR triggerPhrases)
+- [x] [P2] BM25 trigger phrase re-index gate expanded (title OR triggerPhrases) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Gate expanded to include triggerPhrases changes in memory-crud-update.ts
 
 ### Documentation
 
-- [x] **T1-3** P2 corrections applied to `summary_of_existing_features.md` (4 items)
+- [x] [P2] **T1-3** P2 corrections applied to `summary_of_existing_features.md` (4 items) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Quality gate persistence, canonical ID dedup, memory_save summary gen, bulk_delete scope — all applied
-- [x] `spec.md` metadata tool count updated from 23 to 25
+- [x] [P2] `spec.md` metadata tool count updated from 23 to 25 [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: R3 table row 2 status updated from "MISSING — still says '23 MCP tools'" to "FIXED — implementation-summary.md now says '25 MCP tools'" at spec.md:225. The metadata table (lines 3-10) has no tool count field — the stale reference was in the R3 correction-tracking table.
-- [x] Transaction wrappers added to update + single-delete handlers (P2 improvement)
+- [x] [P2] Transaction wrappers added to update + single-delete handlers (P2 improvement) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Transaction wrappers added to memory-crud-update.ts and memory-crud-delete.ts
 
 ---
@@ -162,64 +175,64 @@
 
 ### P0 — Must Fix (Blockers)
 
-- [x] **CR-P0-1** Test suite cannot falsely pass on broken imports — **COMPLETE**
+- [x] [P0] **CR-P0-1** Test suite cannot falsely pass on broken imports — **COMPLETE** [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Round 1 fix: Codex removed try/catch around core imports (L133-135), replaced 2 specific early-returns with throws (L471, L816), strengthened 3 assertion sites (L875, L937, L1040).
   - Round 2 fix: 21 `if (!optionalMod) return;` silent-skip patterns converted to `it.skipIf(!optionalMod)`. 5 optional module types: causalEdgesMod, checkpointsMod, embeddingsSourceMod, folderScoringSourceMod, mutationLedgerMod. 65 required-module `throw` guards preserved unchanged.
   - Evidence: 21 silent-return patterns → it.skipIf(). 44 pass, 21 skipped, 0 fail.
 
 ### P1 — Should Fix
 
-- [x] **CR-P1-1** Deletion exceptions not swallowed in `memory-crud-delete.ts`
+- [x] [P1] **CR-P1-1** Deletion exceptions not swallowed in `memory-crud-delete.ts` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: try/catch removed around `deleteEdgesForMemory` (L75). Errors propagate for transaction rollback.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-2** Top-K results sorted after feedback mutation before slice
+- [x] [P1] **CR-P1-2** Top-K results sorted after feedback mutation before slice [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `results.sort((a, b) => resolveEffectiveScore(b) - resolveEffectiveScore(a))` added at L655, before `.slice()` at L663.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-3** Dedup queries return canonical parent, never chunk children
+- [x] [P1] **CR-P1-3** Dedup queries return canonical parent, never chunk children [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `AND parent_id IS NULL` added to content_hash queries at L800, L1134, L1162.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-4** Session dedup handles undefined IDs without data loss
+- [x] [P1] **CR-P1-4** Session dedup handles undefined IDs without data loss [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `id != null` guards at L346, L357, L378, L389, L672 in session-manager.ts.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-5** Cache hits succeed when embedding model is unavailable
+- [x] [P1] **CR-P1-5** Cache hits succeed when embedding model is unavailable [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Embedding readiness gate moved inside `toolCache.withCache` callback (L786). Cache hits bypass readiness check.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-6** No state mutations outside transaction in partial-update path
+- [x] [P1] **CR-P1-6** No state mutations outside transaction in partial-update path [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Boolean flag set outside tx (L100), but actual DB write `updateEmbeddingStatus` inside `db.transaction()` (L137-138). Correct pattern.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P1-7** Cross-document contradictions resolved (0 conflicts)
+- [x] [P1] **CR-P1-7** Cross-document contradictions resolved (0 conflicts) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `spec.md:7` status updated to "Tier 1-2 Complete; Tier 4 Complete (14/14); Tier 5 Complete (9/9) — ALL TIERS COMPLETE". `checklist.md:119` test evidence normalized. `implementation-summary.md:52,:642` standards wording corrected.
   - Reviewed by: Gemini (CONCERN — checklist boxes unchecked, now fixed) + Claude (PASS)
 
-- [x] **CR-P1-8** Config DB path resolution unified across scripts and runtime
+- [x] [P1] **CR-P1-8** Config DB path resolution unified across scripts and runtime [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `shared/config.ts:22` fallback chain: `SPEC_KIT_DB_DIR || SPECKIT_DB_DIR || defaultPath` (uses `||` not `??` — empty strings fall through to default).
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
 ### P2 — Nice to Have
 
-- [x] **CR-P2-1** `@ts-nocheck` removed from `memory-crud-extended.vitest.ts`
+- [x] [P2] **CR-P2-1** `@ts-nocheck` removed from `memory-crud-extended.vitest.ts` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Directive removed. Type errors fixed via targeted `as any` narrowing on error types in catch blocks.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
-- [x] **CR-P2-2** Telemetry `isExtendedTelemetryEnabled` configurable or documented as intentionally disabled
+- [x] [P2] **CR-P2-2** Telemetry `isExtendedTelemetryEnabled` configurable or documented as intentionally disabled [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Function now checks `process.env.SPECKIT_EXTENDED_TELEMETRY === 'true'` (L25). Stale JSDoc updated by Claude (was "hardcoded to false").
   - Reviewed by: Gemini (CONCERN — stale JSDoc, fixed by Claude) + Claude (FIXED)
 
-- [x] **CR-P2-3** Reporting dashboard row limit not silently truncating data
+- [x] [P2] **CR-P2-3** Reporting dashboard row limit not silently truncating data [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `DASHBOARD_ROW_LIMIT` from `SPECKIT_DASHBOARD_LIMIT` env var (default 10000) with NaN guard (`|| 10000`). Replaced hardcoded 1000.
   - Reviewed by: Gemini (PASS, noted NaN edge case) + Claude (FIXED NaN guard)
 
-- [ ] **CR-P2-4** `memory-save.ts` decomposed below 1000 LOC (orchestration layer only)
+- [ ] [P2] **CR-P2-4** `memory-save.ts` decomposed below 1000 LOC (orchestration layer only)
   - Status: DEFERRED — too large for single CLI session (4-8h effort). Tracked in Tier 3.
   - Source: Gemini review
 
-- [x] **CR-P2-5** Non-finite scores guarded in `evidence-gap-detector.ts`
+- [x] [P2] **CR-P2-5** Non-finite scores guarded in `evidence-gap-detector.ts` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: `finiteScores` filter at L140-144 + post-computation guard at L164. NaN/Infinity cannot propagate.
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
@@ -247,19 +260,19 @@
 
 ### Issues Found & Fixed by Claude
 
-- [x] **R2-1** `retrieval-telemetry.ts:6` header says "default true" but behavior is default false
+- [x] [P2] **R2-1** `retrieval-telemetry.ts:6` header says "default true" but behavior is default false [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Changed to "default false / disabled". JSDoc (L20-22) already correct.
   - Source: Codex Round 2
 
-- [x] **R2-2** `shared/config.ts:22` empty string env var mishandled by `??` operator
+- [x] [P2] **R2-2** `shared/config.ts:22` empty string env var mishandled by `??` operator [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Changed `??` to `||` so empty strings fall through to default.
   - Source: Codex Round 2
 
-- [x] **R2-3** spec.md status said "Tier 4 Documented" while other docs said "Tier 4 Implemented"
+- [x] [P2] **R2-3** spec.md status said "Tier 4 Documented" while other docs said "Tier 4 Implemented" [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Updated to "Tier 1+2 Complete; Tier 4 Implemented (13/14, CR-P0-1 partial); Tier 5 Documented"
   - Source: Gemini Round 2 (4/10 consistency score)
 
-- [x] **R2-4** CR-P0-1 marked as complete but 60+ silent-return patterns remain
+- [x] [P2] **R2-4** CR-P0-1 marked as complete but 60+ silent-return patterns remain [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: Reverted to `[ ]` with detailed remaining-work description
   - Source: Gemini + Codex Round 2 (both agree)
 
@@ -285,45 +298,45 @@
 
 ### HIGH Severity
 
-- [x] **ARCH-1** Stable indexing API created; zero `scripts/` imports from `mcp_server/lib/` internals
+- [x] [P2] **ARCH-1** Stable indexing API created; zero `scripts/` imports from `mcp_server/lib/` internals [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: 4 API modules created (api/eval.ts, api/search.ts, api/providers.ts, api/index.ts). 2 consumer scripts migrated (run-ablation.ts, run-bm25-baseline.ts). Deep mcp_server/lib/ imports replaced with stable mcp_server/api/ imports. tsc clean.
 
-- [x] **ARCH-3** `vector-index-store.ts` physically split from 4,281 LOC into 6 focused modules
+- [x] [P2] **ARCH-3** `vector-index-store.ts` physically split from 4,281 LOC into 6 focused modules [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: store.ts 736 LOC, schema.ts 1,275 LOC, mutations.ts 509 LOC, queries.ts 1,263 LOC, aliases.ts 379 LOC, types.ts 192 LOC. Function bodies physically moved (not re-exports). Acyclic dependency graph. `create_schema` gained options param to break circular dep. SQLiteVectorStore uses dynamic `import()` for cross-module access.
   - Verified: `tsc --noEmit` clean, 7085/7085 tests pass (230 files). See `scratch/arch3-split-results.md` for full details.
   - Reviewed by: Claude Opus 4.6 (5-agent orchestra, Attempt 5)
 
-- [x] **ARCH-6** memory-save.ts decomposed below 1,600 LOC
+- [x] [P2] **ARCH-6** memory-save.ts decomposed below 1,600 LOC [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: memory-save.ts reduced from 2,788 → 1,520 LOC. Extracted: pe-gating.ts (352), chunking-orchestrator.ts (399), causal-links-processor.ts (214), quality-loop.ts (555). DAG verified — no circular imports.
   - Reviewed by: Gemini (PASS — "immaculate module boundaries")
   - Note: hybrid-search.ts (1,539), session-manager.ts (1,140), memory-search.ts (1,064) still >1000 LOC — deferred
 
 ### MEDIUM Severity
 
-- [x] **ARCH-2** All eval CLIs consolidated in `scripts/evals/`
+- [x] [P2] **ARCH-2** All eval CLIs consolidated in `scripts/evals/` [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: run-bm25-baseline.ts, run-ablation.ts, map-ground-truth-ids.ts moved from mcp_server/scripts/ to scripts/evals/. Import paths updated.
   - Reviewed by: Gemini (PASS)
 
-- [x] **ARCH-4** Pure algorithms importable from `@spec-kit/shared` without mcp_server dependency
+- [x] [P2] **ARCH-4** Pure algorithms importable from `@spec-kit/shared` without mcp_server dependency [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: rrf-fusion.ts, adaptive-fusion.ts, mmr-reranker.ts in shared/algorithms/. retrieval-trace.ts in shared/contracts/. Zero mcp_server imports confirmed.
   - Reviewed by: Gemini (PASS)
 
-- [x] **ARCH-5** `shared/config.ts` split — pure env var reading + separate path resolution
+- [x] [P2] **ARCH-5** `shared/config.ts` split — pure env var reading + separate path resolution [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: config.ts exports `getDbDir()`. paths.ts exports `DB_PATH`. shared/index.ts re-exports from paths.ts.
   - Note: shared/paths.ts still has `../../mcp_server/database/` as default — partial improvement
   - Reviewed by: Gemini (PASS)
 
-- [x] **ARCH-7** Circular dependencies resolved
+- [x] [P2] **ARCH-7** Circular dependencies resolved [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: search-types.ts created for GraphSearchFn type. memory-crud-health.ts imports isEmbeddingModelReady from ../core directly.
   - Reviewed by: Gemini (PASS — both cycles confirmed broken)
 
 ### LOW Severity
 
-- [x] **ARCH-8** `scripts/lib/retry-manager.ts` re-export shim removed
+- [x] [P2] **ARCH-8** `scripts/lib/retry-manager.ts` re-export shim removed [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: scripts/core/workflow.ts updated to import from @spec-kit/mcp-server directly.
   - Reviewed by: Gemini (PASS)
 
-- [x] **ARCH-9** `ground-truth-data.ts` dataset extracted to JSON; code file <100 LOC
+- [x] [P2] **ARCH-9** `ground-truth-data.ts` dataset extracted to JSON; code file <100 LOC [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Evidence: ground-truth-data.ts = 74 LOC (thin loader). data/ground-truth.json created. resolveJsonModule added to tsconfig.
   - Reviewed by: Gemini (PASS)
 
@@ -403,3 +416,4 @@ Recommendation: Treat single-model P1 ratings as "P1 (unconfirmed)" until cross-
 | Code Standards | 58 | ≥62 | AI-TRACE compliance (+2), naming fix (+2) |
 | Maintainability | 73 | ≥78 | Documentation accuracy improvement flows to maintainability (+5) |
 | **TOTAL** | **77.4** | **≥84** | Tier 1 + Tier 2 combined improvement |
+<!-- /ANCHOR:summary -->

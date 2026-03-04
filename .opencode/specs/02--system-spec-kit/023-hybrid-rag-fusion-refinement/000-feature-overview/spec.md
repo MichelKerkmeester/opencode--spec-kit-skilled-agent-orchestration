@@ -162,9 +162,9 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | 007-sprint-6 (6a) | 008-sprint-7 | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
 | 007-sprint-6 (6a) | 007-sprint-6 (6b) | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
 | 007-sprint-6 (6b) | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
-| 011-skill-command-alignment | 012-phase-12 | [Criteria TBD] | [Verification TBD] |
-| 012-phase-12 | 013-phase-13 | [Criteria TBD] | [Verification TBD] |
-| 013-phase-13 | 014-phase-14 | [Criteria TBD] | [Verification TBD] |
+| 011-subfolder-resolution-fix | 012-refinement-phase-1 | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `011-subfolder-resolution-fix/checklist.md` summary + testing section |
+| 012-refinement-phase-1 | 013-refinement-phase-2 | Phase-1 remediation exit gate complete with all required checklist items verified | `012-refinement-phase-1/checklist.md` remediation exit gate + summary |
+| 013-refinement-phase-2 | 014-refinement-phase-3 | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | `013-refinement-phase-2/checklist.md` summary + `013-refinement-phase-2/implementation-summary.md` |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -892,3 +892,17 @@ LEVEL 3+ SPEC
 - Full governance controls
 - Phase Documentation Map with 8 sprint phases
 -->
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

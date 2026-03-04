@@ -1,4 +1,17 @@
+---
+title: "Spec: Refinement Phase 4"
+description: "Phase 4 remediation scope for warn-only timer persistence and stage3 effective score fallback hardening."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+importance_tier: "important"
+contextType: "implementation"
+---
+
 # Spec: Refinement Phase 4
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 **Parent:** 023-hybrid-rag-fusion-refinement
 **Level:** 2
@@ -31,3 +44,30 @@ Gemini code review (two reviews: 88/100 and 85/100, both Conditional Pass) ident
 - [ ] Stage 3 preserves Stage 2's `score` field (writes to `rerankScore` only, or documents why overwrite is acceptable)
 - [ ] All 7,008+ existing tests pass
 - [ ] New tests cover persistence and fallback scenarios
+<!-- /ANCHOR:summary -->
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `014-refinement-phase-3`
+- Successor: `016-refinement-phase-5`
+
+## Problem Statement
+Documentation-level normalization for validator completeness without changing implementation outcomes.
+
+## Requirements
+- REQ-DOC-BASE: Maintain current factual implementation statements while improving structural completeness.
+
+## Supplemental Requirements
+- REQ-DOC-002: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-003: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-004: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

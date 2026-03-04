@@ -1,6 +1,17 @@
+---
+title: "Implementation Summary: Refinement Phase 4"
+description: "Summary of Phase 4 fixes for warn-only persistence and effectiveScore fallback ordering."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
+importance_tier: "normal"
+contextType: "implementation"
+---
+
 # Implementation Summary: Refinement Phase 4
 
-**Status:** Complete
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+
+**Status:** In Progress (implementation drafted; checklist verification still open)
 **Date:** 2026-03-02
 
 ## What Was Built

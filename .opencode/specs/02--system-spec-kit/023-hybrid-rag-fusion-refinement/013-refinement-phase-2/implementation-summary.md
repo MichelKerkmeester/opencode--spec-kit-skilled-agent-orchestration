@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: Post-Review Remediation"
 description: "Remediated 21 P0/P1 findings from 25-agent comprehensive review of Spec Kit Memory MCP server."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "remediation summary"
   - "post-review implementation"

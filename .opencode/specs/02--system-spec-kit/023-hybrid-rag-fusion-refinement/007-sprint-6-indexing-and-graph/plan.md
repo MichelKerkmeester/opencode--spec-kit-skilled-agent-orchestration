@@ -297,3 +297,11 @@ LEVEL 2 PLAN — Phase 7 of 8
 - UT-8 amendments: feasibility spike promoted to REQUIRED, phases restructured as sequential sub-sprints
 - HIGH rollback difficulty — checkpoint recommended
 -->
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

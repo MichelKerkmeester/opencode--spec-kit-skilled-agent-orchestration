@@ -1,6 +1,7 @@
 ---
 title: "Tasks: Post-Review Remediation"
 description: "Task breakdown for 2-wave remediation of 21 P0/P1 findings."
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "remediation tasks"
   - "T001 T010"

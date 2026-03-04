@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: P1-19 Flag Catalog + Refinement Phase 3"
 description: "68+ fixes across code quality, performance, documentation, testing, and architecture from 25-agent code review findings."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "refinement phase 3 summary"
   - "flag catalog implementation"

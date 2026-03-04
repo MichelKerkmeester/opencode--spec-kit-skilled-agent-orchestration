@@ -1,6 +1,7 @@
 ---
 title: "Tasks: P1-19 Flag Catalog + Refinement Phase 3"
 description: "14 agents across 3 waves — all tasks completed"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "refinement phase 3 tasks"
   - "014 tasks"

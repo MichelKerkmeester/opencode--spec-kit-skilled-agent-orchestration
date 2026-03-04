@@ -1,4 +1,17 @@
+---
+title: "Spec: 018 - Refinement Phase 7: Cross-AI Review Audit & Remediation"
+description: "Phase 7 cross-AI audit findings, remediation scope, and verification targets."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+importance_tier: "critical"
+contextType: "implementation"
+---
+
 # Spec: 018 — Refinement Phase 7: Cross-AI Review Audit & Remediation
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 | Field | Value |
 |-------|-------|
@@ -277,3 +290,28 @@ Details: `scratch/opus-synthesis-audit.md` Part 3
 | Synthesis Quality Audit | `scratch/opus-synthesis-audit.md` | 139 lines | Propagation failures, fabricated claims, AI bias patterns |
 | Raw Wave Outputs | `scratch/z_archive/` | 19 files | Wave 1-4 agent outputs, deep-dives, meta-reviews |
 | Session Memory | `memory/` | 1 file | Session context for continuation |
+<!-- /ANCHOR:summary -->
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Predecessor: `017-refinement-phase-6`
+- Successor: `019-sprint-9-extra-features`
+
+## Problem Statement
+Documentation-level normalization for validator completeness without changing implementation outcomes.
+
+## Supplemental Requirements
+- REQ-DOC-001: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-002: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-003: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-004: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

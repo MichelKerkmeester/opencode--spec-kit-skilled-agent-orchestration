@@ -1,6 +1,7 @@
 ---
 title: "Verification Checklist: Sprint 9 — Extra Features"
 description: "Verification checklist for productization and operational tooling sprint."
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "sprint 9 checklist"
   - "019 checklist"
@@ -29,10 +30,10 @@ contextType: "verification"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md
-- [x] CHK-002 [P0] Technical approach defined in plan.md
-- [x] CHK-003 [P1] Dependencies identified and available (zod, chokidar, node-llama-cpp)
-- [x] CHK-004 [P0] Research complete (16 documents, triple-verified via 016 synthesis)
+- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-003 [P1] Dependencies identified and available (zod, chokidar, node-llama-cpp) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-004 [P0] Research complete (16 documents, triple-verified via 016 synthesis) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [ ] CHK-005 [P0] Current `formatSearchResults()` response shape audited (OQ-1)
 - [ ] CHK-006 [P1] Current tool parameter usage audited across all 20+ tools
 <!-- /ANCHOR:pre-impl -->
@@ -164,10 +165,10 @@ contextType: "verification"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-060 [P0] No hardcoded secrets in new code
-- [ ] CHK-061 [P0] Zod schemas prevent parameter injection
-- [ ] CHK-062 [P1] File watcher restricted to configured directories (no path traversal)
-- [ ] CHK-063 [P1] Job queue does not expose internal file system paths in error messages
+- [ ] CHK-130 [P0] No hardcoded secrets in new code
+- [ ] CHK-131 [P0] Zod schemas prevent parameter injection
+- [ ] CHK-132 [P1] File watcher restricted to configured directories (no path traversal)
+- [ ] CHK-133 [P1] Job queue does not expose internal file system paths in error messages
 <!-- /ANCHOR:security -->
 
 ---
@@ -175,11 +176,11 @@ contextType: "verification"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-070 [P1] Spec/plan/tasks synchronized with actual implementation
-- [ ] CHK-071 [P1] Feature flags documented with defaults and descriptions
-- [ ] CHK-072 [P1] New MCP tools documented (memory_ingest_start, memory_ingest_status)
-- [ ] CHK-073 [P2] feature_catalog.md updated with new features
-- [ ] CHK-074 [P2] implementation-summary.md written after completion
+- [ ] CHK-134 [P1] Spec/plan/tasks synchronized with actual implementation
+- [ ] CHK-135 [P1] Feature flags documented with defaults and descriptions
+- [ ] CHK-136 [P1] New MCP tools documented (memory_ingest_start, memory_ingest_status)
+- [ ] CHK-137 [P2] feature_catalog.md updated with new features
+- [ ] CHK-138 [P2] implementation-summary.md written after completion
 <!-- /ANCHOR:docs -->
 
 ---
@@ -187,9 +188,9 @@ contextType: "verification"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-080 [P1] Temp files in scratch/ only
-- [ ] CHK-081 [P1] scratch/ cleaned before completion
-- [ ] CHK-082 [P2] Findings saved to memory/ via generate-context.js
+- [ ] CHK-139 [P1] Temp files in scratch/ only
+- [ ] CHK-140 [P1] scratch/ cleaned before completion
+- [ ] CHK-141 [P2] Findings saved to memory/ via generate-context.js
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -197,9 +198,9 @@ contextType: "verification"
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [x] CHK-100 [P0] Architecture decisions documented in decision-record.md
-- [x] CHK-101 [P1] All ADRs have status (Proposed/Accepted)
-- [x] CHK-102 [P1] Alternatives documented with rejection rationale
+- [x] CHK-100 [P0] Architecture decisions documented in decision-record.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-101 [P1] All ADRs have status (Proposed/Accepted) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-102 [P1] Alternatives documented with rejection rationale [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [ ] CHK-103 [P2] Migration path documented for `.strict()` transition
 <!-- /ANCHOR:arch-verify -->
 

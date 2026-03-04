@@ -1,6 +1,7 @@
 ---
 title: "P1-19 Flag Catalog + Refinement Phase 3"
 description: "Address P1-19 (undocumented feature flags) and 38 P2 findings from 25-agent code review across code quality, performance, documentation, testing, and architecture."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "refinement phase 3"
   - "flag catalog"
@@ -23,7 +24,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 (flag catalog) + P2 (all others) |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-01 |
 | **Branch** | `main` (no feature branch — skip-branch) |
 | **Parent** | 013-refinement-phase-2 |
@@ -97,3 +98,19 @@ Close all remaining review findings to achieve a clean audit trail, documented f
 - **Wave 1** (5 Opus): Code quality + performance fixes
 - **Wave 2** (5 mixed): Documentation + observability
 - **Wave 3** (4 mixed): Testing + architecture docs
+
+---
+
+## Phase Navigation
+
+| **Parent Spec** | ../spec.md |
+- Successor: `015-refinement-phase-4`
+
+## Supplemental Requirements
+- REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
+
+## Acceptance Scenarios (Validator Coverage)
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

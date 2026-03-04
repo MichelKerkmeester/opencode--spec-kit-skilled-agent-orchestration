@@ -1,4 +1,17 @@
+---
+title: "Tasks: 018 - Refinement Phase 7"
+description: "Task ledger for cross-AI audit execution and remediation actions in Phase 7."
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
+importance_tier: "critical"
+contextType: "implementation"
+---
+
 # Tasks: 018 — Refinement Phase 7
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 ## Audit Execution (Complete)
 
@@ -748,3 +761,4 @@
 | ARCH-7 | Circular dependencies (2 cycles) | MEDIUM | Circular | `hybrid-search.ts` ↔ `graph-search-fn.ts`, `memory-crud.ts` ↔ `memory-crud-health.ts` |
 | ARCH-8 | retry-manager re-export shim in scripts/ | LOW | Shim | `scripts/lib/retry-manager.ts` |
 | ARCH-9 | ground-truth-data.ts (1,690 LOC) — data in code file | LOW | God file | `mcp_server/lib/eval/ground-truth-data.ts` |
+<!-- /ANCHOR:summary -->

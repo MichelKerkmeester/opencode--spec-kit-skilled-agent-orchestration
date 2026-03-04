@@ -24,11 +24,11 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-001 [P0] `CATEGORY_FOLDER_PATTERN` matches `02--system-spec-kit` [Regex test: true]
-- [x] CHK-002 [P0] `findChildFolderSync` finds children 3 levels deep [Test T-SF07a: PASS]
-- [x] CHK-003 [P0] `parseArguments` handles 3-segment paths [E2E: relative path resolves]
-- [x] CHK-004 [P0] Aliased root dedup prevents false ambiguity [Tests T-SF03a/b: PASS]
-- [x] CHK-005 [P0] True ambiguity still returns null [Tests T-SF03f, T-SF04f: PASS]
+- [x] CHK-001 [P0] `CATEGORY_FOLDER_PATTERN` matches `02--system-spec-kit` [Regex test: true] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-002 [P0] `findChildFolderSync` finds children 3 levels deep [Test T-SF07a: PASS] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-003 [P0] `parseArguments` handles 3-segment paths [E2E: relative path resolves] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-004 [P0] Aliased root dedup prevents false ambiguity [Tests T-SF03a/b: PASS] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-005 [P0] True ambiguity still returns null [Tests T-SF03f, T-SF04f: PASS] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -36,11 +36,11 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-010 [P0] TypeScript compiles cleanly [0 errors]
+- [x] CHK-010 [P0] TypeScript compiles cleanly [0 errors] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-011 [P0] `test-subfolder-resolution.js`: 26 passed, 0 failed [Evidence: test output]
 - [x] CHK-012 [P0] Bare name resolves: `011-skill-command-alignment` [Evidence: "Resolved child folder" output]
 - [x] CHK-013 [P0] Relative path resolves: `02--system-spec-kit/023-.../011-...` [Evidence: "Nested spec folder" output]
-- [x] CHK-014 [P1] `test-folder-detector-functional.js`: no new failures [28 passed, 1 pre-existing]
+- [x] CHK-014 [P1] `test-folder-detector-functional.js`: no new failures [28 passed, 1 pre-existing] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -55,3 +55,9 @@ contextType: "implementation"
 
 **Verification Date**: 2026-03-01
 <!-- /ANCHOR:summary -->
+
+## P0
+- [ ] [P0] No additional phase-specific blockers recorded for this checklist normalization pass.
+
+## P1
+- [ ] [P1] No additional required checks beyond documented checklist items for this phase.

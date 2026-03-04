@@ -1,6 +1,7 @@
 ---
 title: "Decision Record: Sprint 9 — Extra Features"
 description: "Architecture decisions for the productization and operational tooling sprint."
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "sprint 9 decisions"
   - "019 decisions"

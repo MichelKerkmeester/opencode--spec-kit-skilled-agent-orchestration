@@ -46,3 +46,17 @@ Matches organizational containers like `02--system-spec-kit`. Used only for trav
 4. Fix tests + add new ones
 5. Build, run tests, end-to-end verify
 <!-- /ANCHOR:phases -->
+
+## Technical Context
+Current plan scope remains documentation and validation normalization for this phase.
+
+## Implementation
+Apply repeatable documentation updates, then validate recursively until clean.
+
+## Phase 1: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.
+
+## Phase 2: Validation Alignment
+- Normalize checklist metadata and evidence syntax.
+- Re-run validator and resolve residual warnings.

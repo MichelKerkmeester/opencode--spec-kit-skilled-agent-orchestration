@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: Refinement Phase 6 — Opus Review Remediation"
 description: "35 remediation fixes across 5 sprints for the spec-kit-memory MCP server, resolving 4 P0 critical and 31 P1 findings."
+SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "refinement phase 6 summary"
   - "opus remediation results"

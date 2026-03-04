@@ -1,4 +1,17 @@
+---
+title: "Tasks: Refinement Phase 4"
+description: "Task list for Phase 4 persistence and fallback remediation."
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
+importance_tier: "normal"
+contextType: "implementation"
+---
+
 # Tasks: Refinement Phase 4
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+<!-- ANCHOR:summary -->
 
 ## P1 #1: Warn-Only Timer Persistence
 
@@ -18,3 +31,4 @@
 
 - [ ] T9: Full test suite passes (7,008+ tests)
 - [ ] T10: TypeScript compiles without errors
+<!-- /ANCHOR:summary -->

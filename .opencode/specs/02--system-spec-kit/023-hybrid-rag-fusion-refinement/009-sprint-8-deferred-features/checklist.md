@@ -31,9 +31,9 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-S8-001 [P0] Sprint 7 exit gate verified — evidence: implementation-summary.md exists in 008-sprint-7-long-horizon/
-- [x] CHK-S8-002 [P1] Deferred backlog scope identified from prior sprints — evidence: spec.md enumerates deferred candidates
-- [x] CHK-S8-003 [P1] Parent-phase references available and consistent — evidence: predecessor/successor links verified in spec.md metadata
+- [x] CHK-S8-001 [P0] Sprint 7 exit gate verified — evidence: implementation-summary.md exists in 008-sprint-7-long-horizon/ [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S8-002 [P1] Deferred backlog scope identified from prior sprints — evidence: spec.md enumerates deferred candidates [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S8-003 [P1] Parent-phase references available and consistent — evidence: predecessor/successor links verified in spec.md metadata [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,7 +41,7 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-S8-010 [P1] Every deferred item mapped to a named task with owner and status — evidence: tasks.md T001-T010 created with status markers
+- [x] CHK-S8-010 [P1] Every deferred item mapped to a named task with owner and status — evidence: tasks.md T001-T010 created with status markers [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [ ] CHK-S8-011 [P1] Dependencies explicitly documented before execution — evidence: plan.md lists dependency order and gating checkpoints
 - [ ] CHK-S8-012 [P1] Deferred execution remains rollback-safe — evidence: rollback triggers and procedure documented in plan.md
 <!-- /ANCHOR:code-quality -->
@@ -68,8 +68,8 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-S8-040 [P1] Spec/plan/tasks created and synchronized — evidence: all three Level 1 artifacts present
-- [x] CHK-S8-041 [P1] Implementation summary artifact present — evidence: implementation-summary.md created
+- [x] CHK-S8-040 [P1] Spec/plan/tasks created and synchronized — evidence: all three Level 1 artifacts present [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S8-041 [P1] Implementation summary artifact present — evidence: implementation-summary.md created [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [ ] CHK-S8-042 [P2] Handoff to 010-comprehensive-remediation documented
 <!-- /ANCHOR:docs -->
 
@@ -78,8 +78,8 @@ contextType: "implementation"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-S8-050 [P1] Temp files in scratch/ only — confirmed: no scratch/ directory present (no temp files generated)
-- [x] CHK-S8-051 [P1] All required Level 1 artifacts present — evidence: spec.md, plan.md, tasks.md, implementation-summary.md
+- [x] CHK-S8-050 [P1] Temp files in scratch/ only — confirmed: no scratch/ directory present (no temp files generated) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-S8-051 [P1] All required Level 1 artifacts present — evidence: spec.md, plan.md, tasks.md, implementation-summary.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 <!-- /ANCHOR:file-org -->
 
 ---
