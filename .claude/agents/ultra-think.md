@@ -222,16 +222,16 @@ Am I dispatched by another agent?
 ### Synthesis Process
 
 1. **Score each strategy** using the rubric above and produce a comparison table
-1.5. **Adversarial cross-critique** (see §6.1) — required when strategies are within 15 points; skip when one leads by 25+
-2. **Identify the leader** (highest total score, adjusted by cross-critique if run)
-3. **Check for complementary strengths**: can elements from lower-scoring strategies improve the leader?
-4. **Resolve conflicts** when strategies disagree:
+2. **Adversarial cross-critique** (see §6 Adversarial Cross-Critique) — required when strategies are within 15 points; skip when one leads by 25+
+3. **Identify the leader** (highest total score, adjusted by cross-critique if run)
+4. **Check for complementary strengths**: can elements from lower-scoring strategies improve the leader?
+5. **Resolve conflicts** when strategies disagree:
    - If one strategy scores >80 and others <60 → adopt the leader
    - If two strategies score within 10 points → merge complementary elements
    - If all strategies diverge significantly → escalate to user with comparison
-5. **Compose the unified plan**: take the winning approach, enhance with complementary elements
+6. **Compose the unified plan**: take the winning approach, enhance with complementary elements
 
-### 6.1. Adversarial Cross-Critique
+### Adversarial Cross-Critique
 
 **Purpose:** Counter convergence bias — the tendency for all strategies to agree when genuine disagreement would produce better plans. Creates adversarial tension between strategies before identifying a winner.
 
@@ -451,7 +451,7 @@ Fix verification gaps first
 | **Ignoring Low Scorers**           | Low-scoring strategies may have valuable partial insights      | Score everything, cherry-pick good elements        |
 | **Recursive Ultra-Think**          | Nesting Ultra-Think inside itself creates infinite loops       | Ultra-Think is a leaf strategy, no self-recursion  |
 | **No Context Loading**             | Dispatching strategies without codebase context                | ALWAYS run PREPARE step before DIVERSIFY            |
-| **Convergence Sycophancy**         | All strategies artificially agree, masking real trade-offs     | Run cross-critique (§6.1) when scores within 15 pts |
+| **Convergence Sycophancy**         | All strategies artificially agree, masking real trade-offs     | Run cross-critique (§6) when scores within 15 pts |
 
 ---
 

@@ -45,14 +45,14 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
    - File discovery: Use `list_directory` to locate files by pattern
    - Detailed review: Use `read_file` to examine implementations
    - Manual security review: Check for common vulnerability patterns
-5. **EVALUATE** → Score against explicit rubrics (see Section 4)
-6. **IDENTIFY ISSUES** → Categorize findings: Blockers (P0), Required (P1), Suggestions (P2). Run adversarial self-check (§9.1) on all P0/P1 findings before finalizing
+5. **EVALUATE** → Score against explicit rubrics (see Section 5)
+6. **IDENTIFY ISSUES** → Categorize findings: Blockers (P0), Required (P1), Suggestions (P2). Run adversarial self-check (§10) on all P0/P1 findings before finalizing
 7. **REPORT** → Deliver structured review with actionable feedback
 8. **INTEGRATE** → Feed quality scores to orchestrator gates (if delegated)
 
 ---
 
-## 1.1. FAST PATH & CONTEXT PACKAGE
+## 2. FAST PATH & CONTEXT PACKAGE
 
 **If dispatched with `Complexity: low`:** Skip steps 3-5 of the 8-step process. Go directly from scope identification to reviewing. Max 5 tool calls. Minimum deliverable: pass/fail with key findings.
 
@@ -60,7 +60,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ---
 
-## 2. CAPABILITY SCAN
+## 3. CAPABILITY SCAN
 
 ### Skills
 
@@ -91,7 +91,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ---
 
-## 3. REVIEW MODES
+## 4. REVIEW MODES
 
 ### Mode Selection
 
@@ -104,7 +104,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ---
 
-## 4. QUALITY RUBRIC
+## 5. QUALITY RUBRIC
 
 ### Scoring Dimensions (100 points total)
 
@@ -145,7 +145,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ---
 
-## 5. REVIEW CHECKLIST
+## 6. REVIEW CHECKLIST
 
 ### Universal Checks (All Reviews)
 
@@ -227,7 +227,7 @@ PROJECT PATTERNS (loaded dynamically):
 
 ---
 
-## 6. ORCHESTRATOR INTEGRATION
+## 7. ORCHESTRATOR INTEGRATION
 
 ### Quality Gate Protocol
 
@@ -254,7 +254,7 @@ When reviewer consistently scores agent output < 50:
 
 ---
 
-## 7. OUTPUT FORMAT
+## 8. OUTPUT FORMAT
 
 All reports follow structured markdown. Key sections per format:
 
@@ -272,7 +272,7 @@ All reports follow structured markdown. Key sections per format:
 
 ---
 
-## 8. RULES
+## 9. RULES
 
 ### ✅ ALWAYS
 
@@ -305,7 +305,7 @@ All reports follow structured markdown. Key sections per format:
 
 ---
 
-## 9. OUTPUT VERIFICATION
+## 10. OUTPUT VERIFICATION
 
 **CRITICAL**: Before claiming completion or reporting results, you MUST verify your output against actual evidence.
 
@@ -354,7 +354,7 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 
 **Violation Recovery:** STOP → State "I need to verify my findings" → Run verification → Fix gaps → Then send.
 
-### 9.1. Adversarial Self-Check (Hunter/Skeptic/Referee)
+### Adversarial Self-Check (Hunter/Skeptic/Referee)
 
 **Purpose:** Counter sycophancy bias in both directions — finding phantom issues to appear thorough, or approving too readily when code looks clean. This 3-pass internal protocol creates adversarial tension that produces higher-fidelity findings.
 
@@ -386,7 +386,7 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 
 ---
 
-## 10. ANTI-PATTERNS
+## 11. ANTI-PATTERNS
 
 **Never approve without security scan**
 - Security issues are P0 by default
@@ -421,14 +421,14 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 **Never let sycophancy bias findings**
 - Do not inflate severity to appear thorough (phantom issues)
 - Do not approve readily to avoid conflict (missed issues)
-- Run adversarial self-check (§9.1) on all P0/P1 before finalizing
+- Run adversarial self-check (§10) on all P0/P1 before finalizing
 - Evidence from code must override gut feeling in both directions
 
 ---
 
-## 11. RELATED RESOURCES
+## 12. RELATED RESOURCES
 
-See Section 2 for available tools and skills.
+See Section 3 for available tools and skills.
 
 ### Agents
 
@@ -439,7 +439,7 @@ See Section 2 for available tools and skills.
 
 ---
 
-## 12. SUMMARY
+## 13. SUMMARY
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
