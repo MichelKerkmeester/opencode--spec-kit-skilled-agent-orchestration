@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc --build",
     "lint": "tsc --noEmit",
+    "check:ast": "npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts",
     "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts"
   },
   "dependencies": {

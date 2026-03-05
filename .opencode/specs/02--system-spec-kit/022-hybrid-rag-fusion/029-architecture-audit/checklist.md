@@ -61,6 +61,9 @@ contextType: "architecture"
 - [x] CHK-042 [P2] Deprecation/removal criteria documented for compatibility wrappers and allowlist entries. [EVIDENCE: T037 completed; `ARCHITECTURE_BOUNDARIES.md` includes "Wrapper Removal Criteria" and "Allowlist Removal Criteria" sections]
 - [x] CHK-043 [P1] `scripts/evals/README.md` created with import policy (T003). [EVIDENCE: file exists with import policy table and exception process section]
 - [x] CHK-044 [P1] `mcp_server/database/README.md` updated with canonical runbook pointer (T006). [EVIDENCE: pointer to `scripts/memory/README.md` present, duplicate procedural detail replaced]
+- [x] CHK-433 [P1] Stale `retry-manager` references removed or explicitly marked moved in `scripts/lib/README.md` and `scripts/scripts-registry.json` (T018). [EVIDENCE: T018 marked done in `tasks.md`; `scripts/lib/README.md` reflects moved status and registry entry removed]
+- [x] CHK-434 [P1] `shared/README.md` documents boundary/ownership expectations for shared modules (T019). [EVIDENCE: T019 marked done in `tasks.md`; `shared/README.md` includes boundary policy and consumer expectations]
+- [x] CHK-435 [P1] Embeddings shim consolidation is documented with canonical import guidance (T020). [EVIDENCE: T020 marked done in `tasks.md`; `shared/README.md` includes embeddings shim consolidation guidance]
 <!-- /ANCHOR:docs -->
 
 <!-- ANCHOR:arch-verify -->
@@ -115,6 +118,7 @@ Items added from triple ultra-think cross-AI review (2026-03-04).
 - [x] CHK-223 [P2] `handler-utils.ts` has documented growth policy. [EVIDENCE: T033 completed; module header comment defines add-vs-split growth policy]
 - [x] CHK-224 [P2] AST-based enforcement upgrade evaluated. [EVIDENCE: T034 completed; `scratch/ast-parsing-evaluation.md` documents options, tradeoffs, and effort]
 - [x] CHK-225 [P2] Transitive re-export boundary violations detectable. [EVIDENCE: T035 completed; transitive re-export detection added to `check-no-mcp-lib-imports.ts`]
+- [x] CHK-436 [P2] ADR-003 Five Checks explicitly cover both token estimation and quality extractor consolidation (T036). [EVIDENCE: T036 marked done in `tasks.md`; `decision-record.md` ADR-003 updated accordingly]
 <!-- /ANCHOR:review-remediation -->
 
 <!-- ANCHOR:phase-5-enforcement -->
@@ -139,6 +143,7 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 - [x] CHK-402 [P0] Learned-feedback shadow period is log-only end-to-end (no write/apply path effects). [EVIDENCE: `tests/learned-feedback.vitest.ts` shadow-mode write-path tests, combined run passed on 2026-03-04]
 - [x] CHK-403 [P0] Incremental `memory_index_scan` consumes `toDelete` and removes stale index records. [EVIDENCE: `tests/incremental-index-v2.vitest.ts` + `tests/handler-memory-index-cooldown.vitest.ts`, combined run passed on 2026-03-04]
 - [x] CHK-404 [P0] Auto-promotion threshold semantics are based on positive validations per contract. [EVIDENCE: `tests/promotion-positive-validation-semantics.vitest.ts`, combined run passed on 2026-03-04]
+- [x] CHK-437 [P0] Learned-feedback scaling is applied exactly once across learned-feedback and Stage 2 fusion paths (T053). [EVIDENCE: T053 marked done in `tasks.md`; `tests/stage2-fusion.vitest.ts` covers single-weighting behavior]
 
 ### P1 Required (complete or approved deferral)
 
@@ -148,6 +153,8 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 - [x] CHK-413 [P1] Evaluation/graph sections match code for metric count, edge-density denominator, graph-cache invalidation, and community-runtime wiring. [EVIDENCE: metric count aligned to 11 and density denominator aligned to `total_edges/total_memories` in canonical + snippets; community docs now state Stage 2 consumes precomputed assignments and does not auto-run detect/store helpers]
 - [x] CHK-414 [P1] Governance and telemetry sections match code for active flags/knobs, caps, and logging semantics. [EVIDENCE: governance text aligned to process targets + 23 active `is*` helpers in `search-flags.ts`; eval logging semantics updated to fail-safe sync writes and precise channel coverage]
 - [x] CHK-415 [P1] Full 5-agent re-audit over groups 01-18 reports no unresolved HIGH findings. [EVIDENCE: `scratch/t069-audit-agent-1-planck.md`, `scratch/t069-audit-agent-2-ampere.md`, `scratch/t069-audit-agent-3-gauss.md`, `scratch/t069-audit-agent-4-nash.md`, `scratch/t069-audit-agent-5-aristotle.md`, `scratch/t069-audit-summary.md`]
+- [x] CHK-438 [P1] Targeted regression coverage exists for Phase 6 code fixes T050-T057 (T058). [EVIDENCE: T058 marked done in `tasks.md`; targeted suites under `mcp_server/tests/` cover trigger limit, ablation isolation, shadow semantics, weighting, delete flow, promotion semantics, channel logging, and schema contracts]
+- [x] CHK-439 [P1] Phase folder closure evidence for T050-T069 is synchronized across `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` (T070). [EVIDENCE: T070 marked done in `tasks.md`; closure evidence and scratch audit pointers present in all four phase docs]
 
 ### Memory Quality Gates
 
@@ -166,15 +173,15 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 | Category | Total | Verified | Notes |
 |----------|-------|----------|-------|
 | P0 Items (Phases 0-3) | 8 | 8/8 | All original P0 items verified |
-| P1 Items (Phases 0-3) | 14 | 14/14 | All verified complete |
+| P1 Items (Phases 0-3) | 17 | 17/17 | Includes Phase 2b doc backfill checks CHK-433 through CHK-435 |
 | P2 Items (Phases 0-3) | 4 | 4/4 | CHK-023, CHK-042, CHK-103, CHK-112 completed |
 | P0 Items (Phase 4 Review) | 4 | 4/4 | All P0 blockers resolved |
 | P1 Items (Phase 4 Review) | 12 | 12/12 | All P1 should-fix items resolved |
-| P2 Items (Phase 4 Review) | 6 | 6/6 | All P2 nice-to-have review items completed |
+| P2 Items (Phase 4 Review) | 7 | 7/7 | Includes ADR-003 documentation backfill check CHK-436 |
 | P0 Items (Phase 5 Enforcement) | 3 | 3/3 | CHK-300 through CHK-302 completed |
 | P1 Items (Phase 5 Enforcement) | 2 | 2/2 | CHK-303 and CHK-304 completed |
-| P0 Items (Phase 6 Parity) | 5 | 5/5 | Core behavioral parity fixes implemented and verified |
-| P1 Items (Phase 6 Parity) | 6 | 6/6 | Contract + parity + governance + 5-agent re-audit verification complete |
+| P0 Items (Phase 6 Parity) | 6 | 6/6 | Includes learned-feedback single-weighting verification (CHK-437) |
+| P1 Items (Phase 6 Parity) | 11 | 11/11 | Includes required parity checks CHK-410-415, quality gates CHK-430-432, and closure backfills CHK-438-439 |
 | P2 Items (Phase 6 Parity) | 1 | 1/1 | Stale implementation-detail + metadata consistency checks complete |
 
 **Original Verification Date**: 2026-03-04

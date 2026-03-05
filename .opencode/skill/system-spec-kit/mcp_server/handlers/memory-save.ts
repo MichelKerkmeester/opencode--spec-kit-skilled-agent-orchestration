@@ -59,7 +59,7 @@ import {
   resolveMemoryReference,
   CAUSAL_LINK_MAPPINGS,
 } from './causal-links-processor';
-import { detectSpecLevelFromParsed, escapeLikePattern } from './handler-utils';
+import { detectSpecLevelFromParsed } from './handler-utils';
 import { indexChunkedMemoryFile, needsChunking } from './chunking-orchestrator';
 import {
   computeMemoryQualityScore,
@@ -301,8 +301,6 @@ function applyPostInsertMetadata(
     WHERE id = ?
   `).run(...values);
 }
-
-// escapeLikePattern moved to handler-utils.ts
 
 /**
  * TM-06 safety gate: verify a pre-reconsolidation checkpoint exists.
@@ -1439,9 +1437,6 @@ export {
   markMemorySuperseded,
   updateExistingMemory,
   logPeDecision,
-
-  // SQL helper functions
-  escapeLikePattern,
 
   // Causal links helper functions
   processCausalLinks,

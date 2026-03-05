@@ -202,10 +202,11 @@ Triple ultra-think review (Claude Opus) noted that ADR-003 Five Checks item 1 on
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-04 |
 | **Deciders** | System-spec-kit maintainers |
 | **Source** | Triple ultra-think review (Codex 5.3 adversarial analysis, confidence 93/100) |
+| **Note** | Accepted per cross-AI review verification (2026-03-05) |
 
 ### Context
 
@@ -215,7 +216,12 @@ The triple ultra-think cross-AI review identified 4 CRITICAL evasion vectors in 
 3. Multi-line imports/requires bypass line-by-line scanning
 4. Boundary narrower than architecture intent: only `lib/*` blocked, `core/*` paths pass through
 
-Additionally, allowlist governance gaps were identified: no TTL/expiry enforcement, broad wildcard exceptions, and missing approval metadata.
+A subsequent 10-agent cross-AI review (2026-03-05, 5 Codex + 5 Gemini) identified 3 additional vectors documented in 030/decision-record.md ADR-001:
+5. Template literal imports bypass regex extraction
+6. Same-line block comments (`/* ... */`) hide import tokens from line scanners
+7. Transitive barrel re-export checks limited to 1 hop (no deep graph traversal)
+
+Additionally, allowlist governance gaps were identified: no TTL/expiry enforcement (now addressed by `check-allowlist-expiry.ts`), broad wildcard exceptions, and missing approval metadata.
 
 ### Constraints
 
@@ -254,14 +260,86 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 
 ### Five Checks Evaluation
 
-1. **Necessary now?** Yes — 4 CRITICAL evasion vectors confirmed by adversarial analysis.
+1. **Necessary now?** Yes — 7 evasion vectors confirmed by adversarial analysis (4 original + 3 from cross-AI review).
 2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated above.
 3. **Simplest sufficient?** Yes — incremental approach delivers safety without over-engineering.
 4. **On critical path?** P0 items are critical; P1/P2 are important but not blocking.
-5. **No tech debt?** Controlled — P2 AST upgrade is planned, not deferred indefinitely.
+5. **No tech debt?** P2 AST upgrade is deferred tech debt. Current regex has known evasion vectors documented in 030/decision-record.md ADR-001.
 
 ### Implementation
 
 - Phase 4 tasks T021-T038 in `tasks.md`.
 - Verification via checklist items CHK-200 through CHK-225 in `checklist.md`.
 <!-- /ANCHOR:adr-004 -->
+
+<!-- ANCHOR:adr-005 -->
+## ADR-005: Handler-Utils Structural Consolidation
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted (retroactive) |
+| **Date** | 2026-03-05 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+During Phase 2 structural cleanup, handler helper logic was consolidated from scattered handler files into a single module:
+
+- `escapeLikePattern` was extracted from `memory-save.ts` (T013a).
+- `detectSpecLevelFromParsed` was extracted from `causal-links-processor.ts` (T013b).
+- Consumer imports were migrated to `handler-utils.ts` (T014), removing the documented handler cycle (CHK-013).
+
+The implementation happened during audit remediation, but the architectural rationale was not fully documented in ADR form.
+
+### Constraints
+
+- Existing runtime behavior had to remain stable while moving helper ownership.
+- Consolidation had to break handler cycle edges, not create new dependency direction violations.
+- Handler-domain helpers needed a local canonical module; general-purpose utilities should remain in `shared/`.
+- Module growth needed guardrails so `handler-utils.ts` would not become an unbounded catch-all.
+
+### Decision
+
+**We chose**: Accept `mcp_server/handlers/handler-utils.ts` as the canonical consolidation module for shared handler-domain helper logic.
+
+**How it works**: Handler helpers that are shared across multiple handlers are extracted into `handler-utils.ts`, and handler consumers import from that module. Growth is constrained by the documented add-vs-split policy (T033) to keep scope bounded.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Consolidate into `handler-utils.ts` (Chosen)** | Breaks handler cycles, clear local ownership, low migration friction | Requires explicit growth governance | 9/10 |
+| Keep helpers in source handlers with cross-imports | Minimal code movement | Preserves coupling and cycle risk, weaker ownership clarity | 4/10 |
+| Move extracted helpers directly to `shared/` | Centralized utility location | Over-generalizes handler-specific concerns, higher boundary churn | 6/10 |
+| Duplicate helper logic per handler | Maximum local autonomy | Drift, inconsistent behavior, repeated fixes | 2/10 |
+
+**Why this one**: It solves the active handler coupling problem with the smallest structural change while preserving a clear path to split modules later if growth exceeds policy limits.
+
+### Consequences
+
+**What improves**:
+- Handler dependency flow is cleaner and cycle-free for the extracted concerns.
+- Shared handler logic has a single canonical import path.
+- Follow-up fixes (for example `escapeLikePattern` hardening) land in one place.
+
+**What it costs**:
+- Adds governance overhead to prevent utility-module sprawl.
+- Requires import-path migration and ongoing discipline to keep non-handler utilities in `shared/`.
+
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — handler cycle risk and god-object pressure in `memory-save.ts` required immediate extraction and consolidation.
+2. **Alternatives (≥2)?** Yes — 4 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — a single handler-scoped utility module is simpler than broader shared-layer restructuring.
+4. **On critical path?** Yes — this consolidation was prerequisite to confirming the handler cycle removal objective (CHK-013).
+5. **No tech debt?** Controlled — catch-all risk is mitigated by the explicit growth policy and split criteria documented in T033/CHK-223.
+
+### Implementation
+
+- Implemented via Phase 2 tasks `T013a`, `T013b`, `T013c`, and `T014` (extraction + import migration + cycle verification).
+- Governance guardrail added via `T033` (documented `handler-utils.ts` growth policy).
+- Reinforced by `T039` and checklist verification `CHK-203` for `escapeLikePattern` correctness in the consolidated module.
+- Verified through checklist items `CHK-013` (cycle removed) and `CHK-223` (growth policy documented).
+<!-- /ANCHOR:adr-005 -->

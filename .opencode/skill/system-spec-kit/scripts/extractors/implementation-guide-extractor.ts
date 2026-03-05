@@ -3,7 +3,9 @@
 // Extracts implementation guidance and step-by-step instructions from session observations
 // ---------------------------------------------------------------
 
+import { createHash } from 'node:crypto';
 import { detectObservationType } from './file-extractor';
+import { slugify } from '../utils/slug-utils';
 
 /* -----------------------------------------------------------------
    1. INTERFACES
@@ -71,6 +73,11 @@ function hasImplementationWork(observations: ObservationInput[], files: FileInpu
   return score >= 2;
 }
 
+function createTopicFallback(text: string): string {
+  const digest = createHash('sha1').update(text).digest('hex').slice(0, 8);
+  return `topic-${digest}`;
+}
+
 function extractMainTopic(observations: ObservationInput[], specFolder: string | undefined): string {
   if (specFolder) {
     const folderTopic = specFolder.replace(/^\d+-/, '').replace(/-/g, '-');
@@ -82,12 +89,11 @@ function extractMainTopic(observations: ObservationInput[], specFolder: string |
   );
 
   if (implObs && implObs.title) {
-    return implObs.title
-      .toLowerCase()
+    const baseTitle = implObs.title
       .replace(/^(implemented|created|added|built|fixed)\s+/i, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '')
-      .substring(0, 40);
+      .trim();
+    const topicSlug = slugify(baseTitle).substring(0, 40);
+    return topicSlug || createTopicFallback(baseTitle || implObs.title);
   }
 
   return 'implementation';

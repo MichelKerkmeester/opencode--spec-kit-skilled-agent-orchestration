@@ -209,14 +209,60 @@ describe('R6: Stage 4 — Filter + Annotate', () => {
       }
     });
 
-    it('R6-T16: missing memoryState rows are filtered out', () => {
+    it('R6-T16: missing memoryState rows use minState fallback and are retained', () => {
       const rowsWithMissing: Stage4ReadonlyRow[] = [
         { id: 1, similarity: 90, memoryState: 'HOT' },
         { id: 2, similarity: 80 }, // no memoryState
       ];
       const result = filterByMemoryState(rowsWithMissing, 'WARM', false);
-      expect(result.filtered).toHaveLength(1);
+      expect(result.filtered).toHaveLength(2);
+      expect(result.filtered.map(r => r.id)).toEqual([1, 2]);
+      expect(result.statsBefore.UNKNOWN).toBe(1);
+      expect(result.statsAfter.WARM).toBe(1);
+    });
+
+    it('R6-T16a: invalid memoryState values also use minState fallback', () => {
+      const rowsWithInvalidState: Stage4ReadonlyRow[] = [
+        { id: 1, similarity: 90, memoryState: 'INVALID' },
+        { id: 2, similarity: 80, memoryState: 'COLD' },
+      ];
+      const result = filterByMemoryState(rowsWithInvalidState, 'WARM', false);
+      expect(result.filtered.map(r => r.id)).toEqual([1]);
+      expect(result.statsBefore.UNKNOWN).toBe(1);
+      expect(result.statsAfter.WARM).toBe(1);
+    });
+
+    it('R6-T16b: focused/deep minState filtering stays consistent with fallback rows', () => {
+      const mixedRows: Stage4ReadonlyRow[] = [
+        { id: 1, similarity: 91, memoryState: 'HOT' },
+        { id: 2, similarity: 81, memoryState: 'WARM' },
+        { id: 3, similarity: 71, memoryState: 'COLD' },
+        { id: 4, similarity: 61 }, // no memoryState
+      ];
+
+      const focused = filterByMemoryState(mixedRows, 'WARM', false);
+      const deep = filterByMemoryState(mixedRows, 'COLD', false);
+
+      expect(focused.filtered.map(r => r.id)).toEqual([1, 2, 4]);
+      expect(deep.filtered.map(r => r.id)).toEqual([1, 2, 3, 4]);
+
+      for (const focusedRow of focused.filtered) {
+        expect(deep.filtered.some(r => r.id === focusedRow.id)).toBe(true);
+      }
+    });
+
+    it('R6-T16c: applyStateLimits enforces fallback-tier caps', () => {
+      const rowsWithMissingState: Stage4ReadonlyRow[] = Array.from({ length: 35 }, (_, index) => ({
+        id: index + 1,
+        similarity: 100 - index,
+      }));
+
+      const result = filterByMemoryState(rowsWithMissingState, 'WARM', true);
+      expect(result.filtered).toHaveLength(30);
       expect(result.filtered[0].id).toBe(1);
+      expect(result.filtered[29].id).toBe(30);
+      expect(result.statsBefore.UNKNOWN).toBe(35);
+      expect(result.statsAfter.WARM).toBe(30);
     });
 
     it('R6-T17: case-insensitive state matching', () => {

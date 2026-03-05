@@ -5,6 +5,7 @@
 import path from 'path';
 import os from 'os';
 import { COGNITIVE_CONFIG as LOADED_COGNITIVE_CONFIG } from '../configs/cognitive';
+import { DB_UPDATED_FILE as SHARED_DB_UPDATED_FILE } from '@spec-kit/shared/config';
 
 /* ---------------------------------------------------------------
    1. TYPES
@@ -33,7 +34,7 @@ export const DATABASE_DIR: string = process.env.SPEC_KIT_DB_DIR
   ? path.resolve(process.cwd(), process.env.SPEC_KIT_DB_DIR)
   : path.join(SERVER_DIR, 'database');
 export const DATABASE_PATH: string = path.join(DATABASE_DIR, 'context-index.sqlite');
-export const DB_UPDATED_FILE: string = path.join(DATABASE_DIR, '.db-updated');
+export const DB_UPDATED_FILE: string = SHARED_DB_UPDATED_FILE;
 
 /* ---------------------------------------------------------------
    3. BATCH PROCESSING CONFIGURATION

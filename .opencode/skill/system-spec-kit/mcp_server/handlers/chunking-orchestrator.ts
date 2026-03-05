@@ -371,6 +371,55 @@ async function indexChunkedMemoryFile(
     }
   }
 
+  if (successCount === 0) {
+    const parentRolledBack = !existing;
+    const rollbackMessage = parentRolledBack
+      ? `Chunked indexing aborted: all ${retainedChunks.length} chunks failed (parent rolled back)`
+      : `Chunked indexing aborted: all ${retainedChunks.length} chunks failed (existing parent retained)`;
+    console.error(`[memory-save] ${rollbackMessage} for ${filePath}`);
+
+    try {
+      const rollbackTx = database.transaction(() => {
+        database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
+        if (parentRolledBack) {
+          database.prepare(`DELETE FROM memory_index WHERE id = ?`).run(parentId);
+        } else {
+          applyMetadata(database, parentId, {
+            embedding_status: 'pending',
+          });
+        }
+      });
+      rollbackTx();
+    } catch (rollbackErr: unknown) {
+      const message = toErrorMessage(rollbackErr);
+      console.error(`[memory-save] Rollback failed for parent ${parentId}: ${message}`);
+    }
+
+    if (parentRolledBack && bm25Index.isBm25Enabled()) {
+      try {
+        bm25Index.getIndex().removeDocument(String(parentId));
+      } catch (bm25Err: unknown) {
+        const message = toErrorMessage(bm25Err);
+        console.warn(`[memory-save] BM25 rollback failed for parent ${parentId}: ${message}`);
+      }
+    }
+
+    triggerMatcher.clearCache();
+    toolCache.invalidateOnWrite('chunked-save-rollback', { filePath });
+
+    return {
+      status: 'warning',
+      id: parentRolledBack ? 0 : parentId,
+      specFolder: parsed.specFolder,
+      title: parsed.title,
+      triggerPhrases: parsed.triggerPhrases,
+      contextType: parsed.contextType,
+      importanceTier: parsed.importanceTier,
+      embeddingStatus: parentRolledBack ? 'failed' : 'pending',
+      message: rollbackMessage,
+    };
+  }
+
   // Mutation ledger
   appendMutationLedgerSafe(database, {
     mutationType: existing ? 'update' : 'create',

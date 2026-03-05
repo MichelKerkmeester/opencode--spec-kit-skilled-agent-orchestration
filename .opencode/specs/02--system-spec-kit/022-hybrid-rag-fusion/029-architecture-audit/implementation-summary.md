@@ -26,7 +26,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 
 ## Changes Summary
 
-### New Files (8)
+### New Files (18)
 | File | Purpose |
 |------|---------|
 | `ARCHITECTURE_BOUNDARIES.md` | Canonical boundary contract |
@@ -37,8 +37,18 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `mcp_server/handlers/handler-utils.ts` | Extracted handler utilities (cycle break) |
 | `scripts/evals/import-policy-allowlist.json` | Import exception registry |
 | `scripts/evals/check-no-mcp-lib-imports.ts` | Import-policy enforcement script |
+| `shared/parsing/quality-extractors.test.ts` | Behavioral edge-case test coverage for shared quality extractors (Phase 4) |
+| `scripts/evals/check-architecture-boundaries.ts` | Secondary boundary-enforcement checker for shared neutrality + wrapper-only rules (Phase 5) |
+| `scripts/utils/slug-utils.ts` | Content-aware memory slug generation utilities (Phase 6) |
+| `scratch/ast-parsing-evaluation.md` | AST-based enforcement evaluation artifact (Phase 4) |
+| `scratch/t069-audit-agent-1-planck.md` | Phase 6 5-agent re-audit artifact (Agent 1) |
+| `scratch/t069-audit-agent-2-ampere.md` | Phase 6 5-agent re-audit artifact (Agent 2) |
+| `scratch/t069-audit-agent-3-gauss.md` | Phase 6 5-agent re-audit artifact (Agent 3) |
+| `scratch/t069-audit-agent-4-nash.md` | Phase 6 5-agent re-audit artifact (Agent 4) |
+| `scratch/t069-audit-agent-5-aristotle.md` | Phase 6 5-agent re-audit artifact (Agent 5) |
+| `scratch/t069-audit-summary.md` | Consolidated Phase 6 parity re-audit summary |
 
-### Modified Files (15)
+### Modified Files (32)
 | File | Change |
 |------|--------|
 | `scripts/package.json` | Added lint, check scripts with import-policy integration |
@@ -56,6 +66,23 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `scripts/lib/README.md` | retry-manager marked as moved |
 | `scripts/scripts-registry.json` | retry-manager entry removed |
 | `shared/README.md` | Boundary policy + embeddings shim docs added |
+| `scripts/evals/check-no-mcp-lib-imports.ts` | Phase 4 hardening: dynamic import coverage, variable-depth relative paths, transitive re-export checks, and block-comment handling |
+| `decision-record.md` | ADR-003 updated to include both token-estimation and quality-extractor consolidation evidence (T036) |
+| `mcp_server/handlers/memory-triggers.ts` | Cognitive-path limit handling fixed to enforce caller `limit` contract (T050) |
+| `mcp_server/lib/eval/ablation-framework.ts` | Per-channel failure isolation + partial-result reporting (T051) |
+| `mcp_server/lib/search/learned-feedback.ts` | Shadow-period write-path semantics and weighting alignment updates (T052, T053) |
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Removed duplicate learned-feedback weighting application (T053) |
+| `mcp_server/handlers/memory-index.ts` | Incremental scan `toDelete` consumption and stale-index purge flow (T054) |
+| `mcp_server/lib/storage/incremental-index.ts` | Stale-path deletion support for incremental indexing (T054) |
+| `mcp_server/lib/scoring/confidence-tracker.ts` | Positive-validation semantics aligned for promotion eligibility (T055) |
+| `mcp_server/lib/search/auto-promotion.ts` | Promotion threshold semantics aligned with positive validations (T055) |
+| `mcp_server/handlers/memory-search.ts` | Runtime channel-result eval logging integration and limit clamp alignment (T056, T057) |
+| `mcp_server/handlers/memory-context.ts` | Runtime channel-result eval logging integration (T056) |
+| `mcp_server/schemas/tool-input-schemas.ts` | `memory_search.limit` contract normalized to 1-100 (T057) |
+| `mcp_server/tool-schemas.ts` | Public tool schema contract aligned to `memory_search.limit` 1-100 (T057) |
+| `scripts/core/file-writer.ts` | Empty-content and duplicate-content prevention gates added before write (T072) |
+| `scripts/core/workflow.ts` | Content-aware slug integration for generated memory filenames (T073) |
+| `../feature-catalog/feature_catalog.md` | Canonical feature-catalog parity updates from Phase 6 documentation sweep (T059-T068) |
 
 ### Build Output
 | File | Purpose |

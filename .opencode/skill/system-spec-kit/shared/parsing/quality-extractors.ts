@@ -2,13 +2,15 @@
 // MODULE: Quality Extractors
 // ---------------------------------------------------------------
 
+const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
+
 /**
  * Extract the YAML frontmatter block (between --- delimiters).
  * Returns empty string when no frontmatter is found — body text must never
  * be parsed as metadata (T040 acceptance criteria).
  */
 function extractFrontmatter(content: string): string {
-  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  const match = content.match(FRONTMATTER_RE);
   return match ? match[1] : '';
 }
 

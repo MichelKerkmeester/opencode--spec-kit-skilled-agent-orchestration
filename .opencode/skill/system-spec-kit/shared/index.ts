@@ -157,7 +157,7 @@ export {
 // 7. DATABASE CONFIG
 // ---------------------------------------------------------------
 export { DB_PATH } from './paths';
-export { getDbDir } from './config';
+export { getDbDir, DB_UPDATED_FILE } from './config';
 
 // ---------------------------------------------------------------
 // 8. SHARED ALGORITHMS / CONTRACTS

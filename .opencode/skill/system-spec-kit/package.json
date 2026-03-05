@@ -19,6 +19,7 @@
     "test": "npm run test:cli && npm run test:embeddings && npm run test:mcp",
     "test:mcp": "npm run test --workspace=mcp_server",
     "test:cli": "node scripts/dist/memory/generate-context.js --help && echo 'CLI smoke test passed'",
+    "test:task-enrichment": "node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
     "test:embeddings": "node scripts/tests/test-embeddings-factory.js",
     "postinstall": "node scripts/setup/record-node-version.js"
   },

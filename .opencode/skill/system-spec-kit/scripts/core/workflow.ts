@@ -5,6 +5,7 @@
 
 // Node stdlib
 import * as path from 'path';
+import * as fsSync from 'fs';
 
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
@@ -22,6 +23,7 @@ import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
 import { generateContentSlug } from '../utils/slug-utils';
+import { shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
@@ -42,7 +44,7 @@ import {
   extractFileChanges,
 } from '../lib/semantic-summarizer';
 import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
-import * as retryManager from '@spec-kit/mcp-server/lib/providers/retry-manager';
+import { retryManager } from '@spec-kit/mcp-server/api/providers';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import { indexMemory, updateMetadataWithEmbedding } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
@@ -342,6 +344,23 @@ function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: string, 
   return `${base} ${suffix}`;
 }
 
+function extractSpecTitle(specFolderPath: string): string {
+  try {
+    const specPath = path.join(specFolderPath, 'spec.md');
+    const content = fsSync.readFileSync(specPath, 'utf-8');
+    const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
+    if (!fmMatch) return '';
+    const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
+    if (!titleMatch || !titleMatch[1]) return '';
+    let title = titleMatch[1].trim().replace(/["']$/, '');
+    title = title.replace(/^Feature Specification:\s*/i, '');
+    title = title.replace(/\s*\[template:[^\]]*\]\s*$/, '');
+    return title.trim();
+  } catch {
+    return '';
+  }
+}
+
 function injectQualityMetadata(content: string, qualityScore: number, qualityFlags: string[]): string {
   const yamlBlockMatch = content.match(/```yaml\n([\s\S]*?)\n```/);
   if (!yamlBlockMatch) {
@@ -579,13 +598,24 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   const specFolderBasename: string = path.basename(sessionData.SPEC_FOLDER || specFolderName);
   const folderBase: string = specFolderBasename.replace(/^\d+-/, '');
-  const contentSlug: string = generateContentSlug(implSummary.task || '', folderBase);
+
+  let enrichedTask = implSummary.task;
+  const dataSource = typeof collectedData?._source === 'string' ? collectedData._source : null;
+  if (shouldEnrichTaskFromSpecTitle(enrichedTask, dataSource, CONFIG.DATA_FILE)) {
+    const specTitle = extractSpecTitle(specFolder);
+    if (specTitle.length >= 8) {
+      enrichedTask = specTitle;
+      log(`   Enriched task from spec.md: "${enrichedTask}"`);
+    }
+  }
+
+  const contentSlug: string = generateContentSlug(enrichedTask || '', folderBase);
   const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
   const keyFiles = effectiveFiles.map((f) => ({ FILE_PATH: f.FILE_PATH }));
-  const memoryTitle = buildMemoryTitle(implSummary.task, specFolderName, sessionData.DATE);
+  const memoryTitle = buildMemoryTitle(enrichedTask, specFolderName, sessionData.DATE);
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
 
   // Pre-extract trigger phrases for template embedding AND later indexing

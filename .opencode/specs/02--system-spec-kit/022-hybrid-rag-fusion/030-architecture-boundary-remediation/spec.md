@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Architecture Boundary Remediation"
 description: "The ARCHITECTURE_BOUNDARIES.md doc is accurate but the codebase has two compliance gaps: unnecessary allowlist exceptions bypass api/ for functionality already exposed, and enforcement scripts lack CI/CD automation."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "architecture boundary"
   - "api boundary gaps"
@@ -55,7 +56,7 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 - Expand `mcp_server/api/` to expose retry-manager, checkpoints, access-tracker
 - Move `DB_UPDATED_FILE` constant from `mcp_server/core/config` to `shared/config`
 - Remove or narrow unnecessary allowlist entries in `import-policy-allowlist.json`
-- Add pre-commit hook or CI step running `npm run check` from `scripts/`
+- Add CI pipeline step (mandatory) running `npm run check` from `scripts/`; pre-commit hook optional
 
 ### Out of Scope
 
@@ -67,15 +68,15 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `scripts/core/memory-indexer.ts` | Modify | Replace `@spec-kit/mcp-server/lib/search/vector-index` with `api/search` import |
-| `scripts/core/memory-indexer.ts` | Modify | Replace `@spec-kit/mcp-server/core/config` with `shared/config` import |
-| `scripts/memory/reindex-embeddings.ts` | Modify | Replace imports already available via `api/` |
-| `mcp_server/api/search.ts` | Modify | Expose checkpoints and access-tracker if needed |
-| `shared/config.ts` | Modify | Add `DB_UPDATED_FILE` constant |
-| `mcp_server/core/config.ts` | Modify | Re-export from `shared/config` for backward compat |
-| `scripts/evals/import-policy-allowlist.json` | Modify | Remove resolved exceptions |
-| `ARCHITECTURE_BOUNDARIES.md` | Modify | Update current exceptions table |
-| `.husky/pre-commit` or CI config | Create | Add enforcement automation |
+| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | Modify | Replace `@spec-kit/mcp-server/lib/search/vector-index` with `api/search` import |
+| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | Modify | Replace `@spec-kit/mcp-server/core/config` with `shared/config` import |
+| `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts` | Modify | Replace imports already available via `api/` |
+| `.opencode/skill/system-spec-kit/mcp_server/api/search.ts` | Modify | Expose checkpoints and access-tracker if needed |
+| `.opencode/skill/system-spec-kit/shared/config.ts` | Modify | Add `DB_UPDATED_FILE` constant |
+| `.opencode/skill/system-spec-kit/mcp_server/core/config.ts` | Modify | Re-export from `shared/config` for backward compat |
+| `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` | Modify | Remove resolved exceptions |
+| `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` | Modify | Update current exceptions table |
+| `.opencode/skill/system-spec-kit/scripts/package.json` | Modify | Ensure CI pipeline executes `npm run check` (pre-commit optional) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -98,7 +99,7 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 |----|-------------|---------------------|
 | REQ-005 | Audit reindex-embeddings.ts for reducible imports | Document which imports can move to api/ vs which need wildcard |
 | REQ-006 | Expand api/ surface for checkpoints/access-tracker | New exports in api/search.ts or api/storage.ts |
-| REQ-007 | Add enforcement automation | Pre-commit hook or CI step runs boundary checks |
+| REQ-007 | Add enforcement automation | CI pipeline runs boundary checks on every PR; pre-commit hook optional |
 | REQ-008 | Update ARCHITECTURE_BOUNDARIES.md exceptions table | Table reflects post-remediation state |
 <!-- /ANCHOR:requirements -->
 
@@ -107,9 +108,9 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Allowlist reduced from 6 entries to 3 or fewer
+- **SC-001**: Allowlist reduced from 6 entries to 3 or fewer, and no dynamic deep-require patterns bypass enforcement
 - **SC-002**: All 4 enforcement scripts pass (`npm run check` exit 0)
-- **SC-003**: Enforcement runs automatically on commit or PR
+- **SC-003**: CI pipeline enforces boundary checks on every PR (blocks merge on violation)
 - **SC-004**: Zero new forbidden-direction imports introduced
 <!-- /ANCHOR:success-criteria -->
 
@@ -123,7 +124,7 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 | Risk | Moving constants to shared/ may break script dist builds | Med | Test `scripts/` build after shared/ changes |
 | Risk | reindex-embeddings.ts may need deep internals not exposable via api/ | Med | Keep wildcard entry if legitimate |
 | Dependency | shared/config.ts must be importable by both consumers | Low | Already proven pattern with existing shared/ modules |
-| Risk | Pre-commit hook slows developer workflow | Low | Keep check fast (< 5s) or use CI-only |
+| Risk | CI boundary checks may block merges when slow/flaky | Med | Keep checks deterministic/fast; keep pre-commit optional for earlier local feedback |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -175,9 +176,10 @@ Close the API boundary coverage gaps by migrating unnecessary direct imports to 
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- Should enforcement use a pre-commit hook (husky) or CI-only (GitHub Actions)?
+- Resolved: CI pipeline mandatory; pre-commit hook optional.
 - Should `mcp_server/api/` get a new `storage.ts` module or extend `search.ts`?
 - Can `reindex-embeddings.ts` be fully migrated to api/ or does it need the wildcard permanently?
 <!-- /ANCHOR:questions -->

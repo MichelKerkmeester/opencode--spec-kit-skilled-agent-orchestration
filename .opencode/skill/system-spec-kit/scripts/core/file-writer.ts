@@ -9,10 +9,11 @@ import * as crypto from 'crypto';
 import { validateNoLeakedPlaceholders, validateAnchors } from '../utils/validation-utils';
 
 const MIN_SUBSTANCE_CHARS = 200;
+const FRONTMATTER_BLOCK_RE = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
 
 function validateContentSubstance(content: string, filename: string): void {
   const stripped = content
-    .replace(/^---[\s\S]*?---/m, '')           // frontmatter
+    .replace(FRONTMATTER_BLOCK_RE, '')            // frontmatter
     .replace(/<!--.*?-->/g, '')                 // HTML comments / anchors
     .replace(/^#+\s*.*$/gm, '')                // empty headings
     .replace(/^\|.*\|$/gm, '')                 // table rows (template structure)

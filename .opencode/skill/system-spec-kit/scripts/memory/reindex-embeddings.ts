@@ -16,11 +16,9 @@ import fs from 'fs';
 
 import type { EmbeddingProfile, MCPResponse } from '@spec-kit/shared/types';
 
-type VectorIndexModule = typeof import('@spec-kit/mcp-server/lib/search/vector-index');
-type EmbeddingsModule = typeof import('@spec-kit/mcp-server/lib/providers/embeddings');
-type CheckpointsModule = typeof import('@spec-kit/mcp-server/lib/storage/checkpoints');
-type AccessTrackerModule = typeof import('@spec-kit/mcp-server/lib/storage/access-tracker');
-type HybridSearchModule = typeof import('@spec-kit/mcp-server/lib/search/hybrid-search');
+type SearchApiModule = typeof import('@spec-kit/mcp-server/api/search');
+type ProvidersApiModule = typeof import('@spec-kit/mcp-server/api/providers');
+type StorageApiModule = typeof import('@spec-kit/mcp-server/api/storage');
 type CoreModule = typeof import('@spec-kit/mcp-server/core');
 type HandlersModule = typeof import('@spec-kit/mcp-server/handlers');
 
@@ -62,11 +60,9 @@ function requireFromMcpServerDist<T>(...segments: string[]): T {
   return require(modulePath) as T;
 }
 
-const vectorIndex = requireFromMcpServerDist<VectorIndexModule>('lib', 'search', 'vector-index');
-const embeddings = requireFromMcpServerDist<EmbeddingsModule>('lib', 'providers', 'embeddings');
-const checkpointsLib = requireFromMcpServerDist<CheckpointsModule>('lib', 'storage', 'checkpoints');
-const accessTracker = requireFromMcpServerDist<AccessTrackerModule>('lib', 'storage', 'access-tracker');
-const hybridSearch = requireFromMcpServerDist<HybridSearchModule>('lib', 'search', 'hybrid-search');
+const searchApi = requireFromMcpServerDist<SearchApiModule>('api', 'search');
+const providersApi = requireFromMcpServerDist<ProvidersApiModule>('api', 'providers');
+const storageApi = requireFromMcpServerDist<StorageApiModule>('api', 'storage');
 const core = requireFromMcpServerDist<CoreModule>('core');
 const handlers = requireFromMcpServerDist<HandlersModule>('handlers');
 
@@ -81,20 +77,25 @@ async function reindex(): Promise<void> {
   console.log('');
 
   console.log('[1/5] Initializing database...');
-  vectorIndex.initializeDb();
+  searchApi.vectorIndex.initializeDb();
 
   console.log('[2/5] Initializing db-state module...');
-  core.init({ vectorIndex, checkpoints: checkpointsLib, accessTracker, hybridSearch });
+  core.init({
+    vectorIndex: searchApi.vectorIndex,
+    checkpoints: { init: storageApi.initCheckpoints },
+    accessTracker: { init: storageApi.initAccessTracker },
+    hybridSearch: { init: searchApi.initHybridSearch },
+  });
 
   console.log('[3/5] Warming up embedding model...');
   try {
     const start = Date.now();
-    await embeddings.generateEmbedding('warmup test');
+    await providersApi.generateEmbedding('warmup test');
     const elapsed = Date.now() - start;
     core.setEmbeddingModelReady(true);
     console.log(`    Embedding model ready (${elapsed}ms)`);
 
-    const profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
+    const profile = providersApi.getEmbeddingProfile() as EmbeddingProfile | null;
     console.log(`    Provider: ${profile?.provider}, Model: ${profile?.model}, Dim: ${profile?.dim}`);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
@@ -103,13 +104,14 @@ async function reindex(): Promise<void> {
   }
 
   console.log('[4/5] Initializing search modules...');
-  const database = vectorIndex.getDb();
+  const database = searchApi.vectorIndex.getDb();
   if (!database) {
     console.error('ERROR: Database not initialized after initializeDb(). Cannot proceed.');
     process.exit(1);
   }
-  checkpointsLib.init(database);  accessTracker.init(database);
-  hybridSearch.init(database, vectorIndex.vectorSearch);
+  storageApi.initCheckpoints(database);
+  storageApi.initAccessTracker(database);
+  searchApi.initHybridSearch(database, searchApi.vectorIndex.vectorSearch);
 
   console.log('[5/5] Force reindexing all memory files...');
   console.log('');
@@ -156,7 +158,7 @@ async function reindex(): Promise<void> {
     console.log('STATUS=OK');
   }
 
-  vectorIndex.closeDb();
+  searchApi.vectorIndex.closeDb();
 }
 
 /* ---------------------------------------------------------------

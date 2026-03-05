@@ -72,12 +72,8 @@ All exceptions must be registered in `scripts/evals/import-policy-allowlist.json
 
 | File | Import | Reason |
 |------|--------|--------|
-| `scripts/core/workflow.ts` | `@spec-kit/mcp-server/lib/providers/retry-manager` | Retry logic not yet in `shared/` |
-| `scripts/core/memory-indexer.ts` | `@spec-kit/mcp-server/lib/search/vector-index` | Vector indexing not exposed via `api/` |
-| `scripts/core/memory-indexer.ts` | `@spec-kit/mcp-server/core/config` | `DB_UPDATED_FILE` constant needed |
 | `scripts/evals/run-performance-benchmarks.ts` | `@spec-kit/mcp-server/lib/*` (multiple) | Benchmark needs direct access to internal metrics |
 | `scripts/evals/run-chk210-quality-backfill.ts` | `@spec-kit/mcp-server/lib/*` | Quality backfill accesses internal parsing |
-| `scripts/memory/reindex-embeddings.ts` | `@spec-kit/mcp-server/lib/*` (multiple) | Reindex script needs direct access to internals |
 
 ### Removal Criteria
 
@@ -124,9 +120,12 @@ Remove a compatibility wrapper when both criteria are met:
 | Tool | Path | Purpose |
 |------|------|---------|
 | Import-policy checker | `scripts/evals/check-no-mcp-lib-imports.ts` | Detects `@spec-kit/mcp-server/lib/*` imports in `scripts/` |
+| AST import-policy checker | `scripts/evals/check-no-mcp-lib-imports-ast.ts` | AST-level import detection (multiline, comment-safe, re-export graph) |
+| AST handler-cycle checker | `scripts/evals/check-handler-cycles-ast.ts` | Detects circular imports across `mcp_server/handlers/` |
 | Allowlist | `scripts/evals/import-policy-allowlist.json` | Registered exceptions with ownership metadata |
 | API boundary check | `scripts/check-api-boundary.sh` | Checks `lib/` to `api/` direction |
 | Architecture boundary check | `scripts/evals/check-architecture-boundaries.ts` | `shared/` neutrality + `mcp_server/scripts/` wrapper-only verification |
+| CI workflow | `.github/workflows/system-spec-kit-boundary-enforcement.yml` | Runs baseline + AST boundary checks on PRs and pushes |
 
 ---
 

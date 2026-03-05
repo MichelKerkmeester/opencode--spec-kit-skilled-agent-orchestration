@@ -110,6 +110,16 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-010 | Generation-time quality gates (empty + duplicate prevention) | Empty templates and duplicate content rejected before file write |
 <!-- /ANCHOR:requirements -->
 
+## 4.5 REQUIREMENT-TASK TRACEABILITY (BACKFILL)
+
+| Requirement | Plan Phase | Task IDs |
+|-------------|------------|----------|
+| REQ-001 | Phase 2b, Phase 6 | T018, T070 |
+| REQ-003 | Phase 6 | T070 |
+| REQ-004 | Phase 6 | T070 |
+| REQ-005 | Phase 4, Phase 6 | T038, T070 |
+| REQ-007 | Phase 0, Phase 3, Phase 5 | T000, T017, T047, T049 |
+
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 

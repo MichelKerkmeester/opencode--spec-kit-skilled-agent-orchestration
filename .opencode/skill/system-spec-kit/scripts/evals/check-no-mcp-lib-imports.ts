@@ -47,7 +47,24 @@ interface ScanFileResult {
 }
 
 const SCRIPTS_ROOT = path.resolve(__dirname, '..');
-const ALLOWLIST_PATH = path.resolve(__dirname, 'import-policy-allowlist.json');
+
+function resolveAllowlistPath(): string | null {
+  const candidates = [
+    // Source layout (tsx): scripts/evals/check-no-mcp-lib-imports.ts
+    path.resolve(__dirname, 'import-policy-allowlist.json'),
+    // Compiled layout (node): scripts/dist/evals/check-no-mcp-lib-imports.js
+    path.resolve(__dirname, '../../evals/import-policy-allowlist.json'),
+    // CWD fallbacks
+    path.resolve(process.cwd(), 'evals/import-policy-allowlist.json'),
+    path.resolve(process.cwd(), 'scripts/evals/import-policy-allowlist.json'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+
+  return null;
+}
 
 // Patterns that indicate prohibited imports (only match actual import/require statements)
 // Quote class ['"`] covers single quotes, double quotes, and template literal backticks
@@ -81,15 +98,16 @@ const RELATIVE_PROHIBITED_RE = /^\.\.(?:\/\.\.)*\/mcp_server\/(?:lib|core)\//;
 const REEXPORT_FROM_RE = /\bexport\s+(?:\*\s*|\{[^}]*\}\s*)from\s+['"`]([^'"`]+)['"`]/;
 
 function loadAllowlist(): Allowlist {
-  if (!fs.existsSync(ALLOWLIST_PATH)) {
+  const allowlistPath = resolveAllowlistPath();
+  if (!allowlistPath) {
     console.warn('Warning: import-policy-allowlist.json not found, treating all violations as errors');
     return { description: '', exceptions: [] };
   }
   try {
-    return JSON.parse(fs.readFileSync(ALLOWLIST_PATH, 'utf-8'));
+    return JSON.parse(fs.readFileSync(allowlistPath, 'utf-8'));
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`Error: Failed to parse ${ALLOWLIST_PATH}: ${message}`);
+    console.error(`Error: Failed to parse ${allowlistPath}: ${message}`);
     process.exit(2);
   }
 }

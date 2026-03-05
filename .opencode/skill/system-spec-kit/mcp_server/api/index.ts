@@ -8,3 +8,4 @@
 export * from './eval';
 export * from './search';
 export * from './providers';
+export * from './storage';

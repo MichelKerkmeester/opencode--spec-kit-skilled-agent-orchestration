@@ -10,8 +10,8 @@ import * as path from 'path';
 
 import { structuredLog } from '../utils';
 import { generateEmbedding, EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
-import * as vectorIndex from '@spec-kit/mcp-server/lib/search/vector-index';
-import { DB_UPDATED_FILE } from '@spec-kit/mcp-server/core/config';
+import { vectorIndex } from '@spec-kit/mcp-server/api/search';
+import { DB_UPDATED_FILE } from '@spec-kit/shared/config';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import { extractQualityScore, extractQualityFlags } from '@spec-kit/shared/parsing/quality-extractors';

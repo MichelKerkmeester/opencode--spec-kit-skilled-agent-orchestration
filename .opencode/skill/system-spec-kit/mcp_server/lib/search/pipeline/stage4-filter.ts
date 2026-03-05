@@ -71,6 +71,26 @@ const STATE_LIMITS: Record<string, number> = {
 /** Fallback priority for unknown/missing memoryState values. */
 const UNKNOWN_STATE_PRIORITY = 0;
 
+function normalizeStateValue(state: unknown): string | null {
+  if (typeof state !== 'string') {
+    return null;
+  }
+  const normalizedState = state.toUpperCase();
+  return normalizedState in STATE_PRIORITY ? normalizedState : null;
+}
+
+function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string): string {
+  const explicitState = normalizeStateValue(row.memoryState);
+  if (explicitState) {
+    return explicitState;
+  }
+
+  // AI-WHY: Missing memoryState is now treated as a safe fallback instead of
+  // being dropped, because upstream candidates can omit this optional field.
+  // Using minState-derived fallback prevents false-negative empty results.
+  return fallbackState;
+}
+
 /* ---------------------------------------------------------------
    2. TYPES
    --------------------------------------------------------------- */
@@ -117,18 +137,20 @@ export function filterByMemoryState(
   minState: string,
   applyStateLimits: boolean,
 ): FilterResult {
-  const minPriority = STATE_PRIORITY[minState.toUpperCase()] ?? UNKNOWN_STATE_PRIORITY;
+  const normalizedMinState = normalizeStateValue(minState);
+  const minPriority = STATE_PRIORITY[normalizedMinState ?? ''] ?? UNKNOWN_STATE_PRIORITY;
+  const fallbackState = normalizedMinState ?? 'ARCHIVED';
 
   // ── 3a. Tally states before filtering ──
   const statsBefore: StateStats = {};
   for (const row of results) {
-    const state = (row.memoryState ?? 'UNKNOWN').toUpperCase();
+    const state = normalizeStateValue(row.memoryState) ?? 'UNKNOWN';
     statsBefore[state] = (statsBefore[state] ?? 0) + 1;
   }
 
   // ── 3b. State-priority filter ──
   let passing = results.filter(row => {
-    const state = (row.memoryState ?? '').toUpperCase();
+    const state = resolveStateForFiltering(row, fallbackState);
     const priority = STATE_PRIORITY[state] ?? UNKNOWN_STATE_PRIORITY;
     return priority >= minPriority;
   });
@@ -139,7 +161,7 @@ export function filterByMemoryState(
     const limitPassing: Stage4ReadonlyRow[] = [];
 
     for (const row of passing) {
-      const state = (row.memoryState ?? 'UNKNOWN').toUpperCase();
+      const state = resolveStateForFiltering(row, fallbackState);
       const limit = STATE_LIMITS[state] ?? Infinity;
       const count = tierCounters[state] ?? 0;
 
@@ -156,7 +178,7 @@ export function filterByMemoryState(
   // ── 3d. Tally states after filtering ──
   const statsAfter: StateStats = {};
   for (const row of passing) {
-    const state = (row.memoryState ?? 'UNKNOWN').toUpperCase();
+    const state = resolveStateForFiltering(row, fallbackState);
     statsAfter[state] = (statsAfter[state] ?? 0) + 1;
   }
 
@@ -327,6 +349,8 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
  */
 export const __testables = {
   filterByMemoryState,
+  resolveStateForFiltering,
+  normalizeStateValue,
   extractScoringValue,
   STATE_PRIORITY,
   STATE_LIMITS,

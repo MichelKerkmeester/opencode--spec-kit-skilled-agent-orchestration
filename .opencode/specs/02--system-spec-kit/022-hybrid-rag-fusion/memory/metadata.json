@@ -1,5 +1,5 @@
 {
-  "timestamp": "21-02-26 16-29",
+  "timestamp": "05-03-26 12-23",
   "messageCount": 2,
   "decisionCount": 0,
   "diagramCount": 0,
@@ -18,7 +18,7 @@
     }
   },
   "semanticSummary": {
-    "task": "Development session",
+    "task": "10-agent cross-AI review of 029+030 with 16-task remediation",
     "filesCreated": 0,
     "filesModified": 22,
     "decisions": 0,
@@ -35,97 +35,7 @@
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 97,
-    "generatedAt": "2026-02-21T15:29:42.971Z"
-  },
-  "mergedAt": "2026-03-05T06:40:58.932Z",
-  "mergedFrom": [
-    "02--system-spec-kit/022-hybrid-rag-fusion",
-    "02--system-spec-kit/022-hybrid-rag-fusion"
-  ],
-  "sourceMetadata": {
-    "original022": {
-      "timestamp": "21-02-26 16-29",
-      "messageCount": 2,
-      "decisionCount": 0,
-      "diagramCount": 0,
-      "skillVersion": "1.7.2",
-      "autoTriggered": false,
-      "filtering": {
-        "totalProcessed": 2,
-        "noiseFiltered": 0,
-        "duplicatesRemoved": 1,
-        "qualityScore": 30,
-        "filtered": {
-          "noise": 0,
-          "empty": 0,
-          "duplicate": 1,
-          "lowQuality": 0
-        }
-      },
-      "semanticSummary": {
-        "task": "Development session",
-        "filesCreated": 0,
-        "filesModified": 22,
-        "decisions": 0,
-        "messageStats": {
-          "intent": 0,
-          "plan": 0,
-          "implementation": 0,
-          "result": 0,
-          "decision": 0,
-          "total": 2
-        }
-      },
-      "embedding": {
-        "status": "indexed",
-        "model": "nomic-ai/nomic-embed-text-v1.5",
-        "dimensions": 768,
-        "memoryId": 97,
-        "generatedAt": "2026-02-21T15:29:42.971Z"
-      }
-    },
-    "original023": {
-      "timestamp": "04-03-26 20-20",
-      "messageCount": 2,
-      "decisionCount": 0,
-      "diagramCount": 0,
-      "skillVersion": "1.7.2",
-      "autoTriggered": false,
-      "filtering": {
-        "totalProcessed": 2,
-        "noiseFiltered": 0,
-        "duplicatesRemoved": 1,
-        "qualityScore": 30,
-        "filtered": {
-          "noise": 0,
-          "empty": 0,
-          "duplicate": 1,
-          "lowQuality": 0
-        }
-      },
-      "semanticSummary": {
-        "task": "Development session",
-        "filesCreated": 0,
-        "filesModified": 22,
-        "decisions": 0,
-        "messageStats": {
-          "intent": 0,
-          "plan": 0,
-          "implementation": 0,
-          "result": 0,
-          "decision": 0,
-          "total": 2
-        }
-      },
-      "embedding": {
-        "status": "indexed",
-        "model": "nomic-ai/nomic-embed-text-v1.5",
-        "dimensions": 768,
-        "memoryId": 1177,
-        "generatedAt": "2026-03-04T19:20:41.267Z"
-      }
-    }
-  },
-  "mergedMemoryFileCount": 32
+    "memoryId": 1182,
+    "generatedAt": "2026-03-05T11:23:43.211Z"
+  }
 }

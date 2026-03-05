@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: Architecture Boundary Remediation"
 description: "Migrate unnecessary allowlist exceptions to api/ imports, move DB_UPDATED_FILE to shared/, and add automated enforcement via pre-commit hook or CI."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "boundary remediation plan"
   - "api migration plan"

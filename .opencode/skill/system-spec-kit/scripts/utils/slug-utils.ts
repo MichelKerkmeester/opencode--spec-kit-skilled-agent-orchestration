@@ -3,6 +3,8 @@
 // Content-aware slug generation for memory filenames
 // ---------------------------------------------------------------
 
+import { createHash } from 'node:crypto';
+
 const GENERIC_SLUGS = new Set([
   'development-session',
   'session-summary',
@@ -13,12 +15,37 @@ const GENERIC_SLUGS = new Set([
   'work-session',
 ]);
 
-export function slugify(text: string): string {
+const GENERIC_TASK_SLUGS = new Set([
+  ...GENERIC_SLUGS,
+  'implementation-and-updates',
+]);
+
+function toUnicodeSafeSlug(text: string): string {
   return text
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
     .replace(/^-+|-+$/g, '')
     .replace(/-{2,}/g, '-');
+}
+
+function hashFallbackSlug(seed: string): string {
+  const digest = createHash('sha1').update(seed).digest('hex').slice(0, 8);
+  return `session-${digest}`;
+}
+
+export function slugify(text: string): string {
+  if (!text || typeof text !== 'string') return '';
+  return toUnicodeSafeSlug(text);
+}
+
+export function isGenericContentTask(task: string): boolean {
+  const taskSlug = slugify(task);
+  if (taskSlug.length === 0) {
+    return true;
+  }
+  return GENERIC_TASK_SLUGS.has(taskSlug);
 }
 
 export function truncateSlugAtWordBoundary(slug: string, max: number = 50): string {
@@ -37,5 +64,8 @@ export function generateContentSlug(task: string, fallback: string): string {
     return truncateSlugAtWordBoundary(taskSlug);
   }
   const fallbackSlug = slugify(fallback);
-  return fallbackSlug.length > 0 ? truncateSlugAtWordBoundary(fallbackSlug) : 'session';
+  if (fallbackSlug.length > 0) {
+    return truncateSlugAtWordBoundary(fallbackSlug);
+  }
+  return hashFallbackSlug(`${task}::${fallback}`);
 }

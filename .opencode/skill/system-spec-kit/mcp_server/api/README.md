@@ -13,7 +13,8 @@ The `api/` directory provides a curated, stable interface to `mcp_server/` inter
 | `index.ts` | Barrel export | Re-exports all public API modules |
 | `eval.ts` | Evaluation API | Evaluation metrics and reporting |
 | `search.ts` | Search API | Search operations for external callers |
-| `providers.ts` | Provider config | Provider configuration and setup |
+| `providers.ts` | Provider + retry API | Embedding providers and retry-queue access |
+| `storage.ts` | Storage init API | Checkpoint/access-tracker initialization |
 
 ## Consumer Policy
 
