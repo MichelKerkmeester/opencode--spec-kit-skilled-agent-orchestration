@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/04-03-26_20-20__hybrid-rag-fusion-refinement]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/04-03-26_20-20__hybrid-rag-fusion-refinement]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 04-03-26
+# hybrid rag fusion session 04-03-26
 
 ## SESSION SUMMARY
 
@@ -162,7 +162,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/023 hybrid rag fusion refinement` | `skill` | `graph` | `spec` | `kit/023` | `hybrid` | `rag` | `fusion` | `refinement` | 
+**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/022 hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/023` | `hybrid` | `rag` | `fusion` | `refinement` | 
 
 ---
 
@@ -834,7 +834,7 @@ key_topics:
   - "system"
   - "memory"
   - "skill graph"
-  - "system spec kit/023 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "skill"
   - "graph"
   - "spec"
@@ -846,7 +846,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "skill graphs"
   - "in memory"
   - "tree thinning"

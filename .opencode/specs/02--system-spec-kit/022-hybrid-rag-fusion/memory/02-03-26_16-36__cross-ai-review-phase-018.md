@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/02-03-26_16-36__cross-ai-review-phase-018]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/02-03-26_16-36__cross-ai-review-phase-018]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 02-03-26
+# hybrid rag fusion session 02-03-26
 
 ## SESSION SUMMARY
 
@@ -144,7 +144,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../018-refinement-phase-7/spec.md, .opencode/.../018-refinement-phase-7/plan.md, .opencode/.../018-refinement-phase-7/tasks.md
+- Files modified: .opencode/.../010-cross-ai-audit/spec.md, .opencode/.../010-cross-ai-audit/plan.md, .opencode/.../010-cross-ai-audit/tasks.md
 
 - Last: Technical Implementation Details
 
@@ -159,7 +159,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../018-refinement-phase-7/spec.md |
+| Active File | .opencode/.../010-cross-ai-audit/spec.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -181,15 +181,15 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../018-refinement-phase-7/spec.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/spec.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/plan.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/plan.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/tasks.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/tasks.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/checklist.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/checklist.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/implementation-summary.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -214,7 +214,7 @@ Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the enti
 - Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the entire Hybrid RAG...
 - Decision: Used 4-wave orchestrated approach because it allows parallel cross-AI
 - Decision: Prioritized Gemini and Codex over Opus sub-agents per user request, re
-- Decision: Created 018-refinement-phase-7 spec folder (Level 2) for tracking find
+- Decision: Created 010-cross-ai-audit spec folder (Level 2) for tracking find
 - Decision: Downgraded SQL template literal findings from P1 to P2 after Codex pro
 - Decision: Downgraded transaction boundary findings from P1 to P2 because better-
 - Decision: Resolved tool count dispute (25 vs 23) - Codex proved documentation ac
@@ -225,7 +225,7 @@ Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the enti
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../018-refinement-phase-7/(merged-small-files)` | Tree-thinning merged 5 small files (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md). spec.md: File modified (description pending) | plan.md: File modified (description pending) |
+| `.opencode/.../010-cross-ai-audit/(merged-small-files)` | Tree-thinning merged 5 small files (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md). spec.md: File modified (description pending) | plan.md: File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -241,7 +241,7 @@ Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the enti
 
 Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the entire Hybrid RAG Fusion Refinement program. Orchestrated 20+ review tasks across 3 AI models: Gemini (gemini-3.1-pro-review + gemini-3.1-pro-preview), Codex (gpt-5.3-codex), and Opus (claude-opus-4-6). Covered 4 review waves (script location, documentation verification, code standards, bug detection) plus 5 Gemini deep-dives and 5 Codex cross-verifications. Final ultra-think Opus meta-review synthesized all findings. Architecture health score: 79/100. Zero critical bugs. 13 documentation issues in summary_of_existing_features.md. Math.max/min spread patterns identified as most dangerous latent defect (6 files).
 
-**Details:** refinement phase 7 | cross-AI review audit | 018-refinement-phase-7 | architecture health score | script location analysis | summary_of_existing_features | Math.max spread overflow | SQL template literal safety | transaction boundary | cross-model disagreement | ultra-think meta-review | Gemini Codex Opus verification
+**Details:** refinement phase 7 | cross-AI review audit | 010-cross-ai-audit | architecture health score | script location analysis | summary_of_existing_features | Math.max spread overflow | SQL template literal safety | transaction boundary | cross-model disagreement | ultra-think meta-review | Gemini Codex Opus verification
 <!-- /ANCHOR:implementation-comprehensive-crossai-review-audit-c1f133c9 -->
 
 <!-- ANCHOR:implementation-technical-implementation-details-5b6d92b9 -->
@@ -693,7 +693,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "bug detection"
   - "summary of existing features"
   - "cross ai"
@@ -728,7 +728,7 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../018-refinement-phase-7/(merged-small-files)"
+  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:

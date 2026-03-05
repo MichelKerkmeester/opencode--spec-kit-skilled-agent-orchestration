@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/04-03-26_11-31__sprint-019-doc-updates-6-fixes]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/04-03-26_11-31__sprint-019-doc-updates-6-fixes]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 04-03-26
+# hybrid rag fusion session 04-03-26
 
 ## SESSION SUMMARY
 
@@ -121,7 +121,7 @@ contextType: "general"
 
 **Decisions:** 4 decisions recorded
 
-**Summary:** Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (034-feature-catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPL...
+**Summary:** Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog/feature_catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPL...
 
 ### Pending Work
 
@@ -144,7 +144,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../022-hybrid-rag-fusion/034-feature-catalog.md, .opencode/.../035-manual-testing-playbook/manual-test-playbooks.md
+- Files modified: .opencode/.../022-hybrid-rag-fusion/feature-catalog/feature_catalog.md, .opencode/.../manual-testing-playbook/manual-test-playbooks.md
 
 - Last: Technical Implementation Details
 
@@ -159,12 +159,12 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../022-hybrid-rag-fusion/034-feature-catalog.md |
+| Active File | .opencode/.../022-hybrid-rag-fusion/feature-catalog/feature_catalog.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
-| Blockers | Completed 2 remaining documentation updates that Gemini agents failed to finish (034-feature-catalog. |
+| Blockers | Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog. |
 
-**Key Topics:** `decision` | `retry` | `retry timing` | `count` | `fixed` | `timing` | `watcher retry` | `system spec kit/023 hybrid rag fusion refinement` | `all` | `implemented` | `watcher` | `system` | 
+**Key Topics:** `decision` | `retry` | `retry timing` | `count` | `fixed` | `timing` | `watcher retry` | `system spec kit/022 hybrid rag fusion` | `all` | `implemented` | `watcher` | `system` | 
 
 ---
 
@@ -181,9 +181,9 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../022-hybrid-rag-fusion/034-feature-catalog.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/feature-catalog/feature_catalog.md` - Documentation
 
-- `.opencode/.../035-manual-testing-playbook/manual-test-playbooks.md` - Documentation
+- `.opencode/.../manual-testing-playbook/manual-test-playbooks.md` - Documentation
 
 **How to Extend**:
 
@@ -204,7 +204,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (034-feature-catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
+Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog/feature_catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
 
 **Key Outcomes**:
 - Continuation session following context overflow. Completed 2 remaining documentation updates that...
@@ -218,8 +218,8 @@ Continuation session following context overflow. Completed 2 remaining documenta
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../022-hybrid-rag-fusion/(merged-small-files)` | Tree-thinning merged 1 small files (034-feature-catalog.md). 034-feature-catalog.md: All 9 implemented Sprint 019 features (P0-1 through P1-7) |
-| `.opencode/.../035-manual-testing-playbook/(merged-small-files)` | Tree-thinning merged 1 small files (manual-test-playbooks.md). manual-test-playbooks.md: All 9 implemented Sprint 019 features (P0-1 through P1-7) |
+| `.opencode/.../022-hybrid-rag-fusion/(merged-small-files)` | Tree-thinning merged 1 small files (feature-catalog/feature_catalog.md). feature-catalog/feature_catalog.md: All 9 implemented Sprint 019 features (P0-1 through P1-7) |
+| `.opencode/.../manual-testing-playbook/(merged-small-files)` | Tree-thinning merged 1 small files (manual-test-playbooks.md). manual-test-playbooks.md: All 9 implemented Sprint 019 features (P0-1 through P1-7) |
 
 <!-- /ANCHOR:summary -->
 
@@ -233,7 +233,7 @@ Continuation session following context overflow. Completed 2 remaining documenta
 <!-- ANCHOR:implementation-continuation-session-following-context-d5ced613 -->
 ### FEATURE: Continuation session following context overflow. Completed 2 remaining documentation updates that...
 
-Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (034-feature-catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
+Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog/feature_catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
 
 **Details:** feature catalog update | PLANNED to IMPLEMENTED | Sprint 019 documentation | manual test playbook | NEW-095 through NEW-102 | Codex review findings | cross-AI doc review | schema validation test scenarios | ingest lifecycle test | file watcher test scenario | local reranker test | tool count 28 | sprint 9 doc fixes
 <!-- /ANCHOR:implementation-continuation-session-following-context-d5ced613 -->
@@ -241,7 +241,7 @@ Continuation session following context overflow. Completed 2 remaining documenta
 <!-- ANCHOR:implementation-technical-implementation-details-cd8ae825 -->
 ### IMPLEMENTATION: Technical Implementation Details
 
-rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rate limits and lost when context overflowed. Documentation files still contained stale PLANNED labels for features that were fully implemented.; solution: Applied changes directly: 11 edits to 034-feature-catalog.md (PLANNED→IMPLEMENTED, description fixes), 8 new test scenarios in manual-test-playbooks.md. Codex 5.3 xhigh review caught 6 additional issues (2 more features were implemented than initially marked, test scenarios had path/state errors). All fixed.; patterns: Cross-AI review loop: apply changes → Codex review → fix findings. Verified implementation claims by grepping actual code (buildServerInstructions, injectContextualTree, TOOL_SCHEMAS count, retry loop logic).
+rootCause: Gemini 3.1 Pro Preview agents from previous session were stuck on rate limits and lost when context overflowed. Documentation files still contained stale PLANNED labels for features that were fully implemented.; solution: Applied changes directly: 11 edits to feature-catalog/feature_catalog.md (PLANNED→IMPLEMENTED, description fixes), 8 new test scenarios in manual-test-playbooks.md. Codex 5.3 xhigh review caught 6 additional issues (2 more features were implemented than initially marked, test scenarios had path/state errors). All fixed.; patterns: Cross-AI review loop: apply changes → Codex review → fix findings. Verified implementation claims by grepping actual code (buildServerInstructions, injectContextualTree, TOOL_SCHEMAS count, retry loop logic).
 
 <!-- /ANCHOR:implementation-technical-implementation-details-cd8ae825 -->
 
@@ -408,7 +408,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-04 @ 11:31:56
 
-Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (034-feature-catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
+Continuation session following context overflow. Completed 2 remaining documentation updates that Gemini agents failed to finish (feature-catalog/feature_catalog.md and manual-test-playbooks.md). Applied PLANNED→IMPLEMENTED label changes for all 9 implemented Sprint 019 features (P0-1 through P1-7), fixed factual errors (concurrent jobs→sequential worker, truthy→strict equality, 24→28 tools, retry timing), and added 8 new test scenarios (NEW-095 through NEW-102). Codex GPT-5.3 xhigh review found 4 warnings and 2 info items: P1-4 and P1-6 were actually implemented but still labeled PLANNED, NEW-097 had wrong input paths and missing indexing state, NEW-096 needed env var precondition, tool count was stale at 24 (now 28), and file watcher retry timing was inaccurate. All 6 findings were fixed.
 
 ---
 
@@ -598,7 +598,7 @@ key_topics:
   - "fixed"
   - "timing"
   - "watcher retry"
-  - "system spec kit/023 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "all"
   - "implemented"
   - "watcher"
@@ -606,7 +606,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "had wrong"
   - "and missing"
   - "build server instructions"
@@ -642,7 +642,7 @@ trigger_phrases:
 
 key_files:
   - ".opencode/.../022-hybrid-rag-fusion/(merged-small-files)"
-  - ".opencode/.../035-manual-testing-playbook/(merged-small-files)"
+  - ".opencode/.../manual-testing-playbook/(merged-small-files)"
 
 # Relationships
 related_sessions:

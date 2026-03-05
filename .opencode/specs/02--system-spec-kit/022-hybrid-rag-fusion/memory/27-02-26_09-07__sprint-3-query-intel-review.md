@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/27-02-26_09-07__sprint-3-query-intel-review]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/27-02-26_09-07__sprint-3-query-intel-review]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 27-02-26
+# hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179642530-mm059kza1 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../004-sprint-3-query-intelligence/tasks.md, .opencode/.../004-sprint-3-query-intelligence/checklist.md, .opencode/.../004-sprint-3-query-intelligence/spec.md
+- Files modified: .opencode/.../006-core-rag-sprints-0-to-8/tasks.md, .opencode/.../006-core-rag-sprints-0-to-8/checklist.md, .opencode/.../006-core-rag-sprints-0-to-8/spec.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../004-sprint-3-query-intelligence/tasks.md |
+| Active File | .opencode/.../006-core-rag-sprints-0-to-8/tasks.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | Decision: Decompose T001 into 4 sequential subtasks (T001a-T001d) because the monolithic 10-16h task |
@@ -198,17 +198,17 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../004-sprint-3-query-intelligence/tasks.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` - Documentation
 
-- `.opencode/.../004-sprint-3-query-intelligence/checklist.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` - Documentation
 
-- `.opencode/.../004-sprint-3-query-intelligence/spec.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` - Documentation
 
-- `.opencode/.../004-sprint-3-query-intelligence/plan.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/tasks.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/plan.md` - Documentation
 
 **How to Extend**:
 
@@ -244,12 +244,12 @@ Implemented all 5 recommendations from the ultra-think review of Sprint 3 (Query
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../004-sprint-3-query-intelligence/tasks.md` | Updated tasks |
-| `.opencode/.../004-sprint-3-query-intelligence/checklist.md` | Updated checklist |
-| `.opencode/.../004-sprint-3-query-intelligence/spec.md` | Updated spec |
-| `.opencode/.../004-sprint-3-query-intelligence/plan.md` | Updated plan |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` | Updated tasks |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` | Updated plan |
+| `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` | Updated tasks |
+| `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` | Updated checklist |
+| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | Updated spec |
+| `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` | Updated plan |
+| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | Updated tasks |
+| `.opencode/.../022-hybrid-rag-fusion/plan.md` | Updated plan |
 
 <!-- /ANCHOR:summary -->
 
@@ -484,9 +484,9 @@ Implemented all 5 recommendations from the ultra-think review of Sprint 3 (Query
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -498,16 +498,16 @@ Implemented all 5 recommendations from the ultra-think review of Sprint 3 (Query
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -580,7 +580,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179642530-mm059kza1"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -663,7 +663,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "boundary bug"
   - "bug found"
   - "ultra think"
@@ -698,19 +698,19 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../004-sprint-3-query-intelligence/tasks.md"
-  - ".opencode/.../004-sprint-3-query-intelligence/checklist.md"
-  - ".opencode/.../004-sprint-3-query-intelligence/spec.md"
-  - ".opencode/.../004-sprint-3-query-intelligence/plan.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/tasks.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/plan.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
+  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
+  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

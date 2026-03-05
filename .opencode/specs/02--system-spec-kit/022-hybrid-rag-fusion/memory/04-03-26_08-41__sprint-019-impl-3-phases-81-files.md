@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/04-03-26_08-41__sprint-019-impl-3-phases-81-files]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/04-03-26_08-41__sprint-019-impl-3-phases-81-files]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 04-03-26
+# hybrid rag fusion session 04-03-26
 
 ## SESSION SUMMARY
 
@@ -661,7 +661,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "and crash"
   - "include trace"
   - "full auto"

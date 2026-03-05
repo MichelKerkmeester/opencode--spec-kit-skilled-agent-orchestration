@@ -5,8 +5,9 @@ This merged playbook combines:
 - Gemini 3.1 Pro Preview scenario-pack overlays (operator execution bundles)
 
 Canonical source artifacts:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/codex-5-3-xhigh-last-message.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/gemini-3-1-pro-preview-run.log`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__generic-memory-filename-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_15-17__spec-memory-search-state-filter-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/subagent-utilization-ledger.md`
 
 ## Global Preconditions
 1. Working directory is project root.
@@ -230,4 +231,5 @@ Use these as execution bundles over the canonical per-feature matrix:
 8. Evaluation and Telemetry
 
 Overlay source section:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/gemini-3-1-pro-preview-run.log`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_14-56__spec-memory-search-state-filter-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_15-17__spec-memory-search-state-filter-fix.md`

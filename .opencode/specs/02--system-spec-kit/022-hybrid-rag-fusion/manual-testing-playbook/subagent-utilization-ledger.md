@@ -2,8 +2,8 @@
 
 ## Run A: Codex 5.3 xhigh (Observed)
 Source:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/codex-5-3-xhigh-run.log`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/codex-5-3-xhigh-last-message.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__generic-memory-filename-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_13-48__spec-generic-memory-filename-fix-in-stateless-mode.md`
 
 Observed orchestration:
 - Hard cap detected: 6 total sub-agent threads
@@ -16,7 +16,8 @@ Observed orchestration:
 
 ## Run B: Gemini 3.1 Pro Preview (Reported)
 Source:
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/prompts/run-outputs/gemini-3-1-pro-preview-run.log`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_14-56__spec-memory-search-state-filter-fix.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/memory/05-03-26_15-17__spec-memory-search-state-filter-fix.md`
 
 Reported orchestration in output:
 - 1 coordinator + 14 workers

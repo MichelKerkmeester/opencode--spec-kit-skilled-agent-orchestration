@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/27-02-26_19-03__sprint-1-3-impl-27-agents]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/27-02-26_19-03__sprint-1-3-impl-27-agents]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 27-02-26
+# hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772215381742-emmpfm0k9 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,13 +131,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -181,7 +181,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `rsf` | `sprint` | `wave` | `kendall tau` | `confidence truncation` | `query router` | `hybrid` | `rag` | `fusion` | `system spec kit/140 hybrid rag fusion refinement` | `kendall` | `tau` | 
+**Key Topics:** `rsf` | `sprint` | `wave` | `kendall tau` | `confidence truncation` | `query router` | `hybrid` | `rag` | `fusion` | `system spec kit/022 hybrid rag fusion` | `kendall` | `tau` | 
 
 ---
 
@@ -493,9 +493,9 @@ Completed the full 8-wave, 27-agent Hybrid RAG Fusion pipeline implementation ac
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -507,16 +507,16 @@ Completed the full 8-wave, 27-agent Hybrid RAG Fusion pipeline implementation ac
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -589,7 +589,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772215381742-emmpfm0k9"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -666,13 +666,13 @@ key_topics:
   - "hybrid"
   - "rag"
   - "fusion"
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "kendall"
   - "tau"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "single pair"
   - "cross variant"
   - "off ramp"
@@ -723,7 +723,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

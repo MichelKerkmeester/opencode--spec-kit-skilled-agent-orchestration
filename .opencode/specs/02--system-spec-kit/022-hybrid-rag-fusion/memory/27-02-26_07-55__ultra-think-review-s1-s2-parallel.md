@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 27-02-26
+# hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772175347279-faax4c88o |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../140-hybrid-rag-fusion-refinement/spec.md, .opencode/.../140-hybrid-rag-fusion-refinement/plan.md, .opencode/.../140-hybrid-rag-fusion-refinement/tasks.md
+- Files modified: .opencode/.../022-hybrid-rag-fusion/spec.md, .opencode/.../022-hybrid-rag-fusion/plan.md, .opencode/.../022-hybrid-rag-fusion/tasks.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../140-hybrid-rag-fusion-refinement/spec.md |
+| Active File | .opencode/.../022-hybrid-rag-fusion/spec.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -198,13 +198,13 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/spec.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/plan.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/tasks.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/checklist.md` - Documentation
 
 - `.opencode/.../001-sprint-0-epistemological-foundation/spec.md` - Documentation
 
@@ -249,16 +249,16 @@ Conducted comprehensive 3-agent ultra-think review of the Hybrid RAG Fusion Refi
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` | File modified (description pending) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` | File modified (description pending) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` | File modified (description pending) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` | File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/spec.md` | File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/plan.md` | File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/checklist.md` | File modified (description pending) |
 | `.opencode/.../001-sprint-0-epistemological-foundation/spec.md` | File modified (description pending) |
 | `.opencode/.../001-sprint-0-epistemological-foundation/plan.md` | File modified (description pending) |
 | `.opencode/.../001-sprint-0-epistemological-foundation/tasks.md` | File modified (description pending) |
 | `.opencode/.../001-sprint-0-epistemological-foundation/checklist.md` | File modified (description pending) |
-| `.opencode/.../002-sprint-1-graph-signal-activation/spec.md` | File modified (description pending) |
-| `.opencode/.../002-sprint-1-graph-signal-activation/plan.md` | File modified (description pending) |
+| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | File modified (description pending) |
+| `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` | File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -574,9 +574,9 @@ Conducted comprehensive 3-agent ultra-think review of the Hybrid RAG Fusion Refi
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -588,16 +588,16 @@ Conducted comprehensive 3-agent ultra-think review of the Hybrid RAG Fusion Refi
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -670,7 +670,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772175347279-faax4c88o"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -753,7 +753,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "ultra think"
   - "sub 1k"
   - "s1 s2"
@@ -788,23 +788,23 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/spec.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/plan.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/tasks.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/checklist.md"
+  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
+  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
+  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
+  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
   - ".opencode/.../001-sprint-0-epistemological-foundation/spec.md"
   - ".opencode/.../001-sprint-0-epistemological-foundation/plan.md"
   - ".opencode/.../001-sprint-0-epistemological-foundation/tasks.md"
   - ".opencode/.../001-sprint-0-epistemological-foundation/checklist.md"
-  - ".opencode/.../002-sprint-1-graph-signal-activation/spec.md"
-  - ".opencode/.../002-sprint-1-graph-signal-activation/plan.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

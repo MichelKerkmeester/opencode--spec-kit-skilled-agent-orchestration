@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug
+/spec_kit:resume ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug
+Spec: ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -162,7 +162,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `system` | `memory` | `skill graph` | `../.opencode/specs/003 system spec kit/139 hybrid rag fusion/005 auto detected session bug` | `skill` | `graph` | `../.opencode/specs/003` | `spec` | `kit/139` | `hybrid` | `rag` | `fusion/005` | 
+**Key Topics:** `system` | `memory` | `skill graph` | `../.opencode/specs/002 system spec kit/139 hybrid rag fusion/002 auto detected session bug` | `skill` | `graph` | `../.opencode/specs/002` | `spec` | `kit/139` | `hybrid` | `rag` | `fusion/002` | 
 
 ---
 
@@ -679,9 +679,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -693,16 +693,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug", limit: 10 })
+memory_search({ specFolder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug", limit: 10 })
 
 # Verify memory file integrity
-ls -la ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug/memory/
+ls -la ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug --force
 ```
 
 ### Recovery Priority
@@ -775,7 +775,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771750274229-ylzaxpez9"
-spec_folder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug"
+spec_folder: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug"
 channel: "main"
 
 # Classification
@@ -846,7 +846,7 @@ key_topics:
   - "system"
   - "memory"
   - "skill graph"
-  - "../.opencode/specs/003 system spec kit/139 hybrid rag fusion/005 auto detected session bug"
+  - "../.opencode/specs/002 system spec kit/139 hybrid rag fusion/002 auto detected session bug"
   - "skill"
   - "graph"
   - "../.opencode/specs/003"
@@ -858,7 +858,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "../.opencode/specs/003 system spec kit/139 hybrid rag fusion/005 auto detected session bug"
+  - "../.opencode/specs/002 system spec kit/139 hybrid rag fusion/002 auto detected session bug"
   - "session bug"
   - "skill graphs"
   - "in memory"
@@ -913,7 +913,7 @@ related_sessions:
 
   []
 
-parent_spec: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug"
+parent_spec: "../.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-auto-detected-session-bug"
 child_sessions:
 
   []

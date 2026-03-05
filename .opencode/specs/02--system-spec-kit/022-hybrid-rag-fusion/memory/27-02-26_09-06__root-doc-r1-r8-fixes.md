@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/27-02-26_09-06__root-doc-r1-r8-fixes]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/27-02-26_09-06__root-doc-r1-r8-fixes]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 27-02-26
+# hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179603578-n3bew2e06 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../140-hybrid-rag-fusion-refinement/spec.md, .opencode/.../140-hybrid-rag-fusion-refinement/plan.md, .opencode/.../140-hybrid-rag-fusion-refinement/tasks.md
+- Files modified: .opencode/.../022-hybrid-rag-fusion/spec.md, .opencode/.../022-hybrid-rag-fusion/plan.md, .opencode/.../022-hybrid-rag-fusion/tasks.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../140-hybrid-rag-fusion-refinement/spec.md |
+| Active File | .opencode/.../022-hybrid-rag-fusion/spec.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | md (R2), updating stale checklist frontmatter count from ~147 to ~127 (R3), adding INCONCLUSIVE gove |
@@ -181,7 +181,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `decision` | `all` | `because` | `spec` | `chk` | `system spec kit/140 hybrid rag fusion refinement` | `tasks` | `checklist` | `effort` | `system` | `kit/140` | `hybrid` | 
+**Key Topics:** `decision` | `all` | `because` | `spec` | `chk` | `system spec kit/022 hybrid rag fusion` | `tasks` | `checklist` | `effort` | `system` | `kit/140` | `hybrid` | 
 
 ---
 
@@ -198,13 +198,13 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/spec.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/plan.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/tasks.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/checklist.md` - Documentation
 
 **How to Extend**:
 
@@ -240,10 +240,10 @@ Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 14
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` | Resolving recommendation count narrative ambiguity (R1) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` | Resolving recommendation count narrative ambiguity (R1) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` | (R2), updating stale checklist frontmatter count from ~14... |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` | Resolving recommendation count narrative ambiguity (R1) |
+| `.opencode/.../022-hybrid-rag-fusion/spec.md` | Resolving recommendation count narrative ambiguity (R1) |
+| `.opencode/.../022-hybrid-rag-fusion/plan.md` | Resolving recommendation count narrative ambiguity (R1) |
+| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | (R2), updating stale checklist frontmatter count from ~14... |
+| `.opencode/.../022-hybrid-rag-fusion/checklist.md` | Resolving recommendation count narrative ambiguity (R1) |
 
 <!-- /ANCHOR:summary -->
 
@@ -479,9 +479,9 @@ Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 14
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -493,16 +493,16 @@ Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 14
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -575,7 +575,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179603578-n3bew2e06"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -648,7 +648,7 @@ key_topics:
   - "because"
   - "spec"
   - "chk"
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "tasks"
   - "checklist"
   - "effort"
@@ -658,7 +658,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "replace all"
   - "r1 r8"
   - "ultra think"
@@ -693,17 +693,17 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/spec.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/plan.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/tasks.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/checklist.md"
+  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
+  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
+  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
+  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

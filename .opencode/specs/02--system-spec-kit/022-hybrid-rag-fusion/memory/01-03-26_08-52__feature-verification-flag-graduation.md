@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/01-03-26_08-52__feature-verification-flag-graduation]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/01-03-26_08-52__feature-verification-flag-graduation]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 01-03-26
+# hybrid rag fusion session 01-03-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-01 |
 | Session ID | session-1772351564620-b9s50jp72 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -131,13 +131,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -214,7 +214,7 @@ Next: Continue implementation
 
 - `.opencode/.../config/environment_variables.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/summary_of_new_features.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/summary_of_new_features.md` - Documentation
 
 **How to Extend**:
 
@@ -257,7 +257,7 @@ Executed full feature verification and remediation plan for Hybrid RAG Fusion Re
 | `.opencode/.../search/(merged-small-files)` | PI-B1 merged 4 small files (learned-feedback.ts, rrf-fusion.ts, channel-representation.ts, bm25-index.ts). learned-feedback.ts: Updated learned feedback | rrf-fusion.ts: Categories |
 | `.opencode/.../extraction/(merged-small-files)` | PI-B1 merged 1 small files (extraction-adapter.ts). extraction-adapter.ts: Graduated-ON normalization producing [0 |
 | `.opencode/.../config/(merged-small-files)` | PI-B1 merged 1 small files (environment_variables.md). environment_variables.md: Section 8 with categories |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/(merged-small-files)` | PI-B1 merged 1 small files (summary_of_new_features.md). summary_of_new_features.md: File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/(merged-small-files)` | PI-B1 merged 1 small files (summary_of_new_features.md). summary_of_new_features.md: File modified (description pending) |
 | `.opencode/.../tests/(merged-small-files)` | PI-B1 merged 2 small files (learned-feedback.vitest.ts, score-normalization.vitest.ts). learned-feedback.vitest.ts: File modified (description pending) | score-normalization.vitest.ts: File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
@@ -521,9 +521,9 @@ Executed full feature verification and remediation plan for Hybrid RAG Fusion Re
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -535,16 +535,16 @@ Executed full feature verification and remediation plan for Hybrid RAG Fusion Re
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -617,7 +617,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772351564620-b9s50jp72"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -700,7 +700,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "decay per hop"
   - "boost factor"
   - "shadow period ms"
@@ -739,7 +739,7 @@ key_files:
   - ".opencode/.../search/(merged-small-files)"
   - ".opencode/.../extraction/(merged-small-files)"
   - ".opencode/.../config/(merged-small-files)"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/(merged-small-files)"
+  - ".opencode/.../022-hybrid-rag-fusion/(merged-small-files)"
   - ".opencode/.../tests/(merged-small-files)"
 
 # Relationships
@@ -747,7 +747,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

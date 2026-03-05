@@ -137,7 +137,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../001-system-speckit-hybrid-rag-fusion/implementation-summary.md, .opencode/.../002-skill-graph-integration/implementation-summary.md, .opencode/.../003-unified-graph-intelligence/implementation-summary.md
+- Files modified: .opencode/.../001-system-speckit-hybrid-rag-fusion/implementation-summary.md, .opencode/.../002-skill-graph-integration/implementation-summary.md, .opencode/.../002-unified-graph-intelligence/implementation-summary.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -199,7 +199,7 @@ Next: Continue implementation
 
 - `.opencode/.../002-skill-graph-integration/implementation-summary.md` - Documentation
 
-- `.opencode/.../003-unified-graph-intelligence/implementation-summary.md` - Documentation
+- `.opencode/.../002-unified-graph-intelligence/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -245,7 +245,7 @@ Created detailed Level 3+ implementation summaries for all three workstream subf
 |:---------|:----------------|
 | `.opencode/.../001-system-speckit-hybrid-rag-fusion/implementation-summary.md` | ANCHOR tags |
 | `.opencode/.../002-skill-graph-integration/implementation-summary.md` | ANCHOR tags |
-| `.opencode/.../003-unified-graph-intelligence/implementation-summary.md` | ANCHOR tags |
+| `.opencode/.../002-unified-graph-intelligence/implementation-summary.md` | ANCHOR tags |
 
 <!-- /ANCHOR:summary -->
 
@@ -1661,7 +1661,7 @@ trigger_phrases:
 key_files:
   - ".opencode/.../001-system-speckit-hybrid-rag-fusion/implementation-summary.md"
   - ".opencode/.../002-skill-graph-integration/implementation-summary.md"
-  - ".opencode/.../003-unified-graph-intelligence/implementation-summary.md"
+  - ".opencode/.../002-unified-graph-intelligence/implementation-summary.md"
 
 # Relationships
 related_sessions:

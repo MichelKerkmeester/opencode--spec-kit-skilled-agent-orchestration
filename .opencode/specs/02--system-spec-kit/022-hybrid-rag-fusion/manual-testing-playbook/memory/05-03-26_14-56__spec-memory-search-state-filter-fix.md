@@ -1,5 +1,5 @@
 ---
-title: "Spec: Memory Search State [031-memory-search-state-filter-fix/05-03-26_14-56__spec-memory-search-state-filter-fix]"
+title: "Spec: Memory Search State [013-memory-search-bug-fixes/05-03-26_14-56__spec-memory-search-state-filter-fix]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-05 |
 | Session ID | session-1772718976960-owr2i79ge |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -667,9 +667,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -681,16 +681,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes --force
 ```
 
 ### Recovery Priority
@@ -763,7 +763,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772718976960-owr2i79ge"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes"
 channel: "main"
 
 # Classification
@@ -898,7 +898,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes"
 child_sessions:
 
   []

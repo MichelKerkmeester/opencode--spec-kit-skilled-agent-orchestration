@@ -1,5 +1,5 @@
 ---
-title: "sprint 2 scoring calibration session [003-sprint-2-scoring-calibration/27-02-26_09-07__sprint-2-scoring-review-21-edits]"
+title: "sprint 2 scoring calibration session [006-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-2-scoring-review-21-edits]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772179671925-vwkivnlni |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8 |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../003-sprint-2-scoring-calibration/spec.md, .opencode/.../003-sprint-2-scoring-calibration/tasks.md, .opencode/.../003-sprint-2-scoring-calibration/plan.md
+- Files modified: .opencode/.../006-core-rag-sprints-0-to-8/spec.md, .opencode/.../006-core-rag-sprints-0-to-8/tasks.md, .opencode/.../006-core-rag-sprints-0-to-8/plan.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../003-sprint-2-scoring-calibration/spec.md |
+| Active File | .opencode/.../006-core-rag-sprints-0-to-8/spec.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | 08) as initial calibration values subject to empirical tuning; added FUT-S2-001 for post-eval valida |
@@ -198,13 +198,13 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../003-sprint-2-scoring-calibration/spec.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` - Documentation
 
-- `.opencode/.../003-sprint-2-scoring-calibration/tasks.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` - Documentation
 
-- `.opencode/.../003-sprint-2-scoring-calibration/plan.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` - Documentation
 
-- `.opencode/.../003-sprint-2-scoring-calibration/checklist.md` - Documentation
+- `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` - Documentation
 
 **How to Extend**:
 
@@ -242,10 +242,10 @@ Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, 
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../003-sprint-2-scoring-calibration/spec.md` | Updated spec |
-| `.opencode/.../003-sprint-2-scoring-calibration/tasks.md` | Updated tasks |
-| `.opencode/.../003-sprint-2-scoring-calibration/plan.md` | Updated plan |
-| `.opencode/.../003-sprint-2-scoring-calibration/checklist.md` | Updated checklist |
+| `.opencode/.../006-core-rag-sprints-0-to-8/spec.md` | Updated spec |
+| `.opencode/.../006-core-rag-sprints-0-to-8/tasks.md` | Updated tasks |
+| `.opencode/.../006-core-rag-sprints-0-to-8/plan.md` | Updated plan |
+| `.opencode/.../006-core-rag-sprints-0-to-8/checklist.md` | Updated checklist |
 
 <!-- /ANCHOR:summary -->
 
@@ -480,9 +480,9 @@ Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, 
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -494,16 +494,16 @@ Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8 --force
 ```
 
 ### Recovery Priority
@@ -576,7 +576,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179671925-vwkivnlni"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8"
 channel: "main"
 
 # Classification
@@ -659,7 +659,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement/003 sprint 2 scoring calibration"
+  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
   - "documentation only"
   - "rec s2 01"
   - "rec s2 07"
@@ -697,17 +697,17 @@ trigger_phrases:
   - "calibration"
 
 key_files:
-  - ".opencode/.../003-sprint-2-scoring-calibration/spec.md"
-  - ".opencode/.../003-sprint-2-scoring-calibration/tasks.md"
-  - ".opencode/.../003-sprint-2-scoring-calibration/plan.md"
-  - ".opencode/.../003-sprint-2-scoring-calibration/checklist.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/spec.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/tasks.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/plan.md"
+  - ".opencode/.../006-core-rag-sprints-0-to-8/checklist.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/003-sprint-2-scoring-calibration"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8"
 child_sessions:
 
   []

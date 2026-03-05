@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [140-hybrid-rag-fusion-refinement/27-02-26_14-35__22-agent-audit-34-tier-fixes]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/27-02-26_14-35__22-agent-audit-34-tier-fixes]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 27-02-26
+# hybrid rag fusion session 27-02-26
 
 ## SESSION SUMMARY
 
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-27 |
 | Session ID | session-1772199322093-y5b7y3pwg |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../140-hybrid-rag-fusion-refinement/spec.md, .opencode/.../140-hybrid-rag-fusion-refinement/tasks.md, .opencode/.../140-hybrid-rag-fusion-refinement/plan.md
+- Files modified: .opencode/.../022-hybrid-rag-fusion/spec.md, .opencode/.../022-hybrid-rag-fusion/tasks.md, .opencode/.../022-hybrid-rag-fusion/plan.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../140-hybrid-rag-fusion-refinement/spec.md |
+| Active File | .opencode/.../022-hybrid-rag-fusion/spec.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -198,17 +198,17 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/spec.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/tasks.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/plan.md` - Documentation
 
-- `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` - Documentation
+- `.opencode/.../022-hybrid-rag-fusion/checklist.md` - Documentation
 
-- `.opencode/.../005-sprint-4-feedback-and-quality/spec.md` - Documentation
+- `.opencode/.../002-sprint-4-feedback-and-quality/spec.md` - Documentation
 
-- `.opencode/.../005-sprint-4-feedback-and-quality/tasks.md` - Documentation
+- `.opencode/.../002-sprint-4-feedback-and-quality/tasks.md` - Documentation
 
 - `.opencode/.../search/bm25-index.ts` - Entry point / exports
 
@@ -241,7 +241,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 005/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
+Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 002/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
 
 **Key Outcomes**:
 - Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec...
@@ -257,12 +257,12 @@ Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RA
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../140-hybrid-rag-fusion-refinement/spec.md` | File modified (description pending) |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/tasks.md` | Updated tasks |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/plan.md` | (gate evaluation protocol |
-| `.opencode/.../140-hybrid-rag-fusion-refinement/checklist.md` | (6 DIP items + 2 cross-refs |
-| `.opencode/.../005-sprint-4-feedback-and-quality/spec.md` | File modified (description pending) |
-| `.opencode/.../005-sprint-4-feedback-and-quality/tasks.md` | Updated tasks |
+| `.opencode/.../022-hybrid-rag-fusion/spec.md` | File modified (description pending) |
+| `.opencode/.../022-hybrid-rag-fusion/tasks.md` | Updated tasks |
+| `.opencode/.../022-hybrid-rag-fusion/plan.md` | (gate evaluation protocol |
+| `.opencode/.../022-hybrid-rag-fusion/checklist.md` | (6 DIP items + 2 cross-refs |
+| `.opencode/.../002-sprint-4-feedback-and-quality/spec.md` | File modified (description pending) |
+| `.opencode/.../002-sprint-4-feedback-and-quality/tasks.md` | Updated tasks |
 | `.opencode/.../search/bm25-index.ts` | Updated bm25 index |
 | `.opencode/.../handlers/memory-save.ts` | TypeScript compiles clean |
 | `.opencode/.../handlers/memory-crud-health.ts` | TypeScript compiles clean |
@@ -280,7 +280,7 @@ Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RA
 <!-- ANCHOR:integration-executed-remaining-tier-abc-a0f7983c -->
 ### FEATURE: Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec...
 
-Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 005/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
+Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 002/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
 
 **Details:** hybrid rag fusion refinement | tier A B C fixes | B8 signal ceiling | R11 safeguards unified | FTS5 sanitization length guard | per-spec-folder mutex save pipeline | FTS5 row count health check | SQLite version startup check | API compatibility contract | gate metric evaluation protocol | dangerous interaction pairs DIP | save pipeline embedding fallback | PI-B3 LLM dependency fallback | REQ-062 R5 eval assignment | interference_score rollback handling
 <!-- /ANCHOR:integration-executed-remaining-tier-abc-a0f7983c -->
@@ -509,7 +509,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-02-27 @ 14:35:22
 
-Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 005/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
+Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling 12→15 with 14-signal inventory, R11 safeguard #11, API compatibility contract, save pipeline embedding fallback, FTS5 consistency check, PI-B3 LLM fallback, REQ-062 assignment, MR13/MR14 risks, effort annotations, NFR methodology, glossary, phase-sprint mapping, B8 escape clause, signal tracking, lifecycle column, risk ownership). Agent 2 made 8 edits to root tasks.md (T027 safeguards 7→10, 4 child-only tasks T-IP-S4/T-IP-S6/T-PI-S6/T-S6-SPIKE, T032 workstream tag, T000g/T004a sprint 0 tasks, T-DOC-OPS cross-cutting task, T004 foreign keys pragma, effort standardization). Agent 3 made 4 edits to plan.md (gate evaluation protocol, S2 rollback interference_score handling, latency baseline reference). Agent 4 made 4 edits to checklist.md (6 DIP items + 2 cross-refs, CHK-FTS5-SYNC, duplicate ID fixes, count updates to 201 total). Agent 5 made 5 code+spec edits (bm25-index.ts 2000-char guard + NEAR/N stripping, memory-save.ts per-spec-folder mutex, memory-crud-health.ts FTS5 row count check, startup-checks.ts SQLite 3.35.0+ check, child 002/spec.md safeguards 7→10). All verification passed: TypeScript compiles clean, 156 test files / 4606 tests all green, no residual '7 safeguards' or 'Maximum 12 active' in spec docs.
 
 ---
 
@@ -528,9 +528,9 @@ Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RA
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -542,16 +542,16 @@ Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RA
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion --force
 ```
 
 ### Recovery Priority
@@ -624,7 +624,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772199322093-y5b7y3pwg"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
@@ -707,7 +707,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "pi b3"
   - "req 062"
   - "phase sprint"
@@ -742,12 +742,12 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/spec.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/tasks.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/plan.md"
-  - ".opencode/.../140-hybrid-rag-fusion-refinement/checklist.md"
-  - ".opencode/.../005-sprint-4-feedback-and-quality/spec.md"
-  - ".opencode/.../005-sprint-4-feedback-and-quality/tasks.md"
+  - ".opencode/.../022-hybrid-rag-fusion/spec.md"
+  - ".opencode/.../022-hybrid-rag-fusion/tasks.md"
+  - ".opencode/.../022-hybrid-rag-fusion/plan.md"
+  - ".opencode/.../022-hybrid-rag-fusion/checklist.md"
+  - ".opencode/.../002-sprint-4-feedback-and-quality/spec.md"
+  - ".opencode/.../002-sprint-4-feedback-and-quality/tasks.md"
   - ".opencode/.../search/bm25-index.ts"
   - ".opencode/.../handlers/memory-save.ts"
   - ".opencode/.../handlers/memory-crud-health.ts"
@@ -758,7 +758,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:
 
   []

@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/02-03-26_19-40__gemini-codex-review-14-findings]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/02-03-26_19-40__gemini-codex-review-14-findings]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 02-03-26
+# hybrid rag fusion session 02-03-26
 
 ## SESSION SUMMARY
 
@@ -121,7 +121,7 @@ contextType: "general"
 
 **Decisions:** 5 decisions recorded
 
-**Summary:** Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effo...
+**Summary:** Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effo...
 
 ### Pending Work
 
@@ -144,7 +144,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../018-refinement-phase-7/plan.md, .opencode/.../018-refinement-phase-7/tasks.md, .opencode/.../018-refinement-phase-7/checklist.md
+- Files modified: .opencode/.../010-cross-ai-audit/plan.md, .opencode/.../010-cross-ai-audit/tasks.md, .opencode/.../010-cross-ai-audit/checklist.md
 
 - Last: Technical Implementation Details
 
@@ -159,7 +159,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/.../018-refinement-phase-7/plan.md |
+| Active File | .opencode/.../010-cross-ai-audit/plan.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | Gemini over-estimates process quality; Codex under-estimates when it cannot verify claims in sandbox |
@@ -175,17 +175,17 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini...** - Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini 3.
+- **Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini...** - Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.
 
 - **Technical Implementation Details** - rootCause: Original multi-agent audit (8 agents, 4 waves) missed several correctness and consistency issues that fresh-perspective cross-AI review caught — particularly around test trustworthiness and ranking pipeline ordering semantics; solution: Added 14 new findings as Tier 4 to plan.
 
 **Key Files and Their Roles**:
 
-- `.opencode/.../018-refinement-phase-7/plan.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/plan.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/tasks.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/tasks.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/checklist.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/checklist.md` - Documentation
 
 **How to Extend**:
 
@@ -208,10 +208,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
+Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
 
 **Key Outcomes**:
-- Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini...
+- Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini...
 - Decision: Used both Gemini 3.
 - Decision: Added findings as Tier 4 (not merged into Tiers 1-3) because Tiers 1-3
 - Decision: Used CR- prefix (Cross-Review) for all new finding IDs to distinguish
@@ -223,7 +223,7 @@ Delegated comprehensive review of 018-refinement-phase-7 to two independent AI r
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/.../018-refinement-phase-7/(merged-small-files)` | Tree-thinning merged 3 small files (plan.md, tasks.md, checklist.md). plan.md: (added Tier 4 with Steps 17-30) | tasks.md: + findings registry entries) |
+| `.opencode/.../010-cross-ai-audit/(merged-small-files)` | Tree-thinning merged 3 small files (plan.md, tasks.md, checklist.md). plan.md: (added Tier 4 with Steps 17-30) | tasks.md: + findings registry entries) |
 
 <!-- /ANCHOR:summary -->
 
@@ -235,9 +235,9 @@ Delegated comprehensive review of 018-refinement-phase-7 to two independent AI r
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-delegated-comprehensive-review-018refinementphase7-b6f85b26 -->
-### FEATURE: Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini...
+### FEATURE: Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini...
 
-Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
+Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
 
 **Details:** cross-AI review | Gemini Codex validation | 018 refinement phase 7 | test suite false pass | ranking correctness | dedup canonical identity | session dedup undefined ID | cache availability regression | transaction boundary leak | cross-document contradictions | Tier 4 findings | CR-P0 CR-P1 CR-P2
 <!-- /ANCHOR:implementation-delegated-comprehensive-review-018refinementphase7-b6f85b26 -->
@@ -440,7 +440,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-02 @ 19:40:10
 
-Delegated comprehensive review of 018-refinement-phase-7 to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
+Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effort; Codex was skeptical of completion claims and found correctness gaps. Consolidated 14 new findings (1 P0, 8 P1, 5 P2) including: test suite false-pass risk (P0), top-K ranking correctness, dedup canonical identity, session dedup undefined-ID collapse, cache availability regression, transaction boundary leaks, cross-document contradictions, and config compatibility mismatch. Updated plan.md (added Tier 4 with Steps 17-30), tasks.md (added 14 CR-prefixed tasks + findings registry entries), and checklist.md (added Tier 4 verification section with cross-AI comparison table). All items are unchecked and ready for a future agent to remediate.
 
 ---
 
@@ -638,7 +638,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "refinement phase 7"
   - "false pass"
   - "top k"
@@ -673,7 +673,7 @@ trigger_phrases:
   - "refinement"
 
 key_files:
-  - ".opencode/.../018-refinement-phase-7/(merged-small-files)"
+  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:

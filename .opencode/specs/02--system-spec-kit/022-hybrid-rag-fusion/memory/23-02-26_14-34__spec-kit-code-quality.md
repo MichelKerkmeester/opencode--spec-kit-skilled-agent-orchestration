@@ -136,13 +136,13 @@ contextType: "implementation"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Phase Complete
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards
 Status: All 28 tasks complete, all verification gates green
 Next: Program closure review for 139-hybrid-rag-fusion
 ```
@@ -450,9 +450,9 @@ Phase 008 code-quality fixes: repaired touched-files manifest generation, aligne
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -464,16 +464,16 @@ Phase 008 code-quality fixes: repaired touched-files manifest generation, aligne
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards --force
 ```
 
 ### Recovery Priority
@@ -549,7 +549,7 @@ Productive quality-hardening session. All 28 tasks completed. Baseline-first seq
 ```yaml
 # Core Identifiers
 session_id: "session-1771853666863-3qz1ijn5d"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards"
 channel: "main"
 
 # Classification
@@ -674,7 +674,7 @@ key_files:
   - ".opencode/skill/system-spec-kit/scripts/tests/test-validation-extended.sh"
   - ".opencode/skill/system-spec-kit/scripts/wrap-all-templates.ts"
   - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-checkpoints.vitest.ts"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/touched-files-all-paths.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards/scratch/touched-files-all-paths.md"
   - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts"
   - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts"
   - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-alias.ts"
@@ -687,7 +687,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/004-speckit-quality-and-standards"
 child_sessions:
 
   []

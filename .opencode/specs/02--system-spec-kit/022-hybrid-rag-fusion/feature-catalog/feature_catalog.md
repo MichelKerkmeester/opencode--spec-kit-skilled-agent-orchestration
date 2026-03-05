@@ -129,20 +129,20 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Dead code removal](#dead-code-removal)
   - [Performance improvements](#performance-improvements)
   - [Test quality improvements](#test-quality-improvements)
-- [Gemini review P1 fixes (Phase 015)](#gemini-review-p1-fixes-phase-015)
+- [Gemini review P1 fixes (Phase 015 -> 009-post-review-remediation-epic)](#gemini-review-p1-fixes-phase-015)
   - [Quality gate timer persistence](#quality-gate-timer-persistence)
   - [Stage 3 effectiveScore fallback chain](#stage-3-effectivescore-fallback-chain)
-- [Alignment remediation (Phase 016)](#alignment-remediation-phase-016)
+- [Alignment remediation (Phase 016 -> 009-post-review-remediation-epic)](#alignment-remediation-phase-016)
   - [Canonical ID dedup hardening](#canonical-id-dedup-hardening)
   - [Activation window persistence](#activation-window-persistence)
   - [Tier-2 fallback channel forcing](#tier-2-fallback-channel-forcing)
-- [Opus review remediation (Phase 017)](#opus-review-remediation-phase-017)
+- [Opus review remediation (Phase 017 -> 009-post-review-remediation-epic)](#opus-review-remediation-phase-017)
   - [Legacy V1 pipeline removal](#legacy-v1-pipeline-removal)
   - [Scoring and fusion corrections](#scoring-and-fusion-corrections)
   - [Pipeline and mutation hardening](#pipeline-and-mutation-hardening)
   - [Graph and cognitive memory fixes](#graph-and-cognitive-memory-fixes)
   - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
-- [Multi-agent deep review remediation (Phase 018)](#multi-agent-deep-review-remediation-phase-018)
+- [Multi-agent deep review remediation (Phase 018 -> 010-cross-ai-audit)](#multi-agent-deep-review-remediation-phase-018)
   - [Math.max/min stack overflow elimination](#mathmaxmin-stack-overflow-elimination)
   - [Session-manager transaction gap fixes](#session-manager-transaction-gap-fixes)
   - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
@@ -150,7 +150,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [DB_PATH extraction and import standardization](#db_path-extraction-and-import-standardization)
   - [Cross-AI validation fixes](#cross-ai-validation-fixes)
   - [Code standards alignment](#code-standards-alignment)
-- [Extra features (Sprint 019)](#extra-features-sprint-019)
+- [Extra features (Sprint 019 -> 011-extra-features)](#extra-features-sprint-019)
   - [Strict Zod schema validation](#strict-zod-schema-validation)
   - [Provenance-rich response envelopes](#provenance-rich-response-envelopes)
   - [Async ingestion job lifecycle](#async-ingestion-job-lifecycle)
@@ -1122,7 +1122,9 @@ Four test quality issues were addressed:
 
 ## Gemini review P1 fixes (Phase 015)
 
-Two P1 issues from a Gemini code review (scores 88/100 and 85/100, both Conditional Pass) were resolved. Spec folder: `015-gemini-review-p1-fixes`. Test count after: 7,081/7,081.
+Current mapping: legacy Phase 015 content is tracked under sub-phase `009-post-review-remediation-epic`.
+
+Two P1 issues from a Gemini code review (scores 88/100 and 85/100, both Conditional Pass) were resolved. Spec folder: `009-post-review-remediation-epic`. Test count after: 7,081/7,081.
 
 ### Quality gate timer persistence
 
@@ -1136,7 +1138,9 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 
 ## Alignment remediation (Phase 016)
 
-Nine remediation targets across four tranches. Spec folder: `016-alignment-remediation`. Test count after: 7,081/7,081 (176 targeted tests passing across 3 files).
+Current mapping: legacy Phase 016 content is tracked under sub-phase `009-post-review-remediation-epic`.
+
+Nine remediation targets across four tranches. Spec folder: `009-post-review-remediation-epic`. Test count after: 7,081/7,081 (176 targeted tests passing across 3 files).
 
 ### Canonical ID dedup hardening
 
@@ -1154,7 +1158,9 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 
 ## Opus review remediation (Phase 017)
 
-A 10-agent comprehensive Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Spec folder: `026-opus-remediation` (Level 3). Test count after: 7,085/7,085.
+Current mapping: legacy Phase 017 content is tracked under sub-phase `009-post-review-remediation-epic`.
+
+A 10-agent comprehensive Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Spec folder: `009-post-review-remediation-epic` (Level 3). Test count after: 7,085/7,085.
 
 ### Legacy V1 pipeline removal
 
@@ -1219,7 +1225,9 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 ## Multi-agent deep review remediation (Phase 018)
 
-An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Spec folder: `027-cross-ai-audit` (Level 3). Test count after: 7,085/7,085 (230 files).
+Current mapping: legacy Phase 018 content is tracked under sub-phase `010-cross-ai-audit`.
+
+An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Spec folder: `010-cross-ai-audit` (Level 3). Test count after: 7,085/7,085 (230 files).
 
 ### Math.max/min stack overflow elimination
 
@@ -1275,7 +1283,9 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 ## Extra features (Sprint 019)
 
-A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete; 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `028-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
+Current mapping: legacy Sprint 019 content is tracked under sub-phase `011-extra-features`.
+
+A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete; 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `011-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
 
 ### Strict Zod schema validation
 
@@ -1297,7 +1307,7 @@ A dedicated background job queue in `lib/ops/job-queue.ts` manages ingestion tas
 
 ### Contextual tree injection
 
-**IMPLEMENTED (Sprint 019).** *(Overlap note: builds on PI-B3 spec folder description discovery, which provides cached one-sentence descriptions used for routing in `memory_context`.)* Retrieved memory chunks gain hierarchical context headers so the calling agent immediately understands the structural origin of each result without additional round-trips to `memory_list`.
+**IMPLEMENTED (Sprint 004).** *(Overlap note: builds on PI-B3 spec folder description discovery, which provides cached one-sentence descriptions used for routing in `memory_context`.)* Retrieved memory chunks gain hierarchical context headers so the calling agent immediately understands the structural origin of each result without additional round-trips to `memory_list`.
 
 Headers follow the format `[parent > child — description]`, capped at 100 characters to conserve context windows. The injection uses the existing PI-B3 cached descriptions via `injectContextualTree()` in `hybrid-search.ts`, inserted in Stage 4 output after token-budget truncation, before the final return. When no spec folder association exists, injection is gracefully skipped. This behavior is governed by the `SPECKIT_CONTEXT_HEADERS` flag (default `true`).
 
@@ -1422,7 +1432,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_EVENT_DECAY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables FSRS-based attention decay in the working memory system. Scores decay each turn via exponential degradation. When disabled, attention scores do not degrade over the session. |
 | `SPECKIT_EXTENDED_TELEMETRY` | inert | boolean | `lib/telemetry/retrieval-telemetry.ts` | **Deprecated.** Sprint 7 audit determined the overhead was not justified. The env var is accepted but has no effect; the function always returns `false`. |
 | `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
-| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication (with hash seeding on `add` events), ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
+| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 004).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication (with hash seeding on `add` events), ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
 | `SPECKIT_FOLDER_SCORING` | `true` | boolean | `lib/search/folder-relevance.ts` | Sprint 1 two-phase folder-relevance scoring. When enabled, re-ranks results by spec folder relevance using a two-phase retrieval strategy. Disabled by setting to `'false'`. |
 | `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
@@ -1442,7 +1452,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_QUALITY_LOOP` | `false` | boolean | `handlers/memory-save.ts` | **Default OFF.** Enables the quality loop which re-evaluates low-quality memories after save. Must be explicitly set to `'true'`. Used for iterative quality improvement workflows. |
 | `SPECKIT_RECONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. After embedding generation, checks top-3 similar memories in the same folder. Above 0.88 similarity triggers merge; 0.75–0.88 triggers supersede + causal edge. Requires a checkpoint to exist for the spec folder. |
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
-| `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 019).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
+| `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 004).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
 | `SPECKIT_RRF` | `true` | boolean | `lib/search/rrf-fusion.ts` | Enables Reciprocal Rank Fusion for combining multi-channel search results. When disabled, a simpler score-passthrough merge is used. Rarely disabled in production. |
 | `SPECKIT_RSF_FUSION` | inert | boolean | `lib/search/hybrid-search.ts` | **Deprecated runtime gate.** RSF shadow Stage B is no longer active in production ranking paths. Remaining RSF references are compatibility/testing artifacts and do not alter live ranking behavior. |

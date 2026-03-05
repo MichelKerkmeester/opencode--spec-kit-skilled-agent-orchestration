@@ -3,7 +3,7 @@
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
 ---
-title: "Spec: Generic Memory [030-generic-memory-filename-fix/05-03-26_13-48__spec-generic-memory-filename-fix-in-stateless-mode]"
+title: "Spec: Generic Memory [013-memory-search-bug-fixes/05-03-26_13-48__spec-generic-memory-filename-fix-in-stateless-mode]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -47,7 +47,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-05 |
 | Session ID | session-1772714896819-amifcc5l6 |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
 Last: Context save initiated
 Next: Continue implementation
 ```
@@ -161,7 +161,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | None |
 
-**Key Topics:** `system spec kit/022 hybrid rag fusion/030 generic memory filename fix` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/030` | `generic` | `memory` | `filename` | `fix` | `focused implementing` | 
+**Key Topics:** `system spec kit/022 hybrid rag fusion/013 generic memory filename fix` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/013` | `generic` | `memory` | `filename` | `fix` | `focused implementing` | 
 
 ---
 
@@ -252,9 +252,9 @@ No conversation messages were captured. This may indicate an issue with data col
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -266,16 +266,16 @@ No conversation messages were captured. This may indicate an issue with data col
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes --force
 ```
 
 ### Recovery Priority
@@ -348,7 +348,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772714896819-amifcc5l6"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes"
 channel: "main"
 
 # Classification
@@ -416,7 +416,7 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
-  - "system spec kit/022 hybrid rag fusion/030 generic memory filename fix"
+  - "system spec kit/022 hybrid rag fusion/013 generic memory filename fix"
   - "system"
   - "spec"
   - "kit/022"
@@ -431,7 +431,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/030 generic memory filename fix"
+  - " system spec kit/022 hybrid rag fusion/013 generic memory filename fix"
   - "session focused implementing testing"
   - "focused implementing testing features"
   - "system spec kit/022 hybrid"
@@ -460,7 +460,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes"
 child_sessions:
 
   []

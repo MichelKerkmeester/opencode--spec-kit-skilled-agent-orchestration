@@ -37,7 +37,7 @@ Release is `READY` only when:
 Otherwise release is `NOT READY`.
 
 Deterministic coverage check (run from repository root):
-- `TOTAL_FEATURES=$(rg -n '^\| (EX|NEW)-[0-9]{3} \|' specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md | wc -l | tr -d ' ')`
+- `TOTAL_FEATURES=$(rg -n '^\| (EX|NEW)-[0-9]{3} \|' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md | wc -l | tr -d ' ')`
 - Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
 
 ## Memory/Spec-Kit Mandatory Flows

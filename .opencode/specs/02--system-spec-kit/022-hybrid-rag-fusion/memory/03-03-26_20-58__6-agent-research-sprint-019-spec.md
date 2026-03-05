@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/03-03-26_20-58__6-agent-research-sprint-019-spec]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/03-03-26_20-58__6-agent-research-sprint-019-spec]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 03-03-26
+# hybrid rag fusion session 03-03-26
 
 ## SESSION SUMMARY
 
@@ -164,7 +164,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | Decision: Zod strict schemas for all 24 MCP tools — prevents LLM parameter hallucination with action |
 
-**Key Topics:** `decision` | `qmd` | `mcp` | `spec` | `all` | `memory` | `items` | `feature flags` | `memory mcp` | `system` | `hybrid` | `system spec kit/023 hybrid rag fusion refinement` | 
+**Key Topics:** `decision` | `qmd` | `mcp` | `spec` | `all` | `memory` | `items` | `feature flags` | `memory mcp` | `system` | `hybrid` | `system spec kit/022 hybrid rag fusion` | 
 
 ---
 
@@ -252,7 +252,7 @@ Executed a 6-agent cross-AI research delegation (3 Codex gpt-5.3-codex + 3 Gemin
 
 Executed a 6-agent cross-AI research delegation (3 Codex gpt-5.3-codex + 3 Gemini 3.1-pro-preview) analyzing cognee, qmd, and ArtemXTech to extract improvement insights for system-spec-kit Memory MCP. Produced 12 raw research documents, then synthesized them through 3 stages: original 6-agent synthesis (013), Gemini and Codex adjusted reviews (014-015) checking against feature catalog, and a final Opus 4.6 ultra-think definitive synthesis (016). Found ~50% of recommendations already implemented. Compared QMD/recall approach against Memory MCP — concluded no integration needed as Memory MCP surpasses QMD technically. Created Level 3+ spec-kit documentation (spec.md, plan.md, tasks.md, checklist.md, decision-record.md) in 019-sprint-9-extra-features covering all net-new work items. Expanded all docs with precise codebase references (exact file paths, line numbers, current response shapes, PipelineRow fields, 77 feature flags).
 
-**Details:** sprint 9 extra features | cross-AI research delegation | 6-agent synthesis | codex gemini research | productization operational tooling | Zod schema validation MCP | response envelopes provenance | async ingestion job queue | filesystem watching chokidar | GGUF reranker node-llama-cpp | QMD comparison | feature catalog gap analysis | 019 sprint 9 | Level 3+ spec documentation
+**Details:** sprint 9 extra features | cross-AI research delegation | 6-agent synthesis | codex gemini research | productization operational tooling | Zod schema validation MCP | response envelopes provenance | async ingestion job queue | filesystem watching chokidar | GGUF reranker node-llama-cpp | QMD comparison | feature catalog gap analysis | 004 sprint 9 | Level 3+ spec documentation
 <!-- /ANCHOR:implementation-executed-6agent-crossai-delegation-52ee21df -->
 
 <!-- ANCHOR:implementation-technical-implementation-details-cecb02f7 -->
@@ -673,11 +673,11 @@ key_topics:
   - "memory mcp"
   - "system"
   - "hybrid"
-  - "system spec kit/023 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "cross ai"
   - "gpt 5"
   - "pro preview"

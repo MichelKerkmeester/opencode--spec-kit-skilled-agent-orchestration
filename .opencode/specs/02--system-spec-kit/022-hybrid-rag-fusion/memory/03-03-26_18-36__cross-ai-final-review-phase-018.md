@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion refinement session [022-hybrid-rag-fusion/03-03-26_18-36__cross-ai-final-review-phase-018]"
+title: "hybrid rag fusion session [022-hybrid-rag-fusion/03-03-26_18-36__cross-ai-final-review-phase-018]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -35,7 +35,7 @@ contextType: "general"
 
 ---
 
-# hybrid rag fusion refinement session 03-03-26
+# hybrid rag fusion session 03-03-26
 
 ## SESSION SUMMARY
 
@@ -144,7 +144,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/.../scratch/cross-ai-review-session8.md, .opencode/.../018-refinement-phase-7/tasks.md, .opencode/.../018-refinement-phase-7/checklist.md
+- Files modified: .opencode/.../scratch/cross-ai-review-session8.md, .opencode/.../010-cross-ai-audit/tasks.md, .opencode/.../010-cross-ai-audit/checklist.md
 
 - Last: Technical Implementation Details
 
@@ -164,7 +164,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | Cross-model complementary coverage: Codex found tx/concurrency/arch gaps, Gemini found error handlin |
 
-**Key Topics:** `decision` | `gemini` | `all` | `agents` | `gemini agents` | `phase` | `codex` | `items` | `refinement` | `system spec kit/023 hybrid rag fusion refinement` | `not` | `only` | 
+**Key Topics:** `decision` | `gemini` | `all` | `agents` | `gemini agents` | `phase` | `codex` | `items` | `refinement` | `system spec kit/022 hybrid rag fusion` | `not` | `only` | 
 
 ---
 
@@ -183,11 +183,11 @@ Next: Continue implementation
 
 - `.opencode/.../scratch/cross-ai-review-session8.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/tasks.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/tasks.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/checklist.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/checklist.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/implementation-summary.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -231,7 +231,7 @@ Session 8: Cross-AI final review of Phase 018 (Refinement Phase 7) using 8 paral
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/.../scratch/(merged-small-files)` | Tree-thinning merged 1 small files (cross-ai-review-session8.md). cross-ai-review-session8.md: File modified (description pending) |
-| `.opencode/.../018-refinement-phase-7/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). tasks.md: B (2.75/4.0) | checklist.md: Tasks.md checkbox sync (37 items) |
+| `.opencode/.../010-cross-ai-audit/(merged-small-files)` | Tree-thinning merged 3 small files (tasks.md, checklist.md, implementation-summary.md). tasks.md: B (2.75/4.0) | checklist.md: Tasks.md checkbox sync (37 items) |
 
 <!-- /ANCHOR:summary -->
 
@@ -612,13 +612,13 @@ key_topics:
   - "codex"
   - "items"
   - "refinement"
-  - "system spec kit/023 hybrid rag fusion refinement"
+  - "system spec kit/022 hybrid rag fusion"
   - "not"
   - "only"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement"
+  - " system spec kit/022 hybrid rag fusion"
   - "resolve effective score"
   - "cross ai"
   - "gpt 5"
@@ -654,7 +654,7 @@ trigger_phrases:
 
 key_files:
   - ".opencode/.../scratch/(merged-small-files)"
-  - ".opencode/.../018-refinement-phase-7/(merged-small-files)"
+  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:

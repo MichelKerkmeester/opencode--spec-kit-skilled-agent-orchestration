@@ -1,5 +1,5 @@
 ---
-title: "refinement phase 7 session 02-03-26 [018-refinement-phase-7/02-03-26_17-56__8-agent-review-33-findings]"
+title: "refinement phase 7 session 02-03-26 [010-cross-ai-audit/02-03-26_17-56__8-agent-review-33-findings]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-02 |
 | Session ID | session-1772470600498-ek3meqhxu |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7 |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,13 +131,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -181,7 +181,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `decision` | `spec` | `phase` | `gemini` | `review` | `gemini cli` | `cli agents` | `zero critical` | `critical bugs` | `system spec kit/023 hybrid rag fusion refinement/018 refinement phase` | `agents` | `score` | 
+**Key Topics:** `decision` | `spec` | `phase` | `gemini` | `review` | `gemini cli` | `cli agents` | `zero critical` | `critical bugs` | `system spec kit/022 hybrid rag fusion/010 cross ai audit` | `agents` | `score` | 
 
 ---
 
@@ -206,13 +206,13 @@ Next: Continue implementation
 
 - `.opencode/.../scratch/opus-synthesis-audit.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/spec.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/spec.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/plan.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/plan.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/tasks.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/tasks.md` - Documentation
 
-- `.opencode/.../018-refinement-phase-7/checklist.md` - Documentation
+- `.opencode/.../010-cross-ai-audit/checklist.md` - Documentation
 
 **How to Extend**:
 
@@ -251,7 +251,7 @@ Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-pr
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/.../scratch/(merged-small-files)` | Tree-thinning merged 4 small files (master-consolidated-review.md, opus-findings-registry.md, opus-coverage-gaps.md, opus-synthesis-audit.md). master-consolidated-review.md: File modified (description pending) | opus-findings-registry.md: File modified (description pending) |
-| `.opencode/.../018-refinement-phase-7/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md). spec.md: Full detail including code snippets | plan.md: Full detail including code snippets |
+| `.opencode/.../010-cross-ai-audit/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md). spec.md: Full detail including code snippets | plan.md: Full detail including code snippets |
 
 <!-- /ANCHOR:summary -->
 
@@ -540,9 +540,9 @@ Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-pr
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -554,16 +554,16 @@ Executed a comprehensive 8-agent orchestrated review (5 Gemini gemini-3.1-pro-pr
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7 --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit --force
 ```
 
 ### Recovery Priority
@@ -636,7 +636,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772470600498-ek3meqhxu"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit"
 channel: "main"
 
 # Classification
@@ -713,13 +713,13 @@ key_topics:
   - "cli agents"
   - "zero critical"
   - "critical bugs"
-  - "system spec kit/023 hybrid rag fusion refinement/018 refinement phase"
+  - "system spec kit/022 hybrid rag fusion/010 cross ai audit"
   - "agents"
   - "score"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/023 hybrid rag fusion refinement/018 refinement phase 7"
+  - " system spec kit/022 hybrid rag fusion/010 cross ai audit"
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"
@@ -757,14 +757,14 @@ trigger_phrases:
 
 key_files:
   - ".opencode/.../scratch/(merged-small-files)"
-  - ".opencode/.../018-refinement-phase-7/(merged-small-files)"
+  - ".opencode/.../010-cross-ai-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/018-refinement-phase-7"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/010-cross-ai-audit"
 child_sessions:
 
   []

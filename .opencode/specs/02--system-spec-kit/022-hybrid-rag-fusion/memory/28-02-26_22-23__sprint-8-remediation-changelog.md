@@ -1,5 +1,5 @@
 ---
-title: "comprehensive remediation session 28-02-26 [010-comprehensive-remediation/28-02-26_22-23__sprint-8-remediation-changelog]"
+title: "comprehensive remediation session 28-02-26 [006-core-rag-sprints-0-to-8/28-02-26_22-23__sprint-8-remediation-changelog]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-02-28 |
 | Session ID | session-1772313827308-9895faq5y |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8 |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -131,20 +131,20 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: specs/.../140-hybrid-rag-fusion-refinement/summary_of_new_features.md, .opencode/changelog/01--system-spec-kit/v2.3.0.15.md
+- Files modified: specs/.../022-hybrid-rag-fusion/summary_of_new_features.md, .opencode/changelog/01--system-spec-kit/v2.3.0.15.md
 
 - Last: Technical Implementation Details
 
@@ -159,12 +159,12 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | specs/.../140-hybrid-rag-fusion-refinement/summary_of_new_features.md |
+| Active File | specs/.../022-hybrid-rag-fusion/summary_of_new_features.md |
 | Last Action | Technical Implementation Details |
 | Next Action | Continue implementation |
 | Blockers | None |
 
-**Key Topics:** `remediation` | `comprehensive` | `decision` | `sprint` | `feature sections` | `sprint annotations` | `system` | `spec` | `system spec kit/140 hybrid rag fusion refinement/010 comprehensive remediation` | `feature` | `fixes` | `kit/140` | 
+**Key Topics:** `remediation` | `comprehensive` | `decision` | `sprint` | `feature sections` | `sprint annotations` | `system` | `spec` | `system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8` | `feature` | `fixes` | `kit/140` | 
 
 ---
 
@@ -181,7 +181,7 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `specs/.../140-hybrid-rag-fusion-refinement/summary_of_new_features.md` - Documentation
+- `specs/.../022-hybrid-rag-fusion/summary_of_new_features.md` - Documentation
 
 - `.opencode/changelog/01--system-spec-kit/v2.3.0.15.md` - Documentation
 
@@ -215,7 +215,7 @@ Continued comprehensive MCP server remediation session. Updated summary_of_new_f
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `specs/.../140-hybrid-rag-fusion-refinement/(merged-small-files)` | PI-B1 merged 1 small files (summary_of_new_features.md). summary_of_new_features.md: With Sprint 8 annotations across 15+ feature sections ref... |
+| `specs/.../022-hybrid-rag-fusion/(merged-small-files)` | PI-B1 merged 1 small files (summary_of_new_features.md). summary_of_new_features.md: With Sprint 8 annotations across 15+ feature sections ref... |
 | `.opencode/changelog/01--system-spec-kit/(merged-small-files)` | PI-B1 merged 1 small files (v2.3.0.15.md). v2.3.0.15.md: File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
@@ -396,9 +396,9 @@ Continued comprehensive MCP server remediation session. Updated summary_of_new_f
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -410,16 +410,16 @@ Continued comprehensive MCP server remediation session. Updated summary_of_new_f
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8 --force
 ```
 
 ### Recovery Priority
@@ -492,7 +492,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772313827308-9895faq5y"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8"
 channel: "main"
 
 # Classification
@@ -568,14 +568,14 @@ key_topics:
   - "sprint annotations"
   - "system"
   - "spec"
-  - "system spec kit/140 hybrid rag fusion refinement/010 comprehensive remediation"
+  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
   - "feature"
   - "fixes"
   - "kit/140"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/140 hybrid rag fusion refinement/010 comprehensive remediation"
+  - "system spec kit/022 hybrid rag fusion/006 core rag sprints 0 to 8"
   - "bug fixes"
   - "summary of new features"
   - "b1 b4"
@@ -612,7 +612,7 @@ trigger_phrases:
   - "remediation"
 
 key_files:
-  - "specs/.../140-hybrid-rag-fusion-refinement/(merged-small-files)"
+  - "specs/.../022-hybrid-rag-fusion/(merged-small-files)"
   - ".opencode/changelog/01--system-spec-kit/(merged-small-files)"
 
 # Relationships
@@ -620,7 +620,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion-refinement/010-comprehensive-remediation"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/006-core-rag-sprints-0-to-8"
 child_sessions:
 
   []
