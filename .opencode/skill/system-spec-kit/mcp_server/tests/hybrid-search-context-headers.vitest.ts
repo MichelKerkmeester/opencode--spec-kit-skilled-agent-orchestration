@@ -33,12 +33,12 @@ describe('Contextual tree injection', () => {
   it('T064: skips injection when content is null/undefined (includeContent=false mode)', () => {
     const row = {
       id: 2,
-      file_path: '/workspace/.opencode/specs/02--system-spec-kit/023-hybrid-rag-fusion-refinement/019-sprint-9-extra-features/memory/context.md',
+      file_path: '/workspace/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/memory/context.md',
       content: undefined,
     };
 
     const cache = new Map<string, string>([
-      ['023-hybrid-rag-fusion-refinement/019-sprint-9-extra-features', 'Description'],
+      ['022-hybrid-rag-fusion/019-sprint-9-extra-features', 'Description'],
     ]);
 
     const injected = __testables.injectContextualTree(row, cache);

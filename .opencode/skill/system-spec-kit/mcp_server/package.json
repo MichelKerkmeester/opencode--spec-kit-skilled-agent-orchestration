@@ -35,6 +35,7 @@
     "@modelcontextprotocol/sdk": "^1.24.3",
     "better-sqlite3": "^12.6.2",
     "chokidar": "^4.0.3",
+    "onnxruntime-common": "^1.21.0",
     "sqlite-vec": "^0.1.7-alpha.2",
     "zod": "^4.1.12"
   },

@@ -1,7 +1,0 @@
----
-source: libsql-server/src/schema/db.rs
-expression: "register_shared(&meta_store, \"ns\", \"schema\").await.unwrap_err()"
----
-PendingMigrationOnSchema(
-    schema,
-)

@@ -1,0 +1,69 @@
+name: Antithesis experiment
+
+on:
+  # Allows the workflow to be triggered manually
+  workflow_dispatch:
+    inputs:
+      test_name:
+        description: "Name to differentiate this run (optional)"
+        required: false
+        default: ""
+        type: string
+      duration:
+        description: "Duration in minutes (default 4 hours)"
+        required: false
+        default: 240
+        type: number
+  schedule:
+    - cron: "0 0 * * *"
+
+env:
+  ANTITHESIS_PASSWORD: ${{ secrets.ANTITHESIS_PASSWORD }}
+  ANTITHESIS_USER: ${{ secrets.ANTITHESIS_USER }}
+  ANTITHESIS_TENANT: ${{ secrets.ANTITHESIS_TENANT }}
+  ANTITHESIS_PASSWD: ${{ secrets.ANTITHESIS_PASSWD }}
+  ANTITHESIS_DOCKER_HOST: us-central1-docker.pkg.dev
+  ANTITHESIS_DOCKER_REPO: ${{ secrets.ANTITHESIS_DOCKER_REPO }}
+  ANTITHESIS_EMAIL: ${{ secrets.ANTITHESIS_EMAIL }}
+  ANTITHESIS_REGISTRY_KEY: ${{ secrets.ANTITHESIS_REGISTRY_KEY }}
+
+jobs:
+  test:
+    runs-on: blacksmith
+
+    timeout-minutes: 30
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Publish workload
+      run: bash ./scripts/antithesis/publish-workload.sh
+
+    - name: Publish config
+      run: bash ./scripts/antithesis/publish-config.sh
+
+    - name: Launch experiment
+      if: github.event_name == 'schedule'
+      run: bash ./scripts/antithesis/launch.sh
+      env:
+        ANTITHESIS_TRIGGER: ${{ github.event_name }}
+
+    - name: Run Antithesis Tests
+      if: github.event_name == 'workflow_dispatch'
+      uses: antithesishq/antithesis-trigger-action@v0.5
+      with:
+        notebook_name: limbo
+        tenant: ${{ secrets.ANTITHESIS_TENANT }}
+        username: ${{ secrets.ANTITHESIS_USER }}
+        password: ${{ secrets.ANTITHESIS_PASSWD }}
+        github_token: ${{ secrets.ANTITHESIS_GITHUB_TOKEN }}
+        config_image: ${{ secrets.ANTITHESIS_DOCKER_REPO }}/limbo-config:antithesis-latest
+        images: ${{ secrets.ANTITHESIS_DOCKER_REPO }}/limbo-workload:antithesis-latest
+        description: >-
+          Turso - ${{ github.event_name }}
+          on ${{ github.ref_name }} (${{ github.sha }})
+          by ${{ github.actor }}${{ github.event.inputs.test_name && format(' ({0})', github.event.inputs.test_name) || '' }}
+        email_recipients: ${{ secrets.ANTITHESIS_EMAIL }}
+        test_name: ${{ github.event.inputs.test_name }}
+        additional_parameters: |-
+          antithesis.duration=${{ github.event.inputs.duration }}
+          antithesis.source=${{ github.ref_name }}

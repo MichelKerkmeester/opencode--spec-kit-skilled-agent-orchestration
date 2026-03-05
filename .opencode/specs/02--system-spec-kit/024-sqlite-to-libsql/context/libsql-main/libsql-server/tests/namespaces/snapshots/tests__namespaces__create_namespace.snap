@@ -1,5 +1,0 @@
----
-source: libsql-server/tests/namespaces/mod.rs
-expression: e.to_string()
----
-Hrana: `api error: `{"error":"Namespace `foo` doesn't exist"}``

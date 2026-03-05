@@ -1,2 +1,0 @@
-- name: Prepare env vars
-  run: echo "RUSTFLAGS=--cfg tokio_unstable" >> $GITHUB_ENV

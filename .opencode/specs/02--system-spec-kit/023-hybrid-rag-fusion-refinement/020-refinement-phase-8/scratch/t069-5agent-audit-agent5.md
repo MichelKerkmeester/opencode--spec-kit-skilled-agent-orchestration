@@ -1,1 +1,0 @@
-{"agent":"codex","groups":["16-tooling-and-scripts","17-governance","18-comprehensive-remediation-sprint-8"],"unresolved_high":false,"counts":{"high":0,"medium":0,"low":0},"findings":[],"summary":"feature_catalog.md matches all snippets in the requested groups; no runtime-behavior inconsistencies detected."}

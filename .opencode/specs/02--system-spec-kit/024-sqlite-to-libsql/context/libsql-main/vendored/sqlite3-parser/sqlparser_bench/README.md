@@ -1,1 +1,0 @@
-Adapted from https://github.com/ballista-compute/sqlparser-rs/tree/main/sqlparser_bench
