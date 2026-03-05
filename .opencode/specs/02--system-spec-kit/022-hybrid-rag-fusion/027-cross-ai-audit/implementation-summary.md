@@ -57,7 +57,7 @@ This phase executed a comprehensive audit and remediation of the Spec Kit Memory
 
 Tier 3 (15 items, 50-70h realistic) is deferred to a separate spec folder.
 
-**Tier 4 (cross-AI validation, Session 3+6):** Independent reviews by Gemini 3.1 Pro + Codex gpt-5.3-codex found 14 additional issues. 13/14 implemented by Codex 5.3 and verified via 3-stage review pipeline (Codex → Gemini → Claude). CR-P0-1 completed in Attempt 6 (21 silent-return → it.skipIf, 44 pass, 21 skipped). CR-P2-4 (memory-save.ts decomposition) deferred. All 14 P0/P1/P2 items resolved.
+**Tier 4 (cross-AI validation, Session 3+6):** Independent reviews by Gemini 3.1 Pro + Codex gpt-5.3-codex found 14 additional issues. Tier 4 findings addressed: 13 implemented + 1 deferred (CR-P2-4). CR-P0-1 completed in Attempt 6 with runtime `ctx.skip()` guards in optional-module tests (21 silent-return conversions; 44 pass, 21 skipped). Verified via 3-stage review pipeline (Codex → Gemini → Claude).
 <!-- /ANCHOR:executive-summary -->
 
 ---
@@ -654,13 +654,13 @@ All 5 agents ran as parallel background bash processes via `cli-gemini`, outputt
 
 ### Tier 4: Cross-AI Validation Review (2026-03-02)
 
-Independent reviews by Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+) identified 14 additional findings missed by the original 8-agent audit. 13/14 were implemented by Codex 5.3 (xhigh reasoning, 155K tokens), reviewed by Gemini 3.1 Pro, and final-reviewed by Claude Opus 4.6. CR-P0-1 completed in Attempt 6 (21 silent-return patterns → it.skipIf).
+Independent reviews by Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+) identified 14 additional findings missed by the original 8-agent audit. 13/14 were implemented by Codex 5.3 (xhigh reasoning, 155K tokens), reviewed by Gemini 3.1 Pro, and final-reviewed by Claude Opus 4.6. CR-P0-1 completed in Attempt 6 with runtime `ctx.skip()` guards in optional-module tests (21 silent-return conversions).
 
-**Implemented (14/14 — CR-P2-4 deferred as out-of-scope refactoring):**
+**Tier 4: 13/14 implemented; CR-P2-4 deferred:**
 
 | ID | Fix | File(s) | Review Status |
 |----|-----|---------|:---:|
-| CR-P0-1 | Test suite false-pass: fail-fast imports, throw on skip, stronger assertions + 21 silent-return → it.skipIf() for optional modules | memory-crud-extended.vitest.ts | Gemini PASS, Claude PASS. 44 pass, 21 skipped, 0 fail. |
+| CR-P0-1 | Test suite false-pass: fail-fast imports, throw on skip, stronger assertions + 21 silent-return conversions to runtime `ctx.skip()` guards for optional modules | memory-crud-extended.vitest.ts | Gemini PASS, Claude PASS. 44 pass, 21 skipped, 0 fail. |
 | CR-P1-1 | Deletion exception propagation (was swallowed) | memory-crud-delete.ts | Gemini PASS, Claude PASS |
 | CR-P1-2 | Re-sort after feedback mutations before top-K slice | stage2-fusion.ts:655 | Gemini PASS, Claude PASS |
 | CR-P1-3 | Dedup `AND parent_id IS NULL` on content_hash queries | memory-save.ts:800,1134,1162 | Gemini PASS, Claude PASS |
@@ -695,7 +695,7 @@ Second-pass review with differentiated focus: Gemini (documentation audit, 4/10 
 - All Tier 5 ARCH findings: confirmed accurate
 - Both circular dependencies (ARCH-7): confirmed with exact import lines
 
-**CR-P0-1 complete (Attempt 6):** 21 remaining `if (!optionalMod) return;` silent-skip patterns converted to `it.skipIf(!optionalMod)`. 5 optional module types handled. 65 required-module `throw` guards preserved. 44 pass, 21 skipped, 0 fail.
+**CR-P0-1 complete (Attempt 6):** 21 remaining `if (!optionalMod) return;` silent-skip patterns converted to runtime `ctx.skip()` guards in optional-module tests. 5 optional module types handled. 65 required-module `throw` guards preserved. 44 pass, 21 skipped, 0 fail.
 
 ### Tier 5: Architecture Refactoring (2026-03-02, Session 4)
 
