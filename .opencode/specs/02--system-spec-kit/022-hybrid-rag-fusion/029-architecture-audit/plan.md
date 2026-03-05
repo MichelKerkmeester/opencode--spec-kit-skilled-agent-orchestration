@@ -1,6 +1,6 @@
 ---
-title: "Implementation Plan: Scripts vs mcp_server Architecture Refinement [template:level_3/plan.md]"
-description: "Execution plan for boundary clarification and reorganization recommendations derived from the Phase 8 architecture audit."
+title: "Implementation Plan: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/plan.md]"
+description: "Execution plan for boundary clarification, remediation, and merged continuation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "boundary plan"
@@ -10,7 +10,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Implementation Plan: Scripts vs mcp_server Architecture Refinement
+# Implementation Plan: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -29,6 +29,8 @@ contextType: "architecture"
 
 ### Overview
 The plan prioritizes high-value low-risk changes first: architecture contract documentation and import-policy guardrails. After boundary expectations are explicit and enforceable, structural cleanup actions (duplicate helper consolidation and cycle breaking) can be implemented in smaller, verifiable increments.
+
+The former `030-architecture-boundary-remediation` scope is merged into this plan as Phase 7 carry-over execution.
 <!-- /ANCHOR:summary -->
 
 <!-- ANCHOR:quality-gates -->
@@ -48,6 +50,7 @@ The plan prioritizes high-value low-risk changes first: architecture contract do
 - [x] Triple ultra-think review P0 blockers resolved (Phase 4).
 - [x] Review remediation checklist items verified.
 - [x] Feature catalog implementation-doc parity remediation completed (Phase 6).
+- [ ] Phase 7 boundary remediation carry-over tasks completed or explicitly deferred.
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -82,9 +85,10 @@ Contract-first layered architecture.
 | Phase 4: Review Remediation | T021-T045 | ~300 (code+docs) | Medium-High (6-10h) | Medium |
 | Phase 5: Enforcement Gaps | T046-T049 | ~80 (code+docs) | Low (1-2h) | Low |
 | Phase 6: Feature Catalog Parity | T050-T073 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
-| **Total** | **76 task entries** | **~1500** | **~31-45h** | **Medium** |
+| Phase 7: Boundary Remediation Carry-Over (merged 030) | T074-T090 | ~250 (code+docs+automation) | Medium (4-8h) | Medium |
+| **Total** | **93 task entries** | **~1750** | **~35-53h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -166,6 +170,19 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 
 #### Validation
 - [x] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
+
+### Phase 7: Boundary Remediation Carry-Over (Merged from Former 030)
+
+#### Migration and Exception Reduction
+- [ ] Migrate `scripts/core/memory-indexer.ts` imports to API/shared surfaces where coverage already exists.
+- [ ] Move `DB_UPDATED_FILE` ownership to `shared/config` with backward-compatible runtime re-export.
+- [ ] Re-audit `scripts/memory/reindex-embeddings.ts` imports and migrate only encapsulation-safe dependencies.
+- [ ] Remove or narrow allowlist entries that are no longer required after migration.
+
+#### Enforcement Automation and Documentation Sync
+- [ ] Ensure mandatory CI enforcement runs boundary checks on every PR and blocks merge on violations.
+- [ ] Update `ARCHITECTURE_BOUNDARIES.md` exception table and allowlist review metadata after migration.
+- [ ] Re-run `npx tsc --noEmit` and `npm run check` with updated exception set; capture evidence in checklist.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -216,6 +233,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 3. Import-policy enforcement in pipeline (critical).
 4. Review remediation P0 blockers (critical).
 5. Feature catalog parity code fixes + documentation sweep (critical).
+6. Boundary remediation carry-over execution and CI enforcement confirmation (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.

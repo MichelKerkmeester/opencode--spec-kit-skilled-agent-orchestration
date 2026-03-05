@@ -177,8 +177,8 @@ contextType: "verification"
 
 - [x] [P0] **CR-P0-1** Test suite cannot falsely pass on broken imports — **COMPLETE** [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - Round 1 fix: Codex removed try/catch around core imports (L133-135), replaced 2 specific early-returns with throws (L471, L816), strengthened 3 assertion sites (L875, L937, L1040).
-  - Round 2 fix: 21 `if (!optionalMod) return;` silent-skip patterns converted to `it.skipIf(!optionalMod)`. 5 optional module types: causalEdgesMod, checkpointsMod, embeddingsSourceMod, folderScoringSourceMod, mutationLedgerMod. 65 required-module `throw` guards preserved unchanged.
-  - Evidence: 21 silent-return patterns → it.skipIf(). 44 pass, 21 skipped, 0 fail.
+  - Round 2 fix: 21 `if (!optionalMod) return;` silent-skip patterns converted to runtime `ctx.skip()` guards. 5 optional module types: causalEdgesMod, checkpointsMod, embeddingsSourceMod, folderScoringSourceMod, mutationLedgerMod. 65 required-module `throw` guards preserved unchanged.
+  - Evidence: 21 silent-return patterns converted to runtime `ctx.skip()` guard usage. 44 pass, 21 skipped, 0 fail.
 
 ### P1 — Should Fix
 
@@ -207,7 +207,7 @@ contextType: "verification"
   - Reviewed by: Gemini (PASS) + Claude (PASS)
 
 - [x] [P1] **CR-P1-7** Cross-document contradictions resolved (0 conflicts) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-  - Evidence: `spec.md:7` status updated to "Tier 1-2 Complete; Tier 4 Complete (14/14); Tier 5 Complete (9/9) — ALL TIERS COMPLETE". `checklist.md:119` test evidence normalized. `implementation-summary.md:52,:642` standards wording corrected.
+  - Evidence: `spec.md` status updated to "Tier 1-2 Complete; Tier 4: 13/14 implemented; CR-P2-4 deferred; Tier 5 Complete (9/9)". `checklist.md:119` test evidence normalized. `implementation-summary.md:52,:642` standards wording corrected.
   - Reviewed by: Gemini (CONCERN — checklist boxes unchecked, now fixed) + Claude (PASS)
 
 - [x] [P1] **CR-P1-8** Config DB path resolution unified across scripts and runtime [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -269,7 +269,7 @@ contextType: "verification"
   - Source: Codex Round 2
 
 - [x] [P2] **R2-3** spec.md status said "Tier 4 Documented" while other docs said "Tier 4 Implemented" [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-  - Evidence: Updated to "Tier 1+2 Complete; Tier 4 Implemented (13/14, CR-P0-1 partial); Tier 5 Documented"
+  - Evidence: Updated to "Tier 1-2 Complete; Tier 4: 13/14 implemented; CR-P2-4 deferred; Tier 5 Complete (9/9)"
   - Source: Gemini Round 2 (4/10 consistency score)
 
 - [x] [P2] **R2-4** CR-P0-1 marked as complete but 60+ silent-return patterns remain [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -397,7 +397,7 @@ Recommendation: Treat single-model P1 ratings as "P1 (unconfirmed)" until cross-
 | Tier 1 | 7 | 5.25h | 8-10h | Complete | All 7 tasks completed |
 | Tier 2 | 11 | 4.85h | 8-12h | Complete | All 11 tasks completed (T2-2 skipped — npm workspaces handles) |
 | Tier 3 | 15 | 19.7h | 50-70h | Future spec | Requires separate spec folder |
-| Tier 4 | 14 | 8-12h | 16-24h | 14/14 Complete | CR-P2-4 deferred. CR-P0-1 complete (21 silent-return → it.skipIf). Codex 5.3 → Gemini 3.1 Pro → Claude Opus 4.6 |
+| Tier 4 | 14 | 8-12h | 16-24h | 13/14 implemented + 1 deferred | CR-P2-4 deferred/out-of-scope. CR-P0-1 complete with runtime `ctx.skip()` guards (21 silent-return conversions). Codex 5.3 → Gemini 3.1 Pro → Claude Opus 4.6 |
 | Tier 5 | 9 | 12-20h | 30-50h | 9/9 Complete | ARCH-3 physically split (Attempt 5). ARCH-1 stable API complete (4 modules, 2 scripts migrated). |
 | **Total** | **56** | **49.8-61.8h** | **112-166h** | | ALL 41 TASKS COMPLETE (Tier 3 out of scope — separate spec folder) |
 

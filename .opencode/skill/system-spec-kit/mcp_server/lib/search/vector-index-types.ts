@@ -2,18 +2,6 @@
 // MODULE: Vector Index Types
 // ---------------------------------------------------------------
 
-import Database from 'better-sqlite3';
-
-import {
-  EMBEDDING_DIM,
-  getEmbeddingDim,
-  getConfirmedEmbeddingDimension,
-  validateEmbeddingDimension,
-  getDb,
-  isVectorSearchAvailable,
-  DEFAULT_DB_PATH,
-} from './vector-index-store';
-
 // SCHEMA_VERSION is now canonical in vector-index-schema.ts
 export const MAX_TRIGGERS_PER_MEMORY = 10;
 
@@ -114,38 +102,6 @@ export interface EnrichedSearchResult {
   searchMethod?: string;
   isConstitutional: boolean;
   [key: string]: unknown;
-}
-
-let dbSingleton: Database.Database | null = null;
-let sqliteVecAvailableSingleton = false;
-let preparedStatementsSingleton: Map<string, unknown> = new Map();
-
-export function getDbSingleton(): Database.Database | null {
-  if (!dbSingleton) {
-    dbSingleton = getDb();
-  }
-  return dbSingleton;
-}
-
-export function setDbSingleton(db: Database.Database | null): void {
-  dbSingleton = db;
-}
-
-export function getSqliteVecAvailable(): boolean {
-  sqliteVecAvailableSingleton = isVectorSearchAvailable();
-  return sqliteVecAvailableSingleton;
-}
-
-export function setSqliteVecAvailable(available: boolean): void {
-  sqliteVecAvailableSingleton = available;
-}
-
-export function getPreparedStatementsCache(): Map<string, unknown> {
-  return preparedStatementsSingleton;
-}
-
-export function setPreparedStatementsCache(cache: Map<string, unknown>): void {
-  preparedStatementsSingleton = cache;
 }
 
 export function to_embedding_buffer(embedding: Float32Array | number[]): Buffer {

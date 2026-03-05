@@ -14,7 +14,7 @@ contextType: "implementation"
 ## Parent Reference
 
 **Parent Spec:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/`
-**Phase:** 032 of 034 (Hybrid RAG Fusion Refinement)
+**Phase:** 030 of 034 (Hybrid RAG Fusion Refinement)
 <!-- /ANCHOR:parent-ref -->
 
 ---

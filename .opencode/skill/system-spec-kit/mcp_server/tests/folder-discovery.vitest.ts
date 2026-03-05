@@ -313,6 +313,56 @@ describe('T009 generateFolderDescriptions', () => {
     expect(folderNames).toContain('has-spec');
   });
 
+
+  it('discovers spec folders nested 5+ levels deep', () => {
+    const deepSpecDir = path.join(
+      tmpDir,
+      '001-parent',
+      '002-track',
+      '003-stream',
+      '004-phase',
+      '005-task',
+    );
+    fs.mkdirSync(deepSpecDir, { recursive: true });
+    fs.writeFileSync(path.join(deepSpecDir, 'spec.md'), '# Deep Nested Spec\n\nBody.', 'utf-8');
+
+    const cache = generateFolderDescriptions([tmpDir]);
+
+    expect(
+      cache.folders.some(
+        (folder) => folder.specFolder === '001-parent/002-track/003-stream/004-phase/005-task'
+      )
+    ).toBe(true);
+  });
+
+  it('enforces max discovery depth of 8 levels', () => {
+    const depth8Segments = [
+      '001-l1',
+      '002-l2',
+      '003-l3',
+      '004-l4',
+      '005-l5',
+      '006-l6',
+      '007-l7',
+      '008-l8',
+    ];
+    const depth9Segments = [...depth8Segments, '009-l9'];
+
+    const depth8SpecDir = path.join(tmpDir, ...depth8Segments);
+    const depth9SpecDir = path.join(tmpDir, ...depth9Segments);
+
+    fs.mkdirSync(depth8SpecDir, { recursive: true });
+    fs.mkdirSync(depth9SpecDir, { recursive: true });
+    fs.writeFileSync(path.join(depth8SpecDir, 'spec.md'), '# Depth 8 Spec\n\nBody.', 'utf-8');
+    fs.writeFileSync(path.join(depth9SpecDir, 'spec.md'), '# Depth 9 Spec\n\nBody.', 'utf-8');
+
+    const cache = generateFolderDescriptions([tmpDir]);
+    const discoveredFolders = new Set(cache.folders.map((folder) => folder.specFolder));
+
+    expect(discoveredFolders.has(depth8Segments.join('/'))).toBe(true);
+    expect(discoveredFolders.has(depth9Segments.join('/'))).toBe(false);
+  });
+
   it('handles non-existent base path gracefully', () => {
     const nonExistent = path.join(tmpDir, 'does-not-exist');
     const cache = generateFolderDescriptions([nonExistent]);

@@ -38,7 +38,43 @@ function sleep(ms: number): Promise<void> {
 }
 
 function isDotfilePath(filePath: string): boolean {
-  return filePath.split(path.sep).some((part) => part.startsWith('.') && part.length > 1);
+  const parts = filePath
+    .split(/[/\\]/)
+    .filter((part) => part.length > 0);
+
+  for (const part of parts) {
+    if (!part.startsWith('.') || part.length <= 1) {
+      continue;
+    }
+
+    // AI-WHY: .opencode is a first-class workspace root for Spec Kit assets.
+    // Treating it as a dotfile path would suppress watcher events for
+    // .opencode/specs/** and break auto re-indexing in default layouts.
+    if (part === '.opencode') {
+      continue;
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+function isMarkdownPath(filePath: string): boolean {
+  return filePath.toLowerCase().endsWith('.md');
+}
+
+function shouldIgnoreWatchTarget(targetPath: string): boolean {
+  if (isDotfilePath(targetPath)) return true;
+  const basename = path.basename(targetPath);
+  if (basename.startsWith('.')) return true;
+
+  // Directory paths often have no file extension. Do not ignore those so
+  // chokidar can traverse watched roots and discover nested markdown files.
+  const extension = path.extname(targetPath).toLowerCase();
+  if (extension.length === 0) return false;
+
+  return extension !== '.md';
 }
 
 function isSqliteBusyError(error: unknown): boolean {
@@ -82,20 +118,18 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const watcher = chokidar.watch(config.paths, {
     ignoreInitial: true,
     awaitWriteFinish: { stabilityThreshold: 1000 },
-    ignored: (targetPath: string) => {
-      if (isDotfilePath(targetPath)) return true;
-      const basename = path.basename(targetPath);
-      if (basename.startsWith('.')) return true;
-      return !targetPath.endsWith('.md');
-    },
+    ignored: shouldIgnoreWatchTarget,
   });
 
-  const scheduleReindex = (targetPath: unknown): void => {
+  const scheduleReindex = (targetPath: unknown, options: { force?: boolean } = {}): void => {
     if (typeof targetPath !== 'string') {
       return;
     }
+
     const filePath = targetPath;
-    if (!filePath.endsWith('.md') || isDotfilePath(filePath)) {
+    const forceReindex = options.force === true;
+
+    if (!isMarkdownPath(filePath) || isDotfilePath(filePath)) {
       return;
     }
 
@@ -120,9 +154,11 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
             throw hashErr;
           }
 
-          const previousHash = contentHashes.get(filePath);
-          if (previousHash && previousHash === nextHash) {
-            return;
+          if (!forceReindex) {
+            const previousHash = contentHashes.get(filePath);
+            if (previousHash && previousHash === nextHash) {
+              return;
+            }
           }
 
           const reindexStart = Date.now();
@@ -145,25 +181,12 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     debounceTimers.set(filePath, timeout);
   };
 
-  // Codex fix: Seed the dedup hash cache for newly added files so the first
-  // subsequent 'change' event can properly deduplicate. Without seeding, the
-  // cache is empty at startup and every first change triggers a redundant reindex.
-  const seedHash = (targetPath: unknown): void => {
-    if (typeof targetPath !== 'string') return;
-    const filePath = targetPath;
-    if (!filePath.endsWith('.md') || isDotfilePath(filePath)) return;
-    if (contentHashes.has(filePath)) return;
-
-    void hashFileContent(filePath)
-      .then((hash) => { contentHashes.set(filePath, hash); })
-      .catch(() => { /* file may not exist yet — ignore */ });
-  };
-
   watcher.on('add', (targetPath: unknown) => {
-    seedHash(targetPath);
+    scheduleReindex(targetPath, { force: true });
+  });
+  watcher.on('change', (targetPath: unknown) => {
     scheduleReindex(targetPath);
   });
-  watcher.on('change', scheduleReindex);
   watcher.on('error', (error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[file-watcher] Watcher error: ${message}`);
@@ -180,3 +203,10 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
   return watcher;
 }
+
+export const __testables = {
+  isDotfilePath,
+  isMarkdownPath,
+  shouldIgnoreWatchTarget,
+  isSqliteBusyError,
+};

@@ -1,8 +1,109 @@
 {
   "version": 1,
-  "generated": "2026-03-05T12:49:00.242Z",
+  "generated": "2026-03-05T15:45:43.051Z",
   "folders": [
     {
+      "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
+      "description": "Feature Specification: HVR Refinement Implementation",
+      "keywords": [
+        "feature",
+        "specification",
+        "hvr",
+        "refinement",
+        "implementation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/001-global-shared/003-hvr-refinement-repo-analysis",
+      "description": "Feature Specification: HVR Refinement Repo Analysis (003)",
+      "keywords": [
+        "feature",
+        "specification",
+        "hvr",
+        "refinement",
+        "repo",
+        "analysis",
+        "003"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/001-global-shared/004-hvr-multi-lingual",
+      "description": "Feature Specification: HVR Multi-Lingual - Dutch NL (004)",
+      "keywords": [
+        "feature",
+        "specification",
+        "hvr",
+        "multi-lingual",
+        "dutch",
+        "004"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/001-global-shared/005-routing-review",
+      "description": "Routing Review — Specification",
+      "keywords": [
+        "routing",
+        "review",
+        "specification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/002-sales-communication-flows/001-initial-creation",
+      "description": "Sales Ops — Sales Automation Agent: Specification",
+      "keywords": [
+        "sales",
+        "ops",
+        "automation",
+        "agent",
+        "specification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/003-sales-process-automation/001-initial-creation",
+      "description": "System 7 -- Sales - HubSpot Sequences: Specification",
+      "keywords": [
+        "system",
+        "sales",
+        "hubspot",
+        "sequences",
+        "specification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/004-prompt-improver/001-content-submission",
+      "description": "Feature Specification: MagicPath Prompt for Creator Content Link/Select Flow",
+      "keywords": [
+        "feature",
+        "specification",
+        "magicpath",
+        "prompt",
+        "creator",
+        "content",
+        "link",
+        "select",
+        "flow"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "00--ai-systems-non-dev/005-sales-direct-communication/001-speed-of-execution",
+      "description": "Feature Specification: Speed of Execution Optimization",
+      "keywords": [
+        "feature",
+        "specification",
+        "speed",
+        "execution",
+        "optimization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
       "description": "Feature Specification: Comprehensive Performance Optimization - anobel.com",
       "keywords": [
@@ -14,7 +115,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "01--anobel.com/030-label-product-content-attr",
@@ -27,7 +128,7 @@
         "content",
         "attribute"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "01--anobel.com/031-fix-download-btn-transition-glitch",
@@ -40,7 +141,7 @@
         "transition",
         "glitch"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "01--anobel.com/032-cloudflare-r2-migration",
@@ -51,7 +152,7 @@
         "worker",
         "migration"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "01--anobel.com/033-form-upload-issues",
@@ -66,198 +167,375 @@
         "validation",
         "fix"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "02--system-spec-kit/021-spec-kit-phase-system",
-      "description": "Feature Specification: SpecKit Phase System",
+      "specFolder": "01--anobel.com/z_archive/001-finsweet-performance",
+      "description": "Finsweet Performance Optimization",
       "keywords": [
-        "feature",
-        "specification",
-        "speckit",
-        "phase",
-        "system"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "02--system-spec-kit/024-sqlite-to-turso",
-      "description": "SQLite-to-Turso Migration Research",
-      "keywords": [
-        "sqlite-to-turso",
-        "migration",
-        "research"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/018-opencode-agent-path-only",
-      "description": "Feature Specification: OpenCode Agent Path Only",
-      "keywords": [
-        "feature",
-        "specification",
-        "opencode",
-        "agent",
-        "path",
-        "only"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/019-incorrect-sub-agent-nesting",
-      "description": "Feature Specification: Sub-Agent Nesting Depth Control",
-      "keywords": [
-        "feature",
-        "specification",
-        "sub-agent",
-        "nesting",
-        "depth",
-        "control"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/020-agent-sonnet-upgrade",
-      "description": "Feature Specification: Agent Sonnet 4.6 Upgrade",
-      "keywords": [
-        "feature",
-        "specification",
-        "agent",
-        "sonnet",
-        "upgrade"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/021-codex-orchestrate",
-      "description": "Feature Specification: ChatGPT Agent Suite Codex Optimization",
-      "keywords": [
-        "feature",
-        "specification",
-        "chatgpt",
-        "agent",
-        "suite",
-        "codex",
+        "finsweet",
+        "performance",
         "optimization"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "05--agent-orchestration/022-context-overload-prevention",
-      "description": "Feature Specification: Context Overload Prevention",
+      "specFolder": "01--anobel.com/z_archive/002-tab-menu-border-fix",
+      "description": "Tab Menu Border Color Fix",
       "keywords": [
-        "feature",
-        "specification",
-        "context",
-        "overload",
-        "prevention"
+        "tab",
+        "menu",
+        "border",
+        "color",
+        "fix"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "05--agent-orchestration/023-gemini-cli-compatibility",
-      "description": "Feature Specification: Gemini CLI Compatibility",
-      "keywords": [
-        "feature",
-        "specification",
-        "gemini",
-        "cli",
-        "compatibility"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/025-codex-cli-agents",
-      "description": "Feature Specification: Codex CLI Agent Definitions",
-      "keywords": [
-        "feature",
-        "specification",
-        "codex",
-        "cli",
-        "agent",
-        "definitions"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "05--agent-orchestration/026-review-debug-agent-improvement",
-      "description": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents",
+      "specFolder": "01--anobel.com/z_archive/003-btn-download-alignment",
+      "description": "Spec: Download Button Code Standards Alignment",
       "keywords": [
         "spec",
-        "adversarial",
-        "self-check",
-        "review",
-        "debug",
-        "ultra-think",
-        "agents"
+        "download",
+        "button",
+        "code",
+        "standards",
+        "alignment"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "01--anobel.com/029-anobel-performance-analysis",
-      "description": "Feature Specification: Comprehensive Performance Optimization - anobel.com",
+      "specFolder": "01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
+      "description": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories",
       "keywords": [
         "feature",
         "specification",
-        "comprehensive",
+        "custom",
+        "toc",
+        "scrollspy",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/004-table-of-content/002-tab-main-component",
+      "description": "Feature Specification: Tab Main Component",
+      "keywords": [
+        "feature",
+        "specification",
+        "tab",
+        "main",
+        "component"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation",
+      "description": "Spec: Icon Animation Isolation for Download Button",
+      "keywords": [
+        "spec",
+        "icon",
+        "animation",
+        "isolation",
+        "download",
+        "button"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/005-minify-javascript",
+      "description": "Feature Specification: minify-javascript - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "minify-javascript",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/006-video-play-pause-hover",
+      "description": "Video Play/Pause Button Hover Effect",
+      "keywords": [
+        "video",
+        "play",
+        "pause",
+        "button",
+        "hover",
+        "effect"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/007-notification-system",
+      "description": "Feature Specification: Notification System - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "notification",
+        "system",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/008-social-share-cms",
+      "description": "Social Share CMS Integration",
+      "keywords": [
+        "social",
+        "share",
+        "cms",
+        "integration"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/009-security-remediation",
+      "description": "Security Vulnerability Remediation",
+      "keywords": [
+        "security",
+        "vulnerability",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/010-css-performance-cv",
+      "description": "Specification: CSS Performance Upgrade (Content Visibility)",
+      "keywords": [
+        "specification",
+        "css",
+        "performance",
+        "upgrade",
+        "content",
+        "visibility"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/011-form-input-upload-select",
+      "description": "Spec: Form Input Components Enhancement",
+      "keywords": [
+        "spec",
+        "form",
+        "input",
+        "components",
+        "enhancement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/012-notification-time-scheduling",
+      "description": "Feature Specification: Notification Time-Based Scheduling",
+      "keywords": [
+        "feature",
+        "specification",
+        "notification",
+        "time-based",
+        "scheduling"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/013-font-performance",
+      "description": "Specification: Font Performance Optimization",
+      "keywords": [
+        "specification",
+        "font",
+        "performance",
+        "optimization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/014-notification-hero-spacing",
+      "description": "Notification Hero Spacing",
+      "keywords": [
+        "notification",
+        "hero",
+        "spacing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/015-performance-hacks",
+      "description": "Specification: Additional Performance Hacks",
+      "keywords": [
+        "specification",
+        "additional",
+        "performance",
+        "hacks"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/016-form-persistence",
+      "description": "Form Data Persistence",
+      "keywords": [
+        "form",
+        "data",
+        "persistence"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/017-link-card-product-adv",
+      "description": "Link Card Product/Adv - CTA Button Hover Animation",
+      "keywords": [
+        "link",
+        "card",
+        "product",
+        "adv",
+        "cta",
+        "button",
+        "hover",
+        "animation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/018-blog-sort-fix",
+      "description": "Spec: Blog Sort Dropdown Fix",
+      "keywords": [
+        "spec",
+        "blog",
+        "sort",
+        "dropdown",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/019-form-attribute-audit",
+      "description": "Spec: Form Attribute Audit",
+      "keywords": [
+        "spec",
+        "form",
+        "attribute",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/020-attribute-cleanup",
+      "description": "Feature Specification: Attribute Cleanup Deepdive",
+      "keywords": [
+        "feature",
+        "specification",
+        "attribute",
+        "cleanup",
+        "deepdive"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/021-decoding-async-analysis",
+      "description": "Feature Specification: Image Decoding Async Analysis",
+      "keywords": [
+        "feature",
+        "specification",
+        "image",
+        "decoding",
+        "async",
+        "analysis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/022-performance-optimization",
+      "description": "Performance Optimization - anobel.com",
+      "keywords": [
         "performance",
         "optimization",
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "01--anobel.com/030-label-product-content-attr",
-      "description": "Feature Specification: Label Product Content Attribute",
+      "specFolder": "01--anobel.com/z_archive/023-performance-review",
+      "description": "Performance Optimization Review - Spec 025",
+      "keywords": [
+        "performance",
+        "optimization",
+        "review",
+        "spec",
+        "025"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/024-language-selector-hover",
+      "description": "Spec: Language Selector - Desktop Hover to Open",
+      "keywords": [
+        "spec",
+        "language",
+        "selector",
+        "desktop",
+        "hover",
+        "open"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/025-load-toggle",
+      "description": "Load Toggle Component - anobel.com",
+      "keywords": [
+        "load",
+        "toggle",
+        "component",
+        "anobel",
+        "com"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "01--anobel.com/z_archive/026-mobile-btn-link-feedback",
+      "description": "Feature Specification: Mobile Button/Link Tap Feedback",
       "keywords": [
         "feature",
         "specification",
-        "label",
-        "product",
-        "content",
-        "attribute"
+        "mobile",
+        "button",
+        "link",
+        "tap",
+        "feedback"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "01--anobel.com/031-fix-download-btn-transition-glitch",
-      "description": "Spec: Fix Download Button Transition Glitch",
+      "specFolder": "01--anobel.com/z_archive/027-download-btn-on-mobile",
+      "description": "Feature Specification: Download Button Mobile Fix",
       "keywords": [
-        "spec",
-        "fix",
+        "feature",
+        "specification",
         "download",
         "button",
-        "transition",
-        "glitch"
+        "mobile",
+        "fix"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
-      "specFolder": "01--anobel.com/032-cloudflare-r2-migration",
-      "description": "Spec: Cloudflare R2 + Worker Migration",
-      "keywords": [
-        "spec",
-        "cloudflare",
-        "worker",
-        "migration"
-      ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
-    },
-    {
-      "specFolder": "01--anobel.com/033-form-upload-issues",
-      "description": "Feature Specification: CV Upload Form File Type Validation Fix",
+      "specFolder": "01--anobel.com/z_archive/028-hero-flicker-debug",
+      "description": "Feature Specification: Hero Video Card Image Flickering Fix",
       "keywords": [
         "feature",
         "specification",
-        "upload",
-        "form",
-        "file",
-        "type",
-        "validation",
+        "hero",
+        "video",
+        "card",
+        "image",
+        "flickering",
         "fix"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "02--system-spec-kit/021-spec-kit-phase-system",
@@ -269,7 +547,399 @@
         "phase",
         "system"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/000-feature-overview",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "level3-arch",
+        "level3plus-govern"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-deprecated-skill-graph-experiment",
+      "description": "Feature Specification: 013 - Deprecate Skill Graph and README/Skill-Ref Indexing (Completion Pass 2)",
+      "keywords": [
+        "feature",
+        "specification",
+        "013",
+        "deprecate",
+        "skill",
+        "graph",
+        "readme",
+        "skill-ref",
+        "indexing",
+        "completion",
+        "pass"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion",
+      "description": "Spec: 138-hybrid-rag-fusion (Unified Context Engine)",
+      "keywords": [
+        "spec",
+        "138-hybrid-rag-fusion",
+        "unified",
+        "context",
+        "engine"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies",
+      "description": "Feature Specification: Memory Index Deduplication and Tier Normalization",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "index",
+        "deduplication",
+        "tier",
+        "normalization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing",
+      "description": "Feature Specification: 004-frontmatter-indexing",
+      "keywords": [
+        "feature",
+        "specification",
+        "004-frontmatter-indexing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-auto-detected-session-bug",
+      "description": "Feature Specification: Auto-Detected Session Selection Bug",
+      "keywords": [
+        "feature",
+        "specification",
+        "auto-detected",
+        "session",
+        "selection",
+        "bug"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements",
+      "description": "Feature Specification: 006-hybrid-rag-fusion-logic-improvements",
+      "keywords": [
+        "feature",
+        "specification",
+        "006-hybrid-rag-fusion-logic-improvements"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-spec-kit-templates",
+      "description": "Feature Specification: SpecKit Template ToC Policy Enforcement",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "template",
+        "toc",
+        "policy",
+        "enforcement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality",
+      "description": "Feature Specification: Spec Kit Code Quality Completion Run",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "kit",
+        "code",
+        "quality",
+        "completion",
+        "run"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-constitutional-learn-refactor",
+      "description": "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager",
+      "keywords": [
+        "feature",
+        "specification",
+        "refactor",
+        "memory",
+        "learn",
+        "constitutional",
+        "manager"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-measurement-foundation",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-scoring-calibration",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-query-intelligence",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-pipeline-refactor",
+      "description": "Feature Specification: Sprint 5 — Pipeline Refactor",
+      "keywords": [
+        "feature",
+        "specification",
+        "sprint",
+        "pipeline",
+        "refactor"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-indexing-and-graph",
+      "description": "Feature Specification: Sprint 6 — Indexing and Graph",
+      "keywords": [
+        "feature",
+        "specification",
+        "sprint",
+        "indexing",
+        "graph"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/017-long-horizon",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/018-deferred-features",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/019-skill-command-alignment",
+      "description": "Feature Specification: Skill & Command Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "command",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/020-subfolder-resolution-fix",
+      "description": "Specification: Subfolder Resolution Fix",
+      "keywords": [
+        "specification",
+        "subfolder",
+        "resolution",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/021-cross-cutting-remediation",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2",
+      "keywords": [
+        "spec-core",
+        "phase-child-header"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/022-post-review-remediation",
+      "description": "Post-Review Remediation: 59 Findings from 25-Agent Review",
+      "keywords": [
+        "post-review",
+        "remediation",
+        "findings",
+        "25-agent",
+        "review"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/023-flag-catalog-remediation",
+      "description": "P1-19 Flag Catalog + Refinement Phase 3",
+      "keywords": [
+        "p1-19",
+        "flag",
+        "catalog",
+        "refinement",
+        "phase"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/024-timer-persistence-stage3-fallback",
+      "description": "Spec: Refinement Phase 4",
+      "keywords": [
+        "spec",
+        "refinement",
+        "phase"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/025-finalized-scope",
+      "description": "Feature Specification: Refinement Phase 5 Finalized Scope",
+      "keywords": [
+        "feature",
+        "specification",
+        "refinement",
+        "phase",
+        "finalized",
+        "scope"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/026-opus-remediation",
+      "description": "Feature Specification: Refinement Phase 6 — Opus Review Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "refinement",
+        "phase",
+        "opus",
+        "review",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/027-cross-ai-audit",
+      "description": "Spec: 018 — Refinement Phase 7: Cross-AI Review Audit & Remediation",
+      "keywords": [
+        "spec",
+        "018",
+        "refinement",
+        "phase",
+        "cross-ai",
+        "review",
+        "audit",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/028-extra-features",
+      "description": "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)",
+      "keywords": [
+        "feature",
+        "specification",
+        "sprint",
+        "extra",
+        "features",
+        "productization",
+        "operational",
+        "tooling"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit",
+      "description": "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "system-spec-kit",
+        "scripts",
+        "architecture",
+        "audit",
+        "boundary",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/030-generic-memory-filename-fix",
+      "description": "Specification: Generic Memory Filename Fix in Stateless Mode",
+      "keywords": [
+        "specification",
+        "generic",
+        "memory",
+        "filename",
+        "fix",
+        "stateless",
+        "mode"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix",
+      "description": "Specification: Memory Search State Filter Fix + Folder Discovery Follow-up",
+      "keywords": [
+        "specification",
+        "memory",
+        "search",
+        "state",
+        "filter",
+        "fix",
+        "folder",
+        "discovery",
+        "follow-up"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "02--system-spec-kit/024-sqlite-to-turso",
@@ -279,7 +949,2232 @@
         "migration",
         "research"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch",
+      "description": "Feature Specification: Fix Command Dispatch Vulnerability",
+      "keywords": [
+        "feature",
+        "specification",
+        "fix",
+        "command",
+        "dispatch",
+        "vulnerability"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement",
+      "description": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "scratch",
+        "folder",
+        "enforcement",
+        "requirements",
+        "analysis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/002-alignment-fixes",
+      "description": "Memory Command Alignment Fixes",
+      "keywords": [
+        "memory",
+        "command",
+        "alignment",
+        "fixes"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/003-speckit-skill-refinement",
+      "description": "Spec: SpecKit Skill Refinement",
+      "keywords": [
+        "spec",
+        "speckit",
+        "skill",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/004-memory-hook-cleanup",
+      "description": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "hook",
+        "cleanup",
+        "remove",
+        "claude",
+        "code",
+        "references"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/005-speckit-consolidation",
+      "description": "Feature Specification: SpecKit Skill Consolidation - Requirements & Migration Strategy",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "skill",
+        "consolidation",
+        "requirements",
+        "migration",
+        "strategy"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename",
+      "description": "Skill Rename: workflows-spec-kit → system-spec-kit",
+      "keywords": [
+        "skill",
+        "rename",
+        "workflows-spec-kit",
+        "system-spec-kit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/008-rename-memory-check",
+      "description": "Spec: Rename `/memory` Command to `/memory:check`",
+      "keywords": [
+        "spec",
+        "rename",
+        "memory",
+        "command",
+        "check"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/009-speckit-testing",
+      "description": "Feature Specification: SpecKit Post-Rename Testing",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "post-rename",
+        "testing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/011-docs-alignment",
+      "description": "Feature Specification: [YOUR_VALUE_HERE: Feature-Name] - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "feature-name",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/012-handover-triggers",
+      "description": "Feature Specification: Utility Template Trigger Keywords - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "utility",
+        "template",
+        "trigger",
+        "keywords",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/014-anchor-enforcement",
+      "description": "Anchor System Enforcement",
+      "keywords": [
+        "anchor",
+        "system",
+        "enforcement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/015-system-analysis",
+      "description": "Feature Specification: SpecKit System Architecture Analysis",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "system",
+        "architecture",
+        "analysis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/017-stateless-spec-passing",
+      "description": "Stateless Spec Passing & System Alignment",
+      "keywords": [
+        "stateless",
+        "spec",
+        "passing",
+        "system",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
+      "description": "SpecKit Refinement: ECP Analysis & Improvements",
+      "keywords": [
+        "speckit",
+        "refinement",
+        "ecp",
+        "analysis",
+        "improvements"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/001-state-simplification",
+      "description": "State Simplification: Integrate State into Memory Files",
+      "keywords": [
+        "state",
+        "simplification",
+        "integrate",
+        "memory",
+        "files"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement/002-debugger",
+      "description": "Debug Delegation Integration",
+      "keywords": [
+        "debug",
+        "delegation",
+        "integration"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/020-comprehensive-bug-fix",
+      "description": "Comprehensive Bug Fix: System-Spec-Kit & Spec_Kit Commands",
+      "keywords": [
+        "comprehensive",
+        "bug",
+        "fix",
+        "system-spec-kit",
+        "commands"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/001-mvp-monolithic",
+      "description": "Path-Scoped Validation Rules",
+      "keywords": [
+        "path-scoped",
+        "validation",
+        "rules"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture",
+      "description": "Modular Validation Architecture",
+      "keywords": [
+        "modular",
+        "validation",
+        "architecture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-anchors",
+      "description": "Spec: Invalid Anchors Fixture",
+      "keywords": [
+        "spec",
+        "invalid",
+        "anchors",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/invalid-priority-tags",
+      "description": "Spec: Invalid Priority Tags Fixture",
+      "keywords": [
+        "spec",
+        "invalid",
+        "priority",
+        "tags",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/missing-evidence",
+      "description": "Spec: Missing Evidence Fixture",
+      "keywords": [
+        "spec",
+        "missing",
+        "evidence",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-anchors",
+      "description": "Spec: Valid Anchors Fixture",
+      "keywords": [
+        "spec",
+        "valid",
+        "anchors",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-evidence",
+      "description": "Spec: Valid Evidence Fixture",
+      "keywords": [
+        "spec",
+        "valid",
+        "evidence",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-priority-tags",
+      "description": "Spec: Valid Priority Tags Fixture",
+      "keywords": [
+        "spec",
+        "valid",
+        "priority",
+        "tags",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/with-templates",
+      "description": "Spec: Template Test Fixture",
+      "keywords": [
+        "spec",
+        "template",
+        "test",
+        "fixture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/024-comprehensive-alignment-fix",
+      "description": "Spec-Kit Comprehensive Alignment Fix",
+      "keywords": [
+        "spec-kit",
+        "comprehensive",
+        "alignment",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
+      "description": "Spec: Rename workflows-memory → system-memory",
+      "keywords": [
+        "spec",
+        "rename",
+        "workflows-memory",
+        "system-memory"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/001-memory-repo-analysis",
+      "description": "Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "system",
+        "analysis",
+        "roampal",
+        "comparison",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/002-memory-plugin",
+      "description": "Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "plugin",
+        "dashboard",
+        "optimization",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement/003-memory-plugin-debugging",
+      "description": "Memory Plugin Debugging - bun:sqlite Migration",
+      "keywords": [
+        "memory",
+        "plugin",
+        "debugging",
+        "bun",
+        "sqlite",
+        "migration"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix",
+      "description": "Memory Alignment Fix - Three-Layer Defense System",
+      "keywords": [
+        "memory",
+        "alignment",
+        "fix",
+        "three-layer",
+        "defense",
+        "system"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/029-comprehensive-bug-fix",
+      "description": "Comprehensive Skills & MCP Server Bug Fix",
+      "keywords": [
+        "comprehensive",
+        "skills",
+        "mcp",
+        "server",
+        "bug",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/030-gate3-enforcement",
+      "description": "Gate 3 Enforcement - Preventing Spec Folder Bypass",
+      "keywords": [
+        "gate",
+        "enforcement",
+        "preventing",
+        "spec",
+        "folder",
+        "bypass"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/031-comprehensive-bug-fix",
+      "description": "Memory System Comprehensive Bug Fix",
+      "keywords": [
+        "memory",
+        "system",
+        "comprehensive",
+        "bug",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/032-system-health-audit",
+      "description": "System Health Audit - Comprehensive Bug Fix",
+      "keywords": [
+        "system",
+        "health",
+        "audit",
+        "comprehensive",
+        "bug",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/033-ux-deep-analysis",
+      "description": "UX Deep Analysis - Memory & SpecKit Systems",
+      "keywords": [
+        "deep",
+        "analysis",
+        "memory",
+        "speckit",
+        "systems"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/034-gate-enforcement-refinement",
+      "description": "Gate Enforcement Constitutional Memory Refinement",
+      "keywords": [
+        "gate",
+        "enforcement",
+        "constitutional",
+        "memory",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/035-memory-speckit-merger",
+      "description": "Memory System Integration into Spec-Kit",
+      "keywords": [
+        "memory",
+        "system",
+        "integration",
+        "spec-kit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/036-post-merge-refinement-1",
+      "description": "Post-Merger System Refinement",
+      "keywords": [
+        "post-merger",
+        "system",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/037-post-merge-refinement-2",
+      "description": "Post-Merge Refinement Phase 2 (Library Unification)",
+      "keywords": [
+        "post-merge",
+        "refinement",
+        "phase",
+        "library",
+        "unification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/039-node-modules-consolidation",
+      "description": "Node Modules Consolidation",
+      "keywords": [
+        "node",
+        "modules",
+        "consolidation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/040-mcp-server-rename",
+      "description": "MCP Server Rename: semantic_memory → spec_kit_memory",
+      "keywords": [
+        "mcp",
+        "server",
+        "rename"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/041-post-merge-refinement-4",
+      "description": "Feature Specification: Post-Merge Refinement 4 - Comprehensive System Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "post-merge",
+        "refinement",
+        "comprehensive",
+        "system",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/042-post-merge-refinement-5",
+      "description": "Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5)",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "kit",
+        "memory",
+        "system",
+        "post-merge",
+        "refinement",
+        "phase"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/043-post-merge-refinement-final",
+      "description": "Specification: Post-Merge Refinement Final",
+      "keywords": [
+        "specification",
+        "post-merge",
+        "refinement",
+        "final"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite",
+      "description": "Spec Kit Test Suite",
+      "keywords": [
+        "spec",
+        "kit",
+        "test",
+        "suite"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/045-readme-alignment",
+      "description": "Spec: README & Install Guide Alignment",
+      "keywords": [
+        "spec",
+        "readme",
+        "install",
+        "guide",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/046-post-release-refinement-1",
+      "description": "Post-Release Refinement 1: Infrastructure Bug Fixes",
+      "keywords": [
+        "post-release",
+        "refinement",
+        "infrastructure",
+        "bug",
+        "fixes"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme",
+      "description": "Spec: Constitutional Memory System README",
+      "keywords": [
+        "spec",
+        "constitutional",
+        "memory",
+        "system",
+        "readme"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/048-system-analysis",
+      "description": "048: SpecKit & Memory System Remediation",
+      "keywords": [
+        "048",
+        "speckit",
+        "memory",
+        "system",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/049-system-analysis-bugs",
+      "description": "System-Spec-Kit Bug Analysis and Remediation",
+      "keywords": [
+        "system-spec-kit",
+        "bug",
+        "analysis",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/050-security-doc-remediation",
+      "description": "Security & Documentation Remediation",
+      "keywords": [
+        "security",
+        "documentation",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation",
+      "description": "Lib Consolidation - Shared Module Unification",
+      "keywords": [
+        "lib",
+        "consolidation",
+        "shared",
+        "module",
+        "unification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes",
+      "description": "Spec: Codebase Fixes - Embedding Dimension & Performance",
+      "keywords": [
+        "spec",
+        "codebase",
+        "fixes",
+        "embedding",
+        "dimension",
+        "performance"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing",
+      "description": "Feature Specification: Script Analysis Testing - End-to-End Workflow Validation",
+      "keywords": [
+        "feature",
+        "specification",
+        "script",
+        "analysis",
+        "testing",
+        "end-to-end",
+        "workflow",
+        "validation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/054-remaining-bugs-remediation",
+      "description": "Spec: Remaining Bugs Remediation",
+      "keywords": [
+        "spec",
+        "remaining",
+        "bugs",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/055-cognitive-memory-upgrade",
+      "description": "Spec: Cognitive Memory Upgrade Research",
+      "keywords": [
+        "spec",
+        "cognitive",
+        "memory",
+        "upgrade",
+        "research"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization",
+      "description": "system-spec-kit References Reorganization",
+      "keywords": [
+        "system-spec-kit",
+        "references",
+        "reorganization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/057-transaction-nesting-fix",
+      "description": "Spec: Fix SQLite Transaction Nesting Issue",
+      "keywords": [
+        "spec",
+        "fix",
+        "sqlite",
+        "transaction",
+        "nesting",
+        "issue"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/058-generate-context-modularization",
+      "description": "Specification: generate-context.js Modularization",
+      "keywords": [
+        "specification",
+        "generate-context",
+        "modularization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/064-bug-analysis-and-fix",
+      "description": "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "system-spec-kit",
+        "bug",
+        "analysis",
+        "fix",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/065-anchor-system-implementation",
+      "description": "Feature Specification: Anchor System Implementation - Targeted Memory Retrieval",
+      "keywords": [
+        "feature",
+        "specification",
+        "anchor",
+        "system",
+        "implementation",
+        "targeted",
+        "memory",
+        "retrieval"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/066-context-server-modularization",
+      "description": "Feature Specification: Context-Server Modularization - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "context-server",
+        "modularization",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/067-voyage-4-upgrade",
+      "description": "Voyage 4 Model Upgrade Analysis",
+      "keywords": [
+        "voyage",
+        "model",
+        "upgrade",
+        "analysis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/068-memory-index-commands",
+      "description": "Feature Specification: Memory Command Separation - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "command",
+        "separation",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/069-speckit-template-complexity",
+      "description": "Feature Specification: Level-Based Template Architecture",
+      "keywords": [
+        "feature",
+        "specification",
+        "level-based",
+        "template",
+        "architecture"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/070-memory-ranking",
+      "description": "Spec: Memory & Folder Ranking Improvements",
+      "keywords": [
+        "spec",
+        "memory",
+        "folder",
+        "ranking",
+        "improvements"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/071-speckit-level-alignment",
+      "description": "Feature Specification: SpecKit Level-Based Template Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "level-based",
+        "template",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/073-speckit-template-optimization",
+      "description": "Feature Specification: SpecKit Template Optimization",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "template",
+        "optimization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/074-speckit-template-optimization-refinement",
+      "description": "Feature Specification: SpecKit Template Optimization Refinement",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "template",
+        "optimization",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-command-allignment",
+      "description": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment",
+      "keywords": [
+        "spec",
+        "076",
+        "post-speckit",
+        "template",
+        "upgrade",
+        "command",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/075-post-speckit-template-upgrade-testing",
+      "description": "Feature Specification: Post-SpecKit Template Upgrade Testing",
+      "keywords": [
+        "feature",
+        "specification",
+        "post-speckit",
+        "template",
+        "upgrade",
+        "testing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/076-post-speckit-template-upgrade-command-allignment",
+      "description": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment",
+      "keywords": [
+        "spec",
+        "076",
+        "post-speckit",
+        "template",
+        "upgrade",
+        "command",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/077-speckit-upgrade-from-research",
+      "description": "Specification: System-Spec-Kit Upgrade from Research Synthesis",
+      "keywords": [
+        "specification",
+        "system-spec-kit",
+        "upgrade",
+        "research",
+        "synthesis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/078-speckit-test-suite",
+      "description": "Feature Specification: System Spec Kit Comprehensive Test Suite",
+      "keywords": [
+        "feature",
+        "specification",
+        "system",
+        "spec",
+        "kit",
+        "comprehensive",
+        "test",
+        "suite"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/079-speckit-cognitive-memory",
+      "description": "Feature Specification: Cognitive Memory Upgrade",
+      "keywords": [
+        "feature",
+        "specification",
+        "cognitive",
+        "memory",
+        "upgrade"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-ai-integration-patterns-research",
+      "description": "AI Integration Patterns Research",
+      "keywords": [
+        "integration",
+        "patterns",
+        "research"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/080-speckit-bug-remediation",
+      "description": "Spec: Spec Kit Bug Remediation",
+      "keywords": [
+        "spec",
+        "kit",
+        "bug",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/082-speckit-reimagined",
+      "description": "Feature Specification: SpecKit Reimagined",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "reimagined"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-memory-command-consolidation",
+      "description": "Memory Command Consolidation",
+      "keywords": [
+        "memory",
+        "command",
+        "consolidation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes",
+      "description": "Spec Kit Reimagined Bug Fixes (Consolidated)",
+      "keywords": [
+        "spec",
+        "kit",
+        "reimagined",
+        "bug",
+        "fixes",
+        "consolidated"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-test-suite",
+      "description": "Feature Specification: SpecKit Reimagined Test Suite",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit",
+        "reimagined",
+        "test",
+        "suite"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/084-generate-context-template-warnings",
+      "description": "Spec: Fix generate-context.js Template Warnings and API Mismatch",
+      "keywords": [
+        "spec",
+        "fix",
+        "generate-context",
+        "template",
+        "warnings",
+        "api",
+        "mismatch"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/085-alignment-file-paths",
+      "description": "085: Alignment Validator File Path Analysis",
+      "keywords": [
+        "085",
+        "alignment",
+        "validator",
+        "file",
+        "path",
+        "analysis"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/086-mcp-embedding-failure",
+      "description": "MCP Embedding Failure Investigation",
+      "keywords": [
+        "mcp",
+        "embedding",
+        "failure",
+        "investigation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/087-speckit-deep-analysis",
+      "description": "Feature Specification: System-Spec-Kit Deep Analysis & Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "system-spec-kit",
+        "deep",
+        "analysis",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/088-speckit-known-limitations-remediation",
+      "description": "Feature Specification: System-Spec-Kit Known Limitations Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "system-spec-kit",
+        "known",
+        "limitations",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/089-speckit-reimagined-refinement",
+      "description": "Spec 089: system-spec-kit Reimagined Refinement",
+      "keywords": [
+        "spec",
+        "089",
+        "system-spec-kit",
+        "reimagined",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/090-opencode-naming-conventions",
+      "description": "Feature Specification: OpenCode Naming Convention Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "opencode",
+        "naming",
+        "convention",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/091-naming-convention-test-suite",
+      "description": "Feature Specification: Naming Convention Test Suite",
+      "keywords": [
+        "feature",
+        "specification",
+        "naming",
+        "convention",
+        "test",
+        "suite"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/002-agent-routing-doc-update",
+      "description": "Feature Specification: Agent Routing Documentation Update",
+      "keywords": [
+        "feature",
+        "specification",
+        "agent",
+        "routing",
+        "documentation",
+        "update"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/003-node-modules-relocation",
+      "description": "Spec 120: Node Modules Relocation",
+      "keywords": [
+        "spec",
+        "120",
+        "node",
+        "modules",
+        "relocation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/004-script-audit-comprehensive",
+      "description": "Feature Specification: Comprehensive Script Audit",
+      "keywords": [
+        "feature",
+        "specification",
+        "comprehensive",
+        "script",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/005-upgrade-speckit-docs",
+      "description": "Feature Specification: OpenCode Documentation Quality Upgrade",
+      "keywords": [
+        "feature",
+        "specification",
+        "opencode",
+        "documentation",
+        "quality",
+        "upgrade"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/006-generate-context-subfolder",
+      "description": "Feature Specification: generate-context.ts Subfolder Support",
+      "keywords": [
+        "feature",
+        "specification",
+        "generate-context",
+        "subfolder",
+        "support"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/007-upgrade-level-script",
+      "description": "Feature Specification: Spec Folder Level Upgrade Script",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "folder",
+        "level",
+        "upgrade",
+        "script"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/008-codex-system-wide-audit",
+      "description": "Feature Specification: System-Wide Remediation of Audit Findings",
+      "keywords": [
+        "feature",
+        "specification",
+        "system-wide",
+        "remediation",
+        "audit",
+        "findings"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/009-full-spec-doc-indexing",
+      "description": "Feature Specification: Full Spec Folder Document Indexing",
+      "keywords": [
+        "feature",
+        "specification",
+        "full",
+        "spec",
+        "folder",
+        "document",
+        "indexing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/010-documentation-alignment",
+      "description": "Feature Specification: Documentation Alignment for Spec 126",
+      "keywords": [
+        "feature",
+        "specification",
+        "documentation",
+        "alignment",
+        "spec",
+        "126"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/011-upgrade-auto-populate",
+      "description": "Feature Specification: AI Auto-Populate on Spec Upgrade",
+      "keywords": [
+        "feature",
+        "specification",
+        "auto-populate",
+        "spec",
+        "upgrade"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/012-spec-doc-anchor-tags",
+      "description": "Feature Specification: Spec Document Anchor Tags",
+      "keywords": [
+        "feature",
+        "specification",
+        "spec",
+        "document",
+        "anchor",
+        "tags"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
+      "description": "Feature Specification: Memory Overhaul & Agent Upgrade Release",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "overhaul",
+        "agent",
+        "upgrade",
+        "release"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-01-readme-alignment",
+      "description": "Task 01 — README Audit & Alignment",
+      "keywords": [
+        "task",
+        "readme",
+        "audit",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment",
+      "description": "Task 02 — SKILL.md & References Audit",
+      "keywords": [
+        "task",
+        "skill",
+        "references",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-03-command-alignment",
+      "description": "Task 03 — Command Configs Audit",
+      "keywords": [
+        "task",
+        "command",
+        "configs",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment",
+      "description": "Task 04 — Agent Configs Audit",
+      "keywords": [
+        "task",
+        "agent",
+        "configs",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-05-changelog-updates",
+      "description": "Task 05 — Changelog Creation",
+      "keywords": [
+        "task",
+        "changelog",
+        "creation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-06-global-readme-update",
+      "description": "Task 06 — Root README Update",
+      "keywords": [
+        "task",
+        "root",
+        "readme",
+        "update"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release",
+      "description": "Task 07 — Tagged Release",
+      "keywords": [
+        "task",
+        "tagged",
+        "release"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/014-memory-index-txt-support",
+      "description": "Feature Specification: Memory Index TXT File Support",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "index",
+        "txt",
+        "file",
+        "support"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/015-anchor-enforcement-automation",
+      "description": "Feature Specification: Anchor Enforcement Automation",
+      "keywords": [
+        "feature",
+        "specification",
+        "anchor",
+        "enforcement",
+        "automation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/016-index-workflows-code",
+      "description": "Feature Specification: Skill References & Assets Indexing",
+      "keywords": [
+        "feature",
+        "specification",
+        "skill",
+        "references",
+        "assets",
+        "indexing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/017-command-adherence",
+      "description": "Feature Specification: Plan-to-Implementation Gate Bypass Fix",
+      "keywords": [
+        "feature",
+        "specification",
+        "plan-to-implementation",
+        "gate",
+        "bypass",
+        "fix"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/018-mcp-issues-after-update",
+      "description": "Feature Specification: MCP Server Failures After Updates",
+      "keywords": [
+        "feature",
+        "specification",
+        "mcp",
+        "server",
+        "failures",
+        "updates"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr",
+      "description": "Feature Specification: Human Voice Rules — Template Integration",
+      "keywords": [
+        "feature",
+        "specification",
+        "human",
+        "voice",
+        "rules",
+        "template",
+        "integration"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+      "description": "Feature Specification: Working Memory + Hybrid RAG Automation",
+      "keywords": [
+        "feature",
+        "specification",
+        "working",
+        "memory",
+        "hybrid",
+        "rag",
+        "automation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5",
+      "description": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "foundation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3",
+      "description": "Phase Package Spec: Extraction and Rollout (Phase 2, Phase 3)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "extraction",
+        "rollout"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4",
+      "description": "Phase Package Spec: Memory Quality (QP-0 through QP-4)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "memory",
+        "quality",
+        "qp-0",
+        "qp-4"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/004-post-research-wave-1-governance-foundations",
+      "description": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "post-research",
+        "wave",
+        "governance",
+        "foundations"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery",
+      "description": "Phase Package Spec: Post-Research Wave 2 (Controlled Delivery)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "post-research",
+        "wave",
+        "controlled",
+        "delivery"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/006-post-research-wave-3-outcome-confirmation",
+      "description": "Phase Package Spec: Post-Research Wave 3 (Outcome Confirmation)",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "post-research",
+        "wave",
+        "outcome",
+        "confirmation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/007-documentation-alignment",
+      "description": "Phase Package Spec: Documentation Alignment",
+      "keywords": [
+        "phase",
+        "package",
+        "spec",
+        "documentation",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/011-create-command-emoji-enforcement",
+      "description": "Feature Specification: Remove Emoji Enforcement from /create Command",
+      "keywords": [
+        "feature",
+        "specification",
+        "remove",
+        "emoji",
+        "enforcement",
+        "create",
+        "command"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/012-create-codex-compatibility",
+      "description": "Feature Specification: Create Commands Codex Compatibility",
+      "keywords": [
+        "feature",
+        "specification",
+        "create",
+        "commands",
+        "codex",
+        "compatibility"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "description": "Feature Specification: Memory Command Dashboard Visual Design System",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "command",
+        "dashboard",
+        "visual",
+        "design",
+        "system"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "description": "Feature Specification: Create Changelog Command",
+      "keywords": [
+        "feature",
+        "specification",
+        "create",
+        "changelog",
+        "command"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "description": "Feature Specification: create:prompt Command",
+      "keywords": [
+        "feature",
+        "specification",
+        "create",
+        "prompt",
+        "command"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2",
+      "keywords": [
+        "spec-core"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
+      "description": "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2",
+      "keywords": [
+        "spec-core"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "description": "SpecKit LEANN Integration",
+      "keywords": [
+        "speckit",
+        "leann",
+        "integration"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/003-command-document-refinment",
+      "description": "Command Document Refinement",
+      "keywords": [
+        "command",
+        "document",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "description": "Command Logic Improvement",
+      "keywords": [
+        "command",
+        "logic",
+        "improvement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/005-subagent-delegation",
+      "description": "Feature Specification: Sub-Agent Delegation for Memory/Handover Commands",
+      "keywords": [
+        "feature",
+        "specification",
+        "sub-agent",
+        "delegation",
+        "memory",
+        "handover",
+        "commands"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/006-debug-stack-agnostic",
+      "description": "Spec: Make Debug Command Stack-Agnostic",
+      "keywords": [
+        "spec",
+        "make",
+        "debug",
+        "command",
+        "stack-agnostic"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic",
+      "description": "Spec 007: Remove Git Branch Logic from YAML Commands",
+      "keywords": [
+        "spec",
+        "007",
+        "remove",
+        "git",
+        "branch",
+        "logic",
+        "yaml",
+        "commands"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/008-fix-create-dispatch",
+      "description": "Feature Specification: Fix Create Command Dispatch Vulnerability + Defensive Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "fix",
+        "create",
+        "command",
+        "dispatch",
+        "vulnerability",
+        "defensive",
+        "hardening"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/009-create-yaml-architecture",
+      "description": "Feature Specification: Create Commands YAML-First Architecture Refactor",
+      "keywords": [
+        "feature",
+        "specification",
+        "create",
+        "commands",
+        "yaml-first",
+        "architecture",
+        "refactor"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/commands/z_archive/010-speckit-codex-compatibility",
+      "description": "Feature Specification: Make spec_kit Commands Codex-Compatible",
+      "keywords": [
+        "feature",
+        "specification",
+        "make",
+        "commands",
+        "codex-compatible"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "description": "Feature Specification: cli-gemini Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "cli-gemini",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-cli/002-cli-codex",
+      "description": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
+      "keywords": [
+        "specification",
+        "cli-gemini",
+        "model",
+        "consolidation",
+        "cli-codex",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+      "description": "Feature Specification: cli-claude-code Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "cli-claude-code",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-cli/004-cli-copilot",
+      "description": "Feature Specification: cli-copilot Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "cli-copilot",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/014-code-review-skill",
+      "description": "Feature Specification: sk-code--review Promotion",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-code-review",
+        "promotion"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/015-sk-code-opencode-refinement",
+      "description": "Feature Specification: sk-code--opencode refinement",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-code-opencode",
+        "refinement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment",
+      "description": "Feature Specification: Workflows-Code Skill Alignment - Codebase Analysis & Updates",
+      "keywords": [
+        "feature",
+        "specification",
+        "workflows-code",
+        "skill",
+        "alignment",
+        "codebase",
+        "analysis",
+        "updates"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa",
+      "description": "Specification: Workflows-Code Reference QA",
+      "keywords": [
+        "specification",
+        "workflows-code",
+        "reference"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/003-barter-alignment",
+      "description": "workflows-code Skill Alignment with Barter Patterns",
+      "keywords": [
+        "workflows-code",
+        "skill",
+        "alignment",
+        "barter",
+        "patterns"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement",
+      "description": "Feature Specification: Code Quality Enforcement - Requirements & User Stories",
+      "keywords": [
+        "feature",
+        "specification",
+        "code",
+        "quality",
+        "enforcement",
+        "requirements",
+        "user",
+        "stories"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes",
+      "description": "Feature Specification: workflows-code Skill Bug Fixes",
+      "keywords": [
+        "feature",
+        "specification",
+        "workflows-code",
+        "skill",
+        "bug",
+        "fixes"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis",
+      "description": "Feature Specification: JavaScript Codebase Alignment with workflows-code Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "javascript",
+        "codebase",
+        "alignment",
+        "workflows-code",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation",
+      "description": "Feature Specification: JavaScript Codebase Remediation",
+      "keywords": [
+        "feature",
+        "specification",
+        "javascript",
+        "codebase",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update",
+      "description": "Performance Patterns Update - workflows-code Skill",
+      "keywords": [
+        "performance",
+        "patterns",
+        "update",
+        "workflows-code",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/008-workflows-code-multi-stack",
+      "description": "workflows-code-multi-stack Skill - Conversion Spec",
+      "keywords": [
+        "workflows-code-multi-stack",
+        "skill",
+        "conversion",
+        "spec"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/009-rename-to-web-dev",
+      "description": "Feature Specification: Rename workflows-code to workflows-code--web-dev",
+      "keywords": [
+        "feature",
+        "specification",
+        "rename",
+        "workflows-code",
+        "workflows-code-web-dev"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/010-performance-teachings",
+      "description": "Spec: Update workflows-code--web-dev with Spec 031 Performance Teachings",
+      "keywords": [
+        "spec",
+        "update",
+        "workflows-code-web-dev",
+        "031",
+        "performance",
+        "teachings"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/011-initial-set-up",
+      "description": "Feature Specification: workflows-code-opencode Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "workflows-code-opencode",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment",
+      "description": "Feature Specification: OpenCode Codebase Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "opencode",
+        "codebase",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening",
+      "description": "Feature Specification: sk-code--opencode Alignment Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-code-opencode",
+        "alignment",
+        "hardening"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/001-reverse-engineer-visual-explainer",
+      "description": "Feature Specification: Reverse-Engineer Doc Visual Skill",
+      "keywords": [
+        "feature",
+        "specification",
+        "reverse-engineer",
+        "doc",
+        "visual",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/002-sk-doc-visual-hardening",
+      "description": "Feature Specification: sk-doc-visual Hardening",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc-visual",
+        "hardening"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/002-sk-doc-visual-hardening/001-online-visual-upgrade",
+      "description": "Feature Specification: Online Visual Upgrade (Next Stage)",
+      "keywords": [
+        "feature",
+        "specification",
+        "online",
+        "visual",
+        "upgrade",
+        "next",
+        "stage"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/003-sk-doc-visual-refinement",
+      "description": "Feature Specification: SpecKit-aligned doc visual upgrade",
+      "keywords": [
+        "feature",
+        "specification",
+        "speckit-aligned",
+        "doc",
+        "visual",
+        "upgrade"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/004-sk-doc-visual-templates",
+      "description": "Feature Specification: sk-doc-visual Template Improvement",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc-visual",
+        "template",
+        "improvement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/006-sk-doc-visual-design-system/001-initial-set-up",
+      "description": "Feature Specification: SK-Doc-Visual Design System",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc-visual",
+        "design",
+        "system"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/006-sk-doc-visual-design-system/002-component-creation",
+      "description": "Feature Specification: SK-Doc-Visual Additional Section and Component Extraction",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc-visual",
+        "additional",
+        "section",
+        "component",
+        "extraction"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc-visual/006-sk-doc-visual-design-system/003-section-layout-variants",
+      "description": "Feature Specification: Section Layout Variants",
+      "keywords": [
+        "feature",
+        "specification",
+        "section",
+        "layout",
+        "variants"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "description": "Spec: Document Specialist Refactor",
+      "keywords": [
+        "spec",
+        "document",
+        "specialist",
+        "refactor"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/002-skill-rename",
+      "description": "Spec: sk-doc Skill Functional Testing",
+      "keywords": [
+        "spec",
+        "sk-doc",
+        "skill",
+        "functional",
+        "testing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement",
+      "description": "H2 Emoji Enforcement - Specification",
+      "keywords": [
+        "emoji",
+        "enforcement",
+        "specification"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/004-style-enforcement",
+      "description": "Spec: Zero-Tolerance Documentation Formatting",
+      "keywords": [
+        "spec",
+        "zero-tolerance",
+        "documentation",
+        "formatting"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs",
+      "description": "Feature Specification: Remove Emojis from All Documentation",
+      "keywords": [
+        "feature",
+        "specification",
+        "remove",
+        "emojis",
+        "documentation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/006-anchor-implementation",
+      "description": "Spec: Retrieval Anchors for Skill Documentation",
+      "keywords": [
+        "spec",
+        "retrieval",
+        "anchors",
+        "skill",
+        "documentation"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/007-sk-doc-rename",
+      "description": "Feature Specification: sk-doc + sk-doc-visual Repo-Wide Rename",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc",
+        "sk-doc-visual",
+        "repo-wide",
+        "rename"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-doc/008-sk-doc-template-folders",
+      "description": "Feature Specification: sk-doc Template Folder Reorganization",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-doc",
+        "template",
+        "folder",
+        "reorganization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-git/001-github-mcp-integration",
+      "description": "GitHub MCP Integration for sk-git Skill",
+      "keywords": [
+        "github",
+        "mcp",
+        "integration",
+        "sk-git",
+        "skill"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-git/002-superset-worktrees",
+      "description": "Feature Specification: sk-git Superset Worktree Alignment",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-git",
+        "superset",
+        "worktree",
+        "alignment"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "description": "Feature Specification: sk-prompt-improver",
+      "keywords": [
+        "feature",
+        "specification",
+        "sk-prompt-improver"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "03--commands-and-skills/skill-advisor/001-skill-advisor-refinement",
+      "description": "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->",
+      "keywords": [
+        "spec-core",
+        "level2-verify",
+        "level3-arch"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/018-opencode-agent-path-only",
@@ -292,7 +3187,7 @@
         "path",
         "only"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/019-incorrect-sub-agent-nesting",
@@ -305,7 +3200,7 @@
         "depth",
         "control"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/020-agent-sonnet-upgrade",
@@ -317,7 +3212,7 @@
         "sonnet",
         "upgrade"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/021-codex-orchestrate",
@@ -331,7 +3226,7 @@
         "codex",
         "optimization"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/022-context-overload-prevention",
@@ -343,7 +3238,7 @@
         "overload",
         "prevention"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/023-gemini-cli-compatibility",
@@ -355,7 +3250,7 @@
         "cli",
         "compatibility"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/025-codex-cli-agents",
@@ -368,7 +3263,7 @@
         "agent",
         "definitions"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     },
     {
       "specFolder": "05--agent-orchestration/026-review-debug-agent-improvement",
@@ -382,7 +3277,375 @@
         "ultra-think",
         "agents"
       ],
-      "lastUpdated": "2026-03-05T12:49:00.242Z"
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/001-agents-from-oh-my-opencode",
+      "description": "Agent Architecture Analysis: oh-my-opencode",
+      "keywords": [
+        "agent",
+        "architecture",
+        "analysis",
+        "oh-my-opencode"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/002-write-agent-enforcement",
+      "description": "Spec: @write Agent Enforcement for /create Commands",
+      "keywords": [
+        "spec",
+        "write",
+        "agent",
+        "enforcement",
+        "create",
+        "commands"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/003-agent-system-upgrade",
+      "description": "Specification: Agent System Upgrade",
+      "keywords": [
+        "specification",
+        "agent",
+        "system",
+        "upgrade"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/004-multi-agent-dispatch",
+      "description": "Spec: Multi-Agent Dispatch for Research and Debug Commands",
+      "keywords": [
+        "spec",
+        "multi-agent",
+        "dispatch",
+        "research",
+        "debug",
+        "commands"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/005-agent-system-improvements",
+      "description": "Feature Specification: Agent System Improvements",
+      "keywords": [
+        "feature",
+        "specification",
+        "agent",
+        "system",
+        "improvements"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/006-orchestrate-context-window",
+      "description": "Feature Specification: Orchestrate Agent Context Window Protection",
+      "keywords": [
+        "feature",
+        "specification",
+        "orchestrate",
+        "agent",
+        "context",
+        "window",
+        "protection"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/007-explore-sub-agent",
+      "description": "Spec: Context Loader Sub-Agent (@context_loader)",
+      "keywords": [
+        "spec",
+        "context",
+        "loader",
+        "sub-agent"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/008-context-loader-enforcement",
+      "description": "Spec: Aggressive @context_loader Enforcement",
+      "keywords": [
+        "spec",
+        "aggressive",
+        "enforcement"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/009-claude-code-subagents",
+      "description": "Feature Specification: Convert OpenCode Agents to Claude Code Subagents",
+      "keywords": [
+        "feature",
+        "specification",
+        "convert",
+        "opencode",
+        "agents",
+        "claude",
+        "code",
+        "subagents"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/010-explore-routing-fix",
+      "description": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent",
+      "keywords": [
+        "spec",
+        "fix",
+        "explore",
+        "direct",
+        "dispatch",
+        "orchestrate",
+        "agent"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/011-context-model-optimization",
+      "description": "Feature Specification: Context Agent Model Optimization",
+      "keywords": [
+        "feature",
+        "specification",
+        "context",
+        "agent",
+        "model",
+        "optimization"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/012-context-model-comparison",
+      "description": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)",
+      "keywords": [
+        "spec",
+        "012",
+        "context",
+        "agent",
+        "model",
+        "comparison",
+        "haiku",
+        "sonnet"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/013-agent-haiku-compatibility",
+      "description": "Feature Specification: Agent Haiku Compatibility",
+      "keywords": [
+        "feature",
+        "specification",
+        "agent",
+        "haiku",
+        "compatibility"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization",
+      "description": "Feature Specification: Command Agent Utilization Audit",
+      "keywords": [
+        "feature",
+        "specification",
+        "command",
+        "agent",
+        "utilization",
+        "audit"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/base-spec-folder",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/error-spec-folder",
+      "description": "Feature Specification: Notification System",
+      "keywords": [
+        "feature",
+        "specification",
+        "notification",
+        "system"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-gate-fail",
+      "description": "Feature Specification: Notification System",
+      "keywords": [
+        "feature",
+        "specification",
+        "notification",
+        "system"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/complete-happy",
+      "description": "Feature Specification: Notification System with In-App Alerts and Email Delivery",
+      "keywords": [
+        "feature",
+        "specification",
+        "notification",
+        "system",
+        "in-app",
+        "alerts",
+        "email",
+        "delivery"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-happy",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-happy",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/handover-increment",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-debug-threshold",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/implement-happy",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/plan-happy",
+      "description": "Feature Specification: JWT Authentication with RS256 Signing",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication",
+        "rs256",
+        "signing"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-happy",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/resume-stale",
+      "description": "Feature Specification: JWT Authentication",
+      "keywords": [
+        "feature",
+        "specification",
+        "jwt",
+        "authentication"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/015-review-agent-model-agnostic",
+      "description": "Feature Specification: Review Agent Model-Agnostic",
+      "keywords": [
+        "feature",
+        "specification",
+        "review",
+        "agent",
+        "model-agnostic"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/016-handover-model-codex-compat",
+      "description": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility",
+      "keywords": [
+        "spec",
+        "016",
+        "handover",
+        "model",
+        "downgrade",
+        "codex",
+        "agent",
+        "compatibility"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
+    },
+    {
+      "specFolder": "05--agent-orchestration/z_archive/017-agent-provider-switch",
+      "description": "Spec 017: Agent Provider Switching with Primary Runtime Path",
+      "keywords": [
+        "spec",
+        "017",
+        "agent",
+        "provider",
+        "switching",
+        "primary",
+        "runtime",
+        "path"
+      ],
+      "lastUpdated": "2026-03-05T15:45:43.051Z"
     }
   ]
 }

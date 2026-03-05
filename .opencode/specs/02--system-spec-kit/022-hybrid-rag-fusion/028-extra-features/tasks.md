@@ -264,7 +264,7 @@ contextType: "implementation"
 - [B] T110 [B:T109] Wire namespace selection into all existing tools
 
 ### P2-11: ANCHOR Tags as Graph Nodes
-- [B] T111 2-day spike: parse `<!-- ANCHOR:name -->` tags from indexed markdown
+- [B] T111 2-day spike: parse `&lt;!-- ANCHOR:name --&gt;` tags from indexed markdown
 - [B] T112 [B:T111] Convert parsed anchors to typed graph nodes (e.g., `ArchitectureNode`, `DecisionNode`)
 - [B] T113 [B:T112] Create edges between anchor nodes based on co-occurrence and spec folder hierarchy
 - [B] T114 [B:T113] Evaluate: does graph-based anchor retrieval outperform current S2 annotation approach?

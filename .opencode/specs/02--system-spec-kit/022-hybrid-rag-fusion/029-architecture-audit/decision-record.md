@@ -1,6 +1,6 @@
 ---
-title: "Decision Record: Scripts vs mcp_server Architecture Refinement [template:level_3/decision-record.md]"
-description: "Architecture decisions for boundary contract, compatibility strategy, and dependency consolidation in Phase 8."
+title: "Decision Record: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/decision-record.md]"
+description: "Architecture decisions for boundary contract, compatibility strategy, dependency consolidation, and merged boundary-remediation risk handling in Phase 8."
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "decision record"
@@ -9,7 +9,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Decision Record: Scripts vs mcp_server Architecture Refinement
+# Decision Record: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
@@ -216,7 +216,7 @@ The triple ultra-think cross-AI review identified 4 CRITICAL evasion vectors in 
 3. Multi-line imports/requires bypass line-by-line scanning
 4. Boundary narrower than architecture intent: only `lib/*` blocked, `core/*` paths pass through
 
-A subsequent 10-agent cross-AI review (2026-03-05, 5 Codex + 5 Gemini) identified 3 additional vectors documented in 030/decision-record.md ADR-001:
+A subsequent 10-agent cross-AI review (2026-03-05, 5 Codex + 5 Gemini) identified 3 additional vectors documented in ADR-006 (merged from former spec 030):
 5. Template literal imports bypass regex extraction
 6. Same-line block comments (`/* ... */`) hide import tokens from line scanners
 7. Transitive barrel re-export checks limited to 1 hop (no deep graph traversal)
@@ -264,7 +264,7 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated above.
 3. **Simplest sufficient?** Yes — incremental approach delivers safety without over-engineering.
 4. **On critical path?** P0 items are critical; P1/P2 are important but not blocking.
-5. **No tech debt?** P2 AST upgrade is deferred tech debt. Current regex has known evasion vectors documented in 030/decision-record.md ADR-001.
+5. **No tech debt?** P2 AST upgrade is deferred tech debt. Current regex has known evasion vectors documented in ADR-006.
 
 ### Implementation
 
@@ -343,3 +343,74 @@ The implementation happened during audit remediation, but the architectural rati
 - Reinforced by `T039` and checklist verification `CHK-203` for `escapeLikePattern` correctness in the consolidated module.
 - Verified through checklist items `CHK-013` (cycle removed) and `CHK-223` (growth policy documented).
 <!-- /ANCHOR:adr-005 -->
+
+<!-- ANCHOR:adr-006 -->
+## ADR-006: Regex Evasion Risk Acceptance with Time-Bounded AST Hardening
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-05 |
+| **Deciders** | System-spec-kit maintainers |
+| **Source** | Merged from former `030-architecture-boundary-remediation` ADR-001 |
+
+### Context
+
+Cross-AI review (2026-03-05, 5 Codex xhigh + 5 Gemini 3.1 Pro) identified enforcement bypass vectors that remain partially exposed in regex-based import-policy scanning. Combined with prior ADR-004 findings, the active vector set includes:
+
+1. Template literal import variants can evade some regex extraction paths.
+2. Same-line block comments can hide import-like tokens from line scanners.
+3. Transitive boundary checks are currently limited in depth.
+4. Relative-path and multi-line import variants can bypass simplistic scanning patterns.
+5. Dynamic import forms require sustained hardening to stay covered.
+
+### Constraints
+
+- P0/P1 enforcement must remain fast and CI-friendly.
+- Immediate AST migration increases implementation scope and delivery risk.
+- Allowlist governance workflows must remain compatible during transition.
+
+### Decision
+
+**We chose**: Accept short-term residual regex-evasion risk while scheduling AST-based enforcement hardening as explicit, time-bounded technical debt.
+
+**How it works**:
+- Keep current enforcement checks active for immediate guardrails.
+- Track known bypass vectors as explicit accepted risk.
+- Use Phase 7 carry-over tasks to tighten coverage and governance.
+- Reserve AST/parser upgrade as the deeper structural closure path.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Accept risk + staged hardening (Chosen)** | Maintains delivery momentum, keeps CI stable | Temporary bypass surface remains | 8/10 |
+| Immediate AST fast-track | Higher short-term detection ceiling | Larger blast radius and regression risk | 5/10 |
+| Keep regex checks indefinitely | Lowest immediate effort | Known evasion vectors remain unresolved | 2/10 |
+
+**Why this one**: It balances immediate policy enforcement with a controlled path toward stronger parsing.
+
+### Consequences
+
+**What improves**:
+- Risk posture is explicit and documented in canonical decision history.
+- Carry-over remediation is tied to concrete Phase 7 tasks and checklist gates.
+
+**What it costs**:
+- Temporary exposure to known regex limitations until deeper hardening is implemented.
+
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — bypass vectors are repeatedly validated by cross-AI review.
+2. **Alternatives (≥2)?** Yes — immediate AST and indefinite regex-only options were evaluated.
+3. **Simplest sufficient?** Yes — staged hardening improves safety without forcing a high-risk rewrite now.
+4. **On critical path?** Yes — this decision governs completion criteria for merged carry-over remediation.
+5. **No tech debt?** Controlled — debt is explicit, bounded, and tracked in Phase 7 completion checks.
+
+### Implementation
+
+- Merged from former `030-architecture-boundary-remediation/decision-record.md` ADR-001.
+- Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
+<!-- /ANCHOR:adr-006 -->

@@ -1,7 +1,7 @@
 # Unified Cross-AI Review Synthesis
 
 **Date:** 2026-03-05
-**Specs Reviewed:** 029-architecture-audit, 030-architecture-boundary-remediation
+**Specs Reviewed:** 029-architecture-audit, 030-architecture-boundary-remediation (now archived at `029-architecture-audit/scratch/merged-030-architecture-boundary-remediation`)
 **Reviewers:** 5x Codex xhigh (GPT-5.3), 5x Gemini 3.1 Pro Preview
 **Synthesized by:** Claude Opus 4.6 (orchestrator)
 

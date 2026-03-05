@@ -1,6 +1,6 @@
 ---
-title: "Tasks: Scripts vs mcp_server Architecture Refinement [template:level_3/tasks.md]"
-description: "Atomic tasks for boundary clarity, dependency direction cleanup, and documentation consolidation."
+title: "Tasks: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/tasks.md]"
+description: "Atomic tasks for boundary clarity, dependency direction cleanup, remediation carry-over, and documentation consolidation."
 SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "architecture tasks"
@@ -9,7 +9,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Tasks: Scripts vs mcp_server Architecture Refinement
+# Tasks: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -171,6 +171,36 @@ Adds the complete remediation plan from the phase-wide implementation audit acro
 - [x] T070 Update this phase folder (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) with closure evidence for T050-T069 - WHY: maintain audit trail and handover quality - Acceptance: docs reflect final status with command/file evidence. [DONE: phase docs updated with closure status, evidence pointers, and verification command outputs]
 <!-- /ANCHOR:phase-6 -->
 
+<!-- ANCHOR:phase-7 -->
+## Phase 7: Boundary Remediation Carry-Over (Merged from Former 030)
+
+### Phase 7A: Memory Indexer + Shared Config Migration
+
+- [ ] T074 Add `DB_UPDATED_FILE` export to `.opencode/skill/system-spec-kit/shared/config.ts` - WHY: remove cross-boundary import pressure from `mcp_server/core/config` - Acceptance: shared config exports `DB_UPDATED_FILE` with no behavior change.
+- [ ] T075 Update `.opencode/skill/system-spec-kit/mcp_server/core/config.ts` to re-export `DB_UPDATED_FILE` from shared config - WHY: preserve backward compatibility for existing runtime/core consumers - Acceptance: old import path still works via re-export.
+- [ ] T076 Migrate vector index import in `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` to `@spec-kit/mcp-server/api/search` - WHY: remove avoidable direct internal import coupling - Acceptance: memory-indexer no longer imports vector index from runtime internals.
+- [ ] T077 Migrate `DB_UPDATED_FILE` import in `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` to `@spec-kit/shared/config` - WHY: align constant ownership with shared layer boundary - Acceptance: scripts-side import uses shared config path only.
+- [ ] T078 Remove resolved memory-indexer exceptions from `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` - WHY: allowlist should only keep legitimate residual exceptions - Acceptance: removed entries have no remaining violations.
+- [ ] T079 Run `npx tsc --noEmit` after Phase 7A - WHY: verify type-safety after import and ownership migration - Acceptance: zero TypeScript errors.
+- [ ] T080 Run `npm run check --workspace=scripts` after Phase 7A - WHY: verify boundary enforcement passes with reduced exceptions - Acceptance: all check stages pass.
+
+### Phase 7B: Reindex Audit + API Surface Decisioning
+
+- [ ] T081 Audit `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts` for `mcp_server/lib/*` and `mcp_server/core/*` dependencies - WHY: determine which exceptions are still legitimate - Acceptance: import inventory documented with API-available vs internal-only classification.
+- [ ] T082 Verify current API coverage in `.opencode/skill/system-spec-kit/mcp_server/api/search.ts` and `.opencode/skill/system-spec-kit/mcp_server/api/index.ts` - WHY: avoid unnecessary new API exports - Acceptance: coverage map identifies gaps and no-op areas.
+- [ ] T083 Expand API surface only for encapsulation-safe missing dependencies (if needed) in `.opencode/skill/system-spec-kit/mcp_server/api/` - WHY: reduce internal coupling without exposing unstable internals - Acceptance: new exports are minimal and documented.
+- [ ] T084 Migrate feasible imports in `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts` to API/shared surfaces - WHY: close avoidable boundary exceptions - Acceptance: migrated imports compile and pass checks.
+- [ ] T085 Narrow or retain wildcard exceptions in `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` with explicit rationale - WHY: residual exceptions must be intentional and time-bounded - Acceptance: each retained wildcard has owner, rationale, and expiry metadata.
+
+### Phase 7C: Enforcement Automation + Documentation Sync
+
+- [ ] T086 Add or confirm mandatory CI boundary-check stage for pull requests - WHY: manual-only enforcement is insufficient for policy integrity - Acceptance: CI blocks merge on boundary-check failure.
+- [ ] T087 Update `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` current-exceptions table after Phase 7 migrations - WHY: architecture docs must reflect runtime policy reality - Acceptance: exception table and allowlist entries match exactly.
+- [ ] T088 Refresh allowlist governance metadata (`lastReviewedAt`, `expiresAt`, ownership fields) in `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` - WHY: retained exceptions require active governance - Acceptance: all retained entries include current review metadata.
+- [ ] T089 Run final Phase 7 verification (`npx tsc --noEmit` + `npm run check --workspace=scripts`) and capture evidence in this spec folder - WHY: completion claims require reproducible proof - Acceptance: both commands pass with logged evidence.
+- [ ] T090 Update `implementation-summary.md` with Phase 7 outcomes and merged-spec closure notes - WHY: preserve post-merge continuity and handover quality - Acceptance: summary reflects migration decisions, retained exceptions, and CI enforcement state.
+<!-- /ANCHOR:phase-7 -->
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -183,6 +213,7 @@ Adds the complete remediation plan from the phase-wide implementation audit acro
 - [x] Review P2 nice-to-have items completed or documented deferral (T030-T038). [DONE: all 9 P2 items completed — T030 block comments, T031 behavioral tests, T032 cross-links, T033 growth policy, T034 AST evaluation, T035 transitive deps, T036 ADR-003 update, T037 deprecation criteria, T038 validation]
 - [x] Phase 5 architecture enforcement gaps completed (T046-T049). [DONE: checker implemented, check pipeline extended to 4 stages, boundary enforcement table and eval inventory updated]
 - [x] Phase 6 feature-catalog parity remediation completed (T050-T073). [DONE: behavior + doc parity + memory-quality gates + 5-agent re-audit closure recorded]
+- [ ] Phase 7 boundary remediation carry-over tasks completed (T074-T090).
 <!-- /ANCHOR:completion -->
 
 ## Cross-References

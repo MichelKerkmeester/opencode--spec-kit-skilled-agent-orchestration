@@ -1,6 +1,6 @@
 ---
-title: "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit [template:level_3/spec.md]"
-description: "Audit and clarify ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), with concrete reorganization recommendations and risk assessment."
+title: "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation [template:level_3/spec.md]"
+description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "architecture audit"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit
+# Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
@@ -19,6 +19,8 @@ contextType: "architecture"
 ## EXECUTIVE SUMMARY
 
 This phase performs a full architecture audit of `.opencode/skill/system-spec-kit/` with specific focus on the boundary between root `scripts/` and `mcp_server/`. The audit confirms overlapping concerns in memory/index/eval/tooling, partial boundary enforcement, and concrete dependency-direction risks that should be addressed with documentation and guardrails first, then selective refactoring.
+
+As of 2026-03-05, the follow-up boundary remediation work previously tracked in `030-architecture-boundary-remediation` is merged into this spec as continuation scope.
 
 **Key Decisions**: Define a strict runtime-vs-CLI boundary contract; use API-first imports for cross-boundary consumers.
 
@@ -119,6 +121,14 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-004 | Phase 6 | T070 |
 | REQ-005 | Phase 4, Phase 6 | T038, T070 |
 | REQ-007 | Phase 0, Phase 3, Phase 5 | T000, T017, T047, T049 |
+| REQ-011 | Phase 7 | T076, T078 |
+| REQ-012 | Phase 7 | T074, T075, T077 |
+| REQ-013 | Phase 7 | T078, T085, T088 |
+| REQ-014 | Phase 7 | T081, T082 |
+| REQ-015 | Phase 7 | T083, T084 |
+| REQ-016 | Phase 7 | T086 |
+| REQ-017 | Phase 7 | T079, T089 |
+| REQ-018 | Phase 7 | T087, T088 |
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
@@ -249,6 +259,43 @@ Agent 4 was dispatched after Agents 1-3 to provide a second code-quality perspec
 
 All remediation items are tracked as Phase 4 tasks (T021-T045) in `tasks.md`.
 <!-- /ANCHOR:review-findings -->
+
+## 14. MERGED SPEC 030 CONTINUATION
+<!-- ANCHOR:merged-030 -->
+
+Former spec `030-architecture-boundary-remediation` is consolidated into this spec folder to keep one canonical architecture-boundary track.
+
+### Archived Source Location
+- Archived folder: `scratch/merged-030-architecture-boundary-remediation/`
+- Preserved documents: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
+
+### Carry-Over Scope (Pending)
+- Migrate `scripts/core/memory-indexer.ts` imports from runtime internals to API/shared surfaces.
+- Audit `scripts/memory/reindex-embeddings.ts` imports and reduce avoidable deep/internal coupling.
+- Expand API surface only where encapsulation remains intact.
+- Remove/narrow obsolete allowlist exceptions after migrations.
+- Wire mandatory CI enforcement of boundary checks for pull requests.
+
+### Carry-Over Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-011 | Migrate `memory-indexer` vector index import to API surface | `check-no-mcp-lib-imports.ts` passes without the legacy memory-indexer exception |
+| REQ-012 | Move `DB_UPDATED_FILE` ownership to shared config | `memory-indexer` imports shared config, runtime core config remains backward compatible via re-export |
+| REQ-013 | Reduce resolved allowlist exceptions | Remaining entries are justified, dated, and scoped |
+| REQ-014 | Reindex import audit completed | `reindex-embeddings.ts` import inventory documents what can/cannot migrate to API |
+| REQ-015 | API surface expansion is explicit and minimal | New exports documented with encapsulation rationale |
+| REQ-016 | CI-level enforcement is mandatory | Boundary checks run on every PR and fail the workflow on violations |
+| REQ-017 | TypeScript compilation remains clean | `npx tsc --noEmit` passes |
+| REQ-018 | Architecture exceptions documentation stays synchronized | `ARCHITECTURE_BOUNDARIES.md` and allowlist reflect post-migration state |
+
+### Carry-Over Success Criteria
+
+- **SC-005**: Allowlist count and scope are reduced without adding new forbidden-direction imports.
+- **SC-006**: `npm run check` remains passing with all boundary enforcement stages active.
+- **SC-007**: CI workflow blocks merges on boundary-check failures.
+- **SC-008**: No unresolved P0/P1 remediation items remain for merged boundary-continuation tasks.
+<!-- /ANCHOR:merged-030 -->
 
 ## RELATED DOCUMENTS
 

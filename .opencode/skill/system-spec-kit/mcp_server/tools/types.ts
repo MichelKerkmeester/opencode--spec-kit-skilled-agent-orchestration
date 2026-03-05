@@ -48,6 +48,7 @@ export interface ContextArgs {
   sessionId?: string;
   enableDedup?: boolean;
   includeContent?: boolean;
+  includeTrace?: boolean;
   tokenUsage?: number;
   anchors?: string[];
 }

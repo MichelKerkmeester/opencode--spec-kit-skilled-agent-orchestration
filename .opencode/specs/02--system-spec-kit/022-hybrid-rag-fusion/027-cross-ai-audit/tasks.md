@@ -396,7 +396,7 @@ contextType: "implementation"
 ## Tier 4: Cross-AI Validation Review Findings (2026-03-02)
 
 **Source:** Independent reviews by Gemini 3.1 Pro (Grade: A) and Codex gpt-5.3-codex (Grade: C+)
-**Effort:** 8-12h optimistic / 16-24h realistic | **Status:** Complete (14/14 implemented)
+**Effort:** 8-12h optimistic / 16-24h realistic | **Status:** Tier 4 findings addressed: 13 implemented + 1 deferred
 **Note:** Codex was significantly more critical than Gemini. Findings below are deduplicated; source attribution preserved.
 
 ### CR-P0-1: Fix test suite false-pass risk [P0] [Codex]
@@ -406,7 +406,7 @@ contextType: "implementation"
 - [x] Remove/replace swallowed import failures at L134, L137 — must fail-fast on broken imports
 - [x] Convert early-return skip patterns at L482, L824 into explicit `test.skip()` or `beforeAll` failures
 - [x] Strengthen permissive assertions (L885, L943, L1046) — replace `toBeDefined`/truthy with exact value/type checks
-- [x] 21 `if (!optionalMod) return;` silent-skip patterns converted to `it.skipIf(!optionalMod)`. 5 optional module types. 65 required-module `throw` guards preserved.
+- [x] 21 `if (!optionalMod) return;` silent-skip patterns converted to runtime `ctx.skip()` guards in optional-module tests. 5 optional module types. 65 required-module `throw` guards preserved.
 - [x] Verify: 44 pass, 21 skipped, 0 fail.
 
 **Acceptance:** Test suite fails on broken imports. No early-return patterns that silently skip tests. Contract-level assertions on handler outputs.
@@ -520,17 +520,18 @@ contextType: "implementation"
 
 **Acceptance:** Dashboard does not silently discard data. Either configurable limit or logged warning.
 
-### CR-P2-4: Decompose memory-save.ts [P2] [Gemini]
+### CR-P2-4: Decompose memory-save.ts [P2] [Gemini] (Deferred)
 
 **File:** `mcp_server/handlers/memory-save.ts` | **Effort:** 4.0h opt / 8h real
 
-- [x] Extract chunking logic into separate module
-- [x] Extract quality loops into separate module
-- [x] Extract duplicate detection into separate module
-- [x] Extract embedding orchestration into separate module
-- [x] Currently 2,700+ LOC — largest single file
+- [ ] Extract chunking logic into separate module
+- [ ] Extract quality loops into separate module
+- [ ] Extract duplicate detection into separate module
+- [ ] Extract embedding orchestration into separate module
+- [ ] Currently 2,700+ LOC — largest single file
+- [ ] Deferred/out-of-scope for this spec's implementation target: strict <1000 LOC orchestration acceptance not met
 
-**Acceptance:** `memory-save.ts` reduced to orchestration layer. Extracted modules independently testable.
+**Acceptance:** Deferred in this spec. Requires separate follow-up to meet strict <1000 LOC orchestration acceptance target.
 
 ### CR-P2-5: Harden non-finite score handling [P2] [Codex]
 
@@ -725,7 +726,7 @@ contextType: "implementation"
 
 **Source:** Independent reviews by Gemini 3.1 Pro + Codex gpt-5.3-codex
 
-**IMPLEMENTED (14/14 — CR-P2-4 deferred as out-of-scope refactoring) — Codex 5.3, reviewed by Gemini 3.1 Pro + Claude Opus 4.6. CR-P0-1 completed Attempt 6:**
+**Tier 4: 13/14 implemented; CR-P2-4 deferred — Codex 5.3, reviewed by Gemini 3.1 Pro + Claude Opus 4.6. CR-P0-1 completed Attempt 6 with runtime `ctx.skip()` guards in optional-module tests:**
 
 | ID | Title | Severity | Source | File(s) |
 |----|-------|:--------:|:------:|---------|

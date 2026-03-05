@@ -338,7 +338,7 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
-  memory_context: ['input', 'mode', 'intent', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'tokenUsage', 'anchors'],
+  memory_context: ['input', 'mode', 'intent', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors'],
   memory_search: ['query', 'concepts', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace'],
   memory_match_triggers: ['prompt', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
   memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding'],

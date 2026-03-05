@@ -115,6 +115,27 @@ describe('PI-B3: getSpecsBasePaths', () => {
     expect(result).toContain(specsDir);
     expect(result).toContain(openCodeSpecsDir);
   });
+
+  it('T046-05a: deduplicates specs symlink that points to .opencode/specs', () => {
+    const openCodeSpecsDir = path.join(tmpDir, '.opencode', 'specs');
+    const specsLinkPath = path.join(tmpDir, 'specs');
+    fs.mkdirSync(openCodeSpecsDir, { recursive: true });
+
+    try {
+      fs.symlinkSync(openCodeSpecsDir, specsLinkPath, 'dir');
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === 'EPERM' || code === 'EEXIST') {
+        expect(true).toBe(true);
+        return;
+      }
+      throw error;
+    }
+
+    const result = getSpecsBasePaths(tmpDir);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toBe(path.resolve(specsLinkPath));
+  });
 });
 
 /* ═══════════════════════════════════════════════════════════════
@@ -183,6 +204,55 @@ describe('PI-B3: isCacheStale', () => {
     };
 
     expect(isCacheStale(cache, [specsDir])).toBe(true);
+  });
+
+  it('T046-10a: detects staleness in 5-level nested spec paths', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const nestedSpecDir = path.join(
+      specsDir,
+      '001-parent',
+      '010-phase',
+      '020-subphase',
+      '030-workstream',
+      '040-task',
+    );
+    fs.mkdirSync(nestedSpecDir, { recursive: true });
+    fs.writeFileSync(path.join(nestedSpecDir, 'spec.md'), '# Deeply Nested Spec', 'utf-8');
+
+    const cache: DescriptionCache = {
+      version: 1,
+      generated: new Date('2020-01-01').toISOString(),
+      folders: [],
+    };
+
+    expect(isCacheStale(cache, [specsDir])).toBe(true);
+  });
+
+  it('T046-10b: ignores spec.md deeper than max discovery depth (8)', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const depth9SpecDir = path.join(
+      specsDir,
+      '001-l1',
+      '002-l2',
+      '003-l3',
+      '004-l4',
+      '005-l5',
+      '006-l6',
+      '007-l7',
+      '008-l8',
+      '009-l9',
+    );
+    fs.mkdirSync(depth9SpecDir, { recursive: true });
+    fs.writeFileSync(path.join(depth9SpecDir, 'spec.md'), '# Depth 9 Spec', 'utf-8');
+
+    const cache: DescriptionCache = {
+      version: 1,
+      generated: new Date('2020-01-01').toISOString(),
+      folders: [],
+    };
+
+    expect(isCacheStale(cache, [specsDir])).toBe(false);
+    expect(generateFolderDescriptions([specsDir]).folders).toHaveLength(0);
   });
 });
 

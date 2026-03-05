@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary: Refinement Phase 8"
-description: "Phase 8 architecture audit execution summary for scripts vs mcp_server boundary refinement."
+title: "Implementation Summary: Refinement Phase 8 + Boundary Remediation"
+description: "Phase 8 architecture audit and merged boundary-remediation execution summary for scripts vs mcp_server boundary work."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "020 implementation summary"
@@ -8,7 +8,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "architecture"
 ---
-# Implementation Summary: Refinement Phase 8
+# Implementation Summary: Refinement Phase 8 + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
@@ -16,6 +16,8 @@ contextType: "architecture"
 ## Overview
 
 This phase now reflects end-to-end closure through Phase 6: all 76 task entries are completed (T000-T073 plus split tasks T013a/T013b/T013c). Initial delivery covered T000-T020 (core architecture refinement), then follow-up remediation/parity waves closed T021-T073 with enforcement hardening, feature-catalog parity, memory-quality gates, and re-audit verification.
+
+As of 2026-03-05, former spec `030-architecture-boundary-remediation` is merged into this phase folder. Its pending implementation work is now tracked as Phase 7 (`T074-T090`) in this spec.
 
 ## Approach
 
@@ -183,3 +185,10 @@ Phase 6 (`T050-T073`) is now closed with code-contract verification, documentati
   - `scratch/t069-audit-agent-4-nash.md`
   - `scratch/t069-audit-agent-5-aristotle.md`
   - `scratch/t069-audit-summary.md`
+
+## Spec Consolidation (2026-03-05)
+
+- Former folder `030-architecture-boundary-remediation/` was merged into this spec to keep one canonical architecture-boundary track.
+- Archived source materials are preserved at `scratch/merged-030-architecture-boundary-remediation/`.
+- Decision history from former 030 ADR-001 is now canonicalized as ADR-006 in `decision-record.md`.
+- Pending carry-over implementation is tracked in `tasks.md` (Phase 7, `T074-T090`) and `checklist.md` (Phase 7 checks `CHK-500` through `CHK-522`).

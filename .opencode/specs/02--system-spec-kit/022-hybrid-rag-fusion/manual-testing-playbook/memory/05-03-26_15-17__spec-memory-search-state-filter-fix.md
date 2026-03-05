@@ -1,5 +1,5 @@
 ---
-title: "Spec: Memory Search State [033-memory-search-state-filter-fix/05-03-26_14-56__spec-memory-search-state-filter-fix]"
+title: "Spec: Memory Search State [031-memory-search-state-filter-fix/05-03-26_15-17__spec-memory-search-state-filter-fix]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -42,8 +42,8 @@ contextType: "general"
 | **Meta Data** | **Value** |
 |:--------------|:----------|
 | Session Date | 2026-03-05 |
-| Session ID | session-1772718976960-owr2i79ge |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix |
+| Session ID | session-1772720226756-wz6kpuh9p |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -52,8 +52,8 @@ contextType: "general"
 | Decisions Made | 0 |
 | Follow-up Items Recorded | 0 |
 | Created At | 2026-03-05 |
-| Created At (Epoch) | 1772718976 |
-| Last Accessed (Epoch) | 1772718976 |
+| Created At (Epoch) | 1772720226 |
+| Last Accessed (Epoch) | 1772720226 |
 | Access Count | 1 |
 
 ---
@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -162,7 +162,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `memory` | `system` | `skill graph` | `system spec kit/022 hybrid rag fusion/033 memory search state filter fix` | `skill` | `graph` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/033` | `search` | 
+**Key Topics:** `memory` | `system` | `skill graph` | `system spec kit/022 hybrid rag fusion/031 memory search state filter fix` | `skill` | `graph` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/031` | `search` | 
 
 ---
 
@@ -262,7 +262,7 @@ The core of the skill graph relies on an in-memory engine (SGQS - Ski
 
 ## 3. DETAILED CHANGES
 
-<!-- ANCHOR:implementation-here-review-work-completed-c7dc7127 -->
+<!-- ANCHOR:implementation-here-review-work-completed-023b715c -->
 ### FEATURE: Here is a review of the work completed according to the `implementation-summary.
 
 Here is a review of the work completed according to the `implementation-summary.md` for the `036-skill-graphs` spec:
@@ -273,9 +273,9 @@ The `036-skill-graphs` migration is **100% complete** (9/9 tasks done). The proj
 ### 1. Skill Graph Migration (9/9 Skills Complete)
 A total of **72 nodes** were created across all 9 sk
 
-<!-- /ANCHOR:implementation-here-review-work-completed-c7dc7127 -->
+<!-- /ANCHOR:implementation-here-review-work-completed-023b715c -->
 
-<!-- ANCHOR:implementation-based-analysis-036skillgraphs-implementation-2f7e4e2a -->
+<!-- ANCHOR:implementation-based-analysis-036skillgraphs-implementation-0e6d87e4 -->
 ### FEATURE: Based on an analysis of the `036-skill-graphs` implementation and its associated
 
 Based on an analysis of the `036-skill-graphs` implementation and its associated scripts, the Skill Graph system and its memory integration consist of an elegant, entirely in-memory graph database (SGQS) that enriches the existing semantic memory pipeline without requiring external infrastructure like Neo4j.
@@ -285,294 +285,294 @@ Here is an analysis of how the scripts and the Memory MCP integration work:
 ### 1. The Skill Graph Query System (SGQS)
 The core of the skill graph relies on an in-memory engine (SGQS - Ski
 
-<!-- /ANCHOR:implementation-based-analysis-036skillgraphs-implementation-2f7e4e2a -->
+<!-- /ANCHOR:implementation-based-analysis-036skillgraphs-implementation-0e6d87e4 -->
 
-<!-- ANCHOR:implementation-tool-grep-d7fa0d5a -->
+<!-- ANCHOR:implementation-tool-grep-f08b387b -->
 ### OBSERVATION: Tool: grep
 
 SPECKIT_
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts
 **Details:** Tool: grep | Status: completed
-<!-- /ANCHOR:implementation-tool-grep-d7fa0d5a -->
+<!-- /ANCHOR:implementation-tool-grep-f08b387b -->
 
-<!-- ANCHOR:implementation-tool-glob-25a042ae -->
+<!-- ANCHOR:implementation-tool-glob-3095f5e1 -->
 ### OBSERVATION: Tool: glob
 
 .opencode/skill/system-spec-kit/mcp_server
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server
 **Details:** Tool: glob | Status: completed
-<!-- /ANCHOR:implementation-tool-glob-25a042ae -->
+<!-- /ANCHOR:implementation-tool-glob-3095f5e1 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/context-server.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-2 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-2 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-2 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-2 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-3 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-3 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tools/index.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/index.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-3 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-3 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-4 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-4 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tools/causal-tools.ts (repeated 3 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/causal-tools.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-4 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-4 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-5 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-5 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/scripts/sgqs/index.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/sgqs/index.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-5 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-5 -->
 
-<!-- ANCHOR:implementation-tool-write-3244a489 -->
+<!-- ANCHOR:implementation-tool-write-d674cf74 -->
 ### IMPLEMENTATION: Tool: write
 
 .opencode/skill/system-spec-kit/mcp_server/handlers/sgqs-query.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/sgqs-query.ts
 **Details:** Tool: write | Status: completed
-<!-- /ANCHOR:implementation-tool-write-3244a489 -->
+<!-- /ANCHOR:implementation-tool-write-d674cf74 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-6 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-6 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-6 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-6 -->
 
-<!-- ANCHOR:implementation-tool-edit-117873c1 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f -->
 ### IMPLEMENTATION: Tool: edit
 
 .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts (repeated 3 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts
 **Details:** Tool: edit | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-117873c1 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f -->
 
-<!-- ANCHOR:implementation-tool-edit-117873c1-2 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-2 -->
 ### IMPLEMENTATION: Tool: edit
 
 .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
 **Details:** Tool: edit | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-117873c1-2 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-2 -->
 
-<!-- ANCHOR:implementation-tool-edit-117873c1-3 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-3 -->
 ### IMPLEMENTATION: Tool: edit
 
 .opencode/skill/system-spec-kit/mcp_server/tools/causal-tools.ts (repeated 4 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/causal-tools.ts
 **Details:** Tool: edit | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-117873c1-3 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-3 -->
 
-<!-- ANCHOR:implementation-tool-edit-117873c1-4 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-4 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/types.ts
 **Details:** Tool: edit | Status: error | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-117873c1-4 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-4 -->
 
-<!-- ANCHOR:implementation-tool-read-fe4cc335-7 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-7 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tools/types.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/types.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-fe4cc335-7 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-7 -->
 
-<!-- ANCHOR:implementation-tool-bash-e444b875 -->
+<!-- ANCHOR:implementation-tool-bash-e136b0fe -->
 ### OBSERVATION: Tool: bash
 
 Build the mcp server to test compilation (repeated 9 times)
 
 **Details:** Tool: bash | Status: completed
-<!-- /ANCHOR:implementation-tool-bash-e444b875 -->
+<!-- /ANCHOR:implementation-tool-bash-e136b0fe -->
 
-<!-- ANCHOR:integration-tool-read-e2537498 -->
+<!-- ANCHOR:integration-tool-read-82a21f96 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/package.json
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/package.json
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:integration-tool-read-e2537498 -->
+<!-- /ANCHOR:integration-tool-read-82a21f96 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-8 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-8 -->
 
-<!-- ANCHOR:implementation-tool-grep-a9eb8c3d -->
+<!-- ANCHOR:implementation-tool-grep-f08b387b-2 -->
 ### OBSERVATION: Tool: grep
 
 from '\.\./\.\./scripts (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server
 **Details:** Tool: grep | Status: completed
-<!-- /ANCHOR:implementation-tool-grep-a9eb8c3d -->
+<!-- /ANCHOR:implementation-tool-grep-f08b387b-2 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498-2 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-9 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/core/index.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/core/index.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498-2 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-9 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-5 -->
 ### IMPLEMENTATION: Tool: edit
 
 .opencode/skill/system-spec-kit/mcp_server/handlers/sgqs-query.ts (repeated 3 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/sgqs-query.ts
 **Details:** Tool: edit | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-5 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498-3 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-10 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/shared/types.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/types.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498-3 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-10 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498-4 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-11 -->
 ### BUGFIX: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498-4 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-11 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-2 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-6 -->
 ### IMPLEMENTATION: Tool: edit
 
 .opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts
 **Details:** Tool: edit | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-2 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-6 -->
 
-<!-- ANCHOR:implementation-tool-grep-a9eb8c3d-2 -->
+<!-- ANCHOR:implementation-tool-grep-f08b387b-3 -->
 ### OBSERVATION: Tool: grep
 
 memory_causal_unlink
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit
 **Details:** Tool: grep | Status: completed
-<!-- /ANCHOR:implementation-tool-grep-a9eb8c3d-2 -->
+<!-- /ANCHOR:implementation-tool-grep-f08b387b-3 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-3 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-7 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts
 **Details:** Tool: edit | Status: error | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-3 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-7 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498-5 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-12 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498-5 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-12 -->
 
-<!-- ANCHOR:implementation-tool-grep-a9eb8c3d-3 -->
+<!-- ANCHOR:implementation-tool-grep-f08b387b-4 -->
 ### OBSERVATION: Tool: grep
 
 memory_causal_unlink (repeated 2 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests
 **Details:** Tool: grep | Status: completed
-<!-- /ANCHOR:implementation-tool-grep-a9eb8c3d-3 -->
+<!-- /ANCHOR:implementation-tool-grep-f08b387b-4 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-4 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-8 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts
 **Details:** Tool: edit | Status: error
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-4 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-8 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-5 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-9 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit (repeated 6 times)
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts
 **Details:** Tool: edit | Status: error | Status: completed
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-5 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-9 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-6 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-10 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mcp-tool-dispatch.vitest.ts
 **Details:** Tool: edit | Status: error
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-6 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-10 -->
 
-<!-- ANCHOR:implementation-tool-edit-c9e7b3d2-7 -->
+<!-- ANCHOR:implementation-tool-edit-acaf3d7f-11 -->
 ### IMPLEMENTATION: Tool: edit
 
 Executed edit
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mcp-input-validation.vitest.ts
 **Details:** Tool: edit | Status: error
-<!-- /ANCHOR:implementation-tool-edit-c9e7b3d2-7 -->
+<!-- /ANCHOR:implementation-tool-edit-acaf3d7f-11 -->
 
-<!-- ANCHOR:implementation-tool-read-e2537498-6 -->
+<!-- ANCHOR:implementation-tool-read-82a21f96-13 -->
 ### OBSERVATION: Tool: read
 
 .opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts
 
 **Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts
 **Details:** Tool: read | Status: completed
-<!-- /ANCHOR:implementation-tool-read-e2537498-6 -->
+<!-- /ANCHOR:implementation-tool-read-82a21f96-13 -->
 
 <!-- /ANCHOR:detailed-changes -->
 
@@ -667,9 +667,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -681,16 +681,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix --force
 ```
 
 ### Recovery Priority
@@ -762,8 +762,8 @@ Learning metrics will be calculated when both preflight and postflight data are 
 
 ```yaml
 # Core Identifiers
-session_id: "session-1772718976960-owr2i79ge"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix"
+session_id: "session-1772720226756-wz6kpuh9p"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix"
 channel: "main"
 
 # Classification
@@ -813,8 +813,8 @@ causal_links:
 
 # Timestamps (for decay calculations)
 created_at: "2026-03-05"
-created_at_epoch: 1772718976
-last_accessed_epoch: 1772718976
+created_at_epoch: 1772720226
+last_accessed_epoch: 1772720226
 expires_at_epoch: 0  # 0 for critical (never expires)
 
 # Session Metrics
@@ -834,19 +834,19 @@ key_topics:
   - "memory"
   - "system"
   - "skill graph"
-  - "system spec kit/022 hybrid rag fusion/033 memory search state filter fix"
+  - "system spec kit/022 hybrid rag fusion/031 memory search state filter fix"
   - "skill"
   - "graph"
   - "spec"
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/033"
+  - "fusion/031"
   - "search"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/033 memory search state filter fix"
+  - " system spec kit/022 hybrid rag fusion/031 memory search state filter fix"
   - "skill graphs"
   - "in memory"
   - "tree thinning"
@@ -877,7 +877,7 @@ trigger_phrases:
   - "kit/022"
   - "hybrid"
   - "rag"
-  - "fusion/033"
+  - "fusion/031"
   - "memory"
   - "search"
   - "state"
@@ -898,7 +898,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/033-memory-search-state-filter-fix"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/031-memory-search-state-filter-fix"
 child_sessions:
 
   []
@@ -919,4 +919,3 @@ quality_flags:
 ---
 
 *Generated by system-spec-kit skill v1.7.2*
-

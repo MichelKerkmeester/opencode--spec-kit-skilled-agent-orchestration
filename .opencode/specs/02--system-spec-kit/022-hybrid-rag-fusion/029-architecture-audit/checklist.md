@@ -1,6 +1,6 @@
 ---
-title: "Verification Checklist: Scripts vs mcp_server Architecture Refinement [template:level_3/checklist.md]"
-description: "Verification checklist for concern separation, boundary clarity, dependency direction, and discoverability improvements."
+title: "Verification Checklist: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/checklist.md]"
+description: "Verification checklist for concern separation, boundary clarity, dependency direction, remediation carry-over, and discoverability improvements."
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "phase 8 checklist"
@@ -9,7 +9,7 @@ trigger_phrases:
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Verification Checklist: Scripts vs mcp_server Architecture Refinement
+# Verification Checklist: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -167,6 +167,30 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 - [x] CHK-420 [P2] Phase snippet docs contain no stale line-count/call-site attribution claims and all source metadata points to canonical `feature_catalog.md`. [EVIDENCE: stale `~550 lines` + stale `line ~...` call-site references removed; `rg` over 034-feature-catalog confirms no legacy summary-source references and canonical metadata consistency]
 <!-- /ANCHOR:phase-6-parity -->
 
+<!-- ANCHOR:phase-7-carry-over -->
+## Phase 7: Boundary Remediation Carry-Over Verification (Merged from Former 030)
+
+### P0 Blockers (must resolve)
+
+- [ ] CHK-500 [P0] `npx tsc --noEmit` passes after Phase 7 import and constant-ownership migrations. [EVIDENCE: pending]
+- [ ] CHK-501 [P0] `npm run check --workspace=scripts` passes with updated allowlist and no new forbidden-direction imports. [EVIDENCE: pending]
+- [ ] CHK-502 [P0] CI-level boundary enforcement is mandatory and blocks PR merge on violation. [EVIDENCE: pending]
+
+### P1 Required (complete or approved deferral)
+
+- [ ] CHK-510 [P1] `scripts/core/memory-indexer.ts` uses API/shared imports for migrated concerns, and resolved allowlist entries are removed. [EVIDENCE: pending]
+- [ ] CHK-511 [P1] `scripts/memory/reindex-embeddings.ts` import audit is completed with per-import migration disposition. [EVIDENCE: pending]
+- [ ] CHK-512 [P1] Retained allowlist exceptions are justified, owned, and time-bounded (`lastReviewedAt`/`expiresAt`). [EVIDENCE: pending]
+- [ ] CHK-513 [P1] `ARCHITECTURE_BOUNDARIES.md` current-exceptions table matches allowlist state exactly. [EVIDENCE: pending]
+- [ ] CHK-514 [P1] `implementation-summary.md` captures Phase 7 outcomes, retained risks, and enforcement status. [EVIDENCE: pending]
+
+### P2 Nice-to-Have
+
+- [ ] CHK-520 [P2] Optional local pre-commit boundary hook exists and mirrors CI checks. [EVIDENCE: pending]
+- [ ] CHK-521 [P2] Boundary enforcement runtime remains within target budget after Phase 7 changes. [EVIDENCE: pending]
+- [ ] CHK-522 [P2] API-surface expansion decisions include explicit encapsulation rationale in decision docs. [EVIDENCE: pending]
+<!-- /ANCHOR:phase-7-carry-over -->
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
@@ -183,6 +207,9 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 | P0 Items (Phase 6 Parity) | 6 | 6/6 | Includes learned-feedback single-weighting verification (CHK-437) |
 | P1 Items (Phase 6 Parity) | 11 | 11/11 | Includes required parity checks CHK-410-415, quality gates CHK-430-432, and closure backfills CHK-438-439 |
 | P2 Items (Phase 6 Parity) | 1 | 1/1 | Stale implementation-detail + metadata consistency checks complete |
+| P0 Items (Phase 7 Carry-Over) | 3 | 0/3 | Pending merged-boundary remediation execution |
+| P1 Items (Phase 7 Carry-Over) | 5 | 0/5 | Pending migration, docs sync, and closure evidence |
+| P2 Items (Phase 7 Carry-Over) | 3 | 0/3 | Optional hardening and performance checks |
 
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
@@ -190,4 +217,5 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 **Phase 6 Parity Plan Added**: 2026-03-04
 **Phase 6 P0 Code Fixes Completed**: 2026-03-04
 **Phase 6 Parity Closure Completed**: 2026-03-04
+**Spec 030 Merge Date**: 2026-03-05
 <!-- /ANCHOR:summary -->

@@ -2,7 +2,7 @@
 
 - Date: 2026-03-05
 - Agent: Codex-C (Checklist Verification)
-- Target: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/030-architecture-boundary-remediation/checklist.md`
+- Target: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit/scratch/merged-030-architecture-boundary-remediation/checklist.md`
 
 ## Actions Completed
 
@@ -22,5 +22,5 @@
 
 - Kept original pre-existing implementation checklist items (`CHK-001` through `CHK-042`) unchecked.
 - Modified only:
-  - `030/checklist.md`
-  - `030/scratch/codex-c-impl-log.md`
+  - `scratch/merged-030-architecture-boundary-remediation/checklist.md`
+  - `scratch/merged-030-architecture-boundary-remediation/scratch/codex-c-impl-log.md`

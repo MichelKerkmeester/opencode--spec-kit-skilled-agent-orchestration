@@ -6,18 +6,18 @@ Agent: Codex-D (Validation)
 ## Scope
 
 - Validate spec `029-architecture-audit`
-- Validate spec `030-architecture-boundary-remediation`
+- Validate spec `030-architecture-boundary-remediation` (archived under merged-030 path)
 - Fix validation **errors** in allowed files only
 - Verify `check-allowlist-expiry.ts` compiles via `npx tsc --noEmit`
 
 Constraints respected:
-- Did not modify: `029/decision-record.md`, `030/tasks.md`, `030/checklist.md`
-- Modified only allowed files in this run: `030/spec.md`, `030/plan.md`
+- Did not modify: `029/decision-record.md`, `scratch/merged-030-architecture-boundary-remediation/tasks.md`, `scratch/merged-030-architecture-boundary-remediation/checklist.md`
+- Modified only allowed files in this run: `scratch/merged-030-architecture-boundary-remediation/spec.md`, `scratch/merged-030-architecture-boundary-remediation/plan.md`
 
 ## Commands Run
 
 1. `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit`
-2. `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/030-architecture-boundary-remediation`
+2. `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit/scratch/merged-030-architecture-boundary-remediation`
 3. `cd .opencode/skill/system-spec-kit && npx tsc --noEmit`
 
 ## Initial Results
@@ -49,13 +49,13 @@ Initial error details:
 
 ## Fixes Applied
 
-### File: `030/spec.md`
+### File: `scratch/merged-030-architecture-boundary-remediation/spec.md`
 - Added frontmatter key for template-source detection in first 10 lines:
   - `SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"`
 - Fixed anchor mismatch by adding missing opening anchor:
   - Added `<!-- ANCHOR:questions -->` before section `## 10. OPEN QUESTIONS`
 
-### File: `030/plan.md`
+### File: `scratch/merged-030-architecture-boundary-remediation/plan.md`
 - Added frontmatter key for template-source detection in first 10 lines:
   - `SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"`
 
@@ -86,10 +86,10 @@ Remaining warnings (not auto-fixed per task):
 ## Blocked by Ownership/Scope
 
 Per explicit constraints, remaining errors are in files I was instructed not to modify:
-- `030/tasks.md` (owned by Codex-B)
-- `030/checklist.md` (owned by Codex-C)
+- `scratch/merged-030-architecture-boundary-remediation/tasks.md` (owned by Codex-B)
+- `scratch/merged-030-architecture-boundary-remediation/checklist.md` (owned by Codex-C)
 
-Additionally, creating `030/implementation-summary.md` was not included in the allowed-modify list for this task.
+Additionally, creating `scratch/merged-030-architecture-boundary-remediation/implementation-summary.md` was not included in the allowed-modify list for this task.
 
 ## Final Status
 

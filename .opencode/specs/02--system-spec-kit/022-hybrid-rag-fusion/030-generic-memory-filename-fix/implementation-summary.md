@@ -15,7 +15,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 032-generic-memory-filename-fix |
+| **Spec Folder** | 030-generic-memory-filename-fix |
 | **Completed** | 2026-03-05 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->

@@ -2,7 +2,7 @@
 
 - Date: 2026-03-05
 - Agent: Codex-B (Task Status Update)
-- Target: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/030-architecture-boundary-remediation/tasks.md`
+- Target: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit/scratch/merged-030-architecture-boundary-remediation/tasks.md`
 
 ## Completed Updates
 
@@ -25,5 +25,5 @@
 ## Scope Compliance
 
 - Modified files only:
-  - `030/tasks.md`
-  - `030/scratch/codex-b-impl-log.md`
+  - `scratch/merged-030-architecture-boundary-remediation/tasks.md`
+  - `scratch/merged-030-architecture-boundary-remediation/scratch/codex-b-impl-log.md`

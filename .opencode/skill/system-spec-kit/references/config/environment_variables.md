@@ -28,6 +28,10 @@ These variables control memory system behavior, token budgets, script execution,
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
 | `ENABLE_RERANKER` | `false` | Enable experimental ML reranking (requires Python) |
 | `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation (`false` allows unknown passthrough keys) |
+| `SPECKIT_RESPONSE_TRACE` | `false` | Include provenance-rich `scores`/`source`/`trace` fields by default in search responses |
+| `SPECKIT_DYNAMIC_INIT` | `true` | Inject dynamic startup instructions with memory/index summary at MCP initialization |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | Prepend contextual tree headers to markdown search content chunks |
+| `SPECKIT_FILE_WATCHER` | `false` | Enable chokidar-based real-time markdown re-indexing |
 | `RERANKER_LOCAL` | `false` | Enable local GGUF reranker path in Stage 3 (`node-llama-cpp`) |
 | `SPECKIT_RERANKER_MODEL` | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional model path override for local reranker |
 
@@ -192,6 +196,10 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_CONFIDENCE_TRUNCATION` | ON | S4 | Confidence-based result truncation |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | ON | S4 | Dynamic token budget allocation based on query complexity |
 | `SPECKIT_COMPLEXITY_ROUTER` | ON | S4 | Query complexity classification and routing |
+| `SPECKIT_RESPONSE_TRACE` | OFF | S9 | Include provenance-rich `scores` / `source` / `trace` response envelopes by default |
+| `SPECKIT_DYNAMIC_INIT` | ON | S9 | Inject dynamic startup instructions with live memory/index counts |
+| `SPECKIT_CONTEXT_HEADERS` | ON | S9 | Prepend contextual tree headers to markdown content results |
+| `SPECKIT_FILE_WATCHER` | OFF | S9 | Enable chokidar watcher for auto re-index on markdown changes |
 | `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles |
 | `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
 

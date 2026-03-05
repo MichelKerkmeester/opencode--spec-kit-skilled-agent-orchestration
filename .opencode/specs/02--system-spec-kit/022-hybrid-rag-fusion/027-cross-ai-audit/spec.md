@@ -17,7 +17,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Tier 1-2 Complete; Tier 4 Complete (14/14); Tier 5 Complete (9/9) — ALL TIERS COMPLETE |
+| **Status** | Tier 1-2 Complete; Tier 4: 13/14 implemented; CR-P2-4 deferred; Tier 5 Complete (9/9) |
 | **Created** | 2026-03-02 |
 | **Spec Folder** | `022-hybrid-rag-fusion/027-cross-ai-audit` |
 | **Parent** | `022-hybrid-rag-fusion` |

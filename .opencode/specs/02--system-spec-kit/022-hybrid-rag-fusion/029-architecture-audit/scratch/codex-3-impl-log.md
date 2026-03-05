@@ -32,7 +32,7 @@ Target: `decision-record.md`
 ### T034
 
 - Replaced ADR-004 Five Checks item 5 text with:
-- `P2 AST upgrade is deferred tech debt. Current regex has known evasion vectors documented in 030/decision-record.md ADR-001.`
+- `P2 AST upgrade is deferred tech debt. Current regex has known evasion vectors documented in scratch/merged-030-architecture-boundary-remediation/decision-record.md ADR-001.`
 
 ## Verification
 

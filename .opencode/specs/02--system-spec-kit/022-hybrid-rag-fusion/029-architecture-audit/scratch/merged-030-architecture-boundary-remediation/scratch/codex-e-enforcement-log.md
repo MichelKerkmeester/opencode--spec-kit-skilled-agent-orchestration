@@ -103,5 +103,4 @@ Result: no matches.
 ## 5) Files Modified
 
 - `.opencode/skill/system-spec-kit/scripts/evals/check-allowlist-expiry.ts`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/030-architecture-boundary-remediation/scratch/codex-e-enforcement-log.md`
-
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit/scratch/merged-030-architecture-boundary-remediation/scratch/codex-e-enforcement-log.md`

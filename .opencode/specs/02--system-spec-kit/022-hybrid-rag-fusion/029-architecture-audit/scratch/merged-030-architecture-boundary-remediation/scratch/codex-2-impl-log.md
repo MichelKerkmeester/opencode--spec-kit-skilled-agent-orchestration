@@ -2,7 +2,7 @@
 
 Date: 2026-03-05
 Agent: Codex-2 (Phase 0 Evasion + Expiry)
-Spec: `030-architecture-boundary-remediation`
+Spec: `030-architecture-boundary-remediation` (archived under `029-architecture-audit/scratch/merged-030-architecture-boundary-remediation`)
 
 ## Scope
 
@@ -12,7 +12,7 @@ Spec: `030-architecture-boundary-remediation`
 ## Changes Made
 
 1. Created `decision-record.md` at:
-   `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/030-architecture-boundary-remediation/decision-record.md`
+   `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/029-architecture-audit/scratch/merged-030-architecture-boundary-remediation/decision-record.md`
    - Followed 029 decision-record structure and metadata style.
    - Added `ADR-001: Regex Evasion Vector Acceptance`.
    - Status set to **Proposed**.

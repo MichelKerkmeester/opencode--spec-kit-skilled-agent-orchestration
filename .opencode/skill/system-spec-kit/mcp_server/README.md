@@ -738,6 +738,8 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_STRICT_SCHEMAS`        | `true`  | Enforce strict Zod input validation for all MCP tools (`false` allows passthrough unknown keys) |
 | `SPECKIT_RESPONSE_TRACE`        | `false` | Include provenance-rich `scores` / `source` / `trace` response envelopes by default |
 | `SPECKIT_DYNAMIC_INIT`          | `true`  | Inject dynamic startup instructions with live memory/index counts |
+| `SPECKIT_CONTEXT_HEADERS`       | `true`  | Prepend contextual tree headers to markdown content chunks in search results |
+| `SPECKIT_FILE_WATCHER`          | `false` | Enable chokidar-based real-time markdown re-indexing |
 | `RERANKER_LOCAL`                | `false` | Use local GGUF reranker path (`node-llama-cpp`) instead of remote Cohere/Voyage in Stage 3 |
 | `SPECKIT_RERANKER_MODEL`        | `models/bge-reranker-v2-m3.Q4_K_M.gguf` | Optional custom model path override for local reranker |
 | `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |

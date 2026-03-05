@@ -44,6 +44,130 @@ const STOP_WORDS = new Set([
   'your', 'their', 'his', 'her', 'its', 'which', 'who', 'what',
 ]);
 
+const MAX_SPEC_DISCOVERY_DEPTH = 8;
+const SCAN_SKIP_DIRECTORIES = new Set([
+  '.git',
+  '.hg',
+  '.svn',
+  '.vscode',
+  '.idea',
+  'memory',
+  'scratch',
+  'node_modules',
+]);
+
+interface DiscoveredSpecFolder {
+  basePath: string;
+  folderPath: string;
+  specMdPath: string;
+  canonicalFolderPath: string;
+}
+
+function resolveRealPathSafe(targetPath: string): string | null {
+  try {
+    return fs.realpathSync.native(targetPath);
+  } catch {
+    try {
+      return fs.realpathSync(targetPath);
+    } catch {
+      return null;
+    }
+  }
+}
+
+function normalizeBasePaths(basePaths: string[]): string[] {
+  const normalized: string[] = [];
+  const seen = new Set<string>();
+
+  for (const candidate of basePaths) {
+    const absoluteCandidate = path.resolve(candidate);
+
+    let stat: fs.Stats;
+    try {
+      stat = fs.statSync(absoluteCandidate);
+    } catch {
+      continue;
+    }
+
+    if (!stat.isDirectory()) continue;
+
+    const canonicalPath = resolveRealPathSafe(absoluteCandidate) ?? absoluteCandidate;
+    if (seen.has(canonicalPath)) continue;
+
+    seen.add(canonicalPath);
+    normalized.push(absoluteCandidate);
+  }
+
+  return normalized;
+}
+
+function shouldSkipDirectoryName(name: string): boolean {
+  const normalizedName = name.toLowerCase();
+  if (normalizedName.startsWith('.')) {
+    return true;
+  }
+  return SCAN_SKIP_DIRECTORIES.has(normalizedName);
+}
+
+function discoverSpecFolders(basePath: string): DiscoveredSpecFolder[] {
+  const normalizedBasePath = resolveRealPathSafe(basePath) ?? path.resolve(basePath);
+  const discovered: DiscoveredSpecFolder[] = [];
+  const visited = new Set<string>([normalizedBasePath]);
+
+  const walk = (currentPath: string, depth: number): void => {
+    if (depth > MAX_SPEC_DISCOVERY_DEPTH) return;
+
+    let entries: fs.Dirent[];
+    try {
+      entries = fs.readdirSync(currentPath, { withFileTypes: true });
+    } catch {
+      return;
+    }
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      if (shouldSkipDirectoryName(entry.name)) continue;
+
+      const candidateFolderPath = path.join(currentPath, entry.name);
+      const canonicalFolderPath = resolveRealPathSafe(candidateFolderPath) ?? path.resolve(candidateFolderPath);
+      if (visited.has(canonicalFolderPath)) continue;
+      visited.add(canonicalFolderPath);
+
+      let folderStat: fs.Stats;
+      try {
+        folderStat = fs.statSync(canonicalFolderPath);
+      } catch {
+        continue;
+      }
+      if (!folderStat.isDirectory()) continue;
+
+      const relativeFolderPath = path.relative(normalizedBasePath, canonicalFolderPath).replace(/\\/g, '/');
+      if (!relativeFolderPath || relativeFolderPath.startsWith('..')) {
+        continue;
+      }
+
+      const specMdPath = path.join(canonicalFolderPath, 'spec.md');
+      try {
+        if (fs.statSync(specMdPath).isFile()) {
+          discovered.push({
+            basePath: normalizedBasePath,
+            folderPath: canonicalFolderPath,
+            specMdPath,
+            canonicalFolderPath,
+          });
+        }
+      } catch {
+        // No spec.md in this folder
+      }
+
+      walk(canonicalFolderPath, depth + 1);
+    }
+  };
+
+  walk(normalizedBasePath, 1);
+  return discovered;
+}
+
 /* --- 3. DESCRIPTION EXTRACTION --- */
 
 /**
@@ -237,74 +361,34 @@ export function findRelevantFolders(
  * @returns A fully populated DescriptionCache.
  */
 export function generateFolderDescriptions(specsBasePaths: string[]): DescriptionCache {
-  const folders: FolderDescription[] = [];
   const now = new Date().toISOString();
+  const normalizedBasePaths = normalizeBasePaths(specsBasePaths);
+  const byCanonicalFolderPath = new Map<string, FolderDescription>();
 
-  for (const basePath of specsBasePaths) {
-    if (!fs.existsSync(basePath)) continue;
+  for (const basePath of normalizedBasePaths) {
+    const discoveredFolders = discoverSpecFolders(basePath);
 
-    let entries: string[];
-    try {
-      entries = fs.readdirSync(basePath);
-    } catch (_err: unknown) {
-      // AI-GUARD: Unreadable base path — skip silently
-      continue;
-    }
-
-    for (const entry of entries) {
-      const entryPath = path.join(basePath, entry);
-
-      let stat: fs.Stats;
-      try {
-        stat = fs.statSync(entryPath);
-      } catch (_err: unknown) {
-        // AI-GUARD: Unreadable entry — skip silently
+    for (const discoveredFolder of discoveredFolders) {
+      if (byCanonicalFolderPath.has(discoveredFolder.canonicalFolderPath)) {
         continue;
       }
 
-      if (!stat.isDirectory()) continue;
+      const folderEntry = _processSpecFolder(
+        discoveredFolder.basePath,
+        discoveredFolder.folderPath,
+        discoveredFolder.specMdPath,
+        now,
+      );
 
-      // Check for spec.md directly in this folder
-      const specMdPath = path.join(entryPath, 'spec.md');
-      if (fs.existsSync(specMdPath)) {
-          const folderEntry = _processSpecFolder(basePath, entryPath, specMdPath, now);
-        if (folderEntry) {
-          folders.push(folderEntry);
-        }
-      }
-
-      // Also scan one level deeper for phase subfolders
-      let subEntries: string[];
-      try {
-        subEntries = fs.readdirSync(entryPath);
-      } catch (_err: unknown) {
-        // AI-GUARD: Unreadable subfolder directory — skip silently
-        continue;
-      }
-
-      for (const subEntry of subEntries) {
-        const subPath = path.join(entryPath, subEntry);
-
-        let subStat: fs.Stats;
-        try {
-          subStat = fs.statSync(subPath);
-        } catch (_err: unknown) {
-          // AI-GUARD: Unreadable sub-entry — skip silently
-          continue;
-        }
-
-        if (!subStat.isDirectory()) continue;
-
-        const subSpecMdPath = path.join(subPath, 'spec.md');
-        if (fs.existsSync(subSpecMdPath)) {
-          const subFolderEntry = _processSpecFolder(basePath, subPath, subSpecMdPath, now);
-          if (subFolderEntry) {
-            folders.push(subFolderEntry);
-          }
-        }
+      if (folderEntry) {
+        byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, folderEntry);
       }
     }
   }
+
+  const folders = Array.from(byCanonicalFolderPath.values()).sort((a, b) =>
+    a.specFolder.localeCompare(b.specFolder),
+  );
 
   return {
     version: 1,
@@ -408,19 +492,14 @@ export function getSpecsBasePaths(workspacePath?: string): string[] {
     path.join(root, 'specs'),
     path.join(root, '.opencode', 'specs'),
   ];
-  return candidates.filter(p => {
-    try {
-      return fs.statSync(p).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+
+  return normalizeBasePaths(candidates);
 }
 
 /**
  * Check whether a description cache is stale by comparing its
  * `generated` timestamp against the most recent spec.md mtime
- * across all base paths (2-level deep scan).
+ * across all base paths using recursive depth-limited scan.
  *
  * @param cache     - The loaded DescriptionCache to check.
  * @param basePaths - Spec base directories to scan for spec.md files.
@@ -437,44 +516,20 @@ export function isCacheStale(cache: DescriptionCache | null, basePaths: string[]
     return true;
   }
 
+  const normalizedBasePaths = normalizeBasePaths(basePaths);
   let latestMtime = 0;
 
-  for (const basePath of basePaths) {
-    let entries: string[];
-    try {
-      entries = fs.readdirSync(basePath);
-    } catch {
-      continue;
-    }
+  for (const basePath of normalizedBasePaths) {
+    const discoveredFolders = discoverSpecFolders(basePath);
 
-    for (const entry of entries) {
-      const entryPath = path.join(basePath, entry);
+    for (const discoveredFolder of discoveredFolders) {
       try {
-        if (!fs.statSync(entryPath).isDirectory()) continue;
+        const mtime = fs.statSync(discoveredFolder.specMdPath).mtimeMs;
+        if (mtime > latestMtime) {
+          latestMtime = mtime;
+        }
       } catch {
-        continue;
-      }
-
-      // Check spec.md in direct child
-      const specMd = path.join(entryPath, 'spec.md');
-      try {
-        const mtime = fs.statSync(specMd).mtimeMs;
-        if (mtime > latestMtime) latestMtime = mtime;
-      } catch { /* no spec.md here */ }
-
-      // Check one level deeper (phase subfolders)
-      let subEntries: string[];
-      try {
-        subEntries = fs.readdirSync(entryPath);
-      } catch {
-        continue;
-      }
-      for (const sub of subEntries) {
-        const subSpecMd = path.join(entryPath, sub, 'spec.md');
-        try {
-          const mtime = fs.statSync(subSpecMd).mtimeMs;
-          if (mtime > latestMtime) latestMtime = mtime;
-        } catch { /* no spec.md here */ }
+        // Ignore unreadable spec.md entries
       }
     }
   }
@@ -492,18 +547,27 @@ export function isCacheStale(cache: DescriptionCache | null, basePaths: string[]
 export function ensureDescriptionCache(basePaths: string[]): DescriptionCache | null {
   if (basePaths.length === 0) return null;
 
+  const normalizedBasePaths = normalizeBasePaths(basePaths);
+  if (normalizedBasePaths.length === 0) {
+    return {
+      version: 1,
+      generated: new Date().toISOString(),
+      folders: [],
+    };
+  }
+
   // AI-WHY: Cache co-located with primary base path (first in resolution order)
-  const cachePath = path.join(basePaths[0], 'descriptions.json');
+  const cachePath = path.join(normalizedBasePaths[0], 'descriptions.json');
 
   try {
     const existing = loadDescriptionCache(cachePath);
 
-    if (existing && !isCacheStale(existing, basePaths)) {
+    if (existing && !isCacheStale(existing, normalizedBasePaths)) {
       return existing;
     }
 
     // Regenerate
-    const fresh = generateFolderDescriptions(basePaths);
+    const fresh = generateFolderDescriptions(normalizedBasePaths);
     try {
       saveDescriptionCache(fresh, cachePath);
     } catch {
