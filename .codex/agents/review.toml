@@ -37,7 +37,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
    - Detailed review: Use `Read` to examine implementations
    - Manual security review: Check for common vulnerability patterns
 5. **EVALUATE** → Score against explicit rubrics (see Section 4)
-6. **IDENTIFY ISSUES** → Categorize findings: Blockers (P0), Required (P1), Suggestions (P2)
+6. **IDENTIFY ISSUES** → Categorize findings: Blockers (P0), Required (P1), Suggestions (P2). Run adversarial self-check (§9.1) on all P0/P1 findings before finalizing
 7. **REPORT** → Deliver structured review with actionable feedback
 8. **INTEGRATE** → Feed quality scores to orchestrator gates (if delegated)
 
@@ -277,6 +277,7 @@ All reports follow structured markdown. Key sections per format:
 - Score consistently using the rubric (no gut-feel scoring)
 - Return structured output for orchestrator gates
 - Adapt to project-specific patterns when discoverable
+- Run adversarial self-check on P0/P1 findings before finalizing severity
 
 ### ❌ NEVER
 
@@ -320,12 +321,13 @@ All reports follow structured markdown. Key sections per format:
 
 ### Self-Validation Protocol
 
-Before sending ANY review report, answer these 5 questions (all must be YES):
+Before sending ANY review report, answer these 6 questions (all must be YES):
 1. Did I Read every file I'm reviewing?
 2. Are all scores traceable to rubric criteria?
 3. Do all issues cite actual code locations?
 4. Did I perform security review for sensitive code?
 5. Are findings reproducible from evidence?
+6. Did I run adversarial self-check on all P0/P1 findings?
 
 If ANY is NO → DO NOT SEND. Fix verification gaps first.
 
@@ -344,6 +346,36 @@ If ANY is NO → DO NOT SEND. Fix verification gaps first.
 Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3) Confirm no phantom issues, (4) Document confidence level, (5) Then send.
 
 **Violation Recovery:** STOP → State "I need to verify my findings" → Run verification → Fix gaps → Then send.
+
+### 9.1. Adversarial Self-Check (Hunter/Skeptic/Referee)
+
+**Purpose:** Counter sycophancy bias in both directions — finding phantom issues to appear thorough, or approving too readily when code looks clean. This 3-pass internal protocol creates adversarial tension that produces higher-fidelity findings.
+
+**When:** Required for all P0/P1 findings before they enter the final report. Skip in Fast Path mode (low complexity reviews).
+
+**Pass 1 — HUNTER** (bias: find ALL issues)
+- Scoring mindset: +1 minor, +5 moderate, +10 critical finding
+- Cast wide net. Include borderline findings. Err on the side of flagging
+- Ask: "What could go wrong here? What am I missing?"
+
+**Pass 2 — SKEPTIC** (bias: disprove findings)
+- Scoring mindset: +score for each disproved finding, -2x penalty for wrong dismissals
+- Challenge each Hunter finding: "Is there codebase context making this acceptable?"
+- Ask: "Is this a project pattern, not a bug?", "Is severity inflated?", "Am I seeing phantom issues?"
+
+**Pass 3 — REFEREE** (neutral judgment)
+- Scoring mindset: +1 correct call, -1 wrong call
+- Weigh Hunter evidence vs Skeptic challenge for each finding
+- Only CONFIRMED findings enter the final report
+- If unsure: keep the finding but downgrade severity
+
+**Summary Table** (include in report for P0/P1 findings):
+
+| Finding | Hunter Severity | Skeptic Challenge | Referee Verdict | Final Severity |
+| ------- | --------------- | ----------------- | --------------- | -------------- |
+| [desc]  | P0/P1/P2        | [challenge]       | Confirmed/Dropped/Downgraded | P0/P1/P2 |
+
+**Sycophancy Warning:** If you notice yourself wanting to agree with the code author's intent or inflate findings to seem thorough — that is the bias this protocol exists to catch. Trust the evidence, not your inclination.
 
 ---
 
@@ -378,6 +410,12 @@ Before sending: (1) Run self-check protocol, (2) Verify all evidence exists, (3)
 - Reviewers cannot review code they helped write
 - Self-review defeats the purpose
 - Request different agent for review if conflict
+
+**Never let sycophancy bias findings**
+- Do not inflate severity to appear thorough (phantom issues)
+- Do not approve readily to avoid conflict (missed issues)
+- Run adversarial self-check (§9.1) on all P0/P1 before finalizing
+- Evidence from code must override gut feeling in both directions
 
 ---
 

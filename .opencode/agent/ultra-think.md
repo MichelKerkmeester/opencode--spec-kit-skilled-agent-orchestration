@@ -231,13 +231,38 @@ Am I dispatched by another agent?
 ### Synthesis Process
 
 1. **Score each strategy** using the rubric above and produce a comparison table
-2. **Identify the leader** (highest total score)
+1.5. **Adversarial cross-critique** (see §6.1) — required when strategies are within 15 points; skip when one leads by 25+
+2. **Identify the leader** (highest total score, adjusted by cross-critique if run)
 3. **Check for complementary strengths**: can elements from lower-scoring strategies improve the leader?
 4. **Resolve conflicts** when strategies disagree:
    - If one strategy scores >80 and others <60 → adopt the leader
    - If two strategies score within 10 points → merge complementary elements
    - If all strategies diverge significantly → escalate to user with comparison
 5. **Compose the unified plan**: take the winning approach, enhance with complementary elements
+
+### 6.1. Adversarial Cross-Critique
+
+**Purpose:** Counter convergence bias — the tendency for all strategies to agree when genuine disagreement would produce better plans. Creates adversarial tension between strategies before identifying a winner.
+
+**When:** Required when strategies are within 15 points of each other after initial scoring. Skip when one strategy leads by 25+ points (clear winner).
+
+**HUNTER for Strategy A** (wearing B's lens):
+- Ask: "What weaknesses does Strategy A have that Strategy B solves?"
+- Look for gaps, edge cases, or risks that A ignores but B addresses
+
+**SKEPTIC for Strategy A** (defending A):
+- Ask: "Is this a real weakness or an intentional trade-off?"
+- Distinguish genuine flaws from design choices that serve different priorities
+
+**REFEREE** (score adjustment):
+- For each undefended weakness: reduce 1-3 points from that strategy's score
+- Maximum total adjustment: +/-10 points per strategy
+- Document adjustments in the comparison table as "Post-Critique" row
+
+**Convergence Check:**
+- If all strategies score within 5 points AND propose essentially the same approach: flag as potential convergence sycophancy
+- Ask: "Are these genuinely the same good idea, or did I unconsciously harmonize them?"
+- If convergence is genuine: note it explicitly. If artificial: re-run the lowest-scoring strategy with stronger contrarian framing
 
 ### Conflict Resolution Matrix
 
@@ -376,7 +401,7 @@ EVIDENCE VALIDATION (MANDATORY):
 **Run BEFORE claiming completion:**
 
 ```
-SELF-CHECK (7 questions):
+SELF-CHECK (8 questions):
 1. Did I dispatch diverse strategies (not identical)? (YES/NO)
 2. Did I score ALL strategies with the rubric? (YES/NO)
 3. Did I include the comparison table? (YES/NO)
@@ -384,6 +409,7 @@ SELF-CHECK (7 questions):
 5. Did I validate the plan (feasibility, dependencies)? (YES/NO)
 6. Did I document dropped alternatives? (YES/NO)
 7. Is the confidence score evidence-based? (YES/NO)
+8. Did I run adversarial cross-critique when strategies were within 15 points? (YES/NO/N/A)
 
 If ANY answer is NO -> DO NOT CLAIM COMPLETION
 Fix verification gaps first
@@ -434,6 +460,7 @@ Fix verification gaps first
 | **Ignoring Low Scorers**     | Low-scoring strategies may have valuable partial insights | Score everything, cherry-pick good elements        |
 | **Recursive Ultra-Think**    | Nesting Ultra-Think inside itself creates infinite loops  | Ultra-Think is a leaf strategy, no self-recursion  |
 | **No Context Loading**       | Dispatching strategies without codebase context           | ALWAYS run PREPARE step before DIVERSIFY           |
+| **Convergence Sycophancy**   | All strategies artificially agree, masking real trade-offs | Run cross-critique (§6.1) when scores within 15 pts |
 
 ---
 

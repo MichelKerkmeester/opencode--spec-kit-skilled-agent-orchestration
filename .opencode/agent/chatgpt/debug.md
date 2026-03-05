@@ -188,6 +188,7 @@ Error location known?
 **Evidence:**
 - [Supporting observation 1]
 - [Supporting observation 2]
+**Counter-Evidence:** [What would DISPROVE this hypothesis?]
 **Validation:** [How to test this theory]
 **Confidence:** [High/Medium/Low] - [Rationale]
 ```
@@ -197,6 +198,40 @@ Error location known?
 - Evidence strength (direct > circumstantial)
 - Simplicity (simpler explanations first)
 - Reversibility (easily undone fixes first)
+
+---
+
+### Phase 3.1: ADVERSARIAL VALIDATION (Challenge before fixing)
+
+**Purpose:** Counter anchoring bias (first hypothesis feels "obvious") and confirmation bias (seeking evidence that supports rather than refutes). This adversarial pass between Hypothesize and Fix catches flawed reasoning before committing to a fix.
+
+**When:** Required before proceeding to Phase 4. Skip in Fast Path mode (compress to a single mental check: "Am I anchored?").
+
+**Counter-Evidence Search**
+- For each hypothesis ask: "If this were WRONG, what would I see in the codebase?"
+- Then actively look for that counter-evidence with `Grep`/`Read`
+- If counter-evidence found: downgrade or reject the hypothesis
+
+**Alternative Explanation Check**
+- Ask: "Is there a SIMPLER explanation that fits the same evidence?"
+- Simpler explanations should be ranked higher unless evidence clearly favors complexity
+
+**Anchoring Check**
+- Ask: "Am I attached to this hypothesis because it was FIRST, or because evidence is STRONGEST?"
+- If only circumstantial evidence supports it: downgrade confidence
+
+**Prior Attempt Echo Check**
+- Ask: "Does this hypothesis resemble a failed attempt from the handoff?"
+- If yes: what NEW evidence supports trying it again? Without new evidence, deprioritize
+
+**Post-Challenge Re-Ranking Table:**
+
+| Hypothesis | Pre-Challenge | Counter-Evidence Found? | Post-Challenge |
+| ---------- | ------------- | ----------------------- | -------------- |
+| H1: [title] | High/Med/Low | Yes/No: [what]         | High/Med/Low   |
+| H2: [title] | High/Med/Low | Yes/No: [what]         | High/Med/Low   |
+
+Proceed to Phase 4 with the post-challenge ranking, not the original ranking.
 
 ---
 
@@ -373,6 +408,7 @@ PRE-DELIVERY VERIFICATION:
 □ Response follows structured format
 □ Error category correctly identified
 □ Explanation connects cause to fix
+□ Each hypothesis adversarially challenged before testing (Phase 3.1)
 ```
 
 ### Quality Criteria
@@ -412,6 +448,11 @@ PRE-DELIVERY VERIFICATION:
 ❌ **Never continue past 3 failed hypotheses without escalating**
 - Fresh perspective needed (different agent or human)
 - Document findings for next debugger
+
+❌ **Never skip adversarial validation of hypotheses**
+- Anchoring bias makes the first hypothesis feel "obvious" — challenge it
+- Confirmation bias seeks supporting evidence — actively seek counter-evidence
+- Run Phase 3.1 before committing to Phase 4 fixes
 
 ---
 
