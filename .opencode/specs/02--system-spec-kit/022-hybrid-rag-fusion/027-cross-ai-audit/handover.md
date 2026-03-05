@@ -1,7 +1,7 @@
 # Session Handover: 018 — Refinement Phase 7: Cross-AI Review Audit & Remediation
 
 **Spec Folder:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/027-cross-ai-audit`
-**Status:** ALL TIERS COMPLETE — Tier 1-2 (18/18), Tier 4 (14/14), Tier 5 (9/9). Tier 3 out of scope.
+**Status:** Tier 1-2 complete (18/18); Tier 4 findings addressed: 13 implemented + 1 deferred (CR-P2-4); Tier 5 complete (9/9). Tier 3 out of scope.
 **CONTINUATION — Attempt 8**
 
 ---
@@ -74,7 +74,7 @@
 | Tier 1 | 7 | Complete | 100% |
 | Tier 2 | 11 | Complete | 100% |
 | Tier 3 | 15 | Future spec | 0% (out of scope) |
-| Tier 4 | 14 | Complete (14/14) | 100% |
+| Tier 4 | 14 | 13/14 implemented + 1 deferred (CR-P2-4) | 93% |
 | Tier 5 | 9 | Complete (9/9) | 100% |
 
 ---
@@ -82,10 +82,10 @@
 ## 4. Pending Work
 
 ### Immediate Next Action
-> No deferred tasks remain for 018. All changes committed and pushed. Consider Tier 3 (019).
+> No blocking Tier 1/Tier 2/Tier 5 tasks remain for 018. CR-P2-4 remains deferred/out-of-scope for this spec target. Consider Tier 3 (019) and/or follow-up for CR-P2-4.
 
 ### Remaining Tasks
-- [x] **All Tiers 1-5** — DONE across Sessions 1-7
+- [ ] **Tier 4 CR-P2-4** — Deferred/out-of-scope for this spec target (strict <1000 LOC orchestration acceptance not met)
 - [x] **Git commit + push** — DONE (Session 7, commit `40891251`)
 - [x] **023 doc updates** — DONE (Session 7)
 - [ ] **Tier 3** — 15 items, separate spec folder `029-architecture-audit` (19.7h opt / 50-70h real)
@@ -107,7 +107,7 @@
 ## 6. Blockers & Risks
 
 ### Current Blockers
-None — all blocking issues resolved. Working tree clean.
+None for in-scope Tier 1/Tier 2/Tier 5 work. Tier 4 includes one documented deferment (CR-P2-4).
 
 ### Risks
 | Risk | Severity | Status |
@@ -132,5 +132,5 @@ None — all blocking issues resolved. Working tree clean.
 
 ### One-Line Continuation Prompt
 ```
-CONTINUATION — Attempt 8 | Spec: 02--system-spec-kit/022-hybrid-rag-fusion/027-cross-ai-audit | Status: ALL TIERS COMPLETE, COMMITTED (40891251), PUSHED | Next: Consider Tier 3 (029-architecture-audit) or move to other work
+CONTINUATION — Attempt 8 | Spec: 02--system-spec-kit/022-hybrid-rag-fusion/027-cross-ai-audit | Status: Tier 1-2 complete; Tier 4: 13/14 implemented + 1 deferred (CR-P2-4); Tier 5 complete | Next: Consider Tier 3 (029-architecture-audit) and follow-up for CR-P2-4
 ```
