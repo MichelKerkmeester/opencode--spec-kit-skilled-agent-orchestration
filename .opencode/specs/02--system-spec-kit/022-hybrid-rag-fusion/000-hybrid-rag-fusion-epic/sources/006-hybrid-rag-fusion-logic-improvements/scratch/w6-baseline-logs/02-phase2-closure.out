@@ -1,0 +1,4 @@
+$ cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && node .opencode/skill/system-spec-kit/scripts/evals/run-phase2-closure-metrics.mjs '.opencode/specs/002-system-spec-kit/139-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements'
+Phase 2 closure metrics complete
+precision=100.00% recall=88.89%
+manual_save_ratio=24.00% mrr_ratio=0.9811x

@@ -74,6 +74,13 @@ export interface SearchArgs {
   enableCausalBoost?: boolean;
   minQualityScore?: number;
   min_quality_score?: number;
+  rerank?: boolean;
+  applyLengthPenalty?: boolean;
+  applyStateLimits?: boolean;
+  minState?: 'HOT' | 'WARM' | 'COLD' | 'DORMANT' | 'ARCHIVED';
+  trackAccess?: boolean;
+  includeArchived?: boolean;
+  mode?: 'auto' | 'deep';
   includeTrace?: boolean;
 }
 
@@ -120,6 +127,7 @@ export interface HealthArgs {
   reportMode?: 'full' | 'divergent_aliases';
   limit?: number;
   specFolder?: string;
+  autoRepair?: boolean;
 }
 
 export interface MemoryValidateArgs {
@@ -169,6 +177,7 @@ export interface CheckpointRestoreArgs {
 
 export interface CheckpointDeleteArgs {
   name: string;
+  confirmName?: string;
 }
 
 export interface PreflightArgs {

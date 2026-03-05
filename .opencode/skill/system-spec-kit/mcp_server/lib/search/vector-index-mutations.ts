@@ -4,13 +4,11 @@
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // index, update, delete, and status/confidence updates.
 
-import Database from 'better-sqlite3';
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { createLogger } from '../utils/logger';
 import * as embeddingsProvider from '../providers/embeddings';
 import {
   to_embedding_buffer,
-  parse_trigger_phrases,
   get_error_message,
 } from './vector-index-types';
 import {
@@ -24,6 +22,7 @@ import {
 import {
   clear_search_cache,
 } from './vector-index-aliases';
+import * as bm25Index from './bm25-index';
 
 const logger = createLogger('VectorIndex');
 
@@ -369,9 +368,8 @@ export function delete_memory(id: number) {
   const deleted = delete_memory_tx();
   if (deleted) {
     try {
-      const { isBm25Enabled, getIndex } = require('./bm25-index');
-      if (isBm25Enabled()) {
-        getIndex().removeDocument(String(id));
+      if (bm25Index.isBm25Enabled()) {
+        bm25Index.getIndex().removeDocument(String(id));
       }
     } catch { /* BM25 cleanup is best-effort */ }
   }

@@ -4,10 +4,8 @@
 // Split from vector-index-store.ts — contains ALL query/search functions,
 // content extraction, ranking, stats, cleanup, and integrity checks.
 
-import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as crypto from 'crypto';
 import { formatAgeString as format_age_string } from '../utils/format-helpers';
 import { createLogger } from '../utils/logger';
 import * as embeddingsProvider from '../providers/embeddings';

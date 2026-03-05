@@ -11,7 +11,6 @@ import { createLogger } from '../utils/logger';
 import { initEmbeddingCache } from '../cache/embedding-cache';
 import {
   get_error_message,
-  get_error_code,
 } from './vector-index-types';
 
 const logger = createLogger('VectorIndex');

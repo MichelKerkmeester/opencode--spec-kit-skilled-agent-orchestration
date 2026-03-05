@@ -201,6 +201,11 @@ const memoryHealth: ToolDefinition = {
       specFolder: {
         type: 'string',
         description: 'Optional spec folder filter for divergent alias triage mode.'
+      },
+      autoRepair: {
+        type: 'boolean',
+        default: false,
+        description: 'When true in full mode, attempts best-effort repair actions for detected health issues (e.g., FTS rebuild).'
       }
     },
     required: []
@@ -276,7 +281,17 @@ const checkpointRestore: ToolDefinition = {
 const checkpointDelete: ToolDefinition = {
   name: 'checkpoint_delete',
   description: '[L5:Lifecycle] Delete a checkpoint. Token Budget: 600.',
-  inputSchema: { type: 'object', properties: { name: { type: 'string', description: 'Checkpoint name to delete' } }, required: ['name'] },
+  inputSchema: {
+    type: 'object',
+    properties: {
+      name: { type: 'string', description: 'Checkpoint name to delete' },
+      confirmName: {
+        type: 'string',
+        description: 'Optional safety confirmation. When provided, it must exactly match name.'
+      }
+    },
+    required: ['name']
+  },
 };
 
 // L6: Analysis - Deep inspection and lineage (Token Budget: 1200)

@@ -19,22 +19,18 @@ import { createFilePathValidator } from '../utils/validators';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
 import * as memoryParser from '../lib/parsing/memory-parser';
-import type { CausalLinks } from '../lib/parsing/memory-parser';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as bm25Index from '../lib/search/bm25-index';
 import * as predictionErrorGate from '../lib/cache/cognitive/prediction-error-gate';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
 import * as transactionManager from '../lib/storage/transaction-manager';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import * as preflight from '../lib/validation/preflight';
-import * as toolCache from '../lib/cache/tool-cache';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import * as retryManager from '../lib/providers/retry-manager';
 import { runConsolidationCycleIfEnabled } from '../lib/storage/consolidation';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 import { requireDb, toErrorMessage } from '../utils';
 import type { MCPResponse } from './types';
-import { clearConstitutionalCache } from '../hooks/memory-surface';
 
 import { runQualityGate, isQualityGateEnabled } from '../lib/validation/save-quality-gate';
 import { reconsolidate, isReconsolidationEnabled } from '../lib/storage/reconsolidation';
@@ -43,7 +39,7 @@ import { classifyEncodingIntent } from '../lib/search/encoding-intent';
 import { isEncodingIntentEnabled, isSaveQualityGateEnabled, isReconsolidationEnabled as isReconsolidationFlagEnabled } from '../lib/search/search-flags';
 
 import { getMemoryHashSnapshot, appendMutationLedgerSafe } from './memory-crud-utils';
-import { lookupEmbedding, storeEmbedding, computeContentHash as cacheContentHash } from '../lib/cache/embedding-cache';
+import { lookupEmbedding, storeEmbedding } from '../lib/cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer';
 import {
   calculateDocumentWeight,
@@ -59,7 +55,8 @@ import {
   resolveMemoryReference,
   CAUSAL_LINK_MAPPINGS,
 } from './causal-links-processor';
-import { detectSpecLevelFromParsed } from './handler-utils';
+import { runPostMutationHooks } from './mutation-hooks';
+import { detectSpecLevelFromParsed, escapeLikePattern } from './handler-utils';
 import { indexChunkedMemoryFile, needsChunking } from './chunking-orchestrator';
 import {
   computeMemoryQualityScore,
@@ -111,25 +108,6 @@ async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): 
 }
 
 /* --- 2. TYPES --- */
-
-interface ParsedMemory {
-  specFolder: string;
-  filePath: string;
-  title: string | null;
-  triggerPhrases: string[];
-  content: string;
-  contentHash: string;
-  contextType: string;
-  importanceTier: string;
-  memoryType?: string;
-  memoryTypeSource?: string;
-  hasCausalLinks?: boolean;
-  causalLinks?: CausalLinks;
-  /** Spec 126: Document structural type (spec, plan, tasks, memory, etc.) */
-  documentType?: string;
-  qualityScore?: number;
-  qualityFlags?: string[];
-}
 
 interface ValidationResult {
   valid: boolean;
@@ -1243,9 +1221,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     });
   }
 
-  triggerMatcher.clearCache();
-  toolCache.invalidateOnWrite('save', { specFolder: result.specFolder, filePath: file_path });
-  clearConstitutionalCache();
+  runPostMutationHooks('save', { specFolder: result.specFolder, filePath: file_path });
 
   const response: Record<string, unknown> = {
     status: result.status,
@@ -1410,8 +1386,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
     };
   }
 
-  triggerMatcher.clearCache();
-  clearConstitutionalCache();
+  runPostMutationHooks('atomic-save', { filePath: file_path });
   return result;
 }
 
@@ -1441,6 +1416,7 @@ export {
   // Causal links helper functions
   processCausalLinks,
   resolveMemoryReference,
+  escapeLikePattern,
   CAUSAL_LINK_MAPPINGS,
 
   // Quality Loop (T008)

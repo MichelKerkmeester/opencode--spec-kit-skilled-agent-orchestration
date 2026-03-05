@@ -46,6 +46,7 @@ interface CheckpointRestoreArgs {
 
 interface CheckpointDeleteArgs {
   name: string;
+  confirmName?: string;
 }
 
 interface MemoryValidateArgs {
@@ -273,10 +274,16 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
 async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPResponse> {
   const startTime = Date.now();
   await checkDatabaseUpdated();
-  const { name } = args;
+  const { name, confirmName } = args;
 
   if (!name || typeof name !== 'string') {
     throw new Error('name is required and must be a string');
+  }
+  if (confirmName !== undefined && typeof confirmName !== 'string') {
+    throw new Error('confirmName must be a string when provided');
+  }
+  if (confirmName !== undefined && confirmName !== name) {
+    throw new Error('confirmName must exactly match name to delete checkpoint');
   }
 
   const success: boolean = checkpoints.deleteCheckpoint(name);
@@ -288,9 +295,12 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
   return createMCPSuccessResponse({
     tool: 'checkpoint_delete',
     summary,
-    data: { success },
+    data: {
+      success,
+      safetyConfirmationUsed: confirmName !== undefined,
+    },
     hints: success
-      ? []
+      ? (confirmName === undefined ? ['For extra safety, pass confirmName with the same value as name.'] : [])
       : ['Use checkpoint_list() to see available checkpoints'],
     startTime: startTime
   });

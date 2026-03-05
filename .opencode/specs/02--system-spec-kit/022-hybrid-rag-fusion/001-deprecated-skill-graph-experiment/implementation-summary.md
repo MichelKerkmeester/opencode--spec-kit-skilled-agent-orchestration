@@ -47,7 +47,7 @@ The decision record makes the boundary explicit: deprecation removes SGQS/readme
 
 ### Legacy Skill-Graph Consolidation
 
-`013` is now the single active skill-graph-related folder in `138-hybrid-rag-fusion`. Legacy folders `002`, `003`, `006`, `007`, `009`, and `012` were consolidated through merge documentation and archived intact under `../z_archive/skill-graph-legacy/`.
+`013` is now the single active skill-graph-related folder in `138-hybrid-rag-fusion`. Legacy folders `002`, `002`, `006`, `004`, `003`, and `012` were consolidated through merge documentation and archived intact under `../z_archive/skill-graph-legacy/`.
 
 The merge index is documented in `merge-manifest.md`, which records:
 - source folders and archive destinations

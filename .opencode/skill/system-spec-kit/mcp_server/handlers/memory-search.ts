@@ -6,29 +6,16 @@
    1. DEPENDENCIES
 --------------------------------------------------------------- */
 
-import * as vectorIndex from '../lib/search/vector-index';
-import * as embeddings from '../lib/providers/embeddings';
-import * as hybridSearch from '../lib/search/hybrid-search';
-// AI-WHY: fsrsScheduler import removed — only used by legacy strengthenOnAccess/applyTestingEffect
 import * as toolCache from '../lib/cache/tool-cache';
 import * as sessionManager from '../lib/session/session-manager';
 import * as intentClassifier from '../lib/search/intent-classifier';
 // AI-WHY: tierClassifier, crossEncoder imports removed — only used by legacy V1 pipeline.
 import { isEnabled as isSessionBoostEnabled } from '../lib/search/session-boost';
 import { isEnabled as isCausalBoostEnabled } from '../lib/search/causal-boost';
-import { queryLearnedTriggers } from '../lib/search/learned-feedback';
-import { applyNegativeFeedback, getNegativeFeedbackStats } from '../lib/scoring/negative-feedback';
-import { isNegativeFeedbackEnabled } from '../lib/search/search-flags';
 // Sprint 5 (R6): 4-stage pipeline architecture
 import { executePipeline } from '../lib/search/pipeline';
 import type { PipelineConfig, PipelineResult } from '../lib/search/pipeline';
-import { getExtractionMetrics } from '../lib/extraction/extraction-adapter';
-import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
-// AI-TRACE:C138-P1: Evidence gap detection (TRM — Z-score confidence check on RRF scores)
-import { detectEvidenceGap, formatEvidenceGapWarning } from '../lib/search/evidence-gap-detector';
-// AI-TRACE:C138-P3: Query expansion for mode="deep" multi-query RAG
-import { expandQuery } from '../lib/search/query-expander';
 // AI-TRACE:C136-09: Artifact-class routing (spec/plan/tasks/checklist/memory)
 import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
 
@@ -48,16 +35,14 @@ import { createMCPErrorResponse } from '../lib/response/envelope';
 import { formatSearchResults } from '../formatters';
 
 // Shared handler types
-import type { Database, MCPResponse, EmbeddingProfile, IntentClassification } from './types';
+import type { MCPResponse, IntentClassification } from './types';
 
 // Retrieval trace contracts (C136-08)
-import { createTrace, addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
-import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
+import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
 import type { RawSearchResult } from '../formatters';
-import type { RerankDocument } from '../lib/search/cross-encoder';
 import type { RoutingResult, WeightedResult } from '../lib/search/artifact-routing';
 
 /* ---------------------------------------------------------------
@@ -97,33 +82,9 @@ interface MemorySearchRow extends Record<string, unknown> {
   precomputedContent?: string;
 }
 
-type StrengthenResult = {
-  stability: number;
-  difficulty: number;
-} | null;
-
-interface StateFilterResult {
-  results: MemorySearchRow[];
-  stateStats: Record<string, unknown>;
-}
-
 interface DedupResult {
   results: MemorySearchRow[];
   dedupStats: Record<string, unknown>;
-}
-
-interface RerankResult {
-  results: MemorySearchRow[];
-  rerankMetadata: Record<string, unknown>;
-}
-
-interface FeedbackSignalResult {
-  results: MemorySearchRow[];
-  metadata: {
-    applied: boolean;
-    learnedMatches: number;
-    negativeAdjusted: number;
-  };
 }
 
 interface ChunkReassemblyResult {
@@ -397,86 +358,6 @@ function applyArtifactRouting(results: MemorySearchRow[], routingResult?: Routin
   }
 
   return applyRoutingWeights(results as WeightedResult[], routingResult.strategy) as MemorySearchRow[];
-}
-
-function applyFeedbackSignals(results: MemorySearchRow[], queryText: string): FeedbackSignalResult {
-  const base: FeedbackSignalResult = {
-    results,
-    metadata: {
-      applied: false,
-      learnedMatches: 0,
-      negativeAdjusted: 0,
-    },
-  };
-
-  if (!Array.isArray(results) || results.length === 0 || typeof queryText !== 'string' || queryText.trim().length === 0) {
-    return base;
-  }
-
-  let database: ReturnType<typeof requireDb>;
-  try {
-    database = requireDb();
-  } catch {
-    return base;
-  }
-
-  let learnedMap = new Map<number, number>();
-  try {
-    const learnedMatches = queryLearnedTriggers(queryText, database);
-    learnedMap = new Map<number, number>(
-      learnedMatches
-        .filter((m) => Number.isInteger(m.memoryId) && m.memoryId > 0)
-        .map((m) => [m.memoryId, m.weight])
-    );
-  } catch {
-    // Non-fatal: keep learnedMap empty.
-  }
-
-  const numericIds = results
-    .map((result) => result.id)
-    .filter((id): id is number => Number.isInteger(id) && id > 0);
-  const negativeStats = isNegativeFeedbackEnabled()
-    ? getNegativeFeedbackStats(database, numericIds)
-    : new Map<number, { negativeCount: number; lastNegativeAt: number | null }>();
-
-  let learnedHits = 0;
-  let negativeAdjusted = 0;
-
-  const adjusted = results.map((result) => {
-    const baseScoreRaw = typeof result.score === 'number'
-      ? result.score
-      : typeof result.similarity === 'number'
-        ? result.similarity
-        : 0;
-    let adjustedScore = baseScoreRaw;
-
-    const learnedWeight = learnedMap.get(result.id);
-    if (typeof learnedWeight === 'number' && Number.isFinite(learnedWeight) && learnedWeight > 0) {
-      adjustedScore = adjustedScore * (1 + learnedWeight);
-      learnedHits++;
-    }
-
-    const negative = negativeStats.get(result.id);
-    if (negative && negative.negativeCount > 0) {
-      adjustedScore = applyNegativeFeedback(adjustedScore, negative.negativeCount, negative.lastNegativeAt);
-      negativeAdjusted++;
-    }
-
-    return {
-      ...result,
-      score: adjustedScore,
-      feedbackAdjustedScore: adjustedScore,
-    };
-  }).sort((a, b) => ((b.score as number) || 0) - ((a.score as number) || 0));
-
-  return {
-    results: adjusted,
-    metadata: {
-      applied: learnedHits > 0 || negativeAdjusted > 0,
-      learnedMatches: learnedHits,
-      negativeAdjusted,
-    },
-  };
 }
 
 function parseNullableInt(value: unknown): number | null {

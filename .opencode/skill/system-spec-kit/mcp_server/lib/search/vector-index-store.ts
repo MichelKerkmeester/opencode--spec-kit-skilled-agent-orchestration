@@ -19,13 +19,11 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import { validateFilePath } from '../utils/path-security';
-import { createLogger } from '../utils/logger';
 import { SERVER_DIR } from '../../core/config';
 import { IVectorStore } from '../interfaces/vector-store';
 import * as embeddingsProvider from '../providers/embeddings';
 import { computeInterferenceScoresBatch } from '../scoring/interference-scoring';
 import {
-  to_embedding_buffer,
   parse_trigger_phrases,
   get_error_message,
   get_error_code,
@@ -34,9 +32,6 @@ import {
   create_schema,
   ensure_schema_version,
 } from './vector-index-schema';
-
-// MCP-safe logger — all output goes to stderr (stdout reserved for JSON-RPC)
-const logger = createLogger('VectorIndex');
 
 const search_weights_path = path.join(SERVER_DIR, 'configs', 'search-weights.json');
 type SearchWeightsConfig = {

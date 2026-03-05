@@ -44,6 +44,7 @@ interface HealthArgs {
   reportMode?: 'full' | 'divergent_aliases';
   limit?: number;
   specFolder?: string;
+  autoRepair?: boolean;
 }
 
 /** Embedding provider metadata returned by the health check. */

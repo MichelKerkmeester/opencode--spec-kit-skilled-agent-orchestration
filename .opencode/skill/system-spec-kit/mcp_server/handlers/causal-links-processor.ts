@@ -7,7 +7,7 @@ import type BetterSqlite3 from 'better-sqlite3';
 import type { CausalLinks } from '../lib/parsing/memory-parser';
 import * as causalEdges from '../lib/storage/causal-edges';
 import { toErrorMessage } from '../utils';
-import { escapeLikePattern, detectSpecLevelFromParsed } from './handler-utils';
+import { escapeLikePattern } from './handler-utils';
 
 interface CausalLinkMapping {
   relation: typeof causalEdges.RELATION_TYPES[keyof typeof causalEdges.RELATION_TYPES];

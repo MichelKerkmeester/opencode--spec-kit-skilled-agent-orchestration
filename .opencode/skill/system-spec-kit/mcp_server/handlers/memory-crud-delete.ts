@@ -9,15 +9,13 @@
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as checkpoints from '../lib/storage/checkpoints';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as toolCache from '../lib/cache/tool-cache';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import * as causalEdges from '../lib/storage/causal-edges';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
-import { clearConstitutionalCache } from '../hooks/memory-surface';
+import { runPostMutationHooks } from './mutation-hooks';
 
 import type { MCPResponse } from './types';
 import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
@@ -208,9 +206,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   }
 
   if (deletedCount > 0) {
-    triggerMatcher.clearCache();
-    toolCache.invalidateOnWrite('delete', { specFolder });
-    clearConstitutionalCache();
+    runPostMutationHooks('delete', { specFolder, deletedCount });
   }
 
   const summary = deletedCount > 0

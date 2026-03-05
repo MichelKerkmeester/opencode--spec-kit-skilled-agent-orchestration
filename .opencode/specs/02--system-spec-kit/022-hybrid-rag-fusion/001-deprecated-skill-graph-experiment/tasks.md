@@ -87,7 +87,7 @@ contextType: "implementation"
 ## Phase 5: Legacy Skill-Graph Consolidation
 
 - [x] T040 Create `merge-manifest.md` with source-to-archive mapping
-- [x] T041 Consolidate legacy skill-graph source context (`002/003/006/007/009/012`) into active `013` docs
+- [x] T041 Consolidate legacy skill-graph source context (`002/002/006/004/003/012`) into active `013` docs
 - [x] T042 Move legacy source folders to `../z_archive/skill-graph-legacy/`
 - [x] T043 Mark parent root lifecycle docs as intentionally removed and keep child folders as canonical state
 <!-- /ANCHOR:phase-5 -->

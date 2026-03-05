@@ -9,17 +9,13 @@
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as checkpoints from '../lib/storage/checkpoints';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as toolCache from '../lib/cache/tool-cache';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import * as causalEdges from '../lib/storage/causal-edges';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe } from './memory-crud-utils';
-import { clearConstitutionalCache } from '../hooks/memory-surface';
-// AI-WHY: Fix #32 — Dynamic import used because co-activation.ts may not be in tsconfig.
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { runPostMutationHooks } from './mutation-hooks';
 
 import type { MCPResponse } from './types';
 
@@ -206,14 +202,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
 
   // Invalidate caches
   if (deletedCount > 0) {
-    triggerMatcher.clearCache();
-    toolCache.invalidateOnWrite('delete', { specFolder });
-    clearConstitutionalCache();
-    // AI-WHY: Fix #32 (017-refinement-phase-6) — Clear co-activation cache after bulk ops
-    try {
-      const coAct = require('../lib/cognitive/co-activation') as { clearRelatedCache?: () => void };
-      coAct.clearRelatedCache?.();
-    } catch { /* best-effort */ }
+    runPostMutationHooks('bulk-delete', { specFolder, tier, deletedCount });
   }
 
   const summary = `Deleted ${deletedCount} "${tier}" memory(s)${specFolder ? ` from "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`;

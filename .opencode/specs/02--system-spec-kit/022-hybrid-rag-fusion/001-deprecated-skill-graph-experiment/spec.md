@@ -116,10 +116,10 @@ Provide completion-grade closure for deprecating skill graph + README/skill-ref/
 The following legacy skill-graph-related folders are consolidated into this active `013` phase via merge documentation and archived intact under `../z_archive/skill-graph-legacy/`:
 
 - `002-skill-graph-integration/`
-- `003-unified-graph-intelligence/`
+- `002-unified-graph-intelligence/`
 - `006-skill-graph-utilization/`
-- `007-skill-graph-improvement/`
-- `009-skill-graph-score-recovery/`
+- `004-skill-graph-improvement/`
+- `002-skill-graph-score-recovery/`
 - `012-deprecate-skill-graph-and-readme-indexing/`
 <!-- /ANCHOR:scope -->
 

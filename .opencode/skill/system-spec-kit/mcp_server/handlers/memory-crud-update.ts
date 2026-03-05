@@ -11,17 +11,15 @@ import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import type { UpdateMemoryParams } from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as bm25Index from '../lib/search/bm25-index';
 import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers';
 import { MemoryError, ErrorCodes } from '../lib/errors';
-import * as toolCache from '../lib/cache/tool-cache';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
-import { clearConstitutionalCache } from '../hooks/memory-surface';
+import { runPostMutationHooks } from './mutation-hooks';
 
 import type { MCPResponse } from './types';
 import type { UpdateArgs } from './memory-crud-types';
@@ -240,9 +238,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     });
   }
 
-  triggerMatcher.clearCache();
-  toolCache.invalidateOnWrite('update', { memoryId: id });
-  clearConstitutionalCache();
+  runPostMutationHooks('update', { memoryId: id });
 
   const summary = embeddingMarkedForReindex
     ? `Memory ${id} updated (embedding pending re-index)`

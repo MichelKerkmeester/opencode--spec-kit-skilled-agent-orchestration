@@ -249,7 +249,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_FOLDER_TOP_K` | `5` | S3 | Numeric: top-K folder candidates for folder-scoped retrieval |
 | `SPECKIT_DEGREE_BOOST` | ON | S3 | Degree-centrality boost for highly-connected memories |
 | `SPECKIT_CHANNEL_MIN_REP` | ON | S4 | Channel minimum representation: promotes best result from under-represented channels |
-| `SPECKIT_LEARN_FROM_SELECTION` | OFF | S6 | Learned feedback from user result selections (requires 28-day R13 evaluation) |
+| `SPECKIT_LEARN_FROM_SELECTION` | ON | S6 | Learned feedback from user result selections (set `false` to disable) |
 | `SPECKIT_AUTO_RESUME` | ON | S7 | Auto-resume session detection in `memory_context()` |
 | `SPECKIT_PRESSURE_POLICY` | ON | S7 | Context pressure policy for token budget management |
 

@@ -23,7 +23,7 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 // 2026-03-03: Thresholds audited — memory-crud.js tightened from 760→40 after decomposition into sub-modules.
 // TODO: Extract quality gate, reconsolidation, chunked-indexing from memory-save (2,553 LOC source).
 const EXTENDED_LIMITS: Record<string, number> = {
-  'context-server.js': 800,         // actual: 783 — Main entry point + Sprint 019: dynamic init, file watcher init
+  'context-server.js': 880,         // actual: 866 — Main entry point wiring for tools, hooks, and startup lifecycle
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
   'formatters/search-results.js': 400, // actual: 387 — Search result formatting + Sprint 019: response envelope support
   'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration

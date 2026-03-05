@@ -11,6 +11,7 @@ import { resolve } from 'node:path';
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
@@ -170,6 +171,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     reportMode = 'full',
     limit: rawLimit = DEFAULT_DIVERGENT_ALIAS_LIMIT,
     specFolder,
+    autoRepair = false,
   } = args ?? {};
 
   if (reportMode !== 'full' && reportMode !== DIVERGENT_ALIAS_REPORT_MODE) {
@@ -177,6 +179,9 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   }
   if (specFolder !== undefined && typeof specFolder !== 'string') {
     throw new Error('specFolder must be a string');
+  }
+  if (typeof autoRepair !== 'boolean') {
+    throw new Error('autoRepair must be a boolean');
   }
   if (rawLimit !== undefined && (!Number.isFinite(rawLimit) || rawLimit <= 0)) {
     throw new Error('limit must be a positive number');
@@ -234,6 +239,9 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     if (!database) {
       hints.push('Database not connected - restart MCP server');
     }
+    if (autoRepair) {
+      hints.push('autoRepair is only applied in reportMode="full"');
+    }
     if (aliasConflicts.divergentHashGroups === 0) {
       hints.push('No divergent alias groups detected');
     }
@@ -266,6 +274,15 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
   const summary = `Memory system ${status}: ${memoryCount} memories indexed`;
   const hints: string[] = [];
+  const repair = {
+    requested: autoRepair,
+    attempted: false,
+    repaired: false,
+    actions: [] as string[],
+    warnings: [] as string[],
+    errors: [] as string[],
+  };
+
   if (!isEmbeddingModelReady()) {
     hints.push('Embedding model not ready - some operations may fail');
   }
@@ -285,9 +302,39 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
           `FTS5 index out of sync: memory_index has ${memoryCountRow.count} rows, memory_fts has ${ftsCountRow.count} rows. ` +
           `Run memory_index_scan with force:true to rebuild FTS5 index.`
         );
+
+        if (autoRepair) {
+          repair.attempted = true;
+          try {
+            database.exec("INSERT INTO memory_fts(memory_fts) VALUES('rebuild')");
+            repair.actions.push('fts_rebuild');
+
+            triggerMatcher.refreshTriggerCache();
+            repair.actions.push('trigger_cache_refresh');
+
+            const repairedFtsCountRow = database.prepare('SELECT COUNT(*) as count FROM memory_fts').get() as { count: number };
+            if (memoryCountRow.count === repairedFtsCountRow.count) {
+              repair.repaired = true;
+              repair.actions.push('fts_consistency_verified');
+              hints.push('Auto-repair completed: FTS5 index rebuilt and trigger cache refreshed.');
+            } else {
+              const warning = `Post-repair mismatch persists: memory_index=${memoryCountRow.count}, memory_fts=${repairedFtsCountRow.count}`;
+              repair.warnings.push(warning);
+              hints.push(`Auto-repair attempted, but mismatch remains (${warning}).`);
+            }
+          } catch (repairError: unknown) {
+            const message = toErrorMessage(repairError);
+            repair.errors.push(message);
+            hints.push(`Auto-repair failed: ${message}`);
+          }
+        }
       }
     } catch (e: unknown) {
-      hints.push(`FTS5 consistency check failed: ${(e as Error).message}`);
+      const message = toErrorMessage(e);
+      hints.push(`FTS5 consistency check failed: ${message}`);
+      if (autoRepair) {
+        repair.errors.push(`Consistency check failed before repair: ${message}`);
+      }
     }
   }
   if (aliasConflicts.groups > 0) {
@@ -310,6 +357,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       version: SERVER_VERSION,
       reportMode: 'full',
       aliasConflicts,
+      repair,
       embeddingProvider: {
         provider: providerMetadata.provider,
         model: providerMetadata.model,

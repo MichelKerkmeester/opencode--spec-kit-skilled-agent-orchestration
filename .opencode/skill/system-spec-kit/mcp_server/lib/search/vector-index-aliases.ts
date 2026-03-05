@@ -21,7 +21,6 @@ import {
   generate_query_embedding,
 } from './vector-index-queries';
 
-type EmbeddingInput = Float32Array | number[];
 type EnrichedSearchResult = {
   rank: number;
   similarity?: number;

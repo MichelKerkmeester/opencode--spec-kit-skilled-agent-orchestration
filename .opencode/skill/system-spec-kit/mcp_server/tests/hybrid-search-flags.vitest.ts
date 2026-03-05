@@ -13,7 +13,7 @@ const applyMMRMock = vi.fn((candidates, options) => {
   return candidates.slice(0, limit);
 });
 
-vi.mock('../../shared/algorithms/mmr-reranker', () => ({
+vi.mock('@spec-kit/shared/algorithms/mmr-reranker', () => ({
   applyMMR: (...args) => applyMMRMock(...args),
 }));
 

@@ -197,6 +197,7 @@ const memoryHealthSchema = getSchema({
   reportMode: z.enum(['full', 'divergent_aliases']).optional(),
   limit: positiveIntMax(200).optional(),
   specFolder: z.string().optional(),
+  autoRepair: z.boolean().optional(),
 });
 
 const checkpointCreateSchema = getSchema({
@@ -217,6 +218,7 @@ const checkpointRestoreSchema = getSchema({
 
 const checkpointDeleteSchema = getSchema({
   name: z.string().min(1),
+  confirmName: z.string().min(1).optional(),
 });
 
 const taskPreflightSchema = getSchema({
@@ -344,7 +346,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding'],
   memory_list: ['limit', 'offset', 'specFolder', 'sortBy', 'includeChunks'],
   memory_stats: ['folderRanking', 'excludePatterns', 'includeScores', 'includeArchived', 'limit'],
-  memory_health: ['reportMode', 'limit', 'specFolder'],
+  memory_health: ['reportMode', 'limit', 'specFolder', 'autoRepair'],
   memory_delete: ['id', 'specFolder', 'confirm'],
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],
@@ -352,7 +354,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   checkpoint_create: ['name', 'specFolder', 'metadata'],
   checkpoint_list: ['specFolder', 'limit'],
   checkpoint_restore: ['name', 'clearExisting'],
-  checkpoint_delete: ['name'],
+  checkpoint_delete: ['name', 'confirmName'],
   task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
   task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered'],
   memory_drift_why: ['memoryId', 'maxDepth', 'direction', 'relations', 'includeMemoryDetails'],

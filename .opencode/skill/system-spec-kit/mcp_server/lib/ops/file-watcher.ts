@@ -67,14 +67,7 @@ function isMarkdownPath(filePath: string): boolean {
 function shouldIgnoreWatchTarget(targetPath: string): boolean {
   if (isDotfilePath(targetPath)) return true;
   const basename = path.basename(targetPath);
-  if (basename.startsWith('.')) return true;
-
-  // Directory paths often have no file extension. Do not ignore those so
-  // chokidar can traverse watched roots and discover nested markdown files.
-  const extension = path.extname(targetPath).toLowerCase();
-  if (extension.length === 0) return false;
-
-  return extension !== '.md';
+  return basename.startsWith('.');
 }
 
 function isSqliteBusyError(error: unknown): boolean {
@@ -114,6 +107,15 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const debounceMs = config.debounceMs ?? DEFAULT_DEBOUNCE_MS;
   const debounceTimers = new Map<string, NodeJS.Timeout>();
   const contentHashes = new Map<string, string>();
+  const inFlightReindex = new Set<Promise<void>>();
+  let isClosing = false;
+
+  const trackInFlight = (task: Promise<void>): void => {
+    inFlightReindex.add(task);
+    void task.finally(() => {
+      inFlightReindex.delete(task);
+    });
+  };
 
   const watcher = chokidar.watch(config.paths, {
     ignoreInitial: true,
@@ -123,6 +125,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
   const scheduleReindex = (targetPath: unknown, options: { force?: boolean } = {}): void => {
     if (typeof targetPath !== 'string') {
+      return;
+    }
+    if (isClosing) {
       return;
     }
 
@@ -140,8 +145,11 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
     const timeout = setTimeout(() => {
       debounceTimers.delete(filePath);
+      if (isClosing) {
+        return;
+      }
 
-      void (async () => {
+      const task = (async () => {
         try {
           // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
           // created then deleted before the debounce timer fires.
@@ -176,6 +184,8 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
           console.warn(`[file-watcher] Re-index failed for ${filePath}: ${message}`);
         }
       })();
+
+      trackInFlight(task);
     }, debounceMs);
 
     debounceTimers.set(filePath, timeout);
@@ -194,10 +204,16 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
   const originalClose = watcher.close.bind(watcher);
   watcher.close = async () => {
+    isClosing = true;
     for (const timeout of debounceTimers.values()) {
       clearTimeout(timeout);
     }
     debounceTimers.clear();
+
+    while (inFlightReindex.size > 0) {
+      await Promise.allSettled(Array.from(inFlightReindex));
+    }
+
     await originalClose();
   };
 

@@ -2,10 +2,7 @@
 // MODULE: Prediction Error Gating Helpers
 // ---------------------------------------------------------------
 
-import type BetterSqlite3 from 'better-sqlite3';
-
 import * as vectorIndex from '../lib/search/vector-index';
-import * as predictionErrorGate from '../lib/cache/cognitive/prediction-error-gate';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent';

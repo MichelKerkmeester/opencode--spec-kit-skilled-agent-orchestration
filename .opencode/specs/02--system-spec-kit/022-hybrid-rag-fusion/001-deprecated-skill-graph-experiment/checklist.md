@@ -42,7 +42,7 @@ Evidence format: `[Evidence: command/file/result]`
 - [x] CHK-004 [P0] `graph_node` removed from create command workflows [Evidence: `rg -n "graph_node" .opencode/command/create || true` -> no matches]
 - [x] CHK-005 [P0] README indexing notes removed from create-folder-readme auto/confirm YAML [Evidence: `rg -n -i "README indexing|readme indexing|auto-index|index readme|includeReadmes" .opencode/command/create/assets/create_folder_readme_auto.yaml .opencode/command/create/assets/create_folder_readme_confirm.yaml || true` -> no matches]
 - [x] CHK-006 [P0] Level 3 artifact set exists for this phase folder [Evidence: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md` present in `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-deprecated-skill-graph-experiment`]
-- [x] CHK-007 [P0] Merge manifest exists and defines single active skill-graph folder + six legacy source mappings [Evidence: `merge-manifest.md` in this folder with source rows for 002/003/006/007/009/012 and active-state rule]
+- [x] CHK-007 [P0] Merge manifest exists and defines single active skill-graph folder + six legacy source mappings [Evidence: `merge-manifest.md` in this folder with source rows for 002/002/006/004/003/012 and active-state rule]
 - [x] CHK-008 [P0] Legacy skill-graph source folders archived under `../z_archive/skill-graph-legacy/` [Evidence: archive contains `002-skill-graph-integration`, `003-unified-graph-intelligence`, `006-skill-graph-utilization`, `007-skill-graph-improvement`, `009-skill-graph-score-recovery`, `012-deprecate-skill-graph-and-readme-indexing`; none remain active at 138 root]
 <!-- /ANCHOR:p0 -->
 
