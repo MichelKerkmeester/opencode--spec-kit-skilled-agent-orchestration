@@ -2,8 +2,8 @@
 name: speckit
 description: Spec folder documentation specialist for creating and maintaining Level 1-3+ documentation with template enforcement
 mode: subagent
-model: openai/gpt-5.4
-reasoningEffort: medium
+model: openai/gpt-5.3-codex
+reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow

@@ -83,7 +83,7 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/checklist.md` | Create | Verification checklist with evidence |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/implementation-summary.md` | Create | Completion summary and outcomes |
 | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Modify | Remove disallowed ToC sections |
-| `.opencode/specs/03--commands-and-skills/sk-doc-visual/002-sk-doc-visual-hardening/{spec,plan,tasks,checklist,implementation-summary}.md` | Modify | Remove disallowed ToC sections |
+| `removed visual skill hardening docs` | Modify | Remove disallowed ToC sections |
 | `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/{spec,plan,tasks,checklist}.md` | Modify | Remove disallowed ToC sections |
 <!-- /ANCHOR:scope -->
 

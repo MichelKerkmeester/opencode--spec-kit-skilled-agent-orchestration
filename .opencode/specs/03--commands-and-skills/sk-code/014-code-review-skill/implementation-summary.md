@@ -51,7 +51,7 @@ contextType: "implementation"
 - Updated orchestrators in all runtime profiles (`.opencode`, `.opencode/chatgpt`, `.gemini`, `.claude`) to document `@review` as baseline+overlay instead of generic `sk-code--*` only.
 - Updated `.codex/agents/review.toml` and `.codex/agents/orchestrate.toml` so Codex runtime wrappers explicitly enforce the same baseline+overlay review contract while pointing to canonical chatgpt playbooks.
 - Updated all 18 review-dispatch YAML assets with `standards_contract` and consistent dispatch wording.
-- Updated `skill_advisor.py` review routing to prioritize `sk-code--review` for review intents while preserving git and visual-review routing behavior.
+- Updated `skill_advisor.py` review routing to prioritize `sk-code--review` for review intents while preserving git behavior and removing stale visual-skill claims from live docs.
 - Updated skill catalogs (`.opencode/skill/README.md`, `.opencode/README.md`) for new skill and 11-skill counts.
 - Finalized Level 2 spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`).
 <!-- /ANCHOR:what-built -->
@@ -94,7 +94,7 @@ contextType: "implementation"
 | `python3 .opencode/skill/sk-doc/scripts/quick_validate.py .opencode/skill/sk-code--web --json` | FAIL (same rule), confirming existing validator mismatch with established `sk-code--*` naming |
 | `python3 .opencode/skill/scripts/skill_advisor.py "review this PR for race conditions and auth bugs" --threshold 0.8` | PASS: top `sk-code--review` |
 | `python3 .opencode/skill/scripts/skill_advisor.py "help me rebase and split commits" --threshold 0.8` | PASS: top `sk-git` |
-| `python3 .opencode/skill/scripts/skill_advisor.py "visual review of architecture diff" --threshold 0.8` | PASS: top `sk-doc-visual`, `sk-code--review` secondary |
+| Live-doc visual-skill claim cleanup in scoped spec files | PASS: removed stale target assertions from completion evidence |
 | `rg -n "sk-code--review|baseline\+overlay|overlay"` across `.opencode/agent/*.md`, `.opencode/agent/chatgpt/*.md`, `.gemini/agents/*.md`, `.claude/agents/*.md`, `.codex/agents/{review,orchestrate}.toml` | PASS: baseline+overlay contract present in all runtime agent locations |
 | `rg -n "standards_contract|baseline: \"sk-code--review\""` across 18 YAML assets | PASS: all target files matched |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill` | PASS (exit 0): all rules passed, no warnings |
@@ -108,7 +108,7 @@ contextType: "implementation"
 2. Router standards parity with baseline+overlay logic: complete.
 3. Review runtime docs wiring (agents + orchestrators): complete.
 4. Command review-dispatch contract sweep (18 assets): complete.
-5. Advisor routing behavior for review/git/visual test prompts: complete.
+5. Advisor routing behavior for review/git prompts and live-doc visual-skill cleanup: complete.
 6. Spec closure docs and evidence: complete.
 7. Packaging validator pass: not achieved due known existing validator/name rule mismatch; documented with reproducible evidence.
 

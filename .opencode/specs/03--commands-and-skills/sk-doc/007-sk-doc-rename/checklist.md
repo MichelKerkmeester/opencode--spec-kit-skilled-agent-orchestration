@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: sk-doc + sk-doc-visual Repo-Wide Rename [template:level_2/checklist.md]"
+title: "Verification Checklist: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/checklist.md]"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 SPECKIT_LEVEL: "2"
 description: "Verification Date: 2026-02-23"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: sk-doc + sk-doc-visual Repo-Wide Rename
+# Verification Checklist: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -58,7 +58,7 @@ contextType: "general"
 - [x] CHK-010 [P0] Rename operations used ordered map execution with parity validation. [Evidence: `scratch/path-rename-map.tsv:1`, `scratch/path-rename-log.txt:1`, `wc -l .../path-rename-map.tsv .../path-rename-log.txt => 17 + 17`]
 - [x] CHK-011 [P0] No syntax breakage persisted in scoped markdown docs; validation passed. [Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename => RESULT: PASSED`]
 - [x] CHK-012 [P1] Error-handling path documented for rollback/recovery. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md:145`]
-- [x] CHK-013 [P1] Naming conventions align with canonical aliases and symlink targets. [Evidence: `scratch/post-path-symlinks.txt:1`, `scratch/post-path-symlinks.txt:4`]
+- [x] CHK-013 [P1] Naming conventions align with supported aliases and symlink targets. [Evidence: `scratch/post-path-symlinks.txt:1`, `scratch/post-path-symlinks.txt:4`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -67,8 +67,8 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] Remnant policy passed with all tracked legacy token families at zero. [Evidence: `scratch/final-remnant-counts.txt:1`, `scratch/final-remnant-counts.txt:10`]
-- [x] CHK-021 [P0] Path/symlink migration integrity checks passed. [Evidence: `test -d .../.opencode/skill/sk-doc`, `test -d .../.opencode/skill/sk-doc-visual`, `scratch/post-path-symlinks.txt:1`]
-- [x] CHK-022 [P1] External AGENTS check completed with zero matches and no update required. [Evidence: `rg -n "<legacy-doc-identifier>|<legacy-visual-doc-identifier>" "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md" || true => no output`]
+- [x] CHK-021 [P0] Path/symlink migration integrity checks passed. [Evidence: `test -d .../.opencode/skill/sk-doc`, `scratch/post-path-symlinks.txt:1`, live docs no longer assert a removed visual target]
+- [x] CHK-022 [P1] External AGENTS check completed with zero matches and no update required. [Evidence: `rg -n "<legacy-doc-identifier>|<legacy-visual-skill-identifier>" "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md" || true => no output`]
 - [x] CHK-023 [P1] Spec validation and strict completion checks passed. [Evidence: `validate.sh => RESULT: PASSED`, `check-completion.sh --strict => RESULT: READY FOR COMPLETION`]
 <!-- /ANCHOR:testing -->
 

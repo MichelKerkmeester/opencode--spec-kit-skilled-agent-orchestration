@@ -193,11 +193,18 @@ describe('PI-B3: isCacheStale', () => {
     const specsDir = path.join(tmpDir, 'specs');
     createSpecFolder(tmpDir, '001-test', '# Test Spec');
 
-    // Cache generated "now" — spec.md was created before now
+    // Cache generated in the future remains fresh when its folder set still matches discovery
     const cache: DescriptionCache = {
       version: 1,
       generated: new Date(Date.now() + 10000).toISOString(), // future
-      folders: [],
+      folders: [
+        {
+          specFolder: '001-test',
+          description: 'Test Spec',
+          keywords: ['test', 'spec'],
+          lastUpdated: new Date().toISOString(),
+        },
+      ],
     };
 
     expect(isCacheStale(cache, [specsDir])).toBe(false);
@@ -288,7 +295,7 @@ describe('PI-B3: isCacheStale', () => {
 
     const cache: DescriptionCache = {
       version: 1,
-      generated: new Date().toISOString(),
+      generated: new Date(Date.now() + 10000).toISOString(),
       folders: [
         {
           specFolder: '001-deleted',
@@ -310,7 +317,7 @@ describe('PI-B3: isCacheStale', () => {
 
     const cache: DescriptionCache = {
       version: 1,
-      generated: new Date().toISOString(),
+      generated: new Date(Date.now() + 10000).toISOString(),
       folders: [
         {
           specFolder: '001-original',
@@ -381,7 +388,12 @@ describe('CHK-PI-B3-001: ensureDescriptionCache', () => {
     const preCache: DescriptionCache = {
       version: 1,
       generated: new Date(Date.now() + 60000).toISOString(),
-      folders: [{ specFolder: 'test', description: 'Pre-existing', keywords: ['pre'], lastUpdated: new Date().toISOString() }],
+      folders: [{
+        specFolder: '001-auth',
+        description: 'Pre-existing',
+        keywords: ['pre'],
+        lastUpdated: new Date().toISOString(),
+      }],
     };
     const cachePath = path.join(specsDir, 'descriptions.json');
     saveDescriptionCache(preCache, cachePath);

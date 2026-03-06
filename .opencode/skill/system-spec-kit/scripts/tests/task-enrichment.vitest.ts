@@ -17,6 +17,9 @@ const workflowHarness = vi.hoisted(() => ({
   specFolderPath: '',
   contextDir: '',
   writtenFiles: [] as Array<{ contextDir: string; files: Record<string, string> }>,
+  loaderSnapshots: [] as Array<{ dataFile: string | null; specFolderArg: string | null }>,
+  loaderDataWithFile: null as Record<string, unknown> | null,
+  loaderDataWithoutFile: null as Record<string, unknown> | null,
 }));
 
 vi.mock('../spec-folder', () => ({
@@ -76,6 +79,28 @@ vi.mock('../core/file-writer', () => ({
   writeFilesAtomically: vi.fn(async (contextDir: string, files: Record<string, string>) => {
     workflowHarness.writtenFiles.push({ contextDir, files });
     return Object.keys(files);
+  }),
+}));
+
+vi.mock('../loaders/data-loader', () => ({
+  loadCollectedData: vi.fn(async () => {
+    const { CONFIG } = await import('../core');
+    workflowHarness.loaderSnapshots.push({
+      dataFile: CONFIG.DATA_FILE,
+      specFolderArg: CONFIG.SPEC_FOLDER_ARG,
+    });
+
+    if (CONFIG.DATA_FILE) {
+      return workflowHarness.loaderDataWithFile ?? {
+        _source: 'file',
+        userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:00:00Z' }],
+      };
+    }
+
+    return workflowHarness.loaderDataWithoutFile ?? {
+      _source: 'opencode-capture',
+      userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:01:00Z' }],
+    };
   }),
 }));
 
@@ -197,6 +222,9 @@ function createDeferred<T = void>(): {
 beforeEach(() => {
   vi.clearAllMocks();
   workflowHarness.writtenFiles = [];
+  workflowHarness.loaderSnapshots = [];
+  workflowHarness.loaderDataWithFile = null;
+  workflowHarness.loaderDataWithoutFile = null;
 });
 
 afterEach(() => {
@@ -333,6 +361,26 @@ describe('slug outcome guardrail', () => {
       folderBase,
       ['Hybrid RAG fusion recall regression audit']
     )).toBe('Hybrid RAG fusion recall regression audit');
+  });
+
+  it('skips spec title fallback in file-backed mode and preserves other specific candidates', () => {
+    expect(pickPreferredMemoryTask(
+      'Development session',
+      'Spec: Generic Memory Filename Fix in Stateless Mode',
+      folderBase,
+      ['Hybrid RAG fusion recall regression audit'],
+      false
+    )).toBe('Hybrid RAG fusion recall regression audit');
+  });
+
+  it('falls back to the folder base when file-backed mode has no usable candidates', () => {
+    expect(pickPreferredMemoryTask(
+      'Development session',
+      'Spec: Generic Memory Filename Fix in Stateless Mode',
+      folderBase,
+      [],
+      false
+    )).toBe(folderBase);
   });
 
   it('returns the first non-generic, non-contaminated content name', () => {
@@ -542,18 +590,22 @@ describe('workflow seam guardrail', () => {
     const { CONFIG } = await import('../core');
     CONFIG.DATA_FILE = null;
     CONFIG.SPEC_FOLDER_ARG = null;
+    workflowHarness.loaderDataWithoutFile = {
+      _source: 'opencode-capture',
+      userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:01:00Z' }],
+    };
 
     const collectSessionDataFn = async (_collectedData: unknown, specFolderName?: string) => {
-      return createSessionData(specFolderName || '013-memory-search-bug-fixes');
+      const sessionData = createSessionData(specFolderName || '013-memory-search-bug-fixes');
+      sessionData.QUICK_SUMMARY = 'Development session';
+      sessionData.TITLE = 'Development session';
+      sessionData.SUMMARY = 'Implementation and updates';
+      return sessionData;
     };
 
     const fileBackedData = {
       _source: 'file',
       userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:00:00Z' }],
-    };
-    const statelessData = {
-      _source: 'opencode-capture',
-      userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:01:00Z' }],
     };
 
     const fileBackedResult = await runWorkflow({
@@ -563,13 +615,15 @@ describe('workflow seam guardrail', () => {
       silent: true,
     });
     const statelessResult = await runWorkflow({
-      collectedData: statelessData,
       collectSessionDataFn,
       silent: true,
     });
 
-    expect(fileBackedResult.contextFilename).toContain('__generic-memory-filename-fix-in-stateless-mode.md');
+    expect(fileBackedResult.contextFilename).toContain('__memory-search-bug-fixes.md');
     expect(statelessResult.contextFilename).toContain('__generic-memory-filename-fix-in-stateless-mode.md');
+    expect(workflowHarness.loaderSnapshots).toEqual([
+      { dataFile: null, specFolderArg: null },
+    ]);
     expect(CONFIG.DATA_FILE).toBeNull();
     expect(CONFIG.SPEC_FOLDER_ARG).toBeNull();
 

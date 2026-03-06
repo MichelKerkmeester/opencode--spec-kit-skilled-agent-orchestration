@@ -35,7 +35,7 @@ child_agents_md = true
 # Profiles for codex exec -p <name> (non-interactive delegation)
 [profiles.context]
 sandbox_mode = "read-only"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 
 [profiles.debug]
 sandbox_mode = "workspace-write"
@@ -43,7 +43,7 @@ model_reasoning_effort = "xhigh"
 
 [profiles.handover]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "xhigh"
 
 [profiles.orchestrate]
 sandbox_mode = "read-only"
@@ -59,7 +59,7 @@ model_reasoning_effort = "xhigh"
 
 [profiles.speckit]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "xhigh"
 
 [profiles.ultra-think]
 sandbox_mode = "read-only"
@@ -67,7 +67,7 @@ model_reasoning_effort = "xhigh"
 
 [profiles.write]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "xhigh"
 
 # Agents for interactive multi-agent TUI (codex with multi_agent feature)
 [agents.context]

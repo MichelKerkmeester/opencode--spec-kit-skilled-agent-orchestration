@@ -91,7 +91,7 @@ Items added from triple ultra-think cross-AI review (2026-03-04).
 ### P0 Blockers (must resolve before phase completion)
 
 - [x] CHK-200 [P0] `check-api-boundary.sh` integrated into `npm run check` pipeline. [EVIDENCE: `scripts/package.json` check = `npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh`; `npm run check` passes all 3 stages]
-- [x] CHK-201 [P0] `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` exception table matches `import-policy-allowlist.json` exactly. [EVIDENCE: `reindex-embeddings.ts` row added; 6 exceptions in table match 6 entries in allowlist JSON]
+- [x] CHK-201 [P0] `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` exception table matches `import-policy-allowlist.json` exactly. [EVIDENCE: `reindex-embeddings.ts` row added; 2 exceptions in table match 2 entries in allowlist JSON]
 - [x] CHK-202 [P0] `PROHIBITED_PATTERNS` covers `@spec-kit/mcp-server/core/*` in addition to `lib/*`. [EVIDENCE: 2 package-form + 2 relative-form `core/` patterns added; `npm run check` passes with existing `core/config` allowlisted]
 - [x] CHK-203 [P0] `escapeLikePattern` in `handler-utils.ts` escapes backslash before `%`/`_`. [EVIDENCE: `.replace(/\\\\/g, '\\\\\\\\')` prepended; backslash escaped first in chain]
 
@@ -313,6 +313,32 @@ Validates the post-Phase-10 V6/V7 blocker where indexed direct-save render/quali
 - [x] CHK-660 [P2] Verification captures at least one focused indexed direct-save quality example that future audits can reuse as closure evidence. [EVIDENCE: the root direct-save proof is `specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_15-07__phase-13-indexed-direct-save-quality-closure-for.md`; it retained a non-generic filename, indexed successfully as memory `#1201`, and cleared quality gates without `QUALITY_GATE_FAIL` or skipped indexing.]
 <!-- /ANCHOR:phase-13-indexed-direct-save -->
 
+<!-- ANCHOR:post-review-remediation -->
+## Post-Review Remediation Verification (10-Agent Review, 2026-03-06)
+
+Verifies that all P0 and P1 findings from the 10-agent comprehensive review (`scratch/review-2026-03-06/unified-review-synthesis.md`) were correctly remediated.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-700 [P0] `check-allowlist-expiry.ts` is wired into `npm run check` pipeline and executes in CI. [EVIDENCE: `scripts/package.json` `"check"` script ends with `&& npx tsx evals/check-allowlist-expiry.ts`; `npm run check --workspace=scripts` passes including the new stage.]
+- [x] CHK-701 [P0] spec.md Status field reads "Complete" (not "In Review"). [EVIDENCE: `spec.md` line 36: `| **Status** | Complete |`]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-710 [P1] ADR-006 documents active AST enforcement status with accurate residual risk scope. [EVIDENCE: `decision-record.md` contains "Post-Phase 8 AST Enforcement Addendum (2026-03-06)" documenting active CI status, 372-line checker, and residual risk limited to computed/interpolated specifiers.]
+- [x] CHK-711 [P1] Task count is reconciled to "126 task entries (124 IDs; T013 split into T013a/b/c)" across plan.md and implementation-summary.md. [EVIDENCE: `plan.md` effort table total and `implementation-summary.md` overview both use the reconciled count; grep for "123 task entries" returns 0 matches in spec docs.]
+- [x] CHK-712 [P1] Phase 12 is present in effort table, critical path, L3 critical path list, and milestones in plan.md. [EVIDENCE: `plan.md` line 102 (effort table), line 106 (critical path), line 326 (L3 list item 11), line 346 (milestone M10).]
+- [x] CHK-713 [P1] ADR-004 Decision section uses "We chose" (not "We propose"). [EVIDENCE: grep for "We propose" in `decision-record.md` returns 0 matches.]
+
+### P2 Nice-to-Have (completed in-pass)
+
+- [x] CHK-720 [P2] All 18 requirements have traceability entries in spec.md Section 4.5. [EVIDENCE: 5 backfilled rows (REQ-002, -006, -008, -009, -010) added; traceability table now covers REQ-001 through REQ-018 without gaps.]
+- [x] CHK-721 [P2] CHK-201 exception count reflects post-Phase 7 allowlist state. [EVIDENCE: `checklist.md` CHK-201 now reads "2 exceptions in table match 2 entries in allowlist JSON".]
+- [x] CHK-722 [P2] ADR-002 Five Checks item 5 uses "Controlled" (not "Yes"). [EVIDENCE: `decision-record.md` line 127: `5. **No tech debt?** Controlled`.]
+- [x] CHK-723 [P2] Section 12 open questions are formally resolved with ADR references. [EVIDENCE: `spec.md` Section 12 heading reads "OPEN QUESTIONS (Resolved)"; Q1 cites ADR-002, Q2 cites ADR-001 and ADR-004.]
+- [x] CHK-724 [P2] 2-agent post-edit review confirms cross-file consistency and content accuracy. [EVIDENCE: Agent 1 (cross-file consistency): PASS 100/100 — 19 edits verified, 10 consistency checks, 7 format checks. Agent 2 (content accuracy): 14/14 claims VERIFIED after one off-by-one line count correction (373→372).]
+<!-- /ANCHOR:post-review-remediation -->
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
@@ -349,6 +375,9 @@ Validates the post-Phase-10 V6/V7 blocker where indexed direct-save render/quali
 | P0 Items (Phase 13 Indexed Direct-Save Quality) | 2 | 2/2 | Post-Phase-10 V6/V7 blocker closed as a render/indexing-quality issue, not a naming regression |
 | P1 Items (Phase 13 Indexed Direct-Save Quality) | 3 | 3/3 | Regression coverage, focused verification, and cross-doc closure evidence all recorded |
 | P2 Items (Phase 13 Indexed Direct-Save Quality) | 1 | 1/1 | Reusable indexed root-save quality example captured for future audits |
+| P0 Items (Post-Review Remediation) | 2 | 2/2 | Allowlist expiry wiring and status update verified |
+| P1 Items (Post-Review Remediation) | 4 | 4/4 | ADR-006 addendum, task count, Phase 12 metadata, ADR-004 verb verified |
+| P2 Items (Post-Review Remediation) | 5 | 5/5 | Traceability backfill, CHK-201 count, ADR-002 verb, open questions, 2-agent review |
 
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
@@ -370,4 +399,5 @@ Validates the post-Phase-10 V6/V7 blocker where indexed direct-save render/quali
 **Phase 12 Closure Completed**: 2026-03-06
 **Phase 13 Planning Added**: 2026-03-06
 **Phase 13 Closure Completed**: 2026-03-06
+**Post-Review Remediation Completed**: 2026-03-06
 <!-- /ANCHOR:summary -->

@@ -14,7 +14,7 @@ importance_tier: "important"
 
 # OpenCode Install Guides
 
-> AI-executable guides for the OpenCode dev environment. Covers 3 native MCP servers, 11 native skills, 8 agents, and optional CLI tools.
+> AI-executable guides for the OpenCode dev environment. Covers 3 native MCP servers, native skills, 8 agents, and optional CLI tools.
 
 ---
 
@@ -363,7 +363,7 @@ uname -s | grep -E "Darwin|Linux" && echo "✅ PASS" || echo "❌ FAIL"
    │  Webflow, Figma, ClickUp, GitHub...   │
    └───────────────────────────────────┘
 
-   NATIVE SKILLS: 11 skills auto-discovered from .opencode/skill/*/SKILL.md
+   NATIVE SKILLS: auto-discovered from .opencode/skill/*/SKILL.md
    OPTIONAL: Chrome DevTools CLI (bdg), Gemini CLI, Auth Plugins
 ```
 
@@ -807,7 +807,7 @@ Skills are automatically discovered from:
 - `~/.opencode/skill/<name>/SKILL.md` (global)
 - `.claude/skills/<name>/SKILL.md` (Claude-compatible)
 
-**Current Skills (10 total):**
+**Current Skills:**
 | Skill                      | Version    | Purpose                                              |
 | -------------------------- | ---------- | ---------------------------------------------------- |
 | mcp-code-mode              | v1.0.4.0   | External tool orchestration                          |
@@ -819,7 +819,6 @@ Skills are automatically discovered from:
 | sk-code--web    | v1.0.5.0   | Web development implementation orchestrator          |
 | sk-doc    | v1.0.6.0   | Unified markdown and skill management                |
 | sk-git              | v1.0.2.0   | Git workflow orchestrator                            |
-| sk-doc-visual | v1.0.0     | Visual explanation generation                        |
 
 **How it works:**
 - OpenCode scans skill folders on startup
@@ -973,7 +972,7 @@ test -d .opencode/skill && [ $(ls -1 .opencode/skill | wc -l) -ge 1 ] && echo "�
 - [ ] Prerequisites: Node.js 18+, Python 3.10+, uv
 - [ ] Ollama running with nomic-embed-text model
 - [ ] All 3 native MCP servers configured in opencode.json
-- [ ] Skills directory exists with 11 skills
+- [ ] Skills directory exists with native skills
 - [ ] Configuration files exist and are valid JSON
 
 ### Quick Verification

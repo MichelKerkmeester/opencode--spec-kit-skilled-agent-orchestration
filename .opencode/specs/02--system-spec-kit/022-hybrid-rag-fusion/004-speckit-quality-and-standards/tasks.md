@@ -81,7 +81,7 @@ contextType: "implementation"
 - [x] T012 Run ToC policy scan to confirm no ToC sections remain in scoped standard artifacts.
 - [x] T013 Run `validate.sh` for `007-spec-kit-templates`.
 - [x] T014 Run `validate.sh` for `039-sk-code-opencode-alignment-hardening`.
-- [x] T015 Run `validate.sh` for `040-sk-doc-visual-hardening`.
+- [x] T015 Run `validate.sh` for the removed visual skill hardening docs.
 - [x] T016 Run `validate.sh` for `041-code-review-skill`.
 - [x] T017 Compile concise output report: files changed + validation outcomes.
 <!-- /ANCHOR:phase-3 -->

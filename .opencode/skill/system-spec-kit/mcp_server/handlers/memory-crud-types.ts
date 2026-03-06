@@ -50,7 +50,8 @@ interface HealthArgs {
 /** Embedding provider metadata returned by the health check. */
 interface ProviderMetadata {
   provider: string;
-  model: string;
+  model?: string;
+  dim?: number;
   healthy?: boolean;
 }
 
@@ -77,6 +78,16 @@ interface MutationLedgerInput {
   sessionId?: string | null;
 }
 
+/** Result returned by post-mutation hooks (cache invalidation, etc.). */
+interface MutationHookResult {
+  latencyMs: number;
+  triggerCacheCleared: boolean;
+  constitutionalCacheCleared: boolean;
+  toolCacheInvalidated: number;
+  graphSignalsCacheCleared: boolean;
+  coactivationCacheCleared: boolean;
+}
+
 /* ---------------------------------------------------------------
    EXPORTS
 --------------------------------------------------------------- */
@@ -91,4 +102,5 @@ export type {
   MemoryHashSnapshot,
   CrudMutationType,
   MutationLedgerInput,
+  MutationHookResult,
 };

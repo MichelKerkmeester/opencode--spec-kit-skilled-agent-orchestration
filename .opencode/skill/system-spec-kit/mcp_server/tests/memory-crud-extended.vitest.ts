@@ -97,6 +97,9 @@ vi.mock('../lib/providers/embeddings', async (importOriginal) => {
     generateDocumentEmbedding: vi.fn((...args: any[]) => actual.generateDocumentEmbedding?.(...args)),
     getProviderMetadata: vi.fn((...args: any[]) => actual.getProviderMetadata?.(...args)),
     getEmbeddingProfile: vi.fn((...args: any[]) => actual.getEmbeddingProfile?.(...args)),
+    getEmbeddingProfileAsync: vi.fn((...args: any[]) => actual.getEmbeddingProfileAsync?.(...args)),
+    getEmbeddingDimension: vi.fn((...args: any[]) => actual.getEmbeddingDimension?.(...args)),
+    getModelName: vi.fn((...args: any[]) => actual.getModelName?.(...args)),
   };
 });
 
@@ -398,6 +401,9 @@ function installHealthMocks(opts: {
   vectorSearchAvailable?: boolean;
   providerMetadata?: any;
   embeddingProfile?: any;
+  embeddingProfileAsync?: any;
+  embeddingDimension?: number;
+  modelName?: string;
   aliasRows?: any[];
 } = {}) {
   const {
@@ -406,6 +412,9 @@ function installHealthMocks(opts: {
     vectorSearchAvailable = true,
     providerMetadata = { provider: 'test', model: 'test-model', healthy: true },
     embeddingProfile = { dim: 768, getDatabasePath: (base: string) => base + '/test.db' },
+    embeddingProfileAsync = embeddingProfile,
+    embeddingDimension = embeddingProfile?.dim ?? 768,
+    modelName = providerMetadata?.model ?? 'test-model',
     aliasRows = [],
   } = opts;
 
@@ -428,6 +437,9 @@ function installHealthMocks(opts: {
   if (embeddingsSourceMod) {
     vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => providerMetadata);
     vi.mocked(embeddingsSourceMod.getEmbeddingProfile).mockImplementation(() => embeddingProfile);
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfileAsync).mockImplementation(async () => embeddingProfileAsync);
+    vi.mocked(embeddingsSourceMod.getEmbeddingDimension).mockImplementation(() => embeddingDimension);
+    vi.mocked(embeddingsSourceMod.getModelName).mockImplementation(() => modelName);
   }
 
   return fakeDb;
@@ -1049,6 +1061,51 @@ describe('handleMemoryHealth - Happy Path', () => {
     const parsed = parseResponse(result);
     expect(parsed?.data?.embeddingProvider?.provider).toBe('huggingface');
     expect(parsed?.data?.embeddingProvider?.dimension).toBe(384);
+  });
+
+  it('EXT-H4b: Health resolves lazy profile before reporting provider dimensions', async (ctx) => {
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      providerMetadata: { provider: 'voyage' },
+      embeddingProfile: null,
+      embeddingProfileAsync: { provider: 'voyage', model: 'voyage-4', dim: 1024 },
+      embeddingDimension: 768,
+      modelName: 'voyage-4',
+    });
+    vi.mocked(embeddingsSourceMod.getProviderMetadata)
+      .mockImplementationOnce(() => ({ provider: 'voyage' }))
+      .mockImplementation(() => ({ provider: 'voyage', model: 'voyage-4', healthy: true, dim: 1024 }));
+
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+
+    expect(embeddingsSourceMod.getEmbeddingProfileAsync).toHaveBeenCalledTimes(1);
+    expect(parsed?.data?.embeddingProvider?.provider).toBe('voyage');
+    expect(parsed?.data?.embeddingProvider?.model).toBe('voyage-4');
+    expect(parsed?.data?.embeddingProvider?.dimension).toBe(1024);
+  });
+
+  it('EXT-H4c: Health falls back to configured model and dimension when lazy profile stays unavailable', async (ctx) => {
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      providerMetadata: { provider: 'voyage', healthy: true },
+      embeddingProfile: null,
+      embeddingDimension: 1024,
+      modelName: 'voyage-4',
+    });
+
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+
+    expect(parsed?.data?.embeddingProvider?.provider).toBe('voyage');
+    expect(parsed?.data?.embeddingProvider?.model).toBe('voyage-4');
+    expect(parsed?.data?.embeddingProvider?.dimension).toBe(1024);
   });
 
   it('EXT-H5: Health includes version', async () => {

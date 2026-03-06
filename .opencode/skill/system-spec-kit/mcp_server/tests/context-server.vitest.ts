@@ -6,7 +6,12 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { appendAutoSurfaceHints as actualAppendAutoSurfaceHints } from '../hooks/response-hints'
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate'
+import {
+  appendAutoSurfaceHints as actualAppendAutoSurfaceHints,
+  syncEnvelopeTokenCount as actualSyncEnvelopeTokenCount,
+  serializeEnvelopeWithTokenCount as actualSerializeEnvelopeWithTokenCount,
+} from '../hooks/response-hints'
 
 const SERVER_DIR = path.resolve(__dirname, '..')
 const SOURCE_FILE = path.join(SERVER_DIR, 'context-server.ts')
@@ -323,7 +328,10 @@ describe('Context Server', () => {
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
     }
 
-    async function loadRuntimeHarness(options?: { memoryAwareTools?: Set<string> }): Promise<RuntimeHarness> {
+    async function loadRuntimeHarness(options?: {
+      memoryAwareTools?: Set<string>
+      dimValidation?: { valid: boolean; stored?: number | null; current?: number | null; warning?: string }
+    }): Promise<RuntimeHarness> {
       vi.resetModules()
 
       const handlers = new Map<unknown, (request: unknown, extra: unknown) => Promise<unknown>>()
@@ -332,6 +340,8 @@ describe('Context Server', () => {
       const autoSurfaceAtToolDispatchMock = vi.fn(async () => null)
       const autoSurfaceAtCompactionMock = vi.fn(async () => null)
       const appendAutoSurfaceHintsMock = vi.fn(actualAppendAutoSurfaceHints)
+      const syncEnvelopeTokenCountMock = vi.fn(actualSyncEnvelopeTokenCount)
+      const serializeEnvelopeWithTokenCountMock = vi.fn(actualSerializeEnvelopeWithTokenCount)
       const extractContextHintMock = vi.fn((toolArgs: Record<string, unknown>) => {
         if (typeof toolArgs?.query === 'string') return toolArgs.query
         if (typeof toolArgs?.input === 'string') return toolArgs.input
@@ -344,7 +354,7 @@ describe('Context Server', () => {
 
       vi.spyOn(process, 'on').mockImplementation(() => process)
       vi.spyOn(global, 'setImmediate').mockImplementation(() => 0 as unknown as NodeJS.Immediate)
-      vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+      const processExitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
 
       vi.doMock('@modelcontextprotocol/sdk/server/index.js', () => ({
         Server: class {
@@ -402,6 +412,8 @@ describe('Context Server', () => {
         autoSurfaceAtToolDispatch: autoSurfaceAtToolDispatchMock,
         autoSurfaceAtCompaction: autoSurfaceAtCompactionMock,
         appendAutoSurfaceHints: appendAutoSurfaceHintsMock,
+        syncEnvelopeTokenCount: syncEnvelopeTokenCountMock,
+        serializeEnvelopeWithTokenCount: serializeEnvelopeWithTokenCountMock,
       }))
 
       vi.doMock('../lib/architecture/layer-definitions', () => ({
@@ -414,7 +426,7 @@ describe('Context Server', () => {
         initializeDb: vi.fn(),
         closeDb: vi.fn(),
         verifyIntegrity: vi.fn(() => ({ totalMemories: 0, missingVectors: 0, orphanedVectors: 0 })),
-        validateEmbeddingDimension: vi.fn(() => ({ valid: true, stored: 1536 })),
+        validateEmbeddingDimension: vi.fn(() => options?.dimValidation ?? ({ valid: true, stored: 1536 })),
         getDb: vi.fn(() => ({})),
         vectorSearch: vi.fn(),
       }))
@@ -476,6 +488,7 @@ describe('Context Server', () => {
         autoSurfaceAtToolDispatchMock,
         autoSurfaceAtCompactionMock,
         appendAutoSurfaceHintsMock,
+        processExitSpy,
         callToolHandler: callToolHandler as (request: unknown, extra: unknown) => Promise<unknown>,
       }
     }
@@ -773,6 +786,61 @@ describe('Context Server', () => {
       })
       expect(parsed.meta.tokenBudget).toBe(1000)
       expect(parsed.meta.tokenCount).toBeGreaterThan(0)
+    })
+
+    it('T000j: final tokenCount matches the serialized envelope after hints and tokenBudget injection', async () => {
+      const {
+        dispatchToolMock,
+        autoSurfaceAtToolDispatchMock,
+        callToolHandler,
+      } = await loadRuntimeHarness()
+
+      autoSurfaceAtToolDispatchMock.mockResolvedValue({
+        constitutional: [{ id: 1, title: 'Gate rule' }],
+        triggered: [{ memory_id: 2, matched_phrases: ['budget'] }],
+        surfaced_at: '2026-03-06T12:34:56.000Z',
+        latencyMs: 11,
+      })
+
+      dispatchToolMock.mockResolvedValue({
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            summary: 'ok',
+            data: { status: 'success' },
+            hints: ['Initial hint'],
+            meta: { tool: 'memory_list', tokenCount: 1, cacheHit: false },
+          }),
+        }],
+      })
+
+      const response = await callToolHandler(
+        { id: 'call-9', params: { name: 'memory_list', arguments: { query: 'budget contract' } } },
+        {}
+      ) as { content: Array<{ text: string }> }
+
+      const finalText = response.content[0].text
+      const parsed = JSON.parse(finalText)
+
+      expect(finalText).toContain('"tokenBudget": 1000')
+      expect(parsed.hints).toContain('Initial hint')
+      expect(parsed.hints.some((hint: string) => hint.includes('Auto-surface hook: injected 1 constitutional and 1 triggered memories (11ms)'))).toBe(true)
+      expect(parsed.meta.tokenCount).toBe(estimateTokenCount(finalText))
+    })
+
+    it('T000k: startup exits when the configured provider dimension does not match the active database', async () => {
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      const { processExitSpy } = await loadRuntimeHarness({
+        dimValidation: {
+          valid: false,
+          stored: 1024,
+          current: 768,
+          warning: 'DIMENSION MISMATCH: Database has 1024-dim vectors, but provider expects 768.',
+        },
+      })
+
+      expect(processExitSpy).toHaveBeenCalledWith(1)
+      expect(errorSpy.mock.calls.some((call) => String(call[0]).includes('FATAL: Refusing to start with mismatched embedding dimensions'))).toBe(true)
     })
   })
 
@@ -1520,6 +1588,11 @@ describe('Context Server', () => {
     // T55: API key validation (with skip env var)
     it('T55: API key validation with skip option', () => {
       expect(sourceCode).toMatch(/SPECKIT_SKIP_API_VALIDATION/)
+    })
+
+    it('T55b: startup treats embedding dimension mismatches as fatal', () => {
+      expect(sourceCode).toMatch(/FATAL: Refusing to start with mismatched embedding dimensions/)
+      expect(sourceCode).toMatch(/throw new Error\(dimValidation\.warning \?\? 'Embedding dimension mismatch between provider and database'\)/)
     })
 
     // T56: Startup scan runs in background

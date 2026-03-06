@@ -126,7 +126,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: TypeScript build and lint both pass for the MCP server (`npx tsc -b` and `npm run lint`)
-- **SC-002**: Targeted UX hook verification suite passes across 7 files / 460 tests, plus stdio and embeddings regressions pass across 2 files / 15 tests, and MCP SDK stdio smoke validation succeeds with 28 tools listed
+- **SC-002**: The fresh remediation-pass combined UX hook verification rerun passes across 9 files / 485 tests, and MCP SDK stdio smoke validation succeeds with 28 tools listed
 - **SC-003**: Manual playbook `../manual-testing-playbook/manual-test-playbooks.md` contains NEW-103+ scenarios covering UX hooks and context-server hint behavior
 <!-- /ANCHOR:success-criteria -->
 

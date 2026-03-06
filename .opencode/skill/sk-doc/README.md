@@ -37,7 +37,7 @@ The architecture follows a script-assisted AI analysis model: Python scripts han
 
 All documentation output must follow **Human Voice Rules (HVR)**: no em dashes, no semicolons, no Oxford commas, no banned words (leverage, robust, seamless, etc.) and active voice throughout. See `hvr_rules.md` for the full HVR ruleset.
 
-Use this skill when creating or improving markdown documentation, scaffolding new OpenCode components (skills, agents, commands), visualizing workflows as ASCII flowcharts or writing installation guides. If the request is for styled HTML visuals, interactive diagrams, or dashboard-style data pages, route to `sk-doc-visual` instead. Do not use this skill for non-markdown files or auto-generated API docs. Simple typo fixes also fall outside its scope.
+Use this skill when creating or improving markdown documentation, scaffolding new OpenCode components (skills, agents, commands), visualizing workflows as ASCII flowcharts or writing installation guides. If the request is for styled HTML visuals, interactive diagrams, or dashboard-style data pages, use a dedicated HTML workflow instead. Do not use this skill for non-markdown files or auto-generated API docs. Simple typo fixes also fall outside its scope.
 
 <!-- /ANCHOR:overview -->
 

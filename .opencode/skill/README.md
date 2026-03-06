@@ -34,11 +34,11 @@ trigger_phrases:
 
 The Skills Library contains the current skill set under `.opencode/skill/`. Skills load on demand through Gate 2 routing or explicit invocation.
 
-This folder now has 16 skill folders and one shared scripts folder:
+This folder now has 15 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 16           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 15           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
 
@@ -94,7 +94,6 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 ├── sk-code/                # Baseline code workflow skill
 ├── sk-code--*/             # Overlay code workflow skills (optional by repo)
 ├── sk-doc/
-├── sk-doc-visual/
 ├── sk-git/
 ├── sk-prompt-improver/
 ├── system-spec-kit/
@@ -116,7 +115,6 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 | `mcp-code-mode`           | `scripts/update-code-mode.sh`, `scripts/validate_config.py`                                                                                                                       |
 | `sk-code` or `sk-code--*` | Overlay-owned scripts vary by repo (for example alignment checks or minification pipelines)                                                                                       |
 | `sk-doc`                  | `scripts/init_skill.py`, `scripts/quick_validate.py`, `scripts/package_skill.py`, `scripts/validate_document.py`, `scripts/extract_structure.py`, `scripts/validate_flowchart.sh` |
-| `sk-doc-visual`           | `scripts/validate-html-output.sh`, `scripts/check-version-drift.sh`, `scripts/cleanup-output.sh`                                                                                  |
 | `system-spec-kit`         | `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `scripts/memory/generate-context.ts`, `scripts/memory/reindex-embeddings.ts`, `scripts/setup/check-prerequisites.sh`        |
 
 For the full `system-spec-kit` script inventory, use `system-spec-kit/scripts/scripts-registry.json`.
@@ -160,10 +158,6 @@ Prompt optimization with 7 text frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, C
 #### `sk-doc` (v1.1.2.0)
 
 Documentation quality workflows, HVR enforcement, component templates and validation scripts.
-
-#### `sk-doc-visual` (v1.1.0.0)
-
-Converts terminal output and technical context into styled, self-contained HTML visual artifacts.
 
 ### MCP Integrations
 
@@ -219,7 +213,6 @@ Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for mul
 | `sk-code` or `sk-code--*` | Varies        | Varies    | Varies     |
 | `sk-git`                  | Yes           | Yes       | No         |
 | `sk-doc`                  | Yes           | Yes       | Yes        |
-| `sk-doc-visual`           | Yes           | Yes       | Yes        |
 | `sk-prompt-improver`      | Yes           | Yes       | No         |
 | `cli-gemini`              | Yes           | Yes       | No         |
 | `cli-codex`               | Yes           | Yes       | No         |
@@ -291,7 +284,6 @@ Skill folders:
 - `sk-code/` or `sk-code--*/` (repo-specific code baseline and overlays)
 - [sk-doc](sk-doc/)
 - [sk-git](sk-git/)
-- [sk-doc-visual](sk-doc-visual/)
 - [sk-prompt-improver](sk-prompt-improver/)
 - [mcp-chrome-devtools](mcp-chrome-devtools/)
 - [mcp-code-mode](mcp-code-mode/)

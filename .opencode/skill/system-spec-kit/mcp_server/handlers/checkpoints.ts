@@ -132,7 +132,7 @@ async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPRe
     },
     hints: [
       `Restore with: checkpoint_restore({ name: "${name}" })`,
-      `Delete with: checkpoint_delete({ name: "${name}" })`
+      `Delete with: checkpoint_delete({ name: "${name}", confirmName: "${name}" })`
     ],
     startTime: startTime
   });

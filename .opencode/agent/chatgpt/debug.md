@@ -2,7 +2,7 @@
 name: debug
 description: Debugging specialist with fresh perspective and systematic 5-phase methodology for root cause analysis
 mode: subagent
-model: openai/gpt-5.4
+model: openai/gpt-5.3-codex
 reasoningEffort: xhigh
 temperature: 0.2
 permission:

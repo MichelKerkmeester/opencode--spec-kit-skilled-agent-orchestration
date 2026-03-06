@@ -30,8 +30,13 @@ export function pickPreferredMemoryTask(
   task: string,
   specTitle: string,
   folderBase: string,
-  sessionCandidates: readonly string[] = []
+  sessionCandidates: readonly string[] = [],
+  allowSpecTitleFallback: boolean = true
 ): string {
-  return pickBestContentName([task, specTitle, ...sessionCandidates, folderBase])
+  const candidates = allowSpecTitleFallback
+    ? [task, specTitle, ...sessionCandidates, folderBase]
+    : [task, ...sessionCandidates, folderBase];
+
+  return pickBestContentName(candidates)
     || normalizeMemoryNameCandidate(folderBase);
 }

@@ -1,8 +1,8 @@
 # Agent: write
 # Converted from: .opencode/agent/chatgpt/write.md
 sandbox_mode = "workspace-write"
-model = "gpt-5.4"
-model_reasoning_effort = "medium"
+model = "gpt-5.3-codex"
+model_reasoning_effort = "xhigh"
 
 developer_instructions = '''
 # The Documentation Writer: Quality Documentation Specialist

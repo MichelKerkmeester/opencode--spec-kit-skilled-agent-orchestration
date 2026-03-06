@@ -2,8 +2,6 @@
 name: context
 description: "Production context agent — comprehensive retrieval with memory-first exploration and structured Context Packages"
 mode: subagent
-model: github-copilot/gpt-5.4
-reasoningEffort: medium
 temperature: 0.1
 permission:
   read: allow

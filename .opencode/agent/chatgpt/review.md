@@ -2,7 +2,7 @@
 name: review
 description: Code review specialist with pattern validation, quality scoring, and standards enforcement for PRs and code changes
 mode: subagent
-model: openai/gpt-5.4
+model: openai/gpt-5.3-codex
 reasoningEffort: xhigh
 temperature: 0.1
 permission:

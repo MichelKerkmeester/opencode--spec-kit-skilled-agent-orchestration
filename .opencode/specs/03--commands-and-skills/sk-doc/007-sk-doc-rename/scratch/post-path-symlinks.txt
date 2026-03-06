@@ -1,4 +1,0 @@
-.claude/skills/sk-doc -> ../../.opencode/skill/sk-doc
-.claude/skills/sk-doc-visual -> ../../.opencode/skill/sk-doc-visual
-.gemini/skills/sk-doc -> ../../.opencode/skill/sk-doc
-.gemini/skills/sk-doc-visual -> ../../.opencode/skill/sk-doc-visual

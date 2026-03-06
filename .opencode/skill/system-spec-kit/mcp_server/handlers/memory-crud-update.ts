@@ -239,7 +239,16 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     });
   }
 
-  const postMutationHooks = runPostMutationHooks('update', { memoryId: id });
+  let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+  try {
+    postMutationHooks = runPostMutationHooks('update', { memoryId: id });
+  } catch {
+    postMutationHooks = {
+      latencyMs: 0, triggerCacheCleared: false,
+      constitutionalCacheCleared: false, toolCacheInvalidated: 0,
+      graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+    };
+  }
   const postMutationFeedback = buildMutationHookFeedback('update', postMutationHooks);
 
   const summary = embeddingMarkedForReindex

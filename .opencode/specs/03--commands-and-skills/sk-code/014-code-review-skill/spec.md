@@ -64,7 +64,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 - Update review agents and orchestrators across runtime profiles (`.opencode`, `.opencode/chatgpt`, `.gemini`, `.claude`) to document and follow baseline+overlay contract.
 - Update `.codex/agents/review.toml` and `.codex/agents/orchestrate.toml` wrappers to require the same baseline+overlay contract when delegating to canonical chatgpt playbooks.
 - Update all listed review-dispatch command YAML assets (18 files) to include the same contract.
-- Update skill routing (`skill_advisor.py`) so generic review intents route to `sk-code--review` while preserving git and visual-review behavior.
+- Update skill routing (`skill_advisor.py`) so generic review intents route to `sk-code--review` while preserving git behavior and removing stale visual-skill claims from live docs.
 - Update skill indexes (`.opencode/skill/README.md`, `.opencode/README.md`).
 - Finalize Level 2 spec docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`).
 
@@ -98,7 +98,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | REQ-002 | Router rebuilt to standards parity | `SKILL.md` includes required section order + smart routing model + baseline+overlay logic + precedence matrix + related resources |
 | REQ-003 | Review runtime contract updated | Review agents/orchestrators in `.opencode`, `.opencode/chatgpt`, `.gemini`, `.claude`, plus `.codex` wrapper configs, explicitly document/enforce baseline `sk-code--review` + one overlay model |
 | REQ-004 | Command review dispatch updated | All 18 listed command YAMLs include baseline+overlay review contract wording/config |
-| REQ-005 | Review routing updated | `skill_advisor.py` routes generic code-review intents to `sk-code--review` and preserves `sk-git` / `sk-doc-visual` behavior |
+| REQ-005 | Review routing updated | `skill_advisor.py` routes generic code-review intents to `sk-code--review`, preserves `sk-git` behavior, and live docs do not assert a removed visual target |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -131,7 +131,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | Dependency | `sk-doc` validators | `quick_validate.py` and `package_skill.py` currently reject consecutive hyphens in `name` | Record command evidence and note existing validator/name mismatch with current `sk-code--*` naming convention |
 | Dependency | YAML structure consistency | Broken indentation could invalidate command assets | Applied standardized `standards_contract` insertions and re-checked blocks |
 | Risk | Scope drift | Large file list across agents/commands/docs | Limited edits to explicit scope list |
-| Risk | Routing regression | Review intent could still route to git or visual unexpectedly | Added dedicated review boosts and test prompts in evidence |
+| Risk | Routing regression | Review intent could still route to unrelated targets unexpectedly | Added dedicated review boosts and test prompts in evidence |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -177,7 +177,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 
 1. **Given** a review request with security language, **When** advisor routing runs, **Then** `sk-code--review` is top skill.
 2. **Given** git workflow phrasing, **When** advisor routing runs, **Then** `sk-git` remains top skill.
-3. **Given** visual review phrasing, **When** advisor routing runs, **Then** `sk-doc-visual` remains valid top contender.
+3. **Given** visual review phrasing, **When** advisor routing runs, **Then** this spec set does not rely on any removed visual skill target claim to prove success.
 4. **Given** review dispatch steps in all listed YAMLs, **When** inspected, **Then** each contains baseline+overlay standards contract.
 <!-- /ANCHOR:acceptance-scenarios -->
 

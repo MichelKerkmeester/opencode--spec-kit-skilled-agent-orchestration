@@ -95,14 +95,15 @@ Contract-first layered architecture.
 | Phase 5: Enforcement Gaps | T046-T049 | ~80 (code+docs) | Low (1-2h) | Low |
 | Phase 6: Feature Catalog Parity | T050-T073 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
 | Phase 7: Boundary Remediation Carry-Over (merged 030) | T074-T090 | ~250 (code+docs+automation) | Medium (4-8h) | Medium |
-| Phase 8: Strict-Pass Remediation | T091-T096 | ~120 (docs+verification) | Low-Medium (2-4h) | Low |
+| Phase 8: Strict-Pass Remediation | T091-T099 | ~180 (docs+verification) | Low-Medium (3-5h) | Low |
 | Phase 9: Memory Naming Follow-Up | T100-T104 | ~120 (code+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 10: Direct-Save Naming Follow-Up | T105-T109 | ~110 (code+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 11: Explicit CLI Target Authority Closure | T110-T114 | ~80 (tests+docs+smoke verification) | Low (1-2h) | Medium |
+| Phase 12: Explicit Phase-Folder Rejection Rule | T115-T118 | ~60 (code+tests) | Low (1-2h) | Low |
 | Phase 13: Indexed Direct-Save Render/Quality Closure | T119-T123 | ~100 (investigation+fixes+tests+verification) | Low-Medium (2-4h) | Medium |
-| **Total** | **123 task entries** | **~2280** | **~44-71h** | **Medium** |
+| **Total** | **126 task entries (124 IDs; T013 split into T013a/b/c)** | **~2340** | **~46-75h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 13 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 12 → Phase 13 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -322,7 +323,8 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 8. Memory naming follow-up for root-save candidate selection precedence and regression-proof verification (critical).
 9. Direct-save follow-up for collector-path quick-summary candidate loss discovered after Phase 9 closure (critical).
 10. Explicit CLI target authority closure for memory-save routing and smoke verification (critical).
-11. Indexed direct-save render/quality closure for the V6/V7 post-Phase-10 blocker with targeted verification (critical).
+11. Explicit phase-folder rejection rule for memory-save target validation (critical).
+12. Indexed direct-save render/quality closure for the V6/V7 post-Phase-10 blocker with targeted verification (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.
@@ -341,7 +343,8 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M7 | Naming remediation | Root-save memory naming regression fixed without weakening generic-name guardrails | Phase 9 |
 | M8 | Direct-save remediation | Collector-path quick-summary derivation preserves best specific naming candidates during direct-save flows | Phase 10 |
 | M9 | CLI authority closure | Explicit CLI save targets remain authoritative through generate-context control flow with regression + smoke evidence | Phase 11 |
-| M10 | Indexed direct-save quality closure | V6/V7 indexed direct-save render/quality blocker is fixed with regression coverage and targeted verification evidence | Phase 13 |
+| M10 | Phase-folder rejection | Explicit phase-folder rejection rule guards memory-save from targeting phase subfolders | Phase 12 |
+| M11 | Indexed direct-save quality closure | V6/V7 indexed direct-save render/quality blocker is fixed with regression coverage and targeted verification evidence | Phase 13 |
 
 ## AI Execution Protocol
 

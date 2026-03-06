@@ -1,8 +1,8 @@
 ---
-title: "Implementation Plan: sk-doc + sk-doc-visual Repo-Wide Rename [template:level_2/plan.md]"
+title: "Implementation Plan: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/plan.md]"
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 SPECKIT_LEVEL: "2"
-description: "Executed migration plan for canonical documentation-skill identifiers and paths, with artifact-backed validation and strict completion checks."
+description: "Executed migration plan for canonical documentation-skill identifiers plus live-doc cleanup of stale visual-skill references, with artifact-backed validation and strict completion checks."
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: sk-doc + sk-doc-visual Repo-Wide Rename
+# Implementation Plan: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -32,7 +32,7 @@ contextType: "general"
 | **Testing** | `rg`, `find`, `test`, spec-kit validators, skill-advisor smoke checks |
 
 ### Overview
-The migration was executed across the Public repo to standardize canonical identifiers (`sk-doc`, `sk-doc-visual`) in content, folder paths, and runtime symlinks. Execution used preflight discovery, ordered path renames, post-rename flatten correction, content replacement, and final zero-remnant verification. External AGENTS verification in the Barter repo returned zero matches, so no external modification was required.
+The migration was executed across the Public repo to standardize the canonical documentation-skill identifier (`sk-doc`) and remove stale visual-skill references from live docs, folder paths, and runtime symlink evidence. Execution used preflight discovery, ordered path renames, post-rename flatten correction, content replacement, and final zero-remnant verification. External AGENTS verification in the Barter repo returned zero matches, so no external modification was required.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -89,7 +89,7 @@ Preflight artifacts established baseline -> ordered path migration executed -> f
 ### Phase 3: Verification
 - [x] Confirmed final remnant counts are zero (`scratch/final-remnant-counts.txt`).
 - [x] Verified external AGENTS check returned zero matches (no update required).
-- [x] Ran skill-advisor smoke checks for canonical skill routing.
+- [x] Ran skill-advisor smoke checks for supported routing behavior.
 - [x] Ran `validate.sh` and strict completion checks.
 <!-- /ANCHOR:phases -->
 
@@ -102,7 +102,7 @@ Preflight artifacts established baseline -> ordered path migration executed -> f
 |-----------|-------|-------|
 | Unit | N/A for naming migration | N/A |
 | Integration | Path + symlink behavior across runtime profile folders | `find`, `test` |
-| Manual | End-to-end remnant policy and routing behavior | `rg`, `skill_advisor.py`, spec-kit scripts |
+| Manual | End-to-end remnant policy and supported routing behavior | `rg`, `skill_advisor.py`, spec-kit scripts |
 
 ### Planned Checks (all must pass)
 
@@ -112,17 +112,16 @@ Preflight artifacts established baseline -> ordered path migration executed -> f
 - **PC-002 Path migration integrity check**
   - Commands:
     - `test -d "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/sk-doc"`
-    - `test -d "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/sk-doc-visual"`
-    - `wc -l .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-log.txt`
-  - Result: PASS (canonical paths present; map/log parity 17/17).
+      - `wc -l .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-log.txt`
+  - Result: PASS (`sk-doc` path present; map/log parity 17/17; live docs no longer assert a removed visual target).
 - **PC-003 Symlink integrity check**
   - Command: `cat .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/post-path-symlinks.txt`
-  - Result: PASS (canonical aliases and canonical targets only).
+  - Result: PASS (supported aliases and supported targets only).
 - **PC-004 Content replacement coverage check**
   - Command: `wc -l .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/content-replacement-files.txt`
   - Result: PASS (330 files processed).
 - **PC-005 Conditional external verification**
-  - Command (executed): `rg -n "<legacy-doc-identifier>|<legacy-visual-doc-identifier>" "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md" || true`
+  - Command (executed): `rg -n "<legacy-doc-identifier>|<legacy-visual-skill-identifier>" "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md" || true`
   - Result: PASS (0 matches; no external edit).
 - **PC-006 Documentation validation and completion gates**
   - Commands:

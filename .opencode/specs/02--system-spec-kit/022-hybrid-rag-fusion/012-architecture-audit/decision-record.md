@@ -124,7 +124,7 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 2. **Alternatives (≥2)?** Yes — 3 alternatives evaluated in table above.
 3. **Simplest sufficient?** Yes — pointer docs + canonical location is minimal change with maximum clarity.
 4. **On critical path?** Partially — not blocking code changes, but blocking accurate contributor onboarding.
-5. **No tech debt?** Yes — transitional wrappers have explicit deprecation criteria; no hidden cost.
+5. **No tech debt?** Controlled — transitional wrappers have explicit deprecation criteria; no hidden cost.
 
 ### Implementation
 
@@ -231,7 +231,7 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 
 ### Decision
 
-**We propose**: Incremental hardening in 3 tiers:
+**We chose**: Incremental hardening in 3 tiers:
 
 1. **Immediate (P0)**: Expand `PROHIBITED_PATTERNS` to cover `core/*`, integrate `check-api-boundary.sh` into pipeline, fix documentation drift.
 2. **Short-term (P1)**: Add dynamic import detection, path variant coverage, and allowlist governance schema.
@@ -389,6 +389,23 @@ For Phase 7 reindex remediation, we explicitly constrained API growth to a minim
 - `scripts/memory/reindex-embeddings.ts` needed stable runtime bootstrap and index-scan entry points, not direct access to internal orchestration details.
 - Exposing `core/`/`handlers/` internals would turn implementation details into de-facto public contracts and increase future refactor lock-in.
 - A narrow API boundary preserves encapsulation, keeps internal modules free to evolve, and still removes direct scripts-to-internal coupling for the carry-over use case.
+
+#### Post-Phase 8 AST Enforcement Addendum (2026-03-06)
+
+**Status update**: The AST-based enforcement path described above as "reserved" is now **active in CI**. `check-no-mcp-lib-imports-ast.ts` (372 lines) runs via `npm run check:ast --workspace=scripts` and is executed in the CI workflow (`system-spec-kit-boundary-enforcement.yml`). It covers:
+- Dynamic `import()` expressions
+- `require()` calls
+- Template literals (non-interpolated)
+- Multi-line imports (structurally handled by AST parsing)
+- Deep transitive re-export traversal
+
+**Residual risk** is now limited to:
+- Computed/dynamic string module specifiers (`import(variable)`)
+- Template literal imports with interpolation (`` import(`...${x}`) ``)
+
+These vectors cannot be caught by static analysis and are accepted as inherent limitations. The dual regex+AST enforcement provides defense in depth: regex catches simple violations fast, AST catches structural evasions the regex misses.
+
+**Decision status**: The core risk acceptance stands, but the "time-bounded technical debt" framing is superseded — AST enforcement is deployed, not deferred.
 
 ### Alternatives Considered
 

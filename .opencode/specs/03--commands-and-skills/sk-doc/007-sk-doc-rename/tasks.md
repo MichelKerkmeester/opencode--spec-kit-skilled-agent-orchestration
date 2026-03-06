@@ -1,5 +1,5 @@
 ---
-title: "Tasks: sk-doc + sk-doc-visual Repo-Wide Rename [template:level_2/tasks.md]"
+title: "Tasks: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/tasks.md]"
 SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 SPECKIT_LEVEL: "2"
 description: "Task Format: T### [P?] Description (file path)"
@@ -11,7 +11,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: sk-doc + sk-doc-visual Repo-Wide Rename
+# Tasks: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->

@@ -33,7 +33,7 @@ As of 2026-03-05, the follow-up boundary remediation work previously tracked in 
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | In Review |
+| **Status** | Complete |
 | **Created** | 2026-03-04 |
 | **Branch** | `022-hybrid-rag-fusion/012-architecture-audit` |
 <!-- /ANCHOR:metadata -->
@@ -129,6 +129,11 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-016 | Phase 7 | T086 |
 | REQ-017 | Phase 7 | T079, T089 |
 | REQ-018 | Phase 7 | T087, T088 |
+| REQ-002 | Phase 1 | T001-T006 |
+| REQ-006 | Phase 1, Phase 8 | T003-T005, T091-T095 |
+| REQ-008 | Phase 2, Phase 3 | T007-T017 |
+| REQ-009 | Phase 6 | T071, T073 |
+| REQ-010 | Phase 6 | T072 |
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
@@ -198,10 +203,12 @@ As a new contributor, I need discoverable directory and README structure so I ca
 ### US-003: Tooling Owner (P1)
 As a tooling owner, I need enforceable import policies so boundary violations are caught automatically.
 
-## 12. OPEN QUESTIONS
+## 12. OPEN QUESTIONS (Resolved)
 
 - Should compatibility wrappers in `mcp_server/scripts/` be renamed now or only retitled during transition?
+  - **Resolved:** Compatibility wrappers retained with documented deprecation criteria per ADR-002.
 - Should API-first migration be strict immediately, or staged with an allowlist expiry window?
+  - **Resolved:** Staged with allowlist expiry window, per ADR-001 and ADR-004 implementation.
 
 <!-- /ANCHOR:questions -->
 

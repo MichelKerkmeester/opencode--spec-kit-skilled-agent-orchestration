@@ -60,7 +60,7 @@ Verification matrix for completion evidence across rename, contract wiring, rout
   Evidence:
   - `python3 .opencode/skill/scripts/skill_advisor.py "review this PR for race conditions and auth bugs" --threshold 0.8` -> top `sk-code--review`.
   - `python3 .opencode/skill/scripts/skill_advisor.py "help me rebase and split commits" --threshold 0.8` -> top `sk-git`.
-  - `python3 .opencode/skill/scripts/skill_advisor.py "visual review of architecture diff" --threshold 0.8` -> top `sk-doc-visual` with `sk-code--review` as secondary contender.
+  - Live-doc completion evidence no longer asserts any removed visual skill target.
 
 ---
 

@@ -78,7 +78,7 @@ Primary templates:
 
 Create ASCII flowcharts for visualizing workflows, user journeys and decision trees.
 
-For styled HTML visuals (interactive diagrams, dashboard pages, or polished data-table renders), route to `sk-doc-visual` instead of forcing ASCII/markdown flowcharts.
+For styled HTML visuals (interactive diagrams, dashboard pages, or polished data-table renders), use a dedicated HTML workflow instead of forcing ASCII or markdown flowcharts.
 
 **Use when**:
 - Documenting multi-step processes with branching
@@ -686,7 +686,6 @@ Key integrations:
 | ------------------- | ----------------------------------------------------------------------------- |
 | **system-spec-kit** | Context files can be optimized. Validates spec folder documentation structure. |
 | **sk-git**   | Uses documentation quality for commit/PR descriptions                         |
-| **sk-doc-visual** | Owns self-contained HTML visual outputs and interactive diagram rendering workflows. |
 
 ### Workflow Integration
 

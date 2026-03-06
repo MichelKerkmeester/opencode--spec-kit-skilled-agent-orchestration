@@ -81,15 +81,47 @@ Runtime stdout emitters (`console.log`, `console.info`, and `console.debug` styl
 
 #### Added artifact: `tests/hooks-ux-feedback.vitest.ts`
 
-`tests/hooks-ux-feedback.vitest.ts` is the new focused regression suite for the hook modules themselves. It verifies the metadata shape produced by the shared UX-hook helpers, including latency fields, cache-clear booleans, and finalized hint payload expectations. Because the suite targets the hook modules directly, it catches contract drift before handler-level integration tests have to explain the failure. That makes it the fastest signal for regressions inside `mutation-feedback.ts` or `response-hints.ts`. It is part of the recorded Phase 014 UX verification set that passed with 7 files and 460 tests.
+`tests/hooks-ux-feedback.vitest.ts` is the new focused regression suite for the hook modules themselves. It verifies the metadata shape produced by the shared UX-hook helpers, including latency fields, cache-clear booleans, and finalized hint payload expectations. Because the suite targets the hook modules directly, it catches contract drift before handler-level integration tests have to explain the failure. That makes it the fastest signal for regressions inside `mutation-feedback.ts` or `response-hints.ts`. In the fresh remediation-pass rerun, it was exercised as part of the combined 9-file, 485-test Vitest command.
 
 #### Added artifact: `tests/stdio-logging-safety.vitest.ts`
 
-`tests/stdio-logging-safety.vitest.ts` is the new regression suite for stdout-safe MCP runtime behavior. It exists because the server can look correct in unit logic and still fail real clients if startup or runtime paths write advisory output to stdout. The suite verifies that logging on the MCP server path stays on stderr-safe channels so stdio transport negotiation remains clean. That coverage complements the real MCP SDK smoke test instead of replacing it, which gives Phase 014 both automated and live-client confidence. It is part of the recorded secondary verification set that passed with 2 files and 15 tests.
+`tests/stdio-logging-safety.vitest.ts` is the new regression suite for stdout-safe MCP runtime behavior. It exists because the server can look correct in unit logic and still fail real clients if startup or runtime paths write advisory output to stdout. The suite verifies that logging on the MCP server path stays on stderr-safe channels so stdio transport negotiation remains clean. That coverage complements the real MCP SDK smoke test instead of replacing it, which gives Phase 014 both automated and live-client confidence. In the fresh remediation-pass rerun, it was exercised as part of the combined 9-file, 485-test Vitest command.
 
 #### Added artifact: `tests/memory-save-ux-regressions.vitest.ts`
 
 `tests/memory-save-ux-regressions.vitest.ts` is the focused save-path regression suite that locks the review-driven follow-up fixes into place. It proves duplicate-content no-op saves suppress false `postMutationHooks` and cache-clearing hints instead of pretending a mutation occurred. It also proves `atomicSaveMemory()` now returns parity hook metadata, success hints, and partial-indexing guidance when the write succeeds. That gives save callers one consistent UX contract across standard and atomic entry points. The suite matters because it preserves the exact behavioral corrections that moved Phase 014 from partially complete to fully verified.
+
+### Review-Driven Hardening Pass (Phase 4)
+
+A 6-agent parallel review (3 Opus 4.6 + 3 Codex 5.3) produced 4 Major, 10 Minor, and 8 Suggestion findings. 13 actionable items were applied via 6 parallel agents with exclusive file ownership, then verified by 2 independent review agents.
+
+#### Security Hardening (M1 + M2)
+
+`memory-crud-health.ts` now sanitizes all user-facing error hints through `sanitizeErrorForHint()` which strips absolute file paths (both Unix and Windows), removes stack traces, and truncates to 200 characters. Response payloads no longer expose absolute local paths: `redactPath()` converts paths to project-relative form or falls back to basename. Both `repair.errors` entries and hint strings are sanitized consistently.
+
+#### Hook Safety (M3 + M4)
+
+`toolCache.invalidateOnWrite()` is now wrapped in try/catch in the hook runner. The file-watcher path in `context-server.ts` wraps `runPostMutationHooks` in try/catch so thrown invalidation cannot crash the server. `MutationHookResult` was extracted from `mutation-hooks.ts` to the shared `memory-crud-types.ts` module, resolving the layer boundary inversion. The type is re-exported from `mutation-hooks.ts` for backward compatibility.
+
+#### Handler Call-Site Wrapping (m4)
+
+All three mutation handler call sites (`memory-crud-update.ts`, `memory-crud-delete.ts`, `memory-bulk-delete.ts`) now wrap `runPostMutationHooks` in try/catch with a zero-value fallback `MutationHookResult`, making the failure contract explicit at the handler level.
+
+#### Response Hints Improvements (m1 + m2 + m3)
+
+The non-null assertion in `response-hints.ts` was replaced with safe optional chaining. The convergence loop and serialization trade-off are now documented with inline comments.
+
+#### Latency Measurement (m10)
+
+Auto-surface precheck timing was added to `context-server.ts`. When latency exceeds 250ms (the NFR-P01 p95 target), a console.warn fires for observability.
+
+#### Test Improvements (m5 + s6 + s7)
+
+The T521-L3 placeholder test was replaced with behavioral limit clamping assertions. Two new tests were added: all-caches-succeed (no false non-fatal warning) and zero-count auto-surface (no false hint injection).
+
+#### Review Verification
+
+Two independent review agents scored the work 90/100 and 98/100 respectively. Two P1 findings from the review (Windows path bypass in sanitizer regex, unsanitized `repair.errors`) were fixed immediately.
 
 ### Files Changed
 
@@ -123,9 +155,20 @@ Runtime stdout emitters (`console.log`, `console.info`, and `console.debug` styl
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Modified | Verified duplicate-save no-op feedback and atomic-save parity behavior |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/tasks.md` | Modified | Marked implementation and verification tasks complete |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/checklist.md` | Modified | Added evidence-backed P0/P1 verification updates |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/memory/06-03-26_10-36__ux-hooks-automation.md` | Added | Saved fresh context snapshot for the verified follow-up closure pass |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md` | Modified | Added NEW-103+ manual scenarios for UX hooks and context-server hints |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/implementation-summary.md` | Modified | Updated implementation record with actual outcomes |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/implementation-summary.md` | Modified | Updated the implementation record to reflect this remediation pass and pending evidence refresh |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts` | Modified | Phase 4: Added `sanitizeErrorForHint()` and `redactPath()` security helpers (M1+M2) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/mutation-hooks.ts` | Modified | Phase 4: try/catch around `toolCache.invalidateOnWrite()`, type extraction (M3+M4) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-types.ts` | Modified | Phase 4: Added `MutationHookResult` interface (M4) |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts` | Modified | Phase 4: Import path updated to shared types (M4) |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/response-hints.ts` | Modified | Phase 4: Safe access, convergence/serialization comments (m1+m2+m3) |
+| `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Modified | Phase 4: File-watcher try/catch (M3), auto-surface latency measurement (m10) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts` | Modified | Phase 4: try/catch wrapping for `runPostMutationHooks` (m4) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts` | Modified | Phase 4: try/catch wrapping for `runPostMutationHooks` (m4) |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts` | Modified | Phase 4: try/catch wrapping for `runPostMutationHooks` (m4) |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts` | Modified | Phase 4: Single-process assumption comment (s3) |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/handler-checkpoints.vitest.ts` | Modified | Phase 4: Behavioral limit clamping test (m5) |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/hooks-ux-feedback.vitest.ts` | Modified | Phase 4: All-caches-succeed and zero-count tests (s6+s7) |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -139,7 +182,7 @@ Runtime stdout emitters (`console.log`, `console.info`, and `console.debug` styl
      For Level 1: a single sentence is enough.
      For Level 3+: describe stages (testing, rollout, verification). -->
 
-Delivery finished with a reliability sweep that verified both the UX-hook changes and the follow-up closures. `npx tsc -b` passed from `.opencode/skill/system-spec-kit`, `npm run lint` passed from `.opencode/skill/system-spec-kit/mcp_server`, the targeted UX suite passed with 7 files and 460 tests, and the stdio plus embeddings suite passed with 2 files and 15 tests. A real MCP SDK stdio client then connected to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and listed 28 tools. The updated phase snapshot was saved to `memory/06-03-26_10-36__ux-hooks-automation.md` and indexed as memory `#1193`.
+This remediation pass reran the build, lint, the fresh combined 9-file / 485-test targeted Vitest command, the MCP SDK stdio smoke flow, and a real-client manual pass for the updated `reportMode` and `confirmName` contracts. The phase docs now point to fresh evidence instead of stale pending markers. A regenerated context artifact was also saved under the parent spec folder, but indexing still fails on the existing 1024 vs 768 embedding mismatch, so there is still no new memory ID to cite.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -176,11 +219,15 @@ Delivery finished with a reliability sweep that verified both the UX-hook change
 |-------|--------|
 | `npx tsc -b` | PASS |
 | `npm run lint` | PASS |
-| `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` | PASS (7 files, 460 tests) |
-| `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` | PASS (2 files, 15 tests) |
+| `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` | PASS (9 files, 485 tests) |
 | MCP SDK stdio client smoke test | PASS (connected to `dist/context-server.js` and listed 28 tools) |
-| Memory snapshot save | PASS (`memory/06-03-26_10-36__ux-hooks-automation.md`, memory `#1193`) |
+| Manual MCP client contract pass | PASS (`memory_health({ reportMode: "full", limit: 1 })` returned healthy output; `checkpoint_delete({ name: "__phase014_manual_nonexistent__", confirmName: "__phase014_manual_nonexistent__" })` returned `Checkpoint "__phase014_manual_nonexistent__" not found` with `safetyConfirmationUsed=true`) |
+| Memory snapshot save | PASS with follow-up limitation (direct phase-folder save rejected by policy; parent-spec save created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`; `memory_index_scan` reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, so no new indexed memory ID is available because the database expects 1024-dim vectors and the provider returned 768) |
 | Manual playbook sync (`../manual-testing-playbook/manual-test-playbooks.md`) | PASS (NEW-103+ scenarios added for UX hook capabilities) |
+| Phase 4: `npx tsc --noEmit` | PASS (zero type errors after 13 fixes across 12 files) |
+| Phase 4: `npx vitest run` (4 affected suites) | PASS (416/416 tests, including 3 new tests from m5+s6+s7) |
+| Phase 4: Review agent 1 (Security+Types) | 90/100 PASS — 0 P0, 2 P1 (both fixed), 4 P2 |
+| Phase 4: Review agent 2 (Handlers+Tests) | 98/100 PASS — 0 P0, 0 P1, 2 P2 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -193,8 +240,10 @@ Delivery finished with a reliability sweep that verified both the UX-hook change
      not "Some features may require configuration."
      Write "None identified." if nothing applies. -->
 
-1. **Smoke output still surfaced 2839 orphaned entries.** The MCP SDK smoke run still completed successfully and listed 28 tools, but orphan cleanup was outside this phase scope.
-2. **Broader hook expansion still belongs to a later phase.** Structured response actions and a shared success-hint composition layer remain open follow-ons after the now-complete atomic-save parity work.
+1. **Runtime stderr still surfaced 3008 orphaned entries.** Both the MCP SDK smoke run and the manual client pass completed successfully, but orphan cleanup remained outside this phase scope.
+2. **Memory indexing is still blocked by an embedding dimension mismatch.** The parent-spec context artifact was created successfully, but `memory_index_scan` still fails because the database expects 1024-dim vectors and the current provider emits 768, so this phase cannot cite a new indexed memory ID.
+3. **Broader hook expansion still belongs to a later phase.** Structured response actions and a shared success-hint composition layer remain open follow-ons after the now-complete atomic-save parity work.
+4. **Deferred review findings remain open.** m6 (CI conditional skips), m7 (hook registry architecture), m8 (response-hints scope split), m9 (typed map for MutationHookResult), and s1/s2/s4/s5/s8 are tracked but require separate spec scoping.
 <!-- /ANCHOR:limitations -->
 
 ---

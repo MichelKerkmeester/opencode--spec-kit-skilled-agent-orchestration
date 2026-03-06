@@ -16,8 +16,45 @@ interface AutoSurfacedContext {
   latencyMs?: number;
 }
 
+type EnvelopeRecord = Record<string, unknown>;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function ensureEnvelopeMeta(envelope: EnvelopeRecord): EnvelopeRecord {
+  const meta = isRecord(envelope.meta) ? envelope.meta : {};
+  envelope.meta = meta;
+  return meta;
+}
+
+function syncEnvelopeTokenCount(envelope: EnvelopeRecord): number {
+  const meta = ensureEnvelopeMeta(envelope);
+  const currentTokenCount = meta.tokenCount;
+  let previousCount = typeof currentTokenCount === 'number' && Number.isFinite(currentTokenCount)
+    ? currentTokenCount
+    : -1;
+
+  // Converges in 2-3 iterations: token count changes the serialized length,
+  // which changes the count. The 5-iteration cap is a safety bound.
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const nextTokenCount = estimateTokenCount(JSON.stringify(envelope, null, 2));
+    meta.tokenCount = nextTokenCount;
+    if (nextTokenCount === previousCount) {
+      return nextTokenCount;
+    }
+    previousCount = nextTokenCount;
+  }
+
+  return typeof meta.tokenCount === 'number' ? meta.tokenCount : 0;
+}
+
+// Extra JSON.stringify is intentional: syncEnvelopeTokenCount mutates the
+// envelope in place and returns a number. Keeping that return type stable
+// avoids a breaking API change across 10+ call sites.
+function serializeEnvelopeWithTokenCount(envelope: EnvelopeRecord): string {
+  syncEnvelopeTokenCount(envelope);
+  return JSON.stringify(envelope, null, 2);
 }
 
 function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSurfacedContext): void {
@@ -37,8 +74,7 @@ function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSur
       : [];
     envelope.hints = hints;
 
-    const meta = isRecord(envelope.meta) ? envelope.meta : {};
-    envelope.meta = meta;
+    const meta = ensureEnvelopeMeta(envelope);
 
     const constitutionalCount = Array.isArray(autoSurfacedContext?.constitutional)
       ? autoSurfacedContext.constitutional.length
@@ -63,13 +99,13 @@ function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSur
       latencyMs: typeof autoSurfacedContext?.latencyMs === 'number' ? autoSurfacedContext.latencyMs : 0,
     };
 
-    let serializedEnvelope = JSON.stringify(envelope, null, 2);
-    meta.tokenCount = estimateTokenCount(serializedEnvelope);
-    serializedEnvelope = JSON.stringify(envelope, null, 2);
-    result.content![0].text = serializedEnvelope;
+    const firstContent = result.content?.[0];
+    if (firstContent) {
+      firstContent.text = serializeEnvelopeWithTokenCount(envelope);
+    }
   } catch {
     // Non-throwing by design.
   }
 }
 
-export { appendAutoSurfaceHints };
+export { appendAutoSurfaceHints, syncEnvelopeTokenCount, serializeEnvelopeWithTokenCount };

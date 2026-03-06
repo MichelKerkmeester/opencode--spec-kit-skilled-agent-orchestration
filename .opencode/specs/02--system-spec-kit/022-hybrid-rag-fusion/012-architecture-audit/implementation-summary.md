@@ -4,7 +4,7 @@ description: "Phase 13 architecture audit and merged boundary-remediation execut
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "020 implementation summary"
-  - "phase 8 architecture audit"
+  - "phase 0-13 architecture audit closure"
 importance_tier: "normal"
 contextType: "architecture"
 ---
@@ -15,7 +15,9 @@ contextType: "architecture"
 
 ## Overview
 
-This phase now reflects end-to-end closure through Phase 13: all 123 task entries through T123 plus split tasks T013a/T013b/T013c are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder rejection closure covered T115-T118, and indexed direct-save render/quality closure completed T119-T123.
+This phase now reflects end-to-end closure through Phase 13: all 126 task entries (T000-T123, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder rejection closure covered T115-T118, and indexed direct-save render/quality closure completed T119-T123.
+
+> **Note:** Test counts cited below are point-in-time snapshots captured at each phase's closure. Downstream work (e.g., spec 013) may have added tests to the same files, so re-running commands today may yield higher counts.
 
 As of 2026-03-05, former spec `030-architecture-boundary-remediation` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill. Phase 10 preserves the historical note that its direct-save seam was discovered only after Phase 9 had already closed in scope. Phase 11 closed the adjacent explicit-target routing bug by verifying direct CLI save targets remain authoritative. Phase 13 preserves the next follow-up history as well: after Phase 10/11 naming and routing closures, the remaining defect was narrowed to indexed direct-save render/quality output and root-save indexing quality, not another naming-selection regression.
 
@@ -156,8 +158,8 @@ A post-implementation review was performed by three independent AI agents analyz
 
 18 new tasks (T021-T038) added to Phase 4 with:
 - 3 P0 blockers (enforcement pipeline, exception table, pattern expansion)
-- 7 P1 should-fix items (detection hardening, governance, doc updates)
-- 8 P2 nice-to-have items (block comments, tests, AST upgrade, transitive checks)
+- 6 P1 should-fix items (detection hardening, governance, doc updates)
+- 9 P2 nice-to-have items (block comments, tests, AST upgrade, transitive checks)
 
 ### Agent 4: Codex 5.3 Ultra-Think — Code Quality (2nd pass)
 
@@ -336,6 +338,40 @@ Phase 13 indexed direct-save render/quality follow-up (`T119-T123`) is complete.
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` (PASS; exit code 0)
 
 No remaining Phase 13 verification gap remains in this spec folder.
+
+## Post-Review Remediation (2026-03-06)
+
+A 10-agent comprehensive review (`scratch/review-2026-03-06/`) produced a unified synthesis with verdict **PASS WITH CONCERNS**. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed in a single remediation pass.
+
+### What Was Fixed
+
+**P0 Fixes (2):**
+- Wired `check-allowlist-expiry.ts` into `npm run check` pipeline (`scripts/package.json`)
+- Updated spec.md Status from "In Review" to "Complete"
+
+**P1 Fixes (4):**
+- Added "Post-Phase 8 AST Enforcement Addendum" to ADR-006 documenting active CI status and residual risk (`decision-record.md`)
+- Reconciled task count to "126 task entries (124 IDs; T013 split into T013a/b/c)" across `plan.md` and `implementation-summary.md`
+- Added Phase 12 to effort table, critical path, L3 list, and milestones in `plan.md`
+- Fixed ADR-004 verb "We propose" → "We chose" (`decision-record.md`)
+
+**Additional Minor Fixes (8):**
+- Backfilled 5 missing REQ rows (REQ-002, -006, -008, -009, -010) in spec.md traceability table
+- Fixed CHK-201 stale exception count (6→2) in `checklist.md`
+- Fixed ADR-002 Five Checks item 5 "Yes" → "Controlled" (`decision-record.md`)
+- Fixed first remediation breakdown 7/8 → 6/9 (`implementation-summary.md`)
+- Updated stale trigger phrase to "phase 0-13 architecture audit closure" (`implementation-summary.md`)
+- Resolved Section 12 open questions with ADR references (`spec.md`)
+- Added test count snapshot disclaimer note (`implementation-summary.md`)
+- Fixed Phase 8 task range T091-T096 → T091-T099 (`plan.md`)
+
+### Verification
+
+- `npm run check --workspace=scripts` — PASS (includes newly wired `check-allowlist-expiry.ts`)
+- `npm run check:ast --workspace=scripts` — PASS
+- `spec/validate.sh` — PASS (0 errors, 0 warnings)
+- 2-agent post-edit review: cross-file consistency (PASS 100/100) and content accuracy audit (14/14 VERIFIED after one off-by-one line count correction)
+- Review artifacts: `scratch/review-2026-03-06/unified-review-synthesis.md` (includes post-review remediation log)
 
 ## Spec Consolidation (2026-03-05)
 

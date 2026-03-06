@@ -1,0 +1,18 @@
+providerMetadata {
+  provider: 'voyage',
+  reason: 'Explicit EMBEDDINGS_PROVIDER variable',
+  config: {
+    EMBEDDINGS_PROVIDER: 'voyage',
+    VOYAGE_API_KEY: '***set***',
+    VOYAGE_EMBEDDINGS_MODEL: 'voyage-4',
+    OPENAI_API_KEY: 'not set',
+    OPENAI_EMBEDDINGS_MODEL: 'text-embedding-3-small',
+    HF_EMBEDDINGS_MODEL: 'nomic-ai/nomic-embed-text-v1.5'
+  }
+}
+INFO  [VectorIndex] Created idx_file_path index
+INFO  [VectorIndex] Created idx_content_hash index
+INFO  [VectorIndex] Created idx_last_accessed index
+INFO  [VectorIndex] Created idx_importance_tier index
+INFO  [VectorIndex] Created idx_history_timestamp index
+dimensionValidation { valid: true, stored: 1024, current: 1024 }

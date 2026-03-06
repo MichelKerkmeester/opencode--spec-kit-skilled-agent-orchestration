@@ -1,8 +1,8 @@
 ---
-title: "Feature Specification: sk-doc + sk-doc-visual Repo-Wide Rename [template:level_2/spec.md]"
+title: "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/spec.md]"
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 SPECKIT_LEVEL: "2"
-description: "The repository used legacy skill identifiers and paths. This implementation standardized identifiers to sk-doc and sk-doc-visual across content, paths, and symlinks."
+description: "The repository used legacy skill identifiers and paths. This implementation standardized documentation-skill identifiers to sk-doc and removed stale visual-skill references from live docs."
 trigger_phrases:
   - "feature"
   - "specification"
@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: sk-doc + sk-doc-visual Repo-Wide Rename
+# Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -36,10 +36,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Public repository previously contained two legacy identifiers for documentation and visual-documentation skills across content, folder paths, and runtime symlink names. That caused routing drift and inconsistent command/skill discovery behavior across runtime profiles.
+The Public repository previously contained legacy documentation-skill identifiers plus stale references to a removed visual skill across content, folder paths, and runtime symlink names. That caused routing drift and inconsistent command/skill discovery behavior across runtime profiles.
 
 ### Purpose
-Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verified zero remnants of both legacy identifier families in the scoped repository.
+Complete a deterministic migration to `sk-doc` and remove stale visual-skill references, with verified zero remnants of the tracked legacy identifier families in the scoped repository.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,7 +49,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 
 ### In Scope
 - Repository-wide identifier migration in `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public`.
-- Filesystem path and symlink-name migration for documentation and visual-doc skills.
+- Filesystem path and symlink-name migration for documentation skill references plus cleanup of stale visual-skill references.
 - Verification and conditional no-op/update handling for `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md`.
 - Evidence capture in `scratch/` and completion evidence in `checklist.md`.
 
@@ -63,7 +63,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/**` | Modify | Content identifier replacement to canonical names. |
-| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/*` | Move/Rename | Canonical skill folder-path migration and reference repair. |
+| `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/*` | Move/Rename | Canonical documentation-skill path migration and stale visual reference repair. |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.claude/skills/*` | Rename | Runtime symlink-name and target updates. |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.gemini/skills/*` | Rename | Runtime symlink-name and target updates. |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md` | Verify/Conditional Modify | Check for legacy matches and update only if needed. |
@@ -79,7 +79,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Replace all scoped legacy documentation-skill identifier references with canonical naming. | `PC-001` and `PC-004` pass. |
-| REQ-002 | Replace all scoped legacy visual-doc identifier references with canonical naming. | `PC-001` and `PC-004` pass. |
+| REQ-002 | Remove or neutralize all scoped stale visual-skill identifier references in live docs. | `PC-001` and `PC-004` pass. |
 | REQ-003 | Rename/retarget affected folder paths and symlink names. | `PC-002` and `PC-003` pass. |
 | REQ-004 | Run full validation and completion checks. | `PC-005` and `PC-006` pass. |
 
@@ -87,7 +87,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-101 | Preserve repo behavior outside rename scope. | Skill advisor smoke tests pass for both canonical skills. |
+| REQ-101 | Preserve repo behavior outside rename scope. | Skill advisor smoke tests pass for `sk-doc` and unaffected routing flows. |
 | REQ-102 | Preserve evidence traceability for migration operations. | `scratch/` artifacts document baseline, migration, and final checks. |
 <!-- /ANCHOR:requirements -->
 
@@ -98,7 +98,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 
 - **SC-001**: Final remnant count report shows `0` for every tracked legacy identifier token family.
 - **SC-002**: Path-rename map and execution log both contain 17 completed renames.
-- **SC-003**: Runtime symlink report contains only canonical names pointing to canonical skill paths.
+- **SC-003**: Runtime symlink report contains only supported names pointing to supported skill paths, with no stale visual-skill claims.
 - **SC-004**: External AGENTS check in Barter repo reports zero matches and no edit required.
 - **SC-005**: `validate.sh` and `check-completion --strict` both pass.
 <!-- /ANCHOR:success-criteria -->
@@ -113,7 +113,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 | Dependency | Write access to Public repo paths | Partial migration | Execute in ordered phases and re-verify after each phase. |
 | Dependency | Availability of `rg`, `find`, `test`, and spec-kit scripts | Incomplete validation | Run toolchain checks before completion gates. |
 | Risk | Nested path move ordering | Temporary residual subpaths | Apply flatten fix after ordered path moves and re-check remnants. |
-| Risk | Symlink target drift | Skill resolution failures | Generate post-migration symlink inventory and verify targets. |
+| Risk | Symlink target drift | Skill resolution failures | Generate post-migration symlink inventory and verify supported targets. |
 | Risk | External scope creep | Unintended edits outside scope | Restrict external action to one AGENTS file with match-gated update policy. |
 <!-- /ANCHOR:risks -->
 
@@ -136,7 +136,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 
 ### Reliability
 - **NFR-R01**: Post-migration remnant report is all zeros.
-- **NFR-R02**: Runtime symlink targets resolve to canonical skill paths.
+- **NFR-R02**: Runtime symlink targets resolve to supported skill paths.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -179,7 +179,7 @@ Complete a deterministic migration to `sk-doc` and `sk-doc-visual`, with verifie
 
 1. **Given** preflight reports show legacy identifier presence, **when** migration completes, **then** `final-remnant-counts.txt` shows only zeros.
 2. **Given** ordered rename map entries exist, **when** execution finishes, **then** rename log count equals map count and flatten fix resolves nested-path leftovers.
-3. **Given** runtime profile symlinks are migrated, **when** post-path verification runs, **then** symlink inventory contains only canonical aliases.
+3. **Given** runtime profile symlinks are migrated, **when** post-path verification runs, **then** symlink inventory contains only supported aliases and no stale visual-skill target claims.
 4. **Given** external AGENTS file may include legacy identifiers, **when** scoped check runs, **then** file is unchanged on zero-match outcome.
 
 ---

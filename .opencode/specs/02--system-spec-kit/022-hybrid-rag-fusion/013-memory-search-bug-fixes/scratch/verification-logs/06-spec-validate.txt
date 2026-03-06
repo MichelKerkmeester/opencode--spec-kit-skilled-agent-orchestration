@@ -1,3 +1,4 @@
+$ .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
 
 ───────────────────────────────────────────────────────────────
   Spec Folder Validation v2.0.0
@@ -10,7 +11,7 @@
 
 ✓ AI_PROTOCOL: AI protocol check not applicable for Level 2
 ✓ ANCHORS_VALID: All anchor pairs valid in 6 file(s)
-✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=3, tasks=36, stories=0, scenarios=6)
+✓ COMPLEXITY_MATCH: Complexity level consistent with content (Level 2; phases=3, tasks=38, stories=0, scenarios=6)
 ✓ EVIDENCE_CITED: All completed P0/P1 items have evidence
 ✓ FILE_EXISTS: All required files present for Level 2
 ✓ FOLDER_NAMING: Folder name '013-memory-search-bug-fixes' follows naming convention
@@ -33,3 +34,5 @@
 
   RESULT: PASSED
 
+
+EXIT_CODE=0

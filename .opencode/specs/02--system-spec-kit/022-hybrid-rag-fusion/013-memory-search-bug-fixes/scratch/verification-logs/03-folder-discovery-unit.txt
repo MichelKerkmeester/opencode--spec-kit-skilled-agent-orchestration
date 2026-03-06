@@ -1,14 +1,17 @@
+$ npm run test --workspace=mcp_server -- tests/folder-discovery.vitest.ts
 
 > @spec-kit/mcp-server@1.7.2 test
 > vitest run tests/folder-discovery.vitest.ts
 
 
-[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server[39m
+ RUN  v4.0.18 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server
 
- [32m✓[39m tests/folder-discovery.vitest.ts [2m([22m[2m45 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ ✓ tests/folder-discovery.vitest.ts (45 tests) 27ms
 
-[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
-[2m      Tests [22m [1m[32m45 passed[39m[22m[90m (45)[39m
-[2m   Start at [22m 14:50:26
-[2m   Duration [22m 186ms[2m (transform 34ms, setup 0ms, import 45ms, tests 29ms, environment 0ms)[22m
+ Test Files  1 passed (1)
+      Tests  45 passed (45)
+   Start at  16:40:41
+   Duration  180ms (transform 30ms, setup 0ms, import 39ms, tests 27ms, environment 0ms)
 
+
+EXIT_CODE=0

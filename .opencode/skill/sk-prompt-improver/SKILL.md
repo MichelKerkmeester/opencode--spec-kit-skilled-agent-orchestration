@@ -392,7 +392,6 @@ Key integrations:
 | Skill | Integration |
 |-------|-------------|
 | **sk-doc** | Documentation outputs from prompt engineering may use sk-doc for formatting |
-| **sk-doc-visual** | Visual HTML outputs from prompt documentation may route to sk-doc-visual |
 | **sk-code--web** | Prompts for web development contexts may co-invoke with sk-code--web |
 
 ### Tool Usage Guidelines
@@ -414,7 +413,6 @@ Key integrations:
 
 ### Related Skills
 - `sk-doc` - Documentation quality and component creation
-- `sk-doc-visual` - Visual HTML outputs and interactive diagrams
 
 ---
 

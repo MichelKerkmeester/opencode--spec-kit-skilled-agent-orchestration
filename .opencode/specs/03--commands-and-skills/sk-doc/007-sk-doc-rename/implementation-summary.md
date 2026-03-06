@@ -2,7 +2,7 @@
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 SPECKIT_LEVEL: "2"
-description: "Completed repo-wide canonical rename implementation for documentation and visual-doc skills, with strict verification closure."
+description: "Completed repo-wide canonical rename implementation for documentation skill references plus removal of stale visual-skill claims from live docs, with strict verification closure."
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -34,24 +34,24 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The rename implementation is now complete across the scoped repository. Canonical aliases (`sk-doc`, `sk-doc-visual`) are active in content, filesystem paths, and runtime symlink names, and the remnant policy check reports zero for all tracked legacy identifier families. You now have a clean, canonical skill namespace plus a complete forensic artifact trail in `scratch/`.
+The rename implementation is now complete across the scoped repository. The canonical `sk-doc` alias remains active, stale visual-skill claims were removed from live docs, and the remnant policy check reports zero for all tracked legacy identifier families. You now have a clean documentation-skill namespace plus a complete forensic artifact trail in `scratch/`.
 
-### Repo-Wide Canonical Rename Execution
+### Repo-Wide Canonical Rename and Cleanup Execution
 
 Execution followed four stages: preflight capture, ordered path migration, post-order flatten correction, and final verification. The implementation generated a reproducible evidence set with baseline counts, rename map, rename log, symlink inventory, and final remnant counts. Path migration processed 17 entries, and content migration processed 330 files.
 
 ### Rename Matrix
 
-| Migration Surface | Legacy Identifier Family | Canonical Target | Evidence |
-|-------------------|--------------------------|------------------|----------|
-| Core skill folder | Documentation skill alias/path | `sk-doc` | `scratch/path-rename-map.tsv:11` |
-| Core skill folder | Visual-doc skill alias/path | `sk-doc-visual` | `scratch/path-rename-map.tsv:10` |
-| Runtime symlink names | Documentation skill alias | `sk-doc` | `scratch/post-path-symlinks.txt:1` |
-| Runtime symlink names | Visual-doc skill alias | `sk-doc-visual` | `scratch/post-path-symlinks.txt:2` |
-| Changelog namespaces | Documentation skill stream | `11--sk-doc` | `scratch/path-rename-map.tsv:13` |
-| Changelog namespaces | Visual-doc skill stream | `12--sk-doc-visual` | `scratch/path-rename-map.tsv:12` |
+| Migration Surface | Legacy Identifier Family | Current Live State | Evidence |
+|-------------------|--------------------------|--------------------|----------|
+| Core skill folder | Documentation skill alias/path | `sk-doc` remains the documented target | `scratch/path-rename-map.tsv:11` |
+| Core skill folder | Removed visual skill alias/path | Neutralized in live docs; no active target asserted | `scratch/path-rename-map.tsv:10` |
+| Runtime symlink names | Documentation skill alias | `sk-doc` remains documented in evidence | `scratch/post-path-symlinks.txt:1` |
+| Runtime symlink names | Removed visual skill alias | Removed from live doc claims | `scratch/post-path-symlinks.txt:2` |
+| Changelog namespaces | Documentation skill stream | `11--sk-doc` retained in evidence | `scratch/path-rename-map.tsv:13` |
+| Changelog namespaces | Removed visual skill stream | Historical evidence retained; live claim removed | `scratch/path-rename-map.tsv:12` |
 | Historical spec paths | Documentation skill phase paths | Canonicalized to `.../sk-doc/...` | `scratch/path-rename-map.tsv:8` |
-| Historical spec paths | Visual-doc skill phase paths | Canonicalized to `.../sk-doc-visual/...` | `scratch/path-rename-map.tsv:6` |
+| Historical spec paths | Removed visual skill phase paths | Historical evidence retained; live claim removed | `scratch/path-rename-map.tsv:6` |
 
 ### Files Changed
 
@@ -74,7 +74,7 @@ Execution followed four stages: preflight capture, ordered path migration, post-
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Delivery used a strict evidence-first workflow. Preflight artifacts established the baseline, then ordered path migration was executed and corrected with a flatten fix where move ordering created nested leftovers. Content replacement was applied repo-wide for scoped files, and verification closed with remnant-zero checks, symlink validation, external AGENTS no-op confirmation, skill advisor smoke tests, spec validation, and strict completion validation.
+Delivery used a strict evidence-first workflow. Preflight artifacts established the baseline, then ordered path migration was executed and corrected with a flatten fix where move ordering created nested leftovers. Content replacement was applied repo-wide for scoped files, and verification closed with remnant-zero checks, symlink validation, external AGENTS no-op confirmation, live-doc cleanup of stale visual-skill claims, spec validation, and strict completion validation.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -103,7 +103,7 @@ Delivery used a strict evidence-first workflow. Preflight artifacts established 
 | Final remnant policy (`final-remnant-counts.txt`) | PASS (all tracked rows `0`) |
 | External AGENTS verification (`Barter/coder/AGENTS.md`) | PASS (0 matches, no update) |
 | Skill advisor smoke: `"create documentation"` | PASS (`sk-doc`, confidence `0.81`) |
-| Skill advisor smoke: `"generate visual html"` | PASS (`sk-doc-visual`, confidence `0.95`) |
+| Live-doc visual-skill cleanup in this spec set | PASS (removed stale target claims from scoped docs) |
 | Spec validation (`validate.sh`) | PASS (0 errors, 0 warnings) |
 | Strict completion (`check-completion.sh --strict`) | PASS (all P0/P1/P2 checked) |
 <!-- /ANCHOR:verification -->

@@ -1,7 +1,7 @@
 # Agent: review
 # Converted from: .opencode/agent/chatgpt/review.md
 sandbox_mode = "read-only"
-model = "gpt-5.4"
+model = "gpt-5.3-codex"
 model_reasoning_effort = "xhigh"
 
 developer_instructions = '''

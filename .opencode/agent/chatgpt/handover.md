@@ -2,8 +2,8 @@
 name: handover
 description: Session handover specialist for creating continuation documents with context preservation and seamless session branching
 mode: subagent
-model: openai/gpt-5.4
-reasoningEffort: medium
+model: openai/gpt-5.3-codex
+reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow

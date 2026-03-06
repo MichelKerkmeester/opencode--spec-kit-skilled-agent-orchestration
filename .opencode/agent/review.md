@@ -2,8 +2,6 @@
 name: review
 description: Code review specialist with pattern validation, quality scoring, and standards enforcement for PRs and code changes
 mode: subagent
-model: github-copilot/gpt-5.4
-reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow

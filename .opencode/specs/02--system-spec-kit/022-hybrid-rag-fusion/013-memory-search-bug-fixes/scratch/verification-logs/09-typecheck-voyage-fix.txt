@@ -1,0 +1,4 @@
+
+> system-spec-kit@1.7.2 typecheck
+> tsc -p shared/tsconfig.json && tsc --noEmit --composite false -p mcp_server/tsconfig.json && tsc --noEmit --composite false -p scripts/tsconfig.json
+

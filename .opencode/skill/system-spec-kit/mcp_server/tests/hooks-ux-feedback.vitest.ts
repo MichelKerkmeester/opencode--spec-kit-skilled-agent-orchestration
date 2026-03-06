@@ -32,7 +32,20 @@ describe('Hooks UX feedback', () => {
     expect(feedback.hints.some((hint) => hint.includes('non-fatal'))).toBe(true);
   });
 
-  it('appendAutoSurfaceHints injects hints and meta into envelope JSON', () => {
+  it('buildMutationHookFeedback omits non-fatal warning when all caches succeed', () => {
+    const feedback = buildMutationHookFeedback('save', {
+      latencyMs: 5,
+      triggerCacheCleared: true,
+      constitutionalCacheCleared: true,
+      graphSignalsCacheCleared: true,
+      coactivationCacheCleared: true,
+      toolCacheInvalidated: 1,
+    });
+
+    expect(feedback.hints.some((hint) => hint.includes('non-fatal'))).toBe(false);
+  });
+
+  it('appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON', () => {
     const result = {
       content: [
         {
@@ -54,7 +67,8 @@ describe('Hooks UX feedback', () => {
       latencyMs: 6,
     });
 
-    const parsed = JSON.parse(result.content[0].text);
+    const finalText = result.content[0].text;
+    const parsed = JSON.parse(finalText);
     expect(parsed.hints.some((hint: string) => hint.includes('Auto-surface hook: injected 2 constitutional and 1 triggered memories (6ms)'))).toBe(true);
     expect(parsed.meta.autoSurface).toEqual({
       constitutionalCount: 2,
@@ -62,7 +76,9 @@ describe('Hooks UX feedback', () => {
       surfaced_at: '2026-03-05T10:00:00.000Z',
       latencyMs: 6,
     });
-    expect(parsed.meta.tokenCount).toBe(estimateTokenCount(result.content[0].text));
+    expect(finalText).toBe(JSON.stringify(parsed, null, 2));
+    expect(parsed.meta.tokenCount).not.toBe(12);
+    expect(parsed.meta.tokenCount).toBe(estimateTokenCount(finalText));
   });
 
   it('appendAutoSurfaceHints no-ops on malformed or non-json response', () => {
@@ -75,5 +91,27 @@ describe('Hooks UX feedback', () => {
 
     const noTextResult = { content: [{ type: 'text' }] };
     expect(() => appendAutoSurfaceHints(noTextResult, { constitutional: [], triggered: [] })).not.toThrow();
+  });
+
+  it('appendAutoSurfaceHints skips hint injection when constitutional and triggered are empty', () => {
+    const result = {
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            summary: 'ok',
+            data: {},
+            hints: ['existing'],
+            meta: {},
+          }),
+        },
+      ],
+    };
+
+    appendAutoSurfaceHints(result, { constitutional: [], triggered: [] });
+
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.hints).not.toContainEqual(expect.stringContaining('Auto-surface hook'));
+    expect(parsed.hints).toContainEqual('existing');
   });
 });

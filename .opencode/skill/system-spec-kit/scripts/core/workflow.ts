@@ -620,7 +620,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     let enrichedTask = implSummary.task;
     const dataSource = typeof collectedData?._source === 'string' ? collectedData._source : null;
     const specTitle = extractSpecTitle(specFolder);
-    if (shouldEnrichTaskFromSpecTitle(enrichedTask, dataSource, activeDataFile)) {
+    const allowSpecTitleFallback = shouldEnrichTaskFromSpecTitle(
+      enrichedTask,
+      dataSource,
+      activeDataFile
+    );
+
+    if (allowSpecTitleFallback) {
       if (specTitle.length >= 8) {
         enrichedTask = specTitle;
         log(`   Enriched task from spec.md: "${enrichedTask}"`);
@@ -635,7 +641,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       sessionData.QUICK_SUMMARY || '',
       sessionData.TITLE || '',
       sessionData.SUMMARY || '',
-    ]
+    ],
+    allowSpecTitleFallback
   );
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase);
   const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;

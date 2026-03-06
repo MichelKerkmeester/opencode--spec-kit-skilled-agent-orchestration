@@ -303,23 +303,6 @@ INTENT_BOOSTERS = {
     "template": ("sk-doc", 0.4),
 
     # ─────────────────────────────────────────────────────────────────
-    # SK-DOC-VISUAL: Visual HTML diagrams and pages
-    # ─────────────────────────────────────────────────────────────────
-    "visual": ("sk-doc-visual", 1.2),
-    "visualization": ("sk-doc-visual", 1.0),
-    "html": ("sk-doc-visual", 1.0),
-    "mermaid": ("sk-doc-visual", 1.5),
-    "architecture": ("sk-doc-visual", 0.8),
-    "sequence": ("sk-doc-visual", 0.8),
-    "chart": ("sk-doc-visual", 0.8),
-    "timeline": ("sk-doc-visual", 0.8),
-    "dashboard": ("sk-doc-visual", 0.6),
-    "render": ("sk-doc-visual", 1.0),
-    "explainer": ("sk-doc-visual", 0.9),
-    "aesthetic": ("sk-doc-visual", 1.0),
-    "recap": ("sk-doc-visual", 1.2),
-
-    # ─────────────────────────────────────────────────────────────────
     # WORKFLOWS-CODE--WEB-DEV: Implementation and verification (frontend/Webflow)
     # ─────────────────────────────────────────────────────────────────
     "a11y": ("sk-code--web", 0.6),
@@ -445,11 +428,7 @@ MULTI_SKILL_BOOSTERS = {
     "task": [("system-spec-kit", 0.3)],
     "test": [("sk-code--web", 0.3), ("sk-code--full-stack", 0.3), ("mcp-chrome-devtools", 0.2)],
     "update": [("mcp-code-mode", 0.3), ("sk-git", 0.2), ("sk-code--web", 0.2), ("sk-code--full-stack", 0.2)],
-    "diagram": [("sk-doc-visual", 0.6)],
-    "flowchart": [("sk-doc-visual", 0.8)],
-    "generate": [("sk-doc-visual", 0.4)],
-    "table": [("sk-doc-visual", 0.3)],
-    "review": [("sk-code--review", 0.8), ("sk-doc-visual", 0.3)],
+    "review": [("sk-code--review", 0.8)],
     "delegate": [("cli-gemini", 0.5), ("cli-codex", 0.5), ("cli-claude-code", 0.5), ("cli-copilot", 0.5)],
     "opinion": [("cli-gemini", 0.3), ("cli-codex", 0.3), ("cli-claude-code", 0.3), ("cli-copilot", 0.3), ("sk-code--review", 0.2)],
     "validate": [("cli-gemini", 0.2), ("cli-codex", 0.2), ("cli-claude-code", 0.2), ("cli-copilot", 0.2), ("sk-code--review", 0.3)],
@@ -489,16 +468,6 @@ PHRASE_INTENT_BOOSTERS = {
     "sk-code--review": [("sk-code--review", 2.8)],
     "/sk-code--review": [("sk-code--review", 2.8)],
     ".opencode/skill/sk-code--review": [("sk-code--review", 3.0)],
-    "visual review": [("sk-doc-visual", 1.6), ("sk-code--review", 0.4)],
-    # Explicit doc-visual intents and path references
-    "sk-doc-visual": [("sk-doc-visual", 2.2)],
-    "/doc-visual": [("sk-doc-visual", 2.2)],
-    "styled html": [("sk-doc-visual", 1.8)],
-    "html diagram": [("sk-doc-visual", 2.0)],
-    "html page": [("sk-doc-visual", 1.5)],
-    "generate html": [("sk-doc-visual", 1.2)],
-    ".codex/skills/sk-doc-visual": [("sk-doc-visual", 2.8)],
-    ".opencode/skill/sk-doc-visual": [("sk-doc-visual", 2.8)],
     # --- Gemini CLI cross-AI orchestration ---
     "use gemini": [("cli-gemini", 2.5)],
     "gemini cli": [("cli-gemini", 2.5)],
@@ -590,7 +559,7 @@ INTENT_NORMALIZATION_RULES = {
     "documentation": {
         "phrases": ["create documentation", "write readme", "install guide", "markdown docs"],
         "tokens": {"documentation", "document", "readme", "markdown", "guide", "flowchart", "diagram"},
-        "boosts": [("sk-doc", 0.45), ("sk-doc-visual", 0.25)],
+        "boosts": [("sk-doc", 0.45)],
     },
     "memory": {
         "phrases": ["save context", "save memory", "remember this", "restore checkpoint"],

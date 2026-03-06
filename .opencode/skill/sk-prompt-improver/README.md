@@ -270,7 +270,6 @@ Runs 3 DEPTH rounds instead of 10 for faster turnaround. Uses RCAF framework for
 <!-- ANCHOR:related -->
 
 - **sk-doc** - Documentation quality enforcement and component creation workflows
-- **sk-doc-visual** - Styled HTML visual artifacts from technical context
 - **sk-code--web** - Web development implementation lifecycle (pairs with prompts for web contexts)
 - [SKILL.md](./SKILL.md) - AI entry point with full routing logic and processing pipeline
 - [depth_framework.md](./references/depth_framework.md) - DEPTH methodology reference

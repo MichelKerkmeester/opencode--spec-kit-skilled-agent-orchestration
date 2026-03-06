@@ -2,8 +2,8 @@
 name: write
 description: Documentation generation and maintenance specialist using sk-doc skill for DQI-compliant, template-aligned output
 mode: subagent
-model: openai/gpt-5.4
-reasoningEffort: medium
+model: openai/gpt-5.3-codex
+reasoningEffort: high
 temperature: 0.1
 permission:
   read: allow

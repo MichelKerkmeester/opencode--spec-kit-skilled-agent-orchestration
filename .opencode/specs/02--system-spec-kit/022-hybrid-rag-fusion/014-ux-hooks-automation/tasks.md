@@ -64,12 +64,30 @@ contextType: "general"
 - [x] T008 Close follow-up fixes: required `confirmName`, duplicate-save no-op feedback, atomic-save feedback parity/hints, token metadata recomputation before token-budget enforcement, hooks README/export drift, and end-to-end appended-envelope assertion coverage
 - [x] T009 Run TypeScript build verification: `npx tsc -b` in `.opencode/skill/system-spec-kit` (PASS)
 - [x] T010 Run lint verification: `npm run lint` in `.opencode/skill/system-spec-kit/mcp_server` (PASS)
-- [x] T016 Add and pass UX-hook regression suite: `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` (PASS, 7 files / 460 tests)
-- [x] T017 Pass stdio and embeddings regression suite: `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 2 files / 15 tests)
+- [x] T016 Add and pass the fresh remediation-pass combined regression rerun: `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 9 files / 485 tests)
+- [x] T017 Confirm stdio and embeddings regression coverage is included in the same combined remediation-pass Vitest rerun (PASS, 9 files / 485 tests)
 - [x] T018 Pass real MCP SDK stdio smoke test against `node dist/context-server.js` (PASS, 28 tools listed)
-- [x] T019 Save fresh phase context to `memory/06-03-26_10-36__ux-hooks-automation.md` via `generate-context.js` (indexed as memory `#1193`)
+- [x] T019 Re-save fresh phase context via `generate-context.js`, record the saved artifact path, and document that direct phase-folder save is rejected while parent-spec indexing still fails on the 1024 vs 768 embedding mismatch (artifact: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`; no new indexed memory ID available)
 - [x] T020 Update manual playbook with NEW-103+ UX hook scenarios and evidence criteria
 <!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Review-Driven Fixes
+
+- [x] T021 [P] Apply M1+M2: Add `sanitizeErrorForHint()` and `redactPath()` in `memory-crud-health.ts`; sanitize 4 hint call sites and redact 3 path exposures. Add Windows path regex per review P1 finding. Sanitize `repair.errors` per review P1 finding. (`handlers/memory-crud-health.ts`)
+- [x] T022 [P] Apply M3: Wrap `toolCache.invalidateOnWrite()` in try/catch in `mutation-hooks.ts`; wrap file-watcher `runPostMutationHooks` in try/catch in `context-server.ts` (`handlers/mutation-hooks.ts`, `context-server.ts`)
+- [x] T023 [P] Apply M4: Extract `MutationHookResult` to `memory-crud-types.ts`, re-export from `mutation-hooks.ts`, update import in `mutation-feedback.ts` (`handlers/memory-crud-types.ts`, `handlers/mutation-hooks.ts`, `hooks/mutation-feedback.ts`)
+- [x] T024 [P] Apply m1+m2+m3: Replace non-null assertion with safe access, add convergence comment, add serialization trade-off comment (`hooks/response-hints.ts`)
+- [x] T025 [P] Apply m4: Wrap `runPostMutationHooks` call sites in try/catch with fallback `MutationHookResult` in 3 handler files (`handlers/memory-crud-update.ts`, `handlers/memory-crud-delete.ts`, `handlers/memory-bulk-delete.ts`)
+- [x] T026 [P] Apply m10: Add latency measurement for auto-surface precheck path with 250ms p95 warning (`context-server.ts`)
+- [x] T027 [P] Apply m5+s6+s7: Replace T521-L3 placeholder with behavioral test; add all-caches-succeed test; add zero-count auto-surface test (`tests/handler-checkpoints.vitest.ts`, `tests/hooks-ux-feedback.vitest.ts`)
+- [x] T028 [P] Apply s3: Add single-process assumption comment to module-level cache state (`hooks/memory-surface.ts`)
+- [x] T029 Verify: TypeScript type-check passes (`npx tsc --noEmit` PASS)
+- [x] T030 Verify: 416/416 tests pass across 4 affected test suites
+- [x] T031 Review: 2-agent parallel review confirms no P0 blockers. Score: R1=90/100, R2=98/100. Two P1 findings (Windows path regex, unsanitized repair.errors) fixed immediately.
+<!-- /ANCHOR:phase-4 -->
 
 ---
 

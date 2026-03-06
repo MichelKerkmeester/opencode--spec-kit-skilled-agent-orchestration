@@ -62,7 +62,7 @@ Two custom-built systems fix this: a **spec-kit documentation framework** and a 
          ▼                            ▼
 ┌─────────────────┐        ┌─────────────────────┐
 │  AGENT NETWORK  │        │  SKILLS LIBRARY     │
-│  10 specialized │        │  13 domain skills   │
+│  10 specialized │        │  15 domain skills   │
 │  agents with    │◄──────►│  auto-loaded by     │
 │  routing logic  │        │  task keywords      │
 └────────┬────────┘        └──────────┬──────────┘
@@ -145,7 +145,7 @@ opencode
 
 # Test skill routing
 # Ask: "What skills are available?"
-# Expected: 13 skills listed
+# Expected: 15 skills listed
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -526,7 +526,7 @@ All support `:auto` and `:confirm` mode suffixes.
 ## 7. 🧩 SKILLS LIBRARY
 <!-- ANCHOR:skills-library -->
 
-16 domain skills, auto-loaded by task keywords.
+15 domain skills, auto-loaded by task keywords.
 
 Skills are domain expertise on demand. The AI loads the right skill and already knows your conventions.
 
@@ -543,7 +543,6 @@ Skills are domain expertise on demand. The AI loads the right skill and already 
 | `sk-code--web`        | Web Dev       | Webflow, vanilla JS: implementation, debugging, verification                           |
 | `sk-code--review`     | Review        | Findings-first review baseline with security/correctness minimums and baseline+overlay contract |
 | `sk-doc`              | Docs          | Document quality scoring, skill creation and install guides                            |
-| `sk-doc-visual`       | Docs          | HTML visual artifacts, Mermaid diagrams, Chart.js dashboards                           |
 | `sk-git`              | Git           | Commits, branches, PRs, worktrees                                                      |
 | `sk-prompt-improver`  | Prompt Eng    | Prompt optimization with 7 frameworks and CLEAR scoring                                |
 | `cli-gemini`          | Cross-AI     | Gemini CLI orchestration for web research, code review, architecture analysis          |
@@ -1019,7 +1018,6 @@ A: Minimal. SQLite databases are compact. A project with 100+ memories typically
 | [Workflows: Code Review](.opencode/changelog/09--sk-code--review/)           | 2 files   |
 | [Workflows: Git](.opencode/changelog/10--sk-git/)                            | 8 files   |
 | [Workflows: Documentation](.opencode/changelog/11--sk-doc/)                  | 12 files  |
-| [Workflows: Doc Visual](.opencode/changelog/12--sk-doc-visual/)              | 4 files   |
 | [MCP: Code Mode](.opencode/changelog/13--mcp-code-mode/)                     | 8 files   |
 | [MCP: Chrome DevTools](.opencode/changelog/14--mcp-chrome-devtools/)         | 5 files   |
 | [CLI: Gemini](.opencode/changelog/17--cli-gemini/)                            | 1 file    |

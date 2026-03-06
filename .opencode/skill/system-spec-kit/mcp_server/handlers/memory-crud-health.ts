@@ -21,6 +21,28 @@ import { summarizeAliasConflicts } from './memory-index';
 import type { MCPResponse, EmbeddingProfile } from './types';
 import type { HealthArgs, ProviderMetadata } from './memory-crud-types';
 
+/** Strip absolute paths, stack traces, and truncate for safe user-facing hints. */
+function sanitizeErrorForHint(msg: string): string {
+  return msg
+    .replace(/\/[\w./-]+/g, '[path]')          // strip Unix absolute file paths
+    .replace(/[A-Za-z]:\\[\w.\\/-]+/g, '[path]') // strip Windows absolute file paths
+    .replace(/^[ \t]*at .+$/gm, '')            // strip stack trace lines
+    .replace(/\n{2,}/g, '\n')                   // collapse blank lines left by stripping
+    .trim()
+    .slice(0, 200);
+}
+
+/** Redact absolute paths: keep only project-relative portion or basename. */
+function redactPath(absolutePath: string): string {
+  const specsIdx = absolutePath.indexOf('/specs/');
+  const opencodeIdx = absolutePath.indexOf('/.opencode/');
+  if (specsIdx !== -1) return absolutePath.slice(specsIdx + 1);
+  if (opencodeIdx !== -1) return absolutePath.slice(opencodeIdx + 1);
+  // Fallback: basename only
+  const lastSlash = absolutePath.lastIndexOf('/');
+  return lastSlash !== -1 ? absolutePath.slice(lastSlash + 1) : absolutePath;
+}
+
 /* ---------------------------------------------------------------
    CONSTANTS
 --------------------------------------------------------------- */
@@ -142,7 +164,7 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
 
     const variants: DivergentAliasVariant[] = Array.from(bucket.variants.entries())
       .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-      .map(([filePath, contentHash]) => ({ filePath, contentHash }));
+      .map(([filePath, contentHash]) => ({ filePath: redactPath(filePath), contentHash }));
 
     groups.push({
       normalizedPath,
@@ -225,7 +247,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       console.error(`[memory-health] Schema missing [requestId=${requestId}]:`, message);
       return createMCPErrorResponse({
         tool: 'memory_health',
-        error: `Schema missing: ${message}. Run memory_index_scan() to create the database schema, or restart the MCP server.`,
+        error: `Schema missing: ${sanitizeErrorForHint(message)}. Run memory_index_scan() to create the database schema, or restart the MCP server.`,
         code: 'E_SCHEMA_MISSING',
         details: { requestId },
         startTime,
@@ -261,15 +283,18 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         totalRowsScanned: aliasRows.length,
         totalDivergentGroups: aliasConflicts.divergentHashGroups,
         returnedGroups: divergentAliasGroups.length,
-        groups: divergentAliasGroups,
+        groups: divergentAliasGroups.map(g => ({
+          ...g,
+          variants: g.variants.map(v => ({ ...v, filePath: redactPath(v.filePath) })),
+        })),
       },
       hints,
       startTime,
     });
   }
 
-  const providerMetadata = embeddings.getProviderMetadata() as ProviderMetadata;
-  const profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
+  let providerMetadata = embeddings.getProviderMetadata() as ProviderMetadata;
+  let profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
   const status = isEmbeddingModelReady() && database ? 'healthy' : 'degraded';
 
   const summary = `Memory system ${status}: ${memoryCount} memories indexed`;
@@ -282,6 +307,21 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     warnings: [] as string[],
     errors: [] as string[],
   };
+
+  if (!profile) {
+    try {
+      // Resolve the lazy profile so health reflects the active runtime provider
+      // rather than the legacy sync fallback defaults.
+      profile = await embeddings.getEmbeddingProfileAsync() as EmbeddingProfile | null;
+      providerMetadata = embeddings.getProviderMetadata() as ProviderMetadata;
+    } catch (profileError: unknown) {
+      hints.push(`Embedding profile unavailable: ${sanitizeErrorForHint(toErrorMessage(profileError))}`);
+    }
+  }
+
+  const providerName = profile?.provider ?? providerMetadata.provider;
+  const providerModel = profile?.model ?? providerMetadata.model ?? embeddings.getModelName();
+  const providerDimension = profile?.dim ?? providerMetadata.dim ?? embeddings.getEmbeddingDimension();
 
   if (!isEmbeddingModelReady()) {
     hints.push('Embedding model not ready - some operations may fail');
@@ -324,16 +364,16 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
             }
           } catch (repairError: unknown) {
             const message = toErrorMessage(repairError);
-            repair.errors.push(message);
-            hints.push(`Auto-repair failed: ${message}`);
+            repair.errors.push(sanitizeErrorForHint(message));
+            hints.push(`Auto-repair failed: ${sanitizeErrorForHint(message)}`);
           }
         }
       }
     } catch (e: unknown) {
       const message = toErrorMessage(e);
-      hints.push(`FTS5 consistency check failed: ${message}`);
+      hints.push(`FTS5 consistency check failed: ${sanitizeErrorForHint(message)}`);
       if (autoRepair) {
-        repair.errors.push(`Consistency check failed before repair: ${message}`);
+        repair.errors.push(`Consistency check failed before repair: ${sanitizeErrorForHint(message)}`);
       }
     }
   }
@@ -359,11 +399,11 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       aliasConflicts,
       repair,
       embeddingProvider: {
-        provider: providerMetadata.provider,
-        model: providerMetadata.model,
-        dimension: profile ? profile.dim : 768,
+        provider: providerName,
+        model: providerModel,
+        dimension: providerDimension,
         healthy: providerMetadata.healthy !== false,
-        databasePath: vectorIndex.getDbPath(),
+        databasePath: redactPath(vectorIndex.getDbPath() ?? ''),
       },
     },
     hints,

@@ -53,6 +53,8 @@ const TOOL_DISPATCH_TOKEN_BUDGET = 4000;
 const COMPACTION_TOKEN_BUDGET = 4000;
 
 // Constitutional memory cache
+// Module-level mutable state: safe in a single-process MCP server.
+// If the server ever runs multi-process, replace with a shared store.
 let constitutionalCache: ConstitutionalMemory[] | null = null;
 let constitutionalCacheTime = 0;
 const CONSTITUTIONAL_CACHE_TTL = 60000; // 1 minute

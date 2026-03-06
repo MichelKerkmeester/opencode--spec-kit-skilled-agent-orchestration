@@ -48,6 +48,8 @@ import {
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
   appendAutoSurfaceHints,
+  syncEnvelopeTokenCount,
+  serializeEnvelopeWithTokenCount,
 } from './hooks';
 
 // Architecture
@@ -150,9 +152,6 @@ const API_KEY_VALIDATION_TIMEOUT_MS = 5_000;
 
 /** Short delay (ms) before process.exit to allow stderr to flush. */
 const EXIT_FLUSH_DELAY_MS = 100;
-
-/** Rough estimate: 4 characters per token for token budget truncation. */
-const CHARS_PER_TOKEN_ESTIMATE = 4;
 
 let generatedCallIdCounter = 0;
 
@@ -282,6 +281,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     const isCompactionLifecycleCall =
       name === 'memory_context' && args.mode === 'resume';
 
+    const autoSurfaceStart = Date.now();
     if (MEMORY_AWARE_TOOLS.has(name)) {
       const contextHint: string | null = extractContextHint(args);
       if (contextHint) {
@@ -303,6 +303,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
         const msg = surfaceErr instanceof Error ? surfaceErr.message : String(surfaceErr);
         console.error(`[context-server] Tool-dispatch auto-surface failed (non-fatal): ${msg}`);
       }
+    }
+    const autoSurfaceLatencyMs = Date.now() - autoSurfaceStart;
+    if (autoSurfaceLatencyMs > 250) {
+      console.warn(`[context-server] Auto-surface precheck exceeded p95 target: ${autoSurfaceLatencyMs}ms`);
     }
 
     // Ensure database is initialized (safe no-op if already done)
@@ -331,16 +335,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // T205: Enforce per-layer token budgets with actual truncation
     if (result && result.content && result.content[0]?.text) {
       try {
-        const envelope = JSON.parse(result.content[0].text);
-        if (envelope && envelope.meta) {
+        const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+        if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+          const metaValue = envelope.meta;
+          const meta = (metaValue && typeof metaValue === 'object' && !Array.isArray(metaValue))
+            ? metaValue as Record<string, unknown>
+            : {};
+          const dataValue = envelope.data;
+          const data = (dataValue && typeof dataValue === 'object' && !Array.isArray(dataValue))
+            ? dataValue as Record<string, unknown>
+            : null;
+          envelope.meta = meta;
           const budget = getTokenBudget(name);
-          envelope.meta.tokenBudget = budget;
+          meta.tokenBudget = budget;
+          syncEnvelopeTokenCount(envelope);
 
-          if (envelope.meta.tokenCount > budget) {
-            console.error(`[token-budget] ${name} response (${envelope.meta.tokenCount} tokens) exceeds budget (${budget})`);
+          if (typeof meta.tokenCount === 'number' && meta.tokenCount > budget) {
+            console.error(`[token-budget] ${name} response (${meta.tokenCount} tokens) exceeds budget (${budget})`);
 
             // T205: Attempt to truncate results array to fit within budget
-            const innerResults = envelope?.data?.results;
+            const innerResults = data?.results;
             if (Array.isArray(innerResults) && innerResults.length > 1) {
               const originalCount = innerResults.length;
               // Results are typically sorted by score (highest first)
@@ -349,26 +363,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
                 innerResults.pop();
                 // P1-06 FIX: Recalculate token count from the full envelope
                 // (not just results) so trace metadata is included in the budget.
-                envelope.meta.tokenCount = Math.ceil(JSON.stringify(envelope).length / CHARS_PER_TOKEN_ESTIMATE);
-                if (envelope.meta.tokenCount <= budget) break;
+                syncEnvelopeTokenCount(envelope);
+                if (typeof meta.tokenCount === 'number' && meta.tokenCount <= budget) break;
               }
-              if (envelope.data.count !== undefined) {
-                envelope.data.count = innerResults.length;
+              if (data && data.count !== undefined) {
+                data.count = innerResults.length;
               }
               if (Array.isArray(envelope.hints)) {
                 envelope.hints.push(`Token budget enforced: truncated ${originalCount} → ${innerResults.length} results to fit ${budget} token budget`);
               }
-              envelope.meta.tokenBudgetTruncated = true;
-              envelope.meta.originalResultCount = originalCount;
-              envelope.meta.returnedResultCount = innerResults.length;
+              meta.tokenBudgetTruncated = true;
+              meta.originalResultCount = originalCount;
+              meta.returnedResultCount = innerResults.length;
             } else {
               // No truncatable results array — add warning hint only
               if (Array.isArray(envelope.hints)) {
-                envelope.hints.push(`Response exceeds token budget (${envelope.meta.tokenCount}/${budget})`);
+                envelope.hints.push(`Response exceeds token budget (${meta.tokenCount}/${budget})`);
               }
             }
           }
-          result.content[0].text = JSON.stringify(envelope, null, 2);
+          result.content[0].text = serializeEnvelopeWithTokenCount(envelope);
         }
       } catch (_parseErr: unknown) {
         // Non-JSON response, skip token budget injection
@@ -626,7 +640,11 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   }
 
   if (deletedCount > 0) {
-    runPostMutationHooks('delete', { filePath, deletedCount });
+    try {
+      runPostMutationHooks('delete', { filePath, deletedCount });
+    } catch {
+      // Non-throwing by design: file-watcher path must not crash the server.
+    }
   }
 }
 
@@ -776,6 +794,8 @@ async function main(): Promise<void> {
       console.error(`[context-server] ===== EMBEDDING DIMENSION MISMATCH =====`);
       console.error(`[context-server] ${dimValidation.warning}`);
       console.error(`[context-server] =========================================`);
+      console.error('[context-server] FATAL: Refusing to start with mismatched embedding dimensions');
+      throw new Error(dimValidation.warning ?? 'Embedding dimension mismatch between provider and database');
     } else if (dimValidation.stored) {
       console.error(`[context-server] Embedding dimension validated: ${dimValidation.stored}`);
     }
@@ -959,6 +979,7 @@ async function main(): Promise<void> {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.error('[context-server] Integrity check failed:', message);
+    throw err instanceof Error ? err : new Error(message);
   }
 
   // P1-09: Assign to module-level transport (not const) so shutdown handlers can close it

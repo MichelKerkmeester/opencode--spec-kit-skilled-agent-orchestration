@@ -2,7 +2,7 @@
 // MODULE: Mutation Feedback Hook
 // ---------------------------------------------------------------
 
-import type { MutationHookResult } from '../handlers/mutation-hooks';
+import type { MutationHookResult } from '../handlers/memory-crud-types';
 
 function buildMutationHookFeedback(operation: string, hookResult: MutationHookResult): {
   data: {

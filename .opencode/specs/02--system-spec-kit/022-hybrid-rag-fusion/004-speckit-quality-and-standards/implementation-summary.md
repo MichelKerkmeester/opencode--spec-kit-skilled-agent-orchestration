@@ -63,7 +63,7 @@ This update delivered a docs-only policy enforcement pass for SpecKit artifacts.
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/checklist.md` | Created | Record verification controls and status |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/implementation-summary.md` | Created | Capture delivery outcomes |
 | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Modified | Removed disallowed ToC sections |
-| `.opencode/specs/03--commands-and-skills/sk-doc-visual/002-sk-doc-visual-hardening/{spec,plan,tasks,checklist,implementation-summary}.md` | Modified | Removed disallowed ToC sections |
+| `removed visual skill hardening docs` | Modified | Removed disallowed ToC sections |
 | `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/{spec,plan,tasks,checklist}.md` | Modified | Removed disallowed ToC sections |
 <!-- /ANCHOR:what-built -->
 
@@ -97,7 +97,7 @@ The work was delivered in three steps: template-aligned doc creation in the new 
 | ToC policy scan on scoped standard artifacts | PASS (no remaining ToC headings detected) |
 | `validate.sh` on `007-spec-kit-templates` | PASS WITH WARNINGS (exit 1; missing recommended acceptance scenarios and checklist `P0`/`P1` sections) |
 | `validate.sh` on `039-sk-code-opencode-alignment-hardening` | FAIL (exit 2; `TEMPLATE_SOURCE` header missing reported across 6 files) |
-| `validate.sh` on `040-sk-doc-visual-hardening` | FAIL (exit 2; `TEMPLATE_SOURCE` header missing reported across parent and phase docs; phase-link warning also present) |
+| `validate.sh` on removed visual skill hardening docs | FAIL (exit 2; `TEMPLATE_SOURCE` header missing reported across parent and phase docs; phase-link warning also present) |
 | `validate.sh` on `041-code-review-skill` | PASS |
 <!-- /ANCHOR:verification -->
 

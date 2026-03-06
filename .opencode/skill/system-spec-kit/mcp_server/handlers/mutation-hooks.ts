@@ -8,14 +8,9 @@ import { clearConstitutionalCache } from '../hooks/memory-surface';
 import { clearGraphSignalsCache } from '../lib/graph/graph-signals';
 import { clearRelatedCache } from '../lib/cache/cognitive/co-activation';
 
-export interface MutationHookResult {
-  latencyMs: number;
-  triggerCacheCleared: boolean;
-  constitutionalCacheCleared: boolean;
-  toolCacheInvalidated: number;
-  graphSignalsCacheCleared: boolean;
-  coactivationCacheCleared: boolean;
-}
+import type { MutationHookResult } from './memory-crud-types';
+
+export type { MutationHookResult };
 
 function runPostMutationHooks(
   operation: string,
@@ -31,7 +26,12 @@ function runPostMutationHooks(
     triggerCacheCleared = false;
   }
 
-  const toolCacheInvalidated = toolCache.invalidateOnWrite(operation, context);
+  let toolCacheInvalidated = 0;
+  try {
+    toolCacheInvalidated = toolCache.invalidateOnWrite(operation, context);
+  } catch {
+    toolCacheInvalidated = 0;
+  }
 
   let constitutionalCacheCleared = false;
   try {

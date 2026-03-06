@@ -68,6 +68,24 @@ interface DiscoveredSpecState {
   specFolders: Set<string>;
 }
 
+function cachedFoldersMatchDiscoveredState(
+  cache: DescriptionCache,
+  discoveredSpecFolders: Set<string>,
+): boolean {
+  const cachedSpecFolders = new Set(cache.folders.map((folder) => folder.specFolder));
+  if (cachedSpecFolders.size !== discoveredSpecFolders.size) {
+    return false;
+  }
+
+  for (const specFolder of cachedSpecFolders) {
+    if (!discoveredSpecFolders.has(specFolder)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function resolveRealPathSafe(targetPath: string): string | null {
   try {
     return fs.realpathSync.native(targetPath);
@@ -550,12 +568,8 @@ export function isCacheStale(cache: DescriptionCache | null, basePaths: string[]
 
   const normalizedBasePaths = normalizeBasePaths(basePaths);
   const discoveredState = collectDiscoveredSpecState(normalizedBasePaths);
-  if (cacheTime <= Date.now()) {
-    for (const folder of cache.folders) {
-      if (!discoveredState.specFolders.has(folder.specFolder)) {
-        return true;
-      }
-    }
+  if (!cachedFoldersMatchDiscoveredState(cache, discoveredState.specFolders)) {
+    return true;
   }
 
   return discoveredState.latestMtime > cacheTime;
