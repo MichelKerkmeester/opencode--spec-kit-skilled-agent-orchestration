@@ -56,6 +56,7 @@ import {
   CAUSAL_LINK_MAPPINGS,
 } from './causal-links-processor';
 import { runPostMutationHooks } from './mutation-hooks';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 import { detectSpecLevelFromParsed, escapeLikePattern } from './handler-utils';
 import { indexChunkedMemoryFile, needsChunking } from './chunking-orchestrator';
 import {
@@ -182,6 +183,15 @@ interface AtomicSaveResult {
   success: boolean;
   filePath: string;
   error?: string;
+  status?: string;
+  id?: number;
+  specFolder?: string;
+  title?: string | null;
+  summary?: string;
+  message?: string;
+  embeddingStatus?: string;
+  postMutationHooks?: ReturnType<typeof buildMutationHookFeedback>['data'];
+  hints?: string[];
 }
 
 interface SaveArgs {
@@ -338,7 +348,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   parsed.qualityFlags = qualityLoopResult.score.issues;
 
   if (qualityLoopResult.fixes.length > 0) {
-    console.info(`[memory-save] Quality loop applied ${qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(filePath)}`);
+    console.error(`[memory-save] Quality loop applied ${qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(filePath)}`);
     // AI-WHY: Persist mutated content from quality loop; recompute content_hash
     // so downstream dedup and change-detection use the post-fix content.
     if (qualityLoopResult.fixedContent) {
@@ -369,7 +379,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   // CHUNKING BRANCH: Large files get split into parent + child records
   // AI-WHY: Must be inside withSpecFolderLock to serialize chunked saves too
   if (needsChunking(parsed.content)) {
-    console.info(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
+    console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
     return indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
   }
 
@@ -413,7 +423,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     `).get(parsed.specFolder, parsed.contentHash) as { id: number; file_path: string; title: string | null } | undefined;
 
     if (duplicateByHash) {
-      console.info(`[memory-save] T054: Duplicate content detected (hash match id=${duplicateByHash.id}), skipping embedding`);
+      console.error(`[memory-save] T054: Duplicate content detected (hash match id=${duplicateByHash.id}), skipping embedding`);
       return {
         status: 'duplicate',
         id: duplicateByHash.id,
@@ -437,7 +447,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
   if (asyncEmbedding) {
     embeddingFailureReason = 'Deferred: async_embedding requested';
-    console.info(`[memory-save] T306: Async embedding mode - deferring embedding for ${path.basename(filePath)}`);
+    console.error(`[memory-save] T306: Async embedding mode - deferring embedding for ${path.basename(filePath)}`);
   } else {
     try {
       // Check persistent embedding cache before calling provider
@@ -447,7 +457,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
         // Cache hit: convert Buffer to Float32Array
         embedding = new Float32Array(new Uint8Array(cachedBuf).buffer);
         embeddingStatus = 'success';
-        console.info(`[memory-save] Embedding cache HIT for ${path.basename(filePath)}`);
+        console.error(`[memory-save] Embedding cache HIT for ${path.basename(filePath)}`);
       } else {
         // Cache miss: normalize content then generate embedding via provider
         // S1: strip structural noise (frontmatter, anchors, HTML comments) before embedding
@@ -458,7 +468,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
           // Store in persistent cache for future re-index
           const embBuf = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
           storeEmbedding(database, parsed.contentHash, modelId, embBuf, embedding.length);
-          console.info(`[memory-save] Embedding cache MISS+STORE for ${path.basename(filePath)}`);
+          console.error(`[memory-save] Embedding cache MISS+STORE for ${path.basename(filePath)}`);
         } else {
           embeddingFailureReason = 'Embedding generation returned null';
           console.warn(`[memory-save] Embedding failed for ${path.basename(filePath)}: ${embeddingFailureReason}`);
@@ -495,7 +505,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       });
 
       if (!qualityGateResult.pass && !qualityGateResult.warnOnly) {
-        console.info(`[memory-save] TM-04: Quality gate REJECTED save for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
+        console.error(`[memory-save] TM-04: Quality gate REJECTED save for ${path.basename(filePath)}: ${qualityGateResult.reasons.join('; ')}`);
         return {
           status: 'rejected',
           id: 0,
@@ -556,7 +566,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       case predictionErrorGate.ACTION.REINFORCE: {
         const existingId = peDecision.existingMemoryId as number;
         const priorSnapshot = getMemoryHashSnapshot(database, existingId);
-        console.info(`[PE-Gate] REINFORCE: Duplicate detected (${peDecision.similarity.toFixed(1)}%)`);
+        console.error(`[PE-Gate] REINFORCE: Duplicate detected (${peDecision.similarity.toFixed(1)}%)`);
         const reinforced = reinforceExistingMemory(existingId, parsed);
         reinforced.pe_action = 'REINFORCE';
         reinforced.pe_reason = peDecision.reason;
@@ -586,7 +596,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
       case predictionErrorGate.ACTION.SUPERSEDE: {
         const existingId = peDecision.existingMemoryId as number;
-        console.info(`[PE-Gate] SUPERSEDE: Contradiction detected with memory ${existingId}`);
+        console.error(`[PE-Gate] SUPERSEDE: Contradiction detected with memory ${existingId}`);
         const superseded = markMemorySuperseded(existingId);
         if (!superseded) {
           console.warn(`[PE-Gate] Failed to mark memory ${existingId} as superseded, proceeding with CREATE anyway`);
@@ -597,7 +607,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       case predictionErrorGate.ACTION.UPDATE: {
         const existingId = peDecision.existingMemoryId as number;
         const priorSnapshot = getMemoryHashSnapshot(database, existingId);
-        console.info(`[PE-Gate] UPDATE: High similarity (${peDecision.similarity.toFixed(1)}%), updating existing`);
+        console.error(`[PE-Gate] UPDATE: High similarity (${peDecision.similarity.toFixed(1)}%), updating existing`);
         if (!embedding) {
           console.warn(
             '[Memory Save] embedding unexpectedly null in UPDATE path, falling through to CREATE'
@@ -630,14 +640,14 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       }
 
       case predictionErrorGate.ACTION.CREATE_LINKED: {
-        console.info(`[PE-Gate] CREATE_LINKED: Related content (${peDecision.similarity.toFixed(1)}%)`);
+        console.error(`[PE-Gate] CREATE_LINKED: Related content (${peDecision.similarity.toFixed(1)}%)`);
         break;
       }
 
       case predictionErrorGate.ACTION.CREATE:
       default:
         if (peDecision.similarity > 0) {
-          console.info(`[PE-Gate] CREATE: Low similarity (${peDecision.similarity.toFixed(1)}%)`);
+          console.error(`[PE-Gate] CREATE: Low similarity (${peDecision.similarity.toFixed(1)}%)`);
         }
         break;
     }
@@ -753,7 +763,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
         if (reconResult && reconResult.action !== 'complement') {
           // Reconsolidation handled the memory (merge or conflict) — skip normal CREATE path
-          console.info(`[memory-save] TM-06: Reconsolidation ${reconResult.action} for ${path.basename(filePath)}`);
+          console.error(`[memory-save] TM-06: Reconsolidation ${reconResult.action} for ${path.basename(filePath)}`);
 
           const reconId = reconResult.action === 'merge'
             ? reconResult.existingMemoryId
@@ -875,7 +885,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
     id = indexWithMetadata();
   } else {
-    console.info(`[memory-save] Using deferred indexing for ${path.basename(filePath)}`);
+    console.error(`[memory-save] Using deferred indexing for ${path.basename(filePath)}`);
 
     const indexDeferred = database.transaction(() => {
       // Determine importance weight based on document type (Spec 126)
@@ -937,7 +947,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     try {
       causalLinksResult = processCausalLinks(database, id, parsed.causalLinks);
       if (causalLinksResult.inserted > 0) {
-        console.info(`[causal-links] Processed ${causalLinksResult.inserted} causal edges for memory #${id}`);
+        console.error(`[causal-links] Processed ${causalLinksResult.inserted} causal edges for memory #${id}`);
       }
       if (causalLinksResult.unresolved.length > 0) {
         console.warn(`[causal-links] ${causalLinksResult.unresolved.length} references could not be resolved`);
@@ -956,7 +966,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       if (filtered.length > 0) {
         const entityResult = storeEntities(database, id, filtered);
         updateEntityCatalog(database, filtered);
-        console.info(`[entity-extraction] Extracted ${entityResult.stored} entities for memory #${id}`);
+        console.error(`[entity-extraction] Extracted ${entityResult.stored} entities for memory #${id}`);
       }
     } catch (entityErr: unknown) {
       const message = toErrorMessage(entityErr);
@@ -974,7 +984,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
         (text: string) => embeddings.generateQueryEmbedding(text)
       );
       if (summaryResult.stored) {
-        console.info(`[memory-summaries] Generated summary for memory #${id}`);
+        console.error(`[memory-summaries] Generated summary for memory #${id}`);
       }
     } catch (summaryErr: unknown) {
       const message = toErrorMessage(summaryErr);
@@ -988,7 +998,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     try {
       const linkResult = runEntityLinking(database);
       if (linkResult.linksCreated > 0) {
-        console.info(`[entity-linking] Created ${linkResult.linksCreated} cross-doc links from ${linkResult.crossDocMatches} entity matches`);
+        console.error(`[entity-linking] Created ${linkResult.linksCreated} cross-doc links from ${linkResult.crossDocMatches} entity matches`);
       } else if (linkResult.skippedByDensityGuard) {
         const density = typeof linkResult.edgeDensity === 'number'
           ? linkResult.edgeDensity.toFixed(3)
@@ -996,7 +1006,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
         const threshold = typeof linkResult.densityThreshold === 'number'
           ? linkResult.densityThreshold.toFixed(3)
           : 'unknown';
-        console.info(`[entity-linking] Skipped by density guard (density=${density}, threshold=${threshold})`);
+        console.error(`[entity-linking] Skipped by density guard (density=${density}, threshold=${threshold})`);
       }
     } catch (linkErr: unknown) {
       const message = toErrorMessage(linkErr);
@@ -1221,7 +1231,13 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     });
   }
 
-  runPostMutationHooks('save', { specFolder: result.specFolder, filePath: file_path });
+  const shouldEmitPostMutationFeedback = result.status !== 'duplicate';
+  const postMutationFeedback = shouldEmitPostMutationFeedback
+    ? buildMutationHookFeedback(
+        'save',
+        runPostMutationHooks('save', { specFolder: result.specFolder, filePath: file_path })
+      )
+    : null;
 
   const response: Record<string, unknown> = {
     status: result.status,
@@ -1233,8 +1249,11 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     importanceTier: result.importanceTier,
     qualityScore: result.qualityScore,
     qualityFlags: result.qualityFlags,
-    message: result.status === 'duplicate' ? `Memory skipped (duplicate content)` : `Memory ${result.status} successfully`
+    message: result.message ?? (result.status === 'duplicate' ? 'Memory skipped (duplicate content)' : `Memory ${result.status} successfully`)
   };
+  if (postMutationFeedback) {
+    response.postMutationHooks = postMutationFeedback.data;
+  }
 
   if (result.pe_action) {
     response.pe_action = result.pe_action;
@@ -1303,6 +1322,12 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     if ((result.causalLinks as Record<string, unknown>).unresolved_count as number > 0) {
       hints.push(`${(result.causalLinks as Record<string, unknown>).unresolved_count} causal link reference(s) could not be resolved`);
     }
+  }
+
+  if (postMutationFeedback) {
+    hints.push(...postMutationFeedback.hints);
+  } else if (result.status === 'duplicate') {
+    hints.push('Duplicate content matched an existing indexed memory, so caches were left unchanged');
   }
 
   if (result.embeddingStatus === 'success') {
@@ -1382,12 +1407,57 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
     return {
       success: true,
       filePath: file_path,
+      status: 'partial',
+      summary: 'File saved but indexing failed',
+      message: 'File saved but indexing failed',
+      hints: ['Retry memory_save({ filePath, force: true }) to rebuild the memory index entry'],
       error: `File saved but indexing failed: ${indexError?.message ?? 'unknown'}`,
     };
   }
 
-  runPostMutationHooks('atomic-save', { filePath: file_path });
-  return result;
+  const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate';
+  const postMutationFeedback = shouldEmitPostMutationFeedback
+    ? buildMutationHookFeedback(
+        'atomic-save',
+        runPostMutationHooks('atomic-save', {
+          filePath: file_path,
+          specFolder: indexResult.specFolder,
+          memoryId: indexResult.id,
+        })
+      )
+    : null;
+
+  const message = indexResult.message ?? (
+    indexResult.status === 'duplicate'
+      ? 'Memory skipped (duplicate content)'
+      : `Memory ${indexResult.status} successfully`
+  );
+  const hints: string[] = [];
+
+  if (indexResult.embeddingStatus === 'pending') {
+    hints.push('Memory will be fully indexed when embedding provider becomes available');
+  }
+  if (indexResult.embeddingStatus === 'partial') {
+    hints.push('Large file indexed via chunking: parent record + individual chunk records with embeddings');
+  }
+  if (postMutationFeedback) {
+    hints.push(...postMutationFeedback.hints);
+  } else if (indexResult.status === 'duplicate') {
+    hints.push('Duplicate content matched an existing indexed memory, so caches were left unchanged');
+  }
+
+  return {
+    ...result,
+    status: indexResult.status,
+    id: indexResult.id,
+    specFolder: indexResult.specFolder,
+    title: indexResult.title,
+    summary: message,
+    message,
+    embeddingStatus: indexResult.embeddingStatus,
+    ...(postMutationFeedback ? { postMutationHooks: postMutationFeedback.data } : {}),
+    ...(hints.length > 0 ? { hints } : {}),
+  };
 }
 
 /** Return transaction manager metrics for atomicity monitoring */

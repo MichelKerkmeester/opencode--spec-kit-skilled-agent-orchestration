@@ -49,6 +49,11 @@ contextType: "general"
 - [x] T005 Add `memory_health` optional `autoRepair` path with repair metadata reporting
 - [x] T006 Add checkpoint delete safety parameter `confirmName` and response metadata
 - [x] T007 Update schemas/types/tool definitions for new parameters and response contracts
+- [x] T011 Add hook modules `hooks/mutation-feedback.ts` and `hooks/response-hints.ts`, then export via hooks barrel
+- [x] T012 Extend `MutationHookResult` with latency and cache-clear booleans
+- [x] T013 Update mutation handlers (`memory-save`, `memory-crud-update`, `memory-crud-delete`, `memory-bulk-delete`) to expose `postMutationHooks` and UX hints
+- [x] T014 Update `context-server.ts` success path to call `appendAutoSurfaceHints(...)` while preserving `autoSurfacedContext`
+- [x] T015 Update hooks README to document new modules and response contracts
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -56,9 +61,14 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Stabilize regressions: `escapeLikePattern` export, hybrid-search-flags mock path, modularization threshold (800 -> 880), and missing trigger matcher import
-- [x] T009 Run targeted verification: `npm test -- tests/handler-memory-save.vitest.ts tests/hybrid-search-flags.vitest.ts tests/modularization.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts` (150 passed)
-- [x] T010 Run full verification (`npm test`, 237 files / 7146 passed) and sync spec artifacts
+- [x] T008 Close follow-up fixes: required `confirmName`, duplicate-save no-op feedback, atomic-save feedback parity/hints, token metadata recomputation before token-budget enforcement, hooks README/export drift, and end-to-end appended-envelope assertion coverage
+- [x] T009 Run TypeScript build verification: `npx tsc -b` in `.opencode/skill/system-spec-kit` (PASS)
+- [x] T010 Run lint verification: `npm run lint` in `.opencode/skill/system-spec-kit/mcp_server` (PASS)
+- [x] T016 Add and pass UX-hook regression suite: `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` (PASS, 7 files / 460 tests)
+- [x] T017 Pass stdio and embeddings regression suite: `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 2 files / 15 tests)
+- [x] T018 Pass real MCP SDK stdio smoke test against `node dist/context-server.js` (PASS, 28 tools listed)
+- [x] T019 Save fresh phase context to `memory/06-03-26_10-36__ux-hooks-automation.md` via `generate-context.js` (indexed as memory `#1193`)
+- [x] T020 Update manual playbook with NEW-103+ UX hook scenarios and evidence criteria
 <!-- /ANCHOR:phase-3 -->
 
 ---

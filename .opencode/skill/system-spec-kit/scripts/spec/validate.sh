@@ -76,7 +76,8 @@ OPTIONS:
 EXIT CODES: 0=pass, 1=warnings, 2=errors
 
 RULES: FILE_EXISTS, PLACEHOLDER_FILLED, SECTIONS_PRESENT, LEVEL_DECLARED,
-       PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, TOC_POLICY, PHASE_LINKS
+       PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID, TOC_POLICY, PHASE_LINKS,
+       SPEC_DOC_INTEGRITY
 
 LEVELS: 1=spec+plan+tasks+impl-summary*, 2=+checklist, 3=+decision-record
         *impl-summary required after tasks completed
@@ -261,6 +262,7 @@ get_rule_severity() {
     case "$1" in
         FILE_EXISTS|FILES|PLACEHOLDER_FILLED|PLACEHOLDERS|ANCHORS_VALID|ANCHORS|TOC_POLICY) echo "error" ;;
         SECTIONS_PRESENT|SECTIONS|PRIORITY_TAGS|EVIDENCE_CITED|EVIDENCE|PRIORITY|PHASE_LINKS|LINKS_VALID|LINKS) echo "warn" ;;
+        SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "error" ;;
         LEVEL_DECLARED|LEVEL) echo "info" ;;
         *) echo "error" ;;
     esac
@@ -289,6 +291,7 @@ canonicalize_rule_name() {
         FRONTMATTER|FRONTMATTER_VALID) echo "FRONTMATTER_VALID" ;;
         LEVEL_MATCH) echo "LEVEL_MATCH" ;;
         SECTION_COUNTS) echo "SECTION_COUNTS" ;;
+        SPEC_DOC_INTEGRITY|DOC_INTEGRITY) echo "SPEC_DOC_INTEGRITY" ;;
         TEMPLATE_SOURCE) echo "TEMPLATE_SOURCE" ;;
         *) echo "$normalized" ;;
     esac
@@ -314,6 +317,7 @@ rule_name_to_script() {
         LINKS_VALID) echo "links" ;;
         SECTION_COUNTS) echo "section-counts" ;;
         TEMPLATE_SOURCE) echo "template-source" ;;
+        SPEC_DOC_INTEGRITY) echo "spec-doc-integrity" ;;
         *) echo "" ;;
     esac
 }

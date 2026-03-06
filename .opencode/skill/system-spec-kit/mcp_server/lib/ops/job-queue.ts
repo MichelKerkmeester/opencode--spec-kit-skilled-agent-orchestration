@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Sprint 9 fixes: true sequential worker, meaningful state transitions,
 // continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
-// crash recovery with re-enqueue, and validPaths-based indexing.
+// crash recovery with re-enqueue, and original-path progress tracking.
 
 import { requireDb, toErrorMessage } from '../../utils';
 
@@ -168,8 +168,9 @@ function ensureIngestJobsTable(): void {
   `);
 }
 
-// Sprint 9 fix: Preserve progress on crash recovery instead of wiping files_processed.
-// Since indexMemoryFile is idempotent, resuming from last count is safe.
+// Restart interrupted jobs from the beginning on process startup.
+// Indexing is idempotent, and replaying the original path list avoids
+// mismatches when path accessibility changes between runs.
 function resetIncompleteJobsToQueued(): string[] {
   const db = requireDb();
   // Collect IDs of jobs that will be reset so we can re-enqueue them.
@@ -185,6 +186,8 @@ function resetIncompleteJobsToQueued(): string[] {
       UPDATE ingest_jobs
       SET
         state = 'queued',
+        files_processed = 0,
+        errors_json = '[]',
         updated_at = ?
       WHERE state NOT IN ('complete', 'failed', 'cancelled')
     `).run(nowIso())
@@ -336,7 +339,8 @@ export function getIngestProgressPercent(job: Pick<IngestJob, 'filesProcessed' |
 }
 
 // Sprint 9 fix: Real state machine — states now correspond to actual work phases.
-// Codex fix: validPaths is used for indexing instead of current.paths.
+// Progress is tracked against the original submitted path list so terminal
+// accounting stays stable even when some files are inaccessible.
 async function processQueuedJob(jobId: string): Promise<void> {
   if (!processFileFn) {
     throw new Error('Ingest queue not initialized: processFile handler is missing');
@@ -351,16 +355,7 @@ async function processQueuedJob(jobId: string): Promise<void> {
   job = await setIngestJobState(jobId, 'parsing');
   if (TERMINAL_STATES.has(job.state)) return;
 
-  const validPaths: string[] = [];
-  for (const filePath of job.paths) {
-    try {
-      const { access } = await import('fs/promises');
-      await access(filePath);
-      validPaths.push(filePath);
-    } catch {
-      await appendIngestError(jobId, filePath, new Error('File not accessible'));
-    }
-  }
+  const { access } = await import('fs/promises');
 
   // Phase 2: Embedding — placeholder for batch embedding pre-processing.
   // Transition is meaningful: it signals readiness for indexing after validation.
@@ -374,34 +369,29 @@ async function processQueuedJob(jobId: string): Promise<void> {
   if (!latest2 || TERMINAL_STATES.has(latest2.state)) return;
   job = await setIngestJobState(jobId, 'indexing');
 
-  // Update files_total to reflect valid paths only (invalid files already recorded as errors).
-  if (validPaths.length !== job.filesTotal) {
-    const db = requireDb();
-    await withBusyRetry(() =>
-      db.prepare('UPDATE ingest_jobs SET files_total = ?, updated_at = ? WHERE id = ?')
-        .run(validPaths.length, nowIso(), jobId)
-    );
-  }
-
-  // Resume from filesProcessed (crash recovery preserves progress).
+  // Resume from filesProcessed against the original submitted path order.
   let currentIndex = job.filesProcessed;
 
-  while (currentIndex < validPaths.length) {
+  while (currentIndex < job.paths.length) {
     const current = getIngestJob(jobId);
     if (!current) return;
     if (current.state === 'cancelled') return;
 
-    const nextPath = validPaths[currentIndex];
+    const nextPath = current.paths[currentIndex];
     if (!nextPath) {
       break;
     }
 
     // Sprint 9 fix: Continue on file error instead of aborting entire job.
     try {
+      await access(nextPath);
       await processFileFn(nextPath);
     } catch (error: unknown) {
-      await appendIngestError(jobId, nextPath, error);
-      console.warn(`[job-queue] File error (continuing): ${nextPath} — ${toErrorMessage(error)}`);
+      const normalizedError = (error as { code?: string })?.code === 'ENOENT'
+        ? new Error('File not accessible')
+        : error;
+      await appendIngestError(jobId, nextPath, normalizedError);
+      console.warn(`[job-queue] File error (continuing): ${nextPath} — ${toErrorMessage(normalizedError)}`);
     }
 
     job = await incrementProcessed(jobId);

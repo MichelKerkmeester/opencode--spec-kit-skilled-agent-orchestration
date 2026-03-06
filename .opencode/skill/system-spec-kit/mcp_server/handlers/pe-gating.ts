@@ -209,7 +209,7 @@ function markMemorySuperseded(memoryId: number): boolean {
       return false;
     }
 
-    console.info(`[PE-Gate] Memory ${memoryId} marked as superseded`);
+    console.error(`[PE-Gate] Memory ${memoryId} marked as superseded`);
     return true;
   } catch (err: unknown) {
     const message = toErrorMessage(err);

@@ -15,9 +15,9 @@ contextType: "architecture"
 
 ## Overview
 
-This phase now reflects end-to-end closure through Phase 6: all 76 task entries are completed (T000-T073 plus split tasks T013a/T013b/T013c). Initial delivery covered T000-T020 (core architecture refinement), then follow-up remediation/parity waves closed T021-T073 with enforcement hardening, feature-catalog parity, memory-quality gates, and re-audit verification.
+This phase now reflects end-to-end closure through Phase 8: all 102 task entries are completed (T000-T099 plus split tasks T013a/T013b/T013c). Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, and strict-pass documentation remediation closed T091-T099.
 
-As of 2026-03-05, former spec `030-architecture-boundary-remediation` is merged into this phase folder. Its pending implementation work is now tracked as Phase 7 (`T074-T090`) in this spec.
+As of 2026-03-05, former spec `030-architecture-boundary-remediation` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill.
 
 ## Approach
 
@@ -31,9 +31,9 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 ### New Files (18)
 | File | Purpose |
 |------|---------|
-| `ARCHITECTURE_BOUNDARIES.md` | Canonical boundary contract |
-| `mcp_server/api/README.md` | Public API consumer policy |
-| `scripts/evals/README.md` | Eval scripts import policy |
+| `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` | Canonical boundary contract |
+| `.opencode/skill/system-spec-kit/mcp_server/api/README.md` | Public API consumer policy |
+| `.opencode/skill/system-spec-kit/scripts/evals/README.md` | Eval scripts import policy |
 | `shared/utils/token-estimate.ts` | Shared token estimation |
 | `shared/parsing/quality-extractors.ts` | Shared quality extraction |
 | `mcp_server/handlers/handler-utils.ts` | Extracted handler utilities (cycle break) |
@@ -62,12 +62,12 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `mcp_server/handlers/causal-links-processor.ts` | Removed detectSpecLevelFromParsed, imports from handler-utils |
 | `mcp_server/handlers/pe-gating.ts` | Import from handler-utils instead of causal-links-processor |
 | `mcp_server/handlers/chunking-orchestrator.ts` | Import from handler-utils instead of causal-links-processor |
-| `mcp_server/scripts/README.md` | Explicit compatibility wrapper scope |
-| `scripts/memory/README.md` | Canonical runbook section |
-| `mcp_server/database/README.md` | Pointer to canonical runbook |
-| `scripts/lib/README.md` | retry-manager marked as moved |
+| `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md` | Explicit compatibility wrapper scope |
+| `.opencode/skill/system-spec-kit/scripts/memory/README.md` | Canonical runbook section |
+| `.opencode/skill/system-spec-kit/mcp_server/database/README.md` | Pointer to canonical runbook |
+| `.opencode/skill/system-spec-kit/scripts/lib/README.md` | retry-manager marked as moved |
 | `scripts/scripts-registry.json` | retry-manager entry removed |
-| `shared/README.md` | Boundary policy + embeddings shim docs added |
+| `.opencode/skill/system-spec-kit/shared/README.md` | Boundary policy + embeddings shim docs added |
 | `scripts/evals/check-no-mcp-lib-imports.ts` | Phase 4 hardening: dynamic import coverage, variable-depth relative paths, transitive re-export checks, and block-comment handling |
 | `decision-record.md` | ADR-003 updated to include both token-estimation and quality-extractor consolidation evidence (T036) |
 | `mcp_server/handlers/memory-triggers.ts` | Cognitive-path limit handling fixed to enforce caller `limit` contract (T050) |
@@ -99,6 +99,10 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 - Targeted Phase 6 vitest run passes: 10 files, 199 tests, 0 failures.
 - Handler cycle broken: causal-links-processor.ts no longer imports from memory-save.ts.
 - Import-policy violations resolved or explicitly governed via allowlist entries.
+- Final Phase 7 verification passed on 2026-03-06: `npm run check --workspace=scripts`, `npm run check:ast --workspace=scripts`, `npx tsc --noEmit`, and targeted import-policy rules vitest (`tests/import-policy-rules.vitest.ts`).
+- Alignment verifier passed on 2026-03-06: `verify_alignment_drift.py` reports PASS with 0 warnings.
+- Phase 8 README validation evidence passed on 2026-03-06: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passed for the edited README files, including 0-issue runs for `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
+- Final spec-folder validation passed on 2026-03-06: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` exited 0.
 
 ## Triple Ultra-Think Cross-AI Review (2026-03-04)
 
@@ -117,9 +121,9 @@ A post-implementation review was performed by three independent AI agents analyz
 **Behavior Parity (Gemini, 98/100):** All 12 migrated files preserve exact behavioral parity. Re-exports act as perfect shims. Extracted regex matches exactly mimic inline originals. No runtime regression concern.
 
 **Documentation Drift (Claude, 88/100):** 4 MAJOR issues found:
-- `shared/README.md` structure tree omits Phase 8 modules
+- `.opencode/skill/system-spec-kit/shared/README.md` structure tree omits Phase 8 modules
 - Checklist summary reported stale P1 count (12/14 vs actual 14/14)
-- `ARCHITECTURE_BOUNDARIES.md` exception table missing 1 of 6 entries
+- `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` exception table missing 1 of 6 entries
 - `check-api-boundary.sh` documented but not in pipeline
 
 **Enforcement Evasion (Codex, 93/100):** 4 CRITICAL vectors found:
@@ -170,7 +174,7 @@ Phase 6 (`T050-T073`) is now closed with code-contract verification, documentati
 
 - `T057`: `memory_search.limit` contract aligned at 1-100 across schema, runtime clamp, and tool docs.
 - `T058`: targeted regression suites for `T050-T057` confirmed in test set.
-- `T059-T068`: canonical `feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
+- `T059-T068`: canonical `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature-catalog/feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
 - `T069`: 5-agent parity re-audit artifacts captured in `scratch/` with no unresolved HIGH findings and no unresolved MEDIUM findings.
 - `T070`: phase docs (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) updated with closure evidence.
 - `T071-T073`: generation-time memory quality gates added (content-aware slugging, empty-content prevention, duplicate-content prevention).
@@ -186,9 +190,47 @@ Phase 6 (`T050-T073`) is now closed with code-contract verification, documentati
   - `scratch/t069-audit-agent-5-aristotle.md`
   - `scratch/t069-audit-summary.md`
 
+## Phase 7 Closure (2026-03-06)
+
+Phase 7 boundary-remediation carry-over work (`T074-T090`) is complete.
+
+### What Was Closed
+
+- **Phase 7A (ownership/import migration):** `DB_UPDATED_FILE` is owned by `shared/config.ts`; `mcp_server/core/config.ts` re-exports it for compatibility; `scripts/core/memory-indexer.ts` now uses API/shared imports (`@spec-kit/mcp-server/api/search`, `@spec-kit/shared/config`); memory-indexer-specific allowlist exceptions were removed.
+- **Phase 7B (reindex audit + API decisioning):** new API surface `mcp_server/api/indexing.ts` added to expose minimal safe runtime bootstrap/index-scan hooks; `scripts/memory/reindex-embeddings.ts` now imports only `@spec-kit/mcp-server/api/indexing`; enforcement coverage includes internal runtime imports under `lib`, `core`, and `handlers`.
+- **Phase 7C (automation + docs sync):** PR workflow `.github/workflows/system-spec-kit-boundary-enforcement.yml` enforces scripts boundary checks (`check` + `check:ast`); `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` current exceptions table is synchronized with allowlist state; retained wildcard allowlist exceptions remain eval-only and include governance metadata with `lastReviewedAt: 2026-03-05`.
+
+### Verification Evidence
+
+- `npm run check --workspace=scripts` (pass)
+- `npm run check:ast --workspace=scripts` (pass)
+- `npx tsc --noEmit` (pass)
+- `node mcp_server/node_modules/vitest/vitest.mjs run tests/import-policy-rules.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (pass)
+- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` (PASS; 0 warnings)
+
+## Phase 8 Closure (2026-03-06)
+
+Phase 8 strict-pass remediation (`T091-T099`) is complete.
+
+### What Was Closed
+
+- `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` now makes test-placement expectations explicit and states the canonical `dist/` policy: generated build output is not source-of-truth content expected in a fresh checkout.
+- Boundary-adjacent docs were reconciled to that policy and current runtime/operator guidance: `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
+- The Phase 8 `dist/` strategy branch is now closed by explicit policy decision rather than ambiguity: build artifacts are generated as needed and documented as such.
+- Final spec evidence was backfilled in `tasks.md`, `checklist.md`, and this summary so the closure state matches the completed non-spec work.
+
+### Verification Evidence
+
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passed for the edited README files.
+- 0-issue validation runs were recorded for `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
+- `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` passed after the doc changes.
+- Final re-verification verdict: substantive non-spec Phase 8 drift resolved; remaining work was spec evidence only, and that evidence is now recorded.
+
+No remaining accepted exceptions.
+
 ## Spec Consolidation (2026-03-05)
 
 - Former folder `013-architecture-boundary-remediation/` was merged into this spec to keep one canonical architecture-boundary track.
 - Archived source materials are preserved at `scratch/merged-030-architecture-boundary-remediation/`.
 - Decision history from former 013 ADR-001 is now canonicalized as ADR-006 in `decision-record.md`.
-- Pending carry-over implementation is tracked in `tasks.md` (Phase 7, `T074-T090`) and `checklist.md` (Phase 7 checks `CHK-500` through `CHK-522`).
+- Carry-over implementation closure is tracked in `tasks.md` (Phase 7, `T074-T090`) and `checklist.md` (Phase 7 checks `CHK-500` through `CHK-522`, with P2 items intentionally optional/pending).

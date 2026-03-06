@@ -557,4 +557,26 @@ Folder discovery generates cached 1-sentence descriptions for each spec folder t
 
 ---
 
-**Document covers 23 features across 3 sprints. All features are gated behind `SPECKIT_*` environment variables and default to disabled.**
+## Phase 014: UX hooks automation
+
+Phase 014 standardized mutation follow-up behavior and safety checks across memory mutation handlers, then aligned schemas and types so those behaviors are enforced consistently at tool boundaries. The focus was deterministic post-mutation automation, safer destructive operations and clearer repair reporting.
+
+### Shared post-mutation hook wiring
+
+Post-mutation hook execution was unified across save, update, delete and bulk-delete handlers, including atomic save paths. The handlers now invoke one shared post-mutation routine, reducing behavior drift and keeping cache invalidation and related follow-up logic consistent.
+
+### memory_health autoRepair metadata
+
+`memory_health` now supports an optional `autoRepair` path and returns structured metadata describing repair actions. This makes repair runs explicit and observable to callers instead of being opaque side effects.
+
+### Checkpoint delete confirmName safety
+
+Checkpoint deletion now requires a matching `confirmName` parameter before destructive action proceeds. Handler responses include confirmation and deletion metadata so callers can verify safety checks and outcomes.
+
+### Schema/type contract synchronization
+
+The new mutation-safety parameters and outputs were synchronized across runtime schema validation and TypeScript tool contracts. This keeps handler behavior, `tool-input-schemas`, `tool-schemas`, and tool types aligned.
+
+---
+
+**Document includes core tool/pipeline features plus Phase 014 UX hooks automation additions. Feature-flag defaults vary by feature and release phase.**

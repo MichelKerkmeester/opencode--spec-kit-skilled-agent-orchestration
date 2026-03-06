@@ -1,0 +1,23 @@
+{
+  "attempt": 1,
+  "success": false,
+  "error": "",
+  "validation_issues": [
+    "v1: Line count out of range: 525 (expected 600-900)",
+    "v1: Found raw rgb/rgba color outside :root block",
+    "v2: Line count out of range: 459 (expected 600-900)",
+    "v2: Found raw rgb/rgba color outside :root block",
+    "v3: Line count out of range: 307 (expected 600-900)",
+    "v3: Found raw rgb/rgba color outside :root block",
+    "v4: Line count out of range: 318 (expected 600-900)",
+    "v4: Found raw rgb/rgba color outside :root block",
+    "v5: Missing semantic <section> element",
+    "v5: Line count out of range: 351 (expected 600-900)",
+    "v5: Found raw rgb/rgba color outside :root block"
+  ],
+  "variants_saved": 0,
+  "stdout_chars": 62385,
+  "stderr_chars": 5545,
+  "elapsed_seconds": 226.13667511940002,
+  "output_files": []
+}

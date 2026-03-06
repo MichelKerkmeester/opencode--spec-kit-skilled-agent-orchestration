@@ -473,7 +473,17 @@ function getModelName(): string {
   if (providerInstance) {
     return providerInstance.getProfile().model;
   }
-  return 'not-loaded';
+
+  const providerInfo = getProviderInfo();
+  switch (providerInfo.provider) {
+    case 'voyage':
+      return providerInfo.config.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4';
+    case 'openai':
+      return providerInfo.config.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small';
+    case 'hf-local':
+    default:
+      return providerInfo.config.HF_EMBEDDINGS_MODEL || DEFAULT_MODEL_NAME;
+  }
 }
 
 function isModelLoaded(): boolean {

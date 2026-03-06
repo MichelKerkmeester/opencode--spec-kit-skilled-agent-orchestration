@@ -22,8 +22,8 @@ import { scoreMemoryQuality } from './quality-scorer';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
-import { generateContentSlug } from '../utils/slug-utils';
-import { shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
+import { generateContentSlug, pickBestContentName } from '../utils/slug-utils';
+import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
 import type { FileChange, SemanticFileInfo } from '../extractors/file-extractor';
@@ -299,17 +299,9 @@ function truncateMemoryTitle(title: string, maxLength: number = 110): string {
 }
 
 function buildMemoryTitle(implementationTask: string, specFolderName: string, date: string): string {
-  const genericTitles = new Set(['development session', 'session summary', 'session context']);
-
-  const candidateInputs = [implementationTask];
-  for (const input of candidateInputs) {
-    const normalized = normalizeMemoryTitleCandidate(input || '');
-    if (normalized.length < 8) {
-      continue;
-    }
-    if (!genericTitles.has(normalized.toLowerCase())) {
-      return truncateMemoryTitle(normalized);
-    }
+  const preferredTitle = pickBestContentName([implementationTask]);
+  if (preferredTitle.length > 0) {
+    return truncateMemoryTitle(normalizeMemoryTitleCandidate(preferredTitle));
   }
 
   const folderLeaf = specFolderName.split('/').filter(Boolean).pop() || specFolderName;
@@ -352,10 +344,7 @@ function extractSpecTitle(specFolderPath: string): string {
     if (!fmMatch) return '';
     const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
     if (!titleMatch || !titleMatch[1]) return '';
-    let title = titleMatch[1].trim().replace(/["']$/, '');
-    title = title.replace(/^Feature Specification:\s*/i, '');
-    title = title.replace(/\s*\[template:[^\]]*\]\s*$/, '');
-    return title.trim();
+    return normalizeSpecTitleForMemory(titleMatch[1]);
   } catch {
     return '';
   }
@@ -394,90 +383,101 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     silent = false
   } = options;
 
+  const priorDataFile = CONFIG.DATA_FILE;
+  const priorSpecFolderArg = CONFIG.SPEC_FOLDER_ARG;
+  const hasDirectInvocationContext = (
+    dataFile !== undefined ||
+    specFolderArg !== undefined ||
+    preloadedData !== undefined ||
+    loadDataFn !== undefined
+  );
+  const activeDataFile = dataFile ?? (hasDirectInvocationContext ? null : CONFIG.DATA_FILE);
+  const activeSpecFolderArg = specFolderArg ?? (hasDirectInvocationContext ? null : CONFIG.SPEC_FOLDER_ARG);
+
 
   const log = silent ? (): void => {} : console.log.bind(console);
   const warn = silent ? (): void => {} : console.warn.bind(console);
 
   log('Starting memory skill workflow...\n');
+  CONFIG.DATA_FILE = activeDataFile;
+  CONFIG.SPEC_FOLDER_ARG = activeSpecFolderArg;
 
-  // Step 1: Load collected data
-  log('Step 1: Loading collected data...');
+  try {
+    // Step 1: Load collected data
+    log('Step 1: Loading collected data...');
 
-  let collectedData: CollectedDataFull | null;
-  if (preloadedData) {
-    collectedData = preloadedData;
-    log('   Using pre-loaded data');
-  } else if (loadDataFn) {
-    collectedData = await loadDataFn();
-    log('   Loaded via custom function');
-  } else {
-    if (dataFile) CONFIG.DATA_FILE = dataFile;
-    if (specFolderArg) CONFIG.SPEC_FOLDER_ARG = specFolderArg;
-
-    collectedData = await loadCollectedDataFromLoader();
-    log(`   Loaded from ${collectedData?._isSimulation ? 'simulation' : 'data source'}`);
-  }
-
-  if (!collectedData) {
-    throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
-  }
-  log();
-
-  // Step 2: Detect spec folder with context alignment
-  log('Step 2: Detecting spec folder...');
-  const specFolder: string = await detectSpecFolder(collectedData);
-  const specsDir: string = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
-  const normalizedSpecFolder = path.resolve(specFolder).replace(/\\/g, '/');
-  const candidateSpecsDirs = Array.from(new Set([
-    specsDir,
-    ...getSpecsDirectories(),
-    path.join(CONFIG.PROJECT_ROOT, 'specs'),
-    path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
-  ]));
-
-  let specFolderName = '';
-  for (const candidateRoot of candidateSpecsDirs) {
-    const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
-    const relative = path.relative(normalizedRoot, normalizedSpecFolder).replace(/\\/g, '/');
-    if (
-      relative &&
-      relative !== '.' &&
-      relative !== '..' &&
-      !relative.startsWith('../') &&
-      !path.isAbsolute(relative)
-    ) {
-      specFolderName = relative;
-      break;
+    let collectedData: CollectedDataFull | null;
+    if (preloadedData) {
+      collectedData = preloadedData;
+      log('   Using pre-loaded data');
+    } else if (loadDataFn) {
+      collectedData = await loadDataFn();
+      log('   Loaded via custom function');
+    } else {
+      collectedData = await loadCollectedDataFromLoader();
+      log(`   Loaded from ${collectedData?._isSimulation ? 'simulation' : 'data source'}`);
     }
-  }
 
-  if (!specFolderName) {
-    const marker = '/specs/';
-    const markerIndex = normalizedSpecFolder.lastIndexOf(marker);
-    specFolderName = markerIndex >= 0
-      ? normalizedSpecFolder.slice(markerIndex + marker.length)
-      : path.basename(normalizedSpecFolder);
-  }
-  log(`   Using: ${specFolder}\n`);
+    if (!collectedData) {
+      throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
+    }
+    log();
 
-  // Step 3: Setup context directory
-  log('Step 3: Setting up context directory...');
-  const contextDir: string = await setupContextDirectory(specFolder);
-  log(`   Created: ${contextDir}\n`);
+    // Step 2: Detect spec folder with context alignment
+    log('Step 2: Detecting spec folder...');
+    const specFolder: string = await detectSpecFolder(collectedData);
+    const specsDir: string = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
+    const normalizedSpecFolder = path.resolve(specFolder).replace(/\\/g, '/');
+    const candidateSpecsDirs = Array.from(new Set([
+      specsDir,
+      ...getSpecsDirectories(),
+      path.join(CONFIG.PROJECT_ROOT, 'specs'),
+      path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
+    ]));
 
-  // Steps 4-7: Parallel data extraction
-  log('Steps 4-7: Extracting data (parallel execution)...\n');
+    let specFolderName = '';
+    for (const candidateRoot of candidateSpecsDirs) {
+      const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
+      const relative = path.relative(normalizedRoot, normalizedSpecFolder).replace(/\\/g, '/');
+      if (
+        relative &&
+        relative !== '.' &&
+        relative !== '..' &&
+        !relative.startsWith('../') &&
+        !path.isAbsolute(relative)
+      ) {
+        specFolderName = relative;
+        break;
+      }
+    }
 
-  const sessionDataFn = collectSessionDataFn || collectSessionData;
-  if (!sessionDataFn) {
-    throw new Error(
-      'Missing session data collector function.\n' +
-      '  - If calling runWorkflow() directly, pass { collectSessionDataFn: yourFunction } in options\n' +
-      '  - If using generate-context.js, ensure extractors/collect-session-data.js exports collectSessionData'
-    );
-  }
+    if (!specFolderName) {
+      const marker = '/specs/';
+      const markerIndex = normalizedSpecFolder.lastIndexOf(marker);
+      specFolderName = markerIndex >= 0
+        ? normalizedSpecFolder.slice(markerIndex + marker.length)
+        : path.basename(normalizedSpecFolder);
+    }
+    log(`   Using: ${specFolder}\n`);
 
-  const [sessionData, conversations, decisions, diagrams, workflowData] = await Promise.all([
+    // Step 3: Setup context directory
+    log('Step 3: Setting up context directory...');
+    const contextDir: string = await setupContextDirectory(specFolder);
+    log(`   Created: ${contextDir}\n`);
+
+    // Steps 4-7: Parallel data extraction
+    log('Steps 4-7: Extracting data (parallel execution)...\n');
+
+    const sessionDataFn = collectSessionDataFn || collectSessionData;
+    if (!sessionDataFn) {
+      throw new Error(
+        'Missing session data collector function.\n' +
+        '  - If calling runWorkflow() directly, pass { collectSessionDataFn: yourFunction } in options\n' +
+        '  - If using generate-context.js, ensure extractors/collect-session-data.js exports collectSessionData'
+      );
+    }
+
+    const [sessionData, conversations, decisions, diagrams, workflowData] = await Promise.all([
     (async () => {
       log('   Collecting session data...');
       const result = await sessionDataFn(collectedData, specFolderName);
@@ -526,7 +526,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       };
     })()
   ]);
-  log('\n   All extraction complete (parallel execution)\n');
+    log('\n   All extraction complete (parallel execution)\n');
 
   // Step 7.5: Generate semantic implementation summary
   log('Step 7.5: Generating semantic summary...');
@@ -599,23 +599,24 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const specFolderBasename: string = path.basename(sessionData.SPEC_FOLDER || specFolderName);
   const folderBase: string = specFolderBasename.replace(/^\d+-/, '');
 
-  let enrichedTask = implSummary.task;
-  const dataSource = typeof collectedData?._source === 'string' ? collectedData._source : null;
-  if (shouldEnrichTaskFromSpecTitle(enrichedTask, dataSource, CONFIG.DATA_FILE)) {
+    let enrichedTask = implSummary.task;
+    const dataSource = typeof collectedData?._source === 'string' ? collectedData._source : null;
     const specTitle = extractSpecTitle(specFolder);
-    if (specTitle.length >= 8) {
-      enrichedTask = specTitle;
-      log(`   Enriched task from spec.md: "${enrichedTask}"`);
+    if (shouldEnrichTaskFromSpecTitle(enrichedTask, dataSource, activeDataFile)) {
+      if (specTitle.length >= 8) {
+        enrichedTask = specTitle;
+        log(`   Enriched task from spec.md: "${enrichedTask}"`);
+      }
     }
-  }
 
-  const contentSlug: string = generateContentSlug(enrichedTask || '', folderBase);
+  const preferredMemoryTask = pickPreferredMemoryTask(enrichedTask || '', specTitle, folderBase);
+  const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase);
   const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
   const keyFiles = effectiveFiles.map((f) => ({ FILE_PATH: f.FILE_PATH }));
-  const memoryTitle = buildMemoryTitle(enrichedTask, specFolderName, sessionData.DATE);
+  const memoryTitle = buildMemoryTitle(preferredMemoryTask, specFolderName, sessionData.DATE);
   const memoryDashboardTitle = buildMemoryDashboardTitle(memoryTitle, specFolderName, ctxFilename);
 
   // Pre-extract trigger phrases for template embedding AND later indexing
@@ -864,21 +865,25 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   log();
 
-  return {
-    contextDir,
-    specFolder,
-    specFolderName,
-    contextFilename: ctxFilename,
-    writtenFiles,
-    memoryId,
-    stats: {
-      messageCount: conversations.MESSAGES.length,
-      decisionCount: decisions.DECISIONS.length,
-      diagramCount: diagrams.DIAGRAMS.length,
-      qualityScore: qualityResult.score,
-      isSimulation
-    }
-  };
+    return {
+      contextDir,
+      specFolder,
+      specFolderName,
+      contextFilename: ctxFilename,
+      writtenFiles,
+      memoryId,
+      stats: {
+        messageCount: conversations.MESSAGES.length,
+        decisionCount: decisions.DECISIONS.length,
+        diagramCount: diagrams.DIAGRAMS.length,
+        qualityScore: qualityResult.score,
+        isSimulation
+      }
+    };
+  } finally {
+    CONFIG.DATA_FILE = priorDataFile;
+    CONFIG.SPEC_FOLDER_ARG = priorSpecFolderArg;
+  }
 }
 
 /* -----------------------------------------------------------------

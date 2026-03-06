@@ -1,12 +1,14 @@
 // ---------------------------------------------------------------
 // MODULE: Import Policy Checker (AST)
-// AST-based enforcement for prohibited @spec-kit/mcp-server/{lib,core} imports.
+// AST-based enforcement for prohibited internal runtime imports.
 // Includes deep transitive re-export traversal for local barrel files.
 // ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';
 import ts from 'typescript';
+
+import { isProhibitedImportPath } from './import-policy-rules';
 
 interface AllowlistException {
   file: string;
@@ -75,13 +77,6 @@ function resolveAllowlistPath(): string | null {
   return null;
 }
 
-const DIRECT_PROHIBITED_PREFIXES = [
-  '@spec-kit/mcp-server/lib/',
-  '@spec-kit/mcp-server/core/',
-];
-
-const RELATIVE_PROHIBITED_RE = /^\.\.(?:\/\.\.)*\/mcp_server\/(?:lib|core)\//;
-
 function loadAllowlist(): Allowlist {
   const allowlistPath = resolveAllowlistPath();
   if (!allowlistPath) {
@@ -120,10 +115,6 @@ function isAllowlisted(filePath: string, importPath: string, allowlist: Allowlis
 
 function isLocalRelativeImport(importPath: string): boolean {
   return importPath.startsWith('./') || importPath.startsWith('../');
-}
-
-function isProhibitedImportPath(importPath: string): boolean {
-  return DIRECT_PROHIBITED_PREFIXES.some((prefix) => importPath.startsWith(prefix)) || RELATIVE_PROHIBITED_RE.test(importPath);
 }
 
 function resolveLocalImportTarget(importingFile: string, importPath: string): string | null {
@@ -358,7 +349,7 @@ function main(): void {
   const violations = dedupeViolations(allViolations);
 
   if (violations.length === 0) {
-    console.log('AST import policy check passed: no prohibited @spec-kit/mcp-server/{lib,core}/* imports found.');
+    console.log('AST import policy check passed: no prohibited @spec-kit/mcp-server/{lib,core,handlers} internal imports found.');
     process.exit(0);
   }
 

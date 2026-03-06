@@ -218,7 +218,7 @@ const checkpointRestoreSchema = getSchema({
 
 const checkpointDeleteSchema = getSchema({
   name: z.string().min(1),
-  confirmName: z.string().min(1).optional(),
+  confirmName: z.string().min(1),
 });
 
 const taskPreflightSchema = getSchema({

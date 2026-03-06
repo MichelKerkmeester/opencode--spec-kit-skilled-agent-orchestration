@@ -28,6 +28,8 @@ contextType: "implementation"
 **Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
+> Remediation note (2026-03-06): post-review fixes landed for schema/public contract alignment, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup. The targeted regression suite for those fixes passed (`89` tests), and broader automated workspace validation now also passes via `npm run check` (fast gate) and `npm run check:full` (`242` Vitest files / `7182` tests), but the original live runtime/eval/manual tasks below remain pending unless explicitly checked off.
+
 ---
 
 <!-- ANCHOR:phase-1 -->
@@ -78,7 +80,7 @@ contextType: "implementation"
 **Integration:**
 - [x] T008 Create `getSchema()` helper gating `.strict()` vs `.passthrough()` based on `SPECKIT_STRICT_SCHEMAS` env var [DONE: `getSchema()` at line 13 of `schemas/tool-input-schemas.ts`]
 - [x] T009 Wrap all 29 handler entry points in `schema.parse(rawInput)` with try/catch returning formatted Zod errors (`handlers/*.ts`) [DONE: `validateToolArgs()` imported and used in all tool dispatch files (memory-tools.ts, context-tools.ts, causal-tools.ts, checkpoint-tools.ts, lifecycle-tools.ts)]
-- [x] T010 Add `SPECKIT_STRICT_SCHEMAS` env var documentation (default: `true`) [DONE: documented in `references/config/environment_variables.md`]
+- [x] T010 Add `SPECKIT_STRICT_SCHEMAS` env var documentation (default: `true`) [DONE: documented in the environment_variables reference]
 - [x] T011 Create Zod error formatter that produces LLM-actionable messages: "Unknown parameter 'foo'. Expected one of: query, specFolder, limit, ..." [DONE: `formatZodError()` at line 383 with ALLOWED_PARAMETERS lookup and actionable correction messages]
 
 **Testing:**
@@ -218,7 +220,7 @@ contextType: "implementation"
 - [x] T082 Add `node-llama-cpp` dependency: `npm install node-llama-cpp` (includes native binary compilation) [DONE: node-llama-cpp in dependencies]
 - [x] T083 Verify native compilation succeeds on macOS ARM64 (Apple Silicon) [DONE: compilation verified]
 - [x] T084 Download target model: `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB) to `models/` directory [DONE: model path configured]
-- [x] T085 Add `SPECKIT_RERANKER_MODEL` env var for custom model path override [DONE: documented in `references/config/environment_variables.md`]
+- [x] T085 Add `SPECKIT_RERANKER_MODEL` env var for custom model path override [DONE: documented in the environment_variables reference]
 
 **Implementation:**
 - [x] T086 Create `lib/search/local-reranker.ts` with `canUseLocalReranker()` check: verify `RERANKER_LOCAL=true` AND free memory ≥4GB AND model file exists [DONE: `canUseLocalReranker()` at line 177 of `local-reranker.ts`]
@@ -289,12 +291,12 @@ contextType: "implementation"
 - [ ] T123 Verify existing tool calls (no new params) return byte-identical results before vs. after all changes
 
 **Feature flag documentation:**
-- [x] T124 Document all 6 new/modified feature flags with: name, default, description, risk level [DONE: SPECKIT_STRICT_SCHEMAS, RERANKER_LOCAL, SPECKIT_RERANKER_MODEL documented in environment_variables.md; SPECKIT_DYNAMIC_INIT, SPECKIT_FILE_WATCHER, SPECKIT_CONTEXT_HEADERS documented in code]
+- [x] T124 Document all 6 new/modified feature flags with: name, default, description, risk level [DONE: SPECKIT_STRICT_SCHEMAS, RERANKER_LOCAL, SPECKIT_RERANKER_MODEL documented in the environment_variables reference; SPECKIT_DYNAMIC_INIT, SPECKIT_FILE_WATCHER, SPECKIT_CONTEXT_HEADERS documented in code]
 - [ ] T125 Create flag interaction matrix: verify no conflicting combinations (e.g., file watcher + manual index scan)
 
 **Catalog updates:**
-- [x] T126 Update `feature_catalog.md` with new features: Zod schemas, response envelopes, async ingestion, contextual trees, GGUF reranker, dynamic init, file watcher [DONE: all 7 features updated from IMPLEMENTATION CANDIDATE to IMPLEMENTED in feature_catalog.md; intro paragraph and feature flag table updated]
-- [x] T127 Update `summary_of_new_features.md` with Sprint 9 additions [DONE: all 7 features updated from PLANNED to IMPLEMENTED with expanded implementation details; 5 deferred features marked as DEFERRED; ToC and frontmatter updated]
+- [x] T126 Update `feature_catalog` with new features: Zod schemas, response envelopes, async ingestion, contextual trees, GGUF reranker, dynamic init, file watcher [DONE: all 7 features updated from IMPLEMENTATION CANDIDATE to IMPLEMENTED in `../feature-catalog/feature_catalog.md`; intro paragraph and feature flag table updated]
+- [x] T127 Update the feature-catalog summary doc with Sprint 9 additions [DONE: all 7 features updated from PLANNED to IMPLEMENTED with expanded implementation details in the feature-catalog summary doc; 5 deferred features marked as DEFERRED; ToC and frontmatter updated]
 - [x] T128 Write `implementation-summary.md` after all phases complete [DONE: expanded from stub to full implementation summary with metadata, feature descriptions, file change table, feature flags, deferred items, and verification results]
 
 **Memory save:**
@@ -310,8 +312,8 @@ contextType: "implementation"
 - [ ] P1 implementation tasks complete; runtime verification tasks (T063-T065, T077-T081, T093-T098) remain open
 - [x] No `[B]` blocked tasks remaining (except Phase 4 intentional deferrals) [DONE: Phase 4 T099-T118 explicitly deferred on external dependencies]
 - [ ] `eval_run_ablation` shows zero regressions across all 3 phases (T119-T122)
-- [x] All 6 feature flags documented (T124) [DONE: all flags documented across environment_variables.md and code-level gating]
-- [x] `feature_catalog.md` updated (T126) [DONE: 7 features updated to IMPLEMENTED, 5 marked DEFERRED]
+- [x] All 6 feature flags documented (T124) [DONE: all flags documented across the environment_variables reference and code-level gating]
+- [x] `feature_catalog` updated (T126) [DONE: 7 features updated to IMPLEMENTED in `../feature-catalog/feature_catalog.md`, 5 marked DEFERRED]
 - [ ] Manual verification of each new tool passed
 - [x] `implementation-summary.md` written (T128) [DONE: expanded with full implementation details, file changes, feature flags, verification results]
 <!-- /ANCHOR:completion -->

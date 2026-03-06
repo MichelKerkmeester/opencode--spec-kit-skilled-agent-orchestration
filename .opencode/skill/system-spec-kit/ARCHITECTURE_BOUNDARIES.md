@@ -1,6 +1,6 @@
 # Architecture Boundaries: system-spec-kit
 
-Canonical ownership contract between `scripts/` and `mcp_server/`. Defines allowed dependency directions, exception governance and enforcement tooling.
+Canonical ownership contract between `scripts/` and `mcp_server/`. Defines allowed dependency directions, generated-build boundaries, exception governance and enforcement tooling.
 
 - [1. OVERVIEW](#1--overview)
 - [2. OWNERSHIP MATRIX](#2--ownership-matrix)
@@ -17,7 +17,7 @@ Canonical ownership contract between `scripts/` and `mcp_server/`. Defines allow
 
 The `system-spec-kit` codebase splits into three ownership zones: **build-time scripts**, **runtime MCP server** and **shared modules**. Each zone has a clear purpose and strict import rules that prevent coupling between build-time and runtime code.
 
-The `mcp_server/api/` surface acts as the stable boundary. Scripts that need runtime functionality must import through `api/` or `shared/`, never directly from `mcp_server/lib/`.
+The `mcp_server/api/` surface acts as the stable boundary. Scripts that need runtime functionality must import through `api/` or `shared/`, never directly from `mcp_server/lib/`, `mcp_server/core/`, or `mcp_server/handlers/`.
 
 See ADR-001 in the spec folder for the full decision rationale.
 
@@ -32,6 +32,7 @@ See ADR-001 in the spec folder for the full decision rationale.
 | `shared/` | Neutral | Reusable modules consumed by both `scripts/` and `mcp_server/` |
 | `mcp_server/api/` | Public boundary | Stable surface for external consumers (scripts, evals, automation) |
 | `mcp_server/scripts/` | Compatibility | Wrappers delegating to canonical `scripts/` implementations |
+| `*/dist/` | Generated build output | Runtime JavaScript emitted by `tsc --build`; never the authored source of truth |
 
 ---
 
@@ -51,7 +52,17 @@ See ADR-001 in the spec folder for the full decision rationale.
 | From | To | Why |
 |------|----|-----|
 | `scripts/` | `mcp_server/lib/*` | Use `api/` or `shared/` instead |
+| `scripts/` | `mcp_server/core{,/*}` | Runtime bootstrap stays behind `api/` |
+| `scripts/` | `mcp_server/handlers{,/*}` | Runtime handlers stay behind `api/` |
 | `mcp_server/lib/` | `mcp_server/api/` | `api/` wraps `lib/`, not the reverse |
+
+### Build Artifact Rule
+
+`dist/` directories under `shared/`, `scripts/`, and `mcp_server/` are generated build outputs. They can be executed at runtime, but they are not source-of-truth code or documentation. Edit the authored `.ts` and `.md` files in package roots, then rebuild.
+
+### Test Placement Rule
+
+Keep authored tests with the package they verify. For example, runtime behavior belongs under `mcp_server/tests/`. Do not add hand-written tests under any `dist/` directory. Validate generated output by building from source and running source-owned tests or smoke commands.
 
 ---
 
@@ -66,7 +77,7 @@ All exceptions must be registered in `scripts/evals/import-policy-allowlist.json
 | `removeWhen` | Yes | Condition for removing the exception |
 | `createdAt` | Yes | ISO date when exception was created |
 | `lastReviewedAt` | Yes | ISO date of last review |
-| `expiresAt` | Wildcard only | ISO date for sunset (required for `lib/*` entries) |
+| `expiresAt` | Wildcard only | ISO date for sunset (required for wildcard internal-runtime entries) |
 
 ### Current Exceptions
 
@@ -119,8 +130,8 @@ Remove a compatibility wrapper when both criteria are met:
 
 | Tool | Path | Purpose |
 |------|------|---------|
-| Import-policy checker | `scripts/evals/check-no-mcp-lib-imports.ts` | Detects `@spec-kit/mcp-server/lib/*` imports in `scripts/` |
-| AST import-policy checker | `scripts/evals/check-no-mcp-lib-imports-ast.ts` | AST-level import detection (multiline, comment-safe, re-export graph) |
+| Import-policy checker | `scripts/evals/check-no-mcp-lib-imports.ts` | Detects direct `scripts/` imports of `@spec-kit/mcp-server/{lib,core,handlers}` and relative internal-runtime paths |
+| AST import-policy checker | `scripts/evals/check-no-mcp-lib-imports-ast.ts` | AST-level detection for direct and transitive imports of `@spec-kit/mcp-server/{lib,core,handlers}` and relative internal-runtime paths |
 | AST handler-cycle checker | `scripts/evals/check-handler-cycles-ast.ts` | Detects circular imports across `mcp_server/handlers/` |
 | Allowlist | `scripts/evals/import-policy-allowlist.json` | Registered exceptions with ownership metadata |
 | API boundary check | `scripts/check-api-boundary.sh` | Checks `lib/` to `api/` direction |

@@ -63,6 +63,11 @@ interface DiscoveredSpecFolder {
   canonicalFolderPath: string;
 }
 
+interface DiscoveredSpecState {
+  latestMtime: number;
+  specFolders: Set<string>;
+}
+
 function resolveRealPathSafe(targetPath: string): string | null {
   try {
     return fs.realpathSync.native(targetPath);
@@ -166,6 +171,33 @@ function discoverSpecFolders(basePath: string): DiscoveredSpecFolder[] {
 
   walk(normalizedBasePath, 1);
   return discovered;
+}
+
+function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
+  const specFolders = new Set<string>();
+  let latestMtime = 0;
+
+  for (const basePath of basePaths) {
+    const discoveredFolders = discoverSpecFolders(basePath);
+
+    for (const discoveredFolder of discoveredFolders) {
+      const relativeFolderPath = path.relative(discoveredFolder.basePath, discoveredFolder.folderPath).replace(/\\/g, '/');
+      if (relativeFolderPath && !relativeFolderPath.startsWith('..')) {
+        specFolders.add(relativeFolderPath);
+      }
+
+      try {
+        const mtime = fs.statSync(discoveredFolder.specMdPath).mtimeMs;
+        if (mtime > latestMtime) {
+          latestMtime = mtime;
+        }
+      } catch {
+        // Ignore unreadable spec.md entries during staleness probing.
+      }
+    }
+  }
+
+  return { latestMtime, specFolders };
 }
 
 /* --- 3. DESCRIPTION EXTRACTION --- */
@@ -517,24 +549,16 @@ export function isCacheStale(cache: DescriptionCache | null, basePaths: string[]
   }
 
   const normalizedBasePaths = normalizeBasePaths(basePaths);
-  let latestMtime = 0;
-
-  for (const basePath of normalizedBasePaths) {
-    const discoveredFolders = discoverSpecFolders(basePath);
-
-    for (const discoveredFolder of discoveredFolders) {
-      try {
-        const mtime = fs.statSync(discoveredFolder.specMdPath).mtimeMs;
-        if (mtime > latestMtime) {
-          latestMtime = mtime;
-        }
-      } catch {
-        // Ignore unreadable spec.md entries
+  const discoveredState = collectDiscoveredSpecState(normalizedBasePaths);
+  if (cacheTime <= Date.now()) {
+    for (const folder of cache.folders) {
+      if (!discoveredState.specFolders.has(folder.specFolder)) {
+        return true;
       }
     }
   }
 
-  return latestMtime > cacheTime;
+  return discoveredState.latestMtime > cacheTime;
 }
 
 /**

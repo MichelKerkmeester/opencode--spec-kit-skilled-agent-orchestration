@@ -16,6 +16,7 @@ import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 
 import type { MCPResponse } from './types';
 import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
@@ -205,8 +206,10 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
     }
   }
 
+  let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (deletedCount > 0) {
-    runPostMutationHooks('delete', { specFolder, deletedCount });
+    const postMutationHooks = runPostMutationHooks('delete', { specFolder, deletedCount });
+    postMutationFeedback = buildMutationHookFeedback('delete', postMutationHooks);
   }
 
   const summary = deletedCount > 0
@@ -220,11 +223,17 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   if (deletedCount === 0) {
     hints.push('Use memory_list() to find existing memories');
   }
+  if (postMutationFeedback) {
+    hints.push(...postMutationFeedback.hints);
+  }
 
   const data: Record<string, unknown> = { deleted: deletedCount };
   if (checkpointName) {
     data.checkpoint = checkpointName;
     data.restoreCommand = `checkpoint_restore({ name: "${checkpointName}" })`;
+  }
+  if (postMutationFeedback) {
+    data.postMutationHooks = postMutationFeedback.data;
   }
 
   return createMCPSuccessResponse({

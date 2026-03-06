@@ -185,6 +185,28 @@ describe('file-watcher runtime behavior', () => {
     expect(warnSpy).not.toHaveBeenCalled();
   });
 
+  it('calls removeFn when a markdown file is deleted', async () => {
+    const filePath = await createTempMarkdown('remove-me');
+    const tempDir = path.dirname(filePath);
+    const reindexFn = vi.fn(async () => undefined);
+    const removeFn = vi.fn(async () => undefined);
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      removeFn,
+      debounceMs: 50,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(150);
+
+    await fs.unlink(filePath);
+    await waitFor(() => removeFn.mock.calls.length >= 1, { timeoutMs: 4000 });
+
+    expect(removeFn).toHaveBeenCalledWith(filePath);
+  });
+
   it('retries SQLITE_BUSY with exponential backoff before succeeding', async () => {
     const filePath = await createTempMarkdown('retry-busy');
     const tempDir = path.dirname(filePath);

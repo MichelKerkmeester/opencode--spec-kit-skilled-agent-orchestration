@@ -20,6 +20,7 @@ import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 
 import type { MCPResponse } from './types';
 import type { UpdateArgs } from './memory-crud-types';
@@ -238,7 +239,8 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     });
   }
 
-  runPostMutationHooks('update', { memoryId: id });
+  const postMutationHooks = runPostMutationHooks('update', { memoryId: id });
+  const postMutationFeedback = buildMutationHookFeedback('update', postMutationHooks);
 
   const summary = embeddingMarkedForReindex
     ? `Memory ${id} updated (embedding pending re-index)`
@@ -251,11 +253,13 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   if (embeddingRegenerated) {
     hints.push('Embedding regenerated - search results may differ');
   }
+  hints.push(...postMutationFeedback.hints);
 
   const data: Record<string, unknown> = {
     updated: id,
     fields,
     embeddingRegenerated,
+    postMutationHooks: postMutationFeedback.data,
   };
 
   if (embeddingMarkedForReindex) {

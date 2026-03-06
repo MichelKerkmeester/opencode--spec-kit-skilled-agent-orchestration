@@ -11,20 +11,21 @@ Scripts in this directory evaluate memory system quality, performance, and corre
 | Source | Status | Notes |
 |--------|--------|-------|
 | `../../mcp_server/api` | **Preferred** | Public boundary surface |
+| `../../mcp_server/api/*` | **Preferred** | Narrow public modules for specific workflows |
 | `../../shared/` | **Allowed** | Shared utilities |
-| `@spec-kit/mcp-server/lib/*` | **Prohibited** | Internal imports -- use api/ instead |
+| `@spec-kit/mcp-server/{lib,core,handlers}*` | **Prohibited** | Internal runtime imports -- use api/ instead |
 
 ### Exception Process
 
-If a script requires direct `lib/*` or `core/*` access:
+If a script requires direct internal runtime access:
 1. Add an entry to `import-policy-allowlist.json` in this directory
 2. Include: file path, import, owner, reason, removeWhen, createdAt, lastReviewedAt, and expiresAt (required for wildcards)
-3. The `check-no-mcp-lib-imports.ts` script validates compliance
+3. The import-policy checkers validate `lib`, `core`, `handlers`, and relative `../../mcp_server/*` runtime paths
 
 ### Current Exceptions
 
-- `run-performance-benchmarks.ts` — lib/* imports for benchmark-specific metrics
-- `run-chk210-quality-backfill.ts` — lib/* imports for quality backfill internal parsing
+- `run-performance-benchmarks.ts` — allowlisted internal runtime imports for benchmark-specific metrics
+- `run-chk210-quality-backfill.ts` — allowlisted internal runtime import for quality backfill parsing
 
 ## Script Inventory
 

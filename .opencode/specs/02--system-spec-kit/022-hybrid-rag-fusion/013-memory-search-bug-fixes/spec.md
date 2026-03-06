@@ -1,73 +1,156 @@
 ---
-title: "Spec: Generic Memory Filename Fix in Stateless Mode"
-description: "Resolve review fixes for stateless-only enrichment, generic task alignment, and JSON-vs-stateless regression coverage"
+title: "Specification: Memory Search Bug Fixes (Unified)"
+description: "Canonical Level 2 spec for stateless filename/generic-slug parity fixes and folder-discovery follow-up hardening under spec 013"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Specification: Generic Memory Filename Fix in Stateless Mode
-<!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec | v2.2 -->
+# Specification: Memory Search Bug Fixes
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:parent-ref -->
-## Parent Reference
+<!-- ANCHOR:metadata -->
+## 1. Metadata
 
-**Parent Spec:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/`
-**Phase:** 013 of 034 (Hybrid RAG Fusion Refinement)
-<!-- /ANCHOR:parent-ref -->
+| Field | Value |
+|-------|-------|
+| **Canonical Spec Folder** | `013-memory-search-bug-fixes` |
+| **Parent Spec** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/` |
+| **Status** | Verification updated |
+| **Level** | 2 |
+| **Date Consolidated** | 2026-03-06 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
 <!-- ANCHOR:problem -->
-## Problem
+## 2. Problem & Purpose
 
-Review follow-up required tightening and proving the filename-fallback behavior:
+Two linked workstreams were completed in this spec folder but documented in duplicate root/addendum packets:
 
-1. Enrichment must run only in stateless mode (JSON mode must remain unchanged)
-2. Generic task detection must match slug handling, including explicit coverage for `Implementation and updates`
-3. Regression tests must prove JSON-vs-stateless behavior and slug outcomes
+1. Stateless filename / generic-slug parity fixes.
+2. Folder-discovery follow-up hardening and verification.
 
-Without these guardrails, generic labels can still produce non-descriptive filenames in stateless mode or unintentionally alter JSON mode behavior.
+This unified spec makes `013-memory-search-bug-fixes` the only canonical identity and records both workstreams in one standard Level 2 packet.
 <!-- /ANCHOR:problem -->
 
 ---
 
-<!-- ANCHOR:requirements -->
-## Requirements
+## Problem Statement
 
-- REQ-001: When task is generic in stateless mode, extract title from `spec.md` frontmatter as fallback
-- REQ-002: Enriched task feeds slug generation (`generateContentSlug`) and title generation (`buildMemoryTitle`)
-- REQ-003: Template content (`IMPL_TASK`) must still use original `implSummary.task` (stay honest)
-- REQ-004: JSON data mode must remain unaffected via explicit stateless guard before enrichment
-- REQ-005: Generic detection used for enrichment must align with slug generic handling, including `Implementation and updates`
-- REQ-006: Regression tests must explicitly verify JSON-vs-stateless divergence and slug outcome expectations
-<!-- /ANCHOR:requirements -->
+Memory-search bug-fix work was split across duplicate root and addendum document packets, and verification statements drifted from actual command outcomes. The canonical spec packet must remain single-identity (`013-memory-search-bug-fixes`), retain both workstreams, and carry truthful verification status.
 
 ---
 
 <!-- ANCHOR:scope -->
-## Scope
+## 3. Scope
 
 ### In Scope
-- `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`: Apply stateless-only enrichment guard and consume enriched task for slug/title
-- `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts`: Align generic task detection with slug behavior (`implementation-and-updates` coverage)
-- `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts`: Centralize enrichment decision guard (`shouldEnrichTaskFromSpecTitle`)
-- `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts`: Add regression tests for JSON-vs-stateless behavior and slug outcomes
+- Stateless-only task enrichment guardrails for generic task labels.
+- Generic slug parity alignment (including `Implementation and updates`).
+- Regression coverage for JSON-vs-stateless divergence, workflow-level seam restoration, and slug outcomes.
+- Folder discovery recursive hardening (depth-limited to 8), including stale-cache shrink follow-up behavior when cached folders disappear.
+- Canonical root dedupe for alias roots (`specs/` and `.opencode/specs/`).
+- Recursive staleness checks and graceful invalid-path cache behavior.
+- Verification evidence and final handover coherence.
 
 ### Out of Scope
-- `semantic-summarizer.ts` — no changes
-- Template content — `IMPL_TASK` unchanged
+- Memory scoring/ranking algorithm changes.
+- Database schema/index migrations.
+- Auth/security model changes beyond no-regression verification.
 <!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
-## Success Criteria
+<!-- ANCHOR:requirements -->
+## 4. Requirements
 
-1. `npx tsc --noEmit` passes
-2. `npm run build` succeeds
-3. `npm run test:task-enrichment` passes (run from `.opencode/skill/system-spec-kit`)
-4. Stateless mode produces descriptive filename derived from spec.md title for generic tasks
-5. JSON mode remains unchanged due to stateless guard (REQ-004)
+### Workstream A: Stateless Filename + Generic Slug Parity
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-A01 | Generic stateless task labels must enrich from spec title fallback. | Stateless mode uses `spec.md` title-derived fallback for descriptive slug/title when task label is generic. |
+| REQ-A02 | Enrichment must not affect JSON/file-backed mode. | Guard blocks enrichment when source/file-backed input indicates JSON mode. |
+| REQ-A03 | Generic-task semantics must align with slug behavior. | Generic detection includes `Implementation and updates` parity with slug handling. |
+| REQ-A04 | Template honesty must remain intact. | `IMPL_TASK` remains sourced from original `implSummary.task`. |
+| REQ-A05 | Regression coverage must prove divergence, seam restoration, and outcomes. | Tests verify JSON-vs-stateless behavior, prove a file-backed run cannot leak `CONFIG.DATA_FILE` into a later stateless run, and preserve slug expectations. |
+
+### Workstream B: Folder Discovery Follow-up
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-B01 | Folder discovery must support deep nested spec layers with bounded recursion. | Recursive discovery includes nested folders and enforces max depth 8. |
+| REQ-B02 | Aliased roots must dedupe by canonical path while preserving first candidate path. | Duplicate canonical roots are skipped without changing first-path semantics. |
+| REQ-B03 | Staleness checks must use recursively discovered folders and handle cache shrink scenarios. | Cache staleness evaluates full discovered set, not shallow roots only, and a removed cached folder forces regeneration. |
+| REQ-B04 | Invalid/nonexistent non-empty input paths must degrade gracefully. | `ensureDescriptionCache` returns empty cache object instead of invalid/throw behavior. |
+| REQ-B05 | Unit/integration verification state must be recorded with evidence. | Passing checks are documented truthfully in the packet, including final green integration coverage. |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. Success Criteria
+
+- SC-001: Stateless mode yields descriptive filenames/titles for generic labels while JSON mode remains unchanged and invocation-local config state is restored after `runWorkflow()`.
+- SC-002: Generic label parity includes `Implementation and updates` across enrichment and slug handling.
+- SC-003: Recursive discovery supports deep trees with max depth 8, canonical alias-root dedupe, and stale-cache shrink detection when cached folders disappear.
+- SC-004: Invalid/nonexistent non-empty explicit input paths return empty cache object gracefully.
+- SC-005: Evidence-backed verification and coherent Level 2 docs exist with standard filenames only.
 <!-- /ANCHOR:success-criteria -->
+
+---
+
+## Acceptance Scenarios
+
+- **Given** a generic task label in stateless mode, **when** memory content slug/title are generated, **then** the spec-title fallback is used for descriptive naming.
+- **Given** JSON/file-backed mode, **when** enrichment decision logic runs, **then** task enrichment from spec title is not applied.
+- **Given** a file-backed workflow run followed by a stateless workflow run, **when** `runWorkflow()` completes each invocation, **then** `CONFIG.DATA_FILE` from the file-backed run is restored and cannot leak into the later stateless run.
+- **Given** nested spec folders deeper than three levels, **when** folder discovery runs, **then** recursive discovery includes valid folders up to depth 8 and excludes depth 9.
+- **Given** alias roots `specs/` and `.opencode/specs/`, **when** root candidates are canonicalized, **then** duplicate canonical roots are skipped while first-candidate behavior is preserved.
+- **Given** invalid or nonexistent non-empty explicit input paths, **when** `ensureDescriptionCache` executes, **then** it returns an empty cache object without crashing.
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. Risks & Dependencies
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Behavior drift between stateless and JSON modes | Incorrect enrichment side effects | Explicit stateless guard + regression tests |
+| Risk | Recursive traversal overreach | Performance/coverage ambiguity | Hard max depth 8 + depth-boundary tests |
+| Dependency | Filesystem canonicalization for alias dedupe | Duplicate/missed root scanning | Canonical-path dedupe + integration coverage |
+| Dependency | Existing test harnesses (`vitest`, build/type scripts) | Verification confidence | Required commands recorded in checklist/summary |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: Non-Functional Requirements
+
+### Performance
+- NFR-P01: Recursive folder discovery remains bounded by depth 8.
+- NFR-P02: Canonical dedupe avoids duplicate root traversal work.
+
+### Reliability
+- NFR-R01: JSON mode behavior remains unchanged by enrichment logic.
+- NFR-R02: Invalid explicit paths degrade to empty cache object without crashes.
+
+### Security
+- NFR-S01: No credentials/secrets introduced.
+- NFR-S02: No auth/authz behavior changes.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:references -->
+## 8. References
+
+- `spec.md` (this file, canonical)
+- `plan.md`
+- `tasks.md`
+- `checklist.md`
+- `implementation-summary.md`
+- `handover.md`
+<!-- /ANCHOR:references -->

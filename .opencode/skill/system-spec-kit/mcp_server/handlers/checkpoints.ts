@@ -279,10 +279,10 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
   if (!name || typeof name !== 'string') {
     throw new Error('name is required and must be a string');
   }
-  if (confirmName !== undefined && typeof confirmName !== 'string') {
-    throw new Error('confirmName must be a string when provided');
+  if (!confirmName || typeof confirmName !== 'string') {
+    throw new Error('confirmName is required and must be a string');
   }
-  if (confirmName !== undefined && confirmName !== name) {
+  if (confirmName !== name) {
     throw new Error('confirmName must exactly match name to delete checkpoint');
   }
 
@@ -297,10 +297,10 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
     summary,
     data: {
       success,
-      safetyConfirmationUsed: confirmName !== undefined,
+      safetyConfirmationUsed: true,
     },
     hints: success
-      ? (confirmName === undefined ? ['For extra safety, pass confirmName with the same value as name.'] : [])
+      ? []
       : ['Use checkpoint_list() to see available checkpoints'],
     startTime: startTime
   });

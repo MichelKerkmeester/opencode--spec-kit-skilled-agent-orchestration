@@ -763,7 +763,7 @@ async function hybridSearchEnhanced(
           }
         } catch (_mpabErr: unknown) {
           // AI-GUARD: Non-critical — MPAB failure does not block pipeline
-          console.debug('[hybrid-search] MPAB error (non-fatal):', (_mpabErr as Error).message);
+          console.error('[hybrid-search] MPAB error (non-fatal):', (_mpabErr as Error).message);
         }
       }
 
@@ -1399,7 +1399,7 @@ async function searchWithFallbackTiered(
   // TIER 2: Widen search — lower similarity, force all channels
   const tier1CountBefore = results.length;
 
-  console.debug(`[hybrid-search] Tier 1→2 degradation: ${tier1Trigger.reason} (topScore=${tier1Trigger.topScore.toFixed(3)}, count=${tier1Trigger.resultCount})`);
+  console.error(`[hybrid-search] Tier 1→2 degradation: ${tier1Trigger.reason} (topScore=${tier1Trigger.topScore.toFixed(3)}, count=${tier1Trigger.resultCount})`);
 
   const tier2Options: HybridSearchOptions = {
     ...options,
@@ -1433,7 +1433,7 @@ async function searchWithFallbackTiered(
   // TIER 3: Structural search (pure SQL last-resort)
   const tier2CountBefore = results.length;
 
-  console.debug(`[hybrid-search] Tier 2→3 degradation: ${tier2Trigger.reason} (topScore=${tier2Trigger.topScore.toFixed(3)}, count=${tier2Trigger.resultCount})`);
+  console.error(`[hybrid-search] Tier 2→3 degradation: ${tier2Trigger.reason} (topScore=${tier2Trigger.topScore.toFixed(3)}, count=${tier2Trigger.resultCount})`);
 
   const tier3Results = structuralSearch({ specFolder: options.specFolder, limit: options.limit });
   const calibratedTier3 = calibrateTier3Scores(results, tier3Results);

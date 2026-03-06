@@ -1,6 +1,6 @@
 ---
 title: "Shared Library Modules"
-description: "Consolidated TypeScript modules shared between CLI scripts and MCP server for embedding generation and trigger extraction."
+description: "Consolidated TypeScript modules shared between CLI scripts and MCP server for embeddings, retrieval algorithms, contracts, config, and utility logic."
 trigger_phrases:
   - "shared library modules"
   - "embeddings trigger extractor shared"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Shared Library Modules
 
-> Consolidated TypeScript modules shared between CLI scripts and MCP server for embeddings, scoring, normalization, and utility logic. Source files are `.ts`. Compiled CommonJS output is produced in `shared/dist/`.
+> Consolidated TypeScript modules shared between CLI scripts and MCP server for embeddings, scoring, normalization, and utility logic. Source files are `.ts`. `shared/dist/` is generated CommonJS build output.
 
 ---
 
@@ -63,10 +63,11 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 │    │(RE-EXPORTS) │                 │lib/         │               │
 │    ├─────────────┤                 │(RE-EXPORTS) │               │
 │    │embeddings.ts│                 ├─────────────┤               │
-│    │  → import   │                 │embeddings.ts│               │
-│    │  from '../../│                │  → import   │               │
-│    │   shared/'  │                 │  from '../../│              │
-│    └─────────────┘                 │   shared/'  │               │
+│    │ export *    │                 │embeddings.ts│               │
+│    │ from '@spec-│                 │ export *    │               │
+│    │ kit/shared/ │                 │ from '@spec-│               │
+│    │ embeddings' │                 │ kit/shared/ │               │
+│    └─────────────┘                 │ embeddings' │               │
 │                                    └─────────────┘               │
 │                                                                  │
 │  Note: Source is TypeScript (.ts); compiled output is            │
@@ -79,10 +80,10 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 
 | Category                 | Count         | Details                                          |
 | ------------------------ | ------------- | ------------------------------------------------ |
-| Top-Level Modules        | 6             | index, embeddings, chunking, trigger extractor, types, normalization |
+| Top-Level TS Modules     | 8             | index, embeddings, chunking, trigger extractor, types, normalization, config, paths |
+| Top-Level Subdirectories | 7             | algorithms, contracts, embeddings, lib, parsing, scoring, utils |
 | Provider Implementations | 3             | OpenAI, HF Local, Voyage                         |
 | Embedding Dimensions     | 768/1024/1536 | Provider-dependent                               |
-| Build Artifacts          | 2             | `package.json` + `tsconfig*.json`               |
 
 ### Key Features
 
@@ -92,7 +93,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 | **Dynamic Dimension Detection** | 768 (HF), 1024 (Voyage), 1536/3072 (OpenAI)                    |
 | **Task-Specific Functions**     | Document, query and clustering embeddings                      |
 | **TF-IDF + Semantic Triggers**  | Advanced trigger phrase extraction (v11)                       |
-| **Adaptive Fusion**             | 3-channel search fusion (Vector, FTS5, BM25) with intent-aware weighting |
+| **Adaptive Fusion Support**     | Intent-aware weighting used by the runtime 5-channel retrieval pipeline (Vector, FTS5, BM25, Graph, Degree) |
 | **7 Intent Profiles**           | Task-specific weight profiles: add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 
 ### Requirements
@@ -124,12 +125,12 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 
 ```typescript
 // From CLI scripts (scripts/*.ts)
-import { generateEmbedding } from '../shared/embeddings';
-import { extractTriggerPhrases } from '../shared/trigger-extractor';
+import { generateEmbedding } from '@spec-kit/shared/embeddings';
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
 
 // From MCP server (mcp_server/*.ts)
-import { generateEmbedding } from '../shared/embeddings';
-import { extractTriggerPhrases } from '../shared/trigger-extractor';
+import { generateEmbedding } from '@spec-kit/shared/embeddings';
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
 ```
 
 ### Verify Installation
@@ -139,16 +140,16 @@ import { extractTriggerPhrases } from '../shared/trigger-extractor';
 ls .opencode/skill/system-spec-kit/shared/
 
 # Expected source files:
-# index.ts, types.ts, normalization.ts
+# index.ts, types.ts, normalization.ts, config.ts, paths.ts
 # embeddings.ts, chunking.ts, trigger-extractor.ts
-# embeddings/, scoring/, utils/
+# algorithms/, contracts/, embeddings/, lib/, parsing/, scoring/, utils/
 # Compiled output is written to shared/dist/
 ```
 
 ### First Use
 
 ```typescript
-import { generateDocumentEmbedding, getProviderMetadata } from './embeddings';
+import { generateDocumentEmbedding, getProviderMetadata } from '@spec-kit/shared/embeddings';
 
 // Check active provider
 const meta: { provider: string; model: string; dim: number; healthy: boolean } = getProviderMetadata();
@@ -172,9 +173,18 @@ shared/
 ├── index.ts                    # Barrel exports for all shared modules
 ├── types.ts                    # Shared type definitions
 ├── normalization.ts            # DB row <-> app object normalization
+├── config.ts                   # Shared DB directory resolution and update markers
+├── paths.ts                    # Shared DB path resolution
 ├── embeddings.ts               # Multi-provider embedding generation
 ├── chunking.ts                 # Semantic chunking utilities
 ├── trigger-extractor.ts        # Trigger phrase extraction
+├── algorithms/                 # Shared retrieval fusion and reranking algorithms
+│   ├── adaptive-fusion.ts      # Intent-aware weighted RRF profiles
+│   ├── mmr-reranker.ts         # Diversity-aware reranking helpers
+│   ├── rrf-fusion.ts           # Reciprocal rank fusion primitives
+│   └── index.ts                # Algorithms barrel
+├── contracts/
+│   └── retrieval-trace.ts      # Typed trace/envelope contracts for retrieval responses
 ├── embeddings/                 # Provider implementations and profile helpers
 │   ├── factory.ts              # Provider selection and auto-detection
 │   ├── profile.ts              # Embedding profiles and DB path generation
@@ -183,6 +193,11 @@ shared/
 │       ├── hf-local.ts         # HuggingFace local (fallback)
 │       ├── openai.ts           # OpenAI embeddings API
 │       └── voyage.ts           # Voyage AI (recommended)
+├── lib/
+│   └── structure-aware-chunker.ts # Markdown-aware chunking helpers
+├── parsing/
+│   ├── quality-extractors.ts   # Quality score/flags extraction
+│   └── quality-extractors.test.ts # Parsing coverage for quality extraction
 ├── scoring/
 │   ├── folder-scoring.ts       # Composite folder ranking logic
 │   └── README.md
@@ -192,8 +207,6 @@ shared/
 │   ├── jsonc-strip.ts          # JSONC comment stripping helper
 │   ├── token-estimate.ts       # Shared token count estimation
 │   └── README.md
-├── parsing/
-│   └── quality-extractors.ts   # Quality score/flags extraction
 ├── dist/                       # Compiled JS output
 └── README.md
 ```
@@ -205,6 +218,10 @@ shared/
 | `embeddings.ts` | Unified API for multi-provider embedding generation |
 | `trigger-extractor.ts` | Trigger phrase extraction for memory indexing |
 | `normalization.ts` | Canonical DB row <-> app object conversion |
+| `config.ts` | Shared DB directory resolution and update marker paths |
+| `paths.ts` | Canonical `context-index.sqlite` path resolution |
+| `algorithms/` | Shared adaptive fusion, RRF fusion, and MMR reranking helpers |
+| `contracts/retrieval-trace.ts` | Typed retrieval trace and context envelope contracts |
 | `scoring/folder-scoring.ts` | Composite folder scoring and ranking |
 | `utils/token-estimate.ts` | Shared token count estimation (chars/4 heuristic) |
 | `parsing/quality-extractors.ts` | Quality score and flags extraction from frontmatter |
@@ -245,7 +262,7 @@ Two re-export shims exist for path convenience:
 - `scripts/lib/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
 - `mcp_server/lib/providers/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
 
-The canonical source is `shared/embeddings/`. These shims are thin re-exports with no implementation — no consolidation needed. Future consumers may import directly from `@spec-kit/shared/embeddings`.
+The canonical source is the `shared/` package. `shared/embeddings.ts` is the public shared entry point for embeddings, while `shared/embeddings/` contains provider-specific implementation details. These shims are thin re-exports with no implementation.
 
 ---
 
@@ -336,8 +353,8 @@ database/
 
 ```typescript
 // In scripts/memory/generate-context.ts or similar
-import { generateDocumentEmbedding, getEmbeddingDimension } from '../shared/embeddings';
-import { extractTriggerPhrases } from '../shared/trigger-extractor';
+import { generateDocumentEmbedding, getEmbeddingDimension } from '@spec-kit/shared/embeddings';
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
 
 // Generate embedding for memory content
 const content: string = 'Decided to use Voyage API for embeddings due to quality';
@@ -356,8 +373,8 @@ console.log(`Triggers: ${triggers.join(', ')}`);
 
 ```typescript
 // In mcp_server/context-server.ts
-import { generateQueryEmbedding, preWarmModel } from '../shared/embeddings';
-import { extractTriggerPhrases } from '../shared/trigger-extractor';
+import { generateQueryEmbedding, preWarmModel } from '@spec-kit/shared/embeddings';
+import { extractTriggerPhrases } from '@spec-kit/shared/trigger-extractor';
 
 // Pre-warm on startup
 await preWarmModel();
@@ -374,7 +391,7 @@ async function handleSearch(query: string): Promise<void> {
 ### Example 3: Get Provider Information
 
 ```typescript
-import { getProviderMetadata, getEmbeddingProfile } from './embeddings';
+import { getProviderMetadata, getEmbeddingProfile } from '@spec-kit/shared/embeddings';
 
 // Check current provider
 const meta = getProviderMetadata();
@@ -392,7 +409,7 @@ const dbPath: string = profile.getDatabasePath('/base/path');
 ### Example 4: Trigger Extraction with Stats
 
 ```typescript
-import { extractTriggerPhrasesWithStats } from './trigger-extractor';
+import { extractTriggerPhrasesWithStats } from '@spec-kit/shared/trigger-extractor';
 
 const result = extractTriggerPhrasesWithStats(memoryContent);
 console.log(result);

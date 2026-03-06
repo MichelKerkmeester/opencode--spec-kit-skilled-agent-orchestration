@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/plan.md]"
-description: "Execution plan for boundary clarification, remediation, and merged continuation work from former spec 013."
+description: "Execution plan for boundary clarification, remediation, and merged continuation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "boundary plan"
@@ -50,7 +50,8 @@ The former `030-architecture-boundary-remediation` scope is merged into this pla
 - [x] Triple ultra-think review P0 blockers resolved (Phase 4).
 - [x] Review remediation checklist items verified.
 - [x] Feature catalog implementation-doc parity remediation completed (Phase 6).
-- [ ] Phase 7 boundary remediation carry-over tasks completed or explicitly deferred.
+- [x] Phase 7 boundary remediation carry-over tasks completed or explicitly deferred. (Phase 7A-7C closure verified 2026-03-06)
+- [ ] Phase 8 strict-pass remediation closes README drift, boundary/dist policy ambiguity, dist-reference mismatches, and verification evidence gaps before final completion claim.
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -86,9 +87,10 @@ Contract-first layered architecture.
 | Phase 5: Enforcement Gaps | T046-T049 | ~80 (code+docs) | Low (1-2h) | Low |
 | Phase 6: Feature Catalog Parity | T050-T073 | ~350 (code+docs+tests) | Medium-High (8-12h) | Medium |
 | Phase 7: Boundary Remediation Carry-Over (merged 013) | T074-T090 | ~250 (code+docs+automation) | Medium (4-8h) | Medium |
-| **Total** | **93 task entries** | **~1750** | **~35-53h** | **Medium** |
+| Phase 8: Strict-Pass Remediation | T091-T096 | ~120 (docs+verification) | Low-Medium (2-4h) | Low |
+| **Total** | **99 task entries** | **~1870** | **~37-57h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -119,21 +121,21 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 
 #### P0 Blockers
 - [x] Integrate `check-api-boundary.sh` into `npm run check` pipeline for bidirectional enforcement.
-- [x] Add missing `reindex-embeddings.ts` exception to `ARCHITECTURE_BOUNDARIES.md`.
+- [x] Add missing `reindex-embeddings.ts` exception to `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md`.
 - [x] Expand `PROHIBITED_PATTERNS` to cover `@spec-kit/mcp-server/core/*` paths.
 
 #### P1 Should-Fix
 - [x] Add dynamic `import()` expression detection to enforcement script.
 - [x] Add additional relative path variant patterns (3+ depth levels).
-- [x] Update `shared/README.md` structure tree with Phase 8 modules.
+- [x] Update `.opencode/skill/system-spec-kit/shared/README.md` structure tree with Phase 8 modules.
 - [x] Add allowlist governance fields (`approvedBy`, `createdAt`, `expiresAt`).
 - [x] Ban or sunset wildcard exceptions with explicit module lists.
-- [x] Update `evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
+- [x] Update `.opencode/skill/system-spec-kit/scripts/evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
 
 #### P2 Nice-to-Have
 - [x] Add block comment tracking to import checker.
 - [x] Add behavioral tests for `quality-extractors.ts` edge cases.
-- [x] Add bidirectional cross-links in `ARCHITECTURE_BOUNDARIES.md`.
+- [x] Add bidirectional cross-links in `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md`.
 - [x] Define growth policy for `handler-utils.ts`.
 - [x] Consider AST-based parsing upgrade for enforcement script.
 - [x] Add transitive dependency checks for re-export evasion.
@@ -171,18 +173,29 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 #### Validation
 - [x] Re-run phase audit for groups 01-18 and ensure no unresolved high-severity doc-vs-runtime mismatches remain.
 
-### Phase 7: Boundary Remediation Carry-Over (Merged from Former 013)
+### Phase 7: Boundary Remediation Carry-Over (Merged from Former 030)
 
 #### Migration and Exception Reduction
-- [ ] Migrate `scripts/core/memory-indexer.ts` imports to API/shared surfaces where coverage already exists.
-- [ ] Move `DB_UPDATED_FILE` ownership to `shared/config` with backward-compatible runtime re-export.
-- [ ] Re-audit `scripts/memory/reindex-embeddings.ts` imports and migrate only encapsulation-safe dependencies.
-- [ ] Remove or narrow allowlist entries that are no longer required after migration.
+- [x] Migrate `scripts/core/memory-indexer.ts` imports to API/shared surfaces where coverage already exists. [DONE: `vectorIndex` from `@spec-kit/mcp-server/api/search`; `DB_UPDATED_FILE` from `@spec-kit/shared/config`]
+- [x] Move `DB_UPDATED_FILE` ownership to `shared/config` with backward-compatible runtime re-export. [DONE: shared export + `mcp_server/core/config.ts` re-export]
+- [x] Re-audit `scripts/memory/reindex-embeddings.ts` imports and migrate only encapsulation-safe dependencies. [DONE: script now imports only `@spec-kit/mcp-server/api/indexing`]
+- [x] Remove or narrow allowlist entries that are no longer required after migration. [DONE: memory-indexer exceptions removed; retained wildcard exceptions are eval-only with governance metadata]
 
 #### Enforcement Automation and Documentation Sync
-- [ ] Ensure mandatory CI enforcement runs boundary checks on every PR and blocks merge on violations.
-- [ ] Update `ARCHITECTURE_BOUNDARIES.md` exception table and allowlist review metadata after migration.
-- [ ] Re-run `npx tsc --noEmit` and `npm run check` with updated exception set; capture evidence in checklist.
+- [x] Ensure mandatory CI enforcement runs boundary checks on every PR and blocks merge on violations. [DONE: `.github/workflows/system-spec-kit-boundary-enforcement.yml` runs PR checks for scripts boundary enforcement]
+- [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` exception table and allowlist review metadata after migration. [DONE: current exceptions table aligned with allowlist; retained wildcard eval exceptions reviewed `2026-03-05`]
+- [x] Re-run `npx tsc --noEmit` and `npm run check` with updated exception set; capture evidence in checklist. [DONE: passed `npm run check --workspace=scripts`, `npm run check:ast --workspace=scripts`, `npx tsc --noEmit`, and targeted import-policy rules vitest on 2026-03-06]
+
+### Phase 8: Strict-Pass Remediation
+
+#### Documentation and Policy Reconciliation
+- [ ] Re-audit boundary-adjacent README files against canonical architecture and API policy docs; fix drift instead of layering new duplicate guidance.
+- [ ] Clarify source-vs-dist boundary policy so docs explicitly state when `dist/` references are authoritative outputs, generated artifacts, or forbidden as source-of-truth documentation anchors.
+- [ ] Reconcile all retained `dist/` references with current build/runtime behavior and replace stale or ambiguous references with canonical source-doc pointers where appropriate.
+
+#### Verification Closure
+- [ ] Capture strict-pass evidence for each remediation bucket in `checklist.md` using file-path and command evidence only after changes land.
+- [ ] Re-run spec validation and any targeted verification commands needed to support a final strict-pass claim without unresolved README or boundary-policy drift.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -203,7 +216,7 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 |------------|------|--------|-------------------|
 | Team agreement on API-first policy | Internal | Yellow | Delays enforcement rollout |
 | Existing tests around parser/index paths | Internal | Yellow | Higher refactor risk |
-| CI pipeline hook for import-policy check | Internal | Yellow | Rules remain advisory only |
+| CI pipeline hook for import-policy check | Internal | Green | PR workflow is active and enforces boundary checks |
 
 <!-- /ANCHOR:dependencies -->
 
@@ -234,6 +247,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 4. Review remediation P0 blockers (critical).
 5. Feature catalog parity code fixes + documentation sweep (critical).
 6. Boundary remediation carry-over execution and CI enforcement confirmation (critical).
+7. Strict-pass remediation for README drift, boundary/dist policy, dist references, and evidence capture (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.
@@ -248,6 +262,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M3 | Guardrail active | Import-policy checks enforced in default workflow | Phase 3 |
 | M4 | Review remediation | P0 blockers resolved, enforcement hardened, doc drift fixed | Phase 4 |
 | M5 | Feature parity | Feature catalog and snippets align with implemented runtime behavior | Phase 6 |
+| M6 | Strict-pass readiness | README/policy/dist evidence reconciled and verifiable | Phase 8 |
 
 ## AI Execution Protocol
 

@@ -1,11 +1,13 @@
 // ---------------------------------------------------------------
 // MODULE: Import Policy Checker
-// Scans scripts/ for prohibited @spec-kit/mcp-server/{lib,core}/* imports.
+// Scans scripts/ for prohibited internal runtime imports.
 // Violations not in the allowlist cause a non-zero exit.
 // ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';
+
+import { isProhibitedImportPath } from './import-policy-rules';
 
 interface AllowlistException {
   file: string;
@@ -66,35 +68,6 @@ function resolveAllowlistPath(): string | null {
   return null;
 }
 
-// Patterns that indicate prohibited imports (only match actual import/require statements)
-// Quote class ['"`] covers single quotes, double quotes, and template literal backticks
-const PROHIBITED_PATTERNS = [
-  // Static import/from — package-form
-  /(?:import|from)\s+['"`]@spec-kit\/mcp-server\/lib\//,
-  /(?:import|from)\s+['"`]@spec-kit\/mcp-server\/core\//,
-  // Static import/from — relative (variable depth)
-  /(?:import|from)\s+['"`]\.\.(?:\/\.\.)*\/mcp_server\/lib\//,
-  /(?:import|from)\s+['"`]\.\.(?:\/\.\.)*\/mcp_server\/core\//,
-  // require() — package-form
-  /require\s*\(\s*['"`]@spec-kit\/mcp-server\/lib\//,
-  /require\s*\(\s*['"`]@spec-kit\/mcp-server\/core\//,
-  // require() — relative (variable depth)
-  /require\s*\(\s*['"`]\.\.(?:\/\.\.)*\/mcp_server\/lib\//,
-  /require\s*\(\s*['"`]\.\.(?:\/\.\.)*\/mcp_server\/core\//,
-  // Dynamic import() — package-form
-  /import\s*\(\s*['"`]@spec-kit\/mcp-server\/lib\//,
-  /import\s*\(\s*['"`]@spec-kit\/mcp-server\/core\//,
-  // Dynamic import() — relative (variable depth)
-  /import\s*\(\s*['"`]\.\.(?:\/\.\.)*\/mcp_server\/lib\//,
-  /import\s*\(\s*['"`]\.\.(?:\/\.\.)*\/mcp_server\/core\//,
-];
-
-const DIRECT_PROHIBITED_PREFIXES = [
-  '@spec-kit/mcp-server/lib/',
-  '@spec-kit/mcp-server/core/',
-];
-
-const RELATIVE_PROHIBITED_RE = /^\.\.(?:\/\.\.)*\/mcp_server\/(?:lib|core)\//;
 const REEXPORT_FROM_RE = /\bexport\s+(?:\*\s*|\{[^}]*\}\s*)from\s+['"`]([^'"`]+)['"`]/;
 
 function loadAllowlist(): Allowlist {
@@ -122,7 +95,7 @@ function isAllowlisted(filePath: string, importPath: string, allowlist: Allowlis
       continue;
     }
 
-    // Wildcard match for @spec-kit/mcp-server/lib/*
+    // Wildcard match for internal runtime prefixes such as @spec-kit/mcp-server/lib/*
     if (exception.import.endsWith('/*')) {
       const prefix = exception.import.slice(0, -2);
       if (importPath.startsWith(prefix)) return true;
@@ -162,10 +135,6 @@ function extractModuleSpecifier(line: string): string | null {
 
 function isLocalRelativeImport(importPath: string): boolean {
   return importPath.startsWith('./') || importPath.startsWith('../');
-}
-
-function isProhibitedImportPath(importPath: string): boolean {
-  return DIRECT_PROHIBITED_PREFIXES.some((prefix) => importPath.startsWith(prefix)) || RELATIVE_PROHIBITED_RE.test(importPath);
 }
 
 function resolveLocalImportTarget(importingFile: string, importPath: string): string | null {
@@ -249,14 +218,13 @@ function scanLineForViolations(
   allowlist: Allowlist,
   violations: Violation[],
 ): void {
-  for (const pattern of PROHIBITED_PATTERNS) {
-    if (pattern.test(line)) {
-      const importPath = extractImportPath(line);
-      if (!isAllowlisted(filePath, importPath, allowlist)) {
-        violations.push({ file: filePath, line: lineIndex + 1, importPath });
-      }
-      break;
-    }
+  const importPath = extractModuleSpecifier(line);
+  if (!importPath || !isProhibitedImportPath(importPath)) {
+    return;
+  }
+
+  if (!isAllowlisted(filePath, importPath, allowlist)) {
+    violations.push({ file: filePath, line: lineIndex + 1, importPath });
   }
 }
 
@@ -378,7 +346,7 @@ function main(): void {
   }
 
   if (allViolations.length === 0) {
-    console.log('Import policy check passed: no prohibited @spec-kit/mcp-server/{lib,core}/* imports found.');
+    console.log('Import policy check passed: no prohibited @spec-kit/mcp-server/{lib,core,handlers} internal imports found.');
     process.exit(0);
   }
 

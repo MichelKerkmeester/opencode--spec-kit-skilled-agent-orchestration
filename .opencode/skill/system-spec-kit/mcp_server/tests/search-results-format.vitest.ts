@@ -125,6 +125,18 @@ describe('formatSearchResults', () => {
     expect(envelope.data.results).toEqual([]);
   });
 
+  it('C2b: Empty array preserves extraData payload', async () => {
+    const res = await formatSearchResults([], 'semantic', false, null, null, null, {
+      retrievalTrace: { stages: [{ stage: 'routing', metadata: { channel: 'vector' } }] },
+      evidenceGapWarning: 'No supporting evidence found',
+    });
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.evidenceGapWarning).toBe('No supporting evidence found');
+    expect(envelope.data.retrievalTrace).toEqual({
+      stages: [{ stage: 'routing', metadata: { channel: 'vector' } }],
+    });
+  });
+
   it('C3: Single result maps fields correctly', async () => {
     const mockResults = [{
       id: 1,
@@ -224,6 +236,16 @@ describe('formatSearchResults', () => {
     expect(hasBroadenHint).toBe(true);
   });
 
+  it('C10b: Empty response preserves extraData for trace-aware callers', async () => {
+    const res = await formatSearchResults([], 'semantic', false, null, null, null, {
+      retrievalTrace: { stages: [{ stage: 'router' }] },
+      appliedBoosts: { session: true },
+    });
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.retrievalTrace).toEqual({ stages: [{ stage: 'router' }] });
+    expect(envelope.data.appliedBoosts).toEqual({ session: true });
+  });
+
   it('C11: extraData merged into response data', async () => {
     const mockResults = [{ id: 40, spec_folder: 's', file_path: '/f.md', title: 'T' }];
     const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, { myExtra: 'data' });
@@ -283,6 +305,36 @@ describe('formatSearchResults', () => {
     expect(result.parentId).toBe(999);
     expect(result.chunkCount).toBe(3);
     expect(result.contentSource).toBe('reassembled_chunks');
+  });
+
+  it('C16: trace.channelsUsed includes row-level provenance and attribution matches', async () => {
+    const mockResults = [{
+      id: 52,
+      spec_folder: 'specs/010-test',
+      file_path: '/tmp/mock.md',
+      title: 'Trace Parent',
+      source: 'vector',
+      sources: ['vector', 'fts'],
+      traceMetadata: {
+        attribution: {
+          trigger: [52],
+          graph: [999],
+        },
+      },
+    }];
+    const res = await formatSearchResults(
+      mockResults,
+      'semantic',
+      false,
+      null,
+      null,
+      null,
+      {},
+      true,
+    );
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.results[0].trace.channelsUsed).toEqual(expect.arrayContaining(['vector', 'fts', 'trigger']));
+    expect(envelope.data.results[0].trace.channelsUsed).not.toContain('graph');
   });
 });
 

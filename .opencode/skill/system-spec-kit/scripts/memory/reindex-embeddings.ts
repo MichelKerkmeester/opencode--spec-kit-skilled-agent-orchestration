@@ -7,20 +7,18 @@
    1. MODULE SETUP
 --------------------------------------------------------------- */
 
-import path from 'path';
-import fs from 'fs';
+import {
+  closeIndexingRuntime,
+  initializeIndexingRuntime,
+  runMemoryIndexScan,
+  warmEmbeddingModel,
+} from '@spec-kit/mcp-server/api/indexing';
 
 /* ---------------------------------------------------------------
    2. TYPES
 --------------------------------------------------------------- */
 
-import type { EmbeddingProfile, MCPResponse } from '@spec-kit/shared/types';
-
-type SearchApiModule = typeof import('@spec-kit/mcp-server/api/search');
-type ProvidersApiModule = typeof import('@spec-kit/mcp-server/api/providers');
-type StorageApiModule = typeof import('@spec-kit/mcp-server/api/storage');
-type CoreModule = typeof import('@spec-kit/mcp-server/core');
-type HandlersModule = typeof import('@spec-kit/mcp-server/handlers');
+import type { MCPResponse } from '@spec-kit/shared/types';
 
 interface ScanData {
   status: string;
@@ -37,35 +35,6 @@ interface ScanData {
   files?: { status: string; file: string; isConstitutional?: boolean }[];
 }
 
-function resolveMcpServerDistRoot(): string {
-  const candidates: string[] = [
-    path.resolve(__dirname, '../../../mcp_server/dist'),
-  ];
-
-  for (const candidate of candidates) {
-    if (fs.existsSync(path.join(candidate, 'core', 'index.js'))) {
-      return candidate;
-    }
-  }
-
-  throw new Error(
-    `Unable to locate mcp_server/dist from ${__dirname}. Tried:\n - ${candidates.join('\n - ')}`
-  );
-}
-
-const MCP_SERVER_DIST_ROOT: string = resolveMcpServerDistRoot();
-
-function requireFromMcpServerDist<T>(...segments: string[]): T {
-  const modulePath = path.join(MCP_SERVER_DIST_ROOT, ...segments);
-  return require(modulePath) as T;
-}
-
-const searchApi = requireFromMcpServerDist<SearchApiModule>('api', 'search');
-const providersApi = requireFromMcpServerDist<ProvidersApiModule>('api', 'providers');
-const storageApi = requireFromMcpServerDist<StorageApiModule>('api', 'storage');
-const core = requireFromMcpServerDist<CoreModule>('core');
-const handlers = requireFromMcpServerDist<HandlersModule>('handlers');
-
 /* ---------------------------------------------------------------
    3. REINDEX FUNCTION
 --------------------------------------------------------------- */
@@ -76,89 +45,77 @@ async function reindex(): Promise<void> {
   console.log('='.repeat(60));
   console.log('');
 
-  console.log('[1/5] Initializing database...');
-  searchApi.vectorIndex.initializeDb();
-
-  console.log('[2/5] Initializing db-state module...');
-  core.init({
-    vectorIndex: searchApi.vectorIndex,
-    checkpoints: { init: storageApi.initCheckpoints },
-    accessTracker: { init: storageApi.initAccessTracker },
-    hybridSearch: { init: searchApi.initHybridSearch },
-  });
-
-  console.log('[3/5] Warming up embedding model...');
   try {
-    const start = Date.now();
-    await providersApi.generateEmbedding('warmup test');
-    const elapsed = Date.now() - start;
-    core.setEmbeddingModelReady(true);
-    console.log(`    Embedding model ready (${elapsed}ms)`);
+    console.log('[1/5] Initializing database...');
+    initializeIndexingRuntime();
 
-    const profile = providersApi.getEmbeddingProfile() as EmbeddingProfile | null;
-    console.log(`    Provider: ${profile?.provider}, Model: ${profile?.model}, Dim: ${profile?.dim}`);
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.error('ERROR: Embedding warmup failed:', message);
-    process.exit(1);
-  }
+    console.log('[2/5] Initializing db-state module...');
+    console.log('    Runtime bootstrap completed via public api/indexing');
 
-  console.log('[4/5] Initializing search modules...');
-  const database = searchApi.vectorIndex.getDb();
-  if (!database) {
-    console.error('ERROR: Database not initialized after initializeDb(). Cannot proceed.');
-    process.exit(1);
-  }
-  storageApi.initCheckpoints(database);
-  storageApi.initAccessTracker(database);
-  searchApi.initHybridSearch(database, searchApi.vectorIndex.vectorSearch);
-
-  console.log('[5/5] Force reindexing all memory files...');
-  console.log('');
-
-  const result: MCPResponse = await handlers.handleMemoryIndexScan({
-    force: true,
-    includeConstitutional: true
-  });
-
-  if (result.content && result.content[0]) {
-    const data: ScanData = JSON.parse(result.content[0].text);
-
-    console.log('-'.repeat(60));
-    console.log('REINDEX COMPLETE');
-    console.log('-'.repeat(60));
-    console.log(`Status:     ${data.status}`);
-    console.log(`Scanned:    ${data.scanned} files`);
-    console.log(`Indexed:    ${data.indexed} (new embeddings generated)`);
-    console.log(`Updated:    ${data.updated}`);
-    console.log(`Unchanged:  ${data.unchanged}`);
-    console.log(`Failed:     ${data.failed}`);
-
-    if (data.constitutional) {
-      console.log('');
-      console.log('Constitutional memories:');
-      console.log(`  Found:     ${data.constitutional.found}`);
-      console.log(`  Indexed:   ${data.constitutional.indexed}`);
-      console.log(`  Already:   ${data.constitutional.alreadyIndexed}`);
+    console.log('[3/5] Warming up embedding model...');
+    try {
+      const start = Date.now();
+      const profile = await warmEmbeddingModel('warmup test');
+      const elapsed = Date.now() - start;
+      console.log(`    Embedding model ready (${elapsed}ms)`);
+      console.log(`    Provider: ${profile?.provider}, Model: ${profile?.model}, Dim: ${profile?.dim}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error('ERROR: Embedding warmup failed:', message);
+      process.exit(1);
     }
 
-    if (data.files && data.files.length > 0) {
-      console.log('');
-      console.log('Changed files:');
-      for (const f of data.files.slice(0, 15)) {
-        console.log(`  [${f.status}] ${f.file}${f.isConstitutional ? ' (constitutional)' : ''}`);
-      }
-      if (data.files.length > 15) {
-        console.log(`  ... and ${data.files.length - 15} more`);
-      }
-    }
+    console.log('[4/5] Initializing search modules...');
+    console.log('    Search/storage modules initialized during runtime bootstrap');
 
+    console.log('[5/5] Force reindexing all memory files...');
     console.log('');
-    console.log('='.repeat(60));
-    console.log('STATUS=OK');
-  }
 
-  searchApi.vectorIndex.closeDb();
+    const result: MCPResponse = await runMemoryIndexScan({
+      force: true,
+      includeConstitutional: true
+    });
+
+    if (result.content && result.content[0]) {
+      const data: ScanData = JSON.parse(result.content[0].text);
+
+      console.log('');
+      console.log('-'.repeat(60));
+      console.log('REINDEX COMPLETE');
+      console.log('-'.repeat(60));
+      console.log(`Status:     ${data.status}`);
+      console.log(`Scanned:    ${data.scanned} files`);
+      console.log(`Indexed:    ${data.indexed} (new embeddings generated)`);
+      console.log(`Updated:    ${data.updated}`);
+      console.log(`Unchanged:  ${data.unchanged}`);
+      console.log(`Failed:     ${data.failed}`);
+
+      if (data.constitutional) {
+        console.log('');
+        console.log('Constitutional memories:');
+        console.log(`  Found:     ${data.constitutional.found}`);
+        console.log(`  Indexed:   ${data.constitutional.indexed}`);
+        console.log(`  Already:   ${data.constitutional.alreadyIndexed}`);
+      }
+
+      if (data.files && data.files.length > 0) {
+        console.log('');
+        console.log('Changed files:');
+        for (const f of data.files.slice(0, 15)) {
+          console.log(`  [${f.status}] ${f.file}${f.isConstitutional ? ' (constitutional)' : ''}`);
+        }
+        if (data.files.length > 15) {
+          console.log(`  ... and ${data.files.length - 15} more`);
+        }
+      }
+
+      console.log('');
+      console.log('='.repeat(60));
+      console.log('STATUS=OK');
+    }
+  } finally {
+    closeIndexingRuntime();
+  }
 }
 
 /* ---------------------------------------------------------------

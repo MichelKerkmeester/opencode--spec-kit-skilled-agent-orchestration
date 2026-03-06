@@ -12,7 +12,7 @@ import { validateToolInputSchema } from '../utils/tool-input-schema';
 --------------------------------------------------------------- */
 
 describe('Tool Schema Structural Integrity', () => {
-  it('no tool schema uses top-level oneOf, allOf, or anyOf (Claude API constraint)', () => {
+  it('no tool schema uses top-level oneOf, allOf, or anyOf', () => {
     for (const tool of TOOL_DEFINITIONS) {
       const schema = tool.inputSchema as Record<string, unknown>;
       expect(schema).not.toHaveProperty('oneOf');
@@ -99,18 +99,22 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
     }).not.toThrow();
   });
 
-  it('passes empty args at schema level (handler validates either id or specFolder required)', () => {
-    // AI-WHY: oneOf removal means schema no longer rejects empty args;
-    // handler at memory-crud-delete.ts:49 throws 'Either id or specFolder is required'
+  it('rejects empty args when neither delete branch is satisfied', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', {}, TOOL_DEFINITIONS);
-    }).not.toThrow();
+    }).toThrow(/required schema constraints/);
   });
 
-  it('rejects non-boolean confirm field via type check', () => {
+  it('rejects confirm values that do not satisfy the true-only safety gate', () => {
+    expect(() => {
+      validateToolInputSchema('memory_delete', { specFolder: 'specs/001', confirm: false }, TOOL_DEFINITIONS);
+    }).toThrow(/expected constant true/);
+  });
+
+  it('rejects non-boolean confirm field via type check before const matching', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', { specFolder: 'specs/001', confirm: 'yes' }, TOOL_DEFINITIONS);
-    }).toThrow(/expected boolean/);
+    }).toThrow(/expected constant true|expected boolean/);
   });
 
   it('rejects non-number id field via type check', () => {
@@ -125,6 +129,18 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
 --------------------------------------------------------------- */
 
 describe('memory_search limit contract', () => {
+  it('public schema accepts concepts-only search', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', { concepts: ['alpha', 'beta'] }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+  });
+
+  it('public schema rejects requests without query or concepts', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', {}, TOOL_DEFINITIONS);
+    }).toThrow(/required schema constraints/);
+  });
+
   it('accepts limit up to 100', () => {
     expect(() => {
       validateToolArgs('memory_search', { query: 'ab', limit: 100 });
@@ -135,5 +151,43 @@ describe('memory_search limit contract', () => {
     expect(() => {
       validateToolArgs('memory_search', { query: 'ab', limit: 101 });
     }).toThrow();
+  });
+
+  it('runtime rejects concepts arrays shorter than 2 items', () => {
+    expect(() => {
+      validateToolArgs('memory_search', { concepts: ['solo'] });
+    }).toThrow();
+  });
+
+  it('public schema rejects unknown memory_search parameters', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', { query: 'valid query', unexpected: true }, TOOL_DEFINITIONS);
+    }).toThrow(/Unknown argument/);
+  });
+
+  it('public schema enforces query minimum length', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', { query: 'a' }, TOOL_DEFINITIONS);
+    }).toThrow(/length must be >= 2/);
+  });
+
+  it('runtime rejects unknown memory_search parameters', () => {
+    expect(() => {
+      validateToolArgs('memory_search', { query: 'valid query', unexpected: true } as Record<string, unknown>);
+    }).toThrow(/Unknown parameter/);
+  });
+});
+
+describe('checkpoint_delete schema', () => {
+  it('requires confirmName at schema level', () => {
+    expect(() => {
+      validateToolInputSchema('checkpoint_delete', { name: 'danger-zone' }, TOOL_DEFINITIONS);
+    }).toThrow(/Missing required arguments.*confirmName/);
+  });
+
+  it('accepts matching name + confirmName payload shape', () => {
+    expect(() => {
+      validateToolInputSchema('checkpoint_delete', { name: 'danger-zone', confirmName: 'danger-zone' }, TOOL_DEFINITIONS);
+    }).not.toThrow();
   });
 });

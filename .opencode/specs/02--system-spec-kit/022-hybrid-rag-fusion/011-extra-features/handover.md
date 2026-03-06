@@ -1,4 +1,4 @@
-# Session Handover: Sprint 9 — Extra Features (Remaining 58 Checklist Items)
+# Session Handover: Sprint 9 — Extra Features (Runtime/Eval Verification Still Pending)
 
 **CONTINUATION - Attempt 1**
 
@@ -11,17 +11,20 @@
 ## 1. Session Summary
 
 **Objective**: Close architecture boundary enforcement gaps (Phase 008) and sync Phase 004 checklist/documentation with completed implementation work.
-**Progress**: 34% (30/88 checklist items verified; all implementation complete)
+**Progress**: Implementation complete; automated validation green (`npm run check`, `npm run check:full`); live MCP/runtime/eval verification still pending
 
 ### Key Accomplishments
-- Created `check-architecture-boundaries.ts` enforcing GAP A (shared/ neutrality) and GAP B (wrapper-only) — integrated into `npm run check` as stage 4
+- Created `check-architecture-boundaries.ts` enforcing GAP A (shared/ neutrality) and GAP B (wrapper-only) — integrated into the `scripts/` workspace check pipeline
 - Synced Phase 008 checklist: T046-T049 marked done, CHK-300-304 verified, 8 stale P2 items fixed
 - Synced Phase 004 checklist: 26 items marked `[x]` with evidence (from 4/88 to 30/88)
-- Updated feature_catalog.md and summary_of_new_features.md: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
+- Updated `../feature-catalog/feature_catalog.md` and feature-catalog summary_of_new_features: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
 - Expanded implementation-summary.md with full implementation details and rollback documentation
 - Updated 7 feature catalog subfolder files (01-07) to "IMPLEMENTED" status
 - Fixed modularization test limits for Sprint 019 file growth
-- Ran 531+ Sprint 019-specific tests (all pass), full suite 7098/7102 pass
+- Added `mcp_server` validation aliases: `npm run check` (`lint` + `tsc --noEmit`) and `npm run check:full` (full automated gate)
+- `npm run check:full` passed on 2026-03-06 with 242 passing test files / 7182 passing tests
+- 2026-03-06 remediation pass fixed review findings in runtime code and reset the spec docs away from the incorrect `88/88 verified` claim
+- Targeted remediation suites now pass: focused regression coverage (`398` tests) plus the full automated gate (`7182` tests)
 
 ---
 
@@ -29,10 +32,10 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | VERIFICATION (implementation complete, runtime tests pending) |
-| **Active File** | `011-extra-features/checklist.md` |
-| **Last Action** | Updated checklist to 30/88 verified, updated verification summary table |
-| **System State** | `npm run check` passes all 4 stages; `tsc --noEmit` clean; 7098 tests pass |
+| **Phase** | VERIFICATION (implementation complete, runtime/eval verification still pending) |
+| **Active File** | `checklist.md` |
+| **Last Action** | Added `mcp_server` validation aliases, fixed stale modularization/checkpoint test expectations, and re-verified the full automated gate |
+| **System State** | `npm run check` and `npm run check:full` both pass; original live MCP/manual runtime/eval tasks in `tasks.md` remain open |
 
 ---
 
@@ -40,9 +43,12 @@
 
 ### Tasks Completed This Session
 - T046-T049 (Phase 008): Architecture boundary enforcement — checker created, pipeline integrated, docs updated
-- T126: feature_catalog.md updated with 7 implemented Sprint 019 features
-- T127: summary_of_new_features.md updated from PLANNED to IMPLEMENTED
+- T126: `../feature-catalog/feature_catalog.md` updated with 7 implemented Sprint 019 features
+- T127: feature-catalog summary_of_new_features updated from PLANNED to IMPLEMENTED
 - T128: implementation-summary.md expanded with full details and rollback docs
+- Post-review remediation (2026-03-06): fixed schema/public contract drift, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup
+- Added `mcp_server/package.json` validation aliases: `check` (fast lint + typecheck) and `check:full` (full automated validation)
+- Re-aligned stale test expectations with the current contracts: modularization thresholds and checkpoint delete `confirmName`
 
 ### Files Created
 | File | Purpose |
@@ -54,31 +60,33 @@
 | File | Change |
 |------|--------|
 | `scripts/package.json` | Added stage 4 to `check` script |
-| `ARCHITECTURE_BOUNDARIES.md` | Added enforcement table row |
-| `scripts/evals/README.md` | Added inventory entry |
-| `012-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
-| `012-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
-| `011-extra-features/tasks.md` | T126-T128 marked [x] |
-| `011-extra-features/checklist.md` | 26 new items marked [x] (30/88 total) |
-| `011-extra-features/implementation-summary.md` | Expanded from stub to full summary |
-| `feature-catalog/summary_of_new_features.md` | 7 features → IMPLEMENTED |
-| `feature-catalog/feature_catalog.md` | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
+| `ARCHITECTURE_BOUNDARIES` | Added enforcement table row |
+| `scripts/evals/README` | Added inventory entry |
+| `../012-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
+| `../012-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
+| `tasks.md` | T126-T128 marked [x] |
+| `checklist.md` | Removed incorrect `88/88 verified` summary; added remediation note and targeted verification status |
+| `implementation-summary.md` | Expanded from stub to full summary |
+| `feature-catalog summary_of_new_features` | 7 features → IMPLEMENTED |
+| `../feature-catalog/feature_catalog.md` | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
 | `feature-catalog/23-extra-features-sprint-019/01-07*.md` | 7 files → IMPLEMENTED |
+| `mcp_server/package.json` | Added `check` and `check:full` validation commands |
+| `mcp_server/tests/checkpoints-extended.vitest.ts` | Updated checkpoint delete happy-path tests for `confirmName` |
 | `mcp_server/tests/modularization.vitest.ts` | Updated EXTENDED_LIMITS for Sprint 019 growth |
 
 ### Tests Passed
-- 240 Sprint 019-specific tests (Zod, envelopes, context headers, dispatch, validation)
-- 7098/7102 full test suite (4 modularization failures fixed this session)
-- `npm run check` all 4 stages clean
+- Focused remediation suite: 398 passing tests across schema validation, envelopes, watcher deletion, reranker guardrails, ingest queue, context server, and ingest handler coverage
+- `npm run check` passes in `mcp_server` (`eslint` + `tsc --noEmit`)
+- `npm run check:full` passes in `mcp_server` with 242 passing test files / 7182 passing tests
 
 ---
 
 ## 4. Pending Work
 
 ### Immediate Next Action
-Run runtime test verification for the 58 remaining checklist items. These ALL require a running MCP server or eval infrastructure.
+Run the remaining runtime/eval verification tasks still open in `tasks.md`. The automated validation gates are green, but end-to-end MCP, benchmark, and ablation work still requires a running server or eval infrastructure.
 
-### Remaining Items by Category (58 total)
+### Remaining Items by Category
 
 **Runtime Testing (48 items) — Requires live MCP server:**
 | Feature | Items | CHK Range | Corresponding Test Tasks |
@@ -121,7 +129,8 @@ Run runtime test verification for the 58 remaining checklist items. These ALL re
 
 | Decision | Rationale | Impact |
 |----------|-----------|--------|
-| Mark only implementation-verifiable items as `[x]` | Runtime testing items require actual server execution, not code review | 30/88 verified vs Codex Agent 3's suggested 57 — more conservative but accurate |
+| Treat `tasks.md` as the source of truth for remaining verification work | The previous checklist summary drifted away from the actual open tasks | Spec docs now say implementation is complete, targeted regression fixes are verified, and runtime/eval work is still pending |
+| Split validation into `npm run check` and `npm run check:full` in `mcp_server` | Fast local validation and full automated verification serve different needs | Day-to-day checks stay quick, while the full automated gate is now explicit and green |
 | Update modularization test limits | Sprint 019 features legitimately grew context-server.ts, tool-schemas.ts, search-results.ts | 3 EXTENDED_LIMITS updated; all 91 modularization tests pass |
 | Document rollback per feature flag | CHK-120 P0 blocker required documented rollback procedures | Added rollback table to implementation-summary.md |
 
@@ -147,21 +156,23 @@ Run runtime test verification for the 58 remaining checklist items. These ALL re
 
 ### Quick-Start Checklist
 - [ ] Load memory context: `memory_context({ input: "sprint 019 checklist verification", specFolder: "022-hybrid-rag-fusion" })`
-- [ ] Review checklist: `011-extra-features/checklist.md` (30/88 verified)
-- [ ] Review tasks: `011-extra-features/tasks.md` (test tasks T012-T098 subset)
+- [ ] Review checklist: `checklist.md` (remediation note + partial verification status)
+- [ ] Review tasks: `tasks.md` (test tasks T012-T098 subset)
+- [ ] Run `npm run check` for the fast validation gate
+- [ ] Run `npm run check:full` before claiming additional automated verification work
 - [ ] Start MCP server in test mode
 - [ ] Run runtime tests feature by feature (Zod → Envelopes → Ingestion → Trees → Reranker → Init → Watcher)
 - [ ] Run `eval_run_ablation` for regression baseline
 
 ### Files to Review First
-1. `011-extra-features/checklist.md` — Current verification state (30/88)
-2. `011-extra-features/tasks.md` — Test task definitions (T012-T098 testing subset)
-3. `011-extra-features/implementation-summary.md` — Feature details and rollback docs
+1. `checklist.md` — Current partial verification state and remediation note
+2. `tasks.md` — Test task definitions (T012-T098 testing subset)
+3. `implementation-summary.md` — Feature details and rollback docs
 
 ### Context to Load
 - Memory: `memory_search({ query: "sprint 019 extra features checklist", specFolder: "022-hybrid-rag-fusion" })`
-- Feature catalog: `feature-catalog/summary_of_new_features.md` (Sprint 019 section)
-- Environment variables: `references/config/environment_variables.md`
+- Feature catalog: feature-catalog summary doc (Sprint 019 section)
+- Environment variables: system-spec-kit config reference
 
 ### Suggested Approach for 58 Items
 1. **Start with Zod schemas (CHK-020-029)** — Highest priority, foundational, easiest to test

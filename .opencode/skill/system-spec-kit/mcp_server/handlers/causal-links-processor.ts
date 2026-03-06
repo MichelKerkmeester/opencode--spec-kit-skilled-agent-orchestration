@@ -147,11 +147,11 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
       try {
         causalEdges.insertEdge(edgeSourceId, edgeTargetId, mapping.relation, 1.0, `Auto-extracted from ${link_type} in memory file`);
         result.inserted++;
-        console.info(`[causal-links] Inserted edge: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
+        console.error(`[causal-links] Inserted edge: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
       } catch (err: unknown) {
         const message = toErrorMessage(err);
         if (message.includes('UNIQUE constraint')) {
-          console.info(`[causal-links] Edge already exists: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
+          console.error(`[causal-links] Edge already exists: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
         } else {
           result.errors.push({ type: link_type, reference, error: message });
           console.warn(`[causal-links] Failed to insert edge: ${message}`);

@@ -16,6 +16,7 @@ import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
+import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
 
 import type { MCPResponse } from './types';
 
@@ -201,8 +202,10 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   });
 
   // Invalidate caches
+  let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (deletedCount > 0) {
-    runPostMutationHooks('bulk-delete', { specFolder, tier, deletedCount });
+    const postMutationHooks = runPostMutationHooks('bulk-delete', { specFolder, tier, deletedCount });
+    postMutationFeedback = buildMutationHookFeedback('bulk-delete', postMutationHooks);
   }
 
   const summary = `Deleted ${deletedCount} "${tier}" memory(s)${specFolder ? ` from "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`;
@@ -212,6 +215,9 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     hints.push(`Restore with: checkpoint_restore({ name: "${checkpointName}" })`);
   } else if (skipCheckpoint) {
     hints.push('Checkpoint skipped: restore is not available for this operation');
+  }
+  if (postMutationFeedback) {
+    hints.push(...postMutationFeedback.hints);
   }
   hints.push(`Run memory_index_scan({ force: true }) to re-index if needed`);
 
@@ -225,6 +231,9 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   if (checkpointName) {
     data.checkpoint = checkpointName;
     data.restoreCommand = `checkpoint_restore({ name: "${checkpointName}" })`;
+  }
+  if (postMutationFeedback) {
+    data.postMutationHooks = postMutationFeedback.data;
   }
 
   return createMCPSuccessResponse({

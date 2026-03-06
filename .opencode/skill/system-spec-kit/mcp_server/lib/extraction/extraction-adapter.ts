@@ -233,14 +233,14 @@ async function handleAfterTool(toolName: string, callId: string, result: unknown
 
   if (redactionRatio(summary, redactionResult.redactedText) > REDACTION_SKIP_THRESHOLD) {
     metrics.skipped += 1;
-    console.info(`[extraction-adapter] Skipped insert for ${matched.rule.id}: redaction ratio above threshold`);
+    console.error(`[extraction-adapter] Skipped insert for ${matched.rule.id}: redaction ratio above threshold`);
     return;
   }
 
   const memoryId = resolveMemoryIdFromText(matched.sourceText);
   if (!memoryId) {
     metrics.skipped += 1;
-    console.info(`[extraction-adapter] Skipped insert for ${matched.rule.id}: no memory_id resolved`);
+    console.error(`[extraction-adapter] Skipped insert for ${matched.rule.id}: no memory_id resolved`);
     return;
   }
 
@@ -257,7 +257,7 @@ async function handleAfterTool(toolName: string, callId: string, result: unknown
 
   if (inserted) {
     metrics.inserted += 1;
-    console.info(`[extraction-adapter] Inserted working_memory item for memory ${memoryId} (${matched.rule.id})`);
+    console.error(`[extraction-adapter] Inserted working_memory item for memory ${memoryId} (${matched.rule.id})`);
   } else {
     metrics.skipped += 1;
   }

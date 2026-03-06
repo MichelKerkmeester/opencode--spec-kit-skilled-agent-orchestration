@@ -716,9 +716,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     intentWeights = intentClassifier.getIntentWeights(classification.intent as IntentType);
 
     if (classification.fallback) {
-      console.debug(`[memory-search] Intent auto-detected as '${detectedIntent}' (fallback: ${classification.reason})`);
+      console.error(`[memory-search] Intent auto-detected as '${detectedIntent}' (fallback: ${classification.reason})`);
     } else {
-      console.debug(`[memory-search] Intent auto-detected as '${detectedIntent}' (confidence: ${intentConfidence.toFixed(2)})`);
+      console.error(`[memory-search] Intent auto-detected as '${detectedIntent}' (confidence: ${intentConfidence.toFixed(2)})`);
     }
   }
 

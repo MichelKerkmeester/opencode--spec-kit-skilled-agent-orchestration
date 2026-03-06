@@ -190,6 +190,37 @@ function extractAnchorDetails(rawResult: RawSearchResult): { anchorIds: string[]
   return { anchorIds, anchorTypes };
 }
 
+function addChannel(channelsUsed: Set<string>, candidate: unknown): void {
+  if (typeof candidate !== 'string') return;
+  const normalized = candidate.trim();
+  if (normalized.length === 0) return;
+  channelsUsed.add(normalized);
+}
+
+function extractAttributedChannels(rawResult: RawSearchResult): string[] {
+  const channels = new Set<string>();
+  const numericId = toNullableNumber(rawResult.id);
+  const traceMetadata = rawResult.traceMetadata as Record<string, unknown> | undefined;
+  const attribution = traceMetadata?.attribution;
+
+  if (!attribution || typeof attribution !== 'object') {
+    return [];
+  }
+
+  for (const [channel, memoryIds] of Object.entries(attribution as Record<string, unknown>)) {
+    if (!Array.isArray(memoryIds) || numericId === null) {
+      continue;
+    }
+
+    const matchesResult = memoryIds.some((memoryId) => toNullableNumber(memoryId) === numericId);
+    if (matchesResult) {
+      addChannel(channels, channel);
+    }
+  }
+
+  return Array.from(channels);
+}
+
 function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unknown>): MemoryResultTrace {
   const rootTrace = extraData?.retrievalTrace as { stages?: Array<{ stage?: string; metadata?: Record<string, unknown> }> } | undefined;
   const retrievalTrace = (rawResult.retrievalTrace as { stages?: Array<{ stage?: string; metadata?: Record<string, unknown> }> } | undefined) ?? rootTrace;
@@ -239,6 +270,16 @@ function extractTrace(rawResult: RawSearchResult, extraData?: Record<string, unk
     fallbackTier = fallbackTier ?? 2;
   }
 
+  addChannel(channelsUsed, rawResult.source);
+  if (Array.isArray(rawResult.sources)) {
+    for (const source of rawResult.sources) {
+      addChannel(channelsUsed, source);
+    }
+  }
+  for (const channel of extractAttributedChannels(rawResult)) {
+    addChannel(channelsUsed, channel);
+  }
+
   // CHK-038: Fallback — read queryComplexity from traceMetadata if not found in stages
   if (!queryComplexity) {
     const tm = rawResult.traceMetadata as Record<string, unknown> | undefined;
@@ -282,7 +323,8 @@ export async function formatSearchResults(
       summary: 'No matching memories found',
       data: {
         searchType: searchType,
-        constitutionalCount: 0
+        constitutionalCount: 0,
+        ...extraData,
       },
       hints: [
         'Try broadening your search query',

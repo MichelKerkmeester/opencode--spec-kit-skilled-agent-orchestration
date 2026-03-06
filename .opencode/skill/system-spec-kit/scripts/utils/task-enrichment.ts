@@ -3,10 +3,14 @@
 // Shared helpers for memory task title enrichment decisions
 // ---------------------------------------------------------------
 
-import { isGenericContentTask } from './slug-utils';
+import { isContaminatedMemoryName, isGenericContentTask, normalizeMemoryNameCandidate, pickBestContentName } from './slug-utils';
 
 function hasJsonDataFile(dataFilePath: string | null | undefined): boolean {
   return typeof dataFilePath === 'string' && dataFilePath.trim().length > 0;
+}
+
+export function normalizeSpecTitleForMemory(title: string): string {
+  return normalizeMemoryNameCandidate(title);
 }
 
 export function shouldEnrichTaskFromSpecTitle(
@@ -17,5 +21,11 @@ export function shouldEnrichTaskFromSpecTitle(
   if (source === 'file' || hasJsonDataFile(dataFilePath)) {
     return false;
   }
-  return isGenericContentTask(task);
+
+  const normalizedTask = normalizeMemoryNameCandidate(task);
+  return isGenericContentTask(normalizedTask) || isContaminatedMemoryName(normalizedTask);
+}
+
+export function pickPreferredMemoryTask(task: string, specTitle: string, folderBase: string): string {
+  return pickBestContentName([task, specTitle, folderBase]) || normalizeMemoryNameCandidate(folderBase);
 }

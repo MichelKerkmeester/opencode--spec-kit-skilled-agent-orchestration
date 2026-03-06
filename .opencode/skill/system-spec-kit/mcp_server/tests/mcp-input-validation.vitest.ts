@@ -102,8 +102,8 @@ const TOOL_INVALID_INPUTS: Array<{
   {
     tool: 'checkpoint_delete',
     handler: 'handleCheckpointDelete',
-    invalidArgs: {},
-    description: 'missing required name string',
+    invalidArgs: { name: 'checkpoint-without-confirm' },
+    description: 'missing required confirmName string',
   },
   // L6
   {

@@ -14,6 +14,8 @@
   },
   "scripts": {
     "start": "node dist/context-server.js",
+    "check": "npm run lint && npx tsc --noEmit",
+    "check:full": "npm run check && npm run test",
     "lint": "eslint . --ext .ts",
     "test": "vitest run",
     "test:watch": "vitest"

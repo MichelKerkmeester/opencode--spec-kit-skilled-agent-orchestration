@@ -254,6 +254,66 @@ describe('PI-B3: isCacheStale', () => {
     expect(isCacheStale(cache, [specsDir])).toBe(false);
     expect(generateFolderDescriptions([specsDir]).folders).toHaveLength(0);
   });
+
+  it('T046-10c: returns true when a cached spec folder has been deleted', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const deletedSpecDir = createSpecFolder(tmpDir, '001-deleted', '# Deleted Spec');
+
+    const cache: DescriptionCache = {
+      version: 1,
+      generated: new Date().toISOString(),
+      folders: [
+        {
+          specFolder: '001-deleted',
+          description: 'Deleted Spec',
+          keywords: ['deleted', 'spec'],
+          lastUpdated: new Date().toISOString(),
+        },
+      ],
+    };
+
+    fs.rmSync(deletedSpecDir, { recursive: true, force: true });
+
+    expect(isCacheStale(cache, [specsDir])).toBe(true);
+  });
+
+  it('T046-10d: returns true when a cached spec folder has been renamed', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const renamedSpecDir = createSpecFolder(tmpDir, '001-original', '# Original Spec');
+
+    const cache: DescriptionCache = {
+      version: 1,
+      generated: new Date().toISOString(),
+      folders: [
+        {
+          specFolder: '001-original',
+          description: 'Original Spec',
+          keywords: ['original', 'spec'],
+          lastUpdated: new Date().toISOString(),
+        },
+      ],
+    };
+
+    fs.renameSync(renamedSpecDir, path.join(specsDir, '001-renamed'));
+
+    expect(isCacheStale(cache, [specsDir])).toBe(true);
+  });
+
+  it('T046-10e: regenerates cache when a previously cached spec folder is removed', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    createSpecFolder(tmpDir, '001-keep', '# Keep Spec');
+    const deletedSpecDir = createSpecFolder(tmpDir, '002-delete', '# Delete Spec');
+
+    const initialCache = ensureDescriptionCache([specsDir]);
+    expect(initialCache).not.toBeNull();
+    expect(initialCache!.folders.map((folder) => folder.specFolder)).toContain('002-delete');
+
+    fs.rmSync(deletedSpecDir, { recursive: true, force: true });
+
+    const refreshedCache = ensureDescriptionCache([specsDir]);
+    expect(refreshedCache).not.toBeNull();
+    expect(refreshedCache!.folders.map((folder) => folder.specFolder)).toEqual(['001-keep']);
+  });
 });
 
 /* ═══════════════════════════════════════════════════════════════
@@ -386,7 +446,7 @@ describe('CHK-PI-B3-004: Graceful degradation', () => {
     expect(result).toBeNull();
   });
 
-  it('T046-19: ensureDescriptionCache returns null on nonexistent base path', () => {
+  it('T046-19: ensureDescriptionCache returns an empty cache on nonexistent base path', () => {
     const result = ensureDescriptionCache(['/nonexistent/path/that/does/not/exist']);
     // Should not throw, returns a cache (possibly with 0 folders)
     expect(result).not.toBeNull();

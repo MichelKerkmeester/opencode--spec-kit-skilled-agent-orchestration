@@ -1,6 +1,6 @@
 ---
 title: "Hooks"
-description: "Memory-surface helper functions for context hint extraction and optional auto-surfacing."
+description: "Hook helper modules for memory surfacing, mutation UX feedback, and response hint injection."
 trigger_phrases:
   - "hooks"
   - "memory surfacing"
@@ -24,9 +24,9 @@ trigger_phrases:
 
 This section provides an overview of the Hooks directory.
 
-`hooks/` currently provides one helper module, `memory-surface.ts`, exported via `index.ts`.
+`hooks/` provides helper modules exported via `index.ts`.
 
-- It is a utility layer for memory-aware context surfacing.
+- It is a utility layer for memory-aware context surfacing and UX feedback metadata.
 - It is not a standalone MCP hook registration system.
 
 <!-- /ANCHOR:overview -->
@@ -39,11 +39,18 @@ Main exports (camelCase):
 - `getConstitutionalMemories()`
 - `clearConstitutionalCache()`
 - `autoSurfaceMemories(contextHint)`
-- `isMemoryAwareTool(toolName)`
+- `autoSurfaceAtToolDispatch(toolName, toolArgs, options)`
+- `autoSurfaceAtCompaction(sessionContext, options)`
+- `MEMORY_AWARE_TOOLS`
+- `buildMutationHookFeedback(operation, hookResult)`
+- `appendAutoSurfaceHints(result, autoSurfacedContext)`
 
 Data shape:
+- `extractContextHint(args)` pulls the first usable string from `input`, `query`, `prompt`, `specFolder`, or `filePath`, and falls back to joining `concepts[]` when present.
 - auto-surface output includes `constitutional`, `triggered`, `surfaced_at`, and `latencyMs`.
-- `MEMORY_AWARE_TOOLS` currently includes `memory_search`, `memory_match_triggers`, `memory_list`, `memory_save`, and `memory_index_scan`.
+- mutation hook feedback includes cache clear booleans, invalidated tool-cache count, and operation latency.
+- auto-surface response hints enrich the MCP JSON envelope `hints` and `meta.autoSurface`.
+- `MEMORY_AWARE_TOOLS` currently includes `memory_context`, `memory_search`, `memory_match_triggers`, `memory_list`, `memory_save`, and `memory_index_scan`.
 
 
 <!-- /ANCHOR:implemented-state -->

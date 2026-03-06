@@ -35,6 +35,7 @@ import {
   indexMemoryFile,
   handleMemoryStats,
 } from './handlers';
+import { runPostMutationHooks } from './handlers/mutation-hooks';
 
 // Utils
 import { validateInputLengths } from './utils';
@@ -46,6 +47,7 @@ import {
   autoSurfaceMemories,
   autoSurfaceAtToolDispatch,
   autoSurfaceAtCompaction,
+  appendAutoSurfaceHints,
 } from './hooks';
 
 // Architecture
@@ -92,6 +94,7 @@ import { migrateLearnedTriggers, verifyFts5Isolation } from './lib/storage/learn
 import { isLearnedFeedbackEnabled } from './lib/search/learned-feedback';
 import { initIngestJobQueue } from './lib/ops/job-queue';
 import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher';
+import { getCanonicalPathKey } from './lib/utils/canonical-path';
 
 /* ---------------------------------------------------------------
    2. TYPES
@@ -317,6 +320,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
     runAfterToolCallbacks(name, callId, result);
 
+    // SK-004: Inject auto-surfaced context into successful responses before
+    // token-budget enforcement so metadata reflects the final envelope.
+    if (autoSurfacedContext && result && !result.isError) {
+      appendAutoSurfaceHints(result, autoSurfacedContext);
+      result.autoSurfacedContext = autoSurfacedContext;
+    }
+
     // Token Budget Hybrid: Inject tokenBudget into response metadata (CHK-072)
     // T205: Enforce per-layer token budgets with actual truncation
     if (result && result.content && result.content[0]?.text) {
@@ -363,11 +373,6 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       } catch (_parseErr: unknown) {
         // Non-JSON response, skip token budget injection
       }
-    }
-
-    // SK-004: Inject auto-surfaced context into successful responses
-    if (autoSurfacedContext && result && !result.isError) {
-      result.autoSurfacedContext = autoSurfacedContext;
     }
 
     return result;
@@ -528,6 +533,24 @@ let fileWatcher: FSWatcher | null = null;
 /** Maximum time (ms) to wait for async cleanup before force-exiting. */
 const SHUTDOWN_DEADLINE_MS = 2000;
 
+/** Run a shutdown cleanup step and log failures without aborting the sequence. */
+function runCleanupStep(label: string, cleanupFn: () => void): void {
+  try {
+    cleanupFn();
+  } catch (error: unknown) {
+    console.error(`[context-server] ${label} cleanup failed:`, error);
+  }
+}
+
+/** Await a shutdown cleanup step and log failures without aborting the sequence. */
+async function runAsyncCleanupStep(label: string, cleanupFn: () => Promise<void>): Promise<void> {
+  try {
+    await cleanupFn();
+  } catch (error: unknown) {
+    console.error(`[context-server] ${label} cleanup failed:`, error);
+  }
+}
+
 /** P2-06 FIX: Shared graceful shutdown logic for signal handlers. */
 function gracefulShutdown(signal: string): void {
   if (shuttingDown) return;
@@ -535,30 +558,76 @@ function gracefulShutdown(signal: string): void {
   console.error(`[context-server] Received ${signal}, shutting down...`);
 
   // Synchronous cleanup
-  sessionManager.shutdown(); // T302: Clear session cleanup intervals (GAP 1)
-  archivalManager.cleanup(); // T059: Stop archival background job
-  retryManager.stopBackgroundJob(); // T099: Stop retry background job
-  accessTracker.reset();
-  toolCache.shutdown(); // KL-4: Stop cleanup interval and clear cache
+  runCleanupStep('sessionManager', () => sessionManager.shutdown());
+  runCleanupStep('archivalManager', () => archivalManager.cleanup());
+  runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
+  runCleanupStep('accessTracker', () => accessTracker.reset());
+  runCleanupStep('toolCache', () => toolCache.shutdown());
 
   // Async cleanup with deadline — await disposal before exiting to prevent
   // orphaned resources (Codex fix: void + immediate exit = disposal never completes).
   const forceExitTimer = setTimeout(() => process.exit(0), SHUTDOWN_DEADLINE_MS);
 
   void (async () => {
-    try {
+    await runAsyncCleanupStep('fileWatcher', async () => {
       if (fileWatcher) {
-        await fileWatcher.close().catch(() => {});
+        await fileWatcher.close();
         fileWatcher = null;
       }
+    });
+    await runAsyncCleanupStep('local-reranker', async () => {
       await disposeLocalReranker();
-    } catch { /* non-fatal cleanup */ }
-    vectorIndex.closeDb();
+    });
+    runCleanupStep('vectorIndex', () => vectorIndex.closeDb());
     // P1-09 FIX: Close MCP transport on shutdown
-    if (transport) { try { transport.close(); } catch { /* ignore */ } }
+    runCleanupStep('transport', () => {
+      if (transport) {
+        transport.close();
+      }
+    });
     clearTimeout(forceExitTimer);
     process.exit(0);
   })();
+}
+
+/** Remove indexed rows for watcher delete and rename events. */
+async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
+  const database = vectorIndex.getDb();
+  if (!database) {
+    return;
+  }
+
+  const canonicalPath = getCanonicalPathKey(filePath);
+  let rows: Array<{ id: number }> = [];
+
+  try {
+    rows = database.prepare(`
+      SELECT id
+      FROM memory_index
+      WHERE canonical_file_path = ? OR file_path = ?
+      ORDER BY id ASC
+    `).all(canonicalPath, filePath) as Array<{ id: number }>;
+  } catch {
+    rows = database.prepare(`
+      SELECT id
+      FROM memory_index
+      WHERE file_path = ?
+      ORDER BY id ASC
+    `).all(filePath) as Array<{ id: number }>;
+  }
+
+  let deletedCount = 0;
+  for (const row of rows) {
+    if (typeof row.id === 'number') {
+      if (vectorIndex.deleteMemory(row.id)) {
+        deletedCount += 1;
+      }
+    }
+  }
+
+  if (deletedCount > 0) {
+    runPostMutationHooks('delete', { filePath, deletedCount });
+  }
 }
 
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
@@ -566,14 +635,21 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 process.on('uncaughtException', (err: Error) => {
   console.error('[context-server] Uncaught exception:', err);
-  try { sessionManager.shutdown(); } catch (e: unknown) { console.error('[context-server] sessionManager shutdown failed:', e); }
-  try { archivalManager.cleanup(); } catch (e: unknown) { console.error('[context-server] archivalManager cleanup failed:', e); }
-  try { retryManager.stopBackgroundJob(); } catch (e: unknown) { console.error('[context-server] retryManager cleanup failed:', e); }
-  try { accessTracker.reset(); } catch (e: unknown) { console.error('[context-server] accessTracker cleanup failed:', e); }
-  try { toolCache.shutdown(); } catch (e: unknown) { console.error('[context-server] toolCache cleanup failed:', e); }
-  try { if (fileWatcher) { void fileWatcher.close(); fileWatcher = null; } } catch (e: unknown) { console.error('[context-server] fileWatcher cleanup failed:', e); }
-  try { void disposeLocalReranker(); } catch (e: unknown) { console.error('[context-server] local-reranker cleanup failed:', e); }
-  try { vectorIndex.closeDb(); } catch (e: unknown) { console.error('[context-server] vectorIndex closeDb failed:', e); }
+  runCleanupStep('sessionManager', () => sessionManager.shutdown());
+  runCleanupStep('archivalManager', () => archivalManager.cleanup());
+  runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
+  runCleanupStep('accessTracker', () => accessTracker.reset());
+  runCleanupStep('toolCache', () => toolCache.shutdown());
+  runCleanupStep('fileWatcher', () => {
+    if (fileWatcher) {
+      void fileWatcher.close();
+      fileWatcher = null;
+    }
+  });
+  runCleanupStep('local-reranker', () => {
+    void disposeLocalReranker();
+  });
+  runCleanupStep('vectorIndex', () => vectorIndex.closeDb());
   process.exit(1);
 });
 
@@ -866,6 +942,9 @@ async function main(): Promise<void> {
             paths: watchPaths,
             reindexFn: async (filePath: string) => {
               await indexMemoryFile(filePath, { asyncEmbedding: true });
+            },
+            removeFn: async (filePath: string) => {
+              await removeIndexedMemoriesForFile(filePath);
             },
           });
           console.error(`[context-server] File watcher started for ${watchPaths.length} path(s)`);

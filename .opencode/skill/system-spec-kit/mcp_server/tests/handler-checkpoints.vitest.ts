@@ -189,6 +189,33 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     it('T521-DEL2: Empty name throws', async () => {
       await expect(handler.handleCheckpointDelete({ name: '' })).rejects.toThrow(/name/);
     });
+
+    it('T521-DEL3: Missing confirmName throws', async () => {
+      await expect(handler.handleCheckpointDelete({ name: 'checkpoint-without-confirm' })).rejects.toThrow(/confirmName.*required/);
+    });
+
+    it('T521-DEL4: Mismatched confirmName throws', async () => {
+      await expect(
+        handler.handleCheckpointDelete({ name: 'checkpoint-a', confirmName: 'checkpoint-b' })
+      ).rejects.toThrow(/confirmName must exactly match name/);
+    });
+
+    it('T521-DEL5: Matching confirmName deletes checkpoint and reports safety confirmation', async () => {
+      const spy = vi.spyOn(checkpointStorageMod, 'deleteCheckpoint').mockReturnValue(true);
+      try {
+        const result = await handler.handleCheckpointDelete({
+          name: 'safe-delete',
+          confirmName: 'safe-delete',
+        });
+        expect(result.isError).toBeFalsy();
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.success).toBe(true);
+        expect(parsed.data?.safetyConfirmationUsed).toBe(true);
+        expect(parsed.hints).toEqual([]);
+      } finally {
+        spy.mockRestore();
+      }
+    });
   });
 
   // ─────────────────────────────────────────────────────────────

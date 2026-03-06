@@ -138,9 +138,9 @@ async function indexChunkedMemoryFile(
   const parentEncodingIntent = isEncodingIntentEnabled()
     ? classifyEncodingIntent(parsed.content)
     : undefined;
-  console.info(`[memory-save] Chunking ${filePath}: ${chunkResult.strategy} strategy, ${chunkResult.chunks.length} chunks`);
+  console.error(`[memory-save] Chunking ${filePath}: ${chunkResult.strategy} strategy, ${chunkResult.chunks.length} chunks`);
   if (droppedChunkCount > 0) {
-    console.info(`[memory-save] Chunk thinning retained ${retainedChunks.length}/${chunkResult.chunks.length} chunks`);
+    console.error(`[memory-save] Chunk thinning retained ${retainedChunks.length}/${chunkResult.chunks.length} chunks`);
   }
 
   // Wrap parent setup in transaction to prevent check-then-delete race condition

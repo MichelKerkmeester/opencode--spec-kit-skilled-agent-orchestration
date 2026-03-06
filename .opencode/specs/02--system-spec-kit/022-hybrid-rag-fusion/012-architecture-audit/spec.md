@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation [template:level_3/spec.md]"
-description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 013."
+description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "architecture audit"
@@ -223,7 +223,7 @@ On 2026-03-04, a **triple ultra-think cross-AI review** was performed by three i
 
 **Architecture design** is sound — API-first boundary, shared module layer, and handler cycle break are correctly implemented.
 
-**Documentation** has 4 MAJOR drift issues — boundary contract exception table incomplete, shared/README.md missing new modules, checklist summary stale, cross-links partially unidirectional.
+**Documentation** has 4 MAJOR drift issues — boundary contract exception table incomplete, .opencode/skill/system-spec-kit/shared/README.md missing new modules, checklist summary stale, cross-links partially unidirectional.
 
 **Enforcement** has 4 CRITICAL evasion vectors — dynamic imports undetected, relative path variants partially covered, multi-line imports bypass line-by-line scanning, boundary narrower than architecture intent (only `lib/*` blocked, not `core/*`).
 
@@ -247,14 +247,14 @@ Agent 4 was dispatched after Agents 1-3 to provide a second code-quality perspec
 |----|----------|---------|---------|
 | CV-1 | MINOR | Block comment handling gap — only `//` skipped, `/* */` can trigger false positives | Gemini + Codex (x2) |
 | CV-2 | CRITICAL | Enforcement boundary narrower than architecture intent — `core/*` not blocked, `check-api-boundary.sh` not in pipeline | Codex (Agents 3+4) + Claude |
-| CV-3 | MAJOR | Exception table documentation drift — ARCHITECTURE_BOUNDARIES.md missing `reindex-embeddings.ts` entry | Claude + Codex |
+| CV-3 | MAJOR | Exception table documentation drift — .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md missing `reindex-embeddings.ts` entry | Claude + Codex |
 | CV-4 | MAJOR | Quality extraction not frontmatter-bounded — body text can influence metadata | Codex (Agent 4) + Gemini (flagged regex rigidity) |
 | CV-5 | MAJOR | Relative `require` paths for `mcp_server/lib/` not detected by enforcement | Codex (Agents 3+4) |
 
 ### Action Items Summary
 
 - **P0 Blockers (4)**: Integrate `check-api-boundary.sh` into pipeline, add missing exception to boundary doc, expand prohibited patterns to cover `core/*`, fix `escapeLikePattern` backslash escaping
-- **P1 Should-Fix (11)**: Dynamic import detection, path variant coverage, shared/README.md update, allowlist governance fields, wildcard sunset, evals/README.md update, frontmatter-scope quality extraction, causal reference ordering, chunking empty-set guard, pe-gating NaN guard
+- **P1 Should-Fix (11)**: Dynamic import detection, path variant coverage, .opencode/skill/system-spec-kit/shared/README.md update, allowlist governance fields, wildcard sunset, .opencode/skill/system-spec-kit/scripts/evals/README.md update, frontmatter-scope quality extraction, causal reference ordering, chunking empty-set guard, pe-gating NaN guard
 - **P2 Nice-to-Have (8)**: Block comment tracking, behavioral tests, bidirectional cross-links, handler-utils growth policy, AST-based parsing upgrade, transitive dependency checks
 
 All remediation items are tracked as Phase 4 tasks (T021-T045) in `tasks.md`.
@@ -269,12 +269,12 @@ Former spec `030-architecture-boundary-remediation` is consolidated into this sp
 - Archived folder: `scratch/merged-030-architecture-boundary-remediation/`
 - Preserved documents: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
 
-### Carry-Over Scope (Pending)
-- Migrate `scripts/core/memory-indexer.ts` imports from runtime internals to API/shared surfaces.
-- Audit `scripts/memory/reindex-embeddings.ts` imports and reduce avoidable deep/internal coupling.
-- Expand API surface only where encapsulation remains intact.
-- Remove/narrow obsolete allowlist exceptions after migrations.
-- Wire mandatory CI enforcement of boundary checks for pull requests.
+### Carry-Over Scope (Completed 2026-03-06)
+- `scripts/core/memory-indexer.ts` imports migrated to API/shared surfaces for Phase 7 concerns.
+- `scripts/memory/reindex-embeddings.ts` imports audited and migrated to API surface (`@spec-kit/mcp-server/api/indexing`).
+- API surface expanded minimally via `mcp_server/api/indexing.ts` for safe bootstrap/index-scan hooks.
+- Obsolete memory-indexer allowlist exceptions removed; retained wildcard exceptions remain eval-only with governance metadata.
+- Mandatory CI boundary enforcement wired for pull requests in `.github/workflows/system-spec-kit-boundary-enforcement.yml`.
 
 ### Carry-Over Requirements
 
@@ -287,14 +287,14 @@ Former spec `030-architecture-boundary-remediation` is consolidated into this sp
 | REQ-015 | API surface expansion is explicit and minimal | New exports documented with encapsulation rationale |
 | REQ-016 | CI-level enforcement is mandatory | Boundary checks run on every PR and fail the workflow on violations |
 | REQ-017 | TypeScript compilation remains clean | `npx tsc --noEmit` passes |
-| REQ-018 | Architecture exceptions documentation stays synchronized | `ARCHITECTURE_BOUNDARIES.md` and allowlist reflect post-migration state |
+| REQ-018 | Architecture exceptions documentation stays synchronized | `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` and allowlist reflect post-migration state |
 
 ### Carry-Over Success Criteria
 
 - **SC-005**: Allowlist count and scope are reduced without adding new forbidden-direction imports.
 - **SC-006**: `npm run check` remains passing with all boundary enforcement stages active.
 - **SC-007**: CI workflow blocks merges on boundary-check failures.
-- **SC-008**: No unresolved P0/P1 remediation items remain for merged boundary-continuation tasks.
+- **SC-008**: No unresolved P0/P1 remediation items remain for merged boundary-continuation tasks. (Achieved 2026-03-06)
 <!-- /ANCHOR:merged-030 -->
 
 ## RELATED DOCUMENTS

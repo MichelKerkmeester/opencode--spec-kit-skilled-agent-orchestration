@@ -97,7 +97,7 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 
 **We chose**: Preserve wrappers as transitional compatibility surfaces while moving canonical runbook ownership to root scripts docs.
 
-**How it works**: `scripts/memory/README.md` becomes canonical runbook source, while `mcp_server/scripts/README.md` and `mcp_server/database/README.md` point to it.
+**How it works**: `.opencode/skill/system-spec-kit/scripts/memory/README.md` becomes canonical runbook source, while `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md` and `.opencode/skill/system-spec-kit/mcp_server/database/README.md` point to it.
 
 ### Alternatives Considered
 
@@ -216,7 +216,7 @@ The triple ultra-think cross-AI review identified 4 CRITICAL evasion vectors in 
 3. Multi-line imports/requires bypass line-by-line scanning
 4. Boundary narrower than architecture intent: only `lib/*` blocked, `core/*` paths pass through
 
-A subsequent 10-agent cross-AI review (2026-03-05, 5 Codex + 5 Gemini) identified 3 additional vectors documented in ADR-006 (merged from former spec 013):
+A subsequent 10-agent cross-AI review (2026-03-05, 5 Codex + 5 Gemini) identified 3 additional vectors documented in ADR-006 (merged from former spec 030):
 5. Template literal imports bypass regex extraction
 6. Same-line block comments (`/* ... */`) hide import tokens from line scanners
 7. Transitive barrel re-export checks limited to 1 hop (no deep graph traversal)
@@ -411,6 +411,6 @@ Cross-AI review (2026-03-05, 5 Codex xhigh + 5 Gemini 3.1 Pro) identified enforc
 
 ### Implementation
 
-- Merged from former `013-architecture-boundary-remediation/decision-record.md` ADR-001.
+- Merged from former `scratch/merged-030-architecture-boundary-remediation/decision-record.md` ADR-001.
 - Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
 <!-- /ANCHOR:adr-006 -->

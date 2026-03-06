@@ -177,7 +177,7 @@ export interface CheckpointRestoreArgs {
 
 export interface CheckpointDeleteArgs {
   name: string;
-  confirmName?: string;
+  confirmName: string;
 }
 
 export interface PreflightArgs {

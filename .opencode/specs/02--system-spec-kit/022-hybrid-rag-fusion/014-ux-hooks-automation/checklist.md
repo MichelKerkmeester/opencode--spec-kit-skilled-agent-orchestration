@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: UX Hooks Automation"
-description: "Verification Date: 2026-03-05"
+description: "Verification Date: 2026-03-06"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
@@ -48,10 +48,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run lint` passed in `.opencode/skill/system-spec-kit/mcp_server`]
-- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: clean `npm run lint` and `npm test` runs in `.opencode/skill/system-spec-kit/mcp_server` with no console warning/error failures]
-- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: memory-crud-health.ts, checkpoints.ts, and memory-save.ts include guarded error paths]
-- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: shared post-mutation hook wiring applied across CRUD handlers]
+- [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run lint` passed in `.opencode/skill/system-spec-kit/mcp_server`; `npx tsc -b` passed in `.opencode/skill/system-spec-kit` after regenerating build artifacts]
+- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: stdout emitters on MCP server paths were redirected to stderr-safe logging, and a real MCP SDK stdio client connected successfully to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and listed 28 tools; smoke output also reported 2839 orphaned entries, noted as residual operational signal outside this phase scope]
+- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: stdio-path logging no longer pollutes transport output, `hooks/response-hints.ts` and `context-server.ts` preserve success-path behavior, and runtime hook/indexing paths use stderr-safe logging]
+- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: shared hook modules remain exported via hooks barrel, build artifacts were regenerated with `npx tsc -b`, and provider/model-aware embeddings cache identity is covered in `tests/embeddings.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -59,10 +59,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: targeted suite 150 passed and full suite 7146 passed]
-- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: Phase is backend/tooling-only (no interactive UX path); completion verified via `npm test` full suite (`237 passed` files, `7146 passed` tests) and spec validator pass]
-- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: hybrid-search-flags, modularization, and tool-input-schema test coverage]
-- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: handler-memory-save and handler-memory-crud tests cover failure paths]
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: `npx tsc -b` PASS in `.opencode/skill/system-spec-kit`; `npm run lint` PASS in `.opencode/skill/system-spec-kit/mcp_server`; `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` PASS (7 files / 460 tests); `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` PASS (2 files / 15 tests); real MCP SDK stdio smoke test PASS with 28 tools listed; captured in `memory/06-03-26_10-36__ux-hooks-automation.md` / memory `#1193`]
+- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: real MCP SDK stdio smoke test PASS against `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` with 28 tools listed; manual playbook remains synced in `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md` with NEW-103+ scenarios]
+- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: targeted Vitest coverage now includes atomic-save feedback parity/hints, duplicate-save no-op feedback, token metadata recomputation before token-budget enforcement, and checkpoint `confirmName` validation; stdio/embeddings regressions also PASS; recorded in `memory/06-03-26_10-36__ux-hooks-automation.md` / memory `#1193`]
+- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: end-to-end envelope assertion and real MCP SDK stdio smoke test confirm success responses preserve the finalized hint envelope while stdio transport remains clean; recorded in `memory/06-03-26_10-36__ux-hooks-automation.md` / memory `#1193`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -71,7 +71,7 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: secret scan found only mock tokens in `tests/retrieval-trace.vitest.ts` and `tests/retrieval-telemetry.vitest.ts`; no production hardcoded secrets]
-- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: tool-input-schemas.ts, tool-schemas.ts, and tools/types.ts align on new parameters]
+- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: `confirmName` is enforced at handler, schema, tool-schema, and tool-type layers; delete without `confirmName` is rejected, and successful deletion reports `safetyConfirmationUsed=true`]
 - [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `014-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified]
 <!-- /ANCHOR:security -->
 
@@ -80,9 +80,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: spec.md, plan.md, and tasks.md reflect aligned UX hooks automation scope]
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md now align on the actual verification set, follow-up closures, and fresh memory snapshot `memory/06-03-26_10-36__ux-hooks-automation.md` / memory `#1193`]
 - [x] CHK-041 [P1] Code comments adequate [EVIDENCE: touched hook/handler flows remain self-descriptive and aligned with existing comment conventions; no non-obvious logic requiring new inline commentary]
-- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: N/A for this phase; no public API/CLI behavior changes requiring README updates]
+- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: hooks README updated to document new modules and UX hint contract usage]
+- [x] CHK-043 [P1] Manual playbook synchronized with implementation [EVIDENCE: NEW-103+ rows remain aligned to the implemented UX hook behavior, and the linked verification record is the fresh phase snapshot `memory/06-03-26_10-36__ux-hooks-automation.md` indexed as memory `#1193`; end-to-end context-server coverage now asserts the appended envelope hints used by those scenarios]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -92,7 +93,7 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: phase scratch directory contains only `.gitkeep`]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: phase scratch directory contains only `.gitkeep`]
-- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: saved via generate-context script to `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/memory/05-03-26_18-50__ux-hooks-automation.md` and indexed as memory `#1188`]
+- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: fresh snapshot saved via generate-context script to `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/memory/06-03-26_10-36__ux-hooks-automation.md` and indexed as memory `#1193`]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -103,10 +104,10 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 8 | 8/8 |
-| P1 Items | 10 | 10/10 |
+| P1 Items | 11 | 11/11 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-05
+**Verification Date**: 2026-03-06
 <!-- /ANCHOR:summary -->
 
 ---

@@ -783,7 +783,10 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
     it('EXT-H8: handleCheckpointDelete returns success', async () => {
       checkpointStorage.createCheckpoint({ name: 'delete-handler-test' });
 
-      const result = await handler.handleCheckpointDelete({ name: 'delete-handler-test' });
+      const result = await handler.handleCheckpointDelete({
+        name: 'delete-handler-test',
+        confirmName: 'delete-handler-test',
+      });
 
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
@@ -794,7 +797,10 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
     });
 
     it('EXT-H9: handleCheckpointDelete not-found handled', async () => {
-      const result = await handler.handleCheckpointDelete({ name: 'does-not-exist-xyz' });
+      const result = await handler.handleCheckpointDelete({
+        name: 'does-not-exist-xyz',
+        confirmName: 'does-not-exist-xyz',
+      });
 
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();

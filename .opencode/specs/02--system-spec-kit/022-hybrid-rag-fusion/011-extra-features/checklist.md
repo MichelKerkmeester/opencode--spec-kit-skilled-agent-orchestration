@@ -25,6 +25,8 @@ contextType: "verification"
 | **[P2]** | Optional | Can defer with documented reason |
 <!-- /ANCHOR:protocol -->
 
+> Remediation note (2026-03-06): the previous `88/88 verified` summary was incorrect. Use `tasks.md` as the source of truth for open runtime/eval work. This checklist now records implementation evidence, targeted remediation verification, and the refreshed automated workspace validation (`npm run check`, `npm run check:full`), but it has not been fully re-audited end-to-end for live MCP/manual eval tasks.
+
 ---
 
 <!-- ANCHOR:pre-impl -->
@@ -44,7 +46,7 @@ contextType: "verification"
 ## Code Quality
 
 - [x] CHK-010 [P0] Zod schemas match current valid parameter sets exactly (no false rejects) [EVIDENCE: T003-T007 completed; 27+ schemas in `schemas/tool-input-schemas.ts` with superRefine for unions]
-- [x] CHK-011 [P0] No console errors or warnings after schema changes [EVIDENCE: `npm run check` passes all 4 stages; `tsc --noEmit` clean in both workspaces]
+- [x] CHK-011 [P0] No console errors or warnings after schema changes [EVIDENCE: `npm run check` now passes the mcp_server fast gate (`npm run lint && npx tsc --noEmit`); `npm run check:full` passed the full Vitest suite (`242` files / `7182` tests) on 2026-03-06]
 - [x] CHK-012 [P0] Error messages from Zod validation are actionable (include expected shape) [EVIDENCE: T011 completed; `formatZodError()` at line 383 with ALLOWED_PARAMETERS lookup]
 - [x] CHK-013 [P1] All new code follows existing TypeScript patterns in mcp_server/ [EVIDENCE: sk-code--opencode standards applied; numbered sections, AI-WHY comments, PascalCase interfaces]
 - [x] CHK-014 [P1] New feature flags follow SPECKIT_ naming convention [EVIDENCE: T124 completed; SPECKIT_STRICT_SCHEMAS, SPECKIT_DYNAMIC_INIT, SPECKIT_FILE_WATCHER, SPECKIT_CONTEXT_HEADERS all follow convention]
@@ -63,10 +65,10 @@ contextType: "verification"
 - [x] CHK-023 [P0] `SPECKIT_STRICT_SCHEMAS=false` falls back to `.passthrough()` mode (unknown params accepted, logged) [EVIDENCE: getSchema() at tool-input-schemas.ts:14-16; strict ? base.strict() : base.passthrough()]
 - [x] CHK-024 [P1] Schema validation overhead <5ms per tool call (benchmark all 24 tools) [EVIDENCE: synchronous schema.parse() in validateToolArgs() at tool-input-schemas.ts:432-439; no I/O, no heavy computation]
 - [x] CHK-025 [P1] `memory_search` complex schema validates all 25+ params correctly (largest schema) [EVIDENCE: MemorySearchSchema covers query/concepts, scoring flags, dedup/session, trace, mode, archive/state with superRefine cross-field validation; tool-input-schemas.ts:76-105]
-- [x] CHK-026 [P1] Enum values validated: `mode` rejects "invalid_mode", accepts "auto"|"semantic"|"keyword"|"hybrid" [EVIDENCE: z.enum() enforced for mode, intent, tier, minState, relation/channel; tool-input-schemas.ts:35,45,65,103]
-- [x] CHK-027 [P1] Number ranges validated: `limit` rejects 0 and 51, accepts 1-50 [EVIDENCE: .min()/.max() constraints on limit, tokenUsage, min_quality_score, maxDepth; tool-input-schemas.ts:31-32,80,243]
-- [x] CHK-028 [P1] `memory_delete` discriminated union works: accepts `{id: 1}` OR `{specFolder: "x", confirm: true}`, rejects `{id: 1, confirm: true}` [EVIDENCE: two-branch z.union with z.literal(true) for confirm; tool-input-schemas.ts:137-145]
-- [x] CHK-029 [P2] Log rejected params at `info` level for audit trail (strict mode) [EVIDENCE: console.error logging added before throw in validateToolArgs(); logs tool name + formatted message to stderr; tool-input-schemas.ts:440-441]
+- [x] CHK-026 [P1] Enum values validated: `mode` rejects invalid values and currently accepts `auto|deep` for `memory_search` [EVIDENCE: runtime validation uses `z.enum(['auto', 'deep'])`; public schema contract was re-aligned and re-tested on 2026-03-06]
+- [x] CHK-027 [P1] Number ranges validated: `limit` rejects `0` and `101`, accepts `1-100` [EVIDENCE: bounded integer validation is enforced in runtime and covered by the remediation regression suite on 2026-03-06]
+- [x] CHK-028 [P1] `memory_delete` validation accepts `{id: 1}` and `{specFolder: "x", confirm: true}`; bulk deletion still requires `confirm: true` [EVIDENCE: runtime `z.union` keeps the id branch and constrains `confirm` to literal true when present]
+- [x] CHK-029 [P2] Rejected params are logged to stderr via schema-validation error logging (strict mode) [EVIDENCE: `validateToolArgs()` logs formatted validation failures with `console.error`; re-verified in the 2026-03-06 remediation pass]
 
 ### P0-2: Response Envelopes
 - [x] CHK-030 [P0] `memory_search` with `includeTrace: true` returns `scores` object with 7 score fields [EVIDENCE: 7 fields present: semantic, lexical, fusion, intentAdjusted, composite, rerank, attention; search-results.ts:80,317; field names reflect pipeline stages rather than raw channels]
@@ -76,7 +78,7 @@ contextType: "verification"
 - [x] CHK-034 [P0] Default `includeTrace: false` — no trace in response unless explicitly requested [EVIDENCE: includeTrace defaults false in handler; memory-search.ts:645,648; env override SPECKIT_RESPONSE_TRACE available for debug]
 - [x] CHK-035 [P1] `scores.fusion` matches internal `PipelineRow.rrfScore` for same result (no precision loss) [EVIDENCE: scores.fusion taken directly from rawResult.rrfScore; no rounding/formatting; search-results.ts:320,151; memory-search.ts:895]
 - [x] CHK-036 [P1] `scores.rerank` is `null` when `SPECKIT_CROSS_ENCODER=false` (not zero, null) [EVIDENCE: formatter emits null when rerankerScore missing; cross-encoder disabled via isCrossEncoderEnabled() gate; search-results.ts:323,157; hybrid-search.ts:834]
-- [x] CHK-037 [P1] `trace.channelsUsed` accurately lists which of 5 channels (vector/fts5/bm25/graph/degree) contributed [EVIDENCE: channelsUsed derived from trace stage metadata; search-results.ts:201,212; memory-search.ts:885]
+- [x] CHK-037 [P1] `trace.channelsUsed` includes stage metadata plus row-level provenance/attribution when available [EVIDENCE: remediation fixes now merge stage metadata, `source`/`sources`, and attribution matches; covered by `tests/search-results-format.vitest.ts` on 2026-03-06]
 - [x] CHK-038 [P1] `trace.queryComplexity` reflects R15 complexity router classification (simple|moderate|complex) [EVIDENCE: routeResult.tier wired into traceMetadata.queryComplexity in hybrid-search.ts; formatter reads from traceMetadata with fallback; search-results.ts:230; hybrid-search.ts:542,912]
 - [x] CHK-039 [P1] Envelope serialization overhead <10ms (benchmark) [EVIDENCE: minimal overhead — extra objects only created inside if(includeTrace), no I/O; search-results.ts:315,335]
 - [x] CHK-040 [P2] `memory_context` also supports `includeTrace` when underlying `memory_search` is called [EVIDENCE: includeTrace added to ContextArgs/ContextOptions interfaces, Zod schema, tool-schemas.ts inputSchema, and forwarded to all 3 handleMemorySearch call sites; memory-context.ts:84,317,338,364; tool-input-schemas.ts; tool-schemas.ts]
@@ -177,9 +179,9 @@ contextType: "verification"
 ## Documentation
 
 - [x] CHK-134 [P1] Spec/plan/tasks synchronized with actual implementation [EVIDENCE: tasks.md has 70 implementation tasks marked [x] with [DONE] evidence; spec.md and plan.md consistent]
-- [x] CHK-135 [P1] Feature flags documented with defaults and descriptions [EVIDENCE: T124 completed; 6 flags documented in `environment_variables.md` and code-level gating functions]
+- [x] CHK-135 [P1] Feature flags documented with defaults and descriptions [EVIDENCE: T124 completed; 6 flags documented in the system-spec-kit config reference and code-level gating functions]
 - [x] CHK-136 [P1] New MCP tools documented (memory_ingest_start, memory_ingest_status) [EVIDENCE: T050 completed; tool descriptions in TOOL_DEFINITIONS array in tool-schemas.ts]
-- [x] CHK-137 [P2] feature_catalog.md updated with new features [EVIDENCE: T126-T127 completed; feature_catalog.md and summary_of_new_features.md updated with IMPLEMENTED status for 7 features; 12 subfolder files updated]
+- [x] CHK-137 [P2] feature_catalog.md updated with new features [EVIDENCE: T126-T127 completed; `../feature-catalog/feature_catalog.md` and the feature-catalog summary doc were updated with IMPLEMENTED status for 7 features; 12 subfolder files updated]
 - [x] CHK-138 [P2] implementation-summary.md written after completion [EVIDENCE: T128 completed; expanded from stub to full summary with feature descriptions, file changes, flags, deferred items, verification results]
 <!-- /ANCHOR:docs -->
 
@@ -240,16 +242,19 @@ contextType: "verification"
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-| Category | Total | Verified | Notes |
-|----------|-------|----------|-------|
-| P0 Items | 28 | 28/28 | All P0 items verified |
-| P1 Items | 49 | 49/49 | All P1 items verified |
-| P2 Items | 11 | 11/11 | All P2 items verified |
-| **Total** | **88** | **88/88** |
+| Category | Total | Current Status | Notes |
+|----------|-------|----------------|-------|
+| P0 Items | 28 | Partial | Historical checklist marks were not fully re-audited in the 2026-03-06 remediation pass |
+| P1 Items | 49 | Partial | Multiple runtime/e2e/performance items remain open in `tasks.md` |
+| P2 Items | 11 | Partial | Documentation/perf/eval items remain mixed or deferred |
+| **Total** | **88** | **Not 88/88 complete** | Automated validation is broader now, but full sprint runtime/manual/eval verification remains incomplete |
 
-**Verification Date**: 2026-03-04
-- Phase 1: Code-review verification via 5 Codex gpt-5.3-codex agents (81/88 verified with file:line evidence)
-- Phase 2: 7 remaining items fixed with code changes + documentation comments, then verified (88/88)
+**Verification Date**: 2026-03-06
+- Historical implementation notes remain in this checklist, but they should not be treated as a completed verification ledger.
+- Fast workspace validation passed: `npm run check` in `mcp_server` now runs `npm run lint && npx tsc --noEmit`.
+- Full automated workspace validation passed: `npm run check:full` in `mcp_server` completed on 2026-03-06 with `242` Vitest files and `7182` tests passing.
+- Targeted remediation verification also passed: `npx vitest run tests/tool-input-schema.vitest.ts tests/search-results-format.vitest.ts tests/file-watcher.vitest.ts tests/local-reranker.vitest.ts tests/job-queue.vitest.ts tests/handler-memory-ingest.vitest.ts` (`89` tests).
+- Open runtime/eval work remains in `tasks.md` (for example T012-T015, T029-T032, T038-T039, T051-T055, T063-T065, T077-T081, T093-T098, T119-T123, T125, T129).
 
 ### Priority Breakdown by Feature
 

@@ -1157,6 +1157,63 @@ describe('handleMemoryHealth - Happy Path', () => {
     const hints = parsed?.hints || [];
     expect(hints.some((hint: string) => hint.includes('More divergent alias groups available'))).toBe(true);
   });
+
+  it('EXT-H12: autoRepair rebuilds FTS drift and records repair metadata', async (ctx) => {
+    if (!handler?.handleMemoryHealth || !vectorIndex || !embeddingsSourceMod || !triggerMatcherMod?.refreshTriggerCache) {
+      ctx.skip();
+      return;
+    }
+
+    handler.setEmbeddingModelReady(true);
+
+    let ftsCount = 2;
+    const execMock = vi.fn(() => {
+      ftsCount = 42;
+    });
+    const fakeDb = {
+      prepare: (sql: string) => ({
+        get: () => {
+          if (sql.includes('FROM memory_index')) return { count: 42 };
+          if (sql.includes('FROM memory_fts')) return { count: ftsCount };
+          return null;
+        },
+        all: () => [],
+      }),
+      exec: execMock,
+    };
+
+    vi.mocked(vectorIndex.getDb).mockImplementation(() => fakeDb as any);
+    vi.mocked(vectorIndex.isVectorSearchAvailable).mockImplementation(() => true);
+    vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => ({
+      provider: 'test',
+      model: 'test-model',
+      healthy: true,
+    }));
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfile).mockImplementation(() => ({
+      dim: 768,
+      getDatabasePath: (base: string) => `${base}/test.db`,
+    }));
+
+    const refreshSpy = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => undefined as never);
+
+    try {
+      const result = await handler.handleMemoryHealth({ autoRepair: true });
+      const parsed = parseResponse(result);
+
+      expect(execMock).toHaveBeenCalledTimes(1);
+      expect(refreshSpy).toHaveBeenCalledTimes(1);
+      expect(parsed?.data?.repair).toEqual(expect.objectContaining({
+        requested: true,
+        attempted: true,
+        repaired: true,
+      }));
+      expect(parsed?.data?.repair?.actions).toContain('fts_rebuild');
+      expect(parsed?.data?.repair?.actions).toContain('trigger_cache_refresh');
+      expect(parsed?.hints?.some((hint: string) => hint.includes('Auto-repair completed'))).toBe(true);
+    } finally {
+      refreshSpy.mockRestore();
+    }
+  });
 });
 
 /* ─────────────────────────────────────────────────────────────

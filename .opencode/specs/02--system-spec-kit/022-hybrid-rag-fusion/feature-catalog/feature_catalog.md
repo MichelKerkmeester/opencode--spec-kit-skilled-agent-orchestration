@@ -129,6 +129,20 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Dead code removal](#dead-code-removal)
   - [Performance improvements](#performance-improvements)
   - [Test quality improvements](#test-quality-improvements)
+- [UX hooks automation (Phase 014)](#ux-hooks-automation-phase-014)
+  - [Shared post-mutation hook wiring](#shared-post-mutation-hook-wiring)
+  - [Memory health autoRepair metadata](#memory-health-autorepair-metadata)
+  - [Checkpoint delete confirmName safety](#checkpoint-delete-confirmname-safety)
+  - [Schema and type contract synchronization](#schema-and-type-contract-synchronization)
+  - [Dedicated UX hook modules](#dedicated-ux-hook-modules)
+  - [Mutation hook result contract expansion](#mutation-hook-result-contract-expansion)
+  - [Mutation response UX payload exposure](#mutation-response-ux-payload-exposure)
+  - [Context-server success-path hint append](#context-server-success-path-hint-append)
+  - [Duplicate-save no-op feedback hardening](#duplicate-save-no-op-feedback-hardening)
+  - [Atomic-save parity and partial-indexing hints](#atomic-save-parity-and-partial-indexing-hints)
+  - [Final token metadata recomputation](#final-token-metadata-recomputation)
+  - [Hooks README and export alignment](#hooks-readme-and-export-alignment)
+  - [End-to-end success-envelope verification](#end-to-end-success-envelope-verification)
 - [Gemini review P1 fixes (Phase 015 -> 009-post-review-remediation-epic)](#gemini-review-p1-fixes-phase-015)
   - [Quality gate timer persistence](#quality-gate-timer-persistence)
   - [Stage 3 effectiveScore fallback chain](#stage-3-effectivescore-fallback-chain)
@@ -1117,6 +1131,66 @@ Four test quality issues were addressed:
 **P2d:** A duplicate T007 test block was identified as pre-resolved (not present in current file).
 
 **Additional fixes:** `memory-parser.ts` gained a `/z_archive/` exclusion in `isMemoryFile()` spec doc detection. 18+ test files were updated to match changed source behavior (reconsolidation, five-factor-scoring, working-memory, session-cleanup, channel tests, entity tests, extraction-adapter, intent-routing and others). Test count adjusted from 7,027 to 7,003 (24 tests for removed dead-code features were deleted).
+
+---
+
+## UX hooks automation (Phase 014)
+
+Current mapping: this content is tracked under sub-phase `014-ux-hooks-automation`.
+
+Phase 014 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Verification after implementation: `npx tsc -b` PASS, `npm run lint` PASS, the targeted UX suite PASSed with 7 files and 460 tests, the stdio plus embeddings suite PASSed with 2 files and 15 tests, and the MCP SDK stdio smoke test PASSed with 28 tools listed.
+
+### Shared post-mutation hook wiring
+
+Shared post-mutation hook automation now runs for `memory_save`, `memory_update`, `memory_delete`, and `memory_bulk_delete`, including atomic save paths. This removes per-handler follow-up drift and makes mutation side effects consistent.
+
+### Memory health autoRepair metadata
+
+`memory_health` now supports optional `autoRepair` execution and returns structured repair metadata so callers can see exactly what was repaired.
+
+### Checkpoint delete confirmName safety
+
+Checkpoint deletion now requires a matching `confirmName` and returns metadata about confirmation and deletion outcomes, reducing accidental destructive operations. The finalized follow-up pass enforced this requirement across handler, schema, tool-schema, and tool-type layers so the same safety rule applies at every boundary. Successful delete responses now also report `safetyConfirmationUsed=true`.
+
+### Schema and type contract synchronization
+
+The mutation-safety parameters and outputs were aligned across runtime validation and typing layers (`schemas/tool-input-schemas.ts`, `tool-schemas.ts`, and `tools/types.ts`) so handler behavior, tool schemas, and TypeScript contracts stay synchronized. That follow-up work specifically locked in required `confirmName` validation and the finalized mutation response metadata contract.
+
+### Dedicated UX hook modules
+
+Phase 014 extracted UX-oriented post-mutation behavior into dedicated modules for mutation feedback and response hints. This split reduces coupling inside mutation handlers and makes UX hook behavior reusable and easier to evolve without editing each tool handler.
+
+### Mutation hook result contract expansion
+
+The shared mutation hook result contract now includes `latencyMs` and explicit cache-clear booleans so downstream consumers can reason about hook timing and cache invalidation outcomes from a single structured result.
+
+### Mutation response UX payload exposure
+
+Mutation tool responses now expose UX payload data from the hook pipeline, including `postMutationHooks` metadata and hint strings. This allows callers to surface post-mutation guidance directly from tool output rather than reconstructing it externally. The finalized behavior now distinguishes real mutation-hook execution from duplicate-save no-op paths so no false hook metadata is emitted.
+
+### Context-server success-path hint append
+
+The context server success path now appends hint content through `appendAutoSurfaceHints` while preserving the existing `autoSurfacedContext` payload. This keeps prior context surface behavior intact and adds UX guidance without replacing existing response fields. The finalized implementation runs the append step before token-budget enforcement and recomputes final token metadata from the completed envelope.
+
+### Duplicate-save no-op feedback hardening
+
+Duplicate-content save no-op responses no longer emit false `postMutationHooks`, cache-clear booleans, or misleading invalidation hints. Instead, they explain that the save was a no-op and that caches were left unchanged. This gives callers an accurate success response without pretending a mutation hook actually ran.
+
+### Atomic-save parity and partial-indexing hints
+
+`atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle partial success consistently. Atomic save responses no longer require special-case parsing compared with standard save responses.
+
+### Final token metadata recomputation
+
+Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)` adds the last response-envelope content and before token-budget enforcement evaluates the payload. This closes the old gap where appended hints could leave `meta.tokenCount` out of sync with the actual envelope. The result is a success response whose metadata reflects the same finalized payload the budget logic inspects.
+
+### Hooks README and export alignment
+
+The hooks barrel and hooks README were brought back into sync with the implemented UX-hook modules. `mutation-feedback` and `response-hints` are now both exported and documented as the canonical shared hook surface. This follow-up closure removed the documentation and export drift that appeared after the initial rollout.
+
+### End-to-end success-envelope verification
+
+Phase 014 verification now includes an end-to-end appended-envelope assertion in `tests/context-server.vitest.ts`. That coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together instead of checking them in isolation. The change locks the final response shape in place so future regressions surface immediately.
 
 ---
 

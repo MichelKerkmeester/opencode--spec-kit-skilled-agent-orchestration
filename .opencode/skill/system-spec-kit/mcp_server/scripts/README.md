@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Compatibility Wrappers (mcp_server/scripts)
 
-This directory contains **only** compatibility wrappers that delegate to canonical implementations in `scripts/`. These are NOT canonical scripts.
+This directory contains **only** compatibility wrappers that delegate to canonical implementations in `scripts/`. These are not canonical scripts and should not accumulate independent logic.
 
 > Operational entry points for maintenance tasks that run outside the normal MCP request lifecycle, such as forced full-reindex of embeddings.
 
@@ -36,7 +36,7 @@ This directory contains **only** compatibility wrappers that delegate to canonic
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-`scripts/` contains compatibility wrappers for operational scripts that now live in the central `scripts/memory/` workspace.
+`mcp_server/scripts/` contains wrapper source files for legacy entry points. The source-of-truth implementations live under the workspace-level `scripts/` package.
 
 <!-- /ANCHOR:overview -->
 
@@ -47,9 +47,16 @@ This directory contains **only** compatibility wrappers that delegate to canonic
 
 ```
 scripts/
-+-- reindex-embeddings.ts    # Compatibility wrapper -> ../../scripts/dist/memory/reindex-embeddings.js
++-- reindex-embeddings.ts    # Wrapper source -> ../../scripts/dist/memory/reindex-embeddings.js at runtime
 +-- README.md                # This file
 ```
+
+Build outputs are split across packages:
+
+- Canonical implementation source: `../../scripts/memory/reindex-embeddings.ts`
+- Canonical built runtime target: `../../scripts/dist/memory/reindex-embeddings.js`
+- Legacy wrapper source: `reindex-embeddings.ts`
+- Legacy wrapper build output: `../dist/scripts/reindex-embeddings.js`
 
 ### File Inventory
 
@@ -64,10 +71,11 @@ scripts/
 ## 3. IMPLEMENTED STATE
 <!-- ANCHOR:implemented-state -->
 
-- Reindex implementation lives in `scripts/memory/reindex-embeddings.ts` and runs through current handlers (not a separate indexing implementation).
+- Reindex implementation lives in `scripts/memory/reindex-embeddings.ts` and runs through current handlers.
 - Indexed scope follows current scan behavior, including memory, constitutional and spec-doc discovery defaults.
 - Script prints a concise progress summary on stdout and exits non-zero on fatal startup failures.
 - Module initialization order: `vectorIndex` -> `embeddings` -> `checkpointsLib` -> `accessTracker` -> `hybridSearch` -> `initDbState` -> `setEmbeddingModelReady`.
+- Wrapper TypeScript in this directory compiles into `mcp_server/dist/scripts/`, then delegates to the canonical built JavaScript in `scripts/dist/`.
 
 <!-- /ANCHOR:implemented-state -->
 
@@ -77,9 +85,17 @@ scripts/
 <!-- ANCHOR:usage -->
 
 ```bash
+# From .opencode/skill/system-spec-kit/
 npm run build
+
+# Preferred canonical entry point
 node scripts/dist/memory/reindex-embeddings.js
+
+# Legacy compatibility path for older callers
+node mcp_server/dist/scripts/reindex-embeddings.js
 ```
+
+Prefer the canonical `scripts/dist/` entry point in new automation. The legacy `mcp_server/dist/scripts/` path exists only for backward compatibility.
 
 The script exits 0 on success. Any fatal startup error (missing DB, failed embedding warm-up) exits non-zero with an error message on stderr.
 

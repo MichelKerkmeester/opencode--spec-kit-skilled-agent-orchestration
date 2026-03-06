@@ -559,7 +559,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       }
     } catch (err: unknown) {
       // CHK-PI-B3-004: never block context retrieval
-      console.debug('[memory-context] folder discovery failed (non-critical):',
+      console.error('[memory-context] folder discovery failed (non-critical):',
         err instanceof Error ? err.message : String(err));
     }
   }

@@ -182,5 +182,14 @@ describe('Embeddings Architecture (T513)', () => {
       expect(metadata).toBeDefined();
       expect(typeof metadata).toBe('object');
     });
+
+    it('T513-04d: getModelName reflects configured provider before lazy initialization', () => {
+      process.env.EMBEDDINGS_PROVIDER = 'auto';
+      process.env.VOYAGE_API_KEY = 'voyage_test_key_1234567890';
+      process.env.VOYAGE_EMBEDDINGS_MODEL = 'voyage-4-lite';
+      delete process.env.OPENAI_API_KEY;
+
+      expect(embeddingsFacade.getModelName()).toBe('voyage-4-lite');
+    });
   });
 });

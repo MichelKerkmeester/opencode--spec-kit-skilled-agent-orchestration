@@ -6,6 +6,7 @@
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { appendAutoSurfaceHints as actualAppendAutoSurfaceHints } from '../hooks/response-hints'
 
 const SERVER_DIR = path.resolve(__dirname, '..')
 const SOURCE_FILE = path.join(SERVER_DIR, 'context-server.ts')
@@ -318,6 +319,7 @@ describe('Context Server', () => {
       autoSurfaceMemoriesMock: ReturnType<typeof vi.fn>
       autoSurfaceAtToolDispatchMock: ReturnType<typeof vi.fn>
       autoSurfaceAtCompactionMock: ReturnType<typeof vi.fn>
+      appendAutoSurfaceHintsMock: ReturnType<typeof vi.fn>
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
     }
 
@@ -329,6 +331,7 @@ describe('Context Server', () => {
       const autoSurfaceMemoriesMock = vi.fn(async () => ({ constitutional: [], triggered: [] }))
       const autoSurfaceAtToolDispatchMock = vi.fn(async () => null)
       const autoSurfaceAtCompactionMock = vi.fn(async () => null)
+      const appendAutoSurfaceHintsMock = vi.fn(actualAppendAutoSurfaceHints)
       const extractContextHintMock = vi.fn((toolArgs: Record<string, unknown>) => {
         if (typeof toolArgs?.query === 'string') return toolArgs.query
         if (typeof toolArgs?.input === 'string') return toolArgs.input
@@ -398,6 +401,7 @@ describe('Context Server', () => {
         autoSurfaceMemories: autoSurfaceMemoriesMock,
         autoSurfaceAtToolDispatch: autoSurfaceAtToolDispatchMock,
         autoSurfaceAtCompaction: autoSurfaceAtCompactionMock,
+        appendAutoSurfaceHints: appendAutoSurfaceHintsMock,
       }))
 
       vi.doMock('../lib/architecture/layer-definitions', () => ({
@@ -471,6 +475,7 @@ describe('Context Server', () => {
         autoSurfaceMemoriesMock,
         autoSurfaceAtToolDispatchMock,
         autoSurfaceAtCompactionMock,
+        appendAutoSurfaceHintsMock,
         callToolHandler: callToolHandler as (request: unknown, extra: unknown) => Promise<unknown>,
       }
     }
@@ -720,6 +725,54 @@ describe('Context Server', () => {
       expect(autoSurfaceMemoriesMock).toHaveBeenCalledWith('focused retrieval context')
       expect(autoSurfaceAtCompactionMock).not.toHaveBeenCalled()
       expect((response as { autoSurfacedContext?: unknown }).autoSurfacedContext).toEqual(surfaced)
+    })
+
+    it('T000i: successful responses append auto-surface hints and preserve autoSurfacedContext', async () => {
+      const {
+        dispatchToolMock,
+        autoSurfaceAtToolDispatchMock,
+        appendAutoSurfaceHintsMock,
+        callToolHandler,
+      } = await loadRuntimeHarness()
+
+      const surfaced = {
+        constitutional: [{ id: 1, title: 'Gate rule' }],
+        triggered: [{ memory_id: 2, matched_phrases: ['hook'] }],
+        surfaced_at: '2026-03-06T12:00:00.000Z',
+        latencyMs: 7,
+      }
+
+      dispatchToolMock.mockResolvedValue({
+        content: [{
+          type: 'text',
+          text: JSON.stringify({
+            summary: 'ok',
+            data: { results: [{ id: 1 }], count: 1 },
+            hints: [],
+            meta: { tool: 'checkpoint_list', tokenCount: 10, cacheHit: false },
+          }),
+        }],
+      })
+      autoSurfaceAtToolDispatchMock.mockResolvedValue(surfaced)
+
+      const response = await callToolHandler(
+        { id: 'call-8', params: { name: 'checkpoint_list', arguments: { query: 'recent checks' } } },
+        {}
+      ) as { content: Array<{ text: string }>; autoSurfacedContext?: unknown }
+
+      expect(appendAutoSurfaceHintsMock).toHaveBeenCalledTimes(1)
+      expect(response.autoSurfacedContext).toEqual(surfaced)
+
+      const parsed = JSON.parse(response.content[0].text)
+      expect(parsed.hints.some((hint: string) => hint.includes('Auto-surface hook: injected 1 constitutional and 1 triggered memories'))).toBe(true)
+      expect(parsed.meta.autoSurface).toEqual({
+        constitutionalCount: 1,
+        triggeredCount: 1,
+        surfaced_at: '2026-03-06T12:00:00.000Z',
+        latencyMs: 7,
+      })
+      expect(parsed.meta.tokenBudget).toBe(1000)
+      expect(parsed.meta.tokenCount).toBeGreaterThan(0)
     })
   })
 
@@ -1417,6 +1470,11 @@ describe('Context Server', () => {
     // T47: Shutdown closes transport (P1-09)
     it('T47: Shutdown closes transport (P1-09)', () => {
       expect(sourceCode).toMatch(/transport\.close\(\)/)
+    })
+
+    // T47b: File watcher delete path clears mutation caches after DB cleanup
+    it('T47b: watcher-backed delete runs post-mutation hooks', () => {
+      expect(sourceCode).toMatch(/runPostMutationHooks\('delete',\s*\{\s*filePath,\s*deletedCount\s*\}\)/)
     })
 
     // T48: Shutdown guard prevents double shutdown

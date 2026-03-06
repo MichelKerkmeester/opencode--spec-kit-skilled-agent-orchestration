@@ -126,21 +126,12 @@ function extractNumericScore(value: unknown): number | null {
     const parsed = Number.parseFloat(value);
     return Number.isFinite(parsed) ? parsed : null;
   }
-  if (Array.isArray(value)) {
-    const numeric = value.filter((item): item is number => typeof item === 'number' && Number.isFinite(item));
-    if (numeric.length === 0) return null;
-    return numeric.reduce((sum, n) => sum + n, 0) / numeric.length;
-  }
   if (value && typeof value === 'object') {
     const record = value as Record<string, unknown>;
     const directKeys = ['score', 'relevance', 'relevanceScore', 'similarity', 'logit'];
     for (const key of directKeys) {
       const extracted = extractNumericScore(record[key]);
       if (extracted !== null) return extracted;
-    }
-    if (record['embedding'] !== undefined) {
-      const embeddingScore = extractNumericScore(record['embedding']);
-      if (embeddingScore !== null) return embeddingScore;
     }
   }
   return null;
@@ -151,7 +142,7 @@ async function scorePrompt(context: unknown, prompt: string): Promise<number> {
     throw new Error('Invalid llama context');
   }
 
-  const directFns = ['score', 'getScore', 'embed', 'encode', 'evaluate', 'eval'] as const;
+  const directFns = ['score', 'getScore', 'evaluate', 'eval'] as const;
   for (const fnName of directFns) {
     const fn = (context as Record<string, unknown>)[fnName];
     if (typeof fn === 'function') {
@@ -250,7 +241,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
     }));
     const remainder = candidates.slice(rerankCount);
     const elapsed = Date.now() - startedAt;
-    console.log(
+    console.error(
       `[local-reranker] reranked=${rerankCount} total=${candidates.length} durationMs=${elapsed} model=${modelPath}`
     );
     return [...rerankedTop, ...remainder];
@@ -305,4 +296,5 @@ export const __testables = {
   resolveRowText,
   extractNumericScore,
   normalizeScore,
+  scorePrompt,
 };

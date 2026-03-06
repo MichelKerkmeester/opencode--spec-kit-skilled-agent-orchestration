@@ -1,5 +1,5 @@
 {
-  "description": "Allowlist for scripts importing from @spec-kit/mcp-server/{lib,core}/* internals. Each exception requires: owner, reason, removeWhen, createdAt, lastReviewedAt. Wildcard (lib/*) entries MUST include expiresAt; specific-path entries SHOULD include expiresAt.",
+  "description": "Allowlist for scripts importing from @spec-kit/mcp-server/{lib,core,handlers} internals or equivalent relative runtime paths. Each exception requires: owner, reason, removeWhen, createdAt, lastReviewedAt. Wildcard internal-runtime entries MUST include expiresAt; specific-path entries SHOULD include expiresAt.",
   "exceptions": [
     {
       "file": "scripts/evals/run-performance-benchmarks.ts",

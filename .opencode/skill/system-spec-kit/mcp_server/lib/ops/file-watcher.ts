@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 export interface WatcherConfig {
   paths: string[];
   reindexFn: (filePath: string) => Promise<unknown>;
+  removeFn?: (filePath: string) => Promise<unknown>;
   debounceMs?: number;
 }
 
@@ -123,7 +124,10 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     ignored: shouldIgnoreWatchTarget,
   });
 
-  const scheduleReindex = (targetPath: unknown, options: { force?: boolean } = {}): void => {
+  const scheduleTask = (
+    targetPath: unknown,
+    operation: () => Promise<void>,
+  ): void => {
     if (typeof targetPath !== 'string') {
       return;
     }
@@ -132,8 +136,6 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     }
 
     const filePath = targetPath;
-    const forceReindex = options.force === true;
-
     if (!isMarkdownPath(filePath) || isDotfilePath(filePath)) {
       return;
     }
@@ -149,46 +151,74 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         return;
       }
 
-      const task = (async () => {
-        try {
-          // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
-          // created then deleted before the debounce timer fires.
-          let nextHash: string;
-          try {
-            nextHash = await hashFileContent(filePath);
-          } catch (hashErr: unknown) {
-            const code = (hashErr as { code?: string })?.code;
-            if (code === 'ENOENT') return; // File was deleted — silently ignore
-            throw hashErr;
-          }
-
-          if (!forceReindex) {
-            const previousHash = contentHashes.get(filePath);
-            if (previousHash && previousHash === nextHash) {
-              return;
-            }
-          }
-
-          const reindexStart = Date.now();
-          await withBusyRetry(async () => {
-            await config.reindexFn(filePath);
-          });
-          const reindexElapsed = Date.now() - reindexStart;
-          filesReindexed++;
-          totalReindexTimeMs += reindexElapsed;
-          console.error(`[file-watcher] Reindexed ${filePath} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
-
-          contentHashes.set(filePath, nextHash);
-        } catch (error: unknown) {
-          const message = error instanceof Error ? error.message : String(error);
-          console.warn(`[file-watcher] Re-index failed for ${filePath}: ${message}`);
-        }
-      })();
-
+      const task = operation().catch((error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn(`[file-watcher] Watch task failed for ${filePath}: ${message}`);
+      });
       trackInFlight(task);
     }, debounceMs);
 
     debounceTimers.set(filePath, timeout);
+  };
+
+  const scheduleReindex = (targetPath: unknown, options: { force?: boolean } = {}): void => {
+    const filePath = typeof targetPath === 'string' ? targetPath : null;
+    const forceReindex = options.force === true;
+
+    scheduleTask(targetPath, async () => {
+      if (!filePath) {
+        return;
+      }
+
+      // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
+      // created then deleted before the debounce timer fires.
+      let nextHash: string;
+      try {
+        nextHash = await hashFileContent(filePath);
+      } catch (hashErr: unknown) {
+        const code = (hashErr as { code?: string })?.code;
+        if (code === 'ENOENT') return; // File was deleted — silently ignore
+        throw hashErr;
+      }
+
+      if (!forceReindex) {
+        const previousHash = contentHashes.get(filePath);
+        if (previousHash && previousHash === nextHash) {
+          return;
+        }
+      }
+
+      const reindexStart = Date.now();
+      await withBusyRetry(async () => {
+        await config.reindexFn(filePath);
+      });
+      const reindexElapsed = Date.now() - reindexStart;
+      filesReindexed++;
+      totalReindexTimeMs += reindexElapsed;
+      console.error(`[file-watcher] Reindexed ${filePath} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
+
+      contentHashes.set(filePath, nextHash);
+    });
+  };
+
+  const scheduleRemove = (targetPath: unknown): void => {
+    const filePath = typeof targetPath === 'string' ? targetPath : null;
+
+    scheduleTask(targetPath, async () => {
+      if (!filePath) {
+        return;
+      }
+
+      contentHashes.delete(filePath);
+      if (!config.removeFn) {
+        return;
+      }
+
+      await withBusyRetry(async () => {
+        await config.removeFn?.(filePath);
+      });
+      console.error(`[file-watcher] Removed indexed entries for ${filePath}`);
+    });
   };
 
   watcher.on('add', (targetPath: unknown) => {
@@ -196,6 +226,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   });
   watcher.on('change', (targetPath: unknown) => {
     scheduleReindex(targetPath);
+  });
+  watcher.on('unlink', (targetPath: unknown) => {
+    scheduleRemove(targetPath);
   });
   watcher.on('error', (error: unknown) => {
     const message = error instanceof Error ? error.message : String(error);

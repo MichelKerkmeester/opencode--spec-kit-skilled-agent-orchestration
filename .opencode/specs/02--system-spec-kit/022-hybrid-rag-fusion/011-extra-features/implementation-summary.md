@@ -20,10 +20,10 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `022-hybrid-rag-fusion/011-extra-features` |
+| **Spec Folder** | 011-extra-features |
 | **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
-| **Status** | Implementation Complete (runtime tests pending) |
+| **Status** | Implementation complete; post-review remediation and refreshed automated workspace validation applied on 2026-03-06; live runtime/eval verification still pending |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,6 +32,8 @@ contextType: "implementation"
 ## What Was Built
 
 Seven features spanning schema hardening, retrieval observability, operational reliability, and retrieval quality. All implementation tasks (T001-T092) are complete. Test tasks (T012-T098 testing subset) and eval/doc tasks remain open.
+
+Post-review remediation on 2026-03-06 corrected the issues found in the implementation review: public/runtime schema drift, ingest queue accounting and crash recovery, watcher delete handling, empty-result trace envelopes, provenance under-reporting, local reranker fail-open behavior, signal shutdown cleanup, and inconsistent spec-folder status reporting.
 
 ### P0-1: Strict Zod Schema Validation
 
@@ -117,7 +119,7 @@ All 7 features are independently controllable via environment variables. To roll
 | `mcp_server/context-server.ts` | MODIFIED | P1-6 Dynamic init, P1-7 Watcher init |
 | `mcp_server/tool-schemas.ts` | MODIFIED | P0-1 Schema registration |
 | `mcp_server/tools/*.ts` | MODIFIED | P0-1 validateToolArgs integration |
-| `references/config/environment_variables.md` | MODIFIED | Flag documentation |
+| `system-spec-kit config reference` | MODIFIED | Flag documentation |
 <!-- /ANCHOR:files-changed -->
 
 ---
@@ -146,11 +148,8 @@ Five features explicitly deferred with documented blocking conditions:
 | Spec artifacts exist | PASS |
 | `tsc --noEmit` (mcp_server/) | PASS |
 | `tsc --noEmit` (scripts/) | PASS |
-| `npm run check` (4-stage pipeline) | PASS |
-| Zod schema tests (15 tests) | PASS |
-| Envelope tests (37 tests) | PASS |
-| Context header tests (2 tests) | PASS |
-| Search flags tests (5 tests) | PASS |
-| MCP input validation tests (32 tests) | PASS |
-| Checklist verification | 26/88 (implementation items verified; runtime tests pending) |
+| `npm run check` (mcp_server fast gate: lint + `tsc --noEmit`) | PASS |
+| `npm run check:full` (mcp_server full Vitest suite) | PASS (`242` files / `7182` tests on 2026-03-06) |
+| Targeted remediation suite (89 tests) | PASS |
+| Checklist verification | Not fully re-audited; open live runtime/eval tasks remain in `tasks.md` |
 <!-- /ANCHOR:verification -->

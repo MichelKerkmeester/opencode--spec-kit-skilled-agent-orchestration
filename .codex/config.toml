@@ -1,4 +1,6 @@
 model = "gpt-5.4"
+model_reasoning_effort = "xhigh"
+model_auto_compact_token_limit = 400000
 
 [mcp_servers.sequential_thinking]
 command = "npx"
@@ -33,10 +35,18 @@ child_agents_md = true
 # Profiles for codex exec -p <name> (non-interactive delegation)
 [profiles.context]
 sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 
 [profiles.debug]
 sandbox_mode = "workspace-write"
+model_reasoning_effort = "xhigh"
+
+[profiles.handover]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+
+[profiles.orchestrate]
+sandbox_mode = "read-only"
 model_reasoning_effort = "xhigh"
 
 [profiles.research]
@@ -47,13 +57,17 @@ model_reasoning_effort = "xhigh"
 sandbox_mode = "read-only"
 model_reasoning_effort = "xhigh"
 
+[profiles.speckit]
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+
 [profiles.ultra-think]
 sandbox_mode = "read-only"
 model_reasoning_effort = "xhigh"
 
 [profiles.write]
 sandbox_mode = "workspace-write"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "medium"
 
 # Agents for interactive multi-agent TUI (codex with multi_agent feature)
 [agents.context]

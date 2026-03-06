@@ -5,7 +5,7 @@
 
 import { createHash } from 'node:crypto';
 
-const GENERIC_SLUGS = new Set([
+const GENERIC_TASK_SLUGS = new Set([
   'development-session',
   'session-summary',
   'session-context',
@@ -13,12 +13,21 @@ const GENERIC_SLUGS = new Set([
   'context',
   'implementation',
   'work-session',
-]);
-
-const GENERIC_TASK_SLUGS = new Set([
-  ...GENERIC_SLUGS,
   'implementation-and-updates',
 ]);
+
+const CONTAMINATED_NAME_PATTERNS = [
+  /^to promote a memory\b/i,
+  /^epistemic state captured at session start\b/i,
+  /^machine-readable section\b/i,
+  /^table of contents\b/i,
+  /^no conversation messages were captured\b/i,
+  /^no specific implementations recorded\b/i,
+  /^decision_count:\s*0\b/i,
+  /template configuration comments/i,
+  /session context documentation/i,
+  /always surfaced/i,
+];
 
 function toUnicodeSafeSlug(text: string): string {
   return text
@@ -35,17 +44,67 @@ function hashFallbackSlug(seed: string): string {
   return `session-${digest}`;
 }
 
+export function normalizeMemoryNameCandidate(raw: string): string {
+  if (typeof raw !== 'string') {
+    return '';
+  }
+
+  return raw
+    .replace(/^#+\s*/, '')
+    .replace(/^[-*]\s+/, '')
+    .replace(/^(feature\s+)?spec(ification)?:\s*/i, '')
+    .replace(/\s*\[template:[^\]]*\]\s*$/i, '')
+    .replace(/^['"`]+|['"`]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/[\s\-:;,]+$/, '');
+}
+
 export function slugify(text: string): string {
   if (!text || typeof text !== 'string') return '';
   return toUnicodeSafeSlug(text);
 }
 
+export function isContaminatedMemoryName(candidate: string): boolean {
+  const normalized = normalizeMemoryNameCandidate(candidate);
+  if (normalized.length === 0) {
+    return false;
+  }
+
+  return CONTAMINATED_NAME_PATTERNS.some((pattern) => pattern.test(normalized));
+}
+
 export function isGenericContentTask(task: string): boolean {
-  const taskSlug = slugify(task);
+  const taskSlug = slugify(normalizeMemoryNameCandidate(task));
   if (taskSlug.length === 0) {
     return true;
   }
   return GENERIC_TASK_SLUGS.has(taskSlug);
+}
+
+export function pickBestContentName(candidates: readonly string[]): string {
+  const seen = new Set<string>();
+
+  for (const candidate of candidates) {
+    const normalized = normalizeMemoryNameCandidate(candidate);
+    if (normalized.length < 8) {
+      continue;
+    }
+
+    const dedupeKey = normalized.toLowerCase();
+    if (seen.has(dedupeKey)) {
+      continue;
+    }
+    seen.add(dedupeKey);
+
+    if (isGenericContentTask(normalized) || isContaminatedMemoryName(normalized)) {
+      continue;
+    }
+
+    return normalized;
+  }
+
+  return '';
 }
 
 export function truncateSlugAtWordBoundary(slug: string, max: number = 50): string {
@@ -58,11 +117,12 @@ export function truncateSlugAtWordBoundary(slug: string, max: number = 50): stri
   return truncated;
 }
 
-export function generateContentSlug(task: string, fallback: string): string {
-  const taskSlug = slugify(task);
-  if (taskSlug.length >= 8 && !GENERIC_SLUGS.has(taskSlug)) {
-    return truncateSlugAtWordBoundary(taskSlug);
+export function generateContentSlug(task: string, fallback: string, alternatives: readonly string[] = []): string {
+  const bestCandidate = pickBestContentName([task, ...alternatives]);
+  if (bestCandidate.length > 0) {
+    return truncateSlugAtWordBoundary(slugify(bestCandidate));
   }
+
   const fallbackSlug = slugify(fallback);
   if (fallbackSlug.length > 0) {
     return truncateSlugAtWordBoundary(fallbackSlug);

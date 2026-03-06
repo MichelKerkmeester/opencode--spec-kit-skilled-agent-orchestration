@@ -3,13 +3,16 @@
 // Computes deterministic quality score and flags for rendered memories
 // ---------------------------------------------------------------
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9';
 
 type QualityFlag =
   | 'has_placeholders'
   | 'has_fallback_decision'
   | 'has_contamination'
-  | 'sparse_semantic_fields';
+  | 'sparse_semantic_fields'
+  | 'has_tool_state_mismatch'
+  | 'has_spec_relevance_mismatch'
+  | 'has_contaminated_title';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -73,6 +76,18 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityResult {
     }
     if (failed.ruleId === 'V5') {
       qualityFlags.add('sparse_semantic_fields');
+    }
+    if (failed.ruleId === 'V6') {
+      qualityFlags.add('has_placeholders');
+    }
+    if (failed.ruleId === 'V7') {
+      qualityFlags.add('has_tool_state_mismatch');
+    }
+    if (failed.ruleId === 'V8') {
+      qualityFlags.add('has_spec_relevance_mismatch');
+    }
+    if (failed.ruleId === 'V9') {
+      qualityFlags.add('has_contaminated_title');
     }
   }
 

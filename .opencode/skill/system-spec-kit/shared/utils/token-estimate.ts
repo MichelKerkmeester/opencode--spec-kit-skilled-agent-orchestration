@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Token Estimate
+// ---------------------------------------------------------------
+
 /**
  * Estimate token count using chars/4 approximation.
  * Canonical shared implementation — replaces duplicates in tree-thinning.ts and token-metrics.ts.

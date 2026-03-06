@@ -36,11 +36,15 @@ const memorySearch: ToolDefinition = {
   description: '[L2:Core] Search conversation memories semantically using vector similarity. Returns ranked results with similarity scores. Constitutional tier memories are ALWAYS included at the top of results (~2000 tokens max), regardless of query. Requires either query (string) OR concepts (array of 2-5 strings) for multi-concept AND search. Supports intent-aware retrieval (REQ-006) with task-specific weight adjustments. Token Budget: 1500.',
   inputSchema: {
     type: 'object',
+    additionalProperties: false,
+    'x-requiredAnyOf': [['query'], ['concepts']],
     properties: {
-      query: { type: 'string', description: 'Natural language search query' },
+      query: { type: 'string', minLength: 2, maxLength: 1000, description: 'Natural language search query' },
       concepts: {
         type: 'array',
-        items: { type: 'string' },
+        items: { type: 'string', minLength: 1 },
+        minItems: 2,
+        maxItems: 5,
         description: 'Multiple concepts for AND search (requires 2-5 concepts). Results must match ALL concepts.'
       },
       specFolder: { type: 'string', description: 'Limit search to a specific spec folder (e.g., "011-spec-kit-memory-upgrade")' },
@@ -218,10 +222,12 @@ const memoryDelete: ToolDefinition = {
   description: '[L4:Mutation] Delete a memory by ID or all memories in a spec folder. Use to remove incorrect or outdated information. Requires EITHER id (single delete) OR specFolder + confirm:true (bulk delete). Token Budget: 500.',
   inputSchema: {
     type: 'object',
+    additionalProperties: false,
+    'x-requiredAnyOf': [['id'], ['specFolder', 'confirm']],
     properties: {
-      id: { type: 'number', description: 'Memory ID to delete (single delete mode)' },
-      specFolder: { type: 'string', description: 'Delete all memories in this spec folder (bulk delete mode, requires confirm: true)' },
-      confirm: { type: 'boolean', description: 'Required safety gate for bulk delete: must be true when using specFolder without id' }
+      id: { type: 'number', minimum: 1, description: 'Memory ID to delete (single delete mode)' },
+      specFolder: { type: 'string', minLength: 1, description: 'Delete all memories in this spec folder (bulk delete mode, requires confirm: true)' },
+      confirm: { type: 'boolean', const: true, description: 'Safety gate. When provided, confirm must be true.' }
     }
   },
 };
@@ -287,10 +293,10 @@ const checkpointDelete: ToolDefinition = {
       name: { type: 'string', description: 'Checkpoint name to delete' },
       confirmName: {
         type: 'string',
-        description: 'Optional safety confirmation. When provided, it must exactly match name.'
+        description: 'Required safety confirmation. It must exactly match name.'
       }
     },
-    required: ['name']
+    required: ['name', 'confirmName']
   },
 };
 

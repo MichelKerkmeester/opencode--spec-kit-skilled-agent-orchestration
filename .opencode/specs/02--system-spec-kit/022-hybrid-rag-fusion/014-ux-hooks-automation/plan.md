@@ -28,10 +28,10 @@ contextType: "general"
 | **Language/Stack** | TypeScript, Vitest, Markdown docs |
 | **Framework** | System-spec-kit MCP server handlers |
 | **Storage** | None |
-| **Testing** | Targeted Vitest suites + full `npm test` run |
+| **Testing** | `npx tsc -b`, `npm run lint`, targeted Vitest suites (7 files / 460 tests and 2 files / 15 tests), plus real MCP SDK stdio smoke test |
 
 ### Overview
-This phase adds one shared post-mutation hook automation pattern across memory mutation handlers, then extends health and checkpoint safety contracts. The implementation prioritizes consistent mutation follow-up behavior, explicit destructive-action safety, and test-stable delivery.
+This phase adds shared post-mutation hook automation across memory mutation handlers, introduces dedicated UX hook modules, and closes the remaining P0-P2 review issues around checkpoint delete safety, duplicate-save no-op feedback, atomic-save parity, token metadata recomputation, README export drift, and end-to-end envelope verification. The implementation prioritizes consistent mutation follow-up behavior, explicit operator guidance, and a verified response contract backed by targeted Vitest coverage plus a real MCP SDK stdio smoke pass.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -60,11 +60,14 @@ Shared mutation post-hook pattern (common post-mutation wiring + handler-local p
 
 ### Key Components
 - **Post-Mutation Hook Wrapper**: Executes shared follow-up behavior after successful mutations
+- **Mutation Feedback Hook Module**: Builds consistent post-mutation metadata including latency and cache-clear signals
+- **Response Hint Hook Module**: Builds and appends UX hints for successful responses
 - **Health Repair Path**: Runs optional `autoRepair` and returns structured repair metadata
 - **Checkpoint Delete Safety Layer**: Requires `confirmName` and returns metadata for destructive ops
+- **Context Server Success Adapter**: Calls `appendAutoSurfaceHints(...)` before returning successful responses and preserves `autoSurfacedContext`
 
 ### Data Flow
-Mutation request executes handler logic, then shared post-mutation hook flow runs before final response. Health operations optionally run repair and emit repair metadata. Checkpoint deletion validates `confirmName` before delete and reports result metadata.
+Mutation request executes handler logic, then shared post-mutation hooks run and emit `postMutationHooks` plus UX hints before final response. Health operations optionally run repair and emit repair metadata. Checkpoint deletion validates `confirmName` before delete and reports result metadata. Context server appends auto-surface hints on success and preserves `autoSurfacedContext` in the same response.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -81,11 +84,24 @@ Mutation request executes handler logic, then shared post-mutation hook flow run
 - [x] Implement shared post-mutation hook automation in save/update/delete/bulk-delete + atomic save
 - [x] Add `memory_health` optional `autoRepair` and repair metadata reporting
 - [x] Add checkpoint delete `confirmName` safety param and metadata output
+- [x] Add `hooks/mutation-feedback.ts` and `hooks/response-hints.ts` and export them via hooks barrel
+- [x] Extend `MutationHookResult` with latency and cache-clear booleans for consistent response contracts
+- [x] Update mutation handlers to expose `postMutationHooks` data and UX hint payloads
+- [x] Update `context-server.ts` to call `appendAutoSurfaceHints(...)` before successful returns while preserving `autoSurfacedContext`
+- [x] Update hooks README with module responsibilities and integration notes
 
 ### Phase 3: Verification
-- [x] Fix four blocking regressions in test/runtime wiring
-- [x] Run targeted verification suite (5 files, 150 passed)
-- [x] Run full verification suite (`npm test`, 237 files, 7146 passed)
+- [x] Add automated UX hook verification in `tests/hooks-ux-feedback.vitest.ts`
+- [x] Update context-server verification tests for appended success-path hints
+- [x] Close follow-up fixes: duplicate-save no-op feedback, atomic-save feedback parity/hints, token metadata recomputation before token-budget enforcement, and hooks README/export drift
+- [x] Redirect runtime stdout emitters to stderr-safe logging across startup and runtime hook/indexing paths
+- [x] Add regression coverage in `tests/stdio-logging-safety.vitest.ts` and provider-aware lazy model identity coverage in `tests/embeddings.vitest.ts`
+- [x] Add end-to-end envelope assertion covering the finalized appended-envelope hint payload shape
+- [x] Regenerate build artifacts with `npx tsc -b`
+- [x] Run verification commands: `npx tsc -b`; `npm run lint`; `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` (PASS, 7 files / 460 tests); and `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 2 files / 15 tests)
+- [x] Confirm a real MCP SDK stdio client connects to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and lists 28 tools
+- [x] Save a fresh phase snapshot to `memory/06-03-26_10-36__ux-hooks-automation.md` (memory `#1193`)
+- [x] Update manual playbook with NEW-103+ scenarios covering UX hook capabilities
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,9 +111,11 @@ Mutation request executes handler logic, then shared post-mutation hook flow run
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Hook result parser and error copy mapper | Vitest or existing script tests |
-| Integration | Command pre-flight to execution transition | Local command runs |
-| Manual | Invalid sequencing, missing folder, hook fail, recovery flow | CLI |
+| Unit | Mutation feedback and response hint hook modules | Vitest (`tests/hooks-ux-feedback.vitest.ts`) |
+| Integration | Mutation handlers + context-server success response hint append + end-to-end response envelope assertion | Vitest (`tests/context-server.vitest.ts`, `tests/handler-checkpoints.vitest.ts`, `tests/mcp-input-validation.vitest.ts`, `tests/memory-crud-extended.vitest.ts`, `tests/memory-save-ux-regressions.vitest.ts`, `tests/tool-input-schema.vitest.ts`) |
+| Regression | Stdio-safe startup/runtime logging and provider-aware embeddings cache identity | Vitest (`tests/embeddings.vitest.ts`, `tests/stdio-logging-safety.vitest.ts`) |
+| Smoke | Real MCP stdio transport handshake against compiled server | MCP SDK client against `node dist/context-server.js` (28 tools listed) |
+| Manual | UX hint and post-mutation response verification scenarios | Manual playbook (`../manual-testing-playbook/manual-test-playbooks.md`, NEW-103+) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -116,8 +134,8 @@ Mutation request executes handler logic, then shared post-mutation hook flow run
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: False-positive guardrails block normal workflows or hook runner breaks command startup
-- **Procedure**: Revert hook wrapper wiring and restore previous command flow for impacted commands
+- **Trigger**: False-positive guardrails block normal workflows, hook runner changes regress response behavior, or stdout pollution breaks MCP stdio startup/client negotiation
+- **Procedure**: Revert the affected hook wiring or stdio logging change, rebuild with `npx tsc -b`, then rerun the stdio smoke check against `dist/context-server.js` before restoring impacted command flows
 <!-- /ANCHOR:rollback -->
 
 ---

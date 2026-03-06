@@ -1,5 +1,6 @@
 # Agent: orchestrate
 # Converted from: .opencode/agent/chatgpt/orchestrate.md
+profile = "orchestrate"
 sandbox_mode = "read-only"
 model = "gpt-5.4"
 model_reasoning_effort = "xhigh"
