@@ -297,8 +297,8 @@ export function buildContradictionClusters(
             memberIds.add(n.neighbor_id);
           }
         }
-      } catch {
-        // Best-effort cluster expansion
+      } catch (err) {
+        console.warn('[consolidation] cluster expansion error:', err);
       }
     }
 
@@ -327,44 +327,47 @@ export function runHebbianCycle(database: Database.Database): { strengthened: nu
   let decayed = 0;
 
   try {
-    // Strengthen: edges accessed in the last cycle period (7 days)
-    const recentEdges = (database.prepare(`
-      SELECT id, strength, last_accessed, created_by FROM causal_edges
-      WHERE last_accessed IS NOT NULL
-        AND last_accessed > datetime('now', '-7 days')
-        AND strength < 1.0
-    `) as Database.Statement).all() as CausalEdge[];
+    // Wrap all DB operations in a single transaction for atomicity
+    database.transaction(() => {
+      // Strengthen: edges accessed in the last cycle period (7 days)
+      const recentEdges = (database.prepare(`
+        SELECT id, strength, last_accessed, created_by FROM causal_edges
+        WHERE last_accessed IS NOT NULL
+          AND last_accessed > datetime('now', '-7 days')
+          AND strength < 1.0
+      `) as Database.Statement).all() as CausalEdge[];
 
-    for (const edge of recentEdges) {
-      const increase = Math.min(MAX_STRENGTH_INCREASE_PER_CYCLE, 1.0 - edge.strength);
-      if (increase > 0) {
-        const newStrength = Math.min(1.0, edge.strength + increase);
-        // Auto edges cannot exceed MAX_AUTO_STRENGTH
-        const cappedStrength = edge.created_by === 'auto'
-          ? Math.min(newStrength, MAX_AUTO_STRENGTH)
-          : newStrength;
+      for (const edge of recentEdges) {
+        const increase = Math.min(MAX_STRENGTH_INCREASE_PER_CYCLE, 1.0 - edge.strength);
+        if (increase > 0) {
+          const newStrength = Math.min(1.0, edge.strength + increase);
+          // Auto edges cannot exceed MAX_AUTO_STRENGTH
+          const cappedStrength = edge.created_by === 'auto'
+            ? Math.min(newStrength, MAX_AUTO_STRENGTH)
+            : newStrength;
 
-        if (cappedStrength > edge.strength) {
-          updateEdge(edge.id, { strength: cappedStrength }, 'hebbian', 'hebbian-strengthening');
-          strengthened++;
+          if (cappedStrength > edge.strength) {
+            updateEdge(edge.id, { strength: cappedStrength }, 'hebbian', 'hebbian-strengthening');
+            strengthened++;
+          }
         }
       }
-    }
 
-    // Decay: edges not accessed in DECAY_PERIOD_DAYS
-    const staleDecayEdges = (database.prepare(`
-      SELECT id, strength, last_accessed, created_by FROM causal_edges
-      WHERE (last_accessed IS NULL AND extracted_at < datetime('now', '-' || ? || ' days'))
-         OR (last_accessed IS NOT NULL AND last_accessed < datetime('now', '-' || ? || ' days'))
-    `) as Database.Statement).all(DECAY_PERIOD_DAYS, DECAY_PERIOD_DAYS) as CausalEdge[];
+      // Decay: edges not accessed in DECAY_PERIOD_DAYS
+      const staleDecayEdges = (database.prepare(`
+        SELECT id, strength, last_accessed, created_by FROM causal_edges
+        WHERE (last_accessed IS NULL AND extracted_at < datetime('now', '-' || ? || ' days'))
+           OR (last_accessed IS NOT NULL AND last_accessed < datetime('now', '-' || ? || ' days'))
+      `) as Database.Statement).all(DECAY_PERIOD_DAYS, DECAY_PERIOD_DAYS) as CausalEdge[];
 
-    for (const edge of staleDecayEdges) {
-      const newStrength = Math.max(0, edge.strength - DECAY_STRENGTH_AMOUNT);
-      if (newStrength < edge.strength) {
-        updateEdge(edge.id, { strength: newStrength }, 'hebbian', 'decay-30-day');
-        decayed++;
+      for (const edge of staleDecayEdges) {
+        const newStrength = Math.max(0, edge.strength - DECAY_STRENGTH_AMOUNT);
+        if (newStrength < edge.strength) {
+          updateEdge(edge.id, { strength: newStrength }, 'hebbian', 'decay-30-day');
+          decayed++;
+        }
       }
-    }
+    })();
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[consolidation] runHebbianCycle error: ${msg}`);
@@ -503,9 +506,10 @@ export function runConsolidationCycleIfEnabled(
     `) as Database.Statement).run();
 
     return result;
-  } catch {
-    // Fail-open for runtime hook: if cadence bookkeeping fails, still run once.
-    return runConsolidationCycle(database);
+  } catch (err) {
+    // Fail-closed: broken bookkeeping must not cause unbounded cycle runs
+    console.warn('[consolidation] cadence bookkeeping error:', err);
+    return null;
   }
 }
 

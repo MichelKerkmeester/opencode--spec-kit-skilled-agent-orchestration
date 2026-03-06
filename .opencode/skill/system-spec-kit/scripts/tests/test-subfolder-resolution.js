@@ -798,29 +798,15 @@ async function testFindChildFolderSyncDeepNesting() {
 
     try {
       const result = findChildFolderSync(childName);
-      const realSpecsDirs = specsDirs.map(dir => {
-        try { return fs.realpathSync(dir); } catch (_) { return path.resolve(dir); }
-      });
-      const hasAliasedRoots = new Set(realSpecsDirs).size < realSpecsDirs.length;
-
-      if (hasAliasedRoots) {
-        if (result !== null && result.endsWith(childName)) {
-          pass('T-SF07a: Deep nesting find', `Found (aliased roots handled): ${result}`);
-        } else if (result === null) {
-          pass('T-SF07a: Deep nesting find', 'Returned null as expected with aliased specs roots');
-        } else {
-          fail('T-SF07a: Deep nesting find', `Unexpected result: ${result}`);
-        }
+      // Root dedup handles aliased roots upfront — result should always be non-null for unique child
+      const isAbsolute = path.isAbsolute(result || '');
+      const endsCorrectly = (result || '').endsWith(childName);
+      const containsCategory = (result || '').includes(categoryName);
+      const containsParent = (result || '').includes(parentName);
+      if (result !== null && isAbsolute && endsCorrectly && containsCategory && containsParent) {
+        pass('T-SF07a: Deep nesting find', `Found: ${result}`);
       } else {
-        const isAbsolute = path.isAbsolute(result || '');
-        const endsCorrectly = (result || '').endsWith(childName);
-        const containsCategory = (result || '').includes(categoryName);
-        const containsParent = (result || '').includes(parentName);
-        if (result !== null && isAbsolute && endsCorrectly && containsCategory && containsParent) {
-          pass('T-SF07a: Deep nesting find', `Found: ${result}`);
-        } else {
-          fail('T-SF07a: Deep nesting find', `Unexpected result: ${result}`);
-        }
+        fail('T-SF07a: Deep nesting find', `Expected non-null absolute path containing ${categoryName}/${parentName}/${childName}, got: ${result}`);
       }
     } finally {
       try { fs.rmSync(path.join(specsDirs[0], categoryName), { recursive: true, force: true }); } catch (_) {}
@@ -831,7 +817,189 @@ async function testFindChildFolderSyncDeepNesting() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   10. MAIN TEST RUNNER
+   10. TEST: SEARCH_MAX_DEPTH boundary
+────────────────────────────────────────────────────────────────*/
+
+async function testSearchMaxDepthExported() {
+  log('\n🔬 SEARCH_MAX_DEPTH: Exported constant is available');
+
+  try {
+    const { SEARCH_MAX_DEPTH } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+
+    if (typeof SEARCH_MAX_DEPTH === 'number' && SEARCH_MAX_DEPTH > 0) {
+      pass('T-SF08a: SEARCH_MAX_DEPTH exported', `Value: ${SEARCH_MAX_DEPTH}`);
+    } else {
+      fail('T-SF08a: SEARCH_MAX_DEPTH exported', `Expected positive number, got: ${SEARCH_MAX_DEPTH}`);
+    }
+  } catch (err) {
+    fail('T-SF08a: SEARCH_MAX_DEPTH exported', err.message);
+  }
+}
+
+async function testFindChildFolderSyncAtMaxDepth() {
+  log('\n🔬 findChildFolderSync: Finds child at exactly MAX_DEPTH');
+
+  try {
+    const { findChildFolderSync, SEARCH_MAX_DEPTH } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+    const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+    const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+    if (specsDirs.length === 0) {
+      skip('T-SF08b: Find at MAX_DEPTH', 'No specs directories available');
+      return;
+    }
+
+    const token = Date.now().toString(36);
+    // Build SEARCH_MAX_DEPTH levels of traversable intermediary folders
+    const intermediaries = [];
+    for (let i = 0; i < SEARCH_MAX_DEPTH; i++) {
+      intermediaries.push(`99${i}-depth-${token}`);
+    }
+    const targetName = `990-at-limit-${token}`;
+    const atLimitPath = path.join(specsDirs[0], ...intermediaries, targetName);
+    fs.mkdirSync(atLimitPath, { recursive: true });
+
+    try {
+      const result = findChildFolderSync(targetName);
+      if (result !== null && result.endsWith(targetName)) {
+        pass('T-SF08b: Find at MAX_DEPTH', `Found at depth ${SEARCH_MAX_DEPTH}: ${path.basename(result)}`);
+      } else {
+        fail('T-SF08b: Find at MAX_DEPTH', `Expected to find at depth ${SEARCH_MAX_DEPTH}, got: ${result}`);
+      }
+    } finally {
+      try { fs.rmSync(path.join(specsDirs[0], intermediaries[0]), { recursive: true, force: true }); } catch (_) {}
+    }
+  } catch (err) {
+    fail('T-SF08b: Find at MAX_DEPTH', err.message);
+  }
+}
+
+async function testFindChildFolderSyncBeyondMaxDepth() {
+  log('\n🔬 findChildFolderSync: Does NOT find child beyond MAX_DEPTH');
+
+  try {
+    const { findChildFolderSync, SEARCH_MAX_DEPTH } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+    const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+    const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+    if (specsDirs.length === 0) {
+      skip('T-SF08c: Not found beyond MAX_DEPTH', 'No specs directories available');
+      return;
+    }
+
+    const token = `${Date.now().toString(36)}-bm`;
+    // Build SEARCH_MAX_DEPTH + 1 levels — target is one level too deep
+    const intermediaries = [];
+    for (let i = 0; i <= SEARCH_MAX_DEPTH; i++) {
+      intermediaries.push(`99${i}-beyond-${token}`);
+    }
+    const targetName = `990-too-deep-${token}`;
+    const beyondPath = path.join(specsDirs[0], ...intermediaries, targetName);
+    fs.mkdirSync(beyondPath, { recursive: true });
+
+    try {
+      const result = findChildFolderSync(targetName);
+      if (result === null) {
+        pass('T-SF08c: Not found beyond MAX_DEPTH', `Correctly returned null for depth > ${SEARCH_MAX_DEPTH}`);
+      } else {
+        fail('T-SF08c: Not found beyond MAX_DEPTH', `Expected null beyond depth ${SEARCH_MAX_DEPTH}, got: ${result}`);
+      }
+    } finally {
+      try { fs.rmSync(path.join(specsDirs[0], intermediaries[0]), { recursive: true, force: true }); } catch (_) {}
+    }
+  } catch (err) {
+    fail('T-SF08c: Not found beyond MAX_DEPTH', err.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. TEST: isValidSpecFolder multi-segment validation
+────────────────────────────────────────────────────────────────*/
+
+async function testIsValidSpecFolderMultiSegment() {
+  log('\n🔬 isValidSpecFolder: Multi-segment path validation');
+
+  try {
+    const { isValidSpecFolder } = require(path.join(DIST_DIR, 'memory', 'generate-context'));
+
+    const testCases = [
+      { input: 'specs/003-feature', expectValid: true, desc: 'single spec under specs/' },
+      { input: 'specs/003-parent/121-child', expectValid: true, desc: '2-segment under specs/' },
+      { input: '.opencode/specs/003-parent/121-child', expectValid: true, desc: '2-segment under .opencode/specs/' },
+      { input: 'specs/02--cat/003-parent/121-child', expectValid: true, desc: '3-segment with category' },
+      { input: '.opencode/specs/003-feature', expectValid: true, desc: 'single spec under .opencode/specs/' },
+      { input: 'not-valid', expectValid: false, desc: 'non-spec format' },
+      { input: 'specs/bad_name', expectValid: false, desc: 'invalid spec folder name' },
+    ];
+
+    let allPassed = true;
+    const failures = [];
+    for (const { input, expectValid, desc } of testCases) {
+      const result = isValidSpecFolder(input);
+      if (result.valid !== expectValid) {
+        allPassed = false;
+        failures.push(`"${input}" (${desc}): expected valid=${expectValid}, got valid=${result.valid}, reason=${result.reason}`);
+      }
+    }
+
+    if (allPassed) {
+      pass('T-SF09a: Multi-segment validation', `All ${testCases.length} cases passed`);
+    } else {
+      fail('T-SF09a: Multi-segment validation', failures.join('; '));
+    }
+  } catch (err) {
+    fail('T-SF09a: Multi-segment validation', err.message);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   12. TEST: FindChildOptions (onAmbiguity callback)
+────────────────────────────────────────────────────────────────*/
+
+async function testFindChildFolderSyncAmbiguityCallback() {
+  log('\n🔬 findChildFolderSync: onAmbiguity callback receives ambiguous paths');
+
+  const token = `${Date.now().toString(36)}-cb`;
+  const tempChildName = `999-callback-${token}`;
+  const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-SF10a: Ambiguity callback', 'No specs directories available');
+    return;
+  }
+  const parent1 = `997-cb-parent1-${token}`;
+  const parent2 = `998-cb-parent2-${token}`;
+  const dir1 = path.join(specsDirs[0], parent1, tempChildName);
+  const dir2 = path.join(specsDirs[0], parent2, tempChildName);
+
+  try {
+    const { findChildFolderSync } = require(path.join(DIST_DIR, 'core', 'subfolder-utils'));
+
+    fs.mkdirSync(dir1, { recursive: true });
+    fs.mkdirSync(dir2, { recursive: true });
+
+    let callbackCalled = false;
+    let callbackPaths = [];
+    const result = findChildFolderSync(tempChildName, {
+      onAmbiguity: (name, paths) => {
+        callbackCalled = true;
+        callbackPaths = paths;
+      }
+    });
+
+    if (result === null && callbackCalled && callbackPaths.length >= 2) {
+      pass('T-SF10a: Ambiguity callback', `Callback received ${callbackPaths.length} paths`);
+    } else {
+      fail('T-SF10a: Ambiguity callback', `result=${result}, callbackCalled=${callbackCalled}, paths=${callbackPaths.length}`);
+    }
+  } catch (err) {
+    fail('T-SF10a: Ambiguity callback', err.message);
+  } finally {
+    try { fs.rmSync(path.join(specsDirs[0], parent1), { recursive: true, force: true }); } catch (_) {}
+    try { fs.rmSync(path.join(specsDirs[0], parent2), { recursive: true, force: true }); } catch (_) {}
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. MAIN TEST RUNNER
 ────────────────────────────────────────────────────────────────*/
 
 async function main() {
@@ -883,6 +1051,20 @@ async function main() {
   // Category G: Deep nesting (category/parent/child)
   log('\n── Category G: Deep Nesting ──');
   await testFindChildFolderSyncDeepNesting();
+
+  // Category H: SEARCH_MAX_DEPTH boundary
+  log('\n── Category H: SEARCH_MAX_DEPTH Boundary ──');
+  await testSearchMaxDepthExported();
+  await testFindChildFolderSyncAtMaxDepth();
+  await testFindChildFolderSyncBeyondMaxDepth();
+
+  // Category I: isValidSpecFolder multi-segment
+  log('\n── Category I: isValidSpecFolder Multi-Segment ──');
+  await testIsValidSpecFolderMultiSegment();
+
+  // Category J: FindChildOptions (onAmbiguity callback)
+  log('\n── Category J: FindChildOptions ──');
+  await testFindChildFolderSyncAmbiguityCallback();
 
   // Results summary
   log('\n═══════════════════════════════════════════════════════════════');

@@ -14,6 +14,7 @@ import {
   getSpecsDirectories,
   SPEC_FOLDER_PATTERN,
   SPEC_FOLDER_BASIC_PATTERN,
+  CATEGORY_FOLDER_PATTERN,
   findChildFolderSync,
   getPhaseFolderRejectionSync,
 } from '../core';
@@ -122,10 +123,14 @@ process.on('SIGINT', () => {
 // ---------------------------------------------------------------
 
 function isUnderApprovedSpecsRoot(normalizedInput: string): boolean {
-  return normalizedInput.includes('/specs/') ||
-    normalizedInput.startsWith('specs/') ||
-    normalizedInput.includes('/.opencode/specs/') ||
-    normalizedInput.startsWith('.opencode/specs/');
+  if (normalizedInput.startsWith('specs/') || normalizedInput.startsWith('.opencode/specs/')) {
+    return true;
+  }
+  const resolved = path.resolve(CONFIG.PROJECT_ROOT, normalizedInput);
+  return getSpecsDirectories().some((specsDir) => {
+    const resolvedRoot = path.resolve(specsDir);
+    return resolved.startsWith(resolvedRoot + path.sep) || resolved === resolvedRoot;
+  });
 }
 
 function isValidSpecFolder(folderPath: string): SpecFolderValidation {
@@ -312,21 +317,41 @@ function validateArguments(): void {
         console.error('Did you mean:');
         matches.forEach((m) => console.error(`  - ${m}`));
       } else {
-        // --- Subfolder support: 2-level deep scan as fallback ---
+        // --- Subfolder support: multi-level deep scan as fallback ---
         let deepMatches: string[] = [];
         const targetBase = path.basename(CONFIG.SPEC_FOLDER_ARG!);
 
-        for (const parentEntry of available) {
-          if (!SPEC_FOLDER_PATTERN.test(parentEntry)) continue;
-          const parentPath = path.join(specsDir, parentEntry);
+        for (const topEntry of available) {
+          const isSpec = SPEC_FOLDER_PATTERN.test(topEntry);
+          const isCategory = CATEGORY_FOLDER_PATTERN.test(topEntry);
+          if (!isSpec && !isCategory) continue;
+          const topPath = path.join(specsDir, topEntry);
           try {
-            if (!fsSync.statSync(parentPath).isDirectory()) continue;
-            const children = fsSync.readdirSync(parentPath);
-            const childMatches = children.filter(
+            if (!fsSync.statSync(topPath).isDirectory()) continue;
+            const topChildren = fsSync.readdirSync(topPath);
+            // Search direct children of spec/category folders
+            const childMatches = topChildren.filter(
               (c) => c.includes(targetBase) && SPEC_FOLDER_PATTERN.test(c)
             );
             for (const child of childMatches) {
-              deepMatches.push(`${parentEntry}/${child}`);
+              deepMatches.push(`${topEntry}/${child}`);
+            }
+            // For category folders, also search grandchildren (category/parent/child)
+            if (isCategory) {
+              for (const midEntry of topChildren) {
+                if (!SPEC_FOLDER_PATTERN.test(midEntry)) continue;
+                const midPath = path.join(topPath, midEntry);
+                try {
+                  if (!fsSync.statSync(midPath).isDirectory()) continue;
+                  const grandChildren = fsSync.readdirSync(midPath);
+                  const gcMatches = grandChildren.filter(
+                    (c) => c.includes(targetBase) && SPEC_FOLDER_PATTERN.test(c)
+                  );
+                  for (const gc of gcMatches) {
+                    deepMatches.push(`${topEntry}/${midEntry}/${gc}`);
+                  }
+                } catch { /* skip unreadable dirs */ }
+              }
             }
           } catch { /* skip unreadable dirs */ }
         }

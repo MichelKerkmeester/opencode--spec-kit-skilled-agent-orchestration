@@ -190,15 +190,19 @@ export function isContextHeadersEnabled(): boolean {
 /**
  * P1-7: Real-time file watcher for markdown reindexing.
  * Default: FALSE. Set SPECKIT_FILE_WATCHER=true to enable.
+ * Honors SPECKIT_ROLLOUT_PERCENT global rollout policy.
  */
 export function isFileWatcherEnabled(): boolean {
-  return process.env.SPECKIT_FILE_WATCHER === 'true';
+  if (process.env.SPECKIT_FILE_WATCHER !== 'true') return false;
+  return isFeatureEnabled('SPECKIT_FILE_WATCHER');
 }
 
 /**
  * P1-5: Local GGUF reranker gate.
  * Default: FALSE. Set RERANKER_LOCAL=true to enable.
+ * Honors SPECKIT_ROLLOUT_PERCENT global rollout policy.
  */
 export function isLocalRerankerEnabled(): boolean {
-  return process.env.RERANKER_LOCAL === 'true';
+  if (process.env.RERANKER_LOCAL !== 'true') return false;
+  return isFeatureEnabled('RERANKER_LOCAL');
 }

@@ -230,38 +230,21 @@ function calculateCompositeAttention(
   memory: Record<string, unknown>,
   options: { weights?: Record<string, number> } = {}
 ): number {
-  if (typeof calculateFiveFactorScore === 'function') {
-    return calculateFiveFactorScore(memory, options) as number;
-  }
-
-  // Fallback: simple weighted average
-  const tier = (memory.importance_tier as string) || 'normal';
-  const decayRate = getDecayRate(tier);
-  return decayRate;
+  return calculateFiveFactorScore(memory, options) as number;
 }
 
 /**
  * Get detailed attention breakdown for a memory.
  */
 function getAttentionBreakdown(memory: Record<string, unknown>): AttentionBreakdown {
-  const temporal = typeof calculateTemporalScore === 'function'
-    ? calculateTemporalScore(memory) as number
-    : 0.5;
-  const usage = typeof calculateUsageScore === 'function'
-    ? calculateUsageScore((memory.access_count as number) || 0) as number
-    : 0.5;
-  const importance = typeof calculateImportanceScore === 'function'
-    ? calculateImportanceScore(
-      String(memory.importance_tier || memory.importanceTier || 'normal'),
-      memory.importance_weight as number | undefined
-    ) as number
-    : 0.5;
-  const pattern = typeof calculatePatternScore === 'function'
-    ? calculatePatternScore(memory) as number
-    : 0.5;
-  const citation = typeof calculateCitationScore === 'function'
-    ? calculateCitationScore(memory) as number
-    : 0.5;
+  const temporal = calculateTemporalScore(memory) as number;
+  const usage = calculateUsageScore((memory.access_count as number) || 0) as number;
+  const importance = calculateImportanceScore(
+    String(memory.importance_tier || memory.importanceTier || 'normal'),
+    memory.importance_weight as number | undefined
+  ) as number;
+  const pattern = calculatePatternScore(memory) as number;
+  const citation = calculateCitationScore(memory) as number;
 
   const weights = FIVE_FACTOR_WEIGHTS || {
     temporal: 0.25,

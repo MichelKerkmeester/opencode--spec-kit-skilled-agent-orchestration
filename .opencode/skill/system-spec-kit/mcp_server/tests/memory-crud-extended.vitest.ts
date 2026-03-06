@@ -154,6 +154,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+afterAll(() => {
+  vi.restoreAllMocks();
+  vi.resetModules();
+});
+
 /* ─────────────────────────────────────────────────────────────
    MOCK HELPERS
    Use vi.mocked().mockImplementation() on the vi.mock'd modules
@@ -1106,6 +1111,35 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.embeddingProvider?.provider).toBe('voyage');
     expect(parsed?.data?.embeddingProvider?.model).toBe('voyage-4');
     expect(parsed?.data?.embeddingProvider?.dimension).toBe(1024);
+  });
+
+  it('EXT-H4d: Health handles getEmbeddingProfileAsync rejection gracefully', async (ctx) => {
+    if (!embeddingsSourceMod) { ctx.skip(); return; }
+    if (!handler?.handleMemoryHealth || !vectorIndex) {
+      throw new Error('Test setup incomplete');
+    }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      providerMetadata: { provider: 'voyage', healthy: true },
+      embeddingProfile: null,
+      embeddingDimension: 1024,
+      modelName: 'voyage-4',
+    });
+    // Force getEmbeddingProfileAsync to reject (simulating network failure)
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfileAsync)
+      .mockRejectedValueOnce(new Error('Network timeout'));
+
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+
+    // Should NOT throw - handler catches the error and falls back
+    expect(parsed).not.toBeNull();
+    expect(parsed?.data?.embeddingProvider?.provider).toBe('voyage');
+    // Should include a hint about the profile failure
+    expect(parsed?.hints?.some((h: string) =>
+      h.includes('Embedding profile unavailable')
+    )).toBe(true);
   });
 
   it('EXT-H5: Health includes version', async () => {

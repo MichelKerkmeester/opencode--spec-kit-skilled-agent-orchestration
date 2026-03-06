@@ -1,0 +1,92 @@
+**Task A — Error Handling & Circuit Breaker Analysis**
+
+1. **Error taxonomy**
+- You have a solid catalog in [`recovery-hints.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.ts:30) (`E001..E503`) and a structured `MemoryError` in [`core.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts:76).
+- In practice, taxonomy usage is inconsistent:
+- Many handlers throw generic `Error`, which becomes fallback `E040` in [`buildErrorResponse()`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts:233).
+- Several handlers emit non-catalog codes (`E_VALIDATION`, `E_STRATEGY`, `E_SCHEMA_MISSING`, `E404`).
+- `MemoryError` is used in only a subset of handlers (not broad enough for reliable recovery branching today).
+
+2. **Cascade risk / isolation**
+- Request-level isolation is good: top-level tool dispatch is wrapped in try/catch and returns error envelopes instead of crashing request flow ([`context-server.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:267), catch at line 393).
+- But global resources are shared (`vectorIndex`, DB handle, caches, provider singleton), so systemic failures can impact multiple tools.
+- Biggest cascade vector: global `unhandledRejection`/`uncaughtException` handlers exit process ([`context-server.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:654), [`context-server.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:674)).
+
+3. **Circuit breakers**
+- No true circuit breaker (no open/half-open/closed state, no failure-threshold short-circuiting).
+- You do have:
+- Per-call retries with exponential backoff ([`shared/utils/retry.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/utils/retry.ts:251)).
+- Retry queue/backoff for deferred embeddings ([`retry-manager.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts:84)).
+- `memory_index_scan` cooldown (rate limiting), which is not a provider circuit breaker.
+
+4. **Unhandled rejections**
+- Most fire-and-forget async paths are guarded with `.catch(...)` (good).
+- I did not find a major obvious unhandled promise leak in normal runtime paths.
+- Operationally, any missed one is severe because policy is to terminate process on unhandled rejection.
+
+5. **Provider completely down**
+- Startup:
+- Invalid API key can fail fast and stop server (`process.exit(1)`) ([`context-server.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:721)).
+- Validation network error logs warning and startup continues.
+- Runtime:
+- `memory_search` currently fails hard if query embedding cannot be generated (Stage 1 throws before lexical fallback) ([`stage1-candidate-gen.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:226)).
+- `memory_save`/`memory_index_scan` are more resilient: save/index can continue with `embeddingStatus='pending'` + retry manager ([`memory-save.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:477), [`memory-save.ts`](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1081)).
+
+6. **Recovery hints usage**
+- Yes, `recovery-hints.ts` is used, but only partially:
+- Central catch path uses `buildErrorResponse` -> `getRecoveryHint`.
+- Causal graph handlers call `getRecoveryHint` directly.
+- Many handlers bypass this by returning `createMCPErrorResponse` with custom recovery or none.
+- Net: hints are not consistently surfaced across tools.
+
+| Failure Mode | Affected Tools | Cascade Risk (HIGH/MED/LOW) | Current Mitigation | Gap |
+|---|---|---|---|---|
+| Handler throws within a request | Any tool | LOW | Top-level dispatch catch returns error envelope | Generic throws collapse to `E040`, losing precise recovery |
+| Unhandled rejection / uncaught exception | All tools | HIGH | Global handlers log + cleanup | Process exits; one missed async catch = full server outage |
+| Embedding provider outage during query embedding | `memory_search`, `memory_context` (search-based modes) | HIGH | Per-call retries/backoff | No circuit breaker; Stage 1 throws before lexical fallback |
+| Embedding provider outage during indexing/saves | `memory_save`, `memory_index_scan`, ingest/file-watcher indexing | MED | Deferred indexing (`pending/retry/failed`) + background retry manager | Semantic quality degrades; backlog growth and slow recovery possible |
+| DB lock / busy / transient SQLite failures | Most DB-backed tools | MED | WAL mode, some retry wrappers (job queue/file watcher), transient classification helpers | Many handlers still fail fast on transient DB contention |
+| Error-code/schema mismatch (`E_VALIDATION`, `E_SCHEMA_MISSING`, `E404`) | Multiple handlers | MED | Local custom responses | Not aligned to central catalog; weaker automation and inconsistent hints |
+| Provider/API repeated failures under load | Provider-dependent tools | HIGH | Retry with backoff | No failure-threshold trip/open state to stop hammering failed provider |
+| Startup API key invalid / dimension mismatch | All tools (startup availability) | HIGH | Fail-fast checks | No degraded startup mode except manual config/fallback path |
+| Background async worker failures (ingest/watcher callbacks) | Ingest + watcher paths | LOW | Most background calls have `.catch`, continue-on-error patterns | Mostly log-only observability; no centralized incident countering |
+
+---
+
+**Task B — Stemmer Double-Consonant Dedup Bug**
+
+1. **Other words affected**
+- The unconditional dedup impacts many normal trailing-double-consonant words, e.g.:
+- `all -> al`, `add -> ad`, `off -> of`, `bell -> bel`, `bill -> bil`, `cliff -> clif`, `staff -> staf`, `shell -> shel`, `spill -> spil`, `well -> wel`, `will -> wil`, `call -> cal`, `tall -> tal`, `ball -> bal`, `buzz -> buz`, `jazz -> jaz`.
+- Quick dictionary sweep (`/usr/share/dict/words`) found about **1,064 lowercase words** where dedup fires **without any suffix removal** (the exact bug class).
+
+2. **Search quality impact**
+- Primary impact is **over-stemming collisions** (precision loss): unrelated terms collapse to same stem.
+- This also flattens BM25 term specificity (IDF distortion), so relevant docs can rank lower (practical recall loss in top-k).
+- Important nuance: your examples `bass`/`mass` are mainly broken by the separate broad `-s` stripping rule, not this dedup block. So dedup gating alone will not fix those two.
+
+3. **Proposed fix (as requested)**
+```ts
+function simpleStem(word: string): string {
+  let stem = word.toLowerCase();
+  let suffixRemoved = false;
+
+  if (stem.endsWith('ing') && stem.length > 5) { stem = stem.slice(0, -3); suffixRemoved = true; }
+  else if (stem.endsWith('tion') && stem.length > 6) { stem = stem.slice(0, -4); suffixRemoved = true; }
+  else if (stem.endsWith('ed') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('ly') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('es') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('s') && stem.length > 3) { stem = stem.slice(0, -1); suffixRemoved = true; }
+
+  if (suffixRemoved && stem.length >= 3) {
+    const last = stem[stem.length - 1];
+    if (last === stem[stem.length - 2] && !/[aeiou]/.test(last)) {
+      stem = stem.slice(0, -1);
+    }
+  }
+
+  return stem;
+}
+```
+
+- If you also want to fix `bass`/`mass`/`class`/`glass`, add a second guard to the `-s` rule (`!stem.endsWith('ss')`).

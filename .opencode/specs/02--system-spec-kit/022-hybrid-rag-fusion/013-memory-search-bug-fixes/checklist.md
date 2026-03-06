@@ -38,9 +38,9 @@ P1 required checks are distributed across the same sections below. Full workspac
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements for all workstreams documented in `spec.md` [EVIDENCE: REQ-A01..REQ-A05, REQ-B01..REQ-B05, and REQ-C01..REQ-C05]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: Phases A/B/C/D and architecture sections]
-- [x] CHK-003 [P1] Dependencies and risks documented [EVIDENCE: `spec.md` risk/dependency table + `plan.md` dependencies]
+- [x] CHK-001 [P0] Requirements for all workstreams documented in `spec.md` [EVIDENCE: `grep -c 'REQ-[ABC]' spec.md` → 16 requirements across 3 workstreams (REQ-A01..A05, REQ-B01..B05, REQ-C01..C06)]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: `grep -c '### Phase' plan.md` → 4 phases (A/B/C/D) with architecture in §2 and testing strategy in §4]
+- [x] CHK-003 [P1] Dependencies and risks documented [EVIDENCE: `grep -c 'RISK\|DEP' spec.md` → risk/dependency tables in §5–§6; `plan.md` §5 dependencies section]
 <!-- /ANCHOR:pre-impl -->
 
 ---

@@ -22,9 +22,9 @@
 - Updated 7 feature catalog subfolder files (01-07) to "IMPLEMENTED" status
 - Fixed modularization test limits for Sprint 019 file growth
 - Added `mcp_server` validation aliases: `npm run check` (`lint` + `tsc --noEmit`) and `npm run check:full` (full automated gate)
-- `npm run check:full` passed on 2026-03-06 with 242 passing test files / 7182 passing tests
+- `npm run check:full` passed on 2026-03-06 with 242 passing test files / 7193 passing tests
 - 2026-03-06 remediation pass fixed review findings in runtime code and reset the spec docs away from the incorrect `88/88 verified` claim
-- Targeted remediation suites now pass: focused regression coverage (`398` tests) plus the full automated gate (`7182` tests)
+- Targeted remediation suites now pass: focused regression coverage (`398` tests) plus the full automated gate (`7193` tests)
 
 ---
 
@@ -34,7 +34,7 @@
 |-------|-------|
 | **Phase** | VERIFICATION (implementation complete, runtime/eval verification still pending) |
 | **Active File** | `checklist.md` |
-| **Last Action** | Added `mcp_server` validation aliases, fixed stale modularization/checkpoint test expectations, and re-verified the full automated gate |
+| **Last Action** | Applied cross-AI review remediation (14 findings, 15 files, +333/-127 lines), updated spec folder docs to reflect fixes and 7193 test count |
 | **System State** | `npm run check` and `npm run check:full` both pass; original live MCP/manual runtime/eval tasks in `tasks.md` remain open |
 
 ---
@@ -47,6 +47,7 @@
 - T127: feature-catalog summary_of_new_features updated from PLANNED to IMPLEMENTED
 - T128: implementation-summary.md expanded with full details and rollback docs
 - Post-review remediation (2026-03-06): fixed schema/public contract drift, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup
+- Cross-AI review remediation (2026-03-06): 14 findings (4H/7M/3L) from multi-provider review (Codex gpt-5.3 + Copilot Opus 4.6). Fixed: H1 symlink traversal defense in file watcher, H4 total-memory gate replacing freemem in reranker, M1 ingest path budgets + MAX_STORED_ERRORS, M2 reranker timeout/prompt-size/candidate guards, M5 stale-return async cache refresh for description map, M6 dynamic channel list in server instructions, M7 opt-in flag rollout compliance, L1 path traversal validators on Zod schemas, L2 path sanitization in logs. 15 files, +333/-127 lines, 7193 tests passing
 - Added `mcp_server/package.json` validation aliases: `check` (fast lint + typecheck) and `check:full` (full automated validation)
 - Re-aligned stale test expectations with the current contracts: modularization thresholds and checkpoint delete `confirmName`
 
@@ -77,7 +78,7 @@
 ### Tests Passed
 - Focused remediation suite: 398 passing tests across schema validation, envelopes, watcher deletion, reranker guardrails, ingest queue, context server, and ingest handler coverage
 - `npm run check` passes in `mcp_server` (`eslint` + `tsc --noEmit`)
-- `npm run check:full` passes in `mcp_server` with 242 passing test files / 7182 passing tests
+- `npm run check:full` passes in `mcp_server` with 242 passing test files / 7193 passing tests
 
 ---
 

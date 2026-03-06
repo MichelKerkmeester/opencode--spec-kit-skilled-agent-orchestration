@@ -196,6 +196,16 @@ This sprint adds new behavior (strict validation, response envelopes, file watch
 **What it costs**:
 - Code complexity from flag checks. Mitigation: follow existing patterns (SPECKIT_ flags are already pervasive in the codebase).
 
+### includeTrace Gating Behavior
+
+The `includeTrace` parameter (default: `false`) controls whether provenance-rich trace data is included in search responses. When `includeTrace: true`:
+
+- **Per-result envelope**: Each result includes `scores` (7 fields: semantic, lexical, fusion, intentAdjusted, composite, rerank, attention), `source` (file path, anchors, lastModified, memoryState), and `trace` (channelsUsed, pipelineStages, fallbackTier, queryComplexity, expansionTerms, budgetTruncated, scoreResolution).
+- **Response-level extraData**: Pipeline-level metadata (retrieval trace, timing, query expansion) is spread into the response envelope only when `includeTrace` is enabled. When disabled, extraData is omitted to prevent unintended data exposure.
+- **Environment override**: Setting `SPECKIT_RESPONSE_TRACE=true` enables trace data globally without requiring per-call `includeTrace: true`.
+
+This gating ensures backward compatibility (no additional fields by default) and prevents token inflation in production use.
+
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |

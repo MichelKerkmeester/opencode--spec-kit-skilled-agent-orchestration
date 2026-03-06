@@ -248,7 +248,7 @@ describe('formatSearchResults', () => {
 
   it('C11: extraData merged into response data', async () => {
     const mockResults = [{ id: 40, spec_folder: 's', file_path: '/f.md', title: 'T' }];
-    const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, { myExtra: 'data' });
+    const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, { myExtra: 'data' }, true);
     const envelope = parseEnvelope(res);
     expect(envelope.data.myExtra).toBe('data');
   });

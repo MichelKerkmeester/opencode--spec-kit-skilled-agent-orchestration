@@ -413,7 +413,7 @@ function filterAndLimitByState<T extends TierInput>(
     classified = result;
   }
 
-  return classified.slice(0, limit);
+  return classified.slice(0, limit).map(({ _classification, ...rest }) => rest as T);
 }
 
 /**

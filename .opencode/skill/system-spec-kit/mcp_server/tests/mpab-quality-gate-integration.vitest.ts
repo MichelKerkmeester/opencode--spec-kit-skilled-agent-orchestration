@@ -615,18 +615,21 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
     expect(isDocscoreAggregationEnabled()).toBe(true);
   });
 
-  it('S4-INT-19: Non-"true" values disable flags', () => {
+  it('S4-INT-19: Only "false" and "0" disable flags', () => {
     process.env.SPECKIT_DOCSCORE_AGGREGATION = 'false';
     expect(isDocscoreAggregationEnabled()).toBe(false);
 
-    process.env.SPECKIT_DOCSCORE_AGGREGATION = '1';
+    process.env.SPECKIT_DOCSCORE_AGGREGATION = '0';
     expect(isDocscoreAggregationEnabled()).toBe(false);
+
+    process.env.SPECKIT_DOCSCORE_AGGREGATION = '1';
+    expect(isDocscoreAggregationEnabled()).toBe(true);
 
     process.env.SPECKIT_DOCSCORE_AGGREGATION = 'yes';
-    expect(isDocscoreAggregationEnabled()).toBe(false);
+    expect(isDocscoreAggregationEnabled()).toBe(true);
 
     process.env.SPECKIT_DOCSCORE_AGGREGATION = '';
-    expect(isDocscoreAggregationEnabled()).toBe(true); // graduated: empty string treated as enabled
+    expect(isDocscoreAggregationEnabled()).toBe(true);
   });
 });
 

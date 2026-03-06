@@ -77,11 +77,11 @@ export function vectorSearchWithContiguity(
       const boostJ = Math.min(rawBoost, MAX_TOTAL_BOOST - cumulativeBoost[j]);
 
       if (boostI > 0) {
-        boosted[i].similarity = boosted[i].similarity * (1 + boostI);
+        boosted[i].similarity *= (1 + boostI);
         cumulativeBoost[i] += boostI;
       }
       if (boostJ > 0) {
-        boosted[j].similarity = boosted[j].similarity * (1 + boostJ);
+        boosted[j].similarity *= (1 + boostJ);
         cumulativeBoost[j] += boostJ;
       }
     }

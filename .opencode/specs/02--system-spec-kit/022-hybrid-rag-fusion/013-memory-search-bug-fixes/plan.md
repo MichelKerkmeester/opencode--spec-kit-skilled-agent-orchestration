@@ -80,25 +80,25 @@ The solution keeps architecture unchanged and applies targeted behavior fixes:
 <!-- ANCHOR:phases -->
 ## 3. Implementation Phases
 
-### Phase 1: Stateless Filename + Slug Parity
+### Phase A: Stateless Filename + Slug Parity
 - [x] Add/keep stateless enrichment fallback path.
 - [x] Add stateless-only enrichment guard.
 - [x] Align generic-task semantics with slug behavior.
 - [x] Add regression tests for JSON-vs-stateless behavior, workflow seam restoration, and slug outcomes.
 
-### Phase 2: Folder Discovery Follow-up
+### Phase B: Folder Discovery Follow-up
 - [x] Implement recursive discovery with max depth 8.
 - [x] Implement canonical-path root dedupe with first-candidate retention.
 - [x] Route staleness checks through recursive discoveries.
 - [x] Add stale-cache shrink follow-up coverage for deleted cached folders.
 - [x] Implement graceful empty-cache return for invalid/nonexistent explicit input paths.
 
-### Phase 3: Verification + Documentation Consolidation
+### Phase C: Verification + Documentation Consolidation
 - [x] Run targeted workstream tests and compile checks.
 - [x] Consolidate duplicate root/addendum docs into one canonical Level 2 packet.
 - [x] Normalize references to standard filenames only.
 
-### Phase 4: Voyage 4 Runtime Hardening
+### Phase D: Voyage 4 Runtime Hardening
 - [x] Update MCP workspace config to keep `EMBEDDINGS_PROVIDER=auto` and remove literal `${VOYAGE_API_KEY}` / `${OPENAI_API_KEY}` interpolation.
 - [x] Make startup fail on embedding dimension mismatch instead of continuing.
 - [x] Add focused regression coverage for fatal startup on mismatch.

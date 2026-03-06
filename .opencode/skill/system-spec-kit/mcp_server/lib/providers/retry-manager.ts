@@ -7,8 +7,9 @@ import * as fsPromises from 'fs/promises';
 
 // Internal modules
 import * as vectorIndex from '../search/vector-index';
-import { generateDocumentEmbedding } from './embeddings';
+import { computeContentHash, lookupEmbedding, storeEmbedding } from '../cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../parsing/content-normalizer';
+import { generateDocumentEmbedding, getModelName } from './embeddings';
 
 // Type imports
 import type { MemoryDbRow } from '@spec-kit/shared/types';
@@ -216,14 +217,34 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
       return { success: false, error: 'Maximum retries exceeded', permanent: true };
     }
 
-    // TODO(REQ-S2-001): Integrate persistent embedding cache here.
-    // Check lookupEmbedding(db, contentHash, modelId) before calling generateDocumentEmbedding.
-    // On miss, store result via storeEmbedding. See memory-save.ts for reference implementation.
     // BUG-1 fix: Normalize content before embedding to match sync save path (memory-save.ts:1119).
     // Without this, async-saved memories get embeddings from raw markdown (YAML frontmatter, HTML
     // comments, code fences) while sync-saved memories get clean normalized embeddings.
     const normalizedContent = normalizeContentForEmbedding(content);
-    const embedding = await generateDocumentEmbedding(normalizedContent);
+    const modelId = getModelName();
+    const contentHash = computeContentHash(normalizedContent);
+    const cachedEmbedding = lookupEmbedding(db, contentHash, modelId);
+
+    let embedding: Float32Array | null = null;
+
+    if (cachedEmbedding) {
+      embedding = new Float32Array(
+        cachedEmbedding.buffer,
+        cachedEmbedding.byteOffset,
+        Math.floor(cachedEmbedding.byteLength / Float32Array.BYTES_PER_ELEMENT),
+      );
+    } else {
+      embedding = await generateDocumentEmbedding(normalizedContent);
+      if (embedding) {
+        storeEmbedding(
+          db,
+          contentHash,
+          modelId,
+          Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength),
+          embedding.length,
+        );
+      }
+    }
 
     if (!embedding) {
       incrementRetryCount(id, 'Embedding generation returned null');
@@ -246,7 +267,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
         // Ignore if doesn't exist
       }
 
-      const embeddingBuffer = Buffer.from(embedding.buffer);
+      const embeddingBuffer = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
       db.prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)').run(BigInt(id), embeddingBuffer);
     });
 
@@ -506,4 +527,3 @@ export {
   BACKOFF_DELAYS,
   MAX_RETRIES,
 };
-

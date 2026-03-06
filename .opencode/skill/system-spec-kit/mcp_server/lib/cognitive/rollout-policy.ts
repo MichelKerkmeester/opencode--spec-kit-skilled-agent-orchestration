@@ -34,11 +34,9 @@ function isIdentityInRollout(identity: string): boolean {
 }
 
 function isFeatureEnabled(flagName: string, identity?: string): boolean {
-  const rawFlag = process.env[flagName]?.toLowerCase();
-  if (rawFlag === 'false') return false;
-
-  const flagEnabled = rawFlag === undefined || rawFlag.trim().length === 0 || rawFlag === 'true';
-  if (!flagEnabled) return false;
+  const rawFlag = process.env[flagName]?.toLowerCase()?.trim();
+  // Treat 'false' and '0' as explicitly disabled; everything else (including undefined) is enabled
+  if (rawFlag === 'false' || rawFlag === '0') return false;
 
   const rolloutPercent = getRolloutPercent();
   if (rolloutPercent >= 100) return true;

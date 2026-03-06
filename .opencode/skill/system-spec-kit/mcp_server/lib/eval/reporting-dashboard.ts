@@ -419,7 +419,7 @@ function computeTrends(sprints: SprintReport[]): TrendEntry[] {
       const delta = Math.round((current - previous) * 10000) / 10000;
       const percentChange = previous !== 0
         ? Math.round(((current - previous) / Math.abs(previous)) * 10000) / 100
-        : current !== 0 ? 100 : 0;
+        : current > 0 ? 100 : (current < 0 ? -100 : 0);
 
       const higherBetter = isHigherBetter(metric);
       let direction: 'improved' | 'regressed' | 'unchanged';
@@ -483,14 +483,14 @@ function buildSummary(
     if (regressed.length > 0) {
       const worst = regressed.sort((a, b) => Math.abs(b.percentChange) - Math.abs(a.percentChange))[0];
       lines.push(
-        `Largest regression: ${worst.metric} dropped ${Math.abs(worst.percentChange)}% (${worst.previous} -> ${worst.current}).`
+        `Largest regression: ${worst.metric} worsened by ${Math.abs(worst.percentChange)}% (${worst.previous} -> ${worst.current}).`
       );
     }
 
     if (improved.length > 0) {
       const best = improved.sort((a, b) => Math.abs(b.percentChange) - Math.abs(a.percentChange))[0];
       lines.push(
-        `Largest improvement: ${best.metric} gained ${Math.abs(best.percentChange)}% (${best.previous} -> ${best.current}).`
+        `Largest improvement: ${best.metric} improved by ${Math.abs(best.percentChange)}% (${best.previous} -> ${best.current}).`
       );
     }
   }

@@ -71,17 +71,21 @@ const STOP_WORDS = new Set([
 
 function simpleStem(word: string): string {
   let stem = word.toLowerCase();
+  let suffixRemoved = false;
   // Simple suffix removal
-  if (stem.endsWith('ing') && stem.length > 5) stem = stem.slice(0, -3);
-  else if (stem.endsWith('tion') && stem.length > 6) stem = stem.slice(0, -4);
-  else if (stem.endsWith('ed') && stem.length > 4) stem = stem.slice(0, -2);
-  else if (stem.endsWith('ly') && stem.length > 4) stem = stem.slice(0, -2);
-  else if (stem.endsWith('es') && stem.length > 4) stem = stem.slice(0, -2);
-  else if (stem.endsWith('s') && stem.length > 3) stem = stem.slice(0, -1);
+  if (stem.endsWith('ing') && stem.length > 5) { stem = stem.slice(0, -3); suffixRemoved = true; }
+  else if (stem.endsWith('tion') && stem.length > 6) { stem = stem.slice(0, -4); suffixRemoved = true; }
+  else if (stem.endsWith('ed') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('ly') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('es') && stem.length > 4) { stem = stem.slice(0, -2); suffixRemoved = true; }
+  else if (stem.endsWith('s') && stem.length > 3) { stem = stem.slice(0, -1); suffixRemoved = true; }
+  // AI-WHY: Only deduplicate doubled consonants when a suffix was actually removed.
+  // Without this guard, original double consonants are incorrectly stripped:
+  // "bass" -> "bas", "jazz" -> "jaz", "bill" -> "bil" etc.
   // AI-WHY: Fix #18 (017-refinement-phase-6) — Handle doubled consonants after suffix
   // removal. "running"→"runn"→"run", "stopped"→"stopp"→"stop". Check if last two chars
   // are identical consonants and deduplicate.
-  if (stem.length >= 3) {
+  if (suffixRemoved && stem.length >= 3) {
     const last = stem[stem.length - 1];
     if (last === stem[stem.length - 2] && !/[aeiou]/.test(last)) {
       stem = stem.slice(0, -1);

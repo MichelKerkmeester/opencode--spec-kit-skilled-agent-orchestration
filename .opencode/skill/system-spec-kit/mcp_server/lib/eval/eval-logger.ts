@@ -8,7 +8,7 @@
 // when SPECKIT_EVAL_LOGGING is not set to "true".
 // ---------------------------------------------------------------
 
-import { initEvalDb, getEvalDb } from './eval-db';
+import { initEvalDb } from './eval-db';
 
 /* ---------------------------------------------------------------
    1. FEATURE FLAG
@@ -48,7 +48,7 @@ function generateEvalRunId(): number {
   if (!_evalRunCounterInitialized) {
     _evalRunCounterInitialized = true;
     try {
-      const db = getEvalDb?.();
+      const db = getDb();
       if (db) {
         const row = db.prepare('SELECT MAX(eval_run_id) as maxId FROM eval_channel_results').get() as { maxId: number | null } | undefined;
         if (row?.maxId && row.maxId > _evalRunCounter) {

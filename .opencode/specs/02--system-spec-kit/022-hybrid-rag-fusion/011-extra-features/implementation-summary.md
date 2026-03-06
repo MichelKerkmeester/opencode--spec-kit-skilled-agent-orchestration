@@ -23,7 +23,7 @@ contextType: "implementation"
 | **Spec Folder** | 011-extra-features |
 | **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
-| **Status** | Implementation complete; post-review remediation and refreshed automated workspace validation applied on 2026-03-06; live runtime/eval verification still pending |
+| **Status** | Implementation complete; post-review remediation (2026-03-06), cross-AI review remediation (2026-03-06), and 8-agent review remediation (2026-03-06) applied; live runtime/eval verification still pending |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -31,9 +31,13 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Seven features spanning schema hardening, retrieval observability, operational reliability, and retrieval quality. All implementation tasks (T001-T092) are complete. Test tasks (T012-T098 testing subset) and eval/doc tasks remain open.
+ Seven features spanning schema hardening, retrieval observability, operational reliability, and retrieval quality. Implementation tasks (T001-T092 code and unit test scope) are complete, while runtime verification tasks (T012-T098 live MCP server subset) remain open pending runtime verification. Runtime verification items (T012-T098) require live server testing and are tracked separately in tasks.md. Eval/doc tasks remain open.
 
 Post-review remediation on 2026-03-06 corrected the issues found in the implementation review: public/runtime schema drift, ingest queue accounting and crash recovery, watcher delete handling, empty-result trace envelopes, provenance under-reporting, local reranker fail-open behavior, signal shutdown cleanup, and inconsistent spec-folder status reporting.
+
+Cross-AI review remediation on 2026-03-06 applied fixes from a multi-provider review (Codex gpt-5.3, Copilot Opus 4.6): symlink traversal defense in file watcher (H1), total-memory gate replacing unreliable free-memory check in reranker (H4), reranker timeout/prompt-size/candidate-count guards (M2), stale-return async cache refresh for description tail map (M5), dynamic channel list in server instructions (M6), opt-in feature flag rollout compliance (M7), ingest path budget enforcement and MAX_STORED_ERRORS cap (M1), path traversal validators on Zod schemas (L1), and path sanitization in error/log messages (L2). Total: 15 files changed, +333/-127 lines, 7193 tests passing (up from 7182).
+
+8-agent review remediation on 2026-03-06 applied fixes from a second multi-AI review (3 Gemini, 3 Opus, 2 Codex) that identified 26 findings (2 CRITICAL, 6 HIGH, 7 MEDIUM, 6 LOW, 5 not-actionable). Of 21 actionable findings, 12 were confirmed already fixed by the prior remediation pass. The 9 new fixes applied: path traversal protection with `pathString()` refinement and `isSafePath()` check on ingest paths (C1), fail-closed validation throwing `ToolSchemaValidationError` for unknown tools (H1), bounded ingest paths array at 50 (H2), `additionalProperties: false` on all 28 tool JSON Schema definitions (H5), `extraData` spread gated behind `includeTrace` in response envelope (M4), `minItems`/`maxItems`/`minLength` constraints on ingest JSON Schema (M5), sanitized error leak in `validateToolArgs()` catch-all (L2), ADR-003 `includeTrace` gating documentation (L3), and ingest documented as always-on (L6). Integration test suite added: `tests/review-fixes.vitest.ts` with 12 tests in 5 describe blocks. Total: 4 files changed, +145/-15 lines.
 
 ### P0-1: Strict Zod Schema Validation
 
@@ -61,7 +65,7 @@ SQLite-persisted job queue in `lib/ops/job-queue.ts` (497 lines). State machine 
 
 ### P1-5: Local GGUF Reranker
 
-`lib/search/local-reranker.ts` implements `RERANKER_LOCAL` flag with `node-llama-cpp`. `canUseLocalReranker()` checks flag, model existence, and 4GB free memory. `rerankLocal()` scores candidates sequentially (avoids VRAM OOM). Model lazy-loaded, cached at module level, disposed on shutdown. Falls back to RRF on any failure.
+`lib/search/local-reranker.ts` implements `RERANKER_LOCAL` flag with `node-llama-cpp`. `canUseLocalReranker()` checks flag, model existence, and total system memory ≥8GB (cross-AI review H4: replaced unreliable `os.freemem()` with `os.totalmem()`). `rerankLocal()` scores candidates sequentially (avoids VRAM OOM) with a 30-second timeout per candidate, 10KB prompt size cap, and max 50 candidates (cross-AI review M2). Model lazy-loaded, cached at module level, disposed on shutdown. Falls back to RRF on any failure. Error/log messages use `path.basename()` to avoid leaking internal paths (cross-AI review L2).
 
 **Key files:** `lib/search/local-reranker.ts`, `models/` (model storage directory)
 
@@ -73,7 +77,7 @@ SQLite-persisted job queue in `lib/ops/job-queue.ts` (497 lines). State machine 
 
 ### P1-7: Real-Time Filesystem Watching
 
-`lib/ops/file-watcher.ts` (165 lines) implements chokidar-based push indexing. Features: 2s debounce per file, SHA-256 content-hash dedup, `.md`-only filter, dotfile exclusion, ENOENT grace handling. Exponential backoff retry for SQLITE_BUSY (1s→2s→4s, 3 attempts). Gated by `SPECKIT_FILE_WATCHER` (default `false`). Cleanup on server shutdown.
+`lib/ops/file-watcher.ts` (338 lines) implements chokidar-based push indexing. Features: 2s debounce per file, SHA-256 content-hash dedup, `.md`-only filter, dotfile exclusion, ENOENT grace handling, `followSymlinks: false` with `fs.realpath()` containment check against configured watch roots (cross-AI review H1), bounded concurrency (max 2 parallel reindex), per-file abort controllers for stale reindex cancellation. Exponential backoff retry for SQLITE_BUSY (1s→2s→4s, 3 attempts). Gated by `SPECKIT_FILE_WATCHER` (default `false`). Cleanup on server shutdown.
 
 **Key files:** `lib/ops/file-watcher.ts`, `context-server.ts`
 <!-- /ANCHOR:what-built -->
@@ -96,7 +100,7 @@ All 7 features are independently controllable via environment variables. To roll
 
 **Rollback notes:**
 - P0-2 (Response envelopes): No flag needed — `includeTrace` defaults to `false`; existing callers are unaffected
-- P0-3 (Async ingestion): No flag needed — tools are additive; existing `memory_save` path unchanged
+- P0-3 (Async ingestion): Always enabled (no feature flag). The three ingest tools (`memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`) are additive MCP tools gated by tool availability, not by an environment variable. The existing `memory_save` path remains unchanged
 - All flags are independent — disabling one does not affect others
 - No database migrations to reverse — all schema changes are additive (new tables, not modified tables)
 <!-- /ANCHOR:feature-flags -->
@@ -119,6 +123,7 @@ All 7 features are independently controllable via environment variables. To roll
 | `mcp_server/context-server.ts` | MODIFIED | P1-6 Dynamic init, P1-7 Watcher init |
 | `mcp_server/tool-schemas.ts` | MODIFIED | P0-1 Schema registration |
 | `mcp_server/tools/*.ts` | MODIFIED | P0-1 validateToolArgs integration |
+| `mcp_server/tests/review-fixes.vitest.ts` | CREATED | 8-agent review integration tests |
 | `system-spec-kit config reference` | MODIFIED | Flag documentation |
 <!-- /ANCHOR:files-changed -->
 
@@ -134,7 +139,7 @@ Five features explicitly deferred with documented blocking conditions:
 | Warm server / daemon mode | MCP SDK HTTP transport standardization | L (2-3 weeks) |
 | Backend storage adapters | Corpus >100K or multi-node demand | M-L (1-2 weeks) |
 | Namespace management | Multi-tenant demand | S-M (3-5 days) |
-| ANCHOR tags as graph nodes | 2-day feasibility spike | S-M (3-5 days) |
+| ANCHOR tags as graph nodes | 2-day feasibility spike — **promoted to P1-8** per O3 research validation (cross-AI review consensus: "most creative insight" with clear implementation path) | S-M (3-5 days) |
 | AST-level section retrieval | Spec docs >1000 lines | M (5-7 days) |
 <!-- /ANCHOR:deferred -->
 
@@ -149,7 +154,8 @@ Five features explicitly deferred with documented blocking conditions:
 | `tsc --noEmit` (mcp_server/) | PASS |
 | `tsc --noEmit` (scripts/) | PASS |
 | `npm run check` (mcp_server fast gate: lint + `tsc --noEmit`) | PASS |
-| `npm run check:full` (mcp_server full Vitest suite) | PASS (`242` files / `7182` tests on 2026-03-06) |
+| `npm run check:full` (mcp_server full Vitest suite) | PASS (`242` files / `7193` tests on 2026-03-06) |
 | Targeted remediation suite (89 tests) | PASS |
+| 8-agent review integration tests (`tests/review-fixes.vitest.ts`) | PASS (12 tests: C1, H1, H2, H5, M5) |
 | Checklist verification | Not fully re-audited; open live runtime/eval tasks remain in `tasks.md` |
 <!-- /ANCHOR:verification -->

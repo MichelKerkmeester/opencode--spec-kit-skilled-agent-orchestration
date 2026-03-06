@@ -410,3 +410,16 @@ interface PipelineRow {
 4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+
+## Requirement Traceability Matrix
+
+| REQ | Description | Task(s) | CHK Item(s) | Status |
+|-----|-------------|---------|-------------|--------|
+| REQ-001 | Zod `.strict()` validation gate for every MCP tool input | T001–T015 (Phase 1: Strict Zod Schema Validation; T012–T015 remain open for runtime verification) | CHK-010–CHK-029 | Implemented — verification tests pending (T012–T015) |
+| REQ-002 | Response envelopes include scores, source, trace metadata when `includeTrace=true` | T016–T032 (Phase 1: Provenance-Rich Response Envelopes; T029–T032 cover pending verification/benchmarking) | CHK-030–CHK-040 | Implemented — verification and benchmarking pending (T029–T032) |
+| REQ-003 | `memory_ingest_start` returns async job ID in <100ms | T040–T055 (Phase 2: Async Ingestion Job Lifecycle; T051–T055 cover remaining large-batch tests) | CHK-041–CHK-053 | Implemented — large batch + cancel verification pending (T051–T055) |
+| REQ-004 | `memory_ingest_status` reports progress/errors accurately | T040–T055 (same lifecycle tasks as REQ-003) | CHK-041–CHK-053 | Implemented — real-world polling + recovery verification pending (T051–T055) |
+| REQ-005 | Returned chunks include contextual tree headers capped at 100 chars | T056–T065 (Phase 2: Contextual Tree Injection; T063–T065 track runtime validation) | CHK-054–CHK-060 | Implemented — runtime header verification pending (T063–T065) |
+| REQ-006 | Local GGUF reranker scores candidates without external APIs and falls back cleanly | T082–T098 (Phase 3: Local GGUF Reranker; T093–T098 cover latency/eval work) | CHK-061–CHK-069 | Implemented — latency + eval comparisons pending (T093–T098) |
+| REQ-007 | Server startup instructions summarize index state for calling LLMs | T033–T039 (Phase 1: Dynamic Server Instructions; T038–T039 track handshake tests) | CHK-070–CHK-076 | Implemented — handshake verification pending (T038–T039) |
+| REQ-008 | File watcher re-indexes changed spec files within 5 seconds | T066–T081 (Phase 2: Filesystem Watching; T077–T081 cover runtime/debounce tests) | CHK-077–CHK-087 | Implemented — runtime watcher verification pending (T077–T081) |

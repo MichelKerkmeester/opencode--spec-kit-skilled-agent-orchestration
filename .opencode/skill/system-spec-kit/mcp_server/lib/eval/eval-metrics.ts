@@ -200,15 +200,17 @@ export function computeRecall(
  * Precision = |relevant ∩ retrieved@K| / K
  */
 export function computePrecision(
-  results: Array<{ id: number; [key: string]: unknown }>,
-  groundTruth: Set<number> | number[],
+  results: EvalResult[],
+  groundTruth: GroundTruthEntry[],
   k: number = 20
 ): number {
-  if (k <= 0) return 0;
-  const gtSet = groundTruth instanceof Set ? groundTruth : new Set(groundTruth);
-  const topK = results.slice(0, k);
-  if (topK.length === 0) return 0;
-  const hits = topK.filter(r => gtSet.has(r.id)).length;
+  if (k <= 0 || results.length === 0 || groundTruth.length === 0) return 0;
+  const relevantIds = new Set(
+    groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
+  );
+  const topResults = topK(results, k);
+  if (topResults.length === 0) return 0;
+  const hits = topResults.filter(r => relevantIds.has(r.memoryId)).length;
   return hits / k;
 }
 
@@ -217,16 +219,19 @@ export function computePrecision(
  * F1 = 2 * (P * R) / (P + R), or 0 if both are 0.
  */
 export function computeF1(
-  results: Array<{ id: number; [key: string]: unknown }>,
-  groundTruth: Set<number> | number[],
+  results: EvalResult[],
+  groundTruth: GroundTruthEntry[],
   k: number = 20
 ): number {
-  const gtSet = groundTruth instanceof Set ? groundTruth : new Set(groundTruth);
-  if (gtSet.size === 0 || k <= 0) return 0;
-  const topK = results.slice(0, k);
-  const hits = topK.filter(r => gtSet.has(r.id)).length;
-  const p = topK.length === 0 ? 0 : hits / k;
-  const r = hits / gtSet.size;
+  if (k <= 0 || results.length === 0 || groundTruth.length === 0) return 0;
+  const relevantIds = new Set(
+    groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
+  );
+  if (relevantIds.size === 0) return 0;
+  const topResults = topK(results, k);
+  const hits = topResults.filter(r => relevantIds.has(r.memoryId)).length;
+  const p = topResults.length === 0 ? 0 : hits / k;
+  const r = hits / relevantIds.size;
   if (p + r === 0) return 0;
   return 2 * (p * r) / (p + r);
 }
@@ -527,14 +532,8 @@ export function computeAllMetrics(params: {
     mrr: computeMRR(results, groundTruth),
     ndcg: computeNDCG(results, groundTruth),
     recall: computeRecall(results, groundTruth),
-    precision: computePrecision(
-      results.map(r => ({ id: r.memoryId, ...r })),
-      groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
-    ),
-    f1: computeF1(
-      results.map(r => ({ id: r.memoryId, ...r })),
-      groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
-    ),
+    precision: computePrecision(results, groundTruth),
+    f1: computeF1(results, groundTruth),
     hitRate: computeHitRate(results, groundTruth),
     inversionRate: computeInversionRate(results, groundTruth),
     constitutionalSurfacingRate: computeConstitutionalSurfacingRate(results, constitutionalIds),

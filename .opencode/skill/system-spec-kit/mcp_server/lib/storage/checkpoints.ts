@@ -303,98 +303,103 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
   } = options;
 
   try {
-    // Snapshot memory_index
-    const folderFilter = specFolder ? 'WHERE spec_folder = ?' : '';
-    const params = specFolder ? [specFolder] : [];
+    // Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
+    const checkpointInfo = database.transaction(() => {
+      // Snapshot memory_index
+      const folderFilter = specFolder ? 'WHERE spec_folder = ?' : '';
+      const params = specFolder ? [specFolder] : [];
 
-    const memories = database.prepare(
-      `SELECT * FROM memory_index ${folderFilter}`
-    ).all(...params) as Array<Record<string, unknown>>;
+      const memories = database.prepare(
+        `SELECT * FROM memory_index ${folderFilter}`
+      ).all(...params) as Array<Record<string, unknown>>;
 
-    // Snapshot vectors from vec_memories when enabled/available.
-    // This preserves semantic search state across clearExisting restores.
-    let vectors: SnapshotVectorRow[] = [];
-    if (_includeEmbeddings && tableExists(database, 'vec_memories')) {
-      try {
-        const vectorSql = specFolder
-          ? `
-              SELECT v.rowid as rowid, v.embedding as embedding
-              FROM vec_memories v
-              JOIN memory_index m ON m.id = v.rowid
-              WHERE m.spec_folder = ?
-            `
-          : 'SELECT rowid, embedding FROM vec_memories';
-        const vectorParams = specFolder ? [specFolder] : [];
-        vectors = database.prepare(vectorSql).all(...vectorParams) as SnapshotVectorRow[];
-      } catch {
-        vectors = [];
+      // Snapshot vectors from vec_memories when enabled/available.
+      // This preserves semantic search state across clearExisting restores.
+      let vectors: SnapshotVectorRow[] = [];
+      if (_includeEmbeddings && tableExists(database, 'vec_memories')) {
+        try {
+          const vectorSql = specFolder
+            ? `
+                SELECT v.rowid as rowid, v.embedding as embedding
+                FROM vec_memories v
+                JOIN memory_index m ON m.id = v.rowid
+                WHERE m.spec_folder = ?
+              `
+            : 'SELECT rowid, embedding FROM vec_memories';
+          const vectorParams = specFolder ? [specFolder] : [];
+          vectors = database.prepare(vectorSql).all(...vectorParams) as SnapshotVectorRow[];
+        } catch {
+          vectors = [];
+        }
       }
-    }
 
-    // Snapshot working memory if exists
-    let workingMemorySnapshot: Array<Record<string, unknown>> = [];
-    try {
-      workingMemorySnapshot = database.prepare(
-        'SELECT * FROM working_memory'
-      ).all() as Array<Record<string, unknown>>;
-    } catch {
-      // Table may not exist
-    }
+      // Snapshot working memory if exists
+      let workingMemorySnapshot: Array<Record<string, unknown>> = [];
+      try {
+        workingMemorySnapshot = database.prepare(
+          'SELECT * FROM working_memory'
+        ).all() as Array<Record<string, unknown>>;
+      } catch {
+        // Table may not exist
+      }
 
-    const snapshot: CheckpointSnapshot = {
-      memories,
-      workingMemory: workingMemorySnapshot,
-      vectors,
-      timestamp: new Date().toISOString(),
-    };
+      const snapshot: CheckpointSnapshot = {
+        memories,
+        workingMemory: workingMemorySnapshot,
+        vectors,
+        timestamp: new Date().toISOString(),
+      };
 
-    const snapshotJson = JSON.stringify(snapshot);
-    const compressed = zlib.gzipSync(Buffer.from(snapshotJson));
+      const snapshotJson = JSON.stringify(snapshot);
+      const compressed = zlib.gzipSync(Buffer.from(snapshotJson));
 
-    const gitBranch = getGitBranch();
-    const now = new Date().toISOString();
+      const gitBranch = getGitBranch();
+      const now = new Date().toISOString();
 
-    const result = (database.prepare(`
-      INSERT INTO checkpoints (name, created_at, spec_folder, git_branch, memory_snapshot, metadata)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `) as Database.Statement).run(
-      name,
-      now,
-      specFolder,
-      gitBranch,
-      compressed,
-      JSON.stringify({
-        ...metadata,
-        memoryCount: memories.length,
-        vectorCount: vectors.length,
-        includeEmbeddings: _includeEmbeddings,
-      })
-    );
+      const result = (database.prepare(`
+        INSERT INTO checkpoints (name, created_at, spec_folder, git_branch, memory_snapshot, metadata)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `) as Database.Statement).run(
+        name,
+        now,
+        specFolder,
+        gitBranch,
+        compressed,
+        JSON.stringify({
+          ...metadata,
+          memoryCount: memories.length,
+          vectorCount: vectors.length,
+          includeEmbeddings: _includeEmbeddings,
+        })
+      );
 
-    // Enforce max checkpoints
-    const checkpointCount = (database.prepare(
-      'SELECT COUNT(*) as count FROM checkpoints'
-    ) as Database.Statement).get() as { count: number };
+      // Enforce max checkpoints
+      const checkpointCount = (database.prepare(
+        'SELECT COUNT(*) as count FROM checkpoints'
+      ) as Database.Statement).get() as { count: number };
 
-    if (checkpointCount.count > MAX_CHECKPOINTS) {
-      database.prepare(`
-        DELETE FROM checkpoints WHERE id IN (
-          SELECT id FROM checkpoints ORDER BY created_at ASC LIMIT ?
-        )
-      `).run(checkpointCount.count - MAX_CHECKPOINTS);
-    }
+      if (checkpointCount.count > MAX_CHECKPOINTS) {
+        database.prepare(`
+          DELETE FROM checkpoints WHERE id IN (
+            SELECT id FROM checkpoints ORDER BY created_at ASC LIMIT ?
+          )
+        `).run(checkpointCount.count - MAX_CHECKPOINTS);
+      }
 
-    console.error(`[checkpoints] Created checkpoint "${name}" (${compressed.length} bytes compressed)`);
+      return {
+        id: (result as { lastInsertRowid: number | bigint }).lastInsertRowid as number,
+        name,
+        createdAt: now,
+        specFolder,
+        gitBranch,
+        snapshotSize: compressed.length,
+        metadata: { ...metadata, memoryCount: memories.length },
+      };
+    })();
 
-    return {
-      id: (result as { lastInsertRowid: number | bigint }).lastInsertRowid as number,
-      name,
-      createdAt: now,
-      specFolder,
-      gitBranch,
-      snapshotSize: compressed.length,
-      metadata: { ...metadata, memoryCount: memories.length },
-    };
+    console.error(`[checkpoints] Created checkpoint "${name}" (${checkpointInfo.snapshotSize} bytes compressed)`);
+
+    return checkpointInfo;
   } catch (error: unknown) {
     const msg = toErrorMessage(error);
     console.warn(`[checkpoints] createCheckpoint error: ${msg}`);

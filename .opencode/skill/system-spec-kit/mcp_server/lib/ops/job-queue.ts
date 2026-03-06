@@ -70,6 +70,7 @@ const RETRY_DELAYS_MS = [50, 200, 500];
 const pendingQueue: string[] = [];
 let workerActive = false;
 let processFileFn: ((filePath: string) => Promise<unknown>) | null = null;
+const MAX_STORED_ERRORS = 50;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -306,11 +307,26 @@ async function appendIngestError(jobId: string, filePath: string, error: unknown
     throw new Error(`Ingest job not found: ${jobId}`);
   }
 
-  const errors = [...current.errors, {
-    filePath,
-    message: toErrorMessage(error),
-    timestamp: nowIso(),
-  }];
+  let errors = [
+    ...current.errors,
+    {
+      filePath,
+      message: toErrorMessage(error),
+      timestamp: nowIso(),
+    },
+  ];
+
+  if (errors.length > MAX_STORED_ERRORS) {
+    const tailLength = Math.max(0, MAX_STORED_ERRORS - 1);
+    const trimmedCount = errors.length - tailLength;
+    const truncationNotice: IngestJobError = {
+      filePath: '__job__',
+      message: `error log truncated (${trimmedCount} older entries removed)`,
+      timestamp: nowIso(),
+    };
+    const truncatedTail = tailLength > 0 ? errors.slice(-tailLength) : [];
+    errors = [truncationNotice, ...truncatedTail];
+  }
 
   const updatedAt = nowIso();
   await withBusyRetry(() =>

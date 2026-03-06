@@ -807,14 +807,14 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
         throw error;
       }
 
-      // NEW: Try nested parent/child resolution (e.g., "005-memory/002-upgrade")
+      // Try nested multi-segment resolution (e.g., "005-memory/002-upgrade" or "02--cat/022-parent/008-child")
       const argParts = specArg.split('/');
-      if (argParts.length === 2 && SPEC_FOLDER_PATTERN.test(argParts[0]) && SPEC_FOLDER_PATTERN.test(argParts[1])) {
+      if (argParts.length >= 2 && SPEC_FOLDER_PATTERN.test(argParts[argParts.length - 1])) {
         for (const dir of existingSpecsDirs) {
-          const nestedPath = path.join(dir, argParts[0], argParts[1]);
+          const nestedPath = path.join(dir, ...argParts);
           try {
             await fs.access(nestedPath);
-            console.log(`   Using spec folder from CLI argument (nested): ${argParts[0]}/${argParts[1]}`);
+            console.log(`   Using spec folder from CLI argument (nested): ${argParts.join('/')}`);
             return nestedPath;
           } catch {
             // Not found in this specs dir, continue searching
@@ -893,19 +893,21 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
         throw error;
       }
 
-      // NEW: Try nested parent/child resolution for JSON data value
+      // Try nested multi-segment resolution for JSON data value
       const dataParts = specFolderFromData.split('/');
-      if (dataParts.length === 2 && SPEC_FOLDER_PATTERN.test(dataParts[0]) && SPEC_FOLDER_PATTERN.test(dataParts[1])) {
+      if (dataParts.length >= 2 && SPEC_FOLDER_PATTERN.test(dataParts[dataParts.length - 1])) {
         for (const dir of existingSpecsDirs) {
-          const nestedPath = path.join(dir, dataParts[0], dataParts[1]);
+          const nestedPath = path.join(dir, ...dataParts);
           try {
             await fs.access(nestedPath);
-            console.log(`   Using spec folder from data (nested): ${dataParts[0]}/${dataParts[1]}`);
+            console.log(`   Using spec folder from data (nested): ${dataParts.join('/')}`);
 
             if (collectedData) {
-              const alignmentResult = await validateFolderAlignment(collectedData, dataParts[1], path.join(dir, dataParts[0]));
+              const lastPart = dataParts[dataParts.length - 1];
+              const parentDir = path.join(dir, ...dataParts.slice(0, -1));
+              const alignmentResult = await validateFolderAlignment(collectedData, lastPart, parentDir);
               if (alignmentResult.proceed && alignmentResult.useAlternative && alignmentResult.selectedFolder) {
-                const altPath = path.join(dir, dataParts[0], alignmentResult.selectedFolder);
+                const altPath = path.join(parentDir, alignmentResult.selectedFolder);
                 try {
                   await fs.access(altPath);
                   return altPath;

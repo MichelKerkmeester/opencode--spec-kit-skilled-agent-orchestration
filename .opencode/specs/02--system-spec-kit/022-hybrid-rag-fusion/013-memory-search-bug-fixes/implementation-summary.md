@@ -120,3 +120,34 @@ This spec now captures all completed workstreams in one canonical Level 2 packet
 2. Invalid/nonexistent non-empty explicit paths intentionally degrade to empty cache object.
 3. If startup auth truly fails, pre-flight validation still exits before `memory_health` is available; that broader boot-order behavior remains outside this spec’s completed scope.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!-- ANCHOR:post-review-remediation -->
+## Post-Review Remediation
+
+Following the 8-agent multi-perspective review (2026-03-06), 7 findings were identified and addressed:
+
+### Findings Addressed
+
+| ID | Severity | Description | Resolution |
+|----|----------|-------------|------------|
+| F1 | BLOCKING | tasks.md lacked REQ-xxx traceability | Added inline REQ references to all 32 tasks |
+| F2 | BLOCKING | No getEmbeddingProfileAsync rejection test | Added EXT-H4d test with mockRejectedValue |
+| F3 | MINOR | Phase naming inconsistency (1/2/3/4 vs A/B/C/D) | Aligned plan.md to letter naming (A/B/C/D) |
+| F4 | MINOR | Pre-impl P0 evidence cited docs not commands | Enhanced with grep-verifiable evidence |
+| F5 | MINOR | ProviderMetadata type divergence + unsafe cast | Removed unsafe `as` cast, aligned types |
+| F6 | MINOR | No depth-8 positive boundary test | Added T046-10a2 acceptance test |
+| F7 | MINOR | Test singleton reuse without module reset | Added afterAll with vi.resetModules() |
+
+### Files Changed
+
+- `tasks.md` — REQ-xxx inline references (F1)
+- `plan.md` — Phase header renaming (F3)
+- `checklist.md` — P0 evidence enhancement (F4)
+- `implementation-summary.md` — This remediation section (meta)
+- `memory-crud-types.ts` — Type alignment (F5)
+- `memory-crud-health.ts` — Cast removal (F5)
+- `memory-crud-extended.vitest.ts` — Rejection test + cleanup (F2, F7)
+- `folder-discovery-integration.vitest.ts` — Depth-8 boundary test (F6)
+<!-- /ANCHOR:post-review-remediation -->

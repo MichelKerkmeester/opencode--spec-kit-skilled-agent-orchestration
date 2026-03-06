@@ -31,9 +31,9 @@ contextType: "implementation"
 | **Scope** | spec-kit-memory MCP server — 25 MCP tools across L1-L7 tiers |
 | **Review Source** | 8-agent orchestrated review: 5 Gemini + 3 Opus wave structure |
 | **Validated By** | ultra-think meta-review + Codex cross-verification (5 agents) + Gemini 3.1 Pro + Codex 5.3 cross-AI review + Claude Opus 4.6 final review |
-| **Remediation** | Tier 1-2: 4-wave multi-agent (17 agents). Tier 4: Codex 5.3 implementation → Gemini 3.1 Pro review → Claude Opus 4.6 final review |
-| **Test Results** | 230 files, 7085 tests, 0 failures |
-| **Files Modified** | 25 files across mcp_server/, shared/, scripts/, spec docs |
+| **Remediation** | Tier 1-2: 4-wave (17 agents). Tier 3: Wave 2 (10 agents, 5 succeeded). Tier 4: Codex 5.3 → Gemini 3.1 Pro → Claude Opus 4.6 |
+| **Test Results** | 243 files, 7205 tests, 0 failures (post-Wave 2) |
+| **Files Modified** | 40+ files across mcp_server/, shared/, scripts/, spec docs |
 | **Health Score** | 77.4 → target ≥84 (post Tier 1+2) |
 <!-- /ANCHOR:metadata -->
 
@@ -634,23 +634,25 @@ All 5 agents ran as parallel background bash processes via `cli-gemini`, outputt
 | Transaction wrappers deferred | **RESOLVED** — T2-5 complete, both update + delete handlers wrapped |
 | Import alias hygiene deferred | **RESOLVED** — T2-1 complete, 14 imports converted |
 
-### Remaining (Tier 3 — requires separate spec folder)
+### Remaining (Post-Wave 2 — requires separate spec folder)
 
-1. **48% of codebase unreviewed:** Only `search/` (21,515 LOC) and `scoring/` received deep multi-wave review. The following directories received only G5 pattern scanning:
-   - `eval/` — 15 files, 7,051 LOC (14% of lib/, largest blind spot)
-   - `cognitive/` — 10 files, 3,795 LOC (complex stateful logic)
-   - `storage/` — 12 files, 4,831 LOC (DB operations, migration logic)
-   - `providers/`, `telemetry/`, `cache/`, `extraction/`, `graph/`, `learning/`
+1. **Code standards alignment (T3-1):** 19/20 files use internal convention, divergent from sk-code--opencode standard. 180-file scope deferred.
 
-2. **Code standards alignment:** 19/20 files use internal convention, divergent from sk-code--opencode standard (separator headers, narrative comments). Only the files modified in this remediation were brought into compliance.
+2. **Phase 017 remaining verification (T3-14):** C1 checked 25/35: 19 verified, 3 suspicious, 3 missing. 10 remain unverified.
 
-3. **"89 feature flags" claim unverified:** Audit found 20 flags in `search-flags.ts`. Total across all modules not enumerated. Tracked as T3-6.
+3. **Error handling analysis (T3-15):** C2 agent never returned. Error boundaries across mcp_server/ not mapped.
 
-4. **25/35 Phase 017 fixes unverified:** Only 10 were sampled and verified. Tracked as T3-14.
+4. **memory-save.ts rewrite (CR-P2-4):** 10 save/ modules created but memory-save.ts not yet rewritten as slim orchestrator (1555 LOC, target <1000).
 
-5. **No cascading failure analysis:** Error boundaries across mcp_server/ not mapped. Tracked as T3-15.
+### Resolved by Wave 2 (previously listed as limitations)
 
-**Tier 3 effort estimate:** 19.7h optimistic / 50-70h realistic (15 items). Ultra-think review found original estimates 2-3x too low. Plan resourcing against realistic column.
+| Item | Status |
+|------|--------|
+| eval/ unreviewed (7,051 LOC) | **RESOLVED** — T3-3: 3 P0/P1 bugs found and fixed |
+| cognitive/ unreviewed (3,795 LOC) | **RESOLVED** — T3-4: 2 P0 + 4 P1 bugs found and fixed across 6 files |
+| storage/ unreviewed (4,831 LOC) | **RESOLVED** — T3-2/T3-5: Transaction boundaries verified and wrapped |
+| "89 feature flags" claim | **RESOLVED** — T3-6: G2 audit found 72 flags (not 89), 57 boolean-actionable |
+| isFeatureEnabled divergence | **RESOLVED** — T3-13: Fixed to treat only 'false'/'0' as disabled |
 
 ### Tier 4: Cross-AI Validation Review (2026-03-02)
 
@@ -756,4 +758,57 @@ Second-pass review with differentiated focus: Gemini (documentation audit, 4/10 
 
 **Verdict:** Phase 018 code changes are CLEAN. See `scratch/cross-ai-review-session8.md` for full findings.
 <!-- /ANCHOR:session8-review -->
+
+<!-- ANCHOR:wave2-tier3 -->
+## Wave 2: Tier 3 Implementation (2026-03-06)
+
+**Method:** 10-agent parallel delegation (5 cli-copilot Opus 4.6 + 5 cli-codex gpt-5.3-codex) per orchestrate.md §8.
+**Results:** 5/10 agents completed successfully (all 5 copilot); all 5 codex agents failed (MCP init errors).
+**Remaining fixes applied directly** by conductor. Test updates for behavioral changes applied.
+
+### Agent Results
+
+| Agent | CLI | Status | Changes |
+|-------|-----|:------:|---------|
+| O2-1 | copilot | ✅ | eval-metrics.ts: topK() sort fix; eval-logger.ts: getDb() init fix; reporting-dashboard.ts: sign + phrasing fix |
+| O2-2 | copilot | ✅ | working-memory.ts: existence check before eviction, batchUpdateScores tx; fsrs-scheduler.ts: NaN guard |
+| O2-3 | copilot | ✅ | archival-manager.ts: null handling, single tx; temporal-contiguity.ts: boost cap; tier-classifier.ts: strip _classification; attention-decay.ts: dead guard removal |
+| O2-4 | copilot | ✅ | reconsolidation.ts: embedding before tx, executeMerge/executeConflict in db.transaction() |
+| O2-5 | copilot | ❌ | causal-edges.ts, consolidation.ts, checkpoints.ts — already had tx wrappers (verified) |
+| C2-1 | codex | ❌ | handlers/save/ types, db-helpers, dedup, embedding-pipeline, pe-orchestration — files created before failure |
+| C2-2 | codex | ❌ | handlers/save/ reconsolidation-bridge, create-record, post-insert, response-builder, index — files created before failure |
+| C2-3 | codex | ⏸️ | memory-save.ts rewrite — held, never launched (depends on C2-1/C2-2) |
+| C2-4 | codex | ❌ | bm25-index.ts, retry-manager.ts — fixes already applied by C2-5 or pre-existing |
+| C2-5 | codex | ❌ | rollout-policy.ts fix applied before failure; duplicate deletion incorrectly targeted |
+
+### Conductor Fixes (Post-Agent)
+
+1. **rollout-policy.ts symlink discovery**: `lib/cache/cognitive/` is a symlink to `lib/cognitive/`. Both copies are one file. Restored after accidental deletion.
+2. **temporal-contiguity.ts Math.min(1.0) clamp**: Removed — similarities are on 0-100 scale, not 0-1.
+3. **Test updates (10 tests across 7 files)**: Updated tests that encoded old buggy behavior:
+   - 4 feature flag tests: '1'/'yes' now correctly treated as enabled
+   - 4 tier classifier tests: `_classification` correctly stripped from returns
+   - 1 temporal contiguity test: similarity scale fix
+   - 1 search results format test: `includeTrace` parameter needed for extraData merge
+
+### Tier 3 Implementation Summary
+
+| Task | Status | Evidence |
+|------|:------:|---------|
+| T3-2: Transaction boundaries | ✅ | reconsolidation, consolidation, causal-edges, checkpoints all wrapped |
+| T3-3: eval/ deep review | ✅ | 3 files fixed (eval-metrics, eval-logger, reporting-dashboard) |
+| T3-4: cognitive/ deep review | ✅ | 6 files fixed (working-memory, fsrs-scheduler, archival-manager, temporal-contiguity, tier-classifier, attention-decay) |
+| T3-5: storage/ deep review | ✅ | Overlaps with T3-2; all storage files verified |
+| T3-6: Feature flag count | ✅ | 72 flags (not 89), 57 boolean-actionable |
+| T3-7: Stemmer dedup | ✅ | suffixRemoved guard in bm25-index.ts |
+| T3-8: Embedding cache | ✅ | Already implemented in retry-manager.ts |
+| T3-13: isFeatureEnabled | ✅ | Fixed: only 'false'/'0' disable |
+| T3-9/T3-10/T3-11/T3-12 | ✅ | FALSE_POSITIVE or already done |
+| T3-1: Code standards | DEFERRED | 180-file scope |
+| T3-14: Phase 017 verify | PARTIAL | 25/35 checked (19 verified, 3 suspicious, 3 missing) |
+| T3-15: Error handling | DEFERRED | C2 agent never returned |
+| CR-P2-4: save/ decomposition | PARTIAL | 10/10 modules created; memory-save.ts rewrite pending |
+
+**Final verification:** `tsc --noEmit` clean. 243/243 test files pass. 7205/7205 tests pass.
+<!-- /ANCHOR:wave2-tier3 -->
 <!-- /ANCHOR:limitations -->

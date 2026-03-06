@@ -25,11 +25,16 @@ type LocalRerankRow = Record<string, unknown> & {
   rerankerScore?: number;
 };
 
-const MIN_FREE_MEMORY_BYTES = 4 * 1024 * 1024 * 1024;
-// Lower threshold when custom model is configured — still prevents OOM on
-// truly memory-starved machines without blocking intentional overrides.
-const MIN_FREE_MEMORY_CUSTOM_BYTES = 512 * 1024 * 1024;
+const MIN_TOTAL_MEMORY_BYTES = 8 * 1024 * 1024 * 1024;
+// Lower total-memory threshold when custom model is configured — still
+// prevents OOM on truly constrained systems without blocking intentional
+// overrides. We use totalmem() because freemem() is unreliable on macOS/Linux
+// where disk cache can make "free" memory appear deceptively low.
+const MIN_TOTAL_MEMORY_CUSTOM_BYTES = 2 * 1024 * 1024 * 1024;
 const DEFAULT_MODEL_RELATIVE_PATH = path.join('models', 'bge-reranker-v2-m3.Q4_K_M.gguf');
+const RERANKER_TIMEOUT_MS = Number(process.env.SPECKIT_RERANKER_TIMEOUT_MS) || 30_000;
+const MAX_PROMPT_BYTES = 10 * 1024;
+const MAX_RERANK_CANDIDATES = 50;
 
 let cachedLlama: unknown | null = null;
 let cachedModel: unknown | null = null;
@@ -68,38 +73,42 @@ async function loadNodeLlamaCpp(): Promise<NodeLlamaCppModule> {
 }
 
 async function ensureModelLoaded(modelPath: string): Promise<unknown> {
+  // Fast path: model already cached for this path
   if (cachedModel && cachedModelPath === modelPath) {
     return cachedModel;
   }
 
-  // Codex fix: If the model path changed since the last load, discard the
-  // stale promise so a fresh load is initiated for the new path.
+  // H4 fix: Explicitly reuse in-flight promise for the same model path
+  // to prevent concurrent callers from orphaning promises
+  if (modelLoadPromise && modelLoadPromisePath === modelPath) {
+    return await modelLoadPromise;
+  }
+
+  // Discard stale promise if the model path changed since the last load
   if (modelLoadPromise && modelLoadPromisePath !== modelPath) {
     modelLoadPromise = null;
     modelLoadPromisePath = null;
   }
 
-  if (!modelLoadPromise) {
-    modelLoadPromisePath = modelPath;
-    modelLoadPromise = (async () => {
-      const llamaModule = await loadNodeLlamaCpp();
-      cachedLlama = await llamaModule.getLlama();
-      if (!cachedLlama || typeof cachedLlama !== 'object') {
-        throw new Error('getLlama() did not return a usable object');
-      }
-      const loadModel = (cachedLlama as { loadModel?: (args: { modelPath: string }) => Promise<unknown> }).loadModel;
-      if (typeof loadModel !== 'function') {
-        throw new Error('node-llama-cpp runtime missing loadModel()');
-      }
-      const model = await loadModel.call(cachedLlama, { modelPath });
-      if (!model || typeof model !== 'object') {
-        throw new Error('loadModel() returned invalid model');
-      }
-      cachedModel = model;
-      cachedModelPath = modelPath;
-      return model;
-    })();
-  }
+  modelLoadPromisePath = modelPath;
+  modelLoadPromise = (async () => {
+    const llamaModule = await loadNodeLlamaCpp();
+    cachedLlama = await llamaModule.getLlama();
+    if (!cachedLlama || typeof cachedLlama !== 'object') {
+      throw new Error('getLlama() did not return a usable object');
+    }
+    const loadModel = (cachedLlama as { loadModel?: (args: { modelPath: string }) => Promise<unknown> }).loadModel;
+    if (typeof loadModel !== 'function') {
+      throw new Error('node-llama-cpp runtime missing loadModel()');
+    }
+    const model = await loadModel.call(cachedLlama, { modelPath });
+    if (!model || typeof model !== 'object') {
+      throw new Error('loadModel() returned invalid model');
+    }
+    cachedModel = model;
+    cachedModelPath = modelPath;
+    return model;
+  })();
 
   try {
     return await modelLoadPromise;
@@ -173,13 +182,11 @@ export async function canUseLocalReranker(): Promise<boolean> {
     return false;
   }
 
-  // Sprint 9 fix: Bypass freemem check when user explicitly configured a custom
-  // model path, as this indicates intentional override. On macOS/Linux, os.freemem()
-  // is unreliable because the OS uses free RAM for disk caching, reporting
-  // deceptively low values on healthy machines.
+  // Use total system memory instead of free memory. On macOS/Linux,
+  // os.freemem() can look artificially low due to disk cache usage.
   const hasCustomModel = Boolean(process.env.SPECKIT_RERANKER_MODEL?.trim());
-  const memThreshold = hasCustomModel ? MIN_FREE_MEMORY_CUSTOM_BYTES : MIN_FREE_MEMORY_BYTES;
-  if (os.freemem() < memThreshold) {
+  const memThreshold = hasCustomModel ? MIN_TOTAL_MEMORY_CUSTOM_BYTES : MIN_TOTAL_MEMORY_BYTES;
+  if (os.totalmem() < memThreshold) {
     return false;
   }
 
@@ -207,10 +214,12 @@ export async function rerankLocal<T extends LocalRerankRow>(
   }
 
   const modelPath = resolveModelPath();
-  const rerankCount = Math.max(1, Math.min(topK, candidates.length));
+  const rerankCandidates = candidates.slice(0, MAX_RERANK_CANDIDATES);
+  const rerankCount = Math.max(1, Math.min(topK, rerankCandidates.length));
   const startedAt = Date.now();
 
   let context: unknown | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
   try {
     const model = await ensureModelLoaded(modelPath);
     const createContext = (model as { createContext?: () => Promise<unknown> }).createContext;
@@ -219,36 +228,52 @@ export async function rerankLocal<T extends LocalRerankRow>(
     }
     context = await createContext.call(model);
 
-    // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
-    // allocating multiple sequence states simultaneously in VRAM, which
-    // can trigger OOM or context mixing on local LLM inference.
-    // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
-    // model size and hardware. On Apple Silicon with small GGUF (~100MB), expect 200-400ms.
-    // Future optimization: batch inference via node-llama-cpp's evaluateBatch API.
-    const scored: Array<{ candidate: T; rerankScore: number }> = [];
-    for (const candidate of candidates.slice(0, rerankCount)) {
-      const content = resolveRowText(candidate);
-      const prompt = `query: ${query}\ndocument: ${content}`;
-      const rerankScore = await scorePrompt(context, prompt);
-      scored.push({ candidate, rerankScore });
-    }
+    const reranked = await Promise.race([
+      (async (): Promise<T[]> => {
+        // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
+        // allocating multiple sequence states simultaneously in VRAM, which
+        // can trigger OOM or context mixing on local LLM inference.
+        // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
+        // model size and hardware. On Apple Silicon with small GGUF (~100MB), expect 200-400ms.
+        // Future optimization: batch inference via node-llama-cpp's evaluateBatch API.
+        const scored: Array<{ candidate: T; rerankScore: number }> = [];
+        for (const candidate of rerankCandidates.slice(0, rerankCount)) {
+          const content = resolveRowText(candidate);
+          const prompt = `query: ${query}\ndocument: ${content}`;
+          const boundedPrompt = Buffer.byteLength(prompt, 'utf8') > MAX_PROMPT_BYTES
+            ? Buffer.from(prompt, 'utf8').subarray(0, MAX_PROMPT_BYTES).toString('utf8')
+            : prompt;
+          const rerankScore = await scorePrompt(context, boundedPrompt);
+          scored.push({ candidate, rerankScore });
+        }
 
-    scored.sort((a, b) => b.rerankScore - a.rerankScore);
-    const rerankedTop = scored.map((entry) => ({
-      ...entry.candidate,
-      rerankerScore: entry.rerankScore,
-      score: entry.rerankScore,
-    }));
-    const remainder = candidates.slice(rerankCount);
-    const elapsed = Date.now() - startedAt;
-    console.error(
-      `[local-reranker] reranked=${rerankCount} total=${candidates.length} durationMs=${elapsed} model=${modelPath}`
-    );
-    return [...rerankedTop, ...remainder];
+        scored.sort((a, b) => b.rerankScore - a.rerankScore);
+        const rerankedTop = scored.map((entry) => ({
+          ...entry.candidate,
+          rerankerScore: entry.rerankScore,
+          score: entry.rerankScore,
+        }));
+        const remainder = candidates.slice(rerankCount);
+        const elapsed = Date.now() - startedAt;
+        console.error(
+          `[local-reranker] reranked=${rerankCount} total=${candidates.length} durationMs=${elapsed} model=${path.basename(modelPath)}`
+        );
+        return [...rerankedTop, ...remainder];
+      })(),
+      new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => {
+          reject(new Error(`local reranker timed out after ${RERANKER_TIMEOUT_MS}ms`));
+        }, RERANKER_TIMEOUT_MS);
+      }),
+    ]);
+    return reranked;
   } catch (error: unknown) {
     console.warn(`[local-reranker] fallback to original ordering: ${toErrorMessage(error)}`);
     return candidates;
   } finally {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
     const dispose = (context as { dispose?: () => Promise<void> | void } | null)?.dispose;
     if (typeof dispose === 'function') {
       try {

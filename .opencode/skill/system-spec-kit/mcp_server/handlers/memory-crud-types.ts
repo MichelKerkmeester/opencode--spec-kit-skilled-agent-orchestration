@@ -47,8 +47,8 @@ interface HealthArgs {
   autoRepair?: boolean;
 }
 
-/** Embedding provider metadata returned by the health check. */
-interface ProviderMetadata {
+/** Partial embedding provider metadata — see shared/types.ts ProviderMetadata for the full shape. */
+interface PartialProviderMetadata {
   provider: string;
   model?: string;
   dim?: number;
@@ -98,7 +98,7 @@ export type {
   ListArgs,
   StatsArgs,
   HealthArgs,
-  ProviderMetadata,
+  PartialProviderMetadata,
   MemoryHashSnapshot,
   CrudMutationType,
   MutationLedgerInput,

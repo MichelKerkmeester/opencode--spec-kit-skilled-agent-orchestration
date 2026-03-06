@@ -208,36 +208,41 @@ export async function executeMerge(
     // use the merged content's hash, not the stale pre-merge value.
     const mergedHash = createHash('sha256').update(mergedContent, 'utf-8').digest('hex');
 
-    // Update the existing memory with merged content and boosted importance
-    const mergeResult = db.prepare(`
-      UPDATE memory_index
-      SET content_text = ?,
-          importance_weight = ?,
-          content_hash = ?,
-          updated_at = datetime('now')
-      WHERE id = ?
-    `).run(mergedContent, boostedWeight, mergedHash, existingMemory.id);
-
-    if (mergeResult.changes === 0) {
-      throw new Error(`executeMerge: target memory ${existingMemory.id} no longer exists`);
-    }
-
-    // Optionally regenerate embedding for merged content
+    // Generate embedding BEFORE transaction (async I/O cannot run inside
+    // better-sqlite3's synchronous transaction callback).
+    let newEmbedding: Float32Array | number[] | null = null;
     if (generateEmbedding) {
       try {
-        const newEmbedding = await generateEmbedding(mergedContent);
-        if (newEmbedding) {
-          const buffer = embeddingToBuffer(newEmbedding);
-          db.prepare(
-            'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
-          ).run(buffer, existingMemory.id);
-        }
+        newEmbedding = await generateEmbedding(mergedContent);
       } catch (embErr: unknown) {
         const msg = embErr instanceof Error ? embErr.message : String(embErr);
         console.warn('[reconsolidation] Failed to regenerate embedding for merge:', msg);
         // Non-fatal: merged content is stored even without updated embedding
       }
     }
+
+    // Atomic transaction: update content + embedding together so they stay in sync.
+    db.transaction(() => {
+      const mergeResult = db.prepare(`
+        UPDATE memory_index
+        SET content_text = ?,
+            importance_weight = ?,
+            content_hash = ?,
+            updated_at = datetime('now')
+        WHERE id = ?
+      `).run(mergedContent, boostedWeight, mergedHash, existingMemory.id);
+
+      if (mergeResult.changes === 0) {
+        throw new Error(`executeMerge: target memory ${existingMemory.id} no longer exists`);
+      }
+
+      if (newEmbedding) {
+        const buffer = embeddingToBuffer(newEmbedding);
+        db.prepare(
+          'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
+        ).run(buffer, existingMemory.id);
+      }
+    })();
 
     return {
       action: 'merge',
@@ -321,43 +326,44 @@ export function executeConflict(
       newMemory.id !== existingMemory.id;
 
     if (hasDistinctNewId) {
-      // Preferred TM-06 path: preserve superseded content and mark as deprecated.
-      db.prepare(`
-        UPDATE memory_index
-        SET importance_tier = 'deprecated',
-            updated_at = datetime('now')
-        WHERE id = ?
-      `).run(existingMemory.id);
+      // Atomic transaction: deprecate + edge must succeed or fail together.
+      // Without this, a failed insertEdge leaves an orphaned deprecation.
+      db.transaction(() => {
+        db.prepare(`
+          UPDATE memory_index
+          SET importance_tier = 'deprecated',
+              updated_at = datetime('now')
+          WHERE id = ?
+        `).run(existingMemory.id);
 
-      const sourceId = String(newMemory.id);
-      const targetId = String(existingMemory.id);
-      edgeId = causalEdges.insertEdge(
-        sourceId,
-        targetId,
-        'supersedes',
-        1.0,
-        `TM-06 reconsolidation conflict: similarity ${(existingMemory.similarity * 100).toFixed(1)}%`
-      );
+        const sourceId = String(newMemory.id);
+        const targetId = String(existingMemory.id);
+        edgeId = causalEdges.insertEdge(
+          sourceId,
+          targetId,
+          'supersedes',
+          1.0,
+          `TM-06 reconsolidation conflict: similarity ${(existingMemory.similarity * 100).toFixed(1)}%`
+        );
+      })();
     } else {
-      // Legacy fallback: in-place replacement when caller cannot provide new ID.
-      db.prepare(`
-        UPDATE memory_index
-        SET content_text = ?,
-            title = ?,
-            updated_at = datetime('now')
-        WHERE id = ?
-      `).run(newMemory.content, newMemory.title, existingMemory.id);
+      // Atomic transaction: content + embedding update together.
+      db.transaction(() => {
+        db.prepare(`
+          UPDATE memory_index
+          SET content_text = ?,
+              title = ?,
+              updated_at = datetime('now')
+          WHERE id = ?
+        `).run(newMemory.content, newMemory.title, existingMemory.id);
 
-      if (newMemory.embedding) {
-        try {
+        if (newMemory.embedding) {
           const buffer = embeddingToBuffer(newMemory.embedding);
           db.prepare(
             'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
           ).run(buffer, existingMemory.id);
-        } catch {
-          // Non-fatal: content is updated even if embedding update fails
         }
-      }
+      })();
     }
 
     return {
@@ -489,7 +495,21 @@ export async function reconsolidate(
           }
         }
 
-        return executeConflict(topMatch, conflictMemory, db);
+        try {
+          return executeConflict(topMatch, conflictMemory, db);
+        } catch (conflictErr) {
+          // If storeMemory succeeded but executeConflict failed, clean up the orphan
+          // memory so we don't leave dangling rows with no supersedes edge.
+          if (conflictMemory.id !== undefined && conflictMemory.id !== newMemory.id) {
+            try {
+              db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
+            } catch {
+              // Best-effort cleanup
+            }
+            console.warn('[reconsolidation] cleaned up orphan memory', conflictMemory.id, 'after executeConflict failure');
+          }
+          throw conflictErr;
+        }
       }
 
     case 'complement':

@@ -30,7 +30,7 @@ The Spec Kit Memory MCP server has grown to a significant codebase across 17 pri
 
 | Package | Files | LOC | Role |
 |---------|:-----:|----:|------|
-| `mcp_server/lib/` | 154 | 50,060 | Core MCP server (23 subdirectories) |
+| `mcp_server/lib/` | 154 | 50,060 | Core MCP server (24 subdirectories) |
 | `mcp_server/handlers/` | 22 | 9,911 | Request handlers |
 | `scripts/` | ~40 | 21,887 | Build, indexing, maintenance scripts |
 | **Total** | ~216 | ~81,858 | |

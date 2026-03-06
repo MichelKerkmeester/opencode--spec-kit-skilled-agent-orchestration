@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 import { randomBytes } from 'node:crypto';
+import path from 'node:path';
 
 import { checkDatabaseUpdated } from '../core';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
@@ -30,6 +31,9 @@ interface MemoryIngestCancelArgs {
   jobId: string;
 }
 
+const MAX_INGEST_PATHS = 100;
+const MAX_PATH_LENGTH = 500;
+
 // Codex fix: nanoid-style 12-char alphanumeric ID (URL-safe, no UUID dependency).
 const NANOID_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 function createJobId(): string {
@@ -46,7 +50,7 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
     jobId: job.id,
     state: job.state,
     specFolder: job.specFolder,
-    paths: job.paths,
+    paths: job.paths.map((entry) => path.basename(entry || '')),
     filesTotal: job.filesTotal,
     filesProcessed: job.filesProcessed,
     progress: getIngestProgressPercent(job),
@@ -59,9 +63,25 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
 async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 
-  const paths = Array.isArray(args.paths)
+  let paths = Array.isArray(args.paths)
     ? args.paths.filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)
     : [];
+
+  if (paths.length === 0) {
+    throw new Error('paths must be a non-empty array of file paths');
+  }
+
+  if (paths.length > MAX_INGEST_PATHS) {
+    throw new Error(`paths exceeds maximum of ${MAX_INGEST_PATHS}`);
+  }
+
+  const withinLength = paths.filter((entry) => entry.length <= MAX_PATH_LENGTH);
+  if (withinLength.length !== paths.length) {
+    console.warn(
+      `[memory-ingest] Dropped ${paths.length - withinLength.length} path(s) longer than ${MAX_PATH_LENGTH} characters`,
+    );
+  }
+  paths = withinLength;
 
   if (paths.length === 0) {
     throw new Error('paths must be a non-empty array of file paths');

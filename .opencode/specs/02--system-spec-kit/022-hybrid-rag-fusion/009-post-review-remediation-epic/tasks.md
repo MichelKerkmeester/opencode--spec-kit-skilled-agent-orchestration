@@ -355,24 +355,31 @@ contextType: "implementation"
 
 <!-- ANCHOR:summary -->
 
+## Status: Superseded by 025/026
+
+> **Phase 024 was not independently executed.** All planned work was absorbed by subsequent phases:
+> - Timer persistence (T1–T4) → Completed in **025-finalized-scope** (T018–T019, CHK-017)
+> - effectiveScore fallback (T5–T8) → Completed in **026-opus-remediation** (T024, CHK-026–027)
+> - Verification (T9–T10) → Verified in **026-opus-remediation** (T017/T027, 7,085 tests passing)
+
 ## P1 #1: Warn-Only Timer Persistence
 
-- [ ] T1: Add DB persistence functions for activation timestamp in `save-quality-gate.ts`
-- [ ] T2: Modify `setActivationTimestamp()` to write to SQLite `config` table
-- [ ] T3: Add lazy-load in `isWarnOnlyMode()` to recover timestamp from DB
-- [ ] T4: Add tests for persistence across restart simulation
+- [~] T1: SUPERSEDED — Completed in 025 (T018, CHK-017)
+- [~] T2: SUPERSEDED — Completed in 025 (T018)
+- [~] T3: SUPERSEDED — Completed in 025 (T018)
+- [~] T4: SUPERSEDED — Completed in 025 (T019, CHK-017)
 
 ## P1 #2: effectiveScore() Fallback Chain
 
-- [ ] T5: Update `effectiveScore()` with full fallback chain
-- [ ] T6: Preserve `stage2Score` in Stage 3 reranking output (line 312)
-- [ ] T7: Update cross-encoder document mapping to use `effectiveScore()`
-- [ ] T8: Add tests for effectiveScore fallback scenarios
+- [~] T5: SUPERSEDED — Completed in 026 (T024, CHK-026)
+- [~] T6: SUPERSEDED — Completed in 026 (T024, CHK-027)
+- [~] T7: SUPERSEDED — Completed in 026 (T024)
+- [~] T8: SUPERSEDED — Completed in 026 (T026)
 
 ## Verification
 
-- [ ] T9: Full test suite passes (7,008+ tests)
-- [ ] T10: TypeScript compiles without errors
+- [~] T9: SUPERSEDED — Verified in 026 (T027, 7,085 tests passing)
+- [~] T10: SUPERSEDED — Verified in 026 (T017, tsc clean)
 <!-- /ANCHOR:summary -->
 
 

@@ -156,6 +156,7 @@ function calculateElapsedDays(lastReview: string | null): number {
   }
 
   const lastDate = new Date(lastReview);
+  if (isNaN(lastDate.getTime())) return 0;
   const now = new Date();
   const diffMs = now.getTime() - lastDate.getTime();
 

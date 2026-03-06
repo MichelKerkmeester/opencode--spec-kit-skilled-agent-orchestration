@@ -626,7 +626,7 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
-**Status:** In Progress (implementation drafted; checklist verification still open)
+**Status:** Superseded by 025/026 — Timer persistence completed in 025 (T018–T019); effectiveScore fallback completed in 026 (T024). See those phases for implementation details and verification evidence.
 **Date:** 2026-03-02
 
 ## What Was Built

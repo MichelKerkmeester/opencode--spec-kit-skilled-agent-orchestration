@@ -204,6 +204,21 @@ Stage 2's `resolveBaseScore()` and Stage 3's `effectiveScore()` compute the same
 - `pipeline/stage3-rerank.ts`: Local `effectiveScore()` replaced with import
 
 **How to roll back**: `git revert` the Sprint 2 commit.
+
+---
+
+### Scope Exclusions
+
+Two independent `resolveBaseScore()` implementations exist **outside** the Stage 1–4 pipeline scope of this ADR:
+
+| Module | Location | Purpose |
+|--------|----------|---------|
+| `session-boost.ts` | `lib/search/session-boost.ts:112` | Resolves base score for session-boost calculations (post-pipeline boost applied to final results) |
+| `causal-boost.ts` | `lib/search/causal-boost.ts:70` | Resolves base score for causal-boost calculations (post-pipeline boost using causal graph edges) |
+
+**Why excluded:** These modules operate **after** the pipeline completes, applying multiplicative boosts to already-scored results. Their `resolveBaseScore()` functions serve a different purpose than the pipeline's `resolveEffectiveScore()` — they resolve a baseline for boost ratio calculation, not for inter-stage score propagation. Unifying them would couple post-pipeline boost logic to pipeline internals with no correctness benefit.
+
+**Note:** Stage 2's `resolveBaseScore` in `stage2-fusion.ts:152` is already an alias for `resolveEffectiveScore` per this ADR.
 <!-- /ANCHOR:adr-002 -->
 
 ---

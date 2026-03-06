@@ -71,7 +71,7 @@ import * as causalBoost from './lib/search/causal-boost';
 import * as bm25Index from './lib/search/bm25-index';
 import * as memoryParser from './lib/parsing/memory-parser';
 import { getSpecsBasePaths } from './lib/search/folder-discovery';
-import { isFileWatcherEnabled } from './lib/search/search-flags';
+import { isDegreeBoostEnabled, isFileWatcherEnabled } from './lib/search/search-flags';
 import { disposeLocalReranker } from './lib/search/local-reranker';
 import * as workingMemory from './lib/cache/cognitive/working-memory';
 import * as attentionDecay from './lib/cache/cognitive/attention-decay';
@@ -223,7 +223,10 @@ async function buildServerInstructions(): Promise<string> {
   }
 
   const stats = await getMemoryStats();
-  const channels = 'vector, fts5, bm25, graph, degree';
+  const channels: string[] = ['vector', 'fts5'];
+  if (bm25Index.isBm25Enabled()) channels.push('bm25');
+  if (isGraphUnifiedEnabled()) channels.push('graph');
+  if (isDegreeBoostEnabled()) channels.push('degree');
   const staleWarning = stats.staleCount > 10
     ? ` Warning: ${stats.staleCount} stale memories detected. Consider running memory_index_scan.`
     : '';
@@ -231,7 +234,7 @@ async function buildServerInstructions(): Promise<string> {
   return [
     `Spec Kit Memory MCP has ${stats.totalMemories} indexed memories across ${stats.specFolderCount} spec folders.`,
     `Active memories: ${stats.activeCount}. Stale memories: ${stats.staleCount}.`,
-    `Search channels: ${channels}.`,
+    `Search channels: ${channels.join(', ')}.`,
     'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
     staleWarning.trim(),
   ].filter(Boolean).join(' ');

@@ -73,10 +73,9 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     it('T210-FL1: HOT memories handled with overflow redistribution', () => {
       const hotMems = Array.from({ length: 10 }, (_, i) => makeMemByTier(i, 'HOT'));
       const result = filterAndLimitByState(hotMems, null, 100);
-      const hotCount = result.filter((r: any) => r._classification.state === 'HOT').length;
-
+      // _classification is stripped from returned objects; all inputs are HOT
       expect(result.length).toBeLessThanOrEqual(100);
-      expect(hotCount).toBeGreaterThanOrEqual(5);
+      expect(result.length).toBeGreaterThanOrEqual(5);
     });
 
     it('T210-FL2: Mixed tiers balanced with limits', () => {
@@ -91,13 +90,10 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
         ...Array.from({ length: 5 }, (_, i) => makeMemByTier(300 + i, 'DORMANT')),
       ];
       const result = filterAndLimitByState(mems, null, 100);
+      // _classification is stripped from returned objects; verify by ID ranges
+      const hotCount = result.filter((r: any) => r.id < 100).length;
 
-      const counts: Record<string, number> = { HOT: 0, WARM: 0, COLD: 0, DORMANT: 0, ARCHIVED: 0 };
-      for (const r of result) {
-        counts[r._classification.state]++;
-      }
-
-      expect(counts.HOT).toBeGreaterThanOrEqual(5);
+      expect(hotCount).toBeGreaterThanOrEqual(5);
       expect(result.length).toBeLessThanOrEqual(34);
       expect(result.length).toBeGreaterThanOrEqual(20);
     });
@@ -110,7 +106,8 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
         ...Array.from({ length: 5 }, (_, i) => makeMemByTier(200 + i, 'COLD')),
       ];
       const result = filterAndLimitByState(mems, null, 100);
-      const coldCount = result.filter((r: any) => r._classification.state === 'COLD').length;
+      // _classification is stripped; verify by ID range (COLD IDs start at 200)
+      const coldCount = result.filter((r: any) => r.id >= 200).length;
 
       expect(coldCount).toBeGreaterThan(3);
     });

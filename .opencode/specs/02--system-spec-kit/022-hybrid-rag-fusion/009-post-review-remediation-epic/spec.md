@@ -13,7 +13,7 @@ Consolidated on 2026-03-05 from the following source folders:
 
 ## Source: 002-cross-cutting-remediation/spec.md
 
----
+<!-- YAML-META
 title: "Feature Specification: Comprehensive MCP Server Remediation"
 description: "Consolidate cross-workstream remediation scope, constraints, and acceptance criteria for phase 006."
 # SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2
@@ -24,7 +24,7 @@ trigger_phrases:
   - "hybrid rag refinement"
 importance_tier: "important"
 contextType: "implementation"
----
+-->
 # Feature Specification: Comprehensive MCP Server Remediation
 
 <!-- SPECKIT_LEVEL: 1 -->
@@ -32,7 +32,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-002 -->
 ## 1. METADATA
 
 | Field | Value |
@@ -46,11 +46,11 @@ contextType: "implementation"
 | **Phase** | 10 of 10 |
 | **Predecessor** | ../018-deferred-features/ |
 | **Successor** | None (terminal remediation phase) |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-002 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-002 -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -58,11 +58,11 @@ A consolidated remediation pass identified cross-cutting issues spanning correct
 
 ### Purpose
 Define an explicit remediation scope with measurable outcomes so completion can be verified consistently across all work streams.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-002 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-002 -->
 ## 3. SCOPE
 
 ### In Scope
@@ -83,11 +83,11 @@ Define an explicit remediation scope with measurable outcomes so completion can 
 | `plan.md` | Update | Add template source metadata and structured execution anchors |
 | `tasks.md` | Update | Add template source metadata and anchored task blocks |
 | `implementation-summary.md` | Update | Add missing template source header |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-002 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-002 -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -102,37 +102,37 @@ Define an explicit remediation scope with measurable outcomes so completion can 
 |----|-------------|---------------------|
 | REQ-010-002 | Validation-critical metadata is present | Anchors and template-source markers are present in required files |
 | REQ-010-003 | Verification remains reproducible | Plan and tasks define deterministic validation flow |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-002 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-002 -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-010-001**: Recursive validator exits with code 0 or 1 (not 2) for this spec tree.
 - **SC-010-002**: Required phase docs and metadata markers are present and parseable.
 - **SC-010-003**: Remaining warnings are non-blocking and explicitly reportable.
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-002 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-002 -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Preceding phase links and parent spec integrity | Incomplete lineage validation | Maintain explicit parent/predecessor references |
 | Risk | Over-correcting non-blocking warnings during blocker remediation | Scope drift and unnecessary churn | Restrict edits to hard/major blockers first |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-002 -->
 
 ---
 
-<!-- ANCHOR:questions -->
+<!-- ANCHOR:questions-002 -->
 ## 7. OPEN QUESTIONS
 
 - Which non-blocking warnings should be deferred to follow-up documentation hardening?
 - Should this terminal phase be promoted to Level 2 in a separate, non-blocking pass?
-<!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions-002 -->
 
 ---
 
@@ -141,16 +141,14 @@ Define an explicit remediation scope with measurable outcomes so completion can 
 - Predecessor: `008-subfolder-resolution-fix`
 - Successor: `022-post-review-remediation`
 
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+*Acceptance scenarios for this phase use the consolidated validator coverage scenarios. See end of document.*
 
 
 ---
 
 ## Source: 022-post-review-remediation/spec.md
 
----
+<!-- YAML-META
 title: "Post-Review Remediation: 59 Findings from 25-Agent Comprehensive Review"
 description: "Remediation of 2 P0 blockers, 19 P1 required fixes, and 38 P2 improvements discovered during comprehensive 25-agent review of the Spec Kit Memory MCP server."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
@@ -161,7 +159,7 @@ trigger_phrases:
   - "comprehensive review remediation"
 importance_tier: "critical"
 contextType: "implementation"
----
+-->
 # Post-Review Remediation: 59 Findings from 25-Agent Review
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -169,7 +167,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-022 -->
 ## 1. METADATA
 
 | Field | Value |
@@ -179,11 +177,11 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-01 |
 | **Parent** | `022-hybrid-rag-fusion` |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-022 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-022 -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -191,11 +189,11 @@ A comprehensive 25-agent review of the Spec Kit Memory MCP server (`.opencode/sk
 
 ### Purpose
 Remediate all P0 and P1 findings to ensure schema correctness, pipeline completeness, code quality standards, and documentation accuracy. P2 improvements are documented for future work.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-022 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-022 -->
 ## 3. SCOPE
 
 ### In Scope
@@ -234,11 +232,11 @@ Remediate all P0 and P1 findings to ensure schema correctness, pipeline complete
 | `mcp_server/tool-schemas.ts` | Modify | P1-17 |
 | `summary_of_existing_features.md` | Modify | P1-18, P1-20, P1-21 |
 | `summary_of_new_features.md` | Modify | P1-18 |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-022 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-022 -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -286,22 +284,22 @@ Remediate all P0 and P1 findings to ensure schema correctness, pipeline complete
 | P1-19 | 43 undocumented feature flags | Feature flags exist in code but not documented | — |
 | P1-20 | `minState` default incorrect | Docs say wrong default value | `summary_of_existing_features.md` |
 | P1-21 | `asyncEmbedding` undocumented | Parameter exists but not in docs | `summary_of_existing_features.md` |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-022 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-022 -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All P0 findings resolved — `tsc --noEmit` passes
 - **SC-002**: All P1 findings resolved — `npm test` passes
 - **SC-003**: Build succeeds — `npm run build` passes
 - **SC-004**: MCP smoke test — `memory_health`, `memory_stats`, `memory_search` functional
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-022 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-022 -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -310,11 +308,11 @@ Remediate all P0 and P1 findings to ensure schema correctness, pipeline complete
 | Risk | Pipeline V2 wiring introduces regressions | Medium | Feature-flag gated (SPECKIT_MMR, SPECKIT_COACTIVATION) |
 | Risk | SQL dedup refactor changes save behavior | Medium | Extract helper without changing logic |
 | Dependency | Existing test suite coverage | Medium | Run full suite before and after |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-022 -->
 
 ---
 
-<!-- ANCHOR:nfr -->
+<!-- ANCHOR:nfr-022 -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Security
@@ -322,11 +320,11 @@ Remediate all P0 and P1 findings to ensure schema correctness, pipeline complete
 
 ### Reliability
 - **NFR-R01**: Schema consistency — production and test schemas must match
-<!-- /ANCHOR:nfr -->
+<!-- /ANCHOR:nfr-022 -->
 
 ---
 
-<!-- ANCHOR:complexity -->
+<!-- ANCHOR:complexity-022 -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -335,7 +333,7 @@ Remediate all P0 and P1 findings to ensure schema correctness, pipeline complete
 | Risk | 15/25 | Schema changes, pipeline wiring |
 | Research | 5/20 | Findings already documented |
 | **Total** | **38/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+<!-- /ANCHOR:complexity-022 -->
 
 ---
 
@@ -359,24 +357,17 @@ Full details available in the 25-agent synthesis report.
 - Successor: `023-flag-catalog-remediation`
 
 ## Supplemental Requirements
-- REQ-DOC-001: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-002: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-003: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-004: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC: Keep documentation internally consistent with existing phase artifacts and validation output.
 
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+
+*Acceptance scenarios for this phase use the consolidated validator coverage scenarios. See end of document.*
 
 
 ---
 
 ## Source: 023-flag-catalog-remediation/spec.md
 
----
+<!-- YAML-META
 title: "P1-19 Flag Catalog + Refinement Phase 3"
 description: "Address P1-19 (undocumented feature flags) and 38 P2 findings from 25-agent code review across code quality, performance, documentation, testing, and architecture."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
@@ -387,7 +378,7 @@ trigger_phrases:
   - "p2 improvements"
 importance_tier: "important"
 contextType: "implementation"
----
+-->
 # P1-19 Flag Catalog + Refinement Phase 3
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -395,7 +386,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-023 -->
 ## 1. METADATA
 
 | Field | Value |
@@ -406,11 +397,11 @@ contextType: "implementation"
 | **Created** | 2026-03-01 |
 | **Branch** | `main` (no feature branch — skip-branch) |
 | **Parent** | 022-post-review-remediation |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-023 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-023 -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -418,11 +409,11 @@ The 25-agent code review (013) resolved all P0 and most P1 findings. Two categor
 
 ### Purpose
 Close all remaining review findings to achieve a clean audit trail, documented flag catalog, and improved code quality across the MCP server.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-023 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-023 -->
 ## 3. SCOPE
 
 ### In Scope
@@ -437,11 +428,11 @@ Close all remaining review findings to achieve a clean audit trail, documented f
 ### Files to Change
 
 ~27 source files + 2 docs + 2-3 new test files across `mcp_server/`
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-023 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-023 -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers
@@ -455,18 +446,18 @@ Close all remaining review findings to achieve a clean audit trail, documented f
 |----|-------------|---------------------|
 | REQ-003 | Flag catalog covers 50+ env vars | Grep verification shows all SPECKIT_* flags documented |
 | REQ-004 | All 38 P2 findings addressed or documented as N/A | Each finding has corresponding code change or skip justification |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-023 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-023 -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `tsc --noEmit` exits 0 with all changes
 - **SC-002**: Full test suite passes (7000+ tests)
 - **SC-003**: Flag catalog contains 50+ documented env vars
 - **SC-004**: All 38 P2 findings closed (fixed, documented, or N/A)
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-023 -->
 
 ---
 
@@ -487,24 +478,20 @@ Close all remaining review findings to achieve a clean audit trail, documented f
 ## Supplemental Requirements
 - REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
 
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+*Acceptance scenarios for this phase use the consolidated validator coverage scenarios. See end of document.*
 
 
 ---
 
 ## Source: 024-timer-persistence-stage3-fallback/spec.md
 
----
+<!-- YAML-META
 title: "Spec: Refinement Phase 4"
 description: "Phase 4 remediation scope for warn-only timer persistence and stage3 effective score fallback hardening."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 importance_tier: "important"
 contextType: "implementation"
----
+-->
 
 # Spec: Refinement Phase 4
 
@@ -515,8 +502,10 @@ contextType: "implementation"
 
 **Parent:** 022-hybrid-rag-fusion
 **Level:** 2
-**Status:** In Progress
+**Status:** Superseded by 025/026
 **Created:** 2026-03-02
+
+> **Supersession Note:** Phase 024 was not independently executed. Timer persistence (P1 #1) was completed in 025-finalized-scope (T018–T019, CHK-017). The effectiveScore() fallback chain (P1 #2) was completed in 026-opus-remediation (T024, CHK-026–027). All verification passed in 026 with 7,085 tests.
 
 ## Problem
 
@@ -561,23 +550,17 @@ Documentation-level normalization for validator completeness without changing im
 - REQ-DOC-BASE: Maintain current factual implementation statements while improving structural completeness.
 
 ## Supplemental Requirements
-- REQ-DOC-002: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-003: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-004: Keep documentation internally consistent with existing phase artifacts and validation output.
-- REQ-DOC-005: Keep documentation internally consistent with existing phase artifacts and validation output.
+- REQ-DOC: Keep documentation internally consistent with existing phase artifacts and validation output.
 
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+
+*Acceptance scenarios for this phase use the consolidated validator coverage scenarios. See end of document.*
 
 
 ---
 
 ## Source: 025-finalized-scope/spec.md
 
----
+<!-- YAML-META
 title: "Feature Specification: Refinement Phase 5 Finalized Scope [template:level_2/spec.md]"
 description: "Level 2 child scope finalized across tranche-1 through tranche-4, including summary alignment, quality-gate robustness, hybrid-search hardening, and child-doc closeout."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify | v2.2"
@@ -589,7 +572,7 @@ trigger_phrases:
   - "phase 016 tranche-1 through tranche-4"
 importance_tier: "important"
 contextType: "implementation"
----
+-->
 # Feature Specification: Refinement Phase 5 Finalized Scope
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -597,7 +580,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-025 -->
 ## 1. METADATA
 
 | Field | Value |
@@ -609,11 +592,11 @@ contextType: "implementation"
 | **Branch** | `022-hybrid-rag-fusion/025-finalized-scope` |
 | **Parent Spec** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/` |
 | **Predecessor Context** | `024-timer-persistence-stage3-fallback/` |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-025 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-025 -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -623,11 +606,11 @@ This child phase is now complete and records a bounded multi-tranche remediation
 ### Purpose
 
 Document and verify the finalized tranche-1 through tranche-4 outcomes with explicit evidence so the child folder accurately reflects completed remediation and remains aligned with parent summary truth.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-025 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-025 -->
 ## 3. SCOPE
 
 ### In Scope
@@ -656,11 +639,11 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 | `.opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts` | Modify (implementation tranche) | Harden config-table ensure behavior and activation-window continuity |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts` | Modify (implementation tranche) | Canonical ID dedup hardening and tier-2 fallback `forceAllChannels` override |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search.vitest.ts` | Modify (implementation tranche) | Regression tests for canonical dedup and tier-2 fallback channel forcing |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-025 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-025 -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -685,22 +668,22 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 2. **Given** SQLite handles and process lifecycle can change, **when** save-quality-gate persistence helpers initialize and run, **then** config-table ensure behavior and activation-window timestamp state remain stable.
 3. **Given** hybrid search receives mixed memory ID encodings and simple-routed queries, **when** dedup and tier-2 fallback execute, **then** canonical dedup and all-channel fallback behavior are preserved.
 4. **Given** tranche-1 through tranche-4 tasks are complete, **when** expanded targeted tests and child validation run, **then** targeted suite passes (`176 tests`) and child validation exits with zero errors.
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-025 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-025 -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The child spec reflects finalized, bounded tranche-1 through tranche-4 remediation scope with no stale in-progress language.
 - **SC-002**: Parent summary contradiction/wording and P2 polish updates are captured as completed in-scope outcomes with evidence references.
 - **SC-003**: Runtime fixes (`save-quality-gate.ts`, `hybrid-search.ts`) are captured with targeted passing regression coverage.
 - **SC-004**: Child-folder validation reports zero errors after final documentation alignment.
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-025 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-025 -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -709,11 +692,11 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 | Risk | Runtime regressions in persistence or fallback logic after hardening | High | Maintain focused regression coverage and expanded targeted suite evidence in child records |
 | Dependency | Existing `mcp_server` test harness (`vitest`) | Medium | Use expanded targeted command and capture outputs in `tasks.md`, `checklist.md`, and summary evidence |
 | Dependency | Parent-phase context from `023` and predecessor `015` | Low | Keep lineage references in child docs while treating targeted parent summary fixes as in scope |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-025 -->
 
 ---
 
-<!-- ANCHOR:nfr -->
+<!-- ANCHOR:nfr-025 -->
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -727,7 +710,7 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 ### Reliability
 - **NFR-R01**: Config-table ensure behavior remains deterministic across repeated DB handle changes.
 - **NFR-R02**: Child validation output remains stable (exit 0 or 1, no errors) after doc updates.
-<!-- /ANCHOR:nfr -->
+<!-- /ANCHOR:nfr-025 -->
 
 ---
 
@@ -749,7 +732,7 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 
 ---
 
-<!-- ANCHOR:complexity -->
+<!-- ANCHOR:complexity-025 -->
 ## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
@@ -758,16 +741,16 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 | Risk | 18/25 | DB handle lifecycle robustness can affect persistence reliability |
 | Research | 10/20 | Requires contradiction and wording alignment against current source text |
 | **Total** | **42/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+<!-- /ANCHOR:complexity-025 -->
 
 ---
 
-<!-- ANCHOR:questions -->
+<!-- ANCHOR:questions-025 -->
 ## 10. OPEN QUESTIONS
 
 - No open blockers for this child; verification evidence is fully captured in child status docs.
 - Any new contradiction or drift findings should be deferred to the next child scope (for example `017-*`) unless explicitly reopened.
-<!-- /ANCHOR:questions -->
+<!-- /ANCHOR:questions-025 -->
 
 ---
 
@@ -784,7 +767,7 @@ Document and verify the finalized tranche-1 through tranche-4 outcomes with expl
 
 ## Source: 026-opus-remediation/spec.md
 
----
+<!-- YAML-META
 title: "Feature Specification: Refinement Phase 6 — Opus Review Remediation"
 description: "37 remediation fixes (4 P0 + 33 P1) identified by 10-agent Opus review of the spec-kit-memory MCP server."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
@@ -795,7 +778,7 @@ trigger_phrases:
   - "017 remediation"
 importance_tier: "critical"
 contextType: "implementation"
----
+-->
 # Feature Specification: Refinement Phase 6 — Opus Review Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -815,7 +798,7 @@ A 10-agent comprehensive review of the `022-hybrid-rag-fusion` codebase identifi
 
 ## 1. METADATA
 
-<!-- ANCHOR:metadata -->
+<!-- ANCHOR:metadata-026 -->
 
 | Field | Value |
 |-------|-------|
@@ -825,11 +808,11 @@ A 10-agent comprehensive review of the `022-hybrid-rag-fusion` codebase identifi
 | **Created** | 2026-03-02 |
 | **Parent** | `022-hybrid-rag-fusion` |
 | **Siblings** | `015-gemini-review-p1-fixes` (complete), `016-alignment-remediation` (complete) |
-<!-- /ANCHOR:metadata -->
+<!-- /ANCHOR:metadata-026 -->
 
 ---
 
-<!-- ANCHOR:problem -->
+<!-- ANCHOR:problem-026 -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -837,11 +820,11 @@ The 10-agent Opus review identified 38 issues. 37 remain unresolved: 4 P0 critic
 
 ### Purpose
 Resolve all 37 remaining findings to achieve a clean, consistent, single-pipeline codebase with correct scoring, complete cleanup on delete, robust graph integrity, and reliable evaluation metrics.
-<!-- /ANCHOR:problem -->
+<!-- /ANCHOR:problem-026 -->
 
 ---
 
-<!-- ANCHOR:scope -->
+<!-- ANCHOR:scope-026 -->
 ## 3. SCOPE
 
 ### In Scope
@@ -891,11 +874,11 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 | `handlers/session-learning.ts` | Modify | 5 |
 | `tools/types.ts` | Modify | 5 |
 | `lib/storage/access-tracker.ts` | Modify | 5 |
-<!-- /ANCHOR:scope -->
+<!-- /ANCHOR:scope-026 -->
 
 ---
 
-<!-- ANCHOR:requirements -->
+<!-- ANCHOR:requirements-026 -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -944,11 +927,11 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 | REQ-P1-36 | parseArgs validates input | Null/undefined/non-object guard |
 | REQ-P1-37 | Dedup hash 128-bit | `.slice(0, 32)` not `.slice(0, 16)` |
 | REQ-P1-38 | Exit handlers removable | `process.removeListener()` in cleanup |
-<!-- /ANCHOR:requirements -->
+<!-- /ANCHOR:requirements-026 -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
+<!-- ANCHOR:success-criteria-026 -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 7,081+ existing tests pass (zero regressions)
@@ -956,11 +939,11 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 - **SC-003**: Legacy V1 pipeline code fully removed (~600 LOC)
 - **SC-004**: No dual scoring/filtering paths remain
 - **SC-005**: Each sprint independently committable
-<!-- /ANCHOR:success-criteria -->
+<!-- /ANCHOR:success-criteria-026 -->
 
 ---
 
-<!-- ANCHOR:risks -->
+<!-- ANCHOR:risks-026 -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -970,7 +953,7 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 | Risk | Stemmer change affects existing BM25 index | Medium | Changes only affect new indexing; existing data unaffected until re-index |
 | Dependency | Sprint 1 blocks Sprints 2–4 | High | Execute Sprint 1 first; Sprint 5 can run in parallel |
 | Dependency | Test baseline from 015 (7,081 tests) | Low | Verify exact count before starting |
-<!-- /ANCHOR:risks -->
+<!-- /ANCHOR:risks-026 -->
 
 ---
 
@@ -1039,14 +1022,16 @@ Resolve all 37 remaining findings to achieve a clean, consistent, single-pipelin
 - Predecessor: `025-finalized-scope`
 - Successor: `010-cross-ai-audit`
 
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
+*Acceptance scenarios for this phase use the consolidated validator coverage scenarios. See end of document.*
 
+
+
+## Consolidated Acceptance Scenarios (Validator Coverage)
+
+> **Note:** Phases 002, 022, 023, 024, and 026 share the following generic validator coverage scenario.
+> Phase 025 has specific acceptance scenarios documented in its section above.
+
+1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 
 ---
 

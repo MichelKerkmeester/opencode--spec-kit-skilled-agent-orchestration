@@ -32,6 +32,17 @@ const positiveIntMax = (max: number) => safeNumericPreprocess.pipe(z.number().in
 const boundedNumber = (min: number, max: number) => safeNumericPreprocess.pipe(z.number().min(min).max(max));
 const optionalStringArray = z.array(z.string()).optional();
 
+const PATH_TRAVERSAL_MESSAGE = 'Path must not contain traversal sequences';
+const isSafePath = (value: string): boolean => !value.includes('..') && !value.includes('\0');
+const pathString = (minLength = 0) => {
+  let schema = z.string();
+  if (minLength > 0) {
+    schema = schema.min(minLength);
+  }
+  return schema.refine(isSafePath, { message: PATH_TRAVERSAL_MESSAGE });
+};
+const optionalPathString = (minLength = 0) => pathString(minLength).optional();
+
 const intentEnum = z.enum([
   'add_feature',
   'fix_bug',
@@ -64,7 +75,7 @@ const memoryContextSchema = getSchema({
   input: z.string().min(1),
   mode: z.enum(['auto', 'quick', 'deep', 'focused', 'resume']).optional(),
   intent: intentEnum.optional(),
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -77,7 +88,7 @@ const memoryContextSchema = getSchema({
 const memorySearchSchema = getSchema({
   query: z.string().min(2).max(1000).optional(),
   concepts: z.array(z.string().min(1)).min(2).max(5).optional(),
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -124,7 +135,7 @@ const memoryMatchTriggersSchema = getSchema({
 });
 
 const memorySaveSchema = getSchema({
-  filePath: z.string().min(1),
+  filePath: pathString(1),
   force: z.boolean().optional(),
   dryRun: z.boolean().optional(),
   skipPreflight: z.boolean().optional(),
@@ -138,11 +149,11 @@ const memorySaveSchema = getSchema({
 const memoryDeleteSchema = z.union([
   getSchema({
     id: positiveInt,
-    specFolder: z.string().optional(),
+    specFolder: optionalPathString(),
     confirm: z.literal(true).optional(),
   }),
   getSchema({
-    specFolder: z.string().min(1),
+    specFolder: pathString(1),
     confirm: z.literal(true),
   }),
 ]);
@@ -171,7 +182,7 @@ const memoryValidateSchema = getSchema({
 
 const memoryBulkDeleteSchema = getSchema({
   tier: importanceTierEnum,
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   confirm: z.boolean(),
   olderThanDays: safeNumericPreprocess.pipe(z.number().int().min(0)).optional(),
   skipCheckpoint: z.boolean().optional(),
@@ -180,7 +191,7 @@ const memoryBulkDeleteSchema = getSchema({
 const memoryListSchema = getSchema({
   limit: positiveIntMax(100).optional(),
   offset: safeNumericPreprocess.pipe(z.number().int().min(0)).optional(),
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   sortBy: z.enum(['created_at', 'updated_at', 'importance_weight']).optional(),
   includeChunks: z.boolean().optional(),
 });
@@ -196,18 +207,18 @@ const memoryStatsSchema = getSchema({
 const memoryHealthSchema = getSchema({
   reportMode: z.enum(['full', 'divergent_aliases']).optional(),
   limit: positiveIntMax(200).optional(),
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   autoRepair: z.boolean().optional(),
 });
 
 const checkpointCreateSchema = getSchema({
   name: z.string().min(1),
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 const checkpointListSchema = getSchema({
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   limit: positiveIntMax(100).optional(),
 });
 
@@ -222,7 +233,7 @@ const checkpointDeleteSchema = getSchema({
 });
 
 const taskPreflightSchema = getSchema({
-  specFolder: z.string().min(1),
+  specFolder: pathString(1),
   taskId: z.string().min(1),
   knowledgeScore: boundedNumber(0, 100),
   uncertaintyScore: boundedNumber(0, 100),
@@ -232,7 +243,7 @@ const taskPreflightSchema = getSchema({
 });
 
 const taskPostflightSchema = getSchema({
-  specFolder: z.string().min(1),
+  specFolder: pathString(1),
   taskId: z.string().min(1),
   knowledgeScore: boundedNumber(0, 100),
   uncertaintyScore: boundedNumber(0, 100),
@@ -280,7 +291,7 @@ const evalReportingDashboardSchema = getSchema({
 });
 
 const memoryIndexScanSchema = getSchema({
-  specFolder: z.string().optional(),
+  specFolder: optionalPathString(),
   force: z.boolean().optional(),
   includeConstitutional: z.boolean().optional(),
   includeSpecDocs: z.boolean().optional(),
@@ -288,7 +299,7 @@ const memoryIndexScanSchema = getSchema({
 });
 
 const memoryGetLearningHistorySchema = getSchema({
-  specFolder: z.string().min(1),
+  specFolder: pathString(1),
   sessionId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   onlyComplete: z.boolean().optional(),
@@ -296,8 +307,8 @@ const memoryGetLearningHistorySchema = getSchema({
 });
 
 const memoryIngestStartSchema = getSchema({
-  paths: z.array(z.string().min(1)).min(1),
-  specFolder: z.string().optional(),
+  paths: z.array(pathString(1)).min(1).max(50),
+  specFolder: optionalPathString(),
 });
 
 const memoryIngestStatusSchema = getSchema({
@@ -435,7 +446,12 @@ export function getToolSchema(toolName: string): ToolInputSchema | null {
 export function validateToolArgs(toolName: string, rawInput: Record<string, unknown>): ToolInput {
   const schema = getToolSchema(toolName);
   if (!schema) {
-    return rawInput;
+    throw new ToolSchemaValidationError(toolName, `Unknown tool: "${toolName}". No schema registered.`, {
+      tool: toolName,
+      issues: ['unknown_tool'],
+      unknownParameters: [],
+      expectedParameters: [],
+    });
   }
 
   try {
@@ -447,6 +463,6 @@ export function validateToolArgs(toolName: string, rawInput: Record<string, unkn
       console.error(`[schema-validation] ${toolName}: ${formatted.message}`);
       throw formatted;
     }
-    throw error;
+    throw new Error('Schema validation encountered an unexpected error');
   }
 }

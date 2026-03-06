@@ -364,7 +364,14 @@ function upsertExtractedEntry(input: ExtractedEntryInput): boolean {
 
   try {
     const currentEventCounter = nextEventCounter(sessionId);
-    enforceMemoryLimit(sessionId);
+
+    // Only enforce capacity when this will be a true INSERT, not an UPDATE
+    const existingCount = ((db.prepare(
+      'SELECT COUNT(*) as cnt FROM working_memory WHERE session_id = ? AND memory_id = ?'
+    ) as Database.Statement).get(sessionId, memoryId) as { cnt: number }).cnt;
+    if (existingCount === 0) {
+      enforceMemoryLimit(sessionId);
+    }
 
     (db.prepare(`
       INSERT INTO working_memory (
@@ -504,24 +511,26 @@ function batchUpdateScores(sessionId: string): number {
     `) as Database.Statement;
 
     let changedRows = 0;
-    for (const entry of entries) {
-      const eventsElapsed = calculateEventDistance(currentEventCounter, entry.event_counter);
-      const decayBase = entry.attention_score * Math.pow(EVENT_DECAY_FACTOR, eventsElapsed);
-      const mentionBoost = Math.min(entry.mention_count, MAX_MENTION_COUNT) * MENTION_BOOST_FACTOR;
-      const rawScore = decayBase + mentionBoost;
+    db.transaction(() => {
+      for (const entry of entries) {
+        const eventsElapsed = calculateEventDistance(currentEventCounter, entry.event_counter);
+        const decayBase = entry.attention_score * Math.pow(EVENT_DECAY_FACTOR, eventsElapsed);
+        const mentionBoost = Math.min(entry.mention_count, MAX_MENTION_COUNT) * MENTION_BOOST_FACTOR;
+        const rawScore = decayBase + mentionBoost;
 
-      if (rawScore < DELETE_THRESHOLD) {
-        const deleteResult = deleteStmt.run(entry.id) as { changes: number };
-        changedRows += deleteResult.changes;
-        continue;
+        if (rawScore < DELETE_THRESHOLD) {
+          const deleteResult = deleteStmt.run(entry.id) as { changes: number };
+          changedRows += deleteResult.changes;
+          continue;
+        }
+
+        // AI-WHY: Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
+        // Mention boost can push rawScore above 1.0 which breaks [0,1] score semantics.
+        const nextScore = Math.max(DECAY_FLOOR, Math.min(1.0, rawScore));
+        const updateResult = updateStmt.run(nextScore, entry.id) as { changes: number };
+        changedRows += updateResult.changes;
       }
-
-      // AI-WHY: Fix #29 (017-refinement-phase-6) — Clamp to [DECAY_FLOOR, 1.0].
-      // Mention boost can push rawScore above 1.0 which breaks [0,1] score semantics.
-      const nextScore = Math.max(DECAY_FLOOR, Math.min(1.0, rawScore));
-      const updateResult = updateStmt.run(nextScore, entry.id) as { changes: number };
-      changedRows += updateResult.changes;
-    }
+    })();
 
     return changedRows;
   } catch (error: unknown) {

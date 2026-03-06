@@ -40,8 +40,8 @@ describe('Graph Feature Flag', () => {
     expect(isGraphUnifiedEnabled()).toBe(false);
   });
 
-  it("returns false for non-boolean values like '1'", () => {
+  it("returns true for non-boolean values like '1' (only 'false'/'0' disable)", () => {
     process.env.SPECKIT_GRAPH_UNIFIED = '1';
-    expect(isGraphUnifiedEnabled()).toBe(false);
+    expect(isGraphUnifiedEnabled()).toBe(true);
   });
 });

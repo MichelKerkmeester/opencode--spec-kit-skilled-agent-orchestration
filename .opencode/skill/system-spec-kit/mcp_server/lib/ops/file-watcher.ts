@@ -111,6 +111,28 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const inFlightReindex = new Set<Promise<void>>();
   let isClosing = false;
 
+  // C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
+  const MAX_CONCURRENT_REINDEX = 2;
+  let activeReindexCount = 0;
+  const pendingReindexSlots: Array<() => void> = [];
+
+  function acquireReindexSlot(): Promise<void> {
+    if (activeReindexCount < MAX_CONCURRENT_REINDEX) {
+      activeReindexCount++;
+      return Promise.resolve();
+    }
+    return new Promise((resolve) => pendingReindexSlots.push(() => { activeReindexCount++; resolve(); }));
+  }
+
+  function releaseReindexSlot(): void {
+    activeReindexCount--;
+    const next = pendingReindexSlots.shift();
+    if (next) next();
+  }
+
+  // M1 fix: AbortController per file path for cancellation of stale reindex
+  const activeAbortControllers = new Map<string, AbortController>();
+
   const trackInFlight = (task: Promise<void>): void => {
     inFlightReindex.add(task);
     void task.finally(() => {
@@ -122,6 +144,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     ignoreInitial: true,
     awaitWriteFinish: { stabilityThreshold: 1000 },
     ignored: shouldIgnoreWatchTarget,
+    followSymlinks: false,
   });
 
   const scheduleTask = (
@@ -153,7 +176,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
       const task = operation().catch((error: unknown) => {
         const message = error instanceof Error ? error.message : String(error);
-        console.warn(`[file-watcher] Watch task failed for ${filePath}: ${message}`);
+        console.warn(`[file-watcher] Watch task failed for ${path.basename(filePath)}: ${message}`);
       });
       trackInFlight(task);
     }, debounceMs);
@@ -165,39 +188,92 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
     const filePath = typeof targetPath === 'string' ? targetPath : null;
     const forceReindex = options.force === true;
 
+    // M1: Abort any in-flight reindex for this same file before scheduling new one
+    if (filePath) {
+      const prev = activeAbortControllers.get(filePath);
+      if (prev) prev.abort();
+    }
+
     scheduleTask(targetPath, async () => {
       if (!filePath) {
         return;
       }
 
-      // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
-      // created then deleted before the debounce timer fires.
-      let nextHash: string;
-      try {
-        nextHash = await hashFileContent(filePath);
-      } catch (hashErr: unknown) {
-        const code = (hashErr as { code?: string })?.code;
-        if (code === 'ENOENT') return; // File was deleted — silently ignore
-        throw hashErr;
-      }
+      const controller = new AbortController();
+      activeAbortControllers.set(filePath, controller);
 
-      if (!forceReindex) {
-        const previousHash = contentHashes.get(filePath);
-        if (previousHash && previousHash === nextHash) {
+      try {
+        let resolvedPath: string;
+        try {
+          resolvedPath = await fs.realpath(filePath);
+        } catch (realpathErr: unknown) {
+          const code = (realpathErr as { code?: string })?.code;
+          if (code === 'ENOENT') return;
+          throw realpathErr;
+        }
+
+        if (controller.signal.aborted) return;
+
+        const containmentRoots = await Promise.all(config.paths.map(async (root) => {
+          const normalizedRoot = path.resolve(root);
+          try {
+            return await fs.realpath(normalizedRoot);
+          } catch (rootErr: unknown) {
+            const code = (rootErr as { code?: string })?.code;
+            if (code === 'ENOENT') return normalizedRoot;
+            throw rootErr;
+          }
+        }));
+        const isContained = containmentRoots.some((root) => {
+          const rootPrefix = root.endsWith(path.sep) ? root : `${root}${path.sep}`;
+          return resolvedPath === root || resolvedPath.startsWith(rootPrefix);
+        });
+        if (!isContained) {
+          console.warn(`[file-watcher] Skipping reindex outside watch roots: ${path.basename(filePath)}`);
           return;
         }
+
+        // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
+        // created then deleted before the debounce timer fires.
+        let nextHash: string;
+        try {
+          nextHash = await hashFileContent(filePath);
+        } catch (hashErr: unknown) {
+          const code = (hashErr as { code?: string })?.code;
+          if (code === 'ENOENT') return; // File was deleted — silently ignore
+          throw hashErr;
+        }
+
+        if (controller.signal.aborted) return;
+
+        if (!forceReindex) {
+          const previousHash = contentHashes.get(filePath);
+          if (previousHash && previousHash === nextHash) {
+            return;
+          }
+        }
+
+        // C3: Acquire concurrency slot before CPU-intensive reindex
+        await acquireReindexSlot();
+        try {
+          if (controller.signal.aborted) return;
+
+          const reindexStart = Date.now();
+          await withBusyRetry(async () => {
+            await config.reindexFn(filePath);
+          });
+          const reindexElapsed = Date.now() - reindexStart;
+          filesReindexed++;
+          totalReindexTimeMs += reindexElapsed;
+          console.error(`[file-watcher] Reindexed ${path.basename(filePath)} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
+
+          contentHashes.set(filePath, nextHash);
+        } finally {
+          releaseReindexSlot();
+        }
+      } finally {
+        activeAbortControllers.delete(filePath);
       }
-
-      const reindexStart = Date.now();
-      await withBusyRetry(async () => {
-        await config.reindexFn(filePath);
-      });
-      const reindexElapsed = Date.now() - reindexStart;
-      filesReindexed++;
-      totalReindexTimeMs += reindexElapsed;
-      console.error(`[file-watcher] Reindexed ${filePath} in ${reindexElapsed}ms (total: ${filesReindexed} files, avg: ${Math.round(totalReindexTimeMs / filesReindexed)}ms)`);
-
-      contentHashes.set(filePath, nextHash);
     });
   };
 
@@ -217,7 +293,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
       await withBusyRetry(async () => {
         await config.removeFn?.(filePath);
       });
-      console.error(`[file-watcher] Removed indexed entries for ${filePath}`);
+      console.error(`[file-watcher] Removed indexed entries for ${path.basename(filePath)}`);
     });
   };
 

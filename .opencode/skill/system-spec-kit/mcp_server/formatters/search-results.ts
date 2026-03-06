@@ -510,8 +510,11 @@ export async function formatSearchResults(
     count: formatted.length,
     constitutionalCount: constitutionalCount,
     results: formatted,
-    ...extraData
   };
+  // M4 fix: Only spread extraData (pipeline trace, timing, etc.) when includeTrace is enabled
+  if (includeTrace && extraData && Object.keys(extraData).length > 0) {
+    Object.assign(responseData, extraData);
+  }
 
   return createMCPSuccessResponse({
     tool: 'memory_search',

@@ -70,7 +70,7 @@ Three interrelated bugs cause this:
 
 1. `node generate-context.js "008-subfolder-resolution-fix"` succeeds (bare name)
 2. `node generate-context.js "02--system-spec-kit/023-.../012-..."` succeeds (relative path)
-3. `test-subfolder-resolution.js`: 26/26 passed, 0 failed
+3. `test-subfolder-resolution.js`: 31/31 passed, 0 failed (26 original + 5 post-review)
 4. `test-folder-detector-functional.js`: no new failures
 5. TypeScript compiles cleanly
 <!-- /ANCHOR:success-criteria -->
@@ -82,12 +82,3 @@ Three interrelated bugs cause this:
 | **Parent Spec** | ../spec.md |
 - Predecessor: `007-skill-command-alignment`
 - Successor: `021-cross-cutting-remediation`
-
-## Problem Statement
-Documentation-level normalization for validator completeness without changing implementation outcomes.
-
-## Acceptance Scenarios (Validator Coverage)
-1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
-4. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

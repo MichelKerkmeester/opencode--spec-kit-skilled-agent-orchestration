@@ -37,7 +37,7 @@ contextType: "implementation"
 ## Testing
 
 - [x] CHK-010 [P0] TypeScript compiles cleanly [0 errors] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-- [x] CHK-011 [P0] `test-subfolder-resolution.js`: 26 passed, 0 failed [Evidence: test output]
+- [x] CHK-011 [P0] `test-subfolder-resolution.js`: 31 passed, 0 failed [Evidence: test output post-remediation]
 - [x] CHK-012 [P0] Bare name resolves: `007-skill-command-alignment` [Evidence: "Resolved child folder" output]
 - [x] CHK-013 [P0] Relative path resolves: `02--system-spec-kit/023-.../011-...` [Evidence: "Nested spec folder" output]
 - [x] CHK-014 [P1] `test-folder-detector-functional.js`: no new failures [28 passed, 1 pre-existing] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -51,13 +51,11 @@ contextType: "implementation"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
-| P1 Items | 1 | 1/1 |
+| P1 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-01
+**Verification Date**: 2026-03-01 (original), 2026-03-06 (post-review remediation)
 <!-- /ANCHOR:summary -->
 
-## P0
-- [ ] [P0] No additional phase-specific blockers recorded for this checklist normalization pass.
+## Post-Review Remediation
 
-## P1
-- [ ] [P1] No additional required checks beyond documented checklist items for this phase.
+- [x] CHK-020 [P1] Cross-AI review findings addressed (10-agent review, 8 Major + 14 Minor) [Evidence: 008 remediation implementation]

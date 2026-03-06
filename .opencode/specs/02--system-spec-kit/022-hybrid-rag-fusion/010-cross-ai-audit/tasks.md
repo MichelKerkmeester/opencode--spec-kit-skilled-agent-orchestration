@@ -316,80 +316,88 @@ contextType: "implementation"
 
 ## Tier 3: Future (Dedicated Spec Required)
 
-**Effort:** 19.7h optimistic / 50-70h realistic | **Status:** Not started — requires separate spec folder
+**Effort:** 19.7h optimistic / 50-70h realistic | **Status:** 11/15 implemented (Wave 2), 1 partial (T3-14), 3 deferred (T3-1, T3-14 remainder, T3-15)
 
-### T3-1: Code standards alignment pass [P2] — 2.5h opt / 4-6h real
+### T3-1: Code standards alignment pass [P2] — 2.5h opt / 4-6h real — DEFERRED
 - [ ] Convert 19 files from `// -------` separator headers to `// ---` box-drawing standard
 - [ ] Convert narrative comments to AI-intent prefixes (AI-WHY, AI-TRACE, AI-NOTE)
 - [ ] Files: 19 across `mcp_server/` (all fail sk-code--opencode systematically)
+- **Status:** DEFERRED — 180-file scope requires separate spec folder
 
-### T3-2: Transaction boundary audit [P2] — 2.0h opt / 4-6h real
-- [ ] Specialized review of `storage/`, `extraction/`, `graph/`, `learning/` for side-effects outside `.transaction()` wrappers
-- [ ] G5 recommendation: enforceEntryLimit pattern may be repeated beyond session-manager.ts
-- [ ] Files: 12+ files across 4 subdirectories
+### T3-2: Transaction boundary audit [P2] — IMPLEMENTED (Wave 2 agents O2-4, O2-5)
+- [x] `reconsolidation.ts`: executeMerge, executeConflict wrapped in db.transaction(); async generateEmbedding() moved before tx
+- [x] `causal-edges.ts`: insertEdge, updateEdge, rollbackWeights already wrapped in db.transaction() (verified)
+- [x] `consolidation.ts`: runHebbianCycle wrapped in db.transaction(); empty catch replaced with console.warn; fail-open → fail-closed (return null)
+- [x] `checkpoints.ts`: createCheckpoint wrapped in db.transaction() (verified)
+- **Evidence:** `tsc --noEmit` clean, 7205/7205 tests pass
 
-### T3-3: Deep review of eval/ [P2] — 3.0h opt / 12-20h real
-- [ ] 15 files, 7,051 LOC — largest blind spot (14% of lib/)
-- [ ] Contains: ablation framework, shadow scoring, BM25 baseline, reporting dashboard
-- [ ] G5 found Math.max spread in `reporting-dashboard.ts` (already covered in T1-4)
-- [ ] Complex testing/evaluation logic may contain subtle correctness bugs
+### T3-3: Deep review of eval/ [P2] — IMPLEMENTED (Wave 2 agent O2-1)
+- [x] `eval-metrics.ts`: P0 fix — computePrecision/computeF1 now use topK() helper to sort by rank before slicing
+- [x] `eval-logger.ts`: P0 fix — generateEvalRunId() uses proper DB getter for initialization
+- [x] `reporting-dashboard.ts`: P1 fix — zero-baseline trend sign corrected; direction-agnostic phrasing
+- **Evidence:** `tsc --noEmit` clean, 7205/7205 tests pass
 
-### T3-4: Deep review of cognitive/ [P2] — 2.0h opt / 6-10h real
-- [ ] 10 files, 3,795 LOC
-- [ ] Contains: working memory, archival manager, prediction error gate, co-activation
-- [ ] G5 confirmed Math.max spread in `prediction-error-gate.ts` (already covered in T1-4)
-- [ ] Complex stateful logic with implicit assumptions about session lifecycle
+### T3-4: Deep review of cognitive/ [P2] — IMPLEMENTED (Wave 2 agents O2-2, O2-3)
+- [x] `working-memory.ts`: P0 fix — upsertExtractedEntry checks existence before enforceMemoryLimit(); batchUpdateScores wrapped in db.transaction()
+- [x] `fsrs-scheduler.ts`: P0 fix — NaN guard in calculateElapsedDays (`if (isNaN(lastDate.getTime())) return 0`)
+- [x] `archival-manager.ts`: P1 fix — saveArchivalStats always upserts lastScanTime; archiveBatch wrapped in single transaction
+- [x] `temporal-contiguity.ts`: P1 fix — cumulative boost capped via MAX_TOTAL_BOOST (erroneous 0-1 clamp removed)
+- [x] `tier-classifier.ts`: P1 fix — _classification stripped from returned objects in filterAndLimitByState
+- [x] `attention-decay.ts`: P1 fix — dead typeof guards removed from calculateCompositeAttention and getAttentionBreakdown
+- **Evidence:** `tsc --noEmit` clean, 7205/7205 tests pass
 
-### T3-5: Deep review of storage/ [P2] — 2.0h opt / 6-10h real
-- [ ] 12 files, 4,831 LOC — largest fully unreviewed directory
-- [ ] Database operations, migration logic, vector index management
-- [ ] G5 confirmed clean (no Math.max, TODO, FIXME, HACK) but no logic review performed
-- [ ] Recommended for transaction boundary audit (DB-heavy operations)
+### T3-5: Deep review of storage/ [P2] — IMPLEMENTED (overlaps with T3-2)
+- [x] O2-4 audited reconsolidation.ts — 3 P0 fixes applied
+- [x] O2-5 scope covered causal-edges.ts, consolidation.ts, checkpoints.ts — all transaction-wrapped
+- **Evidence:** See T3-2 for details
 
-### T3-6: Verify "89 feature flags" claim [P2] — 1.0h opt / 2-3h real
-- [ ] Flag audit found 20 flags in `search-flags.ts`
-- [ ] 69 unaccounted for — check `rollout-policy.ts`, cognitive/ modules, eval/ modules
-- [ ] Determine if "89" is accurate or an overcount
+### T3-6: Verify "89 feature flags" claim [P2] — RESOLVED
+- [x] G2 audit found 72 flags total (not 89), 57 boolean-actionable
+- [x] isFeatureEnabled divergence confirmed and fixed (see T3-13)
+- **Evidence:** G2 Wave 1 audit output; "89" was an overcount
 
-### T3-7: Fix stemmer double-consonant dedup [P3] — 0.5h opt / 1h real
-- [ ] Make dedup conditional on suffix removal in BM25 stemmer
-- [ ] File: `mcp_server/lib/search/bm25-index.ts` L84-88
-- [ ] Currently dedup applied unconditionally — affects quality, not correctness
+### T3-7: Fix stemmer double-consonant dedup [P3] — IMPLEMENTED
+- [x] Added `suffixRemoved` tracking variable in simpleStem()
+- [x] Dedup now gated on `suffixRemoved && stem.length >= 3`
+- [x] "bass", "jazz", "bill" etc. no longer incorrectly stripped
+- **Evidence:** `bm25-index.ts:74-93`, 7205/7205 tests pass
 
-### T3-8: Evaluate persistent embedding cache [P2] — 1.0h opt / 2-3h real
-- [ ] REQ-S2-001 TODO at `providers/retry-manager.ts:219`
-- [ ] Currently only in-memory — retries from scratch under rate-limit starvation
-- [ ] Assess priority before production load increases rate-limit pressure
+### T3-8: Evaluate persistent embedding cache [P2] — ALREADY IMPLEMENTED
+- [x] `retry-manager.ts` already uses `lookupEmbedding()`/`storeEmbedding()` from embedding-cache.ts
+- [x] Cache lookup occurs before `generateDocumentEmbedding()` call; cache store occurs after successful generation
+- **Evidence:** `retry-manager.ts:226-246` — full cache integration in retryEmbedding()
 
-### T3-9: Remove content-normalizer TODO [P3] — 0.1h
-- [ ] Clean up leftover `<!-- TODO: remove -->` placeholder at `parsing/content-normalizer.ts:62`
+### T3-9: Remove content-normalizer TODO [P3] — FALSE_POSITIVE
+- [x] Docblock example, not an actual TODO comment
+- **Evidence:** Wave 1 triage confirmed FALSE_POSITIVE
 
-### T3-10: Update spec.md metadata [P2] — 0.1h
-- [ ] Tool count from 23 to 25 in spec metadata
+### T3-10: Update spec.md metadata [P2] — DONE
+- [x] spec.md metadata already updated
+- **Evidence:** Verified in Wave 1 triage
 
-### T3-11: Remove duplicate deps [P2] — 0.25h (post T2-8)
-- [ ] Remove better-sqlite3 and/or sqlite-vec from scripts/package.json if confirmed redundant after T2-8
+### T3-11: Remove duplicate deps [P2] — DONE
+- [x] Both better-sqlite3 and sqlite-vec are legitimately used
+- **Evidence:** Wave 1 triage confirmed both deps needed
 
-### T3-12: Add Phase D reindex entry point [P2] — 1.0h opt / 2-3h real
-- [ ] Export dedicated `reindex()` function from mcp_server
-- [ ] Replace current 7-typeof-import bootstrap pattern in `reindex-embeddings.ts`
-- [ ] Architecturally significant — recommended by Wave 1 Opus but lost in synthesis
+### T3-12: Add Phase D reindex entry point [P2] — ALREADY IMPLEMENTED
+- [x] `api/indexing.ts` already exists as stable API entry point
+- **Evidence:** Created during ARCH-1 implementation
 
-### T3-13: Check isFeatureEnabled() divergence [P2] — 0.25h
-- [ ] Verify whether `rollout-policy.ts` and `search-flags.ts` share implementation
-- [ ] Opus found `isFeatureEnabled("1")` returns disabled — potential inconsistency
-- [ ] Single-model finding (unverified)
+### T3-13: Fix isFeatureEnabled() divergence [P2] — IMPLEMENTED
+- [x] `rollout-policy.ts`: Fixed to treat only 'false'/'0' as disabled (was: strict `rawFlag === 'true'`)
+- [x] Values like '1', 'yes' now correctly treated as enabled
+- [x] Duplicate at `lib/cache/cognitive/` is a symlink to `lib/cognitive/` — single source of truth
+- [x] 4 test files updated to match new flag semantics
+- **Evidence:** `rollout-policy.ts:39`, 7205/7205 tests pass
 
-### T3-14: Verify remaining Phase 017 fixes [P2] — 2.0h opt / 4-6h real
-- [ ] Only 10/35 Phase 017 fixes were sampled and verified
-- [ ] 25 remain unverified
-- [ ] Priority: fixes touching search/, scoring/, handlers/ (critical path code)
+### T3-14: Verify remaining Phase 017 fixes [P2] — PARTIAL
+- [x] C1 (Codex Wave 1) checked 25/35: 19 VERIFIED, 3 SUSPICIOUS, 3 MISSING
+- [ ] 10 remaining unverified; 3 suspicious need follow-up
+- **Status:** DEFERRED — remaining verification needs separate effort
 
-### T3-15: Error handling / circuit breaker analysis [P2] — 2.0h opt / 4-6h real
-- [ ] No cascading failure analysis performed across the codebase
-- [ ] Examine `errors/` directory (3 files, 1,135 LOC — scan-only coverage)
-- [ ] Map error boundaries throughout mcp_server/
-- [ ] Assess: can a single handler failure cascade to affect other MCP tools?
+### T3-15: Error handling / circuit breaker analysis [P2] — DEFERRED
+- [ ] C2 agent never returned during Wave 1
+- **Status:** DEFERRED — needs redo in separate effort
 
 ---
 
@@ -520,18 +528,24 @@ contextType: "implementation"
 
 **Acceptance:** Dashboard does not silently discard data. Either configurable limit or logged warning.
 
-### CR-P2-4: Decompose memory-save.ts [P2] [Gemini] (Deferred)
+### CR-P2-4: Decompose memory-save.ts [P2] [Gemini] (Partial — save/ modules created, rewrite pending)
 
 **File:** `mcp_server/handlers/memory-save.ts` | **Effort:** 4.0h opt / 8h real
 
-- [ ] Extract chunking logic into separate module
-- [ ] Extract quality loops into separate module
-- [ ] Extract duplicate detection into separate module
-- [ ] Extract embedding orchestration into separate module
-- [ ] Currently 2,700+ LOC — largest single file
-- [ ] Deferred/out-of-scope for this spec's implementation target: strict <1000 LOC orchestration acceptance not met
+- [x] Extract types into `handlers/save/types.ts`
+- [x] Extract DB helpers into `handlers/save/db-helpers.ts`
+- [x] Extract duplicate detection into `handlers/save/dedup.ts`
+- [x] Extract embedding pipeline into `handlers/save/embedding-pipeline.ts`
+- [x] Extract PE orchestration into `handlers/save/pe-orchestration.ts`
+- [x] Extract reconsolidation bridge into `handlers/save/reconsolidation-bridge.ts`
+- [x] Extract record creation into `handlers/save/create-record.ts`
+- [x] Extract post-insert logic into `handlers/save/post-insert.ts`
+- [x] Extract response building into `handlers/save/response-builder.ts`
+- [x] Create barrel export `handlers/save/index.ts`
+- [ ] Rewrite `memory-save.ts` as slim orchestrator importing from `./save/*` (target: <1000 LOC)
+- **Status:** 10/10 save/ modules created by Wave 2 agents (C2-1, C2-2). memory-save.ts rewrite not completed (C2-3 agent never launched due to C2-1/C2-2 failures). Current: 1555 LOC.
 
-**Acceptance:** Deferred in this spec. Requires separate follow-up to meet strict <1000 LOC orchestration acceptance target.
+**Acceptance:** Partially met — modules exist at `handlers/save/`. Requires follow-up to wire memory-save.ts to use them.
 
 ### CR-P2-5: Harden non-finite score handling [P2] [Codex]
 
@@ -702,16 +716,21 @@ contextType: "implementation"
 | P2-19 | P0 → P2 | Tool count: doc table has all 25, only spec.md metadata stale |
 | memory-save chunks | P1 → P2 | Async embedding makes chunk tx impossible |
 
-**UNVERIFIED (6):**
+**UNVERIFIED (4):**
 
 | ID | Title | Why Unverified |
 |----|-------|---------------|
-| P2-20 | "89 feature flags" claim | No model counted all flag sources |
 | P2-21 | Duplicate deps in scripts/ | Not code-verified |
 | P2-22 | Module moves to shared/ | Architecture recommendation only |
 | P2-23 | File header format (19/20 files) | Confirmed visually, not line-counted |
 | P2-24 | Narrative comments (19/20 files) | Same systematic divergence |
-| P2-25 | isFeatureEnabled "1" quirk | Opus only, no cross-verification |
+
+**RESOLVED BY WAVE 2 (4):**
+
+| ID | Title | Resolution Evidence |
+|----|-------|-------------------|
+| P2-20 | "89 feature flags" claim | G2 audit: 72 flags (not 89), 57 boolean-actionable. Overcount resolved. |
+| P2-25 | isFeatureEnabled "1" quirk | `rollout-policy.ts:39` — fixed: only 'false'/'0' disable. '1'/'yes' now correctly enabled. 4 test files updated. |
 
 **PROCESS (2):**
 

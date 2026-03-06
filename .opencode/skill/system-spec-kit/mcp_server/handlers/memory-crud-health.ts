@@ -19,7 +19,7 @@ import { isEmbeddingModelReady } from '../core';
 import { summarizeAliasConflicts } from './memory-index';
 
 import type { MCPResponse, EmbeddingProfile } from './types';
-import type { HealthArgs, ProviderMetadata } from './memory-crud-types';
+import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
 
 /** Strip absolute paths, stack traces, and truncate for safe user-facing hints. */
 function sanitizeErrorForHint(msg: string): string {
@@ -293,7 +293,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     });
   }
 
-  let providerMetadata = embeddings.getProviderMetadata() as ProviderMetadata;
+  let providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
   let profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
   const status = isEmbeddingModelReady() && database ? 'healthy' : 'degraded';
 
@@ -313,7 +313,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       // Resolve the lazy profile so health reflects the active runtime provider
       // rather than the legacy sync fallback defaults.
       profile = await embeddings.getEmbeddingProfileAsync() as EmbeddingProfile | null;
-      providerMetadata = embeddings.getProviderMetadata() as ProviderMetadata;
+      providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
     } catch (profileError: unknown) {
       hints.push(`Embedding profile unavailable: ${sanitizeErrorForHint(toErrorMessage(profileError))}`);
     }

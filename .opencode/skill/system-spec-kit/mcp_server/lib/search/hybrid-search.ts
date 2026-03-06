@@ -1202,14 +1202,13 @@ function extractSpecSegments(filePath: string): { left: string; right: string; t
 
 // Sprint 9 fix: Memoize description map to avoid rebuilding on every search query.
 // Cache invalidates after 60 seconds so folder renames are eventually picked up.
+// M5 fix: Return stale cache immediately and refresh asynchronously to avoid
+// blocking the search hot path with synchronous filesystem crawls.
 let descMapCache: { map: Map<string, string>; timestamp: number } | null = null;
+let descMapRefreshing = false;
 const DESC_MAP_TTL_MS = 60_000;
 
-function buildDescriptionTailMap(): Map<string, string> {
-  if (descMapCache && (Date.now() - descMapCache.timestamp) < DESC_MAP_TTL_MS) {
-    return descMapCache.map;
-  }
-
+function rebuildDescriptionTailMap(): Map<string, string> {
   const descByTail = new Map<string, string>();
   const cache = ensureDescriptionCache(getSpecsBasePaths());
   if (!cache || !Array.isArray(cache.folders)) {
@@ -1228,8 +1227,37 @@ function buildDescriptionTailMap(): Map<string, string> {
     }
   }
 
-  descMapCache = { map: descByTail, timestamp: Date.now() };
   return descByTail;
+}
+
+function buildDescriptionTailMap(): Map<string, string> {
+  // Fresh cache — return immediately
+  if (descMapCache && (Date.now() - descMapCache.timestamp) < DESC_MAP_TTL_MS) {
+    return descMapCache.map;
+  }
+
+  // Stale cache — return it and schedule async refresh (fail open)
+  if (descMapCache) {
+    if (!descMapRefreshing) {
+      descMapRefreshing = true;
+      setTimeout(() => {
+        try {
+          const freshMap = rebuildDescriptionTailMap();
+          descMapCache = { map: freshMap, timestamp: Date.now() };
+        } catch {
+          // Non-fatal: stale cache remains usable
+        } finally {
+          descMapRefreshing = false;
+        }
+      }, 0);
+    }
+    return descMapCache.map;
+  }
+
+  // Cold start — synchronous build required (no stale data to return)
+  const freshMap = rebuildDescriptionTailMap();
+  descMapCache = { map: freshMap, timestamp: Date.now() };
+  return freshMap;
 }
 
 function injectContextualTree(row: HybridSearchResult, descCache: Map<string, string>): HybridSearchResult {

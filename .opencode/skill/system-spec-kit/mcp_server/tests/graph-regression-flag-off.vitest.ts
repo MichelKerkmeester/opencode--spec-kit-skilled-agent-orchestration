@@ -75,14 +75,14 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
       expect(isGraphUnifiedEnabled()).toBe(true);
     });
 
-    it('T022-5b: Strict equality — "1" does NOT enable flag', () => {
+    it('T022-5b: "1" enables flag (only "false"/"0" disable)', () => {
       process.env.SPECKIT_GRAPH_UNIFIED = '1';
-      expect(isGraphUnifiedEnabled()).toBe(false);
+      expect(isGraphUnifiedEnabled()).toBe(true);
     });
 
-    it('T022-5c: Strict equality — "yes" does NOT enable flag', () => {
+    it('T022-5c: "yes" enables flag (only "false"/"0" disable)', () => {
       process.env.SPECKIT_GRAPH_UNIFIED = 'yes';
-      expect(isGraphUnifiedEnabled()).toBe(false);
+      expect(isGraphUnifiedEnabled()).toBe(true);
     });
 
     it('T022-5d: "True" (mixed case) enables flag', () => {

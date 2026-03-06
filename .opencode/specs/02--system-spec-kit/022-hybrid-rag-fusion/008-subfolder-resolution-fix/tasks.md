@@ -57,9 +57,34 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Post-Review Remediation (10-Agent Cross-AI Review)
+
+- [x] T016 [P] `subfolder-utils.ts`: Replace `readdirSync` + `statSync` with `readdirSync({ withFileTypes: true })` (M5+m13)
+- [x] T017 [P] `subfolder-utils.ts`: Upfront root dedup via `realpathSync` into `Map` before traversal (M6)
+- [x] T018 [P] `subfolder-utils.ts`: Collect warnings from catch blocks; log depth-limit warning at MAX_DEPTH (M7+M8)
+- [x] T019 [P] `subfolder-utils.ts`: Skip symlinks via `dirent.isSymbolicLink()`; add visited-set for cycle prevention (m4+m5)
+- [x] T020 `subfolder-utils.ts`: Extract `SEARCH_MAX_DEPTH = 4` as module-level exported constant (m14)
+- [x] T021 `subfolder-utils.ts`: Add `FindChildOptions` with `onAmbiguity` callback (m12)
+- [x] T022 `generate-context.ts`: Fix `isUnderApprovedSpecsRoot` — `path.resolve()` + `.startsWith()` containment (M4+m6)
+- [x] T023 `generate-context.ts`: Deep-match fallback searches inside category folders (m11)
+- [x] T024 `folder-detector.ts`: Fix `=== 2` → `>= 2` at lines 812, 898 (m1)
+- [x] T025 `core/index.ts`: Export `SEARCH_MAX_DEPTH` and `FindChildOptions`
+- [x] T026 Tests: Add T-SF08a/b/c (SEARCH_MAX_DEPTH boundary), T-SF09a (multi-segment), T-SF10a (onAmbiguity callback)
+- [x] T027 Tests: Tighten T-SF07a — remove permissive null acceptance for aliased roots (M3)
+- [x] T028 Docs: Remove duplicate boilerplate from spec.md and plan.md (m8)
+- [x] T029 Docs: Fix unchecked checklist items (m9)
+- [x] T030 Docs: Add behavioral changes + post-review remediation to implementation-summary.md (m7+m10)
+- [x] T031 Write cross-AI review report to `scratch/cross-ai-review-report.md`
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks completed
+- [x] All tasks completed (T001–T031)
 - [x] All 3 previously-failing inputs now succeed
+- [x] Cross-AI review: 8 Major + 14 Minor issues addressed
+- [x] Tests: 31/31 passed, 0 failed, 0 skipped
 <!-- /ANCHOR:completion -->

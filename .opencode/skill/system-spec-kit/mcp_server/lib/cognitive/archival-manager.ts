@@ -191,7 +191,7 @@ function loadArchivalStats(): void {
           archivalStats.totalUnarchived = parseInt(row.value, 10) || 0;
           break;
         case 'lastScanTime':
-          archivalStats.lastScanTime = row.value || null;
+          archivalStats.lastScanTime = row.value === '' ? null : row.value || null;
           break;
       }
     }
@@ -218,9 +218,7 @@ function saveArchivalStats(): void {
       upsert.run('totalScanned', String(archivalStats.totalScanned));
       upsert.run('totalArchived', String(archivalStats.totalArchived));
       upsert.run('totalUnarchived', String(archivalStats.totalUnarchived));
-      if (archivalStats.lastScanTime) {
-        upsert.run('lastScanTime', archivalStats.lastScanTime);
-      }
+      upsert.run('lastScanTime', archivalStats.lastScanTime ?? '');
     });
 
     saveAll();
@@ -440,16 +438,45 @@ function archiveMemory(memoryId: number): boolean {
 }
 
 function archiveBatch(memoryIds: number[]): { archived: number; failed: number } {
+  if (!db) return { archived: 0, failed: memoryIds.length };
+
   let archived = 0;
   let failed = 0;
 
-  for (const id of memoryIds) {
-    if (archiveMemory(id)) {
-      archived++;
-    } else {
-      failed++;
+  const batchTransaction = db.transaction(() => {
+    for (const id of memoryIds) {
+      try {
+        const result = (db!.prepare(`
+          UPDATE memory_index
+          SET is_archived = 1,
+              updated_at = datetime('now')
+          WHERE id = ?
+            AND (is_archived IS NULL OR is_archived = 0)
+        `) as Database.Statement).run(id);
+
+        const success = (result as { changes: number }).changes > 0;
+        if (success) {
+          archivalStats.totalArchived++;
+          syncBm25OnArchive(id);
+          archived++;
+        } else {
+          failed++;
+        }
+      } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : String(error);
+        const MAX_ERROR_LOG = 100;
+        archivalStats.errors.push(msg);
+        if (archivalStats.errors.length > MAX_ERROR_LOG) {
+          archivalStats.errors = archivalStats.errors.slice(-MAX_ERROR_LOG);
+        }
+        console.warn(`[archival-manager] archiveMemory error: ${msg}`);
+        failed++;
+      }
     }
-  }
+  });
+
+  batchTransaction();
+  saveArchivalStats();
 
   return { archived, failed };
 }

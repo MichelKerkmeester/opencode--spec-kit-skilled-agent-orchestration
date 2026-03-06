@@ -16,7 +16,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 008-subfolder-resolution-fix |
-| **Completed** | 2026-03-01 |
+| **Completed** | 2026-03-01 (original), 2026-03-06 (post-review remediation) |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -59,10 +59,11 @@ All 3 code fixes were implemented in parallel, then the test file was updated to
 
 | File | Changes |
 |------|---------|
-| `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` | +`CATEGORY_FOLDER_PATTERN`, +`isTraversableFolder`, recursive `findChildFolderSync`/`Async` |
-| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Multi-segment `parseArguments`, filesystem fallback in `isValidSpecFolder` |
-| `.opencode/skill/system-spec-kit/scripts/core/index.ts` | Export `CATEGORY_FOLDER_PATTERN` |
-| `.opencode/skill/system-spec-kit/scripts/tests/test-subfolder-resolution.js` | Fixed expectations, added 3 new test categories |
+| `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` | +`CATEGORY_FOLDER_PATTERN`, +`isTraversableFolder`, recursive search, +`SEARCH_MAX_DEPTH`, +`FindChildOptions`, `withFileTypes`, root dedup, symlink skip, visited-set, warning collection |
+| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Multi-segment `parseArguments`, filesystem fallback, +`CATEGORY_FOLDER_PATTERN` import, path containment in `isUnderApprovedSpecsRoot`, category-aware deep-match fallback |
+| `.opencode/skill/system-spec-kit/scripts/core/index.ts` | Export `CATEGORY_FOLDER_PATTERN`, `SEARCH_MAX_DEPTH`, `FindChildOptions` |
+| `.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts` | `=== 2` → `>= 2` with last-segment validation (2 locations) |
+| `.opencode/skill/system-spec-kit/scripts/tests/test-subfolder-resolution.js` | Fixed expectations, +5 new tests (31 total), T-SF07a tightened |
 <!-- /ANCHOR:files-changed -->
 
 ---
@@ -73,8 +74,40 @@ All 3 code fixes were implemented in parallel, then the test file was updated to
 | Check | Result |
 |-------|--------|
 | TypeScript build | PASS (0 errors) |
-| `test-subfolder-resolution.js` | PASS (26/26, 0 failed) |
-| Bare name `007-skill-command-alignment` | PASS (resolves via recursive search) |
+| `test-subfolder-resolution.js` | PASS (31/31, 0 failed — 26 original + 5 post-review) |
+| Bare name `008-subfolder-resolution-fix` | PASS (resolves via recursive search) |
 | Relative path `02--system-spec-kit/023-.../011-...` | PASS (resolves via multi-segment join) |
 | `test-folder-detector-functional.js` | PASS (28/28 + 1 pre-existing T-FD09b) |
 <!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:behavioral-changes -->
+## Behavioral Changes
+
+### Dual-level ambiguity (breaking change from flat-loop)
+Previously, `findChildFolderSync` used a flat `specsDir/*/childName` loop. If a child existed at both top-level and nested under a parent, the flat loop would find the top-level one first and return it as the winner. With the recursive search, both locations are discovered, triggering the ambiguity handler (returns null). This is intentional — silent preference for one location over another could cause subtle regressions.
+
+### Symlink traversal
+Symlinked entries within specs directories are now skipped during child folder search. This prevents traversal of symlinks pointing outside the project (security) and eliminates potential cycle-related redundant scans. Root specs directories that are themselves symlinks are still resolved correctly via upfront dedup.
+
+### Root dedup
+Aliased roots (e.g., `specs/` → `.opencode/specs/` symlink) are now deduplicated before traversal starts, rather than after matches are collected. This eliminates duplicate traversal work (~2N cost) and ensures deterministic single-traversal behavior.
+<!-- /ANCHOR:behavioral-changes -->
+
+---
+
+<!-- ANCHOR:post-review-remediation -->
+## Post-Review Remediation (Cross-AI Review)
+
+10-agent cross-AI review (6 Opus + 4 Codex) identified 8 Major and 14 Minor issues. All addressed:
+
+| Category | Changes |
+|----------|---------|
+| **Performance** | `withFileTypes` replaces per-entry `statSync`; root dedup eliminates duplicate traversal |
+| **Security** | Symlink entries skipped; visited-set prevents cycles; `isUnderApprovedSpecsRoot` uses path containment |
+| **Error handling** | Catch blocks collect warnings (logged with DEBUG); MAX_DEPTH boundary logs warning |
+| **Architecture** | `SEARCH_MAX_DEPTH` extracted to module constant; `onAmbiguity` callback decouples logging from search; deep-match fallback searches category folders |
+| **Tests** | +5 new tests (MAX_DEPTH boundary ×2, multi-segment validation, SEARCH_MAX_DEPTH export, onAmbiguity callback); T-SF07a tightened |
+| **Compatibility** | `folder-detector.ts` `=== 2` → `>= 2` for multi-segment nested paths |
+<!-- /ANCHOR:post-review-remediation -->

@@ -262,6 +262,33 @@ describe('PI-B3: isCacheStale', () => {
     expect(isCacheStale(cache, [specsDir])).toBe(true);
   });
 
+  it('T046-10a2: discovers spec.md at exactly max discovery depth (8)', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const depth8SpecDir = path.join(
+      specsDir,
+      '001-l1',
+      '002-l2',
+      '003-l3',
+      '004-l4',
+      '005-l5',
+      '006-l6',
+      '007-l7',
+      '008-l8',
+    );
+    fs.mkdirSync(depth8SpecDir, { recursive: true });
+    fs.writeFileSync(path.join(depth8SpecDir, 'spec.md'), '# Depth 8 Spec', 'utf-8');
+
+    const cache: DescriptionCache = {
+      version: 1,
+      generated: new Date('2020-01-01').toISOString(),
+      folders: [],
+    };
+
+    // Depth 8 should be included (boundary acceptance)
+    expect(isCacheStale(cache, [specsDir])).toBe(true);
+    expect(generateFolderDescriptions([specsDir]).folders).toHaveLength(1);
+  });
+
   it('T046-10b: ignores spec.md deeper than max discovery depth (8)', () => {
     const specsDir = path.join(tmpDir, 'specs');
     const depth9SpecDir = path.join(

@@ -93,11 +93,11 @@ Validation errors are mapped to targeted document edits, then re-validated recur
 
 ### Phase 2: Format Hardening
 - [x] Fix highest-priority checklist priority-tag format issue impacting validation signal quality
-- [ ] Optional follow-up warning cleanup (deferred)
+- [x] Optional follow-up warning cleanup (deferred — no blocking warnings remain)
 
 ### Phase 3: Verification
-- [ ] Run recursive validator and confirm non-error exit state
-- [ ] Capture before/after error and warning counts
+- [x] Run recursive validator and confirm non-error exit state
+- [x] Capture before/after error and warning counts
 <!-- /ANCHOR:phases -->
 
 ---
@@ -182,12 +182,12 @@ Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and
 - [x] Dependencies identified (none external)
 
 ### Definition of Done
-- [ ] All P0 findings resolved
-- [ ] All P1 findings resolved
-- [ ] `tsc --noEmit` passes
-- [ ] `npm test` passes
-- [ ] `npm run build` passes
-- [ ] MCP smoke test passes
+- [x] All P0 findings resolved
+- [x] All P1 findings resolved
+- [x] `tsc --noEmit` passes
+- [x] `npm test` passes
+- [x] `npm run build` passes — N/A (no build script; server runs TS directly)
+- [x] MCP smoke test passes
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -216,10 +216,10 @@ Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and
 | Sonnet-E | Documentation | `summary_of_*.md` | P1-18, P1-20, P1-21 | ~8 |
 
 ### Phase 3: Verification
-- [ ] `tsc --noEmit` passes
-- [ ] `npm test` passes
-- [ ] `npm run build` passes
-- [ ] MCP smoke test passes
+- [x] `tsc --noEmit` passes — 0 errors
+- [x] `npm test` passes — 7,008/7,008 tests
+- [x] `npm run build` passes — N/A (no build script; server runs TS directly)
+- [x] MCP smoke test passes — memory_health, memory_stats, memory_search functional
 <!-- /ANCHOR:phases -->
 
 ---
@@ -261,202 +261,118 @@ Wave 1 (5 Opus, parallel) ──► Wave 2 (5 Sonnet, parallel) ──► Verifi
 | Finalize | Verification passes | None |
 <!-- /ANCHOR:phase-deps -->
 
-## Architecture
-No architecture changes are introduced by this normalization pass.
-
-## Phase 2: Validation Alignment
-- Normalize checklist metadata and evidence syntax.
-- Re-run validator and resolve residual warnings.
-
 
 ---
 
 ## Source: 023-flag-catalog-remediation/plan.md
 
----
-title: "Implementation Plan: [NAME] [template:level_2/plan.md]"
-description: "[2-3 sentences: what this implements and the technical approach]"
+<!-- YAML-META
+title: "Implementation Plan: P1-19 Flag Catalog + Refinement Phase 3"
+description: "3-wave parallel agent delegation (14 agents total) for code quality, documentation, observability, and test coverage improvements."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
-trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "name"
-  - "template"
-  - "plan core"
 importance_tier: "normal"
-contextType: "general"
----
-# Implementation Plan: [NAME]
+contextType: "implementation"
+-->
+
+# Implementation Plan: P1-19 Flag Catalog + Refinement Phase 3
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-023 -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
-| **Framework** | [e.g., React, FastAPI] |
-| **Storage** | [e.g., PostgreSQL, None] |
-| **Testing** | [e.g., Jest, pytest] |
+| **Language/Stack** | TypeScript (Spec Kit Memory MCP server) |
+| **Framework** | MCP SDK, SQLite, Vitest |
+| **Storage** | SQLite (better-sqlite3) |
+| **Testing** | Vitest (7,008 baseline → 7,081 after) |
 
 ### Overview
-[2-3 sentences: what this implements and the technical approach]
-<!-- /ANCHOR:summary -->
+Three-wave parallel agent execution with 14 agents total. Wave 1 (5 Opus agents) handled code quality and performance fixes. Wave 2 (5 agents) handled documentation, flag catalog (89 env vars), and observability. Wave 3 (4 agents) added 73 new tests and pipeline I/O documentation.
+<!-- /ANCHOR:summary-023 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-023 -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Problem statement clear and scope documented (spec.md REQ-001 through REQ-004)
+- [x] Success criteria measurable (tsc, 7000+ tests, 50+ env vars cataloged)
+- [x] Dependencies identified (all target files verified, fallback-reranker.ts N/A)
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All acceptance criteria met (SC-001 through SC-004 verified)
+- [x] Tests passing: 7,081/7,081 across 230 test files
+- [x] Docs updated: spec.md, plan.md, tasks.md, implementation-summary.md populated
+<!-- /ANCHOR:quality-gates-023 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
-## 3. ARCHITECTURE
-
-### Pattern
-[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
-
-### Key Components
-- **[Component 1]**: [Purpose]
-- **[Component 2]**: [Purpose]
-
-### Data Flow
-[Brief description of how data moves through the system]
-<!-- /ANCHOR:architecture -->
-
----
-
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-023 -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [ ] Project structure created
-- [ ] Dependencies installed
-- [ ] Development environment ready
+### Phase 1: Setup (Completed)
+- [x] Create 023-flag-catalog-remediation spec sub-folder
+- [x] Verify all target files exist (found fallback-reranker.ts N/A)
+- [x] Gather env var inventory for flag catalog
 
-### Phase 2: Core Implementation
-- [ ] [Core feature 1]
-- [ ] [Core feature 2]
-- [ ] [Core feature 3]
+### Phase 2: Implementation — 3-Wave Parallel Execution (Completed)
 
-### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
-<!-- /ANCHOR:phases -->
+**Wave 1 — Code Quality + Performance (5 Opus agents):**
+- [x] Opus-A: Pipeline Stage 3 score normalization, reference boolean, chunk ordering
+- [x] Opus-B: Search Performance — Set dedup, SQL index
+- [x] Opus-C: Graph & Causal — traversal indexes, threshold constant
+- [x] Opus-D: Validation & Extraction — type safety, constants, entity regex
+- [x] Opus-E: Hybrid Search + Eval — MPAB logging, CI percentile fix
+
+**Wave 2 — Documentation + Observability (5 agents):**
+- [x] Sonnet-A: Feature Flag Catalog P1-19 — 89 env vars documented
+- [x] Sonnet-B: Inline Docs — stale comments, AI-WHY, JSDoc, score immutability
+- [x] Sonnet-C: JSDoc Quality Helpers — @param/@returns on 5 functions
+- [x] Opus-F: Observability & Reporting — regex hardening, LIMIT clauses
+- [x] Opus-G: Remaining Fixes — @deprecated exports, test timeout
+
+**Wave 3 — Testing + Architecture Docs (4 agents):**
+- [x] Opus-H: Denylist + RSF Tests — 53 new tests
+- [x] Opus-I: Quality Gate + Regression Tests — 15 regression tests
+- [x] Opus-J: Error Telemetry + CI — requestId propagation, 5 flag ceiling tests
+- [x] Sonnet-D: Pipeline I/O Docs — stage contracts, filter ordering
+
+### Phase 3: Verification (Completed)
+- [x] TypeScript compilation: `tsc --noEmit` → exit 0
+- [x] Full test suite: 7,081/7,081 passed across 230 test files
+- [x] Entity-extractor regex regression fixed (explicit case alternation)
+- [x] Implementation-summary.md populated
+- [x] Checklist.md verified with evidence
+<!-- /ANCHOR:phases-023 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-023 -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | [Components/functions] | [Jest/pytest/etc.] |
-| Integration | [API endpoints/flows] | [Tools] |
-| Manual | [User journeys] | Browser |
-<!-- /ANCHOR:testing -->
+| Type Check | Full compilation | `tsc --noEmit` |
+| Unit/Integration | Full suite + 73 new tests | Vitest |
+| Regression | ReDoS, NDCG cap, schema, fetch limit | Targeted vitest files |
+<!-- /ANCHOR:testing-023 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
-## 6. DEPENDENCIES
-
-| Dependency | Type | Status | Impact if Blocked |
-|------------|------|--------|-------------------|
-| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
-<!-- /ANCHOR:dependencies -->
-
----
-
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-023 -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: [Conditions requiring rollback]
-- **Procedure**: [How to revert changes]
-<!-- /ANCHOR:rollback -->
-
----
-
-
----
-
-<!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
-
-```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
-```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
-
----
-
-<!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
-
-| Phase | Complexity | Estimated Effort |
-|-------|------------|------------------|
-| Setup | [Low/Med/High] | [e.g., 1-2 hours] |
-| Core Implementation | [Low/Med/High] | [e.g., 4-8 hours] |
-| Verification | [Low/Med/High] | [e.g., 1-2 hours] |
-| **Total** | | **[e.g., 6-12 hours]** |
-<!-- /ANCHOR:effort -->
-
----
-
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
-
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. [Immediate action - e.g., disable feature flag]
-2. [Revert code - e.g., git revert or redeploy previous version]
-3. [Verify rollback - e.g., smoke test critical paths]
-4. [Notify stakeholders - if user-facing]
-
-### Data Reversal
-- **Has data migrations?** [Yes/No]
-- **Reversal procedure**: [Steps or "N/A"]
-<!-- /ANCHOR:enhanced-rollback -->
-
----
-
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+- **Trigger**: tsc or test failures after agent changes
+- **Procedure**: `git checkout -- .` on affected files, re-run targeted tests
+<!-- /ANCHOR:rollback-023 -->
 
 
 ---
@@ -510,23 +426,7 @@ contextType: "implementation"
 - Verify TypeScript compiles: `npx tsc --noEmit`
 <!-- /ANCHOR:summary -->
 
-## Technical Context
-Current plan scope remains documentation and validation normalization for this phase.
-
-## Architecture
-No architecture changes are introduced by this normalization pass.
-
-## Implementation
-Apply repeatable documentation updates, then validate recursively until clean.
-
-## Phase 1: Validation Alignment
-- Normalize checklist metadata and evidence syntax.
-- Re-run validator and resolve residual warnings.
-
-## Phase 2: Validation Alignment
-- Normalize checklist metadata and evidence syntax.
-- Re-run validator and resolve residual warnings.
-
+> **Supersession Note:** Phase 024 was not independently executed. All planned work was absorbed by phases 025 (timer persistence T018–T019) and 026 (effectiveScore T024). See those phases for execution details.
 
 ---
 
@@ -781,10 +681,10 @@ Implements 37 remediation fixes across 5 sprints. Sprint 1 removes the legacy V1
 - [x] Dependencies identified (Sprint 1 blocks 2–4; Sprint 5 independent)
 
 ### Definition of Done
-- [ ] All 37 fixes implemented with tests
-- [ ] Full test suite passes (>= 7,081 existing + new)
-- [ ] Each sprint committed independently
-- [ ] `implementation-summary.md` written
+- [x] All 37 fixes implemented with tests (35 completed, 2 deferred with rationale)
+- [x] Full test suite passes: 7,085/7,085
+- [x] Each sprint committed independently
+- [x] `implementation-summary.md` written
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -814,72 +714,72 @@ Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent wei
 ### Sprint 1: Legacy Pipeline Removal + P0 Critical Fixes
 **Fixes:** P0-1, P0-2, P0-3, P0-4, #17 | **Risk:** MEDIUM-HIGH | **~650 removed, ~80 added**
 
-- [ ] Remove legacy `STATE_PRIORITY` map from `memory-search.ts`
-- [ ] Remove `MAX_DEEP_QUERY_VARIANTS=6` constant
-- [ ] Delete functions: `buildDeepQueryVariants()`, `strengthenOnAccess()`, `applyTestingEffect()`, `filterByMemoryState()`, `applySessionDedup()`, `applyCrossEncoderReranking()`, `applyIntentWeightsToResults()`, `shouldApplyPostSearchIntentWeighting()`, `postSearchPipeline()`
-- [ ] Remove `if (isPipelineV2Enabled())` branch — make V2 the only path
-- [ ] Mark `isPipelineV2Enabled()` as always-true with deprecation comment in `search-flags.ts`
-- [ ] Add orphaned chunk detection to `verify_integrity()` in `vector-index-impl.ts`
-- [ ] Add tests for orphaned chunk detection
-- [ ] Verify no test depends on `SPECKIT_PIPELINE_V2=false`
-- [ ] Run full test suite — confirm >= 7,081 passing
+- [x] Remove legacy `STATE_PRIORITY` map from `memory-search.ts`
+- [x] Remove `MAX_DEEP_QUERY_VARIANTS=6` constant
+- [x] Delete functions: `buildDeepQueryVariants()`, `strengthenOnAccess()`, `applyTestingEffect()`, `filterByMemoryState()`, `applySessionDedup()`, `applyCrossEncoderReranking()`, `applyIntentWeightsToResults()`, `shouldApplyPostSearchIntentWeighting()`, `postSearchPipeline()`
+- [x] Remove `if (isPipelineV2Enabled())` branch — make V2 the only path
+- [x] Mark `isPipelineV2Enabled()` as always-true with deprecation comment in `search-flags.ts`
+- [x] Add orphaned chunk detection to `verify_integrity()` in `vector-index-impl.ts`
+- [x] Add tests for orphaned chunk detection
+- [x] Verify no test depends on `SPECKIT_PIPELINE_V2=false`
+- [x] Run full test suite — 7,085 passing
 
 ### Sprint 2: Scoring & Fusion Fixes (8 findings)
 **Fixes:** #5–#12 | **Risk:** MEDIUM | **~120 modified, ~50 added**
 
-- [ ] #5: Add recency scoring to `applyIntentWeights` in `intent-classifier.ts`
-- [ ] #6: Normalize five-factor weights to sum 1.0 in `composite-scoring.ts`
-- [ ] #7: Replace spread-based min/max with loop in `composite-scoring.ts`
-- [ ] #8: Fix BM25 specFolder filter with DB lookup in `hybrid-search.ts`
-- [ ] #9: Fix convergence double-counting in `rrf-fusion.ts`
-- [ ] #10: Normalize adaptive fusion core weights in `adaptive-fusion.ts`
-- [ ] #11: Create shared `resolveEffectiveScore()` in `types.ts`; replace Stage 2's `resolveBaseScore()`
-- [ ] #12: Add optional `threshold` param to `computeInterferenceScoresBatch()`
-- [ ] Add tests for all 8 fixes
-- [ ] Run full test suite
+- [x] #5: Add recency scoring to `applyIntentWeights` in `intent-classifier.ts`
+- [x] #6: Normalize five-factor weights to sum 1.0 in `composite-scoring.ts`
+- [x] #7: Replace spread-based min/max with loop in `composite-scoring.ts`
+- [x] #8: Fix BM25 specFolder filter with DB lookup in `hybrid-search.ts`
+- [x] #9: Fix convergence double-counting in `rrf-fusion.ts`
+- [x] #10: Normalize adaptive fusion core weights in `adaptive-fusion.ts`
+- [x] #11: Create shared `resolveEffectiveScore()` in `types.ts`; replace Stage 2's `resolveBaseScore()`
+- [x] #12: Add optional `threshold` param to `computeInterferenceScoresBatch()`
+- [x] Add tests for all 8 fixes
+- [x] Run full test suite — 7,085 passing
 
 ### Sprint 3: Pipeline, Retrieval, and Mutation Fixes (10 findings)
 **Fixes:** #13–#16, #18–#23 | **Risk:** MEDIUM | **~200 modified, ~100 added**
 
-- [ ] #13: Add hidden params to `memorySearch.inputSchema` in `tool-schemas.ts`
-- [ ] #14: Remove dead `sessionDeduped` from Stage 4 metadata
-- [ ] #15: Pass constitutional count from Stage 1 through to Stage 4
-- [ ] #16: Cache embedding in Stage 1 for constitutional reuse
-- [ ] #18: Fix `simpleStem` double-consonant handling in `bm25-index.ts`
-- [ ] #19: Embed full content (not title only) in `memory-crud-update.ts`
-- [ ] #20: Clean all ancillary records on delete in `vector-index-impl.ts`
-- [ ] #21: Clean BM25 index on delete in `vector-index-impl.ts`
-- [ ] #22: Add SAVEPOINT to `atomicSaveMemory` in `transaction-manager.ts`
-- [ ] #23: Use dynamic error code in `memory-save.ts` preflight
-- [ ] Add tests for all 10 fixes
-- [ ] Run full test suite
+- [x] #13: Add hidden params to `memorySearch.inputSchema` in `tool-schemas.ts`
+- [x] #14: Remove dead `sessionDeduped` from Stage 4 metadata
+- [x] #15: Pass constitutional count from Stage 1 through to Stage 4
+- [x] #16: Cache embedding in Stage 1 for constitutional reuse
+- [x] #18: Fix `simpleStem` double-consonant handling in `bm25-index.ts`
+- [x] #19: Embed full content (not title only) in `memory-crud-update.ts`
+- [x] #20: Clean all ancillary records on delete in `vector-index-impl.ts`
+- [x] #21: Clean BM25 index on delete in `vector-index-impl.ts`
+- [x] #22: Add rename-failure state tracking to `atomicSaveMemory` in `transaction-manager.ts`
+- [x] #23: Use dynamic error code in `memory-save.ts` preflight
+- [x] Add tests for all 10 fixes
+- [x] Run full test suite — 7,085 passing
 
 ### Sprint 4: Graph/Causal + Cognitive Memory Fixes (9 findings)
 **Fixes:** #24–#32 | **Risk:** LOW-MEDIUM | **~150 modified, ~80 added**
 
-- [ ] #24: Prevent self-loops in `causal-edges.ts`
-- [ ] #25: Clamp maxDepth to [1,10] in `causal-graph.ts`
-- [ ] #26: Add FK/existence check in `causal-edges.ts`
-- [ ] #27: Replace edge-count debounce with count:maxId in `community-detection.ts`
-- [ ] #28: Add `cleanupOrphanedEdges()` in `causal-edges.ts`
-- [ ] #29: Clamp WM scores to [0,1] in `working-memory.ts`
-- [ ] #30: Remove double-decay in `memory-triggers.ts`
-- [ ] #31: Fix off-by-one in `session-manager.ts`
-- [ ] #32: Export `clearRelatedCache()` from `co-activation.ts`; call after bulk ops
-- [ ] Add tests for all 9 fixes
-- [ ] Run full test suite
+- [x] #24: Prevent self-loops in `causal-edges.ts`
+- [x] #25: Clamp maxDepth to [1,10] in `causal-graph.ts`
+- [~] #26: Add FK/existence check in `causal-edges.ts` — DEFERRED (test fixtures use synthetic IDs)
+- [x] #27: Replace edge-count debounce with count:maxId in `community-detection.ts`
+- [x] #28: Add `cleanupOrphanedEdges()` in `causal-edges.ts`
+- [x] #29: Clamp WM scores to [0,1] in `working-memory.ts`
+- [x] #30: Remove double-decay in `memory-triggers.ts`
+- [~] #31: Fix off-by-one in `session-manager.ts` — DEFERRED (code already correct)
+- [x] #32: Export `clearRelatedCache()` from `co-activation.ts`; call after bulk ops
+- [x] Add tests for 7 implemented fixes
+- [x] Run full test suite — 7,085 passing
 
 ### Sprint 5: Evaluation Framework + Housekeeping (6 findings)
 **Fixes:** #33–#38 | **Risk:** LOW | **~80 modified, ~40 added**
 
-- [ ] #33: Use `recallK` for ablation limit in `eval-reporting.ts`
-- [ ] #34: Initialize `_evalRunCounter` from DB in `eval-logger.ts`
-- [ ] #35: Allow postflight UPDATE in `session-learning.ts`
-- [ ] #36: Add input guard to `parseArgs<T>()` in `tools/types.ts`
-- [ ] #37: Extend dedup hash to 128-bit in `session-manager.ts`
-- [ ] #38: Add `cleanupExitHandlers()` in `access-tracker.ts`
-- [ ] Add tests for all 6 fixes
-- [ ] Run full test suite
+- [x] #33: Use `recallK` for ablation limit in `eval-reporting.ts`
+- [x] #34: Initialize `_evalRunCounter` from DB in `eval-logger.ts`
+- [x] #35: Allow postflight UPDATE in `session-learning.ts`
+- [x] #36: Add input guard to `parseArgs<T>()` in `tools/types.ts`
+- [x] #37: Extend dedup hash to 128-bit in `session-manager.ts`
+- [x] #38: Add `cleanupExitHandlers()` in `access-tracker.ts`
+- [x] Add tests for all 6 fixes
+- [x] Run full test suite — 7,085 passing
 <!-- /ANCHOR:phases -->
 
 ---
@@ -908,7 +808,7 @@ Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent wei
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Sprint 1 completion | Internal | Pending | Blocks Sprints 2–4 |
+| Sprint 1 completion | Internal | Complete | Blocks Sprints 2–4 |
 | 015 effectiveScore fix | Internal | Complete | Sprint 2 #11 scope reduced |
 | 016 hybrid-search changes | Internal | Complete | Verify line numbers in Sprint 2 #8 |
 | Test baseline (7,081+) | Internal | Verified | Regression threshold |
@@ -1011,33 +911,6 @@ Sprint 5 (Eval + Housekeeping)  ──> Independent (parallel with 2–4)
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
-
-## Phase 1: Validation Alignment
-- Normalize checklist metadata and evidence syntax.
-- Re-run validator and resolve residual warnings.
-
-## Phase 2: Validation Alignment
-- Normalize checklist metadata and evidence syntax.
-- Re-run validator and resolve residual warnings.
-
-## AI Execution Protocol
-
-### Pre-Task Checklist
-- Confirm scope lock for this phase folder before edits.
-- Confirm validator command and target path.
-
-### Execution Rules
-| Rule | Requirement |
-|------|-------------|
-| TASK-SEQ | Execute fixes in warning-category order and re-validate after each pass. |
-| TASK-SCOPE | Do not modify files outside this phase folder unless explicitly required by parent-link checks. |
-
-### Status Reporting Format
-Status Reporting Format: `DONE | IN_PROGRESS | BLOCKED` with file path and validator evidence per update.
-
-### Blocked Task Protocol
-If BLOCKED, record blocker, attempted remediation, and next safe action before proceeding.
-
 
 ---
 
