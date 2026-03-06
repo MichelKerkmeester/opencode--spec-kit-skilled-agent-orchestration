@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Status Dashboard — UntitledUI Variant 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      /* FOREGROUND / ICONS */
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      /* UTILITY COLOR ALIASES */
+      --utility-brand-50: rgb(249 245 255);
+      --utility-brand-200: rgb(232 218 255);
+      --utility-brand-700: rgb(105 65 198);
+      --utility-gray-50: rgb(250 250 250);
+      --utility-gray-200: rgb(233 234 235);
+      --utility-gray-700: rgb(65 70 81);
+      --utility-error-50: rgb(254 243 242);
+      --utility-error-200: rgb(254 205 202);
+      --utility-error-700: rgb(180 35 24);
+      --utility-warning-50: rgb(255 249 235);
+      --utility-warning-200: rgb(254 223 137);
+      --utility-warning-700: rgb(181 71 8);
+      --utility-success-50: rgb(236 253 243);
+      --utility-success-200: rgb(166 244 197);
+      --utility-success-700: rgb(8 119 73);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+      --display-xl: 3.75rem;
+      --display-2xl: 4.5rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xs: 2rem;
+      --leading-display-sm: 2.375rem;
+      --leading-display-md: 2.75rem;
+      --leading-display-lg: 3.75rem;
+      --leading-display-xl: 4.5rem;
+      --leading-display-2xl: 5.625rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-0: 0;
+      --space-0-5: 0.125rem;
+      --space-1: 0.25rem;
+      --space-1-5: 0.375rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-3-5: 0.875rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-7: 1.75rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-24: 6rem;
+
+      /* BORDER RADIUS */
+      --radius-none: 0px;
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+      --shadow-lg: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+
+      /* CONTAINER */
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-secondary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: var(--space-12) var(--container-padding); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    svg { display: block; flex-shrink: 0; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); flex-shrink: 0; }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--md svg { width: 20px; height: 20px; }
+    .featured-icon--success { background: var(--utility-success-50); color: var(--utility-success-700); }
+    .featured-icon--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); }
+    .featured-icon--error { background: var(--utility-error-50); color: var(--utility-error-700); }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1-5); border-radius: var(--radius-full); font-family: var(--font-body); font-weight: var(--font-medium); white-space: nowrap; }
+    .badge--lg { padding: 4px var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--md { padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); transition: box-shadow 200ms ease, border-color 200ms ease; }
+    .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-primary); }
+
+    /* SPECIFIC LAYOUT */
+    .dashboard-header { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: var(--space-12); }
+    .dashboard-title { font-size: var(--display-md); line-height: var(--leading-display-md); font-weight: var(--font-semibold); letter-spacing: -0.02em; margin-bottom: var(--space-4); }
+    .dashboard-overall-status { display: inline-flex; align-items: center; gap: var(--space-2); background: var(--bg-primary); padding: var(--space-2) var(--space-4); border-radius: var(--radius-full); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-sm); }
+    
+    .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-6); margin-bottom: var(--space-10); }
+    .status-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-5); }
+    .status-card__title-group { display: flex; align-items: center; gap: var(--space-3); }
+    .status-card__title { font-size: var(--text-lg); font-weight: var(--font-semibold); color: var(--text-primary); }
+    .status-card__metrics { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-6); }
+    .status-card__uptime { font-size: var(--display-xs); line-height: var(--leading-display-xs); font-weight: var(--font-semibold); color: var(--text-primary); }
+    .status-card__latency { font-size: var(--text-sm); color: var(--text-tertiary); font-family: var(--font-mono); }
+    
+    .status-card__timeline-wrapper { display: flex; flex-direction: column; gap: var(--space-2); }
+    .status-card__timeline-label { font-size: var(--text-xs); color: var(--text-quaternary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: var(--font-medium); }
+    .status-card__timeline { display: flex; justify-content: space-between; align-items: center; gap: var(--space-1); }
+    .timeline-node { flex: 1; height: 32px; border-radius: var(--radius-sm); background: var(--utility-gray-200); position: relative; }
+    .timeline-node:hover::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: var(--space-2); background: var(--bg-overlay); color: var(--text-white); font-size: var(--text-xs); padding: var(--space-1) var(--space-2); border-radius: var(--radius-md); white-space: nowrap; pointer-events: none; }
+    .timeline-node--success { background: var(--utility-success-500); }
+    .timeline-node--warning { background: var(--utility-warning-500); }
+    .timeline-node--error { background: var(--utility-error-500); }
+    
+    .dashboard-footer { text-align: center; border-top: 1px solid var(--border-secondary); padding-top: var(--space-6); }
+    .dashboard-timestamp { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-tertiary); }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <section>
+      
+      <header class="dashboard-header">
+        <h1 class="dashboard-title">System Status</h1>
+        <div class="dashboard-overall-status">
+          <span class="badge badge--success badge--lg">
+            <span class="badge__dot"></span> All Systems Operational
+          </span>
+        </div>
+      </header>
+
+      <div class="status-grid">
+        <!-- API Card -->
+        <article class="card">
+          <div class="status-card__header">
+            <div class="status-card__title-group">
+              <div class="featured-icon featured-icon--md featured-icon--success">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+              <h2 class="status-card__title">Core API</h2>
+            </div>
+            <span class="badge badge--success badge--md">Operational</span>
+          </div>
+          <div class="status-card__metrics">
+            <div class="status-card__uptime">99.99%</div>
+            <div class="status-card__latency">Latency: 42ms</div>
+          </div>
+          <div class="status-card__timeline-wrapper">
+            <div class="status-card__timeline-label">Last 7 Days</div>
+            <div class="status-card__timeline">
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 1: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 2: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 3: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 4: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 5: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 6: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Today: 100%"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Database Card -->
+        <article class="card">
+          <div class="status-card__header">
+            <div class="status-card__title-group">
+              <div class="featured-icon featured-icon--md featured-icon--warning">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+              </div>
+              <h2 class="status-card__title">Primary Database</h2>
+            </div>
+            <span class="badge badge--warning badge--md">Degraded Performance</span>
+          </div>
+          <div class="status-card__metrics">
+            <div class="status-card__uptime">99.95%</div>
+            <div class="status-card__latency">Latency: 350ms (Elevated)</div>
+          </div>
+          <div class="status-card__timeline-wrapper">
+            <div class="status-card__timeline-label">Last 7 Days</div>
+            <div class="status-card__timeline">
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 1: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 2: 100%"></div>
+              <div class="timeline-node timeline-node--warning" data-tooltip="Mar 3: 99.8%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 4: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 5: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 6: 100%"></div>
+              <div class="timeline-node timeline-node--warning" data-tooltip="Today: 99.5%"></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- CDN Card -->
+        <article class="card">
+          <div class="status-card__header">
+            <div class="status-card__title-group">
+              <div class="featured-icon featured-icon--md featured-icon--success">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <h2 class="status-card__title">Global CDN</h2>
+            </div>
+            <span class="badge badge--success badge--md">Operational</span>
+          </div>
+          <div class="status-card__metrics">
+            <div class="status-card__uptime">100.00%</div>
+            <div class="status-card__latency">Latency: 12ms</div>
+          </div>
+          <div class="status-card__timeline-wrapper">
+            <div class="status-card__timeline-label">Last 7 Days</div>
+            <div class="status-card__timeline">
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 1: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 2: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 3: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 4: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 5: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Mar 6: 100%"></div>
+              <div class="timeline-node timeline-node--success" data-tooltip="Today: 100%"></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <footer class="dashboard-footer">
+        <div class="dashboard-timestamp">Last updated: 2026-03-06 14:32:00 UTC</div>
+      </footer>
+
+    </section>
+  </div>
+</body>
+</html>

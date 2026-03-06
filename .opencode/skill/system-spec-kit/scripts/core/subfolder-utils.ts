@@ -6,7 +6,7 @@
 import * as path from 'path';
 import * as fsSync from 'fs';
 import * as fs from 'fs/promises';
-import { getSpecsDirectories } from './config';
+import { CONFIG, getSpecsDirectories } from './config';
 
 /** Pattern for strict spec folder names: 3 digits + kebab-case suffix. */
 export const SPEC_FOLDER_PATTERN: RegExp = /^\d{3}-[a-z][a-z0-9-]*$/;
@@ -16,6 +16,13 @@ export const SPEC_FOLDER_BASIC_PATTERN: RegExp = /^\d{3}-[a-zA-Z]/;
 
 /** Pattern for category/organizational folders: 2 digits + double-hyphen + kebab-case (e.g., "02--system-spec-kit"). */
 export const CATEGORY_FOLDER_PATTERN: RegExp = /^\d{2}--[a-z][a-z0-9-]*$/;
+
+export interface PhaseFolderRejection {
+  phaseFolderPath: string;
+  owningRootSpecFolder: string;
+  reason: 'child-phase-markers' | 'parent-phase-map' | 'legacy-phase-container';
+  message: string;
+}
 
 /** Check if a directory entry is traversable during child folder search. */
 function isTraversableFolder(name: string): boolean {
@@ -28,6 +35,108 @@ function isDirectorySync(filePath: string): boolean {
   } catch {
     return false;
   }
+}
+
+function readFileIfExistsSync(filePath: string): string | null {
+  try {
+    if (!fsSync.statSync(filePath).isFile()) {
+      return null;
+    }
+    return fsSync.readFileSync(filePath, 'utf8');
+  } catch {
+    return null;
+  }
+}
+
+function toProjectRelativePath(filePath: string): string {
+  const relative = path.relative(CONFIG.PROJECT_ROOT, filePath).replace(/\\/g, '/');
+  if (!relative.startsWith('..') && !path.isAbsolute(relative)) {
+    return relative;
+  }
+  return path.resolve(filePath).replace(/\\/g, '/');
+}
+
+function hasChildPhaseMarkers(specContent: string): boolean {
+  return /\.\.\/spec\.md/i.test(specContent) ||
+    /^\|\s*\*\*Parent Spec\*\*/im.test(specContent) ||
+    /^parent\s*:/im.test(specContent) ||
+    /^phase\s*:\s*\d+\s+of\s+\d+/im.test(specContent);
+}
+
+function listImmediateChildSpecFoldersSync(parentPath: string): string[] {
+  try {
+    return fsSync.readdirSync(parentPath).filter((entry) => {
+      if (!SPEC_FOLDER_PATTERN.test(entry)) {
+        return false;
+      }
+      return isDirectorySync(path.join(parentPath, entry));
+    });
+  } catch {
+    return [];
+  }
+}
+
+function isLegacyPhaseContainerSync(parentPath: string): boolean {
+  if (readFileIfExistsSync(path.join(parentPath, 'spec.md'))) {
+    return false;
+  }
+
+  if (!isDirectorySync(path.join(parentPath, 'memory'))) {
+    return false;
+  }
+
+  return listImmediateChildSpecFoldersSync(parentPath).length > 1;
+}
+
+function buildPhaseFolderRejection(
+  phaseFolderPath: string,
+  owningRootSpecFolder: string,
+  reason: PhaseFolderRejection['reason']
+): PhaseFolderRejection {
+  const phaseDisplayPath = toProjectRelativePath(phaseFolderPath);
+  const rootDisplayPath = toProjectRelativePath(owningRootSpecFolder);
+
+  return {
+    phaseFolderPath,
+    owningRootSpecFolder,
+    reason,
+    message: [
+      `Direct memory saves cannot target a phase folder: ${phaseDisplayPath}`,
+      `Save to the owning root spec folder instead: ${rootDisplayPath}`,
+      'Phase-folder targets are rejected deterministically and are not rerouted.'
+    ].join('\n')
+  };
+}
+
+export function getPhaseFolderRejectionSync(specFolderPath: string): PhaseFolderRejection | null {
+  if (!specFolderPath) {
+    return null;
+  }
+
+  const resolvedPath = path.resolve(specFolderPath);
+  const parentPath = path.dirname(resolvedPath);
+  const folderName = path.basename(resolvedPath);
+  const parentFolderName = path.basename(parentPath);
+
+  if (!SPEC_FOLDER_PATTERN.test(folderName) || !SPEC_FOLDER_PATTERN.test(parentFolderName)) {
+    return null;
+  }
+
+  const childSpecContent = readFileIfExistsSync(path.join(resolvedPath, 'spec.md'));
+  if (childSpecContent && hasChildPhaseMarkers(childSpecContent)) {
+    return buildPhaseFolderRejection(resolvedPath, parentPath, 'child-phase-markers');
+  }
+
+  const parentSpecContent = readFileIfExistsSync(path.join(parentPath, 'spec.md'));
+  if (parentSpecContent && /PHASE DOCUMENTATION MAP/i.test(parentSpecContent)) {
+    return buildPhaseFolderRejection(resolvedPath, parentPath, 'parent-phase-map');
+  }
+
+  if (isLegacyPhaseContainerSync(parentPath)) {
+    return buildPhaseFolderRejection(resolvedPath, parentPath, 'legacy-phase-container');
+  }
+
+  return null;
 }
 
 /** Find a bare child folder under all spec parents (sync, recursive up to MAX_DEPTH). */

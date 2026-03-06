@@ -137,6 +137,7 @@ contextType: "general"
 
 ---
 
+{{#HAS_PREFLIGHT_BASELINE}}
 <!-- ANCHOR:preflight -->
 ## PREFLIGHT BASELINE
 
@@ -162,6 +163,7 @@ contextType: "general"
 - Uncertainty: {{PREFLIGHT_UNCERTAINTY_RAW}}
 - Readiness: {{PREFLIGHT_READINESS}}
 <!-- /ANCHOR:preflight -->
+{{/HAS_PREFLIGHT_BASELINE}}
 
 ---
 
@@ -661,6 +663,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 
 ---
 
+{{#HAS_POSTFLIGHT_DELTA}}
 <!-- ANCHOR:postflight -->
 <a id="postflight-learning-delta"></a>
 
@@ -705,6 +708,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 **Session Learning Summary:**
 {{LEARNING_SUMMARY}}
 <!-- /ANCHOR:postflight -->
+{{/HAS_POSTFLIGHT_DELTA}}
 
 ---
 

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Incident Timeline — UntitledUI Variant 5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-secondary: rgb(250 250 250);
+      --bg-tertiary: rgb(245 245 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      
+      /* UTILITY COLORS */
+      --utility-success-50: rgb(236 253 243);
+      --utility-success-200: rgb(166 244 197);
+      --utility-success-700: rgb(8 119 73);
+      --utility-error-50: rgb(254 243 242);
+      --utility-error-200: rgb(254 205 202);
+      --utility-error-700: rgb(180 35 24);
+      --utility-warning-50: rgb(255 249 235);
+      --utility-warning-200: rgb(254 223 137);
+      --utility-warning-700: rgb(181 71 8);
+      --utility-brand-500: rgb(158 119 237);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --display-xs: 1.5rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-display-xs: 2rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+
+      /* SPACING */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+
+      /* BORDER RADIUS */
+      --radius-sm: 0.25rem;
+      --radius-xl: 0.75rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+
+      /* CONTAINER */
+      --container-max: 960px;
+      --container-padding: var(--space-8);
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: var(--space-12) var(--container-padding); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    
+    /* COMPONENTS */
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); }
+    
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-family: var(--font-body); font-weight: var(--font-medium); padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge--error { background: var(--utility-error-50); color: var(--utility-error-700); box-shadow: inset 0 0 0 1px var(--utility-error-200); }
+    .badge--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
+    .badge--gray { background: var(--bg-tertiary); color: var(--text-secondary); box-shadow: inset 0 0 0 1px var(--border-primary); }
+
+    /* LAYOUT SPECIFIC */
+    .timeline-header { margin-bottom: var(--space-12); text-align: center; }
+    .timeline-title { font-size: var(--display-xs); font-weight: var(--font-semibold); margin-bottom: var(--space-2); }
+    .timeline-subtitle { color: var(--text-secondary); }
+
+    .timeline { position: relative; margin-left: 120px; border-left: 2px solid var(--border-secondary); padding-left: var(--space-8); padding-bottom: var(--space-8); }
+    @media (max-width: 600px) { .timeline { margin-left: 0; border-left: none; padding-left: 0; } }
+    
+    .timeline-item { position: relative; margin-bottom: var(--space-12); }
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-time { position: absolute; left: -180px; top: var(--space-1); font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-tertiary); width: 130px; text-align: right; }
+    @media (max-width: 600px) { .timeline-time { position: relative; left: 0; top: 0; text-align: left; width: auto; margin-bottom: var(--space-2); } }
+
+    .timeline-dot { position: absolute; left: -41px; top: var(--space-2); width: 14px; height: 14px; border-radius: var(--radius-full); background: var(--utility-brand-500); box-shadow: 0 0 0 4px var(--bg-primary); z-index: 2; }
+    @media (max-width: 600px) { .timeline-dot { display: none; } }
+
+    .timeline-card { border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); border: 1px solid var(--border-secondary); background: var(--bg-primary); padding: var(--space-6); transition: box-shadow 200ms; }
+    .timeline-item--recent .timeline-card { box-shadow: var(--shadow-md); border-color: var(--border-primary); }
+
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-3); }
+    .card-title { font-size: var(--text-lg); font-weight: var(--font-semibold); color: var(--text-primary); }
+    .card-desc { color: var(--text-secondary); line-height: var(--leading-md); margin-bottom: var(--space-4); }
+
+    .card-footer { display: flex; gap: var(--space-3); border-top: 1px solid var(--border-secondary); padding-top: var(--space-4); margin-top: var(--space-2); }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <section>
+      
+      <header class="timeline-header">
+        <h1 class="timeline-title">Incident Log</h1>
+        <p class="timeline-subtitle">Historical record of system outages and degraded performance events.</p>
+      </header>
+
+      <div class="timeline">
+        
+        <!-- Most Recent Event -->
+        <div class="timeline-item timeline-item--recent">
+          <div class="timeline-time">Today, 14:32</div>
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <h3 class="card-title">Database Latency Spike Resolved</h3>
+              <span class="badge badge--success">Resolved</span>
+            </div>
+            <p class="card-desc">The primary database cluster experienced elevated read latency due to an unoptimized index scan. Query optimization was applied and metrics have returned to baseline.</p>
+            <div class="card-footer">
+              <span class="badge badge--gray">Duration: 45m</span>
+              <span class="badge badge--gray">Impact: Minor</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warning Event -->
+        <div class="timeline-item">
+          <div class="timeline-time">Mar 4, 09:15</div>
+          <div class="timeline-dot" style="background: var(--utility-warning-700);"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <h3 class="card-title">API Rate Limiting Engaged</h3>
+              <span class="badge badge--warning">Degraded</span>
+            </div>
+            <p class="card-desc">An unexpected surge in traffic from a partner integration caused global API rate limiting to engage. Valid requests were throttled for approximately 12 minutes before auto-scaling completed.</p>
+            <div class="card-footer">
+              <span class="badge badge--gray">Duration: 12m</span>
+              <span class="badge badge--gray">Impact: Moderate</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Critical Event -->
+        <div class="timeline-item">
+          <div class="timeline-time">Feb 28, 22:45</div>
+          <div class="timeline-dot" style="background: var(--utility-error-700);"></div>
+          <div class="timeline-card">
+            <div class="card-header">
+              <h3 class="card-title">CDN Region Outage</h3>
+              <span class="badge badge--error">Critical</span>
+            </div>
+            <p class="card-desc">Complete loss of connectivity to the EU-West CDN edge node. Traffic was automatically rerouted to US-East, resulting in elevated latency for European users while the provider resolved a fiber cut.</p>
+            <div class="card-footer">
+              <span class="badge badge--gray">Duration: 2h 15m</span>
+              <span class="badge badge--gray">Impact: Severe</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+</body>
+</html>

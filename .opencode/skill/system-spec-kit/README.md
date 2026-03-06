@@ -652,6 +652,10 @@ cp .opencode/skill/system-spec-kit/templates/level_3/*.md specs/###-name/
 # Generate memory file (executes compiled JS from dist/)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-feature-name>/
 
+# Explicit CLI targets are authoritative and are not rerouted
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion
+
 # Generate for nested phase folder
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/121-child-name
 ```

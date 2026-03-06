@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Extensibility — Hook Registry (Variant 4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-overlay: rgb(10 13 18);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+
+      /* FOREGROUND */
+      --fg-brand-primary: rgb(127 86 217);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+
+      /* UTILITY ALIASES */
+      --utility-brand-50: rgb(249 245 255);
+      --utility-brand-200: rgb(232 218 255);
+      --utility-brand-700: rgb(105 65 198);
+      --utility-gray-50: rgb(250 250 250);
+      --utility-gray-200: rgb(233 234 235);
+      --utility-gray-700: rgb(65 70 81);
+      
+      --gray-100: rgb(245 245 245);
+      --gray-800: rgb(39 43 51);
+      --gray-900: rgb(24 29 39);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Roboto Mono', monospace;
+      --text-xs: 0.75rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.125rem; --display-sm: 1.875rem;
+      --leading-xs: 1.125rem; --leading-sm: 1.25rem; --leading-md: 1.5rem;
+
+      /* SPACING & RADIUS */
+      --space-1: 0.25rem; --space-1-5: 0.375rem; --space-2: 0.5rem; --space-3: 0.75rem; 
+      --space-4: 1rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem;
+      --radius-sm: 0.25rem; --radius-md: 0.375rem; --radius-lg: 0.5rem; --radius-xl: 0.75rem; --radius-full: 9999px;
+
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1);
+      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px rgb(127 86 217);
+      
+      --container-max: 1024px;
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); font-size: var(--text-md); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: var(--space-10) var(--space-4); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; } }
+    svg { display: block; flex-shrink: 0; }
+    :focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); }
+    .featured-icon--sm { width: 32px; height: 32px; }
+    .featured-icon--sm svg { width: 16px; height: 16px; }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-weight: var(--font-medium); padding: 2px var(--space-2); font-size: var(--text-xs); }
+    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
+
+    .code-block { background: var(--gray-900); color: var(--gray-100); font-family: var(--font-mono); font-size: var(--text-sm); line-height: var(--leading-sm); padding: var(--space-4); border-radius: var(--radius-xl); overflow-x: auto; border: 1px solid var(--gray-800); }
+    .code-inline { font-family: var(--font-mono); font-size: 0.875em; background: var(--bg-tertiary); color: var(--text-brand-secondary); padding: 2px var(--space-1-5); border-radius: var(--radius-sm); }
+
+    /* === REGISTRY STYLES === */
+    .header-area { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-6); }
+    .title { font-size: var(--display-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-2); }
+    .desc { color: var(--text-tertiary); font-size: var(--text-lg); }
+
+    .registry-container {
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-xl);
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    /* Table Header */
+    .registry-head {
+      display: grid;
+      grid-template-columns: 2fr 3fr 2fr 1.5fr 40px;
+      gap: var(--space-4);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-secondary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Group Row */
+    .row-group-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-secondary);
+      font-weight: var(--font-semibold);
+      font-size: var(--text-sm);
+    }
+
+    /* Hook Row (Details/Summary) */
+    .hook-details { border-bottom: 1px solid var(--border-secondary); }
+    .hook-details:last-child { border-bottom: none; }
+    
+    .hook-summary {
+      display: grid;
+      grid-template-columns: 2fr 3fr 2fr 1.5fr 40px;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      align-items: center;
+      transition: background var(--transition-fast);
+    }
+    .hook-summary:hover { background: var(--bg-secondary-hover); }
+    
+    .hook-name { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-brand-secondary); font-weight: var(--font-medium); }
+    .hook-desc { font-size: var(--text-sm); color: var(--text-secondary); }
+    .hook-params { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); }
+    .hook-return { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-primary); }
+    
+    .chevron { transition: transform 0.2s ease; color: var(--fg-quaternary); }
+    details[open] .chevron { transform: rotate(180deg); }
+    details[open] .hook-summary { background: var(--bg-secondary); border-bottom: 1px solid var(--border-secondary); }
+
+    .hook-expanded-content {
+      padding: var(--space-6);
+      background: var(--bg-primary);
+    }
+    .expanded-title { font-size: var(--text-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-2); color: var(--text-primary); }
+
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <header class="header-area">
+      <div>
+        <h1 class="title">Hook Registry</h1>
+        <p class="desc">Complete reference of synchronous and asynchronous lifecycle hooks.</p>
+      </div>
+      <div class="badge badge--brand">42 Hooks Available</div>
+    </header>
+
+    <div class="registry-container">
+      <div class="registry-head">
+        <div>Hook Name</div>
+        <div>Trigger Event</div>
+        <div>Parameters</div>
+        <div>Expected Return</div>
+        <div></div>
+      </div>
+
+      <!-- GROUP 1 -->
+      <div class="row-group-header">
+        <div class="featured-icon featured-icon--sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+        Initialization Phase
+        <span class="badge badge--gray" style="margin-left: auto;">2 Hooks</span>
+      </div>
+
+      <details class="hook-details">
+        <summary class="hook-summary">
+          <div class="hook-name">onPluginInit</div>
+          <div class="hook-desc">Fires immediately after the plugin is registered in memory.</div>
+          <div class="hook-params">context, config</div>
+          <div class="hook-return">void | Promise&lt;void&gt;</div>
+          <div><svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+        </summary>
+        <div class="hook-expanded-content">
+          <h4 class="expanded-title">Implementation Example</h4>
+          <pre class="code-block"><code>export default {
+  name: 'my-custom-plugin',
+  onPluginInit: async (context, config) => {
+    // Setup initial state or connect to external DB
+    console.log(`Initializing with config: ${config.apiKey}`);
+    await db.connect(config.dbUrl);
+  }
+}</code></pre>
+        </div>
+      </details>
+
+      <details class="hook-details">
+        <summary class="hook-summary">
+          <div class="hook-name">beforeServerStart</div>
+          <div class="hook-desc">Fires just before the HTTP server binds to the port.</div>
+          <div class="hook-params">app</div>
+          <div class="hook-return">void</div>
+          <div><svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+        </summary>
+        <div class="hook-expanded-content">
+          <h4 class="expanded-title">Implementation Example</h4>
+          <pre class="code-block"><code>export default {
+  beforeServerStart: (app) => {
+    // Inject custom Express middleware globally
+    app.use(myCustomAuthMiddleware);
+  }
+}</code></pre>
+        </div>
+      </details>
+
+      <!-- GROUP 2 -->
+      <div class="row-group-header" style="border-top: 1px solid var(--border-secondary);">
+        <div class="featured-icon featured-icon--sm" style="background: var(--utility-warning-50); color: var(--utility-warning-700);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+        Runtime / Data Phase
+        <span class="badge badge--gray" style="margin-left: auto;">4 Hooks</span>
+      </div>
+
+      <details class="hook-details">
+        <summary class="hook-summary">
+          <div class="hook-name">beforeRecordSave</div>
+          <div class="hook-desc">Intercepts DB save operations. Can mutate data or throw to abort.</div>
+          <div class="hook-params">collection, record</div>
+          <div class="hook-return">Record</div>
+          <div><svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+        </summary>
+        <div class="hook-expanded-content">
+          <h4 class="expanded-title">Implementation Example</h4>
+          <pre class="code-block"><code>export default {
+  beforeRecordSave: (collection, record) => {
+    if (collection === 'users') {
+      // Mutate record before it hits the database
+      record.email = record.email.toLowerCase();
+    }
+    return record; // Must return the mutated record
+  }
+}</code></pre>
+        </div>
+      </details>
+
+      <details class="hook-details">
+        <summary class="hook-summary">
+          <div class="hook-name">afterRecordCreate</div>
+          <div class="hook-desc">Fires after a new record is successfully persisted.</div>
+          <div class="hook-params">collection, record</div>
+          <div class="hook-return">void</div>
+          <div><svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+        </summary>
+        <div class="hook-expanded-content">
+          <h4 class="expanded-title">Implementation Example</h4>
+          <pre class="code-block"><code>export default {
+  afterRecordCreate: async (collection, record) => {
+    if (collection === 'orders') {
+      // Trigger side effect (e.g. email)
+      await mailer.sendReceipt(record.userId, record.id);
+    }
+  }
+}</code></pre>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</body>
+</html>

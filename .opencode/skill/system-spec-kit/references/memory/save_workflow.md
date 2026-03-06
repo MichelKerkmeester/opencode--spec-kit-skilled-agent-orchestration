@@ -16,6 +16,10 @@ Complete guide to saving conversation context, execution methods, and retrieval.
 
 Execute memory operations through whichever method fits your workflow - slash commands for convenience, direct scripts for control. All paths produce identical output with consistent naming for reliable retrieval and index into the same 3-source memory system (schema v13).
 
+When direct CLI mode includes an explicit spec-folder argument, that target is authoritative. Session-learning matches, JSON `SPEC_FOLDER` fields, and auto-detect may inform diagnostics, but they must not reroute the save to another folder.
+
+Direct phase-folder targets are the exception: if the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` rejects the save before writing any memory files and tells the caller to save to the owning root spec folder instead.
+
 ### Execution Paths
 
 The memory system supports **2 independent execution paths**. Any method can be used standalone.
@@ -202,6 +206,14 @@ EOF
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   /tmp/test-save-context.json \
   "049-anchor-context-retrieval"
+
+# Direct root-target mode (authoritative)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
+
+# Direct phase target (rejected; save to the owning root spec instead)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"
 ```
 
 ### Required JSON Fields
@@ -213,6 +225,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 | `observations`   | array  | No       | Discoveries and learnings |
 | `user_prompts`   | array  | No       | Original user requests    |
 
+If both the JSON payload and the CLI provide a spec folder, the explicit CLI argument wins.
+
+If that explicit CLI argument resolves to a phase folder, the command fails deterministically with an actionable error and does not silently reroute to the parent.
+
 ### Validation Checkpoints
 
 | Checkpoint         | Verification                                           | Action on Failure        |
@@ -221,6 +237,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 | Script exists      | `test -f .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Check skill installation |
 | JSON valid         | `jq . < input.json`                                    | Fix JSON syntax          |
 | Spec folder exists | `test -d specs/###/`                                   | Create spec folder       |
+| Target is not a phase folder | Use root spec path, not a child phase path | Re-run with owning root spec folder |
 
 ---
 
@@ -540,6 +557,8 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 | `Topic contains spaces` | Space in filename   | Convert to kebab-case              |
 | `Missing anchor closing`| Incomplete anchor   | Add `<!-- /ANCHOR:... -->`         |
 | `metadata.json parse error` | Invalid JSON    | Validate JSON syntax               |
+| "Saved to wrong folder" | Non-authoritative invocation path | Re-run with explicit CLI target; direct CLI mode does not reroute |
+| "Direct memory saves cannot target a phase folder" | Explicit CLI target resolved to a phase child | Re-run with the owning root spec folder path shown in the error |
 
 ### Debug Commands
 

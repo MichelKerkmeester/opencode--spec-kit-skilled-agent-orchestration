@@ -174,7 +174,7 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 - [x] CHK-500 [P0] `npx tsc --noEmit` passes after Phase 7 import and constant-ownership migrations. [EVIDENCE: 2026-03-06 final verification run passed: `npx tsc --noEmit`]
 - [x] CHK-501 [P0] `npm run check --workspace=scripts` passes with updated allowlist and no new forbidden-direction imports. [EVIDENCE: 2026-03-06 final verification run passed: `npm run check --workspace=scripts` and `npm run check:ast --workspace=scripts`; targeted import-policy rules vitest also passed]
-- [x] CHK-502 [P0] CI-level boundary enforcement is mandatory and blocks PR merge on violation. [EVIDENCE: `.github/workflows/system-spec-kit-boundary-enforcement.yml` configured for pull requests with required boundary check + AST check stages]
+- [x] CHK-502 [P0] CI-level boundary enforcement is mandatory and blocks PR merge on violation. [EVIDENCE: `.github/workflows/system-spec-kit-boundary-enforcement.yml` now installs dependencies, prebuilds referenced declarations with `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json`, then runs `npm run check --workspace=scripts` and `npm run check:ast --workspace=scripts`; the clean-checkout sequence was reproduced and passed on 2026-03-06]
 
 ### P1 Required (complete or approved deferral)
 
@@ -186,9 +186,9 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 ### P2 Nice-to-Have
 
-- [ ] CHK-520 [P2] Optional local pre-commit boundary hook exists and mirrors CI checks. [EVIDENCE: pending]
-- [ ] CHK-521 [P2] Boundary enforcement runtime remains within target budget after Phase 7 changes. [EVIDENCE: pending]
-- [ ] CHK-522 [P2] API-surface expansion decisions include explicit encapsulation rationale in decision docs. [EVIDENCE: pending]
+- [x] CHK-520 [P2] Optional local pre-commit boundary hook exists and mirrors CI checks. [EVIDENCE: local hook `.git/hooks/pre-commit` now exists and runs `npm run check --workspace=scripts` then `npm run check:ast --workspace=scripts`; local pre-commit run passed on 2026-03-06]
+- [x] CHK-521 [P2] Boundary enforcement runtime remains within target budget after Phase 7 changes. [EVIDENCE: 2026-03-06 timed runs from `.opencode/skill/system-spec-kit`: `/usr/bin/time -p npm run check --workspace=scripts` = `real 2.42`, `/usr/bin/time -p npm run check:ast --workspace=scripts` = `real 1.80`; combined boundary checks = 4.22s, within the <5s target carried from merged 030 NFR-P01]
+- [x] CHK-522 [P2] API-surface expansion decisions include explicit encapsulation rationale in decision docs. [EVIDENCE: `decision-record.md` ADR-006 now includes explicit Phase 7 rationale for exposing only `mcp_server/api/indexing.ts` bootstrap/index-scan hooks and not broad `core/`/`handlers` internals]
 <!-- /ANCHOR:phase-7-carry-over -->
 
 <!-- ANCHOR:phase-8-strict-pass -->
@@ -211,6 +211,108 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 - [x] CHK-550 [P2] Dist-reference reconciliation includes a short inventory of intentionally retained generated-artifact references for future drift checks. [EVIDENCE: retained generated-artifact references are limited to `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md`, `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`; each now states the same generated-build-output policy]
 <!-- /ANCHOR:phase-8-strict-pass -->
 
+<!-- ANCHOR:phase-9-memory-naming -->
+## Phase 9: Memory Naming Follow-Up Verification
+
+### P0 Blockers (must resolve)
+
+ - [x] CHK-560 [P0] Naming candidate investigation confirms the root-save regression belongs in candidate selection/fallback ordering for file-backed/manual saves, not in a broad summarizer rewrite. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` passes `QUICK_SUMMARY`, `TITLE`, and `SUMMARY` into `pickPreferredMemoryTask()`; `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts` keeps the fix scoped to candidate selection rather than the summarizer]
+ - [x] CHK-561 [P0] Stronger session semantics are evaluated before folder fallback in the naming candidate selector, and root-save flows no longer default to generic folder-derived names when better session evidence exists. [EVIDENCE: `pickPreferredMemoryTask(task, specTitle, folderBase, sessionCandidates)` now evaluates session candidates before `folderBase`; the root-save regression assertion in `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` expects the stronger `hybrid-rag-fusion-recall-regression-audit` slug]
+ - [x] CHK-562 [P0] Generic-name guardrails remain intact after the fix and still reject weak/generic candidates instead of promoting them. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts` still routes through `pickBestContentName()`, and `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` keeps contaminated/generic negative-control assertions alongside the new precedence test]
+
+### P1 Required (complete or approved deferral)
+
+ - [x] CHK-570 [P1] Regression tests cover file-backed/manual save candidate precedence, including root-save reproduction fixtures. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` adds root-save seam coverage and asserts the previous bad generic `hybrid-rag-fusion` fallback slug is rejected]
+  - [x] CHK-571 [P1] Root-save scenario is reproduced before/after the fix with command or test evidence showing generic fallback naming is eliminated when session evidence is present. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `27/27` tests, including root-save regression assertions in `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts`]
+  - [x] CHK-572 [P1] Phase 9 closure evidence is synchronized across `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` after the remediation lands. [EVIDENCE: all four phase docs now include Phase 9 completion plus refreshed verification evidence (local pre-commit hook pass, targeted `27/27` vitest run, and README scan completion for scripts/docs surfaces); `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` passed afterward]
+
+### P2 Nice-to-Have
+
+ - [x] CHK-580 [P2] Verification captures at least one negative-control case showing generic-name guardrails still reject low-value candidates after the precedence fix. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` retains negative-control assertions for contaminated instructional text and generic task labels while adding the new precedence regression]
+<!-- /ANCHOR:phase-9-memory-naming -->
+
+<!-- ANCHOR:phase-10-direct-save -->
+## Phase 10: Direct-Save Naming Follow-Up Verification
+
+Validates the newly discovered direct-save collector-path seam found after Phase 9 closed within its original scope.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-590 [P0] Direct-save investigation confirms the remaining edge case is a collector-path candidate-loss seam discovered after Phase 9 closure, not evidence that Phase 9 was incomplete. [EVIDENCE: `plan.md` and `tasks.md` preserve the post-Phase-9 discovery note, and `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` now records the collector-path quick-summary assembly that owned the remaining direct-save seam.]
+- [x] CHK-591 [P0] `collectSessionData()` quick-summary derivation selects the best specific candidate across observation titles, `recentContext.request`, `recentContext.learning`, and `taskFromPrompt` before generic fallback logic runs. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` now builds `quickSummaryCandidates` from observation titles, `recentContext.request`, `recentContext.learning`, and `taskFromPrompt`, then resolves `QUICK_SUMMARY` through `pickBestContentName()` before fallback.]
+- [x] CHK-592 [P0] Generic-name and contamination guardrails remain intact after the direct-save fix. [EVIDENCE: guardrails remain centralized in `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts` via `pickBestContentName()`, and `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` now proves the direct-save path rejects the generic folder-derived suffix `__hybrid-rag-fusion` while retaining broader contaminated/generic negative controls.]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-593 [P1] Targeted regression coverage exercises the real direct-save collector path and fails if stronger session naming evidence is dropped. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `27/27`, and the targeted direct-save case `-t "uses collector-derived quick summary during direct preloaded workflow saves"` also passed.]
+- [x] CHK-594 [P1] Phase 10 closure evidence is synchronized across `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` only after validation passes. [EVIDENCE: all four phase docs now record Phase 10 closure, command evidence, and the preserved historical note that Phase 10 was discovered after Phase 9 closure.]
+- [x] CHK-595 [P1] Spec validation is rerun after the Phase 10 planning updates and any later remediation updates, with final exit code captured here. [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` reran after the doc updates and exited 0.]
+
+### P2 Nice-to-Have
+
+- [x] CHK-596 [P2] Verification captures at least one negative-control direct-save case showing generic/contamination guardrails still win even when collector-path candidate ordering changes. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` asserts the direct-save preloaded workflow writes the specific filename suffix `__direct-save-naming-fix-for-hybrid-rag-fusion` and explicitly does not write the generic folder-derived suffix `__hybrid-rag-fusion`, while the same suite retains contaminated/generic negative-control assertions for `pickBestContentName()`.]
+<!-- /ANCHOR:phase-10-direct-save -->
+
+<!-- ANCHOR:phase-11-cli-authority -->
+## Phase 11: Explicit CLI Target Authority Verification
+
+Validates closure for the explicit memory-save routing bug fix where direct CLI targets must remain authoritative over session-learning suggestions.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-600 [P0] Direct CLI mode preserves explicit spec-folder targets through `generate-context` into `runWorkflow` without rerouting. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts` direct-mode case asserts `specFolderArg` is passed unchanged into `runWorkflow`]
+- [x] CHK-601 [P0] JSON mode preserves explicit CLI spec-folder override through the same control flow. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts` JSON override case asserts both `dataFile` and explicit `specFolderArg` are forwarded]
+- [x] CHK-602 [P0] Direct CLI smoke run targeting `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` completes and writes to the requested memory directory. [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` logged `Using spec folder from CLI argument: 022-hybrid-rag-fusion` and wrote a timestamped memory entry under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/`]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-610 [P1] Targeted regression suite for real routing and naming seams passes after the fix lands. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `29/29` tests]
+- [x] CHK-611 [P1] System-spec-kit docs explicitly state that CLI target arguments are authoritative and not rerouted. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` includes `CLI Authority` row and quick-start note that explicit CLI targets stay authoritative; `.opencode/skill/system-spec-kit/scripts/tests/README.md` documents `generate-context-cli-authority.vitest.ts`]
+- [x] CHK-612 [P1] Phase-folder closure evidence for this fix is synchronized across planning/checklist/tasks/summary docs and revalidated. [EVIDENCE: Phase 11 entries present in `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`; `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` reran after updates]
+
+### P2 Nice-to-Have
+
+- [x] CHK-620 [P2] Smoke-test artifact path recorded for operator traceability. [EVIDENCE: smoke run output confirms a timestamped memory entry was generated under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/`]
+<!-- /ANCHOR:phase-11-cli-authority -->
+
+<!-- ANCHOR:phase-12-phase-rejection -->
+## Phase 12: Explicit Phase-Folder Rejection Verification
+
+Verifies the explicit direct-save rule that phase-child folders are rejected deterministically with a clear root-folder redirection message.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-630 [P0] Rejection helper returns deterministic phase-child error text with owning-root guidance. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/core/subfolder-utils.ts` `buildPhaseFolderRejection()` now emits: `Direct memory saves cannot target a phase folder ...`, `Save to the owning root spec folder instead ...`, and `... not rerouted.`]
+- [x] CHK-631 [P0] `generate-context` source flow checks explicit CLI targets for phase-child rejection before workflow execution. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` calls `rejectExplicitPhaseFolderTarget()` before `runWorkflow()` in `main()`]
+- [x] CHK-632 [P0] Explicit phase-folder CLI target fails fast end-to-end before any save write occurs. [EVIDENCE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` now passes `3/3`; `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit` now exits before save and prints the owning-root guidance plus deterministic non-reroute message.]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-633 [P1] Existing explicit root-target CLI behavior remains passing after the new rejection guard. [EVIDENCE: same targeted test run shows both root-target cases in `tests/generate-context-cli-authority.vitest.ts` pass: direct mode and JSON override mode.]
+- [x] CHK-634 [P1] Tests/docs are updated to reflect the explicit-target + phase-child rejection contract. [EVIDENCE: `tests/generate-context-cli-authority.vitest.ts` includes a dedicated phase-folder rejection test; `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` and `.opencode/skill/system-spec-kit/scripts/tests/README.md` were updated for explicit-target authority and regression inventory.]
+<!-- /ANCHOR:phase-12-phase-rejection -->
+
+<!-- ANCHOR:phase-13-indexed-direct-save -->
+## Phase 13: Indexed Direct-Save Render/Quality Closure Verification
+
+Validates the post-Phase-10 V6/V7 blocker where indexed direct-save render/quality behavior still needs focused closure, without reopening the already completed naming-selection decisions.
+
+### P0 Blockers (must resolve)
+
+- [x] CHK-640 [P0] Investigation confirms the remaining V6/V7 issue is an indexed direct-save render/quality blocker discovered after Phase 10 closure, not a reopened naming-selection defect. [EVIDENCE: Phase 13 preserves the post-Phase-10 discovery history in `plan.md` and `tasks.md`; the confirmed seam is render/indexing quality, where empty preflight/postflight sections leaked into direct saves and lowercase captured facts undercounted tool usage, rather than a regression in the completed Phase 9/10 naming-selection work.]
+- [x] CHK-641 [P0] The minimal fix restores indexed direct-save render/quality behavior in the V6/V7 path without broadening scope back into naming-selection logic. [EVIDENCE: fixes stay confined to `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md`; empty preflight/postflight sections no longer render into direct saves, lowercase capture facts increment tool counts consistently, and the final root save keeps a non-generic indexed filename.]
+
+### P1 Required (complete or approved deferral)
+
+- [x] CHK-650 [P1] Regression coverage proves indexed direct-save quality remains correct for the V6/V7 path and fails if the render/quality seam regresses. [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/memory-render-fixture.vitest.ts` now covers the indexed direct-save render/quality seam, and `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `31/31`.]
+- [x] CHK-651 [P1] Targeted verification for indexed direct-save render/quality behavior is rerun and recorded alongside spec validation. [EVIDENCE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `31/31`), `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` (PASS), and `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"` (PASS).]
+- [x] CHK-652 [P1] Phase 13 closure evidence is synchronized across `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` only after verification passes. [EVIDENCE: all four phase docs now record Phase 13 closure after verification; root indexed-save proof is `specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_15-07__phase-13-indexed-direct-save-quality-closure-for.md`, successfully indexed as memory `#1201`, with no `QUALITY_GATE_FAIL` and no skipped indexing.]
+
+### P2 Nice-to-Have
+
+- [x] CHK-660 [P2] Verification captures at least one focused indexed direct-save quality example that future audits can reuse as closure evidence. [EVIDENCE: the root direct-save proof is `specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_15-07__phase-13-indexed-direct-save-quality-closure-for.md`; it retained a non-generic filename, indexed successfully as memory `#1201`, and cleared quality gates without `QUALITY_GATE_FAIL` or skipped indexing.]
+<!-- /ANCHOR:phase-13-indexed-direct-save -->
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
@@ -229,10 +331,24 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 | P2 Items (Phase 6 Parity) | 1 | 1/1 | Stale implementation-detail + metadata consistency checks complete |
 | P0 Items (Phase 7 Carry-Over) | 3 | 3/3 | Final verification and CI enforcement completed on 2026-03-06 |
 | P1 Items (Phase 7 Carry-Over) | 5 | 5/5 | Migration, exception governance, and docs synchronization completed |
-| P2 Items (Phase 7 Carry-Over) | 3 | 0/3 | Intentionally left optional and pending |
+| P2 Items (Phase 7 Carry-Over) | 3 | 3/3 | Runtime budget, encapsulation rationale, and local pre-commit hook parity completed |
 | P0 Items (Phase 8 Strict-Pass) | 3 | 3/3 | README drift, boundary/dist policy, and dist-reference reconciliation verified |
 | P1 Items (Phase 8 Strict-Pass) | 3 | 3/3 | Evidence capture and post-remediation validation recorded |
 | P2 Items (Phase 8 Strict-Pass) | 1 | 1/1 | Retained-reference inventory captured for future drift checks |
+| P0 Items (Phase 9 Memory Naming) | 3 | 3/3 | Candidate-order fix and guardrails verified and carried through executable regression coverage |
+| P1 Items (Phase 9 Memory Naming) | 3 | 3/3 | Regression coverage, end-to-end execution evidence, and cross-doc closure all recorded |
+| P2 Items (Phase 9 Memory Naming) | 1 | 1/1 | Negative-control guardrail evidence retained in regression suite |
+| P0 Items (Phase 10 Direct-Save Naming) | 3 | 3/3 | Collector-path seam closure recorded without rewriting Phase 9 history |
+| P1 Items (Phase 10 Direct-Save Naming) | 3 | 3/3 | Real-path regression coverage, cross-doc closure, and rerun validation recorded |
+| P2 Items (Phase 10 Direct-Save Naming) | 1 | 1/1 | Negative-control direct-save guardrail evidence recorded |
+| P0 Items (Phase 11 CLI Authority) | 3 | 3/3 | Explicit CLI target routing remains authoritative and smoke-tested |
+| P1 Items (Phase 11 CLI Authority) | 3 | 3/3 | Real control-flow regressions and docs alignment verified |
+| P2 Items (Phase 11 CLI Authority) | 1 | 1/1 | Smoke artifact traceability recorded |
+| P0 Items (Phase 12 Phase Rejection) | 3 | 3/3 | Deterministic rejection helper, pre-workflow guard, and end-to-end failure behavior verified |
+| P1 Items (Phase 12 Phase Rejection) | 2 | 2/2 | Root-target non-regression and docs/test updates verified |
+| P0 Items (Phase 13 Indexed Direct-Save Quality) | 2 | 2/2 | Post-Phase-10 V6/V7 blocker closed as a render/indexing-quality issue, not a naming regression |
+| P1 Items (Phase 13 Indexed Direct-Save Quality) | 3 | 3/3 | Regression coverage, focused verification, and cross-doc closure evidence all recorded |
+| P2 Items (Phase 13 Indexed Direct-Save Quality) | 1 | 1/1 | Reusable indexed root-save quality example captured for future audits |
 
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
@@ -244,4 +360,14 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 **Phase 7 Closure Completed**: 2026-03-06
 **Phase 8 Planning Added**: 2026-03-06
 **Phase 8 Closure Completed**: 2026-03-06
+**Phase 9 Planning Added**: 2026-03-06
+**Phase 9 Closure Completed**: 2026-03-06
+**Phase 10 Planning Added**: 2026-03-06
+**Phase 10 Closure Completed**: 2026-03-06
+**Phase 11 Planning Added**: 2026-03-06
+**Phase 11 Closure Completed**: 2026-03-06
+**Phase 12 Planning Added**: 2026-03-06
+**Phase 12 Closure Completed**: 2026-03-06
+**Phase 13 Planning Added**: 2026-03-06
+**Phase 13 Closure Completed**: 2026-03-06
 <!-- /ANCHOR:summary -->

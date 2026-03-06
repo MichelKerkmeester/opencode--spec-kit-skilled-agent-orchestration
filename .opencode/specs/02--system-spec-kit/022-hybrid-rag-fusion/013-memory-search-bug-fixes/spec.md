@@ -151,6 +151,7 @@ Memory-search bug-fix work was split across duplicate root and addendum document
 - `plan.md`
 - `tasks.md`
 - `checklist.md`
+- `decision-record.md`
 - `implementation-summary.md`
 - `handover.md`
 <!-- /ANCHOR:references -->

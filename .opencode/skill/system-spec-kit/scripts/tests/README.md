@@ -22,7 +22,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `tests/` directory validates script behavior, TypeScript module contracts, and end-to-end flows.
+The `tests/` directory validates script behavior, TypeScript module contracts, end-to-end flows, and targeted Vitest regressions for import-policy rules, task enrichment, and rendered-memory fixture guardrails.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
@@ -63,6 +63,12 @@ Shell tests:
 Python tests:
 - `test_dual_threshold.py`
 
+Vitest regression suites:
+- `generate-context-cli-authority.vitest.ts` - preserves explicit CLI spec-folder targets through `main()` into `runWorkflow`
+- `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, and content-aware slug coverage
+- `memory-render-fixture.vitest.ts` - rendered-memory regression coverage for naming fallback and quality validation
+- import-policy Vitest suites under `tests/` - boundary enforcement coverage for package-form, relative, dynamic, and AST-backed checks
+
 Fixtures and cache:
 - `fixtures/` - phase-system fixture inputs for level recommendation/create/validate tests
 - `test-fixtures/`
@@ -98,4 +104,7 @@ python3 test_dual_threshold.py
 - Upgrade path coverage for `spec/upgrade-level.sh` and placeholder handling.
 - Subfolder resolution coverage for memory save and folder matching behavior.
 - Validation regression coverage for shell rule orchestration.
+- Import-policy coverage for regex and AST enforcement paths.
+- Task enrichment and rendered-memory fixture coverage for hardened naming fallback behavior.
+- Direct CLI authority coverage for explicit spec-folder saves through the real `generate-context -> runWorkflow` seam.
 <!-- /ANCHOR:focus-areas -->

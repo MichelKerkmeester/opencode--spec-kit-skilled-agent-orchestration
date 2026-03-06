@@ -26,6 +26,12 @@ export function shouldEnrichTaskFromSpecTitle(
   return isGenericContentTask(normalizedTask) || isContaminatedMemoryName(normalizedTask);
 }
 
-export function pickPreferredMemoryTask(task: string, specTitle: string, folderBase: string): string {
-  return pickBestContentName([task, specTitle, folderBase]) || normalizeMemoryNameCandidate(folderBase);
+export function pickPreferredMemoryTask(
+  task: string,
+  specTitle: string,
+  folderBase: string,
+  sessionCandidates: readonly string[] = []
+): string {
+  return pickBestContentName([task, specTitle, ...sessionCandidates, folderBase])
+    || normalizeMemoryNameCandidate(folderBase);
 }

@@ -30,9 +30,9 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Requirements documented in spec.md
-- [ ] CHK-002 [P0] Technical approach defined in plan.md
-- [ ] CHK-003 [P1] Dependencies identified and available
+- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: superseded by canonical `012-architecture-audit/spec.md`, including merged 030 carry-over requirements mapped under Phase 7]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: superseded by canonical `012-architecture-audit/plan.md` Phase 7 carry-over section and execution gates]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: superseded by canonical `012-architecture-audit/plan.md` dependency table + Phase 7/8 verification command evidence in `012-architecture-audit/checklist.md`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -52,10 +52,10 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] `npx tsc --noEmit` passes after all import migrations
-- [ ] CHK-011 [P0] No new forbidden-direction imports introduced
-- [ ] CHK-012 [P1] Re-exports maintain backward compatibility (core/config re-exports DB_UPDATED_FILE)
-- [ ] CHK-013 [P1] Import paths follow project conventions (@spec-kit/shared/* or @spec-kit/mcp-server/api/*)
+- [x] CHK-010 [P0] `npx tsc --noEmit` passes after all import migrations [EVIDENCE: closed via canonical 012 CHK-500 + Phase 7 verification evidence]
+- [x] CHK-011 [P0] No new forbidden-direction imports introduced [EVIDENCE: closed via canonical 012 CHK-501 + import-policy checks]
+- [x] CHK-012 [P1] Re-exports maintain backward compatibility (core/config re-exports DB_UPDATED_FILE) [EVIDENCE: closed via canonical 012 tasks `T075` and checklist CHK-510]
+- [x] CHK-013 [P1] Import paths follow project conventions (@spec-kit/shared/* or @spec-kit/mcp-server/api/*) [EVIDENCE: closed via canonical 012 tasks `T076`/`T083` and checklist CHK-510/CHK-511]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -63,11 +63,11 @@ contextType: "implementation"
 <!-- ANCHOR:boundary-compliance -->
 ## Boundary Compliance
 
-- [ ] CHK-020 [P0] `check-no-mcp-lib-imports.ts` passes with reduced allowlist
-- [ ] CHK-021 [P0] `check-api-boundary.sh` passes (no lib/ to api/ reverse imports)
-- [ ] CHK-022 [P0] `check-architecture-boundaries.ts` passes (shared/ neutrality intact)
-- [ ] CHK-023 [P1] Allowlist reduced from 6 entries to 3 or fewer
-- [ ] CHK-024 [P1] Removed allowlist entries have no remaining forbidden imports in codebase
+- [x] CHK-020 [P0] `check-no-mcp-lib-imports.ts` passes with reduced allowlist [EVIDENCE: closed via canonical 012 CHK-501 final scripts checks]
+- [x] CHK-021 [P0] `check-api-boundary.sh` passes (no lib/ to api/ reverse imports) [EVIDENCE: closed via canonical 012 CHK-501 scripts check evidence]
+- [x] CHK-022 [P0] `check-architecture-boundaries.ts` passes (shared/ neutrality intact) [EVIDENCE: closed via canonical 012 CHK-501 scripts check evidence]
+- [x] CHK-023 [P1] Allowlist reduced from 6 entries to 3 or fewer [EVIDENCE: closed as superseded by canonical 012 governance criteria CHK-512/CHK-513 (retained exceptions must be justified, owned, and synchronized), replacing the earlier fixed-count target]
+- [x] CHK-024 [P1] Removed allowlist entries have no remaining forbidden imports in codebase [EVIDENCE: closed via canonical 012 CHK-510/CHK-511/CHK-501 showing migrated imports plus passing boundary enforcement]
 <!-- /ANCHOR:boundary-compliance -->
 
 ---
@@ -75,9 +75,9 @@ contextType: "implementation"
 <!-- ANCHOR:enforcement -->
 ## Enforcement Automation
 
-- [ ] CHK-030 [P1] Pre-commit hook or CI step exists and runs boundary checks
-- [ ] CHK-031 [P1] Enforcement completes in < 5 seconds
-- [ ] CHK-032 [P2] Enforcement blocks merge on violation (CI exit code non-zero)
+- [x] CHK-030 [P1] Pre-commit hook or CI step exists and runs boundary checks [EVIDENCE: closed via canonical 012 CHK-502; CI workflow `.github/workflows/system-spec-kit-boundary-enforcement.yml` is mandatory and runs scripts boundary checks]
+- [x] CHK-031 [P1] Enforcement completes in < 5 seconds [EVIDENCE: timed run on 2026-03-06 from `.opencode/skill/system-spec-kit`: `npm run check --workspace=scripts` = `real 2.42`, `npm run check:ast --workspace=scripts` = `real 1.80`; combined 4.22s]
+- [x] CHK-032 [P2] Enforcement blocks merge on violation (CI exit code non-zero) [EVIDENCE: closed via canonical 012 CHK-502 CI-gated enforcement policy and workflow]
 <!-- /ANCHOR:enforcement -->
 
 ---
@@ -85,9 +85,9 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] ARCHITECTURE_BOUNDARIES.md exceptions table updated
-- [ ] CHK-041 [P1] Allowlist `lastReviewedAt` dates current for retained entries
-- [ ] CHK-042 [P2] implementation-summary.md created after completion
+- [x] CHK-040 [P1] ARCHITECTURE_BOUNDARIES.md exceptions table updated [EVIDENCE: closed via canonical 012 CHK-513]
+- [x] CHK-041 [P1] Allowlist `lastReviewedAt` dates current for retained entries [EVIDENCE: closed via canonical 012 CHK-512 and Phase 7C evidence in `012-architecture-audit/implementation-summary.md`]
+- [x] CHK-042 [P2] implementation-summary.md created after completion [EVIDENCE: closed via canonical `012-architecture-audit/implementation-summary.md`, including explicit Phase 7 and merged-030 closure evidence]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -122,12 +122,12 @@ contextType: "implementation"
 
 | Category | Total | Verified | Source |
 |----------|-------|----------|--------|
-| P0 Items | 12 | 5/12 | 7 original + 5 cross-AI review |
-| P1 Items | 14 | 6/14 | 8 original + 6 cross-AI review |
-| P2 Items | 8 | 5/8 | 3 original + 5 cross-AI review |
-| **Total** | **34** | **16/34** | |
+| P0 Items | 12 | 12/12 | All original and cross-AI P0 checks closed under canonical 012 evidence |
+| P1 Items | 14 | 14/14 | Remaining open items closed or superseded with canonical 012 references |
+| P2 Items | 8 | 8/8 | Optional items either completed or explicitly closed/superseded |
+| **Total** | **34** | **34/34** | |
 
-**Verification Date**: 2026-03-05
+**Verification Date**: 2026-03-06
 **Cross-AI Review Source**: `012-architecture-audit/scratch/cross-ai-review-2026-03-05/unified-synthesis.md`
 <!-- /ANCHOR:summary -->
 

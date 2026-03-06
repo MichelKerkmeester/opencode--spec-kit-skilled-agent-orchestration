@@ -11,6 +11,7 @@ import { generateContentSlug, isContaminatedMemoryName, isGenericContentTask, pi
 import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
 import type { SessionData } from '../types/session-types';
+import { collectSessionData } from '../extractors/collect-session-data';
 
 const workflowHarness = vi.hoisted(() => ({
   specFolderPath: '',
@@ -181,6 +182,18 @@ function createSessionData(specFolderName: string): SessionData {
   };
 }
 
+function createDeferred<T = void>(): {
+  promise: Promise<T>;
+  resolve: (value: T | PromiseLike<T>) => void;
+} {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  const promise = new Promise<T>((resolver) => {
+    resolve = resolver;
+  });
+
+  return { promise, resolve };
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
   workflowHarness.writtenFiles = [];
@@ -313,6 +326,15 @@ describe('slug outcome guardrail', () => {
     )).toBe('Hybrid Search Relevance Drift Remediation');
   });
 
+  it('prefers specific session semantics over folder fallback when task and spec title are unusable', () => {
+    expect(pickPreferredMemoryTask(
+      'Development session',
+      'Spec: To promote a memory to constitutional tier (always surfaced)',
+      folderBase,
+      ['Hybrid RAG fusion recall regression audit']
+    )).toBe('Hybrid RAG fusion recall regression audit');
+  });
+
   it('returns the first non-generic, non-contaminated content name', () => {
     expect(pickBestContentName([
       'Implementation and updates',
@@ -427,6 +449,80 @@ describe('memory quality lint gate', () => {
 });
 
 describe('workflow seam guardrail', () => {
+  it('promotes strong recent-context semantics into quick summary through the real collector path', async () => {
+    const collectedData = {
+      SPEC_FOLDER: '022-hybrid-rag-fusion',
+      observations: [
+        {
+          title: 'Implementation and updates',
+          narrative: 'Generic observation that should not win the quick summary selection.',
+        },
+      ],
+      recentContext: [
+        {
+          request: 'Implementation and updates',
+          learning: 'Direct save naming fix for hybrid RAG fusion collector path',
+        },
+      ],
+      userPrompts: [
+        {
+          prompt: 'Fix the direct save naming edge case in the real collector path for hybrid RAG fusion.',
+          timestamp: '2026-03-06T09:00:00Z',
+        },
+      ],
+    };
+
+    const sessionData = await collectSessionData(collectedData, '022-hybrid-rag-fusion');
+
+    expect(sessionData.TITLE).toBe('hybrid rag fusion');
+    expect(sessionData.QUICK_SUMMARY).toBe('Direct save naming fix for hybrid RAG fusion collector path');
+  });
+
+  it('uses quick summary for file-backed root saves before falling back to the folder slug', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: To promote a memory to constitutional tier (always surfaced)"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    const collectSessionDataFn = async (_collectedData: unknown, specFolderName?: string) => {
+      const sessionData = createSessionData(specFolderName || '022-hybrid-rag-fusion');
+      sessionData.QUICK_SUMMARY = 'Hybrid RAG fusion recall regression audit';
+      sessionData.TITLE = 'Hybrid RAG fusion recall regression audit';
+      sessionData.SUMMARY = 'Hybrid RAG fusion recall regression audit for file-backed root save naming.';
+      return sessionData;
+    };
+
+    const fileBackedData = {
+      _source: 'file',
+      userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:00:00Z' }],
+    };
+
+    try {
+      const result = await runWorkflow({
+        dataFile: '/tmp/context.json',
+        collectedData: fileBackedData,
+        collectSessionDataFn,
+        silent: true,
+      });
+
+      expect(result.contextFilename).toContain('__hybrid-rag-fusion-recall-regression-audit.md');
+      expect(result.contextFilename).not.toBe('06-03-26_09-00__hybrid-rag-fusion.md');
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
   it('does not let file-backed state leak into a later stateless workflow run', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
     const specFolderPath = path.join(tempRoot, '013-memory-search-bug-fixes');
@@ -478,5 +574,139 @@ describe('workflow seam guardrail', () => {
     expect(CONFIG.SPEC_FOLDER_ARG).toBeNull();
 
     fs.rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it('serializes overlapping workflow runs so per-run config state stays isolated', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '013-memory-search-bug-fixes');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Generic Memory Filename Fix in Stateless Mode"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const { runWorkflow } = await import('../core/workflow');
+    const { CONFIG } = await import('../core');
+    const specFolderModule = await import('../spec-folder');
+    const detectSpecFolderMock = vi.mocked(specFolderModule.detectSpecFolder);
+    const configSnapshots: Array<{ dataFile: string | null; specFolderArg: string | null }> = [];
+    const firstLoadStarted = createDeferred<void>();
+    const releaseFirstLoad = createDeferred<void>();
+
+    CONFIG.DATA_FILE = null;
+    CONFIG.SPEC_FOLDER_ARG = null;
+
+    detectSpecFolderMock.mockImplementation(async () => {
+      configSnapshots.push({
+        dataFile: CONFIG.DATA_FILE,
+        specFolderArg: CONFIG.SPEC_FOLDER_ARG,
+      });
+      return workflowHarness.specFolderPath;
+    });
+
+    const collectSessionDataFn = async (_collectedData: unknown, specFolderName?: string) => {
+      return createSessionData(specFolderName || '013-memory-search-bug-fixes');
+    };
+
+    const firstRunPromise = runWorkflow({
+      dataFile: '/tmp/first.json',
+      specFolderArg: '001-first-run',
+      loadDataFn: async () => {
+        firstLoadStarted.resolve();
+        await releaseFirstLoad.promise;
+        return {
+          _source: 'file',
+          userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:00:00Z' }],
+        } as never;
+      },
+      collectSessionDataFn,
+      silent: true,
+    });
+
+    await firstLoadStarted.promise;
+
+    const secondRunPromise = runWorkflow({
+      dataFile: '/tmp/second.json',
+      specFolderArg: '002-second-run',
+      loadDataFn: async () => ({
+        _source: 'file',
+        userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:01:00Z' }],
+      }) as never,
+      collectSessionDataFn,
+      silent: true,
+    });
+
+    releaseFirstLoad.resolve();
+
+    await Promise.all([firstRunPromise, secondRunPromise]);
+
+    expect(configSnapshots).toEqual([
+      { dataFile: '/tmp/first.json', specFolderArg: '001-first-run' },
+      { dataFile: '/tmp/second.json', specFolderArg: '002-second-run' },
+    ]);
+    expect(CONFIG.DATA_FILE).toBeNull();
+    expect(CONFIG.SPEC_FOLDER_ARG).toBeNull();
+
+    fs.rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it('uses collector-derived quick summary during direct preloaded workflow saves', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: To promote a memory to constitutional tier (always surfaced)"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    const collectedData = {
+      _source: 'opencode-capture',
+      SPEC_FOLDER: '022-hybrid-rag-fusion',
+      observations: [
+        {
+          title: 'Implementation and updates',
+          narrative: 'Generic observation title should not force a folder slug fallback.',
+        },
+      ],
+      recentContext: [
+        {
+          request: 'Implementation and updates',
+          learning: 'Direct save naming fix for hybrid RAG fusion collector path',
+        },
+      ],
+      userPrompts: [
+        {
+          prompt: 'Fix the direct save naming edge case in the real collector path for hybrid RAG fusion.',
+          timestamp: '2026-03-06T09:00:00Z',
+        },
+      ],
+    };
+
+    try {
+      const result = await runWorkflow({
+        collectedData,
+        specFolderArg: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+        silent: true,
+      });
+
+      expect(result.contextFilename).toContain('__direct-save-naming-fix-for-hybrid-rag-fusion.md');
+      expect(result.contextFilename).not.toContain('__hybrid-rag-fusion.md');
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
   });
 });

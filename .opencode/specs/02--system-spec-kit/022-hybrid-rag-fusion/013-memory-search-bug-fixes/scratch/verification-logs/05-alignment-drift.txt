@@ -1,0 +1,6 @@
+[alignment-drift] PASS
+Scanned files: 676
+Findings: 0
+Errors: 0
+Warnings: 0
+Violations: 0

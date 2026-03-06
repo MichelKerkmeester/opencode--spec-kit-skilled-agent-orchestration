@@ -1,0 +1,948 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero Section — UntitledUI Variant 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ================================================================
+         UNTITLED UI — LIGHT THEME TOKEN VOCABULARY
+         ================================================================ */
+
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      /* FOREGROUND / ICONS */
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      /* BRAND SCALE */
+      --brand-25: rgb(252 250 255);
+      --brand-50: rgb(249 245 255);
+      --brand-100: rgb(244 235 255);
+      --brand-200: rgb(232 218 255);
+      --brand-300: rgb(214 188 250);
+      --brand-400: rgb(186 154 244);
+      --brand-500: rgb(158 119 237);
+      --brand-600: rgb(127 86 217);
+      --brand-700: rgb(105 65 198);
+      --brand-800: rgb(83 56 158);
+      --brand-900: rgb(66 48 125);
+      --brand-950: rgb(44 28 95);
+
+      /* GRAY SCALE */
+      --gray-25: rgb(253 253 253);
+      --gray-50: rgb(250 250 250);
+      --gray-100: rgb(245 245 245);
+      --gray-200: rgb(233 234 235);
+      --gray-300: rgb(213 215 218);
+      --gray-400: rgb(164 167 174);
+      --gray-500: rgb(113 118 128);
+      --gray-600: rgb(83 88 98);
+      --gray-700: rgb(65 70 81);
+      --gray-800: rgb(39 43 51);
+      --gray-900: rgb(24 29 39);
+      --gray-950: rgb(10 13 18);
+
+      /* ERROR SCALE */
+      --error-25: rgb(255 251 250);
+      --error-50: rgb(254 243 242);
+      --error-100: rgb(254 228 226);
+      --error-200: rgb(254 205 202);
+      --error-300: rgb(253 162 155);
+      --error-400: rgb(249 112 102);
+      --error-500: rgb(240 68 56);
+      --error-600: rgb(217 45 32);
+      --error-700: rgb(180 35 24);
+      --error-800: rgb(145 32 24);
+      --error-900: rgb(122 29 25);
+      --error-950: rgb(85 15 10);
+
+      /* WARNING SCALE */
+      --warning-25: rgb(255 252 245);
+      --warning-50: rgb(255 249 235);
+      --warning-100: rgb(254 240 199);
+      --warning-200: rgb(254 223 137);
+      --warning-300: rgb(253 200 75);
+      --warning-400: rgb(253 176 34);
+      --warning-500: rgb(247 144 9);
+      --warning-600: rgb(220 104 3);
+      --warning-700: rgb(181 71 8);
+      --warning-800: rgb(147 55 13);
+      --warning-900: rgb(122 46 14);
+      --warning-950: rgb(78 29 5);
+
+      /* SUCCESS SCALE */
+      --success-25: rgb(246 254 249);
+      --success-50: rgb(236 253 243);
+      --success-100: rgb(209 250 223);
+      --success-200: rgb(166 244 197);
+      --success-300: rgb(108 230 165);
+      --success-400: rgb(50 213 131);
+      --success-500: rgb(18 183 106);
+      --success-600: rgb(7 148 85);
+      --success-700: rgb(8 119 73);
+      --success-800: rgb(9 98 62);
+      --success-900: rgb(12 80 53);
+      --success-950: rgb(5 53 34);
+
+      /* UTILITY COLOR ALIASES */
+      --utility-brand-50: var(--brand-50);
+      --utility-brand-200: var(--brand-200);
+      --utility-brand-700: var(--brand-700);
+      --utility-gray-50: var(--gray-50);
+      --utility-gray-200: var(--gray-200);
+      --utility-gray-700: var(--gray-700);
+      --utility-error-50: var(--error-50);
+      --utility-error-200: var(--error-200);
+      --utility-error-700: var(--error-700);
+      --utility-warning-50: var(--warning-50);
+      --utility-warning-200: var(--warning-200);
+      --utility-warning-700: var(--warning-700);
+      --utility-success-50: var(--success-50);
+      --utility-success-200: var(--success-200);
+      --utility-success-700: var(--success-700);
+      --white-alpha-12: rgba(255, 255, 255, 0.12); /* Encapsulated alpha */
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+      --display-xl: 3.75rem;
+      --display-2xl: 4.5rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xs: 2rem;
+      --leading-display-sm: 2.375rem;
+      --leading-display-md: 2.75rem;
+      --leading-display-lg: 3.75rem;
+      --leading-display-xl: 4.5rem;
+      --leading-display-2xl: 5.625rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-0: 0;
+      --space-0-5: 0.125rem;
+      --space-1: 0.25rem;
+      --space-1-5: 0.375rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-3-5: 0.875rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-7: 1.75rem;
+      --space-8: 2rem;
+      --space-9: 2.25rem;
+      --space-10: 2.5rem;
+      --space-11: 2.75rem;
+      --space-12: 3rem;
+      --space-14: 3.5rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+      --space-32: 8rem;
+      --space-40: 10rem;
+      --space-48: 12rem;
+      --space-64: 16rem;
+
+      /* BORDER RADIUS */
+      --radius-none: 0px;
+      --radius-xxs: 0.0625rem;
+      --radius-xs: 0.125rem;
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-3xl: 1.25rem;
+      --radius-4xl: 1.5rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+      --shadow-lg: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+      --shadow-xl: 0px 20px 24px -4px rgba(10, 13, 18, 0.08), 0px 8px 8px -4px rgba(10, 13, 18, 0.03);
+      --shadow-2xl: 0px 24px 48px -12px rgba(10, 13, 18, 0.18);
+      --shadow-3xl: 0px 32px 64px -12px rgba(10, 13, 18, 0.24);
+
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      --shadow-skeumorphic-inner: 0px 0px 0px 1px rgba(255, 255, 255, 0.12) inset;
+
+      /* FOCUS */
+      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
+      --focus-ring-error: 0 0 0 4px var(--error-100), 0 0 0 1px var(--error-600);
+
+      /* TRANSITIONS */
+      --transition-fast: 100ms linear;
+      --transition-normal: 200ms ease;
+      --transition-slow: 300ms ease;
+
+      /* CONTAINER */
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    /* ================================================================
+       BASE STYLES
+       ================================================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+    }
+    .page-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+    svg {
+      display: block;
+      flex-shrink: 0;
+    }
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+    a {
+      color: var(--text-brand-secondary);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--text-brand-primary);
+      text-decoration: underline;
+    }
+
+    /* ================================================================
+       COMPONENT RECIPES
+       ================================================================ */
+
+    /* Featured Icon */
+    .featured-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--bg-brand-secondary);
+      color: var(--fg-brand-primary);
+      flex-shrink: 0;
+    }
+    .featured-icon--xl  { width: 56px; height: 56px; }
+    .featured-icon--xl svg { width: 28px; height: 28px; }
+
+    /* Badge Pill */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-weight: var(--font-medium);
+      white-space: nowrap;
+    }
+    .badge--md {
+      padding: 2px var(--space-2-5);
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+    }
+    .badge--brand {
+      background: var(--utility-brand-50);
+      color: var(--utility-brand-700);
+      box-shadow: inset 0 0 0 1px var(--utility-brand-200);
+    }
+    .badge--gray {
+      background: var(--utility-gray-50);
+      color: var(--utility-gray-700);
+      box-shadow: inset 0 0 0 1px var(--utility-gray-200);
+    }
+    .badge--success {
+      background: var(--utility-success-50);
+      color: var(--utility-success-700);
+      box-shadow: inset 0 0 0 1px var(--utility-success-200);
+    }
+    .badge__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      background: currentColor;
+    }
+
+    /* Button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-weight: var(--font-semibold);
+      text-decoration: none;
+      transition: background var(--transition-fast), box-shadow var(--transition-fast);
+      position: relative;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid var(--white-alpha-12);
+      pointer-events: none;
+    }
+    .btn--sm {
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+      border-radius: var(--radius-lg);
+    }
+    .btn--xl {
+      padding: var(--space-3) var(--space-5);
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      border-radius: var(--radius-lg);
+    }
+    .btn--primary {
+      background: var(--bg-brand-solid);
+      color: var(--text-white);
+      box-shadow: var(--shadow-xs), var(--shadow-skeumorphic);
+    }
+    .btn--primary:hover {
+      background: var(--bg-brand-solid-hover);
+      color: var(--text-white);
+      text-decoration: none;
+    }
+    .btn--secondary {
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-xs);
+      border: 1px solid var(--border-primary);
+    }
+    .btn--secondary::before {
+      display: none;
+    }
+    .btn--secondary:hover {
+      background: var(--bg-primary-hover);
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    /* Background Grid Pattern */
+    .bg-pattern {
+      position: relative;
+    }
+    .bg-pattern::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-pattern > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ================================================================
+       SECTION-SPECIFIC STYLES (SEED 1)
+       ================================================================ */
+
+    .hero-section {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .hero-badge-container {
+      margin-bottom: var(--space-4);
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-badge-interactive {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--bg-brand-primary);
+      border: 1px solid var(--border-brand);
+      border-radius: var(--radius-full);
+      padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--text-brand-secondary);
+      transition: all var(--transition-normal);
+      cursor: pointer;
+    }
+    .hero-badge-interactive:hover {
+      background: var(--bg-brand-secondary);
+      text-decoration: none;
+    }
+
+    .hero-heading {
+      font-family: var(--font-display);
+      font-size: var(--display-lg);
+      line-height: var(--leading-display-lg);
+      font-weight: var(--font-semibold);
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .hero-subtitle {
+      font-size: var(--text-xl);
+      line-height: var(--leading-xl);
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+    }
+
+    /* UI Mockup Presentation Container */
+    .hero-mockup-wrapper {
+      margin-top: var(--space-16);
+      width: 100%;
+      max-width: 1024px;
+      padding: 0 var(--space-4);
+    }
+
+    .hero-mockup {
+      background: var(--bg-primary);
+      border-radius: var(--radius-2xl);
+      border: 1px solid var(--border-secondary);
+      box-shadow: var(--shadow-2xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-secondary);
+      background: var(--bg-primary);
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: var(--space-1-5);
+    }
+    .mockup-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--border-primary);
+    }
+
+    .mockup-search {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-secondary);
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-lg);
+      width: 320px;
+      color: var(--text-placeholder);
+      font-size: var(--text-sm);
+    }
+
+    .mockup-body {
+      display: flex;
+      height: 480px;
+      background: var(--bg-secondary-subtle);
+    }
+
+    .mockup-sidebar {
+      width: 240px;
+      border-right: 1px solid var(--border-secondary);
+      background: var(--bg-primary);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .mockup-nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+    }
+    .mockup-nav-item--active {
+      background: var(--bg-brand-primary);
+      color: var(--text-brand-secondary);
+    }
+
+    .mockup-content {
+      flex: 1;
+      padding: var(--space-8);
+      overflow-y: auto;
+    }
+
+    .mockup-content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+    }
+
+    .mockup-title {
+      font-size: var(--display-xs);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .mockup-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .mockup-stat-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-2);
+      font-weight: var(--font-medium);
+    }
+
+    .stat-value {
+      font-size: var(--display-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+    }
+
+    /* Trusted By Section */
+    .trusted-by {
+      margin-top: var(--space-20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .trusted-label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .trusted-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+      opacity: 0.6;
+      filter: grayscale(100%);
+      transition: opacity var(--transition-normal);
+    }
+    .trusted-logos:hover {
+      opacity: 0.8;
+    }
+
+    .logo-item {
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-display);
+      font-weight: var(--font-bold);
+      font-size: var(--text-xl);
+      letter-spacing: -0.02em;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .hero-heading {
+        font-size: var(--display-md);
+        line-height: var(--leading-display-md);
+      }
+      .hero-subtitle {
+        font-size: var(--text-lg);
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .btn {
+        width: 100%;
+      }
+      .mockup-sidebar {
+        display: none;
+      }
+      .mockup-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <section class="hero-section bg-pattern">
+      <div class="hero-content">
+        
+        <!-- Interactive Badge above heading -->
+        <div class="hero-badge-container">
+          <a href="#" class="hero-badge-interactive">
+            <span class="badge badge--brand badge--md">New feature</span>
+            <span>Discover Hybrid RAG Fusion</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Central Featured Icon -->
+        <div class="featured-icon featured-icon--xl">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+
+        <!-- Typography -->
+        <h1 class="hero-heading">Supercharge your workflow with next-gen AI</h1>
+        <p class="hero-subtitle">
+          UntitledUI provides the building blocks you need to deploy production-ready applications faster than ever. Built for modern teams.
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero-actions">
+          <button class="btn btn--primary btn--xl">
+            Get started
+          </button>
+          <button class="btn btn--secondary btn--xl">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Watch demo
+          </button>
+        </div>
+      </div>
+
+      <!-- Rich UI Mockup to demonstrate component context -->
+      <div class="hero-mockup-wrapper">
+        <div class="hero-mockup">
+          
+          <!-- Mockup Top Bar -->
+          <div class="mockup-header">
+            <div class="mockup-dots">
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+              <div class="mockup-dot"></div>
+            </div>
+            
+            <div class="mockup-search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Search documentation or data...</span>
+            </div>
+
+            <div class="mockup-dots">
+              <!-- Placeholder for avatar -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--border-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="5"></circle>
+                <path d="M20 21a8 8 0 0 0-16 0"></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Mockup Main Body -->
+          <div class="mockup-body">
+            
+            <!-- Mockup Sidebar -->
+            <div class="mockup-sidebar">
+              <div class="mockup-nav-item mockup-nav-item--active">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Dashboard
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+                Analytics
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Schedules
+              </div>
+              <div class="mockup-nav-item" style="margin-top: auto;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                Settings
+              </div>
+            </div>
+
+            <!-- Mockup Content -->
+            <div class="mockup-content">
+              <div class="mockup-content-header">
+                <div>
+                  <h2 class="mockup-title">Overview</h2>
+                  <p style="color: var(--text-secondary); font-size: var(--text-sm);">View your current hybrid system status.</p>
+                </div>
+                <button class="btn btn--secondary btn--sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  Export
+                </button>
+              </div>
+
+              <!-- Stats Row -->
+              <div class="mockup-stats-grid">
+                <div class="mockup-stat-card">
+                  <div class="stat-label">Total queries</div>
+                  <div class="stat-value">24,592</div>
+                  <div style="margin-top: var(--space-4);">
+                    <span class="badge badge--success badge--sm">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="19" x2="12" y2="5"></line>
+                        <polyline points="5 12 12 5 19 12"></polyline>
+                      </svg>
+                      12%
+                    </span>
+                    <span style="color: var(--text-quaternary); font-size: var(--text-xs); margin-left: var(--space-2);">vs last month</span>
+                  </div>
+                </div>
+                <div class="mockup-stat-card">
+                  <div class="stat-label">Average latency</div>
+                  <div class="stat-value">124ms</div>
+                  <div style="margin-top: var(--space-4);">
+                    <span class="badge badge--gray badge--sm">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                      0%
+                    </span>
+                    <span style="color: var(--text-quaternary); font-size: var(--text-xs); margin-left: var(--space-2);">vs last month</span>
+                  </div>
+                </div>
+                <div class="mockup-stat-card">
+                  <div class="stat-label">Active systems</div>
+                  <div class="stat-value">3</div>
+                  <div style="margin-top: var(--space-4);">
+                    <span class="badge badge--brand badge--sm">
+                      <span class="badge__dot"></span>
+                      All operational
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Dummy UI List -->
+              <div style="background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); overflow: hidden;">
+                <div style="padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border-secondary); font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--text-secondary); display: grid; grid-template-columns: 2fr 1fr 1fr; background: var(--bg-secondary);">
+                  <div>System Name</div>
+                  <div>Status</div>
+                  <div>Uptime</div>
+                </div>
+                <div style="padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border-secondary); font-size: var(--text-sm); display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center;">
+                  <div style="font-weight: var(--font-medium); color: var(--text-primary);">Vector Index Core</div>
+                  <div><span class="badge badge--success badge--sm"><span class="badge__dot"></span> Online</span></div>
+                  <div style="color: var(--text-secondary);">99.9%</div>
+                </div>
+                <div style="padding: var(--space-3) var(--space-4); font-size: var(--text-sm); display: grid; grid-template-columns: 2fr 1fr 1fr; align-items: center;">
+                  <div style="font-weight: var(--font-medium); color: var(--text-primary);">Semantic RAG Fusion</div>
+                  <div><span class="badge badge--brand badge--sm"><span class="badge__dot"></span> Syncing</span></div>
+                  <div style="color: var(--text-secondary);">98.4%</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Indicators -->
+      <div class="trusted-by">
+        <p class="trusted-label">Trusted by innovative teams worldwide</p>
+        <div class="trusted-logos">
+          <div class="logo-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Layers
+          </div>
+          <div class="logo-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            Spheris
+          </div>
+          <div class="logo-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+              <line x1="12" y1="22" x2="12" y2="15.5"></line>
+              <polyline points="22 8.5 12 15.5 2 8.5"></polyline>
+              <polyline points="2 15.5 12 8.5 22 15.5"></polyline>
+              <line x1="12" y1="2" x2="12" y2="8.5"></line>
+            </svg>
+            Luminous
+          </div>
+          <div class="logo-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
+            </svg>
+            Command
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </div>
+</body>
+</html>
+```

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Support — Support Lifecycle Variant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: rgb(255 255 255);
+      --bg-secondary: rgb(250 250 250);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-white: rgb(255 255 255);
+
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-brand: rgb(158 119 237);
+
+      --utility-brand-50: rgb(249 245 255);
+      --utility-brand-200: rgb(232 218 255);
+      --utility-brand-700: rgb(105 65 198);
+      
+      --utility-success-50: rgb(236 253 243);
+      --utility-success-200: rgb(166 244 197);
+      --utility-success-700: rgb(8 119 73);
+
+      --utility-gray-50: rgb(250 250 250);
+      --utility-gray-200: rgb(233 234 235);
+      --utility-gray-700: rgb(65 70 81);
+
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --display-sm: 1.875rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-display-sm: 2.375rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      --radius-sm: 0.25rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+
+      --transition-normal: 200ms ease;
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    svg { display: block; flex-shrink: 0; }
+
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); z-index: 2; position: relative; }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--md svg { width: 20px; height: 20px; }
+    .featured-icon--lg { width: 48px; height: 48px; }
+    .featured-icon--lg svg { width: 24px; height: 24px; }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-sm); color: var(--fg-disabled); }
+    .featured-icon--dark { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: 0 0 0 4px var(--utility-brand-50); }
+    .featured-icon--success { background: var(--utility-success-50); color: var(--fg-success-primary); border: 1px solid var(--utility-success-200); }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-family: var(--font-body); font-weight: var(--font-medium); white-space: nowrap; }
+    .badge--sm { padding: 2px var(--space-2); font-size: var(--text-xs); line-height: var(--leading-xs); }
+    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
+
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-8); }
+    .card--brand { border-color: var(--border-brand); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); border-radius: var(--radius-lg); }
+    .btn--md { padding: var(--space-2-5) var(--space-4); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .btn--primary { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: var(--shadow-skeumorphic); }
+    .btn--secondary { background: var(--bg-primary); color: var(--text-secondary); border: 1px solid var(--border-primary); box-shadow: var(--shadow-sm); }
+
+    /* === SECTION-SPECIFIC STYLES === */
+    .lifecycle-section { padding: var(--space-16) 0; }
+    .lifecycle-header { text-align: center; margin-bottom: var(--space-16); }
+    .lifecycle-title { font-family: var(--font-display); font-size: var(--display-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-4); }
+
+    .flow-container { display: flex; justify-content: space-between; align-items: flex-start; position: relative; margin-bottom: var(--space-12); padding: 0 var(--space-8); }
+    
+    /* Connecting line */
+    .flow-line { position: absolute; top: 24px; left: calc(var(--space-8) + 24px); right: calc(var(--space-8) + 24px); height: 2px; background: var(--border-secondary); z-index: 1; }
+    .flow-line-progress { position: absolute; top: 0; left: 0; height: 100%; width: 50%; background: var(--bg-brand-solid); transition: width var(--transition-normal); }
+
+    .flow-step { display: flex; flex-direction: column; align-items: center; width: 140px; text-align: center; position: relative; z-index: 2; }
+    
+    .step-title { font-size: var(--text-sm); font-weight: var(--font-semibold); color: var(--text-primary); margin: var(--space-4) 0 var(--space-1) 0; }
+    .step-desc { font-size: var(--text-xs); color: var(--text-secondary); line-height: var(--leading-xs); margin-bottom: var(--space-3); }
+
+    .active-step-content { max-width: 800px; margin: 0 auto; }
+    .content-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); padding-bottom: var(--space-6); border-bottom: 1px solid var(--border-secondary); }
+    .content-title-group { display: flex; align-items: center; gap: var(--space-4); }
+    .content-title { font-size: var(--text-lg); font-weight: var(--font-semibold); }
+    .content-meta { display: flex; flex-direction: column; gap: var(--space-4); }
+    
+    .meta-row { display: flex; font-size: var(--text-sm); }
+    .meta-label { width: 120px; color: var(--text-secondary); font-weight: var(--font-medium); }
+    .meta-value { color: var(--text-primary); font-weight: var(--font-medium); }
+
+    .action-bar { margin-top: var(--space-8); display: flex; gap: var(--space-3); }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <section class="lifecycle-section">
+      <div class="lifecycle-header">
+        <h1 class="lifecycle-title">Support Ticket Lifecycle</h1>
+        <p class="text-secondary">Track the resolution progress of your escalated issues.</p>
+      </div>
+
+      <div class="flow-container">
+        <div class="flow-line">
+          <div class="flow-line-progress"></div>
+        </div>
+
+        <!-- Step 1 (Completed) -->
+        <div class="flow-step">
+          <div class="featured-icon featured-icon--lg featured-icon--success">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h3 class="step-title">Reported</h3>
+          <p class="step-desc">Ticket logged via portal</p>
+          <span class="badge badge--success badge--sm">Completed</span>
+        </div>
+
+        <!-- Step 2 (Completed) -->
+        <div class="flow-step">
+          <div class="featured-icon featured-icon--lg featured-icon--success">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h3 class="step-title">Triaged</h3>
+          <p class="step-desc">Severity & team assigned</p>
+          <span class="badge badge--success badge--sm">Completed</span>
+        </div>
+
+        <!-- Step 3 (Active) -->
+        <div class="flow-step">
+          <div class="featured-icon featured-icon--lg featured-icon--dark">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <h3 class="step-title" style="color: var(--text-brand-secondary);">Investigating</h3>
+          <p class="step-desc">Engineering reviewing logs</p>
+          <span class="badge badge--brand badge--sm">In Progress</span>
+        </div>
+
+        <!-- Step 4 (Pending) -->
+        <div class="flow-step">
+          <div class="featured-icon featured-icon--lg featured-icon--outline">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+          </div>
+          <h3 class="step-title" style="color: var(--text-tertiary);">Resolving</h3>
+          <p class="step-desc">Fix deployment</p>
+          <span class="badge badge--gray badge--sm">Pending</span>
+        </div>
+
+        <!-- Step 5 (Pending) -->
+        <div class="flow-step">
+          <div class="featured-icon featured-icon--lg featured-icon--outline">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+          <h3 class="step-title" style="color: var(--text-tertiary);">Verified</h3>
+          <p class="step-desc">Customer confirmation</p>
+          <span class="badge badge--gray badge--sm">Pending</span>
+        </div>
+      </div>
+
+      <div class="active-step-content card card--brand">
+        <div class="content-header">
+          <div class="content-title-group">
+            <div class="featured-icon featured-icon--md">
+              <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h2 class="content-title">Current Phase: Investigation</h2>
+          </div>
+          <span class="text-sm text-secondary">Updated 2 hours ago</span>
+        </div>
+        
+        <div class="content-meta">
+          <div class="meta-row">
+            <div class="meta-label">Ticket ID:</div>
+            <div class="meta-value">#INC-49201</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Assigned To:</div>
+            <div class="meta-value">Core Infrastructure Team</div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-label">Status Note:</div>
+            <div class="meta-value" style="color: var(--text-secondary);">We have successfully reproduced the API timeout issue in our staging environment. Our engineers are currently profiling the database queries to identify the bottleneck. Next update expected within 2 hours.</div>
+          </div>
+        </div>
+
+        <div class="action-bar">
+          <button class="btn btn--primary btn--md">Provide Additional Logs</button>
+          <button class="btn btn--secondary btn--md">Escalate Urgency</button>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</body>
+</html>

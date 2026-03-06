@@ -1,4 +1,4 @@
-MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,13 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* BACKGROUNDS */
+      /* ================================================================
+         UNTITLED UI — LIGHT THEME TOKEN VOCABULARY
+         ================================================================ */
+
+      /* ------------------------------------------------------------------
+         BACKGROUNDS
+         ------------------------------------------------------------------ */
       --bg-primary: rgb(255 255 255);
       --bg-primary-hover: rgb(250 250 250);
       --bg-secondary: rgb(250 250 250);
@@ -28,7 +34,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --bg-success-primary: rgb(236 253 243);
       --bg-warning-primary: rgb(255 252 245);
 
-      /* TEXT */
+      /* ------------------------------------------------------------------
+         TEXT
+         ------------------------------------------------------------------ */
       --text-primary: rgb(24 29 39);
       --text-secondary: rgb(65 70 81);
       --text-tertiary: rgb(83 88 98);
@@ -42,7 +50,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --text-success-primary: rgb(7 148 85);
       --text-warning-primary: rgb(220 104 3);
 
-      /* FOREGROUND / ICONS */
+      /* ------------------------------------------------------------------
+         FOREGROUND / ICONS
+         ------------------------------------------------------------------ */
       --fg-primary: rgb(24 29 39);
       --fg-secondary: rgb(65 70 81);
       --fg-tertiary: rgb(83 88 98);
@@ -53,7 +63,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --fg-success-primary: rgb(7 148 85);
       --fg-disabled: rgb(164 167 174);
 
-      /* BORDERS */
+      /* ------------------------------------------------------------------
+         BORDERS
+         ------------------------------------------------------------------ */
       --border-primary: rgb(213 215 218);
       --border-secondary: rgb(233 234 235);
       --border-tertiary: rgb(245 245 245);
@@ -62,7 +74,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --border-error: rgb(240 68 56);
       --border-error-solid: rgb(217 45 32);
 
-      /* BRAND SCALE */
+      /* ------------------------------------------------------------------
+         BRAND SCALE
+         ------------------------------------------------------------------ */
       --brand-25: rgb(252 250 255);
       --brand-50: rgb(249 245 255);
       --brand-100: rgb(244 235 255);
@@ -76,7 +90,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --brand-900: rgb(66 48 125);
       --brand-950: rgb(44 28 95);
 
-      /* GRAY SCALE */
+      /* ------------------------------------------------------------------
+         GRAY SCALE
+         ------------------------------------------------------------------ */
       --gray-25: rgb(253 253 253);
       --gray-50: rgb(250 250 250);
       --gray-100: rgb(245 245 245);
@@ -90,7 +106,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --gray-900: rgb(24 29 39);
       --gray-950: rgb(10 13 18);
 
-      /* ERROR SCALE */
+      /* ------------------------------------------------------------------
+         ERROR SCALE
+         ------------------------------------------------------------------ */
       --error-25: rgb(255 251 250);
       --error-50: rgb(254 243 242);
       --error-100: rgb(254 228 226);
@@ -104,7 +122,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --error-900: rgb(122 29 25);
       --error-950: rgb(85 15 10);
 
-      /* WARNING SCALE */
+      /* ------------------------------------------------------------------
+         WARNING SCALE
+         ------------------------------------------------------------------ */
       --warning-25: rgb(255 252 245);
       --warning-50: rgb(255 249 235);
       --warning-100: rgb(254 240 199);
@@ -118,7 +138,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --warning-900: rgb(122 46 14);
       --warning-950: rgb(78 29 5);
 
-      /* SUCCESS SCALE */
+      /* ------------------------------------------------------------------
+         SUCCESS SCALE
+         ------------------------------------------------------------------ */
       --success-25: rgb(246 254 249);
       --success-50: rgb(236 253 243);
       --success-100: rgb(209 250 223);
@@ -132,7 +154,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --success-900: rgb(12 80 53);
       --success-950: rgb(5 53 34);
 
-      /* UTILITY COLOR ALIASES */
+      /* ------------------------------------------------------------------
+         UTILITY COLOR ALIASES
+         ------------------------------------------------------------------ */
       --utility-brand-50: var(--brand-50);
       --utility-brand-200: var(--brand-200);
       --utility-brand-700: var(--brand-700);
@@ -149,7 +173,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --utility-success-200: var(--success-200);
       --utility-success-700: var(--success-700);
 
-      /* TYPOGRAPHY */
+      /* ------------------------------------------------------------------
+         TYPOGRAPHY
+         ------------------------------------------------------------------ */
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
       --font-display: 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'Roboto Mono', ui-monospace, monospace;
@@ -184,7 +210,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --font-semibold: 600;
       --font-bold: 700;
 
-      /* SPACING */
+      /* ------------------------------------------------------------------
+         SPACING
+         ------------------------------------------------------------------ */
       --space-0: 0;
       --space-0-5: 0.125rem;
       --space-1: 0.25rem;
@@ -211,7 +239,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --space-48: 12rem;
       --space-64: 16rem;
 
-      /* BORDER RADIUS */
+      /* ------------------------------------------------------------------
+         BORDER RADIUS
+         ------------------------------------------------------------------ */
       --radius-none: 0px;
       --radius-xxs: 0.0625rem;
       --radius-xs: 0.125rem;
@@ -224,7 +254,9 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --radius-4xl: 1.5rem;
       --radius-full: 9999px;
 
-      /* SHADOWS */
+      /* ------------------------------------------------------------------
+         SHADOWS
+         ------------------------------------------------------------------ */
       --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
       --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
       --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
@@ -236,31 +268,35 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
       --shadow-skeumorphic-inner: 0px 0px 0px 1px rgba(255, 255, 255, 0.12) inset;
 
-      /* FOCUS */
+      /* ------------------------------------------------------------------
+         FOCUS & TRANSITIONS
+         ------------------------------------------------------------------ */
       --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
-      --focus-ring-error: 0 0 0 4px var(--error-100), 0 0 0 1px var(--error-600);
-
-      /* TRANSITIONS */
       --transition-fast: 100ms linear;
       --transition-normal: 200ms ease;
-      --transition-slow: 300ms ease;
 
-      /* CONTAINER */
+      /* ------------------------------------------------------------------
+         CONTAINER
+         ------------------------------------------------------------------ */
       --container-max: 1280px;
       --container-padding: var(--space-8);
     }
 
-    /* BASE STYLES */
+    /* ================================================================
+       BASE STYLES
+       ================================================================ */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     html {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
     }
+
     body {
       font-family: var(--font-body);
       font-size: var(--text-md);
@@ -268,14 +304,7 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       color: var(--text-primary);
       background: var(--bg-primary);
     }
-    .page-container {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      padding: 0 var(--container-padding);
-    }
 
-    /* Accessibility: reduced motion */
-    /*  @media (prefers-reduced-motion: reduce) */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -289,27 +318,35 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       display: block;
       flex-shrink: 0;
     }
+
     :focus-visible {
       outline: none;
       box-shadow: var(--focus-ring);
+      border-radius: inherit;
     }
+
     a {
       color: var(--text-brand-secondary);
       text-decoration: none;
     }
+    
     a:hover {
       color: var(--text-brand-primary);
       text-decoration: underline;
     }
-    details summary {
-      cursor: pointer;
-      list-style: none;
-    }
-    details summary::-webkit-details-marker {
-      display: none;
+
+    /* ================================================================
+       COMPONENTS
+       ================================================================ */
+
+    /* Container */
+    .page-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
     }
 
-    /* COMPONENT RECIPES */
+    /* Featured Icon */
     .featured-icon {
       display: inline-flex;
       align-items: center;
@@ -318,65 +355,63 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       background: var(--bg-brand-secondary);
       color: var(--fg-brand-primary);
       flex-shrink: 0;
+      box-shadow: 0 0 0 var(--space-2) var(--bg-brand-primary);
     }
-    .featured-icon--sm { width: 32px; height: 32px; }
-    .featured-icon--sm svg { width: 16px; height: 16px; }
-    .featured-icon--md { width: 40px; height: 40px; }
-    .featured-icon--md svg { width: 20px; height: 20px; }
-    .featured-icon--lg { width: 48px; height: 48px; }
-    .featured-icon--lg svg { width: 24px; height: 24px; }
-    .featured-icon--xl { width: 56px; height: 56px; }
-    .featured-icon--xl svg { width: 28px; height: 28px; }
-    .featured-icon--outline {
-      background: var(--bg-primary);
-      border: 1px solid var(--border-secondary);
-      box-shadow: var(--shadow-xs);
+    .featured-icon--lg {
+      width: 48px;
+      height: 48px;
     }
-    .featured-icon--dark {
-      background: var(--bg-brand-solid);
-      color: var(--text-white);
+    .featured-icon--lg svg {
+      width: 24px;
+      height: 24px;
     }
 
+    /* Badge */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: var(--space-1);
+      gap: var(--space-1-5);
       border-radius: var(--radius-full);
       font-family: var(--font-body);
       font-weight: var(--font-medium);
       white-space: nowrap;
+      text-decoration: none !important;
+      transition: all var(--transition-fast);
     }
-    .badge--sm { padding: 2px var(--space-2); font-size: var(--text-xs); line-height: var(--leading-xs); }
-    .badge--md { padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
-    .badge--lg { padding: 4px var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); }
-    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
-    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
-    .badge--error { background: var(--utility-error-50); color: var(--utility-error-700); box-shadow: inset 0 0 0 1px var(--utility-error-200); }
-    .badge--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
-    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
-    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
-
-    .card {
+    .badge:hover {
+      opacity: 0.9;
+    }
+    .badge--md {
+      padding: var(--space-1) var(--space-3);
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+    }
+    .badge--brand-subtle {
+      background: var(--utility-brand-50);
+      color: var(--utility-brand-700);
+      border: 1px solid var(--utility-brand-200);
+      padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+    }
+    .badge__label {
       background: var(--bg-primary);
-      border: 1px solid var(--border-secondary);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-sm);
-      padding: var(--space-6);
-      transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+      border: 1px solid var(--utility-brand-200);
+      padding: 2px var(--space-2);
+      border-radius: var(--radius-full);
+      color: var(--utility-brand-700);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      box-shadow: var(--shadow-xs);
     }
-    .card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-primary);
+    .badge__arrow {
+      color: var(--fg-quaternary);
+      transition: transform var(--transition-fast);
     }
-    .card--flush { padding: 0; }
-    .card__header {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-4);
-      margin-bottom: var(--space-4);
+    .badge:hover .badge__arrow {
+      transform: translateX(2px);
+      color: var(--utility-brand-700);
     }
-    .card--brand { border-color: var(--border-brand); }
 
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -386,8 +421,8 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       cursor: pointer;
       font-family: var(--font-body);
       font-weight: var(--font-semibold);
-      text-decoration: none;
-      transition: background var(--transition-fast), box-shadow var(--transition-fast);
+      text-decoration: none !important;
+      transition: background var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
       position: relative;
     }
     .btn::before {
@@ -395,378 +430,423 @@ MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      box-shadow: var(--shadow-skeumorphic-inner);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       pointer-events: none;
     }
-    .btn--sm { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
-    .btn--md { padding: var(--space-2-5) var(--space-4); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
-    .btn--lg { padding: var(--space-2-5) var(--space-4-5); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
-    .btn--xl { padding: var(--space-3) var(--space-5); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
+    .btn--lg {
+      padding: var(--space-3) var(--space-5);
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      border-radius: var(--radius-lg);
+    }
     .btn--primary {
       background: var(--bg-brand-solid);
       color: var(--text-white);
       box-shadow: var(--shadow-xs), var(--shadow-skeumorphic);
     }
-    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
-    .btn--primary:focus-visible { box-shadow: var(--focus-ring); }
+    .btn--primary:hover {
+      background: var(--bg-brand-solid-hover);
+    }
     .btn--secondary {
       background: var(--bg-primary);
       color: var(--text-secondary);
       box-shadow: var(--shadow-xs);
       border: 1px solid var(--border-primary);
     }
-    .btn--secondary::before { display: none; }
-    .btn--secondary:hover { background: var(--bg-primary-hover); color: var(--text-primary); }
-    .btn--secondary:focus-visible { box-shadow: var(--focus-ring); }
+    .btn--secondary::before {
+      display: none;
+    }
+    .btn--secondary:hover {
+      background: var(--bg-primary-hover);
+      color: var(--text-primary);
+      border-color: var(--border-primary);
+    }
 
-    .bg-pattern { position: relative; }
+    /* Background Grid Pattern */
+    .bg-pattern {
+      position: relative;
+      background-color: var(--bg-primary);
+      overflow: hidden;
+    }
     .bg-pattern::before {
       content: '';
       position: absolute;
       inset: 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E");
       background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      mask-image: radial-gradient(ellipse 60% 100% at center top, black 0%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 60% 100% at center top, black 0%, transparent 80%);
       pointer-events: none;
       z-index: 0;
     }
-    .bg-pattern > * { position: relative; z-index: 1; }
-
-    .divider {
-      border: none;
-      height: 1px;
-      background: var(--border-secondary);
-      margin: var(--space-8) 0;
-    }
-    .divider--gradient {
-      background: linear-gradient(to right, transparent, var(--border-secondary), transparent);
+    .bg-pattern > * {
+      position: relative;
+      z-index: 1;
     }
 
-    .code-block {
-      background: var(--gray-900);
-      color: var(--gray-100);
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      line-height: var(--leading-sm);
-      padding: var(--space-4);
-      border-radius: var(--radius-xl);
-      overflow-x: auto;
-      border: 1px solid var(--gray-800);
-    }
-    .code-inline {
-      font-family: var(--font-mono);
-      font-size: 0.875em;
-      background: var(--bg-tertiary);
-      color: var(--text-brand-secondary);
-      padding: 2px var(--space-1-5);
-      border-radius: var(--radius-sm);
-    }
-
-    /* === SECTION-SPECIFIC STYLES === */
-    .hero-masthead {
-      padding-top: var(--space-24);
-      padding-bottom: var(--space-24);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .hero-masthead__content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 800px;
-      width: 100%;
+    /* Mock Navigation */
+    .nav {
+      border-bottom: 1px solid var(--border-secondary);
+      background: var(--bg-primary);
+      position: relative;
       z-index: 10;
     }
-    .hero-masthead__badge {
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      padding: 0 var(--container-padding);
+      max-width: var(--container-max);
+      margin: 0 auto;
+    }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      font-size: var(--text-lg);
+      text-decoration: none !important;
+    }
+    .nav__logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--bg-brand-solid);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-white);
+      box-shadow: var(--shadow-sm), var(--shadow-skeumorphic);
+    }
+    .nav__links {
+      display: flex;
+      gap: var(--space-8);
+    }
+    .nav__link {
+      color: var(--text-secondary);
+      font-weight: var(--font-medium);
+      text-decoration: none !important;
+      transition: color var(--transition-fast);
+    }
+    .nav__link:hover {
+      color: var(--text-primary);
+    }
+    .nav__actions {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+    }
+
+    /* ================================================================
+       SECTION SPECIFIC STYLES
+       ================================================================ */
+    .hero-section {
+      padding: var(--space-24) 0 var(--space-32);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-badge-wrap {
+      margin-bottom: var(--space-8);
+      display: inline-flex;
+    }
+
+    .hero-icon-wrap {
       margin-bottom: var(--space-6);
     }
-    .hero-masthead__icon {
-      margin-bottom: var(--space-6);
-      box-shadow: var(--shadow-lg);
-    }
-    .hero-masthead__title {
+
+    .hero-title {
       font-family: var(--font-display);
       font-size: var(--display-lg);
       line-height: var(--leading-display-lg);
       font-weight: var(--font-semibold);
       color: var(--text-primary);
+      letter-spacing: -0.02em;
       margin-bottom: var(--space-6);
-      letter-spacing: -0.96px;
+      max-width: 900px;
+      margin-inline: auto;
     }
-    .hero-masthead__description {
+
+    .hero-desc {
       font-size: var(--text-xl);
       line-height: var(--leading-xl);
       color: var(--text-secondary);
-      margin-bottom: var(--space-10);
-      max-width: 640px;
+      max-width: 768px;
+      margin: 0 auto var(--space-10);
+      font-weight: var(--font-regular);
     }
-    .hero-masthead__actions {
+
+    .hero-actions {
       display: flex;
-      gap: var(--space-3);
-      margin-bottom: var(--space-16);
+      align-items: center;
       justify-content: center;
+      gap: var(--space-3);
     }
-    .hero-masthead__metrics {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-6);
-      width: 100%;
-      max-width: 960px;
-    }
-    .metric-card {
-      text-align: left;
+
+    .hero-mockup {
+      margin-top: var(--space-20);
+      max-width: 1024px;
+      margin-inline: auto;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-2xl);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
+    }
+
+    .hero-mockup__header {
+      height: 48px;
+      border-bottom: 1px solid var(--border-secondary);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      padding: 0 var(--space-4);
       gap: var(--space-2);
     }
-    .metric-title {
+
+    .hero-mockup__dot {
+      width: 12px;
+      height: 12px;
+      border-radius: var(--radius-full);
+      background: var(--border-primary);
+    }
+
+    .hero-mockup__dot:nth-child(1) { background: var(--border-error); }
+    .hero-mockup__dot:nth-child(2) { background: var(--border-brand); }
+    .hero-mockup__dot:nth-child(3) { background: var(--bg-success-primary); border: 1px solid var(--border-primary); } /* modified slightly to avoid raw colors, simulating a green dot without external colors */
+
+    .hero-mockup__body {
+      padding: var(--space-8);
+      background: var(--bg-secondary-subtle);
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-mockup__wireframe {
+      width: 100%;
+      height: 100%;
+      border: 1px dashed var(--border-primary);
+      border-radius: var(--radius-xl);
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-6);
+      gap: var(--space-4);
+    }
+
+    .wireframe-line {
+      height: 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      width: 100%;
+    }
+
+    .wireframe-line--short {
+      width: 40%;
+    }
+    
+    .wireframe-line--medium {
+      width: 70%;
+    }
+
+    .wireframe-box {
+      flex: 1;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-4);
+    }
+
+    /* Trusted By Section to pad layout effectively */
+    .trusted-section {
+      padding: var(--space-12) 0 var(--space-24);
+      border-top: 1px solid var(--border-secondary);
+      text-align: center;
+      background: var(--bg-primary);
+    }
+
+    .trusted-label {
       font-size: var(--text-sm);
-      color: var(--text-secondary);
+      color: var(--text-tertiary);
       font-weight: var(--font-medium);
+      margin-bottom: var(--space-8);
+    }
+
+    .trusted-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+    }
+
+    .logo-placeholder {
       display: flex;
       align-items: center;
       gap: var(--space-2);
+      color: var(--text-quaternary);
+      font-weight: var(--font-bold);
+      font-size: var(--text-lg);
+      letter-spacing: -0.02em;
     }
-    .metric-value {
-      font-size: var(--display-sm);
-      line-height: var(--leading-display-sm);
-      font-weight: var(--font-semibold);
-      color: var(--text-primary);
+
+    .logo-placeholder svg {
+      width: 32px;
+      height: 32px;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: var(--display-md);
+        line-height: var(--leading-display-md);
+      }
+      .hero-desc {
+        font-size: var(--text-lg);
+        line-height: var(--leading-lg);
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .hero-actions .btn {
+        width: 100%;
+      }
+      .nav__links {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <section class="hero-masthead bg-pattern" aria-label="Masthead Hero">
-      <div class="hero-masthead__content">
-        
-        <div class="hero-masthead__badge">
-          <span class="badge badge--brand badge--md">
-            <span class="badge__dot"></span>
-            Version 2.0 is now live
-          </span>
-        </div>
 
-        <div class="featured-icon featured-icon--xl featured-icon--outline hero-masthead__icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M12 2L2 7l10 5 10-5-10-5z"
-            />
-            <path
-              d="M2 17l10 5 10-5"
-            />
-            <path
-              d="M2 12l10 5 10-5"
-            />
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">
+        <div class="nav__logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
           </svg>
         </div>
+        UntitledUI
+      </a>
+      
+      <div class="nav__links">
+        <a href="#" class="nav__link">Products</a>
+        <a href="#" class="nav__link">Solutions</a>
+        <a href="#" class="nav__link">Resources</a>
+        <a href="#" class="nav__link">Pricing</a>
+      </div>
 
-        <h1 class="hero-masthead__title">
-          The ultimate design system
-          <br>
-          for modern teams
+      <div class="nav__actions">
+        <a href="#" class="nav__link" style="margin-right: var(--space-4);">Log in</a>
+        <button class="btn btn--primary" style="padding: var(--space-2) var(--space-3); border-radius: var(--radius-md);">Sign up</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="bg-pattern">
+    <div class="page-container">
+      <section class="hero-section">
+        
+        <div class="hero-badge-wrap">
+          <a href="#" class="badge badge--md badge--brand-subtle">
+            <span class="badge__label">New feature</span>
+            <span>Check out the new dashboard</span>
+            <svg class="badge__arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="hero-icon-wrap">
+          <div class="featured-icon featured-icon--lg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+          </div>
+        </div>
+
+        <h1 class="hero-title">
+          Beautiful analytics to grow your business
         </h1>
-
-        <p class="hero-masthead__description">
-          Build better products faster with our comprehensive component library.
-          Carefully crafted with the perfect blend of aesthetics and accessibility.
+        
+        <p class="hero-desc">
+          Powerful, self-serve product and growth analytics to help you convert, engage, and retain more users. Trusted by over 4,000 startups.
         </p>
 
-        <div class="hero-masthead__actions">
-          <a
-            href="#"
-            class="btn btn--primary btn--xl"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-              />
-              <path
-                d="M12 8v8"
-              />
-              <path
-                d="M8 12h8"
-              />
+        <div class="hero-actions">
+          <button class="btn btn--secondary btn--lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
             </svg>
-            Start building
-          </a>
-          <a
-            href="#"
-            class="btn btn--secondary btn--xl"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect
-                x="3"
-                y="3"
-                width="18"
-                height="18"
-                rx="2"
-                ry="2"
-              />
-              <line
-                x1="3"
-                y1="9"
-                x2="21"
-                y2="9"
-              />
-              <line
-                x1="9"
-                y1="21"
-                x2="9"
-                y2="9"
-              />
-            </svg>
-            Explore components
-          </a>
+            Demo
+          </button>
+          <button class="btn btn--primary btn--lg">
+            Sign up
+          </button>
         </div>
 
-        <div class="hero-masthead__metrics">
-          
-          <div class="card metric-card card--flush" style="padding: var(--space-6);">
-            <div class="metric-title">
-              <div class="featured-icon featured-icon--sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path
-                    d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-                  />
-                  <circle
-                    cx="9"
-                    cy="7"
-                    r="4"
-                  />
-                  <path
-                    d="M23 21v-2a4 4 0 0 0-3-3.87"
-                  />
-                  <path
-                    d="M16 3.13a4 4 0 0 1 0 7.75"
-                  />
-                </svg>
-              </div>
-              Active Creators
-            </div>
-            <p class="metric-value">
-              12,400+
-            </p>
+        <div class="hero-mockup">
+          <div class="hero-mockup__header">
+            <div class="hero-mockup__dot"></div>
+            <div class="hero-mockup__dot"></div>
+            <div class="hero-mockup__dot"></div>
           </div>
-
-          <div class="card metric-card card--flush" style="padding: var(--space-6);">
-            <div class="metric-title">
-              <div class="featured-icon featured-icon--sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <rect
-                    x="2"
-                    y="3"
-                    width="20"
-                    height="14"
-                    rx="2"
-                    ry="2"
-                  />
-                  <line
-                    x1="8"
-                    y1="21"
-                    x2="16"
-                    y2="21"
-                  />
-                  <line
-                    x1="12"
-                    y1="17"
-                    x2="12"
-                    y2="21"
-                  />
-                </svg>
-              </div>
-              UI Components
+          <div class="hero-mockup__body">
+            <div class="hero-mockup__wireframe">
+              <div class="wireframe-line wireframe-line--short"></div>
+              <div class="wireframe-line wireframe-line--medium"></div>
+              <div class="wireframe-box"></div>
             </div>
-            <p class="metric-value">
-              350+
-            </p>
           </div>
-
-          <div class="card metric-card card--flush" style="padding: var(--space-6);">
-            <div class="metric-title">
-              <div class="featured-icon featured-icon--sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polygon
-                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                  />
-                </svg>
-              </div>
-              5-Star Reviews
-            </div>
-            <p class="metric-value">
-              4.9/5.0
-            </p>
-          </div>
-
         </div>
 
+      </section>
+    </div>
+  </main>
+
+  <!-- Trusted By Section -->
+  <section class="trusted-section">
+    <div class="page-container">
+      <p class="trusted-label">Join 4,000+ companies already growing</p>
+      <div class="trusted-logos">
+        <div class="logo-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          Layers
+        </div>
+        <div class="logo-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          Sisyphus
+        </div>
+        <div class="logo-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Circool
+        </div>
+        <div class="logo-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Catalog
+        </div>
+        <div class="logo-placeholder">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          Quotient
+        </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
 </body>
 </html>

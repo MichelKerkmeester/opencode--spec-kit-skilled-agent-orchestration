@@ -1,0 +1,25 @@
+{
+  "attempt": 1,
+  "success": true,
+  "error": "",
+  "validation_issues": [
+    "v1: Line count out of range: 544 (expected 600-900)",
+    "v2: Line count out of range: 531 (expected 600-900)",
+    "v3: Missing shadow token usage",
+    "v3: Line count out of range: 500 (expected 600-900)",
+    "v4: Line count out of range: 592 (expected 600-900)",
+    "v4: Found raw rgb/rgba color outside :root block",
+    "v5: Line count out of range: 484 (expected 600-900)"
+  ],
+  "variants_saved": 5,
+  "stdout_chars": 96173,
+  "stderr_chars": 4568,
+  "elapsed_seconds": 399.4949655532837,
+  "output_files": [
+    "output-from-gemini/feature-grid/feature-grid-v1.html",
+    "output-from-gemini/feature-grid/feature-grid-v2.html",
+    "output-from-gemini/feature-grid/feature-grid-v3.html",
+    "output-from-gemini/feature-grid/feature-grid-v4.html",
+    "output-from-gemini/feature-grid/feature-grid-v5.html"
+  ]
+}

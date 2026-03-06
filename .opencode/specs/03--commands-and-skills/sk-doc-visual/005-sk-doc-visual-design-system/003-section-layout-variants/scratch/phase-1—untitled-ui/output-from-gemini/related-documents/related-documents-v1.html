@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Related Documents — UntitledUI Variant 1 (Document Hub)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      --brand-25: rgb(252 250 255);
+      --brand-50: rgb(249 245 255);
+      --brand-100: rgb(244 235 255);
+      --brand-200: rgb(232 218 255);
+      --brand-300: rgb(214 188 250);
+      --brand-400: rgb(186 154 244);
+      --brand-500: rgb(158 119 237);
+      --brand-600: rgb(127 86 217);
+      --brand-700: rgb(105 65 198);
+      --brand-800: rgb(83 56 158);
+      --brand-900: rgb(66 48 125);
+      --brand-950: rgb(44 28 95);
+
+      --gray-25: rgb(253 253 253);
+      --gray-50: rgb(250 250 250);
+      --gray-100: rgb(245 245 245);
+      --gray-200: rgb(233 234 235);
+      --gray-300: rgb(213 215 218);
+      --gray-400: rgb(164 167 174);
+      --gray-500: rgb(113 118 128);
+      --gray-600: rgb(83 88 98);
+      --gray-700: rgb(65 70 81);
+      --gray-800: rgb(39 43 51);
+      --gray-900: rgb(24 29 39);
+      --gray-950: rgb(10 13 18);
+
+      --error-25: rgb(255 251 250);
+      --error-50: rgb(254 243 242);
+      --error-100: rgb(254 228 226);
+      --error-200: rgb(254 205 202);
+      --error-300: rgb(253 162 155);
+      --error-400: rgb(249 112 102);
+      --error-500: rgb(240 68 56);
+      --error-600: rgb(217 45 32);
+      --error-700: rgb(180 35 24);
+      --error-800: rgb(145 32 24);
+      --error-900: rgb(122 29 25);
+      --error-950: rgb(85 15 10);
+
+      --warning-25: rgb(255 252 245);
+      --warning-50: rgb(255 249 235);
+      --warning-100: rgb(254 240 199);
+      --warning-200: rgb(254 223 137);
+      --warning-300: rgb(253 200 75);
+      --warning-400: rgb(253 176 34);
+      --warning-500: rgb(247 144 9);
+      --warning-600: rgb(220 104 3);
+      --warning-700: rgb(181 71 8);
+      --warning-800: rgb(147 55 13);
+      --warning-900: rgb(122 46 14);
+      --warning-950: rgb(78 29 5);
+
+      --success-25: rgb(246 254 249);
+      --success-50: rgb(236 253 243);
+      --success-100: rgb(209 250 223);
+      --success-200: rgb(166 244 197);
+      --success-300: rgb(108 230 165);
+      --success-400: rgb(50 213 131);
+      --success-500: rgb(18 183 106);
+      --success-600: rgb(7 148 85);
+      --success-700: rgb(8 119 73);
+      --success-800: rgb(9 98 62);
+      --success-900: rgb(12 80 53);
+      --success-950: rgb(5 53 34);
+
+      --utility-brand-50: var(--brand-50);
+      --utility-brand-200: var(--brand-200);
+      --utility-brand-700: var(--brand-700);
+      --utility-gray-50: var(--gray-50);
+      --utility-gray-200: var(--gray-200);
+      --utility-gray-700: var(--gray-700);
+      --utility-error-50: var(--error-50);
+      --utility-error-200: var(--error-200);
+      --utility-error-700: var(--error-700);
+      --utility-warning-50: var(--warning-50);
+      --utility-warning-200: var(--warning-200);
+      --utility-warning-700: var(--warning-700);
+      --utility-success-50: var(--success-50);
+      --utility-success-200: var(--success-200);
+      --utility-success-700: var(--success-700);
+
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+      --display-xl: 3.75rem;
+      --display-2xl: 4.5rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xs: 2rem;
+      --leading-display-sm: 2.375rem;
+      --leading-display-md: 2.75rem;
+      --leading-display-lg: 3.75rem;
+      --leading-display-xl: 4.5rem;
+      --leading-display-2xl: 5.625rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      --space-0: 0;
+      --space-0-5: 0.125rem;
+      --space-1: 0.25rem;
+      --space-1-5: 0.375rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-3-5: 0.875rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-7: 1.75rem;
+      --space-8: 2rem;
+      --space-9: 2.25rem;
+      --space-10: 2.5rem;
+      --space-11: 2.75rem;
+      --space-12: 3rem;
+      --space-14: 3.5rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+      --space-32: 8rem;
+      --space-40: 10rem;
+      --space-48: 12rem;
+      --space-64: 16rem;
+
+      --radius-none: 0px;
+      --radius-xxs: 0.0625rem;
+      --radius-xs: 0.125rem;
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-3xl: 1.25rem;
+      --radius-4xl: 1.5rem;
+      --radius-full: 9999px;
+
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+      --shadow-lg: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+      --shadow-xl: 0px 20px 24px -4px rgba(10, 13, 18, 0.08), 0px 8px 8px -4px rgba(10, 13, 18, 0.03);
+      --shadow-2xl: 0px 24px 48px -12px rgba(10, 13, 18, 0.18);
+      --shadow-3xl: 0px 32px 64px -12px rgba(10, 13, 18, 0.24);
+
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      --shadow-skeumorphic-inner: 0px 0px 0px 1px rgba(255, 255, 255, 0.12) inset;
+
+      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
+      --focus-ring-error: 0 0 0 4px var(--error-100), 0 0 0 1px var(--error-600);
+
+      --transition-fast: 100ms linear;
+      --transition-normal: 200ms ease;
+      --transition-slow: 300ms ease;
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+    }
+
+    .page-container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: var(--space-16) var(--container-padding);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    svg {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    :focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    a {
+      color: var(--text-brand-secondary);
+      text-decoration: none;
+    }
+    a:hover {
+      color: var(--text-brand-primary);
+      text-decoration: underline;
+    }
+
+    /* Base Components */
+    .featured-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--bg-brand-secondary);
+      color: var(--fg-brand-primary);
+      flex-shrink: 0;
+    }
+    .featured-icon--md  { width: 40px; height: 40px; }
+    .featured-icon--md svg { width: 20px; height: 20px; }
+    .featured-icon--outline {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-weight: var(--font-medium);
+      white-space: nowrap;
+    }
+    .badge--sm {
+      padding: 2px var(--space-2);
+      font-size: var(--text-xs);
+      line-height: var(--leading-xs);
+    }
+    .badge--brand {
+      background: var(--utility-brand-50);
+      color: var(--utility-brand-700);
+      box-shadow: inset 0 0 0 1px var(--utility-brand-200);
+    }
+    .badge--gray {
+      background: var(--utility-gray-50);
+      color: var(--utility-gray-700);
+      box-shadow: inset 0 0 0 1px var(--utility-gray-200);
+    }
+
+    .card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-6);
+      transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+    }
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-primary);
+    }
+
+    .bg-pattern {
+      position: relative;
+    }
+    .bg-pattern::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-pattern > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Section-specific Styles for Document Hub */
+    .hub-header {
+      text-align: center;
+      margin-bottom: var(--space-12);
+    }
+    .hub-title {
+      font-size: var(--display-md);
+      line-height: var(--leading-display-md);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+      letter-spacing: -0.02em;
+    }
+    .hub-subtitle {
+      font-size: var(--text-lg);
+      line-height: var(--leading-lg);
+      color: var(--text-tertiary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .hub-filters {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-10);
+      flex-wrap: wrap;
+    }
+    .hub-filter-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      box-shadow: var(--shadow-xs);
+    }
+    .hub-filter-btn:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    .hub-filter-btn--active {
+      background: var(--bg-brand-solid);
+      border-color: var(--border-brand-solid);
+      color: var(--text-white);
+      box-shadow: var(--shadow-sm);
+    }
+    .hub-filter-btn--active:hover {
+      background: var(--bg-brand-solid-hover);
+      color: var(--text-white);
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-6);
+    }
+
+    .hub-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      text-decoration: none !important;
+      color: inherit;
+    }
+    .hub-card:focus-visible {
+      border-radius: var(--radius-xl);
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .hub-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+
+    .hub-card-title {
+      font-size: var(--text-lg);
+      line-height: var(--leading-lg);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .hub-card-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+      color: var(--text-secondary);
+      flex-grow: 1;
+      margin-bottom: var(--space-6);
+    }
+
+    .hub-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-secondary);
+      padding-top: var(--space-4);
+      margin-top: auto;
+    }
+    
+    .hub-card-date {
+      font-size: var(--text-xs);
+      color: var(--text-quaternary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1-5);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container bg-pattern">
+    <section>
+      <header class="hub-header">
+        <h1 class="hub-title">Related Documentation</h1>
+        <p class="hub-subtitle">Explore guides, API references, and tutorials to deepen your understanding of the UntitledUI integration architecture.</p>
+      </header>
+
+      <nav class="hub-filters" aria-label="Document categories">
+        <button class="hub-filter-btn hub-filter-btn--active">All Documents</button>
+        <button class="hub-filter-btn">Guides</button>
+        <button class="hub-filter-btn">API References</button>
+        <button class="hub-filter-btn">Tutorials</button>
+        <button class="hub-filter-btn">Architecture</button>
+      </nav>
+
+      <div class="hub-grid">
+        <!-- Card 1 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Guide</span>
+          </div>
+          <h3 class="hub-card-title">Getting Started with CSS Variables</h3>
+          <p class="hub-card-desc">Learn how to map UntitledUI's color palette to custom CSS properties for seamless light theme integration.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 2 days ago
+            </div>
+            <span class="badge badge--gray badge--sm">5 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Reference</span>
+          </div>
+          <h3 class="hub-card-title">Token API Reference</h3>
+          <p class="hub-card-desc">A comprehensive list of all typography, spacing, radius, and shadow tokens available in the design system.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 1 week ago
+            </div>
+            <span class="badge badge--gray badge--sm">12 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Tutorial</span>
+          </div>
+          <h3 class="hub-card-title">Building Skeumorphic Shadows</h3>
+          <p class="hub-card-desc">Step-by-step tutorial on recreating the signature UntitledUI compound shadow effects using CSS box-shadow.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 3 weeks ago
+            </div>
+            <span class="badge badge--gray badge--sm">8 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Architecture</span>
+          </div>
+          <h3 class="hub-card-title">Grid & Layout Systems</h3>
+          <p class="hub-card-desc">Deep dive into the 8px spacing grid and how it influences responsive container padding and margins.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 1 month ago
+            </div>
+            <span class="badge badge--gray badge--sm">6 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Guide</span>
+          </div>
+          <h3 class="hub-card-title">Component Recipes</h3>
+          <p class="hub-card-desc">Review the core HTML/CSS structural patterns required to build buttons, badges, and elevated cards.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 2 months ago
+            </div>
+            <span class="badge badge--gray badge--sm">15 min read</span>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="#" class="card hub-card">
+          <div class="hub-card-header">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            </div>
+            <span class="badge badge--brand badge--sm">Reference</span>
+          </div>
+          <h3 class="hub-card-title">Typography Guidelines</h3>
+          <p class="hub-card-desc">Rules for pairing Inter and Roboto Mono, including line-height formulas and font-weight assignments.</p>
+          <div class="hub-card-meta">
+            <div class="hub-card-date">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Updated 2 months ago
+            </div>
+            <span class="badge badge--gray badge--sm">4 min read</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+  </div>
+</body>
+</html>

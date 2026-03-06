@@ -9,6 +9,7 @@ import * as path from 'path';
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../core';
 import { formatTimestamp } from '../utils/message-utils';
+import { pickBestContentName } from '../utils/slug-utils';
 import { detectSpecFolder } from '../spec-folder';
 
 import {
@@ -73,6 +74,8 @@ export interface GapDescription {
 }
 
 export interface PreflightPostflightResult {
+  HAS_PREFLIGHT_BASELINE: boolean;
+  HAS_POSTFLIGHT_DELTA: boolean;
   PREFLIGHT_KNOW_SCORE: number | null;
   PREFLIGHT_UNCERTAINTY_SCORE: number | null;
   PREFLIGHT_CONTEXT_SCORE: number | null;
@@ -187,6 +190,27 @@ function calculateLearningIndex(
 function extractPreflightPostflightData(collectedData: CollectedDataFull | null): PreflightPostflightResult {
   const preflight = collectedData?.preflight;
   const postflight = collectedData?.postflight;
+  const hasPreflightBaseline = Boolean(
+    preflight && (
+      typeof preflight.knowledgeScore === 'number' ||
+      typeof preflight.uncertaintyScore === 'number' ||
+      typeof preflight.contextScore === 'number' ||
+      typeof preflight.timestamp === 'string' ||
+      (preflight.gaps?.length ?? 0) > 0 ||
+      typeof preflight.confidence === 'number' ||
+      typeof preflight.uncertaintyRaw === 'number' ||
+      typeof preflight.readiness === 'string'
+    )
+  );
+  const hasPostflightDelta = Boolean(
+    preflight && postflight &&
+    typeof preflight.knowledgeScore === 'number' &&
+    typeof postflight.knowledgeScore === 'number' &&
+    typeof preflight.uncertaintyScore === 'number' &&
+    typeof postflight.uncertaintyScore === 'number' &&
+    typeof preflight.contextScore === 'number' &&
+    typeof postflight.contextScore === 'number'
+  );
 
   const DEFAULT_VALUE = null;
 
@@ -260,6 +284,8 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
   };
 
   return {
+    HAS_PREFLIGHT_BASELINE: hasPreflightBaseline,
+    HAS_POSTFLIGHT_DELTA: hasPostflightDelta,
     ...preflightData,
     ...postflightData,
     ...deltaData,
@@ -664,6 +690,18 @@ async function collectSessionData(
 
   const firstPrompt = userPrompts[0]?.prompt || '';
   const taskFromPrompt = firstPrompt.match(/^(.{20,100}?)(?:[.!?\n]|$)/)?.[1];
+  const quickSummaryCandidates = [
+    ...observations.map((observation) => observation.title || ''),
+    (sessionInfo as RecentContextEntry).request || '',
+    (sessionInfo as RecentContextEntry).learning || '',
+    taskFromPrompt?.trim() || '',
+  ];
+  const quickSummary = pickBestContentName(quickSummaryCandidates)
+    || observations[0]?.title
+    || (sessionInfo as RecentContextEntry).request
+    || (sessionInfo as RecentContextEntry).learning
+    || taskFromPrompt?.trim()
+    || 'Development session';
 
   const OBSERVATIONS_DETAILED: ObservationDetailed[] = buildObservationsWithAnchors(
     observations,
@@ -738,7 +776,7 @@ async function collectSessionData(
     OUTCOMES: OUTCOMES.length > 0 ? OUTCOMES : [{ OUTCOME: 'Session in progress' }],
     TOOL_COUNT,
     MESSAGE_COUNT: messageCount,
-    QUICK_SUMMARY: observations[0]?.title || (sessionInfo as RecentContextEntry).request || taskFromPrompt?.trim() || 'Development session',
+    QUICK_SUMMARY: quickSummary,
     SKILL_VERSION: CONFIG.SKILL_VERSION,
     OBSERVATIONS: OBSERVATIONS_DETAILED,
     HAS_OBSERVATIONS: OBSERVATIONS_DETAILED.length > 0,

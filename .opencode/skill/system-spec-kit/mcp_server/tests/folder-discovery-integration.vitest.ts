@@ -136,6 +136,33 @@ describe('PI-B3: getSpecsBasePaths', () => {
     expect(result).toHaveLength(1);
     expect(result[0]).toBe(path.resolve(specsLinkPath));
   });
+
+  it('T046-05b: generates stable folder identities regardless of alias root order', () => {
+    const openCodeSpecsDir = path.join(tmpDir, '.opencode', 'specs');
+    const specsLinkPath = path.join(tmpDir, 'specs');
+    const canonicalSpecDir = path.join(openCodeSpecsDir, '001-auth');
+    fs.mkdirSync(canonicalSpecDir, { recursive: true });
+    fs.writeFileSync(path.join(canonicalSpecDir, 'spec.md'), '# Authentication System', 'utf-8');
+
+    try {
+      fs.symlinkSync(openCodeSpecsDir, specsLinkPath, 'dir');
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === 'EPERM' || code === 'EEXIST') {
+        expect(true).toBe(true);
+        return;
+      }
+      throw error;
+    }
+
+    const linkFirst = generateFolderDescriptions([specsLinkPath, openCodeSpecsDir]);
+    const realFirst = generateFolderDescriptions([openCodeSpecsDir, specsLinkPath]);
+
+    expect(linkFirst.folders.map((folder) => folder.specFolder)).toEqual(['001-auth']);
+    expect(realFirst.folders.map((folder) => folder.specFolder)).toEqual(['001-auth']);
+    expect(linkFirst.folders).toHaveLength(1);
+    expect(realFirst.folders).toHaveLength(1);
+  });
 });
 
 /* ═══════════════════════════════════════════════════════════════

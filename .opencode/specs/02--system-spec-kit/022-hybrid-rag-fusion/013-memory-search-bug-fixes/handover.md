@@ -23,9 +23,12 @@ Key outcomes:
 - Addendum-named duplicates were removed.
 - Cross-references were normalized to standard filenames.
 - Implementation summary and handover now reflect the final remediation state.
-- Workflow-level seam coverage now records that file-backed `CONFIG.DATA_FILE` state cannot leak into a later stateless run.
+- Workflow-level seam coverage now records that file-backed `CONFIG.DATA_FILE` state cannot leak into a later stateless run, and overlapping `runWorkflow()` calls are serialized.
+- `npm run test:task-enrichment` now records PASS with 28 passing tests, including the new concurrency regression coverage.
 - Full `npm run typecheck && npm run build` now records as PASS.
-- The stale-cache shrink follow-up cases are recorded, and the folder-discovery integration suite is now fully green.
+- The stale-cache shrink follow-up cases and alias-root order determinism integration coverage are recorded, and the folder-discovery integration suite now records PASS with 28 passing tests.
+- Alignment verification now records PASS at the full `.opencode/skill/system-spec-kit` root.
+- Closure memory is saved using the supported owning-root workflow, and the packet docs were refreshed in memory indexing.
 
 ---
 
@@ -35,7 +38,7 @@ Key outcomes:
 |-------|-------|
 | Packet Status | Canonical and updated |
 | Level | 2 |
-| Canonical Files | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `handover.md` |
+| Canonical Files | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md` |
 | Duplicate Addendum Files | Removed |
 
 ---
@@ -51,16 +54,15 @@ Key outcomes:
 - [x] Ran spec validator after merge.
 - [x] Corrected verification evidence to reflect actual command outcomes.
 - [x] Updated docs to record the final green verification state across tests, typecheck/build, alignment, and spec validation.
-- [x] Recorded the workflow-level stateless seam regression coverage and the `runWorkflow()` config restoration behavior.
+- [x] Recorded the workflow-level stateless seam regression coverage, overlapping-call serialization guard, and the `runWorkflow()` config restoration behavior.
+- [x] Recorded the alias-root order determinism integration coverage in the folder-discovery suite.
+- [x] Captured raw verification outputs under `scratch/verification-logs/` for reviewer-auditable command evidence.
 
 ---
 
 ## 4. Pending Work
 
-The packet is current and reflects final green verification for this remediation.
-
-Optional:
-1. Save context memory snapshot if closure memory is desired.
+No remaining work for this packet. It is current and reflects final green verification plus closure memory preservation for this remediation.
 
 ---
 
@@ -74,4 +76,5 @@ Optional:
 ### Review First
 1. `implementation-summary.md`
 2. `checklist.md`
-3. `tasks.md`
+3. `decision-record.md`
+4. `tasks.md`

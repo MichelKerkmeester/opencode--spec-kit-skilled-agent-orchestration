@@ -1,10 +1,1737 @@
-MCP issues detected. Run /mcp list for status.<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>Hero — UntitledUI Variant 1</title>
+  <title>Hero — UntitledUI Variant 1 (Masthead)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      /* FOREGROUND / ICONS */
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      /* BRAND SCALE */
+      --brand-25: rgb(252 250 255);
+      --brand-50: rgb(249 245 255);
+      --brand-100: rgb(244 235 255);
+      --brand-200: rgb(232 218 255);
+      --brand-300: rgb(214 188 250);
+      --brand-400: rgb(186 154 244);
+      --brand-500: rgb(158 119 237);
+      --brand-600: rgb(127 86 217);
+      --brand-700: rgb(105 65 198);
+      --brand-800: rgb(83 56 158);
+      --brand-900: rgb(66 48 125);
+      --brand-950: rgb(44 28 95);
+
+      /* GRAY SCALE */
+      --gray-25: rgb(253 253 253);
+      --gray-50: rgb(250 250 250);
+      --gray-100: rgb(245 245 245);
+      --gray-200: rgb(233 234 235);
+      --gray-300: rgb(213 215 218);
+      --gray-400: rgb(164 167 174);
+      --gray-500: rgb(113 118 128);
+      --gray-600: rgb(83 88 98);
+      --gray-700: rgb(65 70 81);
+      --gray-800: rgb(39 43 51);
+      --gray-900: rgb(24 29 39);
+      --gray-950: rgb(10 13 18);
+
+      /* ERROR SCALE */
+      --error-25: rgb(255 251 250);
+      --error-50: rgb(254 243 242);
+      --error-100: rgb(254 228 226);
+      --error-200: rgb(254 205 202);
+      --error-300: rgb(253 162 155);
+      --error-400: rgb(249 112 102);
+      --error-500: rgb(240 68 56);
+      --error-600: rgb(217 45 32);
+      --error-700: rgb(180 35 24);
+      --error-800: rgb(145 32 24);
+      --error-900: rgb(122 29 25);
+      --error-950: rgb(85 15 10);
+
+      /* WARNING SCALE */
+      --warning-25: rgb(255 252 245);
+      --warning-50: rgb(255 249 235);
+      --warning-100: rgb(254 240 199);
+      --warning-200: rgb(254 223 137);
+      --warning-300: rgb(253 200 75);
+      --warning-400: rgb(253 176 34);
+      --warning-500: rgb(247 144 9);
+      --warning-600: rgb(220 104 3);
+      --warning-700: rgb(181 71 8);
+      --warning-800: rgb(147 55 13);
+      --warning-900: rgb(122 46 14);
+      --warning-950: rgb(78 29 5);
+
+      /* SUCCESS SCALE */
+      --success-25: rgb(246 254 249);
+      --success-50: rgb(236 253 243);
+      --success-100: rgb(209 250 223);
+      --success-200: rgb(166 244 197);
+      --success-300: rgb(108 230 165);
+      --success-400: rgb(50 213 131);
+      --success-500: rgb(18 183 106);
+      --success-600: rgb(7 148 85);
+      --success-700: rgb(8 119 73);
+      --success-800: rgb(9 98 62);
+      --success-900: rgb(12 80 53);
+      --success-950: rgb(5 53 34);
+
+      /* UTILITY COLOR ALIASES */
+      --utility-brand-50: var(--brand-50);
+      --utility-brand-200: var(--brand-200);
+      --utility-brand-700: var(--brand-700);
+      --utility-gray-50: var(--gray-50);
+      --utility-gray-200: var(--gray-200);
+      --utility-gray-700: var(--gray-700);
+      --utility-error-50: var(--error-50);
+      --utility-error-200: var(--error-200);
+      --utility-error-700: var(--error-700);
+      --utility-warning-50: var(--warning-50);
+      --utility-warning-200: var(--warning-200);
+      --utility-warning-700: var(--warning-700);
+      --utility-success-50: var(--success-50);
+      --utility-success-200: var(--success-200);
+      --utility-success-700: var(--success-700);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+      --display-xl: 3.75rem;
+      --display-2xl: 4.5rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xs: 2rem;
+      --leading-display-sm: 2.375rem;
+      --leading-display-md: 2.75rem;
+      --leading-display-lg: 3.75rem;
+      --leading-display-xl: 4.5rem;
+      --leading-display-2xl: 5.625rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-0: 0;
+      --space-0-5: 0.125rem;
+      --space-1: 0.25rem;
+      --space-1-5: 0.375rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-3-5: 0.875rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-7: 1.75rem;
+      --space-8: 2rem;
+      --space-9: 2.25rem;
+      --space-10: 2.5rem;
+      --space-11: 2.75rem;
+      --space-12: 3rem;
+      --space-14: 3.5rem;
+      --space-16: 4rem;
+      --space-20: 5rem;
+      --space-24: 6rem;
+      --space-32: 8rem;
+      --space-40: 10rem;
+      --space-48: 12rem;
+      --space-64: 16rem;
+
+      /* BORDER RADIUS */
+      --radius-none: 0px;
+      --radius-xxs: 0.0625rem;
+      --radius-xs: 0.125rem;
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-3xl: 1.25rem;
+      --radius-4xl: 1.5rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+      --shadow-lg: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
+      --shadow-xl: 0px 20px 24px -4px rgba(10, 13, 18, 0.08), 0px 8px 8px -4px rgba(10, 13, 18, 0.03);
+      --shadow-2xl: 0px 24px 48px -12px rgba(10, 13, 18, 0.18);
+      --shadow-3xl: 0px 32px 64px -12px rgba(10, 13, 18, 0.24);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      --shadow-skeumorphic-inner: 0px 0px 0px 1px rgba(255, 255, 255, 0.12) inset;
+
+      /* FOCUS */
+      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
+      --focus-ring-error: 0 0 0 4px var(--error-100), 0 0 0 1px var(--error-600);
+
+      /* TRANSITIONS */
+      --transition-fast: 100ms linear;
+      --transition-normal: 200ms ease;
+      --transition-slow: 300ms ease;
+
+      /* CONTAINER */
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    svg { display: block; flex-shrink: 0; }
+    :focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    a:hover { color: var(--text-brand-primary); text-decoration: underline; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); flex-shrink: 0; }
+    .featured-icon--lg { width: 48px; height: 48px; }
+    .featured-icon--lg svg { width: 24px; height: 24px; }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-family: var(--font-body); font-weight: var(--font-medium); white-space: nowrap; }
+    .badge--md { padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); text-decoration: none; transition: background var(--transition-fast), box-shadow var(--transition-fast); position: relative; }
+    .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255, 255, 255, 0.12); pointer-events: none; }
+    .btn--xl { padding: var(--space-3) var(--space-5); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
+    .btn--primary { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: var(--shadow-xs), var(--shadow-skeumorphic); }
+    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
+    .btn--secondary { background: var(--bg-primary); color: var(--text-secondary); box-shadow: var(--shadow-xs); border: 1px solid var(--border-primary); }
+    .btn--secondary::before { display: none; }
+    .btn--secondary:hover { background: var(--bg-primary-hover); color: var(--text-primary); }
+
+    .bg-pattern { position: relative; overflow: hidden; }
+    .bg-pattern::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E"); background-size: 48px 48px; mask-image: radial-gradient(ellipse at center 20%, black 0%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at center 20%, black 0%, transparent 70%); pointer-events: none; z-index: 0; }
+    .bg-pattern > * { position: relative; z-index: 1; }
+
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); transition: box-shadow var(--transition-normal), border-color var(--transition-normal); }
+
+    /* SECTION SPECIFIC */
+    .hero-masthead {
+      padding: var(--space-24) 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .hero-badge-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-8);
+      background: var(--bg-brand-primary);
+      padding: var(--space-1) var(--space-3) var(--space-1) var(--space-1);
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-brand);
+      color: var(--text-brand-secondary);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--display-lg);
+      line-height: var(--leading-display-lg);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin-top: var(--space-6);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-description {
+      font-size: var(--text-xl);
+      line-height: var(--leading-xl);
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin-bottom: var(--space-10);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-3);
+      justify-content: center;
+      margin-bottom: var(--space-16);
+    }
+
+    @media (max-width: 600px) {
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 var(--space-4);
+      }
+      .hero-actions .btn { width: 100%; }
+      .hero-title { font-size: var(--display-md); line-height: var(--leading-display-md); }
+    }
+
+    .hero-mockup-wrapper {
+      width: 100%;
+      max-width: 1024px;
+      margin: 0 auto;
+      border-radius: var(--radius-2xl);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-secondary);
+      box-shadow: var(--shadow-2xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-header {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-secondary);
+      padding: var(--space-3) var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .mockup-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: var(--radius-full);
+      background: var(--border-secondary);
+    }
+    .mockup-dot.red { background: var(--error-400); }
+    .mockup-dot.yellow { background: var(--warning-400); }
+    .mockup-dot.green { background: var(--success-400); }
+
+    .mockup-body {
+      padding: var(--space-8);
+      background: var(--bg-secondary-subtle);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-8);
+      min-height: 400px;
+      text-align: left;
+    }
+
+    .mockup-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .mockup-nav-item {
+      height: 32px;
+      border-radius: var(--radius-md);
+      background: var(--bg-tertiary);
+      width: 100%;
+    }
+    .mockup-nav-item.active { background: var(--bg-brand-primary); }
+
+    .mockup-content {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-tertiary);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      padding: var(--space-6);
+    }
+
+    .mockup-skeleton-title {
+      height: 24px;
+      width: 40%;
+      background: var(--bg-quaternary);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-6);
+    }
+    
+    .mockup-skeleton-line {
+      height: 12px;
+      width: 100%;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-3);
+    }
+    .mockup-skeleton-line:last-child { width: 70%; }
+  </style>
+</head>
+<body class="bg-pattern">
+  <div class="page-container">
+    <section class="hero-masthead">
+      
+      <div class="hero-content">
+        <div class="hero-badge-group">
+          <span class="badge badge--brand badge--md">New feature</span>
+          <span>We've just released v2.0 <svg style="display:inline; margin-left: 4px; vertical-align: middle;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        </div>
+
+        <div class="featured-icon featured-icon--lg featured-icon--outline">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+
+        <h1 class="hero-title">Beautiful analytics to grow smarter</h1>
+        
+        <p class="hero-description">
+          Powerful, self-serve product and growth analytics to help you convert, engage, and retain more users. Trusted by over 4,000 startups.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn btn--secondary btn--xl">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8z"/></svg>
+            Demo
+          </button>
+          <button class="btn btn--primary btn--xl">
+            Sign up
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-mockup-wrapper">
+        <div class="mockup-header">
+          <div class="mockup-dot red"></div>
+          <div class="mockup-dot yellow"></div>
+          <div class="mockup-dot green"></div>
+        </div>
+        <div class="mockup-body">
+          <div class="mockup-sidebar">
+            <div class="mockup-nav-item active"></div>
+            <div class="mockup-nav-item"></div>
+            <div class="mockup-nav-item"></div>
+            <div class="mockup-nav-item"></div>
+            <div style="margin-top: auto;"></div>
+            <div class="mockup-nav-item"></div>
+          </div>
+          <div class="mockup-content">
+            <div class="mockup-skeleton-title"></div>
+            <div class="mockup-skeleton-line"></div>
+            <div class="mockup-skeleton-line"></div>
+            <div class="mockup-skeleton-line"></div>
+            <div class="mockup-skeleton-line" style="width: 85%;"></div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px;">
+              <div style="height: 120px; background: var(--bg-tertiary); border-radius: var(--radius-lg);"></div>
+              <div style="height: 120px; background: var(--bg-tertiary); border-radius: var(--radius-lg);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</body>
+</html>
+
+---VARIANT-SEPARATOR---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero — UntitledUI Variant 2 (Split Panel)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      /* FOREGROUND / ICONS */
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      /* BRAND SCALE */
+      --brand-25: rgb(252 250 255);
+      --brand-50: rgb(249 245 255);
+      --brand-100: rgb(244 235 255);
+      --brand-200: rgb(232 218 255);
+      --brand-300: rgb(214 188 250);
+      --brand-400: rgb(186 154 244);
+      --brand-500: rgb(158 119 237);
+      --brand-600: rgb(127 86 217);
+      --brand-700: rgb(105 65 198);
+      --brand-800: rgb(83 56 158);
+      --brand-900: rgb(66 48 125);
+      --brand-950: rgb(44 28 95);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+      --display-xl: 3.75rem;
+      --display-2xl: 4.5rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xs: 2rem;
+      --leading-display-sm: 2.375rem;
+      --leading-display-md: 2.75rem;
+      --leading-display-lg: 3.75rem;
+      --leading-display-xl: 4.5rem;
+      --leading-display-2xl: 5.625rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-0: 0;
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-24: 6rem;
+      --space-32: 8rem;
+
+      /* BORDER RADIUS */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+
+      --transition-normal: 200ms ease;
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; height: 100%; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    svg { display: block; flex-shrink: 0; }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    a:hover { color: var(--text-brand-primary); text-decoration: underline; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); flex-shrink: 0; }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--md svg { width: 20px; height: 20px; }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); color: var(--fg-secondary); }
+
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); transition: box-shadow var(--transition-normal), border-color var(--transition-normal); cursor: pointer; text-align: left; display: block; width: 100%; }
+    .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-primary); }
+
+    /* SECTION SPECIFIC */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+    }
+    
+    @media (min-width: 1024px) {
+      .hero-split {
+        grid-template-columns: 2fr 3fr;
+      }
+    }
+
+    .panel-left {
+      background: var(--bg-brand-section);
+      color: var(--text-white);
+      padding: var(--space-12) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--brand-700) 0%, transparent 70%);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .brand-logo {
+      margin-bottom: var(--space-16);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: var(--font-bold);
+      font-size: var(--text-xl);
+      z-index: 1;
+    }
+
+    .panel-left-content {
+      max-width: 480px;
+      z-index: 1;
+    }
+
+    .panel-left-title {
+      font-family: var(--font-display);
+      font-size: var(--display-lg);
+      line-height: var(--leading-display-lg);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    .panel-left-desc {
+      font-size: var(--text-lg);
+      line-height: var(--leading-lg);
+      color: var(--brand-200);
+    }
+
+    .panel-right {
+      background: var(--bg-secondary-subtle);
+      padding: var(--space-12) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .panel-right-content {
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .right-header {
+      margin-bottom: var(--space-10);
+    }
+
+    .right-title {
+      font-family: var(--font-display);
+      font-size: var(--display-md);
+      line-height: var(--leading-display-md);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .right-desc {
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-secondary);
+    }
+
+    .action-cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .action-card {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .action-card:hover .action-card-arrow {
+      transform: translateX(4px);
+      color: var(--text-brand-secondary);
+    }
+    
+    .action-card:hover .featured-icon {
+      border-color: var(--border-brand);
+      color: var(--text-brand-secondary);
+    }
+
+    .action-card-body {
+      flex: 1;
+    }
+
+    .action-card-title {
+      font-size: var(--text-md);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .action-card-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+      color: var(--text-tertiary);
+    }
+
+    .action-card-arrow {
+      color: var(--fg-quaternary);
+      transition: transform var(--transition-normal), color var(--transition-normal);
+      align-self: center;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero-split">
+    
+    <!-- LEFT PANEL -->
+    <div class="panel-left">
+      <div class="brand-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="white" fill-opacity="0.2"/>
+          <path d="M16 8V24M8 16L24 16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Untitled UI
+      </div>
+      <div class="panel-left-content">
+        <h1 class="panel-left-title">Design without limits.</h1>
+        <p class="panel-left-desc">
+          The most comprehensive UI kit and design system for modern product teams. Start building your next idea faster.
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel-right">
+      <div class="panel-right-content">
+        <div class="right-header">
+          <h2 class="right-title">How can we help you today?</h2>
+          <p class="right-desc">Explore our documentation, view the component library, or read our latest tutorials to get up to speed quickly.</p>
+        </div>
+
+        <div class="action-cards">
+          
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Documentation</h3>
+              <p class="action-card-desc">Everything you need to know about integrating and customizing the design system.</p>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Components</h3>
+              <p class="action-card-desc">Browse the complete library of over 300+ accessible, pre-built components.</p>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </a>
+
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+            </div>
+            <div class="action-card-body">
+              <h3 class="action-card-title">API Reference</h3>
+              <p class="action-card-desc">Detailed endpoints, payload schemas, and authentication guides for developers.</p>
+            </div>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+</body>
+</html>
+
+---VARIANT-SEPARATOR---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero — UntitledUI Variant 3 (Breadcrumb)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-white: rgb(255 255 255);
+      --text-brand-secondary: rgb(105 65 198);
+
+      /* FOREGROUND */
+      --fg-quaternary: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --display-lg: 3rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-display-lg: 3.75rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-24: 6rem;
+
+      /* SHADOWS & RADIUS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-full: 9999px;
+
+      /* UTIL */
+      --utility-brand-50: rgb(249 245 255);
+      --utility-brand-200: rgb(232 218 255);
+      --utility-brand-700: rgb(105 65 198);
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+      --transition-fast: 100ms linear;
+    }
+
+    /* BASE */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    a { color: var(--text-tertiary); text-decoration: none; transition: color var(--transition-fast); }
+    a:hover { color: var(--text-primary); }
+
+    /* COMPONENTS */
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-weight: var(--font-medium); white-space: nowrap; padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); transition: background var(--transition-fast); position: relative; padding: var(--space-2-5) var(--space-4-5, 1.125rem); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
+    .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255, 255, 255, 0.12); pointer-events: none; }
+    .btn--primary { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: var(--shadow-xs), var(--shadow-skeumorphic); }
+    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
+
+    .code-block { background: rgb(24 29 39); color: rgb(245 245 245); font-family: var(--font-mono); font-size: var(--text-sm); line-height: 1.6; padding: var(--space-6); border-radius: var(--radius-xl); overflow-x: auto; box-shadow: var(--shadow-sm); }
+    .token-keyword { color: rgb(186 154 244); }
+    .token-string { color: rgb(108 230 165); }
+    .token-function { color: rgb(253 200 75); }
+    .token-comment { color: rgb(113 118 128); }
+
+    /* SECTION SPECIFIC */
+    .hero-breadcrumb {
+      padding: var(--space-16) 0 var(--space-24) 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-8);
+    }
+    .breadcrumb-nav svg { color: var(--fg-quaternary); }
+
+    .hero-metadata {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .avatar-group {
+      display: flex;
+      align-items: center;
+    }
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--bg-primary);
+      margin-left: -8px;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: var(--font-bold);
+      color: var(--text-secondary);
+    }
+    .avatar:first-child { margin-left: 0; background: var(--utility-brand-200); }
+    .avatar:nth-child(2) { background: rgb(254 228 226); } /* error-100 */
+    .avatar:nth-child(3) { background: rgb(254 240 199); } /* warning-100 */
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--display-lg);
+      line-height: var(--leading-display-lg);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-description {
+      font-size: var(--text-lg);
+      line-height: var(--leading-lg);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-8);
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-12);
+    }
+    
+    .hero-cta span {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <section class="hero-breadcrumb">
+      
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="#">Docs</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <a href="#">Getting Started</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span style="color: var(--text-primary); font-weight: var(--font-semibold);">Installation</span>
+      </nav>
+
+      <div class="hero-metadata">
+        <span class="badge badge--brand badge--md">v3.4.0</span>
+        <span>Updated 2 days ago</span>
+        <div class="avatar-group">
+          <div class="avatar">JD</div>
+          <div class="avatar">AS</div>
+          <div class="avatar">RW</div>
+        </div>
+      </div>
+
+      <h1 class="hero-title">Installation Guide</h1>
+      
+      <p class="hero-description">
+        Learn how to install and configure UntitledUI in your project. We support a variety of package managers and frameworks to get you up and running in minutes.
+      </p>
+
+      <div class="hero-cta">
+        <button class="btn btn--primary btn--lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download CLI
+        </button>
+        <span>or use npm/yarn</span>
+      </div>
+
+      <pre class="code-block"><code><span class="token-comment"># Install via npm</span>
+<span class="token-keyword">npm</span> install <span class="token-string">@untitled-ui/core</span>
+
+<span class="token-comment"># Or via yarn</span>
+<span class="token-keyword">yarn</span> add <span class="token-string">@untitled-ui/core</span>
+
+<span class="token-comment">// Then import in your root file</span>
+<span class="token-keyword">import</span> { ThemeProvider } <span class="token-keyword">from</span> <span class="token-string">'@untitled-ui/core'</span>;
+<span class="token-keyword">import</span> <span class="token-string">'@untitled-ui/core/styles.css'</span>;
+
+<span class="token-function">setupUntitled</span>({
+  <span class="token-keyword">theme</span>: <span class="token-string">'light'</span>,
+  <span class="token-keyword">cssVariables</span>: <span class="token-keyword">true</span>
+});</code></pre>
+
+    </section>
+  </div>
+</body>
+</html>
+
+---VARIANT-SEPARATOR---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero — UntitledUI Variant 4 (Announcement + Search)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-secondary: rgb(250 250 250);
+      --bg-brand-primary: rgb(249 245 255);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+
+      /* FOREGROUND */
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-brand: rgb(158 119 237);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+      
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-xl: 1.25rem;
+      --display-xl: 3.75rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-xl: 1.875rem;
+      --leading-display-xl: 4.5rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING & RADIUS */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+      --space-24: 6rem;
+
+      --radius-sm: 0.25rem;
+      --radius-lg: 0.5rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS & FOCUS */
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1);
+      --focus-ring: 0 0 0 4px rgb(244 235 255), 0 0 0 1px rgb(127 86 217);
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+      --transition-normal: 200ms ease;
+    }
+
+    /* BASE */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    svg { display: block; flex-shrink: 0; }
+
+    /* COMPONENTS */
+    .badge { display: inline-flex; align-items: center; border-radius: var(--radius-full); font-weight: var(--font-medium); padding: 2px var(--space-2); font-size: 0.75rem; }
+    .badge--brand { background: rgb(252 250 255); color: var(--text-brand-secondary); box-shadow: inset 0 0 0 1px rgb(232 218 255); }
+
+    /* SECTION SPECIFIC */
+    .announcement-bar {
+      background: var(--bg-brand-primary);
+      padding: var(--space-3) var(--container-padding);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-secondary);
+    }
+
+    .announcement-content {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      color: var(--text-brand-secondary);
+    }
+
+    .announcement-close {
+      cursor: pointer;
+      color: var(--text-brand-secondary);
+      background: transparent;
+      border: none;
+      padding: var(--space-1);
+      border-radius: var(--radius-sm);
+    }
+    .announcement-close:hover { background: rgba(105, 65, 198, 0.1); }
+
+    .hero-search-section {
+      padding: var(--space-24) 0 var(--space-16) 0;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--display-xl);
+      line-height: var(--leading-display-xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+      letter-spacing: -0.02em;
+      max-width: 900px;
+    }
+
+    .title-accent {
+      color: var(--text-brand-secondary);
+    }
+
+    .hero-description {
+      font-size: var(--text-xl);
+      line-height: var(--leading-xl);
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin-bottom: var(--space-12);
+    }
+
+    .search-container {
+      width: 100%;
+      max-width: 640px;
+      position: relative;
+      margin-bottom: var(--space-24);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: var(--space-4) var(--space-16) var(--space-4) var(--space-12);
+      font-size: var(--text-md);
+      font-family: var(--font-body);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-lg);
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
+      color: var(--text-primary);
+    }
+    .search-input::placeholder { color: var(--fg-quaternary); }
+    .search-input:focus { outline: none; box-shadow: var(--shadow-md), var(--focus-ring); border-color: var(--border-brand); }
+
+    .search-icon {
+      position: absolute;
+      left: var(--space-4);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--fg-quaternary);
+      pointer-events: none;
+    }
+
+    .search-kbd {
+      position: absolute;
+      right: var(--space-4);
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: var(--font-medium);
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-secondary);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      pointer-events: none;
+    }
+
+    .trust-section {
+      border-top: 1px solid var(--border-secondary);
+      padding-top: var(--space-8);
+      width: 100%;
+    }
+
+    .trust-title {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-6);
+    }
+
+    .trust-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-12);
+      flex-wrap: wrap;
+      color: var(--fg-quaternary);
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="announcement-bar">
+    <div style="width: 24px;"></div> <!-- Spacer for flex centering -->
+    <div class="announcement-content">
+      <span class="badge badge--brand">Update</span>
+      <span>We've completely overhauled our search infrastructure. <a href="#" style="text-decoration: underline;">Read the changelog</a></span>
+    </div>
+    <button class="announcement-close" aria-label="Dismiss">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </button>
+  </header>
+
+  <div class="page-container">
+    <section class="hero-search-section">
+      
+      <h1 class="hero-title">Find exactly what you're <br><span class="title-accent">looking for</span></h1>
+      
+      <p class="hero-description">
+        Search across our entire documentation library, API references, and community guides to get the answers you need in milliseconds.
+      </p>
+
+      <div class="search-container">
+        <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" class="search-input" placeholder="Search documentation, components, tutorials...">
+        <div class="search-kbd">⌘ K</div>
+      </div>
+
+      <div class="trust-section">
+        <p class="trust-title">Trusted by engineering teams at</p>
+        <div class="trust-logos">
+          <!-- Abstract Logo 1 -->
+          <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 4L28 12V28L16 20L4 28V12L16 4Z" fill="currentColor" fill-opacity="0.2"/>
+            <path d="M16 20L28 12M16 20V32M16 20L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="36" y="22" font-family="Inter" font-weight="600" font-size="16" fill="currentColor">Layers</text>
+          </svg>
+          <!-- Abstract Logo 2 -->
+          <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/>
+            <circle cx="16" cy="16" r="6" fill="currentColor"/>
+            <text x="36" y="22" font-family="Inter" font-weight="600" font-size="16" fill="currentColor">Spherule</text>
+          </svg>
+          <!-- Abstract Logo 3 -->
+          <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="24" height="16" rx="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 16H22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <text x="36" y="22" font-family="Inter" font-weight="600" font-size="16" fill="currentColor">Catalog</text>
+          </svg>
+          <!-- Abstract Logo 4 -->
+          <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 24L12 8L16 16L20 8L28 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="36" y="22" font-family="Inter" font-weight="600" font-size="16" fill="currentColor">Quotient</text>
+          </svg>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</body>
+</html>
+
+---VARIANT-SEPARATOR---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero — UntitledUI Variant 5 (Dashboard Header)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-white: rgb(255 255 255);
+
+      /* FOREGROUND */
+      --fg-secondary: rgb(65 70 81);
+      --fg-quaternary: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+      
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --display-sm: 1.875rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-display-sm: 2.375rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+
+      /* SPACING & RADIUS */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+
+      --radius-sm: 0.25rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS & FOCUS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      
+      /* UTILS */
+      --utility-success-50: rgb(236 253 243);
+      --utility-success-200: rgb(166 244 197);
+      --utility-success-700: rgb(8 119 73);
+      --utility-warning-50: rgb(255 249 235);
+      --utility-warning-200: rgb(254 223 137);
+      --utility-warning-700: rgb(181 71 8);
+      --utility-gray-50: rgb(250 250 250);
+      --utility-gray-200: rgb(233 234 235);
+      --utility-gray-700: rgb(65 70 81);
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+      --transition-fast: 100ms linear;
+    }
+
+    /* BASE */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    svg { display: block; flex-shrink: 0; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); flex-shrink: 0; }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); color: var(--fg-secondary); }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1-5); border-radius: var(--radius-full); font-weight: var(--font-medium); white-space: nowrap; padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
+    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
+    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); transition: background var(--transition-fast); position: relative; padding: var(--space-2-5) var(--space-4); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
+    .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255, 255, 255, 0.12); pointer-events: none; }
+    .btn--primary { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: var(--shadow-xs), var(--shadow-skeumorphic); }
+    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
+    .btn--secondary { background: var(--bg-primary); color: var(--text-secondary); box-shadow: var(--shadow-xs); border: 1px solid var(--border-primary); }
+    .btn--secondary::before { display: none; }
+    .btn--secondary:hover { background: var(--bg-primary-hover); color: var(--text-primary); }
+    .btn--icon { padding: var(--space-2-5); }
+
+    /* SECTION SPECIFIC */
+    .dashboard-header {
+      padding: var(--space-10) 0;
+      border-bottom: 1px solid var(--border-secondary);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: var(--display-sm);
+      line-height: var(--leading-display-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .page-subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex: 1;
+      justify-content: center;
+      min-width: 300px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .header-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .description {
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-secondary);
+      max-width: 800px;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .metric-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-2);
+    }
+
+    .metric-value {
+      font-size: var(--display-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .trend-indicator {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+    .trend-indicator.up { color: var(--utility-success-700); }
+    .trend-indicator.down { color: var(--utility-warning-700); }
+
+    @media (max-width: 768px) {
+      .header-top { flex-direction: column; }
+      .header-center { justify-content: flex-start; width: 100%; }
+      .header-right { width: 100%; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <header class="dashboard-header">
+      
+      <div class="header-top">
+        <div class="header-left">
+          <div class="featured-icon featured-icon--md featured-icon--outline">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <div class="title-group">
+            <h1 class="page-title">Infrastructure Overview</h1>
+            <span class="page-subtitle">Production Environment • us-east-1</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <span class="badge badge--success badge--md">
+            <span class="badge__dot"></span> Operational
+          </span>
+          <span class="badge badge--warning badge--md">
+            <span class="badge__dot"></span> 2 Degraded
+          </span>
+          <span class="badge badge--gray badge--md">
+            <span class="badge__dot"></span> Maintenance window active
+          </span>
+        </div>
+
+        <div class="header-right">
+          <button class="btn btn--secondary btn--icon" aria-label="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button class="btn btn--secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Export
+          </button>
+          <button class="btn btn--primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Deploy Service
+          </button>
+        </div>
+      </div>
+
+      <div class="header-bottom">
+        <p class="description">
+          Monitor your core services, database clusters, and API gateways. Key metrics refresh automatically every 30 seconds. System health is currently operating normally despite minor localized latency.
+        </p>
+
+        <div class="metrics-row">
+          
+          <div class="metric-card">
+            <div class="metric-label">API Requests (24h)</div>
+            <div class="metric-value">
+              24.8M
+              <span class="trend-indicator up">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                12%
+              </span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Global Latency</div>
+            <div class="metric-value">
+              112ms
+              <span class="trend-indicator down">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                3.1%
+              </span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Error Rate</div>
+            <div class="metric-value">
+              0.04%
+              <span class="trend-indicator up">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                0%
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </header>
+  </div>
+</body>
+</html>

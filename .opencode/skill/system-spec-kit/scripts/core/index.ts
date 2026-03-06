@@ -24,4 +24,9 @@ export {
   CATEGORY_FOLDER_PATTERN,
   findChildFolderSync,
   findChildFolderAsync,
+  getPhaseFolderRejectionSync,
+} from './subfolder-utils';
+
+export type {
+  PhaseFolderRejection,
 } from './subfolder-utils';

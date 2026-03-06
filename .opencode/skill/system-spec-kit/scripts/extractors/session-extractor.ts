@@ -241,8 +241,15 @@ function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]
     if (obs.facts) {
       for (const fact of obs.facts) {
         const factText = typeof fact === 'string' ? fact : (fact as { text?: string }).text || '';
+        const normalizedFactText = factText.toLowerCase();
         for (const tool of toolNames) {
-          if (factText.includes(`Tool: ${tool}`) || factText.includes(`${tool}(`)) counts[tool]++;
+          const normalizedTool = tool.toLowerCase();
+          if (
+            normalizedFactText.includes(`tool: ${normalizedTool}`) ||
+            normalizedFactText.includes(`${normalizedTool}(`)
+          ) {
+            counts[tool]++;
+          }
         }
       }
     }
@@ -250,7 +257,7 @@ function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]
   for (const prompt of userPrompts) {
     const promptText = prompt.prompt || '';
     for (const tool of toolNames) {
-      const matches = promptText.match(new RegExp(`\\b${tool}\\s*\\(`, 'g'));
+      const matches = promptText.match(new RegExp(`\\b${tool}\\s*\\(`, 'gi'));
       if (matches) counts[tool] += matches.length;
     }
   }

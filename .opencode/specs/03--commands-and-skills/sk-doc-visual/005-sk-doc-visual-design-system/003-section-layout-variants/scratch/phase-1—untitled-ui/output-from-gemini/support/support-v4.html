@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Support — Knowledge Base Grid Variant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: rgb(255 255 255);
+      --bg-secondary: rgb(250 250 250);
+      --bg-brand-secondary: rgb(244 235 255);
+
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-placeholder: rgb(113 118 128);
+
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-brand: rgb(158 119 237);
+
+      --utility-brand-50: rgb(249 245 255);
+      --utility-brand-200: rgb(232 218 255);
+      --utility-brand-700: rgb(105 65 198);
+
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --display-md: 2.25rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-display-md: 2.75rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      --radius-full: 9999px;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
+
+      --focus-ring: 0 0 0 4px var(--utility-brand-200), 0 0 0 1px rgb(127 86 217);
+      --transition-fast: 100ms linear;
+      --transition-normal: 200ms ease;
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    svg { display: block; flex-shrink: 0; }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    a:hover { color: var(--text-brand-primary); text-decoration: underline; }
+
+    .bg-pattern { position: relative; padding: var(--space-16) 0; }
+    .bg-pattern::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at top, black 0%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at top, black 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .bg-pattern > * { position: relative; z-index: 1; }
+
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--md svg { width: 20px; height: 20px; }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-family: var(--font-body); font-weight: var(--font-medium); white-space: nowrap; }
+    .badge--sm { padding: 2px var(--space-2); font-size: var(--text-xs, 0.75rem); line-height: 1.125rem; }
+    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); transition: box-shadow var(--transition-normal), border-color var(--transition-normal); }
+    .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-primary); }
+
+    /* === SECTION-SPECIFIC STYLES === */
+    .kb-header { text-align: center; margin-bottom: var(--space-12); }
+    .kb-title { font-family: var(--font-display); font-size: var(--display-md); font-weight: var(--font-semibold); margin-bottom: var(--space-4); color: var(--text-primary); }
+    .kb-subtitle { font-size: var(--text-lg); color: var(--text-secondary); }
+
+    .search-container { max-width: 640px; margin: 0 auto var(--space-16) auto; position: relative; }
+    .search-input-lg { width: 100%; padding: var(--space-4) var(--space-5) var(--space-4) 3rem; font-size: var(--text-lg); border: 1px solid var(--border-primary); border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm); outline: none; transition: box-shadow var(--transition-fast), border-color var(--transition-fast); }
+    .search-input-lg:focus { box-shadow: var(--focus-ring); border-color: var(--border-brand); }
+    .search-icon-lg { position: absolute; left: var(--space-5); top: 50%; transform: translateY(-50%); color: var(--fg-quaternary); }
+
+    .kb-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+
+    .kb-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+    .kb-card-title { font-size: var(--text-md); font-weight: var(--font-semibold); color: var(--text-primary); margin-bottom: var(--space-4); }
+    
+    .kb-links { list-style: none; margin-bottom: var(--space-6); }
+    .kb-link-item { margin-bottom: var(--space-3); }
+    .kb-link { display: flex; align-items: flex-start; gap: var(--space-2); color: var(--text-secondary); font-size: var(--text-sm); line-height: var(--leading-sm); transition: color var(--transition-fast); }
+    .kb-link:hover { color: var(--text-brand-secondary); text-decoration: none; }
+    .kb-link svg { color: var(--fg-quaternary); margin-top: 2px; }
+    
+    .kb-card-footer { border-top: 1px solid var(--border-secondary); padding-top: var(--space-4); }
+    .kb-view-all { font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--text-brand-secondary); display: inline-flex; align-items: center; gap: var(--space-1); }
+    .kb-view-all:hover { text-decoration: none; color: var(--text-brand-primary); }
+
+    @media (max-width: 1024px) { .kb-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .kb-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="bg-pattern">
+    <div class="page-container">
+      <section>
+        <div class="kb-header">
+          <h1 class="kb-title">Knowledge Base</h1>
+          <p class="kb-subtitle">Find answers, learn best practices, and explore our guides.</p>
+        </div>
+
+        <div class="search-container">
+          <svg class="search-icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input type="text" class="search-input-lg" placeholder="Search knowledge base...">
+        </div>
+
+        <div class="kb-grid">
+          
+          <!-- Category 1 -->
+          <div class="card">
+            <div class="kb-card-header">
+              <div class="featured-icon featured-icon--md">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              </div>
+              <span class="badge badge--brand badge--sm">12 articles</span>
+            </div>
+            <h3 class="kb-card-title">Quick Start</h3>
+            <ul class="kb-links">
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Installation Guide</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Creating your first workspace</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Inviting team members</a></li>
+            </ul>
+            <div class="kb-card-footer">
+              <a href="#" class="kb-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div class="card">
+            <div class="kb-card-header">
+              <div class="featured-icon featured-icon--md">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+              </div>
+              <span class="badge badge--brand badge--sm">8 articles</span>
+            </div>
+            <h3 class="kb-card-title">Billing & Accounts</h3>
+            <ul class="kb-links">
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Updating payment methods</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Understanding your invoice</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Changing subscription plans</a></li>
+            </ul>
+            <div class="kb-card-footer">
+              <a href="#" class="kb-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div class="card">
+            <div class="kb-card-header">
+              <div class="featured-icon featured-icon--md">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+              </div>
+              <span class="badge badge--brand badge--sm">15 articles</span>
+            </div>
+            <h3 class="kb-card-title">Security & Privacy</h3>
+            <ul class="kb-links">
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Configuring SSO/SAML</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Setting up Two-Factor Auth</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Data retention policies</a></li>
+            </ul>
+            <div class="kb-card-footer">
+              <a href="#" class="kb-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+            </div>
+          </div>
+
+          <!-- Category 4 -->
+          <div class="card">
+            <div class="kb-card-header">
+              <div class="featured-icon featured-icon--md">
+                <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+              </div>
+              <span class="badge badge--brand badge--sm">24 articles</span>
+            </div>
+            <h3 class="kb-card-title">Developer API</h3>
+            <ul class="kb-links">
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Authentication and Tokens</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Rate limits and pagination</a></li>
+              <li class="kb-link-item"><a href="#" class="kb-link"><svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M9 5l7 7-7 7"></path></svg> Webhooks setup guide</a></li>
+            </ul>
+            <div class="kb-card-footer">
+              <a href="#" class="kb-view-all">View all <svg width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

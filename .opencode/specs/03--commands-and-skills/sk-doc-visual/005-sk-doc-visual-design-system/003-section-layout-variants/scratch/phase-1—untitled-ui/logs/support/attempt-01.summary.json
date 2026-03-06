@@ -1,0 +1,27 @@
+{
+  "attempt": 1,
+  "success": true,
+  "error": "",
+  "validation_issues": [
+    "v1: Found raw rgb/rgba color outside :root block",
+    "v2: Line count out of range: 266 (expected 600-900)",
+    "v3: Missing prefers-reduced-motion media query",
+    "v3: Line count out of range: 319 (expected 600-900)",
+    "v3: Found raw rgb/rgba color outside :root block",
+    "v4: Missing prefers-reduced-motion media query",
+    "v4: Line count out of range: 233 (expected 600-900)",
+    "v5: Missing prefers-reduced-motion media query",
+    "v5: Line count out of range: 241 (expected 600-900)"
+  ],
+  "variants_saved": 5,
+  "stdout_chars": 82115,
+  "stderr_chars": 4568,
+  "elapsed_seconds": 184.60895681381226,
+  "output_files": [
+    "output-from-gemini/support/support-v1.html",
+    "output-from-gemini/support/support-v2.html",
+    "output-from-gemini/support/support-v3.html",
+    "output-from-gemini/support/support-v4.html",
+    "output-from-gemini/support/support-v5.html"
+  ]
+}

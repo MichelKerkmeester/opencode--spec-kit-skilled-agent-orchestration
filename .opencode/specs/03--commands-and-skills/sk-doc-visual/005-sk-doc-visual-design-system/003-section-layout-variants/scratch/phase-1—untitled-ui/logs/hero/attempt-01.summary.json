@@ -1,23 +1,32 @@
 {
   "attempt": 1,
-  "success": false,
+  "success": true,
   "error": "",
   "validation_issues": [
-    "v1: Line count out of range: 525 (expected 600-900)",
+    "v1: Line count out of range: 507 (expected 600-900)",
     "v1: Found raw rgb/rgba color outside :root block",
-    "v2: Line count out of range: 459 (expected 600-900)",
-    "v2: Found raw rgb/rgba color outside :root block",
-    "v3: Line count out of range: 307 (expected 600-900)",
+    "v2: Line count out of range: 384 (expected 600-900)",
+    "v3: Missing prefers-reduced-motion media query",
+    "v3: Missing required Untitled UI token vocabulary",
+    "v3: Line count out of range: 243 (expected 600-900)",
     "v3: Found raw rgb/rgba color outside :root block",
-    "v4: Line count out of range: 318 (expected 600-900)",
+    "v4: Missing prefers-reduced-motion media query",
+    "v4: Line count out of range: 277 (expected 600-900)",
     "v4: Found raw rgb/rgba color outside :root block",
+    "v5: Missing prefers-reduced-motion media query",
     "v5: Missing semantic <section> element",
-    "v5: Line count out of range: 351 (expected 600-900)",
+    "v5: Line count out of range: 314 (expected 600-900)",
     "v5: Found raw rgb/rgba color outside :root block"
   ],
-  "variants_saved": 0,
-  "stdout_chars": 62385,
-  "stderr_chars": 5545,
-  "elapsed_seconds": 226.13667511940002,
-  "output_files": []
+  "variants_saved": 5,
+  "stdout_chars": 66575,
+  "stderr_chars": 4568,
+  "elapsed_seconds": 256.3132789134979,
+  "output_files": [
+    "output-from-gemini/hero/hero-v1.html",
+    "output-from-gemini/hero/hero-v2.html",
+    "output-from-gemini/hero/hero-v3.html",
+    "output-from-gemini/hero/hero-v4.html",
+    "output-from-gemini/hero/hero-v5.html"
+  ]
 }

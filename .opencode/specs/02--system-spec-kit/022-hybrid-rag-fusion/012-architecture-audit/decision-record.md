@@ -382,6 +382,14 @@ Cross-AI review (2026-03-05, 5 Codex xhigh + 5 Gemini 3.1 Pro) identified enforc
 - Use Phase 7 carry-over tasks to tighten coverage and governance.
 - Reserve AST/parser upgrade as the deeper structural closure path.
 
+### Phase 7 API-Surface Encapsulation Addendum (2026-03-06)
+
+For Phase 7 reindex remediation, we explicitly constrained API growth to a minimal indexing surface (`mcp_server/api/indexing.ts`) instead of exposing broader `core/` or `handlers/` internals.
+
+- `scripts/memory/reindex-embeddings.ts` needed stable runtime bootstrap and index-scan entry points, not direct access to internal orchestration details.
+- Exposing `core/`/`handlers/` internals would turn implementation details into de-facto public contracts and increase future refactor lock-in.
+- A narrow API boundary preserves encapsulation, keeps internal modules free to evolve, and still removes direct scripts-to-internal coupling for the carry-over use case.
+
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |

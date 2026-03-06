@@ -1,0 +1,7 @@
+Starting memory skill...
+
+   Stateless mode: Nested spec folder provided directly
+
+Error: Direct memory saves cannot target a phase folder: specs/02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes
+Save to the owning root spec folder instead: specs/02--system-spec-kit/022-hybrid-rag-fusion
+Phase-folder targets are rejected deterministically and are not rerouted.

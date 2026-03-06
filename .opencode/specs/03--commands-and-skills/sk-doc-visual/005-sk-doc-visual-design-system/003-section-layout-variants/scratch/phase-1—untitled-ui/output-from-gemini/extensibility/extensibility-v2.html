@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Extensibility — API Reference (Variant 2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-secondary-hover: rgb(245 245 245);
+      --bg-secondary-subtle: rgb(253 253 253);
+      --bg-tertiary: rgb(245 245 245);
+      --bg-quaternary: rgb(233 234 235);
+      --bg-brand-primary: rgb(249 245 255);
+      --bg-brand-secondary: rgb(244 235 255);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+      --bg-brand-section: rgb(83 56 158);
+      --bg-overlay: rgb(10 13 18);
+      --bg-error-primary: rgb(254 243 242);
+      --bg-success-primary: rgb(236 253 243);
+      --bg-warning-primary: rgb(255 252 245);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-tertiary: rgb(83 88 98);
+      --text-quaternary: rgb(113 118 128);
+      --text-white: rgb(255 255 255);
+      --text-placeholder: rgb(113 118 128);
+      --text-brand-primary: rgb(66 48 125);
+      --text-brand-secondary: rgb(105 65 198);
+      --text-brand-tertiary: rgb(127 86 217);
+      --text-error-primary: rgb(217 45 32);
+      --text-success-primary: rgb(7 148 85);
+      --text-warning-primary: rgb(220 104 3);
+
+      /* FOREGROUND / ICONS */
+      --fg-primary: rgb(24 29 39);
+      --fg-secondary: rgb(65 70 81);
+      --fg-tertiary: rgb(83 88 98);
+      --fg-quaternary: rgb(164 167 174);
+      --fg-brand-primary: rgb(127 86 217);
+      --fg-brand-secondary: rgb(158 119 237);
+      --fg-error-primary: rgb(217 45 32);
+      --fg-success-primary: rgb(7 148 85);
+      --fg-disabled: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+      --border-tertiary: rgb(245 245 245);
+      --border-brand: rgb(158 119 237);
+      --border-brand-solid: rgb(127 86 217);
+      --border-error: rgb(240 68 56);
+      --border-error-solid: rgb(217 45 32);
+
+      /* BRAND SCALE */
+      --brand-25: rgb(252 250 255);
+      --brand-50: rgb(249 245 255);
+      --brand-100: rgb(244 235 255);
+      --brand-200: rgb(232 218 255);
+      --brand-300: rgb(214 188 250);
+      --brand-400: rgb(186 154 244);
+      --brand-500: rgb(158 119 237);
+      --brand-600: rgb(127 86 217);
+      --brand-700: rgb(105 65 198);
+      --brand-800: rgb(83 56 158);
+      --brand-900: rgb(66 48 125);
+      --brand-950: rgb(44 28 95);
+
+      /* GRAY SCALE */
+      --gray-25: rgb(253 253 253);
+      --gray-50: rgb(250 250 250);
+      --gray-100: rgb(245 245 245);
+      --gray-200: rgb(233 234 235);
+      --gray-300: rgb(213 215 218);
+      --gray-400: rgb(164 167 174);
+      --gray-500: rgb(113 118 128);
+      --gray-600: rgb(83 88 98);
+      --gray-700: rgb(65 70 81);
+      --gray-800: rgb(39 43 51);
+      --gray-900: rgb(24 29 39);
+      --gray-950: rgb(10 13 18);
+
+      /* ERROR SCALE */
+      --error-25: rgb(255 251 250);
+      --error-50: rgb(254 243 242);
+      --error-100: rgb(254 228 226);
+      --error-200: rgb(254 205 202);
+      --error-300: rgb(253 162 155);
+      --error-400: rgb(249 112 102);
+      --error-500: rgb(240 68 56);
+      --error-600: rgb(217 45 32);
+      --error-700: rgb(180 35 24);
+      --error-800: rgb(145 32 24);
+      --error-900: rgb(122 29 25);
+      --error-950: rgb(85 15 10);
+
+      /* WARNING SCALE */
+      --warning-25: rgb(255 252 245);
+      --warning-50: rgb(255 249 235);
+      --warning-100: rgb(254 240 199);
+      --warning-200: rgb(254 223 137);
+      --warning-300: rgb(253 200 75);
+      --warning-400: rgb(253 176 34);
+      --warning-500: rgb(247 144 9);
+      --warning-600: rgb(220 104 3);
+      --warning-700: rgb(181 71 8);
+      --warning-800: rgb(147 55 13);
+      --warning-900: rgb(122 46 14);
+      --warning-950: rgb(78 29 5);
+
+      /* SUCCESS SCALE */
+      --success-25: rgb(246 254 249);
+      --success-50: rgb(236 253 243);
+      --success-100: rgb(209 250 223);
+      --success-200: rgb(166 244 197);
+      --success-300: rgb(108 230 165);
+      --success-400: rgb(50 213 131);
+      --success-500: rgb(18 183 106);
+      --success-600: rgb(7 148 85);
+      --success-700: rgb(8 119 73);
+      --success-800: rgb(9 98 62);
+      --success-900: rgb(12 80 53);
+      --success-950: rgb(5 53 34);
+
+      /* UTILITY ALIASES */
+      --utility-brand-50: var(--brand-50);
+      --utility-brand-200: var(--brand-200);
+      --utility-brand-700: var(--brand-700);
+      --utility-gray-50: var(--gray-50);
+      --utility-gray-200: var(--gray-200);
+      --utility-gray-700: var(--gray-700);
+      --utility-error-50: var(--error-50);
+      --utility-error-200: var(--error-200);
+      --utility-error-700: var(--error-700);
+      --utility-warning-50: var(--warning-50);
+      --utility-warning-200: var(--warning-200);
+      --utility-warning-700: var(--warning-700);
+      --utility-success-50: var(--success-50);
+      --utility-success-200: var(--success-200);
+      --utility-success-700: var(--success-700);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.25rem;
+      --display-xs: 1.5rem;
+      --display-sm: 1.875rem;
+      --display-md: 2.25rem;
+      --display-lg: 3rem;
+
+      --leading-xs: 1.125rem;
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-lg: 1.75rem;
+      --leading-xl: 1.875rem;
+
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-semibold: 600;
+      --font-bold: 700;
+
+      /* SPACING */
+      --space-0: 0;
+      --space-1: 0.25rem;
+      --space-1-5: 0.375rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      /* BORDER RADIUS */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS & EFFECTS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
+      --transition-fast: 100ms linear;
+
+      --container-max: 1280px;
+    }
+
+    /* BASE STYLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; height: 100%; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    svg { display: block; flex-shrink: 0; }
+    :focus-visible { outline: none; box-shadow: var(--focus-ring); }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    a:hover { color: var(--text-brand-primary); text-decoration: underline; }
+
+    /* COMPONENTS */
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1); border-radius: var(--radius-full); font-family: var(--font-mono); font-weight: var(--font-medium); white-space: nowrap; }
+    .badge--sm { padding: 2px var(--space-2); font-size: var(--text-xs); line-height: var(--leading-xs); }
+    .badge--get { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge--post { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
+    .badge--put { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
+    .badge--del { background: var(--utility-error-50); color: var(--utility-error-700); box-shadow: inset 0 0 0 1px var(--utility-error-200); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); transition: background var(--transition-fast), box-shadow var(--transition-fast); position: relative; }
+    .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255, 255, 255, 0.12); pointer-events: none; }
+    .btn--sm { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
+    .btn--secondary { background: var(--bg-primary); color: var(--text-secondary); box-shadow: var(--shadow-xs); border: 1px solid var(--border-primary); }
+    .btn--secondary::before { display: none; }
+
+    .code-block { background: var(--gray-900); color: var(--gray-100); font-family: var(--font-mono); font-size: var(--text-sm); line-height: var(--leading-sm); padding: var(--space-4); border-radius: var(--radius-xl); overflow-x: auto; border: 1px solid var(--gray-800); margin: var(--space-4) 0; }
+    .code-inline { font-family: var(--font-mono); font-size: 0.875em; background: var(--bg-tertiary); color: var(--text-brand-secondary); padding: 2px var(--space-1-5); border-radius: var(--radius-sm); }
+    
+    .divider { border: none; height: 1px; background: var(--border-secondary); margin: var(--space-8) 0; }
+
+    /* === SECTION-SPECIFIC STYLES === */
+    .api-layout {
+      display: flex;
+      min-height: 100vh;
+      border-top: 1px solid var(--border-secondary);
+    }
+    
+    /* SIDEBAR */
+    .api-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border-secondary);
+      background: var(--bg-secondary-subtle);
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-header {
+      padding: var(--space-6) var(--space-5) var(--space-4);
+      border-bottom: 1px solid var(--border-secondary);
+    }
+    .sidebar-header h2 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-semibold);
+    }
+    .sidebar-content {
+      padding: var(--space-4) var(--space-3);
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+    .nav-group {
+      margin-bottom: var(--space-6);
+    }
+    .nav-group-title {
+      font-size: var(--text-xs);
+      font-weight: var(--font-bold);
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0 var(--space-2);
+      margin-bottom: var(--space-2);
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+    .nav-item:hover {
+      background: var(--bg-secondary-hover);
+    }
+    .nav-item--active {
+      background: var(--bg-brand-primary);
+      color: var(--text-brand-secondary);
+      font-weight: var(--font-medium);
+    }
+    .nav-badge {
+      width: 44px;
+      text-align: center;
+      display: inline-block;
+      font-size: 0.65rem;
+    }
+
+    /* MAIN CONTENT */
+    .api-content {
+      flex-grow: 1;
+      padding: var(--space-8) var(--space-10);
+      max-width: 900px;
+      overflow-y: auto;
+    }
+    .endpoint-header {
+      margin-bottom: var(--space-8);
+    }
+    .endpoint-title {
+      font-size: var(--display-xs);
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--space-2);
+    }
+    .endpoint-desc {
+      font-size: var(--text-lg);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-6);
+    }
+    .endpoint-path-box {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-secondary);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-xl);
+      font-family: var(--font-mono);
+      font-size: var(--text-md);
+    }
+    
+    .section-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-semibold);
+      margin-top: var(--space-10);
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--border-secondary);
+    }
+
+    /* PARAMETERS TABLE */
+    .params-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .params-table th {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: var(--text-quaternary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-secondary);
+      background: var(--bg-secondary-subtle);
+    }
+    .params-table th:first-child { border-top-left-radius: var(--radius-lg); }
+    .params-table th:last-child { border-top-right-radius: var(--radius-lg); }
+    
+    .params-table td {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border-tertiary);
+      vertical-align: top;
+    }
+    .param-name {
+      font-family: var(--font-mono);
+      font-weight: var(--font-medium);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+      display: block;
+    }
+    .param-type {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+    .param-required {
+      color: var(--text-error-primary);
+      font-size: var(--text-xs);
+      font-weight: var(--font-medium);
+      background: var(--bg-error-primary);
+      padding: 2px var(--space-1-5);
+      border-radius: var(--radius-sm);
+      margin-left: var(--space-2);
+    }
+    .param-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-sm);
+    }
+  </style>
+</head>
+<body>
+  <section class="api-layout">
+    <aside class="api-sidebar">
+      <div class="sidebar-header">
+        <h2>API Reference</h2>
+        <p style="font-size: var(--text-sm); color: var(--text-tertiary); margin-top: var(--space-1);">v2.0 REST API</p>
+      </div>
+      <div class="sidebar-content">
+        <!-- Group 1 -->
+        <div class="nav-group">
+          <div class="nav-group-title">Projects</div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--get nav-badge">GET</span>
+            <span>/projects</span>
+          </div>
+          <div class="nav-item nav-item--active">
+            <span class="badge badge--sm badge--get nav-badge">GET</span>
+            <span>/projects/:id</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--post nav-badge">POST</span>
+            <span>/projects</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--put nav-badge">PUT</span>
+            <span>/projects/:id</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--del nav-badge">DEL</span>
+            <span>/projects/:id</span>
+          </div>
+        </div>
+
+        <!-- Group 2 -->
+        <div class="nav-group">
+          <div class="nav-group-title">Users</div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--get nav-badge">GET</span>
+            <span>/users</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--post nav-badge">POST</span>
+            <span>/users</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--get nav-badge">GET</span>
+            <span>/users/:id</span>
+          </div>
+        </div>
+
+        <!-- Group 3 -->
+        <div class="nav-group">
+          <div class="nav-group-title">Webhooks</div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--get nav-badge">GET</span>
+            <span>/webhooks</span>
+          </div>
+          <div class="nav-item">
+            <span class="badge badge--sm badge--post nav-badge">POST</span>
+            <span>/webhooks</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="api-content">
+      <div class="endpoint-header">
+        <h1 class="endpoint-title">Retrieve a project</h1>
+        <p class="endpoint-desc">Retrieves the details of an existing project. You need only supply the unique project identifier that was returned upon project creation.</p>
+        
+        <div class="endpoint-path-box">
+          <span class="badge badge--get" style="padding: 4px var(--space-3); font-size: var(--text-md);">GET</span>
+          <span style="color: var(--text-primary);">https://api.untitled.com/v2/projects/<span style="color: var(--text-quaternary);">{id}</span></span>
+          <button class="btn btn--secondary btn--sm" style="margin-left: auto;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <h3 class="section-title">Path Parameters</h3>
+      <table class="params-table">
+        <thead>
+          <tr>
+            <th style="width: 35%;">Parameter</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="param-name">id<span class="param-required">Required</span></span>
+              <span class="param-type">string</span>
+            </td>
+            <td>
+              <p class="param-desc">The unique identifier of the project to retrieve. Must be a valid UUID v4.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-title">Query Parameters</h3>
+      <table class="params-table">
+        <thead>
+          <tr>
+            <th style="width: 35%;">Parameter</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <span class="param-name">expand</span>
+              <span class="param-type">array of strings</span>
+            </td>
+            <td>
+              <p class="param-desc">Specifies which relation fields should be expanded in the response. Available fields are <span class="code-inline">owner</span>, <span class="code-inline">team</span>, and <span class="code-inline">active_sprint</span>.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="param-name">include_archived</span>
+              <span class="param-type">boolean</span>
+            </td>
+            <td>
+              <p class="param-desc">If set to <span class="code-inline">true</span>, the response will include child resources (like tasks) even if they are marked as archived. Default is <span class="code-inline">false</span>.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="section-title">Response</h3>
+      <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4);">Returns a project object if a valid identifier was provided. Returns a <span class="code-inline">404</span> error if the project does not exist or you do not have permission to access it.</p>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; background: var(--gray-950); padding: var(--space-2) var(--space-4); border-top-left-radius: var(--radius-xl); border-top-right-radius: var(--radius-xl); border-bottom: 1px solid var(--gray-800);">
+        <span style="color: var(--utility-success-200); font-family: var(--font-mono); font-size: var(--text-sm);">200 OK</span>
+        <span style="color: var(--gray-400); font-size: var(--text-xs);">application/json</span>
+      </div>
+      <pre class="code-block" style="margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-top: none;"><code>{
+  "id": "prj_01h4p8z9n2k5x7m3",
+  "object": "project",
+  "name": "Acme Corp Redesign",
+  "description": "Complete overhaul of the marketing website.",
+  "status": "in_progress",
+  "owner": "usr_99x8c7v6b5n4m3",
+  "settings": {
+    "is_public": false,
+    "allow_guest_comments": true
+  },
+  "created_at": 1686743892,
+  "updated_at": 1686830215
+}</code></pre>
+
+    </main>
+  </section>
+</body>
+</html>

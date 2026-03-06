@@ -40,7 +40,7 @@ The `renderers/` directory turns extracted session data into markdown output for
 
 - Supports Mustache-like placeholders and section blocks.
 - Handles conditional and inverted blocks.
-- Cleans template-only artifacts before final write.
+- Cleans leaked template and instructional blocks before final write.
 - Works with extractor output and core write/index steps.
 
 

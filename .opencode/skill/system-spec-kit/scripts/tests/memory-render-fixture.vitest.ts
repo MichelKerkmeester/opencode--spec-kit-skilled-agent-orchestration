@@ -34,7 +34,7 @@ vi.mock('@spec-kit/mcp-server/api/providers', () => ({
   },
 }));
 
-function createSessionData(specFolderName: string): SessionData {
+function createSessionData(specFolderName: string, overrides: Partial<SessionData> = {}): SessionData {
   return {
     TITLE: 'Memory Generator Naming Guardrail',
     DATE: '06-03-26',
@@ -95,6 +95,7 @@ function createSessionData(specFolderName: string): SessionData {
     PREFLIGHT_CONFIDENCE: 81,
     PREFLIGHT_UNCERTAINTY_RAW: 32,
     PREFLIGHT_READINESS: 'Ready to verify the rendered fixture output',
+    HAS_PREFLIGHT_BASELINE: true,
     POSTFLIGHT_KNOW_SCORE: 80,
     POSTFLIGHT_UNCERTAINTY_SCORE: 12,
     POSTFLIGHT_CONTEXT_SCORE: 78,
@@ -106,6 +107,7 @@ function createSessionData(specFolderName: string): SessionData {
     DELTA_CONTEXT_TREND: 'up',
     LEARNING_INDEX: 22,
     LEARNING_SUMMARY: 'The fixture confirms naming enrichment and quality validation stay aligned.',
+    HAS_POSTFLIGHT_DELTA: true,
     GAPS_CLOSED: [{ GAP_DESCRIPTION: 'Verified the rendered output title and slug are specific.' }],
     NEW_GAPS: [],
     SESSION_STATUS: 'Ready for follow-up',
@@ -117,6 +119,7 @@ function createSessionData(specFolderName: string): SessionData {
     PENDING_TASKS: [],
     NEXT_CONTINUATION_COUNT: 1,
     RESUME_CONTEXT: [{ CONTEXT_ITEM: 'Review the generated memory heading and metadata title.' }],
+    ...overrides,
   };
 }
 
@@ -202,6 +205,141 @@ describe('rendered memory fixture regression', () => {
 
       expect(validation.failedRules).toEqual([]);
       expect(validation.valid).toBe(true);
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('falls back to the folder-base slug when prompt and spec title are contaminated or generic', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-fixture-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '015-memory-render-guardrails');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+      fs.writeFileSync(
+        path.join(specFolderPath, 'spec.md'),
+        [
+          '---',
+          'title: "Spec: To promote a memory to constitutional tier (always surfaced)"',
+          '---',
+          '# Spec',
+        ].join('\n'),
+        'utf-8'
+      );
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          _source: 'opencode-capture',
+          userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:25:00Z' }],
+          observations: [
+            {
+              timestamp: '2026-03-06T09:25:30Z',
+              narrative: 'Table of Contents',
+              facts: ['Tool: Read File: scripts/core/workflow.ts Result: development session'],
+              files: [],
+            },
+          ],
+        },
+        collectSessionDataFn: async (_input, specFolderName) => createSessionData(
+          specFolderName || '015-memory-render-guardrails',
+          {
+            TITLE: 'Development session',
+            SUMMARY: 'Table of Contents',
+            QUICK_SUMMARY: 'Implementation and updates',
+          }
+        ),
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+      const validation = validateMemoryQualityContent(rendered);
+      const frontmatterTitle = rendered.match(/^title:\s*"([^"]+)"$/m)?.[1] ?? '';
+      const heading = rendered.match(/^#\s+(.+)$/m)?.[1] ?? '';
+
+      expect(result.contextFilename).toBe('06-03-26_09-30__memory-render-guardrails.md');
+      expect(result.contextFilename).not.toContain('development-session');
+      expect(result.contextFilename).not.toContain('promote-a-memory');
+      expect(result.contextFilename).not.toContain('constitutional-tier');
+      expect(result.contextFilename).not.toContain('always-surfaced');
+
+      expect(heading).not.toMatch(/development session|to promote a memory|constitutional tier|always surfaced/i);
+      expect(frontmatterTitle).not.toMatch(/development session|to promote a memory|constitutional tier|always surfaced/i);
+
+      expect(validation.valid).toBe(true);
+      expect(validation.failedRules).toEqual([]);
+    } finally {
+      CONFIG.TEMPLATE_DIR = previousTemplateDir;
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('renders direct preloaded saves without placeholder leakage and with a non-zero tool count', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-render-direct-'));
+    const { CONFIG } = await import('../core');
+    const previousTemplateDir = CONFIG.TEMPLATE_DIR;
+    const templatesDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'templates');
+
+    try {
+      const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
+      const contextDir = path.join(specFolderPath, 'memory');
+      fs.mkdirSync(contextDir, { recursive: true });
+
+      workflowHarness.specFolderPath = specFolderPath;
+      workflowHarness.contextDir = contextDir;
+      CONFIG.TEMPLATE_DIR = templatesDir;
+
+      const { runWorkflow } = await import('../core/workflow');
+      const result = await runWorkflow({
+        collectedData: {
+          SPEC_FOLDER: '022-hybrid-rag-fusion',
+          userPrompts: [
+            {
+              prompt: 'Retry the indexed direct save render quality closure for hybrid rag fusion.',
+              timestamp: '2026-03-06T13:57:00Z',
+            },
+          ],
+          recentContext: [
+            {
+              request: 'Finalize direct save render quality closure',
+              learning: 'Direct save render quality closure for hybrid RAG fusion indexing',
+            },
+          ],
+          observations: [
+            {
+              title: 'Direct save render quality closure for hybrid rag',
+              narrative: 'Specific title should survive the direct preloaded collector path and keep the indexed save non-generic.',
+              facts: [
+                'Tool: read File: scripts/extractors/collect-session-data.ts Result: inspected quick summary derivation',
+                'Tool: bash File: scripts/tests/memory-render-fixture.vitest.ts Result: validated direct save quality output',
+              ],
+              files: ['scripts/extractors/collect-session-data.ts', 'scripts/tests/memory-render-fixture.vitest.ts'],
+              timestamp: '2026-03-06T13:57:30Z',
+            },
+          ],
+        },
+        silent: true,
+      });
+
+      const rendered = fs.readFileSync(path.join(result.contextDir, result.contextFilename), 'utf-8');
+      const validation = validateMemoryQualityContent(rendered);
+
+      expect(result.contextFilename).toContain('__direct-save-render-quality-closure-for-hybrid-rag.md');
+      expect(result.contextFilename).not.toContain('__hybrid-rag-fusion.md');
+      expect(rendered).not.toContain('## PREFLIGHT BASELINE');
+      expect(rendered).not.toContain('## POSTFLIGHT LEARNING DELTA');
+      expect(rendered).not.toMatch(/\|\s*Tool Executions\s*\|\s*0\s*\|/);
+      expect(validation.valid).toBe(true);
+      expect(validation.failedRules).toEqual([]);
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;
       fs.rmSync(tempRoot, { recursive: true, force: true });

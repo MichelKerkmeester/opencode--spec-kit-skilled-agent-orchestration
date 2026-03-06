@@ -8,7 +8,15 @@ import * as path from 'path';
 import * as fsSync from 'fs';
 
 // Internal modules
-import { CONFIG, findActiveSpecsDir, getSpecsDirectories, SPEC_FOLDER_PATTERN, SPEC_FOLDER_BASIC_PATTERN, findChildFolderSync } from '../core';
+import {
+  CONFIG,
+  findActiveSpecsDir,
+  getSpecsDirectories,
+  SPEC_FOLDER_PATTERN,
+  SPEC_FOLDER_BASIC_PATTERN,
+  findChildFolderSync,
+  getPhaseFolderRejectionSync,
+} from '../core';
 import { runWorkflow } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
 import { collectSessionData } from '../extractors/collect-session-data';
@@ -54,6 +62,11 @@ Subfolder examples:
 Output:
   Creates a memory file in <spec-folder>/memory/ with ANCHOR format
   for indexing by the Spec Kit Memory system.
+
+Direct CLI target rule:
+  - When a spec folder is passed on the CLI, that explicit target is authoritative.
+  - Session learning, JSON SPEC_FOLDER fields, and auto-detect may inform logging,
+    but they must not reroute the save to another folder.
 
 JSON Data Format (with preflight/postflight support):
   {
@@ -185,12 +198,22 @@ function parseArguments(): void {
   if (!primaryArg) return;
 
   const folderName = path.basename(primaryArg);
+  const explicitProjectScopedPath = !primaryArg.endsWith('.json') && (
+    primaryArg.startsWith('specs/') ||
+    primaryArg.startsWith('.opencode/specs/')
+  )
+    ? path.join(CONFIG.PROJECT_ROOT, primaryArg)
+    : null;
 
   // --- Subfolder support: detect nested parent/child spec paths ---
   // Check if arg1 is a nested spec path (e.g., "003-parent/121-child",
   // "specs/003-parent/121-child", ".opencode/specs/003-parent/121-child")
   let resolvedNestedPath: string | null = null;
   if (!primaryArg.endsWith('.json')) {
+    if (path.isAbsolute(primaryArg) && fsSync.existsSync(primaryArg)) {
+      resolvedNestedPath = primaryArg;
+    }
+
     let cleaned = primaryArg;
     // Strip known prefixes to get the relative portion
     if (cleaned.startsWith('.opencode/specs/')) {
@@ -201,9 +224,13 @@ function parseArguments(): void {
     // Remove trailing slashes
     cleaned = cleaned.replace(/\/+$/, '');
 
+    if (!resolvedNestedPath && explicitProjectScopedPath && fsSync.existsSync(explicitProjectScopedPath)) {
+      resolvedNestedPath = explicitProjectScopedPath;
+    }
+
     // Check if cleaned is a multi-segment path (e.g., "parent/child" or "category/parent/child")
     const segments = cleaned.split('/');
-    if (segments.length >= 2) {
+    if (!resolvedNestedPath && segments.length >= 2) {
       // Try to resolve the full segment path under known specs directories
       for (const specsDir of getSpecsDirectories()) {
         const candidate = path.join(specsDir, ...segments);
@@ -325,6 +352,65 @@ function validateArguments(): void {
   process.exit(1);
 }
 
+function resolveExplicitCliSpecFolderPath(specFolderArg: string): string | null {
+  if (!specFolderArg || specFolderArg.endsWith('.json')) {
+    return null;
+  }
+
+  if (path.isAbsolute(specFolderArg) && fsSync.existsSync(specFolderArg)) {
+    return specFolderArg;
+  }
+
+  const explicitProjectScopedPath = (
+    specFolderArg.startsWith('specs/') ||
+    specFolderArg.startsWith('.opencode/specs/')
+  )
+    ? path.join(CONFIG.PROJECT_ROOT, specFolderArg)
+    : null;
+
+  if (explicitProjectScopedPath && fsSync.existsSync(explicitProjectScopedPath)) {
+    return explicitProjectScopedPath;
+  }
+
+  let cleaned = specFolderArg;
+  if (cleaned.startsWith('.opencode/specs/')) {
+    cleaned = cleaned.slice('.opencode/specs/'.length);
+  } else if (cleaned.startsWith('specs/')) {
+    cleaned = cleaned.slice('specs/'.length);
+  }
+  cleaned = cleaned.replace(/\/+$/, '');
+
+  const segments = cleaned.split('/').filter(Boolean);
+  if (segments.length >= 2) {
+    for (const specsDir of getSpecsDirectories()) {
+      const candidate = path.join(specsDir, ...segments);
+      if (fsSync.existsSync(candidate)) {
+        return candidate;
+      }
+    }
+  }
+
+  return null;
+}
+
+function rejectExplicitPhaseFolderTarget(): void {
+  if (!CONFIG.SPEC_FOLDER_ARG) {
+    return;
+  }
+
+  const resolvedPath = resolveExplicitCliSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
+  if (!resolvedPath) {
+    return;
+  }
+
+  const rejection = getPhaseFolderRejectionSync(resolvedPath);
+  if (!rejection) {
+    return;
+  }
+
+  throw new Error(rejection.message);
+}
+
 // ---------------------------------------------------------------
 // 5. MAIN ENTRY POINT
 // ---------------------------------------------------------------
@@ -335,14 +421,17 @@ async function main(): Promise<void> {
   try {
     parseArguments();
     validateArguments();
+    rejectExplicitPhaseFolderTarget();
 
     await runWorkflow({
+      dataFile: CONFIG.DATA_FILE ?? undefined,
+      specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined,
       loadDataFn: loadCollectedData,
       collectSessionDataFn: collectSessionData,
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
-    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected/.test(errMsg);
+    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Direct memory saves cannot target a phase folder/.test(errMsg);
 
     if (isExpected) {
       console.error(`\nError: ${errMsg}`);

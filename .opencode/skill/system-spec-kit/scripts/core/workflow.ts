@@ -350,6 +350,24 @@ function extractSpecTitle(specFolderPath: string): string {
   }
 }
 
+let workflowRunQueue: Promise<void> = Promise.resolve();
+
+async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): Promise<TResult> {
+  const priorRun = workflowRunQueue;
+  let releaseCurrentRun: () => void = () => undefined;
+  workflowRunQueue = new Promise<void>((resolve) => {
+    releaseCurrentRun = resolve;
+  });
+
+  await priorRun;
+
+  try {
+    return await operation();
+  } finally {
+    releaseCurrentRun();
+  }
+}
+
 function injectQualityMetadata(content: string, qualityScore: number, qualityFlags: string[]): string {
   const yamlBlockMatch = content.match(/```yaml\n([\s\S]*?)\n```/);
   if (!yamlBlockMatch) {
@@ -374,35 +392,35 @@ function injectQualityMetadata(content: string, qualityScore: number, qualityFla
 ------------------------------------------------------------------*/
 
 async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResult> {
-  const {
-    dataFile,
-    specFolderArg,
-    collectedData: preloadedData,
-    loadDataFn,
-    collectSessionDataFn,
-    silent = false
-  } = options;
+  return withWorkflowRunLock(async () => {
+    const {
+      dataFile,
+      specFolderArg,
+      collectedData: preloadedData,
+      loadDataFn,
+      collectSessionDataFn,
+      silent = false
+    } = options;
 
-  const priorDataFile = CONFIG.DATA_FILE;
-  const priorSpecFolderArg = CONFIG.SPEC_FOLDER_ARG;
-  const hasDirectInvocationContext = (
-    dataFile !== undefined ||
-    specFolderArg !== undefined ||
-    preloadedData !== undefined ||
-    loadDataFn !== undefined
-  );
-  const activeDataFile = dataFile ?? (hasDirectInvocationContext ? null : CONFIG.DATA_FILE);
-  const activeSpecFolderArg = specFolderArg ?? (hasDirectInvocationContext ? null : CONFIG.SPEC_FOLDER_ARG);
+    const priorDataFile = CONFIG.DATA_FILE;
+    const priorSpecFolderArg = CONFIG.SPEC_FOLDER_ARG;
+    const hasDirectDataContext = (
+      dataFile !== undefined ||
+      preloadedData !== undefined ||
+      loadDataFn !== undefined
+    );
+    const activeDataFile = dataFile ?? (hasDirectDataContext ? null : CONFIG.DATA_FILE);
+    const activeSpecFolderArg = specFolderArg ?? (hasDirectDataContext ? null : CONFIG.SPEC_FOLDER_ARG);
 
 
-  const log = silent ? (): void => {} : console.log.bind(console);
-  const warn = silent ? (): void => {} : console.warn.bind(console);
+    const log = silent ? (): void => {} : console.log.bind(console);
+    const warn = silent ? (): void => {} : console.warn.bind(console);
 
-  log('Starting memory skill workflow...\n');
-  CONFIG.DATA_FILE = activeDataFile;
-  CONFIG.SPEC_FOLDER_ARG = activeSpecFolderArg;
+    log('Starting memory skill workflow...\n');
+    CONFIG.DATA_FILE = activeDataFile;
+    CONFIG.SPEC_FOLDER_ARG = activeSpecFolderArg;
 
-  try {
+    try {
     // Step 1: Load collected data
     log('Step 1: Loading collected data...');
 
@@ -609,7 +627,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }
 
-  const preferredMemoryTask = pickPreferredMemoryTask(enrichedTask || '', specTitle, folderBase);
+  const preferredMemoryTask = pickPreferredMemoryTask(
+    enrichedTask || '',
+    specTitle,
+    folderBase,
+    [
+      sessionData.QUICK_SUMMARY || '',
+      sessionData.TITLE || '',
+      sessionData.SUMMARY || '',
+    ]
+  );
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase);
   const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
 
@@ -865,25 +892,26 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   log();
 
-    return {
-      contextDir,
-      specFolder,
-      specFolderName,
-      contextFilename: ctxFilename,
-      writtenFiles,
-      memoryId,
-      stats: {
-        messageCount: conversations.MESSAGES.length,
-        decisionCount: decisions.DECISIONS.length,
-        diagramCount: diagrams.DIAGRAMS.length,
-        qualityScore: qualityResult.score,
-        isSimulation
-      }
-    };
-  } finally {
-    CONFIG.DATA_FILE = priorDataFile;
-    CONFIG.SPEC_FOLDER_ARG = priorSpecFolderArg;
-  }
+      return {
+        contextDir,
+        specFolder,
+        specFolderName,
+        contextFilename: ctxFilename,
+        writtenFiles,
+        memoryId,
+        stats: {
+          messageCount: conversations.MESSAGES.length,
+          decisionCount: decisions.DECISIONS.length,
+          diagramCount: diagrams.DIAGRAMS.length,
+          qualityScore: qualityResult.score,
+          isSimulation
+        }
+      };
+    } finally {
+      CONFIG.DATA_FILE = priorDataFile;
+      CONFIG.SPEC_FOLDER_ARG = priorSpecFolderArg;
+    }
+  });
 }
 
 /* -----------------------------------------------------------------

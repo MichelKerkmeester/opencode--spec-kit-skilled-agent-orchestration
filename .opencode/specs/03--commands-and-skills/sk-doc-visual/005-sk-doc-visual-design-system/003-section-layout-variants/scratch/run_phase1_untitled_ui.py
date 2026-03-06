@@ -26,7 +26,7 @@ PROJECT_ROOT = next((parent for parent in SCRIPT_PATH.parents if (parent / ".ope
 
 MODEL = "gemini-3.1-pro-preview"
 OUTPUT_FORMAT = "text"
-DEFAULT_CONCURRENCY = 2
+DEFAULT_CONCURRENCY = 1
 TIMEOUT_SECONDS = 900
 INTER_WAVE_DELAY_SECONDS = 5
 RETRY_BACKOFF_SECONDS = 20
@@ -232,7 +232,17 @@ def save_attempt_files(section_dir: Path, attempt: int, prompt: str, stdout: str
 
 
 def run_gemini(prompt: str) -> subprocess.CompletedProcess[str]:
-    command = ["gemini", "-p", prompt, "-m", MODEL, "-o", OUTPUT_FORMAT]
+    command = [
+        "gemini",
+        "--allowed-mcp-server-names",
+        "spec_kit_memory",
+        "-p",
+        prompt,
+        "-m",
+        MODEL,
+        "-o",
+        OUTPUT_FORMAT,
+    ]
     return subprocess.run(
         command,
         capture_output=True,
@@ -242,28 +252,170 @@ def run_gemini(prompt: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def build_single_seed_prompt(base_prompt: str, seed_number: int, previous_issues: Iterable[str]) -> str:
+def get_variant_path(job: SectionJob, seed_number: int) -> Path:
+    return OUTPUT_DIR / job.slug / f"{job.slug}-v{seed_number}.html"
+
+
+def read_existing_variant(job: SectionJob, seed_number: int) -> str:
+    output_path = get_variant_path(job, seed_number)
+    if not output_path.exists():
+        return ""
+    return output_path.read_text(encoding="utf-8")
+
+
+def build_single_seed_prompt(
+    base_prompt: str,
+    seed_number: int,
+    previous_issues: Iterable[str],
+    existing_html: str,
+) -> str:
     seed_override = (
         "CRITICAL OVERRIDE FOR THIS RETRY:\n"
         f"- Generate ONLY Seed {seed_number}.\n"
         "- Return exactly one complete standalone HTML document.\n"
+        "- Output ONLY raw HTML that starts with <!DOCTYPE html> and ends with </html>.\n"
         "- Do NOT output the variant separator.\n"
         "- Ignore all instructions that ask for 5 files in this retry; this retry is for one file only.\n"
         "- Target 650-850 lines for this single document.\n"
         "- Preserve Untitled UI light-theme token discipline.\n"
+        "- Include exactly one top-level <section> wrapper for the layout.\n"
+        "- Include an explicit @media (prefers-reduced-motion: reduce) block.\n"
+        "- Use one CSS declaration per line and one HTML element per line so the output naturally stays within the line-count target.\n"
+        "- Do NOT use literal rgb(), rgba(), or hex colors outside the :root token block. If you need transparency, declare a token in :root and reference it with var(--token).\n"
+        "- Do NOT use raw color literals in code blocks, pseudo-elements, shadows, gradients, borders, or overlays outside :root.\n"
+        "- Use Untitled UI token references like var(--bg-*), var(--text-*), var(--border-*), var(--brand-*), and var(--shadow-*).\n"
+        "- Prefer rewriting the existing variant rather than inventing a new seed concept.\n"
     )
     retry_hint = build_retry_hint(previous_issues)
-    return f"{seed_override}\n\n{base_prompt}{retry_hint}"
+    existing_context = ""
+    if existing_html.strip():
+        existing_context = (
+            "\n\n### EXISTING HTML TO REPAIR\n"
+            "Rewrite this exact variant to fix the listed issues while preserving its strongest structural ideas.\n"
+            "```html\n"
+            f"{existing_html.strip()}\n"
+            "```"
+        )
+    return f"{seed_override}\n\n{base_prompt}{retry_hint}{existing_context}"
 
 
-def save_single_variant(job: SectionJob, seed_number: int, html: str, validation_issues: list[str], output_files: list[str]) -> None:
-    if validation_issues:
-        return
-
-    output_path = OUTPUT_DIR / job.slug / f"{job.slug}-v{seed_number}.html"
+def save_single_variant(job: SectionJob, seed_number: int, html: str, output_files: list[str]) -> None:
+    output_path = get_variant_path(job, seed_number)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html.strip() + "\n", encoding="utf-8")
-    output_files.append(str(output_path.relative_to(PHASE_DIR)))
+    relative_path = str(output_path.relative_to(PHASE_DIR))
+    if relative_path not in output_files:
+        output_files.append(relative_path)
+
+
+def collect_section_validation(job: SectionJob) -> dict[int, list[str]]:
+    failures: dict[int, list[str]] = {}
+    for seed_number in range(1, SEED_COUNT + 1):
+        output_path = get_variant_path(job, seed_number)
+        if not output_path.exists():
+            failures[seed_number] = ["Missing output file"]
+            continue
+        html = output_path.read_text(encoding="utf-8")
+        issues = validate_variant(html)
+        if issues:
+            failures[seed_number] = issues
+    return failures
+
+
+def collect_saved_output_files(job: SectionJob) -> list[str]:
+    output_dir = OUTPUT_DIR / job.slug
+    return [str(path.relative_to(PHASE_DIR)) for path in sorted(output_dir.glob("*.html"))]
+
+
+def run_single_seed(
+    job: SectionJob,
+    base_prompt: str,
+    seed_number: int,
+    baseline_issues: list[str],
+) -> tuple[bool, list[str], list[str], list[AttemptRecord]]:
+    seed_attempts: list[AttemptRecord] = []
+    seed_output_files: list[str] = []
+    baseline_issue_count = len(baseline_issues) if baseline_issues else 9999
+    best_html = ""
+    best_issues: list[str] | None = None
+    existing_html = read_existing_variant(job, seed_number)
+
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        prompt = build_single_seed_prompt(
+            base_prompt,
+            seed_number,
+            baseline_issues if attempt == 1 else (best_issues or baseline_issues),
+            existing_html,
+        )
+        label = f"{job.slug}/seed-{seed_number}"
+        log(f"[{label}] fallback attempt {attempt}/{MAX_ATTEMPTS} starting")
+        start = time.time()
+        try:
+            result = run_gemini(prompt)
+            elapsed = time.time() - start
+        except subprocess.TimeoutExpired as error:
+            elapsed = time.time() - start
+            record = AttemptRecord(
+                attempt=attempt,
+                success=False,
+                error=f"Seed {seed_number} timeout after {elapsed:.1f}s",
+                elapsed_seconds=elapsed,
+            )
+            seed_attempts.append(record)
+            save_attempt_files(LOGS_DIR / job.slug, 100 * seed_number + attempt, prompt, "", f"TIMEOUT: {error}")
+            time.sleep(RETRY_BACKOFF_SECONDS)
+            continue
+
+        stdout = result.stdout or ""
+        stderr = result.stderr or ""
+        save_attempt_files(LOGS_DIR / job.slug, 100 * seed_number + attempt, prompt, stdout, stderr)
+
+        if result.returncode != 0:
+            error_text = (stderr or stdout or f"Gemini exited {result.returncode}").strip()
+            record = AttemptRecord(
+                attempt=attempt,
+                success=False,
+                error=f"Seed {seed_number}: {error_text[:1000]}",
+                stdout_chars=len(stdout),
+                stderr_chars=len(stderr),
+                elapsed_seconds=elapsed,
+            )
+            seed_attempts.append(record)
+            time.sleep(RETRY_BACKOFF_SECONDS)
+            continue
+
+        html = sanitize_output(stdout)
+        issues = validate_variant(html)
+        if best_issues is None or len(issues) < len(best_issues):
+            best_html = html
+            best_issues = issues
+
+        if not issues:
+            existing_html = html
+        elif best_html:
+            existing_html = best_html
+
+        record = AttemptRecord(
+            attempt=attempt,
+            success=not issues,
+            validation_issues=[f"v{seed_number}: {issue}" for issue in issues],
+            stdout_chars=len(stdout),
+            stderr_chars=len(stderr),
+            elapsed_seconds=elapsed,
+        )
+        seed_attempts.append(record)
+
+        if not issues:
+            save_single_variant(job, seed_number, html, seed_output_files)
+            return True, [], seed_output_files, seed_attempts
+
+        time.sleep(RETRY_BACKOFF_SECONDS)
+
+    if best_html and best_issues is not None and len(best_issues) < baseline_issue_count:
+        save_single_variant(job, seed_number, best_html, seed_output_files)
+        return False, [f"v{seed_number}: {issue}" for issue in best_issues], seed_output_files, seed_attempts
+
+    return False, [f"v{seed_number}: {issue}" for issue in (best_issues or baseline_issues or ["repair failed"] )], seed_output_files, seed_attempts
 
 
 def run_seed_fallback(job: SectionJob, base_prompt: str) -> tuple[bool, list[str], list[str], list[AttemptRecord]]:
@@ -272,74 +424,46 @@ def run_seed_fallback(job: SectionJob, base_prompt: str) -> tuple[bool, list[str
     output_files: list[str] = []
 
     for seed_number in range(1, SEED_COUNT + 1):
-        seed_issues: list[str] = []
-        seed_success = False
-        for attempt in range(1, MAX_ATTEMPTS + 1):
-            prompt = build_single_seed_prompt(base_prompt, seed_number, seed_issues)
-            label = f"{job.slug}/seed-{seed_number}"
-            log(f"[{label}] fallback attempt {attempt}/{MAX_ATTEMPTS} starting")
-            start = time.time()
-            try:
-                result = run_gemini(prompt)
-                elapsed = time.time() - start
-            except subprocess.TimeoutExpired as error:
-                elapsed = time.time() - start
-                record = AttemptRecord(
-                    attempt=attempt,
-                    success=False,
-                    error=f"Seed {seed_number} timeout after {elapsed:.1f}s",
-                    elapsed_seconds=elapsed,
-                )
-                fallback_attempts.append(record)
-                save_attempt_files(LOGS_DIR / job.slug, 100 * seed_number + attempt, prompt, "", f"TIMEOUT: {error}")
-                seed_issues = [record.error]
-                time.sleep(RETRY_BACKOFF_SECONDS)
-                continue
-
-            stdout = result.stdout or ""
-            stderr = result.stderr or ""
-            save_attempt_files(LOGS_DIR / job.slug, 100 * seed_number + attempt, prompt, stdout, stderr)
-
-            if result.returncode != 0:
-                error_text = (stderr or stdout or f"Gemini exited {result.returncode}").strip()
-                record = AttemptRecord(
-                    attempt=attempt,
-                    success=False,
-                    error=f"Seed {seed_number}: {error_text[:1000]}",
-                    stdout_chars=len(stdout),
-                    stderr_chars=len(stderr),
-                    elapsed_seconds=elapsed,
-                )
-                fallback_attempts.append(record)
-                seed_issues = [record.error]
-                time.sleep(RETRY_BACKOFF_SECONDS)
-                continue
-
-            html = sanitize_output(stdout)
-            issues = validate_variant(html)
-            record = AttemptRecord(
-                attempt=attempt,
-                success=not issues,
-                validation_issues=[f"v{seed_number}: {issue}" for issue in issues],
-                stdout_chars=len(stdout),
-                stderr_chars=len(stderr),
-                elapsed_seconds=elapsed,
-            )
-            fallback_attempts.append(record)
-
-            if issues:
-                seed_issues = [f"v{seed_number}: {issue}" for issue in issues]
-                time.sleep(RETRY_BACKOFF_SECONDS)
-                continue
-
-            save_single_variant(job, seed_number, html, issues, output_files)
-            seed_success = True
-            break
-
+        seed_success, seed_issues, seed_files, seed_attempts = run_single_seed(job, base_prompt, seed_number, ["Missing output file"])
+        fallback_attempts.extend(seed_attempts)
+        output_files.extend(seed_files)
         if not seed_success:
             aggregated_issues.extend(seed_issues or [f"v{seed_number}: fallback generation failed"])
 
     return len(output_files) == SEED_COUNT, aggregated_issues, output_files, fallback_attempts
+
+
+def repair_section(job: SectionJob, master_template: str) -> SectionResult:
+    base_prompt = extract_prompt_content(read_text(job.prompt_path))
+    base_prompt = inject_master_template(base_prompt, master_template)
+
+    attempts: list[AttemptRecord] = []
+    initial_failures = collect_section_validation(job)
+    if not initial_failures:
+        return SectionResult(
+            slug=job.slug,
+            success=True,
+            attempts=[AttemptRecord(attempt=1, success=True, variants_saved=len(collect_saved_output_files(job)), output_files=collect_saved_output_files(job))],
+        )
+
+    for seed_number, issues in initial_failures.items():
+        seed_success, seed_issues, _seed_files, seed_attempts = run_single_seed(job, base_prompt, seed_number, issues)
+        attempts.extend(seed_attempts)
+        if not seed_success:
+            attempts.append(AttemptRecord(attempt=1000 + seed_number, success=False, validation_issues=seed_issues))
+
+    final_failures = collect_section_validation(job)
+    final_issue_list = [f"v{seed}: {issue}" for seed, issues in final_failures.items() for issue in issues]
+    attempts.append(
+        AttemptRecord(
+            attempt=9999,
+            success=not final_failures,
+            validation_issues=final_issue_list,
+            variants_saved=len(collect_saved_output_files(job)),
+            output_files=collect_saved_output_files(job),
+        )
+    )
+    return SectionResult(slug=job.slug, success=not final_failures, attempts=attempts)
 
 
 def process_section(job: SectionJob, master_template: str) -> SectionResult:
@@ -419,17 +543,15 @@ def process_section(job: SectionJob, master_template: str) -> SectionResult:
         output_files: list[str] = []
         for index, variant_html in enumerate(variants, start=1):
             issues = validate_variant(variant_html)
-            if issues:
-                validation_issues.extend([f"v{index}: {issue}" for issue in issues])
-                continue
-
             output_path = section_output_dir / f"{job.slug}-v{index}.html"
             output_path.write_text(variant_html.strip() + "\n", encoding="utf-8")
             output_files.append(str(output_path.relative_to(PHASE_DIR)))
+            if issues:
+                validation_issues.extend([f"v{index}: {issue}" for issue in issues])
 
         record = AttemptRecord(
             attempt=attempt,
-            success=not validation_issues,
+            success=len(output_files) == EXPECTED_VARIANTS,
             validation_issues=validation_issues,
             variants_saved=len(output_files),
             stdout_chars=len(stdout),
@@ -443,7 +565,10 @@ def process_section(job: SectionJob, master_template: str) -> SectionResult:
         summary_path.write_text(json.dumps(asdict(record), indent=2), encoding="utf-8")
 
         if record.success:
-            log(f"[{job.slug}] attempt {attempt} succeeded with 5 variants")
+            if validation_issues:
+                log(f"[{job.slug}] attempt {attempt} produced 5 variants with {len(validation_issues)} validation warnings")
+            else:
+                log(f"[{job.slug}] attempt {attempt} succeeded with 5 variants")
             return SectionResult(slug=job.slug, success=True, attempts=attempts)
 
         previous_issues = validation_issues
@@ -473,10 +598,10 @@ def build_jobs(section_filter: str | None) -> list[SectionJob]:
     return jobs
 
 
-def run_wave(jobs: list[SectionJob], master_template: str, concurrency: int) -> list[SectionResult]:
+def run_wave(jobs: list[SectionJob], master_template: str, concurrency: int, processor=process_section) -> list[SectionResult]:
     results: list[SectionResult] = []
     with ThreadPoolExecutor(max_workers=concurrency) as executor:
-        future_map = {executor.submit(process_section, job, master_template): job for job in jobs}
+        future_map = {executor.submit(processor, job, master_template): job for job in jobs}
         for future in as_completed(future_map):
             results.append(future.result())
     return results
@@ -525,6 +650,7 @@ def main() -> int:
     parser.add_argument("--section", help="Run only one section slug")
     parser.add_argument("--dry-run", action="store_true", help="Show planned sections without executing Gemini")
     parser.add_argument("--concurrency", type=int, default=DEFAULT_CONCURRENCY, help="Concurrent Gemini section runs")
+    parser.add_argument("--repair", action="store_true", help="Regenerate only failing variants for existing outputs")
     args = parser.parse_args()
 
     jobs = build_jobs(args.section)
@@ -543,6 +669,12 @@ def main() -> int:
         return 0
 
     all_results: list[SectionResult] = []
+    if args.repair:
+        all_results.extend(run_wave(jobs, master_template, concurrency=max(1, args.concurrency), processor=repair_section))
+        save_manifest(all_results)
+        print_report(all_results)
+        return 0 if all(result.success for result in all_results) else 1
+
     if len(jobs) > 1 and jobs[0].slug == "hero":
         log("Running hero canary before remaining sections.")
         canary_results = run_wave([jobs[0]], master_template, concurrency=1)

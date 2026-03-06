@@ -1,70 +1,39 @@
 {
   "model": "gemini-3.1-pro-preview",
-  "timestamp": "2026-03-06T11:45:40",
+  "timestamp": "2026-03-06T15:25:11",
   "phase": "phase-1-untitled-ui",
   "sections": [
     {
-      "slug": "hero",
-      "success": false,
+      "slug": "related-documents",
+      "success": true,
       "attempts": [
         {
           "attempt": 1,
-          "success": false,
+          "success": true,
           "error": "",
-          "validation_issues": [
-            "v1: Line count out of range: 525 (expected 600-900)",
-            "v1: Found raw rgb/rgba color outside :root block",
-            "v2: Line count out of range: 459 (expected 600-900)",
-            "v2: Found raw rgb/rgba color outside :root block",
-            "v3: Line count out of range: 307 (expected 600-900)",
-            "v3: Found raw rgb/rgba color outside :root block",
-            "v4: Line count out of range: 318 (expected 600-900)",
-            "v4: Found raw rgb/rgba color outside :root block",
-            "v5: Missing semantic <section> element",
-            "v5: Line count out of range: 351 (expected 600-900)",
-            "v5: Found raw rgb/rgba color outside :root block"
-          ],
-          "variants_saved": 0,
-          "stdout_chars": 62385,
-          "stderr_chars": 5545,
-          "elapsed_seconds": 226.13667511940002,
-          "output_files": []
-        },
-        {
-          "attempt": 2,
-          "success": false,
-          "error": "",
-          "validation_issues": [
-            "v5: Missing prefers-reduced-motion media query",
-            "v5: Missing semantic <section> element",
-            "v5: Missing skeumorphic ::before styling",
-            "v5: Missing CSS variable usage",
-            "v5: Missing required Untitled UI token vocabulary",
-            "v5: Missing shadow token usage",
-            "v5: Line count out of range: 34 (expected 600-900)",
-            "v5: Found raw rgb/rgba color outside :root block"
-          ],
-          "variants_saved": 4,
-          "stdout_chars": 102868,
-          "stderr_chars": 5545,
-          "elapsed_seconds": 825.8054358959198,
-          "output_files": [
-            "output-from-gemini/hero/hero-v1.html",
-            "output-from-gemini/hero/hero-v2.html",
-            "output-from-gemini/hero/hero-v3.html",
-            "output-from-gemini/hero/hero-v4.html"
-          ]
-        },
-        {
-          "attempt": 3,
-          "success": false,
-          "error": "Expected 5 variants but parsed 4",
           "validation_issues": [],
           "variants_saved": 0,
-          "stdout_chars": 104445,
-          "stderr_chars": 5545,
-          "elapsed_seconds": 571.2316401004791,
+          "stdout_chars": 34574,
+          "stderr_chars": 4568,
+          "elapsed_seconds": 191.93836784362793,
           "output_files": []
+        },
+        {
+          "attempt": 9999,
+          "success": true,
+          "error": "",
+          "validation_issues": [],
+          "variants_saved": 5,
+          "stdout_chars": 0,
+          "stderr_chars": 0,
+          "elapsed_seconds": 0.0,
+          "output_files": [
+            "output-from-gemini/related-documents/related-documents-v1.html",
+            "output-from-gemini/related-documents/related-documents-v2.html",
+            "output-from-gemini/related-documents/related-documents-v3.html",
+            "output-from-gemini/related-documents/related-documents-v4.html",
+            "output-from-gemini/related-documents/related-documents-v5.html"
+          ]
         }
       ]
     }

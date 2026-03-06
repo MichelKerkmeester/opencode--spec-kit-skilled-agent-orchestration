@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <title>Hero Section — UntitledUI Variant 2</title>
+  <title>Hero — UntitledUI Variant 2 (Split Panel)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -76,79 +76,6 @@
       --brand-900: rgb(66 48 125);
       --brand-950: rgb(44 28 95);
 
-      /* GRAY SCALE */
-      --gray-25: rgb(253 253 253);
-      --gray-50: rgb(250 250 250);
-      --gray-100: rgb(245 245 245);
-      --gray-200: rgb(233 234 235);
-      --gray-300: rgb(213 215 218);
-      --gray-400: rgb(164 167 174);
-      --gray-500: rgb(113 118 128);
-      --gray-600: rgb(83 88 98);
-      --gray-700: rgb(65 70 81);
-      --gray-800: rgb(39 43 51);
-      --gray-900: rgb(24 29 39);
-      --gray-950: rgb(10 13 18);
-
-      /* ERROR SCALE */
-      --error-25: rgb(255 251 250);
-      --error-50: rgb(254 243 242);
-      --error-100: rgb(254 228 226);
-      --error-200: rgb(254 205 202);
-      --error-300: rgb(253 162 155);
-      --error-400: rgb(249 112 102);
-      --error-500: rgb(240 68 56);
-      --error-600: rgb(217 45 32);
-      --error-700: rgb(180 35 24);
-      --error-800: rgb(145 32 24);
-      --error-900: rgb(122 29 25);
-      --error-950: rgb(85 15 10);
-
-      /* WARNING SCALE */
-      --warning-25: rgb(255 252 245);
-      --warning-50: rgb(255 249 235);
-      --warning-100: rgb(254 240 199);
-      --warning-200: rgb(254 223 137);
-      --warning-300: rgb(253 200 75);
-      --warning-400: rgb(253 176 34);
-      --warning-500: rgb(247 144 9);
-      --warning-600: rgb(220 104 3);
-      --warning-700: rgb(181 71 8);
-      --warning-800: rgb(147 55 13);
-      --warning-900: rgb(122 46 14);
-      --warning-950: rgb(78 29 5);
-
-      /* SUCCESS SCALE */
-      --success-25: rgb(246 254 249);
-      --success-50: rgb(236 253 243);
-      --success-100: rgb(209 250 223);
-      --success-200: rgb(166 244 197);
-      --success-300: rgb(108 230 165);
-      --success-400: rgb(50 213 131);
-      --success-500: rgb(18 183 106);
-      --success-600: rgb(7 148 85);
-      --success-700: rgb(8 119 73);
-      --success-800: rgb(9 98 62);
-      --success-900: rgb(12 80 53);
-      --success-950: rgb(5 53 34);
-
-      /* UTILITY COLOR ALIASES */
-      --utility-brand-50: var(--brand-50);
-      --utility-brand-200: var(--brand-200);
-      --utility-brand-700: var(--brand-700);
-      --utility-gray-50: var(--gray-50);
-      --utility-gray-200: var(--gray-200);
-      --utility-gray-700: var(--gray-700);
-      --utility-error-50: var(--error-50);
-      --utility-error-200: var(--error-200);
-      --utility-error-700: var(--error-700);
-      --utility-warning-50: var(--warning-50);
-      --utility-warning-200: var(--warning-200);
-      --utility-warning-700: var(--warning-700);
-      --utility-success-50: var(--success-50);
-      --utility-success-200: var(--success-200);
-      --utility-success-700: var(--success-700);
-
       /* TYPOGRAPHY */
       --font-body: 'Inter', system-ui, -apple-system, sans-serif;
       --font-display: 'Inter', system-ui, -apple-system, sans-serif;
@@ -159,7 +86,6 @@
       --text-md: 1rem;
       --text-lg: 1.125rem;
       --text-xl: 1.25rem;
-
       --display-xs: 1.5rem;
       --display-sm: 1.875rem;
       --display-md: 2.25rem;
@@ -186,353 +112,153 @@
 
       /* SPACING */
       --space-0: 0;
-      --space-0-5: 0.125rem;
       --space-1: 0.25rem;
-      --space-1-5: 0.375rem;
       --space-2: 0.5rem;
-      --space-2-5: 0.625rem;
       --space-3: 0.75rem;
-      --space-3-5: 0.875rem;
       --space-4: 1rem;
       --space-5: 1.25rem;
       --space-6: 1.5rem;
-      --space-7: 1.75rem;
       --space-8: 2rem;
-      --space-9: 2.25rem;
       --space-10: 2.5rem;
-      --space-11: 2.75rem;
       --space-12: 3rem;
-      --space-14: 3.5rem;
       --space-16: 4rem;
-      --space-20: 5rem;
       --space-24: 6rem;
       --space-32: 8rem;
-      --space-40: 10rem;
-      --space-48: 12rem;
-      --space-64: 16rem;
 
       /* BORDER RADIUS */
-      --radius-none: 0px;
-      --radius-xxs: 0.0625rem;
-      --radius-xs: 0.125rem;
       --radius-sm: 0.25rem;
       --radius-md: 0.375rem;
       --radius-lg: 0.5rem;
       --radius-xl: 0.75rem;
       --radius-2xl: 1rem;
-      --radius-3xl: 1.25rem;
-      --radius-4xl: 1.5rem;
       --radius-full: 9999px;
 
       /* SHADOWS */
       --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
       --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1), 0px 1px 2px -1px rgba(10, 13, 18, 0.1);
       --shadow-md: 0px 4px 6px -1px rgba(10, 13, 18, 0.1), 0px 2px 4px -2px rgba(10, 13, 18, 0.06);
-      --shadow-lg: 0px 12px 16px -4px rgba(10, 13, 18, 0.08), 0px 4px 6px -2px rgba(10, 13, 18, 0.03);
-      --shadow-xl: 0px 20px 24px -4px rgba(10, 13, 18, 0.08), 0px 8px 8px -4px rgba(10, 13, 18, 0.03);
-      --shadow-2xl: 0px 24px 48px -12px rgba(10, 13, 18, 0.18);
-      --shadow-3xl: 0px 32px 64px -12px rgba(10, 13, 18, 0.24);
 
-      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
-      --shadow-skeumorphic-inner: 0px 0px 0px 1px rgba(255, 255, 255, 0.12) inset;
-
-      /* FOCUS */
-      --focus-ring: 0 0 0 4px var(--brand-100), 0 0 0 1px var(--brand-600);
-      --focus-ring-error: 0 0 0 4px var(--error-100), 0 0 0 1px var(--error-600);
-
-      /* TRANSITIONS */
-      --transition-fast: 100ms linear;
       --transition-normal: 200ms ease;
-      --transition-slow: 300ms ease;
-
-      /* CONTAINER */
-      --container-max: 1280px;
-      --container-padding: var(--space-8);
     }
 
     /* BASE STYLES */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    html {
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-    }
-    body {
-      font-family: var(--font-body);
-      font-size: var(--text-md);
-      line-height: var(--leading-md);
-      color: var(--text-primary);
-      background: var(--bg-primary);
-    }
-    .page-container {
-      max-width: var(--container-max);
-      margin: 0 auto;
-      padding: 0 var(--container-padding);
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; height: 100%; }
+    body { font-family: var(--font-body); font-size: var(--text-md); line-height: var(--leading-md); color: var(--text-primary); background: var(--bg-primary); height: 100%; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    svg { display: block; flex-shrink: 0; }
+    a { color: var(--text-brand-secondary); text-decoration: none; }
+    a:hover { color: var(--text-brand-primary); text-decoration: underline; }
 
-    /* Accessibility: reduced motion */
-    /*  @media (prefers-reduced-motion: reduce) */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-      }
-    }
-
-    svg {
-      display: block;
-      flex-shrink: 0;
-    }
-    :focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-    a {
-      color: var(--text-brand-secondary);
-      text-decoration: none;
-    }
-    a:hover {
-      color: var(--text-brand-primary);
-      text-decoration: underline;
-    }
-    details summary {
-      cursor: pointer;
-      list-style: none;
-    }
-    details summary::-webkit-details-marker {
-      display: none;
-    }
-
-    /* COMPONENT RECIPES */
-    .featured-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: var(--radius-full);
-      background: var(--bg-brand-secondary);
-      color: var(--fg-brand-primary);
-      flex-shrink: 0;
-    }
-    .featured-icon--sm { width: 32px; height: 32px; }
-    .featured-icon--sm svg { width: 16px; height: 16px; }
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--bg-brand-secondary); color: var(--fg-brand-primary); flex-shrink: 0; }
     .featured-icon--md { width: 40px; height: 40px; }
     .featured-icon--md svg { width: 20px; height: 20px; }
-    .featured-icon--lg { width: 48px; height: 48px; }
-    .featured-icon--lg svg { width: 24px; height: 24px; }
-    .featured-icon--xl { width: 56px; height: 56px; }
-    .featured-icon--xl svg { width: 28px; height: 28px; }
-    .featured-icon--outline {
-      background: var(--bg-primary);
-      border: 1px solid var(--border-secondary);
-      box-shadow: var(--shadow-xs);
-    }
-    .featured-icon--dark {
-      background: var(--bg-brand-solid);
-      color: var(--text-white);
-    }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); color: var(--fg-secondary); }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-1);
-      border-radius: var(--radius-full);
-      font-family: var(--font-body);
-      font-weight: var(--font-medium);
-      white-space: nowrap;
-    }
-    .badge--sm { padding: 2px var(--space-2); font-size: var(--text-xs); line-height: var(--leading-xs); }
-    .badge--md { padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
-    .badge--lg { padding: 4px var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); }
-    .badge--brand { background: var(--utility-brand-50); color: var(--utility-brand-700); box-shadow: inset 0 0 0 1px var(--utility-brand-200); }
-    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
-    .badge--error { background: var(--utility-error-50); color: var(--utility-error-700); box-shadow: inset 0 0 0 1px var(--utility-error-200); }
-    .badge--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
-    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
-    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+    .card { background: var(--bg-primary); border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); padding: var(--space-6); transition: box-shadow var(--transition-normal), border-color var(--transition-normal); cursor: pointer; text-align: left; display: block; width: 100%; }
+    .card:hover { box-shadow: var(--shadow-md); border-color: var(--border-primary); }
 
-    .card {
-      background: var(--bg-primary);
-      border: 1px solid var(--border-secondary);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-sm);
-      padding: var(--space-6);
-      transition: box-shadow var(--transition-normal), border-color var(--transition-normal);
-    }
-    .card:hover {
-      box-shadow: var(--shadow-md);
-      border-color: var(--border-primary);
-    }
-    .card--flush { padding: 0; }
-    .card__header {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-4);
-      margin-bottom: var(--space-4);
-    }
-    .card--brand { border-color: var(--border-brand); }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--space-2);
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-body);
-      font-weight: var(--font-semibold);
-      text-decoration: none;
-      transition: background var(--transition-fast), box-shadow var(--transition-fast);
-      position: relative;
-    }
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      box-shadow: var(--shadow-skeumorphic-inner);
-      pointer-events: none;
-    }
-    .btn--sm { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
-    .btn--md { padding: var(--space-2-5) var(--space-4); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
-    .btn--lg { padding: var(--space-2-5) var(--space-4-5); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
-    .btn--xl { padding: var(--space-3) var(--space-5); font-size: var(--text-md); line-height: var(--leading-md); border-radius: var(--radius-lg); }
-    .btn--primary {
-      background: var(--bg-brand-solid);
-      color: var(--text-white);
-      box-shadow: var(--shadow-xs), var(--shadow-skeumorphic);
-    }
-    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
-    .btn--primary:focus-visible { box-shadow: var(--focus-ring); }
-    .btn--secondary {
-      background: var(--bg-primary);
-      color: var(--text-secondary);
-      box-shadow: var(--shadow-xs);
-      border: 1px solid var(--border-primary);
-    }
-    .btn--secondary::before { display: none; }
-    .btn--secondary:hover { background: var(--bg-primary-hover); color: var(--text-primary); }
-    .btn--secondary:focus-visible { box-shadow: var(--focus-ring); }
-
-    .bg-pattern { position: relative; }
-    .bg-pattern::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M48 0H0v48' fill='none' stroke='%23E9EAEB' stroke-width='1'/%3E%3C/svg%3E");
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .bg-pattern > * { position: relative; z-index: 1; }
-
-    .divider {
-      border: none;
-      height: 1px;
-      background: var(--border-secondary);
-      margin: var(--space-8) 0;
-    }
-    .divider--gradient {
-      background: linear-gradient(to right, transparent, var(--border-secondary), transparent);
-    }
-
-    .code-block {
-      background: var(--gray-900);
-      color: var(--gray-100);
-      font-family: var(--font-mono);
-      font-size: var(--text-sm);
-      line-height: var(--leading-sm);
-      padding: var(--space-4);
-      border-radius: var(--radius-xl);
-      overflow-x: auto;
-      border: 1px solid var(--gray-800);
-    }
-    .code-inline {
-      font-family: var(--font-mono);
-      font-size: 0.875em;
-      background: var(--bg-tertiary);
-      color: var(--text-brand-secondary);
-      padding: 2px var(--space-1-5);
-      border-radius: var(--radius-sm);
-    }
-
-    /* === SECTION-SPECIFIC STYLES === */
-    .split-hero {
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      min-height: 80vh;
-      border-radius: var(--radius-2xl);
-      overflow: hidden;
-      margin-top: var(--space-12);
-      margin-bottom: var(--space-12);
-      box-shadow: var(--shadow-2xl);
-      background: var(--bg-primary);
+    /* SECTION SPECIFIC */
+    .hero-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      min-height: 100vh;
     }
     
-    @media (max-width: 1024px) {
-      .split-hero {
-        flex-direction: column;
+    @media (min-width: 1024px) {
+      .hero-split {
+        grid-template-columns: 2fr 3fr;
       }
     }
 
-    .split-hero__left {
-      flex: 0 0 45%;
+    .panel-left {
       background: var(--bg-brand-section);
       color: var(--text-white);
-      padding: var(--space-16) var(--space-12);
+      padding: var(--space-12) var(--space-8);
       display: flex;
       flex-direction: column;
       justify-content: center;
       position: relative;
+      overflow: hidden;
     }
 
-    .split-hero__right {
-      flex: 1;
-      padding: var(--space-16) var(--space-12);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--brand-700) 0%, transparent 70%);
+      opacity: 0.5;
+      pointer-events: none;
     }
 
-    .split-hero__icon {
-      width: 72px;
-      height: 72px;
-      background: var(--brand-700);
-      border-radius: var(--radius-2xl);
+    .brand-logo {
+      margin-bottom: var(--space-16);
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: var(--space-10);
-      color: var(--text-white);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--brand-600);
+      gap: var(--space-2);
+      font-weight: var(--font-bold);
+      font-size: var(--text-xl);
+      z-index: 1;
     }
 
-    .split-hero__title {
+    .panel-left-content {
+      max-width: 480px;
+      z-index: 1;
+    }
+
+    .panel-left-title {
       font-family: var(--font-display);
       font-size: var(--display-lg);
       line-height: var(--leading-display-lg);
       font-weight: var(--font-semibold);
       margin-bottom: var(--space-6);
-      letter-spacing: -0.96px;
+      letter-spacing: -0.02em;
     }
 
-    .split-hero__subtitle {
-      font-size: var(--text-xl);
-      line-height: var(--leading-xl);
+    .panel-left-desc {
+      font-size: var(--text-lg);
+      line-height: var(--leading-lg);
       color: var(--brand-200);
-      margin-bottom: var(--space-12);
     }
 
-    .split-hero__cards {
+    .panel-right {
+      background: var(--bg-secondary-subtle);
+      padding: var(--space-12) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .panel-right-content {
+      max-width: 640px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .right-header {
+      margin-bottom: var(--space-10);
+    }
+
+    .right-title {
+      font-family: var(--font-display);
+      font-size: var(--display-md);
+      line-height: var(--leading-display-md);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .right-desc {
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-secondary);
+    }
+
+    .action-cards {
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
@@ -542,312 +268,117 @@
       display: flex;
       align-items: flex-start;
       gap: var(--space-4);
-      padding: var(--space-6);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-secondary);
-      background: var(--bg-primary);
-      transition: all var(--transition-normal);
       text-decoration: none;
       color: inherit;
     }
 
-    .action-card:hover {
+    .action-card:hover .action-card-arrow {
+      transform: translateX(4px);
+      color: var(--text-brand-secondary);
+    }
+    
+    .action-card:hover .featured-icon {
       border-color: var(--border-brand);
-      box-shadow: var(--shadow-md);
-      transform: translateY(-2px);
+      color: var(--text-brand-secondary);
     }
 
-    .action-card__icon {
-      flex-shrink: 0;
-    }
-
-    .action-card__content {
+    .action-card-body {
       flex: 1;
     }
 
-    .action-card__title {
-      font-size: var(--text-lg);
-      line-height: var(--leading-lg);
+    .action-card-title {
+      font-size: var(--text-md);
       font-weight: var(--font-semibold);
       color: var(--text-primary);
       margin-bottom: var(--space-1);
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
     }
 
-    .action-card__desc {
-      font-size: var(--text-md);
-      color: var(--text-secondary);
+    .action-card-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-sm);
+      color: var(--text-tertiary);
     }
 
-    .action-card__arrow {
+    .action-card-arrow {
       color: var(--fg-quaternary);
-      transition: color var(--transition-fast), transform var(--transition-fast);
+      transition: transform var(--transition-normal), color var(--transition-normal);
       align-self: center;
-    }
-
-    .action-card:hover .action-card__arrow {
-      color: var(--fg-brand-primary);
-      transform: translateX(4px);
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <section class="split-hero" aria-label="Brand Panel Hero">
-      
-      <div class="split-hero__left">
-        <div class="split-hero__icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <polygon
-              points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
-            />
-          </svg>
-        </div>
-        
-        <h1 class="split-hero__title">
-          Powering the world’s best teams.
-        </h1>
-        
-        <p class="split-hero__subtitle">
-          Join over 4,000+ startups who use our platform to manage their daily workflows and build incredible products together.
+  <section class="hero-split">
+    
+    <!-- LEFT PANEL -->
+    <div class="panel-left">
+      <div class="brand-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="white" fill-opacity="0.2"/>
+          <path d="M16 8V24M8 16L24 16" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Untitled UI
+      </div>
+      <div class="panel-left-content">
+        <h1 class="panel-left-title">Design without limits.</h1>
+        <p class="panel-left-desc">
+          The most comprehensive UI kit and design system for modern product teams. Start building your next idea faster.
         </p>
-
-        <div style="margin-top: auto;">
-          <p style="color: var(--brand-200); font-size: var(--text-sm);">
-            Trusted by industry leaders worldwide.
-          </p>
-        </div>
       </div>
+    </div>
 
-      <div class="split-hero__right">
-        
-        <div style="margin-bottom: var(--space-8);">
-          <span class="badge badge--brand badge--lg" style="margin-bottom: var(--space-4);">
-            <span class="badge__dot"></span>
-            Getting Started
-          </span>
-          <h2 style="font-size: var(--display-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-2);">
-            Choose your path
-          </h2>
-          <p style="color: var(--text-secondary); font-size: var(--text-lg);">
-            Whether you are a developer, designer, or product manager, we have the right tools for you.
-          </p>
+    <!-- RIGHT PANEL -->
+    <div class="panel-right">
+      <div class="panel-right-content">
+        <div class="right-header">
+          <h2 class="right-title">How can we help you today?</h2>
+          <p class="right-desc">Explore our documentation, view the component library, or read our latest tutorials to get up to speed quickly.</p>
         </div>
 
-        <div class="split-hero__cards">
+        <div class="action-cards">
           
-          <a href="#" class="action-card">
-            <div class="featured-icon featured-icon--md featured-icon--outline action-card__icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                />
-                <polyline
-                  points="14 2 14 8 20 8"
-                />
-                <line
-                  x1="16"
-                  y1="13"
-                  x2="8"
-                  y2="13"
-                />
-                <line
-                  x1="16"
-                  y1="17"
-                  x2="8"
-                  y2="17"
-                />
-                <polyline
-                  points="10 9 9 9 8 9"
-                />
-              </svg>
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
             </div>
-            <div class="action-card__content">
-              <h3 class="action-card__title">
-                Read the Documentation
-              </h3>
-              <p class="action-card__desc">
-                Learn how to integrate our APIs and build custom workflows.
-              </p>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Documentation</h3>
+              <p class="action-card-desc">Everything you need to know about integrating and customizing the design system.</p>
             </div>
-            <div class="action-card__arrow">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line
-                  x1="5"
-                  y1="12"
-                  x2="19"
-                  y2="12"
-                />
-                <polyline
-                  points="12 5 19 12 12 19"
-                />
-              </svg>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </a>
 
-          <a href="#" class="action-card">
-            <div class="featured-icon featured-icon--md featured-icon--outline action-card__icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect
-                  x="3"
-                  y="3"
-                  width="18"
-                  height="18"
-                  rx="2"
-                  ry="2"
-                />
-                <line
-                  x1="3"
-                  y1="9"
-                  x2="21"
-                  y2="9"
-                />
-                <line
-                  x1="9"
-                  y1="21"
-                  x2="9"
-                  y2="9"
-                />
-              </svg>
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
             </div>
-            <div class="action-card__content">
-              <h3 class="action-card__title">
-                Explore the UI Kit
-              </h3>
-              <p class="action-card__desc">
-                Browse hundreds of ready-to-use components in Figma.
-              </p>
+            <div class="action-card-body">
+              <h3 class="action-card-title">Components</h3>
+              <p class="action-card-desc">Browse the complete library of over 300+ accessible, pre-built components.</p>
             </div>
-            <div class="action-card__arrow">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line
-                  x1="5"
-                  y1="12"
-                  x2="19"
-                  y2="12"
-                />
-                <polyline
-                  points="12 5 19 12 12 19"
-                />
-              </svg>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </a>
 
-          <a href="#" class="action-card">
-            <div class="featured-icon featured-icon--md featured-icon--outline action-card__icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-                />
-                <polyline
-                  points="3.27 6.96 12 12.01 20.73 6.96"
-                />
-                <line
-                  x1="12"
-                  y1="22.08"
-                  x2="12"
-                  y2="12"
-                />
-              </svg>
+          <a href="#" class="card action-card">
+            <div class="featured-icon featured-icon--md featured-icon--outline">
+              <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
             </div>
-            <div class="action-card__content">
-              <h3 class="action-card__title">
-                Deploy to Production
-              </h3>
-              <p class="action-card__desc">
-                Set up CI/CD pipelines and ship your app globally.
-              </p>
+            <div class="action-card-body">
+              <h3 class="action-card-title">API Reference</h3>
+              <p class="action-card-desc">Detailed endpoints, payload schemas, and authentication guides for developers.</p>
             </div>
-            <div class="action-card__arrow">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line
-                  x1="5"
-                  y1="12"
-                  x2="19"
-                  y2="12"
-                />
-                <polyline
-                  points="12 5 19 12 12 19"
-                />
-              </svg>
+            <div class="action-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
           </a>
 
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+
+  </section>
 </body>
 </html>

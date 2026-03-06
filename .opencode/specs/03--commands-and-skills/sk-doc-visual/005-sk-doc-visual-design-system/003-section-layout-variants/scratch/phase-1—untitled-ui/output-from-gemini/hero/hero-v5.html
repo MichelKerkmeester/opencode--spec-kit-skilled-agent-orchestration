@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Hero — UntitledUI Variant 5 (Dashboard Header)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* BACKGROUNDS */
+      --bg-primary: rgb(255 255 255);
+      --bg-primary-hover: rgb(250 250 250);
+      --bg-secondary: rgb(250 250 250);
+      --bg-brand-solid: rgb(127 86 217);
+      --bg-brand-solid-hover: rgb(105 65 198);
+
+      /* TEXT */
+      --text-primary: rgb(24 29 39);
+      --text-secondary: rgb(65 70 81);
+      --text-white: rgb(255 255 255);
+
+      /* FOREGROUND */
+      --fg-secondary: rgb(65 70 81);
+      --fg-quaternary: rgb(164 167 174);
+
+      /* BORDERS */
+      --border-primary: rgb(213 215 218);
+      --border-secondary: rgb(233 234 235);
+
+      /* TYPOGRAPHY */
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-display: 'Inter', system-ui, sans-serif;
+      
+      --text-sm: 0.875rem;
+      --text-md: 1rem;
+      --display-sm: 1.875rem;
+
+      --leading-sm: 1.25rem;
+      --leading-md: 1.5rem;
+      --leading-display-sm: 2.375rem;
+
+      --font-medium: 500;
+      --font-semibold: 600;
+
+      /* SPACING & RADIUS */
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-2-5: 0.625rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+
+      --radius-sm: 0.25rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-full: 9999px;
+
+      /* SHADOWS & FOCUS */
+      --shadow-xs: 0px 1px 2px rgba(10, 13, 18, 0.05);
+      --shadow-sm: 0px 1px 3px rgba(10, 13, 18, 0.1);
+      --shadow-skeumorphic: 0px 0px 0px 1px rgba(10, 13, 18, 0.18) inset, 0px -2px 0px rgba(10, 13, 18, 0.05) inset;
+      
+      /* UTILS */
+      --utility-success-50: rgb(236 253 243);
+      --utility-success-200: rgb(166 244 197);
+      --utility-success-700: rgb(8 119 73);
+      --utility-warning-50: rgb(255 249 235);
+      --utility-warning-200: rgb(254 223 137);
+      --utility-warning-700: rgb(181 71 8);
+      --utility-gray-50: rgb(250 250 250);
+      --utility-gray-200: rgb(233 234 235);
+      --utility-gray-700: rgb(65 70 81);
+
+      --container-max: 1280px;
+      --container-padding: var(--space-8);
+      --transition-fast: 100ms linear;
+    }
+
+    /* BASE */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); color: var(--text-primary); background: var(--bg-primary); }
+    .page-container { max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-padding); }
+    svg { display: block; flex-shrink: 0; }
+
+    /* COMPONENTS */
+    .featured-icon { display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); flex-shrink: 0; }
+    .featured-icon--md { width: 40px; height: 40px; }
+    .featured-icon--outline { background: var(--bg-primary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); color: var(--fg-secondary); }
+
+    .badge { display: inline-flex; align-items: center; gap: var(--space-1-5); border-radius: var(--radius-full); font-weight: var(--font-medium); white-space: nowrap; padding: 2px var(--space-2-5); font-size: var(--text-sm); line-height: var(--leading-sm); }
+    .badge--success { background: var(--utility-success-50); color: var(--utility-success-700); box-shadow: inset 0 0 0 1px var(--utility-success-200); }
+    .badge--warning { background: var(--utility-warning-50); color: var(--utility-warning-700); box-shadow: inset 0 0 0 1px var(--utility-warning-200); }
+    .badge--gray { background: var(--utility-gray-50); color: var(--utility-gray-700); box-shadow: inset 0 0 0 1px var(--utility-gray-200); }
+    .badge__dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: currentColor; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); border: none; cursor: pointer; font-family: var(--font-body); font-weight: var(--font-semibold); transition: background var(--transition-fast); position: relative; padding: var(--space-2-5) var(--space-4); font-size: var(--text-sm); line-height: var(--leading-sm); border-radius: var(--radius-lg); }
+    .btn::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255, 255, 255, 0.12); pointer-events: none; }
+    .btn--primary { background: var(--bg-brand-solid); color: var(--text-white); box-shadow: var(--shadow-xs), var(--shadow-skeumorphic); }
+    .btn--primary:hover { background: var(--bg-brand-solid-hover); }
+    .btn--secondary { background: var(--bg-primary); color: var(--text-secondary); box-shadow: var(--shadow-xs); border: 1px solid var(--border-primary); }
+    .btn--secondary::before { display: none; }
+    .btn--secondary:hover { background: var(--bg-primary-hover); color: var(--text-primary); }
+    .btn--icon { padding: var(--space-2-5); }
+
+    /* SECTION SPECIFIC */
+    .dashboard-header {
+      padding: var(--space-10) 0;
+      border-bottom: 1px solid var(--border-secondary);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: var(--display-sm);
+      line-height: var(--leading-display-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .page-subtitle {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    .header-center {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex: 1;
+      justify-content: center;
+      min-width: 300px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .header-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .description {
+      font-size: var(--text-md);
+      line-height: var(--leading-md);
+      color: var(--text-secondary);
+      max-width: 800px;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .metric-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      font-weight: var(--font-medium);
+      margin-bottom: var(--space-2);
+    }
+
+    .metric-value {
+      font-size: var(--display-sm);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .trend-indicator {
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+    .trend-indicator.up { color: var(--utility-success-700); }
+    .trend-indicator.down { color: var(--utility-warning-700); }
+
+    @media (max-width: 768px) {
+      .header-top { flex-direction: column; }
+      .header-center { justify-content: flex-start; width: 100%; }
+      .header-right { width: 100%; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <header class="dashboard-header">
+      
+      <div class="header-top">
+        <div class="header-left">
+          <div class="featured-icon featured-icon--md featured-icon--outline">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <div class="title-group">
+            <h1 class="page-title">Infrastructure Overview</h1>
+            <span class="page-subtitle">Production Environment • us-east-1</span>
+          </div>
+        </div>
+
+        <div class="header-center">
+          <span class="badge badge--success badge--md">
+            <span class="badge__dot"></span> Operational
+          </span>
+          <span class="badge badge--warning badge--md">
+            <span class="badge__dot"></span> 2 Degraded
+          </span>
+          <span class="badge badge--gray badge--md">
+            <span class="badge__dot"></span> Maintenance window active
+          </span>
+        </div>
+
+        <div class="header-right">
+          <button class="btn btn--secondary btn--icon" aria-label="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button class="btn btn--secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Export
+          </button>
+          <button class="btn btn--primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Deploy Service
+          </button>
+        </div>
+      </div>
+
+      <div class="header-bottom">
+        <p class="description">
+          Monitor your core services, database clusters, and API gateways. Key metrics refresh automatically every 30 seconds. System health is currently operating normally despite minor localized latency.
+        </p>
+
+        <div class="metrics-row">
+          
+          <div class="metric-card">
+            <div class="metric-label">API Requests (24h)</div>
+            <div class="metric-value">
+              24.8M
+              <span class="trend-indicator up">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                12%
+              </span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Global Latency</div>
+            <div class="metric-value">
+              112ms
+              <span class="trend-indicator down">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                3.1%
+              </span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-label">Error Rate</div>
+            <div class="metric-value">
+              0.04%
+              <span class="trend-indicator up">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                0%
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </header>
+  </div>
+</body>
+</html>

@@ -342,6 +342,18 @@ const results = await memory_search({ specFolder: "###-correct-folder", limit: 3
 Read(results[0].filePath)  // Read specific memory file
 ```
 
+For direct memory saves, prefer an explicit CLI target:
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  /tmp/save-context-data.json \
+  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion
+```
+
+That explicit target is authoritative. Session-learning hints and auto-detect logging do not reroute the save.
+
+Phase-folder targets are rejected instead of being rerouted. If the command reports `Direct memory saves cannot target a phase folder`, re-run it with the owning root spec folder path printed in the error.
+
 **"Constitutional memories not appearing"**
 
 Root Cause: Tier not set correctly

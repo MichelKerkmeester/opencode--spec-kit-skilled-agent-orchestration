@@ -1,0 +1,23 @@
+{
+  "attempt": 3,
+  "success": true,
+  "error": "",
+  "validation_issues": [
+    "v2: Line count out of range: 585 (expected 600-900)",
+    "v3: Line count out of range: 448 (expected 600-900)",
+    "v3: Found raw rgb/rgba color outside :root block",
+    "v4: Line count out of range: 481 (expected 600-900)",
+    "v5: Line count out of range: 415 (expected 600-900)"
+  ],
+  "variants_saved": 5,
+  "stdout_chars": 97895,
+  "stderr_chars": 4568,
+  "elapsed_seconds": 387.6548480987549,
+  "output_files": [
+    "output-from-gemini/related-documents/related-documents-v1.html",
+    "output-from-gemini/related-documents/related-documents-v2.html",
+    "output-from-gemini/related-documents/related-documents-v3.html",
+    "output-from-gemini/related-documents/related-documents-v4.html",
+    "output-from-gemini/related-documents/related-documents-v5.html"
+  ]
+}

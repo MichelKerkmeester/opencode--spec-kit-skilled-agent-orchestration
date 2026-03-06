@@ -39,10 +39,10 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 ## 2. CURRENT INVENTORY
 
 
-- `generate-context.ts` - generate memory output from spec folder or JSON input
+- `generate-context.ts` - generate memory output from spec folder or JSON input with content-aware candidate selection
 - `rank-memories.ts` - rank memory candidates by scoring rules
 - `cleanup-orphaned-vectors.ts` - remove stale vector rows not linked to active memories
-- `validate-memory-quality.ts` - validates memory entry quality against scoring thresholds
+- `validate-memory-quality.ts` - validates post-render memory quality against scoring thresholds before indexing/reporting
 - `reindex-embeddings.ts` - force full embedding reindex across memory/spec documents
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
 - `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
@@ -60,6 +60,8 @@ Direct spec-folder mode:
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
 ```
+
+Explicit CLI targets are authoritative, but direct saves to policy-defined phase folders are rejected. Re-run those saves against the owning root spec folder shown in the error.
 
 JSON input mode:
 
@@ -90,8 +92,10 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 - Uses the modular core/extractors/loaders/renderers/lib pipeline.
 - Supports subfolder-aware spec path handling through core utilities.
 - Produces ANCHOR-structured markdown expected by downstream validation and indexing.
+- Uses content-aware candidate selection so task/session evidence beats generic folder fallback when valid.
 - Writes `MEMORY_TITLE` into generated context frontmatter/headings so index titles stay descriptive.
 - Writes `MEMORY_DASHBOARD_TITLE` into context template frontmatter so dashboard titles stay disambiguated.
+- Runs post-render memory quality validation so contaminated headings or fallback-decision leaks are caught after template population.
 - Retroactive title refresh for existing memories: run `memory_index_scan({ force: true })` after parser/template updates.
 <!-- /ANCHOR:workflow-alignment -->
 

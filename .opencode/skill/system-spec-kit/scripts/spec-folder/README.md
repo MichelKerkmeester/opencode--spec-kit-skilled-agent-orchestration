@@ -37,11 +37,13 @@ The `scripts/spec-folder/` directory contains TypeScript modules that handle int
 
 | Feature                     | Description                                                                         |
 | --------------------------- | ----------------------------------------------------------------------------------- |
-| **Smart Detection**         | Auto-detect appropriate spec folder from CLI args, prompts or conversation context  |
+| **Smart Detection**         | Auto-detect appropriate spec folder when no explicit CLI target is supplied          |
 | **Alignment Validation**    | Calculate alignment scores between conversation topics and spec folder names        |
 | **Archive Filtering**       | Automatically exclude archived folders (z_, archive, old patterns)                  |
 | **Multi-Directory Support** | Handle both `specs/` and `.opencode/specs/` locations                               |
 | **Topic Extraction**        | Extract keywords from conversation context and observations                         |
+| **CLI Authority**           | Respect explicit CLI spec-folder targets without rerouting to session-learning picks |
+| **Phase Guardrail**         | Reject direct memory saves that explicitly target policy-defined phase folders         |
 
 ### Requirements
 
@@ -66,6 +68,10 @@ import { detectSpecFolder, validateContentAlignment } from '../spec-folder';
 
 // Auto-detect spec folder from conversation context
 const specFolder = await detectSpecFolder(collectedData);
+
+// Explicit CLI targets stay authoritative when CONFIG.SPEC_FOLDER_ARG is set
+// Session-learning and alignment may log alternatives, but they do not reroute the save
+// Exception: phase-folder targets are rejected with an owning-root error
 
 // Validate alignment between conversation and folder
 const alignment = await validateContentAlignment(
@@ -181,10 +187,16 @@ node scripts/dist/memory/generate-context.js .opencode/specs/<###-feature-name>/
 
 **Cause**: Conversation topics don't match folder name keywords
 
-**Solution**: Manually confirm correct folder when prompted or use CLI argument:
+**Solution**: Manually confirm correct folder when prompted or use an explicit CLI argument:
 ```bash
-# Force specific folder with CLI arg
+# Explicit CLI target is authoritative and is not rerouted
 node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-feature-name>/
+
+# Non-phase nested child paths stay authoritative
+node scripts/dist/memory/generate-context.js 003-parent/001-child
+
+# Phase-folder paths are rejected; save to the parent root instead
+node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit
 ```
 
 #### Multiple specs directories warning
@@ -207,7 +219,8 @@ node scripts/dist/memory/generate-context.js /tmp/context.json specs/<###-featur
 | Module not found               | `npm install` in project root                   |
 | Permission denied on memory/   | `chmod 755 specs/<###-feature-name>`                   |
 | Archive pattern false positive | Rename folder without z_, archive, old patterns |
-| Wrong folder selected          | Use CLI argument to override detection          |
+| Wrong folder selected          | Pass the exact CLI target; explicit args are authoritative |
+| Phase-folder target rejected   | Re-run with the owning root spec folder from the error |
 
 ### Diagnostic Commands
 

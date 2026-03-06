@@ -24,7 +24,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, and context indexing.
+This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, context indexing, and targeted Vitest regressions around hardened script behavior.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:inventory-snapshot -->
@@ -50,7 +50,7 @@ Primary script directories:
 - `lib/` - 11 TypeScript libraries plus 3 shell helper libraries
 - `evals/` - 8 evaluation scripts (redaction calibration, phase1-5 shadow eval, quality backfill, performance benchmarks, closure metrics, telemetry dashboard, quality legacy remediation)
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
-- `tests/` - JS, shell, and Python test suites for scripts and modules
+- `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
 - `templates/` - wrapper/composition helpers for template packaging workflows
 
 
@@ -90,6 +90,8 @@ Memory save entrypoint (required by Memory Save Rule):
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
 ```
+
+Direct saves must target a root spec folder. If an explicit CLI path resolves to a phase folder, the command fails with an error that points to the owning root spec folder.
 
 JSON mode is also supported:
 

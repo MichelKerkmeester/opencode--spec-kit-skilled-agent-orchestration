@@ -48,7 +48,7 @@ P1 required checks are distributed across the same sections below. Full workspac
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Stateless enrichment guard, config-state restoration, and generic parity implemented [EVIDENCE: workflow/task-enrichment/slug-utils updates documented in `implementation-summary.md`]
+- [x] CHK-010 [P0] Stateless enrichment guard, `runWorkflow()` serialization guard, config-state restoration, and generic parity implemented [EVIDENCE: workflow/task-enrichment/slug-utils updates documented in `implementation-summary.md`]
 - [x] CHK-011 [P0] Folder-discovery recursion + canonical dedupe + graceful invalid-path behavior implemented [EVIDENCE: folder-discovery updates documented in `implementation-summary.md`]
 - [x] CHK-012 [P1] Scope remains constrained to intended modules/tests and spec docs [EVIDENCE: touched files scoped to listed workstream files and this spec folder]
 <!-- /ANCHOR:code-quality -->
@@ -58,14 +58,14 @@ P1 required checks are distributed across the same sections below. Full workspac
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Stateless regression tests pass, including the workflow-level stateless seam [EVIDENCE: `npm run test:task-enrichment` -> PASS (13 passed)]
+- [x] CHK-020 [P0] Stateless regression tests pass, including workflow seam and overlapping-call concurrency coverage [EVIDENCE: `npm run test:task-enrichment` -> PASS (28 passed); raw log: `scratch/verification-logs/02-task-enrichment.txt`]
 - [x] CHK-021 [P0] Folder-discovery unit tests pass [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery.vitest.ts` -> 45 passed]
-- [x] CHK-022 [P0] Stale-cache shrink follow-up coverage is present for deleted cached folders [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` exercised `T046-10c` and `T046-10d` as PASS]
-- [x] CHK-023 [P0] Folder-discovery integration suite is fully green [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> 27 passed, 0 failed]
-- [x] CHK-024 [P1] Typecheck baseline passes [EVIDENCE: `npx tsc --noEmit` PASS]
-- [x] CHK-025 [P1] Full workspace typecheck/build passes [EVIDENCE: `npm run typecheck && npm run build` PASS in `.opencode/skill/system-spec-kit`]
-- [x] CHK-026 [P1] Alignment drift check pass [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` PASS]
-- [x] CHK-027 [P1] Spec validator pass [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes` PASS]
+- [x] CHK-022 [P0] Stale-cache shrink follow-up coverage and alias-root order determinism coverage are present in integration verification [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> PASS (28 passed), including stale-cache shrink coverage and alias-root order determinism assertions; raw log: `scratch/verification-logs/04-folder-discovery-integration.txt`]
+- [x] CHK-023 [P0] Folder-discovery integration suite is fully green [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> PASS (28 passed); raw log: `scratch/verification-logs/04-folder-discovery-integration.txt`]
+- [x] CHK-024 [P1] Typecheck baseline passes [EVIDENCE: `npx tsc --noEmit` PASS; raw log: `scratch/verification-logs/01-tsc-noemit.txt`]
+- [x] CHK-025 [P1] Full workspace typecheck/build passes [EVIDENCE: `npm run typecheck && npm run build` PASS in `.opencode/skill/system-spec-kit`; raw log: `scratch/verification-logs/07-typecheck-build.txt`]
+- [x] CHK-026 [P1] Alignment drift check pass [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS; raw log: `scratch/verification-logs/05-alignment-drift.txt`]
+- [x] CHK-027 [P1] Spec validator pass [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes` PASS; raw log: `scratch/verification-logs/06-spec-validate.txt`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -82,10 +82,10 @@ P1 required checks are distributed across the same sections below. Full workspac
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Canonical Level 2 packet exists with standard filenames only [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `handover.md`]
+- [x] CHK-040 [P1] Canonical Level 2 packet exists with standard filenames only [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`]
 - [x] CHK-041 [P1] Cross-references resolve using standard filenames only [EVIDENCE: references normalized in tasks/spec/plan]
-- [x] CHK-042 [P1] Implementation summary and handover reflect the updated remediation state, including workflow seam coverage [EVIDENCE: `implementation-summary.md`, `handover.md`]
-- [ ] CHK-043 [P2] Optional memory save for final closure [DEFERRED: not requested in this merge step]
+- [x] CHK-042 [P1] Implementation summary and handover reflect the updated remediation state, including workflow serialization, alias-order determinism coverage, and decision rationale [EVIDENCE: `implementation-summary.md`, `handover.md`, `decision-record.md`]
+- [x] CHK-043 [P2] Closure memory is saved and packet docs are refreshed in memory indexing [EVIDENCE: direct packet save rejection captured in `scratch/verification-logs/08-memory-save.txt`; owning-root save completed in `scratch/verification-logs/09-memory-save-root.txt`; packet docs refreshed via `memory_index_scan` for `02--system-spec-kit/022-hybrid-rag-fusion/013-memory-search-bug-fixes`]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -97,7 +97,7 @@ P1 required checks are distributed across the same sections below. Full workspac
 |----------|-------|----------|
 | P0 Items | 9 | 9/9 |
 | P1 Items | 10 | 10/10 |
-| P2 Items | 1 | 0/1 (deferred) |
+| P2 Items | 1 | 1/1 |
 
 **Verification Date**: 2026-03-06
 <!-- /ANCHOR:summary -->

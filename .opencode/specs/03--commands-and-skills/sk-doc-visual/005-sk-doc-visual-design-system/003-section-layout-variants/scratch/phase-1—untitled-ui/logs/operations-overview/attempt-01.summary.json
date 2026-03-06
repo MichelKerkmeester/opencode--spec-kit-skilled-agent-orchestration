@@ -1,0 +1,25 @@
+{
+  "attempt": 1,
+  "success": true,
+  "error": "",
+  "validation_issues": [
+    "v1: Line count out of range: 318 (expected 600-900)",
+    "v2: Line count out of range: 266 (expected 600-900)",
+    "v2: Found raw rgb/rgba color outside :root block",
+    "v3: Line count out of range: 250 (expected 600-900)",
+    "v4: Line count out of range: 203 (expected 600-900)",
+    "v4: Found raw rgb/rgba color outside :root block",
+    "v5: Line count out of range: 190 (expected 600-900)"
+  ],
+  "variants_saved": 5,
+  "stdout_chars": 61981,
+  "stderr_chars": 4568,
+  "elapsed_seconds": 224.48232507705688,
+  "output_files": [
+    "output-from-gemini/operations-overview/operations-overview-v1.html",
+    "output-from-gemini/operations-overview/operations-overview-v2.html",
+    "output-from-gemini/operations-overview/operations-overview-v3.html",
+    "output-from-gemini/operations-overview/operations-overview-v4.html",
+    "output-from-gemini/operations-overview/operations-overview-v5.html"
+  ]
+}
