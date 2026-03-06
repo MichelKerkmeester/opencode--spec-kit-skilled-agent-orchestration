@@ -1,6 +1,7 @@
 # Agent: speckit
 # Converted from: .opencode/agent/chatgpt/speckit.md
 sandbox_mode = "workspace-write"
+model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
 developer_instructions = '''

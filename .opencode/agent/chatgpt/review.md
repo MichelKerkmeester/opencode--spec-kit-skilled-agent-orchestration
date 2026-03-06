@@ -2,7 +2,7 @@
 name: review
 description: Code review specialist with pattern validation, quality scoring, and standards enforcement for PRs and code changes
 mode: subagent
-model: openai/gpt-5.3-codex
+model: openai/gpt-5.4
 reasoningEffort: xhigh
 temperature: 0.1
 permission:
@@ -27,7 +27,7 @@ Read-only code review specialist providing quality scoring, pattern validation, 
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
-**Model Convention (spec 015)**: This ChatGPT review variant is intentionally pinned to `openai/gpt-5.3-codex` in frontmatter to maximize review quality and consistency.
+**Model Convention (spec 015)**: This ChatGPT review variant is intentionally pinned to `openai/gpt-5.4` in frontmatter to maximize review quality and consistency.
 
 **CRITICAL**: You have READ-ONLY file access. You CANNOT modify files - only analyze, score, and report. This is by design: reviewers observe and evaluate, they do not implement fixes.
 

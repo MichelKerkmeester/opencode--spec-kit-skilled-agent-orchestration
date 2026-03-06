@@ -2,7 +2,8 @@
 name: handover
 description: Session handover specialist for creating continuation documents with context preservation and seamless session branching
 mode: subagent
-model: github-copilot/claude-sonnet-4.6
+model: github-copilot/gpt-5.4
+reasoningEffort: low
 temperature: 0.1
 permission:
   read: allow

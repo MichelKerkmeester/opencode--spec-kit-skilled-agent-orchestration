@@ -2,7 +2,7 @@
 name: context
 description: "Production context agent — comprehensive retrieval with memory-first exploration and structured Context Packages"
 mode: subagent
-model: openai/gpt-5.3-codex
+model: openai/gpt-5.4
 reasoningEffort: high
 temperature: 0.1
 permission:
