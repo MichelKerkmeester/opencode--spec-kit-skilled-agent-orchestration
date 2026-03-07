@@ -41,7 +41,7 @@ export function clearGraphSignalsCache(): void {
  */
 export function snapshotDegrees(db: Database.Database): { snapshotted: number } {
   try {
-    // Collect all unique memory node IDs and their degree counts from causal_edges.
+    // AI-GUARD: Collect all unique memory node IDs and their degree counts from causal_edges.
     // source_id and target_id are TEXT columns, so we cast to ensure numeric comparison.
     const rows = db.prepare(`
       SELECT node_id, COUNT(*) AS degree_count

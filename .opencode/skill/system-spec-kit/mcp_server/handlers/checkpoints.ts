@@ -209,7 +209,7 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
 
       triggerMatcher.refreshTriggerCache();
     } catch (rebuildErr: unknown) {
-      // Index rebuild failure is non-fatal — indexes will self-heal on next query or restart
+      // AI-GUARD: Index rebuild failure is non-fatal — indexes will self-heal on next query or restart
       console.error('[T102] Index rebuild after checkpoint restore failed:', toErrorMessage(rebuildErr));
     }
   }
@@ -450,7 +450,7 @@ export {
   handleMemoryValidate,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_checkpoint_create = handleCheckpointCreate;
 const handle_checkpoint_list = handleCheckpointList;
 const handle_checkpoint_restore = handleCheckpointRestore;

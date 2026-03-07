@@ -107,6 +107,8 @@ copilot "Help me debug the middleware"
 | `--allow-all-tools` | | Auto-approve all actions | `--allow-all-tools` |
 | `--target` | `-t` | Target specific context | `--target shell` |
 | `--hostname` | | Enterprise hostname | `--hostname github.acme.com` |
+| `--model` | `-m` | Select AI model | `--model gpt-5.4` |
+| `--no-ask-user` | | Autonomous mode (no questions) | `--no-ask-user` |
 | `--help` | `-h` | Show help information | `copilot -h` |
 | `--version` | `-v` | Show version info | `copilot -v` |
 
@@ -123,25 +125,56 @@ copilot "Help me debug the middleware"
 <!-- ANCHOR:models -->
 ## 6. MODELS
 
-Copilot CLI supports a wide range of frontier models (7+).
+Copilot CLI supports 18 models across 3 providers.
 
 ### Available Models
 
-| Model | Provider | Best For |
-|-------|----------|----------|
-| **Claude Opus 4.6** | Anthropic | Architecture & complex logic |
-| **Claude Sonnet 4.6** | Anthropic | General coding & speed (Default) |
-| **Claude Haiku 4.5** | Anthropic | Rapid classification & scripting |
-| **GPT-5.3-Codex** | OpenAI | Advanced reasoning & code generation |
-| **GPT-5 mini** | OpenAI | High-speed, cost-efficient tasks |
-| **GPT-4.1** | OpenAI | Stable legacy task performance |
-| **Gemini 3 Pro** | Google | Large context analysis |
+| Model | ID | Provider | Best For |
+|-------|----|----------|----------|
+| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic | Architecture & complex logic |
+| **Claude Opus 4.6 Fast** | `claude-opus-4.6-fast` | Anthropic | Opus quality, faster output |
+| **Claude Opus 4.5** | `claude-opus-4.5` | Anthropic | Previous-gen deep reasoning |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding & speed (Default) |
+| **Claude Sonnet 4.5** | `claude-sonnet-4.5` | Anthropic | Balanced coding tasks |
+| **Claude Sonnet 4** | `claude-sonnet-4` | Anthropic | Stable previous-gen coding |
+| **Claude Haiku 4.5** | `claude-haiku-4.5` | Anthropic | Rapid classification & scripting |
+| **GPT-5.4** | `gpt-5.4` | OpenAI | Frontier reasoning with effort levels |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI | Advanced code generation |
+| **GPT-5.2-Codex** | `gpt-5.2-codex` | OpenAI | Code generation (previous-gen) |
+| **GPT-5.2** | `gpt-5.2` | OpenAI | General reasoning |
+| **GPT-5.1-Codex-Max** | `gpt-5.1-codex-max` | OpenAI | Max-compute code tasks |
+| **GPT-5.1-Codex** | `gpt-5.1-codex` | OpenAI | Standard code generation |
+| **GPT-5.1** | `gpt-5.1` | OpenAI | General tasks |
+| **GPT-5.1-Codex-Mini** | `gpt-5.1-codex-mini` | OpenAI | Lightweight code tasks |
+| **GPT-5 mini** | `gpt-5-mini` | OpenAI | High-speed, cost-efficient tasks |
+| **GPT-4.1** | `gpt-4.1` | OpenAI | Stable legacy task performance |
+| **Gemini 3 Pro Preview** | `gemini-3-pro-preview` | Google | Large context analysis |
+
+### Reasoning Effort (GPT-5.x models)
+
+GPT-5.x models support reasoning effort levels that control depth vs speed:
+
+| Level | Description |
+|-------|-------------|
+| Low | Faster responses, less detailed reasoning |
+| Medium | Balanced speed and reasoning depth (default) |
+| High | More thorough reasoning, slower responses |
+| Extra High | Maximum reasoning depth, slowest responses |
+
+**Interactive mode:** Select via `/model` → choose GPT-5.x → select effort level.
+
+**Non-interactive mode (`-p`):** No `--reasoning-effort` flag exists yet ([github/copilot-cli#1048](https://github.com/github/copilot-cli/issues/1048)). Workaround: set reasoning level in interactive mode first — copilot persists the last-used effort level per model. Subsequent `-p` calls with the same model inherit that level.
 
 ### Model Switching
 
-You can switch the active model mid-session using the interactive command:
+Switch the active model mid-session (interactive):
 ```bash
 /model
+```
+
+Select model for non-interactive invocation:
+```bash
+copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:models -->

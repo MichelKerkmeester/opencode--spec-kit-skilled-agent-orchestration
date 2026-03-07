@@ -1,10 +1,10 @@
 // ---------------------------------------------------------------
 // MODULE: Embedding-Based Query Expansion (R12)
-// Sprint 5 Phase B — semantic query expansion using embedding similarity.
+// AI-WHY: Sprint 5 Phase B — semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
 //   When the R15 query complexity classifier returns tier = "simple",
-//   embedding expansion is suppressed entirely. This prevents unnecessary
+// embedding expansion is suppressed entirely. This prevents unnecessary
 //   latency on short, well-defined queries that benefit from exact matches
 //   rather than semantic broadening.
 //
@@ -180,12 +180,12 @@ export async function expandQueryWithEmbeddings(
   embedding: Float32Array,
   options?: EmbeddingExpansionOptions,
 ): Promise<ExpandedQuery> {
-  // ── Guard 1: Feature flag ──────────────────────────────────────────────────
+  // AI-GUARD: ── Guard 1: Feature flag ──────────────────────────────────────────────────
   if (!isEmbeddingExpansionEnabled()) {
     return identityResult(query);
   }
 
-  // ── Guard 2: R15 mutual exclusion ─────────────────────────────────────────
+  // AI-GUARD: ── Guard 2: R15 mutual exclusion ─────────────────────────────────────────
   // classifyQueryComplexity() returns "complex" when SPECKIT_COMPLEXITY_ROUTER
   // is disabled (its own feature flag). When R15 is active and classifies the
   // query as "simple", R12 expansion is suppressed to avoid latency overhead
@@ -195,7 +195,7 @@ export async function expandQueryWithEmbeddings(
     return identityResult(query);
   }
 
-  // ── Guard 3: Valid embedding ───────────────────────────────────────────────
+  // AI-GUARD: ── Guard 3: Valid embedding ───────────────────────────────────────────────
   if (!embedding || embedding.length === 0) {
     console.warn('[embedding-expansion] Received empty embedding — skipping expansion');
     return identityResult(query);
@@ -214,7 +214,7 @@ export async function expandQueryWithEmbeddings(
       includeConstitutional: false,
     }) as Array<Record<string, unknown>>;
 
-    // ── Guard 4: No candidates ─────────────────────────────────────────────────
+    // AI-GUARD: ── Guard 4: No candidates ─────────────────────────────────────────────────
     if (!similarMemories || similarMemories.length === 0) {
       return identityResult(query);
     }
@@ -253,7 +253,7 @@ export async function expandQueryWithEmbeddings(
       return identityResult(query);
     }
 
-    // ── Step d: Combine ───────────────────────────────────────────────────────
+    // AI-WHY: ── Step d: Combine ───────────────────────────────────────────────────────
     // Append the top expanded terms to the original query.
     // A space-separated suffix keeps the combined query compatible with both
     // FTS and embedding re-encoding without requiring a separator token.

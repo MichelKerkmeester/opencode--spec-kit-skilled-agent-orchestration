@@ -156,7 +156,7 @@ function extractSprintFromMetadata(metadata: string | null): string | null {
       return String(parsed.sprintLabel);
     }
     return null;
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }
@@ -204,7 +204,7 @@ function queryMetricSnapshots(
     sql += ` LIMIT ?`;
     params.push(config.limit * 20); // Over-fetch to allow grouping
   } else {
-    // Default LIMIT to prevent unbounded result sets on large eval databases
+    // AI-GUARD: Default LIMIT to prevent unbounded result sets on large eval databases
     sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
   }
 
@@ -233,7 +233,7 @@ function queryChannelResults(
     params.push(...channelFilter);
   }
 
-  // Default LIMIT to prevent unbounded result sets on large eval databases
+  // AI-GUARD: Default LIMIT to prevent unbounded result sets on large eval databases
   sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
 
   return db.prepare(sql).all(...params) as ChannelResultRow[];

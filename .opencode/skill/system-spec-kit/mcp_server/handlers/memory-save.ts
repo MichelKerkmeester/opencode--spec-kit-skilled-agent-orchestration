@@ -106,7 +106,7 @@ async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): 
 
 /** Parse, validate, and index a memory file with PE gating, FSRS scheduling, and causal links */
 async function indexMemoryFile(filePath: string, { force = false, parsedOverride = null as ReturnType<typeof memoryParser.parseMemoryFile> | null, asyncEmbedding = false } = {}): Promise<IndexResult> {
-  // Reuse parsed content when provided by caller to avoid a second parse.
+  // AI-WHY: Reuse parsed content when provided by caller to avoid a second parse.
   const parsed = parsedOverride || memoryParser.parseMemoryFile(filePath);
 
   const validation = memoryParser.validateParsedMemory(parsed);
@@ -158,11 +158,11 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     };
   }
 
-  // Per-spec-folder lock to prevent TOCTOU race conditions on concurrent saves
+  // AI-GUARD: Per-spec-folder lock to prevent TOCTOU race conditions on concurrent saves
   return withSpecFolderLock(parsed.specFolder, async () => {
 
-  // CHUNKING BRANCH: Large files get split into parent + child records
-  // AI-WHY: Must be inside withSpecFolderLock to serialize chunked saves too
+  // AI-WHY: CHUNKING BRANCH: Large files get split into parent + child records
+  // Must be inside withSpecFolderLock to serialize chunked saves too
   if (needsChunking(parsed.content)) {
     console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
     return indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
@@ -402,12 +402,12 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const { file_path, content } = params;
   const { force = false } = options;
 
-  // Write file and run DB operation atomically
+  // AI-WHY: Write file and run DB operation atomically
   const result = transactionManager.executeAtomicSave(
     file_path,
     content,
     () => {
-      // DB operation is a no-op during atomic write;
+      // AI-GUARD: DB operation is a no-op during atomic write;
       // indexing happens asynchronously after the write succeeds.
     }
   );
@@ -416,7 +416,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
     return result;
   }
 
-  // Index the saved file (async, after atomic write succeeded)
+  // AI-GUARD: Index the saved file (async, after atomic write succeeded)
   let indexResult: IndexResult | null = null;
   let indexError: Error | null = null;
 
@@ -539,7 +539,7 @@ export type {
   QualityLoopResult,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const index_memory_file = indexMemoryFile;
 const handle_memory_save = handleMemorySave;
 const atomic_save_memory = atomicSaveMemory;

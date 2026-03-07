@@ -8,6 +8,10 @@ A governance framework defines operational targets (small active flag surface, e
 
 The B8 signal ceiling ("12 active scoring signals") is a governance target, not a runtime-enforced guardrail.
 
+## Source Files
+
+No dedicated source files — this describes governance process controls.
+
 ## Source Metadata
 
 - Group: Governance

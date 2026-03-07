@@ -8,6 +8,23 @@ The budget is computed early in the pipeline (before channel execution) so downs
 
 The savings add up. If 60% of your queries are simple, you recover roughly 40% of the token budget that was previously wasted on over-delivering.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/dynamic-token-budget.ts` | Lib | Token budget computation |
+| `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/dynamic-token-budget.vitest.ts` | Token budget computation |
+| `mcp_server/tests/query-classifier.vitest.ts` | Query classification accuracy |
+| `mcp_server/tests/token-budget.vitest.ts` | Token budget tests |
+
 ## Source Metadata
 
 - Group: Query intelligence

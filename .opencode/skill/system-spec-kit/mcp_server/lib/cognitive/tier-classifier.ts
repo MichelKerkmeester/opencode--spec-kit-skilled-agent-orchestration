@@ -105,7 +105,7 @@ interface StateStats {
   total: number;
 }
 
-// Lazy-load memory types to avoid circular dependencies
+// AI-WHY: Lazy-load memory types to avoid circular dependencies
 let memoryTypesModule: Record<string, unknown> | false | null = null;
 
 /** Get memory types module (lazy loaded) */
@@ -291,7 +291,7 @@ function classifyTier(memory: TierInput): {
     elapsedDays = Math.max(0, (now.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
   }
 
-  // Use effective stability from half-life.
+  // AI-GUARD: Use effective stability from half-life.
   // Math.max ensures new memories (default stability=1.0) benefit from their
   // type's configured half-life, while well-reviewed memories keep their
   // earned FSRS stability if it exceeds the type baseline.
@@ -468,12 +468,12 @@ function getStateStats(memories: readonly TierInput[]): StateStats {
 function shouldArchive(memory: TierInput): boolean {
   const { state } = classifyTier(memory);
 
-  // Never archive constitutional or critical
+  // AI-GUARD: Never archive constitutional or critical
   if (memory.importance_tier === 'constitutional' || memory.importance_tier === 'critical') {
     return false;
   }
 
-  // Pinned memories are never archived
+  // AI-GUARD: Pinned memories are never archived
   if (memory.is_pinned === 1) {
     return false;
   }

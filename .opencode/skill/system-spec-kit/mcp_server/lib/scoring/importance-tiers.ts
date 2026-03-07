@@ -113,7 +113,7 @@ export function allowsDecay(tier: string): boolean {
   return config.decay === true;
 }
 
-// Get auto-expiration days for tier (null = never expires)
+// AI-GUARD: Get auto-expiration days for tier (null = never expires)
 export function getAutoExpireDays(tier: string): number | null {
   const config = getTierConfig(tier);
   return config.autoExpireDays;

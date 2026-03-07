@@ -8,6 +8,31 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 
 **Sprint 8 update:** The unused `RECOVERY_HALF_LIFE_DAYS` constant was removed (the millisecond-based `RECOVERY_HALF_LIFE_MS` is the actual constant used in computation).
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/scoring/confidence-tracker.ts` | Lib | Confidence tracking |
+| `mcp_server/lib/scoring/negative-feedback.ts` | Lib | Negative feedback demotion |
+| `shared/normalization.ts` | Shared | Text normalization |
+| `shared/types.ts` | Shared | Type definitions |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/confidence-tracker.vitest.ts` | Confidence tracking tests |
+| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
+| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
+| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
+| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
+| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
+| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
+| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
+| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+
 ## Source Metadata
 
 - Group: Scoring and calibration

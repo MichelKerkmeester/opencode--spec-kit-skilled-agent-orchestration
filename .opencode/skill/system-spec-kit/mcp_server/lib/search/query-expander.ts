@@ -77,7 +77,7 @@ export function expandQuery(query: string): string[] {
     if (variants.size >= MAX_VARIANTS) break;
     const synonyms = DOMAIN_VOCABULARY_MAP[word];
     if (synonyms && synonyms.length > 0) {
-      // Keep one expansion per matched word to avoid over-expanding simple queries.
+      // AI-WHY: Keep one expansion per matched word to avoid over-expanding simple queries.
       for (const synonym of synonyms) {
         if (variants.size >= MAX_VARIANTS) break;
         const expanded = query.replace(new RegExp(`\\b${escapeRegExp(word)}\\b`, 'i'), synonym);

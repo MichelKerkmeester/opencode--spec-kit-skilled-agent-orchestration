@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Scoring Observability (T010)
 // ---------------------------------------------------------------
-// Lightweight observability logging for N4 cold-start boost and
+// AI-WHY: Lightweight observability logging for N4 cold-start boost and
 // TM-01 interference scoring values at query time.
 // Sampled at 5% of queries to avoid performance overhead.
 // All logging is best-effort (fail-safe, never throws).

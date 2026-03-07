@@ -10,6 +10,21 @@ The momentum signal applies as an additive bonus in Stage 2 of the pipeline, cap
 
 When no snapshot exists for the 7-day lookback (common during initial rollout), the momentum defaults to zero rather than penalizing the memory. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2b).
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/graph/graph-signals.ts` | Lib | Graph momentum and depth signals |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/feature-eval-graph-signals.vitest.ts` | Graph signal evaluation |
+| `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
+
 ## Source Metadata
 
 - Group: Graph signal activation

@@ -8,6 +8,20 @@ Seven diagnostic metrics add depth: inversion rate counts pairwise ranking mista
 
 This battery of metrics means you can diagnose where the pipeline fails, not just whether it fails.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/eval/eval-metrics.ts` | Lib | Core metric computation |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/eval-metrics.vitest.ts` | Eval metrics computation |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

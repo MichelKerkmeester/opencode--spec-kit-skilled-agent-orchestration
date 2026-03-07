@@ -127,7 +127,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   }
 
   // AI-WHY: T2-5 transaction wrapper — wraps all synchronous mutation steps (DB update,
-  // cache invalidation, BM25 re-index, ledger append) in a single transaction for atomicity.
+  // AI-WHY: cache invalidation, BM25 re-index, ledger append) in a single transaction for atomicity.
   // AI-WHY: Embedding generation (async) runs before this block; its result feeds into updateParams.
   const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
 
@@ -185,7 +185,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       });
     })();
   } else {
-    // AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
+    // AI-GUARD: AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
     if (embeddingStatusNeedsPendingWrite) {
       vectorIndex.updateEmbeddingStatus(id, 'pending');
     }

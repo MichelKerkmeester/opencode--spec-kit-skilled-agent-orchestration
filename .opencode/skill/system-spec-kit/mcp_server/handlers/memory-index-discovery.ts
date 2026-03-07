@@ -135,7 +135,7 @@ export function detectSpecLevel(specPath: string): number | null {
       if (level >= 1 && level <= 3) return level;
     }
 
-    // Heuristic fallback: check sibling files.
+    // AI-WHY: Heuristic fallback: check sibling files.
     const dir = path.dirname(specPath);
     try {
       const siblings = fs.readdirSync(dir).map(f => f.toLowerCase());

@@ -102,6 +102,40 @@ const BACKGROUND_JOB_CONFIG: BackgroundJobConfig = {
 let backgroundJobInterval: ReturnType<typeof setInterval> | null = null;
 let backgroundJobRunning = false;
 
+// AI-WHY: T3-15 circuit breaker — prevents the background retry job from
+// hammering the embedding API when the provider is entirely down. After
+// PROVIDER_FAILURE_THRESHOLD consecutive failures across any items, the
+// circuit opens for PROVIDER_COOLDOWN_MS, causing retryEmbedding to skip
+// the API call and return a transient error instead.
+const PROVIDER_FAILURE_THRESHOLD = 5;
+const PROVIDER_COOLDOWN_MS = 120_000; // 2 minutes
+
+let providerFailures = 0;
+let providerCircuitOpenedAt: number | null = null;
+
+function isProviderCircuitOpen(): boolean {
+  if (providerCircuitOpenedAt === null) return false;
+  if (Date.now() - providerCircuitOpenedAt >= PROVIDER_COOLDOWN_MS) {
+    providerCircuitOpenedAt = null;
+    providerFailures = 0;
+    return false;
+  }
+  return true;
+}
+
+function recordProviderSuccess(): void {
+  providerFailures = 0;
+  providerCircuitOpenedAt = null;
+}
+
+function recordProviderFailure(): void {
+  providerFailures++;
+  if (providerFailures >= PROVIDER_FAILURE_THRESHOLD && providerCircuitOpenedAt === null) {
+    providerCircuitOpenedAt = Date.now();
+    console.warn(`[retry-manager] Embedding provider circuit breaker OPEN after ${providerFailures} consecutive failures. Cooldown: ${PROVIDER_COOLDOWN_MS}ms`);
+  }
+}
+
 /* ---------------------------------------------------------------
    3. RETRY QUEUE
 --------------------------------------------------------------- */
@@ -234,8 +268,14 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
         Math.floor(cachedEmbedding.byteLength / Float32Array.BYTES_PER_ELEMENT),
       );
     } else {
+      // T3-15: Skip API call if provider circuit breaker is open
+      if (isProviderCircuitOpen()) {
+        return { success: false, error: 'Embedding provider circuit breaker open — skipping API call' };
+      }
+
       embedding = await generateDocumentEmbedding(normalizedContent);
       if (embedding) {
+        recordProviderSuccess();
         storeEmbedding(
           db,
           contentHash,
@@ -243,6 +283,8 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
           Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength),
           embedding.length,
         );
+      } else {
+        recordProviderFailure();
       }
     }
 
@@ -263,7 +305,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
 
       try {
         db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(id));
-      } catch {
+      } catch (_error: unknown) {
         // Ignore if doesn't exist
       }
 
@@ -280,6 +322,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
       return { success: false, error: `Transaction failed: ${message}` };
     }
   } catch (error: unknown) {
+    recordProviderFailure();
     const message = error instanceof Error ? error.message : String(error);
     incrementRetryCount(id, message);
     return { success: false, error: message };
@@ -380,7 +423,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
     }
 
     if (!content) {
-      // P2-08 FIX: Count content load failure as a retry attempt to prevent infinite retry loops
+      // AI-TRACE: P2-08 FIX: Count content load failure as a retry attempt to prevent infinite retry loops
       incrementRetryCount(memory.id, 'Content load failed: file unreadable or missing');
       results.details!.push({ id: memory.id, success: false, error: 'Could not load content (counted as retry)' });
       results.failed++;
@@ -492,7 +535,7 @@ function parseRow(row: RetryMemoryRow): RetryMemoryRow {
   if (row.triggerPhrases && typeof row.triggerPhrases === 'string') {
     try {
       return { ...row, triggerPhrases: JSON.parse(row.triggerPhrases) };
-    } catch {
+    } catch (_error: unknown) {
       return { ...row, triggerPhrases: [] };
     }
   }
@@ -502,7 +545,7 @@ function parseRow(row: RetryMemoryRow): RetryMemoryRow {
 async function loadContentFromFile(filePath: string): Promise<string | null> {
   try {
     return await fsPromises.readFile(filePath, 'utf-8');
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }

@@ -11,7 +11,7 @@ import type Database from 'better-sqlite3';
 
 const ACCUMULATOR_THRESHOLD = 0.5;
 const INCREMENT_VALUE = 0.1;
-// P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
+// AI-TRACE: P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
 const MAX_ACCUMULATOR_SIZE = 10000;
 
 /* -------------------------------------------------------------
@@ -48,7 +48,7 @@ function init(database: Database.Database): void {
  * Track a memory access, accumulating until threshold is reached.
  */
 function trackAccess(memoryId: number): boolean {
-  // P4-14 FIX: If accumulator map exceeds max size, flush all and clear
+  // AI-GUARD: P4-14 FIX: If accumulator map exceeds max size, flush all and clear
   // to prevent unbounded memory growth.
   if (accumulators.size > MAX_ACCUMULATOR_SIZE) {
     console.warn(`[access-tracker] Accumulator map exceeded ${MAX_ACCUMULATOR_SIZE} entries, flushing all`);

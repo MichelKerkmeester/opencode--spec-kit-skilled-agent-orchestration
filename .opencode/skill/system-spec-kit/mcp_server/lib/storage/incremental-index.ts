@@ -241,7 +241,7 @@ function categorizeFilesForIndexing(filePaths: string[]): CategorizedFiles {
     }
   }
 
-  // Include stale indexed paths that are no longer discovered on disk.
+  // AI-GUARD: Include stale indexed paths that are no longer discovered on disk.
   // Without this pass, removed files never enter toDelete during normal scans
   // because discovery only returns files that currently exist.
   const staleIndexedPaths = listStaleIndexedPaths(filePaths);

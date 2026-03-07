@@ -209,7 +209,7 @@ async function getMemoryStats(): Promise<DynamicMemoryStats> {
       activeCount: success,
       staleCount: pending + failed + retry,
     };
-  } catch {
+  } catch (_error: unknown) {
     return { totalMemories: 0, specFolderCount: 0, activeCount: 0, staleCount: 0 };
   }
 }
@@ -441,7 +441,7 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
           }
         }
       }
-    } catch {
+    } catch (_error: unknown) {
       // Non-fatal: constitutional directory discovery failed
     }
 
@@ -624,7 +624,7 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
       WHERE canonical_file_path = ? OR file_path = ?
       ORDER BY id ASC
     `).all(canonicalPath, filePath) as Array<{ id: number }>;
-  } catch {
+  } catch (_error: unknown) {
     rows = database.prepare(`
       SELECT id
       FROM memory_index
@@ -645,7 +645,7 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   if (deletedCount > 0) {
     try {
       runPostMutationHooks('delete', { filePath, deletedCount });
-    } catch {
+    } catch (_error: unknown) {
       // Non-throwing by design: file-watcher path must not crash the server.
     }
   }

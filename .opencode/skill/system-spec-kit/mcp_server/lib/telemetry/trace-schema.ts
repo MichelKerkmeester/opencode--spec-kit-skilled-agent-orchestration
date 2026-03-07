@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Telemetry Trace Schema
 // ---------------------------------------------------------------
-// Canonical schema + runtime validation for retrieval trace payloads
+// AI-WHY: Canonical schema + runtime validation for retrieval trace payloads
 // used by telemetry serialization. Unknown or sensitive fields are
 // excluded from canonical payloads.
 // ---------------------------------------------------------------

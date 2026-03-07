@@ -346,7 +346,7 @@ export async function retryWithBackoff<T>(
     }
   }
 
-  // Should never reach here, but TypeScript needs this
+  // AI-GUARD: Should never reach here, but TypeScript needs this
   throw new RetryError(`[${options.operationName}] Unexpected retry loop exit`, { attemptLog });
 }
 

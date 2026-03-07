@@ -96,13 +96,13 @@ export function isMpabEnabled(): boolean {
 export function computeMPAB(scores: number[]): number {
   const N = scores.length;
 
-  // Guard: no chunks = no signal
+  // AI-GUARD: Guard: no chunks = no signal
   if (N === 0) return 0;
 
-  // Guard: single chunk = raw score, no bonus
+  // AI-GUARD: Guard: single chunk = raw score, no bonus
   if (N === 1) return scores[0];
 
-  // Sort descending (copy to avoid mutating input)
+  // AI-WHY: Sort descending (copy to avoid mutating input)
   const sorted = [...scores].sort((a, b) => b - a);
 
   // Index-based max removal: sorted[0] is always the max

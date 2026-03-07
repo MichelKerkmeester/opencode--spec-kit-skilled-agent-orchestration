@@ -549,7 +549,7 @@ function cleanupStaleSessions(thresholdMs: number = STALE_SESSION_THRESHOLD_MS):
     workingMemoryDeleted = wmResult.changes;
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
-    // Table may not exist if working-memory module was never initialized
+    // AI-GUARD: Table may not exist if working-memory module was never initialized
     if (!msg.includes('no such table')) {
       errors.push(`working_memory cleanup: ${msg}`);
     }

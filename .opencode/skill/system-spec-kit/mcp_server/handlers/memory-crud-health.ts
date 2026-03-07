@@ -17,6 +17,7 @@ import { toErrorMessage } from '../utils';
 
 import { isEmbeddingModelReady } from '../core';
 import { summarizeAliasConflicts } from './memory-index';
+import * as causalEdges from '../lib/storage/causal-edges';
 
 import type { MCPResponse, EmbeddingProfile } from './types';
 import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
@@ -38,7 +39,7 @@ function redactPath(absolutePath: string): string {
   const opencodeIdx = absolutePath.indexOf('/.opencode/');
   if (specsIdx !== -1) return absolutePath.slice(specsIdx + 1);
   if (opencodeIdx !== -1) return absolutePath.slice(opencodeIdx + 1);
-  // Fallback: basename only
+  // AI-WHY: Fallback: basename only
   const lastSlash = absolutePath.lastIndexOf('/');
   return lastSlash !== -1 ? absolutePath.slice(lastSlash + 1) : absolutePath;
 }
@@ -66,7 +67,7 @@ const SERVER_VERSION: string = (() => {
       }
     }
     return 'unknown';
-  } catch {
+  } catch (_error: unknown) {
     return 'unknown';
   }
 })();
@@ -310,7 +311,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
   if (!profile) {
     try {
-      // Resolve the lazy profile so health reflects the active runtime provider
+      // AI-WHY: Resolve the lazy profile so health reflects the active runtime provider
       // rather than the legacy sync fallback defaults.
       profile = await embeddings.getEmbeddingProfileAsync() as EmbeddingProfile | null;
       providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
@@ -377,6 +378,23 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       }
     }
   }
+  // AI-WHY: Fix #28 (017-refinement-phase-6) — cleanupOrphanedEdges was exported but
+  // never invoked at runtime. Wire it into autoRepair so orphaned causal edges
+  // (referencing deleted memories) are cleaned up during health checks.
+  if (autoRepair && database) {
+    try {
+      const orphanResult = causalEdges.cleanupOrphanedEdges();
+      if (orphanResult.deleted > 0) {
+        repair.attempted = true;
+        repair.repaired = true;
+        repair.actions.push(`orphan_edges_cleaned:${orphanResult.deleted}`);
+        hints.push(`Auto-repair: removed ${orphanResult.deleted} orphaned causal edge(s)`);
+      }
+    } catch (orphanError: unknown) {
+      repair.errors.push(`Orphan edge cleanup failed: ${sanitizeErrorForHint(toErrorMessage(orphanError))}`);
+    }
+  }
+
   if (aliasConflicts.groups > 0) {
     hints.push(`Detected ${aliasConflicts.groups} specs/.opencode alias group(s)`);
   }

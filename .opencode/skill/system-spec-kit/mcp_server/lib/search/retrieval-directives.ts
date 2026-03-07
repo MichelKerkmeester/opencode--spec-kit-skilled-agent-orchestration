@@ -327,7 +327,7 @@ export function enrichWithRetrievalDirectives(
           content = fs.readFileSync(result.filePath, 'utf-8');
         }
       } catch {
-        // File read failure is non-fatal; fall back to title-only directive
+        // AI-GUARD: File read failure is non-fatal; fall back to title-only directive
         content = '';
       }
     }

@@ -10,6 +10,25 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 
 ---
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/eval/channel-attribution.ts` | Lib | Channel attribution analysis |
+| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
+| `mcp_server/lib/eval/shadow-scoring.ts` | Lib | Shadow scoring system |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
+| `mcp_server/tests/eval-db.vitest.ts` | Eval database operations |
+| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
+| `mcp_server/tests/shadow-scoring.vitest.ts` | Shadow scoring tests |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

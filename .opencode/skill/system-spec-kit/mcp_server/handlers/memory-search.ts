@@ -37,7 +37,7 @@ import { formatSearchResults } from '../formatters';
 // Shared handler types
 import type { MCPResponse, IntentClassification } from './types';
 
-// Retrieval trace contracts (C136-08)
+// AI-TRACE: Retrieval trace contracts (C136-08)
 import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // Type imports for casting
@@ -1056,7 +1056,7 @@ export const __testables = {
   buildEvalChannelPayloads,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_memory_search = handleMemorySearch;
 
 export {

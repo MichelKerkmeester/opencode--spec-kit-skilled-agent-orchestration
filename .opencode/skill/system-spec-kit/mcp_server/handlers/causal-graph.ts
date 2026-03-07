@@ -705,7 +705,7 @@ export {
   handleMemoryCausalUnlink,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_memory_drift_why = handleMemoryDriftWhy;
 const handle_memory_causal_link = handleMemoryCausalLink;
 const handle_memory_causal_stats = handleMemoryCausalStats;

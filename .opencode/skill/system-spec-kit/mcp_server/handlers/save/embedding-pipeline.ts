@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Embedding Pipeline
+// ---------------------------------------------------------------
+
 import path from 'path';
 import type Database from 'better-sqlite3';
 

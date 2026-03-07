@@ -85,7 +85,7 @@ function calculateDocumentWeight(filePath: string, documentType?: string): numbe
     if (weight !== undefined) return weight;
   }
 
-  // Fallback: path-based heuristic (backward compatibility)
+  // AI-WHY: Fallback: path-based heuristic (backward compatibility)
   const normalizedPath = filePath.replace(/\\/g, '/');
   if (normalizedPath.includes('/scratch/')) return 0.25;
   return 0.5;

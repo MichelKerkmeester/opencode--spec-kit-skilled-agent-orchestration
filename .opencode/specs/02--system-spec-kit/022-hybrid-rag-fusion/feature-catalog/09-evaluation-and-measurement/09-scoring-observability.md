@@ -8,6 +8,21 @@ The novelty boost (`calculateNoveltyBoost`) was removed from the hot scoring pat
 
 The 5% sample rate keeps storage costs low while still catching calibration drift. A try-catch wrapper guarantees that telemetry failures never affect scoring results. If the observation write fails, the search result is unchanged and the failure is swallowed silently.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/telemetry/scoring-observability.ts` | Lib | Scoring observability |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/scoring-observability.vitest.ts` | Scoring observability tests |
+| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

@@ -32,7 +32,7 @@ import { isIdentityInRollout } from '../lib/cache/cognitive/rollout-policy';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
-// T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// AI-TRACE: T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
 import * as vectorIndex from '../lib/search/vector-index';
 
@@ -223,7 +223,7 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
     }
   }
 
-  // Fallback: if no inner results array found or couldn't parse,
+  // AI-WHY: Fallback: if no inner results array found or couldn't parse,
   // truncate the raw serialized text and report
   return {
     result: truncatedResult,
@@ -426,7 +426,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
 
   const normalizedInput = input.trim();
 
-  // T005: Eval logger — capture context query at entry (fail-safe)
+  // AI-TRACE: T005: Eval logger — capture context query at entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -558,7 +558,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         options.specFolder = discoveredFolder;
       }
     } catch (err: unknown) {
-      // CHK-PI-B3-004: never block context retrieval
+      // AI-GUARD: CHK-PI-B3-004: never block context retrieval
       console.error('[memory-context] folder discovery failed (non-critical):',
         err instanceof Error ? err.message : String(err));
     }
@@ -683,7 +683,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     }
   });
 
-  // T004: Consumption instrumentation — log context event (fail-safe, never throws)
+  // AI-TRACE: T004: Consumption instrumentation — log context event (fail-safe, never throws)
   try {
     const db = vectorIndex.getDb();
     if (db) {
@@ -711,7 +711,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     }
   } catch { /* instrumentation must never cause context handler to fail */ }
 
-  // T005: Eval logger — capture final context results at exit (fail-safe)
+  // AI-TRACE: T005: Eval logger — capture final context results at exit (fail-safe)
   try {
     if (_evalRunId && _evalQueryId) {
       let finalMemoryIds: number[] = [];
@@ -761,7 +761,7 @@ export {
   enforceTokenBudget,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_memory_context = handleMemoryContext;
 
 export {

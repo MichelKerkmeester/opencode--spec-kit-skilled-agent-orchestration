@@ -435,7 +435,7 @@ function classifyIntent(query: string): IntentResult {
     }
   }
 
-  // P3-12: If top score is below minimum confidence, return "understand" with low confidence
+  // AI-WHY: P3-12: If top score is below minimum confidence, return "understand" with low confidence
   // This prevents weak single-keyword matches from dominating classification.
   if (topScore < MIN_CONFIDENCE_THRESHOLD) {
     return {

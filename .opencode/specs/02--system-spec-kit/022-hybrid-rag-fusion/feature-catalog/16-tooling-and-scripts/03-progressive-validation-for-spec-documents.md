@@ -8,6 +8,10 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 ---
 
+## Source Files
+
+No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+
 ## Source Metadata
 
 - Group: Tooling and scripts

@@ -8,6 +8,30 @@ Edge bounds are enforced at insert time. Auto-generated edges (those with `creat
 
 This audit infrastructure supports the N3-lite consolidation engine: Hebbian strengthening, staleness detection and edge bounds enforcement all rely on accurate weight history and provenance tracking.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
+| `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 index management |
+| `mcp_server/lib/search/graph-search-fn.ts` | Lib | Graph degree scoring |
+| `mcp_server/lib/search/search-types.ts` | Lib | Search type definitions |
+| `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/bm25-index.vitest.ts` | BM25 index operations |
+| `mcp_server/tests/causal-edges-unit.vitest.ts` | Causal edge unit tests |
+| `mcp_server/tests/causal-edges.vitest.ts` | Causal edge storage tests |
+| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
+| `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
+| `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
+
 ## Source Metadata
 
 - Group: Graph signal activation

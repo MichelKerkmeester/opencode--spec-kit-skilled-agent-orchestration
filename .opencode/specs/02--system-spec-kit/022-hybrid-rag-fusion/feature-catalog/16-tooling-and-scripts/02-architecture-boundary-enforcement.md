@@ -8,6 +8,20 @@ Two architecture rules in `ARCHITECTURE_BOUNDARIES.md` were previously documenta
 
 GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and verifies each passes three conditions: at most 50 substantive lines (non-blank, non-comment), contains a `child_process` import, and references `scripts/dist/` somewhere in its content. Failure on any condition flags the file as not a valid wrapper.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/architecture/layer-definitions.ts` | Lib | Architecture layer enforcement |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/layer-definitions.vitest.ts` | Layer definition tests |
+
 ## Source Metadata
 
 - Group: Tooling and scripts

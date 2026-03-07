@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Local GGUF Reranker (node-llama-cpp)
 // ---------------------------------------------------------------
-// Optional local reranker for Stage 3. This module is fully gated by
+// AI-WHY: Optional local reranker for Stage 3. This module is fully gated by
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any
 // precondition or runtime failure.
 //
@@ -26,7 +26,7 @@ type LocalRerankRow = Record<string, unknown> & {
 };
 
 const MIN_TOTAL_MEMORY_BYTES = 8 * 1024 * 1024 * 1024;
-// Lower total-memory threshold when custom model is configured — still
+// AI-WHY: Lower total-memory threshold when custom model is configured — still
 // prevents OOM on truly constrained systems without blocking intentional
 // overrides. We use totalmem() because freemem() is unreliable on macOS/Linux
 // where disk cache can make "free" memory appear deceptively low.
@@ -78,7 +78,7 @@ async function ensureModelLoaded(modelPath: string): Promise<unknown> {
     return cachedModel;
   }
 
-  // H4 fix: Explicitly reuse in-flight promise for the same model path
+  // AI-GUARD: H4 fix: Explicitly reuse in-flight promise for the same model path
   // to prevent concurrent callers from orphaning promises
   if (modelLoadPromise && modelLoadPromisePath === modelPath) {
     return await modelLoadPromise;
@@ -194,7 +194,7 @@ export async function canUseLocalReranker(): Promise<boolean> {
   try {
     await access(modelPath);
     return true;
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
@@ -230,7 +230,7 @@ export async function rerankLocal<T extends LocalRerankRow>(
 
     const reranked = await Promise.race([
       (async (): Promise<T[]> => {
-        // Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
+        // AI-WHY: Sprint 9 fix: Sequential scoring instead of Promise.all to avoid
         // allocating multiple sequence states simultaneously in VRAM, which
         // can trigger OOM or context mixing on local LLM inference.
         // PERF(CHK-113): Sequential per-candidate inference. For 20 candidates, latency depends on
@@ -278,8 +278,8 @@ export async function rerankLocal<T extends LocalRerankRow>(
     if (typeof dispose === 'function') {
       try {
         await dispose.call(context);
-      } catch {
-        // non-fatal cleanup
+      } catch (_error: unknown) {
+        // AI-GUARD: non-fatal cleanup
       }
     }
   }
@@ -297,7 +297,7 @@ export async function disposeLocalReranker(): Promise<void> {
       if (disposable && typeof disposable.dispose === 'function') {
         await disposable.dispose();
       }
-    } catch {
+    } catch (_error: unknown) {
       // Model failed to load — nothing to dispose.
     }
   }
@@ -306,8 +306,8 @@ export async function disposeLocalReranker(): Promise<void> {
   if (model && typeof model.dispose === 'function') {
     try {
       await model.dispose();
-    } catch {
-      // non-fatal cleanup
+    } catch (_error: unknown) {
+      // AI-GUARD: non-fatal cleanup
     }
   }
   cachedLlama = null;

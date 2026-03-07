@@ -6,6 +6,20 @@ An `encoding_intent` field classifies content type at index time as `document`, 
 
 The classification is stored as read-only metadata on the `encoding_intent` column for both parent records and individual chunks. It has no retrieval-time scoring impact. The intent is to build a labeled dataset that future work can use for type-aware retrieval. Runs behind the `SPECKIT_ENCODING_INTENT` flag (default ON).
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/encoding-intent.ts` | Lib | Encoding intent classification |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/encoding-intent.vitest.ts` | Encoding intent tests |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

@@ -145,7 +145,7 @@ function logConsumptionEvent(db: Database.Database, event: ConsumptionEvent): vo
       metadataJson
     );
   } catch {
-    // Intentionally swallowed — instrumentation must never cause failures
+    // AI-GUARD: Intentionally swallowed — instrumentation must never cause failures
   }
 }
 
@@ -375,7 +375,7 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
     }
 
   } catch {
-    // If the whole function fails, return empty patterns — never throw
+    // AI-GUARD: If the whole function fails, return empty patterns — never throw
   }
 
   return patterns;

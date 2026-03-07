@@ -111,7 +111,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   const inFlightReindex = new Set<Promise<void>>();
   let isClosing = false;
 
-  // C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
+  // AI-GUARD: C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
   const MAX_CONCURRENT_REINDEX = 2;
   let activeReindexCount = 0;
   const pendingReindexSlots: Array<() => void> = [];
@@ -233,7 +233,7 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
           return;
         }
 
-        // Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
+        // AI-WHY: Sprint 9 fix: Handle ENOENT gracefully when a file is rapidly
         // created then deleted before the debounce timer fires.
         let nextHash: string;
         try {

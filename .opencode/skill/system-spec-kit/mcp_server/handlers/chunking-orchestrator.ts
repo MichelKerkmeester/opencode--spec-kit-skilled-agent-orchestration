@@ -143,7 +143,7 @@ async function indexChunkedMemoryFile(
     console.error(`[memory-save] Chunk thinning retained ${retainedChunks.length}/${chunkResult.chunks.length} chunks`);
   }
 
-  // Wrap parent setup in transaction to prevent check-then-delete race condition
+  // AI-GUARD: Wrap parent setup in transaction to prevent check-then-delete race condition
   const setupParent = database.transaction(() => {
     const existing = database.prepare(`
       SELECT id FROM memory_index

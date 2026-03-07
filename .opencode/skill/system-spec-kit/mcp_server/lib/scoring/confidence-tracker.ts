@@ -137,7 +137,7 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
         effectiveNegativeValidationCount
       );
 
-      // Report eligibility only; promotion is intentionally explicit and separate.
+      // AI-WHY: Report eligibility only; promotion is intentionally explicit and separate.
       const promotionEligible = isPromotionEligible(
         memory.importance_tier,
         newConfidence,

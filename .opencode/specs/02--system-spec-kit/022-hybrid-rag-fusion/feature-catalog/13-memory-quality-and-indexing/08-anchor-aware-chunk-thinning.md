@@ -6,6 +6,21 @@ When large files are split into chunks during indexing, not all chunks carry equ
 
 Chunks scoring below the 0.3 threshold are dropped from the index, reducing storage and search noise. The thinning guarantee: the function never returns an empty array regardless of scoring. Always active in the chunking path with no separate feature flag.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
+| `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

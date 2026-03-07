@@ -222,7 +222,7 @@ export function executeAutoPromotion(db: Database, memoryId: number): AutoPromot
       return check;
     }
 
-    // Safeguard: cap promotion throughput to avoid runaway tier inflation.
+    // AI-WHY: Safeguard: cap promotion throughput to avoid runaway tier inflation.
     ensurePromotionAuditTable(db);
     const nowMs = Date.now();
     const recentPromotions = countRecentPromotions(db, nowMs);

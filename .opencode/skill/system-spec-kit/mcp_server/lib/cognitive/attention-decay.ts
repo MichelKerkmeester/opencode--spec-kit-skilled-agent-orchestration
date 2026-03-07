@@ -102,7 +102,7 @@ function calculateRetrievabilityDecay(stability: number, elapsedDays: number): n
   if (typeof fsrsScheduler.calculateRetrievability === 'function') {
     return fsrsScheduler.calculateRetrievability(stability, elapsedDays);
   }
-  // T301: Inline fallback uses canonical constants from fsrs-scheduler.ts
+  // AI-TRACE: T301: Inline fallback uses canonical constants from fsrs-scheduler.ts
   if (stability <= 0 || elapsedDays < 0) return 0;
   return Math.pow(1 + fsrsScheduler.FSRS_FACTOR * (elapsedDays / stability), fsrsScheduler.FSRS_DECAY);
 }

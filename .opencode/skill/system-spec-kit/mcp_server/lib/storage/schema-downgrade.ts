@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Schema Downgrade (v16 -> v15)
 // ---------------------------------------------------------------
-// Targeted downgrade utility for removing chunking columns added in v16:
+// AI-WHY: Targeted downgrade utility for removing chunking columns added in v16:
 //   - parent_id
 //   - chunk_index
 //   - chunk_label

@@ -30,7 +30,7 @@ import { createMCPSuccessResponse, createMCPEmptyResponse } from '../lib/respons
 // T004: Consumption instrumentation
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
-// T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
+// AI-TRACE: T005: Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 
 // Shared handler types
@@ -188,7 +188,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
 
   const startTime = Date.now();
 
-  // T005: Eval logger — capture trigger query at entry (fail-safe)
+  // AI-TRACE: T005: Eval logger — capture trigger query at entry (fail-safe)
   let _evalQueryId = 0;
   let _evalRunId = 0;
   try {
@@ -430,7 +430,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     }
   });
 
-  // T004: Consumption instrumentation — log triggers event (fail-safe, never throws)
+  // AI-TRACE: T004: Consumption instrumentation — log triggers event (fail-safe, never throws)
   try {
     const db = attentionDecay.getDb();
     if (db) {
@@ -447,7 +447,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     }
   } catch { /* instrumentation must never cause triggers handler to fail */ }
 
-  // T005: Eval logger — capture final trigger results at exit (fail-safe)
+  // AI-TRACE: T005: Eval logger — capture final trigger results at exit (fail-safe)
   const triggerMemoryIds = formattedResults.map(r => r.memoryId).filter(id => typeof id === 'number');
   logFinalTriggerEval(triggerMemoryIds, latencyMs);
 
@@ -462,7 +462,7 @@ export {
   handleMemoryMatchTriggers,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_memory_match_triggers = handleMemoryMatchTriggers;
 
 export {

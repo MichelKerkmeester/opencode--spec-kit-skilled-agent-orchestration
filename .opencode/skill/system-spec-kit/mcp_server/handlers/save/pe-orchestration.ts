@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Pe Orchestration
+// ---------------------------------------------------------------
+
 import type Database from 'better-sqlite3';
 
 import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';
@@ -48,7 +52,7 @@ export function evaluateAndApplyPeDecision(
 
     logPeDecision(peDecision, parsed.contentHash, parsed.specFolder);
 
-    // Guard: PE actions that reference an existing memory require existingMemoryId
+    // AI-GUARD: Guard: PE actions that reference an existing memory require existingMemoryId
     if (
       (peDecision.action === predictionErrorGate.ACTION.REINFORCE ||
         peDecision.action === predictionErrorGate.ACTION.SUPERSEDE ||

@@ -415,7 +415,7 @@ async function pathIsDirectory(candidatePath: string): Promise<boolean> {
   try {
     const stat = await fs.stat(candidatePath);
     return stat.isDirectory();
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
@@ -437,7 +437,7 @@ async function collectSpecParentCache(specsDirs: string[]): Promise<Map<string, 
       }
 
       parentCache.set(specsDir, parentFolders);
-    } catch {
+    } catch (_error: unknown) {
       parentCache.set(specsDir, []);
     }
   }
@@ -623,7 +623,7 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
     let topEntries: string[] = [];
     try {
       topEntries = await fs.readdir(specsDir);
-    } catch {
+    } catch (_error: unknown) {
       continue;
     }
 
@@ -634,7 +634,7 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
       let topStat;
       try {
         topStat = await fs.stat(topPath);
-      } catch {
+      } catch (_error: unknown) {
         continue;
       }
       if (!topStat.isDirectory()) continue;
@@ -644,7 +644,7 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
       let childEntries: string[] = [];
       try {
         childEntries = await fs.readdir(topPath);
-      } catch {
+      } catch (_error: unknown) {
         continue;
       }
 
@@ -656,7 +656,7 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
           if (childStat.isDirectory()) {
             upsertCandidate(childPath, childStat.mtimeMs);
           }
-        } catch {
+        } catch (_error: unknown) {
           // Unreadable child, skip and continue scanning.
         }
       }
@@ -815,7 +815,7 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
             await fs.access(nestedPath);
             console.log(`   Using spec folder from CLI argument (nested): ${argParts.join('/')}`);
             return nestedPath;
-          } catch {
+          } catch (_error: unknown) {
             // Not found in this specs dir, continue searching
           }
         }
@@ -845,7 +845,7 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
             console.error(`  - ${folder}`);
           });
         }
-      } catch {
+      } catch (_error: unknown) {
         // Silently ignore if we can't read specs directory
       }
 
@@ -910,7 +910,7 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
                 try {
                   await fs.access(altPath);
                   return altPath;
-                } catch {
+                } catch (_error: unknown) {
                   // Alternative not found as nested, use original
                 }
               }

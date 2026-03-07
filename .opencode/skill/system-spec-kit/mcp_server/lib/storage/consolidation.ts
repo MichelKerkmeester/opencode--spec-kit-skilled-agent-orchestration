@@ -103,7 +103,7 @@ function checkSqliteVecAvailable(database: Database.Database): boolean {
       "SELECT name FROM sqlite_master WHERE type='table' AND name='vec_memories'"
     ) as Database.Statement).get() as { name: string } | undefined;
     return !!result;
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
@@ -135,7 +135,7 @@ function scanContradictionsVector(
   }>;
 
   // AI-WHY: O(n^2) pairwise scan capped at 500 memories (up to 124,750 pairs).
-  // A 5-second deadline prevents runaway CPU when embeddings are large or the
+  // AI-WHY: A 5-second deadline prevents runaway CPU when embeddings are large or the
   // machine is slow, keeping the consolidation cycle non-blocking.
   const deadline = Date.now() + 5000;
 
@@ -195,7 +195,7 @@ function scanContradictionsHeuristic(
   }>;
 
   // AI-WHY: Same 5-second timeout guard as the vector-based scan to prevent
-  // unbounded CPU usage in the heuristic O(n^2) fallback path.
+  // AI-WHY: unbounded CPU usage in the heuristic O(n^2) fallback path.
   const deadline = Date.now() + 5000;
 
   // Simple word-overlap heuristic for candidate generation
@@ -297,7 +297,7 @@ export function buildContradictionClusters(
             memberIds.add(n.neighbor_id);
           }
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.warn('[consolidation] cluster expansion error:', err);
       }
     }
@@ -327,7 +327,7 @@ export function runHebbianCycle(database: Database.Database): { strengthened: nu
   let decayed = 0;
 
   try {
-    // Wrap all DB operations in a single transaction for atomicity
+    // AI-WHY: Wrap all DB operations in a single transaction for atomicity
     database.transaction(() => {
       // Strengthen: edges accessed in the last cycle period (7 days)
       const recentEdges = (database.prepare(`
@@ -449,7 +449,7 @@ export function runConsolidationCycle(database: Database.Database): Consolidatio
       const bounds = checkEdgeBounds(node_id);
       if (!bounds.canAddAuto) rejectedCount++;
     }
-  } catch {
+  } catch (_error: unknown) {
     // Best-effort bounds check
   }
 
@@ -506,8 +506,8 @@ export function runConsolidationCycleIfEnabled(
     `) as Database.Statement).run();
 
     return result;
-  } catch (err) {
-    // Fail-closed: broken bookkeeping must not cause unbounded cycle runs
+  } catch (err: unknown) {
+    // AI-GUARD: Fail-closed: broken bookkeeping must not cause unbounded cycle runs
     console.warn('[consolidation] cadence bookkeeping error:', err);
     return null;
   }

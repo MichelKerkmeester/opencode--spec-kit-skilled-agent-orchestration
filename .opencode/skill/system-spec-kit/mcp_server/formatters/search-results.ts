@@ -143,7 +143,7 @@ export function safeJsonParse<T>(str: string | null | undefined, fallback: T): T
   if (!str) return fallback;
   try {
     return JSON.parse(str) as T;
-  } catch {
+  } catch (_error: unknown) {
     return fallback;
   }
 }
@@ -324,8 +324,8 @@ export async function formatSearchResults(
       data: {
         searchType: searchType,
         constitutionalCount: 0,
-        // M4 fix: Only spread extraData (pipeline trace, timing, etc.) when includeTrace is enabled
-        ...(includeTrace && extraData ? extraData : {}),
+        // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.)
+        ...(extraData ?? {}),
       },
       hints: [
         'Try broadening your search query',
@@ -512,8 +512,8 @@ export async function formatSearchResults(
     constitutionalCount: constitutionalCount,
     results: formatted,
   };
-  // M4 fix: Only spread extraData (pipeline trace, timing, etc.) when includeTrace is enabled
-  if (includeTrace && extraData && Object.keys(extraData).length > 0) {
+  // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.)
+  if (extraData && Object.keys(extraData).length > 0) {
     Object.assign(responseData, extraData);
   }
 

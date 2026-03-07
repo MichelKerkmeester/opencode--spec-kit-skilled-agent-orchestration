@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Types
+// ---------------------------------------------------------------
+
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 

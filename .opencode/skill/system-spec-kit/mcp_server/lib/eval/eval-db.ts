@@ -120,7 +120,7 @@ function initEvalDb(dataDir?: string): Database.Database {
     return evalDb;
   }
 
-  // Ensure the directory exists
+  // AI-GUARD: Ensure the directory exists
   if (!fs.existsSync(resolvedDir)) {
     fs.mkdirSync(resolvedDir, { recursive: true });
   }

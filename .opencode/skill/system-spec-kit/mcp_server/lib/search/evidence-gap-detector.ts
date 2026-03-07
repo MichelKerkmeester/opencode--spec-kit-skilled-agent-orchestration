@@ -165,7 +165,7 @@ export function detectEvidenceGap(rrfScores: number[]): TRMResult {
     return { gapDetected: true, zScore: 0, mean: 0, stdDev: 0 };
   }
 
-  // Avoid division by zero when all scores are identical (stdDev === 0 → Z = 0).
+  // AI-WHY: Avoid division by zero when all scores are identical (stdDev === 0 → Z = 0).
   const zScore = stdDev === 0 ? 0 : (topScore - mean) / stdDev;
 
   // When stdDev===0 all scores are identical; Z-score is meaningless.

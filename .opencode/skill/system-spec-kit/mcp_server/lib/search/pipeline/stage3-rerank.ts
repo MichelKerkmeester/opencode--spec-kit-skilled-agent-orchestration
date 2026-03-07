@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Stage 3 — Rerank + Aggregate
-// 4-Stage Retrieval Pipeline: Stage 3 of 4
+// AI-GUARD: 4-Stage Retrieval Pipeline: Stage 3 of 4
 //
 // Responsibilities (in execution order):
 //   1. Cross-encoder reranking   — re-scores results via neural model
@@ -8,7 +8,7 @@
 //   3. MPAB chunk collapse        — dedup chunks, reassemble parents
 //
 // Pipeline position constraint (Sprint 4):
-//   MPAB MUST remain AFTER RRF fusion (Stage 2).
+// MPAB MUST remain AFTER RRF fusion (Stage 2).
 //   Stage 3 is the only stage that may change scores after Stage 2.
 //
 // I/O CONTRACT:
@@ -170,7 +170,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
           if (emb) {
             mmrCandidates.push({
               id: r.id,
-              // P1-015: Use effectiveScore() for consistent fallback chain
+              // AI-TRACE: P1-015: Use effectiveScore() for consistent fallback chain
               score: effectiveScore(r),
               embedding: emb,
             });
@@ -199,7 +199,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     }
   }
 
-  // ── Step 3: MPAB chunk collapse + parent reassembly ───────────
+  // AI-GUARD: ── Step 3: MPAB chunk collapse + parent reassembly ───────────
   //
   // MPAB must remain AFTER RRF (Stage 2 constraint). This step runs
   // here in Stage 3 — never move it upstream.
@@ -264,12 +264,12 @@ async function applyCrossEncoderReranking(
     limit: number;
   }
 ): Promise<{ rows: PipelineRow[]; applied: boolean }> {
-  // Feature-flag guard
+  // AI-GUARD: Feature-flag guard
   if (!options.rerank || !isCrossEncoderEnabled()) {
     return { rows: results, applied: false };
   }
 
-  // Minimum-document guard
+  // AI-GUARD: Minimum-document guard
   if (results.length < MIN_RESULTS_FOR_RERANK) {
     return { rows: results, applied: false };
   }
@@ -316,7 +316,7 @@ async function applyCrossEncoderReranking(
     }
   }
 
-  // Map PipelineRow → RerankDocument (uses `content` field per cross-encoder interface)
+  // AI-TRACE: Map PipelineRow → RerankDocument (uses `content` field per cross-encoder interface)
   // P1-015: Use effectiveScore() for consistent fallback chain
   const documents: RerankDocument[] = results.map((row) => ({
     id: row.id,
@@ -359,7 +359,7 @@ async function applyCrossEncoderReranking(
 
     return { rows: rerankedRows, applied: true };
   } catch (err: unknown) {
-    // Graceful degradation — return original results on any reranker failure
+    // AI-WHY: Graceful degradation — return original results on any reranker failure
     console.warn(
       `[stage3-rerank] Cross-encoder reranking failed: ${toErrorMessage(err)} — returning original results`
     );
@@ -537,7 +537,7 @@ async function reassembleParentRow(
       .get(parentId) as Record<string, unknown> | undefined;
 
     if (!parentRow) {
-      // Parent not found in DB — use best chunk as fallback
+      // AI-WHY: Parent not found in DB — use best chunk as fallback
       stats.fallback++;
       return markFallback(bestChunk);
     }
@@ -569,7 +569,7 @@ async function reassembleParentRow(
     stats.reassembled++;
     return reassembled;
   } catch (err: unknown) {
-    // DB error — gracefully fall back to best-chunk content
+    // AI-WHY: DB error — gracefully fall back to best-chunk content
     console.warn(
       `[stage3-rerank] MPAB DB reassembly failed for parent ${parentId}: ${toErrorMessage(err)} — using chunk fallback`
     );

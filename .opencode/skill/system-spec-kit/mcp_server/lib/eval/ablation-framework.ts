@@ -201,7 +201,7 @@ function signTestPValue(nPositive: number, nNegative: number): number | null {
   // Two-sided sign test: P(X <= min(n+, n-)) under Binomial(n, 0.5)
   const k = Math.min(nPositive, nNegative);
 
-  // Log-space binomial coefficient to avoid overflow for large n
+  // AI-WHY: Log-space binomial coefficient to avoid overflow for large n
   function logBinomial(nVal: number, kVal: number): number {
     if (kVal < 0 || kVal > nVal) return -Infinity;
     if (kVal === 0 || kVal === nVal) return 0;
@@ -403,7 +403,7 @@ export function storeAblationResults(report: AblationReport): boolean {
   try {
     const db = getDb();
 
-    // Use a synthetic eval_run_id: negative timestamp to avoid collision
+    // AI-WHY: Use a synthetic eval_run_id: negative timestamp to avoid collision
     // with production run IDs (same pattern as bm25-baseline.ts).
     const evalRunId = -(Date.parse(report.timestamp));
 

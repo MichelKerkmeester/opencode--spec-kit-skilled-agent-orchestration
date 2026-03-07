@@ -6,6 +6,20 @@ Memory filenames were previously derived solely from the spec folder name, produ
 
 The slug is lowercased, non-alphanumeric characters replaced with hyphens, collapsed, and truncated at a word boundary (hyphen) to a maximum of 50 characters. A minimum length of 8 characters ensures slugs are meaningful. This produces filenames like `04-03-26_17-25__sprint-019-impl-3-phases-81-files.md` instead of `04-03-26_17-25__hybrid-rag-fusion-refinement.md`. Always active with no feature flag.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

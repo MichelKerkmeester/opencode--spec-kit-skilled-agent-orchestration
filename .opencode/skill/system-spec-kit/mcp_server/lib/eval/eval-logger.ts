@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Logger
-// T005: Non-blocking, fail-safe logging hooks for search, context,
+// AI-TRACE: T005: Non-blocking, fail-safe logging hooks for search, context,
 // and trigger handlers. All writes go to the eval DB (speckit-eval.db).
 //
 // CRITICAL: Logging must NEVER break production search.
@@ -55,7 +55,7 @@ function generateEvalRunId(): number {
           _evalRunCounter = row.maxId;
         }
       }
-    } catch { /* DB may not have eval tables yet — start from 0 */ }
+    } catch (_error: unknown) { /* DB may not have eval tables yet — start from 0 */ }
   }
   return ++_evalRunCounter;
 }

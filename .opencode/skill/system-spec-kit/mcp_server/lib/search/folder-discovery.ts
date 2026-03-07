@@ -644,7 +644,7 @@ export function discoverSpecFolder(
 
     return best.specFolder;
   } catch {
-    // CHK-PI-B3-004: Never throw — graceful degradation
+    // AI-GUARD: CHK-PI-B3-004: Never throw — graceful degradation
     return null;
   }
 }

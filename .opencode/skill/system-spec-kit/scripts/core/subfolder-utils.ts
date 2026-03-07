@@ -40,7 +40,7 @@ function isTraversableFolder(name: string): boolean {
 function isDirectorySync(filePath: string): boolean {
   try {
     return fsSync.statSync(filePath).isDirectory();
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
@@ -51,7 +51,7 @@ function readFileIfExistsSync(filePath: string): string | null {
       return null;
     }
     return fsSync.readFileSync(filePath, 'utf8');
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }
@@ -79,7 +79,7 @@ function listImmediateChildSpecFoldersSync(parentPath: string): string[] {
       }
       return isDirectorySync(path.join(parentPath, entry));
     });
-  } catch {
+  } catch (_error: unknown) {
     return [];
   }
 }
@@ -160,7 +160,7 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
   for (const specsDir of specsDirs) {
     if (!fsSync.existsSync(specsDir)) continue;
     let realRoot: string;
-    try { realRoot = fsSync.realpathSync(specsDir); } catch { realRoot = path.resolve(specsDir); }
+    try { realRoot = fsSync.realpathSync(specsDir); } catch (_error: unknown) { realRoot = path.resolve(specsDir); }
     if (!uniqueRoots.has(realRoot)) {
       uniqueRoots.set(realRoot, specsDir);
     }
@@ -173,7 +173,7 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
     }
     // Prevent cycle revisits via real-path tracking
     let realDir: string;
-    try { realDir = fsSync.realpathSync(dir); } catch { realDir = path.resolve(dir); }
+    try { realDir = fsSync.realpathSync(dir); } catch (_error: unknown) { realDir = path.resolve(dir); }
     if (visited.has(realDir)) return;
     visited.add(realDir);
 
@@ -213,7 +213,7 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
   if (matches.length > 1) {
     // Deduplicate aliased results (belt-and-suspenders with root dedup)
     const uniqueReal = [...new Set(matches.map((m) => {
-      try { return fsSync.realpathSync(m); } catch { return m; }
+      try { return fsSync.realpathSync(m); } catch (_error: unknown) { return m; }
     }))];
     if (uniqueReal.length === 1) {
       return matches[0];
@@ -243,11 +243,11 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
     try {
       await fs.access(specsDir);
       let realRoot: string;
-      try { realRoot = await fs.realpath(specsDir); } catch { realRoot = path.resolve(specsDir); }
+      try { realRoot = await fs.realpath(specsDir); } catch (_error: unknown) { realRoot = path.resolve(specsDir); }
       if (!uniqueRoots.has(realRoot)) {
         uniqueRoots.set(realRoot, specsDir);
       }
-    } catch {
+    } catch (_error: unknown) {
       continue;
     }
   }
@@ -258,7 +258,7 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
       return;
     }
     let realDir: string;
-    try { realDir = await fs.realpath(dir); } catch { realDir = path.resolve(dir); }
+    try { realDir = await fs.realpath(dir); } catch (_error: unknown) { realDir = path.resolve(dir); }
     if (visited.has(realDir)) return;
     visited.add(realDir);
 
@@ -297,7 +297,7 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
 
   if (matches.length > 1) {
     const uniqueReal = [...new Set(await Promise.all(matches.map(async (m) => {
-      try { return await fs.realpath(m); } catch { return m; }
+      try { return await fs.realpath(m); } catch (_error: unknown) { return m; }
     })))];
     if (uniqueReal.length === 1) {
       return matches[0];

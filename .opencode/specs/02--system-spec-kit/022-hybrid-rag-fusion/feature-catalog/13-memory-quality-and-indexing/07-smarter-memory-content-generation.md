@@ -8,6 +8,34 @@ Seven primitives run in sequence: strip YAML frontmatter, strip anchor markers, 
 
 The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/config/memory-types.ts` | Lib | Memory type definitions |
+| `mcp_server/lib/config/type-inference.ts` | Lib | Memory type inference |
+| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
+| `mcp_server/lib/parsing/memory-parser.ts` | Lib | Memory file parser |
+| `mcp_server/lib/scoring/importance-tiers.ts` | Lib | Importance tier definitions |
+| `mcp_server/lib/utils/canonical-path.ts` | Lib | Canonical path resolution |
+| `mcp_server/lib/utils/path-security.ts` | Lib | Path security validation |
+| `shared/parsing/quality-extractors.ts` | Shared | Quality signal extraction |
+| `shared/utils/path-security.ts` | Shared | Shared path security |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
+| `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
+| `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |
+| `mcp_server/tests/memory-parser.vitest.ts` | Memory parser tests |
+| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
+| `mcp_server/tests/unit-path-security.vitest.ts` | Path security unit tests |
+| `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

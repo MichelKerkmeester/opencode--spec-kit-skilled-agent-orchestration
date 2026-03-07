@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Temporal-Structural Coherence (FSRS + Graph Centrality)
 // ---------------------------------------------------------------
-// Augments FSRS stability scores with graph centrality so that
+// AI-WHY: Augments FSRS stability scores with graph centrality so that
 // central nodes decay slower and peripheral nodes decay faster.
 
 /* --- 1. INTERFACES --- */
@@ -68,7 +68,7 @@ export function computeGraphCentrality(
   // Cannot normalize with fewer than 2 nodes.
   if (totalNodes < 2) return 0;
 
-  // Node must exist in the graph.
+  // AI-GUARD: Node must exist in the graph.
   if (!graph.nodes.has(nodeId)) return 0;
 
   const inDegree = (graph.inbound.get(nodeId) ?? []).length;
@@ -76,6 +76,6 @@ export function computeGraphCentrality(
 
   const centrality = (inDegree + outDegree) / (2 * (totalNodes - 1));
 
-  // Clamp to [0, 1] to guard against unexpected edge-list duplication.
+  // AI-GUARD: Clamp to [0, 1] to guard against unexpected edge-list duplication.
   return Math.min(1, Math.max(0, centrality));
 }

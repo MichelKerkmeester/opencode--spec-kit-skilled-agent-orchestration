@@ -116,7 +116,7 @@ function tableExists(database: Database.Database, tableName: string): boolean {
       "SELECT name FROM sqlite_master WHERE type IN ('table','view') AND name = ?"
     ).get(tableName) as { name?: string } | undefined;
     return !!row?.name;
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }
@@ -126,7 +126,7 @@ function getTableColumns(database: Database.Database, tableName: string): string
     return (database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>)
       .map((column) => column.name)
       .filter((name) => typeof name === 'string' && name.length > 0);
-  } catch {
+  } catch (_error: unknown) {
     return [];
   }
 }
@@ -303,7 +303,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
   } = options;
 
   try {
-    // Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
+    // AI-WHY: Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
     const checkpointInfo = database.transaction(() => {
       // Snapshot memory_index
       const folderFilter = specFolder ? 'WHERE spec_folder = ?' : '';
@@ -328,7 +328,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
             : 'SELECT rowid, embedding FROM vec_memories';
           const vectorParams = specFolder ? [specFolder] : [];
           vectors = database.prepare(vectorSql).all(...vectorParams) as SnapshotVectorRow[];
-        } catch {
+        } catch (_error: unknown) {
           vectors = [];
         }
       }
@@ -339,7 +339,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
         workingMemorySnapshot = database.prepare(
           'SELECT * FROM working_memory'
         ).all() as Array<Record<string, unknown>>;
-      } catch {
+      } catch (_error: unknown) {
         // Table may not exist
       }
 
@@ -478,7 +478,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
     const checkpointVectors = Array.isArray(snapshot.vectors) ? snapshot.vectors : [];
     const hasVectorSnapshot = hasVecMemories && checkpointVectors.length > 0;
 
-    // T107 FIX: Validate every row BEFORE any DB mutations.
+    // AI-GUARD: T107 FIX: Validate every row BEFORE any DB mutations.
     // Reject the entire restore on schema violations to prevent
     // partial restores or silent NULL insertions.
     if (snapshot.memories.length > 0) {
@@ -508,7 +508,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         `) as Database.Statement
       : null;
 
-    // T213: Ensure working_memory table schema is ready BEFORE the transaction.
+    // AI-TRACE: T213: Ensure working_memory table schema is ready BEFORE the transaction.
     // DDL (CREATE TABLE, ALTER TABLE) causes SQLite to auto-commit, which would
     // corrupt a surrounding transaction. Run DDL outside the transaction boundary.
     if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
@@ -553,13 +553,13 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         if (!wmColumns.includes('redaction_applied')) {
           database.exec('ALTER TABLE working_memory ADD COLUMN redaction_applied INTEGER NOT NULL DEFAULT 0');
         }
-      } catch {
+      } catch (_error: unknown) {
         // Table may already exist with different schema — proceed anyway
       }
     }
 
-    // T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
-    // When clearExisting=true, the DELETE and all INSERTs must be atomic.
+    // AI-TRACE: T101 FIX: Transaction-wrap checkpoint restore to prevent data loss.
+    // AI-GUARD: When clearExisting=true, the DELETE and all INSERTs must be atomic.
     // If any INSERT fails after DELETE, ROLLBACK restores original data.
     // Previously, individual insert errors were silently swallowed inside
     // the transaction, allowing COMMIT after DELETE + partial inserts = data loss.
@@ -567,10 +567,10 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       // Clear existing data if requested
       if (clearExisting) {
         database.prepare('DELETE FROM memory_index').run();
-        // Only clear vec table when checkpoint contains vectors to restore.
+        // AI-WHY: Only clear vec table when checkpoint contains vectors to restore.
         // This keeps backward compatibility for older checkpoints that lacked vector snapshots.
         if (hasVectorSnapshot) {
-          try { database.prepare('DELETE FROM vec_memories').run(); } catch { /* table may not exist */ }
+          try { database.prepare('DELETE FROM vec_memories').run(); } catch (_error: unknown) { /* table may not exist */ }
         }
       }
 
@@ -655,13 +655,13 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         }
       }
 
-      // T213: Restore working memory state from checkpoint snapshot.
+      // AI-GUARD: T213: Restore working memory state from checkpoint snapshot.
       // The working_memory table holds session-based attention data that must
       // survive checkpoint save/restore cycles.
       // DDL (CREATE TABLE, ALTER TABLE) is executed BEFORE the transaction above.
       if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
         if (clearExisting) {
-          try { database.prepare('DELETE FROM working_memory').run(); } catch { /* table may not exist */ }
+          try { database.prepare('DELETE FROM working_memory').run(); } catch (_error: unknown) { /* table may not exist */ }
         }
 
         for (const wmEntry of snapshot.workingMemory) {

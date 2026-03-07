@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Shadow Scoring
 // ---------------------------------------------------------------
-//
+// AI-GUARD: 
 // Runs a parallel scoring path alongside production results WITHOUT affecting
 // production output. Logs both production and shadow scores for A/B comparison.
 //
@@ -162,7 +162,7 @@ function ensureShadowSchema(): void {
     db.exec(SHADOW_SCHEMA_SQL);
     _schemaEnsured = true;
   } catch {
-    // Non-fatal — logging should never break production
+    // AI-GUARD: Non-fatal — logging should never break production
   }
 }
 

@@ -183,7 +183,7 @@ function persistActivationTimestampToDb(timestamp: number): void {
     db.prepare('INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)')
       .run(ACTIVATION_CONFIG_KEY, timestamp.toString());
   } catch {
-    // Non-fatal: in-memory value still works
+    // AI-GUARD: Non-fatal: in-memory value still works
   }
 }
 
@@ -593,7 +593,7 @@ export function checkSemanticDedup(
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[quality-gate] Semantic dedup check failed:', message);
-    // Non-fatal: allow save through on error
+    // AI-GUARD: Non-fatal: allow save through on error
     return {
       pass: true,
       isDuplicate: false,

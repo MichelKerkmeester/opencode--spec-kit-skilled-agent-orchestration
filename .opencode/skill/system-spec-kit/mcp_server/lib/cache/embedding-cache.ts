@@ -80,7 +80,7 @@ function lookupEmbedding(
 /* --- 4. CACHE STORE --- */
 
 // AI-WHY: 10 000 is ~2× the expected upper-bound memory count (~5 000 memories
-// × model variants). Prevents unbounded SQLite table growth in long-running
+// AI-WHY: × model variants). Prevents unbounded SQLite table growth in long-running
 // server processes. Eviction uses LRU (oldest last_used_at first).
 const MAX_CACHE_ENTRIES = 10000;
 

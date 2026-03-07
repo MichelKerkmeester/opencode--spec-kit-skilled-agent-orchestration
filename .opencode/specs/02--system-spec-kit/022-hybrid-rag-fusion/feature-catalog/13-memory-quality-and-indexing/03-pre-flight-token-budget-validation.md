@@ -8,6 +8,21 @@ For `includeContent=true` queries where a single result overshoots the budget, a
 
 Overflow events are logged with query ID, candidate count, total tokens, budget limit and the number of results after truncation. This prevents the response from blowing through the caller's context window.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
+| `mcp_server/lib/validation/preflight.ts` | Lib | Pre-flight validation |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/preflight.vitest.ts` | Pre-flight validation tests |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

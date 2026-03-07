@@ -156,7 +156,7 @@ export function loadGroundTruth(
     VALUES (?, ?, ?, ?, ?)
   `);
 
-  // Use a transaction for atomic load
+  // AI-GUARD: Use a transaction for atomic load
   const loadAll = evalDb.transaction(() => {
     for (const q of dataset.queries) {
       const result = insertQuery.run(

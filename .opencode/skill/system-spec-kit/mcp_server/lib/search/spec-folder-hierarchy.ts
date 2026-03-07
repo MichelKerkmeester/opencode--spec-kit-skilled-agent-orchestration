@@ -126,7 +126,7 @@ function ensureNodeExists(
   };
   nodeMap.set(folderPath, node);
 
-  // Ensure parent chain exists (with 0 memoryCount for implicit parents)
+  // AI-GUARD: Ensure parent chain exists (with 0 memoryCount for implicit parents)
   const parentPath = getParentPath(folderPath);
   if (parentPath) {
     ensureNodeExists(nodeMap, parentPath, 0);

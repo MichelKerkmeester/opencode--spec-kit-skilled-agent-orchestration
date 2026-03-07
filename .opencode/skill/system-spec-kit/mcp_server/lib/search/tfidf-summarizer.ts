@@ -145,7 +145,7 @@ export function computeTfIdf(sentences: string[]): ScoredSentence[] {
     return { text, score, index };
   });
 
-  // Normalize scores to [0, 1]
+  // AI-WHY: Normalize scores to [0, 1]
   // Use reduce-based max to avoid RangeError when scored is large (spread exceeds call-stack limit)
   const maxScore = scored.reduce((max, s) => s.score > max ? s.score : max, -Infinity);
   if (maxScore > 0) {

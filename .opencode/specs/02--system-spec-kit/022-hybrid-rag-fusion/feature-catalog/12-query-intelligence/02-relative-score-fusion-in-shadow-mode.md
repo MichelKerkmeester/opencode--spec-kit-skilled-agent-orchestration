@@ -10,6 +10,24 @@ Kendall tau correlation between RSF and RRF rankings is computed at sprint exit 
 
 **Sprint 8 update:** The `isRsfEnabled()` feature flag function was removed as dead code. The dead RSF branch in `hybrid-search.ts` (which was gated behind this flag returning `false`) was also removed. The RSF fusion module (`rsf-fusion.ts`) retains its core fusion logic for potential future activation, but the flag guard function is gone.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/rsf-fusion.ts` | Lib | Relative score fusion |
+| `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
+| `mcp_server/tests/rsf-fusion-edge-cases.vitest.ts` | RSF fusion edge cases |
+| `mcp_server/tests/rsf-fusion.vitest.ts` | RSF fusion scoring |
+| `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
+
 ## Source Metadata
 
 - Group: Query intelligence

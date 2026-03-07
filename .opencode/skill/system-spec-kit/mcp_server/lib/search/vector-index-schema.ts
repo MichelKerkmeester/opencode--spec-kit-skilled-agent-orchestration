@@ -35,7 +35,7 @@ const logger = createLogger('VectorIndex');
 // v21: Add learned_triggers column (R11 learned feedback)
 export const SCHEMA_VERSION = 21;
 
-// Run schema migrations from one version to another
+// AI-TRACE: Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
 // BUG-019 FIX: Wrap migrations in transaction for atomicity
 export function run_migrations(database: Database.Database, from_version: number, to_version: number) {
@@ -691,7 +691,7 @@ export function run_migrations(database: Database.Database, from_version: number
     }
   };
 
-  // BUG-019 FIX: Wrap all migrations in a transaction for atomicity
+  // AI-TRACE: BUG-019 FIX: Wrap all migrations in a transaction for atomicity
   const run_all_migrations = database.transaction(() => {
     for (let v = from_version + 1; v <= to_version; v++) {
       if (migrations[v]) {
@@ -709,7 +709,7 @@ export function run_migrations(database: Database.Database, from_version: number
   }
 }
 
-// Ensure schema version table exists and run any pending migrations
+// AI-GUARD: Ensure schema version table exists and run any pending migrations
 export function ensure_schema_version(database: Database.Database) {
   database.exec(`
     CREATE TABLE IF NOT EXISTS schema_version (
@@ -1227,7 +1227,7 @@ export function create_schema(database: Database.Database, options: { sqlite_vec
   // AI-WHY: Sprint 2 (REQ-S2-001) — create embedding_cache table
   initEmbeddingCache(database);
 
-  // Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)
+  // AI-WHY: Create memory_index-specific indexes (not IF NOT EXISTS because this is a fresh DB)
   database.exec(`
     CREATE INDEX idx_spec_folder ON memory_index(spec_folder);
     CREATE INDEX idx_created_at ON memory_index(created_at);
@@ -1264,7 +1264,7 @@ export function create_schema(database: Database.Database, options: { sqlite_vec
   console.warn('[vector-index] Schema created successfully');
 }
 
-// camelCase aliases for backward compatibility
+// AI-WHY: camelCase aliases for backward compatibility
 export { ensure_schema_version as ensureSchemaVersion };
 export { run_migrations as runMigrations };
 export { create_schema as createSchema };

@@ -1,4 +1,8 @@
 // ---------------------------------------------------------------
+// MODULE: Graph Regression Flag Off Vitest
+// ---------------------------------------------------------------
+
+// ---------------------------------------------------------------
 // TEST: GRAPH REGRESSION - FLAG CONTRACT + NULL-WIRING SAFETY (T022)
 // Verifies SPECKIT_GRAPH_UNIFIED env semantics and behavior when
 // hybrid-search is explicitly initialized with graphFn = null.

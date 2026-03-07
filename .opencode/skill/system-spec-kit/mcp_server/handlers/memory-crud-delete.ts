@@ -64,7 +64,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
     const singleSnapshot = getMemoryHashSnapshot(database, numericId);
 
     // AI-WHY: T2-5 transaction wrapper — wraps single-delete path (memory delete, causal edge
-    // cleanup, ledger append) in a transaction for atomicity on error.
+    // AI-WHY: cleanup, ledger append) in a transaction for atomicity on error.
     if (database) {
       database.transaction(() => {
         deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
@@ -91,7 +91,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         }
       })();
     } else {
-      // AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
+      // AI-GUARD: AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
       deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
 
       if (deletedCount > 0) {
@@ -129,7 +129,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
           hashById.set(row.id, row);
         }
       } catch (_err: unknown) {
-        // AI-RISK: Non-fatal — bulk delete proceeds without per-memory hash snapshots; ledger entries will lack prior hashes.
+        // AI-GUARD: AI-RISK: Non-fatal — bulk delete proceeds without per-memory hash snapshots; ledger entries will lack prior hashes.
       }
     }
 

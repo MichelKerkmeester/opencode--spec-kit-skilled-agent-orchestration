@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Validation Metadata Enrichment (Sprint 5 Phase B)
-//
+// AI-GUARD: 
 // PURPOSE: Extract validation signals from spec document metadata
 // and surface them as retrieval metadata on PipelineRow results.
 // This allows the scoring layer to incorporate spec quality information.
@@ -233,7 +233,7 @@ export function extractValidationMetadata(
     hasAnySignal = true;
   }
 
-  // ── 4. Importance tier signal (even without quality score fallback above) ──
+  // AI-WHY: ── 4. Importance tier signal (even without quality score fallback above) ──
   // If we have a tier name at all, it's a signal — record qualityScore if not yet set.
   if (!hasAnySignal && typeof row.importance_tier === 'string') {
     const tierScore = qualityScoreFromTier(row.importance_tier);

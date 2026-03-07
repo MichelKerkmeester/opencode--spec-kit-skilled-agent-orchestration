@@ -6,6 +6,34 @@ A fifth RRF channel scores memories by their graph connectivity. Edge type weigh
 
 Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. When a memory has zero edges, the channel returns 0 rather than failing.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
+| `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 index management |
+| `mcp_server/lib/search/graph-flags.ts` | Lib | Graph feature flags |
+| `mcp_server/lib/search/graph-search-fn.ts` | Lib | Graph degree scoring |
+| `mcp_server/lib/search/search-types.ts` | Lib | Search type definitions |
+| `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/bm25-index.vitest.ts` | BM25 index operations |
+| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
+| `mcp_server/tests/degree-computation.vitest.ts` | Degree computation tests |
+| `mcp_server/tests/graph-flags.vitest.ts` | Graph flag behavior |
+| `mcp_server/tests/graph-scoring-integration.vitest.ts` | Graph scoring integration |
+| `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
+| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+| `mcp_server/tests/rrf-degree-channel.vitest.ts` | Degree channel integration |
+| `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
+
 ## Source Metadata
 
 - Group: Graph signal activation

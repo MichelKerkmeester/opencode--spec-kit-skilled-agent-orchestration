@@ -118,6 +118,56 @@ const CACHE_TTL = 300000; // 5 minutes
 const latencyTracker: { durations: number[] } = { durations: [] };
 const MAX_LATENCY_SAMPLES = 100;
 
+// AI-WHY: T3-15 circuit breaker — prevents cascading failures when external
+// rerank APIs (Voyage, Cohere) are down. After FAILURE_THRESHOLD consecutive
+// failures, the circuit opens and calls skip the API for COOLDOWN_MS, returning
+// positional fallback scores instead.
+const CIRCUIT_FAILURE_THRESHOLD = 3;
+const CIRCUIT_COOLDOWN_MS = 60_000; // 1 minute
+
+interface CircuitState {
+  failures: number;
+  openedAt: number | null;
+}
+
+const circuitBreakers = new Map<string, CircuitState>();
+
+function getCircuit(provider: string): CircuitState {
+  let state = circuitBreakers.get(provider);
+  if (!state) {
+    state = { failures: 0, openedAt: null };
+    circuitBreakers.set(provider, state);
+  }
+  return state;
+}
+
+function isCircuitOpen(provider: string): boolean {
+  const state = getCircuit(provider);
+  if (state.openedAt === null) return false;
+  if (Date.now() - state.openedAt >= CIRCUIT_COOLDOWN_MS) {
+    // Cooldown elapsed — half-open: allow one attempt
+    state.openedAt = null;
+    state.failures = 0;
+    return false;
+  }
+  return true;
+}
+
+function recordSuccess(provider: string): void {
+  const state = getCircuit(provider);
+  state.failures = 0;
+  state.openedAt = null;
+}
+
+function recordFailure(provider: string): void {
+  const state = getCircuit(provider);
+  state.failures++;
+  if (state.failures >= CIRCUIT_FAILURE_THRESHOLD) {
+    state.openedAt = Date.now();
+    console.warn(`[cross-encoder] Circuit breaker OPEN for ${provider} after ${state.failures} consecutive failures. Cooldown: ${CIRCUIT_COOLDOWN_MS}ms`);
+  }
+}
+
 /* -----------------------------------------------------------
    4. PROVIDER RESOLUTION
 ----------------------------------------------------------------*/
@@ -313,13 +363,26 @@ async function rerankResults(
 
   const provider = resolveProvider();
   if (!provider) {
-    // No reranker available — P3-16: use 'fallback' scoringMethod and distinct score range
+    // AI-TRACE: No reranker available — P3-16: use 'fallback' scoringMethod and distinct score range
     return documents.slice(0, limit).map((d, i) => ({
       ...d,
       rerankerScore: 0.5 - (i / (documents.length * 2)),
       score: 0.5 - (i / (documents.length * 2)),
       originalRank: i,
       provider: 'none',
+      scoringMethod: 'fallback' as const,
+    }));
+  }
+
+  // AI-WHY: T3-15 — Circuit breaker check. When the provider has failed
+  // consecutively, skip the API call and return positional fallback.
+  if (isCircuitOpen(provider)) {
+    return documents.slice(0, limit).map((d, i) => ({
+      ...d,
+      rerankerScore: 0.5 - (i / (documents.length * 2)),
+      score: 0.5 - (i / (documents.length * 2)),
+      originalRank: i,
+      provider: 'fallback',
       scoringMethod: 'fallback' as const,
     }));
   }
@@ -382,11 +445,13 @@ async function rerankResults(
       cache.set(cacheKey, { results, timestamp: Date.now() });
     }
 
+    recordSuccess(provider);
     return results.slice(0, limit);
   } catch (error: unknown) {
+    recordFailure(provider);
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[cross-encoder] Reranking failed (${provider}): ${msg} — falling back to positional scoring`);
-    // P3-16: Fallback scores use distinct range (0–0.5) and scoringMethod marker
+    // AI-TRACE: P3-16: Fallback scores use distinct range (0–0.5) and scoringMethod marker
     return documents.slice(0, limit).map((d, i) => ({
       ...d,
       rerankerScore: 0.5 - (i / (documents.length * 2)),
@@ -434,10 +499,11 @@ function getRerankerStatus(): RerankerStatus {
 function resetSession(): void {
   cache.clear();
   latencyTracker.durations = [];
+  circuitBreakers.clear();
 }
 
 function resetProvider(): void {
-  // no-op: activeProvider cache removed (was never populated)
+  // AI-GUARD: no-op: activeProvider cache removed (was never populated)
 }
 
 /* -----------------------------------------------------------

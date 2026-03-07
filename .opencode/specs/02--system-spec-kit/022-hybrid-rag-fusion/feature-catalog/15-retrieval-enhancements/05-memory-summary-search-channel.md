@@ -14,6 +14,26 @@ The summary channel runs as a parallel search channel in Stage 1 of the 4-stage 
 
 A runtime scale gate activates the channel only when the system exceeds 5,000 indexed memories with successful embeddings. Below that threshold, the summary channel adds overhead without measurable benefit because the base channels already cover the corpus effectively. The code exists regardless of scale; the gate simply skips execution. Runs behind the `SPECKIT_MEMORY_SUMMARIES` flag (default ON).
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+| `mcp_server/lib/search/memory-summaries.ts` | Lib | Memory summary generation |
+| `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
+| `mcp_server/lib/search/tfidf-summarizer.ts` | Lib | TF-IDF extractive summarizer |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
+| `mcp_server/tests/memory-summaries.vitest.ts` | Summary generation tests |
+| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+| `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
+
 ## Source Metadata
 
 - Group: Retrieval enhancements

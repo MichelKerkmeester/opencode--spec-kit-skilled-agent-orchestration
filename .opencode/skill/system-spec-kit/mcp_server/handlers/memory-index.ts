@@ -393,7 +393,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     }
   }
 
-  // T106/P0-09: Update mtimes ONLY for successfully indexed files (not before indexing).
+  // AI-WHY: T106/P0-09: Update mtimes ONLY for successfully indexed files (not before indexing).
   // Failed files keep their old mtime so they are retried on next scan.
   // This is the ONLY place where scan-triggered mtime updates occur.
   // See also: indexMemoryFile() sets file_mtime_ms within its DB transaction,
@@ -407,7 +407,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   // Includes deferred indexing outcomes and incremental single-file updates.
   if (include_spec_docs) {
     try {
-      // Determine which spec folders had spec document changes in this scan.
+      // AI-WHY: Determine which spec folders had spec document changes in this scan.
       // We use parsed document type (not basename) to avoid false positives
       // from memory/plan.md or similar filenames.
       const affectedSpecFolders = new Set<string>();
@@ -559,7 +559,7 @@ export {
   runDivergenceReconcileHooks,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_memory_index_scan = handleMemoryIndexScan;
 const index_single_file = indexSingleFile;
 const find_constitutional_files = findConstitutionalFiles;

@@ -124,7 +124,7 @@ function parseJsonArray<T>(value: string | null | undefined, fallback: T[]): T[]
   try {
     const parsed = JSON.parse(value) as unknown;
     return Array.isArray(parsed) ? (parsed as T[]) : fallback;
-  } catch {
+  } catch (_error: unknown) {
     return fallback;
   }
 }
@@ -446,12 +446,12 @@ async function drainQueue(): Promise<void> {
           if (current && ACTIVE_STATES.has(current.state)) {
             await setIngestJobState(jobId, 'failed');
           }
-        } catch {
-          // Non-fatal: queue guard to avoid unhandled rejection loops.
+        } catch (_error: unknown) {
+          // AI-GUARD: Non-fatal: queue guard to avoid unhandled rejection loops.
         }
       }
 
-      // Brief yield between jobs to avoid starving the event loop.
+      // AI-WHY: Brief yield between jobs to avoid starving the event loop.
       await sleep(10);
     }
   } finally {
@@ -460,7 +460,7 @@ async function drainQueue(): Promise<void> {
 }
 
 function enqueueIngestJob(jobId: string): void {
-  // Prevent duplicate enqueue of the same job.
+  // AI-GUARD: Prevent duplicate enqueue of the same job.
   if (pendingQueue.includes(jobId)) {
     return;
   }

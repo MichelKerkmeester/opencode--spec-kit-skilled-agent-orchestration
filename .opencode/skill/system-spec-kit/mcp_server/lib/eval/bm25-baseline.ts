@@ -406,7 +406,7 @@ export function recordBaselineMetrics(
   evalDb: Database.Database,
   result: BM25BaselineResult,
 ): void {
-  // Use a synthetic eval_run_id for baseline runs: negative integer based on
+  // AI-WHY: Use a synthetic eval_run_id for baseline runs: negative integer based on
   // timestamp to avoid collision with production run IDs (which start at 1).
   const evalRunId = -(Date.parse(result.timestamp));
 

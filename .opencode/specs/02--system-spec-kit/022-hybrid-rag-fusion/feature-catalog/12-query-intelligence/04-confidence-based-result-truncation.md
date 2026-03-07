@@ -8,6 +8,20 @@ A minimum of three results is guaranteed regardless of gap analysis so the syste
 
 Edge cases are handled: NaN and Infinity scores are filtered, and all-equal scores (median gap of zero) pass through unchanged. Runs behind the `SPECKIT_CONFIDENCE_TRUNCATION` flag.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/confidence-truncation.ts` | Lib | Confidence-based truncation |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/confidence-truncation.vitest.ts` | Truncation behavior |
+
 ## Source Metadata
 
 - Group: Query intelligence

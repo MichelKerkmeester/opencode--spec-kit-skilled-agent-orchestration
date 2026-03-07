@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Transaction Manager
-// Atomic file + index operations with pending file recovery
+// AI-GUARD: Atomic file + index operations with pending file recovery
 // ---------------------------------------------------------------
 
 import * as fs from 'fs';
@@ -104,7 +104,7 @@ function atomicWriteFile(filePath: string, content: string, encoding: BufferEnco
   const tempPath = filePath + TEMP_SUFFIX;
 
   try {
-    // Ensure directory exists
+    // AI-GUARD: Ensure directory exists
     const dir = path.dirname(filePath);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
@@ -113,7 +113,7 @@ function atomicWriteFile(filePath: string, content: string, encoding: BufferEnco
     // Write to temp file
     fs.writeFileSync(tempPath, content, encoding);
 
-    // Atomic rename
+    // AI-GUARD: Atomic rename
     fs.renameSync(tempPath, filePath);
 
     metrics.totalAtomicWrites++;
@@ -180,11 +180,12 @@ function executeAtomicSave(
     }
     fs.writeFileSync(pendingPath, content, 'utf-8');
 
-    // AI-WHY: Fix #22 (017-refinement-phase-6) — Use SAVEPOINT for true atomicity.
-    // If the DB operation succeeds but the rename fails, we can roll back the DB change.
-    // The dbOperation callback typically runs inside a better-sqlite3 transaction, but
-    // the rename (Step 3) happening outside means a rename failure leaves DB committed.
-    // Using SAVEPOINT lets us roll back if rename fails.
+    // AI-WHY: Fix #22 (017-refinement-phase-6) — Flag-based rollback coordination.
+    // The dbOperation callback runs synchronously (better-sqlite3 transaction). If it
+    // succeeds but the rename (Step 3) fails, the DB change is already committed and
+    // cannot be rolled back. The dbCommitted flag tracks this state so the error path
+    // can report which step failed. No SAVEPOINT is used — better-sqlite3 transactions
+    // are all-or-nothing within the dbOperation() callback itself.
     let dbCommitted = false;
 
     // Step 2: Execute database operation
@@ -199,7 +200,7 @@ function executeAtomicSave(
       return { success: false, filePath, error: `DB operation failed: ${msg}` };
     }
 
-    // Step 3: Rename pending to final (atomic)
+    // AI-GUARD: Step 3: Rename pending to final (atomic)
     try {
       fs.renameSync(pendingPath, filePath);
     } catch (renameError: unknown) {
@@ -264,7 +265,7 @@ function findPendingFiles(dirPath: string): string[] {
     try {
       files = (fs.readdirSync(dirPath, { recursive: true, encoding: 'utf-8' }) as string[]).map((f) => path.join(dirPath, f));
     } catch {
-      // Node 18 compatibility fallback when recursive readdir is unavailable.
+      // AI-WHY: Node 18 compatibility fallback when recursive readdir is unavailable.
       files = listFilesRecursive(dirPath);
     }
 
@@ -332,7 +333,7 @@ export {
   isPendingFile,
   getOriginalPath,
 
-  // Atomic operations
+  // AI-GUARD: Atomic operations
   atomicWriteFile,
   deleteFileIfExists,
   executeAtomicSave,

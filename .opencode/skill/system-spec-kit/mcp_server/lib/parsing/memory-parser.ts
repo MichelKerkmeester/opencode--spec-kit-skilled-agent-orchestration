@@ -114,7 +114,7 @@ export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
 export function readFileWithEncoding(filePath: string): string {
   const buffer = fs.readFileSync(filePath);
 
-  // Check for BOM (Byte Order Mark)
+  // AI-GUARD: Check for BOM (Byte Order Mark)
   // UTF-8 BOM: EF BB BF (must check first - 3 bytes)
   if (buffer.length >= 3 &&
       buffer[0] === 0xEF &&
@@ -267,7 +267,7 @@ export function extractSpecFolder(filePath: string): string {
     return specDocMatch[1];
   }
 
-  // Fallback: try to extract from path segments
+  // AI-WHY: Fallback: try to extract from path segments
   const segments = normalizedPath.split('/');
   const specsIndex = segments.findIndex(s => s === 'specs');
 
@@ -477,7 +477,7 @@ export function extractTriggerPhrases(content: string): string[] {
     }
   }
 
-  // Method 2: Find ## Trigger Phrases section (fallback/additional)
+  // AI-WHY: Method 2: Find ## Trigger Phrases section (fallback/additional)
   const sectionMatch = content.match(/##\s*Trigger\s*Phrases?\s*\n([\s\S]*?)(?=\n##|\n---|\n\n\n|$)/i);
 
   if (sectionMatch) {
@@ -520,7 +520,7 @@ export function extractContextType(content: string): ContextType {
 export function extractImportanceTier(content: string, options: ExtractImportanceTierOptions = {}): string {
   const { documentType = null, fallbackTier = null } = options;
 
-  // Strip HTML comments to avoid matching instructional examples
+  // AI-WHY: Strip HTML comments to avoid matching instructional examples
   // (e.g., template comments containing "importanceTier: 'constitutional'" as documentation)
   const contentWithoutComments = content.replace(/<!--[\s\S]*?-->/g, '');
 
@@ -823,7 +823,7 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
     path.join(workspacePath, '.opencode', 'specs')
   ];
 
-  // Recursive directory walker
+  // AI-TRACE: Recursive directory walker
   // BUG-027 FIX: Skip symbolic links to prevent infinite loops
   function walkDir(dir: string, depth: number = 0): void {
     if (depth > 10) {
@@ -838,7 +838,7 @@ export function findMemoryFiles(workspacePath: string, options: FindMemoryFilesO
     }
 
     for (const entry of entries) {
-      // BUG-027 FIX: Skip symbolic links to prevent loops and duplicate scanning
+      // AI-TRACE: BUG-027 FIX: Skip symbolic links to prevent loops and duplicate scanning
       if (entry.isSymbolicLink()) {
         continue;
       }
@@ -928,7 +928,7 @@ module.exports = {
   MEMORY_FILE_PATTERN,
   CONTEXT_TYPE_MAP,
 
-  // Backward-compatible aliases (snake_case)
+  // AI-WHY: Backward-compatible aliases (snake_case)
   parse_memory_file: parseMemoryFile,
   read_file_with_encoding: readFileWithEncoding,
   extract_spec_folder: extractSpecFolder,

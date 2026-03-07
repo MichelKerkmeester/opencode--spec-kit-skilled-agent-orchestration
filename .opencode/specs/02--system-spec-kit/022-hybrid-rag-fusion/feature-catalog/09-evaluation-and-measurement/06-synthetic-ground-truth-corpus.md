@@ -8,6 +8,21 @@ A corpus of 110 query-relevance pairs covers all seven intent types with at leas
 
 Hard negative queries are included to verify that irrelevant memories rank low. The corpus also incorporates findings from the G-NEW-2 agent consumption analysis, so queries reflect how agents actually use the system rather than how a spec author imagines they do.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/eval/ground-truth-data.ts` | Lib | Ground truth data |
+| `mcp_server/lib/eval/ground-truth-generator.ts` | Lib | Synthetic ground truth generator |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/ground-truth.vitest.ts` | Ground truth tests |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

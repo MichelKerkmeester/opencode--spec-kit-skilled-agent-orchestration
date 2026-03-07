@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Stage 2 — Fusion + Signal Integration
-// Sprint 5 (R6): 4-Stage Retrieval Pipeline
+// AI-GUARD: Sprint 5 (R6): 4-Stage Retrieval Pipeline
 //
 // I/O CONTRACT:
 //   Input:  Stage2Input { candidates: PipelineRow[], config, stage1Metadata }
@@ -341,7 +341,7 @@ function applyFeedbackSignals(
   try {
     db = requireDb();
   } catch {
-    // DB not available — skip feedback signals gracefully
+    // AI-WHY: DB not available — skip feedback signals gracefully
     return results;
   }
 
@@ -548,7 +548,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
             }
             return row;
           });
-          // Re-sort after co-activation boost to ensure boosted results
+          // AI-GUARD: Re-sort after co-activation boost to ensure boosted results
           // are promoted to their correct position in the ranking
           results.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
           (metadata as Record<string, unknown>).coActivationApplied = true;
@@ -592,7 +592,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 3. Testing effect (FSRS write-back) ──
+  // AI-GUARD: ── 3. Testing effect (FSRS write-back) ──
   // P3-09 FIX: Only when explicitly opted in via trackAccess.
   // Write-back is fire-and-forget; errors per-row are swallowed inside
   // applyTestingEffect so they never abort the pipeline.
@@ -606,7 +606,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 4. Intent weights ──
+  // AI-WHY: ── 4. Intent weights ──
   // G2 PREVENTION: Only apply for non-hybrid search types.
   // Hybrid search (RRF / RSF) incorporates intent weighting during fusion —
   // applying it again here would double-count, causing the G2 bug.
@@ -661,7 +661,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     results = results.slice(0, config.artifactRouting.strategy.maxResults);
   }
 
-  // ── 8. Anchor metadata annotation ──
+  // AI-GUARD: ── 8. Anchor metadata annotation ──
   // Pure annotation: attach AnchorMetadata[] to rows that contain ANCHOR tags.
   // No scores are changed — this satisfies the Stage 4 score-immutability
   // invariant and does not conflict with the G2 double-weighting guard.

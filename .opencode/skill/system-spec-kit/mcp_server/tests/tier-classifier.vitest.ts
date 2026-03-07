@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Tier Classifier Vitest
+// ---------------------------------------------------------------
+
 // ───────────────────────────────────────────────────────────────
 // TEST: TIER CLASSIFIER (5-STATE MODEL) — vitest
 // Aligned with production tier-classifier.ts named exports

@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Db Helpers
+// ---------------------------------------------------------------
+
 import type Database from 'better-sqlite3';
 
 import type { PostInsertMetadataFields } from './types';
@@ -78,7 +82,7 @@ export function hasReconsolidationCheckpoint(database: Database.Database, specFo
     `).get(specFolder) as { count?: number } | undefined;
 
     return (row?.count ?? 0) > 0;
-  } catch {
+  } catch (_error: unknown) {
     return false;
   }
 }

@@ -6,6 +6,20 @@ Constitutional-tier memories receive a `retrieval_directive` metadata field form
 
 Rule patterns are extracted from content using a ranked list of imperative verbs (must, always, never, should, require) and condition-introducing words (when, if, for, during). Scanning is capped at 2,000 characters from the start of content, and each directive component is capped at 120 characters. The `enrichWithRetrievalDirectives()` function maps over results without filtering or reordering. The enrichment is wired into `hooks/memory-surface.ts` before returning results.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/retrieval-directives.ts` | Lib | Constitutional retrieval injection |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
+
 ## Source Metadata
 
 - Group: Retrieval enhancements

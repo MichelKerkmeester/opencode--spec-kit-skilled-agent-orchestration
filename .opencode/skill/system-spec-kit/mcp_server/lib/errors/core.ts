@@ -39,7 +39,7 @@ export interface ErrorResponse {
 }
 
 // ---------------------------------------------------------------
-// 2. ERROR CODES (Legacy)
+// AI-WHY: 2. ERROR CODES (Legacy)
 //
 // Re-export from recovery-hints for backward compatibility.
 // New code should use ERROR_CODES from recovery-hints.ts.
@@ -143,7 +143,7 @@ export function userFriendlyError(error: Error): string {
     if (pattern.test(error.message)) return message;
   }
 
-  // P2-09: Return generic message to avoid leaking internal details.
+  // AI-TRACE: P2-09: Return generic message to avoid leaking internal details.
   // Raw error is logged for debugging but not returned to the caller.
   console.error('[errors] Unmatched error (debug):', error.message);
   return 'An unexpected error occurred. Please check logs for details.';
@@ -184,7 +184,7 @@ export function isTransientError(error: Error): boolean {
     return retryModule.isTransientError(error);
   }
 
-  // Legacy fallback patterns
+  // AI-WHY: Legacy fallback patterns
   const transientPatterns: RegExp[] = [
     /SQLITE_BUSY/,
     /SQLITE_LOCKED/,
@@ -208,7 +208,7 @@ export function isPermanentError(error: Error): boolean {
     return retryModule.isPermanentError(error);
   }
 
-  // Legacy fallback patterns
+  // AI-WHY: Legacy fallback patterns
   const permanentPatterns: RegExp[] = [
     /unauthorized/i,
     /authentication failed/i,
@@ -235,7 +235,7 @@ export function buildErrorResponse(
   error: Error | MemoryError,
   context: Record<string, unknown> = {}
 ): ErrorResponse {
-  // Extract error code (from MemoryError or fallback)
+  // AI-WHY: Extract error code (from MemoryError or fallback)
   const errorCode = (error as MemoryError).code || ErrorCodes.SEARCH_FAILED;
 
   // Get recovery hint (zero-cost static lookup)

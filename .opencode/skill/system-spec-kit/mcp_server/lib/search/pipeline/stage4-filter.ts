@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Stage 4 — Filter + Annotate
-// Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
+// AI-WHY: Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
 //
 // ARCHITECTURAL INVARIANT: Stage 4 MUST NOT modify scores.
 // Any ordering change after Stage 3 is a bug. Score fields on
@@ -86,8 +86,8 @@ function resolveStateForFiltering(row: Stage4ReadonlyRow, fallbackState: string)
   }
 
   // AI-WHY: Missing memoryState is now treated as a safe fallback instead of
-  // being dropped, because upstream candidates can omit this optional field.
-  // Using minState-derived fallback prevents false-negative empty results.
+  // AI-WHY: being dropped, because upstream candidates can omit this optional field.
+  // AI-WHY: Using minState-derived fallback prevents false-negative empty results.
   return fallbackState;
 }
 
@@ -307,7 +307,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
 
   const durationMs = Date.now() - stageStart;
 
-  // ── Trace entry ──
+  // AI-WHY: ── Trace entry ──
   if (config.trace) {
     addTraceEntry(
       config.trace,

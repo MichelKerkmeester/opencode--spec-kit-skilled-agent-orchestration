@@ -9,7 +9,7 @@ import { normalizeEntityName, computeEdgeDensity } from '../search/entity-linker
 
 import type Database from 'better-sqlite3';
 
-// Re-export canonical versions from entity-linker for backward compatibility
+// AI-WHY: Re-export canonical versions from entity-linker for backward compatibility
 export { normalizeEntityName, computeEdgeDensity };
 
 // ---------------------------------------------------------------------------
@@ -61,7 +61,7 @@ export function extractEntities(content: string): ExtractedEntity[] {
     raw.push({ text: match[1], type: 'technology' });
   }
 
-  // Rule 3: Words after key phrases — keywords are case-insensitive via explicit
+  // AI-GUARD: Rule 3: Words after key phrases — keywords are case-insensitive via explicit
   // alternation (no `i` flag, since continuation words must require uppercase start
   // to avoid capturing common English words like "and", "the"). First captured word
   // allows lowercase for "using react"; continuation words require uppercase start.

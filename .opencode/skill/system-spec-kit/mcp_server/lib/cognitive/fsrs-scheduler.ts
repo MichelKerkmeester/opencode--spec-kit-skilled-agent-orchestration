@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Fsrs Scheduler
 // ---------------------------------------------------------------
-// CANONICAL FSRS CONSTANTS & ALGORITHM
+// AI-GUARD: CANONICAL FSRS CONSTANTS & ALGORITHM
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //
 // T301: TWO-DOMAIN DECAY MODEL (Single Source of Truth)
@@ -9,7 +9,7 @@
 // Long-term memory (this file):
 //   FSRS v4 power-law: R(t) = (1 + FSRS_FACTOR * t/S)^FSRS_DECAY
 //   Timescale: days/weeks. Constants: FSRS_FACTOR=19/81, FSRS_DECAY=-0.5
-//   All long-term decay consumers MUST import constants from this file.
+// All long-term decay consumers MUST import constants from this file.
 //
 // Working memory (working-memory.ts — separate system, intentionally decoupled):
 //   Linear multiplicative: score * 0.95 per tick

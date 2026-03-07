@@ -16,6 +16,25 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 ---
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+| `mcp_server/lib/search/entity-linker.ts` | Lib | Cross-document entity linking |
+| `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/entity-linker.vitest.ts` | Entity linking tests |
+| `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
+| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+| `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
+
 ## Source Metadata
 
 - Group: Retrieval enhancements

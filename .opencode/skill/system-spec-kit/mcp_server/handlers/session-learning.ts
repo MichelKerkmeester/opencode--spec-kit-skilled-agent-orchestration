@@ -183,7 +183,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
   const now = new Date().toISOString();
   const gapsJson = JSON.stringify(knowledgeGaps);
 
-  // REQ-207: Check for existing record before INSERT to prevent silent data loss
+  // AI-TRACE: REQ-207: Check for existing record before INSERT to prevent silent data loss
   const existing = database.prepare(
     'SELECT id, phase FROM session_learning WHERE spec_folder = ? AND task_id = ?'
   ).get(spec_folder, taskId) as { id: number; phase: string } | undefined;
@@ -664,7 +664,7 @@ export {
   ensureSchema,
 };
 
-// Backward-compatible aliases (snake_case)
+// AI-WHY: Backward-compatible aliases (snake_case)
 const handle_task_preflight = handleTaskPreflight;
 const handle_task_postflight = handleTaskPostflight;
 const handle_get_learning_history = handleGetLearningHistory;

@@ -6,6 +6,21 @@ A bottom-up merge strategy thins small files during spec folder context loading.
 
 Memory file thresholds differ: under 100 tokens for content-as-summary, 100-300 tokens for merged-into-parent, 300+ tokens kept as-is. The `applyTreeThinning()` function runs in `workflow.ts` at Step 7.6 before pipeline stages and is applied to the rendered context payload. Stats track total files, thinned count, merged count and tokens saved.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
+| `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |
+
 ## Source Metadata
 
 - Group: Tooling and scripts

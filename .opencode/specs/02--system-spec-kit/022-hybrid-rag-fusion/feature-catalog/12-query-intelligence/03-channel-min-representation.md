@@ -8,6 +8,21 @@ After fusion, the system checks that every channel which returned results has at
 
 Promoted items are appended to the result list and the entire set is re-sorted by score so ranking integrity is preserved. The net effect: you see results from diverse retrieval strategies rather than one dominant channel. Runs behind the `SPECKIT_CHANNEL_MIN_REP` flag.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/channel-representation.ts` | Lib | Channel min-representation |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
+| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
+
 ## Source Metadata
 
 - Group: Query intelligence

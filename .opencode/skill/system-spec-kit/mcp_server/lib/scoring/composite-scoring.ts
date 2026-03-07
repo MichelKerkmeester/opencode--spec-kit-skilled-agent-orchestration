@@ -19,7 +19,7 @@ import type { MemoryDbRow } from '@spec-kit/shared/types';
  */
 export type ScoringInput = Partial<MemoryDbRow> & Record<string, unknown>;
 
-// COGNITIVE-079: FSRS Scheduler for retrievability calculations
+// AI-WHY: COGNITIVE-079: FSRS Scheduler for retrievability calculations
 // Try to import, fallback to inline calculation if not yet available
 interface FsrsSchedulerModule {
   calculateRetrievability: (stability: number, elapsedDays: number) => number;
@@ -116,7 +116,7 @@ export const FIVE_FACTOR_WEIGHTS: FiveFactorWeights = {
   citation: 0.15,
 };
 
-// Legacy 6-factor weights for backward compatibility
+// AI-WHY: Legacy 6-factor weights for backward compatibility
 export const DEFAULT_WEIGHTS: LegacyWeights = {
   similarity: 0.30,
   importance: 0.25,
@@ -126,10 +126,10 @@ export const DEFAULT_WEIGHTS: LegacyWeights = {
   retrievability: 0.15,
 };
 
-// HIGH-003 FIX: Re-export DECAY_RATE for backward compatibility
+// AI-WHY: HIGH-003 FIX: Re-export DECAY_RATE for backward compatibility
 export const RECENCY_SCALE_DAYS: number = 1 / DECAY_RATE;
 
-// T301: FSRS constants imported from canonical source (fsrs-scheduler.ts)
+// AI-WHY: T301: FSRS constants imported from canonical source (fsrs-scheduler.ts)
 // Re-exported for backward compatibility — consumers may import from here
 export const FSRS_FACTOR: number = fsrsScheduler?.FSRS_FACTOR ?? 19 / 81;
 export const FSRS_DECAY: number = fsrsScheduler?.FSRS_DECAY ?? -0.5;
@@ -270,7 +270,7 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
   const elapsedMs = Date.now() - timestamp;
   const elapsedDays = Math.max(0, elapsedMs / (1000 * 60 * 60 * 24));
 
-  // TM-03: Classification decay applies at stability-level; when enabled do not
+  // AI-WHY: TM-03: Classification decay applies at stability-level; when enabled do not
   // additionally apply elapsed-time tier multipliers to avoid double decay.
   let adjustedStability = stability;
   if (classificationDecayEnabled) {
@@ -330,7 +330,7 @@ export function calculateImportanceScore(tier: string, baseWeight: number | unde
  * T033: Calculate citation recency score (REQ-017 Factor 5)
  */
 export function calculateCitationScore(row: ScoringInput): number {
-  // C2 FIX: Only use actual citation data (lastCited / last_cited).
+  // AI-GUARD: C2 FIX: Only use actual citation data (lastCited / last_cited).
   // Never fall back to last_accessed or updated_at — those conflate
   // general recency with citation recency. Uncited memories score 0.
   const lastCited = (row.lastCited as string | undefined)
@@ -511,7 +511,7 @@ function applyPostProcessingAndObserve(
   // C1 FIX: Clamp to [0, 1] — doc-type multipliers can push composite above 1.0
   const finalScore = Math.max(0, Math.min(1, composite));
 
-  // T010: Scoring observability (5% sampled, fail-safe)
+  // AI-TRACE: T010: Scoring observability (5% sampled, fail-safe)
   try {
     if (shouldSample()) {
       const createdMs = row.created_at ? new Date(row.created_at).getTime() : Date.now();

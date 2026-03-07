@@ -187,7 +187,7 @@ export function computeCeilingFromGroundTruth(
 ): CeilingResult {
   const { queries, groundTruth, k = 5 } = options;
 
-  // Guard: empty inputs
+  // AI-GUARD: Guard: empty inputs
   if (queries.length === 0 || groundTruth.length === 0) {
     return {
       ceilingMRR: 0,

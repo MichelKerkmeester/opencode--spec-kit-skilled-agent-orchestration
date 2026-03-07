@@ -8,6 +8,20 @@ A hit returns the stored embedding in microseconds instead of making a network r
 
 The cache has no feature flag because cache misses fall through to normal embedding generation with zero behavioral change.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding Cache |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/embedding-cache.vitest.ts` | Embedding cache tests |
+
 ## Source Metadata
 
 - Group: Scoring and calibration

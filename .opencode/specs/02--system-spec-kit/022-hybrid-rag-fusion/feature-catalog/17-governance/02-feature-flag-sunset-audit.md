@@ -12,6 +12,10 @@ The current active flag-helper inventory in `search-flags.ts` is 23 exported `is
 
 ---
 
+## Source Files
+
+No dedicated source files — this describes governance process controls.
+
 ## Source Metadata
 
 - Group: Governance

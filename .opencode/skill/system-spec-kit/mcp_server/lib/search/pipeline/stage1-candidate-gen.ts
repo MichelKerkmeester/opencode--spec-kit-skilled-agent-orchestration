@@ -216,8 +216,8 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   // ── Channel: Hybrid (with optional deep-mode query expansion) ───────────────
 
   else if (searchType === 'hybrid') {
-    // Resolve the query embedding — either pre-computed in config or generate now
-    // AI-WHY: Fix #16 — Cache this embedding for reuse in constitutional injection path
+    // AI-WHY: Resolve the query embedding — either pre-computed in config or generate now
+    // Fix #16 — Cache this embedding for reuse in constitutional injection path
     // to avoid a duplicate generateQueryEmbedding() call.
     const effectiveEmbedding: Float32Array | number[] | null =
       queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
@@ -380,7 +380,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             `[stage1-candidate-gen] Hybrid search failed, falling back to vector: ${hybridMsg}`
           );
 
-          // Fallback: pure vector search
+          // AI-WHY: Fallback: pure vector search
           channelCount = 1;
           candidates = vectorIndex.vectorSearch(effectiveEmbedding, {
             limit,
@@ -431,7 +431,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  // ── Tier and contextType filtering ─────────────────────────────────────────
+  // AI-WHY: ── Tier and contextType filtering ─────────────────────────────────────────
   //
   // Applied after candidate collection but before constitutional injection so
   // injected constitutional rows are evaluated by the same filters.
@@ -564,7 +564,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }
   }
 
-  // ── Trace ──────────────────────────────────────────────────────────────────
+  // AI-WHY: ── Trace ──────────────────────────────────────────────────────────────────
 
   const durationMs = Date.now() - startTime;
 

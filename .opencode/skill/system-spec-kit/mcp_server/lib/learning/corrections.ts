@@ -327,7 +327,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     throw new Error(`correction_type must be one of: ${valid_types.join(', ')}`);
   }
 
-  // Prevent self-correction
+  // AI-GUARD: Prevent self-correction
   if (correction_memory_id && original_memory_id === correction_memory_id) {
     throw new Error('original_memory_id and correction_memory_id cannot be the same');
   }
@@ -346,7 +346,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     }
   }
 
-  // Use transaction for atomicity
+  // AI-WHY: Use transaction for atomicity
   const run_correction = db.transaction(() => {
     // Apply stability penalty to original memory (T053: 0.5x penalty)
     const original_stability_after = original_stability_before * CORRECTION_STABILITY_PENALTY;
@@ -491,7 +491,7 @@ export function undo_correction(correction_id: number): UndoResult {
     };
   }
 
-  // Use transaction for atomicity
+  // AI-WHY: Use transaction for atomicity
   const run_undo = db.transaction(() => {
     // Restore original memory stability
     if (correction.original_stability_before !== null) {

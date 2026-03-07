@@ -8,6 +8,14 @@ The quality proxy formula produces a single 0-1 score from four components: `avg
 
 The weights were chosen to prioritize relevance over speed while still penalizing latency spikes. Correlation testing against the manual ground truth corpus confirmed the proxy tracks real quality well enough for regression detection.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/eval/eval-quality-proxy.ts` | Lib | Quality proxy formula |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

@@ -21,7 +21,7 @@ export {
   isEmbeddingModelReady,
 };
 
-// Backward-compatible aliases (snake_case) — remove after all callers migrate to camelCase
+// AI-WHY: Backward-compatible aliases (snake_case) — remove after all callers migrate to camelCase
 const handle_memory_delete = handleMemoryDelete;
 const handle_memory_update = handleMemoryUpdate;
 const handle_memory_list = handleMemoryList;

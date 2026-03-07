@@ -183,7 +183,7 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
   const query_buffer = to_embedding_buffer(query_embedding);
   const max_distance = 2 * (1 - minSimilarity / 100);
 
-  // ADR-004: FSRS-preferred decay with half-life fallback
+  // AI-WHY: ADR-004: FSRS-preferred decay with half-life fallback
   const decay_expr = useDecay
     ? `CASE
          WHEN m.is_pinned = 1 THEN m.importance_weight

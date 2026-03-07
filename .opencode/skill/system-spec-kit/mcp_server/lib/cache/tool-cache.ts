@@ -325,7 +325,7 @@ async function withCache<T>(
 
   const key = generateCacheKey(tool_name, args);
 
-  // Use get() directly to avoid TOCTOU race between has() and get()
+  // AI-GUARD: Use get() directly to avoid TOCTOU race between has() and get()
   const cached = get<T>(key);
   if (cached !== null) {
     return cached;

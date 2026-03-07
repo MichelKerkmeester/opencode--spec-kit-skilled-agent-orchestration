@@ -57,7 +57,7 @@ function createSpecFolder(basePath: string, folderName: string, specContent: str
 function cleanup(tmpDir: string): void {
   try {
     fs.rmSync(tmpDir, { recursive: true, force: true });
-  } catch { /* best effort */ }
+  } catch (_error: unknown) { /* best effort */ }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -123,7 +123,7 @@ describe('PI-B3: getSpecsBasePaths', () => {
 
     try {
       fs.symlinkSync(openCodeSpecsDir, specsLinkPath, 'dir');
-    } catch (error) {
+    } catch (error: unknown) {
       const code = (error as NodeJS.ErrnoException).code;
       if (code === 'EPERM' || code === 'EEXIST') {
         expect(true).toBe(true);
@@ -146,7 +146,7 @@ describe('PI-B3: getSpecsBasePaths', () => {
 
     try {
       fs.symlinkSync(openCodeSpecsDir, specsLinkPath, 'dir');
-    } catch (error) {
+    } catch (error: unknown) {
       const code = (error as NodeJS.ErrnoException).code;
       if (code === 'EPERM' || code === 'EEXIST') {
         expect(true).toBe(true);

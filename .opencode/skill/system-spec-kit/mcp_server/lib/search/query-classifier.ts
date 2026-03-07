@@ -142,7 +142,7 @@ function classifyQueryComplexity(
   query: string,
   triggerPhrases?: string[],
 ): ClassificationResult {
-  // Safe fallback for any unexpected state
+  // AI-WHY: Safe fallback for any unexpected state
   const FALLBACK: ClassificationResult = {
     tier: 'complex',
     features: { termCount: 0, charCount: 0, hasTriggerMatch: false, stopWordRatio: 0 },
@@ -155,7 +155,7 @@ function classifyQueryComplexity(
       return FALLBACK;
     }
 
-    // Edge case: empty or whitespace-only queries → complex fallback
+    // AI-WHY: Edge case: empty or whitespace-only queries → complex fallback
     if (!query || typeof query !== 'string' || query.trim().length === 0) {
       return FALLBACK;
     }

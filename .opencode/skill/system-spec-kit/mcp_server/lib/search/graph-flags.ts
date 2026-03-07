@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Graph Search Compatibility Flag
-// Legacy compatibility shim retained for test/runtime imports.
+// AI-WHY: Legacy compatibility shim retained for test/runtime imports.
 // ---------------------------------------------------------------
 
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';

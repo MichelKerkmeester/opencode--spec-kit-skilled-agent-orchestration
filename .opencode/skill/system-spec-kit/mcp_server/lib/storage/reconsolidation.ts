@@ -217,11 +217,11 @@ export async function executeMerge(
       } catch (embErr: unknown) {
         const msg = embErr instanceof Error ? embErr.message : String(embErr);
         console.warn('[reconsolidation] Failed to regenerate embedding for merge:', msg);
-        // Non-fatal: merged content is stored even without updated embedding
+        // AI-GUARD: Non-fatal: merged content is stored even without updated embedding
       }
     }
 
-    // Atomic transaction: update content + embedding together so they stay in sync.
+    // AI-GUARD: Atomic transaction: update content + embedding together so they stay in sync.
     db.transaction(() => {
       const mergeResult = db.prepare(`
         UPDATE memory_index
@@ -317,8 +317,8 @@ export function executeConflict(
   db: Database.Database
 ): ConflictResult {
   try {
-    // Add causal 'supersedes' edge only when caller provides a distinct new ID.
-    // AI-GUARD: Prevent self-referential supersedes edges (source == target).
+    // AI-GUARD: Add causal 'supersedes' edge only when caller provides a distinct new ID.
+    // Prevent self-referential supersedes edges (source == target).
     let edgeId: number | null = null;
     const hasDistinctNewId =
       typeof newMemory.id === 'number' &&
@@ -326,7 +326,7 @@ export function executeConflict(
       newMemory.id !== existingMemory.id;
 
     if (hasDistinctNewId) {
-      // Atomic transaction: deprecate + edge must succeed or fail together.
+      // AI-GUARD: Atomic transaction: deprecate + edge must succeed or fail together.
       // Without this, a failed insertEdge leaves an orphaned deprecation.
       db.transaction(() => {
         db.prepare(`
@@ -347,7 +347,7 @@ export function executeConflict(
         );
       })();
     } else {
-      // Atomic transaction: content + embedding update together.
+      // AI-GUARD: Atomic transaction: content + embedding update together.
       db.transaction(() => {
         db.prepare(`
           UPDATE memory_index
@@ -455,7 +455,7 @@ export async function reconsolidate(
   // No existing memories: complement (new)
   if (similarMemories.length === 0) {
     // AI-WHY: Do not persist in orchestrator complement path.
-    // Caller owns canonical create flow (prevents duplicate writes).
+    // AI-WHY: Caller owns canonical create flow (prevents duplicate writes).
     return {
       action: 'complement',
       newMemoryId: newMemory.id ?? 0,
@@ -497,13 +497,13 @@ export async function reconsolidate(
 
         try {
           return executeConflict(topMatch, conflictMemory, db);
-        } catch (conflictErr) {
+        } catch (conflictErr: unknown) {
           // If storeMemory succeeded but executeConflict failed, clean up the orphan
           // memory so we don't leave dangling rows with no supersedes edge.
           if (conflictMemory.id !== undefined && conflictMemory.id !== newMemory.id) {
             try {
               db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
-            } catch {
+            } catch (_error: unknown) {
               // Best-effort cleanup
             }
             console.warn('[reconsolidation] cleaned up orphan memory', conflictMemory.id, 'after executeConflict failure');

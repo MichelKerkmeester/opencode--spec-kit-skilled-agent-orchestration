@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Response Builder
+// ---------------------------------------------------------------
+
 import type BetterSqlite3 from 'better-sqlite3';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 

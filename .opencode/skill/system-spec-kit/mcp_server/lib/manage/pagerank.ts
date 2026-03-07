@@ -65,7 +65,7 @@ export function computePageRank(
 ): PageRankResult {
   const nodeCount = nodes.length;
 
-  // Guard: empty graph converges immediately with no scores.
+  // AI-GUARD: Guard: empty graph converges immediately with no scores.
   if (nodeCount === 0) {
     return { scores: new Map(), iterations: 0, converged: true };
   }
@@ -82,7 +82,7 @@ export function computePageRank(
     scores.set(node.id, 1 / nodeCount);
   }
 
-  // Pre-compute inbound link lists to avoid scanning all edges each iteration.
+  // AI-WHY: Pre-compute inbound link lists to avoid scanning all edges each iteration.
   const inLinks = new Map<number, number[]>();
   for (const node of nodes) {
     if (!inLinks.has(node.id)) inLinks.set(node.id, []);

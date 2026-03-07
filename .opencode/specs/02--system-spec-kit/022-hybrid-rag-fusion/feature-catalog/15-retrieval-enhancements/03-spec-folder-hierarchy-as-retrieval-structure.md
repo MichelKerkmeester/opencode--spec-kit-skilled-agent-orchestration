@@ -8,6 +8,20 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 
 **Sprint 8 update:** A WeakMap TTL cache (60s, keyed by database instance) was added to `buildHierarchyTree()` to avoid full-scan reconstruction on every search request. An `invalidateHierarchyCache()` export allows explicit cache clearing when hierarchy data changes.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
+
 ## Source Metadata
 
 - Group: Retrieval enhancements

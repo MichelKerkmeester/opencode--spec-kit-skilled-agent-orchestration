@@ -265,7 +265,7 @@ export function runDivergenceReconcileHooks(
     }))
     .sort((a, b) => a.normalizedPath.localeCompare(b.normalizedPath));
 
-  // Samples are intentionally capped; when summary says more divergent groups exist,
+  // AI-WHY: Samples are intentionally capped; when summary says more divergent groups exist,
   // expand to the full candidate set from the index table.
   if (aliasConflicts.divergentHashGroups > reconcileCandidates.length) {
     try {

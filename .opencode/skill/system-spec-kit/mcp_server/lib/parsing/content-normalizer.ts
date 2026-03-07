@@ -35,7 +35,7 @@
  * first character of the document.
  */
 export function stripYamlFrontmatter(content: string): string {
-  // Must start at position 0.  The closing `---` must be on its own line.
+  // AI-GUARD: Must start at position 0.  The closing `---` must be on its own line.
   // Without the `m` flag, `^` anchors to position 0 only (document start),
   // preventing accidental matches on mid-document `---` (e.g. HR rules).
   return content.replace(/^---[\s\S]*?\n---\s*\n?/, '');
@@ -63,7 +63,7 @@ export function stripAnchors(content: string): string {
  *   <!-- prettier-ignore -->
  */
 export function stripHtmlComments(content: string): string {
-  // Non-greedy match to avoid swallowing multiple comments in one pass
+  // AI-WHY: Non-greedy match to avoid swallowing multiple comments in one pass
   return content.replace(/<!--[\s\S]*?-->/g, '');
 }
 

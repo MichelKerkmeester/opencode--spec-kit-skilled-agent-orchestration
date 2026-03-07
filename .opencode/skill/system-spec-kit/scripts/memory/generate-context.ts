@@ -350,10 +350,10 @@ function validateArguments(): void {
                   for (const gc of gcMatches) {
                     deepMatches.push(`${topEntry}/${midEntry}/${gc}`);
                   }
-                } catch { /* skip unreadable dirs */ }
+                } catch (_error: unknown) { /* skip unreadable dirs */ }
               }
             }
-          } catch { /* skip unreadable dirs */ }
+          } catch (_error: unknown) { /* skip unreadable dirs */ }
         }
 
         if (deepMatches.length > 0) {

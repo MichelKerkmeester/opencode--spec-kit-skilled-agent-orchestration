@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Dedup
+// ---------------------------------------------------------------
+
 import type Database from 'better-sqlite3';
 
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';

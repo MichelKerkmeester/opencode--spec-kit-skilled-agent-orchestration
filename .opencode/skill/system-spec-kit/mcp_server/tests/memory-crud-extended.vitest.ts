@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Memory Crud Extended Vitest
+// ---------------------------------------------------------------
+
 import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest';
 
 // ───────────────────────────────────────────────────────────────
@@ -130,24 +134,24 @@ let mutationLedgerMod: any = null;
 /** Parse the JSON envelope from an MCP response */
 function parseResponse(result: any): any {
   if (!result || !result.content || !result.content[0]) return null;
-  try { return JSON.parse(result.content[0].text); } catch { return null; }
+  try { return JSON.parse(result.content[0].text); } catch (_error: unknown) { return null; }
 }
 
 beforeAll(async () => {
   handler = await import('../handlers/memory-crud');
   vectorIndex = await import('../lib/search/vector-index');
 
-  try { checkpointsMod = await import('../lib/storage/checkpoints'); } catch { /* optional */ }
-  try { embeddingsMod = await import('../lib/providers/embeddings'); } catch { /* optional */ }
-  try { embeddingsSourceMod = await import('../lib/providers/embeddings'); } catch { /* optional */ }
-  try { triggerMatcherMod = await import('../lib/parsing/trigger-matcher'); } catch { /* optional */ }
-  try { toolCacheMod = await import('../lib/cache/tool-cache'); } catch { /* optional */ }
-  try { causalEdgesMod = await import('../lib/storage/causal-edges'); } catch { /* optional */ }
-  try { memorySurfaceMod = await import('../hooks/memory-surface'); } catch { /* optional */ }
-  try { folderScoringMod = await import('../lib/scoring/folder-scoring'); } catch { /* optional */ }
-  try { folderScoringSourceMod = await import('../lib/scoring/folder-scoring'); } catch { /* optional */ }
-  try { dbStateMod = await import('../core/db-state'); } catch { /* optional */ }
-  try { mutationLedgerMod = await import('../lib/storage/mutation-ledger'); } catch { /* optional */ }
+  try { checkpointsMod = await import('../lib/storage/checkpoints'); } catch (_error: unknown) { /* optional */ }
+  try { embeddingsMod = await import('../lib/providers/embeddings'); } catch (_error: unknown) { /* optional */ }
+  try { embeddingsSourceMod = await import('../lib/providers/embeddings'); } catch (_error: unknown) { /* optional */ }
+  try { triggerMatcherMod = await import('../lib/parsing/trigger-matcher'); } catch (_error: unknown) { /* optional */ }
+  try { toolCacheMod = await import('../lib/cache/tool-cache'); } catch (_error: unknown) { /* optional */ }
+  try { causalEdgesMod = await import('../lib/storage/causal-edges'); } catch (_error: unknown) { /* optional */ }
+  try { memorySurfaceMod = await import('../hooks/memory-surface'); } catch (_error: unknown) { /* optional */ }
+  try { folderScoringMod = await import('../lib/scoring/folder-scoring'); } catch (_error: unknown) { /* optional */ }
+  try { folderScoringSourceMod = await import('../lib/scoring/folder-scoring'); } catch (_error: unknown) { /* optional */ }
+  try { dbStateMod = await import('../core/db-state'); } catch (_error: unknown) { /* optional */ }
+  try { mutationLedgerMod = await import('../lib/storage/mutation-ledger'); } catch (_error: unknown) { /* optional */ }
 });
 
 afterEach(() => {

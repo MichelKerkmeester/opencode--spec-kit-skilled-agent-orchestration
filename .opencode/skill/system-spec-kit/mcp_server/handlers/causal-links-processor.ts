@@ -169,7 +169,7 @@ export {
   CAUSAL_LINK_MAPPINGS,
 };
 
-// Re-export from handler-utils for backward compatibility
+// AI-WHY: Re-export from handler-utils for backward compatibility
 export { detectSpecLevelFromParsed } from './handler-utils';
 
 export type {

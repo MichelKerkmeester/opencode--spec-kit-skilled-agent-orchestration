@@ -205,13 +205,13 @@ export function extractLearnableTerms(
   const candidates = queryTerms
     .map((t) => t.toLowerCase().trim())
     .filter((term) => {
-      // Must meet minimum length
+      // AI-GUARD: Must meet minimum length
       if (term.length < MIN_TERM_LENGTH) return false;
-      // Must not be on denylist (Safeguard #3)
+      // AI-GUARD: Must not be on denylist (Safeguard #3)
       if (denylist.has(term)) return false;
-      // Must not already be an organic trigger
+      // AI-GUARD: Must not already be an organic trigger
       if (existingLower.has(term)) return false;
-      // Must be alphanumeric (no symbols/punctuation only)
+      // AI-GUARD: Must be alphanumeric (no symbols/punctuation only)
       if (!/[a-z0-9]/.test(term)) return false;
       return true;
     });
@@ -219,7 +219,7 @@ export function extractLearnableTerms(
   // Deduplicate
   const unique = [...new Set(candidates)];
 
-  // Rate cap: max 3 per selection (Safeguard #4)
+  // AI-WHY: Rate cap: max 3 per selection (Safeguard #4)
   return unique.slice(0, MAX_TERMS_PER_SELECTION);
 }
 
@@ -254,17 +254,17 @@ export function recordSelection(
   db: Database
 ): { terms: string[]; applied: boolean; reason?: string } {
   try {
-    // Safeguard #8: Feature must be enabled
+    // AI-GUARD: Safeguard #8: Feature must be enabled
     if (!isLearnedFeedbackEnabled()) {
       return { terms: [], applied: false, reason: 'feature_disabled' };
     }
 
-    // Safeguard #5: Only learn from selections NOT in top-3
+    // AI-WHY: Safeguard #5: Only learn from selections NOT in top-3
     if (resultRank <= TOP_N_EXCLUSION) {
       return { terms: [], applied: false, reason: 'top_3_exclusion' };
     }
 
-    // Safeguard #7: Check memory age
+    // AI-WHY: Safeguard #7: Check memory age
     const memory = db.prepare(
       'SELECT created_at, trigger_phrases, learned_triggers FROM memory_index WHERE id = ?'
     ).get(memoryId) as { created_at?: string; trigger_phrases?: string; learned_triggers?: string } | undefined;
@@ -291,7 +291,7 @@ export function recordSelection(
       }
     }
 
-    // Extract learnable terms (Safeguards #3, #4)
+    // AI-WHY: Extract learnable terms (Safeguards #3, #4)
     const terms = extractLearnableTerms(queryTerms, existingTriggers);
 
     if (terms.length === 0) {
@@ -301,20 +301,20 @@ export function recordSelection(
     const now = Date.now();
     const shadowMode = isInShadowPeriod(db);
 
-    // Ensure audit table exists (Safeguard #10)
+    // AI-GUARD: Ensure audit table exists (Safeguard #10)
     ensureAuditTable(db);
 
-    // Log to audit (Safeguard #10)
+    // AI-WHY: Log to audit (Safeguard #10)
     db.prepare(
       'INSERT INTO learned_feedback_audit (memory_id, action, terms, source, timestamp, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
     ).run(memoryId, 'add', JSON.stringify(terms), queryId, now, shadowMode ? 1 : 0);
 
-    // Safeguard #6: Shadow period is log-only end-to-end (no persistence/apply effects)
+    // AI-WHY: Safeguard #6: Shadow period is log-only end-to-end (no persistence/apply effects)
     if (shadowMode) {
       return { terms, applied: false, reason: 'shadow_period' };
     }
 
-    // Apply learned triggers (Safeguard #1 -- separate column, NOT FTS5)
+    // AI-WHY: Apply learned triggers (Safeguard #1 -- separate column, NOT FTS5)
     applyLearnedTriggers(memoryId, terms, db, queryId);
 
     return { terms, applied: true };
@@ -358,7 +358,7 @@ export function applyLearnedTriggers(
     const nowSeconds = Math.floor(Date.now() / 1000);
     const expiresAt = nowSeconds + LEARNED_TERM_TTL_SECONDS;
 
-    // Filter out already-learned terms and respect rate cap (Safeguard #4)
+    // AI-WHY: Filter out already-learned terms and respect rate cap (Safeguard #4)
     const newEntries: LearnedTriggerEntry[] = [];
     for (const term of terms) {
       if (existingTerms.has(term.toLowerCase())) continue;
@@ -377,7 +377,7 @@ export function applyLearnedTriggers(
     const updated = [...existing, ...newEntries];
     const serialized = serializeLearnedTriggers(updated);
 
-    // CRITICAL: Update ONLY the learned_triggers column on memory_index.
+    // AI-WHY: CRITICAL: Update ONLY the learned_triggers column on memory_index.
     // Do NOT touch memory_fts or any FTS5 table (Safeguard #1).
     db.prepare(
       'UPDATE memory_index SET learned_triggers = ? WHERE id = ?'
@@ -424,7 +424,7 @@ function isInShadowPeriod(db: Database): boolean {
     const ageMs = Date.now() - row.earliest;
     return ageMs < SHADOW_PERIOD_MS;
   } catch (_error: unknown) {
-    // On error, be conservative: assume shadow period to avoid premature boosting
+    // AI-WHY: On error, be conservative: assume shadow period to avoid premature boosting
     return true;
   }
 }
@@ -451,7 +451,7 @@ export function queryLearnedTriggers(
 
     if (queryTerms.length === 0) return [];
 
-    // Ensure partial index exists to avoid full-table scan (A2-P2-4)
+    // AI-TRACE: Ensure partial index exists to avoid full-table scan (A2-P2-4)
     ensureLearnedTriggersIndex(db);
 
     // Fetch memories that have learned triggers (uses idx_memory_learned_triggers partial index)
@@ -464,7 +464,7 @@ export function queryLearnedTriggers(
 
     for (const row of rows) {
       const entries = parseLearnedTriggers(row.learned_triggers);
-      // Filter out expired terms (Safeguard #2)
+      // AI-WHY: Filter out expired terms (Safeguard #2)
       const validEntries = entries.filter((e) => e.expiresAt > nowSeconds);
 
       const matchedTerms = validEntries
@@ -517,7 +517,7 @@ export function expireLearnedTerms(db: Database): number {
       const expired = entries.filter((e) => e.expiresAt <= nowSeconds);
 
       if (expired.length > 0) {
-        // Log expired terms to audit (Safeguard #10)
+        // AI-WHY: Log expired terms to audit (Safeguard #10)
         db.prepare(
           'INSERT INTO learned_feedback_audit (memory_id, action, terms, source, timestamp, shadow_mode) VALUES (?, ?, ?, ?, ?, ?)'
         ).run(
@@ -558,7 +558,7 @@ export function clearAllLearnedTriggers(db: Database): number {
     ensureAuditTable(db);
     ensureLearnedTriggersIndex(db);
 
-    // Log the rollback to audit (Safeguard #10)
+    // AI-WHY: Log the rollback to audit (Safeguard #10)
     const rows = db.prepare(
       `SELECT id, learned_triggers FROM memory_index WHERE learned_triggers IS NOT NULL AND learned_triggers != '[]'`
     ).all() as Array<{ id: number; learned_triggers: string }>;

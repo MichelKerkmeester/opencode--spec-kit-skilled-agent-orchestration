@@ -316,13 +316,18 @@ contextType: "implementation"
 
 ## Tier 3: Future (Dedicated Spec Required)
 
-**Effort:** 19.7h optimistic / 50-70h realistic | **Status:** 11/15 implemented (Wave 2), 1 partial (T3-14), 3 deferred (T3-1, T3-14 remainder, T3-15)
+**Effort:** 19.7h optimistic / 50-70h realistic | **Status:** 14/15 implemented (Wave 2 + Wave 3), 1 deferred (T3-1 separator headers)
 
-### T3-1: Code standards alignment pass [P2] — 2.5h opt / 4-6h real — DEFERRED
-- [ ] Convert 19 files from `// -------` separator headers to `// ---` box-drawing standard
-- [ ] Convert narrative comments to AI-intent prefixes (AI-WHY, AI-TRACE, AI-NOTE)
-- [ ] Files: 19 across `mcp_server/` (all fail sk-code--opencode systematically)
-- **Status:** DEFERRED — 180-file scope requires separate spec folder
+### T3-1: Code standards alignment pass [P2] — IMPLEMENTED (AI-prefix conversion)
+- [x] Audit completed by Codex gpt-5.3-codex (read-only): 180 files scanned
+- [ ] Convert ~40 files from `// -------` separator headers to `// ---` box-drawing standard — DEFERRED (cosmetic)
+- [x] Convert rationale comments to AI-intent prefixes (AI-WHY, AI-TRACE, AI-NOTE, AI-GUARD)
+  - Phase 1: 62 files without AI-prefixes → 132 comments converted
+  - Phase 2: 42 mixed files → 170 comments converted
+  - Phase 3: 89 continuation-line false positives fixed across 41 files (AI-prefix moved from continuation to block start)
+  - Total: 104 files modified, 302 comments converted, 89 false positives corrected
+- **Evidence:** `/tmp/ai-prefix-convert.mjs` (conversion script), `tsc --noEmit` baseline-equal (0 new errors), `scratch/wave3-codex-t3-1.md`
+- **Status:** IMPLEMENTED — AI-prefix conversion complete. Separator header conversion deferred (cosmetic, no functional impact)
 
 ### T3-2: Transaction boundary audit [P2] — IMPLEMENTED (Wave 2 agents O2-4, O2-5)
 - [x] `reconsolidation.ts`: executeMerge, executeConflict wrapped in db.transaction(); async generateEmbedding() moved before tx
@@ -390,14 +395,24 @@ contextType: "implementation"
 - [x] 4 test files updated to match new flag semantics
 - **Evidence:** `rollout-policy.ts:39`, 7205/7205 tests pass
 
-### T3-14: Verify remaining Phase 017 fixes [P2] — PARTIAL
+### T3-14: Verify remaining Phase 017 fixes [P2] — IMPLEMENTED
 - [x] C1 (Codex Wave 1) checked 25/35: 19 VERIFIED, 3 SUSPICIOUS, 3 MISSING
-- [ ] 10 remaining unverified; 3 suspicious need follow-up
-- **Status:** DEFERRED — remaining verification needs separate effort
+- [x] Wave 3 Codex agent verified fixes #1-#10, followed up on #18/#22/#28, verified #36-#38
+- [x] Fix #22 CORRECTED: misleading SAVEPOINT comment in transaction-manager.ts:183 — rewritten to accurately describe flag-based rollback coordination
+- [x] Fix #28 CORRECTED: cleanupOrphanedEdges wired into memory_health autoRepair (memory-crud-health.ts)
+- [x] Fixes #1-#3 CORRECTED: non-canonical markers (`Fix 1` → `Fix #1`) in quality-loop.ts:304,318,325
+- **Combined totals (Wave 1 + Wave 3):** 27 VERIFIED, 6 MISSING (#4, #9, #10 + 3 non-canonical now fixed), 2 SUSPICIOUS → FIXED
+- **Evidence:** `scratch/wave3-codex-t3-14.md`, transaction-manager.ts:183, memory-crud-health.ts, quality-loop.ts:304
+- **Status:** IMPLEMENTED — 2 suspicious items fixed, 3 markers canonicalized. Fixes #4, #9, #10 were never implemented (no trace in codebase).
 
-### T3-15: Error handling / circuit breaker analysis [P2] — DEFERRED
-- [ ] C2 agent never returned during Wave 1
-- **Status:** DEFERRED — needs redo in separate effort
+### T3-15: Error handling / circuit breaker analysis [P2] — IMPLEMENTED (circuit breakers)
+- [x] C2 agent never returned during Wave 1
+- [x] Wave 3 Codex agent completed full error handling audit (read-only)
+- [x] Circuit breaker added to cross-encoder.ts (P1): per-provider failure tracking, 3 consecutive failures → circuit open for 60s, half-open retry after cooldown
+- [x] Circuit breaker added to retry-manager.ts (P2): global provider failure tracking, 5 consecutive failures → circuit open for 120s, skips API calls during cooldown
+- **Remaining (deferred):** vector-index-schema.ts 54 swallowed catches review, session-manager.ts catch audit
+- **Evidence:** `scratch/wave3-codex-t3-15.md`, cross-encoder.ts (circuit breaker at module state section), retry-manager.ts (circuit breaker at configuration section)
+- **Status:** IMPLEMENTED — circuit breakers for both external API call sites. Catch block review deferred.
 
 ---
 

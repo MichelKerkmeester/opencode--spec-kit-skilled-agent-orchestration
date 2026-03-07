@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Hybrid Search
 // ---------------------------------------------------------------
-// Combines vector, FTS, and BM25 search with fallback
+// AI-WHY: Combines vector, FTS, and BM25 search with fallback
 
 /* --- 1. IMPORTS --- */
 
@@ -270,7 +270,7 @@ function bm25Search(
           ).get(Number(r.id)) as { spec_folder: string | null } | undefined;
           if (!row?.spec_folder) return false;
           return row.spec_folder === specFolder || row.spec_folder.startsWith(specFolder + '/');
-        } catch {
+        } catch (_error: unknown) {
           return true; // Fail open on DB errors
         }
       })
@@ -368,8 +368,8 @@ function combinedLexicalSearch(
   const ftsResults = ftsSearch(query, options);
   const bm25Results = bm25Search(query, options);
 
-  // Merge by canonical ID, prefer FTS scores.
-  // AI-WHY: canonicalResultId() prevents duplicate rows when one channel emits
+  // AI-WHY: Merge by canonical ID, prefer FTS scores.
+  // canonicalResultId() prevents duplicate rows when one channel emits
   // numeric IDs (42) and another emits string IDs ("42" or "mem:42").
   const merged = new Map<string, HybridSearchResult>();
 
@@ -536,8 +536,8 @@ async function hybridSearchEnhanced(
     // Sprint 3: Pipeline metadata collector (populated by flag-gated stages)
     const s3meta: Sprint3PipelineMeta = {};
 
-    // ── Sprint 3 Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) ──
-    // AI-WHY: When enabled, classifies query complexity and restricts channels to a
+    // AI-WHY: ── Sprint 3 Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) ──
+    // When enabled, classifies query complexity and restricts channels to a
     // subset (e.g., simple queries skip graph+degree). When disabled, all channels run.
     const routeResult = routeQuery(query, options.triggerPhrases);
     const allPossibleChannels: ChannelName[] = ['vector', 'fts', 'bm25', 'graph', 'degree'];
@@ -545,8 +545,8 @@ async function hybridSearchEnhanced(
       ? new Set<ChannelName>(allPossibleChannels)
       : new Set<ChannelName>(routeResult.channels);
 
-    // ── Ablation override: allow callers to force-disable channels (BUG-1 fix) ──
-    // AI-WHY: The ablation framework passes useVector/useBm25/useFts=false to disable
+    // AI-WHY: ── Ablation override: allow callers to force-disable channels (BUG-1 fix) ──
+    // The ablation framework passes useVector/useBm25/useFts=false to disable
     // specific channels for contribution analysis. Without this intersection, ablation
     // channel disable was a no-op because only routeQuery() controlled activeChannels.
     if (options.useVector === false) activeChannels.delete('vector');
@@ -563,8 +563,8 @@ async function hybridSearchEnhanced(
       };
     }
 
-    // ── Sprint 3 Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) ──
-    // AI-WHY: Compute tier-aware budget early so it's available for downstream truncation.
+    // AI-WHY: ── Sprint 3 Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) ──
+    // Compute tier-aware budget early so it's available for downstream truncation.
     // When disabled, getDynamicTokenBudget returns the default 4000 budget with applied=false.
     const budgetResult = getDynamicTokenBudget(routeResult.tier);
     if (budgetResult.applied) {
@@ -728,8 +728,8 @@ async function hybridSearchEnhanced(
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
 
-      // ── Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) ──
-      // AI-WHY: When enabled, collapses chunk-level results back to their parent memory
+      // AI-WHY: ── Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) ──
+      // When enabled, collapses chunk-level results back to their parent memory
       // documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
       // multiple chunks from the same document dominating the result list.
       // MINOR-1 fix: isMpabEnabled() and isDocscoreAggregationEnabled() check the same env var
@@ -767,8 +767,8 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // ── Sprint 3 Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) ──
-      // AI-WHY: Ensures every channel that returned results has at least one representative
+      // AI-WHY: ── Sprint 3 Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) ──
+      // Ensures every channel that returned results has at least one representative
       // in the top-k window. Prevents single-channel dominance in fusion output.
       // When disabled, passes results through unchanged.
       try {
@@ -803,8 +803,8 @@ async function hybridSearchEnhanced(
         // AI-GUARD: Non-critical — enforcement failure does not block pipeline
       }
 
-      // ── Sprint 3 Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) ──
-      // AI-WHY: Trims low-confidence tail from fused results using gap analysis.
+      // AI-WHY: ── Sprint 3 Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) ──
+      // Trims low-confidence tail from fused results using gap analysis.
       // A gap > 2x median signals a relevance cliff — results below are noise.
       // When disabled, passes results through unchanged.
       try {
@@ -915,7 +915,7 @@ async function hybridSearchEnhanced(
               }
             }
           }
-          // P1-2 FIX: Re-sort after co-activation boost to ensure boosted results
+          // AI-TRACE: P1-2 FIX: Re-sort after co-activation boost to ensure boosted results
           // are promoted to their correct position in the ranking
           reranked.sort((a, b) => ((b.score as number) ?? 0) - ((a.score as number) ?? 0));
         } catch (_err: unknown) {
@@ -979,7 +979,7 @@ async function hybridSearchEnhanced(
         });
       }
 
-      // Preserve Stage 4 trace metadata as explicit result fields so downstream
+      // AI-WHY: Preserve Stage 4 trace metadata as explicit result fields so downstream
       // formatters can opt-in to provenance-rich envelopes without relying on
       // non-enumerable array shadow properties.
       if ((s4shadowMeta !== undefined || s4attributionMeta !== undefined || degradationMeta !== undefined) && reranked.length > 0) {
@@ -991,7 +991,7 @@ async function hybridSearchEnhanced(
             degradation: degradationMeta ?? null,
             budgetTruncated: budgeted.truncated,
             budgetLimit: budgetResult.budget,
-            // CHK-038: Wire queryComplexity from router classification into trace
+            // AI-TRACE: CHK-038: Wire queryComplexity from router classification into trace
             queryComplexity: routeResult.tier,
           },
         }));
@@ -1004,8 +1004,8 @@ async function hybridSearchEnhanced(
         }
       }
 
-      // Sprint 3: Attach pipeline metadata to results for eval/debugging
-      // AI-WHY: Metadata is attached as non-enumerable _s3meta property to avoid
+      // AI-WHY: Sprint 3: Attach pipeline metadata to results for eval/debugging
+      // Metadata is attached as non-enumerable _s3meta property to avoid
       // polluting result serialization while remaining accessible for debugging.
       if (Object.keys(s3meta).length > 0 && reranked.length > 0) {
         Object.defineProperty(reranked, '_s3meta', { value: s3meta, enumerable: false, configurable: true });
@@ -1037,7 +1037,7 @@ async function searchWithFallback(
   embedding: Float32Array | number[] | null,
   options: HybridSearchOptions = {}
 ): Promise<HybridSearchResult[]> {
-  // PI-A2: Delegate to tiered fallback when flag is enabled
+  // AI-WHY: PI-A2: Delegate to tiered fallback when flag is enabled
   if (isSearchFallbackEnabled()) {
     return searchWithFallbackTiered(query, embedding, options);
   }
@@ -1052,12 +1052,12 @@ async function searchWithFallback(
   const primaryOptions = { ...options, minSimilarity: options.minSimilarity ?? PRIMARY_THRESHOLD };
   let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
 
-  // C138-P0: Two-pass adaptive fallback
+  // AI-TRACE: C138-P0: Two-pass adaptive fallback
   if (results.length === 0 && (primaryOptions.minSimilarity ?? PRIMARY_THRESHOLD) >= FALLBACK_THRESHOLD) {
     const fallbackOptions = { ...options, minSimilarity: FALLBACK_THRESHOLD };
     results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
     if (results.length > 0) {
-      // Tag results with fallback metadata
+      // AI-WHY: Tag results with fallback metadata
       for (const r of results) {
         (r as Record<string, unknown>).fallbackRetry = true;
       }
@@ -1066,11 +1066,11 @@ async function searchWithFallback(
 
   if (results.length > 0) return results;
 
-  // Fallback to FTS only
+  // AI-WHY: Fallback to FTS only
   const ftsResults = ftsSearch(query, options);
   if (ftsResults.length > 0) return ftsResults;
 
-  // Fallback to BM25 only
+  // AI-WHY: Fallback to BM25 only
   const bm25Results = bm25Search(query, options);
   if (bm25Results.length > 0) return bm25Results;
 
@@ -1200,7 +1200,7 @@ function extractSpecSegments(filePath: string): { left: string; right: string; t
   };
 }
 
-// Sprint 9 fix: Memoize description map to avoid rebuilding on every search query.
+// AI-WHY: Sprint 9 fix: Memoize description map to avoid rebuilding on every search query.
 // Cache invalidates after 60 seconds so folder renames are eventually picked up.
 // M5 fix: Return stale cache immediately and refresh asynchronously to avoid
 // blocking the search hot path with synchronous filesystem crawls.
@@ -1244,8 +1244,8 @@ function buildDescriptionTailMap(): Map<string, string> {
         try {
           const freshMap = rebuildDescriptionTailMap();
           descMapCache = { map: freshMap, timestamp: Date.now() };
-        } catch {
-          // Non-fatal: stale cache remains usable
+        } catch (_error: unknown) {
+          // AI-GUARD: Non-fatal: stale cache remains usable
         } finally {
           descMapRefreshing = false;
         }
@@ -1599,7 +1599,7 @@ function truncateToBudget(
     return { results: sorted, truncated: false };
   }
 
-  // Single-result overflow with includeContent: return summary fallback
+  // AI-WHY: Single-result overflow with includeContent: return summary fallback
   if (sorted.length === 1 && includeContent) {
     const summary = createSummaryFallback(sorted[0]!, effectiveBudget);
     const overflow: OverflowLogEntry = {
@@ -1684,7 +1684,7 @@ export {
   routeQuery,
   getDynamicTokenBudget,
   isDynamicTokenBudgetEnabled,
-  // PI-A2: Tiered fallback exports
+  // AI-WHY: PI-A2: Tiered fallback exports
   structuralSearch,
   DEGRADATION_QUALITY_THRESHOLD,
   DEGRADATION_MIN_RESULTS,

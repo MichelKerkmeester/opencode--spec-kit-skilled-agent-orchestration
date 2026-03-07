@@ -6,6 +6,20 @@ Instrumentation wiring remains present in retrieval handlers (`memory_search`, `
 
 The earlier pattern-analysis outcome from this workstream still informed ground-truth design, but current production runtime does not actively write new consumption-log rows unless instrumentation is reactivated.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/telemetry/consumption-logger.ts` | Lib | Agent consumption logging |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/consumption-logger.vitest.ts` | Consumption logger tests |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

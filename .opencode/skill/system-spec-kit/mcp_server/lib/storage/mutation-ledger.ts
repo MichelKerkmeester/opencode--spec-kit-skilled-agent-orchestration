@@ -299,7 +299,7 @@ function hasDivergenceEscalationEntry(db: Database.Database, normalizedPath: str
     return false;
   }
 
-  // Use COUNT(*) with json_extract to avoid O(n) full-table scan in application code.
+  // AI-WHY: Use COUNT(*) with json_extract to avoid O(n) full-table scan in application code.
   const row = db.prepare(`
     SELECT COUNT(*) AS cnt
     FROM mutation_ledger

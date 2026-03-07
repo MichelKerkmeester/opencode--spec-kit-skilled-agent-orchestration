@@ -301,7 +301,7 @@ function attemptAutoFix(
   const fixedMetadata = { ...metadata };
   const fixed: string[] = [];
 
-  // Fix 1: Re-extract trigger phrases if missing/insufficient
+  // Fix #1 (017-refinement-phase-6): Re-extract trigger phrases if missing/insufficient
   const hasTriggerIssue = issues.some(i => /trigger phrase/i.test(i));
   if (hasTriggerIssue) {
     const existingTriggers = Array.isArray(fixedMetadata.triggerPhrases)
@@ -315,14 +315,14 @@ function attemptAutoFix(
     }
   }
 
-  // Fix 2: Close unclosed ANCHOR tags
+  // Fix #2 (017-refinement-phase-6): Close unclosed ANCHOR tags
   const hasAnchorIssue = issues.some(i => /unclosed anchor/i.test(i));
   if (hasAnchorIssue) {
     fixedContent = normalizeAnchors(fixedContent);
     fixed.push('Normalized unclosed ANCHOR tags');
   }
 
-  // Fix 3: Trim content to budget
+  // Fix #3 (017-refinement-phase-6): Trim content to budget
   const hasBudgetIssue = issues.some(i => /token budget/i.test(i));
   if (hasBudgetIssue) {
     if (fixedContent.length > DEFAULT_CHAR_BUDGET) {

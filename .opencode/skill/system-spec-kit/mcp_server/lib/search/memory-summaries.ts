@@ -65,7 +65,7 @@ function float32ToBuffer(arr: Float32Array): Buffer {
  * Convert a Buffer (SQLite BLOB) back to a Float32Array.
  */
 function bufferToFloat32(buf: Buffer): Float32Array {
-  // Create a copy to avoid alignment issues
+  // AI-WHY: Create a copy to avoid alignment issues
   const copy = new ArrayBuffer(buf.length);
   const view = new Uint8Array(copy);
   for (let i = 0; i < buf.length; i++) {
@@ -163,8 +163,8 @@ export function querySummaryEmbeddings(
   limit: number
 ): SummarySearchResult[] {
   try {
-    // Cap rows fetched to avoid full-table scans on large databases.
-    // Over-fetch by a factor so that after cosine ranking we can still return `limit` results.
+    // AI-WHY: Cap rows fetched to avoid full-table scans on large databases.
+    // AI-WHY: Over-fetch by a factor so that after cosine ranking we can still return `limit` results.
     const fetchCap = Math.max(limit * 10, 1000);
     const rows = db.prepare(`
       SELECT id, memory_id, summary_embedding

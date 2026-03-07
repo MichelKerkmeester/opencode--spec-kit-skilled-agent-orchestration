@@ -12,6 +12,20 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 
 ---
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/graph/community-detection.ts` | Lib | Community detection algorithm |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/community-detection.vitest.ts` | Community detection tests |
+
 ## Source Metadata
 
 - Group: Graph signal activation

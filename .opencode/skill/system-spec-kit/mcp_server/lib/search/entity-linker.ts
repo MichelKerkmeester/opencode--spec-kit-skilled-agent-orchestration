@@ -343,7 +343,7 @@ export function createEntityLinks(
         const sourceId = String(idA);
         const targetId = String(idB);
 
-        // Global density guard: skip linking if this insert would push density
+        // AI-GUARD: Global density guard: skip linking if this insert would push density
         // above the configured threshold.
         if (totalMemories > 0) {
           const projectedDensity = (totalEdges + 1) / totalMemories;

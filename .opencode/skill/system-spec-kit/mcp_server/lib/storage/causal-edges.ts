@@ -98,7 +98,7 @@ function invalidateDegreeCache(): void {
   try {
     clearDegreeCache();
   } catch (_error: unknown) {
-    // cache invalidation is best-effort; never block edge mutations
+    // AI-GUARD: cache invalidation is best-effort; never block edge mutations
   }
 }
 
@@ -109,7 +109,7 @@ function invalidateDegreeCache(): void {
 function init(database: Database.Database): void {
   db = database;
 
-  // A4-P2-2: Defensive traversal indexes — the canonical creation lives in
+  // AI-TRACE: A4-P2-2: Defensive traversal indexes — the canonical creation lives in
   // vector-index-impl.ts migration v8 (CHK-062).  These IF NOT EXISTS guards
   // ensure the indexes are present even when the module is initialised outside
   // the normal migration path (e.g. tests, standalone scripts).
@@ -164,9 +164,9 @@ function insertEdge(
   try {
     const clampedStrength = Math.max(0, Math.min(1, effectiveStrength));
 
-    // Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
+    // AI-WHY: Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
     const rowId = db.transaction(() => {
-      // Check if edge exists (for weight_history logging on conflict update).
+      // AI-WHY: Check if edge exists (for weight_history logging on conflict update).
       // This SELECT is intentional: we need the old strength to decide whether
       // to write a weight_history row after the upsert. The subsequent INSERT
       // uses last_insert_rowid() to avoid a second post-upsert SELECT.
@@ -175,7 +175,7 @@ function insertEdge(
         WHERE source_id = ? AND target_id = ? AND relation = ?
       `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
 
-      // Single upsert — SQLite sets last_insert_rowid() to the row's rowid for
+      // AI-WHY: Single upsert — SQLite sets last_insert_rowid() to the row's rowid for
       // both INSERT and the DO UPDATE conflict path, so we avoid a post-upsert SELECT.
       const upsertResult = (db.prepare(`
         INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
@@ -387,7 +387,7 @@ function updateEdge(
 
     params.push(edgeId);
 
-    // Wrap SELECT + UPDATE + logWeightChange in a transaction for atomicity
+    // AI-WHY: Wrap SELECT + UPDATE + logWeightChange in a transaction for atomicity
     const changed = db.transaction(() => {
       // T001d: Capture old strength for weight_history logging
       let oldStrength: number | undefined;
@@ -622,7 +622,7 @@ function getWeightHistory(edgeId: number, limit: number = 50): WeightHistoryEntr
 function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
   if (!db) return false;
   try {
-    // Wrap SELECTs + UPDATE + logWeightChange in a transaction for atomicity
+    // AI-WHY: Wrap SELECTs + UPDATE + logWeightChange in a transaction for atomicity
     const changed = db.transaction(() => {
       // Get current strength before rollback
       const current = (db.prepare(

@@ -392,7 +392,7 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         return result;
       }
     } catch (err: unknown) {
-      // Non-fatal: log and continue with other checks
+      // AI-GUARD: Non-fatal: log and continue with other checks
       const message = err instanceof Error ? err.message : String(err);
       console.warn('[preflight] Exact duplicate check failed:', message);
     }
@@ -420,7 +420,7 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
         }
       }
     } catch (err: unknown) {
-      // Non-fatal: log and continue
+      // AI-GUARD: Non-fatal: log and continue
       const message = err instanceof Error ? err.message : String(err);
       console.warn('[preflight] Similar duplicate check failed:', message);
     }
@@ -688,7 +688,7 @@ export function runPreflight(params: PreflightParams, options: PreflightOptions 
     }
   }
 
-  // In dry-run mode, never actually block - just report
+  // AI-GUARD: In dry-run mode, never actually block - just report
   if (dry_run) {
     result.pass = true;
     result.dry_run_would_pass = result.errors.length === 0;

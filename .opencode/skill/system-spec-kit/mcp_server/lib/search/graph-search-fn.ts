@@ -76,11 +76,11 @@ function queryCausalEdges(
     if (isFtsTableAvailable(database)) {
       graphResults.push(...queryCausalEdgesFTS5(database, query, limit));
     } else {
-      // Fallback: LIKE matching when FTS5 table is unavailable
+      // AI-WHY: Fallback: LIKE matching when FTS5 table is unavailable
       graphResults.push(...queryCausalEdgesLikeFallback(database, query, limit));
     }
 
-    // S4: hierarchy-aware fallback/augmentation for spec-scoped retrieval.
+    // AI-TRACE: S4: hierarchy-aware fallback/augmentation for spec-scoped retrieval.
     if (typeof specFolder === 'string' && specFolder.trim().length > 0) {
       const hierarchyRows = queryHierarchyMemories(database, specFolder, Math.max(5, Math.ceil(limit / 2)));
       for (const row of hierarchyRows) {

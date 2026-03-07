@@ -636,11 +636,11 @@ All 5 agents ran as parallel background bash processes via `cli-gemini`, outputt
 
 ### Remaining (Post-Wave 2 — requires separate spec folder)
 
-1. **Code standards alignment (T3-1):** 19/20 files use internal convention, divergent from sk-code--opencode standard. 180-file scope deferred.
+1. **Code standards alignment (T3-1):** IMPLEMENTED. 302 rationale comments converted to AI-prefixed format across 104 files (script: `/tmp/ai-prefix-convert.mjs`). 89 continuation-line false positives corrected in 41 files. Separator header conversion (~40 files) deferred — cosmetic only.
 
-2. **Phase 017 remaining verification (T3-14):** C1 checked 25/35: 19 verified, 3 suspicious, 3 missing. 10 remain unverified.
+2. **Phase 017 remaining verification (T3-14):** IMPLEMENTED. Combined Wave 1+3: 27 VERIFIED, 6 MISSING (#4, #9, #10 never implemented). 2 SUSPICIOUS items FIXED: #22 SAVEPOINT comment corrected in transaction-manager.ts, #28 cleanupOrphanEdges wired into memory_health autoRepair. Fixes #1-#3 markers canonicalized in quality-loop.ts.
 
-3. **Error handling analysis (T3-15):** C2 agent never returned. Error boundaries across mcp_server/ not mapped.
+3. **Error handling analysis (T3-15):** IMPLEMENTED (circuit breakers). Circuit breaker added to cross-encoder.ts (3 failures → 60s cooldown per provider) and retry-manager.ts (5 failures → 120s cooldown). Remaining: vector-index-schema.ts 54 swallowed catches review, session-manager.ts catch audit — deferred.
 
 4. ~~memory-save.ts rewrite (CR-P2-4)~~ **RESOLVED** — Conductor rewrite: 1556→579 LOC (63% reduction). 10 save/ modules (1249 LOC) integrated. 0 new type errors. 7203/7205 tests pass (2 pre-existing in search-results-format).
 
@@ -804,11 +804,58 @@ Second-pass review with differentiated focus: Gemini (documentation audit, 4/10 
 | T3-8: Embedding cache | ✅ | Already implemented in retry-manager.ts |
 | T3-13: isFeatureEnabled | ✅ | Fixed: only 'false'/'0' disable |
 | T3-9/T3-10/T3-11/T3-12 | ✅ | FALSE_POSITIVE or already done |
-| T3-1: Code standards | DEFERRED | 180-file scope |
-| T3-14: Phase 017 verify | PARTIAL | 25/35 checked (19 verified, 3 suspicious, 3 missing) |
-| T3-15: Error handling | DEFERRED | C2 agent never returned |
+| T3-1: Code standards | ✅ | 302 comments converted across 104 files. 89 false positives fixed. Separator headers deferred (cosmetic). |
+| T3-14: Phase 017 verify | ✅ | 27 verified, 3 markers canonicalized, 2 suspicious fixed (#22 comment, #28 wired to health). 3 fixes never implemented (#4, #9, #10). |
+| T3-15: Error handling | ✅ | Circuit breakers added: cross-encoder.ts (3-fail/60s) + retry-manager.ts (5-fail/120s). Catch review deferred. |
 | CR-P2-4: save/ decomposition | COMPLETE | 10/10 modules + conductor rewrite: 1556→579 LOC |
 
 **Final verification:** `tsc --noEmit` clean. 243/243 test files pass. 7205/7205 tests pass.
 <!-- /ANCHOR:wave2-tier3 -->
+
+<!-- ANCHOR:wave3-deferred -->
+## Wave 3: Deferred Item Audits (2026-03-07)
+
+**Method:** 3 Codex gpt-5.3-codex agents via cli-codex (read-only sandbox, xhigh reasoning).
+**Scope:** T3-1 (code standards), T3-14 (Phase 017 remaining verification), T3-15 (error handling & circuit breakers).
+**Results:** All 3 agents completed successfully. Audit-only — no code modifications.
+
+### Agent Results
+
+| Agent | Task | Output | Key Findings |
+|-------|------|:------:|-------------|
+| Codex T3-1 | Code standards alignment | 451 lines | 180 files, 256 non-standard rationale comments across 97 files, 65 files need AI-prefix conversion |
+| Codex T3-14 | Phase 017 fix verification | 47 lines (structured) | 8 VERIFIED, 6 MISSING, 2 SUSPICIOUS CONFIRMED |
+| Codex T3-15 | Error handling & circuit breakers | 275 lines | 0 circuit breakers found, 54 swallowed catches in vector-index-schema.ts |
+
+### Audit Summaries
+
+**T3-1 (Code Standards):** 57/180 files have AI-prefixes. 65 files have rationale comments without any AI-prefix (conversion candidates). AI-WHY=122, AI-TRACE=28, AI-NOTE=0, AI-GUARD=35. Top 3 files needing conversion: learned-feedback.ts (20 comments), hybrid-search.ts (18), stage3-rerank.ts (10). ~40 files use non-standard separator headers.
+
+**T3-14 (Phase 017):** Combined Wave 1 (C1) + Wave 3 totals: 27 VERIFIED, 6 MISSING (#1-#4, #9, #10), 2 SUSPICIOUS (#22: SAVEPOINT comment misleading, #28: cleanupOrphanEdges never invoked). Fixes #1-#3 have non-canonical markers (`Fix 1` vs `Fix #1`) in quality-loop.ts.
+
+**T3-15 (Error Handling):** Zero circuit breaker patterns in entire mcp_server/. External API calls without circuit breakers: cross-encoder.ts (Voyage/Cohere rerank via fetch()), retry-manager.ts (embedding providers). Highest-risk files: vector-index-schema.ts (54 swallowed, 18 overly broad), session-manager.ts (6 swallowed, 19 overly broad).
+
+### Implementation (Conductor, post-audit)
+
+After the 3 Codex audit agents completed, the conductor implemented the concrete fixes:
+
+**T3-14 Fixes:**
+- `transaction-manager.ts:183` — Corrected misleading Fix #22 SAVEPOINT comment. Now accurately describes flag-based rollback coordination.
+- `memory-crud-health.ts` — Wired Fix #28 `cleanupOrphanedEdges()` into `memory_health` autoRepair flow. Orphaned causal edges (referencing deleted memories) are now cleaned up during health checks with `autoRepair: true`.
+- `quality-loop.ts:304,318,325` — Canonicalized Fix #1, #2, #3 markers from `Fix N` to `Fix #N` format.
+
+**T3-15 Circuit Breakers:**
+- `cross-encoder.ts` — Per-provider circuit breaker (Voyage, Cohere, local). 3 consecutive failures → circuit opens for 60s. Half-open after cooldown allows one retry. Success resets. Integrated into `rerankResults()` and `resetSession()`.
+- `retry-manager.ts` — Global embedding provider circuit breaker. 5 consecutive failures → circuit opens for 120s. Prevents background retry job from hammering the API during sustained outages. Integrated into `retryEmbedding()`.
+
+**T3-1 (Code Standards) — AI-Prefix Conversion:**
+- Script `/tmp/ai-prefix-convert.mjs`: keyword-based classifier (TRACE_KW → AI-TRACE, GUARD_KW → AI-GUARD, default → AI-WHY)
+- Phase 1: 62 files without AI-prefixes → 132 comments converted
+- Phase 2: 42 mixed files (had some AI-prefixes + plain rationale) → 170 comments converted
+- Phase 3: 89 continuation-line false positives fixed across 41 files — AI-prefix moved from continuation to block start
+- Total: 104 files modified, 302 comments converted, 89 false positives corrected
+- Separator header conversion (~40 files) deferred — cosmetic, no functional impact
+
+**Verification:** `tsc --noEmit` baseline-equal (0 new errors, 11 pre-existing). 7203/7205 tests pass (2 pre-existing in search-results-format.vitest.ts).
+<!-- /ANCHOR:wave3-deferred -->
 <!-- /ANCHOR:limitations -->

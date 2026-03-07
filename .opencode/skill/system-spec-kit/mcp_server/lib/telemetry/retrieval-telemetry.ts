@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Retrieval Telemetry (C136-12)
 // ---------------------------------------------------------------
-// Captures latency, mode selection, fallback, and quality-proxy
+// AI-WHY: Captures latency, mode selection, fallback, and quality-proxy
 // dimensions for governance review and Wave 2 gate decisions.
 // Feature flag: SPECKIT_EXTENDED_TELEMETRY (default false / disabled)
 // ---------------------------------------------------------------

@@ -8,6 +8,20 @@ System A (`INTENT_WEIGHT_PROFILES` in adaptive fusion) controls how much each ch
 
 A minor inefficiency exists (recency boost from System A is discarded when System B re-scores), but it is harmless. No code change needed. The 4-stage pipeline (R6) resolved this structurally: Stage 2 applies intent weights only for non-hybrid search types via an `isHybrid` boolean gate, so the code path for double-weighting is absent by design.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/intent-classifier.ts` | Lib | Intent detection |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/intent-classifier.vitest.ts` | Intent classification accuracy |
+
 ## Source Metadata
 
 - Group: Scoring and calibration

@@ -9,7 +9,7 @@ import type Database from 'better-sqlite3';
    1. DEPENDENCIES (lazy-loaded)
 ----------------------------------------------------------------*/
 
-// Lazy-load tier-classifier to avoid circular dependencies
+// AI-WHY: Lazy-load tier-classifier to avoid circular dependencies
 let tierClassifierModule: Record<string, unknown> | null = null;
 
 function getTierClassifier(): Record<string, unknown> | null {
@@ -18,7 +18,7 @@ function getTierClassifier(): Record<string, unknown> | null {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     tierClassifierModule = require('./tier-classifier');
     return tierClassifierModule;
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }
@@ -40,13 +40,13 @@ function getBm25Index(): Bm25IndexModule | null {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     bm25IndexModule = require('../search/bm25-index') as Bm25IndexModule;
     return bm25IndexModule;
-  } catch {
+  } catch (_error: unknown) {
     try {
       // Support cache/cognitive symlink import path in some runtime setups.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       bm25IndexModule = require('../../search/bm25-index') as Bm25IndexModule;
       return bm25IndexModule;
-    } catch {
+    } catch (_error: unknown) {
       return null;
     }
   }
@@ -274,7 +274,7 @@ function getArchivalCandidates(limit: number = ARCHIVAL_CONFIG.batchSize): Archi
         // Primary: FSRS-based decision
         shouldArchiveRow = classifier.shouldArchive(row) as boolean;
       } else {
-        // Fallback: SQL-based criteria only when FSRS is unavailable
+        // AI-WHY: Fallback: SQL-based criteria only when FSRS is unavailable
         shouldArchiveRow = (
           row.created_at != null &&
           new Date(row.created_at as string) < cutoffDate &&
@@ -358,7 +358,7 @@ function getMemoryIndexColumns(): Set<string> {
   try {
     const columns = (db.prepare('PRAGMA table_info(memory_index)') as Database.Statement).all() as Array<{ name: string }>;
     return new Set(columns.map(column => column.name));
-  } catch {
+  } catch (_error: unknown) {
     return new Set();
   }
 }

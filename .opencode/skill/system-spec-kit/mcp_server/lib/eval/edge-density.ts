@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Edge Density (Sprint 1 T003)
 // ---------------------------------------------------------------
-//
+// AI-WHY: 
 // Measures the edge density of the causal graph:
 //   density = edge_count / total_memories
 //

@@ -178,23 +178,56 @@ copilot -p "prompt" --allow-all-tools 2>&1
 |---------------|---------|
 | `-p "prompt"` | Non-interactive mode — send prompt and get response |
 | `--allow-all-tools` | Enable Autopilot/Autonomous mode (no approval prompts) |
-| `/model <id>` | Mid-session or initial model selection |
+| `--model <id>` | Select AI model (e.g., `--model gpt-5.4`) |
+| `--no-ask-user` | Autonomous mode — no interactive questions |
+| `/model <id>` | Mid-session or initial model selection (interactive) |
 | `/delegate` | Push task to GitHub Cloud Coding Agent |
 | `&prompt` | Inline shorthand for cloud delegation |
 
 ### Model Selection
 
-Copilot CLI supports 7+ models across 3 providers (GA Feb 2026):
+Copilot CLI supports 18 models across 3 providers:
 
 | Model | ID | Provider |
 |-------|----|----------|
-| **Claude 4.6 Opus** | `claude-opus-4.6` | Anthropic |
-| **Claude 4.6 Sonnet** | `claude-sonnet-4.6` | Anthropic |
-| **Claude 4.5 Haiku** | `claude-haiku-4.5` | Anthropic |
+| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic |
+| **Claude Opus 4.6 Fast** | `claude-opus-4.6-fast` | Anthropic |
+| **Claude Opus 4.5** | `claude-opus-4.5` | Anthropic |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic |
+| **Claude Sonnet 4.5** | `claude-sonnet-4.5` | Anthropic |
+| **Claude Sonnet 4** | `claude-sonnet-4` | Anthropic |
+| **Claude Haiku 4.5** | `claude-haiku-4.5` | Anthropic |
+| **GPT-5.4** | `gpt-5.4` | OpenAI |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI |
+| **GPT-5.2-Codex** | `gpt-5.2-codex` | OpenAI |
+| **GPT-5.2** | `gpt-5.2` | OpenAI |
+| **GPT-5.1-Codex-Max** | `gpt-5.1-codex-max` | OpenAI |
+| **GPT-5.1-Codex** | `gpt-5.1-codex` | OpenAI |
+| **GPT-5.1** | `gpt-5.1` | OpenAI |
+| **GPT-5.1-Codex-Mini** | `gpt-5.1-codex-mini` | OpenAI |
 | **GPT-5 mini** | `gpt-5-mini` | OpenAI |
 | **GPT-4.1** | `gpt-4.1` | OpenAI |
-| **Gemini 3 Pro** | `gemini-3-pro` | Google |
+| **Gemini 3 Pro Preview** | `gemini-3-pro-preview` | Google |
+
+### Reasoning Effort (GPT-5.x models)
+
+GPT-5.x models support reasoning effort levels that control depth vs speed:
+
+| Level | Description |
+|-------|-------------|
+| Low | Faster responses, less detailed reasoning |
+| Medium | Balanced speed and reasoning depth (default) |
+| High | More thorough reasoning, slower responses |
+| Extra High | Maximum reasoning depth, slowest responses |
+
+**Interactive mode:** Select via `/model` → choose GPT-5.x → select effort level.
+
+**Non-interactive mode (`-p`):** No `--reasoning-effort` flag exists yet ([github/copilot-cli#1048](https://github.com/github/copilot-cli/issues/1048)). Workaround: set reasoning level in interactive mode first — copilot persists the last-used effort level per model. Subsequent `-p` calls with the same model inherit that level.
+
+**Non-interactive invocation:**
+```bash
+copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
+```
 
 ### Copilot CLI Agent Delegation
 

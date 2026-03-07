@@ -10,6 +10,23 @@ When the `SPECKIT_COMPLEXITY_ROUTER` flag is disabled, the classifier returns "c
 
 The router's classification tier (`routeResult.tier`) is propagated into `traceMetadata.queryComplexity` in hybrid search (CHK-038), making it available in response envelopes when `includeTrace: true`. The formatter reads this via a fallback path from `traceMetadata` when stage metadata is unavailable.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
+| `mcp_server/lib/search/query-router.ts` | Lib | Channel routing |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/query-classifier.vitest.ts` | Query classification accuracy |
+| `mcp_server/tests/query-router-channel-interaction.vitest.ts` | Channel interaction tests |
+| `mcp_server/tests/query-router.vitest.ts` | Query routing logic |
+
 ## Source Metadata
 
 - Group: Query intelligence

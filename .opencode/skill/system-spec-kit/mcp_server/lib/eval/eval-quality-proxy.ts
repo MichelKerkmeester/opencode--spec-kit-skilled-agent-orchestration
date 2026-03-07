@@ -175,7 +175,7 @@ export function computeQualityProxy(
     latencyTargetMs = DEFAULT_LATENCY_TARGET_MS,
   } = input;
 
-  // Clamp raw inputs to [0, 1] — guard against out-of-range values
+  // AI-GUARD: Clamp raw inputs to [0, 1] — guard against out-of-range values
   const clampedAvgRelevance = clamp(avgRelevance, 0, 1);
   const clampedTopResult = clamp(topResultRelevance, 0, 1);
 

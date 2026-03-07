@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Vector Index Store — Core DB singleton, init, constitutional cache
 // ---------------------------------------------------------------
-// SEARCH: VECTOR INDEX
+// AI-GUARD: SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
 // DECAY STRATEGY (ADR-004): Search-time temporal decay uses an
 // FSRS-preferred strategy. Memories with FSRS review data (last_review
@@ -372,7 +372,7 @@ export function clear_prepared_statements() {
    5. CONSTITUTIONAL MEMORIES CACHE
 ────────────────────────────────────────────────────────────────*/
 
-// BUG-004 FIX: Checks external DB modifications before using cache
+// AI-TRACE: BUG-004 FIX: Checks external DB modifications before using cache
 // BUG-012 FIX: Prevent thundering herd when cache expires
 export function get_constitutional_memories(
   database: Database.Database,
@@ -599,7 +599,7 @@ export class SQLiteVectorStore extends IVectorStore {
       includeConstitutional: options.includeConstitutional !== false
     };
 
-    // Lazy import to avoid circular dependency at module load time
+    // AI-WHY: Lazy import to avoid circular dependency at module load time
     const { vector_search } = await import('./vector-index-queries');
     return vector_search(embedding, search_options);
   }
@@ -718,7 +718,7 @@ export class SQLiteVectorStore extends IVectorStore {
    9. CAMELCASE ALIASES
 ────────────────────────────────────────────────────────────────*/
 
-// camelCase aliases for backward compatibility (functions already exported above)
+// AI-WHY: camelCase aliases for backward compatibility (functions already exported above)
 export { initialize_db as initializeDb };
 export { close_db as closeDb };
 export { get_db as getDb };

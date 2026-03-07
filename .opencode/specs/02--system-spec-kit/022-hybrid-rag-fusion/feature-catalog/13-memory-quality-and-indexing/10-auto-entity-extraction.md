@@ -16,6 +16,30 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 ---
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+| `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working memory integration |
+| `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter |
+| `mcp_server/lib/extraction/redaction-gate.ts` | Lib | Redaction gate |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory |
+| `mcp_server/tests/entity-extractor.vitest.ts` | Entity extraction tests |
+| `mcp_server/tests/extraction-adapter.vitest.ts` | Extraction adapter tests |
+| `mcp_server/tests/redaction-gate.vitest.ts` | Redaction gate tests |
+| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+| `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
+| `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
+
 ## Source Metadata
 
 - Group: Memory quality and indexing

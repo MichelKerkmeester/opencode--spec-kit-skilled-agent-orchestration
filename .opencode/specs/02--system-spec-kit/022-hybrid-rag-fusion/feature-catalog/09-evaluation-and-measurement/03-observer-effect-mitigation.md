@@ -4,6 +4,23 @@
 
 Measurement infrastructure should not degrade the system it measures. A health check compares search p95 latency with eval logging enabled versus disabled and fires an alert when overhead exceeds 10%. In practice, measured overhead stays within the 5ms p95 budget. If the eval database becomes unavailable (disk full, file lock, corruption), search continues normally with logging silently disabled. The system never blocks a user query to record an evaluation metric.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
+| `mcp_server/lib/eval/shadow-scoring.ts` | Lib | Shadow scoring system |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/eval-db.vitest.ts` | Eval database operations |
+| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
+| `mcp_server/tests/shadow-scoring.vitest.ts` | Shadow scoring tests |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement

@@ -8,6 +8,21 @@ Interference scoring penalizes cluster density: for each memory, the system coun
 
 Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be tuned empirically after two R13 evaluation cycles, tracked as FUT-S2-001. Runs behind the `SPECKIT_INTERFERENCE_SCORE` flag.
 
+## Source Files
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/scoring/interference-scoring.ts` | Lib | Interference penalty scoring |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
+| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
+
 ## Source Metadata
 
 - Group: Scoring and calibration

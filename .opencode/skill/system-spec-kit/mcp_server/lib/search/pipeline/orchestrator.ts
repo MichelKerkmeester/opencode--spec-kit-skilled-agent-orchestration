@@ -39,7 +39,7 @@ export async function executePipeline(config: PipelineConfig): Promise<PipelineR
   // Stage 1: Candidate Generation
   const stage1Result = await executeStage1({ config });
 
-  // Stage 2: Fusion + Signal Integration (single scoring point — prevents G2)
+  // AI-WHY: Stage 2: Fusion + Signal Integration (single scoring point — prevents G2)
   const stage2Result = await executeStage2({
     candidates: stage1Result.candidates,
     config,
