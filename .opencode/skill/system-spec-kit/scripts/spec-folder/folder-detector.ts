@@ -7,7 +7,11 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
+// External packages
+import Database from 'better-sqlite3';
+
 // Internal modules
+import { DB_PATH } from '@spec-kit/shared/paths';
 import { promptUser, promptUserChoice } from '../utils/prompt-utils';
 import { CONFIG, findActiveSpecsDir, getAllExistingSpecsDirs, SPEC_FOLDER_PATTERN, findChildFolderAsync } from '../core';
 import {
@@ -938,23 +942,15 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
 
   // Priority 2.5: Session learning DB lookup (most recent preflight spec folder)
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const Database = require(
-      path.join(CONFIG.PROJECT_ROOT, '.opencode/skill/system-spec-kit/mcp_server/node_modules/better-sqlite3')
-    );
-    const dbPath = path.join(
-      CONFIG.PROJECT_ROOT,
-      '.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite'
-    );
-    const db = new Database(dbPath, { readonly: true });
+    const db = new Database(DB_PATH, { readonly: true });
     try {
       const rows = db.prepare(
         `SELECT spec_folder, created_at, updated_at
          FROM session_learning
-         WHERE created_at > datetime('now', '-${SESSION_LOOKBACK_HOURS} hours')
+         WHERE created_at > datetime('now', '-' || ? || ' hours')
          ORDER BY created_at DESC
-         LIMIT ${SESSION_ROW_LIMIT}`
-      ).all() as unknown[];
+         LIMIT ?`
+      ).all(SESSION_LOOKBACK_HOURS, SESSION_ROW_LIMIT) as unknown[];
 
       const sessionCandidates = await buildSessionCandidates(rows, specsDirsForDetection);
       const rankedSessionCandidates = rankSessionCandidates(sessionCandidates);

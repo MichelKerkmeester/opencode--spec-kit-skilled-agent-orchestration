@@ -1,34 +1,34 @@
 {
-  "timestamp": "07-03-26 10-50",
-  "messageCount": 1,
-  "decisionCount": 1,
+  "timestamp": "07-03-26 11-31",
+  "messageCount": 2,
+  "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 2,
     "noiseFiltered": 0,
-    "duplicatesRemoved": 0,
-    "qualityScore": 40,
+    "duplicatesRemoved": 1,
+    "qualityScore": 30,
     "filtered": {
       "noise": 0,
       "empty": 0,
-      "duplicate": 0,
+      "duplicate": 1,
       "lowQuality": 0
     }
   },
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 7,
+    "filesModified": 22,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
-      "plan": 1,
+      "plan": 0,
       "implementation": 0,
       "result": 0,
       "decision": 0,
-      "total": 1
+      "total": 2
     }
   },
   "embedding": {

@@ -1,5 +1,5 @@
 ---
-title: "UX Hooks Automation [014-ux-hooks-automation/06-03-26_10-36__ux-hooks-automation]"
+title: "UX Hooks Automation [011-ux-hooks-automation/06-03-26_10-36__ux-hooks-automation]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-06 |
 | Session ID | session-1772789792741-o8tzmfcmp |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -667,9 +667,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -681,16 +681,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation --force
 ```
 
 ### Recovery Priority
@@ -763,7 +763,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772789792741-o8tzmfcmp"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation"
 channel: "main"
 
 # Classification
@@ -895,7 +895,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/014-ux-hooks-automation"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation"
 child_sessions:
 
   []

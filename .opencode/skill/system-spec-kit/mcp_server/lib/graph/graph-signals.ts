@@ -13,11 +13,26 @@ import type Database from 'better-sqlite3';
 // 2. SESSION CACHE
 // ---------------------------------------------------------------------------
 
+/** Maximum number of entries allowed in each session-scoped cache. */
+const CACHE_MAX_SIZE = 10000;
+
 /** Session-scoped cache for momentum scores (memoryId -> momentum). */
 const momentumCache = new Map<number, number>();
 
 /** Session-scoped cache for causal depth scores (memoryId -> normalized depth). */
 const depthCache = new Map<number, number>();
+
+/**
+ * Evict entries from a cache when it exceeds the size bound.
+ * Clears the entire cache when the limit is exceeded, since Map
+ * iteration order is insertion order and partial eviction of
+ * "oldest" entries would require iterating anyway.
+ */
+function enforceCacheBound(cache: Map<number, number>): void {
+  if (cache.size > CACHE_MAX_SIZE) {
+    cache.clear();
+  }
+}
 
 /**
  * Clear both session-scoped caches. Call at session boundaries or when
@@ -65,8 +80,8 @@ export function snapshotDegrees(db: Database.Database): { snapshotted: number } 
     const insertMany = db.transaction((entries: Array<{ node_id: string; degree_count: number }>) => {
       let count = 0;
       for (const entry of entries) {
-        const memoryId = Number.parseInt(entry.node_id, 10);
-        if (!Number.isFinite(memoryId)) continue;
+        const memoryId = Number(entry.node_id);
+        if (!Number.isInteger(memoryId)) continue;
         insertStmt.run(memoryId, entry.degree_count);
         count++;
       }
@@ -163,6 +178,9 @@ export function computeMomentumScores(db: Database.Database, memoryIds: number[]
     results.set(memoryId, momentum);
   }
 
+  // Enforce cache size bound after batch insert
+  enforceCacheBound(momentumCache);
+
   return results;
 }
 
@@ -185,9 +203,9 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
     `).all() as Array<{ source_id: string; target_id: string }>;
 
     for (const edge of edges) {
-      const source = Number.parseInt(edge.source_id, 10);
-      const target = Number.parseInt(edge.target_id, 10);
-      if (!Number.isFinite(source) || !Number.isFinite(target)) continue;
+      const source = Number(edge.source_id);
+      const target = Number(edge.target_id);
+      if (!Number.isInteger(source) || !Number.isInteger(target)) continue;
 
       allNodes.add(source);
       allNodes.add(target);
@@ -214,6 +232,9 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
  *
  * Optimisation: when multiple IDs are requested, we build the adjacency list
  * and run BFS once, then cache all results.
+ *
+ * Uses index-based queue traversal instead of queue.shift() to avoid
+ * O(n) per-dequeue cost.
  */
 export function computeCausalDepthScores(db: Database.Database, memoryIds: number[]): Map<number, number> {
   const results = new Map<number, number>();
@@ -259,7 +280,7 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
       return results;
     }
 
-    // BFS from all roots simultaneously
+    // BFS from all roots simultaneously — index-based to avoid O(n) shift()
     const depthMap = new Map<number, number>();
     const queue: Array<{ nodeId: number; depth: number }> = [];
 
@@ -269,9 +290,10 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
     }
 
     let maxDepth = 0;
+    let queueIdx = 0;
 
-    while (queue.length > 0) {
-      const { nodeId, depth } = queue.shift()!;
+    while (queueIdx < queue.length) {
+      const { nodeId, depth } = queue[queueIdx++];
       const neighbors = adjacency.get(nodeId) ?? [];
 
       for (const neighbor of neighbors) {
@@ -293,6 +315,9 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
       depthCache.set(id, normalizedDepth);
       results.set(id, normalizedDepth);
     }
+
+    // Enforce cache size bound after batch insert
+    enforceCacheBound(depthCache);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[graph-signals] computeCausalDepthScores failed: ${message}`);

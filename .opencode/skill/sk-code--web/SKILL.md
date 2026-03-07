@@ -2,7 +2,7 @@
 name: sk-code--web
 description: "Orchestrator guiding developers through implementation, debugging, and verification phases across specialized code quality skills (project)"
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
-version: 1.0.8.0
+version: 1.1.0.0
 ---
 
 <!-- Keywords: sk-code--web, development-orchestrator, frontend-development, browser-verification, debugging-workflow, implementation-patterns, webflow-integration -->
@@ -31,7 +31,7 @@ Unified workflow guidance across 6 specialized code quality skills for frontend 
 - After implementing or debugging frontend code
 
 **Keyword triggers:**
-- Implementation: "implement", "build", "create", "add feature", "async", "validation", "CDN", "animation", "webflow", "performance", "security"
+- Implementation: "implement", "build", "create", "add feature", "async", "validation", "CDN", "animation", "webflow", "performance", "interaction", "defer", "deferred loading", "PageSpeed", "Lighthouse", "TBT", "INP", "security"
 - Debugging: "debug", "fix", "error", "not working", "broken", "issue", "bug", "console error"
 - Verification: "done", "complete", "works", "fixed", "finished", "verify", "test"
 
@@ -116,12 +116,36 @@ TASK_SIGNALS = {
     "FORMS": {"form": 2.0, "validation": 1.7, "submit": 1.5},
     "VIDEO": {"video": 2.0, "hls": 2.4, "streaming": 2.1},
     "DEPLOYMENT": {"deploy": 2.2, "minify": 2.1, "cdn": 2.0, "r2": 1.8},
-    "PERFORMANCE": {"performance": 2.2, "optimize": 1.7, "core web vitals": 2.4},
+    "PERFORMANCE": {
+        "performance": 2.2,
+        "optimize": 1.7,
+        "core web vitals": 2.4,
+        "interaction": 1.4,
+        "first interaction": 2.2,
+        "defer": 1.5,
+        "deferred": 1.5,
+        "deferred loading": 2.3,
+        "pagespeed": 2.2,
+        "lighthouse": 2.2,
+        "tbt": 2.4,
+        "inp": 2.4,
+        "main thread": 1.8,
+        "long task": 1.8,
+        "long tasks": 1.9,
+    },
 }
 
 NOISY_SYNONYMS = {
     "DEBUGGING": {"unstable": 1.4, "janky": 1.6, "freeze": 1.6, "stutter": 1.5, "regression": 1.3},
-    "PERFORMANCE": {"cls": 1.7, "layout shift": 1.7, "main thread": 1.4, "stuck frame": 1.4},
+    "PERFORMANCE": {
+        "cls": 1.7,
+        "layout shift": 1.7,
+        "main thread": 1.4,
+        "main-thread": 1.4,
+        "stuck frame": 1.4,
+        "blocking time": 1.8,
+        "interaction delay": 1.8,
+    },
     "FORMS": {"duplicate submit": 1.9, "double submit": 1.9, "slow network": 1.2},
     "VERIFICATION": {"before claiming": 1.6, "prove": 1.4, "evidence": 1.3},
 }
@@ -144,7 +168,16 @@ RESOURCE_MAP = {
     "FORMS": ["references/implementation/form_upload_workflows.md", "references/implementation/implementation_workflows.md"],
     "VIDEO": ["references/implementation/implementation_workflows.md"],
     "DEPLOYMENT": ["references/deployment/minification_guide.md", "references/deployment/cdn_deployment.md"],
-    "PERFORMANCE": ["references/implementation/performance_patterns.md", "references/implementation/async_patterns.md"],
+    "PERFORMANCE": [
+        "references/performance/interaction_gated_loading.md",
+        "assets/checklists/performance_loading_checklist.md",
+        "references/performance/cwv_remediation.md",
+        "references/performance/resource_loading.md",
+        "references/performance/third_party.md",
+        "references/performance/webflow_constraints.md",
+        "references/implementation/performance_patterns.md",
+        "references/implementation/async_patterns.md",
+    ],
 }
 
 LOADING_LEVELS = {

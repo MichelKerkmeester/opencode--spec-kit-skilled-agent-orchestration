@@ -45,7 +45,7 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 (Sprints 0-1), P1 (Sprints 2-6; S5-S6 elevated for safety-critical NFRs), P2 (Sprint 7) |
-| **Status** | In Progress |
+| **Status** | In Progress (85%+ complete) |
 | **Created** | 2026-02-26 |
 | **Complexity** | 90/100 |
 <!-- /ANCHOR:metadata -->
@@ -174,7 +174,7 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | 016-indexing-and-graph (6a) | 017-long-horizon | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
 | 016-indexing-and-graph (6a) | 016-indexing-and-graph (6b) | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
 | 016-indexing-and-graph (6b) | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
-| 008-subfolder-resolution-fix | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `008-subfolder-resolution-fix/checklist.md` summary + testing section |
+| 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `008-combined-bug-fixes/checklist.md` summary + testing section |
 | 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | `002-cross-cutting-remediation/checklist.md` remediation exit gate + summary |
 | 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | `022-post-review-remediation/checklist.md` summary + `022-post-review-remediation/implementation-summary.md` |
 <!-- /ANCHOR:phase-map -->
@@ -1252,7 +1252,7 @@ Deliver a broadened deep-audit and hardening pass that makes the complete retrie
 - **From `002-hybrid-rag-fusion`**: tri-hybrid retrieval (vector + FTS/BM25 + graph), MMR, and evidence-gap signaling remain architectural baseline.
 - **From `003-index-tier-anomalies`**: canonical-path dedup and deterministic tier precedence remain mandatory invariants.
 - **From `004-frontmatter-indexing`**: normalized frontmatter and idempotent reindex behavior remain required preconditions.
-- **From `003-auto-detected-session-bug`**: confidence-aware session/folder detection and archive exclusion remain mandatory for workflow safety.
+- **From `008-combined-bug-fixes`**: confidence-aware session/folder detection and archive exclusion remain mandatory for workflow safety.
 
 ### Carry-Forward Expansion Matrix in `006`
 
@@ -1261,7 +1261,7 @@ Deliver a broadened deep-audit and hardening pass that makes the complete retrie
 | `002-hybrid-rag-fusion` | Tri-hybrid + fusion + evidence-gap baseline | Adds graph-contract scoring, cognitive decay integration, and telemetry-governed ranking diagnostics |
 | `003-index-tier-anomalies` | Canonical path + tier invariants | Adds index-health automation, CRUD re-embed consistency, and ledger-backed integrity checks |
 | `004-frontmatter-indexing` | Normalized metadata and idempotent reindex | Adds parser/index auto-heal checks, schema drift prevention, and re-embedding consistency gates |
-| `003-auto-detected-session-bug` | Confidence-aware routing safeguards | Adds session-learning quality metrics, routing/retrieval confidence alignment, and operational runbook coverage |
+| `008-combined-bug-fixes` | Confidence-aware routing safeguards | Adds session-learning quality metrics, routing/retrieval confidence alignment, and operational runbook coverage |
 
 ### Carry-Forward Gaps Addressed in `006`
 - Convert deferred operational controls into enforced release checks across all ten scoped subsystems.

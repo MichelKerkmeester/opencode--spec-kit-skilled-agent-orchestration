@@ -22,7 +22,7 @@ Each pattern documented here includes the rationale, implementation template, an
 
 ### When to Use
 
-- You need Copilot's specific multi-model reasoning (GPT-4o, Claude 3.5, o1, etc.)
+- You need Copilot's specific multi-model reasoning (GPT-5.4, Claude Opus 4.6, Gemini 3.1 Pro, etc.)
 - You want to offload long-running tasks to GitHub's cloud agents via delegation
 - You require surgical code editing with automatic tool execution via `--allow-all-tools`
 - You need to enrich context using Copilot's repository-wide symbol indexing
@@ -126,27 +126,28 @@ copilot -p "Execute the plan described in /tmp/plan.md" \
 
 ## 5. MULTI-MODEL STRATEGY
 
-**Pick the best model for the task.** Copilot CLI supports multiple model tiers (7+ options including GPT-4o, Claude 3.5 Sonnet, and o1).
+**Pick the best model for the task.** Copilot CLI supports 5 recommended models across 3 providers.
 
 ### Decision Matrix
 
 | Task Complexity | Recommended Model | Flag |
 |----------------|-------------------|------|
-| Fast Triage/Formatting | GPT-4o-mini | `--model gpt-4o-mini` |
-| Standard Coding/Review | Claude 3.5 Sonnet | `--model claude-3.5-sonnet` |
-| Complex Logic/Math | o1-preview | `--model o1-preview` |
-| Deep Reasoning/Refactor | o1 | `--model o1` |
+| Fast Coding/Review | Claude Sonnet 4.6 | `--model claude-sonnet-4.6` |
+| Advanced Code Generation | GPT-5.3-Codex | `--model gpt-5.3-codex` |
+| Complex Logic/Reasoning | GPT-5.4 | `--model gpt-5.4` |
+| Deep Architecture/Refactor | Claude Opus 4.6 | `--model claude-opus-4.6` |
+| Large Context Analysis | Gemini 3.1 Pro | `--model gemini-3.1-pro-preview` |
 
 ### Implementation
 
 ```bash
-# Use o1 for complex logic
+# Use GPT-5.4 for complex logic
 copilot -p "Solve this performance bottleneck in the recursive tree-walking algorithm: [code]" \
-  --model o1 --allow-all-tools 2>&1
+  --model gpt-5.4 --allow-all-tools 2>&1
 
 # Use Sonnet for standard review
 copilot -p "Review @src/utils/ for idiomatic TypeScript usage" \
-  --model claude-3.5-sonnet --allow-all-tools 2>&1
+  --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:multi-model-strategy -->
@@ -272,11 +273,11 @@ copilot -p "Generate unit tests for the edge cases identified in /tmp/logic_chec
 # Calling AI (e.g. Gemini) generates a solution
 # ... saved to /tmp/solution.ts ...
 
-# Copilot CLI (Model A: GPT-4o) reviews
-copilot -p "Critique @/tmp/solution.ts for security" --model gpt-4o --allow-all-tools 2>&1 > /tmp/review_1.md
+# Copilot CLI (Model A: GPT-5.4) reviews
+copilot -p "Critique @/tmp/solution.ts for security" --model gpt-5.4 --allow-all-tools 2>&1 > /tmp/review_1.md
 
-# Copilot CLI (Model B: Claude 3.5 Sonnet) reviews
-copilot -p "Critique @/tmp/solution.ts for performance" --model claude-3.5-sonnet --allow-all-tools 2>&1 > /tmp/review_2.md
+# Copilot CLI (Model B: Claude Opus 4.6) reviews
+copilot -p "Critique @/tmp/solution.ts for performance" --model claude-opus-4.6 --allow-all-tools 2>&1 > /tmp/review_2.md
 
 # Calling AI synthesizes both reviews to produce the final version
 ```
@@ -300,7 +301,7 @@ copilot -p "Critique @/tmp/solution.ts for performance" --model claude-3.5-sonne
 | **Blind `--allow-all-tools`** | May perform destructive actions without oversight | Use a Plan-Then-Execute flow for sensitive tasks |
 | **Vague Prompts** | "Fix the app" leads to context explosion and hallucinations | Target specific files/symbols with `@` |
 | **Nesting Invocations** | Running `copilot` inside a `copilot` shell | Keep orchestrator (Calling AI) and executor (CLI) separate |
-| **Ignoring Model Tiers** | Using o1 for simple formatting | Use GPT-4o-mini for trivial tasks to save cost/latency |
+| **Ignoring Model Tiers** | Using GPT-5.4 for simple formatting | Use Claude Sonnet 4.6 for fast tasks to save cost/latency |
 | **Missing `2>&1`** | Errors are sent to stderr and may be lost in logs | Always capture stderr to diagnose tool failures |
 | **Context Overload** | Passing too many files at once | Focus on the minimal set of files required for the task |
 | **Skipping Local Checks** | Trusting AI over compiler errors | Always run local build/lint/test alongside AI checks |
@@ -338,7 +339,7 @@ copilot -p "Review @/tmp/fix.go for potential deadlocks." --allow-all-tools 2>&1
 ### Considerations
 
 - Look for overlap in findings to identify high-confidence issues.
-- Use different model families (e.g., GPT-based vs. Claude-based) for maximum diversity.
+- Use different model families (e.g., GPT-5.4 vs. Claude Opus 4.6) for maximum diversity.
 <!-- /ANCHOR:cross-validation -->
 
 <!-- ANCHOR:anti-patterns -->

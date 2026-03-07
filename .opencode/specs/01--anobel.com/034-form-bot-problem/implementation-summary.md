@@ -1,10 +1,10 @@
 ---
 title: "Implementation Summary: Contact Form Bot Submission Investigation"
-description: "Planning-phase status document confirming implementation has not started and defining handoff into /spec_kit:implement."
+description: "Documentation refocus update: prioritize Formspark-enforced honeypot-first mitigation while keeping unresolved spam and open hypotheses explicit."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "implementation summary"
-  - "planning phase"
+  - "evidence schema"
   - "contact form"
   - "botpoison"
   - "034"
@@ -26,68 +26,109 @@ contextType: "implementation"
 | **Spec Folder** | 034-form-bot-problem |
 | **Last Updated** | 2026-03-07 |
 | **Level** | 3 |
-| **Status** | Planning package updated; implementation not started |
+| **Status** | Planning artifacts updated, including a Webflow-side honeypot implementation guide; spam issue remains unresolved; no production code changes |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built -->
-## What Was Produced in Planning
+<!-- ANCHOR:session-progress -->
+## What Changed This Session
 
-This spec folder now includes the full Level 3 planning set for the contact-form bot-submission problem. The planning artifacts define verified evidence, root-cause hypotheses, architecture decisions, and a phased mitigation strategy.
+This session updated the Level 3 documentation package to refocus mitigation/design direction on a Formspark-enforced honeypot-first approach.
 
-The presence of this file does not indicate implementation has occurred; it records planning status for a clean handoff.
+- Updated `spec.md`, `plan.md`, and `tasks.md` so Phase 3 mitigation work prioritizes a real DOM honeypot field compatible with both custom JSON submit and native fallback.
+- Added a practical Webflow Designer guide section in `plan.md` covering in-form honeypot insertion, naming strategy, safe hiding, architecture alignment, and post-publish verification.
+- Updated `decision-record.md` ADR language to prioritize honeypot-first as the lowest-change candidate while preserving investigation-first truth and unresolved RC-A/RC-B status.
+- Incorporated research findings that Formspark supports honeypot/custom honeypot and Botpoison, and that honeypot/spam-verification failures are silently ignored (not saved, no notifications, no submission count impact).
+- Preserved explicit caution that Botpoison remains complementary and server-verified, but available official docs do not provide enough provenance to treat Botpoison as the sole investigation answer.
 
-### Planning Artifacts Finalized
-
-The team finalized `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` to support an evidence-first investigation. These documents focus on proving or disproving RC-A through RC-D before committing to mitigation implementation.
-
-### Implementation Status
-
-Implementation has not started yet. No production code, deployment configuration, or runtime behavior has been changed in this phase.
-<!-- /ANCHOR:what-built -->
+No website application code, deployment config, or live runtime behavior was changed in this session.
+<!-- /ANCHOR:session-progress -->
 
 ---
 
-<!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+<!-- ANCHOR:files-modified-created -->
+## Files Modified / Created
 
-This document is delivered as a planning-status artifact in the Level 3 package. It records current state without claiming implementation work and keeps the workflow truthful for handoff.
+| File | Change | Purpose |
+|------|--------|---------|
+| `spec.md` | Updated | Shift executive summary, requirements, risks, and success criteria to honeypot-first mitigation direction |
+| `plan.md` | Updated | Refocus mitigation phases and add practical Webflow-side honeypot implementation guidance |
+| `tasks.md` | Updated | Ensure executable work includes practical Webflow honeypot guide output in mitigation rollout task |
+| `decision-record.md` | Updated | Prioritize Formspark-enforced honeypot as first low-change mitigation candidate |
+| `implementation-summary.md` | Updated | Record this documentation refocus and preserved cautions |
 
-No rollout or runtime verification was performed because execution work is intentionally deferred.
-<!-- /ANCHOR:how-delivered -->
-
----
-
-<!-- ANCHOR:decisions -->
-## Key Decisions
-
-| Decision | Why |
-|----------|-----|
-| Create `implementation-summary.md` during planning with explicit non-implementation status | Validation requires this file once checklist completion exists, and the document must remain accurate about current progress. |
-| Defer implementation and mitigation execution to `/spec_kit:implement` | Current scope is planning and evidence design; execution belongs to the next phase to preserve scope lock and traceability. |
-<!-- /ANCHOR:decisions -->
+No new runtime, source, or deployment files were created.
+<!-- /ANCHOR:files-modified-created -->
 
 ---
 
-<!-- ANCHOR:verification -->
-## Verification
+<!-- ANCHOR:verification-steps-taken -->
+## Verification Steps Taken
 
 | Check | Result |
 |-------|--------|
-| Planning documentation set present in spec folder | PASS |
-| Implementation status statement matches current phase | PASS (implementation has not started) |
-| Next phase explicitly identified | PASS (`/spec_kit:implement`) |
-| Code/test/deployment execution evidence | NOT RUN (outside planning phase scope) |
-<!-- /ANCHOR:verification -->
+| Verified updated docs keep unresolved-truth wording (no claim production issue is fixed) | PASS |
+| Verified RC-A/RC-B remain unproven/disproven in updated planning artifacts | PASS |
+| Verified mitigation direction now prioritizes Formspark-enforced honeypot with real DOM field | PASS |
+| Verified Webflow guide preserves architecture constraints and does not reclassify Webflow-native anti-spam as trust boundary | PASS |
+| Verified Botpoison positioning remains layered/complementary, not sole trust boundary | PASS |
+| Ran spec validation script for target spec folder | PASS |
+
+External evidence used this session:
+- Official Formspark docs indicate support for honeypot, custom honeypot, and Botpoison.
+- Official Formspark docs indicate honeypot/spam-verification failures are silently ignored (not saved, no notifications, no count impact).
+- Official Botpoison docs document server-side verification (`ok`, `message`) but do not provide enough provenance to close RC-A/RC-B alone.
+<!-- /ANCHOR:verification-steps-taken -->
 
 ---
 
-<!-- ANCHOR:limitations -->
-## Known Limitations
+<!-- ANCHOR:deviations-from-plan -->
+## Deviations From Plan
 
-1. This summary cannot report implementation outcomes because implementation has not started.
-2. Server-side evidence collection, mitigation rollout, and post-change performance/security verification remain pending until `/spec_kit:implement`.
-<!-- /ANCHOR:limitations -->
+- No production mitigation or UI changes were attempted; this was a documentation-direction update only.
+- No claim was made that spam is solved or that RC-A/RC-B are proven/disproven.
+- Validation and wording were adjusted to avoid overclaiming from documentation-only changes.
+<!-- /ANCHOR:deviations-from-plan -->
+
+---
+
+<!-- ANCHOR:skill-updates -->
+## Skill Updates
+
+- No skill files or shared framework files were modified.
+- The implementation workflow used the existing SpecKit planning package as the source of truth.
+- Generated memory remains supplemental only; `handover.md` is still the authoritative continuation artifact.
+<!-- /ANCHOR:skill-updates -->
+
+---
+
+<!-- ANCHOR:browser-testing-results -->
+## Browser Testing Results
+
+- No new browser or live-site testing was run in this documentation update step.
+- Prior live observations remain contextual and still require fresh verification in implementation tasks.
+<!-- /ANCHOR:browser-testing-results -->
+
+---
+
+<!-- ANCHOR:recommended-next-steps -->
+## Recommended Next Steps
+
+1. Confirm active Formspark honeypot configuration and field naming in the live workspace.
+2. Execute Phase 3 tasks to verify honeypot-field compatibility across JSON submit and native fallback paths.
+3. Keep RC-A/RC-B verdict tasks gated on provider/inbox evidence so unresolved hypotheses are not over-claimed.
+4. Define silent-ignore observability metrics before rollout decisions.
+<!-- /ANCHOR:recommended-next-steps -->
+
+---
+
+<!-- ANCHOR:current-limitations -->
+## Current Limitations
+
+1. RC-A and RC-B still depend on external provider/inbox visibility and remain unresolved.
+2. Documentation focus has shifted to honeypot-first mitigation, but this is design direction, not production proof.
+3. No implementation claim in this summary should be interpreted as inbox protection being fixed.
+<!-- /ANCHOR:current-limitations -->
 
 ---

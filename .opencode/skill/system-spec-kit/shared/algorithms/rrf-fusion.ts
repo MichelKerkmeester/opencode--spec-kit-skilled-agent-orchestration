@@ -112,6 +112,7 @@ function fuseResults(
   sourceA: string = SOURCE_TYPES.VECTOR,
   sourceB: string = SOURCE_TYPES.FTS,
 ): FusionResult[] {
+  if (k < 0) throw new Error('RRF k parameter must be non-negative');
   const scoreMap = new Map<string, FusionResult>();
 
   // Process list A
@@ -174,6 +175,7 @@ function fuseResultsMulti(
 ): FusionResult[] {
   // Use ?? (not ||) so callers can explicitly pass 0 without falling back to defaults
   const k = options.k ?? DEFAULT_K;
+  if (k < 0) throw new Error('RRF k parameter must be non-negative');
   const convergenceBonus = options.convergenceBonus ?? CONVERGENCE_BONUS;
   const graphWeightBoost = options.graphWeightBoost ?? GRAPH_WEIGHT_BOOST;
 
@@ -211,7 +213,9 @@ function fuseResultsMulti(
     // times when the same channel contributes via different code paths.
     const uniqueSourceCount = new Set(result.sources).size;
     if (uniqueSourceCount >= 2) {
-      const bonus = convergenceBonus * (uniqueSourceCount - 1);
+      const maxRrfPerSource = 1 / (k + 1);
+      const normalizedBonus = convergenceBonus * maxRrfPerSource;
+      const bonus = normalizedBonus * (uniqueSourceCount - 1);
       result.convergenceBonus = bonus;
       result.rrfScore += bonus;
     }
@@ -240,7 +244,7 @@ function fuseScoresAdvanced(
   query: string,
   options: FuseAdvancedOptions = {}
 ): Array<FusionResult & { termMatches: number }> {
-  const termMatchBonus = options.termMatchBonus || 0.05;
+  const termMatchBonus = options.termMatchBonus ?? 0.05;
   const queryTerms = query.toLowerCase().split(/\s+/).filter(t => t.length >= MIN_QUERY_TERM_LENGTH);
 
   return results.map(r => {
@@ -323,6 +327,8 @@ function fuseResultsCrossVariant(
 ): FusionResult[] {
   // Use ?? so callers can explicitly pass 0 convergence bonus without falling back to default
   const convergenceBonusPerVariant = options.convergenceBonus ?? CONVERGENCE_BONUS;
+  const k = options.k ?? DEFAULT_K;
+  if (k < 0) throw new Error('RRF k parameter must be non-negative');
 
   if (variantLists.length === 0) return [];
 
@@ -366,7 +372,7 @@ function fuseResultsCrossVariant(
           existing.sourceScores[key] = (existing.sourceScores[key] || 0) + val;
         }
       } else {
-        mergedMap.set(key, { ...result });
+        mergedMap.set(key, { ...result, rrfScore: result.rrfScore - result.convergenceBonus, convergenceBonus: 0 });
       }
     }
   }
@@ -375,7 +381,9 @@ function fuseResultsCrossVariant(
   for (const [id, result] of mergedMap) {
     const variantCount = variantAppearances.get(id)?.size || 1;
     if (variantCount >= 2) {
-      const crossVariantBonus = convergenceBonusPerVariant * (variantCount - 1);
+      const maxRrfPerSource = 1 / (k + 1);
+      const normalizedBonus = convergenceBonusPerVariant * maxRrfPerSource;
+      const crossVariantBonus = normalizedBonus * (variantCount - 1);
       result.convergenceBonus = crossVariantBonus;
       result.rrfScore += crossVariantBonus;
     }

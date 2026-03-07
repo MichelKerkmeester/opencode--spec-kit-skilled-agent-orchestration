@@ -1,11 +1,11 @@
 ---
-title: "Spec Kit Memory — Feature Catalog"
+title: "Spec Kit Memory  -- Feature Catalog"
 description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
 ---
 
-# Spec Kit Memory — Feature Catalog
+# Spec Kit Memory  -- Feature Catalog
 
-This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today — every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why — every improvement delivered across the refinement program, with ticket IDs and implementation details.
+This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today  -- every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why  -- every improvement delivered across the refinement program, with ticket IDs and implementation details.
 
 ## Contents
 
@@ -17,6 +17,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [4-stage pipeline architecture](#4-stage-pipeline-architecture)
   - [BM25 trigger phrase re-index gate](#bm25-trigger-phrase-re-index-gate)
   - [AST-level section retrieval tool](#ast-level-section-retrieval-tool)
+  - [Quality-aware 3-tier search fallback](#quality-aware-3-tier-search-fallback)
 - [Mutation](#mutation)
   - [Memory indexing (memory_save)](#memory-indexing-memory_save)
   - [Memory metadata update (memory_update)](#memory-metadata-update-memory_update)
@@ -25,6 +26,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Validation feedback (memory_validate)](#validation-feedback-memory_validate)
   - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
   - [Namespace management CRUD tools](#namespace-management-crud-tools)
+  - [Prediction-error save arbitration](#prediction-error-save-arbitration)
 - [Discovery](#discovery)
   - [Memory browser (memory_list)](#memory-browser-memory_list)
   - [System statistics (memory_stats)](#system-statistics-memory_stats)
@@ -120,6 +122,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Generation-time duplicate and empty content prevention](#generation-time-duplicate-and-empty-content-prevention)
   - [Entity normalization consolidation](#entity-normalization-consolidation)
   - [Quality gate timer persistence](#quality-gate-timer-persistence)
+  - [Deferred lexical-only indexing](#deferred-lexical-only-indexing)
 - [Pipeline architecture](#pipeline-architecture)
   - [4-stage pipeline refactor](#4-stage-pipeline-refactor)
   - [MPAB chunk-to-memory aggregation](#mpab-chunk-to-memory-aggregation)
@@ -137,6 +140,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Dynamic server instructions at MCP initialization](#dynamic-server-instructions-at-mcp-initialization)
   - [Warm server / daemon mode](#warm-server--daemon-mode)
   - [Backend storage adapter abstraction](#backend-storage-adapter-abstraction)
+  - [Cross-process DB hot rebinding](#cross-process-db-hot-rebinding)
 - [Retrieval enhancements](#retrieval-enhancements)
   - [Dual-scope memory auto-surface](#dual-scope-memory-auto-surface)
   - [Constitutional memory as expert knowledge injection](#constitutional-memory-as-expert-knowledge-injection)
@@ -154,6 +158,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Dead code removal](#dead-code-removal)
   - [Code standards alignment](#code-standards-alignment)
   - [Real-time filesystem watching with chokidar](#real-time-filesystem-watching-with-chokidar)
+  - [Standalone admin CLI](#standalone-admin-cli)
 - [Governance](#governance)
   - [Feature flag governance](#feature-flag-governance)
   - [Feature flag sunset audit](#feature-flag-sunset-audit)
@@ -270,7 +275,7 @@ Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated 
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated — `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
+The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated  -- `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
 
 
 #### Source Files
@@ -288,12 +293,25 @@ See [`01-retrieval/06-bm25-trigger-phrase-re-index-gate.md`](01-retrieval/06-bm2
 
 ### AST-level section retrieval tool
 
-**PLANNED (Sprint 019) — DEFERRED.** Existing R7 anchor-aware chunk thinning provides reasonable granularity for retrieval. For very large spec documents (>1000 lines), a targeted `read_spec_section(filePath, heading)` tool using Markdown AST parsing via `remark` would extract and return only content beneath a requested heading. Deferred until spec documents consistently exceed the 1000-line threshold. Estimated effort: M (5-7 days).
+**PLANNED (Sprint 019)  -- DEFERRED.** Existing R7 anchor-aware chunk thinning provides reasonable granularity for retrieval. For very large spec documents (>1000 lines), a targeted `read_spec_section(filePath, heading)` tool using Markdown AST parsing via `remark` would extract and return only content beneath a requested heading. Deferred until spec documents consistently exceed the 1000-line threshold. Estimated effort: M (5-7 days).
 
 
 #### Source Files
 
-No source files yet — this feature is planned but not yet implemented.
+No source files yet  -- this feature is planned but not yet implemented.
+
+### Quality-aware 3-tier search fallback
+
+Adaptive search degradation chain in `searchWithFallbackTiered()`. When the initial hybrid search returns low-quality results, the system automatically widens its search parameters through up to three tiers. Tier 1 uses standard hybrid search with minSimilarity=0.3. A quality check via `checkDegradation()` evaluates whether topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3.
+
+On quality failure, Tier 2 widens the search (minSimilarity=0.1, all channels forced). If Tier 2 also fails the same quality check, Tier 3 falls back to structural SQL ordering by importance_tier and importance_weight. Tier 3 scores are calibrated to max 50% of the existing top score, preventing structural results from outranking semantic hits. Degradation events are attached as a non-enumerable `_degradation` property on the result set. The feature is gated by `SPECKIT_SEARCH_FALLBACK` (default: true, graduated).
+
+
+#### Source Files
+
+See [`01-retrieval/08-quality-aware-3-tier-search-fallback.md`](01-retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-109](../manual-testing-playbook/manual-test-playbooks.md)
 
 
 ---
@@ -400,12 +418,25 @@ See [`02-mutation/06-transaction-wrappers-on-mutation-handlers.md`](02-mutation/
 
 ### Namespace management CRUD tools
 
-**PLANNED (Sprint 019) — DEFERRED.** The `specFolder` filter currently provides logical scoping for memory isolation. For true multi-tenant or multi-project isolation, explicit namespace boundaries via CRUD tools (`list_namespaces`, `create_namespace`, `switch_namespace`, `delete_namespace`) would provide strict contextual segmentation. Deferred pending verifiable demand for multi-tenant deployment architectures. Estimated effort: S-M (3-5 days).
+**PLANNED (Sprint 019)  -- DEFERRED.** The `specFolder` filter currently provides logical scoping for memory isolation. For true multi-tenant or multi-project isolation, explicit namespace boundaries via CRUD tools (`list_namespaces`, `create_namespace`, `switch_namespace`, `delete_namespace`) would provide strict contextual segmentation. Deferred pending verifiable demand for multi-tenant deployment architectures. Estimated effort: S-M (3-5 days).
 
 
 #### Source Files
 
 See [`02-mutation/07-namespace-management-crud-tools.md`](02-mutation/07-namespace-management-crud-tools.md) for full implementation and test file listings.
+
+### Prediction-error save arbitration
+
+A 5-action decision engine that activates during the save path. It examines the semantic similarity of new content against existing memories and selects one of five actions: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), or CREATE (<0.70, standalone).
+
+Contradiction detection uses regex patterns. All decisions are logged to the `memory_conflicts` table with similarity score, chosen action, contradiction flag, reason, and spec_folder. Document-type-aware weighting adjusts thresholds (constitutional=1.0 down to scratch=0.25). The engine is always active unless `force: true` is passed to bypass arbitration.
+
+
+#### Source Files
+
+See [`02-mutation/08-prediction-error-save-arbitration.md`](02-mutation/08-prediction-error-save-arbitration.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-110](../manual-testing-playbook/manual-test-playbooks.md)
 
 ## Discovery
 
@@ -637,7 +668,7 @@ See [`06-analysis/07-learning-history-memorygetlearninghistory.md`](06-analysis/
 
 This tool runs controlled ablation studies across the retrieval pipeline's search channels. You disable one channel at a time (vector, BM25, FTS5, graph or trigger) and measure the Recall@20 delta against a full-pipeline baseline. The answer to "what happens if we turn off the graph channel?" becomes a measured number rather than speculation.
 
-The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is robust with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results).
+The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is reliable with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results).
 
 Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool requires `SPECKIT_ABLATION=true` to activate. When the flag is off, the public MCP handler rejects the call with an explicit disabled-flag error.
 
@@ -707,13 +738,13 @@ See [`08-bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`]
 
 Four database-layer bugs were fixed:
 
-**B1 — Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
+**B1  -- Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
 
-**B2 — DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`; only DML is wrapped in the transaction.
+**B2  -- DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`; only DML is wrapped in the transaction.
 
-**B3 — SQL operator precedence:** `causal-edges.ts` had `WHERE a AND b OR c` without parentheses, matching wrong rows on edge deletion. Fixed to `WHERE a AND (b OR c)`.
+**B3  -- SQL operator precedence:** `causal-edges.ts` had `WHERE a AND b OR c` without parentheses, matching wrong rows on edge deletion. Fixed to `WHERE a AND (b OR c)`.
 
-**B4 — Missing changes guard:** `memory-save.ts` UPDATE statements reported success even when zero rows were updated. Added `.changes > 0` guards so callers can distinguish actual updates from no-ops.
+**B4  -- Missing changes guard:** `memory-save.ts` UPDATE statements reported success even when zero rows were updated. Added `.changes > 0` guards so callers can distinguish actual updates from no-ops.
 
 
 #### Source Files
@@ -724,13 +755,13 @@ See [`08-bug-fixes-and-data-integrity/05-database-and-schema-safety.md`](08-bug-
 
 Two guard/edge-case issues were fixed:
 
-**E1 — Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
+**E1  -- Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
-**E2 — Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed; the function returns `null` on resolution failure.
+**E2  -- Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed; the function returns `null` on resolution failure.
 
-Current mapping: legacy Phase 016 content is tracked under sub-phase `009-post-review-remediation-epic`.
+Current mapping: legacy Phase 016 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
-Nine remediation targets across four tranches. Spec folder: `009-post-review-remediation-epic`. Test count after: 7,081/7,081 (176 targeted tests passing across 3 files).
+Nine remediation targets across four tranches. Canonical spec folder: `008-combined-bug-fixes`. Historical test snapshot: 7,081/7,081 (176 targeted tests passing across 3 files).
 
 
 #### Source Files
@@ -741,9 +772,9 @@ See [`08-bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`](08-bug-fixes
 
 Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybrid search. Normalization was applied in `combinedLexicalSearch()` for the new pipeline and in legacy `hybridSearch()` for the dedup map. Regression tests `T031-LEX-05` and `T031-BASIC-04` verify the fix.
 
-Current mapping: legacy Phase 018 content is tracked under sub-phase `010-cross-ai-audit`.
+Current mapping: legacy Phase 018 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `010-cross-ai-audit`).
 
-An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Spec folder: `010-cross-ai-audit` (Level 3). Test count after: 7,085/7,085 (230 files).
+An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across 4 severity tiers. Remediation dispatched 17 agents across 4 waves, completing all Tier 1 (7 tasks) and Tier 2 (11 tasks). Tier 4 cross-AI validation (Gemini 3.1 Pro + Codex gpt-5.3-codex) found 14 additional issues, all resolved via a 3-stage review pipeline. Canonical spec folder: `008-combined-bug-fixes` (historical source: retired `010-cross-ai-audit`, Level 3 snapshot). Historical test snapshot: 7,085/7,085 (230 files).
 
 
 #### Source Files
@@ -754,12 +785,12 @@ See [`08-bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`](08-bu
 
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
-- `rsf-fusion.ts` — 6 instances (4 + 2)
-- `causal-boost.ts` — 1 instance
-- `evidence-gap-detector.ts` — 1 instance
-- `prediction-error-gate.ts` — 2 instances
-- `retrieval-telemetry.ts` — 1 instance
-- `reporting-dashboard.ts` — 2 instances
+- `rsf-fusion.ts`  -- 6 instances (4 + 2)
+- `causal-boost.ts`  -- 1 instance
+- `evidence-gap-detector.ts`  -- 1 instance
+- `prediction-error-gate.ts`  -- 2 instances
+- `retrieval-telemetry.ts`  -- 1 instance
+- `reporting-dashboard.ts`  -- 2 instances
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
@@ -925,7 +956,7 @@ Four test quality issues were addressed:
 
 #### Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -950,8 +981,8 @@ See [`09-evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md`](09
 
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
-- **CR-P0-1:** Test suite false-pass patterns — 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
-- **CR-P1-1:** Deletion exception propagation — causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **CR-P0-1:** Test suite false-pass patterns  -- 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
+- **CR-P1-1:** Deletion exception propagation  -- causal edge cleanup errors in single-delete now propagate (previously swallowed).
 - **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
 - **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
 - **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
@@ -966,7 +997,7 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 
 #### Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ## Graph signal activation
@@ -1081,7 +1112,7 @@ See [`10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10-gra
 
 ### ANCHOR tags as graph nodes
 
-**PLANNED (Sprint 019) — DEFERRED.** S2 currently parses `<!-- ANCHOR: architecture -->` tags and derives semantic types, but these annotations exist only on pipeline rows and are not promoted to graph nodes. Converting anchors into strongly typed graph nodes with distinct edge rules would create a deterministic knowledge graph from existing markdown conventions without expensive LLM extraction. This was the most creative unique insight from the research corpus (Gemini-2). Deferred pending a 2-day technical spike to validate the approach. Estimated effort: S-M (3-5 days).
+**PLANNED (Sprint 019)  -- DEFERRED.** S2 currently parses `<!-- ANCHOR: architecture -->` tags and derives semantic types, but these annotations exist only on pipeline rows and are not promoted to graph nodes. Converting anchors into strongly typed graph nodes with distinct edge rules would create a deterministic knowledge graph from existing markdown conventions without expensive LLM extraction. This was the most creative unique insight from the research corpus (Gemini-2). Deferred pending a 2-day technical spike to validate the approach. Estimated effort: S-M (3-5 days).
 
 
 #### Source Files
@@ -1220,13 +1251,13 @@ See [`11-scoring-and-calibration/10-auto-promotion-on-validation.md`](11-scoring
 
 Four scoring-layer bugs were fixed:
 
-**C1 — Composite score overflow:** `composite-scoring.ts` used `Math.max(0, composite)` which allowed scores above 1.0. Changed to `Math.max(0, Math.min(1, composite))` clamping to [0,1] at three call sites.
+**C1  -- Composite score overflow:** `composite-scoring.ts` used `Math.max(0, composite)` which allowed scores above 1.0. Changed to `Math.max(0, Math.min(1, composite))` clamping to [0,1] at three call sites.
 
-**C2 — Citation fallback chain:** `composite-scoring.ts` fell back through `last_accessed` then `updated_at` when no citation data existed, conflating recency with citation authority. The fallback chain was removed; the function returns 0 when no citation data exists.
+**C2  -- Citation fallback chain:** `composite-scoring.ts` fell back through `last_accessed` then `updated_at` when no citation data existed, conflating recency with citation authority. The fallback chain was removed; the function returns 0 when no citation data exists.
 
-**C3 — Causal-boost cycle amplification:** `causal-boost.ts` used `UNION ALL` in a recursive CTE, allowing cycles to amplify scores exponentially as the same node was visited multiple times. Changed to `UNION` which deduplicates visited nodes and prevents cycles.
+**C3  -- Causal-boost cycle amplification:** `causal-boost.ts` used `UNION ALL` in a recursive CTE, allowing cycles to amplify scores exponentially as the same node was visited multiple times. Changed to `UNION` which deduplicates visited nodes and prevents cycles.
 
-**C4 — Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
+**C4  -- Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
 
 #### Source Files
@@ -1462,13 +1493,13 @@ See [`13-memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md
 
 ### Auto entity extraction
 
-Memory content contains implicit entities — technology names, architectural concepts, project identifiers — that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
+Memory content contains implicit entities  -- technology names, architectural concepts, project identifiers  -- that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
 
 Auto entity extraction runs at save time using five pure-TypeScript regex rules with no external NLP dependencies. Rule 1 captures capitalized multi-word sequences (proper nouns like "Claude Code" or "Spec Kit Memory"). Rule 2 extracts technology names from code fence language annotations. Rule 3 identifies nouns following key phrases ("using", "with", "via", "implements"). Rule 4 pulls content from markdown headings. Rule 5 captures quoted strings.
 
 Extracted entities pass through a denylist filter (`entity-denylist.ts`) containing 64 combined stop words across three categories: common nouns (29 words like "thing", "time", "example"), technology stop words (20 words like "api", "json", "npm") and generic modifiers (15 words like "new", "old", "simple"). Single-character entities and entities shorter than 2 characters are also filtered.
 
-Deduplicated entities are stored in the `memory_entities` table with a UNIQUE constraint on `(memory_id, entity_text)`. The `entity_catalog` table maintains canonical names with Unicode-aware alias normalization (`/[^\p{L}\p{N}\s]/gu` — preserving letters and numbers from all scripts) and a `memory_count` field tracking how many memories reference each entity. An `edge_density` check (`totalEdges / totalMemories`) provides a diagnostic metric.
+Deduplicated entities are stored in the `memory_entities` table with a UNIQUE constraint on `(memory_id, entity_text)`. The `entity_catalog` table maintains canonical names with Unicode-aware alias normalization (`/[^\p{L}\p{N}\s]/gu`  -- preserving letters and numbers from all scripts) and a `memory_count` field tracking how many memories reference each entity. An `edge_density` check (`totalEdges / totalMemories`) provides a diagnostic metric.
 
 **Sprint 8 update:** Entity normalization was consolidated. Two divergent `normalizeEntityName` functions (ASCII-only in `entity-extractor.ts` vs Unicode-aware in `entity-linker.ts`) were unified into a single Unicode-aware version in `entity-linker.ts`. The `entity-extractor.ts` module now imports and re-exports this function. Similarly, a duplicate `computeEdgeDensity` function was consolidated into `entity-linker.ts`.
 
@@ -1494,7 +1525,7 @@ See [`13-memory-quality-and-indexing/11-content-aware-memory-filename-generation
 
 Two pre-write quality gates in `scripts/core/file-writer.ts` prevent empty and duplicate memory files at generation time, complementing the existing index-time dedup in `memory-save.ts`. The empty content gate (`validateContentSubstance`) strips YAML frontmatter, HTML comments, anchor markers, empty headings, table rows and empty list items, then rejects files with fewer than 200 characters of remaining substance. The duplicate gate (`checkForDuplicateContent`) computes a SHA-256 hash of the file content and compares it against all existing `.md` files in the target memory directory, rejecting exact matches.
 
-Both gates run inside `writeFilesAtomically()` before the atomic write operation, after the existing `validateNoLeakedPlaceholders` check. Failures throw descriptive errors that halt the save and report which validation failed. This catches the two most common quality problems — SGQS-template-only files and repeated saves of identical content — at the earliest possible point. Always active with no feature flag.
+Both gates run inside `writeFilesAtomically()` before the atomic write operation, after the existing `validateNoLeakedPlaceholders` check. Failures throw descriptive errors that halt the save and report which validation failed. This catches the two most common quality problems  -- SGQS-template-only files and repeated saves of identical content  -- at the earliest possible point. Always active with no feature flag.
 
 
 #### Source Files
@@ -1505,13 +1536,13 @@ See [`13-memory-quality-and-indexing/12-generation-time-duplicate-and-empty-cont
 
 Two cross-cutting normalization issues were resolved:
 
-**A1 — Divergent normalizeEntityName:** `entity-extractor.ts` used ASCII-only normalization (`/[^\w\s-]/g`) while `entity-linker.ts` used Unicode-aware normalization (`/[^\p{L}\p{N}\s]/gu`). Consolidated to a single Unicode-aware version in `entity-linker.ts`, imported by `entity-extractor.ts`.
+**A1  -- Divergent normalizeEntityName:** `entity-extractor.ts` used ASCII-only normalization (`/[^\w\s-]/g`) while `entity-linker.ts` used Unicode-aware normalization (`/[^\p{L}\p{N}\s]/gu`). Consolidated to a single Unicode-aware version in `entity-linker.ts`, imported by `entity-extractor.ts`.
 
-**A2 — Duplicate computeEdgeDensity:** Both `entity-extractor.ts` and `entity-linker.ts` had independent implementations. Consolidated to `entity-linker.ts` with import and re-export from `entity-extractor.ts`.
+**A2  -- Duplicate computeEdgeDensity:** Both `entity-extractor.ts` and `entity-linker.ts` had independent implementations. Consolidated to `entity-linker.ts` with import and re-export from `entity-extractor.ts`.
 
-Current mapping: legacy Phase 015 content is tracked under sub-phase `009-post-review-remediation-epic`.
+Current mapping: legacy Phase 015 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
-Two P1 issues from a Gemini code review (scores 88/100 and 85/100, both Conditional Pass) were resolved. Spec folder: `009-post-review-remediation-epic`. Test count after: 7,081/7,081.
+Two P1 issues from a Gemini code review (scores 88/100 and 85/100, both Conditional Pass) were resolved. Canonical spec folder: `008-combined-bug-fixes`. Historical test snapshot: 7,081/7,081.
 
 
 #### Source Files
@@ -1527,6 +1558,19 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 
 See [`13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md) for full implementation and test file listings.
 
+### Deferred lexical-only indexing
+
+Async embedding fallback via `index_memory_deferred()`. When embedding generation fails due to API timeout or rate limiting, memories are inserted with `embedding_status='pending'` and become immediately searchable via BM25/FTS5 (title, trigger_phrases, content_text) and structural SQL (importance_tier, importance_weight). Vector search remains unavailable until `embedding_status='success'`.
+
+Deferred memories skip embedding dimension validation and `vec_memories` insertion entirely. Background retry via the retry manager or CLI reindex increments `retry_count` and updates the status field. The failure reason is recorded for diagnostics. This ensures that no memory is lost due to transient embedding failures  -- lexical searchability is preserved as a degraded-but-functional baseline.
+
+
+#### Source Files
+
+See [`13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-111](../manual-testing-playbook/manual-test-playbooks.md)
+
 ## Pipeline architecture
 
 ### 4-stage pipeline refactor
@@ -1537,7 +1581,7 @@ Stage 1 (Candidate Generation) executes search channels based on query type: mul
 
 **Phase 017 update:** The query embedding is now cached at function scope for reuse in the constitutional injection path, saving one API call per search. The constitutional injection count is tracked and passed through the orchestrator to Stage 4 output metadata (previously hardcoded to 0).
 
-Stage 2 (Fusion and Signal Integration) applies all scoring signals in a fixed order: session boost, causal boost, co-activation spreading (2a), community co-retrieval from precomputed `community_assignments` (N2c, 2b), graph signals (N2a+N2b — additive momentum and depth bonuses, 2c), FSRS testing effect, intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Community injection runs before graph signals so injected rows can also receive momentum/depth adjustments. The G2 prevention is structural: an `isHybrid` boolean gates the intent weight step so the code path is absent for hybrid search.
+Stage 2 (Fusion and Signal Integration) applies all scoring signals in a fixed order: session boost, causal boost, co-activation spreading (2a), community co-retrieval from precomputed `community_assignments` (N2c, 2b), graph signals (N2a+N2b  -- additive momentum and depth bonuses, 2c), FSRS testing effect, intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Community injection runs before graph signals so injected rows can also receive momentum/depth adjustments. The G2 prevention is structural: an `isHybrid` boolean gates the intent weight step so the code path is absent for hybrid search.
 
 **Phase 017 update:** Stage 2 now uses the shared `resolveEffectiveScore()` function from `pipeline/types.ts` (aliased as `resolveBaseScore`) for consistent score resolution. The five-factor composite weights auto-normalize to sum 1.0 after partial overrides. Cross-variant RRF fusion no longer double-counts convergence bonuses (per-variant bonus subtracted before cross-variant bonus). Adaptive fusion core weights (semantic + keyword + recency) normalize after doc-type adjustments.
 
@@ -1613,11 +1657,11 @@ See [`14-pipeline-architecture/06-learned-relevance-feedback.md`](14-pipeline-ar
 
 Three search pipeline issues were fixed:
 
-**D1 — Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
+**D1  -- Summary quality bypass:** `stage1-candidate-gen.ts` allowed R8 summary hits to bypass the `minQualityScore` filter, letting low-quality summaries enter final results. Summary candidates now pass through the same quality filter.
 
-**D2 — FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
+**D2  -- FTS5 double-tokenization:** `sqlite-fts.ts` and `bm25-index.ts` had separate tokenization logic, causing query terms to be tokenized differently than indexed content. Refactored to a shared `sanitizeQueryTokens()` function returning a raw token array that both callers join with their appropriate syntax.
 
-**D3 — Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
+**D3  -- Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
 
 
 #### Source Files
@@ -1643,9 +1687,9 @@ See [`14-pipeline-architecture/08-performance-improvements.md`](14-pipeline-arch
 
 The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.ts` to preserve the warn-only window activation timestamp across process restarts. Without this, the 14-day warm-up period restarted on every server reload. Regression test `WO7` verifies persistence.
 
-Current mapping: legacy Phase 017 content is tracked under sub-phase `009-post-review-remediation-epic`.
+Current mapping: legacy Phase 017 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
-A 10-agent comprehensive Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Spec folder: `009-post-review-remediation-epic` (Level 3). Test count after: 7,085/7,085.
+A 10-agent comprehensive Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Canonical spec folder: `008-combined-bug-fixes` (historical source: retired `009-post-review-remediation-epic`, Level 3 snapshot). Historical test snapshot: 7,085/7,085.
 
 
 #### Source Files
@@ -1687,9 +1731,9 @@ See [`14-pipeline-architecture/11-pipeline-and-mutation-hardening.md`](14-pipeli
 
 `shared/config.ts` gained an exported `getDbDir()` function reading `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` env vars. `shared/paths.ts` exports `DB_PATH` using this config. Scripts that hardcoded database paths (`cleanup-orphaned-vectors.ts`) now import from shared. Fourteen relative cross-boundary imports across scripts were converted to `@spec-kit/` workspace aliases.
 
-Current mapping: legacy Sprint 019 content is tracked under sub-phase `011-extra-features`.
+Current mapping: legacy Sprint 019 content is tracked under sub-phase `009-extra-features`.
 
-A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete; 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `011-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
+A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. These were distilled into Sprint 019 scope: 12 features total (3 P0 foundation, 4 P1 quality and operations, 5 P2 deferred innovation). All 7 implementation features are complete; 5 features remain deferred (Phase 4). Runtime test tasks remain open. Verification status in `009-extra-features/checklist.md` (current: P0 11/28, P1 14/49, P2 1/11, total 26/88).
 
 
 #### Source Files
@@ -1720,7 +1764,7 @@ See [`14-pipeline-architecture/14-dynamic-server-instructions-at-mcp-initializat
 
 ### Warm server / daemon mode
 
-**PLANNED (Sprint 019) — DEFERRED.** An HTTP daemon with warm caches and multi-transport support (stdio, HTTP, SSE) would eliminate cold-start penalties for subsequent agent invocations. The historical `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` controls are now inert, and lazy provider initialization is the permanent behavior (`shouldEagerWarmup()` returns `false`). This feature is deferred until the MCP SDK standardizes HTTP transport protocols to avoid building a custom daemon that risks throwaway work. Estimated effort: L (2-3 weeks).
+**PLANNED (Sprint 019)  -- DEFERRED.** An HTTP daemon with warm caches and multi-transport support (stdio, HTTP, SSE) would eliminate cold-start penalties for subsequent agent invocations. The historical `SPECKIT_LAZY_LOADING` and `SPECKIT_EAGER_WARMUP` controls are now inert, and lazy provider initialization is the permanent behavior (`shouldEagerWarmup()` returns `false`). This feature is deferred until the MCP SDK standardizes HTTP transport protocols to avoid building a custom daemon that risks throwaway work. Estimated effort: L (2-3 weeks).
 
 
 #### Source Files
@@ -1729,12 +1773,25 @@ See [`14-pipeline-architecture/15-warm-server-daemon-mode.md`](14-pipeline-archi
 
 ### Backend storage adapter abstraction
 
-**PLANNED (Sprint 019) — DEFERRED.** Extracting core storage logic into generic `IVectorStore`, `IGraphStore`, and `IDocumentStore` interfaces would allow hot-swapping backend technologies. The embedding provider is already abstracted (auto/openai/hf-local/voyage), demonstrating the pattern. However, the storage layer remains tightly coupled to SQLite with sqlite-vec and FTS5, which handles the current scale well. This is a classic premature abstraction risk. Deferred until the corpus exceeds 100K memories or multi-node deployment demand emerges. Estimated effort: M-L (1-2 weeks).
+**PLANNED (Sprint 019)  -- DEFERRED.** Extracting core storage logic into generic `IVectorStore`, `IGraphStore`, and `IDocumentStore` interfaces would allow hot-swapping backend technologies. The embedding provider is already abstracted (auto/openai/hf-local/voyage), demonstrating the pattern. However, the storage layer remains tightly coupled to SQLite with sqlite-vec and FTS5, which handles the current scale well. This is a classic premature abstraction risk. Deferred until the corpus exceeds 100K memories or multi-node deployment demand emerges. Estimated effort: M-L (1-2 weeks).
 
 
 #### Source Files
 
 See [`14-pipeline-architecture/16-backend-storage-adapter-abstraction.md`](14-pipeline-architecture/16-backend-storage-adapter-abstraction.md) for full implementation and test file listings.
+
+### Cross-process DB hot rebinding
+
+Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When an external process mutates the database, it writes a timestamp to the marker file. On the next `checkDatabaseUpdated()` call, if the timestamp exceeds `lastDbCheck`, the system triggers `reinitializeDatabase()`: closes the old DB handle, calls `vectorIndex.initializeDb()`, and rebinds 6 modules (vectorIndex, checkpoints, accessTracker, hybridSearch, sessionManager, incrementalIndex).
+
+Concurrency is handled safely via a mutex with a race-condition fix (P4-13). The module also manages embedding model readiness via polling with timeout and the constitutional cache lifecycle. This mechanism enables multi-process architectures where the CLI or external tools can mutate the database while the MCP server is running, without requiring a server restart.
+
+
+#### Source Files
+
+See [`14-pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14-pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-112](../manual-testing-playbook/manual-test-playbooks.md)
 
 ## Retrieval enhancements
 
@@ -1848,7 +1905,7 @@ See [`15-retrieval-enhancements/08-provenance-rich-response-envelopes.md`](15-re
 
 **IMPLEMENTED (Sprint 004).** *(Overlap note: builds on PI-B3 spec folder description discovery, which provides cached one-sentence descriptions used for routing in `memory_context`.)* Retrieved memory chunks gain hierarchical context headers so the calling agent immediately understands the structural origin of each result without additional round-trips to `memory_list`.
 
-Headers follow the format `[parent > child — description]`, capped at 100 characters to conserve context windows. The injection uses the existing PI-B3 cached descriptions via `injectContextualTree()` in `hybrid-search.ts`, inserted in Stage 4 output after token-budget truncation, before the final return. When no spec folder association exists, injection is gracefully skipped. This behavior is governed by the `SPECKIT_CONTEXT_HEADERS` flag (default `true`).
+Headers follow the format `[parent > child  -- description]`, capped at 100 characters to conserve context windows. The injection uses the existing PI-B3 cached descriptions via `injectContextualTree()` in `hybrid-search.ts`, inserted in Stage 4 output after token-budget truncation, before the final return. When no spec folder association exists, injection is gracefully skipped. This behavior is governed by the `SPECKIT_CONTEXT_HEADERS` flag (default `true`).
 
 
 #### Source Files
@@ -1890,7 +1947,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 #### Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -1903,16 +1960,16 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
-**Dead module-level state:** `stmtCache` Map (archival-manager.ts — never populated), `lastComputedAt` (community-detection.ts — set but never read), `activeProvider` cache (cross-encoder.ts — never populated), `flushCount` (access-tracker.ts — never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
+**Dead module-level state:** `stmtCache` Map (archival-manager.ts  -- never populated), `lastComputedAt` (community-detection.ts  -- set but never read), `activeProvider` cache (cross-encoder.ts  -- never populated), `flushCount` (access-tracker.ts  -- never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
-**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts — batch version is the only caller), `getSubgraphWeights` (graph-search-fn.ts — always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts — never imported), `'related'` weight entry (causal-edges.ts — invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts — never called).
+**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts  -- batch version is the only caller), `getSubgraphWeights` (graph-search-fn.ts  -- always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts  -- never imported), `'related'` weight entry (causal-edges.ts  -- invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts  -- never called).
 
 **Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
 
 
 #### Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ### Code standards alignment
@@ -1922,7 +1979,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 #### Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -1938,6 +1995,19 @@ The watcher implements a 2-second debounce and uses TM-02 SHA-256 content hashin
 
 See [`16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`](16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) for full implementation and test file listings.
 
+### Standalone admin CLI
+
+Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance outside the MCP protocol. Provides four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint; constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), and `schema-downgrade` (--to 15, --confirm).
+
+Deletions are transaction-wrapped with automatic checkpoint creation before bulk-delete and mutation ledger recording. Invoked as `node cli.js <command>` from any directory. This provides operators a direct database maintenance path without requiring an active MCP session or AI assistant.
+
+
+#### Source Files
+
+See [`16-tooling-and-scripts/07-standalone-admin-cli.md`](16-tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-113](../manual-testing-playbook/manual-test-playbooks.md)
+
 ## Governance
 
 ### Feature flag governance
@@ -1951,7 +2021,7 @@ The B8 signal ceiling ("12 active scoring signals") is treated as a governance t
 
 #### Source Files
 
-No dedicated source files — this describes governance process controls.
+No dedicated source files  -- this describes governance process controls.
 
 
 ### Feature flag sunset audit
@@ -1967,14 +2037,14 @@ The current active flag-helper inventory in `search-flags.ts` is 23 exported `is
 
 #### Source Files
 
-No dedicated source files — this describes governance process controls.
+No dedicated source files  -- this describes governance process controls.
 
 
 ---
 
 ## UX hooks
 
-Current mapping: this content is tracked under sub-phase `014-ux-hooks-automation`.
+Current mapping: this content is tracked under sub-phase `011-ux-hooks-automation`.
 
 Phase 014 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Verification after implementation: `npx tsc -b` PASS, `npm run lint` PASS, the targeted UX suite PASSed with 7 files and 460 tests, the stdio plus embeddings suite PASSed with 2 files and 15 tests, and the MCP SDK stdio smoke test PASSed with 28 tools listed.
 
@@ -2108,7 +2178,7 @@ The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5
 
 #### Source Files
 
-No dedicated source files — this is a decision record.
+No dedicated source files  -- this is a decision record.
 
 
 ### Implemented: graph centrality and community detection
@@ -2183,7 +2253,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true` | boolean | `lib/search/confidence-truncation.ts` | Sprint 3 Stage D: trims the low-confidence tail from fused results. A consecutive score gap exceeding 2× the median gap triggers truncation. Always returns at least 3 results. |
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect; the function always returns `false`. |
-| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Injected in Stage 4 after token-budget truncation. |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child  -- description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Injected in Stage 4 after token-budget truncation. |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
 | `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
@@ -2350,4 +2420,3 @@ These variables are read at runtime to annotate checkpoint and evaluation record
 #### Source Files
 
 Source file references are included in the flag table above.
-

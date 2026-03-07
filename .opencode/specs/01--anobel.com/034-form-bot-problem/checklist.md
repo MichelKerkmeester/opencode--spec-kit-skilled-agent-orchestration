@@ -59,7 +59,7 @@ This checklist is phase-aligned: planning gates are active now, while implementa
 - [x] CHK-001 [P0] Requirements documented in `spec.md` [EVIDENCE: specs/01--anobel.com/034-form-bot-problem/spec.md]
   - Evidence: `spec.md` includes VERIFIED findings, RC-A..RC-D hypotheses, and acceptance criteria.
 - [x] CHK-002 [P0] Technical approach defined in `plan.md` [EVIDENCE: specs/01--anobel.com/034-form-bot-problem/plan.md]
-  - Evidence: `plan.md` prioritizes server-side verification and observability before UI changes.
+  - Evidence: `plan.md` prioritizes a Formspark-enforced honeypot-first gate, with server-side verification and observability before UI-only changes.
 - [x] CHK-003 [P0] Dependencies identified and availability status captured [EVIDENCE: dependencies table in plan.md]
   - Evidence: `plan.md` dependency table captures provider evidence and inbox traceability dependencies.
 <!-- /ANCHOR:pre-impl -->
@@ -113,7 +113,7 @@ This checklist is phase-aligned: planning gates are active now, while implementa
 ## Documentation
 
 - [x] CHK-040 [P0] Spec/plan/tasks synchronized [EVIDENCE: cross-doc consistency review]
-  - Evidence: RC-A..RC-D and server-side-first sequence appear consistently across all planning docs.
+  - Evidence: RC-A..RC-D unresolved truth and honeypot-first mitigation sequence appear consistently across planning docs.
 - [x] CHK-041 [P0] Documentation quality and evidence references present [Evidence: inline source citations]
   - Evidence: Inline source citations included for verified findings.
 - [ ] CHK-042 [P2] README updated (if applicable)
@@ -201,7 +201,7 @@ This checklist is phase-aligned: planning gates are active now, while implementa
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-140 [P1] All spec documents synchronized [EVIDENCE: manual sync check on planning package docs]
-  - Evidence: Planning docs align on investigation scope and priorities, including implementation-summary status wording.
+  - Evidence: Planning docs align on unresolved investigation status, honeypot-first mitigation priority, and implementation-summary status wording.
 - [ ] CHK-141 [P1] API documentation complete (if applicable)
   - Evidence: Future-phase gate; pending if provider-side integration changes are approved.
 - [ ] CHK-142 [P2] User-facing documentation updated

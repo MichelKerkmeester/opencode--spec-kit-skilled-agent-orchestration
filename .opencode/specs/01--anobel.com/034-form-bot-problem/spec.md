@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Contact Form Bot Submission Investigation"
-description: "Investigate why bot submissions still reach the /nl/contact inbox despite Botpoison and produce a mitigation plan grounded in verified server-side evidence."
+description: "Investigate unresolved contact-form spam while prioritizing a Formspark-enforced honeypot-first mitigation design grounded in verified evidence."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "contact form"
@@ -21,11 +21,11 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-The `/nl/contact` page includes Botpoison and enhanced submit interception, yet bot-like submissions still reach the inbox. Verified evidence shows client enhancements can produce `_botpoison` tokens, but the public submit endpoint and public key are exposed in live markup, so bypass risk remains.
+The `/nl/contact` page includes Botpoison and enhanced submit interception, yet bot-like submissions still reach the inbox. Verified evidence still supports an unresolved spam issue; this spec update does not claim production behavior is fixed.
 
-The first milestone is to prove or disprove four likely causes with server-side evidence before changing UI flows: direct endpoint abuse, native fallback bypass, stale asset drift, and weak defense-in-depth.
+Research indicates Formspark supports honeypot and custom honeypot fields, plus Botpoison, and that honeypot or spam-verification failures are silently ignored (not saved, not counted, no notification). Given the current custom JSON submit architecture with possible native fallback, the lowest-change mitigation candidate is a Formspark-enforced honeypot implemented as a real DOM field that survives both submit paths.
 
-**Key Decisions**: Prioritize server-side verification and observability over speculative front-end tweaks; treat client-side bot signals as advisory until enforced server-side.
+**Key Decisions**: Prioritize a Formspark-enforced honeypot as first mitigation candidate while keeping RC-A and RC-B unproven until provider-side evidence closes them; keep Botpoison as layered defense, not sole trust boundary.
 
 **Critical Dependencies**: Access to provider-side request logs and inbox-side traceability for suspicious submissions.
 
@@ -52,7 +52,7 @@ The first milestone is to prove or disprove four likely causes with server-side 
 Spam or bot-like submissions are still arriving through the `/nl/contact` flow even though the page integrates Botpoison and custom JS interception. The system currently appears to rely heavily on client behavior and a public endpoint, which creates bypass risk if server-side enforcement and telemetry are insufficient.
 
 ### Purpose
-Produce an evidence-backed investigation and mitigation plan that explains how spam reaches the inbox and defines prioritized, testable remediations with minimal disruption.
+Produce an evidence-backed investigation and mitigation plan that explains how spam reaches the inbox, prioritizes a low-change Formspark honeypot-first mitigation path, and keeps unresolved hypotheses explicit until verified.
 
 ### VERIFIED Durable Findings (repo-backed)
 1. Intended contact page snippet loads `form_validation.min.js?v=1.2.36`, `form_submission.min.js?v=1.2.36`, `form_persistence.min.js?v=1.1.0`, and Botpoison SDK (`src/0_html/contact.html:57`, `src/0_html/contact.html:58`, `src/0_html/contact.html:59`, `src/0_html/contact.html:72`).
@@ -64,6 +64,9 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 7. Service worker uses cache-first for CDN JS with 7-day TTL, increasing stale-asset risk (`src/2_javascript/global/service_worker.js:21`, `src/2_javascript/global/service_worker.js:215`, `src/2_javascript/global/service_worker.js:230`).
 8. Minified manifest maps local sources to minified form stack artifacts (`src/2_javascript/z_minified/manifest.tsv:9`, `src/2_javascript/z_minified/manifest.tsv:11`).
 9. Repo scripts do not show form-specific automated tests; current coverage is interactive search oriented (`package.json:7`, `package.json:16`).
+10. Formspark official docs support honeypot and custom honeypot fields, and support Botpoison integration (external documentation research, session date 2026-03-07).
+11. Formspark official docs state honeypot/spam-verification failures are silently ignored: submissions are not saved and do not trigger notifications or submission counts (external documentation research, session date 2026-03-07).
+12. Current custom architecture builds `FormData`, injects `_botpoison`, serializes to JSON, posts to Formspark, and may fall back to native submit; a real DOM honeypot field is expected to survive both paths by design intent (code + runtime architecture evidence).
 
 ### Current-session/live observations (re-verify during implementation)
 1. Live fetched page loaded `form_submission.min.js?v=1.2.35` while intended source references `v=1.2.36`, indicating potential version drift in this session (`/Users/michelkerkmeester/.local/share/opencode/tool-output/tool_cc772e515001eclbD35NY1uUny:7279`).
@@ -76,7 +79,7 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 | RC-A | Direct endpoint abuse bypasses client Botpoison | High | Submit endpoint is public in markup | Correlate inbox spam entries with provider logs missing valid Botpoison verification evidence |
 | RC-B | Native fallback path bypasses `_botpoison` | Medium | Fallback can force native submit when network/CORS style failures occur | Reproduce fallback path and inspect whether `_botpoison` is absent or unverified server-side |
 | RC-C | Version drift or stale SW cache preserves old behavior | Medium | Source/live version mismatch plus cache-first JS TTL | Confirm active runtime script hashes/versions on affected clients and SW cache state |
-| RC-D | Defense-in-depth is too weak | High | No visible honeypot/rate-limit/server-side hard gate in current evidence set | Verify absence/presence of server-side anti-abuse controls in provider/backend configuration |
+| RC-D | Defense-in-depth is too weak | High | No repo-verified Formspark-enforced honeypot/rate-limit hard gate in current evidence set | Verify active provider-side anti-abuse controls and their enforcement outcomes |
 <!-- /ANCHOR:problem -->
 
 ---
@@ -88,7 +91,7 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 - Investigation planning for contact-form spam path on `/nl/contact`.
 - Evidence matrix separating VERIFIED observations from LIKELY hypotheses.
 - Server-side verification and observability plan (provider logs, inbox correlation, request fingerprints).
-- Mitigation design for endpoint abuse, fallback bypass, and stale asset behavior.
+- Mitigation design with a Formspark honeypot-first candidate that remains compatible with endpoint abuse, fallback bypass, and stale asset concerns.
 - Documentation updates in this spec folder only for planning.
 
 ### Out of Scope
@@ -121,16 +124,19 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 | REQ-002 | Prove/disprove RC-A endpoint abuse | Decision-ready conclusion based on provider-side request evidence and inbox correlation |
 | REQ-003 | Prove/disprove RC-B fallback bypass | Controlled reproduction demonstrates whether fallback path can bypass Botpoison assurance |
 | REQ-004 | Prove/disprove RC-C asset drift | Runtime version/caching analysis confirms or rejects stale-asset impact |
-| REQ-005 | Establish server-side enforcement requirements | Mitigation plan defines non-optional server checks before inbox delivery |
-| REQ-006 | Add minimum observability design | Plan includes required telemetry fields to audit suspicious submissions end to end |
+| REQ-005 | Define Formspark-enforced honeypot-first mitigation design | Plan defines a real DOM honeypot field enforced by provider behavior before inbox delivery |
+| REQ-006 | Preserve unresolved investigation truth in all artifacts | Docs explicitly state RC-A/RC-B are not yet proven/disproven and issue is not marked fixed |
+| REQ-007 | Add minimum observability design | Plan includes required telemetry fields to audit suspicious submissions end to end |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-007 | Define layered anti-abuse controls | Plan includes at least one server-side gate plus secondary controls (rate limit and trap signal) |
-| REQ-008 | Define cache/version hardening | Plan includes explicit JS version integrity and service-worker invalidation strategy |
-| REQ-009 | Define safe validation protocol | Investigation can run without sending real customer submissions |
+| REQ-008 | Define honeypot naming strategy compatible with Formspark | Plan prefers custom honeypot name, with `_honeypot` or `_gotcha` as supported defaults |
+| REQ-009 | Keep optional client-side honeypot pre-check non-authoritative | Any client pre-check is convenience only; provider-side enforcement remains security boundary |
+| REQ-010 | Keep Botpoison as layered defense | Plan retains Botpoison for defense-in-depth but does not treat it as sole investigation answer |
+| REQ-011 | Define cache/version hardening | Plan includes explicit JS version integrity and service-worker invalidation strategy |
+| REQ-012 | Define safe validation protocol | Investigation can run without sending real customer submissions |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -138,10 +144,11 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All four hypotheses (RC-A through RC-D) are marked proven or disproven with cited evidence.
-- **SC-002**: A server-side-first mitigation sequence is approved before any speculative UI change work.
-- **SC-003**: Observability design can attribute each suspicious submission to a concrete path (enhanced submit, native fallback, or direct endpoint hit).
-- **SC-004**: Drift detection strategy can identify mismatched runtime assets within one verification cycle.
+- **SC-001**: A Formspark-enforced honeypot-first mitigation design is documented with concrete field strategy and submit-path compatibility.
+- **SC-002**: Artifacts explicitly state the spam issue is unresolved and RC-A/RC-B remain unproven until provider-side evidence is collected.
+- **SC-003**: Observability design can attribute suspicious submissions to enhanced submit, native fallback, or direct endpoint-hit patterns.
+- **SC-004**: Botpoison is documented as layered defense, while provider-side honeypot enforcement is documented as primary low-change gate.
+- **SC-005**: Drift detection strategy can identify mismatched runtime assets within one verification cycle.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -152,8 +159,9 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 - **AS-002** Given forced network/CORS failure in controlled testing, when fallback path runs, then assurance behavior is observable.
 - **AS-003** Given a client with cached assets, when runtime is inspected, then active script versions are attributable.
 - **AS-004** Given a submission event, when telemetry is reviewed, then delivery decision has a server-side reason code.
-- **AS-005** Given a missing or invalid anti-abuse assurance state, when policy is applied, then submission is blocked or quarantined.
-- **AS-006** Given mitigation rollout, when monitoring runs, then spam rate decreases without unacceptable legitimate-drop rate.
+- **AS-005** Given a honeypot field is populated, when Formspark policy evaluates submission, then submission is silently ignored and does not reach inbox records.
+- **AS-006** Given honeypot client pre-check is enabled, when triggered, then UX can short-circuit without redefining server trust boundaries.
+- **AS-007** Given mitigation rollout, when monitoring runs, then spam rate decreases without unacceptable legitimate-drop rate.
 
 ---
 
@@ -163,8 +171,10 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Access to provider-side request data | Without logs, RC-A remains unproven | Request temporary operational access or exported evidence set |
+| Dependency | Confirmation of active Formspark honeypot configuration | Without config confirmation, mitigation impact cannot be attributed | Capture configuration evidence and controlled submission outcomes |
 | Dependency | Ability to observe live runtime cache state | RC-C could be misclassified | Capture runtime asset URLs, headers, and SW cache metadata on affected sessions |
 | Risk | False confidence from client-only tests | Inbox spam persists after partial fixes | Require server evidence gate before marking complete |
+| Risk | Silent-ignore behavior masks rejected spam visibility | Team misreads lower submission counts as total threat reduction | Track dropped-at-gate indicators separately from inbox volume |
 | Risk | Over-broad anti-spam controls | Legitimate submissions blocked | Define allowlist and progressive rollout with rollback conditions |
 <!-- /ANCHOR:risks -->
 
@@ -188,11 +198,13 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 ## 8. EDGE CASES
 
 ### Data Boundaries
+- Missing or malformed honeypot field in JSON payload while DOM field exists.
 - Missing `_botpoison` token with otherwise valid form body.
 - Submission payloads mimicking browser structure but originating outside page runtime.
 
 ### Error Scenarios
 - CORS or network-style failure triggering native fallback path.
+- Honeypot field exists in DOM but is omitted from serialized payload in custom submit path.
 - Service worker serves stale JS despite source updates.
 - Event-name drift causes persistence/cleanup side effects not to fire.
 
@@ -215,10 +227,11 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Direct endpoint abuse remains undetected | High | High | Add server-side verification gate and request fingerprint logging |
-| R-002 | Native fallback bypasses token assurance | High | Medium | Reproduce fallback path and enforce server rejection when token assurance missing |
+| R-001 | Direct endpoint abuse remains undetected | High | High | Add provider-enforced honeypot gate plus request fingerprint logging |
+| R-002 | Native fallback bypasses token assurance | High | Medium | Ensure real DOM honeypot survives fallback and enforce provider-side spam gates |
 | R-003 | Stale assets keep old behavior in production | Medium | Medium | Add version audit, SW invalidation procedure, and cache-bust checks |
-| R-004 | Fixes over-block legitimate users | High | Low | Progressive rollout with explicit rollback thresholds |
+| R-004 | Silent ignore semantics reduce visibility of blocked attempts | Medium | Medium | Add observability notes for ignored submissions and compare with inbox trends |
+| R-005 | Fixes over-block legitimate users | High | Low | Progressive rollout with explicit rollback thresholds |
 
 ---
 
@@ -226,21 +239,21 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 
 ### US-001: Security-First Contact Intake (Priority: P0)
 
-**As a** site owner, **I want** submissions verified through server-side anti-abuse checks, **so that** spam does not reach the contact inbox by bypassing client controls.
+**As a** site owner, **I want** a provider-enforced honeypot gate backed by layered anti-abuse checks, **so that** low-effort bot submissions are filtered before inbox delivery even if client paths are bypassed.
 
 **Acceptance Criteria**:
 1. **Given** a suspicious submission path, **when** evidence is reviewed, **then** the path is attributable and classified.
-2. **Given** missing or invalid anti-abuse assurance, **when** submission is processed, **then** inbox delivery is blocked or quarantined by policy.
+2. **Given** a populated honeypot field or failed spam verification, **when** submission is processed by provider policy, **then** it is ignored before inbox delivery.
 
 ---
 
 ### US-002: Investigation Confidence (Priority: P0)
 
-**As an** engineer, **I want** hypotheses proven or disproven with hard evidence, **so that** we implement targeted mitigations instead of speculative changes.
+**As an** engineer, **I want** hypotheses and mitigation assumptions validated with hard evidence, **so that** honeypot-first mitigation is effective without overstating what is proven.
 
 **Acceptance Criteria**:
 1. **Given** RC-A through RC-D, **when** investigation completes, **then** each has a clear verdict with citations.
-2. **Given** provider evidence is unavailable, **when** verdict quality drops below threshold, **then** status is explicitly marked inconclusive and blocked.
+2. **Given** provider evidence is unavailable, **when** verdict quality drops below threshold, **then** status remains explicitly inconclusive and blocked.
 
 ---
 
@@ -256,8 +269,9 @@ Produce an evidence-backed investigation and mitigation plan that explains how s
 
 ## 12. OPEN QUESTIONS
 
-- What provider-side evidence is available to prove token verification result per submission?
-- Are there existing server-side rules (rate-limits, honeypots, challenge scoring) configured outside this repository?
+- What provider-side evidence is available to prove honeypot and Botpoison verification outcomes per submission?
+- Is a Formspark honeypot already configured in production, and if so, what field name is active?
+- Are there existing server-side rules (rate-limits, additional challenge scoring) configured outside this repository?
 - What is the acceptable false-positive rate for anti-spam controls on legitimate contact requests?
 <!-- /ANCHOR:questions -->
 

@@ -41,7 +41,7 @@ contextType: "implementation"
 | `002-hybrid-rag-fusion` | Preserve tri-hybrid + MMR/TRM baseline | Extend with graph-contract calibration and cognitive weighting controls |
 | `003-index-tier-anomalies` | Keep canonical path and tier precedence as hard invariants | Add parser/index automation and storage-ledger reliability gates |
 | `004-frontmatter-indexing` | Keep normalized frontmatter + idempotent reindex | Add CRUD re-embed metadata consistency and docs/schema governance checks |
-| `003-auto-detected-session-bug` | Keep low-confidence routing safeguards and archive exclusion behavior | Extend to session-learning quality/performance and runbook automation |
+| `008-combined-bug-fixes` | Keep low-confidence routing safeguards and archive exclusion behavior | Extend to session-learning quality/performance and runbook automation |
 
 ## Subsystem-to-Task Coverage
 

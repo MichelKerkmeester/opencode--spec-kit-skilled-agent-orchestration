@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Contact Form Bot Submission Investigation"
-description: "Plan to prove or disprove likely spam paths on /nl/contact and define server-side-first mitigations before front-end changes."
+description: "Plan unresolved spam investigation while prioritizing a Formspark-enforced honeypot-first mitigation compatible with custom JSON submit and native fallback."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
@@ -29,13 +29,13 @@ contextType: "decision"
 | **Language/Stack** | JavaScript (Vanilla), static HTML, service worker |
 | **Framework** | Webflow-rendered pages with custom JS enhancements |
 | **Submission Backend** | Formspark submit endpoint (`submit-form.com`) |
-| **Anti-bot Layer** | Botpoison client SDK + `_botpoison` token injection path |
+| **Anti-bot Layer** | Botpoison client SDK + candidate Formspark-enforced honeypot gate |
 | **Testing** | Browser-safe live inspection, code inspection, controlled request tracing |
 
 ### Overview
-This plan prioritizes high-confidence investigation before mitigation implementation. Work starts by building a server-observable evidence baseline, then proving or disproving four likely causes (endpoint abuse, fallback bypass, asset drift, weak defense-in-depth), and only then selecting mitigations.
+This plan keeps the unresolved investigation front and center while refocusing mitigation design toward a low-change, provider-enforced honeypot first. Work still starts with a server-observable evidence baseline and hypothesis validation (RC-A through RC-D), but mitigation design now assumes Formspark honeypot semantics are the fastest hard gate candidate.
 
-First implementation priority is server-side verification and telemetry. UI-only hardening is intentionally deferred until trust-boundary evidence confirms where bypass happens.
+Formspark documentation indicates honeypot/custom-honeypot and spam-verification failures are silently ignored (not saved, not counted, no notifications). Botpoison remains complementary and should stay layered, but current provenance does not support making Botpoison-only checks the sole trust boundary.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -55,7 +55,7 @@ First implementation priority is server-side verification and telemetry. UI-only
 
 ### Definition of Future Implementation Ready
 - [ ] RC-A through RC-D each marked proven or disproven with evidence
-- [ ] Mitigation plan approved with server-side gate first
+- [ ] Mitigation plan approved with Formspark-enforced honeypot as first low-change server-side gate
 - [ ] Verification checklist P0/P1 items complete or deferred with explicit approval
 <!-- /ANCHOR:quality-gates -->
 
@@ -99,17 +99,18 @@ Investigation-first, evidence-driven mitigation planning.
 
 ### Key Components
 - **Contact page runtime (`contact.html`)**: Script loading and public endpoint exposure baseline.
-- **Submission enhancer (`form_submission.js`)**: Interception, validation, Botpoison token injection, fallback behavior.
+- **Submission enhancer (`form_submission.js`)**: Interception, validation, Botpoison token injection, JSON payload construction, fallback behavior.
 - **Persistence layer (`form_persistence.js`)**: Event-driven cleanup and state retention side effects.
 - **Service worker (`service_worker.js`)**: Cache-first strategy affecting JS freshness.
-- **Submit provider path (`submit-form.com`)**: Server-side trust boundary and inbox delivery behavior.
+- **Submit provider path (`submit-form.com`)**: Server-side trust boundary, honeypot/Botpoison enforcement behavior, and inbox delivery behavior.
 
 ### Data Flow
 1. User submits `/nl/contact` form.
-2. JS interception path attempts enhanced JSON submit with `_botpoison` token.
+2. JS interception path builds `FormData`, injects `_botpoison`, and attempts enhanced JSON submit.
 3. Failure conditions may trigger native form fallback.
-4. Provider endpoint processes request and forwards to inbox.
-5. Missing server-side enforcement or weak controls can still allow spam delivery.
+4. Real DOM honeypot field should remain present for both enhanced JSON and native fallback paths.
+5. Provider endpoint processes request; honeypot or spam-verification failures should be silently ignored.
+6. Missing or misconfigured server-side enforcement can still allow spam delivery.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -129,9 +130,13 @@ Investigation-first, evidence-driven mitigation planning.
 - [ ] **RC-D** Defense depth: audit for server-side rate-limit/honeypot/challenge gate coverage.
 
 ### Phase 3: Mitigation Design
-- [ ] Define mandatory server-side verification gate for inbox delivery.
-- [ ] Define secondary controls (rate limit, trap signal, policy path for invalid assurance).
-- [ ] Define version governance and service-worker cache invalidation procedure.
+- [ ] Define and implement the real DOM honeypot field as `contact_website_check` for Formspark enforcement.
+- [ ] Validate submit-path compatibility: honeypot field survives custom JSON submit and native fallback.
+- [ ] Define optional client-side pre-check as UX convenience only (not security boundary).
+- [ ] Keep Botpoison as layered defense and define evidence needs for its server-verified role.
+- [ ] Define observability for silent-ignore outcomes, plus version governance and service-worker cache invalidation procedure.
+- [ ] Produce a practical Webflow Designer implementation guide for the honeypot-first path.
+- [ ] Produce implementation-ready tasks for markup insertion, safe wrapper styling, JSON/fallback payload verification, optional client pre-check, Formspark alignment, and post-change verification.
 
 ### Phase 4: Verification and Implementation Handoff Readiness
 - [ ] Define pre/post metrics for spam reduction and false-positive safety.
@@ -141,13 +146,28 @@ Investigation-first, evidence-driven mitigation planning.
 
 ---
 
+<!-- ANCHOR:webflow-guide -->
+## 4.1 WEBFLOW DESIGNER GUIDE (HONEYPOT-FIRST)
+
+Execution-level Webflow and Formspark instructions are documented in `webflow-honeypot-guide.md`.
+
+### Alignment Requirements
+- Keep one real DOM honeypot input inside the same `/nl/contact` form that submits via the current Formspark/custom action architecture.
+- Use final honeypot field name `contact_website_check` and keep it exactly aligned with Formspark honeypot configuration.
+- Keep the honeypot field non-required, enabled, and submitted in both custom JSON and native fallback paths.
+- Native Webflow anti-spam controls remain supplementary only while this form posts to Formspark/custom action.
+- Preserve truthful status in all artifacts: issue remains unresolved; no fix claim until RC-A and RC-B are closed with provider evidence.
+<!-- /ANCHOR:webflow-guide -->
+
+---
+
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Investigation | Verify each hypothesis against evidence | Browser DevTools, provider dashboards, controlled traces |
-| Integration | Validate token enforcement and delivery rules | Safe staging/test payload workflow |
+| Integration | Validate honeypot enforcement and Botpoison layering behavior | Safe staging/test payload workflow |
 | Manual | Confirm runtime version and fallback behavior | Browser + network inspection |
 
 Investigation test protocol avoids real user data and avoids sending unintended production submissions where possible.
@@ -161,6 +181,7 @@ Investigation test protocol avoids real user data and avoids sending unintended 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Provider-side request evidence access | External | Yellow | RC-A/RC-B cannot be conclusively proven |
+| Confirmation of active honeypot field configuration in Formspark | External | Yellow | Honeypot-first mitigation cannot be validated confidently |
 | Runtime inspection access on live contact page | Internal | Green | Drift and fallback analysis slows if unavailable |
 | Inbox-side traceability fields | External | Yellow | Attribution confidence remains weak |
 | Deployment owner for server-side controls | External | Yellow | Mitigation implementation blocked after planning |
@@ -260,10 +281,10 @@ Phase 1 (Baseline) ──► Phase 2 (Validate Causes) ──► Phase 3 (Design
 <!-- ANCHOR:critical-path -->
 ## L3: CRITICAL PATH
 
-1. **Obtain provider-side evidence visibility** - Critical
-2. **Validate RC-A and RC-B** - Critical
-3. **Finalize server-side gate policy** - Critical
-4. **Approve rollout and rollback criteria** - Critical
+1. **Obtain provider-side evidence visibility and honeypot configuration confirmation** - Critical
+2. **Validate RC-A and RC-B without overstating verdict confidence** - Critical
+3. **Finalize Formspark-enforced honeypot-first gate policy with Botpoison layering** - Critical
+4. **Approve rollout and rollback criteria with silent-ignore observability** - Critical
 
 **Total Critical Path**: 4 major gates, no safe shortcut
 
@@ -289,19 +310,19 @@ Phase 1 (Baseline) ──► Phase 2 (Validate Causes) ──► Phase 3 (Design
 
 ## L3: ARCHITECTURE DECISION RECORD
 
-### ADR-001: Server-side verification before UI hardening
+### ADR-001: Formspark-enforced honeypot-first mitigation before UI hardening
 
 **Status**: Proposed (planning rationale; formal approval pending implementation kickoff)
 
-**Context**: Current evidence shows client behavior alone cannot establish trustworthy anti-abuse enforcement.
+**Context**: Current evidence shows client behavior alone cannot establish trustworthy anti-abuse enforcement; Formspark docs provide a low-change server-side gate candidate through honeypot enforcement semantics.
 
-**Decision**: Require server-side verification and telemetry verdicts before investing in additional UI or client-path changes.
+**Decision**: Prioritize a Formspark-enforced honeypot implemented as a real DOM field as first mitigation candidate, while keeping server-side verification and telemetry verdicts mandatory before claiming resolution.
 
 **Consequences**:
 - Positive: Reduces guesswork and prevents ineffective client-only fixes.
 - Negative: Depends on external provider visibility and coordination.
 
 **Alternatives Rejected**:
-- UI-first mitigation without server evidence: rejected due to high risk of false confidence.
+- Botpoison-only answer without honeypot gate: rejected because available provenance does not make it a sufficient standalone investigation answer.
 
 ---

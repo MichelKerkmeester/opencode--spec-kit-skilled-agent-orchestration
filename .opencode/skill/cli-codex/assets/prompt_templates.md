@@ -28,7 +28,8 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 | Flag                           | Purpose                                                                             |
 | ------------------------------ | ----------------------------------------------------------------------------------- |
-| `--model gpt-5.3-codex`        | Model selection (only supported model, always include)                              |
+| `--model gpt-5.4`              | GPT-5.4: frontier reasoning, complex analysis, architecture, security              |
+| `--model gpt-5.3-codex`        | GPT-5.3-Codex: code generation, standard review, implementation, docs              |
 | `--sandbox read-only`          | Safe mode: read files, no writes or shell commands                                  |
 | `--sandbox workspace-write`    | Allow file writes and build commands within workspace                               |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval**                             |
@@ -515,3 +516,59 @@ All placeholders used across templates in this file:
 - [codex_tools.md](../references/codex_tools.md) - Built-in capabilities (/review, --search, MCP, session management)
 
 <!-- /ANCHOR:related_resources -->
+
+<!-- ANCHOR:model_selection -->
+
+## 13. MODEL SELECTION
+
+### When to Use GPT-5.4
+
+Use `--model gpt-5.4` for reasoning-heavy tasks that benefit from deeper analysis:
+
+```bash
+# Architecture analysis
+codex exec "Analyze the architecture of this project. Identify coupling issues, circular dependencies, and scalability concerns." \
+  --model gpt-5.4 --sandbox read-only
+
+# Security audit
+codex exec "Perform a thorough security audit of @./[file]. Check OWASP Top 10, auth bypasses, injection vectors, and cryptographic weaknesses." \
+  --model gpt-5.4 --sandbox read-only
+
+# Complex planning
+codex exec -p ultra-think "Design 3 alternative caching strategies for this API. Score each on correctness, maintainability, and performance." \
+  --model gpt-5.4 -s read-only
+```
+
+### When to Use GPT-5.3-Codex
+
+Use `--model gpt-5.3-codex` for code-focused tasks optimized for generation:
+
+```bash
+# Code generation
+codex exec "Create a [description] in [language]. Requirements: [requirements]. Output complete file." \
+  --model gpt-5.3-codex --sandbox workspace-write
+
+# Standard code review
+codex exec "Review @./[file] for bugs, style issues, and edge cases." \
+  --model gpt-5.3-codex --sandbox read-only
+
+# Test generation
+codex exec "Generate comprehensive unit tests for @./[file]." \
+  --model gpt-5.3-codex --sandbox workspace-write
+```
+
+### Mixed Model Workflow
+
+Use GPT-5.4 for analysis, then GPT-5.3-Codex for implementation:
+
+```bash
+# Step 1: Deep analysis with GPT-5.4
+codex exec "Identify all security vulnerabilities in @./src/auth/" \
+  --model gpt-5.4 --sandbox read-only > /tmp/security-findings.txt
+
+# Step 2: Fix with GPT-5.3-Codex
+codex exec "Fix these security issues: $(cat /tmp/security-findings.txt)" \
+  --model gpt-5.3-codex --sandbox workspace-write
+```
+
+<!-- /ANCHOR:model_selection -->

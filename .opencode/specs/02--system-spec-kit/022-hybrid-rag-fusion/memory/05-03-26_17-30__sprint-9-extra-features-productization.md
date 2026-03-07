@@ -1,5 +1,5 @@
 ---
-title: "Sprint 9 — Extra Features (Productization [011-extra-features/05-03-26_17-30__sprint-9-extra-features-productization]"
+title: "Sprint 9 — Extra Features (Productization [009-extra-features/05-03-26_17-30__sprint-9-extra-features-productization]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -43,7 +43,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-03-05 |
 | Session ID | session-1772728204022-wccwgzjzp |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -129,13 +129,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -667,9 +667,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -681,16 +681,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features --force
 ```
 
 ### Recovery Priority
@@ -763,7 +763,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772728204022-wccwgzjzp"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features"
 channel: "main"
 
 # Classification
@@ -895,7 +895,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-extra-features"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/009-extra-features"
 child_sessions:
 
   []

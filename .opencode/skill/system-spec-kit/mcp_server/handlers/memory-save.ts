@@ -389,14 +389,20 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
 /* --- 10. ATOMIC MEMORY SAVE --- */
 
 /**
- * Write content to disk and index atomically with rollback on failure.
+ * Save memory content to disk with best-effort indexing.
+ *
+ * **NOT truly atomic.** The file write uses atomic rename (write-to-temp +
+ * rename), but DB indexing runs asynchronously afterward because
+ * `indexMemoryFile` requires async embedding generation while
+ * `executeAtomicSave` expects a synchronous `dbOperation` callback.
+ *
+ * On embedding failure, the memory is saved to disk and indexed in the DB
+ * **without vector embeddings** — a partial-success state. The caller
+ * receives a `status: 'partial'` result with a hint to retry
+ * `memory_save({ filePath, force: true })` to rebuild the index entry.
  *
  * P4-01/P4-17 NOTE: True atomicity between file write and DB indexing is not
- * achievable here because `executeAtomicSave` requires a synchronous
- * `dbOperation` callback, while `indexMemoryFile` is async (embedding
- * generation). The current design is: (1) write file atomically, (2) index
- * asynchronously. If indexing fails, the file exists on disk but is not in
- * the DB — a partial-success state that is reported to the caller.
+ * achievable under this architecture.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
   const { file_path, content } = params;

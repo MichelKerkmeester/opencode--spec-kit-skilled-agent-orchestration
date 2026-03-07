@@ -71,7 +71,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 500,
     priority: 4,
     useCase: 'Make changes to existing memories when corrections or updates are needed.',
-    tools: ['memory_update', 'memory_delete', 'memory_validate']
+    tools: ['memory_update', 'memory_delete', 'memory_validate', 'memory_bulk_delete']
   },
   L5: {
     id: 'L5',
@@ -80,7 +80,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 600,
     priority: 5,
     useCase: 'Create checkpoints before major changes, restore previous states.',
-    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete']
+    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
   },
   L6: {
     id: 'L6',

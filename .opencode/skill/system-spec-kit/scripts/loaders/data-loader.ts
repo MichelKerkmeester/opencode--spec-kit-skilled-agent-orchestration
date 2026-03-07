@@ -70,9 +70,17 @@ async function getOpencodeCapture(): Promise<OpencodeCaptureMod | null> {
 // 4. LOADER FUNCTIONS
 // ---------------------------------------------------------------
 
-async function loadCollectedData(): Promise<LoadedData> {
+interface LoadOptions {
+  dataFile?: string | null;
+  specFolderArg?: string | null;
+}
+
+async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
+  const dataFile = options?.dataFile !== undefined ? options.dataFile : CONFIG.DATA_FILE;
+  const specFolderArg = options?.specFolderArg !== undefined ? options.specFolderArg : CONFIG.SPEC_FOLDER_ARG;
+
   // Priority 1: Data file provided via command line
-  if (CONFIG.DATA_FILE) {
+  if (dataFile) {
     try {
       // SEC-001: Path traversal mitigation (CWE-22)
       // Use os.tmpdir() for cross-platform temp directory support
@@ -89,11 +97,11 @@ async function loadCollectedData(): Promise<LoadedData> {
 
       let validatedDataFilePath: string;
       try {
-        validatedDataFilePath = sanitizePath(CONFIG.DATA_FILE, dataFileAllowedBases);
+        validatedDataFilePath = sanitizePath(dataFile, dataFileAllowedBases);
       } catch (pathError: unknown) {
         const pathErrMsg = pathError instanceof Error ? pathError.message : String(pathError);
         structuredLog('error', 'Invalid data file path - security validation failed', {
-          filePath: CONFIG.DATA_FILE,
+          filePath: dataFile,
           error: pathErrMsg
         });
         throw new Error(`Security: Invalid data file path: ${pathErrMsg}`);
@@ -102,7 +110,7 @@ async function loadCollectedData(): Promise<LoadedData> {
       const dataContent: string = await fs.readFile(validatedDataFilePath, 'utf-8');
       const rawData: RawInputData = JSON.parse(dataContent) as RawInputData;
 
-      validateInputData(rawData, CONFIG.SPEC_FOLDER_ARG);
+      validateInputData(rawData, specFolderArg);
       console.log('   \u2713 Loaded and validated conversation data from file');
 
       const data: NormalizedData | RawInputData = normalizeInputData(rawData);
@@ -111,24 +119,24 @@ async function loadCollectedData(): Promise<LoadedData> {
     } catch (error: unknown) {
       if (error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
         structuredLog('warn', 'Data file not found', {
-          filePath: CONFIG.DATA_FILE,
+          filePath: dataFile,
           error: error.message
         });
-        console.log(`   \u26A0\uFE0F  Data file not found: ${CONFIG.DATA_FILE}`);
+        console.log(`   \u26A0\uFE0F  Data file not found: ${dataFile}`);
       } else if (error instanceof SyntaxError) {
         structuredLog('warn', 'Invalid JSON in data file', {
-          filePath: CONFIG.DATA_FILE,
+          filePath: dataFile,
           error: error.message,
           position: error.message.match(/position (\d+)/)?.[1] || 'unknown'
         });
-        console.log(`   \u26A0\uFE0F  Invalid JSON in data file ${CONFIG.DATA_FILE}: ${error.message}`);
+        console.log(`   \u26A0\uFE0F  Invalid JSON in data file ${dataFile}: ${error.message}`);
       } else {
         const errMsg = error instanceof Error ? error.message : String(error);
         structuredLog('warn', 'Failed to load data file', {
-          filePath: CONFIG.DATA_FILE,
+          filePath: dataFile,
           error: errMsg
         });
-        console.log(`   \u26A0\uFE0F  Failed to load data file ${CONFIG.DATA_FILE}: ${errMsg}`);
+        console.log(`   \u26A0\uFE0F  Failed to load data file ${dataFile}: ${errMsg}`);
       }
     }
   }

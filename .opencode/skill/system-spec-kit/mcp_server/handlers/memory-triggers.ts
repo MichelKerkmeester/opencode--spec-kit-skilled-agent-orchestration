@@ -26,7 +26,7 @@ import type { TierInput, StateStats } from '../lib/cache/cognitive/tier-classifi
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 
 // REQ-019: Standardized Response Structure
-import { createMCPSuccessResponse, createMCPEmptyResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPEmptyResponse, createMCPErrorResponse } from '../lib/response/envelope';
 // T004: Consumption instrumentation
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 
@@ -183,7 +183,15 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     : 1;
 
   if (!prompt || typeof prompt !== 'string') {
-    throw new Error('prompt is required and must be a string');
+    return createMCPErrorResponse({
+      tool: 'memory_match_triggers',
+      error: 'prompt is required and must be a string',
+      code: 'E_VALIDATION',
+      details: { parameter: 'prompt' },
+      recovery: {
+        hint: 'Provide a non-empty string for the prompt parameter'
+      }
+    });
   }
 
   const startTime = Date.now();

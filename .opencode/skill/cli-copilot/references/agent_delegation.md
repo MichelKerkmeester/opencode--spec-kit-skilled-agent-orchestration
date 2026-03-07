@@ -188,10 +188,10 @@ GitHub Copilot CLI supports multiple models (Anthropic, OpenAI, Google). The con
 
 | Scenario | Agent | Model Recommendation |
 |----------|-------|----------------------|
-| Quick code review | `@Explore` | Balanced (e.g., GPT-4o / Claude 3.5 Sonnet) |
-| Deep security audit | `@Explore` / `Cloud` | High-reasoning (e.g., o1 / Claude 3 Opus) |
-| Architecture planning | `Cloud` | High-reasoning (e.g., o1 / Claude 3 Opus) |
-| Fast codebase scan | `@Explore` | Fast (e.g., GPT-4o-mini / Claude 3.5 Haiku) |
+| Quick code review | `@Explore` | Balanced (e.g., Claude Sonnet 4.6 / GPT-5.3-Codex) |
+| Deep security audit | `@Explore` / `Cloud` | High-reasoning (e.g., GPT-5.4 / Claude Opus 4.6) |
+| Architecture planning | `Cloud` | High-reasoning (e.g., GPT-5.4 / Claude Opus 4.6) |
+| Fast codebase scan | `@Explore` | Fast (e.g., Claude Sonnet 4.6 / Gemini 3.1 Pro) |
 
 ---
 

@@ -291,7 +291,18 @@ function validateMemoryQualityContent(content: string): ValidationResult {
 }
 
 function validateMemoryQualityFile(filePath: string): ValidationResult {
-  const content = fs.readFileSync(filePath, 'utf-8');
+  let content: string;
+  try {
+    content = fs.readFileSync(filePath, 'utf-8');
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : String(e);
+    console.error(`Cannot read ${filePath}: ${message}`);
+    return {
+      valid: false,
+      failedRules: ['V1'],
+      ruleResults: [{ ruleId: 'V1', passed: false, message: `Cannot read file: ${message}` }],
+    };
+  }
   return validateMemoryQualityContent(content);
 }
 

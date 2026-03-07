@@ -164,7 +164,7 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | 016-indexing-and-graph (6a) | 017-long-horizon | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
 | 016-indexing-and-graph (6a) | 016-indexing-and-graph (6b) | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
 | 016-indexing-and-graph (6b) | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
-| 008-subfolder-resolution-fix | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `008-subfolder-resolution-fix/checklist.md` summary + testing section |
+| 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `008-combined-bug-fixes/checklist.md` summary + testing section |
 | 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | `002-cross-cutting-remediation/checklist.md` remediation exit gate + summary |
 | 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | `022-post-review-remediation/checklist.md` summary + `022-post-review-remediation/implementation-summary.md` |
 <!-- /ANCHOR:phase-map -->

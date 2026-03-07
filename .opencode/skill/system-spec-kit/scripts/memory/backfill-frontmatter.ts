@@ -167,7 +167,13 @@ function parseArgs(argv: string[]): CliOptions {
         .split(',')
         .map((entry) => entry.trim())
         .filter((entry) => entry.length > 0)
-        .map((entry) => path.resolve(PROJECT_ROOT, entry));
+        .map((entry) => {
+          const resolved = path.resolve(PROJECT_ROOT, entry);
+          if (!resolved.startsWith(PROJECT_ROOT)) {
+            throw new Error(`Path ${entry} is outside project boundary`);
+          }
+          return resolved;
+        });
       continue;
     }
 
@@ -177,7 +183,11 @@ function parseArgs(argv: string[]): CliOptions {
         throw new Error('--report requires a file path');
       }
       i += 1;
-      reportPath = path.resolve(PROJECT_ROOT, value);
+      const resolvedReport = path.resolve(PROJECT_ROOT, value);
+      if (!resolvedReport.startsWith(PROJECT_ROOT)) {
+        throw new Error(`Path ${value} is outside project boundary`);
+      }
+      reportPath = resolvedReport;
       continue;
     }
 

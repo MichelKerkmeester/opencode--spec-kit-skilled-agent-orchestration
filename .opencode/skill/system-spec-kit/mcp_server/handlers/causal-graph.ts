@@ -501,6 +501,21 @@ async function handleMemoryCausalLink(args: CausalLinkArgs): Promise<MCPResponse
     const safeRelation = relation as causalEdges.RelationType;
     const edge = causalEdges.insertEdge(String(sourceId), String(targetId), safeRelation, strength ?? 1.0, evidence ?? null);
 
+    if (!edge) {
+      return createMCPErrorResponse({
+        tool: 'memory_causal_link',
+        error: 'Edge creation failed',
+        code: 'E031',
+        details: { sourceId, targetId, relation },
+        recovery: {
+          hint: 'The edge could not be created. Check for self-loops or edge limits.',
+          actions: ['Verify source and target are different', 'Check edge count limits'],
+          severity: 'error'
+        },
+        startTime: startTime
+      });
+    }
+
     return createMCPSuccessResponse({
       tool: 'memory_causal_link',
       summary: `Created causal link: ${sourceId} --[${relation}]--> ${targetId}`,

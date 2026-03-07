@@ -175,9 +175,7 @@ function insertEdge(
         WHERE source_id = ? AND target_id = ? AND relation = ?
       `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
 
-      // AI-WHY: Single upsert — SQLite sets last_insert_rowid() to the row's rowid for
-      // both INSERT and the DO UPDATE conflict path, so we avoid a post-upsert SELECT.
-      const upsertResult = (db.prepare(`
+      (db.prepare(`
         INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
         VALUES (?, ?, ?, ?, ?, ?)
         ON CONFLICT(source_id, target_id, relation) DO UPDATE SET
@@ -185,7 +183,10 @@ function insertEdge(
           evidence = COALESCE(excluded.evidence, causal_edges.evidence)
       `) as Database.Statement).run(sourceId, targetId, relation, clampedStrength, evidence, createdBy);
 
-      const rowId = Number((upsertResult as { lastInsertRowid: number | bigint }).lastInsertRowid);
+      const row = (db.prepare(`
+        SELECT id FROM causal_edges WHERE source_id = ? AND target_id = ? AND relation = ?
+      `) as Database.Statement).get(sourceId, targetId, relation) as { id: number } | undefined;
+      const rowId = row ? row.id : 0;
 
       // T001d: Log weight change on conflict update
       if (existing && rowId && existing.strength !== clampedStrength) {

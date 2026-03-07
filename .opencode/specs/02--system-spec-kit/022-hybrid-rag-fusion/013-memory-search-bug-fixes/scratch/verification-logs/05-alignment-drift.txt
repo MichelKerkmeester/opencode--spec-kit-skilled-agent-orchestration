@@ -1,9 +1,0 @@
-$ python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit
-[alignment-drift] PASS
-Scanned files: 676
-Findings: 0
-Errors: 0
-Warnings: 0
-Violations: 0
-
-EXIT_CODE=0

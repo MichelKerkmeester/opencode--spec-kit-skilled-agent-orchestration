@@ -185,57 +185,18 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       });
     })();
   } else {
-    // AI-GUARD: AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
-    if (embeddingStatusNeedsPendingWrite) {
-      vectorIndex.updateEmbeddingStatus(id, 'pending');
-    }
-
-    vectorIndex.updateMemory(updateParams);
-
-    if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled()) {
-      try {
-        const db = vectorIndex.getDb();
-        if (db) {
-          const row = db.prepare(
-            'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
-          ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
-          if (row) {
-            const textParts: string[] = [];
-            if (row.title) textParts.push(row.title);
-            if (row.content_text) textParts.push(row.content_text);
-            if (row.trigger_phrases) textParts.push(row.trigger_phrases);
-            if (row.file_path) textParts.push(row.file_path);
-            const text = textParts.join(' ');
-            if (text.trim()) {
-              bm25Index.getIndex().addDocument(String(id), text);
-            }
-          }
-        }
-      } catch (e: unknown) {
-        console.warn(`[memory-crud-update] BM25 re-index failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
-      }
-    }
-
-    appendMutationLedgerSafe(database, {
-      mutationType: 'update',
-      reason: 'memory_update: metadata update',
-      priorHash: priorSnapshot?.content_hash ?? (existing.content_hash as string | null) ?? null,
-      newHash: mutationLedger.computeHash(JSON.stringify({
-        id,
-        title: updateParams.title ?? existing.title ?? null,
-        triggerPhrases: updateParams.triggerPhrases ?? null,
-        importanceWeight: updateParams.importanceWeight ?? null,
-        importanceTier: updateParams.importanceTier ?? null,
-      })),
-      linkedMemoryIds: [id],
-      decisionMeta: {
-        tool: 'memory_update',
+    // AI-GUARD: P1-021 — No database handle means we cannot guarantee transactional
+    // consistency. Abort early rather than risk partial state.
+    console.warn('[memory-crud-update] No database handle, aborting update to prevent partial state');
+    return createMCPSuccessResponse({
+      tool: 'memory_update',
+      summary: `Memory ${id} update aborted: database unavailable`,
+      data: {
+        updated: null,
         fields,
-        embeddingRegenerated,
-        embeddingMarkedForReindex,
-        allowPartialUpdate,
+        error: 'Database unavailable — update aborted to prevent partial state',
       },
-      actor: 'mcp:memory_update',
+      hints: ['Restart the MCP server or run memory_index_scan() to reinitialize the database'],
     });
   }
 

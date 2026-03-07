@@ -135,6 +135,11 @@ export function getPhaseFolderRejectionSync(specFolderPath: string): PhaseFolder
     return buildPhaseFolderRejection(resolvedPath, parentPath, 'child-phase-markers');
   }
 
+  // Child has spec.md without phase markers → independent sub-spec, not a phase child
+  if (childSpecContent) {
+    return null;
+  }
+
   const parentSpecContent = readFileIfExistsSync(path.join(parentPath, 'spec.md'));
   if (parentSpecContent && /PHASE DOCUMENTATION MAP/i.test(parentSpecContent)) {
     return buildPhaseFolderRejection(resolvedPath, parentPath, 'parent-phase-map');

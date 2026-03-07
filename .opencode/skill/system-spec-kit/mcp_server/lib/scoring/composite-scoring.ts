@@ -245,7 +245,8 @@ function parseLastAccessed(value: number | string | undefined | null): number | 
  * Uses FSRS v4 power-law formula: R = (1 + 0.235 * t/S)^-0.5
  */
 export function calculateRetrievabilityScore(row: ScoringInput): number {
-  const stability = (row.stability as number | undefined) || 1.0;
+  let stability = (row.stability as number | undefined) || 1.0;
+  if (!isFinite(stability)) stability = 1.0;
   const lastReview = (row.lastReview as string | undefined) || row.updated_at || row.created_at;
   const contextType = typeof row.context_type === 'string'
     ? row.context_type.toLowerCase()
@@ -310,6 +311,7 @@ export const calculateTemporalScore = calculateRetrievabilityScore;
  * Normalized to 0-1 range for composite scoring
  */
 export function calculateUsageScore(accessCount: number): number {
+  accessCount = Math.max(0, accessCount);
   const count = accessCount || 0;
   const usageBoost = Math.min(1.5, 1.0 + count * 0.05);
   return (usageBoost - 1.0) / 0.5;
@@ -361,7 +363,7 @@ export function calculatePatternScore(row: ScoringInput, options: ScoringOptions
   const query = options.query || '';
   const queryLower = query.toLowerCase();
 
-  const similarity = (Number(row.similarity) || 0) / 100;
+  const similarity = (Number(row.similarity ?? 0) || 0) / 100;
   score = similarity * 0.5;
 
   if (row.title && queryLower) {

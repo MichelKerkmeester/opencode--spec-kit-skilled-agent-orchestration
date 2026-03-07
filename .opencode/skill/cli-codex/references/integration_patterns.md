@@ -192,20 +192,56 @@ tail -f /tmp/generated-tests.ts
 
 ## 5. MODEL SELECTION STRATEGY
 
-**`gpt-5.3-codex` is the only supported model. Use it for all tasks.**
+**Codex CLI supports 2 models. Choose based on task type.**
+
+### Decision Matrix
+
+| Task Type | Recommended Model | Flag | Rationale |
+|-----------|-------------------|------|-----------|
+| Architecture analysis | `gpt-5.4` | `--model gpt-5.4` | Frontier reasoning for complex analysis |
+| Security audit | `gpt-5.4` | `--model gpt-5.4` | Deep reasoning catches subtle patterns |
+| Complex planning | `gpt-5.4` | `--model gpt-5.4` | Multi-strategy evaluation |
+| Research synthesis | `gpt-5.4` | `--model gpt-5.4` | Better synthesis of findings |
+| Code generation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Optimized for code output |
+| Standard review | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Efficient pattern-based review |
+| Implementation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Code-focused with xhigh reasoning |
+| Test generation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Better test structure output |
+| Documentation | `gpt-5.3-codex` | `--model gpt-5.3-codex` | Efficient structured generation |
+
+### Strength Comparison
+
+| Dimension | GPT-5.4 | GPT-5.3-Codex |
+|-----------|---------|---------------|
+| Reasoning depth | Frontier (configurable effort) | High (xhigh fixed) |
+| Code generation | Strong | Optimized |
+| Architecture analysis | Best choice | Good |
+| Security reasoning | Best choice | Good |
+| Speed | Slower (deeper reasoning) | Faster |
+| Cost | Higher | Lower |
 
 ### Implementation
 
 ```bash
-# All tasks use the same model — always specify explicitly
-codex exec "Review the authentication architecture" \
-  --sandbox read-only --model gpt-5.3-codex
+# GPT-5.4 for reasoning-heavy tasks
+codex exec "Review the authentication architecture for security gaps" \
+  --sandbox read-only --model gpt-5.4
 
+codex exec "Plan the migration from REST to GraphQL" \
+  --sandbox read-only --model gpt-5.4
+
+# GPT-5.3-Codex for code-focused tasks
 codex exec "Write tests for utils.ts" \
   --sandbox workspace-write --model gpt-5.3-codex
 
-codex exec "Does src/ use the singleton pattern? Answer yes or no." \
-  --sandbox read-only --model gpt-5.3-codex
+codex exec "Generate a rate limiter middleware" \
+  --sandbox workspace-write --model gpt-5.3-codex
+
+# Mixed workflow: analyze with 5.4, implement with 5.3-Codex
+codex exec "Analyze src/ for N+1 query patterns" \
+  --sandbox read-only --model gpt-5.4 > /tmp/analysis.txt
+
+codex exec "Fix the N+1 patterns identified: $(cat /tmp/analysis.txt)" \
+  --sandbox workspace-write --model gpt-5.3-codex
 ```
 
 ### Why Explicit Model Specification Matters

@@ -393,11 +393,14 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err: unknown) => {
-  const errMsg = err instanceof Error ? err.message : String(err);
-  console.error(`Error: ${errMsg}`);
-  process.exit(1);
-});
+// Guard main() execution to prevent side effects on import
+if (require.main === module) {
+  main().catch((err: unknown) => {
+    const errMsg = err instanceof Error ? err.message : String(err);
+    console.error(`Error: ${errMsg}`);
+    process.exit(1);
+  });
+}
 
 /* -----------------------------------------------------------------
    7. EXPORTS

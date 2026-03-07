@@ -83,14 +83,14 @@ copilot -p "Implement a file upload service in Node.js. Create necessary files: 
 
 ```bash
 copilot -p "Security review of @./[file]. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
-  --mode plan --model gemini-3-pro --allow-all-tools 2>&1
+  --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Security review of @./src/api/auth.ts. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
-  --mode plan --model gemini-3-pro --allow-all-tools 2>&1
+  --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### Performance Review
@@ -123,7 +123,7 @@ copilot -p "Propose an architecture for a real-time collaborative editor. Consid
 
 ```bash
 copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [new-stack]. Identify risks and rollback strategies." \
-  --mode plan --model gpt-4.1 --allow-all-tools 2>&1
+  --mode plan --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:planning -->
@@ -161,7 +161,7 @@ copilot -p "Investigate why [feature] stopped working after recent changes in @.
 
 ```bash
 copilot -p "Generate Vitest unit tests for @./[file]. Aim for 90%+ coverage. Mock external dependencies as seen in @./[example-test]." \
-  --model gpt-5-mini --allow-all-tools 2>&1
+  --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
 ### E2E Scenario
@@ -187,7 +187,7 @@ copilot -p "Write a technical specification for @./[dir]. Include: data models, 
 
 ```bash
 copilot -p "Update documentation in @./docs to match code changes in @./src. Ensure all examples are functional." \
-  --model gemini-3-pro --allow-all-tools 2>&1
+  --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:documentation -->
@@ -213,7 +213,7 @@ copilot -p "Convert @./src/legacy/db.js to use ESM modules and top-level await. 
 
 ```bash
 copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind classes. Maintain exact visual fidelity." \
-  --model gpt-5-mini --allow-all-tools 2>&1
+  --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:code_transformation -->
@@ -225,7 +225,7 @@ copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind clas
 
 ```bash
 copilot -p "Map all internal dependencies for @./[dir]. Output as a JSON object showing import relationships." \
-  --output-format json --mode plan --model gemini-3-pro --allow-all-tools 2>&1
+  --output-format json --mode plan --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 ### API Surface Analysis
@@ -258,7 +258,7 @@ copilot -p "Generate Terraform modules for an AWS EKS cluster. Requirements: pri
 
 ```bash
 copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting, testing, and deployment to [environment]." \
-  --model gpt-4.1 --allow-all-tools 2>&1
+  --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:cloud_delegation -->
@@ -277,7 +277,7 @@ copilot -p "Execute a complex refactor of @./[dir]. Use @context to map dependen
 
 ```bash
 copilot -p "Summarize progress for the current task. List: completed files, remaining work, and context for the next developer." \
-  --agent handover --model gemini-3-pro --allow-all-tools 2>&1
+  --agent handover --model gemini-3.1-pro-preview --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:specialized_tasks -->

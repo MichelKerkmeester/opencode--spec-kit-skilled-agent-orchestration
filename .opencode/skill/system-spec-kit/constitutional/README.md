@@ -23,12 +23,12 @@ The constitutional tier is the highest importance level in the Spec Kit Memory s
 - [3. STRUCTURE](#3--structure)
 - [4. FEATURES](#4--features)
 - [5. CONFIGURATION](#5--configuration)
-- [6. CREATING CONSTITUTIONAL MEMORIES]](#6--creating-constitutional-memories)
-- [7. CUSTOMIZATION]](#7--customization)
+- [6. CREATING CONSTITUTIONAL MEMORIES](#6--creating-constitutional-memories)
+- [7. CUSTOMIZATION](#7--customization)
 - [8. USAGE EXAMPLES](#8--usage-examples)
 - [9. TROUBLESHOOTING](#9--troubleshooting)
 - [10. RELATED DOCUMENTS](#10--related-documents)
-- [11. SUMMARY]](#11--summary)
+- [11. SUMMARY](#11--summary)
 
 ---
 

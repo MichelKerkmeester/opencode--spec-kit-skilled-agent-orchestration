@@ -432,7 +432,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData = await loadDataFn();
       log('   Loaded via custom function');
     } else {
-      collectedData = await loadCollectedDataFromLoader();
+      collectedData = await loadCollectedDataFromLoader({ dataFile: activeDataFile, specFolderArg: activeSpecFolderArg });
       log(`   Loaded from ${collectedData?._isSimulation ? 'simulation' : 'data source'}`);
     }
 

@@ -14,7 +14,7 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/architecture/layer-definitions.ts` | Lib | Architecture layer enforcement |
+| `mcp_server/lib/architecture/check-architecture-boundaries.ts` | Lib | Architecture boundary enforcement |
 
 ### Tests
 

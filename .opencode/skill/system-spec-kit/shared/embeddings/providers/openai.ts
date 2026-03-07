@@ -145,6 +145,7 @@ export class OpenAIProvider implements IEmbeddingProvider {
       const data = await response.json() as OpenAIEmbeddingResponse;
 
       this.requestCount++;
+      this.isHealthy = true;
       if (data.usage) {
         this.totalTokens += data.usage.total_tokens;
       }

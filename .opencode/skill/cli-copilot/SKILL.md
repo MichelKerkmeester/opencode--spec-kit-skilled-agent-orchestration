@@ -2,7 +2,7 @@
 name: cli-copilot
 description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.0.0
+version: 1.1.0
 ---
 
 <!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
@@ -186,28 +186,15 @@ copilot -p "prompt" --allow-all-tools 2>&1
 
 ### Model Selection
 
-Copilot CLI supports 18 models across 3 providers:
+Copilot CLI supports 5 recommended models across 3 providers:
 
 | Model | ID | Provider |
 |-------|----|----------|
-| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic |
-| **Claude Opus 4.6 Fast** | `claude-opus-4.6-fast` | Anthropic |
-| **Claude Opus 4.5** | `claude-opus-4.5` | Anthropic |
-| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic |
-| **Claude Sonnet 4.5** | `claude-sonnet-4.5` | Anthropic |
-| **Claude Sonnet 4** | `claude-sonnet-4` | Anthropic |
-| **Claude Haiku 4.5** | `claude-haiku-4.5` | Anthropic |
 | **GPT-5.4** | `gpt-5.4` | OpenAI |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI |
-| **GPT-5.2-Codex** | `gpt-5.2-codex` | OpenAI |
-| **GPT-5.2** | `gpt-5.2` | OpenAI |
-| **GPT-5.1-Codex-Max** | `gpt-5.1-codex-max` | OpenAI |
-| **GPT-5.1-Codex** | `gpt-5.1-codex` | OpenAI |
-| **GPT-5.1** | `gpt-5.1` | OpenAI |
-| **GPT-5.1-Codex-Mini** | `gpt-5.1-codex-mini` | OpenAI |
-| **GPT-5 mini** | `gpt-5-mini` | OpenAI |
-| **GPT-4.1** | `gpt-4.1` | OpenAI |
-| **Gemini 3 Pro Preview** | `gemini-3-pro-preview` | Google |
+| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic |
+| **Gemini 3.1 Pro Preview** | `gemini-3.1-pro-preview` | Google |
 
 ### Reasoning Effort (GPT-5.x models)
 

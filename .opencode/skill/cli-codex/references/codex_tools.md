@@ -326,6 +326,7 @@ These capabilities provide functionality comparable to Claude Code's built-in to
 | **Multi-file read** | Multiple `Read` calls | `@glob` pattern | Codex batches natively |
 | **Image analysis** | `Read` (multimodal) | `--image` / `-i` flag | Both support image input |
 | **Code review (diff)** | Manual diff + Read | `/review` command | Codex `/review` is diff-aware |
+| **Models** | 3 (Anthropic) | 2 (OpenAI: GPT-5.4 + GPT-5.3-Codex) | Codex offers reasoning + code-focused models |
 | **Session continuity** | Spec Kit Memory MCP | `resume`, `fork` | Codex preserves tool-call history |
 | **Cloud execution** | Not built-in | `codex cloud` | Codex-exclusive |
 | **Agent system** | `.claude/agents/` | `.codex/agents/*.toml` | Both support specialized agents |

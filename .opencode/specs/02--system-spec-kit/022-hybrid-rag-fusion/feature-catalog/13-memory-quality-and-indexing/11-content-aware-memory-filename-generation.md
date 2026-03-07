@@ -12,7 +12,7 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
+| `mcp_server/lib/parsing/slug-utils.ts` | Lib | Content-aware slug generation |
 
 ### Tests
 

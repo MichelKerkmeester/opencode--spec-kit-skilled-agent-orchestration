@@ -67,6 +67,7 @@ interface CheckpointSnapshot {
   memories: Array<Record<string, unknown>>;
   workingMemory: Array<Record<string, unknown>>;
   vectors?: SnapshotVectorRow[];
+  causalEdges?: Array<Record<string, unknown>>;
   timestamp: string;
 }
 
@@ -343,10 +344,23 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
         // Table may not exist
       }
 
+      // Snapshot causal_edges if exists
+      let causalEdgesSnapshot: Array<Record<string, unknown>> = [];
+      if (tableExists(database, 'causal_edges')) {
+        try {
+          causalEdgesSnapshot = database.prepare(
+            'SELECT * FROM causal_edges'
+          ).all() as Array<Record<string, unknown>>;
+        } catch (_error: unknown) {
+          // Table may not exist or be empty
+        }
+      }
+
       const snapshot: CheckpointSnapshot = {
         memories,
         workingMemory: workingMemorySnapshot,
         vectors,
+        causalEdges: causalEdgesSnapshot,
         timestamp: new Date().toISOString(),
       };
 
@@ -501,10 +515,23 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       return result;
     }
 
+    // AI-GUARD: P0-005 FIX: Split INSERT strategy by restore mode.
+    // clearExisting mode: INSERT OR REPLACE is safe (table was already emptied).
+    // merge mode: INSERT OR REPLACE triggers CASCADE DELETE on working_memory
+    // via the FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE.
+    // Use INSERT OR IGNORE + explicit UPDATE to avoid the delete-reinsert cycle.
     const memoryInsertStmt = memoryRestoreColumns.length > 0
       ? database.prepare(`
-          INSERT OR REPLACE INTO memory_index (${memoryRestoreColumns.join(', ')})
+          INSERT OR ${clearExisting ? 'REPLACE' : 'IGNORE'} INTO memory_index (${memoryRestoreColumns.join(', ')})
           VALUES (${memoryRestoreColumns.map(() => '?').join(', ')})
+        `) as Database.Statement
+      : null;
+
+    const nonIdColumns = memoryRestoreColumns.filter(c => c !== 'id');
+    const memoryUpdateStmt = (!clearExisting && nonIdColumns.length > 0)
+      ? database.prepare(`
+          UPDATE memory_index SET ${nonIdColumns.map(c => `${c} = ?`).join(', ')}
+          WHERE id = ?
         `) as Database.Statement
       : null;
 
@@ -619,7 +646,19 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           const values = memoryRestoreColumns.map((column) =>
             normalizeMemoryColumnValue(column, memory[column as keyof typeof memory])
           );
-          memoryInsertStmt.run(...values);
+          const insertResult = memoryInsertStmt.run(...values) as { changes: number };
+
+          // P0-005: In merge mode, INSERT OR IGNORE returns changes=0 when
+          // the row already exists. Follow up with an explicit UPDATE to
+          // apply the snapshot values without triggering CASCADE deletes.
+          if (!clearExisting && insertResult.changes === 0 && memoryUpdateStmt) {
+            const updateValues = nonIdColumns.map((column) =>
+              normalizeMemoryColumnValue(column, memory[column as keyof typeof memory])
+            );
+            updateValues.push(memory.id); // WHERE id = ?
+            memoryUpdateStmt.run(...updateValues);
+          }
+
           restoredMemoryIds.add(memory.id as number);
           result.restored++;
         } catch (e: unknown) {
@@ -692,6 +731,31 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           } catch (e: unknown) {
             const msg = toErrorMessage(e);
             txErrors.push(`WorkingMemory ${wmEntry.id}: ${msg}`);
+          }
+        }
+      }
+
+      // P1-036: Restore causal_edges from checkpoint snapshot.
+      if (Array.isArray(snapshot.causalEdges) && snapshot.causalEdges.length > 0 && tableExists(database, 'causal_edges')) {
+        if (clearExisting) {
+          try { database.prepare('DELETE FROM causal_edges').run(); } catch (_error: unknown) { /* table may not exist */ }
+        }
+
+        const edgeColumns = getTableColumns(database, 'causal_edges');
+        if (edgeColumns.length > 0) {
+          const edgeInsertStmt = database.prepare(`
+            INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
+            VALUES (${edgeColumns.map(() => '?').join(', ')})
+          `) as Database.Statement;
+
+          for (const edge of snapshot.causalEdges) {
+            try {
+              const edgeValues = edgeColumns.map(col => edge[col] ?? null);
+              edgeInsertStmt.run(...edgeValues);
+            } catch (e: unknown) {
+              const msg = toErrorMessage(e);
+              txErrors.push(`CausalEdge: ${msg}`);
+            }
           }
         }
       }

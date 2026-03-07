@@ -1,7 +1,7 @@
 # Manual Test Playbooks (Merged)
 
 This merged playbook combines:
-- Codex 5.3 xhigh canonical per-feature matrix (full 128-feature mapping)
+- Codex 5.3 xhigh canonical per-feature matrix (full 151-feature mapping)
 - Gemini 3.1 Pro Preview scenario-pack overlays (operator execution bundles)
 
 Canonical source artifacts:
@@ -68,7 +68,7 @@ Canonical source artifacts:
 | EX-033 | 6. Debug and Telemetry | Observability toggle check | `List telemetry/debug vars and inert flags` | `memory_search("DEBUG_TRIGGER_MATCHER ... inert")` | Debug/telemetry controls identified | Search output | PASS if active vs inert clearly separated | Check feature flag governance section |
 | EX-034 | 7. CI and Build (informational) | Branch metadata source audit | `Find branch env vars used in checkpoint metadata` | `memory_search("GIT_BRANCH BRANCH_NAME ...")` | Branch source vars surfaced | Search output | PASS if all listed vars are found | Search CI scripts and runtime helpers |
 
-## New Features (`NEW-001..NEW-094`)
+## New Features (`NEW-001..NEW-113`)
 
 Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 - Evidence: command transcript + key output snapshot + any DB/log artifact
@@ -185,6 +185,199 @@ Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 | NEW-106 | Hooks barrel + README synchronization | Confirm hooks index exports and docs cover the finalized modules and contract fields | `Validate hook barrel and README coverage for the finalized UX-hook surface.` | 1) `rg "mutation-feedback|response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg "mutation-feedback|response-hints|MutationHookResult|postMutationHooks" .opencode/skill/system-spec-kit/mcp_server/hooks/README.md` | Barrel includes both module exports and README includes usage plus contract references | `rg` output snippets from both files | PASS if both files reference the new modules and contract fields | Update hooks barrel/doc text and rerun `rg` checks |
 | NEW-107 | Checkpoint confirmName and schema enforcement | Confirm delete safety is required across handler and validation layers | `Validate checkpoint delete confirmName enforcement across handler and schema layers.` | 1) `npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts` 2) inspect rejection assertions for missing `confirmName` 3) inspect success assertions for `safetyConfirmationUsed=true` | Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting | Test transcript + assertion snippets | PASS if the three suites pass and prove required `confirmName` enforcement end to end | Inspect checkpoint handler, schemas, and tool typing alignment |
 | NEW-108 | Phase 014 finalized verification command suite evidence | Confirm the recorded verification set matches the final phase evidence | `Run the finalized Phase 014 verification command suite and record evidence.` | 1) `npx tsc -b` 2) `npm run lint` 3) `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts` 4) `npx vitest run tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` 5) run MCP SDK stdio smoke test against `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` | `npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 460 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed | Build/lint/test/smoke transcripts with totals and tool count | PASS if all five verification steps match the recorded Phase 014 evidence exactly | Re-run the failing verification step in isolation and inspect the corresponding Phase 014 handler or test coverage |
+| NEW-109 | Quality-aware 3-tier search fallback | Confirm 3-tier degradation chain triggers correctly | `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.` | 1) `memory_search({query:"zzz_nonexistent_term_zzz", limit:20})` with default settings (Tier 1) 2) inspect `_degradation` property on result — if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3, confirm Tier 2 triggered 3) verify Tier 2 uses minSimilarity=0.1 and forces all channels 4) if Tier 2 also fails quality check, confirm Tier 3 structural SQL fallback fires 5) verify Tier 3 scores capped at 50% of existing top score 6) set `SPECKIT_SEARCH_FALLBACK=false` and verify single-tier only |
+| NEW-110 | Prediction-error save arbitration | Confirm 5-action PE decision engine during save | `Validate prediction-error save arbitration actions.` | 1) save a memory with unique content → expect CREATE action 2) save identical content → expect REINFORCE (similarity >=0.95) 3) save slightly modified content (no contradiction) → expect UPDATE (0.85-0.94) 4) save modified content with contradiction → expect SUPERSEDE (0.85-0.94 + contradiction) 5) save loosely related content → expect CREATE_LINKED (0.70-0.84) 6) query `memory_conflicts` table entries for action/similarity/contradiction columns 7) save with `force:true` → verify PE arbitration bypassed |
+| NEW-111 | Deferred lexical-only indexing | Confirm embedding-failure fallback and BM25 searchability | `Validate deferred lexical-only indexing fallback.` | 1) simulate embedding failure (e.g., set invalid `OPENAI_API_KEY`) 2) `memory_save(filePath)` → verify memory saved with `embedding_status='pending'` 3) `memory_search({query:"<title of saved memory>"})` → verify BM25/FTS5 retrieval works (lexical match) 4) restore valid API key 5) run `node cli.js reindex` → verify `embedding_status` transitions to `'success'` and `retry_count` increments 6) `memory_search({query:"<semantic query>"})` → verify vector search now works |
+| NEW-112 | Cross-process DB hot rebinding | Confirm marker-file triggers DB reinitialization | `Validate cross-process DB hot rebinding via marker file.` | 1) start MCP server 2) create a test memory via MCP: `memory_save(filePath)` and note its title 3) from a separate terminal, run `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox` (non-dry-run — this mutates the DB and writes the `DB_UPDATED_FILE` marker) 4) immediately call `memory_stats()` via MCP → verify server detects marker and reinitializes DB 5) verify no stale data from pre-rebind state 6) run `memory_health()` → verify healthy status post-rebind |
+| NEW-113 | Standalone admin CLI | Confirm 4 CLI commands execute correctly | `Validate standalone admin CLI commands.` | 1) `node cli.js stats` → verify tier distribution, top folders, schema version displayed 2) `node cli.js bulk-delete --tier scratch --folder specs/test-sandbox --dry-run` → verify dry-run shows deletion plan without executing 3) `node cli.js reindex --force` → verify full reindex completes 4) `node cli.js schema-downgrade --to 15` (without --confirm) → verify safety prompt 5) verify checkpoint auto-created before bulk-delete (non-dry-run) |
+
+## Feature Catalog Cross-Reference Index
+
+Bidirectional mapping between playbook scenarios and feature catalog entries.
+Catalog base path: `feature-catalog/` (relative to `022-hybrid-rag-fusion/`)
+
+### Existing Features (EX-001..034)
+
+| Playbook ID | Catalog Entry |
+|---|---|
+| EX-001 | [01-retrieval/01-unified-context-retrieval-memorycontext.md](../feature-catalog/01-retrieval/01-unified-context-retrieval-memorycontext.md) |
+| EX-002 | [01-retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature-catalog/01-retrieval/02-semantic-and-lexical-search-memorysearch.md) |
+| EX-003 | [01-retrieval/03-trigger-phrase-matching-memorymatchtriggers.md](../feature-catalog/01-retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) |
+| EX-004 | [01-retrieval/04-hybrid-search-pipeline.md](../feature-catalog/01-retrieval/04-hybrid-search-pipeline.md) |
+| EX-005 | [01-retrieval/05-4-stage-pipeline-architecture.md](../feature-catalog/01-retrieval/05-4-stage-pipeline-architecture.md) |
+| EX-006 | [02-mutation/01-memory-indexing-memorysave.md](../feature-catalog/02-mutation/01-memory-indexing-memorysave.md) |
+| EX-007 | [02-mutation/02-memory-metadata-update-memoryupdate.md](../feature-catalog/02-mutation/02-memory-metadata-update-memoryupdate.md) |
+| EX-008 | [02-mutation/03-single-and-folder-delete-memorydelete.md](../feature-catalog/02-mutation/03-single-and-folder-delete-memorydelete.md) |
+| EX-009 | [02-mutation/04-tier-based-bulk-deletion-memorybulkdelete.md](../feature-catalog/02-mutation/04-tier-based-bulk-deletion-memorybulkdelete.md) |
+| EX-010 | [02-mutation/05-validation-feedback-memoryvalidate.md](../feature-catalog/02-mutation/05-validation-feedback-memoryvalidate.md) |
+| EX-011 | [03-discovery/01-memory-browser-memorylist.md](../feature-catalog/03-discovery/01-memory-browser-memorylist.md) |
+| EX-012 | [03-discovery/02-system-statistics-memorystats.md](../feature-catalog/03-discovery/02-system-statistics-memorystats.md) |
+| EX-013 | [03-discovery/03-health-diagnostics-memoryhealth.md](../feature-catalog/03-discovery/03-health-diagnostics-memoryhealth.md) |
+| EX-014 | [04-maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../feature-catalog/04-maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) |
+| EX-015 | [05-lifecycle/01-checkpoint-creation-checkpointcreate.md](../feature-catalog/05-lifecycle/01-checkpoint-creation-checkpointcreate.md) |
+| EX-016 | [05-lifecycle/02-checkpoint-listing-checkpointlist.md](../feature-catalog/05-lifecycle/02-checkpoint-listing-checkpointlist.md) |
+| EX-017 | [05-lifecycle/03-checkpoint-restore-checkpointrestore.md](../feature-catalog/05-lifecycle/03-checkpoint-restore-checkpointrestore.md) |
+| EX-018 | [05-lifecycle/04-checkpoint-deletion-checkpointdelete.md](../feature-catalog/05-lifecycle/04-checkpoint-deletion-checkpointdelete.md) |
+| EX-019 | [06-analysis/01-causal-edge-creation-memorycausallink.md](../feature-catalog/06-analysis/01-causal-edge-creation-memorycausallink.md) |
+| EX-020 | [06-analysis/02-causal-graph-statistics-memorycausalstats.md](../feature-catalog/06-analysis/02-causal-graph-statistics-memorycausalstats.md) |
+| EX-021 | [06-analysis/03-causal-edge-deletion-memorycausalunlink.md](../feature-catalog/06-analysis/03-causal-edge-deletion-memorycausalunlink.md) |
+| EX-022 | [06-analysis/04-causal-chain-tracing-memorydriftwhy.md](../feature-catalog/06-analysis/04-causal-chain-tracing-memorydriftwhy.md) |
+| EX-023 | [06-analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature-catalog/06-analysis/05-epistemic-baseline-capture-taskpreflight.md) |
+| EX-024 | [06-analysis/06-post-task-learning-measurement-taskpostflight.md](../feature-catalog/06-analysis/06-post-task-learning-measurement-taskpostflight.md) |
+| EX-025 | [06-analysis/07-learning-history-memorygetlearninghistory.md](../feature-catalog/06-analysis/07-learning-history-memorygetlearninghistory.md) |
+| EX-026 | [07-evaluation/01-ablation-studies-evalrunablation.md](../feature-catalog/07-evaluation/01-ablation-studies-evalrunablation.md) |
+| EX-027 | [07-evaluation/02-reporting-dashboard-evalreportingdashboard.md](../feature-catalog/07-evaluation/02-reporting-dashboard-evalreportingdashboard.md) |
+| EX-028 | [20-feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature-catalog/20-feature-flag-reference/01-1-search-pipeline-features-speckit.md) |
+| EX-029 | [20-feature-flag-reference/02-2-session-and-cache.md](../feature-catalog/20-feature-flag-reference/02-2-session-and-cache.md) |
+| EX-030 | [20-feature-flag-reference/03-3-mcp-configuration.md](../feature-catalog/20-feature-flag-reference/03-3-mcp-configuration.md) |
+| EX-031 | [20-feature-flag-reference/04-4-memory-and-storage.md](../feature-catalog/20-feature-flag-reference/04-4-memory-and-storage.md) |
+| EX-032 | [20-feature-flag-reference/05-5-embedding-and-api.md](../feature-catalog/20-feature-flag-reference/05-5-embedding-and-api.md) |
+| EX-033 | [20-feature-flag-reference/06-6-debug-and-telemetry.md](../feature-catalog/20-feature-flag-reference/06-6-debug-and-telemetry.md) |
+| EX-034 | [20-feature-flag-reference/07-7-ci-and-build-informational.md](../feature-catalog/20-feature-flag-reference/07-7-ci-and-build-informational.md) |
+
+### New Features (NEW-001..113)
+
+| Playbook ID | Catalog Entry |
+|---|---|
+| NEW-001 | [08-bug-fixes-and-data-integrity/01-graph-channel-id-fix.md](../feature-catalog/08-bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) |
+| NEW-002 | [08-bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../feature-catalog/08-bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) |
+| NEW-003 | [08-bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md](../feature-catalog/08-bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) |
+| NEW-004 | [08-bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md](../feature-catalog/08-bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) |
+| NEW-005 | [09-evaluation-and-measurement/01-evaluation-database-and-schema.md](../feature-catalog/09-evaluation-and-measurement/01-evaluation-database-and-schema.md) |
+| NEW-006 | [09-evaluation-and-measurement/02-core-metric-computation.md](../feature-catalog/09-evaluation-and-measurement/02-core-metric-computation.md) |
+| NEW-007 | [09-evaluation-and-measurement/03-observer-effect-mitigation.md](../feature-catalog/09-evaluation-and-measurement/03-observer-effect-mitigation.md) |
+| NEW-008 | [09-evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature-catalog/09-evaluation-and-measurement/04-full-context-ceiling-evaluation.md) |
+| NEW-009 | [09-evaluation-and-measurement/05-quality-proxy-formula.md](../feature-catalog/09-evaluation-and-measurement/05-quality-proxy-formula.md) |
+| NEW-010 | [09-evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../feature-catalog/09-evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) |
+| NEW-011 | [09-evaluation-and-measurement/07-bm25-only-baseline.md](../feature-catalog/09-evaluation-and-measurement/07-bm25-only-baseline.md) |
+| NEW-012 | [09-evaluation-and-measurement/08-agent-consumption-instrumentation.md](../feature-catalog/09-evaluation-and-measurement/08-agent-consumption-instrumentation.md) |
+| NEW-013 | [09-evaluation-and-measurement/09-scoring-observability.md](../feature-catalog/09-evaluation-and-measurement/09-scoring-observability.md) |
+| NEW-014 | [09-evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature-catalog/09-evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) |
+| NEW-015 | [09-evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature-catalog/09-evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) |
+| NEW-016 | [10-graph-signal-activation/01-typed-weighted-degree-channel.md](../feature-catalog/10-graph-signal-activation/01-typed-weighted-degree-channel.md) |
+| NEW-017 | [10-graph-signal-activation/02-co-activation-boost-strength-increase.md](../feature-catalog/10-graph-signal-activation/02-co-activation-boost-strength-increase.md) |
+| NEW-018 | [10-graph-signal-activation/03-edge-density-measurement.md](../feature-catalog/10-graph-signal-activation/03-edge-density-measurement.md) |
+| NEW-019 | [10-graph-signal-activation/04-weight-history-audit-tracking.md](../feature-catalog/10-graph-signal-activation/04-weight-history-audit-tracking.md) |
+| NEW-020 | [10-graph-signal-activation/05-graph-momentum-scoring.md](../feature-catalog/10-graph-signal-activation/05-graph-momentum-scoring.md) |
+| NEW-021 | [10-graph-signal-activation/06-causal-depth-signal.md](../feature-catalog/10-graph-signal-activation/06-causal-depth-signal.md) |
+| NEW-022 | [10-graph-signal-activation/07-community-detection.md](../feature-catalog/10-graph-signal-activation/07-community-detection.md) |
+| NEW-023 | [11-scoring-and-calibration/01-score-normalization.md](../feature-catalog/11-scoring-and-calibration/01-score-normalization.md) |
+| NEW-024 | [11-scoring-and-calibration/02-cold-start-novelty-boost.md](../feature-catalog/11-scoring-and-calibration/02-cold-start-novelty-boost.md) |
+| NEW-025 | [11-scoring-and-calibration/03-interference-scoring.md](../feature-catalog/11-scoring-and-calibration/03-interference-scoring.md) |
+| NEW-026 | [11-scoring-and-calibration/04-classification-based-decay.md](../feature-catalog/11-scoring-and-calibration/04-classification-based-decay.md) |
+| NEW-027 | [11-scoring-and-calibration/05-folder-level-relevance-scoring.md](../feature-catalog/11-scoring-and-calibration/05-folder-level-relevance-scoring.md) |
+| NEW-028 | [11-scoring-and-calibration/06-embedding-cache.md](../feature-catalog/11-scoring-and-calibration/06-embedding-cache.md) |
+| NEW-029 | [11-scoring-and-calibration/07-double-intent-weighting-investigation.md](../feature-catalog/11-scoring-and-calibration/07-double-intent-weighting-investigation.md) |
+| NEW-030 | [11-scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md](../feature-catalog/11-scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md) |
+| NEW-031 | [11-scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature-catalog/11-scoring-and-calibration/09-negative-feedback-confidence-signal.md) |
+| NEW-032 | [11-scoring-and-calibration/10-auto-promotion-on-validation.md](../feature-catalog/11-scoring-and-calibration/10-auto-promotion-on-validation.md) |
+| NEW-033 | [12-query-intelligence/01-query-complexity-router.md](../feature-catalog/12-query-intelligence/01-query-complexity-router.md) |
+| NEW-034 | [12-query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature-catalog/12-query-intelligence/02-relative-score-fusion-in-shadow-mode.md) |
+| NEW-035 | [12-query-intelligence/03-channel-min-representation.md](../feature-catalog/12-query-intelligence/03-channel-min-representation.md) |
+| NEW-036 | [12-query-intelligence/04-confidence-based-result-truncation.md](../feature-catalog/12-query-intelligence/04-confidence-based-result-truncation.md) |
+| NEW-037 | [12-query-intelligence/05-dynamic-token-budget-allocation.md](../feature-catalog/12-query-intelligence/05-dynamic-token-budget-allocation.md) |
+| NEW-038 | [12-query-intelligence/06-query-expansion.md](../feature-catalog/12-query-intelligence/06-query-expansion.md) |
+| NEW-039 | [13-memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md](../feature-catalog/13-memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md) |
+| NEW-040 | [13-memory-quality-and-indexing/02-signal-vocabulary-expansion.md](../feature-catalog/13-memory-quality-and-indexing/02-signal-vocabulary-expansion.md) |
+| NEW-041 | [13-memory-quality-and-indexing/03-pre-flight-token-budget-validation.md](../feature-catalog/13-memory-quality-and-indexing/03-pre-flight-token-budget-validation.md) |
+| NEW-042 | [13-memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature-catalog/13-memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
+| NEW-043 | [13-memory-quality-and-indexing/05-pre-storage-quality-gate.md](../feature-catalog/13-memory-quality-and-indexing/05-pre-storage-quality-gate.md) |
+| NEW-044 | [13-memory-quality-and-indexing/06-reconsolidation-on-save.md](../feature-catalog/13-memory-quality-and-indexing/06-reconsolidation-on-save.md) |
+| NEW-045 | [13-memory-quality-and-indexing/07-smarter-memory-content-generation.md](../feature-catalog/13-memory-quality-and-indexing/07-smarter-memory-content-generation.md) |
+| NEW-046 | [13-memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md](../feature-catalog/13-memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md) |
+| NEW-047 | [13-memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../feature-catalog/13-memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) |
+| NEW-048 | [13-memory-quality-and-indexing/10-auto-entity-extraction.md](../feature-catalog/13-memory-quality-and-indexing/10-auto-entity-extraction.md) |
+| NEW-049 | [14-pipeline-architecture/01-4-stage-pipeline-refactor.md](../feature-catalog/14-pipeline-architecture/01-4-stage-pipeline-refactor.md) |
+| NEW-050 | [14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md](../feature-catalog/14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md) |
+| NEW-051 | [14-pipeline-architecture/03-chunk-ordering-preservation.md](../feature-catalog/14-pipeline-architecture/03-chunk-ordering-preservation.md) |
+| NEW-052 | [14-pipeline-architecture/04-template-anchor-optimization.md](../feature-catalog/14-pipeline-architecture/04-template-anchor-optimization.md) |
+| NEW-053 | [14-pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../feature-catalog/14-pipeline-architecture/05-validation-signals-as-retrieval-metadata.md) |
+| NEW-054 | [14-pipeline-architecture/06-learned-relevance-feedback.md](../feature-catalog/14-pipeline-architecture/06-learned-relevance-feedback.md) |
+| NEW-055 | [15-retrieval-enhancements/01-dual-scope-memory-auto-surface.md](../feature-catalog/15-retrieval-enhancements/01-dual-scope-memory-auto-surface.md) |
+| NEW-056 | [15-retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../feature-catalog/15-retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) |
+| NEW-057 | [15-retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../feature-catalog/15-retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) |
+| NEW-058 | [15-retrieval-enhancements/04-lightweight-consolidation.md](../feature-catalog/15-retrieval-enhancements/04-lightweight-consolidation.md) |
+| NEW-059 | [15-retrieval-enhancements/05-memory-summary-search-channel.md](../feature-catalog/15-retrieval-enhancements/05-memory-summary-search-channel.md) |
+| NEW-060 | [15-retrieval-enhancements/06-cross-document-entity-linking.md](../feature-catalog/15-retrieval-enhancements/06-cross-document-entity-linking.md) |
+| NEW-061 | [16-tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature-catalog/16-tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) |
+| NEW-062 | [16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature-catalog/16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md) |
+| NEW-063 | [17-governance/01-feature-flag-governance.md](../feature-catalog/17-governance/01-feature-flag-governance.md) |
+| NEW-064 | [17-governance/02-feature-flag-sunset-audit.md](../feature-catalog/17-governance/02-feature-flag-sunset-audit.md) |
+| NEW-065 | [08-bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature-catalog/08-bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
+| NEW-066 | [11-scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature-catalog/11-scoring-and-calibration/11-scoring-and-ranking-corrections.md) |
+| NEW-067 | [14-pipeline-architecture/07-search-pipeline-safety.md](../feature-catalog/14-pipeline-architecture/07-search-pipeline-safety.md) |
+| NEW-068 | [08-bug-fixes-and-data-integrity/06-guards-and-edge-cases.md](../feature-catalog/08-bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) |
+| NEW-069 | [13-memory-quality-and-indexing/13-entity-normalization-consolidation.md](../feature-catalog/13-memory-quality-and-indexing/13-entity-normalization-consolidation.md) |
+| NEW-070 | [16-tooling-and-scripts/04-dead-code-removal.md](../feature-catalog/16-tooling-and-scripts/04-dead-code-removal.md) |
+| NEW-071 | [14-pipeline-architecture/08-performance-improvements.md](../feature-catalog/14-pipeline-architecture/08-performance-improvements.md) |
+| NEW-072 | [09-evaluation-and-measurement/12-test-quality-improvements.md](../feature-catalog/09-evaluation-and-measurement/12-test-quality-improvements.md) |
+| NEW-073 | [13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md](../feature-catalog/13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md) |
+| NEW-074 | [11-scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../feature-catalog/11-scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) |
+| NEW-075 | [08-bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../feature-catalog/08-bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
+| NEW-076 | [14-pipeline-architecture/09-activation-window-persistence.md](../feature-catalog/14-pipeline-architecture/09-activation-window-persistence.md) |
+| NEW-077 | [15-retrieval-enhancements/07-tier-2-fallback-channel-forcing.md](../feature-catalog/15-retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) |
+| NEW-078 | [14-pipeline-architecture/10-legacy-v1-pipeline-removal.md](../feature-catalog/14-pipeline-architecture/10-legacy-v1-pipeline-removal.md) |
+| NEW-079 | [11-scoring-and-calibration/13-scoring-and-fusion-corrections.md](../feature-catalog/11-scoring-and-calibration/13-scoring-and-fusion-corrections.md) |
+| NEW-080 | [14-pipeline-architecture/11-pipeline-and-mutation-hardening.md](../feature-catalog/14-pipeline-architecture/11-pipeline-and-mutation-hardening.md) |
+| NEW-081 | [10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../feature-catalog/10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
+| NEW-082 | [09-evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../feature-catalog/09-evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md) |
+| NEW-083 | [08-bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../feature-catalog/08-bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) |
+| NEW-084 | [08-bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md](../feature-catalog/08-bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) |
+| NEW-085 | [02-mutation/06-transaction-wrappers-on-mutation-handlers.md](../feature-catalog/02-mutation/06-transaction-wrappers-on-mutation-handlers.md) |
+| NEW-086 | [01-retrieval/06-bm25-trigger-phrase-re-index-gate.md](../feature-catalog/01-retrieval/06-bm25-trigger-phrase-re-index-gate.md) |
+| NEW-087 | [14-pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../feature-catalog/14-pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) |
+| NEW-088 | [09-evaluation-and-measurement/14-cross-ai-validation-fixes.md](../feature-catalog/09-evaluation-and-measurement/14-cross-ai-validation-fixes.md) |
+| NEW-089 | [16-tooling-and-scripts/05-code-standards-alignment.md](../feature-catalog/16-tooling-and-scripts/05-code-standards-alignment.md) |
+| NEW-090 | [19-decisions-and-deferrals/01-int8-quantization-evaluation.md](../feature-catalog/19-decisions-and-deferrals/01-int8-quantization-evaluation.md) |
+| NEW-091 | [19-decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md](../feature-catalog/19-decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md) |
+| NEW-092 | [19-decisions-and-deferrals/03-implemented-auto-entity-extraction.md](../feature-catalog/19-decisions-and-deferrals/03-implemented-auto-entity-extraction.md) |
+| NEW-093 | [19-decisions-and-deferrals/04-implemented-memory-summary-generation.md](../feature-catalog/19-decisions-and-deferrals/04-implemented-memory-summary-generation.md) |
+| NEW-094 | [19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md](../feature-catalog/19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) |
+| NEW-095 | [14-pipeline-architecture/13-strict-zod-schema-validation.md](../feature-catalog/14-pipeline-architecture/13-strict-zod-schema-validation.md) |
+| NEW-096 | [15-retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature-catalog/15-retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
+| NEW-097 | [05-lifecycle/05-async-ingestion-job-lifecycle.md](../feature-catalog/05-lifecycle/05-async-ingestion-job-lifecycle.md) |
+| NEW-098 | [11-scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature-catalog/11-scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) |
+| NEW-099 | [16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature-catalog/16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) |
+| NEW-100 | *(server lifecycle — no dedicated catalog entry)* |
+| NEW-101 | *(memory_delete confirm schema — covered by `02-mutation/03`)* |
+| NEW-102 | *(node-llama-cpp optionalDependencies — covered by `11-scoring-and-calibration/14`)* |
+| NEW-103 | [18-ux-hooks/05-dedicated-ux-hook-modules.md](../feature-catalog/18-ux-hooks/05-dedicated-ux-hook-modules.md) |
+| NEW-104 | [18-ux-hooks/09-duplicate-save-no-op-feedback-hardening.md](../feature-catalog/18-ux-hooks/09-duplicate-save-no-op-feedback-hardening.md) |
+| NEW-105 | [18-ux-hooks/08-context-server-success-hint-append.md](../feature-catalog/18-ux-hooks/08-context-server-success-hint-append.md) |
+| NEW-106 | [18-ux-hooks/12-hooks-readme-and-export-alignment.md](../feature-catalog/18-ux-hooks/12-hooks-readme-and-export-alignment.md) |
+| NEW-107 | [18-ux-hooks/03-checkpoint-delete-confirmname-safety.md](../feature-catalog/18-ux-hooks/03-checkpoint-delete-confirmname-safety.md) |
+| NEW-108 | *(Phase 014 verification suite — no dedicated catalog entry)* |
+| NEW-109 | [01-retrieval/08-quality-aware-3-tier-search-fallback.md](../feature-catalog/01-retrieval/08-quality-aware-3-tier-search-fallback.md) |
+| NEW-110 | [02-mutation/08-prediction-error-save-arbitration.md](../feature-catalog/02-mutation/08-prediction-error-save-arbitration.md) |
+| NEW-111 | [13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../feature-catalog/13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) |
+| NEW-112 | [14-pipeline-architecture/17-cross-process-db-hot-rebinding.md](../feature-catalog/14-pipeline-architecture/17-cross-process-db-hot-rebinding.md) |
+| NEW-113 | [16-tooling-and-scripts/07-standalone-admin-cli.md](../feature-catalog/16-tooling-and-scripts/07-standalone-admin-cli.md) |
+
+### Catalog Entries Without Playbook Coverage (19 entries)
+
+These catalog entries have no dedicated playbook scenario. They are either deferred/planned features, cross-cutting concerns tested implicitly via other scenarios, or documentation-only entries:
+
+| Catalog Entry | Reason |
+|---|---|
+| `01-retrieval/07-ast-level-section-retrieval-tool.md` | DEFERRED — not yet implemented |
+| `02-mutation/07-namespace-management-crud-tools.md` | DEFERRED — not yet implemented |
+| `10-graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | DEFERRED — planned for Sprint 019, not yet implemented |
+| `13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Tested implicitly via NEW-045 (smarter content generation) |
+| `13-memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md` | Tested implicitly via NEW-004 (SHA-256 dedup) |
+| `14-pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md` | Server startup concern — tested implicitly |
+| `14-pipeline-architecture/15-warm-server-daemon-mode.md` | DEFERRED — not yet implemented |
+| `14-pipeline-architecture/16-backend-storage-adapter-abstraction.md` | DEFERRED — not yet implemented |
+| `15-retrieval-enhancements/09-contextual-tree-injection.md` | Tested implicitly via context retrieval scenarios |
+| `16-tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time enforcement — not runtime testable |
+| `18-ux-hooks/01-shared-post-mutation-hook-wiring.md` | Tested via NEW-085, NEW-103, NEW-104 |
+| `18-ux-hooks/02-memory-health-autorepair-metadata.md` | Tested via EX-013 (health diagnostics) |
+| `18-ux-hooks/04-schema-and-type-contract-synchronization.md` | Build-time concern — tested via NEW-095 |
+| `18-ux-hooks/06-mutation-hook-result-contract-expansion.md` | Tested via NEW-103 |
+| `18-ux-hooks/07-mutation-response-ux-payload-exposure.md` | Tested via NEW-104 |
+| `18-ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Tested via NEW-104 |
+| `18-ux-hooks/11-final-token-metadata-recomputation.md` | Tested via NEW-105 |
+| `18-ux-hooks/13-end-to-end-success-envelope-verification.md` | Tested via NEW-105 |
+| `20-feature-flag-reference/*` (7 entries) | Reference docs — tested via EX-028..034 |
 
 ## Dedicated Memory/Spec-Kit Scenarios (Required)
 

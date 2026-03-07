@@ -138,12 +138,25 @@ model_reasoning_effort = "xhigh"
 
 ## 3. AGENT CATALOG
 
+### Model Selection for Agents
+
+| Agent Type | Recommended Model | Rationale |
+|-----------|-------------------|-----------|
+| Analysis / exploration | `gpt-5.4` | Frontier reasoning for architectural understanding |
+| Code review / security | `gpt-5.4` | Deep reasoning catches subtle issues |
+| Planning / strategy | `gpt-5.4` | Multi-faceted analysis benefits from higher reasoning |
+| Implementation / fixes | `gpt-5.3-codex` | Code-focused model for generation tasks |
+| Documentation / specs | `gpt-5.3-codex` | Efficient for structured content |
+| Research (with web) | `gpt-5.4` | Better synthesis of web findings |
+
+---
+
 ### @context — Codebase Explorer
 
 | Property           | Value                          |
 | ------------------ | ------------------------------ |
 | **Role**           | Read-only codebase exploration |
-| **Model**          | gpt-5.3-codex                  |
+| **Model**          | gpt-5.4 (recommended) or gpt-5.3-codex |
 | **Sandbox Mode**   | read-only                      |
 | **Modifies Files** | Never                          |
 
@@ -164,7 +177,7 @@ codex exec -p context \
 | Property           | Value                                       |
 | ------------------ | ------------------------------------------- |
 | **Role**           | Systematic debugging with fresh perspective |
-| **Model**          | gpt-5.3-codex                               |
+| **Model**          | gpt-5.3-codex (fixes) or gpt-5.4 (analysis) |
 | **Sandbox Mode**   | workspace-write                             |
 | **Modifies Files** | Yes (bug fixes)                             |
 
@@ -231,7 +244,7 @@ codex exec -p orchestrate \
 | Property           | Value                                                           |
 | ------------------ | --------------------------------------------------------------- |
 | **Role**           | Evidence gathering, feasibility analysis, technology comparison |
-| **Model**          | gpt-5.3-codex                                                   |
+| **Model**          | gpt-5.4 (recommended for synthesis) or gpt-5.3-codex           |
 | **Sandbox Mode**   | workspace-write                                                 |
 | **Modifies Files** | Yes (research.md)                                               |
 
@@ -254,7 +267,7 @@ codex exec -p research --search -s workspace-write \
 | Property           | Value                                                 |
 | ------------------ | ----------------------------------------------------- |
 | **Role**           | Code review, quality scoring (0-100), security audits |
-| **Model**          | gpt-5.3-codex                                         |
+| **Model**          | gpt-5.4 (deep review, security) or gpt-5.3-codex (standard review) |
 | **Sandbox Mode**   | read-only                                             |
 | **Modifies Files** | Never                                                 |
 
@@ -296,7 +309,7 @@ codex exec -p speckit -s workspace-write \
 | Property           | Value                                                |
 | ------------------ | ---------------------------------------------------- |
 | **Role**           | Multi-strategy planning with diverse thinking lenses |
-| **Model**          | gpt-5.3-codex                                        |
+| **Model**          | gpt-5.4 (recommended for complex planning)          |
 | **Sandbox Mode**   | read-only                                            |
 | **Modifies Files** | Never                                                |
 

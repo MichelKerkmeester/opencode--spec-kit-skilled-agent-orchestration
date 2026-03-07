@@ -88,6 +88,9 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
 /**
  * Detect communities using BFS connected-component labelling.
  * Returns a map of nodeId -> communityId (0-indexed).
+ *
+ * Uses index-based queue traversal instead of queue.shift() to avoid
+ * O(n) per-dequeue cost, keeping BFS at O(V+E).
  */
 export function detectCommunitiesBFS(
   db: Database.Database,
@@ -100,12 +103,13 @@ export function detectCommunitiesBFS(
   for (const node of adj.keys()) {
     if (visited.has(node)) continue;
 
-    // BFS from this unvisited node
+    // BFS from this unvisited node — index-based to avoid O(n) shift()
     const queue: string[] = [node];
+    let queueIdx = 0;
     visited.add(node);
 
-    while (queue.length > 0) {
-      const current = queue.shift()!;
+    while (queueIdx < queue.length) {
+      const current = queue[queueIdx++];
       assignments.set(current, communityId);
 
       const neighbors = adj.get(current);
@@ -328,13 +332,15 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
     }
 
     // --- Phase 1: BFS -------------------------------------------------------
-    const bfsResult = detectCommunitiesBFS(db);
+    // Build adjacency list once and reuse for both BFS and potential Louvain
+    const adj = buildAdjacencyList(db);
+    const bfsResult = detectCommunitiesBFSFromAdj(adj);
 
     let finalResult: Map<string, number>;
 
     // --- Phase 2: Escalate? --------------------------------------------------
     if (shouldEscalateToLouvain(bfsResult)) {
-      const adj = buildAdjacencyList(db);
+      // Reuse the adjacency list already built — no second DB query needed
       finalResult = detectCommunitiesLouvain(adj);
     } else {
       finalResult = bfsResult;
@@ -351,6 +357,49 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
     console.warn(`[community-detection] detectCommunities failed: ${message}`);
     return new Map();
   }
+}
+
+/**
+ * BFS connected-component labelling from a pre-built adjacency list.
+ * Used by the orchestrator to avoid rebuilding the adjacency list when
+ * escalation to Louvain is needed.
+ *
+ * Uses index-based queue traversal instead of queue.shift() to avoid
+ * O(n) per-dequeue cost, keeping BFS at O(V+E).
+ */
+function detectCommunitiesBFSFromAdj(
+  adj: AdjacencyList,
+): Map<string, number> {
+  const visited = new Set<string>();
+  const assignments = new Map<string, number>();
+  let communityId = 0;
+
+  for (const node of adj.keys()) {
+    if (visited.has(node)) continue;
+
+    const queue: string[] = [node];
+    let queueIdx = 0;
+    visited.add(node);
+
+    while (queueIdx < queue.length) {
+      const current = queue[queueIdx++];
+      assignments.set(current, communityId);
+
+      const neighbors = adj.get(current);
+      if (neighbors) {
+        for (const neighbor of neighbors) {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            queue.push(neighbor);
+          }
+        }
+      }
+    }
+
+    communityId++;
+  }
+
+  return assignments;
 }
 
 // ---------------------------------------------------------------------------
@@ -384,10 +433,16 @@ function loadStoredAssignments(db: Database.Database): Map<string, number> {
 export function storeCommunityAssignments(
   db: Database.Database,
   assignments: Map<string, number>,
+  algorithm: string = "bfs",
 ): { stored: number } {
   let stored = 0;
 
   try {
+    // P1-014: Clean up stale assignments for deleted memories
+    db.prepare(
+      "DELETE FROM community_assignments WHERE memory_id NOT IN (SELECT id FROM memory_index)",
+    ).run();
+
     const insert = db.prepare(
       `INSERT OR REPLACE INTO community_assignments
          (memory_id, community_id, algorithm, computed_at)
@@ -395,12 +450,12 @@ export function storeCommunityAssignments(
     );
 
     const now = new Date().toISOString();
-    const algorithm =
-      computedThisSession && lastEdgeCount >= 0 ? "bfs+louvain" : "bfs";
 
     const runAll = db.transaction(() => {
       for (const [nodeId, communityId] of assignments) {
-        insert.run(Number(nodeId), communityId, algorithm, now);
+        const numId = Number(nodeId);
+        if (!Number.isFinite(numId)) continue;
+        insert.run(numId, communityId, algorithm, now);
         stored++;
       }
     });

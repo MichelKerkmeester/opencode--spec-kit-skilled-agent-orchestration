@@ -201,11 +201,18 @@ function executeAtomicSave(
     }
 
     // AI-GUARD: Step 3: Rename pending to final (atomic)
+    // P1-020 KNOWN LIMITATION: If renameSync fails after dbOperation() committed,
+    // the DB contains the new state but the file is not at its final path. This is
+    // a window of vulnerability that cannot be eliminated without two-phase commit.
+    // The `dbCommitted` flag on the returned error result enables callers to detect
+    // this state and trigger recovery (e.g., re-index from DB or replay the write).
+    // Mitigation: `recoverAllPendingFiles()` can be called on startup to find
+    // orphaned pending files and rename them to their final paths.
     try {
       fs.renameSync(pendingPath, filePath);
     } catch (renameError: unknown) {
-      // Rename failed after DB committed — this is the inconsistency Fix #22 addresses.
-      // Clean up pending file and report the failure.
+      // Rename failed after DB committed — DB has new state but file wasn't renamed.
+      // Clean up pending file and report the failure with dbCommitted flag.
       const msg = renameError instanceof Error ? renameError.message : String(renameError);
       try { if (fs.existsSync(pendingPath)) fs.unlinkSync(pendingPath); } catch { /* ignore */ }
       metrics.totalErrors++;

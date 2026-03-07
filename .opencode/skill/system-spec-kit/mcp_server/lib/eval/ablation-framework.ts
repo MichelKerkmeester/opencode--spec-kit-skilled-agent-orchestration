@@ -413,11 +413,13 @@ export function storeAblationResults(report: AblationReport): boolean {
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `);
 
+    const recallK = report.config.recallK ?? 20;
+
     const writeAll = db.transaction(() => {
       // Store baseline recall
       insertSnapshot.run(
         evalRunId,
-        'ablation_baseline_recall@20',
+        `ablation_baseline_recall@${recallK}`,
         report.overallBaselineRecall,
         'all',
         report.results[0]?.queryCount ?? 0,
@@ -434,7 +436,7 @@ export function storeAblationResults(report: AblationReport): boolean {
       for (const result of report.results) {
         insertSnapshot.run(
           evalRunId,
-          'ablation_recall@20_delta',
+          `ablation_recall@${recallK}_delta`,
           result.delta,
           result.channel,
           result.queryCount,
@@ -477,7 +479,8 @@ export function formatAblationReport(report: AblationReport): string {
   lines.push(``);
   lines.push(`- **Run ID:** ${report.runId}`);
   lines.push(`- **Timestamp:** ${report.timestamp}`);
-  lines.push(`- **Baseline Recall@20:** ${report.overallBaselineRecall.toFixed(4)}`);
+  const recallK = report.config.recallK ?? 20;
+  lines.push(`- **Baseline Recall@${recallK}:** ${report.overallBaselineRecall.toFixed(4)}`);
   lines.push(`- **Duration:** ${report.durationMs}ms`);
   lines.push(`- **Queries evaluated:** ${report.results[0]?.queryCount ?? 0}`);
   lines.push(``);
@@ -531,7 +534,7 @@ export function formatAblationReport(report: AblationReport): string {
   for (let i = 0; i < ranked.length; i++) {
     const r = ranked[i];
     const contribution = -r.delta; // Invert: negative delta means positive contribution
-    lines.push(`${i + 1}. **${r.channel}** — contribution: ${contribution >= 0 ? '+' : ''}${contribution.toFixed(4)} Recall@20`);
+    lines.push(`${i + 1}. **${r.channel}** — contribution: ${contribution >= 0 ? '+' : ''}${contribution.toFixed(4)} Recall@${recallK}`);
   }
 
   return lines.join('\n');

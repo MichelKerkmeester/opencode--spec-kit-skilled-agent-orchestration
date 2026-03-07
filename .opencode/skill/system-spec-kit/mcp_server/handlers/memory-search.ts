@@ -917,10 +917,19 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       resultsData = responseToReturn as unknown as Record<string, unknown>;
     }
 
+    // AI-GUARD: P1-018 — Validate response shape before dedup. If the cached response
+    // doesn't have the expected data.results array, log a warning and skip dedup
+    // rather than silently falling through to the un-deduped response.
     const data = (resultsData && typeof resultsData.data === 'object' && resultsData.data !== null)
       ? resultsData.data as Record<string, unknown>
       : null;
     const existingResults = Array.isArray(data?.results) ? data.results as MemorySearchRow[] : null;
+
+    if (resultsData && !data) {
+      console.warn('[memory-search] Cached response shape mismatch: missing "data" object, skipping dedup');
+    } else if (data && !existingResults) {
+      console.warn('[memory-search] Cached response shape mismatch: "data.results" is not an array, skipping dedup');
+    }
 
     if (resultsData && data && existingResults && existingResults.length > 0) {
       const { results: dedupedResults } = applySessionDedup(

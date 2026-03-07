@@ -207,7 +207,7 @@ Bring all 4 speckit agent files into full alignment with the Spec 140 MCP tool i
 
 | **Parent Spec** | ../spec.md |
 - Predecessor: `018-deferred-features`
-- Successor: `008-subfolder-resolution-fix`
+- Successor: `008-combined-bug-fixes`
 
 ## Supplemental Requirements
 - REQ-DOC-008: Keep documentation internally consistent with existing phase artifacts and validation output.

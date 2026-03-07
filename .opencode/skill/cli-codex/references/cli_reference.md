@@ -14,7 +14,7 @@ Comprehensive reference for all Codex CLI commands, flags, models, configuration
 
 ### Core Principle
 
-Codex CLI is OpenAI's terminal-based AI coding agent powered by the `gpt-5.3-codex` model with `xhigh` reasoning effort. It provides direct access to OpenAI's code-focused capabilities from the command line, including code generation, file manipulation, shell execution, web browsing, and multi-turn sessions — all governed by configurable sandbox modes.
+Codex CLI is OpenAI's terminal-based AI coding agent powered by two models — `gpt-5.4` (frontier reasoning) and `gpt-5.3-codex` (code generation). It provides direct access to OpenAI's capabilities from the command line, including code generation, file manipulation, shell execution, web browsing, and multi-turn sessions — all governed by configurable sandbox modes.
 
 ### Purpose
 
@@ -105,7 +105,7 @@ codex logout
 
 | Flag | Short | Values | Description |
 |------|-------|--------|-------------|
-| `--model` | `-m` | `gpt-5.3-codex` | Model to use (only one model supported) |
+| `--model` | `-m` | `gpt-5.4`, `gpt-5.3-codex` | Model to use (2 supported models) |
 | `--sandbox` | `-s` | `read-only`, `workspace-write`, `danger-full-access` | Sandbox mode controlling file/shell access |
 | `--ask-for-approval` | `-a` | `untrusted`, `on-request`, `never` | When to prompt for approval before executing actions |
 | `--profile` | `-p` | profile-name | Load a named configuration profile |
@@ -174,28 +174,47 @@ codex exec "Refactor this function" --oss
 
 ## 5. MODEL SELECTION
 
-### Supported Model
+### Supported Models
 
-| Model | Reasoning Effort | Description |
-|-------|-----------------|-------------|
-| `gpt-5.3-codex` | `xhigh` | The only supported model. Code-focused, maximum reasoning effort. Use for all tasks. |
+| Model | ID | Reasoning Effort | Best For |
+|-------|----|-----------------|----------|
+| **GPT-5.4** | `gpt-5.4` | configurable | Frontier reasoning, complex analysis, architecture, security audit, deep review |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | `xhigh` (fixed) | Code generation, standard review, implementation, refactoring, documentation |
 
 ### Selection Strategy
 
-`gpt-5.3-codex` is the only supported model and is always invoked with `xhigh` reasoning effort. Always specify `--model gpt-5.3-codex` explicitly in scripts for predictability; omitting it relies on the CLI default, which may change across versions.
+| Task Type | Recommended Model | Rationale |
+|-----------|-------------------|-----------|
+| Architecture decisions | `gpt-5.4` | Frontier reasoning excels at multi-faceted analysis |
+| Security audits | `gpt-5.4` | Deep reasoning catches subtle vulnerability patterns |
+| Complex planning | `gpt-5.4` | Multi-strategy evaluation benefits from higher reasoning |
+| Code generation | `gpt-5.3-codex` | Code-focused model optimized for generation tasks |
+| Standard code review | `gpt-5.3-codex` | Efficient for pattern-based review |
+| Implementation | `gpt-5.3-codex` | Optimized for translating specs to code |
+| Test generation | `gpt-5.3-codex` | Code-focused model produces better test structures |
+| Documentation | `gpt-5.3-codex` | Efficient for structured doc generation |
+
+Always specify `--model` explicitly in scripts for predictability; omitting it relies on the CLI default, which may change across versions.
 
 ### Command-Line Specification
 
 ```bash
-# Always specify the model explicitly
-codex exec "Analyze this architecture" --model gpt-5.3-codex
+# GPT-5.4 for reasoning-heavy tasks
+codex exec "Analyze this architecture and identify coupling issues" --model gpt-5.4
+codex exec "Security audit of @./src/auth.ts" --model gpt-5.4
+
+# GPT-5.3-Codex for code-focused tasks
 codex exec "Write unit tests for user.ts" --model gpt-5.3-codex
+codex exec "Generate a rate limiter middleware" --model gpt-5.3-codex
 ```
 
 ### Agent TOML Configuration
 
 ```toml
-# .codex/agents/my-agent.toml
+# .codex/agents/my-agent.toml — reasoning-heavy agent
+model = "gpt-5.4"
+
+# .codex/agents/my-codegen-agent.toml — code-focused agent
 model = "gpt-5.3-codex"
 model_reasoning_effort = "xhigh"
 ```

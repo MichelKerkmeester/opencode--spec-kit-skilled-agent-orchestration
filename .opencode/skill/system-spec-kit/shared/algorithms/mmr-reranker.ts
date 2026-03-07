@@ -46,17 +46,33 @@ export function computeCosine(
   a: Float32Array | number[],
   b: Float32Array | number[],
 ): number {
-  const len = Math.min(a.length, b.length);
-  if (len === 0) return 0;
+  if (a.length === 0 || b.length === 0) return 0;
+
+  const maxLen = Math.max(a.length, b.length);
+  const minLen = Math.min(a.length, b.length);
+
+  if (minLen < maxLen) {
+    const ratio = 1 - minLen / maxLen;
+    if (ratio > 0.1) {
+      throw new Error(
+        `computeCosine: vector length mismatch exceeds 10% (${a.length} vs ${b.length})`,
+      );
+    }
+    console.warn(
+      `computeCosine: padding shorter vector (${minLen} → ${maxLen})`,
+    );
+  }
 
   let dot = 0;
   let normA = 0;
   let normB = 0;
 
-  for (let i = 0; i < len; i++) {
-    dot += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
+  for (let i = 0; i < maxLen; i++) {
+    const ai = i < a.length ? a[i] : 0;
+    const bi = i < b.length ? b[i] : 0;
+    dot += ai * bi;
+    normA += ai * ai;
+    normB += bi * bi;
   }
 
   const denom = Math.sqrt(normA) * Math.sqrt(normB);
@@ -73,10 +89,13 @@ export function applyMMR(
   const {
     lambda: rawLambda,
     limit,
-    maxCandidates = DEFAULT_MAX_CANDIDATES,
+    maxCandidates: rawMaxCandidates = DEFAULT_MAX_CANDIDATES,
   } = config;
 
+  if (limit <= 0) return [];
+
   const lambda = Math.max(0, Math.min(1, rawLambda));
+  const maxCandidates = Math.max(0, rawMaxCandidates);
 
   const pool = candidates.slice(0, maxCandidates);
   if (pool.length === 0) return [];

@@ -267,13 +267,17 @@ async function setIngestJobState(jobId: string, nextState: IngestJobState): Prom
   }
 
   const updatedAt = nowIso();
-  await withBusyRetry(() =>
+  const result = await withBusyRetry(() =>
     db.prepare(`
       UPDATE ingest_jobs
       SET state = ?, updated_at = ?
-      WHERE id = ?
-    `).run(nextState, updatedAt, jobId)
+      WHERE id = ? AND state = ?
+    `).run(nextState, updatedAt, jobId, current.state)
   );
+
+  if ((result as { changes: number }).changes === 0) {
+    throw new Error(`State transition conflict: job ${jobId} state was changed by another process (expected '${current.state}')`);
+  }
 
   return {
     ...current,

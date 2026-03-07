@@ -2,7 +2,7 @@
 name: cli-codex
 description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.0.0
+version: 1.1.0
 ---
 
 <!-- Keywords: codex, codex-cli, openai, cross-ai, web-search, code-generation, code-review, second-opinion, agent-delegation, gpt-5, session-management -->
@@ -268,7 +268,7 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 | Flag / Option | Purpose |
 |---------------|---------|
-| `--model gpt-5.3-codex` | Model selection — only supported model |
+| `--model <id>` | Model selection — `gpt-5.4` or `gpt-5.3-codex` |
 | `--sandbox read-only` | Safe mode: read files, no writes or shell commands |
 | `--sandbox workspace-write` | Allow file writes within the workspace |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval** |
@@ -281,9 +281,16 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 
 ### Model Selection
 
-| Model | Use Case |
-|-------|----------|
-| `gpt-5.3-codex` | All tasks (default and only model) with `xhigh` reasoning effort |
+Codex CLI supports 2 models with distinct strengths:
+
+| Model | ID | Use Case | Reasoning Effort |
+|-------|----|----------|-----------------|
+| **GPT-5.4** | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, deep review, security audit | configurable |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, standard review, implementation, documentation, tests | `xhigh` (fixed) |
+
+**Selection Strategy:**
+- **GPT-5.4** — Choose for reasoning-heavy tasks: architecture decisions, security audits, complex planning, multi-strategy analysis, deep code review
+- **GPT-5.3-Codex** — Choose for code-focused tasks: generation, standard review, implementation, refactoring, documentation, test generation
 
 ### Codex Agent Delegation
 
@@ -293,13 +300,13 @@ The calling AI acts as the **conductor** that delegates tasks to Codex CLI. Code
 
 | Task Type | Profile | Invocation Pattern |
 |-----------|---------|-------------------|
-| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.3-codex` |
+| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.4` |
 | Git diff review | (built-in) | `codex exec review "Focus on security" --commit HEAD` |
-| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.3-codex` |
-| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.3-codex --search` |
+| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.4` |
+| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.4 --search` |
 | Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.3-codex` |
 | Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.3-codex` |
-| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.3-codex` |
+| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.4` |
 
 **Profile setup**: Profiles are defined in `.codex/config.toml` under `[profiles.<name>]` sections. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
 
@@ -386,8 +393,9 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 
 5. **ALWAYS capture stderr** with `2>&1` to catch rate limit messages and errors
 
-6. **ALWAYS use `gpt-5.3-codex`** as the model — it is the only supported model
-   - Invoke with `--model gpt-5.3-codex` on every `codex exec` call
+6. **ALWAYS specify the model explicitly** — choose based on task type
+   - Use `--model gpt-5.4` for reasoning-heavy tasks (architecture, security, planning)
+   - Use `--model gpt-5.3-codex` for code-focused tasks (generation, review, implementation)
 
 7. **ALWAYS route to the appropriate Codex profile** when the task matches a profile specialization
    - Use `-p <profile>` flag; see profile routing table in Section 3

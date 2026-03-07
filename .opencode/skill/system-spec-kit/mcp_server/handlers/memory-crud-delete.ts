@@ -91,26 +91,19 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         }
       })();
     } else {
-      // AI-GUARD: AI-RISK: No database handle — running without transaction; prior behavior preserved but not atomic.
-      deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
-
-      if (deletedCount > 0) {
-        appendMutationLedgerSafe(database, {
-          mutationType: 'delete',
-          reason: 'memory_delete: single memory delete',
-          priorHash: singleSnapshot?.content_hash ?? null,
-          newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
-          linkedMemoryIds: [numericId],
-          decisionMeta: {
-            tool: 'memory_delete',
-            bulk: false,
-            memoryId: numericId,
-            specFolder: singleSnapshot?.spec_folder ?? null,
-            filePath: singleSnapshot?.file_path ?? null,
-          },
-          actor: 'mcp:memory_delete',
-        });
-      }
+      // AI-GUARD: P1-022 — No database handle means causal edge cleanup and mutation
+      // ledger writes cannot be performed. Abort early per ADR-005 rather than
+      // proceeding with a delete that skips causal edge cleanup.
+      console.warn('[memory-crud-delete] No database handle, aborting delete to prevent orphaned causal edges');
+      return createMCPSuccessResponse({
+        tool: 'memory_delete',
+        summary: 'Delete aborted: database unavailable',
+        data: {
+          deleted: 0,
+          error: 'Database unavailable — delete aborted to prevent orphaned causal edges',
+        },
+        hints: ['Restart the MCP server or run memory_index_scan() to reinitialize the database'],
+      });
     }
   } else {
     const memories: { id: number }[] = vectorIndex.getMemoriesByFolder(specFolder as string);

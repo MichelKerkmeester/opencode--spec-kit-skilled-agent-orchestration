@@ -9,21 +9,28 @@ export function getDbDir(): string | undefined {
   return process.env.SPEC_KIT_DB_DIR || process.env.SPECKIT_DB_DIR || undefined;
 }
 
-function resolvePackageRoot(): string {
-  const candidates = [
-    path.resolve(__dirname, '..'),
-    path.resolve(__dirname, '../..'),
-    process.cwd(),
-    path.resolve(process.cwd(), '..'),
-  ];
+function findUp(filename: string, startDir: string): string | undefined {
+  let dir = startDir;
+  while (true) {
+    if (fs.existsSync(path.join(dir, filename))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) return undefined;
+    dir = parent;
+  }
+}
 
-  for (const candidate of candidates) {
-    if (fs.existsSync(path.join(candidate, 'mcp_server', 'database'))) {
-      return candidate;
-    }
+function resolvePackageRoot(): string {
+  const fromPackageJson = findUp('package.json', __dirname);
+  if (fromPackageJson && fs.existsSync(path.join(fromPackageJson, 'mcp_server', 'database'))) {
+    return fromPackageJson;
   }
 
-  return candidates[0];
+  const fromCwd = findUp('package.json', process.cwd());
+  if (fromCwd && fs.existsSync(path.join(fromCwd, 'mcp_server', 'database'))) {
+    return fromCwd;
+  }
+
+  return fromPackageJson || path.resolve(__dirname, '..');
 }
 
 const PACKAGE_ROOT = resolvePackageRoot();

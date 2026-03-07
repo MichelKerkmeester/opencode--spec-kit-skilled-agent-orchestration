@@ -42,7 +42,7 @@ This skill orchestrates OpenAI's Codex CLI for tasks that benefit from a second 
 
 | Category | Value |
 |----------|-------|
-| Model | `gpt-5.3-codex` with `xhigh` reasoning (only supported model) |
+| Models | `GPT-5.4` (frontier reasoning) + `GPT-5.3-Codex` (code generation) |
 | Authentication | `OPENAI_API_KEY` or ChatGPT OAuth |
 | Agent System | 9 specialized agents in `.codex/agents/*.toml` |
 | Unique Features | `/review` command, `--search`, session resume/fork, `--image` |
@@ -83,17 +83,17 @@ codex login
 **Basic invocations:**
 
 ```bash
-# Code review (read-only sandbox)
-codex exec "Review @./src/auth.ts for security issues" --model gpt-5.3-codex --sandbox read-only
+# Code review with frontier reasoning (GPT-5.4)
+codex exec "Review @./src/auth.ts for security issues" --model gpt-5.4 --sandbox read-only
 
-# Code generation (workspace writes allowed)
+# Code generation with code-focused model (GPT-5.3-Codex)
 codex exec "Create a rate limiter middleware for Express" --model gpt-5.3-codex --sandbox workspace-write
 
 # Web research
 codex exec "What's new in Next.js 15?" --model gpt-5.3-codex --search --sandbox read-only
 
 # Profile-based task delegation
-codex exec -p research "Research latest Express.js security advisories" --model gpt-5.3-codex --search
+codex exec -p research "Research latest Express.js security advisories" --model gpt-5.4 --search
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -138,8 +138,14 @@ cli-codex/
 - Automatic intent detection scores 7 intents: GENERATION, REVIEW, RESEARCH, ARCHITECTURE, AGENT_DELEGATION, TEMPLATES, PATTERNS
 - Loads only the reference files relevant to the detected intent
 
-**Single Model**
-- `gpt-5.3-codex` with `xhigh` reasoning for all tasks — no model selection complexity
+**Dual Model Support**
+
+| Model | ID | Use Case |
+|-------|----|----------|
+| GPT-5.4 | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, security |
+| GPT-5.3-Codex | `gpt-5.3-codex` | Code generation, standard review, implementation, docs |
+
+Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Codex
 
 **Sandbox Modes**
 
@@ -214,10 +220,10 @@ cli-codex/
 ## 6. EXAMPLES
 <!-- ANCHOR:usage-examples -->
 
-**Cross-AI code review:**
+**Cross-AI code review (GPT-5.4 for deep analysis):**
 ```bash
 codex exec "Review @./src/auth.ts for security vulnerabilities. Check for XSS, injection, and auth bypasses." \
-  --model gpt-5.3-codex --sandbox read-only
+  --model gpt-5.4 --sandbox read-only
 ```
 
 **Web research:**
@@ -226,10 +232,10 @@ codex exec "Search the web for the latest security advisories for Express.js as 
   --model gpt-5.3-codex --search --sandbox read-only
 ```
 
-**Profile-based architecture analysis:**
+**Profile-based architecture analysis (GPT-5.4 for reasoning):**
 ```bash
 codex exec -p context "Map all authentication-related files and their dependencies" \
-  --model gpt-5.3-codex
+  --model gpt-5.4
 ```
 
 **Background task:**

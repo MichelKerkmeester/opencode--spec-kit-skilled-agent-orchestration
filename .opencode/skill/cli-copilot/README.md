@@ -42,7 +42,7 @@ This skill enables external AI assistants (Gemini CLI, Codex CLI, Claude Code, e
 
 | Category | Value |
 |----------|-------|
-| Models | `GPT-5.3-Codex`, `GPT-5 mini`, `GPT-4.1`, `Claude Opus/Sonnet/Haiku`, `Gemini 3 Pro` |
+| Models | `GPT-5.4`, `GPT-5.3-Codex`, `Claude Opus 4.6`, `Claude Sonnet 4.6`, `Gemini 3.1 Pro` |
 | Authentication | `GH_TOKEN`, `GITHUB_TOKEN`, or OAuth via `copilot /login` |
 | Agent System | Built-in `Explore` and `Task` agents + custom Markdown agents |
 | Unique Features | `/delegate` (cloud), plan mode, autopilot, repo memory, MCP support |
@@ -50,7 +50,7 @@ This skill enables external AI assistants (Gemini CLI, Codex CLI, Claude Code, e
 
 ### When to Use
 
-- **Multi-Model Validation** — Verify code logic across GPT-5, Claude 3.5, and Gemini 3 Pro
+- **Multi-Model Validation** — Verify code logic across GPT-5.4, Claude Opus 4.6, and Gemini 3.1 Pro
 - **Cloud Delegation** — Offload long-running tasks to GitHub's cloud via `/delegate`
 - **Repository Memory** — Leverage Copilot's native indexing for large-scale codebase queries
 - **Autopilot Execution** — Automated multi-step plan fulfillment with self-correction
@@ -152,10 +152,11 @@ cli-copilot/
 
 | Model | ID | Primary Use |
 |-------|----|-------------|
-| GPT-5.3 | `gpt-5.3-codex` | State-of-the-art code generation and logic |
-| Claude 3.5 | `claude-3-5-sonnet` | Nuanced reasoning and architectural analysis |
-| Gemini 3 | `gemini-3-pro` | Large context window and Google ecosystem data |
-| GPT-5 mini | `gpt-5-mini` | Fast, cost-efficient sub-tasks and classification |
+| GPT-5.4 | `gpt-5.4` | Frontier reasoning with effort levels |
+| GPT-5.3-Codex | `gpt-5.3-codex` | Advanced code generation |
+| Claude Opus 4.6 | `claude-opus-4.6` | Architecture and complex logic |
+| Claude Sonnet 4.6 | `claude-sonnet-4.6` | General coding and speed |
+| Gemini 3.1 Pro | `gemini-3.1-pro-preview` | Large context analysis |
 
 **Execution Modes**
 
@@ -233,7 +234,7 @@ cli-copilot/
 copilot -p "Implement a robust circuit breaker in @src/network.ts" --model gpt-5.3-codex --allow-all-tools 2>&1
 
 # Step 2: Use Claude 3.5 to verify and review
-copilot -p "Critically review the circuit breaker in @src/network.ts for edge cases" --model claude-3-5-sonnet --mode plan 2>&1
+copilot -p "Critically review the circuit breaker in @src/network.ts for edge cases" --model claude-sonnet-4.6 --mode plan 2>&1
 ```
 
 **Cloud-delegated heavy lifting:**

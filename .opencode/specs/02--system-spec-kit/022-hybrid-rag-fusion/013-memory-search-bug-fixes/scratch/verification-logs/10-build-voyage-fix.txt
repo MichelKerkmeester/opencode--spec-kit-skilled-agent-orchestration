@@ -1,4 +1,0 @@
-
-> system-spec-kit@1.7.2 build
-> tsc --build
-

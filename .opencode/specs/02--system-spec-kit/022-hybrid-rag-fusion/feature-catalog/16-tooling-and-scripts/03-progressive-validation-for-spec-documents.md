@@ -10,7 +10,11 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 ## Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `scripts/progressive-validate.sh` | Script | Progressive validation wrapper around validate.sh |
 
 ## Source Metadata
 

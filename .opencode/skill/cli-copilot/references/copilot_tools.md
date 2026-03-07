@@ -71,9 +71,9 @@ Covers all built-in capabilities of Copilot CLI, highlights what is unique compa
 **Unparalleled model choice.** Access a curated selection of the world's leading models from Anthropic, OpenAI, and Google within a single interface.
 
 **Capabilities:**
-- **Anthropic:** Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku
-- **OpenAI:** GPT-5.3-Codex, GPT-5 mini, GPT-4.1
-- **Google:** Gemini 1.5 Pro
+- **OpenAI:** GPT-5.4, GPT-5.3-Codex
+- **Anthropic:** Claude Opus 4.6, Claude Sonnet 4.6
+- **Google:** Gemini 3.1 Pro Preview
 - Seamless switching via `/model` command
 
 ---
@@ -128,7 +128,7 @@ Covers all built-in capabilities of Copilot CLI, highlights what is unique compa
 | **Image Input** | Vision support | N/A | `--image` | `--image` / `-i` |
 | **Memory** | Repository Memory | Spec Kit Memory MCP | N/A | N/A |
 | **Hooks** | N/A | Pre/post tool hooks | N/A | N/A |
-| **Models** | 7+ (3 providers) | 3 (Anthropic) | 1 (Google) | 1 (OpenAI) |
+| **Models** | 5 (3 providers) | 3 (Anthropic) | 1 (Google) | 1 (OpenAI) |
 | **Auth** | GitHub Auth | API key / OAuth | API key / OAuth | API key / OAuth |
 | **Non-interactive** | `copilot -p "..."` | `-p "..."` | `-p "..."` | `exec "..."` |
 | **Review** | PR Integration | `--agent review` | Agent definition | `/review` (TUI) |
@@ -168,7 +168,7 @@ copilot -p "Run a full security audit and fix all high-severity issues" --delega
 
 # Switching models for specific tasks
 copilot -p "Analyze this logic" --model gpt-5.3-codex
-copilot -p "Apply surgical edits" --model claude-3-5-sonnet
+copilot -p "Apply surgical edits" --model claude-sonnet-4.6
 ```
 
 ### Handling Multi-Model Output

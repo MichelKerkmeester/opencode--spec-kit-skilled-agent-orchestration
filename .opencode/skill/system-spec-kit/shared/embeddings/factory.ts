@@ -139,7 +139,12 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
           model: options.model,
           dim: options.dim,
           apiKey: options.apiKey,
+          baseUrl: options.baseUrl,
+          timeout: options.timeout,
         });
+        if (options.maxTextLength) {
+          console.warn('[factory] VoyageProvider does not support maxTextLength option — ignored');
+        }
         break;
 
       case 'openai':
@@ -153,14 +158,24 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
           model: options.model,
           dim: options.dim,
           apiKey: options.apiKey,
+          baseUrl: options.baseUrl,
+          timeout: options.timeout,
         });
+        if (options.maxTextLength) {
+          console.warn('[factory] OpenAIProvider does not support maxTextLength option — ignored');
+        }
         break;
 
       case 'hf-local':
         provider = new HfLocalProvider({
           model: options.model,
           dim: options.dim,
+          maxTextLength: options.maxTextLength,
+          timeout: options.timeout,
         });
+        if (options.baseUrl) {
+          console.warn('[factory] HfLocalProvider does not support baseUrl option — ignored');
+        }
         break;
 
       case 'ollama':
@@ -286,7 +301,7 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
   const providerName = resolution.name;
 
   // Local providers don't need API key validation
-  if (providerName === 'hf-local' || providerName === 'ollama') {
+  if (providerName === 'hf-local') {
     return {
       valid: true,
       provider: providerName,

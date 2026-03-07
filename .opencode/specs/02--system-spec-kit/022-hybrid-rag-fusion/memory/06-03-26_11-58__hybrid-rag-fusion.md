@@ -189,11 +189,11 @@ Next: Continue implementation
 
 - `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` - Documentation
 
-- `specs/.../012-architecture-audit/plan.md` - Documentation
+- `specs/.../010-architecture-audit/plan.md` - Documentation
 
-- `specs/.../012-architecture-audit/checklist.md` - Documentation
+- `specs/.../010-architecture-audit/checklist.md` - Documentation
 
-- `specs/.../012-architecture-audit/tasks.md` - Documentation
+- `specs/.../010-architecture-audit/tasks.md` - Documentation
 
 **How to Extend**:
 
@@ -214,7 +214,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hooks READMEs so documented ownership, wrapper policy, alias imports, tool grouping, and dist policy align with verified runtime/build structure. Then updated 012-architecture-audit tasks/checklist/implementation-summary to record closure evidence. validate_document.py passed for edited README files, spec validate.sh passed with exit code 0 and 0 warnings, and final review scored the audited Phase 8 scope as a strict documentation/architecture pass.
+Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hooks READMEs so documented ownership, wrapper policy, alias imports, tool grouping, and dist policy align with verified runtime/build structure. Then updated 010-architecture-audit tasks/checklist/implementation-summary to record closure evidence. validate_document.py passed for edited README files, spec validate.sh passed with exit code 0 and 0 warnings, and final review scored the audited Phase 8 scope as a strict documentation/architecture pass.
 
 **Key Outcomes**:
 - Phase 8 strict-pass remediation completed
@@ -229,8 +229,8 @@ Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hoo
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/(merged-small-files)` | Tree-thinning merged 1 small files (README.md). README.md: Verified runtime/build structure |
 | `.opencode/skill/system-spec-kit/shared/(merged-small-files)` | Tree-thinning merged 1 small files (README.md). README.md: Verified runtime/build structure |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/(merged-small-files)` | Tree-thinning merged 1 small files (README.md). README.md: Verified runtime/build structure |
-| `specs/.../012-architecture-audit/(merged-small-files)` | Tree-thinning merged 4 small files (plan.md, checklist.md, tasks.md, implementation-summary.md). plan.md: Verified runtime/build structure | checklist.md: Verified runtime/build structure |
-| `specs/.../022-hybrid-rag-fusion/(merged-small-files)` | Tree-thinning merged 1 small files (012-architecture-audit). 012-architecture-audit: Exit code 0 and 0 warnings |
+| `specs/.../010-architecture-audit/(merged-small-files)` | Tree-thinning merged 4 small files (plan.md, checklist.md, tasks.md, implementation-summary.md). plan.md: Verified runtime/build structure | checklist.md: Verified runtime/build structure |
+| `specs/.../022-hybrid-rag-fusion/(merged-small-files)` | Tree-thinning merged 1 small files (010-architecture-audit). 010-architecture-audit: Exit code 0 and 0 warnings |
 
 <!-- /ANCHOR:summary -->
 
@@ -244,9 +244,9 @@ Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hoo
 <!-- ANCHOR:implementation-phase-strictpass-remediation-completed-71900689 -->
 ### IMPLEMENTATION: Phase 8 strict-pass remediation completed
 
-Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hooks READMEs so documented ownership, wrapper policy, alias imports, tool grouping, and dist policy align with verified runtime/build structure. Then updated 012-architecture-audit tasks/checklist/implementation-summary to record closure evidence.
+Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hooks READMEs so documented ownership, wrapper policy, alias imports, tool grouping, and dist policy align with verified runtime/build structure. Then updated 010-architecture-audit tasks/checklist/implementation-summary to record closure evidence.
 
-**Files:** .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md, .opencode/skill/system-spec-kit/mcp_server/README.md, .opencode/skill/system-spec-kit/mcp_server/hooks/README.md, .opencode/skill/system-spec-kit/mcp_server/scripts/README.md, .opencode/skill/system-spec-kit/shared/README.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/checklist.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/implementation-summary.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/plan.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/tasks.md
+**Files:** .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md, .opencode/skill/system-spec-kit/mcp_server/README.md, .opencode/skill/system-spec-kit/mcp_server/hooks/README.md, .opencode/skill/system-spec-kit/mcp_server/scripts/README.md, .opencode/skill/system-spec-kit/shared/README.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/checklist.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/implementation-summary.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/plan.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/tasks.md
 **Details:** dist policy explicitly documented as generated build output, not source-of-truth checkout content | wrapper-only role of mcp_server/scripts clarified against canonical scripts ownership | shared README alias-import guidance and package inventory aligned to current shared surface | hooks README updated to include extractContextHint and current memory-aware helper behavior | Phase 8 tasks T091-T099 and checklist CHK-530 through CHK-550 recorded as complete
 <!-- /ANCHOR:implementation-phase-strictpass-remediation-completed-71900689 -->
 
@@ -255,8 +255,8 @@ Updated ARCHITECTURE_BOUNDARIES.md plus the mcp_server, scripts, shared, and hoo
 
 validate_document.py passed for edited README files, spec validate.sh passed with exit code 0 and 0 warnings, and final review scored the audited Phase 8 scope as a strict documentation/architecture pass.
 
-**Files:** .opencode/skill/system-spec-kit/mcp_server/README.md, .opencode/skill/system-spec-kit/mcp_server/hooks/README.md, .opencode/skill/system-spec-kit/mcp_server/scripts/README.md, .opencode/skill/system-spec-kit/shared/README.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit
-**Details:** README validator passed with 0 issues for edited README files | spec validation command passed: bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit | final gate review returned PASS 96/100 within audited Phase 8 scope | no remaining accepted exceptions were recorded for Phase 8
+**Files:** .opencode/skill/system-spec-kit/mcp_server/README.md, .opencode/skill/system-spec-kit/mcp_server/hooks/README.md, .opencode/skill/system-spec-kit/mcp_server/scripts/README.md, .opencode/skill/system-spec-kit/shared/README.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit
+**Details:** README validator passed with 0 issues for edited README files | spec validation command passed: bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit | final gate review returned PASS 96/100 within audited Phase 8 scope | no remaining accepted exceptions were recorded for Phase 8
 <!-- /ANCHOR:implementation-phase-verification-passed-7cc9295d -->
 
 <!-- /ANCHOR:detailed-changes -->
@@ -552,7 +552,7 @@ key_files:
   - ".opencode/skill/system-spec-kit/mcp_server/scripts/(merged-small-files)"
   - ".opencode/skill/system-spec-kit/shared/(merged-small-files)"
   - ".opencode/skill/system-spec-kit/mcp_server/hooks/(merged-small-files)"
-  - "specs/.../012-architecture-audit/(merged-small-files)"
+  - "specs/.../010-architecture-audit/(merged-small-files)"
   - "specs/.../022-hybrid-rag-fusion/(merged-small-files)"
 
 # Relationships

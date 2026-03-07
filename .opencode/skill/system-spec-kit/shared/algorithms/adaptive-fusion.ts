@@ -24,13 +24,13 @@ export interface FusionWeights {
 
 export interface DegradedModeContract {
   /** What failed */
-  failure_mode: string;
+  failureMode: string;
   /** What was used instead */
-  fallback_mode: string;
+  fallbackMode: string;
   /** Impact on result confidence (0-1, where 0 = no impact, 1 = total loss) */
-  confidence_impact: number;
+  confidenceImpact: number;
   /** Retry guidance for callers and typed trace contracts */
-  retry_recommendation: 'immediate' | 'delayed' | 'none';
+  retryRecommendation: 'immediate' | 'delayed' | 'none';
 }
 
 export interface AdaptiveFusionResult {
@@ -151,17 +151,17 @@ export function getAdaptiveWeights(
         break;
       // No default adjustment needed
     }
+  }
 
-    // AI-WHY: Fix #10 (017-refinement-phase-6) — Normalize core weights (semantic +
-    // keyword + recency) to sum 1.0 after doc-type adjustments. Only applied when
-    // doc-type shifts alter the balance. graphWeight and graphCausalBias are separate
-    // boosts, not part of the weighted average.
-    const coreSum = weights.semanticWeight + weights.keywordWeight + weights.recencyWeight;
-    if (coreSum > 0 && Math.abs(coreSum - 1.0) > 0.001) {
-      weights.semanticWeight /= coreSum;
-      weights.keywordWeight /= coreSum;
-      weights.recencyWeight /= coreSum;
-    }
+  // AI-WHY: Fix #10 (017-refinement-phase-6), P1-008 — Normalize core weights
+  // (semantic + keyword + recency) to sum 1.0. Always applied regardless of
+  // documentType presence. graphWeight and graphCausalBias are separate boosts,
+  // not part of the weighted average.
+  const coreSum = weights.semanticWeight + weights.keywordWeight + weights.recencyWeight;
+  if (coreSum > 0 && Math.abs(coreSum - 1.0) > 0.001) {
+    weights.semanticWeight /= coreSum;
+    weights.keywordWeight /= coreSum;
+    weights.recencyWeight /= coreSum;
   }
 
   return weights;
@@ -209,9 +209,17 @@ export function adaptiveFuse(
 
   const fused = fuseResultsMulti(lists);
 
-  // Apply recency boost if recencyWeight > 0
+  // Apply recency boost if recencyWeight > 0, then re-normalize to [0,1]
+  // P1-007: Boost MUST be followed by normalization to keep scores in [0,1]
   if (weights.recencyWeight > 0) {
     applyRecencyBoost(fused, weights.recencyWeight);
+
+    const maxScore = fused.reduce((mx, r) => Math.max(mx, r.rrfScore), 0);
+    if (maxScore > 1.0) {
+      for (const r of fused) {
+        r.rrfScore /= maxScore;
+      }
+    }
   }
 
   // Re-sort after recency boost
@@ -347,10 +355,10 @@ export function hybridAdaptiveFuse(
       results: [],
       weights,
         degraded: {
-          failure_mode: `standard_fusion_error: ${msg}`,
-          fallback_mode: 'empty_results',
-          confidence_impact: 1.0,
-          retry_recommendation: 'immediate',
+          failureMode: `standard_fusion_error: ${msg}`,
+          fallbackMode: 'empty_results',
+          confidenceImpact: 1.0,
+          retryRecommendation: 'immediate',
         },
       };
   }
@@ -374,10 +382,10 @@ export function hybridAdaptiveFuse(
       results: standardResults,
       weights,
       degraded: {
-        failure_mode: `adaptive_fusion_error: ${msg}`,
-        fallback_mode: 'standard_rrf',
-        confidence_impact: 0.3,
-        retry_recommendation: 'none',
+        failureMode: `adaptive_fusion_error: ${msg}`,
+        fallbackMode: 'standard_rrf',
+        confidenceImpact: 0.3,
+        retryRecommendation: 'none',
       },
     };
   }

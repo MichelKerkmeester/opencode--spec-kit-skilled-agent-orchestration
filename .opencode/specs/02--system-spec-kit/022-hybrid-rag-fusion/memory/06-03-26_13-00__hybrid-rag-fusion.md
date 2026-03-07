@@ -173,7 +173,7 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Phase 9 memory naming closure with executable validation** - Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 012-architecture-audit.
+- **Phase 9 memory naming closure with executable validation** - Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 010-architecture-audit.
 
 **Key Files and Their Roles**:
 
@@ -183,13 +183,13 @@ Next: Continue implementation
 
 - `.opencode/.../tests/task-enrichment.vitest.ts` - Regression coverage proves root-save filenames no longer ...
 
-- `specs/.../012-architecture-audit/plan.md` - Documentation
+- `specs/.../010-architecture-audit/plan.md` - Documentation
 
-- `specs/.../012-architecture-audit/tasks.md` - Documentation
+- `specs/.../010-architecture-audit/tasks.md` - Documentation
 
-- `specs/.../012-architecture-audit/checklist.md` - Documentation
+- `specs/.../010-architecture-audit/checklist.md` - Documentation
 
-- `specs/.../012-architecture-audit/implementation-summary.md` - Documentation
+- `specs/.../010-architecture-audit/implementation-summary.md` - Documentation
 
 **How to Extend**:
 
@@ -226,7 +226,7 @@ The validation blocker was only the execution path; the correct existing scripts
 | `.opencode/skill/system-spec-kit/scripts/core/(merged-small-files)` | Tree-thinning merged 1 small files (workflow.ts). workflow.ts: Updated workflow |
 | `.opencode/.../utils/(merged-small-files)` | Tree-thinning merged 1 small files (task-enrichment.ts). task-enrichment.ts: Updated task enrichment |
 | `.opencode/.../tests/(merged-small-files)` | Tree-thinning merged 1 small files (task-enrichment.vitest.ts). task-enrichment.vitest.ts: Updated task enrichment.vitest |
-| `specs/.../012-architecture-audit/(merged-small-files)` | Tree-thinning merged 4 small files (plan.md, tasks.md, checklist.md, implementation-summary.md). plan.md: Updated plan | tasks.md: Updated tasks |
+| `specs/.../010-architecture-audit/(merged-small-files)` | Tree-thinning merged 4 small files (plan.md, tasks.md, checklist.md, implementation-summary.md). plan.md: Updated plan | tasks.md: Updated tasks |
 
 <!-- /ANCHOR:summary -->
 
@@ -240,9 +240,9 @@ The validation blocker was only the execution path; the correct existing scripts
 <!-- ANCHOR:implementation-phase-memory-naming-closure-e2b4dc38 -->
 ### IMPLEMENTATION: Phase 9 memory naming closure with executable validation
 
-Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 012-architecture-audit.
+Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 010-architecture-audit.
 
-**Files:** .opencode/skill/system-spec-kit/scripts/core/workflow.ts, .opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts, .opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/plan.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/tasks.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/checklist.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit/implementation-summary.md
+**Files:** .opencode/skill/system-spec-kit/scripts/core/workflow.ts, .opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts, .opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/plan.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/tasks.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/checklist.md, specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/implementation-summary.md
 **Details:** workflow naming now considers QUICK_SUMMARY TITLE SUMMARY before folderBase | generic and contamination guardrails remained unchanged | task-enrichment regression suite passed 25 of 25 tests | spec validation passed with 0 errors and 0 warnings | Phase 9 tasks T103 T104 and checklist CHK-571 CHK-572 were closed
 <!-- /ANCHOR:implementation-phase-memory-naming-closure-e2b4dc38 -->
 
@@ -310,7 +310,7 @@ Save final Phase 9 closure context to root 022 memory with a better non-generic 
 
 > **Assistant** | 2026-03-06 @ 13:00:11
 
-Save final Phase 9 closure context to root 022 memory with a better non-generic title → Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 012-architecture-audit.
+Save final Phase 9 closure context to root 022 memory with a better non-generic title → Closed the Phase 9 root-save filename regression by prioritizing QUICK_SUMMARY, TITLE, and SUMMARY before folderBase, preserved generic and contamination guardrails, and completed executable validation plus spec closure in 010-architecture-audit.
 
 ---
 
@@ -545,7 +545,7 @@ key_files:
   - ".opencode/skill/system-spec-kit/scripts/core/(merged-small-files)"
   - ".opencode/.../utils/(merged-small-files)"
   - ".opencode/.../tests/(merged-small-files)"
-  - "specs/.../012-architecture-audit/(merged-small-files)"
+  - "specs/.../010-architecture-audit/(merged-small-files)"
 
 # Relationships
 related_sessions:

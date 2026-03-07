@@ -54,6 +54,7 @@ skill_advisor.py "implement form validation" --threshold 0.8
 
 **Keyword triggers:**
 - Implementation: `implement`, `build`, `create`, `async`, `validation`, `webflow`, `animation`
+- Performance: `interaction`, `first interaction`, `defer`, `deferred loading`, `pagespeed`, `lighthouse`, `tbt`, `inp`, `main thread`, `long tasks`
 - Debugging: `debug`, `fix`, `error`, `not working`, `broken`, `bug`
 - Verification: `done`, `complete`, `works`, `fixed`, `verify`
 
@@ -74,6 +75,8 @@ Phase 0: Research (optional) -> Phase 1: Implementation -> Phase 1.5: Code Quali
 .opencode/skill/sk-code--web/
 ├── SKILL.md                          # Entry point with routing logic
 ├── README.md                         # This file
+├── changelog/
+│   └── CHANGELOG.md                  # Canonical release history
 ├── references/
 │   ├── implementation/
 │   │   ├── implementation_workflows.md   # Async waiting, validation, CDN versioning
@@ -98,6 +101,7 @@ Phase 0: Research (optional) -> Phase 1: Implementation -> Phase 1.5: Code Quali
 │   │   └── cdn_deployment.md             # Cloudflare R2, versioning
 │   ├── performance/
 │   │   ├── cwv_remediation.md            # Core Web Vitals patterns
+│   │   ├── interaction_gated_loading.md  # Interaction, viewport, idle gate playbook
 │   │   ├── resource_loading.md           # Preconnect, preload, async
 │   │   ├── webflow_constraints.md        # Platform limitations
 │   │   └── third_party.md               # GTM, analytics optimization
@@ -113,8 +117,10 @@ Phase 0: Research (optional) -> Phase 1: Implementation -> Phase 1.5: Code Quali
 │   ├── checklists/
 │   │   ├── code_quality_checklist.md     # P0/P1/P2 quality gate items
 │   │   ├── debugging_checklist.md        # Step-by-step debug workflow
+│   │   ├── performance_loading_checklist.md # TBT/INP/Lighthouse verification
 │   │   └── verification_checklist.md     # Mandatory verification steps
 │   ├── patterns/
+│   │   ├── interaction_gate_patterns.js  # Load-once, interaction, viewport, idle helpers
 │   │   ├── wait_patterns.js              # Condition-based waiting
 │   │   ├── validation_patterns.js        # Defense-in-depth validation
 │   │   └── performance_patterns.js       # Throttle, debounce, RAF
@@ -139,6 +145,7 @@ Phase 0: Research (optional) -> Phase 1: Implementation -> Phase 1.5: Code Quali
 - **Code quality gate:** P0/P1/P2 priority enforcement for JavaScript and CSS standards
 - **Browser verification:** Mandatory multi-viewport testing (375px, 991px, 1920px) before completion claims
 - **Domain coverage:** Animation, forms, video, accessibility, performance, observers, CSS architecture
+- **Interaction-gated loading:** First-interaction, viewport, and idle fallback patterns for deferred startup
 - **Deployment pipeline:** Minification (Terser), AST verification, CDN deployment (Cloudflare R2)
 - **Performance targets:** FCP < 1.8s, LCP < 2.5s, CLS < 0.1, 60fps animations, 0 console errors
 - **Timing constants:** Validated defaults: 64ms pointer throttle, 180ms validation debounce, 200ms resize debounce
@@ -152,7 +159,7 @@ Phase 0: Research (optional) -> Phase 1: Implementation -> Phase 1.5: Code Quali
 ## 5. CONFIGURATION
 <!-- ANCHOR:configuration -->
 
-**Version:** 1.0.6.0
+**Version:** 1.1.0.0
 
 **Allowed tools:** Bash, Edit, Glob, Grep, Read, Task, Write
 
@@ -243,12 +250,11 @@ wrangler r2 object put project-cdn/js/file.min.js \
 ## 9. CHANGELOG
 <!-- ANCHOR:changelog -->
 
-### 2026-02-14 - v1.0.6.0
-- Updated FilePond upload documentation to match current implementation and production behavior.
-- Documented `data-label-error-upload` and clarified localized upload-failure messaging.
-- Clarified MIME-first validation with extension alias fallbacks and native `accept` synchronization.
-- Added guidance for `processfile` error-path handling (ERROR state instead of forced COMPLETE).
-- Added upload URL submission-guard notes to prevent non-idle upload states from submitting with empty hidden URL values.
-- Updated uploaded-file R2 domain references to `pub-383189394a924ad3b619aa4522f32d27.r2.dev` and aligned cross-references.
+Canonical changelog: `changelog/CHANGELOG.md`
+
+Latest release: `1.1.0.0` on `2026-03-07`
+- Expanded PERFORMANCE routing vocabulary for interaction-gated loading, Lighthouse/PageSpeed, TBT, INP, and main-thread prompts.
+- Added `interaction_gated_loading.md`, `interaction_gate_patterns.js`, and `performance_loading_checklist.md`.
+- Aligned the new checklist and pattern assets with the `sk-doc` asset-template conventions.
 
 <!-- /ANCHOR:changelog -->
