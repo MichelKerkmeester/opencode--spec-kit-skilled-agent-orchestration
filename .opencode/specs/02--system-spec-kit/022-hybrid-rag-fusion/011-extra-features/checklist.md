@@ -242,12 +242,12 @@ contextType: "verification"
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
-| Category | Total | Current Status | Notes |
-|----------|-------|----------------|-------|
-| P0 Items | 28 | Partial | Historical checklist marks were not fully re-audited in the 2026-03-06 remediation pass |
-| P1 Items | 49 | Partial | Multiple runtime/e2e/performance items remain open in `tasks.md` |
-| P2 Items | 11 | Partial | Documentation/perf/eval items remain mixed or deferred |
-| **Total** | **88** | **Not 88/88 complete** | Automated validation is broader now, but full sprint runtime/manual/eval verification remains incomplete |
+| Category | Total | Verified | Notes |
+|----------|-------|----------|-------|
+| P0 Items | 28 | 14/28 | Unchecked items are live runtime/e2e/eval tasks (T012-T015, T029-T032, T051-T055, T119-T123) |
+| P1 Items | 49 | 42/49 | Unchecked items are live runtime/benchmark tasks (T038-T039, T063-T065, T077-T081, T093-T098) |
+| P2 Items | 11 | 9/11 | CHK-069 (eval comparison) and CHK-141 (memory save) remain open |
+| **Total** | **88** | **65/88** | Code implementation complete; 23 unchecked items are runtime/eval verification requiring live MCP server |
 
 **Verification Date**: 2026-03-06
 - Historical implementation notes remain in this checklist, but they should not be treated as a completed verification ledger.
@@ -281,17 +281,17 @@ A second 8-agent multi-AI review (3 Gemini, 3 Opus, 2 Codex) identified 26 findi
 |---------|---:|---:|---:|:--------:|------:|
 | Pre-Implementation | 4 | 2 | 0 | 6/6 | 6 |
 | Code Quality | 3 | 3 | 0 | 6/6 | 6 |
-| P0-1: Zod Schemas | 4 | 5 | 1 | 10/10 | 10 |
-| P0-2: Response Envelopes | 5 | 5 | 1 | 11/11 | 11 |
-| P0-3: Async Ingestion | 6 | 6 | 1 | 13/13 | 13 |
-| P1-4: Contextual Trees | 0 | 6 | 1 | 7/7 | 7 |
-| P1-5: GGUF Reranker | 0 | 8 | 1 | 9/9 | 9 |
-| P1-6: Dynamic Init | 0 | 6 | 1 | 7/7 | 7 |
-| P1-7: File Watcher | 0 | 10 | 1 | 11/11 | 11 |
-| Regression | 6 | 3 | 0 | 9/9 | 9 |
+| P0-1: Zod Schemas | 4 | 5 | 1 | 6/10 | 10 |
+| P0-2: Response Envelopes | 5 | 5 | 1 | 4/11 | 11 |
+| P0-3: Async Ingestion | 6 | 6 | 1 | 5/13 | 13 |
+| P1-4: Contextual Trees | 0 | 6 | 1 | 4/7 | 7 |
+| P1-5: GGUF Reranker | 0 | 8 | 1 | 3/9 | 9 |
+| P1-6: Dynamic Init | 0 | 6 | 1 | 1/7 | 7 |
+| P1-7: File Watcher | 0 | 10 | 1 | 6/11 | 11 |
+| Regression | 6 | 3 | 0 | 2/9 | 9 |
 | Security | 2 | 2 | 0 | 4/4 | 4 |
 | Documentation | 0 | 3 | 2 | 5/5 | 5 |
-| File Organization | 0 | 2 | 1 | 3/3 | 3 |
+| File Organization | 0 | 2 | 1 | 2/3 | 3 |
 | Architecture (L3+) | 1 | 2 | 1 | 4/4 | 4 |
 | Performance (L3+) | 0 | 4 | 0 | 4/4 | 4 |
 | Deployment (L3+) | 2 | 1 | 0 | 3/3 | 3 |

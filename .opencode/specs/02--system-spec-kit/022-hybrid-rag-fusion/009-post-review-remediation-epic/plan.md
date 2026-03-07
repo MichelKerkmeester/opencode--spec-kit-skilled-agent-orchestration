@@ -31,7 +31,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-002 -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -45,11 +45,11 @@ contextType: "implementation"
 
 ### Overview
 This plan drives phase 006 remediation using wave-based execution and a verify-fix-verify cycle. Focus stays on blocking validation failures first, then on non-blocking quality improvements.
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-002 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-002 -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -58,14 +58,14 @@ This plan drives phase 006 remediation using wave-based execution and a verify-f
 - [x] Scope boundaries are explicit (spec-tree markdown only)
 
 ### Definition of Done
-- [ ] Recursive validation exit code is 0 or 1
-- [ ] All blocker-level doc issues in this phase are remediated
-- [ ] Remaining warnings are documented in final report
-<!-- /ANCHOR:quality-gates -->
+- [x] Recursive validation exit code is 0 or 1
+- [x] All blocker-level doc issues in this phase are remediated
+- [x] Remaining warnings are documented in final report
+<!-- /ANCHOR:quality-gates-002 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-002 -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -79,11 +79,11 @@ Wave-based remediation with strict scope lock and iterative validation.
 
 ### Data Flow
 Validation errors are mapped to targeted document edits, then re-validated recursively until only warnings remain.
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-002 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-002 -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Blocker Remediation
@@ -98,11 +98,11 @@ Validation errors are mapped to targeted document edits, then re-validated recur
 ### Phase 3: Verification
 - [x] Run recursive validator and confirm non-error exit state
 - [x] Capture before/after error and warning counts
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-002 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-002 -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -110,27 +110,27 @@ Validation errors are mapped to targeted document edits, then re-validated recur
 | Validation | Spec tree blocker and warning checks | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive` |
 | Structural | Required files/headers/anchors present | Validator rule set (FILE_EXISTS, ANCHORS_VALID, TEMPLATE_SOURCE) |
 | Manual | Confirm changed paths are in-scope only | Path review under `022-hybrid-rag-fusion/**` |
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-002 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-002 -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Parent phase tree integrity | Internal | Required | Recursive validation fails or reports lineage issues |
 | Existing 010 docs content | Internal | Required | Missing context for remediation reporting |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-002 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-002 -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Validation exit remains 2 after blocker edits.
 - **Procedure**: Revert latest phase-specific markdown changes, restore last passing subset, then re-apply edits in smaller batches.
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-002 -->
 
 
 ---
@@ -155,7 +155,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-022 -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -169,11 +169,11 @@ contextType: "implementation"
 
 ### Overview
 Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and complex P1 code logic fixes; Wave 2 (5 Sonnet agents) handles P1 standards, error handling, and documentation fixes. All agents run in isolation with summary-mode returns (max 30 lines).
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-022 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-022 -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -188,11 +188,11 @@ Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and
 - [x] `npm test` passes
 - [x] `npm run build` passes — N/A (no build script; server runs TS directly)
 - [x] MCP smoke test passes
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-022 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-022 -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Wave 1: P0 + Complex P1 Code Fixes (5 Opus Agents, Parallel)
@@ -220,11 +220,11 @@ Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and
 - [x] `npm test` passes — 7,008/7,008 tests
 - [x] `npm run build` passes — N/A (no build script; server runs TS directly)
 - [x] MCP smoke test passes — memory_health, memory_stats, memory_search functional
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-022 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-022 -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -233,20 +233,20 @@ Two-wave parallel agent strategy: Wave 1 (5 Opus agents) handles P0 blockers and
 | Unit/Integration | Full test suite | `vitest` |
 | Build | Production build | `npm run build` |
 | Smoke | MCP tools | `memory_health`, `memory_stats` |
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-022 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-022 -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: tsc or test failures after changes
 - **Procedure**: `git checkout -- .` on affected files
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-022 -->
 
 ---
 
-<!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:phase-deps-022 -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -259,7 +259,7 @@ Wave 1 (5 Opus, parallel) ──► Wave 2 (5 Sonnet, parallel) ──► Verifi
 | Wave 2 | Wave 1 complete | Verification |
 | Verification | Wave 2 complete | Finalize |
 | Finalize | Verification passes | None |
-<!-- /ANCHOR:phase-deps -->
+<!-- /ANCHOR:phase-deps-022 -->
 
 
 ---
@@ -392,7 +392,7 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-024 -->
 
 ## P1 #1: Warn-Only Timer Persistence
 
@@ -424,7 +424,7 @@ contextType: "implementation"
 ## Verification
 - Run full test suite: `cd .opencode/skill/system-spec-kit && npm test`
 - Verify TypeScript compiles: `npx tsc --noEmit`
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-024 -->
 
 > **Supersession Note:** Phase 024 was not independently executed. All planned work was absorbed by phases 025 (timer persistence T018–T019) and 026 (effectiveScore T024). See those phases for execution details.
 
@@ -452,7 +452,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-025 -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -466,11 +466,11 @@ contextType: "implementation"
 
 ### Overview
 This plan records completed tranche continuity from tranche-1 through tranche-4 with bounded scope: summary alignment corrections, `save-quality-gate.ts` robustness/activation-window continuity, hybrid-search canonical dedup plus tier-2 `forceAllChannels` hardening, and parent-summary P2 documentation polish. Verification evidence is captured in this child folder.
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-025 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-025 -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -484,11 +484,11 @@ This plan records completed tranche continuity from tranche-1 through tranche-4 
 - [x] `save-quality-gate.ts` config-table ensure behavior is robust across DB handle changes and persisted activation-window continuity.
 - [x] Hybrid-search canonical dedup and tier-2 `forceAllChannels` fallback hardening are completed with regression coverage.
 - [x] Child validation and targeted tests pass with evidence captured in `checklist.md` and `implementation-summary.md`.
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-025 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-025 -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -502,11 +502,11 @@ Constrained remediation flow: docs alignment fixes first, runtime robustness fix
 
 ### Data Flow
 Source wording and behavior mismatches are corrected in targeted files, then validated through command outputs. Evidence links are recorded in checklist and implementation summary to close P0/P1 criteria.
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-025 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-025 -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Child Doc Alignment (Completed)
@@ -536,11 +536,11 @@ Source wording and behavior mismatches are corrected in targeted files, then val
 - [x] Apply parent-summary P2 polish updates A-F in targeted summary files.
 - [x] Update child status docs to finalized completed-state wording.
 - [x] Run child validation and expanded targeted tests; capture evidence in `tasks.md`, `checklist.md`, and `implementation-summary.md`.
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-025 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-025 -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Commands |
@@ -548,11 +548,11 @@ Source wording and behavior mismatches are corrected in targeted files, then val
 | Spec validation | Child Level 2 docs quality and structure | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/025-finalized-scope"` |
 | Targeted unit/integration | Quality-gate persistence behavior, hybrid-search regression coverage, and adjacent integration wiring | `npm run test --workspace=mcp_server -- tests/hybrid-search.vitest.ts tests/save-quality-gate.vitest.ts tests/mpab-quality-gate-integration.vitest.ts` (PASS, 3 files, 176 tests) |
 | Manual contradiction review | Summary-doc consistency checks | `rg -n "RSF|shadow|fallback|floor|reconsolidation" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-feature-overview/summary_of_existing_features.md && rg -n "isInShadowPeriod" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-feature-overview/summary_of_new_features.md` |
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-025 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-025 -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -560,20 +560,20 @@ Source wording and behavior mismatches are corrected in targeted files, then val
 | Existing summary source content | Internal | Green | Cannot complete wording/contradiction corrections safely |
 | Existing quality-gate tests and vitest workspace | Internal | Green | Runtime robustness fix cannot be proven |
 | Parent/predecessor context references | Internal | Green | Scope lineage clarity degrades |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-025 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-025 -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Any fix introduces contradiction regression, test failures, or new validation errors.
 - **Procedure**: Revert only the failing file change, rerun targeted verification commands, and document blocker evidence in `checklist.md`.
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-025 -->
 
 ---
 
-<!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:phase-deps-025 -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -588,11 +588,11 @@ Phase 1 (Doc Alignment) -> Phase 2 (Summary Fixes) -> Phase 3 (save-quality-gate
 | Phase 4 | Phases 2 and 3 | Phase 5-6 |
 | Phase 5 | Phase 4 | Phase 6 |
 | Phase 6 | Phases 4 and 5 | Tranche closeout |
-<!-- /ANCHOR:phase-deps -->
+<!-- /ANCHOR:phase-deps-025 -->
 
 ---
 
-<!-- ANCHOR:effort -->
+<!-- ANCHOR:effort-025 -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
@@ -602,11 +602,11 @@ Phase 1 (Doc Alignment) -> Phase 2 (Summary Fixes) -> Phase 3 (save-quality-gate
 | Phase 3: save-quality-gate fix + tests | Medium-High | 3-6 hours |
 | Phase 4: Verification + evidence | Medium | 1-2 hours |
 | **Total** | | **7-14 hours** |
-<!-- /ANCHOR:effort -->
+<!-- /ANCHOR:effort-025 -->
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
+<!-- ANCHOR:enhanced-rollback-025 -->
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
@@ -623,7 +623,7 @@ Phase 1 (Doc Alignment) -> Phase 2 (Summary Fixes) -> Phase 3 (save-quality-gate
 ### Data Reversal
 - **Has data migrations?** No.
 - **Reversal procedure**: N/A.
-<!-- /ANCHOR:enhanced-rollback -->
+<!-- /ANCHOR:enhanced-rollback-025 -->
 
 ---
 
@@ -652,7 +652,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:summary -->
+<!-- ANCHOR:summary-026 -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -668,11 +668,11 @@ contextType: "implementation"
 Implements 37 remediation fixes across 5 sprints. Sprint 1 removes the legacy V1 pipeline (~600 LOC) which resolves all 4 P0 critical issues. Sprints 2–5 address P1 findings in scoring/fusion, pipeline/mutation, graph/cognitive, and evaluation domains. Each sprint is independently committable.
 
 **Base path:** `.opencode/skill/system-spec-kit/mcp_server/`
-<!-- /ANCHOR:summary -->
+<!-- /ANCHOR:summary-026 -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
+<!-- ANCHOR:quality-gates-026 -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -685,11 +685,11 @@ Implements 37 remediation fixes across 5 sprints. Sprint 1 removes the legacy V1
 - [x] Full test suite passes: 7,085/7,085
 - [x] Each sprint committed independently
 - [x] `implementation-summary.md` written
-<!-- /ANCHOR:quality-gates -->
+<!-- /ANCHOR:quality-gates-026 -->
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-026 -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -704,11 +704,11 @@ Single MCP server with modular pipeline architecture (Stage 1–4).
 
 ### Data Flow
 Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent weights) → Stage 3 (rerank + MMR) → Stage 4 (filter + dedup) → Results
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-026 -->
 
 ---
 
-<!-- ANCHOR:phases -->
+<!-- ANCHOR:phases-026 -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Sprint 1: Legacy Pipeline Removal + P0 Critical Fixes
@@ -780,11 +780,11 @@ Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent wei
 - [x] #38: Add `cleanupExitHandlers()` in `access-tracker.ts`
 - [x] Add tests for all 6 fixes
 - [x] Run full test suite — 7,085 passing
-<!-- /ANCHOR:phases -->
+<!-- /ANCHOR:phases-026 -->
 
 ---
 
-<!-- ANCHOR:testing -->
+<!-- ANCHOR:testing-026 -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -799,11 +799,11 @@ Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent wei
 - Sprint 3: Embedding call count, stemmer symmetry, delete cleanup completeness, SAVEPOINT rollback
 - Sprint 4: Self-loop rejection, depth clamping, score bounds, decay correctness
 - Sprint 5: Ablation limit, evalRunId persistence, hash length, handler removal
-<!-- /ANCHOR:testing -->
+<!-- /ANCHOR:testing-026 -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-026 -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -812,20 +812,20 @@ Query → Stage 1 (candidates + constitutional) → Stage 2 (fusion + intent wei
 | 015 effectiveScore fix | Internal | Complete | Sprint 2 #11 scope reduced |
 | 016 hybrid-search changes | Internal | Complete | Verify line numbers in Sprint 2 #8 |
 | Test baseline (7,081+) | Internal | Verified | Regression threshold |
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-026 -->
 
 ---
 
-<!-- ANCHOR:rollback -->
+<!-- ANCHOR:rollback-026 -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Test suite drops below 7,081 passing tests after any sprint
 - **Procedure**: `git revert` the sprint commit; investigate failures before re-attempting
-<!-- /ANCHOR:rollback -->
+<!-- /ANCHOR:rollback-026 -->
 
 ---
 
-<!-- ANCHOR:phase-deps -->
+<!-- ANCHOR:phase-deps-026 -->
 ## L2: PHASE DEPENDENCIES
 
 ```
@@ -843,11 +843,11 @@ Sprint 5 (Eval + Housekeeping)  ──> Independent (parallel with 2–4)
 | Sprint 3 | Sprint 1 | None |
 | Sprint 4 | Sprint 1 | None |
 | Sprint 5 | None | None |
-<!-- /ANCHOR:phase-deps -->
+<!-- /ANCHOR:phase-deps-026 -->
 
 ---
 
-<!-- ANCHOR:effort -->
+<!-- ANCHOR:effort-026 -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated LOC |
@@ -858,7 +858,7 @@ Sprint 5 (Eval + Housekeeping)  ──> Independent (parallel with 2–4)
 | Sprint 4: Graph/Cognitive | Medium | ~230 (150 modified, 80 added) |
 | Sprint 5: Eval/Housekeeping | Low | ~120 (80 modified, 40 added) |
 | **Total** | | **~1,550 LOC** |
-<!-- /ANCHOR:effort -->
+<!-- /ANCHOR:effort-026 -->
 
 ---
 

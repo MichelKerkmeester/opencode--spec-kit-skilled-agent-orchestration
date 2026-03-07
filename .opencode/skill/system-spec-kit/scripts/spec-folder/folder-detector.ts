@@ -500,12 +500,11 @@ async function resolveSessionSpecFolderPaths(
   }
 
   if (
-    segments.length === 2 &&
-    SPEC_FOLDER_PATTERN.test(segments[0]) &&
-    SPEC_FOLDER_PATTERN.test(segments[1])
+    segments.length >= 2 &&
+    SPEC_FOLDER_PATTERN.test(segments[segments.length - 1])
   ) {
     for (const specsDir of specsDirs) {
-      await addCandidate(path.join(specsDir, segments[0], segments[1]));
+      await addCandidate(path.join(specsDir, ...segments));
     }
     return Array.from(resolvedPaths);
   }

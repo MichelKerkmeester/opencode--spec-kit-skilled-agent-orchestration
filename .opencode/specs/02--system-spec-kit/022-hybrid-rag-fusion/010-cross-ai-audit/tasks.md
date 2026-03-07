@@ -528,7 +528,7 @@ contextType: "implementation"
 
 **Acceptance:** Dashboard does not silently discard data. Either configurable limit or logged warning.
 
-### CR-P2-4: Decompose memory-save.ts [P2] [Gemini] (Partial — save/ modules created, rewrite pending)
+### CR-P2-4: Decompose memory-save.ts [P2] [Gemini] (COMPLETE)
 
 **File:** `mcp_server/handlers/memory-save.ts` | **Effort:** 4.0h opt / 8h real
 
@@ -542,10 +542,10 @@ contextType: "implementation"
 - [x] Extract post-insert logic into `handlers/save/post-insert.ts`
 - [x] Extract response building into `handlers/save/response-builder.ts`
 - [x] Create barrel export `handlers/save/index.ts`
-- [ ] Rewrite `memory-save.ts` as slim orchestrator importing from `./save/*` (target: <1000 LOC)
-- **Status:** 10/10 save/ modules created by Wave 2 agents (C2-1, C2-2). memory-save.ts rewrite not completed (C2-3 agent never launched due to C2-1/C2-2 failures). Current: 1555 LOC.
+- [x] Rewrite `memory-save.ts` as slim orchestrator importing from `./save/*` (target: <1000 LOC)
+- **Status:** 10/10 save/ modules created (C2-1, C2-2). Conductor rewrite: 1556→579 LOC (63% reduction). 0 new type errors. 7203/7205 tests pass (2 pre-existing failures in search-results-format.vitest.ts unrelated to save pipeline).
 
-**Acceptance:** Partially met — modules exist at `handlers/save/`. Requires follow-up to wire memory-save.ts to use them.
+**Acceptance:** FULLY MET — `memory-save.ts` is now a slim orchestrator (579 LOC) delegating to 10 `handlers/save/` modules (1249 LOC). All exports preserved. All backward-compatible aliases retained.
 
 ### CR-P2-5: Harden non-finite score handling [P2] [Codex]
 
@@ -631,7 +631,7 @@ contextType: "implementation"
 - [x] `hybrid-search.ts` (1,539 LOC): split by stage/services
 - [x] `session-manager.ts` (1,140 LOC): separate dedup, recovery, persistence
 
-**Acceptance:** ARCH-6 partial for this spec: handler decomposition work completed, but strict "no handler file >1000 LOC" remains unmet because `memory-save.ts` follow-up is deferred under CR-P2-4.
+**Acceptance:** ARCH-6 COMPLETE — handler decomposition done. `memory-save.ts` reduced from 1556→579 LOC via CR-P2-4 (10 `handlers/save/` modules).
 
 ### ARCH-7: Fix circular dependencies [MEDIUM] [Codex scan]
 

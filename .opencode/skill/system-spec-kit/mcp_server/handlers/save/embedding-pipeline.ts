@@ -5,7 +5,7 @@ import * as embeddings from '../../lib/providers/embeddings';
 import { lookupEmbedding, storeEmbedding } from '../../lib/cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../../lib/parsing/content-normalizer';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
-import { toErrorMessage } from '../utils';
+import { toErrorMessage } from '../../utils';
 
 export interface EmbeddingResult {
   embedding: Float32Array | null;

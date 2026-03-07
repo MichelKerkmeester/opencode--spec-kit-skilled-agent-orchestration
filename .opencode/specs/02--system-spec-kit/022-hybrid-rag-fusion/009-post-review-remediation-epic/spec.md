@@ -528,11 +528,11 @@ Gemini code review (two reviews: 88/100 and 85/100, both Conditional Pass) ident
 - Any pipeline behavioral changes beyond the fallback chain fix
 
 ## Success Criteria
-- [ ] Quality gate activation timestamp persists across server restarts
-- [ ] `effectiveScore()` checks `intentAdjustedScore` -> `rrfScore` -> `score` -> `similarity/100`
-- [ ] Stage 3 preserves Stage 2's `score` field (writes to `rerankScore` only, or documents why overwrite is acceptable)
-- [ ] All 7,008+ existing tests pass
-- [ ] New tests cover persistence and fallback scenarios
+- [~] Quality gate activation timestamp persists across server restarts — SUPERSEDED: Completed in 025 (T018-T019, CHK-017)
+- [~] `effectiveScore()` checks `intentAdjustedScore` -> `rrfScore` -> `score` -> `similarity/100` — SUPERSEDED: Completed in 026 (T024, CHK-026)
+- [~] Stage 3 preserves Stage 2's `score` field — SUPERSEDED: Completed in 026 (T024, CHK-027)
+- [~] All 7,008+ existing tests pass — SUPERSEDED: 7,085/7,085 passing in 026
+- [~] New tests cover persistence and fallback scenarios — SUPERSEDED: WO7 test in 025, resolveEffectiveScore tests in 026
 <!-- /ANCHOR:summary -->
 
 ---

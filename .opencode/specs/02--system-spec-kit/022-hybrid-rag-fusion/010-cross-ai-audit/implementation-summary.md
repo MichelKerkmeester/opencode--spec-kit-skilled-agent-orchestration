@@ -57,7 +57,7 @@ This phase executed a comprehensive audit and remediation of the Spec Kit Memory
 
 Tier 3 (15 items, 50-70h realistic) is deferred to a separate spec folder.
 
-**Tier 4 (cross-AI validation, Session 3+6):** Independent reviews by Gemini 3.1 Pro + Codex gpt-5.3-codex found 14 additional issues. Tier 4 findings addressed: 13 implemented + 1 deferred (CR-P2-4). CR-P0-1 completed in Attempt 6 with runtime `ctx.skip()` guards in optional-module tests (21 silent-return conversions; 44 pass, 21 skipped). Verified via 3-stage review pipeline (Codex → Gemini → Claude).
+**Tier 4 (cross-AI validation, Session 3+6):** Independent reviews by Gemini 3.1 Pro + Codex gpt-5.3-codex found 14 additional issues. Tier 4 findings addressed: 14/14 implemented (CR-P2-4 completed via conductor rewrite: 1556→579 LOC). CR-P0-1 completed in Attempt 6 with runtime `ctx.skip()` guards in optional-module tests (21 silent-return conversions; 44 pass, 21 skipped). Verified via 3-stage review pipeline (Codex → Gemini → Claude).
 <!-- /ANCHOR:executive-summary -->
 
 ---
@@ -642,7 +642,7 @@ All 5 agents ran as parallel background bash processes via `cli-gemini`, outputt
 
 3. **Error handling analysis (T3-15):** C2 agent never returned. Error boundaries across mcp_server/ not mapped.
 
-4. **memory-save.ts rewrite (CR-P2-4):** 10 save/ modules created but memory-save.ts not yet rewritten as slim orchestrator (1555 LOC, target <1000).
+4. ~~memory-save.ts rewrite (CR-P2-4)~~ **RESOLVED** — Conductor rewrite: 1556→579 LOC (63% reduction). 10 save/ modules (1249 LOC) integrated. 0 new type errors. 7203/7205 tests pass (2 pre-existing in search-results-format).
 
 ### Resolved by Wave 2 (previously listed as limitations)
 
@@ -658,7 +658,7 @@ All 5 agents ran as parallel background bash processes via `cli-gemini`, outputt
 
 Independent reviews by Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+) identified 14 additional findings missed by the original 8-agent audit. 13/14 were implemented by Codex 5.3 (xhigh reasoning, 155K tokens), reviewed by Gemini 3.1 Pro, and final-reviewed by Claude Opus 4.6. CR-P0-1 completed in Attempt 6 with runtime `ctx.skip()` guards in optional-module tests (21 silent-return conversions).
 
-**Tier 4: 13/14 implemented; CR-P2-4 deferred:**
+**Tier 4: 14/14 implemented (CR-P2-4 completed):**
 
 | ID | Fix | File(s) | Review Status |
 |----|-----|---------|:---:|
@@ -676,8 +676,8 @@ Independent reviews by Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded
 | CR-P2-3 | Dashboard limit configurable via SPECKIT_DASHBOARD_LIMIT (default 10000) | reporting-dashboard.ts:22 | Gemini PASS (NaN noted), Claude FIXED (NaN guard) |
 | CR-P2-5 | Non-finite score guard (finiteScores filter + post-computation check) | evidence-gap-detector.ts:140-166 | Gemini PASS, Claude PASS |
 
-**Deferred (1/14):**
-- CR-P2-4: Decompose `memory-save.ts` (2,700+ LOC → domain modules). Estimated 4-8h. Tracked in Tier 3.
+**Previously Deferred (now complete):**
+- CR-P2-4: `memory-save.ts` decomposed (1556→579 LOC) via conductor rewrite. 10 `handlers/save/` modules integrated.
 
 **3-stage review pipeline:** Codex implemented → Gemini reviewed → Claude final-reviewed. 2 minor issues caught by reviewers (stale JSDoc on telemetry, NaN edge case on dashboard limit) and fixed by Claude.
 
@@ -777,7 +777,7 @@ Second-pass review with differentiated focus: Gemini (documentation audit, 4/10 
 | O2-5 | copilot | ❌ | causal-edges.ts, consolidation.ts, checkpoints.ts — already had tx wrappers (verified) |
 | C2-1 | codex | ❌ | handlers/save/ types, db-helpers, dedup, embedding-pipeline, pe-orchestration — files created before failure |
 | C2-2 | codex | ❌ | handlers/save/ reconsolidation-bridge, create-record, post-insert, response-builder, index — files created before failure |
-| C2-3 | codex | ⏸️ | memory-save.ts rewrite — held, never launched (depends on C2-1/C2-2) |
+| C2-3 | conductor | ✅ | memory-save.ts rewrite — completed by conductor (1556→579 LOC, imports from ./save/*) |
 | C2-4 | codex | ❌ | bm25-index.ts, retry-manager.ts — fixes already applied by C2-5 or pre-existing |
 | C2-5 | codex | ❌ | rollout-policy.ts fix applied before failure; duplicate deletion incorrectly targeted |
 
@@ -807,7 +807,7 @@ Second-pass review with differentiated focus: Gemini (documentation audit, 4/10 
 | T3-1: Code standards | DEFERRED | 180-file scope |
 | T3-14: Phase 017 verify | PARTIAL | 25/35 checked (19 verified, 3 suspicious, 3 missing) |
 | T3-15: Error handling | DEFERRED | C2 agent never returned |
-| CR-P2-4: save/ decomposition | PARTIAL | 10/10 modules created; memory-save.ts rewrite pending |
+| CR-P2-4: save/ decomposition | COMPLETE | 10/10 modules + conductor rewrite: 1556→579 LOC |
 
 **Final verification:** `tsc --noEmit` clean. 243/243 test files pass. 7205/7205 tests pass.
 <!-- /ANCHOR:wave2-tier3 -->

@@ -324,7 +324,8 @@ export async function formatSearchResults(
       data: {
         searchType: searchType,
         constitutionalCount: 0,
-        ...extraData,
+        // M4 fix: Only spread extraData (pipeline trace, timing, etc.) when includeTrace is enabled
+        ...(includeTrace && extraData ? extraData : {}),
       },
       hints: [
         'Try broadening your search query',
