@@ -1158,3 +1158,266 @@ exec
 867:        if (!Array.isArray(snapshot.causalEdges) || snapshot.causalEdges.length === 0) {
 870:        const edgeColumns = getTableColumns(database, 'causal_edges');
 876:            INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
+codex
+---
+FINDING: FATAL_ERROR_CLEANUP_DIVERGES
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:571-681
+SEVERITY: P1-IMPORTANT
+TYPE: SIGNAL
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: Fatal-process handlers are not wired to the same cleanup path. `gracefulShutdown()` awaits watcher/reranker cleanup and closes transport, but `unhandledRejection` skips cleanup entirely, and `uncaughtException` exits without awaiting async cleanup or closing transport.
+EVIDENCE:
+```ts
+// graceful path
+await fileWatcher.close();
+await disposeLocalReranker();
+if (transport) { transport.close(); }
+
+// fatal paths
+process.on('uncaughtException', ... { void fileWatcher.close(); void disposeLocalReranker(); process.exit(1); });
+process.on('unhandledRejection', ... { setTimeout(() => process.exit(1), EXIT_FLUSH_DELAY_MS); });
+```
+SUGGESTED_FIX: Route `SIGINT`, `SIGTERM`, `uncaughtException`, and `unhandledRejection` through one async `fatalShutdown(reason, exitCode)` that reuses the graceful cleanup sequence, awaits it with a deadline, then exits.
+---
+
+---
+FINDING: SESSION_STATE_RECOVERY_IS_EFFECTIVELY_DEAD
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:919-933
+SEVERITY: P1-IMPORTANT
+TYPE: SESSION
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: Startup initializes and resets `session_state`, but live request flow does not appear to persist session state into it. In production code, `memory_context` tracks lifecycle from `workingMemory`, not `sessionManager`, and I found no non-test call sites for `saveSessionState`, `completeSession`, or `checkpointSession`. That means crash recovery/logging is largely inert.
+EVIDENCE:
+```ts
+const sessionResult = sessionManager.init(database);
+const recoveryResult = sessionManager.resetInterruptedSessions();
+const interrupted = sessionManager.getInterruptedSessions();
+```
+```ts
+const requestedSessionId = ... ? session_id.trim() : null;
+const effectiveSessionId = requestedSessionId ?? randomUUID();
+const resumedSession = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
+```
+SUGGESTED_FIX: Persist `session_state` on request entry/update/exit boundaries for caller sessions, and checkpoint on resume/compaction paths; otherwise remove the reset/recovery surface to avoid a false sense of coverage.
+---
+
+---
+FINDING: INGEST_QUEUE_HAS_NO_SHUTDOWN_COORDINATION
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts:505-526
+SEVERITY: P2-MINOR
+TYPE: SHUTDOWN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: The server starts the ingest queue at startup, but the queue exposes no shutdown/drain API and the server shutdown path never coordinates with it. A worker can still be processing files while shutdown closes the DB and exits.
+EVIDENCE:
+```ts
+function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
+  processFileFn = config.processFile;
+  const resetJobIds = resetIncompleteJobsToQueued();
+  for (const jobId of resetJobIds) enqueueIngestJob(jobId);
+}
+export { initIngestJobQueue, createIngestJob, getIngestJob, cancelIngestJob, enqueueIngestJob, resetIncompleteJobsToQueued };
+```
+SUGGESTED_FIX: Add `shutdown({ drain?: boolean, timeoutMs?: number })` to the queue and call it before `closeDb()` in all shutdown/fatal-exit paths.
+---
+
+---
+FINDING: F8
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts:397-401
+SEVERITY: P1-IMPORTANT
+TYPE: HOOK_WIRING
+STATUS: FIXED
+PRIOR_REF: F8
+DESCRIPTION: The orphan-edge auto-repair path now initializes the local causal-edge DB binding before running orphan cleanup, which removes the earlier uninitialized-handle bug.
+EVIDENCE:
+```ts
+if (autoRepair && database) {
+  causalEdges.init(database);
+  const orphanResult = causalEdges.cleanupOrphanedEdges();
+}
+```
+SUGGESTED_FIX: Keep a regression test on the `autoRepair=true` health path so future refactors do not remove the `causalEdges.init(database)` call.
+---
+
+---
+FINDING: F9
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts:286-286
+SEVERITY: P1-IMPORTANT
+TYPE: ERROR_CONTRACT
+STATUS: PARTIALLY_FIXED
+PRIOR_REF: F9
+DESCRIPTION: The outer MCP layer is more standardized now, but internal contracts are still mixed: some paths throw, some return `{ success: false }`, some return `false`/`null`. That still causes silent failure handling, for example `memory-search` ignores the `MarkBatchResult` from `sessionManager.markResultsSent(...)`.
+EVIDENCE:
+```ts
+// throw
+throw new Error('Memory object is required for hash generation');
+
+// return-object failure
+return { success: false, markedCount: 0, error: message };
+
+// ignored by caller
+if (filtered.length > 0) {
+  sessionManager.markResultsSent(sessionId, filtered);
+}
+```
+SUGGESTED_FIX: Pick one internal contract per layer, ideally `Result<T>` for non-throwing helpers or throw-only below the MCP boundary, and make callers check the returned status instead of dropping it.
+---
+
+---
+FINDING: F11
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:857-899
+SEVERITY: P1-IMPORTANT
+TYPE: HOOK_WIRING
+STATUS: STILL_PRESENT
+PRIOR_REF: F11
+DESCRIPTION: Checkpoint restore still writes `causal_edges` directly with SQL instead of going through `causal-edges.ts`. That duplicates persistence logic and bypasses mutation-side effects like degree-cache invalidation and any future edge invariants centralized in the module.
+EVIDENCE:
+```ts
+const edgeInsertStmt = database.prepare(`
+  INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
+  VALUES (${edgeColumns.map(() => '?').join(', ')})
+`);
+edgeInsertStmt.run(...edgeValues);
+```
+```ts
+if (shouldInvalidateCache) { invalidateDegreeCache(); }
+if ((result as { changes: number }).changes > 0) { invalidateDegreeCache(); }
+```
+SUGGESTED_FIX: Move checkpoint edge clear/restore behind public bulk APIs in `causal-edges.ts`, or at minimum call a public cache-invalidation hook after checkpoint restore/delete operations.
+---
+
+No circular import cycle or undefined hook handler stood out in the audited modules. I did not run the test suite.
+tokens used
+177,105
+---
+FINDING: FATAL_ERROR_CLEANUP_DIVERGES
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:571-681
+SEVERITY: P1-IMPORTANT
+TYPE: SIGNAL
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: Fatal-process handlers are not wired to the same cleanup path. `gracefulShutdown()` awaits watcher/reranker cleanup and closes transport, but `unhandledRejection` skips cleanup entirely, and `uncaughtException` exits without awaiting async cleanup or closing transport.
+EVIDENCE:
+```ts
+// graceful path
+await fileWatcher.close();
+await disposeLocalReranker();
+if (transport) { transport.close(); }
+
+// fatal paths
+process.on('uncaughtException', ... { void fileWatcher.close(); void disposeLocalReranker(); process.exit(1); });
+process.on('unhandledRejection', ... { setTimeout(() => process.exit(1), EXIT_FLUSH_DELAY_MS); });
+```
+SUGGESTED_FIX: Route `SIGINT`, `SIGTERM`, `uncaughtException`, and `unhandledRejection` through one async `fatalShutdown(reason, exitCode)` that reuses the graceful cleanup sequence, awaits it with a deadline, then exits.
+---
+
+---
+FINDING: SESSION_STATE_RECOVERY_IS_EFFECTIVELY_DEAD
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:919-933
+SEVERITY: P1-IMPORTANT
+TYPE: SESSION
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: Startup initializes and resets `session_state`, but live request flow does not appear to persist session state into it. In production code, `memory_context` tracks lifecycle from `workingMemory`, not `sessionManager`, and I found no non-test call sites for `saveSessionState`, `completeSession`, or `checkpointSession`. That means crash recovery/logging is largely inert.
+EVIDENCE:
+```ts
+const sessionResult = sessionManager.init(database);
+const recoveryResult = sessionManager.resetInterruptedSessions();
+const interrupted = sessionManager.getInterruptedSessions();
+```
+```ts
+const requestedSessionId = ... ? session_id.trim() : null;
+const effectiveSessionId = requestedSessionId ?? randomUUID();
+const resumedSession = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
+```
+SUGGESTED_FIX: Persist `session_state` on request entry/update/exit boundaries for caller sessions, and checkpoint on resume/compaction paths; otherwise remove the reset/recovery surface to avoid a false sense of coverage.
+---
+
+---
+FINDING: INGEST_QUEUE_HAS_NO_SHUTDOWN_COORDINATION
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts:505-526
+SEVERITY: P2-MINOR
+TYPE: SHUTDOWN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: The server starts the ingest queue at startup, but the queue exposes no shutdown/drain API and the server shutdown path never coordinates with it. A worker can still be processing files while shutdown closes the DB and exits.
+EVIDENCE:
+```ts
+function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
+  processFileFn = config.processFile;
+  const resetJobIds = resetIncompleteJobsToQueued();
+  for (const jobId of resetJobIds) enqueueIngestJob(jobId);
+}
+export { initIngestJobQueue, createIngestJob, getIngestJob, cancelIngestJob, enqueueIngestJob, resetIncompleteJobsToQueued };
+```
+SUGGESTED_FIX: Add `shutdown({ drain?: boolean, timeoutMs?: number })` to the queue and call it before `closeDb()` in all shutdown/fatal-exit paths.
+---
+
+---
+FINDING: F8
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts:397-401
+SEVERITY: P1-IMPORTANT
+TYPE: HOOK_WIRING
+STATUS: FIXED
+PRIOR_REF: F8
+DESCRIPTION: The orphan-edge auto-repair path now initializes the local causal-edge DB binding before running orphan cleanup, which removes the earlier uninitialized-handle bug.
+EVIDENCE:
+```ts
+if (autoRepair && database) {
+  causalEdges.init(database);
+  const orphanResult = causalEdges.cleanupOrphanedEdges();
+}
+```
+SUGGESTED_FIX: Keep a regression test on the `autoRepair=true` health path so future refactors do not remove the `causalEdges.init(database)` call.
+---
+
+---
+FINDING: F9
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts:286-286
+SEVERITY: P1-IMPORTANT
+TYPE: ERROR_CONTRACT
+STATUS: PARTIALLY_FIXED
+PRIOR_REF: F9
+DESCRIPTION: The outer MCP layer is more standardized now, but internal contracts are still mixed: some paths throw, some return `{ success: false }`, some return `false`/`null`. That still causes silent failure handling, for example `memory-search` ignores the `MarkBatchResult` from `sessionManager.markResultsSent(...)`.
+EVIDENCE:
+```ts
+// throw
+throw new Error('Memory object is required for hash generation');
+
+// return-object failure
+return { success: false, markedCount: 0, error: message };
+
+// ignored by caller
+if (filtered.length > 0) {
+  sessionManager.markResultsSent(sessionId, filtered);
+}
+```
+SUGGESTED_FIX: Pick one internal contract per layer, ideally `Result<T>` for non-throwing helpers or throw-only below the MCP boundary, and make callers check the returned status instead of dropping it.
+---
+
+---
+FINDING: F11
+FILE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts:857-899
+SEVERITY: P1-IMPORTANT
+TYPE: HOOK_WIRING
+STATUS: STILL_PRESENT
+PRIOR_REF: F11
+DESCRIPTION: Checkpoint restore still writes `causal_edges` directly with SQL instead of going through `causal-edges.ts`. That duplicates persistence logic and bypasses mutation-side effects like degree-cache invalidation and any future edge invariants centralized in the module.
+EVIDENCE:
+```ts
+const edgeInsertStmt = database.prepare(`
+  INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
+  VALUES (${edgeColumns.map(() => '?').join(', ')})
+`);
+edgeInsertStmt.run(...edgeValues);
+```
+```ts
+if (shouldInvalidateCache) { invalidateDegreeCache(); }
+if ((result as { changes: number }).changes > 0) { invalidateDegreeCache(); }
+```
+SUGGESTED_FIX: Move checkpoint edge clear/restore behind public bulk APIs in `causal-edges.ts`, or at minimum call a public cache-invalidation hook after checkpoint restore/delete operations.
+---
+
+No circular import cycle or undefined hook handler stood out in the audited modules. I did not run the test suite.

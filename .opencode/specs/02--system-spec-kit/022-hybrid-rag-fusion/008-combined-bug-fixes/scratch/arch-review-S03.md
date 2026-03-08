@@ -1074,3 +1074,283 @@ exec
     60	    : 'created_at';
     61	
     62	  try {
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts | sed -n '404,430p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts | sed -n '209,223p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n \"paths\\[currentIndex\\]|processFileFn\\(|processFile\\(\" .opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts | sed -n '1,40p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
+416:    const nextPath = current.paths[currentIndex];
+424:      await processFileFn(nextPath);
+ succeeded in 51ms:
+   404	  // Resume from filesProcessed against the original submitted path order.
+   405	  let currentIndex = job.filesProcessed;
+   406	  // AI-WHY: Track actual failure count independently of the truncated errors array.
+   407	  // The errors array is capped at MAX_STORED_ERRORS, so using errors.length for
+   408	  // terminal state decisions would misclassify all-fail jobs with >50 files as "complete".
+   409	  let failCount = 0;
+   410	
+   411	  while (currentIndex < job.paths.length) {
+   412	    const current = getIngestJob(jobId);
+   413	    if (!current) return;
+   414	    if (current.state === 'cancelled') return;
+   415	
+   416	    const nextPath = current.paths[currentIndex];
+   417	    if (!nextPath) {
+   418	      break;
+   419	    }
+   420	
+   421	    // Sprint 9 fix: Continue on file error instead of aborting entire job.
+   422	    try {
+   423	      await access(nextPath);
+ succeeded in 51ms:
+   209	async function createIngestJob(args: {
+   210	  id: string;
+   211	  paths: string[];
+   212	  specFolder?: string;
+   213	}): Promise<IngestJob> {
+   214	  const db = requireDb();
+   215	  const timestamp = nowIso();
+   216	  const normalizedPaths = args.paths.map((entry) => String(entry)).filter((entry) => entry.length > 0);
+   217	
+   218	  if (normalizedPaths.length === 0) {
+   219	    throw new Error('paths must include at least one file path');
+   220	  }
+   221	
+   222	  await withBusyRetry(() =>
+   223	    db.prepare(`
+codex
+---
+FINDING: INGEST-SYMLINK-ESCAPE
+FILE: [memory-ingest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts):101
+SEVERITY: P1-IMPORTANT
+TYPE: PATH_TRAVERSAL
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `memory_ingest_start` validates paths with `path.resolve()` plus prefix checks, but never canonicalizes symlinks. A symlink placed inside an approved root can point outside it and still pass validation; the queued worker later processes the stored path without re-checking the real path.
+EVIDENCE:
+```ts
+const resolvedPath = path.resolve(trimmedPath);
+const isWithinAllowedBase = allowedBasePaths.some((basePath) => (
+  resolvedPath === basePath || resolvedPath.startsWith(`${basePath}${path.sep}`)
+));
+normalizedPaths.push(resolvedPath);
+```
+
+```ts
+const nextPath = current.paths[currentIndex];
+await access(nextPath);
+await processFileFn(nextPath);
+```
+SUGGESTED_FIX: Canonicalize with `fs.realpathSync.native()` or async equivalent before the root check, reject symlink escapes, and re-validate the canonical path again in the worker before processing.
+---
+
+FINDING: F6
+FILE: [folder-detector.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts):459
+SEVERITY: P1-IMPORTANT
+TYPE: PATH_TRAVERSAL
+STATUS: PARTIALLY_FIXED
+PRIOR_REF: F6
+DESCRIPTION: The current caller now blocks unapproved absolute `spec_folder` values before invoking `resolveSessionSpecFolderPaths`, but the helper itself still accepts an absolute path and adds it to the resolved set without approved-root enforcement. The reachable path is narrowed, but the unsafe primitive remains.
+EVIDENCE:
+```ts
+const addCandidate = async (candidatePath: string): Promise<void> => {
+  if (await pathIsDirectory(candidatePath)) {
+    resolvedPaths.add(path.resolve(candidatePath));
+  }
+};
+
+if (path.isAbsolute(trimmed)) {
+  await addCandidate(trimmed);
+}
+```
+
+```ts
+if (path.isAbsolute(trimmedSpecFolder)) {
+  const resolvedAbsoluteSpecFolder = path.resolve(trimmedSpecFolder);
+  if (!isUnderApprovedSpecsRoots(resolvedAbsoluteSpecFolder)) continue;
+}
+```
+SUGGESTED_FIX: Move approved-root validation into `addCandidate()` or the absolute-path branch so every caller is protected by default.
+---
+
+FINDING: F7
+FILE: [workflow.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts):818
+SEVERITY: P1-IMPORTANT
+TYPE: INPUT_SANITIZATION
+STATUS: STILL_PRESENT
+PRIOR_REF: F7
+DESCRIPTION: The HTML cleaning logic is still regex-based and only removes `summary`, `details`, `div`, `span`, `p`, `br`, and `hr`. Active HTML such as `script`, `img`, `iframe`, `svg`, `style`, and event-handler attributes is not sanitized here.
+EVIDENCE:
+```ts
+return segment
+  .replace(/<\/?summary>/gi, '')
+  .replace(/<\/?details>/gi, '')
+  .replace(/<(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
+```
+SUGGESTED_FIX: Replace regex stripping with a real HTML sanitizer or escape all raw HTML outside fenced code blocks.
+---
+
+FINDING: F10
+FILE: [memory-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts):584
+SEVERITY: P2-MINOR
+TYPE: SCHEMA_GAP
+STATUS: STILL_PRESENT
+PRIOR_REF: F10
+DESCRIPTION: Boundary contracts are still loose and only partially runtime-validated. `memory_search` accepts many external fields but validates only a subset, and adjacent handlers still expose open-ended `Record<string, unknown>` inputs such as checkpoint metadata. This leaves malformed boundary payloads to be interpreted deeper in the stack.
+EVIDENCE:
+```ts
+const {
+  query, concepts, specFolder, limit: rawLimit = 10, tier, contextType,
+  anchors, bypassCache, sessionId, ... , mode, includeTrace: includeTraceArg = false,
+} = args;
+```
+
+```ts
+const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
+  ? Math.min(Math.floor(rawLimit), 100)
+  : 10;
+
+if (specFolder !== undefined && typeof specFolder !== 'string') { ... }
+```
+SUGGESTED_FIX: Add per-handler runtime schemas and validate all optional arrays, enums, booleans, and nested objects at the boundary; remove boundary `Record<string, unknown>` shapes.
+---
+
+FINDING: LIST-LIMIT-COERCION
+FILE: [memory-crud-list.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts):24
+SEVERITY: P2-MINOR
+TYPE: TYPE_COERCION
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `memory_list` does not type-check `limit` or `offset` before numeric clamping. Non-number inputs are coerced by `Math.min/Math.max`, which can yield surprising values or `NaN` and then flow into SQLite `LIMIT/OFFSET`.
+EVIDENCE:
+```ts
+const {
+  limit: rawLimit = 20,
+  offset: rawOffset = 0,
+} = args;
+
+const safeLimit = Math.max(1, Math.min(rawLimit || 20, 100));
+const safeOffset = Math.max(0, rawOffset || 0);
+```
+SUGGESTED_FIX: Reject non-numeric `limit`/`offset`, then clamp with `Number.isFinite` and `Math.floor`, matching the safer pattern already used in `memory_search`.
+---
+
+No SQL injection issues were found in the scoped files; the inspected SQL paths used placeholders or explicit column whitelists.
+tokens used
+182,734
+---
+FINDING: INGEST-SYMLINK-ESCAPE
+FILE: [memory-ingest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts):101
+SEVERITY: P1-IMPORTANT
+TYPE: PATH_TRAVERSAL
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `memory_ingest_start` validates paths with `path.resolve()` plus prefix checks, but never canonicalizes symlinks. A symlink placed inside an approved root can point outside it and still pass validation; the queued worker later processes the stored path without re-checking the real path.
+EVIDENCE:
+```ts
+const resolvedPath = path.resolve(trimmedPath);
+const isWithinAllowedBase = allowedBasePaths.some((basePath) => (
+  resolvedPath === basePath || resolvedPath.startsWith(`${basePath}${path.sep}`)
+));
+normalizedPaths.push(resolvedPath);
+```
+
+```ts
+const nextPath = current.paths[currentIndex];
+await access(nextPath);
+await processFileFn(nextPath);
+```
+SUGGESTED_FIX: Canonicalize with `fs.realpathSync.native()` or async equivalent before the root check, reject symlink escapes, and re-validate the canonical path again in the worker before processing.
+---
+
+FINDING: F6
+FILE: [folder-detector.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts):459
+SEVERITY: P1-IMPORTANT
+TYPE: PATH_TRAVERSAL
+STATUS: PARTIALLY_FIXED
+PRIOR_REF: F6
+DESCRIPTION: The current caller now blocks unapproved absolute `spec_folder` values before invoking `resolveSessionSpecFolderPaths`, but the helper itself still accepts an absolute path and adds it to the resolved set without approved-root enforcement. The reachable path is narrowed, but the unsafe primitive remains.
+EVIDENCE:
+```ts
+const addCandidate = async (candidatePath: string): Promise<void> => {
+  if (await pathIsDirectory(candidatePath)) {
+    resolvedPaths.add(path.resolve(candidatePath));
+  }
+};
+
+if (path.isAbsolute(trimmed)) {
+  await addCandidate(trimmed);
+}
+```
+
+```ts
+if (path.isAbsolute(trimmedSpecFolder)) {
+  const resolvedAbsoluteSpecFolder = path.resolve(trimmedSpecFolder);
+  if (!isUnderApprovedSpecsRoots(resolvedAbsoluteSpecFolder)) continue;
+}
+```
+SUGGESTED_FIX: Move approved-root validation into `addCandidate()` or the absolute-path branch so every caller is protected by default.
+---
+
+FINDING: F7
+FILE: [workflow.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts):818
+SEVERITY: P1-IMPORTANT
+TYPE: INPUT_SANITIZATION
+STATUS: STILL_PRESENT
+PRIOR_REF: F7
+DESCRIPTION: The HTML cleaning logic is still regex-based and only removes `summary`, `details`, `div`, `span`, `p`, `br`, and `hr`. Active HTML such as `script`, `img`, `iframe`, `svg`, `style`, and event-handler attributes is not sanitized here.
+EVIDENCE:
+```ts
+return segment
+  .replace(/<\/?summary>/gi, '')
+  .replace(/<\/?details>/gi, '')
+  .replace(/<(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
+```
+SUGGESTED_FIX: Replace regex stripping with a real HTML sanitizer or escape all raw HTML outside fenced code blocks.
+---
+
+FINDING: F10
+FILE: [memory-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts):584
+SEVERITY: P2-MINOR
+TYPE: SCHEMA_GAP
+STATUS: STILL_PRESENT
+PRIOR_REF: F10
+DESCRIPTION: Boundary contracts are still loose and only partially runtime-validated. `memory_search` accepts many external fields but validates only a subset, and adjacent handlers still expose open-ended `Record<string, unknown>` inputs such as checkpoint metadata. This leaves malformed boundary payloads to be interpreted deeper in the stack.
+EVIDENCE:
+```ts
+const {
+  query, concepts, specFolder, limit: rawLimit = 10, tier, contextType,
+  anchors, bypassCache, sessionId, ... , mode, includeTrace: includeTraceArg = false,
+} = args;
+```
+
+```ts
+const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
+  ? Math.min(Math.floor(rawLimit), 100)
+  : 10;
+
+if (specFolder !== undefined && typeof specFolder !== 'string') { ... }
+```
+SUGGESTED_FIX: Add per-handler runtime schemas and validate all optional arrays, enums, booleans, and nested objects at the boundary; remove boundary `Record<string, unknown>` shapes.
+---
+
+FINDING: LIST-LIMIT-COERCION
+FILE: [memory-crud-list.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts):24
+SEVERITY: P2-MINOR
+TYPE: TYPE_COERCION
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `memory_list` does not type-check `limit` or `offset` before numeric clamping. Non-number inputs are coerced by `Math.min/Math.max`, which can yield surprising values or `NaN` and then flow into SQLite `LIMIT/OFFSET`.
+EVIDENCE:
+```ts
+const {
+  limit: rawLimit = 20,
+  offset: rawOffset = 0,
+} = args;
+
+const safeLimit = Math.max(1, Math.min(rawLimit || 20, 100));
+const safeOffset = Math.max(0, rawOffset || 0);
+```
+SUGGESTED_FIX: Reject non-numeric `limit`/`offset`, then clamp with `Number.isFinite` and `Math.floor`, matching the safer pattern already used in `memory_search`.
+---
+
+No SQL injection issues were found in the scoped files; the inspected SQL paths used placeholders or explicit column whitelists.

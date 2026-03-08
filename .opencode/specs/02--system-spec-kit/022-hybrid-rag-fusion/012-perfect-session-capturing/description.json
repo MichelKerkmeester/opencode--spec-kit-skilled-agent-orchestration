@@ -9,8 +9,9 @@
     "generate-context",
     "quality"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "08-03-26_20-03__tool-grep.md"
+    "08-03-26_20-03__tool-grep.md",
+    "08-03-26_20-47__fixes-for-memory-pipeline-contamination.md"
   ]
 }

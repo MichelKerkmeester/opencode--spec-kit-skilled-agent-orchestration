@@ -94,16 +94,17 @@ export function isMpabEnabled(): boolean {
  * @returns MPAB aggregated score (may exceed 1.0 for multi-chunk documents)
  */
 export function computeMPAB(scores: number[]): number {
-  const N = scores.length;
+  const safeScores = scores.map(score => Number.isFinite(score) ? score : 0);
+  const N = safeScores.length;
 
   // AI-GUARD: Guard: no chunks = no signal
   if (N === 0) return 0;
 
   // AI-GUARD: Guard: single chunk = raw score, no bonus
-  if (N === 1) return scores[0];
+  if (N === 1) return safeScores[0];
 
   // AI-WHY: Sort descending (copy to avoid mutating input)
-  const sorted = [...scores].sort((a, b) => b - a);
+  const sorted = [...safeScores].sort((a, b) => b - a);
 
   // Index-based max removal: sorted[0] is always the max
   const sMax = sorted[0];
@@ -115,7 +116,8 @@ export function computeMPAB(scores: number[]): number {
   const sumRemaining = remaining.reduce((acc, s) => acc + s, 0);
   const bonus = MPAB_BONUS_COEFFICIENT * sumRemaining / Math.sqrt(N);
 
-  return sMax + bonus;
+  const aggregated = sMax + bonus;
+  return Number.isFinite(aggregated) ? aggregated : 0;
 }
 
 /* --- 5. CHUNK COLLAPSE & REASSEMBLY --- */

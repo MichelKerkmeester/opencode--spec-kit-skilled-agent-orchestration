@@ -12,6 +12,7 @@ import type Database from 'better-sqlite3';
 
 // Internal utils
 import { toErrorMessage } from '../../utils/db-helpers';
+import { bulkInsertEdges, deleteEdgesForMemory, type RelationType } from './causal-edges';
 
 /* -------------------------------------------------------------
    1. CONSTANTS
@@ -221,15 +222,9 @@ function deleteCausalEdgesForMemoryIds(database: Database.Database, memoryIds: n
     return;
   }
 
-  const edgeIds = memoryIds.map((id) => String(id));
-  const placeholders = edgeIds.map(() => '?').join(', ');
-  database.prepare(
-    `
-      DELETE FROM causal_edges
-      WHERE source_id IN (${placeholders})
-         OR target_id IN (${placeholders})
-    `
-  ).run(...edgeIds, ...edgeIds);
+  for (const memoryId of new Set(memoryIds.map((id) => String(id)))) {
+    deleteEdgesForMemory(memoryId);
+  }
 }
 
 function normalizeMemoryColumnValue(column: string, value: unknown): unknown {
@@ -867,18 +862,16 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
         if (!Array.isArray(snapshot.causalEdges) || snapshot.causalEdges.length === 0) {
           // No edges captured for this checkpoint state — leave the scoped graph cleared.
         } else {
-        const edgeColumns = getTableColumns(database, 'causal_edges');
-        if (edgeColumns.length > 0) {
           const memoryExistsStmt = database.prepare(
             'SELECT 1 FROM memory_index WHERE id = ? LIMIT 1'
           ) as Database.Statement;
-          const edgeInsertStmt = database.prepare(`
-            INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
-            VALUES (${edgeColumns.map(() => '?').join(', ')})
-          `) as Database.Statement;
+          const edgesToRestore: Array<Record<string, unknown>> = [];
 
           for (const edge of snapshot.causalEdges) {
             try {
+              if (typeof edge.source_id !== 'string' || typeof edge.target_id !== 'string' || typeof edge.relation !== 'string') {
+                continue;
+              }
               if (checkpointSpecFolder) {
                 const sourceExists = !!memoryExistsStmt.get(edge.source_id);
                 const targetExists = !!memoryExistsStmt.get(edge.target_id);
@@ -886,20 +879,28 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
                   continue;
                 }
               }
-              // AI: Fix F5 — reject self-loops during checkpoint restore.
               if (edge.source_id === edge.target_id) {
                 console.warn(`[checkpoints] Skipping self-loop causal edge during restore: ${String(edge.source_id)}`);
                 continue;
               }
-              const edgeValues = edgeColumns.map(col => edge[col] ?? null);
-              edgeInsertStmt.run(...edgeValues);
+
+              edgesToRestore.push({
+                ...edge,
+                relation: edge.relation as RelationType,
+              });
             } catch (e: unknown) {
               const msg = toErrorMessage(e);
               txErrors.push(`CausalEdge: ${msg}`);
             }
           }
+
+          if (edgesToRestore.length > 0) {
+            const { failed } = bulkInsertEdges(edgesToRestore);
+            if (failed > 0) {
+              txErrors.push(`CausalEdge: failed to restore ${failed} edge(s)`);
+            }
+          }
         }
-      }
       }
 
       // T101: When clearExisting=true, any insert error means data loss risk.

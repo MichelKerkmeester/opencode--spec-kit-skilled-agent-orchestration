@@ -55,5 +55,5 @@
 ## Phase E: Documentation
 - [x] E1: Update tasks.md with concrete items from manifest
 - [x] E2: Update checklist.md with verification results
-- [ ] E3: Create implementation-summary.md
-- [ ] E4: Save memory context via generate-context.js
+- [x] E3: Create implementation-summary.md
+- [x] E4: Save memory context via generate-context.js

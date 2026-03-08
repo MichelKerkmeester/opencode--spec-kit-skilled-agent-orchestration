@@ -165,7 +165,7 @@ async function extractDecisions(
           PROS: [],
           HAS_CONS: false,
           CONS: [],
-          CONFIDENCE: 80,
+          CONFIDENCE: OPTIONS.length > 1 ? 70 : (rationale !== title ? 65 : 50),
           HAS_EVIDENCE: false,
           EVIDENCE: [],
           HAS_CAVEATS: false,

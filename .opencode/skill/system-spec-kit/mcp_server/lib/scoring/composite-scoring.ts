@@ -293,14 +293,17 @@ export function calculateRetrievabilityScore(row: ScoringInput): number {
     adjustedElapsedDays = elapsedDays * tierMultiplier;
   }
 
+  adjustedStability = Math.max(0.001, adjustedStability);
+
   if (fsrsScheduler && typeof fsrsScheduler.calculateRetrievability === 'function') {
-    return fsrsScheduler.calculateRetrievability(adjustedStability, adjustedElapsedDays);
+    const score = fsrsScheduler.calculateRetrievability(adjustedStability, adjustedElapsedDays);
+    return Number.isFinite(score) ? score : 0;
   }
 
   // AI-WHY: Inline FSRS power-law formula used when fsrs-scheduler module unavailable
   const retrievability = Math.pow(1 + FSRS_FACTOR * (adjustedElapsedDays / adjustedStability), FSRS_DECAY);
-
-  return Math.max(0, Math.min(1, retrievability));
+  const score = Math.max(0, Math.min(1, retrievability));
+  return Number.isFinite(score) ? score : 0;
 }
 
 export const calculateTemporalScore = calculateRetrievabilityScore;
@@ -799,15 +802,19 @@ export function normalizeCompositeScores(scores: number[]): number[] {
   // larger than ~100K elements (exceeds JS call-stack argument limit).
   let maxScore = -Infinity;
   let minScore = Infinity;
+  let hasFiniteScore = false;
   for (const s of scores) {
+    if (!Number.isFinite(s)) continue;
+    hasFiniteScore = true;
     if (s > maxScore) maxScore = s;
     if (s < minScore) minScore = s;
   }
+  if (!hasFiniteScore) return scores.map(() => 0);
   const range = maxScore - minScore;
 
   if (range > 0) {
-    return scores.map(s => (s - minScore) / range);
+    return scores.map(s => Number.isFinite(s) ? (s - minScore) / range : 0);
   } else {
-    return scores.map(() => 1.0);
+    return scores.map(s => Number.isFinite(s) ? 1.0 : 0);
   }
 }

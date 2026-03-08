@@ -12,6 +12,7 @@ import type Database from 'better-sqlite3';
 
 const ACCUMULATOR_THRESHOLD = 0.5;
 const INCREMENT_VALUE = 0.1;
+const FLUSH_INTERVAL_MS = 30_000;
 // AI-TRACE: P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
 const MAX_ACCUMULATOR_SIZE = 10000;
 
@@ -31,6 +32,7 @@ interface AccumulatorState {
 let db: Database.Database | null = null;
 const accumulators = new Map<number, number>();
 let exitHandlersInstalled = false;
+let flushInterval: ReturnType<typeof setInterval> | null = null;
 
 /* -------------------------------------------------------------
    4. INITIALIZATION
@@ -39,6 +41,12 @@ let exitHandlersInstalled = false;
 function init(database: Database.Database): void {
   db = database;
   initExitHandlers();
+  if (!flushInterval) {
+    flushInterval = setInterval(() => {
+      reset();
+    }, FLUSH_INTERVAL_MS);
+    flushInterval.unref?.();
+  }
 }
 
 /* -------------------------------------------------------------
@@ -241,6 +249,16 @@ function cleanupExitHandlers(): void {
   exitHandlersInstalled = false;
 }
 
+function dispose(): void {
+  if (flushInterval) {
+    clearInterval(flushInterval);
+    flushInterval = null;
+  }
+  cleanupExitHandlers();
+  reset();
+  db = null;
+}
+
 /* -------------------------------------------------------------
    7. EXPORTS
 ----------------------------------------------------------------*/
@@ -258,6 +276,7 @@ export {
   calculatePopularityScore,
   calculateUsageBoost,
   reset,
+  dispose,
   initExitHandlers,
   cleanupExitHandlers,
 };

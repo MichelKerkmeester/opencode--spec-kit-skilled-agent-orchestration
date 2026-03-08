@@ -105,12 +105,12 @@ function extractFilesFromData(
   collectedData: CollectedDataForFiles | null,
   observations: ObservationInput[] | null
 ): FileChange[] {
-  const filesMap = new Map<string, string>();
+  const filesMap = new Map<string, { description: string; action?: string }>();
 
   if (!collectedData) collectedData = {} as CollectedDataForFiles;
   if (!observations) observations = [];
 
-  const addFile = (rawPath: string, description: string): void => {
+  const addFile = (rawPath: string, description: string, action?: string): void => {
     const normalized = toRelativePath(rawPath, CONFIG.PROJECT_ROOT);
     if (!normalized) return;
 
@@ -119,11 +119,11 @@ function extractFilesFromData(
 
     if (existing) {
       // Prefer a valid, more descriptive (longer) description over a generic one
-      if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing) || cleaned.length > existing.length)) {
-        filesMap.set(normalized, cleaned);
+      if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing.description) || cleaned.length > existing.description.length)) {
+        filesMap.set(normalized, { description: cleaned, action: action || existing.action });
       }
     } else {
-      filesMap.set(normalized, cleaned || 'Modified during session');
+      filesMap.set(normalized, { description: cleaned || 'Modified during session', action });
     }
   };
 
@@ -132,7 +132,8 @@ function extractFilesFromData(
     for (const fileInfo of collectedData.FILES) {
       const filePath = fileInfo.FILE_PATH || fileInfo.path;
       const description = fileInfo.DESCRIPTION || fileInfo.description || 'Modified during session';
-      if (filePath) addFile(filePath, description);
+      const action = (fileInfo as any).ACTION || (fileInfo as any).action;
+      if (filePath) addFile(filePath, description, action);
     }
   }
 
@@ -165,8 +166,8 @@ function extractFilesFromData(
   }
 
   const filesEntries = Array.from(filesMap.entries());
-  const withValidDesc = filesEntries.filter(([, desc]) => isDescriptionValid(desc));
-  const withFallback = filesEntries.filter(([, desc]) => !isDescriptionValid(desc));
+  const withValidDesc = filesEntries.filter(([, data]) => isDescriptionValid(data.description));
+  const withFallback = filesEntries.filter(([, data]) => !isDescriptionValid(data.description));
 
   const allFiles = [...withValidDesc, ...withFallback];
   if (allFiles.length > CONFIG.MAX_FILES_IN_MEMORY) {
@@ -175,9 +176,10 @@ function extractFilesFromData(
 
   return allFiles
     .slice(0, CONFIG.MAX_FILES_IN_MEMORY)
-    .map(([filePath, description]) => ({
+    .map(([filePath, data]) => ({
       FILE_PATH: filePath,
-      DESCRIPTION: description
+      DESCRIPTION: data.description,
+      ...(data.action ? { ACTION: data.action } : {}),
     }));
 }
 

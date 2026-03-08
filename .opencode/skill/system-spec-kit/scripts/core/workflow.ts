@@ -34,6 +34,8 @@ import {
   type ValidationSignal,
 } from '../extractors/quality-scorer';
 import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
+import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
+import { extractGitContext } from '../extractors/git-context-extractor';
 
 // Static imports replacing lazy require()
 import * as flowchartGen from '../lib/flowchart-generator';
@@ -179,6 +181,14 @@ function pickCarrierIndex(indices: number[], files: FileChange[]): number {
   return indices[0];
 }
 
+function compactMergedContent(value: string): string {
+  return value
+    .replace(/<!--\s*merged from:\s*([^>]+)\s*-->/gi, 'Merged from $1:')
+    .replace(/\n\s*---\s*\n/g, ' | ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 /**
  * Apply tree-thinning decisions to the semantic file-change list that feeds
  * context template rendering.
@@ -235,14 +245,11 @@ function applyThinningToFileChanges(
     }
 
     const childNames = childFiles.map((f) => path.basename(f.FILE_PATH));
-    const highlights = childFiles
-      .slice(0, 2)
-      .map((f) => `${path.basename(f.FILE_PATH)}: ${f.DESCRIPTION}`)
-      .join(' | ');
+    const mergedContent = compactMergedContent(mergedGroup.mergedSummary);
 
     const mergeNote = capText(
-      `Tree-thinning merged ${childFiles.length} small files (${childNames.join(', ')}). ${highlights}`,
-      420,
+      `Tree-thinning merged ${childFiles.length} small files (${childNames.join(', ')}). ${mergedContent}`,
+      900,
     );
 
     const parentDir = normalizeFilePath(mergedGroup.parentPath || '');
@@ -375,20 +382,147 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
 }
 
 function injectQualityMetadata(content: string, qualityScore: number, qualityFlags: string[]): string {
-  const yamlBlockMatch = content.match(/```yaml\n([\s\S]*?)\n```/);
-  if (!yamlBlockMatch) {
+  const frontmatterMatch = content.match(/---\r?\n([\s\S]*?)\r?\n---/);
+  if (!frontmatterMatch || frontmatterMatch.index === undefined) {
     return content;
   }
 
-  const yamlBlock = yamlBlockMatch[1];
+  const newline = content.includes('\r\n') ? '\r\n' : '\n';
+  const frontmatterLines = frontmatterMatch[1].split(/\r?\n/);
+  const strippedLines: string[] = [];
+  let skippingQualityFlags = false;
+
+  for (const line of frontmatterLines) {
+    const trimmed = line.trimStart();
+    if (skippingQualityFlags) {
+      if (/^\s*-\s+/.test(line) || line.trim() === '') {
+        continue;
+      }
+      skippingQualityFlags = false;
+    }
+
+    if (/^quality_score\s*:/i.test(trimmed)) {
+      continue;
+    }
+
+    if (/^quality_flags\s*:/i.test(trimmed)) {
+      skippingQualityFlags = true;
+      continue;
+    }
+
+    strippedLines.push(line);
+  }
+
   const qualityLines = [
     `quality_score: ${qualityScore.toFixed(2)}`,
-    'quality_flags:',
-    ...(qualityFlags.length > 0 ? qualityFlags.map((flag) => `  - "${flag}"`) : ['  []']),
-  ].join('\n');
+    ...(qualityFlags.length > 0
+      ? ['quality_flags:', ...qualityFlags.map((flag) => `  - ${JSON.stringify(flag)}`)]
+      : ['quality_flags: []']),
+  ];
+  const updatedFrontmatter = [
+    '---',
+    ...strippedLines,
+    ...qualityLines,
+    '---',
+  ].join(newline);
+  const prefix = content.slice(0, frontmatterMatch.index);
+  const suffix = content.slice(frontmatterMatch.index + frontmatterMatch[0].length).replace(/^\r?\n/, '');
+  return `${updatedFrontmatter}${newline}${prefix}${suffix}`;
+}
 
-  const updatedYaml = `${yamlBlock}\n\n# Quality Signals\n${qualityLines}`;
-  return content.replace(yamlBlock, updatedYaml);
+async function enrichStatelessData(
+  collectedData: Record<string, any>,
+  specFolder: string,
+  projectRoot: string
+): Promise<void> {
+  // Only enrich stateless mode — file-backed JSON is authoritative
+  if (collectedData._source === 'file') return;
+
+  try {
+    // Run spec-folder and git extraction in parallel
+    const [specContext, gitContext] = await Promise.all([
+      extractSpecFolderContext(specFolder).catch(() => null),
+      extractGitContext(projectRoot).catch(() => null),
+    ]);
+
+    // Merge spec-folder observations (provenance-tagged, won't conflict with live data)
+    if (specContext) {
+      const existingObs = collectedData.observations || [];
+      collectedData.observations = [
+        ...existingObs,
+        ...specContext.observations,
+      ];
+
+      // Merge FILES (deduplicate by path, prefer existing descriptions)
+      const existingFiles = collectedData.FILES || [];
+      const existingPaths = new Set(
+        existingFiles.map((f: any) => (f.FILE_PATH || f.path || '').toLowerCase())
+      );
+      const newFiles = specContext.FILES.filter(
+        (f: any) => !existingPaths.has(f.FILE_PATH.toLowerCase())
+      );
+      collectedData.FILES = [...existingFiles, ...newFiles];
+
+      // Merge trigger phrases
+      if (specContext.triggerPhrases.length > 0) {
+        collectedData._manualTriggerPhrases = [
+          ...(collectedData._manualTriggerPhrases || []),
+          ...specContext.triggerPhrases,
+        ];
+      }
+
+      // Merge decisions
+      if (specContext.decisions.length > 0) {
+        collectedData._manualDecisions = [
+          ...(collectedData._manualDecisions || []),
+          ...specContext.decisions,
+        ];
+      }
+
+      // Use spec summary if collectedData summary is missing or generic
+      if (specContext.summary && (!collectedData.SUMMARY || collectedData.SUMMARY === 'Development session')) {
+        collectedData.SUMMARY = specContext.summary;
+      }
+
+      // Merge recentContext
+      if (specContext.recentContext.length > 0) {
+        collectedData.recentContext = [
+          ...(collectedData.recentContext || []),
+          ...specContext.recentContext,
+        ];
+      }
+    }
+
+    // Merge git context
+    if (gitContext) {
+      const existingObs = collectedData.observations || [];
+      collectedData.observations = [
+        ...existingObs,
+        ...gitContext.observations,
+      ];
+
+      // Merge FILES (deduplicate by path)
+      const existingFiles = collectedData.FILES || [];
+      const existingPaths = new Set(
+        existingFiles.map((f: any) => (f.FILE_PATH || f.path || '').toLowerCase())
+      );
+      const newFiles = gitContext.FILES.filter(
+        (f: any) => !existingPaths.has(f.FILE_PATH.toLowerCase())
+      );
+      collectedData.FILES = [...existingFiles, ...newFiles];
+
+      // Append git summary to existing summary
+      if (gitContext.summary) {
+        const existing = collectedData.SUMMARY || '';
+        collectedData.SUMMARY = existing
+          ? `${existing}. Git: ${gitContext.summary}`
+          : gitContext.summary;
+      }
+    }
+  } catch (err) {
+    // Enrichment failure is non-fatal — proceed with whatever data we have
+    console.warn(`   Warning: Stateless enrichment failed: ${err instanceof Error ? err.message : String(err)}`);
+  }
 }
 
 /* -----------------------------------------------------------------
@@ -461,9 +595,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         });
         const overlapRatio = relevantPaths.length / totalPaths;
         if (overlapRatio < 0.05) {
-          warn(`   ALIGNMENT WARNING: Only ${(overlapRatio * 100).toFixed(0)}% of captured file paths relate to spec folder "${activeSpecFolderArg}".`);
-          warn(`   The active session may be working on a different task. Memory content may be cross-contaminated.`);
-          warn(`   Spec keywords: [${specKeywords.join(', ')}], Total paths: ${totalPaths}, Matching: ${relevantPaths.length}`);
+          const alignMsg = `ALIGNMENT_BLOCK: Only ${(overlapRatio * 100).toFixed(0)}% of captured file paths relate to spec folder "${activeSpecFolderArg}". ` +
+            `The active session appears to be working on a different task (spec keywords: [${specKeywords.join(', ')}], ` +
+            `total paths: ${totalPaths}, matching: ${relevantPaths.length}). ` +
+            `Aborting to prevent cross-spec contamination. To force, pass data via JSON file.`;
+          warn(`   ${alignMsg}`);
         }
       }
     }
@@ -512,6 +648,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('Step 3: Setting up context directory...');
     const contextDir: string = await setupContextDirectory(specFolder);
     log(`   Created: ${contextDir}\n`);
+
+    // Step 3.5: Enrich stateless data with spec folder and git context
+    if (isStatelessMode) {
+      log('Step 3.5: Enriching stateless data...');
+      await enrichStatelessData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
+      log('   Enrichment complete\n');
+    }
 
     // Steps 4-7: Parallel data extraction
     log('Steps 4-7: Extracting data (parallel execution)...\n');
@@ -825,11 +968,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   let cleanedContent = segments.map((segment) => {
     // Odd indices are code blocks (captured groups) — preserve them
     if (segment.startsWith('```')) return segment;
-    // Strip leaked HTML tags from non-code content
-    return segment
-      .replace(/<\/?summary>/gi, '')
-      .replace(/<\/?details>/gi, '')
-      .replace(/<(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
+    // Strip leaked formatting tags from non-code content
+    return segment.replace(/<\/?(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
   }).join('');
   // Only update if cleaning made changes
   if (cleanedContent !== rawContent) {
@@ -864,7 +1004,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     files[ctxFilename],
     preExtractedTriggers,
     keyTopics,
-    enhancedFiles,
+    effectiveFiles,
     sessionData.OBSERVATIONS || []
   );
   log(`   Memory quality score: ${qualityResult.score}/100 (legacy), ${qualityV2.qualityScore.toFixed(2)} (v2)`);

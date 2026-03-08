@@ -6,6 +6,7 @@
 
 import type Database from 'better-sqlite3';
 import { clearDegreeCache } from '../search/graph-search-fn';
+import { runInTransaction } from './transaction-manager';
 
 /* -------------------------------------------------------------
    1. CONSTANTS
@@ -249,6 +250,55 @@ function insertEdgesBatch(
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] insertEdgesBatch error: ${msg}`);
+  }
+
+  return { inserted, failed };
+}
+
+function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: number; failed: number } {
+  if (!db) return { inserted: 0, failed: edges.length };
+
+  const database = db;
+  let inserted = 0;
+  let failed = 0;
+
+  try {
+    const edgeColumns = (database.prepare('PRAGMA table_info(causal_edges)').all() as Array<{ name: string }>)
+      .map((column) => column.name)
+      .filter((name) => typeof name === 'string' && name.length > 0);
+
+    if (edgeColumns.length === 0) {
+      return { inserted: 0, failed: edges.length };
+    }
+
+    const insertEdgeStmt = database.prepare(`
+      INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
+      VALUES (${edgeColumns.map(() => '?').join(', ')})
+    `) as Database.Statement;
+
+    const insertTx = database.transaction(() => {
+      for (const edge of edges) {
+        if (!edge || typeof edge.source_id !== 'string' || typeof edge.target_id !== 'string') {
+          failed++;
+          continue;
+        }
+        if (edge.source_id === edge.target_id) {
+          failed++;
+          continue;
+        }
+
+        const result = insertEdgeStmt.run(...edgeColumns.map((column) => edge[column] ?? null)) as { changes: number };
+        if (result.changes > 0) inserted++;
+      }
+    });
+
+    insertTx();
+    if (inserted > 0) {
+      invalidateDegreeCache();
+    }
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[causal-edges] bulkInsertEdges error: ${msg}`);
   }
 
   return { inserted, failed };
@@ -526,14 +576,13 @@ function cleanupOrphanedEdges(): { deleted: number } {
   if (!db) return { deleted: 0 };
   try {
     const orphaned = findOrphanedEdges();
-    let deleted = 0;
-    // AI: Fix F20 — wrap multi-step mutation in transaction for atomicity.
-    const runInTransaction = db.transaction(() => {
+    const deleted = runInTransaction(db, () => {
+      let count = 0;
       for (const edge of orphaned) {
-        if (deleteEdge(edge.id)) deleted++;
+        if (deleteEdge(edge.id)) count++;
       }
+      return count;
     });
-    runInTransaction();
     return { deleted };
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -747,6 +796,7 @@ export {
   init,
   insertEdge,
   insertEdgesBatch,
+  bulkInsertEdges,
   getEdgesFrom,
   getEdgesTo,
   getAllEdges,

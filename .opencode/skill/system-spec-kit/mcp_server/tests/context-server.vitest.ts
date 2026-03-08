@@ -1364,7 +1364,8 @@ describe('Context Server', () => {
 
     // T43: Shutdown closes database
     it('T43: SIGTERM closes database', () => {
-      expect(sourceCode).toMatch(/process\.on\('SIGTERM'[\s\S]*?vectorIndex\.closeDb\(\)/)
+      expect(sourceCode).toMatch(/process\.on\('SIGTERM'[\s\S]*?fatalShutdown/);
+      expect(sourceCode).toMatch(/fatalShutdown[\s\S]*?vectorIndex\.closeDb\(\)/)
     })
 
     // T44: Shutdown stops archival manager

@@ -750,6 +750,18 @@ describe('Causal Edges Unit Tests', () => {
     });
   });
 
+  describe('cleanupOrphanedEdges', () => {
+    it('CO1: Runs inside an outer transaction without reopening one', () => {
+      resetEdges();
+      causalEdges.insertEdge('999', '1', 'supports', 0.5);
+
+      const result = testDb.transaction(() => causalEdges.cleanupOrphanedEdges())();
+
+      expect(result.deleted).toBe(1);
+      expect(causalEdges.findOrphanedEdges()).toHaveLength(0);
+    });
+  });
+
   /* ─────────────────────────────────────────────────────────────
      Uninitialised DB Guards
   ──────────────────────────────────────────────────────────────── */

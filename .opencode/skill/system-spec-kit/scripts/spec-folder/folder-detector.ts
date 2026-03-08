@@ -474,11 +474,23 @@ async function resolveSessionSpecFolderPaths(
   };
 
   if (path.isAbsolute(trimmed)) {
-    await addCandidate(trimmed);
-    const relativeToSpecs = getRelativePathToSpecsRoot(trimmed, specsDirs);
-    if (relativeToSpecs) {
-      for (const specsDir of specsDirs) {
-        await addCandidate(path.join(specsDir, relativeToSpecs));
+    const resolvedSpecFolder = path.resolve(trimmed);
+    const approvedRoot = specsDirs
+      .map((specsDir) => path.resolve(specsDir))
+      .find(
+        (specsDir) =>
+          resolvedSpecFolder === specsDir || resolvedSpecFolder.startsWith(`${specsDir}${path.sep}`)
+      );
+
+    if (!approvedRoot) {
+      console.warn(`Skipping session_learning spec_folder outside specs roots: ${resolvedSpecFolder}`);
+    } else {
+      await addCandidate(resolvedSpecFolder);
+      const relativeToSpecs = getRelativePathToSpecsRoot(resolvedSpecFolder, specsDirs);
+      if (relativeToSpecs) {
+        for (const specsDir of specsDirs) {
+          await addCandidate(path.join(specsDir, relativeToSpecs));
+        }
       }
     }
   }

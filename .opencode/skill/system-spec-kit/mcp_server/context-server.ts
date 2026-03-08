@@ -150,9 +150,6 @@ const EMBEDDING_MODEL_TIMEOUT_MS = 30_000;
 /** Timeout (ms) for API key validation during startup. */
 const API_KEY_VALIDATION_TIMEOUT_MS = 5_000;
 
-/** Short delay (ms) before process.exit to allow stderr to flush. */
-const EXIT_FLUSH_DELAY_MS = 100;
-
 let generatedCallIdCounter = 0;
 
 function resolveToolCallId(request: { id?: unknown }): string {
@@ -548,7 +545,7 @@ let dbInitialized = false;
 let fileWatcher: FSWatcher | null = null;
 
 /** Maximum time (ms) to wait for async cleanup before force-exiting. */
-const SHUTDOWN_DEADLINE_MS = 2000;
+const SHUTDOWN_DEADLINE_MS = 5000;
 
 /** Run a shutdown cleanup step and log failures without aborting the sequence. */
 function runCleanupStep(label: string, cleanupFn: () => void): void {
@@ -568,24 +565,19 @@ async function runAsyncCleanupStep(label: string, cleanupFn: () => Promise<void>
   }
 }
 
-/** P2-06 FIX: Shared graceful shutdown logic for signal handlers. */
-function gracefulShutdown(signal: string): void {
+async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
   if (shuttingDown) return;
   shuttingDown = true;
-  console.error(`[context-server] Received ${signal}, shutting down...`);
+  console.error(`[context-server] ${reason}`);
 
-  // Synchronous cleanup
   runCleanupStep('sessionManager', () => sessionManager.shutdown());
   runCleanupStep('archivalManager', () => archivalManager.cleanup());
   runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
   runCleanupStep('accessTracker', () => accessTracker.reset());
   runCleanupStep('toolCache', () => toolCache.shutdown());
 
-  // Async cleanup with deadline — await disposal before exiting to prevent
-  // orphaned resources (Codex fix: void + immediate exit = disposal never completes).
-  const forceExitTimer = setTimeout(() => process.exit(0), SHUTDOWN_DEADLINE_MS);
-
-  void (async () => {
+  let deadlineTimer: NodeJS.Timeout | undefined;
+  const cleanup = (async () => {
     await runAsyncCleanupStep('fileWatcher', async () => {
       if (fileWatcher) {
         await fileWatcher.close();
@@ -600,11 +592,27 @@ function gracefulShutdown(signal: string): void {
     runCleanupStep('transport', () => {
       if (transport) {
         transport.close();
+        transport = null;
       }
     });
-    clearTimeout(forceExitTimer);
-    process.exit(0);
   })();
+
+  const timedOut = await Promise.race([
+    cleanup.then(() => false),
+    new Promise<boolean>((resolve) => {
+      deadlineTimer = setTimeout(() => resolve(true), SHUTDOWN_DEADLINE_MS);
+    }),
+  ]);
+
+  if (deadlineTimer) {
+    clearTimeout(deadlineTimer);
+  }
+
+  if (timedOut) {
+    console.error(`[context-server] Shutdown deadline exceeded after ${SHUTDOWN_DEADLINE_MS}ms`);
+  }
+
+  process.exit(exitCode);
 }
 
 /** Remove indexed rows for watcher delete and rename events. */
@@ -651,34 +659,22 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   }
 }
 
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => {
+  void fatalShutdown('Received SIGTERM, shutting down...', 0);
+});
+process.on('SIGINT', () => {
+  void fatalShutdown('Received SIGINT, shutting down...', 0);
+});
 
 process.on('uncaughtException', (err: Error) => {
-  console.error('[context-server] Uncaught exception:', err);
-  runCleanupStep('sessionManager', () => sessionManager.shutdown());
-  runCleanupStep('archivalManager', () => archivalManager.cleanup());
-  runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
-  runCleanupStep('accessTracker', () => accessTracker.reset());
-  runCleanupStep('toolCache', () => toolCache.shutdown());
-  runCleanupStep('fileWatcher', () => {
-    if (fileWatcher) {
-      void fileWatcher.close();
-      fileWatcher = null;
-    }
-  });
-  runCleanupStep('local-reranker', () => {
-    void disposeLocalReranker();
-  });
-  runCleanupStep('vectorIndex', () => vectorIndex.closeDb());
-  process.exit(1);
+  void fatalShutdown(`Uncaught exception: ${err.stack ?? err.message}`, 1);
 });
 
 process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
-  console.error('[context-server] Unhandled rejection at:', promise, 'reason:', reason);
-  // P1-10 FIX: Exit after flush to avoid running in undefined state
-  // AI-WHY: Short delay allows pending stderr writes to flush before exit
-  setTimeout(() => process.exit(1), EXIT_FLUSH_DELAY_MS);
+  void fatalShutdown(
+    `Unhandled rejection at: ${String(promise)} reason: ${reason instanceof Error ? reason.stack ?? reason.message : String(reason)}`,
+    1,
+  );
 });
 
 /* ---------------------------------------------------------------

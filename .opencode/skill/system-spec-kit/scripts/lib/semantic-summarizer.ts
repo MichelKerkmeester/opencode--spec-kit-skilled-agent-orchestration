@@ -8,6 +8,7 @@ import os from 'os';
 // Internal modules
 import { extractTriggerPhrases } from './trigger-extractor';
 import { cleanDescription } from '../utils/file-helpers';
+import { CONFIG } from '../core';
 
 // ---------------------------------------------------------------
 // 1. TYPES
@@ -196,6 +197,7 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
     created: /(?:created?|wrote?|new file|Write\()/i,
     modified: /(?:modified|edited|changed|updated|Edit\()/i,
     deleted: /(?:deleted|removed|rm\s)/i,
+    renamed: /(?:renamed|moved|mv\s)/i,
     read: /(?:read|Read\()/i,
   };
 
@@ -232,7 +234,7 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
           }
         }
 
-        if (action === 'read') continue;
+        if (action === 'read' && !content.match(/(?:renamed|moved)\s/i)) continue;
 
         const fileIndex: number = findFilePosition(content, filePath, lastSearchPosition);
 
@@ -333,7 +335,7 @@ function isDescriptionValid(description: string): boolean {
 
 /** Caps context at 500 chars to prevent regex backtracking */
 function extractChangeDescription(context: string, filePath: string): string {
-  const safeContext: string = context.substring(0, 500);
+  const safeContext: string = context.substring(0, CONFIG.MAX_CONTENT_PREVIEW);
 
   const filename: string = filePath.replace(/\\/g, '/').split('/').pop() || '';
   const filenameNoExt: string = filename.replace(/\.[^.]+$/, '');

@@ -15,6 +15,7 @@ import * as bm25Index from '../lib/search/bm25-index';
 import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers';
 import { MemoryError, ErrorCodes } from '../lib/errors';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
+import { runInTransaction } from '../lib/storage/transaction-manager';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
@@ -132,7 +133,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   const fields = Object.keys(updateParams).filter((key) => key !== 'id' && key !== 'embedding');
 
   if (database) {
-    database.transaction(() => {
+    runInTransaction(database, () => {
       if (embeddingStatusNeedsPendingWrite) {
         vectorIndex.updateEmbeddingStatus(id, 'pending');
       }
@@ -183,7 +184,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
         },
         actor: 'mcp:memory_update',
       });
-    })();
+    });
   } else {
     // AI-GUARD: P1-021 — No database handle means we cannot guarantee transactional
     // consistency. Abort early rather than risk partial state.

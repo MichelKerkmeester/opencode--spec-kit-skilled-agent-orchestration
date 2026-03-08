@@ -293,6 +293,7 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
     }
 
     let maxDepth = 0;
+    const maxTraversalDepth = 1000;
     let queueIdx = 0;
 
     while (queueIdx < queue.length) {
@@ -300,8 +301,11 @@ export function computeCausalDepthScores(db: Database.Database, memoryIds: numbe
       const neighbors = adjacency.get(nodeId) ?? [];
 
       for (const neighbor of neighbors) {
-        if (!depthMap.has(neighbor)) {
-          const neighborDepth = depth + 1;
+        const neighborDepth = depth + 1;
+        if (
+          neighborDepth <= maxTraversalDepth &&
+          (!depthMap.has(neighbor) || neighborDepth > depthMap.get(neighbor)!)
+        ) {
           depthMap.set(neighbor, neighborDepth);
           if (neighborDepth > maxDepth) maxDepth = neighborDepth;
           queue.push({ nodeId: neighbor, depth: neighborDepth });

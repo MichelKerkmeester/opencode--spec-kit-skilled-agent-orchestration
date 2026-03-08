@@ -25,7 +25,8 @@ This is a **merged checklist** combining all verification items from four source
 | **008** | Subfolder Resolution Fix | 9 | 2 | 0 | 11 | 11/11 |
 | **013** | Memory Search Bug Fixes | 10 | 13 | 2 | 25 | 22/25 |
 | **015** | Bug Fixes and Alignment | 9 | 54 | 15 | 78 | 69/78 |
-| **Combined** | | **38** | **78** | **19** | **135** | **122/135** |
+| **016** | Code Audit (2026-03-08) | 1 | 16 | 1 | 18 | 0/18 |
+| **Combined** | | **39** | **94** | **20** | **153** | **122/153** |
 
 Current gate truth (2026-03-07):
 - `npm run check`: PASS
@@ -421,3 +422,50 @@ Current gate truth (2026-03-07):
 | P2 Items | 15 | 12/15 |
 
 **Verification Date**: 2026-03-07
+
+---
+---
+
+## Source: 016 -- Code Audit (2026-03-08)
+
+> 35-agent audit. Full details: `scratch/code-audit-synthesis.md`
+> Launch script: `scratch/launch-code-audit.sh`
+> Raw output: `scratch/code-audit-A{01-30}.md`, `scratch/arch-review-S{01-05}.md`
+
+### P0 Items (016)
+
+- [ ] CHK-300 [P0]: Fix broken import path in `graph-flags.ts` and `causal-boost.ts` (T069) — `../cache/cognitive/rollout-policy` → `../cognitive/rollout-policy`
+
+### P1 Items (016)
+
+- [ ] CHK-301 [P1]: `access-tracker.ts` flush interval timer cleared on shutdown (T070)
+- [ ] CHK-302 [P1]: `composite-scoring.ts` negative stability guard with `Number.isFinite()` (T071)
+- [ ] CHK-303 [P1]: `rrf-fusion.ts` finite/non-negative validation on `k`, `convergenceBonus`, `list.weight` (T072)
+- [ ] CHK-304 [P1]: `context-server.ts` fatal error handlers unified through single shutdown path (T073)
+- [ ] CHK-305 [P1]: `workflow.ts` HTML sanitization covers all active tags (T074, F7)
+- [ ] CHK-306 [P1]: `folder-detector.ts` approved-root validation enforced inside helper (T075, F6)
+- [ ] CHK-307 [P1]: `checkpoints.ts` edge restore routes through `causal-edges.ts` module (T076, F11)
+- [ ] CHK-308 [P1]: `transaction-manager.ts` nested transaction guard / savepoint support (T077)
+- [ ] CHK-309 [P1]: `memory-crud-update.ts` update+validation in single transaction with rollback (T078)
+- [ ] CHK-310 [P1]: `eval-metrics.ts` empty ground-truth guard returns 0 (T079)
+- [ ] CHK-311 [P1]: `graph-signals.ts` causal depth uses longest-path DAG traversal (T080)
+- [ ] CHK-312 [P1]: `mpab-aggregation.ts` finite-number guards on chunk scores (T081)
+- [ ] CHK-313 [P1]: `shared/normalization.ts` finite-input validation (T082)
+- [ ] CHK-314 [P1]: `co-activation.ts` type-guard on parsed similarity field (T083)
+- [ ] CHK-315 [P1]: `fsrs-scheduler.ts` review interval parameters clamped to valid ranges (T084)
+- [ ] CHK-316 [P1]: Prior findings F4 (FK cascade) and F9 (error contracts) fully resolved
+
+### P2 Items (016)
+
+- [ ] CHK-317 [P2]: `hooks/README.md` lists all 4 hook files including `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (T085)
+
+### Verification Summary (016)
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 1 | 0/1 |
+| P1 Items | 16 | 0/16 |
+| P2 Items | 1 | 0/1 |
+
+**Audit Date**: 2026-03-08
+**Prior Findings Re-Verified**: F1-F11 (4 FIXED, 3 PARTIALLY_FIXED, 3 STILL_PRESENT)

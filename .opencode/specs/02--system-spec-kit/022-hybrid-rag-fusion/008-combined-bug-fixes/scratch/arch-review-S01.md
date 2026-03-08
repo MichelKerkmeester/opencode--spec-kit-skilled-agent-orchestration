@@ -630,3 +630,192 @@ exec
 { line248: -1, isFinite: true }
  succeeded in 52ms:
 {"retr":null,"clamped":null,"retrIsNaN":true,"clampedIsNaN":true}
+codex
+---
+FINDING: F1
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):326-395
+SEVERITY: P1-IMPORTANT
+TYPE: SCALE_MISMATCH
+STATUS: FIXED
+PRIOR_REF: F1
+DESCRIPTION: The prior normalized-vs-raw convergence-bonus mixing bug is no longer present. Cross-variant fusion now merges each per-variant fused score as-is, then applies the cross-variant bonus once at the merged stage.
+EVIDENCE: `const perVariantFused = variantLists.map(lists => fuseResultsMulti(lists, options)); ... existing.rrfScore += result.rrfScore; ... const crossVariantBonus = convergenceBonusPerVariant * (variantCount - 1); result.rrfScore += crossVariantBonus;`
+SUGGESTED_FIX: None for F1; current logic addresses the prior scale-mixing defect.
+---
+FINDING: F2
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):187-195
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: FIXED
+PRIOR_REF: F2
+DESCRIPTION: The prior non-finite `list.weight` propagation bug is fixed. Non-finite weights are now sanitized before score multiplication.
+EVIDENCE: `const rawWeight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0); const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; const rrfScore = weight * (1 / (k + i + 1));`
+SUGGESTED_FIX: None for F2. Separate validation gaps still remain for other numeric options, noted below.
+---
+FINDING: F3
+FILE: [adaptive-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts):192-215
+SEVERITY: P1-IMPORTANT
+TYPE: EDGE_CASE
+STATUS: FIXED
+PRIOR_REF: F3
+DESCRIPTION: The all-zero-channel case is now guarded. `adaptiveFuse()` returns an empty array instead of falling into a path that normalized an empty/zero-signal result set to `1.0`.
+EVIDENCE: `if (lists.length === 0) { return []; }`
+SUGGESTED_FIX: None for F3.
+---
+FINDING: N1
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):247-303
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `calculateRetrievabilityScore()` accepts negative finite `stability` values. In the inline FSRS path, that can make `1 + FSRS_FACTOR * (elapsed / stability)` negative, and `Math.pow(negative, -0.5)` returns `NaN`. The final clamp uses `Math.min/Math.max`, so `NaN` survives into the returned composite score.
+EVIDENCE: `let stability = (row.stability as number | undefined) || 1.0; ... const retrievability = Math.pow(1 + FSRS_FACTOR * (adjustedElapsedDays / adjustedStability), FSRS_DECAY); return Math.max(0, Math.min(1, retrievability));`
+SUGGESTED_FIX: Require `stability` to be finite and strictly `> 0`, and validate/clamp the scheduler return with `Number.isFinite(...) ? clamp(...) : 0.5`.
+---
+FINDING: N2
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):179-195
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: RRF option validation is still incomplete. `k` is only checked for `< 0`, so `k = NaN` yields `1 / (k + i + 1) => NaN`. `convergenceBonus` and `graphWeightBoost` are accepted without finite/non-negative checks, and negative finite `list.weight` values are still allowed, which can invert score contributions instead of disabling a channel.
+EVIDENCE: `const k = options.k ?? DEFAULT_K; if (k < 0) throw ...; const convergenceBonus = options.convergenceBonus ?? CONVERGENCE_BONUS; const graphWeightBoost = options.graphWeightBoost ?? GRAPH_WEIGHT_BOOST; const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; const rrfScore = weight * (1 / (k + i + 1));`
+SUGGESTED_FIX: Validate all numeric inputs with `Number.isFinite(...)` and enforce `k >= 0`, `convergenceBonus >= 0`, `graphWeightBoost >= 0`, and `list.weight >= 0`. Treat `0` as an explicit channel disable, not as a fallback trigger.
+---
+FINDING: N3
+FILE: [adaptive-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts):217-257
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `recencyWeight` bypasses the finite-weight guard used by `fuseResultsMulti()`. If it is non-finite, `applyRecencyBoost()` can write `Infinity`/`NaN` into `rrfScore`, and the follow-up renormalization can turn the whole result set into `NaN`.
+EVIDENCE: `if (weights.recencyWeight > 0) { applyRecencyBoost(fused, weights.recencyWeight); const maxScore = fused.reduce((mx, r) => Math.max(mx, r.rrfScore), 0); ... r.rrfScore /= maxScore; } ... r.rrfScore += freshness * recencyWeight * RECENCY_BOOST_SCALE;`
+SUGGESTED_FIX: Sanitize `recencyWeight` before use (`finite && >= 0`), and skip or zero out the boost when invalid.
+---
+FINDING: N4
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):793-812
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `normalizeCompositeScores()` assumes all inputs are finite. All-`NaN` input normalizes to all `1.0`, and mixed `Infinity` input can emit `NaN` entries. That is mathematically inconsistent with the intended `[0,1]` normalization contract.
+EVIDENCE: `let maxScore = -Infinity; let minScore = Infinity; for (const s of scores) { if (s > maxScore) maxScore = s; if (s < minScore) minScore = s; } const range = maxScore - minScore; return range > 0 ? scores.map(s => (s - minScore) / range) : scores.map(() => 1.0);`
+SUGGESTED_FIX: Mirror `normalizeRrfScores()`: detect non-finite inputs first, define an explicit all-invalid behavior, and never normalize `Infinity`/`NaN` directly.
+---
+FINDING: N5
+FILE: [mpab-aggregation.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/mpab-aggregation.ts):96-118
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `computeMPAB()` performs sort, sum, and bonus calculations on raw chunk scores without any finite-number validation. A single `Infinity` score yields an infinite parent score; a `NaN` score makes both sort order and aggregate output undefined.
+EVIDENCE: `const sorted = [...scores].sort((a, b) => b - a); const sMax = sorted[0]; const remaining = sorted.slice(1); const sumRemaining = remaining.reduce((acc, s) => acc + s, 0); const bonus = MPAB_BONUS_COEFFICIENT * sumRemaining / Math.sqrt(N); return sMax + bonus;`
+SUGGESTED_FIX: Reject or sanitize non-finite chunk scores before sorting, and define whether negative scores are legal for MPAB input.
+---
+FINDING: N6
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):599-625
+SEVERITY: P2-MINOR
+TYPE: SCALE_MISMATCH
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: The legacy 6-factor path still merges partial weight overrides without re-normalizing them. That breaks weighted-average semantics, changes the absolute score scale, and can collapse distinct raw composites to the same clamped `1.0` output.
+EVIDENCE: `const weights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) }; ... const composite = ( similarity * weights.similarity + ... + retrievabilityScore * weights.retrievability ); return applyPostProcessingAndObserve(composite, row, 'cs');`
+SUGGESTED_FIX: Normalize legacy weights after merge, exactly as the 5-factor path does, and use the same normalized weights in score breakdown helpers.
+---
+
+No concrete off-by-one, float-`===`, or sort-stability defects stood out in the audited files beyond the non-finite-input issues above. Review was source-based with small local arithmetic reproductions; I did not run the full test suite.
+tokens used
+98,696
+---
+FINDING: F1
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):326-395
+SEVERITY: P1-IMPORTANT
+TYPE: SCALE_MISMATCH
+STATUS: FIXED
+PRIOR_REF: F1
+DESCRIPTION: The prior normalized-vs-raw convergence-bonus mixing bug is no longer present. Cross-variant fusion now merges each per-variant fused score as-is, then applies the cross-variant bonus once at the merged stage.
+EVIDENCE: `const perVariantFused = variantLists.map(lists => fuseResultsMulti(lists, options)); ... existing.rrfScore += result.rrfScore; ... const crossVariantBonus = convergenceBonusPerVariant * (variantCount - 1); result.rrfScore += crossVariantBonus;`
+SUGGESTED_FIX: None for F1; current logic addresses the prior scale-mixing defect.
+---
+FINDING: F2
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):187-195
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: FIXED
+PRIOR_REF: F2
+DESCRIPTION: The prior non-finite `list.weight` propagation bug is fixed. Non-finite weights are now sanitized before score multiplication.
+EVIDENCE: `const rawWeight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0); const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; const rrfScore = weight * (1 / (k + i + 1));`
+SUGGESTED_FIX: None for F2. Separate validation gaps still remain for other numeric options, noted below.
+---
+FINDING: F3
+FILE: [adaptive-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts):192-215
+SEVERITY: P1-IMPORTANT
+TYPE: EDGE_CASE
+STATUS: FIXED
+PRIOR_REF: F3
+DESCRIPTION: The all-zero-channel case is now guarded. `adaptiveFuse()` returns an empty array instead of falling into a path that normalized an empty/zero-signal result set to `1.0`.
+EVIDENCE: `if (lists.length === 0) { return []; }`
+SUGGESTED_FIX: None for F3.
+---
+FINDING: N1
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):247-303
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `calculateRetrievabilityScore()` accepts negative finite `stability` values. In the inline FSRS path, that can make `1 + FSRS_FACTOR * (elapsed / stability)` negative, and `Math.pow(negative, -0.5)` returns `NaN`. The final clamp uses `Math.min/Math.max`, so `NaN` survives into the returned composite score.
+EVIDENCE: `let stability = (row.stability as number | undefined) || 1.0; ... const retrievability = Math.pow(1 + FSRS_FACTOR * (adjustedElapsedDays / adjustedStability), FSRS_DECAY); return Math.max(0, Math.min(1, retrievability));`
+SUGGESTED_FIX: Require `stability` to be finite and strictly `> 0`, and validate/clamp the scheduler return with `Number.isFinite(...) ? clamp(...) : 0.5`.
+---
+FINDING: N2
+FILE: [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts):179-195
+SEVERITY: P1-IMPORTANT
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: RRF option validation is still incomplete. `k` is only checked for `< 0`, so `k = NaN` yields `1 / (k + i + 1) => NaN`. `convergenceBonus` and `graphWeightBoost` are accepted without finite/non-negative checks, and negative finite `list.weight` values are still allowed, which can invert score contributions instead of disabling a channel.
+EVIDENCE: `const k = options.k ?? DEFAULT_K; if (k < 0) throw ...; const convergenceBonus = options.convergenceBonus ?? CONVERGENCE_BONUS; const graphWeightBoost = options.graphWeightBoost ?? GRAPH_WEIGHT_BOOST; const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; const rrfScore = weight * (1 / (k + i + 1));`
+SUGGESTED_FIX: Validate all numeric inputs with `Number.isFinite(...)` and enforce `k >= 0`, `convergenceBonus >= 0`, `graphWeightBoost >= 0`, and `list.weight >= 0`. Treat `0` as an explicit channel disable, not as a fallback trigger.
+---
+FINDING: N3
+FILE: [adaptive-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts):217-257
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `recencyWeight` bypasses the finite-weight guard used by `fuseResultsMulti()`. If it is non-finite, `applyRecencyBoost()` can write `Infinity`/`NaN` into `rrfScore`, and the follow-up renormalization can turn the whole result set into `NaN`.
+EVIDENCE: `if (weights.recencyWeight > 0) { applyRecencyBoost(fused, weights.recencyWeight); const maxScore = fused.reduce((mx, r) => Math.max(mx, r.rrfScore), 0); ... r.rrfScore /= maxScore; } ... r.rrfScore += freshness * recencyWeight * RECENCY_BOOST_SCALE;`
+SUGGESTED_FIX: Sanitize `recencyWeight` before use (`finite && >= 0`), and skip or zero out the boost when invalid.
+---
+FINDING: N4
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):793-812
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `normalizeCompositeScores()` assumes all inputs are finite. All-`NaN` input normalizes to all `1.0`, and mixed `Infinity` input can emit `NaN` entries. That is mathematically inconsistent with the intended `[0,1]` normalization contract.
+EVIDENCE: `let maxScore = -Infinity; let minScore = Infinity; for (const s of scores) { if (s > maxScore) maxScore = s; if (s < minScore) minScore = s; } const range = maxScore - minScore; return range > 0 ? scores.map(s => (s - minScore) / range) : scores.map(() => 1.0);`
+SUGGESTED_FIX: Mirror `normalizeRrfScores()`: detect non-finite inputs first, define an explicit all-invalid behavior, and never normalize `Infinity`/`NaN` directly.
+---
+FINDING: N5
+FILE: [mpab-aggregation.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/mpab-aggregation.ts):96-118
+SEVERITY: P2-MINOR
+TYPE: NaN
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: `computeMPAB()` performs sort, sum, and bonus calculations on raw chunk scores without any finite-number validation. A single `Infinity` score yields an infinite parent score; a `NaN` score makes both sort order and aggregate output undefined.
+EVIDENCE: `const sorted = [...scores].sort((a, b) => b - a); const sMax = sorted[0]; const remaining = sorted.slice(1); const sumRemaining = remaining.reduce((acc, s) => acc + s, 0); const bonus = MPAB_BONUS_COEFFICIENT * sumRemaining / Math.sqrt(N); return sMax + bonus;`
+SUGGESTED_FIX: Reject or sanitize non-finite chunk scores before sorting, and define whether negative scores are legal for MPAB input.
+---
+FINDING: N6
+FILE: [composite-scoring.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts):599-625
+SEVERITY: P2-MINOR
+TYPE: SCALE_MISMATCH
+STATUS: NEW
+PRIOR_REF: NONE
+DESCRIPTION: The legacy 6-factor path still merges partial weight overrides without re-normalizing them. That breaks weighted-average semantics, changes the absolute score scale, and can collapse distinct raw composites to the same clamped `1.0` output.
+EVIDENCE: `const weights: LegacyWeights = { ...DEFAULT_WEIGHTS, ...(options.weights as Partial<LegacyWeights>) }; ... const composite = ( similarity * weights.similarity + ... + retrievabilityScore * weights.retrievability ); return applyPostProcessingAndObserve(composite, row, 'cs');`
+SUGGESTED_FIX: Normalize legacy weights after merge, exactly as the 5-factor path does, and use the same normalized weights in score breakdown helpers.
+---
+
+No concrete off-by-one, float-`===`, or sort-stability defects stood out in the audited files beyond the non-finite-input issues above. Review was source-based with small local arithmetic reproductions; I did not run the full test suite.

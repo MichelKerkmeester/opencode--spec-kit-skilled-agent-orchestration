@@ -26,6 +26,9 @@ This section provides an overview of the Hooks directory.
 
 `hooks/` provides helper modules exported via `index.ts`.
 
+- `memory-surface.ts`: context extraction, constitutional/triggered memory surfacing, lifecycle hook helpers, and constitutional cache management.
+- `mutation-feedback.ts`: post-mutation feedback payloads and hint strings for cache clear results and tool cache invalidation.
+- `response-hints.ts`: auto-surface hint injection plus MCP JSON envelope metadata and token-count synchronization.
 - It is a utility layer for memory-aware context surfacing and UX feedback metadata.
 - It is not a standalone MCP hook registration system.
 

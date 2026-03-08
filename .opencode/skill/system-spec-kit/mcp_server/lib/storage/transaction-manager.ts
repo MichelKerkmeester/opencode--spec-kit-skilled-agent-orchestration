@@ -4,6 +4,7 @@
 // AI-GUARD: Atomic file + index operations with pending file recovery
 // ---------------------------------------------------------------
 
+import type Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -53,6 +54,8 @@ const metrics: TransactionMetrics = {
   lastOperationTime: null,
 };
 
+const activeTransactions = new WeakMap<object, number>();
+
 /* -------------------------------------------------------------
    4. METRICS
 ----------------------------------------------------------------*/
@@ -91,6 +94,29 @@ function getOriginalPath(pendingPath: string): string {
   const base = path.basename(pendingPath, ext);
   const originalBase = base.replace(new RegExp(`${PENDING_SUFFIX}$`), '');
   return path.join(dir, `${originalBase}${ext}`);
+}
+
+function runInTransaction<T>(database: Database.Database, callback: () => T): T {
+  const runCallback = (): T => {
+    const depth = activeTransactions.get(database) ?? 0;
+    activeTransactions.set(database, depth + 1);
+    try {
+      return callback();
+    } finally {
+      const nextDepth = (activeTransactions.get(database) ?? 1) - 1;
+      if (nextDepth > 0) {
+        activeTransactions.set(database, nextDepth);
+      } else {
+        activeTransactions.delete(database);
+      }
+    }
+  };
+
+  if ((activeTransactions.get(database) ?? 0) > 0 || database.inTransaction) {
+    return runCallback();
+  }
+
+  return database.transaction(() => runCallback())();
 }
 
 /* -------------------------------------------------------------
@@ -340,6 +366,7 @@ export {
   getPendingPath,
   isPendingFile,
   getOriginalPath,
+  runInTransaction,
 
   // AI-GUARD: Atomic operations
   atomicWriteFile,

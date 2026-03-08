@@ -262,15 +262,10 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
     LEARNING_SUMMARY: 'Learning metrics will be calculated when both preflight and postflight data are provided.'
   };
 
-  if (preflight && postflight &&
-      typeof preflight.knowledgeScore === 'number' &&
-      typeof postflight.knowledgeScore === 'number') {
-
-    const deltaKnow = postflight.knowledgeScore - preflight.knowledgeScore;
-    const hasUncert = typeof preflight.uncertaintyScore === 'number' && typeof postflight.uncertaintyScore === 'number';
-    const hasContext = typeof preflight.contextScore === 'number' && typeof postflight.contextScore === 'number';
-    const deltaUncert = hasUncert ? preflight.uncertaintyScore! - postflight.uncertaintyScore! : 0;
-    const deltaContext = hasContext ? postflight.contextScore! - preflight.contextScore! : 0;
+  if (hasPostflightDelta) {
+    const deltaKnow = postflight!.knowledgeScore! - preflight!.knowledgeScore!;
+    const deltaUncert = preflight!.uncertaintyScore! - postflight!.uncertaintyScore!;
+    const deltaContext = postflight!.contextScore! - preflight!.contextScore!;
 
     const learningIndex = calculateLearningIndex(deltaKnow, deltaUncert, deltaContext);
 

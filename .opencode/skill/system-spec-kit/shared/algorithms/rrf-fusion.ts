@@ -177,10 +177,16 @@ function fuseResultsMulti(
   options: FuseMultiOptions = {}
 ): FusionResult[] {
   // Use ?? (not ||) so callers can explicitly pass 0 without falling back to defaults
-  const k = options.k ?? DEFAULT_K;
-  if (k < 0) throw new Error('RRF k parameter must be non-negative');
-  const convergenceBonus = options.convergenceBonus ?? CONVERGENCE_BONUS;
-  const graphWeightBoost = options.graphWeightBoost ?? GRAPH_WEIGHT_BOOST;
+  const rawK = options.k;
+  const k = typeof rawK === 'number' && Number.isFinite(rawK) && rawK > 0 ? rawK : DEFAULT_K;
+  const rawConvergenceBonus = options.convergenceBonus;
+  const convergenceBonus = typeof rawConvergenceBonus === 'number' && Number.isFinite(rawConvergenceBonus) && rawConvergenceBonus >= 0
+    ? rawConvergenceBonus
+    : 0;
+  const rawGraphWeightBoost = options.graphWeightBoost;
+  const graphWeightBoost = typeof rawGraphWeightBoost === 'number' && Number.isFinite(rawGraphWeightBoost) && rawGraphWeightBoost >= 0
+    ? rawGraphWeightBoost
+    : 0;
 
   const scoreMap = new Map<string, FusionResult>();
 
@@ -189,7 +195,7 @@ function fuseResultsMulti(
     // Graph source gets GRAPH_WEIGHT_BOOST when no weight is given because curated
     // causal edges are higher-signal than unweighted lexical/vector channels.
     const rawWeight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0);
-    const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; // AI: Fix F2 — guard against NaN/Infinity weights.
+    const weight = typeof rawWeight === 'number' && Number.isFinite(rawWeight) && rawWeight >= 0 ? rawWeight : 0;
     for (let i = 0; i < list.results.length; i++) {
       const item = list.results[i];
       const rrfScore = weight * (1 / (k + i + 1));

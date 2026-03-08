@@ -22,7 +22,8 @@ This file merges tasks from four source spec folders into a single canonical ref
 | 008 | Subfolder Resolution Fix | 31 | 31 | 0 |
 | 013 | Memory Search Bug Fixes | 40 | 40 | 0 |
 | 015 | Bug Fixes and Alignment | 84 | 69 | 15 |
-| **Total** | | **167** | **152** | **15** |
+| 016 | Code Audit (2026-03-08) | 17 | 0 | 0 |
+| **Total** | | **184** | **152** | **15** |
 
 Current verification truth snapshot (2026-03-07):
 - `npm run check` is green.
@@ -417,3 +418,41 @@ Current verification truth snapshot (2026-03-07):
 - [x] T066: Grep for remaining TODO/FIXME in modified files -- 0 found
 - [x] T067: Verify feature catalog em dash count is 0 -- confirmed
 - [x] T068: Create implementation-summary.md
+
+---
+---
+
+## Source: 016 -- Code Audit (2026-03-08)
+
+> 35-agent code audit: 30 Copilot (gpt-5.3-codex) per-feature + 5 Codex (gpt-5.4) cross-cutting.
+> Raw findings: 268 → ~145 unique after deduplication.
+> Full synthesis: `scratch/code-audit-synthesis.md`
+
+### Tier 1: Immediate (P0 + high-impact P1)
+
+- [ ] T069 [P] Fix broken import `../cache/cognitive/rollout-policy` → `../cognitive/rollout-policy` in `graph-flags.ts:6` and `causal-boost.ts:9` (P0-001)
+- [ ] T070 [P] Clear `access-tracker.ts` flush interval timer on shutdown; add `dispose()` method (P1-T05)
+- [ ] T071 [P] Guard negative `stability` in `composite-scoring.ts:247-303`; add `Number.isFinite()` check on output (P1-S01)
+- [ ] T072 [P] Add finite/non-negative validation for `k`, `convergenceBonus`, `graphWeightBoost`, `list.weight` in `rrf-fusion.ts:179-195` (P1-S02)
+- [ ] T073: Unify fatal error handlers in `context-server.ts:571-681` through single `fatalShutdown()` with deadline (P1-I01)
+- [ ] T074: Replace regex HTML strip in `workflow.ts:818` with comprehensive tag sanitization (P1-H09, F7 STILL_PRESENT)
+- [ ] T075: Add approved-root validation inside `resolveSessionSpecFolderPaths` in `folder-detector.ts:459` (P1-H08, F6 PARTIALLY_FIXED)
+
+### Tier 2: Important (transaction/storage safety)
+
+- [ ] T076: Route checkpoint edge restore through `causal-edges.ts` public API in `checkpoints.ts:819-848` (P1-T01, F11 STILL_PRESENT)
+- [ ] T077: Add nested transaction guard / savepoint support in `transaction-manager.ts:291-312` (P1-T04)
+- [ ] T078: Wrap update + validation in single transaction with rollback in `memory-crud-update.ts:187-200` (P1-H02)
+- [ ] T079 [P] Add empty ground-truth guard in `eval-metrics.ts:191-198` returning 0 instead of dividing by zero (P1-E01)
+- [ ] T080: Replace first-visit BFS with longest-path DAG traversal for causal depth in `graph-signals.ts:298-308` (P1-R05)
+
+### Tier 3: Quality hardening (NaN guards, type safety)
+
+- [ ] T081 [P] Add `Number.isFinite()` guards on chunk scores in `mpab-aggregation.ts:96-118` (P1-S05)
+- [ ] T082 [P] Add finite-input validation in `shared/normalization.ts:25-61,117-154` (P1-S07)
+- [ ] T083 [P] Type-guard parsed `related_memories` similarity field in `co-activation.ts:131-153` (P1-G01)
+- [ ] T084 [P] Clamp review interval parameters to valid ranges in `fsrs-scheduler.ts:95-145` (P1-G06)
+
+### Tier 4: README gaps
+
+- [ ] T085 [P] Add missing entries to `hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README)

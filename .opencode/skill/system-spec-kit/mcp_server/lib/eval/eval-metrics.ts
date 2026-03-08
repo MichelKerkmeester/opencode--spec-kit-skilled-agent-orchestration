@@ -110,6 +110,7 @@ export function computeMRR(
   k: number = 5,
 ): number {
   if (results.length === 0 || groundTruth.length === 0) return 0;
+  if (groundTruth.every(entry => entry.relevance <= 0)) return 0;
 
   const relevanceMap = buildRelevanceMap(groundTruth);
   const topResults = topK(results, k);
@@ -140,6 +141,7 @@ export function computeNDCG(
   k: number = 10,
 ): number {
   if (results.length === 0 || groundTruth.length === 0) return 0;
+  if (groundTruth.every(entry => entry.relevance <= 0)) return 0;
 
   const relevanceMap = buildRelevanceMap(groundTruth);
   const topResults = topK(results, k);
@@ -396,6 +398,7 @@ export function computeImportanceWeightedRecall(
   k: number = 20,
 ): number {
   if (results.length === 0 || groundTruth.length === 0) return 0;
+  if (groundTruth.every(entry => entry.relevance <= 0)) return 0;
 
   const defaultWeights: Record<string, number> = {
     constitutional: 3,

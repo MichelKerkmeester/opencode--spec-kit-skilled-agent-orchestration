@@ -6,6 +6,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import * as mod from '../lib/storage/checkpoints';
 import type { CheckpointInfo } from '../lib/storage/checkpoints';
+import * as causalEdges from '../lib/storage/causal-edges';
 import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as os from 'os';
@@ -117,6 +118,7 @@ function createTestDb(): void {
   `).run(3, '3', '3', 'supports');
 
   mod.init(database);
+  causalEdges.init(database);
 }
 
 function cleanupDb(): void {
@@ -279,6 +281,7 @@ describe('Checkpoints Storage (T503)', () => {
       `);
 
       mod.init(emptyDb);
+      causalEdges.init(emptyDb);
 
       const list = mod.listCheckpoints();
       expect(Array.isArray(list)).toBe(true);
@@ -289,6 +292,7 @@ describe('Checkpoints Storage (T503)', () => {
 
       // Re-init with original test database
        mod.init(getTestDb());
+       causalEdges.init(getTestDb());
     });
   });
 

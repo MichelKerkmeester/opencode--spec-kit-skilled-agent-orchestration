@@ -128,19 +128,29 @@ function getRelatedMemories(
       return [];
     }
 
-    let related: Array<{ id: number; similarity: number }>;
+    let parsedRelated: unknown;
     try {
-      related = JSON.parse(memory.related_memories);
+      parsedRelated = JSON.parse(memory.related_memories);
     } catch (_err: unknown) { // AI-GUARD: Malformed JSON in related_memories — return empty
       return [];
     }
 
-    if (!Array.isArray(related)) return [];
+    if (!Array.isArray(parsedRelated)) return [];
+
+    const related = parsedRelated.filter((rel): rel is { id: number; similarity: number } => {
+      if (typeof rel !== 'object' || rel === null) return false;
+      const candidate = rel as { id?: unknown; similarity?: unknown };
+      return (
+        typeof candidate.id === 'number'
+        && Number.isFinite(candidate.id)
+        && typeof candidate.similarity === 'number'
+        && Number.isFinite(candidate.similarity)
+      );
+    });
 
     // Fetch full memory details for each related
     const results: RelatedMemory[] = [];
     for (const rel of related.slice(0, limit)) {
-      if (rel.id == null) continue;
       try {
         const fullMemory = (db.prepare(
           'SELECT id, title, spec_folder, file_path, importance_tier FROM memory_index WHERE id = ?'
@@ -347,7 +357,7 @@ function spreadActivation(
       if (visited.has(rel.id)) continue;
 
       const decayedScore = current.score * CO_ACTIVATION_CONFIG.decayPerHop * (rel.similarity / 100);
-      if (decayedScore < 0.01) continue;
+      if (!Number.isFinite(decayedScore) || decayedScore < 0.01) continue;
 
       queue.push({
         id: rel.id,

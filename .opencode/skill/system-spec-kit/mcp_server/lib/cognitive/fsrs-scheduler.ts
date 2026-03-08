@@ -98,17 +98,20 @@ function updateStability(
   grade: number,
   retrievability: number
 ): number {
+  const safeStability = Math.max(0, currentStability);
+  const safeDifficulty = Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, difficulty));
+
   if (grade === GRADE_AGAIN) {
     // Lapse: stability decreases significantly
-    return Math.max(MIN_STABILITY, currentStability * 0.2);
+    return Math.max(MIN_STABILITY, safeStability * 0.2);
   }
 
   // Success: stability increases based on grade and difficulty
-  const difficultyFactor = 1 + (11 - difficulty) * 0.1;
+  const difficultyFactor = 1 + (11 - safeDifficulty) * 0.1;
   const gradeFactor = grade === GRADE_EASY ? 1.3 : grade === GRADE_GOOD ? 1.0 : 0.8;
   const retrievabilityBonus = 1 + (1 - retrievability) * 0.5;
 
-  const newStability = currentStability * difficultyFactor * gradeFactor * retrievabilityBonus;
+  const newStability = safeStability * difficultyFactor * gradeFactor * retrievabilityBonus;
 
   return Math.max(MIN_STABILITY, newStability);
 }
@@ -118,30 +121,33 @@ function updateStability(
  * The interval where retrievability = 0.9 (desired retention).
  */
 function calculateOptimalInterval(stability: number, desiredRetention: number = 0.9): number {
-  if (stability <= 0 || desiredRetention <= 0 || desiredRetention >= 1) {
-    return 1;
+  const safeStability = Math.max(0, stability);
+
+  if (safeStability <= 0 || desiredRetention <= 0 || desiredRetention >= 1) {
+    return 0;
   }
 
-  const interval = (stability / FSRS_FACTOR) * (Math.pow(desiredRetention, 1 / FSRS_DECAY) - 1);
+  const interval = (safeStability / FSRS_FACTOR) * (Math.pow(desiredRetention, 1 / FSRS_DECAY) - 1);
 
-  return Math.max(1, Math.round(interval));
+  return Math.max(0, Math.round(Math.max(0, interval)));
 }
 
 /**
  * Update difficulty based on review grade.
  */
 function updateDifficulty(currentDifficulty: number, grade: number): number {
+  const safeDifficulty = Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, currentDifficulty));
   let newDifficulty: number;
 
   if (grade === GRADE_AGAIN) {
-    newDifficulty = currentDifficulty + 1.0;
+    newDifficulty = safeDifficulty + 1.0;
   } else if (grade === GRADE_HARD) {
-    newDifficulty = currentDifficulty + 0.5;
+    newDifficulty = safeDifficulty + 0.5;
   } else if (grade === GRADE_GOOD) {
-    newDifficulty = currentDifficulty;
+    newDifficulty = safeDifficulty;
   } else {
     // EASY
-    newDifficulty = currentDifficulty - 0.5;
+    newDifficulty = safeDifficulty - 0.5;
   }
 
   return Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, newDifficulty));

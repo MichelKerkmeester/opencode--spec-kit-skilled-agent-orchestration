@@ -57,7 +57,7 @@ export async function writeFilesAtomically(
   contextDir: string,
   files: Record<string, string>
 ): Promise<string[]> {
-  const written: string[] = [];
+  const written: Array<{ filename: string; existedBefore: boolean; backupPath?: string }> = [];
   for (const [filename, content] of Object.entries(files)) {
     validateNoLeakedPlaceholders(content, filename);
     validateContentSubstance(content, filename);
@@ -65,9 +65,15 @@ export async function writeFilesAtomically(
     const warnings = validateAnchors(content);
     if (warnings.length) console.warn(`   Warning: ${filename}: ${warnings.join(', ')}`);
     const filePath = path.join(contextDir, filename);
-    // Defense-in-depth: warn if target already exists
+    // Backup existing file before overwrite
+    let existedBefore = false;
+    let backupPath: string | undefined;
     try {
       await fs.access(filePath);
+      existedBefore = true;
+      const backupSuffix = crypto.randomBytes(4).toString('hex');
+      backupPath = `${filePath}.bak.${backupSuffix}`;
+      await fs.copyFile(filePath, backupPath);
       console.warn(`   Warning: overwriting existing file ${filename}`);
     } catch { /* Expected: file doesn't exist */ }
     const tempSuffix = crypto.randomBytes(4).toString('hex');
@@ -77,17 +83,39 @@ export async function writeFilesAtomically(
       const stat = await fs.stat(tempPath);
       if (stat.size !== Buffer.byteLength(content, 'utf-8')) throw new Error('Size mismatch');
       await fs.rename(tempPath, filePath);
-      written.push(filename);
+      written.push({ filename, existedBefore, backupPath });
       console.log(`   ${filename} (${content.split('\n').length} lines)`);
     } catch (e: unknown) {
       try { await fs.unlink(tempPath); } catch { /* temp file cleanup — failure is non-critical */ }
       // Rollback already-written files from this batch
+      const rollbackErrors: string[] = [];
       for (const prev of written) {
-        try { await fs.unlink(path.join(contextDir, prev)); } catch { /* best-effort rollback */ }
+        try {
+          if (prev.existedBefore && prev.backupPath) {
+            await fs.rename(prev.backupPath, path.join(contextDir, prev.filename));
+          } else {
+            await fs.unlink(path.join(contextDir, prev.filename));
+          }
+        } catch (rollbackErr: unknown) {
+          const msg = rollbackErr instanceof Error ? rollbackErr.message : String(rollbackErr);
+          rollbackErrors.push(`${prev.filename}: ${msg}`);
+        }
+      }
+      if (backupPath) {
+        try { await fs.unlink(backupPath); } catch { /* cleanup current backup */ }
       }
       const errMsg = e instanceof Error ? e.message : String(e);
-      throw new Error(`Write failed ${filename} (rolled back ${written.length} prior files): ${errMsg}`);
+      const rollbackNote = rollbackErrors.length > 0
+        ? ` (rollback errors: ${rollbackErrors.join('; ')})`
+        : '';
+      throw new Error(`Write failed ${filename} (rolled back ${written.length} prior files${rollbackNote}): ${errMsg}`);
     }
   }
-  return written;
+  // Clean up backup files on success
+  for (const w of written) {
+    if (w.backupPath) {
+      try { await fs.unlink(w.backupPath); } catch { /* best-effort cleanup */ }
+    }
+  }
+  return written.map(w => w.filename);
 }
