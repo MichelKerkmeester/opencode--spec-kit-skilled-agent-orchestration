@@ -64,6 +64,18 @@ export interface SemanticFileInfo {
   action: string;
 }
 
+const ACTION_MAP: Record<string, string> = {
+  created: 'Created',
+  modified: 'Modified',
+  deleted: 'Deleted',
+  read: 'Read',
+  renamed: 'Renamed',
+};
+
+function normalizeFileAction(action: string): string {
+  return ACTION_MAP[action.toLowerCase()] || 'Modified';
+}
+
 /* -----------------------------------------------------------------
    2. OBSERVATION TYPE DETECTION
 ------------------------------------------------------------------*/
@@ -106,7 +118,8 @@ function extractFilesFromData(
     const cleaned = cleanDescription(description);
 
     if (existing) {
-      if (isDescriptionValid(cleaned) && cleaned.length < existing.length) {
+      // Prefer a valid, more descriptive (longer) description over a generic one
+      if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing) || cleaned.length > existing.length)) {
         filesMap.set(normalized, cleaned);
       }
     } else {
@@ -186,7 +199,7 @@ function enhanceFilesWithSemanticDescriptions(
       return {
         FILE_PATH: file.FILE_PATH,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
-        ACTION: info.action === 'created' ? 'Created' : 'Modified'
+        ACTION: normalizeFileAction(info.action)
       };
     }
 
@@ -211,7 +224,7 @@ function enhanceFilesWithSemanticDescriptions(
       return {
         FILE_PATH: file.FILE_PATH,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
-        ACTION: info.action === 'created' ? 'Created' : 'Modified'
+        ACTION: normalizeFileAction(info.action)
       };
     }
 

@@ -22,6 +22,13 @@ export interface WorkflowConfig {
   contextPreviewHeadLines: number;
   contextPreviewTailLines: number;
   timezoneOffsetHours: number;
+  maxFilesInMemory: number;
+  maxObservations: number;
+  minPromptLength: number;
+  maxContentPreview: number;
+  toolPreviewLines: number;
+  toolOutputMaxLength: number;
+  timestampMatchToleranceMs: number;
 }
 
 /** Represents spec kit config. */
@@ -44,6 +51,8 @@ export interface SpecKitConfig {
   MAX_OBSERVATIONS: number;
   MIN_PROMPT_LENGTH: number;
   MAX_CONTENT_PREVIEW: number;
+  TOOL_OUTPUT_MAX_LENGTH: number;
+  TIMESTAMP_MATCH_TOLERANCE_MS: number;
 }
 
 /* -----------------------------------------------------------------
@@ -70,6 +79,13 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
     'maxConversationMessages',
     'maxToolOutputLines',
     'messageTimeWindow',
+    'maxFilesInMemory',
+    'maxObservations',
+    'minPromptLength',
+    'maxContentPreview',
+    'toolPreviewLines',
+    'toolOutputMaxLength',
+    'timestampMatchToleranceMs',
   ];
 
   for (const field of positiveFields) {
@@ -129,7 +145,14 @@ function loadConfig(): WorkflowConfig {
     messageTimeWindow: 300000,
     contextPreviewHeadLines: 50,
     contextPreviewTailLines: 20,
-    timezoneOffsetHours: 0
+    timezoneOffsetHours: 0,
+    maxFilesInMemory: 10,
+    maxObservations: 3,
+    minPromptLength: 60,
+    maxContentPreview: 500,
+    toolPreviewLines: 10,
+    toolOutputMaxLength: 500,
+    timestampMatchToleranceMs: 5000,
   };
 
   const configPath: string = path.join(SCRIPTS_DIR, '..', 'config', 'config.jsonc');
@@ -200,7 +223,7 @@ const CONFIG: SpecKitConfig = {
   TRUNCATE_LAST_LINES: userConfig.contextPreviewTailLines,
   MESSAGE_TIME_WINDOW: userConfig.messageTimeWindow,
   TIMEZONE_OFFSET_HOURS: userConfig.timezoneOffsetHours,
-  TOOL_PREVIEW_LINES: 10,
+  TOOL_PREVIEW_LINES: userConfig.toolPreviewLines,
 
   TEMPLATE_DIR: path.join(SCRIPTS_DIR, '..', 'templates'),
   PROJECT_ROOT: path.resolve(SCRIPTS_DIR, '..', '..', '..', '..'),
@@ -209,10 +232,12 @@ const CONFIG: SpecKitConfig = {
   DATA_FILE: null,
   SPEC_FOLDER_ARG: null,
 
-  MAX_FILES_IN_MEMORY: 10,
-  MAX_OBSERVATIONS: 3,
-  MIN_PROMPT_LENGTH: 60,
-  MAX_CONTENT_PREVIEW: 500
+  MAX_FILES_IN_MEMORY: userConfig.maxFilesInMemory,
+  MAX_OBSERVATIONS: userConfig.maxObservations,
+  MIN_PROMPT_LENGTH: userConfig.minPromptLength,
+  MAX_CONTENT_PREVIEW: userConfig.maxContentPreview,
+  TOOL_OUTPUT_MAX_LENGTH: userConfig.toolOutputMaxLength,
+  TIMESTAMP_MATCH_TOLERANCE_MS: userConfig.timestampMatchToleranceMs
 };
 
 /* -----------------------------------------------------------------

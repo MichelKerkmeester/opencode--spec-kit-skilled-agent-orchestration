@@ -347,6 +347,52 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
 }
 
 // ---------------------------------------------------------------
+// 5.5. TOOL OBSERVATION TITLE BUILDER
+// ---------------------------------------------------------------
+
+/**
+ * Build a descriptive observation title from a tool call.
+ * Uses the tool's file path, pattern, or command to create a meaningful title
+ * instead of a generic "Tool: grep" label.
+ */
+function buildToolObservationTitle(tool: CaptureToolCall): string {
+  const toolName = tool.tool || 'unknown';
+  const input = tool.input || {};
+
+  // Prefer the tool's own title if it's descriptive (not just a tool name)
+  if (tool.title && tool.title.length > 10 && !/^Tool:\s/i.test(tool.title)) {
+    return tool.title.substring(0, 80);
+  }
+
+  const filePath = input.filePath || input.file_path || input.path || '';
+  const shortPath = filePath ? filePath.split('/').slice(-2).join('/') : '';
+
+  switch (toolName.toLowerCase()) {
+    case 'read':
+      return shortPath ? `Read ${shortPath}` : 'Read file';
+    case 'edit':
+      return shortPath ? `Edit ${shortPath}` : 'Edit file';
+    case 'write':
+      return shortPath ? `Write ${shortPath}` : 'Write file';
+    case 'grep': {
+      const pattern = typeof input.pattern === 'string' ? input.pattern.substring(0, 40) : '';
+      return pattern ? `Grep: ${pattern}` : 'Grep search';
+    }
+    case 'glob': {
+      const globPattern = typeof input.pattern === 'string' ? input.pattern.substring(0, 40) : '';
+      return globPattern ? `Glob: ${globPattern}` : 'Glob search';
+    }
+    case 'bash': {
+      const desc = typeof input.description === 'string' ? input.description.substring(0, 60) : '';
+      const cmd = typeof input.command === 'string' ? input.command.substring(0, 40) : '';
+      return desc || cmd || 'Bash command';
+    }
+    default:
+      return shortPath ? `${toolName}: ${shortPath}` : `Tool: ${toolName}`;
+  }
+}
+
+// ---------------------------------------------------------------
 // 6. OPENCODE CAPTURE TRANSFORMATION
 // ---------------------------------------------------------------
 
@@ -428,9 +474,10 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
   }
 
   for (const tool of filteredToolCalls) {
+    const toolTitle = buildToolObservationTitle(tool);
     const toolObs: Observation = {
       type: tool.tool === 'edit' || tool.tool === 'write' ? 'implementation' : 'observation',
-      title: `Tool: ${tool.tool}`,
+      title: toolTitle,
       narrative: tool.title || `Executed ${tool.tool}`,
       timestamp: tool.timestamp ? new Date(tool.timestamp).toISOString() : new Date().toISOString(),
       facts: [`Tool: ${tool.tool}`, `Status: ${tool.status}`],

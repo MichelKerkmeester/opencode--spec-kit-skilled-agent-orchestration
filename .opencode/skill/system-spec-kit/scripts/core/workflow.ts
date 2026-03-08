@@ -439,6 +439,34 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (!collectedData) {
       throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
     }
+
+    // Step 1.5: Stateless mode alignment check
+    // When no JSON data file was provided, data comes from the active OpenCode session.
+    // Verify the captured content relates to the target spec folder to prevent
+    // cross-spec contamination (e.g., session working on spec A saved to spec B).
+    const isStatelessMode = !activeDataFile && !preloadedData;
+    if (isStatelessMode && activeSpecFolderArg && collectedData.observations) {
+      const specFolderLeaf = path.basename(activeSpecFolderArg).replace(/^\d+-/, '').toLowerCase();
+      const specKeywords = specFolderLeaf.split('-').filter((w: string) => w.length >= 3);
+
+      const allFilePaths = (collectedData.observations || [])
+        .flatMap((obs: { files?: string[] }) => obs.files || [])
+        .concat((collectedData.FILES || []).map((f: { FILE_PATH?: string; path?: string }) => f.FILE_PATH || f.path || ''));
+
+      const totalPaths = allFilePaths.length;
+      if (totalPaths > 0 && specKeywords.length > 0) {
+        const relevantPaths = allFilePaths.filter((fp: string) => {
+          const lower = fp.toLowerCase();
+          return specKeywords.some((kw: string) => lower.includes(kw));
+        });
+        const overlapRatio = relevantPaths.length / totalPaths;
+        if (overlapRatio < 0.05) {
+          warn(`   ALIGNMENT WARNING: Only ${(overlapRatio * 100).toFixed(0)}% of captured file paths relate to spec folder "${activeSpecFolderArg}".`);
+          warn(`   The active session may be working on a different task. Memory content may be cross-contaminated.`);
+          warn(`   Spec keywords: [${specKeywords.join(', ')}], Total paths: ${totalPaths}, Matching: ${relevantPaths.length}`);
+        }
+      }
+    }
     log();
 
     // Step 2: Detect spec folder with context alignment
@@ -788,18 +816,25 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log(`   Template populated (quality: ${filterStats.qualityScore}/100)\n`);
 
   // Step 8.5: Content cleaning — strip leaked HTML tags from rendered content
+  // Preserves HTML inside fenced code blocks (```...```) which is legitimate code.
   log('Step 8.5: Content cleaning...');
   const rawContent = files[ctxFilename];
-  // Strip <summary> and </summary> tags that leak from conversation data
-  let cleanedContent = rawContent
-    .replace(/<\/?summary>/gi, '')
-    .replace(/<\/?details>/gi, '');
-  // AI: Fix F7 — strip all HTML tags, not just summary/details.
-  cleanedContent = cleanedContent.replace(/<[^>]+>/g, '');
+  // Split on code fences, only strip HTML tags from non-code sections
+  const codeFenceRe = /(```[\s\S]*?```)/g;
+  const segments = rawContent.split(codeFenceRe);
+  let cleanedContent = segments.map((segment) => {
+    // Odd indices are code blocks (captured groups) — preserve them
+    if (segment.startsWith('```')) return segment;
+    // Strip leaked HTML tags from non-code content
+    return segment
+      .replace(/<\/?summary>/gi, '')
+      .replace(/<\/?details>/gi, '')
+      .replace(/<(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
+  }).join('');
   // Only update if cleaning made changes
   if (cleanedContent !== rawContent) {
     files[ctxFilename] = cleanedContent;
-    log('   Stripped leaked HTML tags from content');
+    log('   Stripped leaked HTML tags from content (code blocks preserved)');
   } else {
     log('   No HTML cleaning needed');
   }
@@ -840,6 +875,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log(`   Breakdown: triggers=${qualityResult.breakdown.triggerPhrases}/20, topics=${qualityResult.breakdown.keyTopics}/15, fileDesc=${qualityResult.breakdown.fileDescriptions}/20, length=${qualityResult.breakdown.contentLength}/15, html=${qualityResult.breakdown.noLeakedTags}/15, dedup=${qualityResult.breakdown.observationDedup}/15`);
 
+  // Step 8.7: Quality gate — abort save if quality is too low
+  const QUALITY_ABORT_THRESHOLD = 15;
+  if (qualityResult.score < QUALITY_ABORT_THRESHOLD && !isSimulation) {
+    const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
+      `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
+      `To force save, pass data via JSON file instead of stateless mode.`;
+    warn(abortMsg);
+    throw new Error(abortMsg);
+  }
+
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
@@ -859,10 +904,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ];
       savePFD(existing, specFolderAbsolute);
     }
-  } catch (_error: unknown) {
-    if (_error instanceof Error) {
-      void _error.message;
-    } /* Non-fatal — description tracking is best-effort */ }
+  } catch { /* Non-fatal — description tracking is best-effort */ }
   log();
 
   // Step 9.5: State embedded in memory file
@@ -890,7 +932,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   try {
     if (qualityValidation.valid) {
       memoryId = await indexMemory(contextDir, ctxFilename, files[ctxFilename], specFolderName, collectedData, preExtractedTriggers);
-      if (memoryId) {
+      if (memoryId !== null) {
         log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
         await updateMetadataWithEmbedding(contextDir, memoryId);
         log('   Updated metadata.json with embedding info');

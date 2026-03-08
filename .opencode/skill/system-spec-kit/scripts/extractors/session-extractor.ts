@@ -4,6 +4,7 @@
 // Extracts session metadata — ID, title, duration, key topics, and learning delta
 
 // Node stdlib
+import * as crypto from 'crypto';
 import { execSync } from 'child_process';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -119,11 +120,11 @@ export interface ProjectStateParams {
    2. SESSION ID & CHANNEL
 ------------------------------------------------------------------*/
 
-// NOTE: Similar to lib/simulation-factory.ts:generateSessionId but differs in randomness source.
-// This version uses Math.random() (pseudorandom); simulation-factory uses crypto.randomBytes (CSPRNG).
-// Same output format: session-{timestamp}-{9-char-random}
+// Uses crypto.randomBytes (CSPRNG) for session ID generation.
+// Output format: session-{timestamp}-{9-char-random}
 function generateSessionId(): string {
-  return `session-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+  const randomPart = crypto.randomBytes(7).toString('base64url').substring(0, 9);
+  return `session-${Date.now()}-${randomPart}`;
 }
 
 function getChannel(): string {
@@ -134,10 +135,7 @@ function getChannel(): string {
     return branch === 'HEAD'
       ? `detached:${execSync('git rev-parse --short HEAD', { encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'] }).trim()}`
       : branch;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return 'default';
-    }
+  } catch {
     return 'default';
   }
 }
@@ -178,7 +176,7 @@ function detectProjectPhase(
   messageCount: number
 ): string {
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
-  if (total === 0 && messageCount < 3) return 'RESEARCH';
+  if (total === 0) return 'RESEARCH';
 
   const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0);
   const writeTools = (toolCounts.Write || 0) + (toolCounts.Edit || 0);
@@ -321,10 +319,7 @@ async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> 
     try {
       await fs.access(filePath);
       return true;
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return false;
-      }
+    } catch {
       return false;
     }
   };

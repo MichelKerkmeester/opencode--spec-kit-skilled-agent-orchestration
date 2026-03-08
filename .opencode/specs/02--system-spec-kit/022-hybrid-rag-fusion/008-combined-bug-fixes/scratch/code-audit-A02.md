@@ -243,4 +243,29 @@ SUGGESTED_FIX: Read `MAX(event_counter)` (or maintain a per-session monotonic co
 
 BUG: F09-B02  
 FILE: mcp_server/lib/cognitive/working-memory.ts:361-363  
-SEVERITY:
+SEVERITY: P2-MINOR  
+TYPE: ERROR_HANDLING  
+DESCRIPTION: Invalid extraction input is rejected with a silent `false` return and no diagnostic log, which obscures ingestion failures from tool-result extraction callers.  
+EVIDENCE:
+```ts
+if (!sessionId || !sourceTool || !sourceCallId || !extractionRuleId) {
+  return false;
+}
+```
+SUGGESTED_FIX: Emit a structured warning/error (including which required fields are missing) before returning `false`, or throw a typed validation error for upstream handling.
+
+README_COVERAGE:
+- mcp_server/lib/cognitive/working-memory.ts: LISTED in mcp_server/lib/cognitive/README.md
+- mcp_server/lib/storage/checkpoints.ts: LISTED in mcp_server/lib/storage/README.md
+- mcp_server/tests/working-memory.vitest.ts: LISTED in mcp_server/tests/README.md
+- mcp_server/tests/working-memory-event-decay.vitest.ts: LISTED in mcp_server/tests/README.md
+- mcp_server/tests/checkpoint-working-memory.vitest.ts: LISTED in mcp_server/tests/README.md
+---
+
+
+Total usage est:        1 Premium request
+API time spent:         2m 41s
+Total session time:     2m 54s
+Total code changes:     +0 -0
+Breakdown by AI model:
+ gpt-5.3-codex           440.7k in, 9.4k out, 255.7k cached (Est. 1 Premium request)

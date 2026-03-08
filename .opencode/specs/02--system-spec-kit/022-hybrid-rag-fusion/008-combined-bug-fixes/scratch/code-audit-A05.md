@@ -172,3 +172,260 @@ Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/tool-input-schema.ts
 ● Read .opencode/skill/system-spec-kit/mcp_server/utils/tool-input-schema.ts lines 1-220
   └ 219 lines read
 
+● Read .opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts lines 286-320
+  └ 35 lines read
+
+● Grep "interface CategorizedFiles|categorizeFilesForIndexing|toSkip|skipped_hash|hash"
+(/Users/michelkerkmeester/MEGA/Development/Opencode
+Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts)
+  └ 9 lines found
+
+● Read .opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts lines 200-280
+  └ 81 lines read
+
+● Grep "function shouldReindex|case 'skip'|content_hash|mtime"
+(/Users/michelkerkmeester/MEGA/Development/Opencode
+Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts)
+  └ 19 lines found
+
+● Read .opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts lines 140-185
+  └ 45 lines read
+
+● Extract coverage details per feature
+  $ python3 - <<'PY'
+  import json,re
+  from pathlib import Path
+  raw=Path('/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1772995355611-4
+  6y4rr.txt').read_text()...
+  └ 100 lines...
+
+● Todo completed: audit-source-files, check-readme-coverage, compile-report
+
+---
+FEATURE: 01-memory-browser-memorylist.md  
+SOURCE_FILES_AUDITED: 238  
+BUGS_FOUND: 2
+
+BUG: F1-B1  
+FILE: mcp_server/handlers/memory-crud-stats.ts:151-155,216  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: `totalSpecFolders` is undercounted for `recency`/`importance`/`composite` because scoring is called with `limit: safeLimit`, then `totalSpecFolders = scoredFolders.length`; this returns only the limited page size, not total eligible folders.  
+EVIDENCE:
+```ts
+const scoringOptions = {
+  includeArchived,
+  excludePatterns,
+  limit: safeLimit,
+};
+// ...
+totalSpecFolders = scoredFolders.length;
+```
+SUGGESTED_FIX: Compute unbounded scores first (no limit), set `totalSpecFolders` from full set, then apply `slice(0, safeLimit)` only to `topFolders`.
+
+BUG: F1-B2  
+FILE: mcp_server/handlers/memory-index.ts:319-323 and mcp_server/lib/storage/incremental-index.ts:163-173  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: `skipped_hash` is always reported as `0`, and incremental decisioning has no content-hash skip path (mtime/status only), so “skipped-by-hash” telemetry is inaccurate/misleading.  
+EVIDENCE:
+```ts
+results.skipped_mtime = categorized.toSkip.length;
+results.skipped_hash = 0;
+```
+```ts
+// Path 4: Mtime unchanged ... return 'skip'
+// Path 5: Mtime changed ... return 'modified'
+```
+SUGGESTED_FIX: Either (a) add actual hash-based skip classification in incremental logic and populate `skipped_hash`, or (b) remove/rename `skipped_hash` field to avoid false metrics.
+
+README_COVERAGE:
+- mcp_server/hooks/memory-surface.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/hooks/mutation-feedback.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/tests/chunk-thinning.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/content-normalizer.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/encoding-intent.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-extractor.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-linker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/folder-discovery-integration.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/hybrid-search-context-headers.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/local-reranker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-save-ux-regressions.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-summaries.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/mpab-aggregation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/n3lite-consolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/reconsolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/retrieval-directives.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/save-quality-gate.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/spec-folder-hierarchy.vitest.ts: MISSING in mcp_server/tests/README.md
+- all other source files in this feature: LISTED
+
+---
+FEATURE: 02-system-statistics-memorystats.md  
+SOURCE_FILES_AUDITED: 238  
+BUGS_FOUND: 2
+
+BUG: F2-B1  
+FILE: mcp_server/handlers/memory-crud-stats.ts:151-155,216  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Same undercount issue: `totalSpecFolders` reflects limited results, not true eligible folder count, for non-`count` ranking modes.  
+EVIDENCE:
+```ts
+const scoringOptions = { includeArchived, excludePatterns, limit: safeLimit };
+totalSpecFolders = scoredFolders.length;
+```
+SUGGESTED_FIX: Separate total-count computation from pagination/limit application.
+
+BUG: F2-B2  
+FILE: mcp_server/handlers/memory-index.ts:319-323 and mcp_server/lib/storage/incremental-index.ts:163-173  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: “skipped-by-hash” metric is hardcoded to zero and unsupported by decision logic.  
+EVIDENCE:
+```ts
+results.skipped_hash = 0;
+```
+SUGGESTED_FIX: Implement true hash-skip classification or remove the metric.
+
+README_COVERAGE:
+- mcp_server/hooks/memory-surface.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/hooks/mutation-feedback.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/tests/chunk-thinning.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/content-normalizer.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/encoding-intent.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-extractor.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-linker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/folder-discovery-integration.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/hybrid-search-context-headers.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/local-reranker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-save-ux-regressions.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-summaries.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/mpab-aggregation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/n3lite-consolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/reconsolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/retrieval-directives.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/save-quality-gate.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/spec-folder-hierarchy.vitest.ts: MISSING in mcp_server/tests/README.md
+- all other source files in this feature: LISTED
+
+---
+FEATURE: 03-health-diagnostics-memoryhealth.md  
+SOURCE_FILES_AUDITED: 238  
+BUGS_FOUND: 2
+
+BUG: F3-B1  
+FILE: mcp_server/handlers/memory-crud-stats.ts:151-155,216  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Non-`count` rankings under-report `totalSpecFolders` due to applying `limit` before total calculation.  
+EVIDENCE:
+```ts
+const scoringOptions = { ..., limit: safeLimit };
+totalSpecFolders = scoredFolders.length;
+```
+SUGGESTED_FIX: Use full scored set for `totalSpecFolders`; apply limit only to output list.
+
+BUG: F3-B2  
+FILE: mcp_server/handlers/memory-index.ts:319-323 and mcp_server/lib/storage/incremental-index.ts:163-173  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: Hash-skip metric is never populated from real logic and is always `0`.  
+EVIDENCE:
+```ts
+results.skipped_hash = 0;
+```
+SUGGESTED_FIX: Add hash-based skip decisions or deprecate the field.
+
+README_COVERAGE:
+- mcp_server/hooks/memory-surface.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/hooks/mutation-feedback.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/tests/chunk-thinning.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/content-normalizer.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/encoding-intent.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-extractor.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-linker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/folder-discovery-integration.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/hybrid-search-context-headers.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/local-reranker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-save-ux-regressions.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-summaries.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/mpab-aggregation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/n3lite-consolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/reconsolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/retrieval-directives.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/save-quality-gate.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/spec-folder-hierarchy.vitest.ts: MISSING in mcp_server/tests/README.md
+- all other source files in this feature: LISTED
+
+---
+FEATURE: 01-workspace-scanning-and-indexing-memoryindexscan.md  
+SOURCE_FILES_AUDITED: 181  
+BUGS_FOUND: 1
+
+BUG: F4-B1  
+FILE: mcp_server/handlers/memory-index.ts:319-323 and mcp_server/lib/storage/incremental-index.ts:163-173  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: `skipped_hash` is always `0` and not backed by incremental classification logic, causing inaccurate scan telemetry.  
+EVIDENCE:
+```ts
+results.skipped_mtime = categorized.toSkip.length;
+results.skipped_hash = 0;
+```
+```ts
+if (Math.abs(fileInfo.mtime - stored.file_mtime_ms) < MTIME_FAST_PATH_MS) return 'skip';
+return 'modified';
+```
+SUGGESTED_FIX: Track skip reason split (mtime vs hash) in incremental-index and populate both counters correctly.
+
+README_COVERAGE:
+- mcp_server/hooks/memory-surface.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/hooks/mutation-feedback.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/tests/chunk-thinning.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/content-normalizer.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/encoding-intent.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-extractor.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/entity-linker.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-save-ux-regressions.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/memory-summaries.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/n3lite-consolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/reconsolidation.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/retrieval-directives.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/save-quality-gate.vitest.ts: MISSING in mcp_server/tests/README.md
+- mcp_server/tests/spec-folder-hierarchy.vitest.ts: MISSING in mcp_server/tests/README.md
+- all other source files in this feature: LISTED
+
+---
+FEATURE: 02-startup-runtime-compatibility-guards.md  
+SOURCE_FILES_AUDITED: 5  
+BUGS_FOUND: 1
+
+BUG: F5-B1  
+FILE: mcp_server/cli.ts:392-395  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: Reindex CLI prints `Skipped` and `Errors` from non-existent fields (`d.skipped`, `d.errors`), while scan response uses `unchanged` and `failed`; output is silently wrong (often `0`).  
+EVIDENCE:
+```ts
+console.log(`    Skipped:   ${d.skipped ?? 0}`);
+console.log(`    Errors:    ${d.errors ?? 0}`);
+```
+(Producer response in memory_index_scan returns `unchanged` and `failed`.)
+SUGGESTED_FIX: Read `d.unchanged` and `d.failed` (or support both key sets for backward compatibility).
+
+README_COVERAGE:
+- mcp_server/startup-checks.ts: LISTED in mcp_server/README.md
+- mcp_server/context-server.ts: LISTED in mcp_server/README.md
+- mcp_server/cli.ts: LISTED in mcp_server/README.md
+- mcp_server/tests/context-server.vitest.ts: LISTED in mcp_server/tests/README.md
+- mcp_server/tests/modularization.vitest.ts: LISTED in mcp_server/tests/README.md
+---
+
+
+Total usage est:        1 Premium request
+API time spent:         4m 34s
+Total session time:     4m 56s
+Total code changes:     +0 -0
+Breakdown by AI model:
+ gpt-5.3-codex           1.9m in, 13.0k out, 1.8m cached (Est. 1 Premium request)

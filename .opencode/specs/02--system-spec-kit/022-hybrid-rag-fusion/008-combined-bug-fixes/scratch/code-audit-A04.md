@@ -205,4 +205,121 @@ DESCRIPTION: Database-unavailable branch reports success for an aborted update.
 EVIDENCE: same code path as F06-B01.  
 SUGGESTED_FIX: Surface as error (`MemoryError`/error envelope), not success.
 
-BUG: F07-B
+BUG: F07-B02  
+FILE: mcp_server/handlers/memory-crud-delete.ts:93-106  
+SEVERITY: P1-IMPORTANT  
+TYPE: ERROR_HANDLING  
+DESCRIPTION: Database-unavailable branch reports success for an aborted delete.  
+EVIDENCE: same code path as F06-B02.  
+SUGGESTED_FIX: Surface as error (`MemoryError`/error envelope), not success.
+
+README_COVERAGE:
+- mcp_server/hooks/memory-surface.ts: MISSING in mcp_server/hooks/README.md
+- mcp_server/hooks/mutation-feedback.ts: MISSING in mcp_server/hooks/README.md
+- All other 187 source files: LISTED in their directory README.md
+---
+
+---
+FEATURE: 08-prediction-error-save-arbitration.md  
+SOURCE_FILES_AUDITED: 4  
+BUGS_FOUND: 2
+
+BUG: F08-B01  
+FILE: mcp_server/handlers/save/pe-orchestration.ts:53 + mcp_server/lib/cognitive/prediction-error-gate.ts:268-281  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Conflict decisions can be logged twice to `memory_conflicts` (once in `evaluateMemory` and again in orchestration), causing duplicate telemetry rows.  
+EVIDENCE:  
+```ts
+// pe-orchestration.ts
+logPeDecision(peDecision, parsed.contentHash, parsed.specFolder);
+
+// prediction-error-gate.ts
+if (similarity >= THRESHOLD.LOW_MATCH && db) {
+  const record = formatConflictRecord(...);
+  logConflict(record);
+}
+```  
+SUGGESTED_FIX: Choose one logging point (gate OR orchestration) or add idempotency key/unique constraint.
+
+BUG: F08-B02  
+FILE: mcp_server/handlers/save/pe-orchestration.ts:70,100,112,145,152  
+SEVERITY: P2-MINOR  
+TYPE: LOGIC  
+DESCRIPTION: Similarity is normalized 0..1 but logged as percentage without multiplying by 100, producing misleading values (e.g., `1.0%` for 0.96).  
+EVIDENCE:  
+```ts
+console.error(`[PE-Gate] REINFORCE ... (${peDecision.similarity.toFixed(1)}%)`);
+```  
+SUGGESTED_FIX: Use `(peDecision.similarity * 100).toFixed(1)` in all percentage logs.
+
+README_COVERAGE:
+- mcp_server/handlers/pe-gating.ts: LISTED in mcp_server/handlers/README.md
+- mcp_server/handlers/save/pe-orchestration.ts: LISTED in mcp_server/handlers/save/README.md
+- mcp_server/lib/cognitive/prediction-error-gate.ts: LISTED in mcp_server/lib/cognitive/README.md
+- mcp_server/handlers/save/create-record.ts: LISTED in mcp_server/handlers/save/README.md
+---
+
+---
+FEATURE: 09-correction-tracking-with-undo.md  
+SOURCE_FILES_AUDITED: 1  
+BUGS_FOUND: 1
+
+BUG: F09-B01  
+FILE: mcp_server/lib/learning/corrections.ts:590-598  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Undo deletes all causal edges between two memories regardless of relation/source context; unrelated edges can be removed accidentally.  
+EVIDENCE:  
+```ts
+DELETE FROM causal_edges
+WHERE source_id = ? AND target_id = ?
+```  
+SUGGESTED_FIX: Store `causal_edges.id` (or exact relation/evidence fingerprint) when recording correction and delete only that specific edge on undo.
+
+README_COVERAGE:
+- mcp_server/lib/learning/corrections.ts: LISTED in mcp_server/lib/learning/README.md
+---
+
+---
+FEATURE: 10-per-memory-history-log.md  
+SOURCE_FILES_AUDITED: 5  
+BUGS_FOUND: 2
+
+BUG: F10-B01  
+FILE: mcp_server/lib/search/vector-index-mutations.ts:355 and 445  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Deleting a memory deletes all of its `memory_history` rows, which breaks “per-memory lifecycle audit trail” expectations.  
+EVIDENCE:  
+```ts
+database.prepare('DELETE FROM memory_history WHERE memory_id = ?').run(id);
+```  
+SUGGESTED_FIX: Keep history immutable; mark tombstones in history instead of purging rows on delete.
+
+BUG: F10-B02  
+FILE: mcp_server/lib/search/vector-index-schema.ts:1078  
+SEVERITY: P2-MINOR  
+TYPE: EDGE_CASE  
+DESCRIPTION: `memory_history.event` CHECK only allows `ADD/UPDATE/DELETE`, but feature semantics mention `created/updated/merged/archived/restored`; schema blocks richer event types.  
+EVIDENCE:  
+```ts
+event TEXT NOT NULL CHECK(event IN ('ADD', 'UPDATE', 'DELETE'))
+```  
+SUGGESTED_FIX: Expand enum (or normalize event taxonomy) to include required lifecycle events.
+
+README_COVERAGE:
+- mcp_server/lib/search/vector-index-schema.ts: LISTED in mcp_server/lib/search/README.md
+- mcp_server/handlers/session-learning.ts: LISTED in mcp_server/handlers/README.md
+- mcp_server/lib/storage/causal-edges.ts: LISTED in mcp_server/lib/storage/README.md
+- mcp_server/lib/search/vector-index-mutations.ts: LISTED in mcp_server/lib/search/README.md
+- scripts/memory/cleanup-orphaned-vectors.ts: LISTED in scripts/memory/README.md
+---
+
+
+Total usage est:        1 Premium request
+API time spent:         2m 43s
+Total session time:     2m 56s
+Total code changes:     +0 -0
+Breakdown by AI model:
+ gpt-5.3-codex           568.2k in, 9.5k out, 448.8k cached (Est. 1 Premium request)

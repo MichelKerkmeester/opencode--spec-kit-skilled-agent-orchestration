@@ -793,6 +793,7 @@ A: Yes. Major flags including `SPECKIT_ADAPTIVE_FUSION`, `SPECKIT_CAUSAL_BOOST` 
 | [references/workflows/rollback_runbook.md](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedure |
 | [../sk-code--opencode/SKILL.md](../sk-code--opencode/SKILL.md) | Mandatory standard for all code creation and updates |
 | [../sk-doc/SKILL.md](../sk-doc/SKILL.md) | Mandatory standard for all documentation creation and updates |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Boundary contract between scripts/ and mcp_server/ with import policy and enforcement |
 
 ### Directory Structure
 

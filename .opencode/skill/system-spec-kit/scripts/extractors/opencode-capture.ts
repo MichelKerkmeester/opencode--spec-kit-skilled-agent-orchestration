@@ -7,6 +7,7 @@ import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
+import { CONFIG } from '../core';
 
 /* -----------------------------------------------------------------
    1. INTERFACES
@@ -115,10 +116,7 @@ async function pathExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
     return true;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return false;
-    }
+  } catch {
     return false;
   }
 }
@@ -127,10 +125,7 @@ async function readJsonSafe<T = unknown>(filePath: string): Promise<T | null> {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) as T;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return null;
-    }
+  } catch {
     return null;
   }
 }
@@ -221,10 +216,7 @@ function getProjectId(directory: string): string | null {
         }
       }
     }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return null;
-    }
+  } catch {
     return null;
   }
 
@@ -261,10 +253,7 @@ async function getRecentSessions(projectId: string, limit: number = 10): Promise
 
     sessions.sort((a, b) => b.updated - a.updated);
     return sessions.slice(0, limit);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return [];
-    }
+  } catch {
     return [];
   }
 }
@@ -311,10 +300,7 @@ async function getSessionMessages(sessionId: string): Promise<MessageInfo[]> {
 
     messages.sort((a, b) => a.created - b.created);
     return messages;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return [];
-    }
+  } catch {
     return [];
   }
 }
@@ -350,10 +336,7 @@ async function getMessageParts(messageId: string): Promise<Record<string, unknow
       return aTime - bTime;
     });
     return parts;
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return [];
-    }
+  } catch {
     return [];
   }
 }
@@ -413,11 +396,12 @@ async function getToolExecutions(sessionId: string): Promise<ToolExecution[]> {
   return toolCalls;
 }
 
-function truncateOutput(output: string | undefined, maxLength: number = 500): string {
+function truncateOutput(output: string | undefined, maxLength?: number): string {
   if (!output || typeof output !== 'string') return '';
-  if (output.length <= maxLength) return output;
+  const limit = maxLength ?? CONFIG.TOOL_OUTPUT_MAX_LENGTH;
+  if (output.length <= limit) return output;
 
-  const half = Math.floor(maxLength / 2) - 10;
+  const half = Math.floor(limit / 2) - 10;
   return output.substring(0, half) + '\n... [truncated] ...\n' + output.substring(output.length - half);
 }
 
@@ -488,7 +472,7 @@ function buildExchanges(
     const prompt = prompts.find((p) => {
       if (!p.timestamp && !userMsg.created) return false;
       const promptTime = new Date(p.timestamp || '').getTime();
-      return Math.abs(promptTime - userMsg.created) < 5000;
+      return Math.abs(promptTime - userMsg.created) < CONFIG.TIMESTAMP_MATCH_TOLERANCE_MS;
     });
 
     const response = responses.find((r) => {
@@ -497,7 +481,7 @@ function buildExchanges(
     });
 
     const userInput: string | null = prompt?.input || (userMsg.summary as Record<string, string>)?.title || null;
-    const assistantResponse: string | null = response?.content?.substring(0, 500) || null;
+    const assistantResponse: string | null = response?.content?.substring(0, CONFIG.TOOL_OUTPUT_MAX_LENGTH) || null;
 
     if (!userInput && !assistantResponse) {
       continue;

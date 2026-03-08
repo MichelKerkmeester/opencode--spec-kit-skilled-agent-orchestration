@@ -382,6 +382,9 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 | P0 Items (Post-Review Remediation) | 2 | 2/2 | Allowlist expiry wiring and status update verified |
 | P1 Items (Post-Review Remediation) | 4 | 4/4 | ADR-006 addendum, task count, Phase 12 metadata, ADR-004 verb verified |
 | P2 Items (Post-Review Remediation) | 5 | 5/5 | Traceability backfill, CHK-201 count, ADR-002 verb, open questions, 2-agent review |
+| P0 Items (Phase 14 README Audit) | 3 | 3/3 | 14 READMEs created, file listings verified, 0 HVR-banned words |
+| P1 Items (Phase 14 README Audit) | 3 | 3/3 | 50+ existing READMEs verified, 26 misaligned fixed, 83/83 frontmatter confirmed |
+| P2 Items (Phase 14 README Audit) | 2 | 2/2 | Cross-references documented (cosmetic gaps noted), 25 audit reports written |
 
 <!-- ANCHOR:readme-audit -->
 ## README Documentation Audit (Phase 14)
@@ -417,4 +420,5 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 **Phase 13 Planning Added**: 2026-03-06
 **Phase 13 Closure Completed**: 2026-03-06
 **Post-Review Remediation Completed**: 2026-03-06
+**Phase 14 README Audit Completed**: 2026-03-08
 <!-- /ANCHOR:summary -->

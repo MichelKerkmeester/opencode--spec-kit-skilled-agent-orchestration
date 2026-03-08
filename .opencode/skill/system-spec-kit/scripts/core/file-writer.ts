@@ -35,10 +35,7 @@ async function checkForDuplicateContent(
   try {
     const dirEntries = await fs.readdir(contextDir);
     entries = dirEntries.filter(f => f.endsWith('.md') && f !== filename);
-  } catch (_error: unknown) {
-    if (_error instanceof Error) {
-      void _error.message;
-    }
+  } catch {
     return; // directory doesn't exist yet — no duplicates possible
   }
   for (const existing of entries) {
@@ -55,7 +52,7 @@ async function checkForDuplicateContent(
   }
 }
 
-/** Write files atomically. */
+/** Write files atomically with batch rollback on failure. */
 export async function writeFilesAtomically(
   contextDir: string,
   files: Record<string, string>
@@ -72,11 +69,9 @@ export async function writeFilesAtomically(
     try {
       await fs.access(filePath);
       console.warn(`   Warning: overwriting existing file ${filename}`);
-    } catch (_error: unknown) {
-      if (_error instanceof Error) {
-        void _error.message;
-      } /* Expected: file doesn't exist */ }
-    const tempPath = filePath + '.tmp';
+    } catch { /* Expected: file doesn't exist */ }
+    const tempSuffix = crypto.randomBytes(4).toString('hex');
+    const tempPath = `${filePath}.tmp.${tempSuffix}`;
     try {
       await fs.writeFile(tempPath, content, 'utf-8');
       const stat = await fs.stat(tempPath);
@@ -85,12 +80,13 @@ export async function writeFilesAtomically(
       written.push(filename);
       console.log(`   ${filename} (${content.split('\n').length} lines)`);
     } catch (e: unknown) {
-      try { await fs.unlink(tempPath); } catch (_e: unknown) {
-        if (_e instanceof Error) {
-          void _e.message;
-        } /* temp file cleanup — failure is non-critical */ }
+      try { await fs.unlink(tempPath); } catch { /* temp file cleanup — failure is non-critical */ }
+      // Rollback already-written files from this batch
+      for (const prev of written) {
+        try { await fs.unlink(path.join(contextDir, prev)); } catch { /* best-effort rollback */ }
+      }
       const errMsg = e instanceof Error ? e.message : String(e);
-      throw new Error(`Write failed ${filename}: ${errMsg}`);
+      throw new Error(`Write failed ${filename} (rolled back ${written.length} prior files): ${errMsg}`);
     }
   }
   return written;

@@ -1,3 +1,13 @@
+---
+title: "Architecture Boundaries: system-spec-kit"
+description: "Canonical ownership contract between scripts/ and mcp_server/ defining allowed dependency directions, build boundaries, exception governance and enforcement tooling."
+trigger_phrases:
+  - "architecture boundaries"
+  - "boundary contract"
+  - "import policy"
+  - "dependency direction"
+---
+
 # Architecture Boundaries: system-spec-kit
 
 > Canonical ownership contract between `scripts/` and `mcp_server/` defining allowed dependency directions, build boundaries, exception governance and enforcement tooling.

@@ -211,12 +211,18 @@ dist/context-server.js     (compiled output, executed at runtime by node)
 
 | Directory     | Purpose                                                        |
 | ------------- | -------------------------------------------------------------- |
-| `handlers/`   | Handler modules for tool dispatch and infrastructure                    |
-| `lib/`        | Runtime libraries for cognitive, search, scoring, eval, storage, etc.  |
-| `tools/`      | Tool registration wrappers per category                                |
+| `api/`        | Stable cross-boundary consumption surface for scripts          |
+| `configs/`    | Runtime configuration files (cognitive, smart-ranking, search) |
 | `core/`       | Initialization, config, database state                                 |
+| `database/`   | SQLite storage files and profile-based DB instances            |
 | `formatters/` | Search result and token-metric formatting                              |
+| `handlers/`   | Handler modules for tool dispatch and infrastructure                    |
+| `hooks/`      | Lifecycle hooks (post-save, post-delete, indexing)             |
+| `lib/`        | Runtime libraries for cognitive, search, scoring, eval, storage, etc.  |
+| `schemas/`    | Zod input validation schemas for all 28 MCP tools              |
 | `scripts/`    | CLI utilities                                                          |
+| `tools/`      | Tool registration wrappers per category                                |
+| `utils/`      | Shared runtime utilities (token counting, input schemas)       |
 | `tests/`      | Source-owned Vitest suite                                              |
 | `dist/`       | Generated JavaScript output that Node executes at runtime              |
 

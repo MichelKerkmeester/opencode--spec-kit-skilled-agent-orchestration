@@ -267,8 +267,10 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
       typeof postflight.knowledgeScore === 'number') {
 
     const deltaKnow = postflight.knowledgeScore - preflight.knowledgeScore;
-    const deltaUncert = (preflight.uncertaintyScore ?? 0) - (postflight.uncertaintyScore ?? 0);
-    const deltaContext = (postflight.contextScore ?? 0) - (preflight.contextScore ?? 0);
+    const hasUncert = typeof preflight.uncertaintyScore === 'number' && typeof postflight.uncertaintyScore === 'number';
+    const hasContext = typeof preflight.contextScore === 'number' && typeof postflight.contextScore === 'number';
+    const deltaUncert = hasUncert ? preflight.uncertaintyScore! - postflight.uncertaintyScore! : 0;
+    const deltaContext = hasContext ? postflight.contextScore! - preflight.contextScore! : 0;
 
     const learningIndex = calculateLearningIndex(deltaKnow, deltaUncert, deltaContext);
 

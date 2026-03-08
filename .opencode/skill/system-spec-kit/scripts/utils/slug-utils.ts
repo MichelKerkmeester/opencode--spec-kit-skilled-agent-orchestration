@@ -29,6 +29,9 @@ const CONTAMINATED_NAME_PATTERNS = [
   /template configuration comments/i,
   /session context documentation/i,
   /always surfaced/i,
+  /^Tool:\s+\w+$/i,
+  /^Executed\s+\w+$/i,
+  /^User initiated conversation$/i,
 ];
 
 function toUnicodeSafeSlug(text: string): string {

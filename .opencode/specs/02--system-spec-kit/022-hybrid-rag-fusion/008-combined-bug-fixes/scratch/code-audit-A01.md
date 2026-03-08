@@ -198,3 +198,251 @@ Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
   features=[...
   └ 18 lines...
 
+● Check README coverage per feature for missing files
+  $ python3 - <<'PY'
+  import re, pathlib
+  root=pathlib.Path('/Users/michelkerkmeester/MEGA/Development/Opencode
+  Env/Public/.opencode/skill/system-spec-kit')
+  features=[...
+  └ 28 lines...
+
+● Read .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts lines 221-236
+  └ 16 lines read
+
+● Read .opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts lines 149-160
+  └ 12 lines read
+
+● Read .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts lines
+  252-264
+  └ 13 lines read
+
+● Read .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts lines 543-552
+  └ 10 lines read
+
+● Read .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts lines 910-917
+  └ 8 lines read
+
+● Todo completed: audit-source-files, check-readme-coverage, produce-report
+
+---
+FEATURE: 01-unified-context-retrieval-memorycontext.md  
+SOURCE_FILES_AUDITED: 123  
+BUGS_FOUND: 5
+
+BUG: RTR-001  
+FILE: mcp_server/handlers/memory-context.ts:226-236  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Token budget fallback path reports enforcement but does not actually truncate when inner JSON parsing fails, so over-budget payloads can still be returned.  
+EVIDENCE:  
+```ts
+// fallback ... couldn't parse
+return {
+  result: truncatedResult,
+  enforcement: {
+    budgetTokens,
+    actualTokens,
+    enforced: true,
+    truncated: false,
+  }
+};
+```  
+SUGGESTED_FIX: In fallback branch, perform real truncation (e.g., trim content text by token budget) or set `enforced:false` and surface explicit failure metadata.
+
+BUG: RTR-002  
+FILE: mcp_server/handlers/memory-triggers.ts:157-159  
+SEVERITY: P2-MINOR  
+TYPE: ERROR_HANDLING  
+DESCRIPTION: File-read/validation errors while loading HOT/WARM tier content are silently swallowed and converted to empty content, hiding operational and path issues.  
+EVIDENCE:  
+```ts
+} catch (_error: unknown) {
+  return '';
+}
+```  
+SUGGESTED_FIX: Log structured warning (memoryId/filePath/tier) and return explicit error marker or metadata instead of silent empty string.
+
+BUG: RTR-003  
+FILE: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:252-263  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Deep-mode multi-variant merge deduplicates by first occurrence, not best score, so higher-scoring duplicates from later variants can be discarded.  
+EVIDENCE:  
+```ts
+for (const variantResults of variantResultSets) {
+  for (const row of variantResults) {
+    if (!seenIds.has(row.id)) {
+      seenIds.add(row.id);
+      merged.push(row);
+    }
+  }
+}
+```  
+SUGGESTED_FIX: Deduplicate by id using max effective score (or merge strategy preserving strongest row), then sort.
+
+BUG: RTR-004  
+FILE: mcp_server/lib/search/pipeline/stage2-fusion.ts:547-551  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Co-activation score boost is unbounded; resulting `score` can exceed expected [0,1] range and destabilize downstream score consumers/threshold logic.  
+EVIDENCE:  
+```ts
+score: baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor,
+```  
+SUGGESTED_FIX: Clamp score after boost (`Math.max(0, Math.min(1, ...))`) and apply consistently across all score mutations.
+
+BUG: RTR-005  
+FILE: mcp_server/lib/search/hybrid-search.ts:914-916  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Hybrid co-activation boost also writes unbounded scores, creating out-of-range values and inconsistent ranking behavior vs clamped score resolvers.  
+EVIDENCE:  
+```ts
+(result as Record<string, unknown>).score =
+  ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor;
+```  
+SUGGESTED_FIX: Clamp boosted score to [0,1] before assignment and keep score normalization invariant across stages.
+
+README_COVERAGE:
+- all 123 source files: LISTED in their respective directory README.md files (no missing entries detected)
+---
+
+---
+FEATURE: 02-semantic-and-lexical-search-memorysearch.md  
+SOURCE_FILES_AUDITED: 111  
+BUGS_FOUND: 3
+
+BUG: RTR-003  
+FILE: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:252-263  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: Deep-mode variant merge keeps first hit per id instead of highest-scoring hit.  
+EVIDENCE:
+```ts
+if (!seenIds.has(row.id)) {
+  seenIds.add(row.id);
+  merged.push(row);
+}
+```  
+SUGGESTED_FIX: Merge by id with best score winner, then re-sort.
+
+BUG: RTR-004  
+FILE: mcp_server/lib/search/pipeline/stage2-fusion.ts:547-551  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Co-activation boost can produce scores above 1.0.  
+EVIDENCE:
+```ts
+score: baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor
+```  
+SUGGESTED_FIX: Clamp to [0,1] after boost.
+
+BUG: RTR-005  
+FILE: mcp_server/lib/search/hybrid-search.ts:914-916  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Hybrid path applies unbounded additive boost to score.  
+EVIDENCE:
+```ts
+score = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor
+```  
+SUGGESTED_FIX: Clamp and normalize immediately after mutation.
+
+README_COVERAGE:
+- all 111 source files: LISTED in their respective directory README.md files (no missing entries detected)
+---
+
+---
+FEATURE: 03-trigger-phrase-matching-memorymatchtriggers.md  
+SOURCE_FILES_AUDITED: 70  
+BUGS_FOUND: 1
+
+BUG: RTR-002  
+FILE: mcp_server/handlers/memory-triggers.ts:157-159  
+SEVERITY: P2-MINOR  
+TYPE: ERROR_HANDLING  
+DESCRIPTION: Tiered content retrieval failures are swallowed and hidden as empty strings.  
+EVIDENCE:
+```ts
+} catch (_error: unknown) {
+  return '';
+}
+```  
+SUGGESTED_FIX: Emit warning + attach retrieval failure metadata per result.
+
+README_COVERAGE:
+- all 70 source files: LISTED in their respective directory README.md files (no missing entries detected)
+---
+
+---
+FEATURE: 04-hybrid-search-pipeline.md  
+SOURCE_FILES_AUDITED: 63  
+BUGS_FOUND: 1
+
+BUG: RTR-005  
+FILE: mcp_server/lib/search/hybrid-search.ts:914-916  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Co-activation boost may drive scores beyond expected normalized bounds.  
+EVIDENCE:
+```ts
+score = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor
+```  
+SUGGESTED_FIX: Clamp boosted score to [0,1] before ranking/sorting.
+
+README_COVERAGE:
+- all 63 source files: LISTED in their respective directory README.md files (no missing entries detected)
+---
+
+---
+FEATURE: 05-4-stage-pipeline-architecture.md  
+SOURCE_FILES_AUDITED: 89  
+BUGS_FOUND: 3
+
+BUG: RTR-003  
+FILE: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:252-263  
+SEVERITY: P1-IMPORTANT  
+TYPE: LOGIC  
+DESCRIPTION: First-occurrence dedup in deep query variant merge can discard stronger duplicate rows.  
+EVIDENCE:
+```ts
+if (!seenIds.has(row.id)) {
+  seenIds.add(row.id);
+  merged.push(row);
+}
+```  
+SUGGESTED_FIX: Resolve duplicates by max score/effective score.
+
+BUG: RTR-004  
+FILE: mcp_server/lib/search/pipeline/stage2-fusion.ts:547-551  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Unbounded additive score mutation in Stage 2 co-activation.  
+EVIDENCE:
+```ts
+score: baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor
+```  
+SUGGESTED_FIX: Clamp score after additive boost.
+
+BUG: RTR-005  
+FILE: mcp_server/lib/search/hybrid-search.ts:914-916  
+SEVERITY: P1-IMPORTANT  
+TYPE: EDGE_CASE  
+DESCRIPTION: Unbounded additive score mutation in hybrid co-activation branch.  
+EVIDENCE:
+```ts
+score = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor
+```  
+SUGGESTED_FIX: Clamp and normalize score immediately after update.
+
+README_COVERAGE:
+- all 89 source files: LISTED in their respective directory README.md files (no missing entries detected)
+---
+
+
+Total usage est:        1 Premium request
+API time spent:         3m 44s
+Total session time:     4m 5s
+Total code changes:     +0 -0
+Breakdown by AI model:
+ gpt-5.3-codex           1.8m in, 11.4k out, 1.2m cached (Est. 1 Premium request)
