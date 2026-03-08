@@ -64,7 +64,14 @@ export async function writeFilesAtomically(
     await checkForDuplicateContent(contextDir, content, filename);
     const warnings = validateAnchors(content);
     if (warnings.length) console.warn(`   Warning: ${filename}: ${warnings.join(', ')}`);
+    // Reject filenames that could escape contextDir
+    if (path.isAbsolute(filename) || filename.includes('..')) {
+      throw new Error(`Invalid filename "${filename}": must be a relative path without traversal`);
+    }
     const filePath = path.join(contextDir, filename);
+    if (!path.resolve(filePath).startsWith(path.resolve(contextDir) + path.sep)) {
+      throw new Error(`Filename "${filename}" resolves outside target directory`);
+    }
     // Backup existing file before overwrite
     let existedBefore = false;
     let backupPath: string | undefined;

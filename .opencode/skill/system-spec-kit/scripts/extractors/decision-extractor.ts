@@ -26,7 +26,7 @@ export interface CollectedDataForDecisions {
   observations?: Array<{
     type?: string;
     narrative?: string;
-    facts?: string[];
+    facts?: Array<string | { text?: string }>;
     title?: string;
     timestamp?: string;
     files?: string[];
@@ -204,7 +204,8 @@ async function extractDecisions(
 
   const decisions: DecisionRecord[] = allDecisionObservations.map((obs, index) => {
     const narrative: string = obs.narrative || '';
-    const facts: string[] = obs.facts || [];
+    // Coerce facts: runtime data may contain objects with { text?: string } instead of plain strings
+    const facts: string[] = (obs.facts || []).map(f => typeof f === 'string' ? f : (f as { text?: string }).text || '');
 
     const optionMatches = facts.filter((f) => f.includes('Option') || f.includes('Alternative'));
     const OPTIONS: DecisionOption[] = optionMatches.map((opt, i) => {

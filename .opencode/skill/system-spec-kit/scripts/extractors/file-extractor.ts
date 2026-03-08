@@ -331,7 +331,8 @@ function deduplicateObservations(observations: ObservationInput[]): ObservationI
         );
       }
     } else {
-      const obsCopy = { ...obs };
+      // Deep copy nested arrays to prevent mutation of the original observations
+      const obsCopy = { ...obs, facts: obs.facts ? [...obs.facts] : undefined, files: obs.files ? [...obs.files] : undefined };
       mergeTracker.set(dedupKey, { obs: obsCopy, count: 1, index: result.length });
       result.push(obsCopy);
     }

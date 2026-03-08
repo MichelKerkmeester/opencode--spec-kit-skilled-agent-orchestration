@@ -719,9 +719,15 @@ async function collectSessionData(
 
   let SPEC_FILES: SpecFileEntry[] = [];
   const activeSpecsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
-  const specFolderPath: string | null = collectedData.SPEC_FOLDER
-    ? path.join(activeSpecsDir, collectedData.SPEC_FOLDER)
-    : null;
+  // Path traversal guard: reject SPEC_FOLDER values that escape the specs directory
+  let specFolderPath: string | null = null;
+  if (collectedData.SPEC_FOLDER) {
+    const candidate = path.resolve(activeSpecsDir, collectedData.SPEC_FOLDER);
+    const boundary = path.resolve(activeSpecsDir);
+    if (candidate === boundary || candidate.startsWith(boundary + path.sep)) {
+      specFolderPath = candidate;
+    }
+  }
 
   if (specFolderPath) {
     try {

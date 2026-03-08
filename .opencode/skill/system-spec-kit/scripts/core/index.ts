@@ -20,6 +20,10 @@ export type {
 } from './config';
 
 export {
+  writeFilesAtomically,
+} from './file-writer';
+
+export {
   SPEC_FOLDER_PATTERN,
   SPEC_FOLDER_BASIC_PATTERN,
   CATEGORY_FOLDER_PATTERN,
