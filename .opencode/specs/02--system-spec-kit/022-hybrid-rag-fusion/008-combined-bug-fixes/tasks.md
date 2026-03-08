@@ -276,7 +276,7 @@ Current verification truth snapshot (2026-03-07):
 - [x] T081: Absorb 009 ADR-001..003 decision substance into `decision-record.md` as inherited implemented history
 - [x] T082: Absorb 009 remediation execution digest and 010 handover continuity digest (including commit `40891251` and 230/7085 snapshot) into `implementation-summary.md`
 - [x] T083: Resolve D-12 contradiction in `spec.md` by excluding historical CR-P2-4 from active deferred inventory
-- [x] T084: Normalize canonical mapping references to 008 (`../011-feature-catalog/feature_catalog.md`, `../006-extra-features/spec.md`) and complete deletion safety check for 009/010
+- [x] T084: Normalize canonical mapping references to 008 (../011-feature-catalog/feature_catalog.md, `../006-extra-features/spec.md`) and complete deletion safety check for 009/010
 
 ---
 

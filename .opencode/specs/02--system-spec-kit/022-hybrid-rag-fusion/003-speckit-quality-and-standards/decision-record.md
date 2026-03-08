@@ -1,6 +1,6 @@
 ---
 title: "Consolidated decision-record: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/decision-record.md]"
-description: "Consolidated from 004-spec-kit-templates/decision-record.md and 008-spec-kit-code-quality/decision-record.md."
+description: "Consolidated from decision-record.md (merged from the former templates phase) and decision-record.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,17 +11,17 @@ contextType: "implementation"
 # Consolidated decision-record.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/decision-record.md`
-- `008-spec-kit-code-quality/decision-record.md`
+- `decision-record.md (merged from the former templates phase)`
+- `decision-record.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/decision-record.md`
+## Source: `decision-record.md (merged from the former templates phase)`
 
-_Not present in 007-spec-kit-templates._
+_Not present in historical templates phase._
 
-## Source: `008-spec-kit-code-quality/decision-record.md`
+## Source: `decision-record.md (merged from former phase 008)`
 
 ---
-title: "Decision Record: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/decision-record.md]"
+title: "Decision Record: Spec Kit Code Quality Completion Run [decision-record.md (merged from former phase 008)]"
 description: "Architecture and execution decisions for phase 008 quality hardening across system-spec-kit and mcp_server."
 trigger_phrases:
   - "decision record"
@@ -352,12 +352,12 @@ Documentation modernization is required, but scope is intentionally constrained 
 <!-- ANCHOR:adr-004-context -->
 ### Context
 
-Two sibling phase folders (`008-spec-kit-code-quality` and `009-spec-kit-code-quality`) held overlapping governance and verification artifacts for the same initiative under `139-hybrid-rag-fusion`. Continuing dual active folders risks drift in checklist gates, audit artifacts, and closure evidence.
+Two sibling phase folders (merged phase-008 content and retired phase-009 record) held overlapping governance and verification artifacts for the same initiative under `139-hybrid-rag-fusion`. Continuing dual active folders risks drift in checklist gates, audit artifacts, and closure evidence.
 
 ### Constraints
 
-- `008` remains the authoritative root documentation set.
-- `009` evidence must be preserved without deleting existing `009` files.
+- the canonical merged phase remains the authoritative root documentation set.
+- phase-009 evidence must be preserved without deleting existing phase-009 files.
 - Ongoing work must continue in one canonical phase folder.
 <!-- /ANCHOR:adr-004-context -->
 
@@ -366,9 +366,9 @@ Two sibling phase folders (`008-spec-kit-code-quality` and `009-spec-kit-code-qu
 <!-- ANCHOR:adr-004-decision -->
 ### Decision
 
-**We chose**: Merge phase `009-spec-kit-code-quality` into `008-spec-kit-code-quality`, keep `008` as the single active phase folder, import `002` evidence snapshots into `008/scratch/from-009-*`, and tombstone `009`.
+**We chose**: Merge phase retired phase-009 record into merged phase-008 content, keep the canonical merged phase as the single active phase folder, import `002` evidence snapshots into `merged phase-009 scratch imports (from-009-*)`, and tombstone the former phase-009 record.
 
-**How it works**: Governance deltas from `009` are merged into `008/checklist.md`, continuity notes are added in `008` root docs, and `009/TOMBSTONE.md` redirects all future execution to `008`.
+**How it works**: Governance deltas from the former phase-009 record are merged into `checklist.md (merged from former phase 008)`, continuity notes are added in the canonical merged phase root docs, and `former phase 009 tombstone note` redirects all future execution to the canonical merged phase.
 <!-- /ANCHOR:adr-004-decision -->
 
 ---
@@ -391,8 +391,8 @@ Two sibling phase folders (`008-spec-kit-code-quality` and `009-spec-kit-code-qu
 ### Consequences
 
 **What improves**:
-- `008` becomes the canonical execution and governance location.
-- `009` artifacts remain auditable via imported `from-009-*` snapshots and scratch evidence.
+- the canonical merged phase becomes the canonical execution and governance location.
+- the former phase-009 record artifacts remain auditable via imported `from-009-*` snapshots and scratch evidence.
 
 **What it costs**:
 - Additional documentation maintenance for merge continuity. Mitigation: keep updates minimal and explicit.
@@ -401,8 +401,8 @@ Two sibling phase folders (`008-spec-kit-code-quality` and `009-spec-kit-code-qu
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Missing critical `009` evidence during merge | Medium | Explicit imported-artifact list in `implementation-summary.md` |
-| Team continues using `009` accidentally | Medium | Tombstone file with exact destination path and instruction to continue in `008` |
+| Missing critical phase-009 evidence during merge | Medium | Explicit imported-artifact list in `implementation-summary.md` |
+| Team continues using the former phase-009 record accidentally | Medium | Tombstone file with exact destination path and instruction to continue in the canonical merged phase |
 <!-- /ANCHOR:adr-004-consequences -->
 
 ---
@@ -411,10 +411,10 @@ Two sibling phase folders (`008-spec-kit-code-quality` and `009-spec-kit-code-qu
 ### Implementation
 
 **What changes**:
-- Added merge governance sections to `008/checklist.md`.
-- Imported specified `009` root and scratch artifacts into `008/scratch/from-009-*`.
-- Added continuity notes in `008/tasks.md` and `008/implementation-summary.md`.
-- Added `009/TOMBSTONE.md`.
+- Added merge governance sections to `checklist.md (merged from former phase 008)`.
+- Imported specified the former phase-009 record root and scratch artifacts into `merged phase-009 scratch imports (from-009-*)`.
+- Added continuity notes in `tasks.md (merged from former phase 008)` and `implementation-summary.md (merged from former phase 008)`.
+- Added `former phase 009 tombstone note`.
 
 **How to roll back**: Remove merge-specific continuity sections and imported `from-009-*` artifacts, then restore previous dual-folder workflow explicitly.
 <!-- /ANCHOR:adr-004-impl -->

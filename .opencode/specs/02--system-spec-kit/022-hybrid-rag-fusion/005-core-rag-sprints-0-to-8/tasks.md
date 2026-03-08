@@ -16,21 +16,21 @@ contextType: "implementation"
 This file consolidates `tasks.md` from sprint folders 010 through 018.
 
 Source folders:
-- `006-measurement-foundation/tasks.md`
-- `011-graph-signal-activation/tasks.md`
-- `012-scoring-calibration/tasks.md`
-- `013-query-intelligence/tasks.md`
-- `014-feedback-and-quality/tasks.md`
-- `015-pipeline-refactor/tasks.md`
-- `016-indexing-and-graph/tasks.md`
-- `017-long-horizon/tasks.md`
-- `018-deferred-features/tasks.md`
+- 006-measurement-foundation/tasks.md
+- 011-graph-signal-activation/tasks.md
+- 012-scoring-calibration/tasks.md
+- 013-query-intelligence/tasks.md
+- 014-feedback-and-quality/tasks.md
+- 015-pipeline-refactor/tasks.md
+- 016-indexing-and-graph/tasks.md
+- 017-long-horizon/tasks.md
+- 018-deferred-features/tasks.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/tasks.md`
+Source: 006-measurement-foundation/tasks.md
 
 ---
 title: "Tasks: Sprint 0 — Measurement Foundation"
@@ -182,7 +182,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -214,7 +214,7 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -231,7 +231,7 @@ LEVEL 2 TASKS — Phase 1 of 8
 
 ## 011-graph-signal-activation
 
-Source: `011-graph-signal-activation/tasks.md`
+Source: 011-graph-signal-activation/tasks.md
 
 ---
 title: "Tasks: Sprint 1 — Graph Signal Activation"
@@ -385,7 +385,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -410,8 +410,8 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
-- **Predecessor Tasks**: See `../006-measurement-foundation/tasks.md`
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Predecessor Tasks**: See ../006-measurement-foundation/tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -432,7 +432,7 @@ LEVEL 2 TASKS — Phase 2 of 8
 
 ## 012-scoring-calibration
 
-Source: `012-scoring-calibration/tasks.md`
+Source: 012-scoring-calibration/tasks.md
 
 ---
 title: "Tasks: Sprint 2 — Scoring Calibration"
@@ -582,7 +582,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -608,8 +608,8 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
-- **Predecessor Tasks**: See `../006-measurement-foundation/tasks.md` (direct dependency — Sprint 1 is a parallel sibling)
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Predecessor Tasks**: See ../006-measurement-foundation/tasks.md (direct dependency — Sprint 1 is a parallel sibling)
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -630,7 +630,7 @@ LEVEL 2 TASKS — Phase 3 of 8
 
 ## 013-query-intelligence
 
-Source: `013-query-intelligence/tasks.md`
+Source: 013-query-intelligence/tasks.md
 
 ---
 title: "Tasks: Sprint 3 — Query Intelligence"
@@ -767,7 +767,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -792,8 +792,8 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -808,7 +808,7 @@ LEVEL 2 TASKS — Phase 4 of 8
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/tasks.md`
+Source: 014-feedback-and-quality/tasks.md
 
 ---
 title: "Tasks: Sprint 4 — Feedback and Quality"
@@ -968,7 +968,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -999,8 +999,8 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -1015,7 +1015,7 @@ LEVEL 2 TASKS — Phase 5 of 8
 
 ## 015-pipeline-refactor
 
-Source: `015-pipeline-refactor/tasks.md`
+Source: 015-pipeline-refactor/tasks.md
 
 ---
 title: "Tasks: Sprint 5 — Pipeline Refactor"
@@ -1135,7 +1135,7 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -1164,8 +1164,8 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -1180,7 +1180,7 @@ LEVEL 2 TASKS — Phase 6 of 8
 
 ## 016-indexing-and-graph
 
-Source: `016-indexing-and-graph/tasks.md`
+Source: 016-indexing-and-graph/tasks.md
 
 ---
 title: "Tasks: Sprint 6 — Indexing and Graph"
@@ -1362,7 +1362,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -1390,7 +1390,7 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -1408,7 +1408,7 @@ LEVEL 2 TASKS — Phase 7 of 8
 
 ## 017-long-horizon
 
-Source: `017-long-horizon/tasks.md`
+Source: 017-long-horizon/tasks.md
 
 ---
 title: "Tasks: Sprint 7 — Long Horizon"
@@ -1546,7 +1546,7 @@ contextType: "implementation"
 <!-- ANCHOR:task-id-mapping -->
 ## Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -1569,7 +1569,7 @@ Child tasks use local IDs; parent `../000-feature-overview/tasks.md` uses global
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---
@@ -1585,7 +1585,7 @@ LEVEL 2 TASKS — Phase 8 of 8 (FINAL)
 
 ## 018-deferred-features
 
-Source: `018-deferred-features/tasks.md`
+Source: 018-deferred-features/tasks.md
 
 ---
 title: "Tasks: Sprint 8 - Deferred Features"

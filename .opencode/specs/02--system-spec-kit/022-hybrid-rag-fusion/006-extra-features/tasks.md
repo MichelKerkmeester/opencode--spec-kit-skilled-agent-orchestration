@@ -334,7 +334,7 @@ contextType: "implementation"
 - [ ] T125 Create flag interaction matrix: verify no conflicting combinations (e.g., file watcher + manual index scan)
 
 **Catalog updates:**
-- [x] T126 Update `feature_catalog` with new features: Zod schemas, response envelopes, async ingestion, contextual trees, GGUF reranker, dynamic init, file watcher [DONE: all 7 features updated from IMPLEMENTATION CANDIDATE to IMPLEMENTED in `../011-feature-catalog/feature_catalog.md`; intro paragraph and feature flag table updated]
+- [x] T126 Update `feature_catalog` with new features: Zod schemas, response envelopes, async ingestion, contextual trees, GGUF reranker, dynamic init, file watcher [DONE: all 7 features updated from IMPLEMENTATION CANDIDATE to IMPLEMENTED in feature catalog document in folder 011-feature-catalog; intro paragraph and feature flag table updated]
 - [x] T127 Update the feature-catalog summary doc with Sprint 9 additions [DONE: all 7 features updated from PLANNED to IMPLEMENTED with expanded implementation details in the feature-catalog summary doc; 5 deferred features marked as DEFERRED; ToC and frontmatter updated]
 - [x] T128 Write `implementation-summary.md` after all phases complete [DONE: expanded from stub to full implementation summary with metadata, feature descriptions, file change table, feature flags, deferred items, and verification results]
 
@@ -352,7 +352,7 @@ contextType: "implementation"
 - [x] No `[B]` blocked tasks remaining (except Phase 4 intentional deferrals) [DONE: Phase 4 T099-T118 explicitly deferred on external dependencies]
 - [ ] `eval_run_ablation` shows zero regressions across all 3 phases (T119-T122)
 - [x] All 6 feature flags documented (T124) [DONE: all flags documented across the environment_variables reference and code-level gating]
-- [x] `feature_catalog` updated (T126) [DONE: 7 features updated to IMPLEMENTED in `../011-feature-catalog/feature_catalog.md`, 5 marked DEFERRED]
+- [x] `feature_catalog` updated (T126) [DONE: 7 features updated to IMPLEMENTED in feature catalog document in folder 011-feature-catalog, 5 marked DEFERRED]
 - [ ] Manual verification of each new tool passed
 - [x] `implementation-summary.md` written (T128) [DONE: expanded with full implementation details, file changes, feature flags, verification results]
 <!-- /ANCHOR:completion -->

@@ -394,7 +394,7 @@ I have gone ahead and deleted the older duplicates to clean up your workspace. Y
 
 I have successfully adopted the `@speckit` persona and generated the complete Level 3+ documentation suite for the Unified Context Engine upgrade. 
 
-Because this is a highly complex architectural upgrade (Level 3+), I have rigorously enforced the Spec Kit documentation standards, including mandatory `<!-- ANCHOR: [type]-[slug]-[id] -->` tags for 93% token-efficient retrieval later on.
+Because this is a highly complex architectural upgrade (Level 3+), I have rigorously enforced the Spec Kit documentation standards, including mandatory `&lt;!-- ANCHOR:type-slug-id --&gt;` tags for 93% token-efficient retrieval later on.
 
 The following files have been created inside `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.op
 

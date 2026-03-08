@@ -62,6 +62,7 @@ cd .opencode/skill/system-spec-kit/scripts && npm run build
 - `workflow.ts` composes loaders, extractors, renderers, and lib utilities.
 - `subfolder-utils.ts` supports subfolder-aware operations used by memory save flows.
 - `file-writer.ts` and `memory-indexer.ts` keep generated context output consistent with indexing expectations.
+- `workflow.ts` updates per-folder `description.json` after each memory save (increments `memorySequence`, appends to `memoryNameHistory`). This tracking is best-effort — failures are non-fatal.
 
 
 <!-- /ANCHOR:workflow-notes -->

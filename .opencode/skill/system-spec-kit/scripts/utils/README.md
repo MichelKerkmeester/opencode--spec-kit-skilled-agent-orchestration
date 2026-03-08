@@ -39,7 +39,7 @@ The utilities folder contains reusable TypeScript modules (compiled to JavaScrip
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Utility Modules | 10 | Core functionality for all scripts |
+| Utility Modules | 12 | Core functionality for all scripts |
 | Primary Functions | 40+ | Validation, sanitization, normalization, logging |
 | Security Standards | CWE-22, Path Traversal | Enforced in path-utils.ts |
 
@@ -134,6 +134,8 @@ utils/
 ├── message-utils.ts           # User-facing message formatting
 ├── path-utils.ts              # Path sanitization and security (CWE-22)
 ├── prompt-utils.ts            # Prompt generation and formatting
+├── slug-utils.ts                 # Content-aware slug generation and memory filename uniqueness
+├── task-enrichment.ts            # Task title enrichment from spec titles and memory context
 ├── tool-detection.ts          # MCP tool capability detection
 ├── validation-utils.ts        # Path-scoped validation and checklist verification
 └── README.md                  # This file
@@ -148,6 +150,8 @@ dist/utils/                    # TypeScript compilation output
 ├── message-utils.js
 ├── path-utils.js
 ├── prompt-utils.js
+├── slug-utils.js
+├── task-enrichment.js
 ├── tool-detection.js
 ├── validation-utils.js
 └── *.d.ts, *.js.map           # Type definitions and source maps
@@ -166,6 +170,8 @@ dist/utils/                    # TypeScript compilation output
 | `path-utils.ts` | Sanitizes file paths to prevent directory traversal (CWE-22). Validates against allowed base directories |
 | `prompt-utils.ts` | Generates prompts for CLI interactions and user input collection |
 | `tool-detection.ts` | Detects available MCP tools and their capabilities for dynamic feature enablement |
+| `slug-utils.ts` | Content-aware slug generation for memory filenames. Provides `ensureUniqueMemoryFilename()` to prevent collisions via `-1`, `-2` suffix appending |
+| `task-enrichment.ts` | Task title enrichment from spec titles and memory context for higher-quality memory naming |
 | `validation-utils.ts` | Validates spec folders against path-scoped rules. Verifies checklist completeness |
 
 ---

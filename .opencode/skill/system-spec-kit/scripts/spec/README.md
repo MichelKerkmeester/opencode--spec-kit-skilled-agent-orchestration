@@ -97,4 +97,5 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh specs/<###
 - `create.sh` supports `--phase` to create a numbered phase child folder inside a parent spec (e.g., `001-phase-name/`).
 - `validate.sh` supports `--recursive` to validate a parent spec folder and all its phase children in one pass.
 - `validate.sh` supports emergency bypass via `SPECKIT_SKIP_VALIDATION=1`.
+- `create.sh` auto-generates `description.json` in each created folder (normal mode, phase parent, and phase children) via `generate-description.js`. Generation failures are non-fatal — a warning is printed and creation continues.
 <!-- /ANCHOR:notes -->

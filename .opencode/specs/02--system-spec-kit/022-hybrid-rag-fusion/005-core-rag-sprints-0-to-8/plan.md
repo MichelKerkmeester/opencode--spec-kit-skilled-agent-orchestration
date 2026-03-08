@@ -16,21 +16,21 @@ contextType: "implementation"
 This file consolidates `plan.md` from sprint folders 010 through 018.
 
 Source folders:
-- `006-measurement-foundation/plan.md`
-- `011-graph-signal-activation/plan.md`
-- `012-scoring-calibration/plan.md`
-- `013-query-intelligence/plan.md`
-- `014-feedback-and-quality/plan.md`
-- `015-pipeline-refactor/plan.md`
-- `016-indexing-and-graph/plan.md`
-- `017-long-horizon/plan.md`
-- `018-deferred-features/plan.md`
+- 006-measurement-foundation/plan.md
+- 011-graph-signal-activation/plan.md
+- 012-scoring-calibration/plan.md
+- 013-query-intelligence/plan.md
+- 014-feedback-and-quality/plan.md
+- 015-pipeline-refactor/plan.md
+- 016-indexing-and-graph/plan.md
+- 017-long-horizon/plan.md
+- 018-deferred-features/plan.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/plan.md`
+Source: 006-measurement-foundation/plan.md
 
 ---
 title: "Implementation Plan: Sprint 0 — Measurement Foundation"
@@ -259,7 +259,7 @@ Phase 2 (Eval Infrastructure) ──────────┤
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md
 
 ---
 
@@ -274,7 +274,7 @@ LEVEL 2 PLAN — Phase 1 of 8
 
 ## 011-graph-signal-activation
 
-Source: `011-graph-signal-activation/plan.md`
+Source: 011-graph-signal-activation/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 1 — Graph Signal Activation"
@@ -518,8 +518,8 @@ Phase 6 (PI-A3) ─── (independent, no blockers from Phase 5)
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
-- **Predecessor Plan**: See `../006-measurement-foundation/plan.md`
+- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Predecessor Plan**: See `../006-measurement-foundation/plan.md
 
 ---
 
@@ -534,7 +534,7 @@ LEVEL 2 PLAN — Phase 2 of 8
 
 ## 012-scoring-calibration
 
-Source: `012-scoring-calibration/plan.md`
+Source: 012-scoring-calibration/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 2 — Scoring Calibration"
@@ -801,8 +801,8 @@ Phase 6 (TM-03 Decay) ───────────────────�
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
-- **Predecessor Plan**: See `../006-measurement-foundation/plan.md` (direct dependency — Sprint 1 is a parallel sibling)
+- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Predecessor Plan**: See `../006-measurement-foundation/plan.md (direct dependency — Sprint 1 is a parallel sibling)
 
 ---
 
@@ -817,7 +817,7 @@ LEVEL 2 PLAN — Phase 3 of 8
 
 ## 013-query-intelligence
 
-Source: `013-query-intelligence/plan.md`
+Source: 013-query-intelligence/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 3 — Query Intelligence"
@@ -1022,7 +1022,7 @@ The 100+ queries required for RSF shadow comparison (CHK-030) must be sourced us
 Phase 1 (R15 Router) ──────┐
                             ├──► Phase 3 (R2 Min-Rep) ──► Phase 4 (Shadow + Verify)
 Phase 2 (R14/N1 RSF) ──────┘
-```
+`
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
@@ -1069,7 +1069,7 @@ Phase 2 (R14/N1 RSF) ──────┘
 - **Effort**: 12-16h | **Risk**: Medium | **Dependency**: Sprint 0 eval framework
 
 ### PI-B3: Description-Based Spec Folder Discovery (4-8h) [P2/Optional]
-- [ ] Generate 1-sentence description per spec folder from `spec.md` content
+- [ ] Generate 1-sentence description per spec folder from spec.md content
 - [ ] Write descriptions to `descriptions.json` cache file (path: project root or spec root)
 - [ ] Integrate cache lookup into `memory_context` orchestration layer for folder routing
 - [ ] Add cache invalidation / regeneration trigger when `spec.md` changes
@@ -1088,7 +1088,7 @@ Phase 2 (R14/N1 RSF) ──────┘
 - [ ] Eval infrastructure operational for shadow comparison
 
 ### Rollback Procedure
-1. Disable all 3 flags: `SPECKIT_COMPLEXITY_ROUTER`, `SPECKIT_RSF_FUSION`, `SPECKIT_CHANNEL_MIN_REP`
+1. Disable all 3 flags: `SPECKIT_COMPLEXITY_ROUTER`, `SPECKIT_RSF_FUSION`, SPECKIT_CHANNEL_MIN_REP
 2. Verify full 5-channel pipeline resumes for all queries
 3. Verify independent flag rollback (3-5h testing)
 4. Check eval metrics for regression confirmation
@@ -1114,7 +1114,7 @@ LEVEL 2 PLAN — Phase 4 of 8
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/plan.md`
+Source: 014-feedback-and-quality/plan.md
 
 ---
 title: "Implementation Plan: Sprint 4 — Feedback and Quality"
@@ -1377,7 +1377,7 @@ Phase 5 (TM-06 Reconsolidation) ─────┘
 <!-- ANCHOR:pageindex-phases -->
 ## PageIndex Tasks
 
-> **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion). See Sprint 5 spec `../015-pipeline-refactor/spec.md` for updated placement. Rationale: ultra-think review REC-07.
+> **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion). See Sprint 5 spec ../015-pipeline-refactor/spec.md for updated placement. Rationale: ultra-think review REC-07.
 <!-- /ANCHOR:pageindex-phases -->
 
 ---
@@ -1414,7 +1414,7 @@ If both R11 and TM-06 have been active and a regression is detected:
 1. **Disable both flags immediately**: `SPECKIT_LEARN_FROM_SELECTION=false`, `SPECKIT_RECONSOLIDATION=false`
 2. **Identify R11-touched memories**: Query `SELECT id FROM memory_index WHERE learned_triggers != '[]'` — these memories have R11 mutations
 3. **Identify TM-06-touched memories**: Query causal edges with `relation='supersedes'` created after TM-06 enable date; check frequency counter deltas against checkpoint baseline
-4. **Assess overlap**: If overlap exists (memory both R11-written and TM-06-merged), restore from `pre-sprint-4b` checkpoint — partial rollback is unsafe
+4. **Assess overlap**: If overlap exists (memory both R11-written and TM-06-merged), restore from `pre-sprint-4b checkpoint — partial rollback is unsafe
 5. **If no overlap**: Roll back independently per existing single-system procedures
 6. **Verify**: Run full test suite + R13 eval metrics against pre-S4b baseline
 
@@ -1433,7 +1433,7 @@ LEVEL 2 PLAN — Phase 5 of 8
 
 ## 015-pipeline-refactor
 
-Source: `015-pipeline-refactor/plan.md`
+Source: 015-pipeline-refactor/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 5 — Pipeline Refactor"
@@ -1677,7 +1677,7 @@ Phase A (R6 Pipeline) ──[0 ordering diff GATE]──► Phase B (R9, R12, S2
 
 ### Rollback Procedure
 1. Disable `SPECKIT_PIPELINE_V2` and `SPECKIT_EMBEDDING_EXPANSION` flags
-2. Restore from `pre-pipeline-refactor` checkpoint if needed
+2. Restore from `pre-pipeline-refactor checkpoint if needed
 3. Re-run full test suite to verify restoration
 4. Phase B items (R9, R12, S2, S3) revert independently — no checkpoint needed
 
@@ -1705,7 +1705,7 @@ LEVEL 2 PLAN — Phase 6 of 8
 
 ## 016-indexing-and-graph
 
-Source: `016-indexing-and-graph/plan.md`
+Source: 016-indexing-and-graph/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 6 — Indexing and Graph"
@@ -1994,7 +1994,7 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md
 
 ---
 
@@ -2019,7 +2019,7 @@ LEVEL 2 PLAN — Phase 7 of 8
 
 ## 017-long-horizon
 
-Source: `017-long-horizon/plan.md`
+Source: 017-long-horizon/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 7 — Long Horizon"
@@ -2309,7 +2309,7 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Plan**: See `../000-feature-overview/plan.md
 
 ---
 
@@ -2333,7 +2333,7 @@ LEVEL 2 PLAN — Phase 8 of 8 (FINAL)
 
 ## 018-deferred-features
 
-Source: `018-deferred-features/plan.md`
+Source: 018-deferred-features/plan.md`
 
 ---
 title: "Implementation Plan: Sprint 8 - Deferred Features"

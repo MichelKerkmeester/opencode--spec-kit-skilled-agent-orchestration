@@ -31,7 +31,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `02--system-spec-kit/022-hybrid-rag-fusion` |
+| **Spec Folder** | 001-hybrid-rag-fusion-epic |
 | **Level** | 3+ |
 | **Status** | In Progress (implementation extends through Phase 10; program closeout pending) |
 | **Latest Phase Covered** | Phase 10 (Comprehensive Remediation, Phase 2) |
@@ -491,10 +491,10 @@ The zero schema migration constraint (spec §3.1) was maintained throughout. All
 
 This folder now acts as the canonical active RAG track after parent-level consolidation. Two non-lifecycle outcome sets were merged into this folder:
 
-- Command-alignment outcomes: `supplemental/command-alignment-summary.md`
-- Non-skill-graph consolidation outcomes: `supplemental/non-skill-graph-consolidation-summary.md`
+- Command-alignment outcomes: supplemental/command-alignment-summary.md
+- Non-skill-graph consolidation outcomes: supplemental/non-skill-graph-consolidation-summary.md
 
-Index and mapping are maintained in `supplemental-index.md`.
+Index and mapping are maintained in supplemental-index.md.
 
 ---
 
@@ -562,7 +562,7 @@ Implementation delivery is closed for the broadened ten-subsystem hardening scop
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Delivery used the existing Level 3+ spec workflow and consolidated verification evidence from final quality artifacts. Closure evidence came from one final quality bundle (`scratch/final-quality-evidence-2026-02-22.md`) plus prior global sweep support artifacts (`scratch/w5-global-quality-evidence.md`, `scratch/w6-baseline-metrics-sweep.md`). These were encoded into closure docs and sign-off state dated `2026-02-22`.
+Delivery used the existing Level 3+ spec workflow and consolidated verification evidence from final quality artifacts. Closure evidence came from one final quality bundle (scratch/final-quality-evidence-2026-02-22.md) plus prior global sweep support artifacts (scratch/w5-global-quality-evidence.md, scratch/w6-baseline-metrics-sweep.md). These were encoded into closure docs and sign-off state dated `2026-02-22`.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -605,7 +605,7 @@ Delivery used the existing Level 3+ spec workflow and consolidated verification 
 5. Telemetry schema and doc drift validation: satisfied (`6/6` alignment tests pass).
 6. Self-healing drills: satisfied for all four required failure classes.
 7. Sign-off model: synchronized to approved statuses dated `2026-02-22`.
-8. Governance closure: satisfied via `global-quality-sweep.md` with closure gate marked SATISFIED.
+8. Governance closure: satisfied via global-quality-sweep.md with closure gate marked SATISFIED.
 
 ---
 
@@ -613,7 +613,7 @@ Delivery used the existing Level 3+ spec workflow and consolidated verification 
 ## Known Limitations
 
 1. A transient timing flake was observed once in `tests/envelope.vitest.ts` (`latencyMs >= 30` measured `29ms`), then cleared on immediate isolated rerun and subsequent full-suite rerun.
-2. `w6` notes partial benchmark script availability; unavailable metrics are explicitly documented in `scratch/w6-baseline-metrics-sweep.md` and treated as non-blocking for this closure package.
+2. `w6` notes partial benchmark script availability; unavailable metrics are explicitly documented in scratch/w6-baseline-metrics-sweep.md and treated as non-blocking for this closure package.
 3. Conditional standards update pathway remained `N/A` because no architecture mismatch was detected in final evidence.
 <!-- /ANCHOR:limitations -->
 

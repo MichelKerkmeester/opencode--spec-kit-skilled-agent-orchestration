@@ -1,6 +1,6 @@
 ---
 title: "Consolidated checklist: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/checklist.md]"
-description: "Consolidated from 004-spec-kit-templates/checklist.md and 008-spec-kit-code-quality/checklist.md."
+description: "Consolidated from checklist.md (merged from the former templates phase) and checklist.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "checklist + level2-verify | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated checklist.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/checklist.md`
-- `008-spec-kit-code-quality/checklist.md`
+- `checklist.md (merged from the former templates phase)`
+- `checklist.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/checklist.md`
+## Source: `checklist.md (merged from the former templates phase)`
 
 ---
-title: "Verification Checklist: SpecKit Template ToC Policy Enforcement [004-spec-kit-templates/checklist.md]"
+title: "Verification Checklist: SpecKit Template ToC Policy Enforcement [checklist.md (merged from the former templates phase)]"
 description: "Level 2 verification checklist for documentation-only ToC policy enforcement and retro cleanup."
 trigger_phrases:
   - "verification"
@@ -84,7 +84,7 @@ P1 items are required unless explicitly deferred with user approval and document
 - [x] CHK-020 [P0] ToC scan confirms no ToC sections in scoped standard artifacts. [Evidence: verified in scoped spec artifacts and validation output.]
 - [x] CHK-021 [P0] `validate.sh` executed for all four requested folders. [Evidence: verified in scoped spec artifacts and validation output.]
 - [x] CHK-022 [P1] Validation outcomes captured per folder. [Evidence: verified in scoped spec artifacts and validation output.]
-- [x] CHK-023 [P1] No `research.md` files modified. [Evidence: verified in scoped spec artifacts and validation output.]
+- [x] CHK-023 [P1] No research documents modified. [Evidence: verified in scoped spec artifacts and validation output.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -131,10 +131,10 @@ P1 items are required unless explicitly deferred with user approval and document
 **Verification Date**: 2026-02-22
 <!-- /ANCHOR:summary -->
 
-## Source: `008-spec-kit-code-quality/checklist.md`
+## Source: `checklist.md (merged from former phase 008)`
 
 ---
-title: "Verification Checklist: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/checklist.md]"
+title: "Verification Checklist: Spec Kit Code Quality Completion Run [checklist.md (merged from former phase 008)]"
 description: "Level 3 checklist for phase 008 with blocking gates, evidence format requirements, and closure verification."
 trigger_phrases:
   - "verification checklist"
@@ -171,8 +171,8 @@ contextType: "implementation"
 - For deferred P1/P2 items, use `"[DEFERRED: <reason>]"`.
 - Accepted examples:
   - `[EVIDENCE: npm --prefix .opencode/skill/system-spec-kit/mcp_server run test -- tests/query-expander.vitest.ts (pass)]`
-  - `[EVIDENCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/review-lane-gap-note.md]`
-  - `[EVIDENCE: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality]`
+  - `[EVIDENCE: scratch/ (merged from former phase 008)review-lane-gap-note.md]`
+  - `[EVIDENCE: node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards]`
 <!-- /ANCHOR:evidence-format -->
 
 ---
@@ -188,9 +188,9 @@ P0 items are blocking gates and must all be checked before completion is claimed
 - [x] CHK-004 [P0] README modernization changed only repo-owned files under allowed scope. [EVIDENCE: README sweep command on 66 scoped files returned `FAILED=0`; see `implementation-summary.md` Verification]
 - [x] CHK-005 [P0] Lint and full test matrix complete without unresolved P0 failures. [EVIDENCE: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run lint` (pass), `npm test` (pass), `bash scripts/tests/test-validation.sh` (55/55 pass), `bash scripts/tests/test-validation-extended.sh` (129/129 pass)]
 - [x] CHK-006 [P0] Path security and MCP response contracts remain intact after edits. [EVIDENCE: `npx vitest run tests/unit-path-security.vitest.ts tests/mcp-error-format.vitest.ts` (pass)]
-- [x] CHK-007 [P0] Phase documentation validates via `validate.sh` for this folder. [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` (pass)]
-- [x] CHK-008 [P0] `implementation-summary.md` created only after implementation completion. [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/implementation-summary.md`]
-- [x] CHK-009 [P0] Context saved via official `generate-context.js` script. [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` created `memory/23-02-26_14-34__spec-kit-code-quality-session.md`]
+- [x] CHK-007 [P0] Phase documentation validates via `validate.sh` for this folder. [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` (pass)]
+- [x] CHK-008 [P0] `implementation-summary.md` created only after implementation completion. [EVIDENCE: `implementation-summary.md (merged from former phase 008)`]
+- [x] CHK-009 [P0] Context saved via official `generate-context.js` script. [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` created `memory/23-02-26_14-34__spec-kit-code-quality-session.md`]
 <!-- /ANCHOR:p0 -->
 
 ---
@@ -200,11 +200,11 @@ P0 items are blocking gates and must all be checked before completion is claimed
 P1 items are required unless explicitly deferred with user approval.
 
 <!-- ANCHOR:p1 -->
-- [x] CHK-101 [P1] `sk-code--opencode` propagation evaluated and updated when needed. [EVIDENCE: updated `sk-code--opencode/SKILL.md` and `sk-code--opencode/README.md`; updated `system-spec-kit/SKILL.md` verifier gate]
-- [x] CHK-102 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` remain synchronized. [EVIDENCE: `validate.sh` pass with zero errors/warnings on `008-spec-kit-code-quality`]
+- [x] CHK-101 [P1] `sk-code--opencode` propagation evaluated and updated when needed. [EVIDENCE: updated the `sk-code--opencode` skill guide and sk-code--opencode/README.md; updated the `system-spec-kit` skill guide verifier gate]
+- [x] CHK-102 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md` remain synchronized. [EVIDENCE: `validate.sh` pass with zero errors/warnings on merged phase-008 content]
 - [x] CHK-103 [P1] Read-only review findings are prioritized and mapped to executed fixes. [EVIDENCE: code fix set + summaries documented in `implementation-summary.md` and ADR rationale in `decision-record.md`]
 - [x] CHK-104 [P1] Rollback notes are updated for stabilized and modularized areas. [EVIDENCE: `decision-record.md` rollback guidance under ADR-003 ("How to roll back")]
-- [x] CHK-105 [P1] Final closure report includes changed files and validation result summary. [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/implementation-summary.md`]
+- [x] CHK-105 [P1] Final closure report includes changed files and validation result summary. [EVIDENCE: `implementation-summary.md (merged from former phase 008)`]
 <!-- /ANCHOR:p1 -->
 
 ---
@@ -234,7 +234,7 @@ P2 items are optional and may be deferred when documented.
 ## L3+: PERFORMANCE VERIFICATION
 
 - [x] CHK-311 [P1] Runtime verification indicates no significant regressions versus baseline. [EVIDENCE: `implementation-summary.md` Verification table]
-- [x] CHK-312 [P1] Hotspot refactor checks complete within expected runtime windows. [EVIDENCE: `implementation-summary.md` Verification table + `scratch/from-009-verification-log.md`]
+- [x] CHK-312 [P1] Hotspot refactor checks complete within expected runtime windows. [EVIDENCE: `implementation-summary.md` Verification table + `phase-009 scratch artifact "from-009-verification-log.md`]
 - [ ] CHK-313 [P2] Optional benchmark table is captured for future trend analysis. [DEFERRED: No benchmark mandate for this phase]
 <!-- /ANCHOR:perf-verify -->
 
@@ -254,7 +254,7 @@ P2 items are optional and may be deferred when documented.
 ## L3+: COMPLIANCE VERIFICATION
 
 - [x] CHK-331 [P1] Security-sensitive paths remain compliant with existing safeguards. [EVIDENCE: `checklist.md` CHK-006 + `implementation-summary.md` Verification]
-- [x] CHK-332 [P1] License/ownership boundaries are respected for documentation changes. [EVIDENCE: phase scope lock in `spec.md` and merge artifact import under `scratch/from-009-*` only]
+- [x] CHK-332 [P1] License/ownership boundaries are respected for documentation changes. [EVIDENCE: phase scope lock in `spec.md` and merge artifact import under `phase-009 scratch artifact "from-009-*` only]
 - [ ] CHK-333 [P2] Optional OWASP-style review notes are captured where relevant. [DEFERRED: Not required for this phase]
 <!-- /ANCHOR:compliance-verify -->
 
@@ -264,7 +264,7 @@ P2 items are optional and may be deferred when documented.
 ## L3+: DOCUMENTATION VERIFICATION
 
 - [x] CHK-341 [P1] All in-scope READMEs comply with latest workflow template structure. [EVIDENCE: `implementation-summary.md` Verification (`validate_document.py` pass)]
-- [x] CHK-342 [P1] HVR style alignment is complete for in-scope READMEs. [EVIDENCE: README verification results in `implementation-summary.md` + imported `scratch/from-009-readme-audit-global.md`]
+- [x] CHK-342 [P1] HVR style alignment is complete for in-scope READMEs. [EVIDENCE: README verification results in `implementation-summary.md` + imported `phase-009 scratch artifact "from-009-readme-audit-global.md`]
 - [ ] CHK-343 [P2] Non-phase docs follow-up list is recorded for future work. [DEFERRED: No additional follow-up queue required after merged audits]
 <!-- /ANCHOR:docs-verify -->
 

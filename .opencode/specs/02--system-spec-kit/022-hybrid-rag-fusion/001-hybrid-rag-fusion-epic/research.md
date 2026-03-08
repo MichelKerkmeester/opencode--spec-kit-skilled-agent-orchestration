@@ -1066,7 +1066,7 @@ contextType: "research"
 | Date | 2026-02-22 |
 | Scope | Current-state architecture, capability inventory, failure modes, test coverage observations, automation opportunities, and strategic roadmap for hybrid RAG fusion |
 | Evidence Grade | A/B mixed (A for code claims, B for runtime/operational inferences) |
-| Target Artifact | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/research.md` |
+| Target Artifact | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/research.md |
 
 ---
 
@@ -1218,7 +1218,7 @@ Caller
 - KPI targets are governance targets for 006 release gates, not claims of current measured production values.
 
 Method evidence:
-[SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/plan.md:173-180`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/tasks.md:49-127`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md`]
+[SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/plan.md:173-180`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/tasks.md:49-127`] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md]
 
 ### Option A: Contract-Hardening Patchset (Incremental, 2-3 weeks)
 
@@ -1478,17 +1478,17 @@ Related evidence:
 
 ### 006 Program Documents
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/spec.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/plan.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/tasks.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/checklist.md`
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/spec.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/plan.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/tasks.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/checklist.md
 
 ### Prior Specs (Continuity)
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md`
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md
 
 ### MCP Runtime and Libraries
 

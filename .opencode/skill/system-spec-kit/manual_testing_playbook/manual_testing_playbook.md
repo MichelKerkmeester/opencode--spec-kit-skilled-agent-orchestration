@@ -68,7 +68,7 @@ Canonical source artifacts:
 | EX-033 | 6. Debug and Telemetry | Observability toggle check | `List telemetry/debug vars and inert flags` | `memory_search("DEBUG_TRIGGER_MATCHER ... inert")` | Debug/telemetry controls identified | Search output | PASS if active vs inert clearly separated | Check feature flag governance section |
 | EX-034 | 7. CI and Build (informational) | Branch metadata source audit | `Find branch env vars used in checkpoint metadata` | `memory_search("GIT_BRANCH BRANCH_NAME ...")` | Branch source vars surfaced | Search output | PASS if all listed vars are found | Search CI scripts and runtime helpers |
 
-## New Features (`NEW-001..NEW-118`)
+## New Features (`NEW-001..NEW-119`)
 
 Note: Each NEW scenario uses this evidence+verdict baseline unless overridden:
 - Evidence: command transcript + key output snapshot + any DB/log artifact

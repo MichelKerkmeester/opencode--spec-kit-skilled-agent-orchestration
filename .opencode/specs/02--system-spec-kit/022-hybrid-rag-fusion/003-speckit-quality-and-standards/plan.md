@@ -1,6 +1,6 @@
 ---
 title: "Consolidated plan: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/plan.md]"
-description: "Consolidated from 004-spec-kit-templates/plan.md and 008-spec-kit-code-quality/plan.md."
+description: "Consolidated from plan.md (merged from the former templates phase) and plan.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "plan-core + level2-verify | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated plan.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/plan.md`
-- `008-spec-kit-code-quality/plan.md`
+- `plan.md (merged from the former templates phase)`
+- `plan.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/plan.md`
+## Source: `plan.md (merged from the former templates phase)`
 
 ---
-title: "Implementation Plan: SpecKit Template ToC Policy Enforcement [004-spec-kit-templates/plan.md]"
+title: "Implementation Plan: SpecKit Template ToC Policy Enforcement [plan.md (merged from the former templates phase)]"
 description: "Execution plan for documentation-only ToC policy enforcement and retro cleanup in scoped spec artifacts."
 trigger_phrases:
   - "implementation"
@@ -59,10 +59,10 @@ This plan executes a docs-only pass in three phases: template-based authoring of
 ### Definition of Ready
 - [x] Scope limited to markdown documentation in spec folders.
 - [x] Target folders and required file list identified.
-- [x] ToC policy clarified: only `research.md` may include ToC.
+- [x] ToC policy clarified: only the research document may include ToC.
 
 ### Definition of Done
-- [x] New Level 2 docs created in `007-spec-kit-templates`.
+- [x] New Level 2 docs created in the historical templates phase.
 - [x] ToC sections removed from scoped non-research artifacts.
 - [x] Validation executed for all requested folders.
 - [x] Final concise report prepared.
@@ -77,7 +77,7 @@ This plan executes a docs-only pass in three phases: template-based authoring of
 Documentation normalization workflow.
 
 ### Key Components
-- **Template-aligned spec docs**: New Level 2 files in `007-spec-kit-templates`.
+- **Template-aligned spec docs**: New Level 2 files in the historical templates phase.
 - **Retro cleanup set**: Existing standard artifacts in `039`, `040`, and `041`.
 - **Validation layer**: `spec/validate.sh` run per target folder.
 
@@ -100,9 +100,9 @@ Documentation normalization workflow.
 - [x] Confirm exact cleanup file set.
 
 ### Phase 2: Documentation Edits
-- [x] Create `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` in `007-spec-kit-templates`.
+- [x] Create `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` in the historical templates phase.
 - [x] Remove ToC sections from non-research standard artifacts in `039`, `040`, `041`.
-- [x] Preserve all out-of-scope files, including `research.md`.
+- [x] Preserve all out-of-scope files, including the research document.
 
 ### Phase 3: Verification and Reporting
 - [x] Run ToC policy scan on targeted standard artifacts.
@@ -193,10 +193,10 @@ Phase 1 (Preparation) ──► Phase 2 (Documentation Edits) ──► Phase 3 
 - **Reversal procedure**: N/A
 <!-- /ANCHOR:enhanced-rollback -->
 
-## Source: `008-spec-kit-code-quality/plan.md`
+## Source: `plan.md (merged from former phase 008)`
 
 ---
-title: "Implementation Plan: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/plan.md]"
+title: "Implementation Plan: Spec Kit Code Quality Completion Run [plan.md (merged from former phase 008)]"
 description: "Execution plan for phase 008 hardening across system-spec-kit and mcp_server, including baseline stabilization, read-only review coverage, moderate modularization, README modernization, standards propagation, and final verification/context save."
 trigger_phrases:
   - "implementation plan"
@@ -344,7 +344,7 @@ Quality-hardening pipeline with staged stabilization and bounded parallel review
 | Modularization gate | Oversized module threshold and structure checks | `vitest run tests/modularization.vitest.ts` |
 | Full regression | Workspace-wide quality confirmation | `npm --prefix .opencode/skill/system-spec-kit test` |
 | Lint gate | MCP server TypeScript linting | `npm --prefix .opencode/skill/system-spec-kit/mcp_server run lint` |
-| Spec validation | Phase documentation integrity | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` |
+| Spec validation | Phase documentation integrity | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -513,6 +513,6 @@ Phase 1 (Baseline) ──► Phase 2 (Review Wave) ──► Phase 3 (Modulariza
 | Modularization | `npm --prefix .opencode/skill/system-spec-kit/mcp_server run test -- tests/modularization.vitest.ts` | Oversized-module gate passes |
 | Lint | `npm --prefix .opencode/skill/system-spec-kit/mcp_server run lint` | No blocking lint errors |
 | Full suite | `npm --prefix .opencode/skill/system-spec-kit test` | No unresolved P0 failures |
-| Spec validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` | Exit `0` or `1` with documented warnings |
-| Context save | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` | Memory file generated successfully |
+| Spec validation | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` | Exit `0` or `1` with documented warnings |
+| Context save | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` | Memory file generated successfully |
 <!-- /ANCHOR:commands -->

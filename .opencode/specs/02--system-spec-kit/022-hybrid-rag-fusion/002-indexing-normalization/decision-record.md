@@ -1,6 +1,6 @@
 ---
 title: "Consolidated decision-record: 002-indexing-normalization [002-indexing-normalization/decision-record.md]"
-description: "Consolidated from 002-index-tier-anomalies/decision-record.md and 004-frontmatter-indexing/decision-record.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> decision-record.md and former child spec 004-frontmatter-indexing -> decision-record.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated decision-record.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/decision-record.md`
-- `004-frontmatter-indexing/decision-record.md`
+- `former child spec 002-index-tier-anomalies -> decision-record.md`
+- `former child spec 004-frontmatter-indexing -> decision-record.md`
 
-## Source: `002-index-tier-anomalies/decision-record.md`
+## Source: `former child spec 002-index-tier-anomalies -> decision-record.md`
 
 ---
-title: "Decision Record: Memory Index Deduplication and Tier Normalization [002-index-tier-anomalies/decision-record]"
+title: "Decision Record: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> decision-record]"
 description: "We need deterministic indexing even when specs/ and .opencode/specs/ reference the same file tree. Today those roots can both contribute identical files to one scan. That create..."
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:
@@ -178,10 +178,10 @@ Use one precedence chain: explicit YAML tier metadata first, inline tier markers
 - Inline markers over metadata, rejected because metadata should be explicit source of truth.
 - Default-only mapping, rejected because it ignores intentional per-document overrides.
 
-## Source: `004-frontmatter-indexing/decision-record.md`
+## Source: `former child spec 004-frontmatter-indexing -> decision-record.md`
 
 ---
-title: "Decision Record: 004-frontmatter-indexing [004-frontmatter-indexing/decision-record]"
+title: "Decision Record: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> decision-record]"
 description: "We need one predictable metadata contract before rebuilding indexes. Legacy documents contain mixed key casing, optional aliases, and inconsistent scalar vs list values. If we r..."
 SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 trigger_phrases:

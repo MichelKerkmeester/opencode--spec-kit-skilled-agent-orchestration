@@ -1,6 +1,6 @@
 ---
 title: "Consolidated tasks: 002-indexing-normalization [002-indexing-normalization/tasks.md]"
-description: "Consolidated from 002-index-tier-anomalies/tasks.md and 004-frontmatter-indexing/tasks.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> tasks.md and former child spec 004-frontmatter-indexing -> tasks.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated tasks.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/tasks.md`
-- `004-frontmatter-indexing/tasks.md`
+- `former child spec 002-index-tier-anomalies -> tasks.md`
+- `former child spec 004-frontmatter-indexing -> tasks.md`
 
-## Source: `002-index-tier-anomalies/tasks.md`
+## Source: `former child spec 002-index-tier-anomalies -> tasks.md`
 
 ---
-title: "Tasks: Memory Index Deduplication and Tier Normalization [002-index-tier-anomalies/tasks]"
+title: "Tasks: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> tasks]"
 description: "Task Format: T### [priority] [P?] Description (file path)"
 SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
@@ -107,10 +107,10 @@ contextType: "implementation"
 - **Decision Record**: `decision-record.md`
 <!-- /ANCHOR:cross-refs -->
 
-## Source: `004-frontmatter-indexing/tasks.md`
+## Source: `former child spec 004-frontmatter-indexing -> tasks.md`
 
 ---
-title: "Tasks: 004-frontmatter-indexing [004-frontmatter-indexing/tasks]"
+title: "Tasks: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> tasks]"
 description: "Task Format: T### [P?] Description (file path)"
 SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
@@ -169,7 +169,7 @@ contextType: "implementation"
 
 - [x] T008 Run unit tests for parser/coercion/compose paths (`npm test -- parser/frontmatter suites`) | Evidence: Passed: `test-template-system.js`, `test-template-comprehensive.js`, `test-frontmatter-backfill.js`, `mcp_server/tests/memory-parser.vitest.ts`, `mcp_server/tests/memory-parser-extended.vitest.ts`.
 - [x] T009 Run integration reindex and retrieval regression suites (`mcp_server/tests/...`) | Evidence: `npm run test --workspace mcp_server -- tests/spec126-full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed; reindex quality checks remain captured in `implementation-summary.md`.
-- [x] T010 Update checklist and implementation summary with evidence (`checklist.md`, `implementation-summary.md`) | Evidence: Evidence paths, numbering normalization, and `scratch/full-tree-fusion-audit.md` were updated in this remediation pass.
+- [x] T010 Update checklist and implementation summary with evidence (`checklist.md`, `implementation-summary.md`) | Evidence: Evidence paths, numbering normalization, and `historical scratch artifact "full-tree-fusion-audit.md"` were updated in this remediation pass.
 <!-- /ANCHOR:phase-3 -->
 
 ---

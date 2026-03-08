@@ -117,7 +117,7 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 | Indexing | `memory_index` schema, embedding pipeline | Modify |
 | Spec-Kit logic | Template processing, validation handlers | Modify |
 | Memory quality (NEW) | `memory-save.ts`, `composite-scoring.ts`, `fsrs-scheduler.ts`, `trigger-matcher.ts` | Modify |
-| Documentation artifacts (NEW) | `011-feature-catalog/**/**/feature.md` (generated from `feature_catalog.md` + `summary_of_new_features.md`) | Create/Update |
+| Documentation artifacts (NEW) | `011-feature-catalog/**/**/feature.md` (generated from feature_catalog.md + summary_of_new_features.md) | Create/Update |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -174,9 +174,9 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 | 016-indexing-and-graph (6a) | 017-long-horizon | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
 | 016-indexing-and-graph (6a) | 016-indexing-and-graph (6b) | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
 | 016-indexing-and-graph (6b) | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
-| 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | `008-combined-bug-fixes/checklist.md` summary + testing section |
-| 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | `002-cross-cutting-remediation/checklist.md` remediation exit gate + summary |
-| 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | `022-post-review-remediation/checklist.md` summary + `022-post-review-remediation/implementation-summary.md` |
+| 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | 008-combined-bug-fixes/checklist.md summary + testing section |
+| 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | 002-cross-cutting-remediation/checklist.md remediation exit gate + summary |
+| 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | 022-post-review-remediation/checklist.md summary + 022-post-review-remediation/implementation-summary.md |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -315,7 +315,7 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 
 | ID | Requirement | Acceptance Criteria | Sprint/Placement |
 |----|-------------|---------------------|------------------|
-| DOC-01 | Extract each canonical feature into per-folder markdown artifacts — parse all `###` features from `011-feature-catalog/feature_catalog.md`, enrich with optional matching content from `011-feature-catalog/summary_of_new_features.md`, and write `feature.md` in each corresponding numbered feature folder under `011-feature-catalog/` | 1) One `feature.md` per canonical feature folder (`011-feature-catalog/**/**/feature.md`), 2) each artifact contains canonical section + new/updated context section + source metadata, 3) folder mapping uses numbered group/feature ordering from the canonical catalog, 4) coverage check passes with missing=0 and extra=0 | Cross-cutting |
+| DOC-01 | Extract each canonical feature into per-folder markdown artifacts — parse all `###` features from 011-feature-catalog/feature_catalog.md, enrich with optional matching content from 011-feature-catalog/summary_of_new_features.md, and write feature.md in each corresponding numbered feature folder under `011-feature-catalog/` | 1) One feature.md per canonical feature folder (`011-feature-catalog/**/**/feature.md`), 2) each artifact contains canonical section + new/updated context section + source metadata, 3) folder mapping uses numbered group/feature ordering from the canonical catalog, 4) coverage check passes with missing=0 and extra=0 | Cross-cutting |
 
 ### 4.1 R13 Evaluation Schema Definition
 
@@ -1137,9 +1137,9 @@ interface EnhancedMCPResponse {
 
 ## Consolidation Addendum (2026-02-22)
 
-- Consolidated command-alignment outcomes are recorded in `supplemental/command-alignment-summary.md`.
-- Consolidated non-skill-graph outcomes are recorded in `supplemental/non-skill-graph-consolidation-summary.md`.
-- Supplemental index is maintained in `supplemental-index.md`.
+- Consolidated command-alignment outcomes are recorded in supplemental/command-alignment-summary.md.
+- Consolidated non-skill-graph outcomes are recorded in supplemental/non-skill-graph-consolidation-summary.md.
+- Supplemental index is maintained in supplemental-index.md.
 
 ## Source: 006-hybrid-rag-fusion-logic-improvements
 

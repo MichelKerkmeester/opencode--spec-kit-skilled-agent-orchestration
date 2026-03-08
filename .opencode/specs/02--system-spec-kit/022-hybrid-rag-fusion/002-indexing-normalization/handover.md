@@ -1,6 +1,6 @@
 ---
 title: "Consolidated handover: 002-indexing-normalization [002-indexing-normalization/handover.md]"
-description: "Consolidated from 002-index-tier-anomalies/handover.md and 004-frontmatter-indexing/handover.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> handover.md and former child spec 004-frontmatter-indexing -> handover.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated handover.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/handover.md`
-- `004-frontmatter-indexing/handover.md`
+- `former child spec 002-index-tier-anomalies -> handover.md`
+- `former child spec 004-frontmatter-indexing -> handover.md`
 
-## Source: `002-index-tier-anomalies/handover.md`
+## Source: `former child spec 002-index-tier-anomalies -> handover.md`
 
 ---
-title: "CONTINUATION - Attempt 1 [002-index-tier-anomalies/handover]"
+title: "CONTINUATION - Attempt 1 [former child spec 002-index-tier-anomalies -> handover]"
 description: "Handover for memory title remediation, retroactive indexing, and list-filter verification follow-up."
 trigger_phrases:
   - "continuation"
@@ -64,12 +64,12 @@ CONTINUATION - Attempt 1 | Spec: `.opencode/specs/02--system-spec-kit/022-hybrid
 - [x] Preserved user constraint: no nested agent dispatch from this command workflow.
 
 ### Files Modified in This Step
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/spec.md` (frontmatter template-source marker)
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/plan.md` (frontmatter template-source marker)
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/tasks.md` (frontmatter template-source marker)
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/checklist.md` (frontmatter template-source marker)
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/decision-record.md` (frontmatter template-source marker)
-- [x] `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> spec.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> plan.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> tasks.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> checklist.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> decision-record.md` (frontmatter template-source marker)
+- [x] `former child spec 002-index-tier-anomalies -> implementation-summary.md` (frontmatter template-source marker)
 
 ### Verification Executed
 - [x] `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` -> PASS (0 errors, 0 warnings)
@@ -125,7 +125,7 @@ CONTINUATION - Attempt 1 | Spec: `.opencode/specs/02--system-spec-kit/022-hybrid
 1. `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts` - list filtering behavior (`includeChunks`).
 2. `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` - API schema/runtime wiring.
 3. `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts` - expected list behavior.
-4. `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/checklist.md` - verification status baseline.
+4. `former child spec 002-index-tier-anomalies -> checklist.md` - verification status baseline.
 
 ### Quick-Start Checklist
 - [ ] Confirm MCP server process restart/reload status.
@@ -133,6 +133,6 @@ CONTINUATION - Attempt 1 | Spec: `.opencode/specs/02--system-spec-kit/022-hybrid
 - [ ] Re-run one `memory_search` sanity query for generic titles.
 - [ ] Update checklist/handover with final verification evidence.
 
-## Source: `004-frontmatter-indexing/handover.md`
+## Source: `former child spec 004-frontmatter-indexing -> handover.md`
 
 _Not present in 004-frontmatter-indexing._

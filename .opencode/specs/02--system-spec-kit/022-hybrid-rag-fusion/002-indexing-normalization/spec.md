@@ -1,6 +1,6 @@
 ---
 title: "Consolidated spec: 002-indexing-normalization [002-indexing-normalization/spec.md]"
-description: "Consolidated from 002-index-tier-anomalies/spec.md and 004-frontmatter-indexing/spec.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> spec.md and former child spec 004-frontmatter-indexing -> spec.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated spec.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/spec.md`
-- `004-frontmatter-indexing/spec.md`
+- `former child spec 002-index-tier-anomalies -> spec.md`
+- `former child spec 004-frontmatter-indexing -> spec.md`
 
-## Source: `002-index-tier-anomalies/spec.md`
+## Source: `former child spec 002-index-tier-anomalies -> spec.md`
 
 ---
-title: "Feature Specification: Memory Index Deduplication and Tier Normalization [002-index-tier-anomalies/spec]"
+title: "Feature Specification: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> spec]"
 description: "memory_index_scan can index the same logical files twice when both specs/ and .opencode/specs/ resolve to the same tree through symlinks or mirrored paths. This inflates scan co..."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
@@ -283,10 +283,10 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
 
-## Source: `004-frontmatter-indexing/spec.md`
+## Source: `former child spec 004-frontmatter-indexing -> spec.md`
 
 ---
-title: "Feature Specification: 004-frontmatter-indexing [004-frontmatter-indexing/spec]"
+title: "Feature Specification: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> spec]"
 description: "This child spec defines a focused Level 3 implementation for frontmatter normalization and index rebuild. The goal is to standardize metadata across templates, spec docs, and me..."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:

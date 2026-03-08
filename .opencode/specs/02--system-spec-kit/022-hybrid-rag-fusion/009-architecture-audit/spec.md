@@ -294,7 +294,7 @@ Former spec `009-architecture-audit` is consolidated into this spec folder to ke
 | REQ-015 | API surface expansion is explicit and minimal | New exports documented with encapsulation rationale |
 | REQ-016 | CI-level enforcement is mandatory | Boundary checks run on every PR and fail the workflow on violations |
 | REQ-017 | TypeScript compilation remains clean | `npx tsc --noEmit` passes |
-| REQ-018 | Architecture exceptions documentation stays synchronized | `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` and allowlist reflect post-migration state |
+| REQ-018 | Architecture exceptions documentation stays synchronized | .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md and allowlist reflect post-migration state |
 
 ### Carry-Over Success Criteria
 

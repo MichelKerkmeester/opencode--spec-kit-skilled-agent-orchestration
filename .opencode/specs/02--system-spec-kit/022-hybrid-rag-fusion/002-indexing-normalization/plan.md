@@ -1,6 +1,6 @@
 ---
 title: "Consolidated plan: 002-indexing-normalization [002-indexing-normalization/plan.md]"
-description: "Consolidated from 002-index-tier-anomalies/plan.md and 004-frontmatter-indexing/plan.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> plan.md and former child spec 004-frontmatter-indexing -> plan.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated plan.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/plan.md`
-- `004-frontmatter-indexing/plan.md`
+- `former child spec 002-index-tier-anomalies -> plan.md`
+- `former child spec 004-frontmatter-indexing -> plan.md`
 
-## Source: `002-index-tier-anomalies/plan.md`
+## Source: `former child spec 002-index-tier-anomalies -> plan.md`
 
 ---
-title: "Implementation Plan: Memory Index Deduplication and Tier Normalization [002-index-tier-anomalies/plan]"
+title: "Implementation Plan: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> plan]"
 description: "This implementation introduces a canonical-path dedup pass before index batching and a single tier-precedence model used across parser and scoring logic. Delivery is test-first ..."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
@@ -304,10 +304,10 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 - Record blocker reason and immediate next action.
 - Do not continue to downstream blocked tasks until blocker is resolved or deferred with approval.
 
-## Source: `004-frontmatter-indexing/plan.md`
+## Source: `former child spec 004-frontmatter-indexing -> plan.md`
 
 ---
-title: "Implementation Plan: 004-frontmatter-indexing [004-frontmatter-indexing/plan]"
+title: "Implementation Plan: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> plan]"
 description: "This plan standardizes frontmatter across templates, spec docs, and memory markdown, then rebuilds indexes from normalized metadata. The approach is parser-first: define canonic..."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:

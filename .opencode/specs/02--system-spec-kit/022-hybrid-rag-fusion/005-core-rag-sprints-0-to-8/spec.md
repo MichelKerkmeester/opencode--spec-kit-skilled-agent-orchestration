@@ -16,21 +16,21 @@ contextType: "implementation"
 This file consolidates `spec.md` from sprint folders 006 through 018.
 
 Source folders:
-- `006-measurement-foundation/spec.md`
-- `011-graph-signal-activation/spec.md`
-- `012-scoring-calibration/spec.md`
-- `013-query-intelligence/spec.md`
-- `014-feedback-and-quality/spec.md`
-- `015-pipeline-refactor/spec.md`
-- `016-indexing-and-graph/spec.md`
-- `017-long-horizon/spec.md`
-- `018-deferred-features/spec.md`
+- 006-measurement-foundation/spec.md
+- 011-graph-signal-activation/spec.md
+- 012-scoring-calibration/spec.md
+- 013-query-intelligence/spec.md
+- 014-feedback-and-quality/spec.md
+- 015-pipeline-refactor/spec.md
+- 016-indexing-and-graph/spec.md
+- 017-long-horizon/spec.md
+- 018-deferred-features/spec.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/spec.md`
+Source: 006-measurement-foundation/spec.md
 
 ---
 title: "Feature Specification: Sprint 0 — Measurement Foundation"
@@ -283,8 +283,8 @@ Bounded quality loop after embedding generation: verify (cosine self-similarity 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 
 ---
 
@@ -305,7 +305,7 @@ LEVEL 2 SPEC — Phase 1 of 8
 
 ## 011-graph-signal-activation
 
-Source: `011-graph-signal-activation/spec.md`
+Source: 011-graph-signal-activation/spec.md
 
 ---
 title: "Feature Specification: Sprint 1 — Graph Signal Activation"
@@ -545,9 +545,9 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
-- **Predecessor**: See `../006-measurement-foundation/`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Predecessor**: See ../006-measurement-foundation/
 
 ---
 
@@ -562,7 +562,7 @@ LEVEL 2 SPEC — Phase 2 of 8
 
 ## Phase Navigation
 
-- Successor: `012-scoring-calibration`
+- Successor: 012-scoring-calibration
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
@@ -574,7 +574,7 @@ LEVEL 2 SPEC — Phase 2 of 8
 
 ## 012-scoring-calibration
 
-Source: `012-scoring-calibration/spec.md`
+Source: 012-scoring-calibration/spec.md
 
 ---
 title: "Feature Specification: Sprint 2 — Scoring Calibration"
@@ -834,9 +834,9 @@ where M is the number of memories in the folder. The damping factor `1/sqrt(M+1)
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
-- **Predecessor**: See `../006-measurement-foundation/` (direct dependency — Sprint 1 is a parallel sibling)
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Predecessor**: See ../006-measurement-foundation/ (direct dependency — Sprint 1 is a parallel sibling)
 
 ---
 
@@ -852,7 +852,7 @@ LEVEL 2 SPEC — Phase 3 of 8
 
 ## Phase Navigation
 
-- Predecessor: `011-graph-signal-activation`
+- Predecessor: `011-graph-signal-activation
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
@@ -864,7 +864,7 @@ LEVEL 2 SPEC — Phase 3 of 8
 
 ## 013-query-intelligence
 
-Source: `013-query-intelligence/spec.md`
+Source: 013-query-intelligence/spec.md
 
 ---
 title: "Feature Specification: Sprint 3 — Query Intelligence"
@@ -959,7 +959,7 @@ Route simple queries to fewer channels for speed improvement, evaluate RSF as a 
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `query-classifier.ts` (new) | Create | R15: Query classifier + tier-based channel routing |
+| query-classifier.ts` (new) | Create | R15: Query classifier + tier-based channel routing |
 | `rrf-fusion.ts` | Modify | R14/N1: RSF implementation alongside RRF (all 3 variants) |
 | `hybrid-search.ts` | Modify | R2: Channel min-representation enforcement post-fusion |
 <!-- /ANCHOR:scope -->
@@ -1120,8 +1120,8 @@ Transition thresholds: top result similarity < 0.4 OR result count < 3 triggers 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See `../000-feature-overview/plan.md
 
 ---
 
@@ -1153,7 +1153,7 @@ LEVEL 2 SPEC — Phase 4 of 8
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/spec.md`
+Source: 014-feedback-and-quality/spec.md
 
 ---
 title: "Feature Specification: Sprint 4 — Feedback and Quality"
@@ -1235,7 +1235,7 @@ Aggregate chunk scores safely with MPAB (preserving N=0/N=1 semantics), learn fr
 ### In Scope
 
 - **R1**: MPAB chunk-to-memory aggregation with N=0/N=1 guards, index-based max removal
-- **R11**: Learned relevance feedback with separate `learned_triggers` column + 10 safeguards
+- **R11**: Learned relevance feedback with separate learned_triggers` column + 10 safeguards
 - **R13-S2**: Shadow scoring + channel attribution + ground truth Phase B
 - **G-NEW-3 Phase C**: LLM-judge ground truth generation (tasks T027a, T027b) — context-type boost validation via automated LLM-judge labeling with >=80% agreement with manual labels
 
@@ -1270,7 +1270,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 
 **Rationale for split**: R11 has CRITICAL severity — an FTS5 contamination mistake (adding `learned_triggers` to the FTS5 index) is irreversible without a full re-index of all memories. Isolating R11 into S4b means S4a's A/B infrastructure is operational before R11 mutations begin, enabling immediate detection of any regression. Risk concentration is eliminated by ensuring R1 and R13-S2 are verified clean before R11 is enabled.
 
-> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (`../000-feature-overview/spec.md` line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
+> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (../000-feature-overview/spec.md line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
 
 ### Files to Change
 
@@ -1407,7 +1407,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 <!-- ANCHOR:pageindex-integration -->
 ### PageIndex Integration
 
-> **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and does not affect any Sprint 4 exit criterion. It is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion R12). See `../015-pipeline-refactor/spec.md` for updated placement. Rationale: ultra-think review REC-07.
+> **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and does not affect any Sprint 4 exit criterion. It is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion R12). See ../015-pipeline-refactor/spec.md for updated placement. Rationale: ultra-think review REC-07.
 <!-- /ANCHOR:pageindex-integration -->
 
 ---
@@ -1417,8 +1417,8 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 
 ---
 
@@ -1428,7 +1428,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]';
 -- Nullable, default empty JSON array
 -- Rollback: ALTER TABLE memory_index DROP COLUMN learned_triggers; (SQLite 3.35.0+)
-```
+`
 
 ---
 
@@ -1449,7 +1449,7 @@ LEVEL 2 SPEC — Phase 5 of 8
 
 ## 015-pipeline-refactor
 
-Source: `015-pipeline-refactor/spec.md`
+Source: 015-pipeline-refactor/spec.md
 
 ---
 title: "Feature Specification: Sprint 5 — Pipeline Refactor"
@@ -1536,7 +1536,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 
 - **R6**: 4-stage pipeline refactor with Stage 4 invariant (no score changes after Stage 3)
 - **R9**: Spec folder pre-filter for scoped queries
-- **R12**: Query expansion (suppressed when R15="simple") with `SPECKIT_EMBEDDING_EXPANSION` flag
+- **R12**: Query expansion (suppressed when R15="simple") with SPECKIT_EMBEDDING_EXPANSION flag
 - **S2**: Template anchor optimization — anchor-aware retrieval metadata
 - **S3**: Validation signals as retrieval metadata — validation metadata in scoring
 - **PI-A4**: Constitutional memory as retrieval directives — reformat constitutional memories with `retrieval_directive` metadata field (deferred from Sprint 4 per REC-07)
@@ -1724,8 +1724,8 @@ All auto-fixes are logged with before/after diffs as the primary mitigation agai
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 
 ---
 
@@ -1753,7 +1753,7 @@ LEVEL 2 SPEC — Phase 6 of 8
 
 ## 016-indexing-and-graph
 
-Source: `016-indexing-and-graph/spec.md`
+Source: 016-indexing-and-graph/spec.md
 
 ---
 title: "Feature Specification: Sprint 6 — Indexing and Graph"
@@ -1852,7 +1852,7 @@ Maximize graph channel contribution through centrality and community detection, 
 #### Sprint 6a — Practical Improvements (33-51h, LOW risk)
 
 - **R7**: Anchor-aware chunk thinning — Recall@20 within 10% of baseline
-- **R16**: Encoding-intent capture at index time behind `SPECKIT_ENCODING_INTENT` flag
+- **R16**: Encoding-intent capture at index time behind SPECKIT_ENCODING_INTENT flag
 - **S4**: Spec folder hierarchy as retrieval structure — hierarchy traversal functional
 - **T001d / MR10**: weight_history audit tracking — log weight changes for N3-lite Hebbian modifications; enables rollback independent of edge creation
 - **N3-lite**: Contradiction scan (weekly) + Hebbian edge strengthening + staleness detection + contradiction cluster surfacing (surface all cluster members, not just flagged pair) behind `SPECKIT_CONSOLIDATION` flag
@@ -2039,8 +2039,8 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 
 ---
 
@@ -2063,7 +2063,7 @@ LEVEL 2 SPEC — Phase 7 of 8
 
 ## 017-long-horizon
 
-Source: `017-long-horizon/spec.md`
+Source: 017-long-horizon/spec.md
 
 ---
 title: "Feature Specification: Sprint 7 — Long Horizon"
@@ -2149,7 +2149,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 
 ### In Scope
 
-- **R8**: Memory summaries (gated on >5K memories) behind `SPECKIT_MEMORY_SUMMARIES` flag — summary pre-filtering reduces search space. Note: the PageIndex tree-navigation approach used in summary generation must be validated against the 500ms p95 latency limit before activation.
+- **R8**: Memory summaries (gated on >5K memories) behind SPECKIT_MEMORY_SUMMARIES flag — summary pre-filtering reduces search space. Note: the PageIndex tree-navigation approach used in summary generation must be validated against the 500ms p95 latency limit before activation.
 - **S1**: Smarter memory content generation from markdown — improved content quality
 - **S5**: Cross-document entity linking (gated on >1K active memories OR >50 verified entities) behind `SPECKIT_ENTITY_LINKING` flag — entity links established across documents
 - **R13-S3**: Full reporting + ablation studies — complete evaluation capability
@@ -2326,8 +2326,8 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See `../000-feature-overview/spec.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Spec**: See ../000-feature-overview/spec.md
+- **Parent Plan**: See ../000-feature-overview/plan.md
 
 ---
 
@@ -2344,7 +2344,7 @@ LEVEL 2 SPEC — Phase 8 of 8 (FINAL)
 
 ## Phase Navigation
 
-- Successor: `018-deferred-features`
+- Successor: 018-deferred-features
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
@@ -2356,7 +2356,7 @@ LEVEL 2 SPEC — Phase 8 of 8 (FINAL)
 
 ## 018-deferred-features
 
-Source: `018-deferred-features/spec.md`
+Source: 018-deferred-features/spec.md
 
 ---
 title: "Feature Specification: Sprint 8 - Deferred Features"
@@ -2424,7 +2424,7 @@ Define a contained implementation phase for deferred work, with explicit depende
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Deferred-feature sprint requirements and acceptance criteria |
+| spec.md | Create | Deferred-feature sprint requirements and acceptance criteria |
 | `plan.md` | Create | Technical execution and quality-gate plan |
 | `tasks.md` | Create | Task decomposition and completion tracking |
 <!-- /ANCHOR:scope -->

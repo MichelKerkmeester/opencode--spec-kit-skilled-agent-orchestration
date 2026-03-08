@@ -1,6 +1,6 @@
 ---
 title: "Consolidated checklist: 002-indexing-normalization [002-indexing-normalization/checklist.md]"
-description: "Consolidated from 002-index-tier-anomalies/checklist.md and 004-frontmatter-indexing/checklist.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> checklist.md and former child spec 004-frontmatter-indexing -> checklist.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated checklist.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/checklist.md`
-- `004-frontmatter-indexing/checklist.md`
+- `former child spec 002-index-tier-anomalies -> checklist.md`
+- `former child spec 004-frontmatter-indexing -> checklist.md`
 
-## Source: `002-index-tier-anomalies/checklist.md`
+## Source: `former child spec 002-index-tier-anomalies -> checklist.md`
 
 ---
-title: "Verification Checklist: Memory Index Deduplication and Tier Normalization [002-index-tier-anomalies/checklist]"
+title: "Verification Checklist: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> checklist]"
 description: "Verification Date: 2026-02-22"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
@@ -196,10 +196,10 @@ contextType: "implementation"
 | TBD | QA Lead | Pending | |
 <!-- /ANCHOR:sign-off -->
 
-## Source: `004-frontmatter-indexing/checklist.md`
+## Source: `former child spec 004-frontmatter-indexing -> checklist.md`
 
 ---
-title: "Verification Checklist: 004-frontmatter-indexing [004-frontmatter-indexing/checklist]"
+title: "Verification Checklist: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> checklist]"
 description: "Verification Date: 2026-02-22"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:

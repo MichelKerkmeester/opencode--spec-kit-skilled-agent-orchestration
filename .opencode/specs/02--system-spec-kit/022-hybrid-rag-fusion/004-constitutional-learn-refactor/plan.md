@@ -1,6 +1,8 @@
 ---
 title: "Implementation Plan: Refactor /memory:learn → Constitutional Memory Manager"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
+<!-- ANCHOR:plan -->
 # Implementation Plan
 
 ## Step 1: Rewrite `.opencode/command/memory/learn.md`
@@ -40,3 +42,4 @@ Complete replacement of the 620-line generic learning capture with a ~250-line c
 
 - Check no broken cross-references
 - Verify constitutional/ directory structure documented correctly
+<!-- /ANCHOR:plan -->

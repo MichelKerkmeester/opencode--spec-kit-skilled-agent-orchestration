@@ -1,6 +1,6 @@
 ---
 title: "Consolidated implementation-summary: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/implementation-summary.md]"
-description: "Consolidated from 004-spec-kit-templates/implementation-summary.md and 008-spec-kit-code-quality/implementation-summary.md."
+description: "Consolidated from implementation-summary.md (merged from the former templates phase) and implementation-summary.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated implementation-summary.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/implementation-summary.md`
-- `008-spec-kit-code-quality/implementation-summary.md`
+- `implementation-summary.md (merged from the former templates phase)`
+- `implementation-summary.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/implementation-summary.md`
+## Source: `implementation-summary.md (merged from the former templates phase)`
 
 ---
-title: "Implementation Summary [004-spec-kit-templates/implementation-summary.md]"
+title: "Implementation Summary [implementation-summary.md (merged from the former templates phase)]"
 description: "Documentation-only completion summary for Level 2 spec creation and retro ToC cleanup under SpecKit policy enforcement scope."
 trigger_phrases:
   - "implementation"
@@ -41,7 +41,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `02--system-spec-kit/022-hybrid-rag-fusion/007-spec-kit-templates` |
+| **Spec Folder** | 003-speckit-quality-and-standards |
 | **Completed** | 2026-02-22 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -51,17 +51,17 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This update delivered a docs-only policy enforcement pass for SpecKit artifacts. You now have a complete Level 2 documentation set in `007-spec-kit-templates`, and the previously identified non-research standard artifacts in `039`, `040`, and `041` no longer include ToC sections.
+This update delivered a docs-only policy enforcement pass for SpecKit artifacts. You now have a complete Level 2 documentation set in the historical templates phase, and the previously identified non-research standard artifacts in `039`, `040`, and `041` no longer include ToC sections.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/spec.md` | Created | Define requirements/scope for ToC policy enforcement and retro cleanup |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/plan.md` | Created | Document implementation and validation approach |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/tasks.md` | Created | Track execution tasks to completion |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/checklist.md` | Created | Record verification controls and status |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/implementation-summary.md` | Created | Capture delivery outcomes |
+| `spec.md (merged from the former templates phase)` | Created | Define requirements/scope for ToC policy enforcement and retro cleanup |
+| `plan.md (merged from the former templates phase)` | Created | Document implementation and validation approach |
+| `tasks.md (merged from the former templates phase)` | Created | Track execution tasks to completion |
+| `checklist.md (merged from the former templates phase)` | Created | Record verification controls and status |
+| `implementation-summary.md (merged from the former templates phase)` | Created | Capture delivery outcomes |
 | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Modified | Removed disallowed ToC sections |
 | `removed visual skill hardening docs` | Modified | Removed disallowed ToC sections |
 | `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/{spec,plan,tasks,checklist}.md` | Modified | Removed disallowed ToC sections |
@@ -83,7 +83,7 @@ The work was delivered in three steps: template-aligned doc creation in the new 
 | Decision | Why |
 |----------|-----|
 | Limit retro cleanup to standard artifact filenames only | Matches requested scope and avoids unrelated README/archive edits |
-| Preserve `research.md` and subtree exclusions (`memory/`, `scratch/`, `context/`) | Enforces explicit policy boundaries |
+| Preserve the research document and subtree exclusions (`memory/`, `scratch/`, `context/`) | Enforces explicit policy boundaries |
 | Use minimal ToC block removal pattern | Prevents content churn outside policy target |
 <!-- /ANCHOR:decisions -->
 
@@ -95,7 +95,7 @@ The work was delivered in three steps: template-aligned doc creation in the new 
 | Check | Result |
 |-------|--------|
 | ToC policy scan on scoped standard artifacts | PASS (no remaining ToC headings detected) |
-| `validate.sh` on `007-spec-kit-templates` | PASS WITH WARNINGS (exit 1; missing recommended acceptance scenarios and checklist `P0`/`P1` sections) |
+| `validate.sh` on the historical templates phase | PASS WITH WARNINGS (exit 1; missing recommended acceptance scenarios and checklist `P0`/`P1` sections) |
 | `validate.sh` on `039-sk-code-opencode-alignment-hardening` | FAIL (exit 2; `TEMPLATE_SOURCE` header missing reported across 6 files) |
 | `validate.sh` on removed visual skill hardening docs | FAIL (exit 2; `TEMPLATE_SOURCE` header missing reported across parent and phase docs; phase-link warning also present) |
 | `validate.sh` on `041-code-review-skill` | PASS |
@@ -111,10 +111,10 @@ The work was delivered in three steps: template-aligned doc creation in the new 
 3. **No memory save in this pass** Context persistence was not requested for this task.
 <!-- /ANCHOR:limitations -->
 
-## Source: `008-spec-kit-code-quality/implementation-summary.md`
+## Source: `implementation-summary.md (merged from former phase 008)`
 
 ---
-title: "Implementation Summary: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/implementation-summary.md]"
+title: "Implementation Summary: Spec Kit Code Quality Completion Run [implementation-summary.md (merged from former phase 008)]"
 description: "Baseline failures were stabilized, high-impact review findings were fixed, and validation gates were brought back to green with targeted modularization and documentation updates."
 trigger_phrases:
   - "implementation summary"
@@ -138,7 +138,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` |
+| **Spec Folder** | 003-speckit-quality-and-standards |
 | **Completed** | 2026-02-23 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -164,7 +164,7 @@ The review backlog was converted into concrete fixes across handlers, storage, u
 
 ### README and Standards Propagation
 
-Repository-owned README coverage under `system-spec-kit` was revalidated and modernized where drift existed. `scripts/ops/README.md` was rewritten to the active `sk-doc` structure and HVR style. High-visibility READMEs were normalized for style drift. Standards propagation guidance now includes explicit `verify_alignment_drift.py` completion-gate steps in both `system-spec-kit` and `sk-code--opencode` skill surfaces.
+Repository-owned README coverage under `system-spec-kit` was revalidated and modernized where drift existed. `operations README under scripts/ops` was rewritten to the active `sk-doc` structure and HVR style. High-visibility READMEs were normalized for style drift. Standards propagation guidance now includes explicit `verify_alignment_drift.py` completion-gate steps in both `system-spec-kit` and `sk-code--opencode` skill surfaces.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -200,21 +200,21 @@ When stricter validator rules surfaced fixture drift, fixtures were normalized t
 <!-- ANCHOR:merge-continuity -->
 ## Phase Merge Continuity (002 -> 008)
 
-Phase `009-spec-kit-code-quality` was merged into this canonical phase folder on 2026-02-23. The following artifacts were imported into `scratch/` to preserve evidence and root-doc snapshots:
+Phase retired phase-009 record was merged into this canonical phase folder on 2026-02-23. The following artifacts were imported into `scratch/` to preserve evidence and root-doc snapshots:
 
-- `scratch/from-009-global-quality-sweep.md`
-- `scratch/from-009-readme-audit-global.json`
-- `scratch/from-009-readme-audit-global.md`
-- `scratch/from-009-readme-audit.json`
-- `scratch/from-009-readme-audit.md`
-- `scratch/from-009-review-summary.md`
-- `scratch/from-009-verification-log.md`
-- `scratch/from-009-spec.md`
-- `scratch/from-009-plan.md`
-- `scratch/from-009-tasks.md`
-- `scratch/from-009-checklist.md`
-- `scratch/from-009-decision-record.md`
-- `scratch/from-009-implementation-summary.md`
+- `phase-009 scratch artifact "from-009-global-quality-sweep.md`
+- `phase-009 scratch artifact "from-009-readme-audit-global.json`
+- `phase-009 scratch artifact "from-009-readme-audit-global.md`
+- `phase-009 scratch artifact "from-009-readme-audit.json`
+- `phase-009 scratch artifact "from-009-readme-audit.md`
+- `phase-009 scratch artifact "from-009-review-summary.md`
+- `phase-009 scratch artifact "from-009-verification-log.md`
+- `phase-009 scratch artifact "from-009-spec.md`
+- `phase-009 scratch artifact "from-009-plan.md`
+- `phase-009 scratch artifact "from-009-tasks.md`
+- `phase-009 scratch artifact "from-009-checklist.md`
+- `phase-009 scratch artifact "from-009-decision-record.md`
+- `phase-009 scratch artifact "from-009-implementation-summary.md`
 <!-- /ANCHOR:merge-continuity -->
 
 ---
@@ -233,7 +233,7 @@ Phase `009-spec-kit-code-quality` was merged into this canonical phase folder on
 | `bash scripts/tests/test-phase-system.sh` | PASS (5/5) |
 | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server --root .opencode/skill/system-spec-kit/scripts --fail-on-warn` | PASS with 0 errors and 0 warnings |
 | README sweep via `validate_document.py` on 66 scoped files | PASS (66/66) |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` | PASS |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` | PASS |
 <!-- /ANCHOR:verification -->
 
 ---

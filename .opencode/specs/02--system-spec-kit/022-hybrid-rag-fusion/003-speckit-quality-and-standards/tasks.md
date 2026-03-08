@@ -1,6 +1,6 @@
 ---
 title: "Consolidated tasks: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/tasks.md]"
-description: "Consolidated from 004-spec-kit-templates/tasks.md and 008-spec-kit-code-quality/tasks.md."
+description: "Consolidated from tasks.md (merged from the former templates phase) and tasks.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "tasks-core + level2-verify | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated tasks.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/tasks.md`
-- `008-spec-kit-code-quality/tasks.md`
+- `tasks.md (merged from the former templates phase)`
+- `tasks.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/tasks.md`
+## Source: `tasks.md (merged from the former templates phase)`
 
 ---
-title: "Tasks: SpecKit Template ToC Policy Enforcement [004-spec-kit-templates/tasks.md]"
+title: "Tasks: SpecKit Template ToC Policy Enforcement [tasks.md (merged from the former templates phase)]"
 description: "Execution checklist for Level 2 documentation creation, retro ToC cleanup, and validation reporting."
 trigger_phrases:
   - "tasks"
@@ -63,11 +63,11 @@ contextType: "implementation"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Documentation Updates
 
-- [x] T004 Create `spec.md` in `007-spec-kit-templates` with task-specific Level 2 content.
-- [x] T005 Create `plan.md` in `007-spec-kit-templates` with execution and verification flow.
-- [x] T006 Create `tasks.md` in `007-spec-kit-templates` and mark execution state.
-- [x] T007 Create `checklist.md` in `007-spec-kit-templates` with evidence-backed verification status.
-- [x] T008 Create `implementation-summary.md` in `007-spec-kit-templates`.
+- [x] T004 Create `spec.md` in the historical templates phase with task-specific Level 2 content.
+- [x] T005 Create `plan.md` in the historical templates phase with execution and verification flow.
+- [x] T006 Create `tasks.md` in the historical templates phase and mark execution state.
+- [x] T007 Create `checklist.md` in the historical templates phase with evidence-backed verification status.
+- [x] T008 Create `implementation-summary.md` in the historical templates phase.
 - [x] T009 Remove ToC sections from scoped non-research standard artifacts under `039`.
 - [x] T010 Remove ToC sections from scoped non-research standard artifacts under `040`.
 - [x] T011 Remove ToC sections from scoped non-research standard artifacts under `041`.
@@ -79,7 +79,7 @@ contextType: "implementation"
 ## Phase 3: Verification
 
 - [x] T012 Run ToC policy scan to confirm no ToC sections remain in scoped standard artifacts.
-- [x] T013 Run `validate.sh` for `007-spec-kit-templates`.
+- [x] T013 Run `validate.sh` for the historical templates phase.
 - [x] T014 Run `validate.sh` for `039-sk-code-opencode-alignment-hardening`.
 - [x] T015 Run `validate.sh` for the removed visual skill hardening docs.
 - [x] T016 Run `validate.sh` for `041-code-review-skill`.
@@ -106,10 +106,10 @@ contextType: "implementation"
 - **Verification**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
 
-## Source: `008-spec-kit-code-quality/tasks.md`
+## Source: `tasks.md (merged from former phase 008)`
 
 ---
-title: "Tasks: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/tasks.md]"
+title: "Tasks: Spec Kit Code Quality Completion Run [tasks.md (merged from former phase 008)]"
 description: "Execution-ready task list mapping baseline stabilization, read-only review coverage, moderate modularization, README modernization, standards propagation, final verification, and context save."
 trigger_phrases:
   - "tasks"
@@ -145,7 +145,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-continuity -->
 ## Phase Continuity Notice
 
-As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-quality` for all ongoing work in this stream. Continue execution, verification, and documentation updates only in this `008` folder.
+As of 2026-02-23, merged phase-008 content supersedes retired phase-009 record for all ongoing work in this stream. Continue execution, verification, and documentation updates only in this the canonical merged phase folder.
 <!-- /ANCHOR:phase-continuity -->
 
 ---
@@ -157,7 +157,7 @@ As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-qual
 - [x] T002 Fix graph search SQL/lookup contract failure (`.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`).
 - [x] T003 Fix query expander single-word variant contract failure (`.opencode/skill/system-spec-kit/mcp_server/lib/search/query-expander.ts`).
 - [x] T004 Resolve modularization gate regression through `memory-index` seam extraction (`.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts`).
-- [x] T005 Re-run focused triad tests and record pass outputs (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/`).
+- [x] T005 Re-run focused triad tests and record pass outputs (`scratch/ (merged from former phase 008)`).
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -165,14 +165,14 @@ As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-qual
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Full Read-Only Review Wave (Max 6 Parallel Lanes)
 
-- [x] T006 Define six-lane bounded-summary schema and lane ownership (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/`).
+- [x] T006 Define six-lane bounded-summary schema and lane ownership (`scratch/ (merged from former phase 008)`).
 - [x] T007 [P] Lane 1 review: search/ranking logic seams (read-only) (`.opencode/skill/system-spec-kit/mcp_server/lib/search/`).
 - [x] T008 [P] Lane 2 review: handler and persistence seams (read-only) (`.opencode/skill/system-spec-kit/mcp_server/handlers/`).
 - [x] T009 [P] Lane 3 review: parsing/indexing seams (read-only) (`.opencode/skill/system-spec-kit/mcp_server/lib/parsing/`, `.opencode/skill/system-spec-kit/mcp_server/lib/storage/`).
 - [x] T010 [P] Lane 4 review: scripts/validation seams (read-only) (`.opencode/skill/system-spec-kit/scripts/`).
 - [x] T011 [P] Lane 5 review: documentation/README seams (read-only) (`.opencode/skill/system-spec-kit/**/README.md`).
 - [x] T012 [P] Lane 6 review: test reliability/flaky risk seams (read-only) (`.opencode/skill/system-spec-kit/mcp_server/tests/`).
-- [x] T013 Consolidate lane findings into prioritized remediation queue and map to requirements (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/tasks.md`).
+- [x] T013 Consolidate lane findings into prioritized remediation queue and map to requirements (`tasks.md (merged from former phase 008)`).
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -193,7 +193,7 @@ As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-qual
 
 - [x] T018 Generate README inventory with enforced exclusions (`node_modules`, `dist`, cache-like directories) (`.opencode/skill/system-spec-kit/`).
 - [x] T019 Modernize in-scope READMEs for clarity/consistency in touched areas (`.opencode/skill/system-spec-kit/**/README.md`).
-- [x] T020 Verify touched README set excludes vendor/generated trees and record manifest (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/`).
+- [x] T020 Verify touched README set excludes vendor/generated trees and record manifest (`scratch/ (merged from former phase 008)`).
 <!-- /ANCHOR:phase-4 -->
 
 ---
@@ -202,8 +202,8 @@ As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-qual
 ## Phase 5: `sk-code--opencode` Propagation (Conditional)
 
 - [x] T021 Compare changed implementation patterns against current `sk-code--opencode` references/checklists (`.opencode/skill/sk-code--opencode/references/` and `assets/checklists/`).
-- [x] T022 Apply standards propagation updates if net-new enforceable patterns are introduced (`.opencode/skill/sk-code--opencode/README.md`, `SKILL.md`, selected references).
-- [x] T023 Record propagation evidence in phase artifacts (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/checklist.md`).
+- [x] T022 Apply standards propagation updates if net-new enforceable patterns are introduced (`.opencode/skill/sk-code--opencode/README.md`, the skill guide, selected references).
+- [x] T023 Record propagation evidence in phase artifacts (`checklist.md (merged from former phase 008)`).
 <!-- /ANCHOR:phase-5 -->
 
 ---
@@ -211,11 +211,11 @@ As of 2026-02-23, `008-spec-kit-code-quality` supersedes `009-spec-kit-code-qual
 <!-- ANCHOR:phase-6 -->
 ## Phase 6: Final Verification, Documentation Closure, and Context Save
 
-- [x] T024 Run final command matrix (focused triad, modularization, lint, full suite) and capture evidence (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/scratch/`).
-- [x] T025 Validate phase folder docs (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .../008-spec-kit-code-quality`).
-- [x] T026 Create and populate `implementation-summary.md` after implementation completion (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/implementation-summary.md`).
-- [x] T027 Execute memory save script for this phase (`node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality`).
-- [x] T028 Prepare concise closure report with files changed and validation results (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/checklist.md`).
+- [x] T024 Run final command matrix (focused triad, modularization, lint, full suite) and capture evidence (`scratch/ (merged from former phase 008)`).
+- [x] T025 Validate phase folder docs (`bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .../merged phase-008 content`).
+- [x] T026 Create and populate `implementation-summary.md` after implementation completion (`implementation-summary.md (merged from former phase 008)`).
+- [x] T027 Execute memory save script for this phase (`node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards`).
+- [x] T028 Prepare concise closure report with files changed and validation results (`checklist.md (merged from former phase 008)`).
 <!-- /ANCHOR:phase-6 -->
 
 ---

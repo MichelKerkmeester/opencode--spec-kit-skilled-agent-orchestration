@@ -17,7 +17,7 @@
 - Created `check-architecture-boundaries.ts` enforcing GAP A (shared/ neutrality) and GAP B (wrapper-only) — integrated into the `scripts/` workspace check pipeline
 - Synced Phase 008 checklist: T046-T049 marked done, CHK-300-304 verified, 8 stale P2 items fixed
 - Synced Phase 004 checklist: 26 items marked `[x]` with evidence (from 4/88 to 30/88)
-- Updated `../011-feature-catalog/feature_catalog.md` and feature-catalog summary_of_new_features: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
+- Updated feature catalog document in folder 011-feature-catalog and feature-catalog summary_of_new_features: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
 - Expanded implementation-summary.md with full implementation details and rollback documentation
 - Updated 7 feature catalog subfolder files (01-07) to "IMPLEMENTED" status
 - Fixed modularization test limits for Sprint 019 file growth
@@ -43,7 +43,7 @@
 
 ### Tasks Completed This Session
 - T046-T049 (Phase 008): Architecture boundary enforcement — checker created, pipeline integrated, docs updated
-- T126: `../011-feature-catalog/feature_catalog.md` updated with 7 implemented Sprint 019 features
+- T126: feature catalog document in folder 011-feature-catalog updated with 7 implemented Sprint 019 features
 - T127: feature-catalog summary_of_new_features updated from PLANNED to IMPLEMENTED
 - T128: implementation-summary.md expanded with full details and rollback docs
 - Post-review remediation (2026-03-06): fixed schema/public contract drift, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup
@@ -69,7 +69,7 @@
 | `checklist.md` | Removed incorrect `88/88 verified` summary; added remediation note and targeted verification status |
 | `implementation-summary.md` | Expanded from stub to full summary |
 | `feature-catalog summary_of_new_features` | 7 features → IMPLEMENTED |
-| `../011-feature-catalog/feature_catalog.md` | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
+| feature catalog document in folder 011-feature-catalog | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
 | `011-feature-catalog/23-extra-features-sprint-019/01-07*.md` | 7 files → IMPLEMENTED |
 | `mcp_server/package.json` | Added `check` and `check:full` validation commands |
 | `mcp_server/tests/checkpoints-extended.vitest.ts` | Updated checkpoint delete happy-path tests for `confirmName` |

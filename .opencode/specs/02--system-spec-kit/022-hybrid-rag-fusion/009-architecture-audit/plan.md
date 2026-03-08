@@ -134,7 +134,7 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 
 #### P0 Blockers
 - [x] Integrate `check-api-boundary.sh` into `npm run check` pipeline for bidirectional enforcement.
-- [x] Add missing `reindex-embeddings.ts` exception to `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md`.
+- [x] Add missing `reindex-embeddings.ts` exception to .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md.
 - [x] Expand `PROHIBITED_PATTERNS` to cover `@spec-kit/mcp-server/core/*` paths.
 
 #### P1 Should-Fix
@@ -148,7 +148,7 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 #### P2 Nice-to-Have
 - [x] Add block comment tracking to import checker.
 - [x] Add behavioral tests for `quality-extractors.ts` edge cases.
-- [x] Add bidirectional cross-links in `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md`.
+- [x] Add bidirectional cross-links in .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md.
 - [x] Define growth policy for `handler-utils.ts`.
 - [x] Consider AST-based parsing upgrade for enforcement script.
 - [x] Add transitive dependency checks for re-export evasion.
@@ -196,7 +196,7 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 
 #### Enforcement Automation and Documentation Sync
 - [x] Ensure mandatory CI enforcement runs boundary checks on every PR and blocks merge on violations. [DONE: `.github/workflows/system-spec-kit-boundary-enforcement.yml` now prebuilds `shared` and `mcp_server` declaration outputs on clean checkouts before running scripts boundary checks]
-- [x] Update `.opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md` exception table and allowlist review metadata after migration. [DONE: current exceptions table aligned with allowlist; retained wildcard eval exceptions reviewed `2026-03-05`]
+- [x] Update .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md exception table and allowlist review metadata after migration. [DONE: current exceptions table aligned with allowlist; retained wildcard eval exceptions reviewed `2026-03-05`]
 - [x] Re-run `npx tsc --noEmit` and `npm run check` with updated exception set; capture evidence in checklist. [DONE: passed `npm run check --workspace=scripts`, `npm run check:ast --workspace=scripts`, `npx tsc --noEmit`, and targeted import-policy rules vitest on 2026-03-06]
 
 ### Phase 8: Strict-Pass Remediation

@@ -19,4 +19,4 @@ This folder consolidates:
   - `sources/002-hybrid-rag-fusion/`
   - `sources/006-hybrid-rag-fusion-logic-improvements/`
 
-All original artifacts (including `feature-catalog.md`, `handover.md`, `supplemental-index.md`, `global-quality-sweep.md`, changelog files, and nested research/scratch/context/supplemental/memory content) are preserved in `sources/`.
+All original artifacts (including feature-catalog.md, handover.md, supplemental-index.md, global-quality-sweep.md, changelog files, and nested research/scratch/context/supplemental/memory content) are preserved in `sources/`.

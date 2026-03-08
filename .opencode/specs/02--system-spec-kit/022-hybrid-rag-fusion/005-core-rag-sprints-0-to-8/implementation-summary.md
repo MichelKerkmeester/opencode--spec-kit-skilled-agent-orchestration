@@ -16,21 +16,21 @@ contextType: "implementation"
 This file consolidates `implementation-summary.md` from sprint folders 010 through 018.
 
 Source folders:
-- `006-measurement-foundation/implementation-summary.md`
-- `011-graph-signal-activation/implementation-summary.md`
-- `012-scoring-calibration/implementation-summary.md`
-- `013-query-intelligence/implementation-summary.md`
-- `014-feedback-and-quality/implementation-summary.md`
-- `015-pipeline-refactor/implementation-summary.md`
-- `016-indexing-and-graph/implementation-summary.md`
-- `017-long-horizon/implementation-summary.md`
-- `018-deferred-features/implementation-summary.md`
+- 006-measurement-foundation/implementation-summary.md
+- 011-graph-signal-activation/implementation-summary.md
+- 012-scoring-calibration/implementation-summary.md
+- 013-query-intelligence/implementation-summary.md
+- 014-feedback-and-quality/implementation-summary.md
+- 015-pipeline-refactor/implementation-summary.md
+- 016-indexing-and-graph/implementation-summary.md
+- 017-long-horizon/implementation-summary.md
+- 018-deferred-features/implementation-summary.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/implementation-summary.md`
+Source: 006-measurement-foundation/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 0 — Measurement Foundation"
@@ -109,7 +109,7 @@ Sprint 0 delivered the measurement foundation for the Hybrid RAG Fusion Refineme
 
 ## 011-graph-signal-activation
 
-Source: `011-graph-signal-activation/implementation-summary.md`
+Source: 011-graph-signal-activation/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 1 — Graph Signal Activation"
@@ -191,7 +191,7 @@ Sprint 1 activated the causal graph's structural connectivity as a 5th RRF chann
 
 ## 012-scoring-calibration
 
-Source: `012-scoring-calibration/implementation-summary.md`
+Source: 012-scoring-calibration/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 2 — Scoring Calibration"
@@ -289,7 +289,7 @@ Sprint 2 resolved the 15:1 magnitude mismatch between RRF and composite scoring 
 
 ## 013-query-intelligence
 
-Source: `013-query-intelligence/implementation-summary.md`
+Source: 013-query-intelligence/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 3 — Query Intelligence"
@@ -384,7 +384,7 @@ Sprint 3 added query-level intelligence to the retrieval pipeline: a 3-tier comp
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/implementation-summary.md`
+Source: 014-feedback-and-quality/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 4 — Feedback and Quality"
@@ -410,7 +410,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality |
+| **Spec Folder** | 005-core-rag-sprints-0-to-8 |
 | **Completed** | 2026-02-28 |
 | **Level** | 2 |
 | **Total New Tests** | 315 |
@@ -572,7 +572,7 @@ Sprint 4: Feedback and Quality
 
 ## 015-pipeline-refactor
 
-Source: `015-pipeline-refactor/implementation-summary.md`
+Source: 015-pipeline-refactor/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 5 — Pipeline Refactor"
@@ -788,7 +788,7 @@ Active in typical deployment: 4-6 (≤6 threshold met).
 | P2 Items | 3 | 3/3 |
 | Tasks | 15 | 15/15 |
 | New Tests | 304+ | Passing in Sprint 5 test files |
-| TypeScript | Clean | `tsc --noEmit` zero errors |
+| TypeScript | Clean | `tsc --noEmit zero errors |
 
 ---
 
@@ -806,7 +806,7 @@ Active in typical deployment: 4-6 (≤6 threshold met).
 
 ## 016-indexing-and-graph
 
-Source: `016-indexing-and-graph/implementation-summary.md`
+Source: 016-indexing-and-graph/implementation-summary.md`
 
 ---
 title: "Implementation Summary: Sprint 6a — Indexing and Graph"
@@ -975,13 +975,13 @@ Sprint 6b items remain pending, gated on feasibility spike (T-S6-SPIKE):
 - **Plan**: See `plan.md`
 - **Tasks**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
+- **Parent Tasks**: See `../000-feature-overview/tasks.md
 
 ---
 
 ## 017-long-horizon
 
-Source: `017-long-horizon/implementation-summary.md`
+Source: 017-long-horizon/implementation-summary.md`
 
 ---
 title: "Implementation Summary: Sprint 7 — Long Horizon"
@@ -1084,7 +1084,7 @@ Sprint 7 implemented the final phase (Phase 8 of 8) of the Hybrid RAG Fusion Ref
 
 **61 unique SPECKIT_ flags** found across the codebase.
 
-**Disposition rollup from the sunset-candidate set (see `scratch/w2-a10-flag-audit.md`):**
+**Disposition rollup from the sunset-candidate set (see scratch/w2-a10-flag-audit.md):**
 
 - GRADUATE: 27
 - REMOVE: 9
@@ -1094,7 +1094,7 @@ Sprint 7 implemented the final phase (Phase 8 of 8) of the Hybrid RAG Fusion Ref
 
 **Verification**: `grep -rn "SPECKIT_" mcp_server/ --include="*.ts" | grep -v node_modules`
 
-**Key recommendations**: 27 flags are ready to graduate to permanent-ON defaults (removing flag checks). 9 flags are identified as dead code for removal. 3 flags remain active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`). Full audit in `scratch/w2-a10-flag-audit.md`.
+**Key recommendations**: 27 flags are ready to graduate to permanent-ON defaults (removing flag checks). 9 flags are identified as dead code for removal. 3 flags remain active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`). Full audit in scratch/w2-a10-flag-audit.md.
 
 ### T006a: DEF-014 structuralFreshness() Disposition
 
@@ -1199,16 +1199,16 @@ Sprint 7 is the final sprint. No successor sprint exists. Items deferred from Sp
 - **Plan**: See `plan.md`
 - **Tasks**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See `../000-feature-overview/tasks.md`
-- **Decisions**: See `scratch/w2-a9-decisions.md`
-- **Flag Audit**: See `scratch/w2-a10-flag-audit.md`
-- **R5 Analysis**: See `scratch/w1-a5-r5-decision.md`
+- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Decisions**: See scratch/w2-a9-decisions.md
+- **Flag Audit**: See scratch/w2-a10-flag-audit.md
+- **R5 Analysis**: See `scratch/w1-a5-r5-decision.md
 
 ---
 
 ## 018-deferred-features
 
-Source: `018-deferred-features/implementation-summary.md`
+Source: 018-deferred-features/implementation-summary.md
 
 ---
 title: "Implementation Summary: Sprint 8 - Deferred Features"
@@ -1233,7 +1233,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 018-deferred-features |
+| **Spec Folder** | 005-core-rag-sprints-0-to-8 |
 | **Completed** | 2026-03-01 |
 | **Level** | 1 |
 | **Status** | In Progress |
@@ -1248,7 +1248,7 @@ This update adds the missing Level 1 implementation summary document for Sprint 
 
 ### Validation Readiness Artifact
 
-You can now validate phase `018-deferred-features` without failing the required-file check for a missing `implementation-summary.md`.
+You can now validate phase 018-deferred-features` without failing the required-file check for a missing `implementation-summary.md`.
 
 ### Files Changed
 

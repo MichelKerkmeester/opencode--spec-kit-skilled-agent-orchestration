@@ -1,6 +1,6 @@
 ---
 title: "Consolidated spec: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/spec.md]"
-description: "Consolidated from 004-spec-kit-templates/spec.md and 008-spec-kit-code-quality/spec.md."
+description: "Consolidated from spec.md (merged from the former templates phase) and spec.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "consolidated"
@@ -11,14 +11,14 @@ contextType: "implementation"
 # Consolidated spec.md
 
 This document consolidates source documents from:
-- `004-spec-kit-templates/spec.md`
-- `008-spec-kit-code-quality/spec.md`
+- `spec.md (merged from the former templates phase)`
+- `spec.md (merged from former phase 008)`
 
-## Source: `004-spec-kit-templates/spec.md`
+## Source: `spec.md (merged from the former templates phase)`
 
 ---
-title: "Feature Specification: SpecKit Template ToC Policy Enforcement [004-spec-kit-templates/spec.md]"
-description: "Level 2 documentation-only scope to enforce the policy that only research.md may contain a ToC and to retro-clean non-research spec artifacts."
+title: "Feature Specification: SpecKit Template ToC Policy Enforcement [spec.md (merged from the former templates phase)]"
+description: "Level 2 documentation-only scope to enforce the policy that only research document may contain a ToC and to retro-clean non-research spec artifacts."
 trigger_phrases:
   - "spec kit"
   - "templates"
@@ -52,7 +52,7 @@ contextType: "decision"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Spec-folder artifacts currently contain inconsistent Table of Contents sections in non-`research.md` files, which violates the target policy and creates validation/doc-style drift. The target spec folder for this work is also empty and needs complete Level 2 documentation for traceability.
+Spec-folder artifacts currently contain inconsistent Table of Contents sections in non-research documents, which violates the target policy and creates validation/doc-style drift. The target spec folder for this work is also empty and needs complete Level 2 documentation for traceability.
 
 ### Purpose
 Deliver a documentation-only update that applies the ToC policy consistently and records the work in a complete Level 2 spec folder.
@@ -65,23 +65,23 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 
 ### In Scope
 - Populate this folder with Level 2 documentation files using system-spec-kit template structure.
-- Remove ToC sections from non-`research.md` standard artifacts in the specified existing spec folders.
+- Remove ToC sections from non-research standard artifacts in the specified existing spec folders.
 - Validate all affected folders with `validate.sh` and capture outcomes.
 
 ### Out of Scope
 - Any code or script logic changes in skill tooling.
-- Any edits to `research.md` files.
+- Any edits to research documents.
 - Any edits in `memory/`, `scratch/`, or `context/` subtrees.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/spec.md` | Create | Level 2 specification for this doc-only change |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/plan.md` | Create | Implementation/verification plan |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/tasks.md` | Create | Task tracking for execution |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/checklist.md` | Create | Verification checklist with evidence |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-spec-kit-templates/implementation-summary.md` | Create | Completion summary and outcomes |
+| `spec.md (merged from the former templates phase)` | Create | Level 2 specification for this doc-only change |
+| `plan.md (merged from the former templates phase)` | Create | Implementation/verification plan |
+| `tasks.md (merged from the former templates phase)` | Create | Task tracking for execution |
+| `checklist.md (merged from the former templates phase)` | Create | Verification checklist with evidence |
+| `implementation-summary.md (merged from the former templates phase)` | Create | Completion summary and outcomes |
 | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Modify | Remove disallowed ToC sections |
 | `removed visual skill hardening docs` | Modify | Remove disallowed ToC sections |
 | `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/{spec,plan,tasks,checklist}.md` | Modify | Remove disallowed ToC sections |
@@ -96,9 +96,9 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Create complete Level 2 docs in `007-spec-kit-templates` | All required files exist and contain non-placeholder task-specific content |
+| REQ-001 | Create complete Level 2 docs in the historical templates phase | All required files exist and contain non-placeholder task-specific content |
 | REQ-002 | Remove ToC sections from specified non-research artifacts | No `## TABLE OF CONTENTS` remains in the listed standard artifacts |
-| REQ-003 | Preserve policy boundaries | No changes made to `research.md`, `memory/`, `scratch/`, or `context/` |
+| REQ-003 | Preserve policy boundaries | No changes made to the research document, `memory/`, `scratch/`, or `context/` |
 | REQ-004 | Validate affected folders | `validate.sh` runs for all four target folders and outcomes are recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -114,7 +114,7 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: New `007-spec-kit-templates` folder contains `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+- **SC-001**: New the historical templates phase folder contains `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 - **SC-002**: All listed offender files no longer include ToC sections.
 - **SC-003**: All four requested `validate.sh` runs execute and outcomes are documented.
 - **SC-004**: No out-of-scope file classes are modified.
@@ -157,7 +157,7 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 
 ### Data Boundaries
 - `README.md` files under spec folders may still contain ToC and are out of this cleanup scope.
-- `research.md` is explicitly allowed to contain ToC and must remain unchanged.
+- the research document is explicitly allowed to contain ToC and must remain unchanged.
 
 ### Error Scenarios
 - Validation script may return warnings for pre-existing content style issues unrelated to this policy.
@@ -173,10 +173,10 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 <!-- ANCHOR:acceptance-scenarios -->
 ## L2: ACCEPTANCE SCENARIOS
 
-1. **Given** the empty `007-spec-kit-templates` folder, **When** Level 2 docs are authored, **Then** `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` all exist with real content.
+1. **Given** the empty the historical templates phase folder, **When** Level 2 docs are authored, **Then** `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` all exist with real content.
 2. **Given** scoped standard artifacts in `039`, **When** ToC cleanup is applied, **Then** no `## TABLE OF CONTENTS` section remains in `spec/plan/tasks/checklist/decision-record/implementation-summary`.
 3. **Given** scoped standard artifacts in `040` and `041`, **When** ToC cleanup is applied, **Then** no `## TABLE OF CONTENTS` section remains in the listed non-research standard artifacts.
-4. **Given** the ToC policy exception for `research.md`, **When** cleanup runs, **Then** `research.md` files remain untouched.
+4. **Given** the ToC policy exception for the research document, **When** cleanup runs, **Then** research documents remain untouched.
 5. **Given** the four requested validation commands, **When** `validate.sh` is executed, **Then** each folder returns a recorded outcome for reporting.
 <!-- /ANCHOR:acceptance-scenarios -->
 
@@ -201,10 +201,10 @@ Deliver a documentation-only update that applies the ToC policy consistently and
 - None.
 <!-- /ANCHOR:questions -->
 
-## Source: `008-spec-kit-code-quality/spec.md`
+## Source: `spec.md (merged from former phase 008)`
 
 ---
-title: "Feature Specification: Spec Kit Code Quality Completion Run [008-spec-kit-code-quality/spec.md]"
+title: "Feature Specification: Spec Kit Code Quality Completion Run [spec.md (merged from former phase 008)]"
 description: "Phase 008 executes full code-quality hardening for system-spec-kit and mcp_server: stabilize baseline failing tests, complete read-only review coverage, apply moderate modularization, modernize repo-owned READMEs, propagate sk-code--opencode standards when needed, and close with verification plus context save."
 trigger_phrases:
   - "spec kit code quality"
@@ -225,7 +225,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-Phase `008-spec-kit-code-quality` is the closure hardening phase under parent `139-hybrid-rag-fusion`, following completed predecessor phase `007-spec-kit-templates`. The phase will execute a strict quality run across `.opencode/skill/system-spec-kit` and `mcp_server`, with baseline defect stabilization, broad read-only review coverage, bounded modularization, documentation modernization, standards propagation, and final verification/context persistence.
+Phase merged phase-008 content is the closure hardening phase under parent `139-hybrid-rag-fusion`, following completed predecessor phase the historical templates phase. The phase will execute a strict quality run across `.opencode/skill/system-spec-kit` and `mcp_server`, with baseline defect stabilization, broad read-only review coverage, bounded modularization, documentation modernization, standards propagation, and final verification/context persistence.
 
 **Key Decisions**: Baseline-first defect stabilization before structural changes; maximum six parallel read-only review lanes with bounded summaries.
 
@@ -242,8 +242,8 @@ Phase `008-spec-kit-code-quality` is the closure hardening phase under parent `1
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-23 |
-| **Parent Spec** | `../spec.md` |
-| **Predecessor Phase** | `../007-spec-kit-templates` (Complete) |
+| **Parent Spec** | the parent spec document |
+| **Predecessor Phase** | the historical templates phase (Complete) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -287,8 +287,8 @@ Deliver a controlled completion run that removes blocking quality debt, hardens 
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts` | Modify | Moderate modularization for line-limit maintainability gate |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/{graph-search-fn,query-expander,memory-save-extended,modularization}.vitest.ts` | Modify | Keep failing contracts and modularization guardrails aligned to intended behavior |
 | `.opencode/skill/system-spec-kit/**/README.md` (repo-owned only) | Modify | Modernize structure/clarity for maintained modules only |
-| `.opencode/skill/sk-code--opencode/{README.md,SKILL.md,references/**/*.md}` | Conditional Modify | Propagate new enforceable standards if quality run introduces novel patterns |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/{spec,plan,tasks,checklist,decision-record,implementation-summary}.md` | Create/Modify | Phase documentation and closure evidence |
+| `.opencode/skill/sk-code--opencode/{README.md,skill guide,references/**/*.md}` | Conditional Modify | Propagate new enforceable standards if quality run introduces novel patterns |
+| `merged phase-008 root docs` | Create/Modify | Phase documentation and closure evidence |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -306,7 +306,7 @@ Deliver a controlled completion run that removes blocking quality debt, hardens 
 | REQ-004 | Enforce README modernization scope boundaries | Only repo-owned READMEs under `system-spec-kit` are updated; no vendor/generated README files are modified |
 | REQ-005 | Preserve behavior/security contracts | Path security, indexing safety, and existing MCP response contracts remain green after changes |
 | REQ-006 | Execute final verification matrix | Lint/tests/spec validation commands complete with no unresolved P0 failures |
-| REQ-007 | Save final context with official script | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` succeeds |
+| REQ-007 | Save final context with official script | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/003-speckit-quality-and-standards` succeeds |
 
 ### P1 - Required (complete OR user-approved deferral)
 

@@ -34,7 +34,7 @@ Refactor `/memory:learn` from a generic learning capture command (pattern, mista
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-23 |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | Parent spec document |
 | **Predecessor Phase** | `../008-spec-kit-code-quality` (Complete) |
 <!-- /ANCHOR:metadata -->
 

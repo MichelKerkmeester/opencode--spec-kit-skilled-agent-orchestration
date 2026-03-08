@@ -436,6 +436,6 @@ These vectors cannot be caught by static analysis and are accepted as inherent l
 
 ### Implementation
 
-- Merged from former `scratch/merged-009-architecture-audit/decision-record.md` ADR-001.
+- Merged from former scratch/merged-009-architecture-audit/decision-record.md ADR-001.
 - Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
 <!-- /ANCHOR:adr-006 -->

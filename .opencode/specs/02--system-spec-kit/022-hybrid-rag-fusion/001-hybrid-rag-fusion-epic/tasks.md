@@ -87,7 +87,7 @@ contextType: "implementation"
 - [x] T000d [W-C] Curate diverse ground truth query set — manually create ≥15 natural-language queries covering: graph relationship queries ("what decisions led to X?"), temporal queries ("what was discussed last week?"), cross-document queries ("how does A relate to B?"), and hard negatives; minimum ≥5 per intent type, ≥3 complexity tiers (simple factual, moderate relational, complex multi-hop) [2-3h] {} — G-NEW-1/G-NEW-3
   - Acceptance: query set JSON with `intent_type`, `complexity_tier`, `expected_result_ids` fields per query
   - Feeds into T007 synthetic ground truth generation and T008 BM25 baseline
-- [x] T000e [W-C] G-NEW-2 pre-analysis: Agent consumption pattern survey — lightweight analysis of how AI agents currently consume memory search results: What query patterns do agents use? What results do they select vs ignore? What retrieval failures are common? Document findings in `scratch/agent-consumption-survey.md` [3-4h] {} — G-NEW-2
+- [x] T000e [W-C] G-NEW-2 pre-analysis: Agent consumption pattern survey — lightweight analysis of how AI agents currently consume memory search results: What query patterns do agents use? What results do they select vs ignore? What retrieval failures are common? Document findings in scratch/agent-consumption-survey.md [3-4h] {} — G-NEW-2
   - Findings feed into ground truth design (T007) and R13 eval query design (T004-T006)
   - Full G-NEW-2 analysis (8-12h) remains in Sprint 1 (T012); this is scoping pre-work only
 - [x] T000g [W-E] Latency baseline recording — record latency baselines in R13 eval logging framework [2-3h] {T001, T003} — Baseline
@@ -379,13 +379,13 @@ contextType: "implementation"
   - Sprint: Cross-cutting (all sprints) | Priority: Low
   - Update: configuration guide, troubleshooting playbook, migration notes
   - Cadence: Update at each sprint gate review
-- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate `feature.md` for every numbered feature folder in `011-feature-catalog/` using canonical sections from `feature_catalog.md` and optional enrichments from `summary_of_new_features.md` [6-10h] {} — DOC-01 (completed 2026-03-04)
+- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate feature.md for every numbered feature folder in `011-feature-catalog/` using canonical sections from feature_catalog.md and optional enrichments from summary_of_new_features.md [6-10h] {} — DOC-01 (completed 2026-03-04)
   - Tooling: cli-gemini workflow with `gemini-3.1-pro-preview` + deterministic local mapping/validation pass
   - Output contract: each artifact includes title, canonical documentation, new/updated context, and source metadata
 - [x] T061a [W-D] Resolve numbering drift in feature catalog folders to preserve strict `##/###` order mapping [0.5-1h] {T061} — DOC-01 (completed 2026-03-04)
   - Applied correction: `16-tooling-and-scripts` 02/03 folder swap (`architecture-boundary-enforcement` and `progressive-validation-for-spec-documents`)
 - [x] T061b [W-D] Coverage verification for DOC-01 artifact generation [0.5h] {T061, T061a} — DOC-01 (completed 2026-03-04)
-  - Verification result: canonical features=141, `feature.md` written=141, missing target folders=0, extra folders without `feature.md`=0
+  - Verification result: canonical features=141, feature.md written=141, missing target folders=0, extra folders without feature.md=0
 <!-- /ANCHOR:cross-cutting-tasks -->
 
 ---
@@ -564,9 +564,9 @@ contextType: "implementation"
 
 ## Consolidation Tasks (2026-02-22)
 
-- [x] Merge command-alignment outcomes into `supplemental/command-alignment-summary.md`
-- [x] Merge non-skill-graph outcomes into `supplemental/non-skill-graph-consolidation-summary.md`
-- [x] Add `supplemental-index.md` and link consolidated evidence
+- [x] Merge command-alignment outcomes into supplemental/command-alignment-summary.md
+- [x] Merge non-skill-graph outcomes into supplemental/non-skill-graph-consolidation-summary.md
+- [x] Add supplemental-index.md and link consolidated evidence
 - [x] Confirm this folder remains the only active RAG lifecycle set
 
 ## Source: 006-hybrid-rag-fusion-logic-improvements
@@ -637,12 +637,12 @@ contextType: "implementation"
 ## Phase 1: Cross-System Audit and Continuity Lock
 
 - [x] T001 [P0] Build ten-subsystem contract map across retrieval, graph, cognitive, session, CRUD, parser/index, storage, telemetry, tests, and operations (`spec.md`, audit artifacts)
-- [x] T002 [P0] Capture baseline fixture corpus and metrics (latency, quality, misroute, stale-embed backlog, recovery timing) (`mcp_server/tests/*`, benchmark scripts) [EVIDENCE: `scratch/w6-baseline-metrics-sweep.md`]
+- [x] T002 [P0] Capture baseline fixture corpus and metrics (latency, quality, misroute, stale-embed backlog, recovery timing) (`mcp_server/tests/*`, benchmark scripts) [EVIDENCE: scratch/w6-baseline-metrics-sweep.md]
 - [x] T003 [P0] Create ranked seam-risk register with owner and mitigation for each subsystem (`spec.md`, `plan.md`, `decision-record.md`)
 - [x] T004 [P1] Validate continuity assumptions from `002/002/004/003` and map to 006 requirement IDs (`spec.md`, `plan.md`, `tasks.md`)
 - [x] T025 [P0] Lock relation-score adjudication corpus policy (shared vs domain-specific corpus) with approved fixture governance (`spec.md`, `decision-record.md`, ranking fixtures)
 - [x] T026 [P0] Lock cognitive-weight policy scope (global bounds vs intent-scoped bounds) and rollout defaults (`spec.md`, `decision-record.md`, scoring fixtures)
-- [x] T027 [P1] Lock self-healing auto-remediation policy (auto-apply vs operator acknowledgement by failure class) with escalation guardrails (`plan.md`, `checklist.md`, runbook artifacts) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` runbook drill entries]
+- [x] T027 [P1] Lock self-healing auto-remediation policy (auto-apply vs operator acknowledgement by failure class) with escalation guardrails (`plan.md`, `checklist.md`, runbook artifacts) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md runbook drill entries]
 <!-- /ANCHOR:phase-1 -->
 
 ### Phase 1 Task Matrix
@@ -706,9 +706,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-4 -->
 ## Phase 4: Telemetry Governance and Operational Automation
 
-- [x] T015 [P0] Define canonical telemetry/trace schema and enforce payload validation (`lib/telemetry/trace-schema.ts`, emitters, tests) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` command 4]
-- [x] T016 [P0] Implement documentation drift prevention checks for telemetry and operational contracts (`scripts/spec-folder/alignment-validator.ts`, docs validation hooks) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` command 4]
-- [x] T017 [P1] Draft and verify runbooks for index drift, session ambiguity, ledger mismatch, and telemetry drift (`plan.md`, `checklist.md`, ops docs) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` commands 5-6]
+- [x] T015 [P0] Define canonical telemetry/trace schema and enforce payload validation (`lib/telemetry/trace-schema.ts`, emitters, tests) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md command 4]
+- [x] T016 [P0] Implement documentation drift prevention checks for telemetry and operational contracts (`scripts/spec-folder/alignment-validator.ts`, docs validation hooks) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md command 4]
+- [x] T017 [P1] Draft and verify runbooks for index drift, session ambiguity, ledger mismatch, and telemetry drift (`plan.md`, `checklist.md`, ops docs) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md commands 5-6]
 - [x] T018 [P1] [P] Wire self-healing automation loops and operational checks into CI/scheduled runs (`scripts/ops/*`, CI config)
 <!-- /ANCHOR:phase-4 -->
 
@@ -726,16 +726,16 @@ contextType: "implementation"
 <!-- ANCHOR:phase-5 -->
 ## Phase 5: Verification Hardening and Governance Closure
 
-- [x] T019 [P0] Expand and close deferred/skipped-path tests from `002`/`003`/`004`/`005` lineage (`mcp_server/tests/*`, script tests) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` commands 2-3]
-- [x] T020 [P0] Run consolidated performance/reliability verification (retrieval, session, recovery, automation) against required thresholds [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md`, `scratch/w6-baseline-metrics-sweep.md`]
-- [x] T021 [P1] Execute failure-injection drills for recovery and self-healing paths and capture evidence (`scripts/ops/*`, verification artifacts) [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md` commands 5-6]
+- [x] T019 [P0] Expand and close deferred/skipped-path tests from `002`/`003`/`004`/`005` lineage (`mcp_server/tests/*`, script tests) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md commands 2-3]
+- [x] T020 [P0] Run consolidated performance/reliability verification (retrieval, session, recovery, automation) against required thresholds [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md, scratch/w6-baseline-metrics-sweep.md]
+- [x] T021 [P1] Execute failure-injection drills for recovery and self-healing paths and capture evidence (`scripts/ops/*`, verification artifacts) [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md commands 5-6]
 - [x] T022 [P1] Synchronize checklist evidence and sign-off model across all Level 3+ docs (`checklist.md`, `spec.md`) [EVIDENCE: docs sync closure dated 2026-02-22]
 - [x] T023 [P1] Finalize decision record and implementation summary with delivered subsystem evidence (`decision-record.md`, `implementation-summary.md`)
 - [ ] T024 [P2] Save context snapshot after implementation completion (`memory/` via generate-context script) [DEFERRED: memory snapshot generation intentionally not executed in this closure pass because user scope is markdown-only updates in this folder; reclassified from completed to deferred per governance review]
-- [x] T028 [P0] Execute global quality sweep across all implemented updates/new features and publish evidence in `global-quality-sweep.md` [EVIDENCE: `global-quality-sweep.md` EVT-001]
-- [x] T029 [P0] Run global bug detection sweep and close all discovered P0/P1 defects; publish closure evidence in `global-quality-sweep.md` [EVIDENCE: `global-quality-sweep.md` EVT-002]
-- [x] T030 [P1] Complete `sk-code--opencode` compliance audit for all changed/added code paths and capture findings in `global-quality-sweep.md` [EVIDENCE: `global-quality-sweep.md` EVT-003]
-- [x] T031 [P1] Apply conditional standards update only if architecture mismatch is confirmed; document rationale/evidence in `global-quality-sweep.md` [EVIDENCE: `global-quality-sweep.md` EVT-004 (`N/A`, no mismatch detected)]
+- [x] T028 [P0] Execute global quality sweep across all implemented updates/new features and publish evidence in global-quality-sweep.md [EVIDENCE: global-quality-sweep.md EVT-001]
+- [x] T029 [P0] Run global bug detection sweep and close all discovered P0/P1 defects; publish closure evidence in global-quality-sweep.md [EVIDENCE: global-quality-sweep.md EVT-002]
+- [x] T030 [P1] Complete `sk-code--opencode` compliance audit for all changed/added code paths and capture findings in global-quality-sweep.md [EVIDENCE: global-quality-sweep.md EVT-003]
+- [x] T031 [P1] Apply conditional standards update only if architecture mismatch is confirmed; document rationale/evidence in global-quality-sweep.md [EVIDENCE: global-quality-sweep.md EVT-004 (`N/A`, no mismatch detected)]
 <!-- /ANCHOR:phase-5 -->
 
 ### Phase 5 Task Matrix
@@ -748,10 +748,10 @@ contextType: "implementation"
 | T022 | T019, T020 | All P0 checklist items complete; P1 items complete or approved deferred with rationale. |
 | T023 | T022 | ADRs, implementation summary, and sign-off status are synchronized and evidence-backed. |
 | T024 | T023 | Context snapshot saved with final status, blockers, and next-step handoff. |
-| T028 | T019, T020, T021 | Global quality sweep executed across all implemented updates/new features with complete evidence entries in `global-quality-sweep.md`. |
-| T029 | T028 | Bug detection sweep completed with unresolved defect counts `P0=0` and `P1=0`, evidence published in `global-quality-sweep.md`. |
-| T030 | T028 | `sk-code--opencode` compliance audit covers all changed/added code paths with evidence and closure state captured in `global-quality-sweep.md`. |
-| T031 | T030 | If architecture mismatch exists, standards update is documented with rationale and evidence; otherwise marked approved `N/A` with rationale in `global-quality-sweep.md`. |
+| T028 | T019, T020, T021 | Global quality sweep executed across all implemented updates/new features with complete evidence entries in global-quality-sweep.md. |
+| T029 | T028 | Bug detection sweep completed with unresolved defect counts `P0=0` and `P1=0`, evidence published in global-quality-sweep.md. |
+| T030 | T028 | `sk-code--opencode` compliance audit covers all changed/added code paths with evidence and closure state captured in global-quality-sweep.md. |
+| T031 | T030 | If architecture mismatch exists, standards update is documented with rationale and evidence; otherwise marked approved `N/A` with rationale in global-quality-sweep.md. |
 
 ---
 
@@ -761,9 +761,9 @@ contextType: "implementation"
 - [x] All P0 tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Decision-lock tasks `T025`, `T026`, and `T027` are closed before Phase 2 starts
-- [x] Performance, recovery, and automation gates passed [EVIDENCE: `scratch/final-quality-evidence-2026-02-22.md`, `scratch/w6-baseline-metrics-sweep.md`]
-- [x] `T028` and `T029` are closed with evidence in `global-quality-sweep.md`
-- [x] `T030` and `T031` are closed, or `T031` is approved `N/A` with explicit rationale/evidence in `global-quality-sweep.md`
+- [x] Performance, recovery, and automation gates passed [EVIDENCE: scratch/final-quality-evidence-2026-02-22.md, scratch/w6-baseline-metrics-sweep.md]
+- [x] `T028` and `T029` are closed with evidence in global-quality-sweep.md
+- [x] `T030` and `T031` are closed, or `T031` is approved `N/A` with explicit rationale/evidence in global-quality-sweep.md
 - [x] Governance approval workflow updated to approved state
 <!-- /ANCHOR:completion -->
 
@@ -776,7 +776,7 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 - **Decision Record**: See `decision-record.md`
-- **Global Quality Sweep**: See `global-quality-sweep.md`
+- **Global Quality Sweep**: See global-quality-sweep.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

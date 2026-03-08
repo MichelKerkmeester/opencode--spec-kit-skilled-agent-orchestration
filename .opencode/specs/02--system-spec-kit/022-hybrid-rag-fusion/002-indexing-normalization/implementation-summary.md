@@ -1,6 +1,6 @@
 ---
 title: "Consolidated implementation-summary: 002-indexing-normalization [002-indexing-normalization/implementation-summary.md]"
-description: "Consolidated from 002-index-tier-anomalies/implementation-summary.md and 004-frontmatter-indexing/implementation-summary.md."
+description: "Consolidated from former child spec 002-index-tier-anomalies -> implementation-summary.md and former child spec 004-frontmatter-indexing -> implementation-summary.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
   - "consolidated"
@@ -11,13 +11,13 @@ contextType: "implementation"
 # Consolidated implementation-summary.md
 
 This document consolidates source documents from:
-- `002-index-tier-anomalies/implementation-summary.md`
-- `004-frontmatter-indexing/implementation-summary.md`
+- `former child spec 002-index-tier-anomalies -> implementation-summary.md`
+- `former child spec 004-frontmatter-indexing -> implementation-summary.md`
 
-## Source: `002-index-tier-anomalies/implementation-summary.md`
+## Source: `former child spec 002-index-tier-anomalies -> implementation-summary.md`
 
 ---
-title: "Implementation Summary [002-index-tier-anomalies/implementation-summary]"
+title: "Implementation Summary [former child spec 002-index-tier-anomalies -> implementation-summary]"
 description: "The implementation delivered deterministic indexing and tier normalization for Spec 002."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
@@ -42,7 +42,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization` |
+| **Spec Folder** | 002-indexing-normalization |
 | **Completed** | 2026-02-22 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -116,10 +116,10 @@ Delivery followed the plan's setup -> implementation -> verification progression
 3. Dedicated scan performance/load benchmarks were not run in this implementation pass.
 <!-- /ANCHOR:limitations -->
 
-## Source: `004-frontmatter-indexing/implementation-summary.md`
+## Source: `former child spec 004-frontmatter-indexing -> implementation-summary.md`
 
 ---
-title: "Implementation Summary [004-frontmatter-indexing/implementation-summary]"
+title: "Implementation Summary [former child spec 004-frontmatter-indexing -> implementation-summary]"
 description: "Completed implementation summary with build/test/migration/reindex verification evidence for frontmatter normalization and indexing."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
@@ -144,7 +144,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 004-frontmatter-indexing |
+| **Spec Folder** | 002-indexing-normalization |
 | **Completed** | 2026-02-22 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
@@ -191,7 +191,7 @@ Delivery and verification evidence captured in this run:
 4. Coverage and reindex quality:
 - Coverage and parser/index regression tests passed in the executed command set listed above.
 - Reindex completed with `STATUS=OK` (ran twice), and legacy invalid-anchor warnings in archived files were non-fatal.
-- Expanded fusion audit report: `scratch/full-tree-fusion-audit.md` (commits `111fb30a`, `937f0b06`, `85cc0ce3`) confirms no stale active-spec references outside archive paths.
+- Expanded fusion audit report: `historical scratch artifact "full-tree-fusion-audit.md"` (commits `111fb30a`, `937f0b06`, `85cc0ce3`) confirms no stale active-spec references outside archive paths.
 
 5. Standards alignment checks:
 - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server/lib/parsing --root .opencode/skill/system-spec-kit/scripts/lib --root .opencode/skill/system-spec-kit/scripts/memory --root .opencode/skill/system-spec-kit/mcp_server/tests --root .opencode/skill/system-spec-kit/scripts/tests` passed with `Errors: 0`. Warnings were in unrelated shell utilities, and no findings matched touched frontmatter/indexing files.

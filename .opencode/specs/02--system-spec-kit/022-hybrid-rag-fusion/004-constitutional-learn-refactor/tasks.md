@@ -1,6 +1,8 @@
 ---
 title: "Tasks: Refactor /memory:learn"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
+<!-- ANCHOR:tasks -->
 # Tasks
 
 ## T1: Rewrite learn.md [P0] — COMPLETE
@@ -31,3 +33,4 @@ title: "Tasks: Refactor /memory:learn"
 - [x] No broken cross-references — all links verified
 - [x] Constitutional directory path correct — `.opencode/skill/system-spec-kit/constitutional/` consistent
 - [x] Token budget constant correct (~2000) — referenced in Sections 4, 5, 6, 7, 10
+<!-- /ANCHOR:tasks -->

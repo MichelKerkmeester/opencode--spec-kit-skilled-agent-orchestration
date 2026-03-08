@@ -16,21 +16,21 @@ contextType: "implementation"
 This file consolidates `checklist.md` from sprint folders 010 through 018.
 
 Source folders:
-- `006-measurement-foundation/checklist.md`
-- `011-graph-signal-activation/checklist.md`
-- `012-scoring-calibration/checklist.md`
-- `013-query-intelligence/checklist.md`
-- `014-feedback-and-quality/checklist.md`
-- `015-pipeline-refactor/checklist.md`
-- `016-indexing-and-graph/checklist.md`
-- `017-long-horizon/checklist.md`
-- `018-deferred-features/checklist.md`
+- 006-measurement-foundation/checklist.md
+- 011-graph-signal-activation/checklist.md
+- 012-scoring-calibration/checklist.md
+- 013-query-intelligence/checklist.md
+- 014-feedback-and-quality/checklist.md
+- 015-pipeline-refactor/checklist.md
+- 016-indexing-and-graph/checklist.md
+- 017-long-horizon/checklist.md
+- 018-deferred-features/checklist.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/checklist.md`
+Source: 006-measurement-foundation/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 0 — Measurement Foundation"
@@ -188,7 +188,7 @@ P0 must complete, P1 need approval to defer
 
 ## 011-graph-signal-activation
 
-Source: `011-graph-signal-activation/checklist.md`
+Source: 011-graph-signal-activation/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 1 — Graph Signal Activation"
@@ -336,7 +336,7 @@ P0 must complete, P1 need approval to defer
 
 ## 012-scoring-calibration
 
-Source: `012-scoring-calibration/checklist.md`
+Source: 012-scoring-calibration/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 2 — Scoring Calibration"
@@ -488,7 +488,7 @@ Off-ramp: Recommended minimum viable stop after Sprint 2+3 (phases 3+4)
 
 ## 013-query-intelligence
 
-Source: `013-query-intelligence/checklist.md`
+Source: 013-query-intelligence/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 3 — Query Intelligence"
@@ -678,7 +678,7 @@ P0 must complete, P1 need approval to defer
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/checklist.md`
+Source: 014-feedback-and-quality/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 4 — Feedback and Quality"
@@ -879,7 +879,7 @@ P0 must complete, P1 need approval to defer
 
 ## 015-pipeline-refactor
 
-Source: `015-pipeline-refactor/checklist.md`
+Source: 015-pipeline-refactor/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 5 — Pipeline Refactor"
@@ -1074,7 +1074,7 @@ P0 must complete, P1 need approval to defer
 
 ## 016-indexing-and-graph
 
-Source: `016-indexing-and-graph/checklist.md`
+Source: 016-indexing-and-graph/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 6 — Indexing and Graph"
@@ -1251,7 +1251,7 @@ P0 must complete, P1 need approval to defer
 
 ## 017-long-horizon
 
-Source: `017-long-horizon/checklist.md`
+Source: 017-long-horizon/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 7 — Long Horizon"
@@ -1415,7 +1415,7 @@ Final sprint — includes program completion and flag sunset audit
 
 ## 018-deferred-features
 
-Source: `018-deferred-features/checklist.md`
+Source: 018-deferred-features/checklist.md
 
 ---
 title: "Verification Checklist: Sprint 8 — Deferred Features"

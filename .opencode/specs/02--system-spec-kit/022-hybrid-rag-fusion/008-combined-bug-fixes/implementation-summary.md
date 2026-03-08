@@ -496,19 +496,19 @@ Earlier remediation waves implemented a substantial subset of P0/P1/P2 findings 
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `../011-feature-catalog/feature_catalog.md` | Modified | P2-002 em dashes, P2-003 HVR |
-| `../011-feature-catalog/07-evaluation/01-ablation-studies-evalrunablation.md` | Modified | P2-003 HVR |
-| `../011-feature-catalog/05-lifecycle/04-checkpoint-deletion-checkpointdelete.md` | Modified | P1-027 |
-| `../011-feature-catalog/13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Modified | P1-028 |
-| `../011-feature-catalog/16-tooling-and-scripts/02-architecture-boundary-enforcement.md` | Modified | P1-030 |
-| `../011-feature-catalog/16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md` | Modified | P1-029 |
+| ../011-feature-catalog/feature_catalog.md | Modified | P2-002 em dashes, P2-003 HVR |
+| ../011-feature-catalog/07-evaluation/01-ablation-studies-evalrunablation.md | Modified | P2-003 HVR |
+| ../011-feature-catalog/05-lifecycle/04-checkpoint-deletion-checkpointdelete.md | Modified | P1-027 |
+| ../011-feature-catalog/13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md | Modified | P1-028 |
+| ../011-feature-catalog/16-tooling-and-scripts/02-architecture-boundary-enforcement.md | Modified | P1-030 |
+| ../011-feature-catalog/16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md | Modified | P1-029 |
 | Historical 009 README (retired folder) | Rewritten | P2-004 |
 | `../002-indexing-normalization/README.md` | Rewritten | P2-004 |
 | `../007-ux-hooks-automation/README.md` | Rewritten | P2-004 |
 | Historical 009 implementation summary (retired folder) | Modified | P2-014 flag count |
 | Historical 009 checklist (retired folder) | Modified | P2-014 flag count |
 | `../001-hybrid-rag-fusion-epic/spec.md` | Modified | P2-013 status |
-| `../016-manual-testing-per-playbook/manual-test-playbooks.md` | Modified | P2-012 header |
+| ../016-manual-testing-per-playbook/manual-test-playbooks.md | Modified | P2-012 header |
 | Historical constitutional README (external snapshot) | Modified | P2-005 TOC |
 | Historical config README (external snapshot) | Modified | P2-005 TOC |
 

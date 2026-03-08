@@ -3,14 +3,14 @@
 This file consolidates `handover.md` from sprint folders 006 through 018.
 
 Source folders:
-- `006-measurement-foundation/handover.md`
-- `014-feedback-and-quality/handover.md`
+- 006-measurement-foundation/handover.md
+- 014-feedback-and-quality/handover.md
 
 ---
 
 ## 006-measurement-foundation
 
-Source: `006-measurement-foundation/handover.md`
+Source: 006-measurement-foundation/handover.md
 
 ---
 title: "Session Handover: Sprint 0 — Measurement Foundation"
@@ -56,7 +56,7 @@ contextType: "general"
 | Blocker | Status | Resolution / Workaround |
 |---------|--------|-------------------------|
 | Ground truth memory IDs are placeholder (-1) — live DB not available during generation | OPEN | Map IDs against production DB before calling `runBM25Baseline()`; `loadGroundTruth()` returns the dataset ready for ID substitution |
-| `smartRanking.relevanceWeight=0.2` anomaly in `search-weights.json` (vs fallback 0.5) | OPEN — flagged, not resolved | Documented in `scratch/t000c-search-weights-audit.md`; deprioritizes relevance by 60% relative to fallback; warrants investigation before baseline metrics are interpreted |
+| `smartRanking.relevanceWeight=0.2` anomaly in `search-weights.json` (vs fallback 0.5) | OPEN — flagged, not resolved | Documented in scratch/t000c-search-weights-audit.md; deprioritizes relevance by 60% relative to fallback; warrants investigation before baseline metrics are interpreted |
 | T004b observer-effect mitigation not yet implemented | OPEN (not Sprint 0 required for exit gate) | Blocked until health-check benchmarking infrastructure available; deferred to Sprint 1 |
 
 ### 2.3 Files Modified
@@ -106,13 +106,13 @@ contextType: "general"
 
 | File | Purpose |
 |------|---------|
-| `scratch/t000a-performance-baseline.md` | Pre-Sprint-0 p95 latency snapshot |
-| `scratch/t000b-feature-flag-governance.md` | 6-flag max, 90-day lifespan, INCONCLUSIVE rules |
-| `scratch/t000c-search-weights-audit.md` | `relevanceWeight=0.2` anomaly flagged |
-| `scratch/t000d-ground-truth-queries.json` | Manually curated seed queries feeding T007 |
-| `scratch/t007b-agent-consumption-patterns.md` | 10 agent consumption patterns (G-NEW-2) |
-| `scratch/t-fs0-flag-sunset-review.md` | Feature flag sunset audit: 5/6 slots used |
-| `scratch/t009-exit-gate-verification.md` | Exit gate status: 5 PASS / 3 PARTIAL |
+| scratch/t000a-performance-baseline.md | Pre-Sprint-0 p95 latency snapshot |
+| scratch/t000b-feature-flag-governance.md | 6-flag max, 90-day lifespan, INCONCLUSIVE rules |
+| scratch/t000c-search-weights-audit.md | `relevanceWeight=0.2` anomaly flagged |
+| scratch/t000d-ground-truth-queries.json | Manually curated seed queries feeding T007 |
+| scratch/t007b-agent-consumption-patterns.md | 10 agent consumption patterns (G-NEW-2) |
+| scratch/t-fs0-flag-sunset-review.md | Feature flag sunset audit: 5/6 slots used |
+| scratch/t009-exit-gate-verification.md | Exit gate status: 5 PASS / 3 PARTIAL |
 
 **Commits on `main`:**
 
@@ -129,25 +129,25 @@ contextType: "general"
 
 ### 3.1 Recommended Starting Point
 
-- **File:** `scratch/t009-exit-gate-verification.md`
+- **File:** scratch/t009-exit-gate-verification.md
 - **Context:** Review exit gate status table first (5 PASS / 3 PARTIAL). The 3 PARTIAL gates (3, 5, 6) all share the same root cause: no live DB run yet. All code is complete. The session task is purely execution.
 
 ### 3.2 Priority Tasks Remaining
 
 1. **Map ground truth placeholder IDs to real memory IDs** — `ground-truth-data.ts` uses `memoryId=-1` as a placeholder. Query the production memory DB to resolve real IDs for all 110 queries before running the baseline. The `loadGroundTruth()` function returns the dataset ready for substitution.
 2. **Enable `SPECKIT_EVAL_LOGGING=true` and run `runBM25Baseline()`** — call the function in `mcp_server/lib/eval/bm25-baseline.ts` against the live production DB. This populates `eval_metric_snapshots` in `speckit-eval.db` and produces the actual MRR@5 value needed for the contingency decision.
-3. **Record BM25 MRR@5 and execute contingency decision** — `evaluateContingency(bm25MRR)` implements the 3-band matrix (≥0.80 → PAUSE, 0.50–0.79 → RATIONALIZE, <0.50 → PROCEED). Once the actual MRR@5 is known, call the function and document the outcome in `scratch/t009-exit-gate-verification.md`.
+3. **Record BM25 MRR@5 and execute contingency decision** — `evaluateContingency(bm25MRR)` implements the 3-band matrix (≥0.80 → PAUSE, 0.50–0.79 → RATIONALIZE, <0.50 → PROCEED). Once the actual MRR@5 is known, call the function and document the outcome in scratch/t009-exit-gate-verification.md.
 4. **Close 3 PARTIAL exit gates** — update T009 gate status to PASS after live execution.
-5. **Investigate `relevanceWeight=0.2` anomaly** — `scratch/t000c-search-weights-audit.md` documents a 60% de-weighting of relevance vs the fallback 0.5 value. Determine if this is intentional before baseline metrics are interpreted; an anomalous weight will skew BM25 comparison results.
-6. **Transition to Sprint 1** after Sprint 0 close-out — next sprint folder: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation`
+5. **Investigate `relevanceWeight=0.2` anomaly** — scratch/t000c-search-weights-audit.md documents a 60% de-weighting of relevance vs the fallback 0.5 value. Determine if this is intentional before baseline metrics are interpreted; an anomalous weight will skew BM25 comparison results.
+6. **Transition to Sprint 1** after Sprint 0 close-out — next sprint folder: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation
 
 ### 3.3 Critical Context to Load
 
-- [x] Memory files: `memory/27-02-26_15-08__sprint-0-measurement-foundation.md` and `memory/27-02-26_15-27__sprint-0-measurement-foundation.md` (most recent; IDs #2031–#2032)
-- [x] Exit gate status: `scratch/t009-exit-gate-verification.md`
+- [x] Memory files: memory/27-02-26_15-08__sprint-0-measurement-foundation.md and memory/27-02-26_15-27__sprint-0-measurement-foundation.md (most recent; IDs #2031–#2032)
+- [x] Exit gate status: scratch/t009-exit-gate-verification.md
 - [x] BM25 runner: `mcp_server/lib/eval/bm25-baseline.ts` (functions: `runBM25Baseline`, `recordBaselineMetrics`, `evaluateContingency`)
 - [x] Ground truth data: `mcp_server/lib/eval/ground-truth-data.ts` (110 queries; IDs need live mapping)
-- [x] Search weights anomaly: `scratch/t000c-search-weights-audit.md`
+- [x] Search weights anomaly: scratch/t000c-search-weights-audit.md
 - [x] Spec file: `spec.md` (REQ-S0-004 governs the BM25 contingency gate)
 
 ---
@@ -181,12 +181,12 @@ Before handover, verify:
 **`relevanceWeight=0.2` anomaly (T000c)**: The `smartRanking` section of `search-weights.json` sets relevance weight to 0.2, compared to the fallback of 0.5. This deprioritizes relevance by 60% relative to the fallback. The anomaly is flagged but not resolved. Investigate before concluding that BM25 baseline metrics represent normal system behavior.
 
 **Sprint 1 entry point:**
-`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation`
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-graph-signal-activation
 
 **Continuation command:**
-```
+`
 /spec_kit:resume .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-measurement-foundation
-```
+`
 
 **Quick-start checklist for next session:**
 - [ ] Load this handover document
@@ -194,9 +194,9 @@ Before handover, verify:
 - [ ] Map ground truth placeholder IDs to real memory IDs
 - [ ] Run `runBM25Baseline()` against live production DB
 - [ ] Record BM25 MRR@5 and call `evaluateContingency(mrr5)`
-- [ ] Document contingency decision in `scratch/t009-exit-gate-verification.md`
+- [ ] Document contingency decision in scratch/t009-exit-gate-verification.md
 - [ ] Close remaining 3 PARTIAL exit gates (T009 gates 3, 5, 6)
-- [ ] Investigate `relevanceWeight=0.2` anomaly (T000c)
+- [ ] Investigate `relevanceWeight=0.2 anomaly (T000c)
 - [ ] Begin Sprint 1 after Sprint 0 is closed
 
 ---
@@ -212,11 +212,11 @@ Next: Map ground truth IDs to live DB, run runBM25Baseline(), close 3 PARTIAL ex
 
 ## 014-feedback-and-quality
 
-Source: `014-feedback-and-quality/handover.md`
+Source: 014-feedback-and-quality/handover.md
 
 # Session Handover: Sprint 4 — Feedback and Quality
 
-**Spec Folder**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality`
+**Spec Folder**: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
 **Created**: 2026-02-28
 **Session Duration**: ~25 min (5 parallel opus agents)
 
@@ -286,7 +286,7 @@ Source: `014-feedback-and-quality/handover.md`
 
 ### 3.1 Recommended Starting Point
 
-- **File**: `014-feedback-and-quality/checklist.md`
+- **File**: 014-feedback-and-quality/checklist.md
 - **Context**: Mark all checklist items with evidence. Many P0 and P1 items can now be verified against the test results and implementation.
 
 ### 3.2 Priority Tasks Remaining
@@ -294,12 +294,12 @@ Source: `014-feedback-and-quality/handover.md`
 1. **Update checklist.md** — Mark verified items `[x]` with evidence from test results (315 tests passing)
 2. **Update tasks.md** — Mark completed tasks `[x]` (T001, T001a, T002, T002a, T002b, T003, T003a, T007, T008, T027a, T027b)
 3. **Commit changes** — Stage and commit all Sprint 4 implementation files
-4. **Begin Sprint 5** — `/spec_kit:implement .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-pipeline-refactor`
+4. **Begin Sprint 5** — /spec_kit:implement .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-pipeline-refactor
 5. **S4b timeline planning** — When R13 completes 2+ eval cycles (28+ days), enable R11 learned feedback
 
 ### 3.3 Critical Context to Load
 
-- [ ] Memory file: `memory/28-02-26_09-06__sprint-4-feedback-and-quality.md`
+- [ ] Memory file: memory/28-02-26_09-06__sprint-4-feedback-and-quality.md
 - [ ] Spec file: `spec.md` (all sections — requirements REQ-S4-001 through REQ-S4-005)
 - [ ] Plan file: `plan.md` (Phase 1-6 implementation phases)
 - [ ] Implementation summary: `implementation-summary.md`
@@ -348,15 +348,15 @@ Before handover, verify:
 
 ## Resume Instructions
 
-```
+`
 /spec_kit:resume .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
-```
+`
 
 Or paste:
-```
+`
 CONTINUATION - Attempt 1
 Spec: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-feedback-and-quality
 Last: Sprint 4 implementation complete (315 tests, 18 new files, 3 modified files)
 Next: Update checklist.md and tasks.md with evidence, commit changes, begin Sprint 5
-```
+`
 
