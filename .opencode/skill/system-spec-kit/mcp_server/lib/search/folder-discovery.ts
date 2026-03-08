@@ -27,6 +27,18 @@ export interface DescriptionCache {
   folders: FolderDescription[];
 }
 
+/**
+ * Per-folder description stored as `description.json` inside each spec folder.
+ * Extends FolderDescription with identity and memory-tracking fields.
+ */
+export interface PerFolderDescription extends FolderDescription {
+  specId: string;               // Numeric prefix e.g. "010"
+  folderSlug: string;           // Slugified name e.g. "spec-descriptions"
+  parentChain: string[];        // Ancestor folder names
+  memorySequence: number;       // Monotonic counter per save
+  memoryNameHistory: string[];  // Last 20 slugs (ring buffer)
+}
+
 /* --- 2. STOP WORDS --- */
 
 const STOP_WORDS = new Set([
@@ -423,6 +435,22 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
         continue;
       }
 
+      // Prefer per-folder description.json if fresh
+      const perFolder = loadPerFolderDescription(discoveredFolder.folderPath);
+      if (perFolder && !isPerFolderDescriptionStale(discoveredFolder.folderPath)) {
+        const relativePath = path.relative(discoveredFolder.basePath, discoveredFolder.folderPath).replace(/\\/g, '/');
+        if (relativePath && !relativePath.startsWith('..')) {
+          byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, {
+            specFolder: relativePath,
+            description: perFolder.description,
+            keywords: perFolder.keywords,
+            lastUpdated: perFolder.lastUpdated,
+          });
+          continue;
+        }
+      }
+
+      // Fall back to spec.md extraction
       const folderEntry = _processSpecFolder(
         discoveredFolder.basePath,
         discoveredFolder.folderPath,
@@ -485,6 +513,140 @@ function _processSpecFolder(
     keywords,
     lastUpdated: timestamp,
   };
+}
+
+/* --- 6a. SLUG HELPER --- */
+
+/**
+ * Slugify a spec folder name: strip numeric prefix, replace non-alphanumeric
+ * characters with hyphens, lowercase, collapse runs, trim edges.
+ */
+export function slugifyFolderName(folderName: string): string {
+  return folderName
+    .replace(/^\d+-?/, '')
+    .replace(/[^a-z0-9-]/gi, '-')
+    .toLowerCase()
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/* --- 6b. PER-FOLDER DESCRIPTION OPERATIONS --- */
+
+/**
+ * Generate a PerFolderDescription by reading the spec.md in a folder.
+ * Preserves memorySequence and memoryNameHistory from existing description.json.
+ *
+ * @param folderPath - Absolute path to the spec folder.
+ * @param basePath   - Absolute path to the specs root directory.
+ * @returns A PerFolderDescription, or null if spec.md is unreadable/empty.
+ */
+export function generatePerFolderDescription(
+  folderPath: string,
+  basePath: string,
+): PerFolderDescription | null {
+  const specMdPath = path.join(folderPath, 'spec.md');
+  let content: string;
+  try {
+    content = fs.readFileSync(specMdPath, 'utf-8');
+  } catch {
+    return null;
+  }
+
+  const description = extractDescription(content);
+  if (!description) return null;
+
+  const keywords = extractKeywords(description);
+  const folderName = path.basename(folderPath);
+
+  // Extract numeric prefix (e.g. "010" from "010-spec-descriptions")
+  const numMatch = folderName.match(/^(\d+)/);
+  const specId = numMatch ? numMatch[1] : '';
+
+  const folderSlug = slugifyFolderName(folderName);
+
+  // Build parent chain from path segments between basePath and folderPath
+  const relativePath = path.relative(basePath, folderPath).replace(/\\/g, '/');
+  const segments = relativePath.split('/').filter(Boolean);
+  const parentChain = segments.length > 1 ? segments.slice(0, -1) : [];
+
+  // Preserve existing tracking data if description.json already exists
+  const existing = loadPerFolderDescription(folderPath);
+
+  const normalizedRelativeFolder = relativePath && !relativePath.startsWith('..') ? relativePath : folderName;
+
+  return {
+    specFolder: normalizedRelativeFolder,
+    description,
+    keywords,
+    lastUpdated: new Date().toISOString(),
+    specId,
+    folderSlug,
+    parentChain,
+    memorySequence: existing?.memorySequence ?? 0,
+    memoryNameHistory: existing?.memoryNameHistory ?? [],
+  };
+}
+
+/**
+ * Load a PerFolderDescription from `description.json` in the given folder.
+ * Returns null if missing, corrupt, or structurally invalid (graceful degradation).
+ *
+ * @param folderPath - Absolute path to the spec folder.
+ * @returns The parsed PerFolderDescription, or null.
+ */
+export function loadPerFolderDescription(folderPath: string): PerFolderDescription | null {
+  const descPath = path.join(folderPath, 'description.json');
+  try {
+    const raw = fs.readFileSync(descPath, 'utf-8');
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed.description !== 'string' || !Array.isArray(parsed.keywords)) {
+      return null; // Structurally invalid — triggers spec.md fallback
+    }
+    return parsed as PerFolderDescription;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Save a PerFolderDescription to `description.json` using atomic write.
+ * Creates parent directories if needed.
+ *
+ * Note: memorySequence/memoryNameHistory tracking is best-effort.
+ * Concurrent processes may cause lost updates (acceptable trade-off
+ * for non-critical tracking data — no file lock is used).
+ *
+ * @param desc       - The PerFolderDescription to persist.
+ * @param folderPath - Absolute path to the spec folder.
+ */
+export function savePerFolderDescription(desc: PerFolderDescription, folderPath: string): void {
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+  }
+  const descPath = path.join(folderPath, 'description.json');
+  const tempPath = descPath + '.tmp';
+  fs.writeFileSync(tempPath, JSON.stringify(desc, null, 2), 'utf-8');
+  fs.renameSync(tempPath, descPath);
+}
+
+/**
+ * Check whether a per-folder description.json is stale.
+ * Compares description.json mtime vs spec.md mtime.
+ * Missing description.json = stale.
+ *
+ * @param folderPath - Absolute path to the spec folder.
+ * @returns true if description.json is missing or older than spec.md.
+ */
+export function isPerFolderDescriptionStale(folderPath: string): boolean {
+  const descPath = path.join(folderPath, 'description.json');
+  const specPath = path.join(folderPath, 'spec.md');
+  try {
+    const descMtime = fs.statSync(descPath).mtimeMs;
+    const specMtime = fs.statSync(specPath).mtimeMs;
+    return specMtime > descMtime;
+  } catch {
+    return true;
+  }
 }
 
 /* --- 7. CACHE I/O --- */

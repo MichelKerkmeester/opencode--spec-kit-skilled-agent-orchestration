@@ -20,6 +20,26 @@
       "createdAt": "2026-02-21",
       "lastReviewedAt": "2026-03-05",
       "expiresAt": "2026-06-04"
+    },
+    {
+      "file": "scripts/spec-folder/generate-description.ts",
+      "import": "@spec-kit/mcp-server/lib/search/folder-discovery",
+      "owner": "spec-kit-maintainers",
+      "reason": "CLI tool needs folder-discovery internals for description generation",
+      "removeWhen": "folder-discovery exports exposed via api/",
+      "createdAt": "2026-03-08",
+      "lastReviewedAt": "2026-03-08",
+      "expiresAt": "2026-06-08"
+    },
+    {
+      "file": "scripts/core/workflow.ts",
+      "import": "@spec-kit/mcp-server/lib/search/folder-discovery",
+      "owner": "spec-kit-maintainers",
+      "reason": "Workflow memory-save updates per-folder description.json via dynamic import",
+      "removeWhen": "folder-discovery exports exposed via api/",
+      "createdAt": "2026-03-08",
+      "lastReviewedAt": "2026-03-08",
+      "expiresAt": "2026-06-08"
     }
   ]
 }

@@ -806,6 +806,17 @@ if [[ "$PHASE_MODE" = true ]]; then
         fi
     fi
 
+    # ── Generate description.json for parent ──
+    _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
+    if [[ -f "$_DESC_SCRIPT" ]]; then
+      if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
+        --description "$FEATURE_DESCRIPTION" 2>/dev/null; then
+        CREATED_FILES+=("description.json")
+      else
+        echo "  Warning: description.json generation skipped" >&2
+      fi
+    fi
+
     # ── Create child phase folders ──
     CHILD_LEVEL_DIR=$(get_level_templates_dir "1" "$TEMPLATES_BASE")
     CHILDREN_INFO=()   # For JSON output
@@ -826,6 +837,17 @@ if [[ "$PHASE_MODE" = true ]]; then
                 _child_created_files+=("$(copy_template "$template_name" "$_child_path" "$CHILD_LEVEL_DIR" "$TEMPLATES_BASE")")
             fi
         done
+
+        # Generate description.json for child phase
+        if [[ -f "$_DESC_SCRIPT" ]]; then
+          _phase_name="${_child_folder#*-}"  # strip numeric prefix
+          if node "$_DESC_SCRIPT" "$_child_path" "$FEATURE_DIR" \
+            --description "Phase ${_i}: ${_phase_name}" 2>/dev/null; then
+            _child_created_files+=("description.json")
+          else
+            echo "  Warning: description.json generation skipped for phase ${_i}" >&2
+          fi
+        fi
 
         # Inject parent back-reference into child spec.md
         _child_spec="$_child_path/spec.md"
@@ -1010,6 +1032,20 @@ for template_file in "$LEVEL_TEMPLATES_DIR"/*.md; do
 done
 
 # ───────────────────────────────────────────────────────────────
+# 6.5. GENERATE PER-FOLDER description.json
+# ───────────────────────────────────────────────────────────────
+
+_DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
+if [[ -f "$_DESC_SCRIPT" ]]; then
+  if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
+    --description "$FEATURE_DESCRIPTION" 2>/dev/null; then
+    CREATED_FILES+=("description.json")
+  else
+    echo "  Warning: description.json generation skipped" >&2
+  fi
+fi
+
+# ───────────────────────────────────────────────────────────────
 # 7. SHARDED SPEC SECTIONS (Level 3 with --sharded flag)
 # ───────────────────────────────────────────────────────────────
 
@@ -1072,9 +1108,16 @@ if $JSON_MODE; then
         expansion_json=",\"EXPANDED\":false"
     fi
 
+    # Build description info
+    if [[ -f "$FEATURE_DIR/description.json" ]]; then
+        description_json=",\"HAS_DESCRIPTION\":true"
+    else
+        description_json=",\"HAS_DESCRIPTION\":false"
+    fi
+
     # P1-03 FIX: Escape JSON values to prevent injection
-    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","DOC_LEVEL":"%s","SHARDED":%s%s%s,"CREATED_FILES":[%s]}\n' \
-        "$(_json_escape "$BRANCH_NAME")" "$(_json_escape "$SPEC_FILE")" "$FEATURE_NUM" "$DOC_LEVEL" "$SHARDED" "$complexity_json" "$expansion_json" "$files_json"
+    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","DOC_LEVEL":"%s","SHARDED":%s%s%s%s,"CREATED_FILES":[%s]}\n' \
+        "$(_json_escape "$BRANCH_NAME")" "$(_json_escape "$SPEC_FILE")" "$FEATURE_NUM" "$DOC_LEVEL" "$SHARDED" "$complexity_json" "$expansion_json" "$description_json" "$files_json"
 else
     echo ""
     echo "───────────────────────────────────────────────────────────────────"
@@ -1097,6 +1140,7 @@ else
     for file in "${CREATED_FILES[@]}"; do
         echo "      ├── $file"
     done
+    echo "      ├── description.json   (per-folder identity)"
     echo "      ├── scratch/          (git-ignored working files)"
     echo "      │   └── .gitkeep"
     echo "      └── memory/           (context preservation)"

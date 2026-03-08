@@ -34,11 +34,11 @@ trigger_phrases:
 
 The Skills Library contains the current skill set under `.opencode/skill/`. Skills load on demand through Gate 2 routing or explicit invocation.
 
-This folder now has 15 skill folders and one shared scripts folder:
+This folder now has 16 skill folders and one shared scripts folder:
 
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
-| Skill folders                | 15           | Each skill has a `SKILL.md` entry point          |
+| Skill folders                | 16           | Each skill has a `SKILL.md` entry point          |
 | Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
 | Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
 
@@ -88,6 +88,7 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 ├── cli-copilot/
 ├── cli-gemini/
 ├── mcp-chrome-devtools/
+├── mcp-clickup/
 ├── mcp-code-mode/
 ├── mcp-figma/
 ├── scripts/
@@ -169,6 +170,10 @@ TypeScript-based orchestration for MCP tools with progressive discovery and type
 
 Browser debugging through CLI-first flow with MCP fallback for multi-tool runs.
 
+#### `mcp-clickup` (v1.0.0)
+
+ClickUp project management orchestrator with CLI (cu, 30+ commands) for daily task ops and MCP (Code Mode, 46 tools) for enterprise features like docs, goals, webhooks, and time tracking.
+
 #### `mcp-figma` (v1.0.7.0)
 
 Figma MCP workflow for file retrieval, image export and component/style extraction.
@@ -208,6 +213,7 @@ Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for mul
 | Skill                     | `references/` | `assets/` | `scripts/` |
 | ------------------------- | ------------- | --------- | ---------- |
 | `mcp-chrome-devtools`     | Yes           | No        | No         |
+| `mcp-clickup`             | Yes           | Yes       | No         |
 | `mcp-code-mode`           | Yes           | Yes       | Yes        |
 | `mcp-figma`               | Yes           | Yes       | No         |
 | `sk-code` or `sk-code--*` | Varies        | Varies    | Varies     |
@@ -286,6 +292,7 @@ Skill folders:
 - [sk-git](sk-git/)
 - [sk-prompt-improver](sk-prompt-improver/)
 - [mcp-chrome-devtools](mcp-chrome-devtools/)
+- [mcp-clickup](mcp-clickup/)
 - [mcp-code-mode](mcp-code-mode/)
 - [mcp-figma](mcp-figma/)
 - [cli-gemini](cli-gemini/)

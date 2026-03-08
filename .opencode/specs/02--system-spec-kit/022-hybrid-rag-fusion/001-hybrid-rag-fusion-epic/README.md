@@ -1,4 +1,4 @@
-# 000-hybrid-rag-fusion-epic
+# 001-hybrid-rag-fusion-epic
 
 This folder consolidates:
 - `000-feature-overview`

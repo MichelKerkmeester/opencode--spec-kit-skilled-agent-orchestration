@@ -460,7 +460,7 @@ Execution rule for this plan: complete Phase M documentation normalization befor
 #### 0.4 Documentation Truthfulness Corrections (VF-006)
 - Update stale README counts using current tool registry source (`tool-schemas.ts`)
 - Patch catalog and manual playbook coverage entries currently marked incomplete/planned where implementation now exists
-- Files: `README.md` (line 106, 183, 189, 730), `tool-schemas.ts` (line 450), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/999-final-polish-and-release/001-feature-catalog/undocumented-features-scan.md` (line 11), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md` (line 341, 356), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature-catalog/feature_catalog.md` (line 296, 1767, 1776)
+- Files: `README.md` (line 106, 183, 189, 730), `tool-schemas.ts` (line 450), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/999-final-polish-and-release/001-011-feature-catalog/undocumented-features-scan.md` (line 11), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-manual-testing-per-playbook/manual-test-playbooks.md` (line 341, 356), `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md` (line 296, 1767, 1776)
 
 #### 0.5 Scope Closure on Non-MCP Surfaces and Deferral Marker (VF-007, VF-008)
 - Include touched non-`mcp_server` paths in review and remediation: `scripts/core/subfolder-utils.ts`, `scripts/memory/generate-context.ts`, `scripts/spec-folder/folder-detector.ts`, `shared/config.ts`, `opencode.json`
@@ -569,7 +569,7 @@ Execution rule for this spec: complete Phase 0 before broad inherited backlog ph
 - P1-030: Align narrative name with source files table entry
 
 #### 5.2 P2 Documentation Quality
-- Replace all em dashes with hyphens in `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature-catalog/feature_catalog.md`
+- Replace all em dashes with hyphens in `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md`
 - Fix HVR "robust" violations in authored prose
 - Replace 3 boilerplate READMEs (009, 002, 014) with actual content
 - Fix broken TOC links in constitutional/ and config/ READMEs

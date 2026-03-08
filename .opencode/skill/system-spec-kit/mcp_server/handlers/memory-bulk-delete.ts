@@ -64,6 +64,10 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     throw new Error(`skipCheckpoint is not allowed for "${tier}" tier. Checkpoint is mandatory for high-safety tiers.`);
   }
 
+  if (olderThanDays !== undefined && (!Number.isInteger(olderThanDays) || olderThanDays < 1)) {
+    throw new Error('olderThanDays must be a positive integer when provided');
+  }
+
   const database = vectorIndex.getDb();
   if (!database) {
     throw new Error('Database not available');
@@ -78,7 +82,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     countParams.push(specFolder);
   }
 
-  if (olderThanDays !== undefined && olderThanDays > 0) {
+  if (olderThanDays !== undefined) {
     countSql += ` AND created_at < datetime('now', '-' || ? || ' days')`;
     countParams.push(olderThanDays);
   }
@@ -146,7 +150,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     selectParams.push(specFolder);
   }
 
-  if (olderThanDays !== undefined && olderThanDays > 0) {
+  if (olderThanDays !== undefined) {
     selectSql += ` AND created_at < datetime('now', '-' || ? || ' days')`;
     selectParams.push(olderThanDays);
   }

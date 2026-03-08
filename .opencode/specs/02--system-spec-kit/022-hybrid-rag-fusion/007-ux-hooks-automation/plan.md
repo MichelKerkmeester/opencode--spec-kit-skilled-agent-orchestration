@@ -100,7 +100,7 @@ Mutation request executes handler logic, then shared post-mutation hooks run and
 - [x] Regenerate build artifacts with `npx tsc -b`
 - [x] Run verification commands: `npx tsc -b`; `npm run lint`; and the fresh remediation-pass combined Vitest rerun `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 9 files / 485 tests)
 - [x] Confirm a real MCP SDK stdio client connects to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and lists 28 tools
-- [x] Re-save context via `generate-context.js`, record the parent-spec artifact path `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`, and document that no new indexed memory ID is available because `memory_index_scan` still fails on the 1024 vs 768 embedding mismatch
+- [x] Re-save context via `generate-context.js`, record the parent-spec artifact path `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`, and document that no new indexed memory ID is available because `memory_index_scan` still fails on the 1024 vs 768 embedding mismatch
 - [x] Update manual playbook with NEW-103+ scenarios covering UX hook capabilities
 
 ### Phase 4: Review-Driven Fixes
@@ -120,7 +120,7 @@ Mutation request executes handler logic, then shared post-mutation hooks run and
 | Integration | Mutation handlers + context-server success response hint append + end-to-end response envelope assertion | Vitest (`tests/context-server.vitest.ts`, `tests/handler-checkpoints.vitest.ts`, `tests/mcp-input-validation.vitest.ts`, `tests/memory-crud-extended.vitest.ts`, `tests/memory-save-ux-regressions.vitest.ts`, `tests/tool-input-schema.vitest.ts`) |
 | Regression | Stdio-safe startup/runtime logging and provider-aware embeddings cache identity | Vitest (`tests/embeddings.vitest.ts`, `tests/stdio-logging-safety.vitest.ts`) |
 | Smoke | Real MCP stdio transport handshake against compiled server | MCP SDK client against `node dist/context-server.js` (28 tools listed) |
-| Manual | UX hint and post-mutation response verification scenarios | Manual playbook (`../manual-testing-playbook/manual-test-playbooks.md`, NEW-103+) |
+| Manual | UX hint and post-mutation response verification scenarios | Manual playbook (`../016-manual-testing-per-playbook/manual-test-playbooks.md`, NEW-103+) |
 <!-- /ANCHOR:testing -->
 
 ---

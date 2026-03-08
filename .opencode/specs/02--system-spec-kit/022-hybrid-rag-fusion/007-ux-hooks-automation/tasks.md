@@ -67,7 +67,7 @@ contextType: "general"
 - [x] T016 Add and pass the fresh remediation-pass combined regression rerun: `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` (PASS, 9 files / 485 tests)
 - [x] T017 Confirm stdio and embeddings regression coverage is included in the same combined remediation-pass Vitest rerun (PASS, 9 files / 485 tests)
 - [x] T018 Pass real MCP SDK stdio smoke test against `node dist/context-server.js` (PASS, 28 tools listed)
-- [x] T019 Re-save fresh phase context via `generate-context.js`, record the saved artifact path, and document that direct phase-folder save is rejected while parent-spec indexing still fails on the 1024 vs 768 embedding mismatch (artifact: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`; no new indexed memory ID available)
+- [x] T019 Re-save fresh phase context via `generate-context.js`, record the saved artifact path, and document that direct phase-folder save is rejected while parent-spec indexing still fails on the 1024 vs 768 embedding mismatch (artifact: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`; no new indexed memory ID available)
 - [x] T020 Update manual playbook with NEW-103+ UX hook scenarios and evidence criteria
 <!-- /ANCHOR:phase-3 -->
 

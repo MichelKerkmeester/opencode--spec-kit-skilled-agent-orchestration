@@ -22,7 +22,7 @@ import { scoreMemoryQuality } from './quality-scorer';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
-import { generateContentSlug, pickBestContentName } from '../utils/slug-utils';
+import { generateContentSlug, pickBestContentName, ensureUniqueMemoryFilename } from '../utils/slug-utils';
 import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { SessionData, CollectedDataFull } from '../extractors/collect-session-data';
@@ -641,7 +641,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     allowSpecTitleFallback
   );
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase);
-  const ctxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
+  const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
+  const ctxFilename: string = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
@@ -836,6 +837,23 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
+
+  // Update per-folder description.json memory tracking
+  try {
+    const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD } = await import(
+      '@spec-kit/mcp-server/lib/search/folder-discovery'
+    );
+    const specFolderAbsolute = path.resolve(specFolder);
+    const existing = loadPFD(specFolderAbsolute);
+    if (existing) {
+      existing.memorySequence = (existing.memorySequence || 0) + 1;
+      existing.memoryNameHistory = [
+        ...(existing.memoryNameHistory || []).slice(-19),
+        ctxFilename,
+      ];
+      savePFD(existing, specFolderAbsolute);
+    }
+  } catch { /* Non-fatal — description tracking is best-effort */ }
   log();
 
   // Step 9.5: State embedded in memory file

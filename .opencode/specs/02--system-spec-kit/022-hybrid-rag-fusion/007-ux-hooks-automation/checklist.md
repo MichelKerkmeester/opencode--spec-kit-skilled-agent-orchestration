@@ -72,7 +72,7 @@ contextType: "general"
 
 - [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: secret scan found only mock tokens in `tests/retrieval-trace.vitest.ts` and `tests/retrieval-telemetry.vitest.ts`; no production hardcoded secrets; Phase 4: `sanitizeErrorForHint()` strips paths and stack traces from all user-facing hints (M1), `redactPath()` removes absolute paths from response payloads (M2), `repair.errors` sanitized per review P1 finding]
 - [x] CHK-031 [P0] Input validation implemented [EVIDENCE: `confirmName` is enforced at handler, schema, tool-schema, and tool-type layers; delete without `confirmName` is rejected, and successful deletion reports `safetyConfirmationUsed=true`; Phase 4: `sanitizeErrorForHint` covers both Unix and Windows paths per review P1 finding]
-- [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `011-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified]
+- [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `007-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified]
 <!-- /ANCHOR:security -->
 
 ---
@@ -93,7 +93,7 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: phase scratch directory contains only `.gitkeep`]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: phase scratch directory contains only `.gitkeep`]
-- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: direct save to phase folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation` was rejected by policy, so the rerun used parent spec folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`; `memory_index_scan({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` then reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, including that file failing with `Expected 1024 dimensions but received 768`, so no new indexed memory ID is available]
+- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: direct save to phase folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation` was rejected by policy, so the rerun used parent spec folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`; `memory_index_scan({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` then reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, including that file failing with `Expected 1024 dimensions but received 768`, so no new indexed memory ID is available]
 <!-- /ANCHOR:file-org -->
 
 ---

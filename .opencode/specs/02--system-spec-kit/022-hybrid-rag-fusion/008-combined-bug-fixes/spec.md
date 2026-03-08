@@ -211,10 +211,10 @@ Spec-folder auto-detection must consistently prefer active non-archived work, ha
 ### Problem
 
 `generate-context.js` fails with "Invalid spec folder format" when given:
-1. A bare child name like `007-skill-command-alignment` (3 levels deep under `02--system-spec-kit/022-hybrid-rag-fusion/`)
-2. A relative path like `02--system-spec-kit/022-hybrid-rag-fusion/007-skill-command-alignment`
+1. A bare child name like `012-command-alignment` (3 levels deep under `02--system-spec-kit/022-hybrid-rag-fusion/`)
+2. A relative path like `02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment`
 
-Only the full path `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-skill-command-alignment` works.
+Only the full path `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment` works.
 
 Three interrelated bugs cause this:
 1. `parseArguments` requires exactly 2 path segments (hard-coded `segments.length === 2`)
@@ -268,7 +268,7 @@ Three interrelated bugs cause this:
 ### Phase Navigation
 
 | **Parent Spec** | ../spec.md |
-- Predecessor: `007-skill-command-alignment`
+- Predecessor: `012-command-alignment`
 - Successor: `021-cross-cutting-remediation`
 
 ---
@@ -473,10 +473,10 @@ Memory-search bug-fix work was split across duplicate root and addendum document
 `008-combined-bug-fixes` is the canonical destination for merged remediation and audit follow-up.
 
 It supersedes active planning ownership from:
-- `009-post-review-remediation-epic` (historical remediation-epic lineage, including consolidated 002/022/023/024/025/026 roots)
-- `010-cross-ai-audit` (cross-AI audit provenance and session handover state)
+- the historical remediation-epic lineage now folded into `008-combined-bug-fixes` (including consolidated 002/022/023/024/025/026 roots)
+- `009-architecture-audit` (cross-AI audit provenance and session handover state)
 
-Source folders `009-post-review-remediation-epic` and `010-cross-ai-audit` are retained as historical lineage; `008-combined-bug-fixes` is the live canonical folder.
+The remediation-epic lineage now lives inside `008-combined-bug-fixes`, while `009-architecture-audit` is retained as historical lineage; `008-combined-bug-fixes` is the live canonical folder.
 
 ---
 
@@ -503,9 +503,9 @@ Verification-aligned note: audit counts above are inherited backlog from prior m
 
 #### Out of Scope
 
-- Runtime verification tasks (009-extra-features T012-T098) -- requires live MCP server
+- Runtime verification tasks (006-extra-features T012-T098) -- requires live MCP server
 - eval_run_ablation execution -- requires eval infrastructure
-- 005-constitutional-learn-refactor -- separate workstream
+- 004-constitutional-learn-refactor -- separate workstream
 - 012 boundary remediation Phases 1-3 -- separate workstream
 - Phase 4 deferred features (warm server, storage adapters, namespaces, AST retrieval)
 <!-- /ANCHOR:scope-015 -->
@@ -577,8 +577,8 @@ Status model for this spec:
 | ------ | -------- | -------------------------------------------------------------------------------- | ------------------------- |
 | P0-001 | Code     | Division by zero in RRF fusion -- negative `k` makes denominator 0              | rrf-fusion.ts:120,189     |
 | P0-002 | Spec     | 4 P0 checklist items unchecked (CHK-S10, CHK-S11, CHK-035, CHK-036)             | 000-epic/checklist.md     |
-| P0-003 | Verify   | 41 runtime verification tasks never executed against live MCP server             | 009-extra-features        |
-| P0-004 | Verify   | eval_run_ablation never run -- spec's own P0 hard blocker for release            | 009-extra-features        |
+| P0-003 | Verify   | 41 runtime verification tasks never executed against live MCP server             | 006-extra-features        |
+| P0-004 | Verify   | eval_run_ablation never run -- spec's own P0 hard blocker for release            | 006-extra-features        |
 | P0-005 | Code     | INSERT OR REPLACE in checkpoint merge-mode triggers CASCADE, destroys sessions  | checkpoints.ts:506        |
 
 #### P1 -- Required Fixes (35)
@@ -677,7 +677,7 @@ Status model for this spec:
 
 | ID     | Finding                                                             | Location                     |
 | ------ | ------------------------------------------------------------------- | ---------------------------- |
-| P2-001 | Source file tables over-inflated across ~50 feature docs             | feature-catalog/*            |
+| P2-001 | Source file tables over-inflated across ~50 feature docs             | 011-feature-catalog/*            |
 | P2-002 | 50+ em dash violations in feature_catalog.md                        | feature_catalog.md           |
 | P2-003 | HVR "robust" in authored prose (3+ locations)                       | multiple docs                |
 | P2-004 | 3 spec-folder READMEs are template boilerplate (009, 002, 014)      | sub-spec READMEs             |

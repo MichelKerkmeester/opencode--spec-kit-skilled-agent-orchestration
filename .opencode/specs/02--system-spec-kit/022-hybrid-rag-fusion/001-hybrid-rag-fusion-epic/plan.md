@@ -897,10 +897,10 @@ Implement during or after Sprint 4-5. These require more invasive changes.
 ## Documentation Addendum Plan (DOC-01)
 
 ### Objective
-- Generate one per-feature artifact file (`feature.md`) inside every numbered feature folder under `feature-catalog/`, using canonical content from `feature_catalog.md` plus optional enrichment from `summary_of_new_features.md`.
+- Generate one per-feature artifact file (`feature.md`) inside every numbered feature folder under `011-feature-catalog/`, using canonical content from `feature_catalog.md` plus optional enrichment from `summary_of_new_features.md`.
 
 ### Execution Strategy
-1. Parse canonical inventory from `feature-catalog/feature_catalog.md` (`##` group + `###` feature hierarchy).
+1. Parse canonical inventory from `011-feature-catalog/feature_catalog.md` (`##` group + `###` feature hierarchy).
 2. Normalize feature titles with trailing ticket-parenthetical stripping (only when parenthetical includes digits) for folder mapping parity.
 3. Resolve each feature to its numbered target folder (`NN-group/NN-feature`), then write `feature.md` with:
    - H1 feature title

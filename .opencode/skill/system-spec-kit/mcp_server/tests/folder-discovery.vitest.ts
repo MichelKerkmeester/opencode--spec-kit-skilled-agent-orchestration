@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Tests: extractDescription, extractKeywords, findRelevantFolders,
 //        generateFolderDescriptions, loadDescriptionCache,
-//        saveDescriptionCache
+//        saveDescriptionCache, PerFolderDescription operations
 
 import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
@@ -16,8 +16,12 @@ import {
   generateFolderDescriptions,
   loadDescriptionCache,
   saveDescriptionCache,
+  generatePerFolderDescription,
+  loadPerFolderDescription,
+  savePerFolderDescription,
+  isPerFolderDescriptionStale,
 } from '../lib/search/folder-discovery';
-import type { FolderDescription, DescriptionCache } from '../lib/search/folder-discovery';
+import type { FolderDescription, DescriptionCache, PerFolderDescription } from '../lib/search/folder-discovery';
 
 /* -----------------------------------------------------------
    1. extractDescription — spec.md content parsing
@@ -492,5 +496,306 @@ describe('T009 cache version', () => {
     } finally {
       fs.rmSync(tmpDir2, { recursive: true, force: true });
     }
+  });
+});
+
+/* -----------------------------------------------------------
+   7. PerFolderDescription — per-folder description.json operations
+----------------------------------------------------------------*/
+
+describe('T009 PerFolderDescription schema', () => {
+  it('has required specId field', () => {
+    const desc: PerFolderDescription = {
+      specFolder: '010-spec-descriptions',
+      description: 'Test',
+      keywords: ['test'],
+      lastUpdated: new Date().toISOString(),
+      specId: '010',
+      folderSlug: 'spec-descriptions',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.specId).toBe('010');
+  });
+
+  it('has required folderSlug field', () => {
+    const desc: PerFolderDescription = {
+      specFolder: '010-spec-descriptions',
+      description: 'Test',
+      keywords: ['test'],
+      lastUpdated: new Date().toISOString(),
+      specId: '010',
+      folderSlug: 'spec-descriptions',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.folderSlug).toBe('spec-descriptions');
+  });
+
+  it('parentChain is empty array for root folders', () => {
+    const desc: PerFolderDescription = {
+      specFolder: '010-test',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '010',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.parentChain).toEqual([]);
+  });
+
+  it('parentChain contains ancestor names for nested folders', () => {
+    const desc: PerFolderDescription = {
+      specFolder: '022-rag/001-epic',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '001',
+      folderSlug: 'epic',
+      parentChain: ['022-rag'],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.parentChain).toEqual(['022-rag']);
+  });
+
+  it('memorySequence starts at 0', () => {
+    const desc: PerFolderDescription = {
+      specFolder: 'test',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.memorySequence).toBe(0);
+  });
+
+  it('memoryNameHistory is initially empty', () => {
+    const desc: PerFolderDescription = {
+      specFolder: 'test',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    expect(desc.memoryNameHistory).toEqual([]);
+  });
+
+  it('memoryNameHistory acts as ring buffer (max 20)', () => {
+    const history = Array.from({ length: 25 }, (_, i) => `file-${i}.md`);
+    const desc: PerFolderDescription = {
+      specFolder: 'test',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 25,
+      memoryNameHistory: history.slice(-20),
+    };
+    expect(desc.memoryNameHistory).toHaveLength(20);
+    expect(desc.memoryNameHistory[0]).toBe('file-5.md');
+  });
+
+  it('extends FolderDescription with all base fields', () => {
+    const desc: PerFolderDescription = {
+      specFolder: 'test',
+      description: 'Base description',
+      keywords: ['base', 'test'],
+      lastUpdated: '2026-03-08T00:00:00.000Z',
+      specId: '',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    // Verify it satisfies FolderDescription
+    const base: FolderDescription = desc;
+    expect(base.specFolder).toBe('test');
+    expect(base.description).toBe('Base description');
+    expect(base.keywords).toEqual(['base', 'test']);
+  });
+});
+
+describe('T009 generatePerFolderDescription', () => {
+  let tmpDir2: string;
+
+  beforeEach(() => {
+    tmpDir2 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-pfolder-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir2, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  it('generates description from spec.md', () => {
+    const specDir = path.join(tmpDir2, '010-my-feature');
+    fs.mkdirSync(specDir, { recursive: true });
+    fs.writeFileSync(path.join(specDir, 'spec.md'), '# My Great Feature\n\nSome content.');
+
+    const result = generatePerFolderDescription(specDir, tmpDir2);
+    expect(result).not.toBeNull();
+    expect(result!.specId).toBe('010');
+    expect(result!.folderSlug).toBe('my-feature');
+    expect(result!.description).toBe('My Great Feature');
+    expect(result!.parentChain).toEqual([]);
+  });
+
+  it('computes parentChain for nested folders', () => {
+    const nested = path.join(tmpDir2, '022-parent', '001-child');
+    fs.mkdirSync(nested, { recursive: true });
+    fs.writeFileSync(path.join(nested, 'spec.md'), '# Child Spec\n\nContent.');
+
+    const result = generatePerFolderDescription(nested, tmpDir2);
+    expect(result).not.toBeNull();
+    expect(result!.parentChain).toEqual(['022-parent']);
+    expect(result!.specId).toBe('001');
+    expect(result!.folderSlug).toBe('child');
+  });
+
+  it('returns null for missing spec.md', () => {
+    const emptyDir = path.join(tmpDir2, '005-empty');
+    fs.mkdirSync(emptyDir, { recursive: true });
+
+    const result = generatePerFolderDescription(emptyDir, tmpDir2);
+    expect(result).toBeNull();
+  });
+
+  it('preserves existing memorySequence on regeneration', () => {
+    const specDir = path.join(tmpDir2, '010-feature');
+    fs.mkdirSync(specDir, { recursive: true });
+    fs.writeFileSync(path.join(specDir, 'spec.md'), '# Feature\n\nContent.');
+
+    // Write an existing description.json with tracking data
+    const existing: PerFolderDescription = {
+      specFolder: '010-feature',
+      description: 'Old description',
+      keywords: [],
+      lastUpdated: '',
+      specId: '010',
+      folderSlug: 'feature',
+      parentChain: [],
+      memorySequence: 5,
+      memoryNameHistory: ['a.md', 'b.md'],
+    };
+    fs.writeFileSync(path.join(specDir, 'description.json'), JSON.stringify(existing));
+
+    const result = generatePerFolderDescription(specDir, tmpDir2);
+    expect(result).not.toBeNull();
+    expect(result!.memorySequence).toBe(5);
+    expect(result!.memoryNameHistory).toEqual(['a.md', 'b.md']);
+    expect(result!.description).toBe('Feature'); // Updated from spec.md
+  });
+});
+
+describe('T009 loadPerFolderDescription / savePerFolderDescription', () => {
+  let tmpDir3: string;
+
+  beforeEach(() => {
+    tmpDir3 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-pfio-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir3, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  it('roundtrips save and load', () => {
+    const desc: PerFolderDescription = {
+      specFolder: '010-test',
+      description: 'Test description',
+      keywords: ['test'],
+      lastUpdated: '2026-03-08T00:00:00.000Z',
+      specId: '010',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 3,
+      memoryNameHistory: ['a.md', 'b.md', 'c.md'],
+    };
+
+    savePerFolderDescription(desc, tmpDir3);
+    const loaded = loadPerFolderDescription(tmpDir3);
+    expect(loaded).toEqual(desc);
+  });
+
+  it('returns null for missing description.json', () => {
+    const result = loadPerFolderDescription(tmpDir3);
+    expect(result).toBeNull();
+  });
+
+  it('returns null for corrupt JSON', () => {
+    fs.writeFileSync(path.join(tmpDir3, 'description.json'), '{invalid json');
+    const result = loadPerFolderDescription(tmpDir3);
+    expect(result).toBeNull();
+  });
+
+  it('creates parent directories if needed', () => {
+    const nested = path.join(tmpDir3, 'deep', 'nested', 'dir');
+    const desc: PerFolderDescription = {
+      specFolder: 'test',
+      description: 'Test',
+      keywords: [],
+      lastUpdated: '',
+      specId: '',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(desc, nested);
+    expect(fs.existsSync(path.join(nested, 'description.json'))).toBe(true);
+  });
+});
+
+describe('T009 isPerFolderDescriptionStale', () => {
+  let tmpDir4: string;
+
+  beforeEach(() => {
+    tmpDir4 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-stale-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir4, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  it('returns true when description.json is missing', () => {
+    fs.writeFileSync(path.join(tmpDir4, 'spec.md'), '# Test');
+    expect(isPerFolderDescriptionStale(tmpDir4)).toBe(true);
+  });
+
+  it('returns true when spec.md is missing', () => {
+    fs.writeFileSync(path.join(tmpDir4, 'description.json'), '{}');
+    expect(isPerFolderDescriptionStale(tmpDir4)).toBe(true);
+  });
+
+  it('returns false when description.json is newer than spec.md', () => {
+    fs.writeFileSync(path.join(tmpDir4, 'spec.md'), '# Test');
+    // Small delay to ensure different mtime
+    const specMtime = fs.statSync(path.join(tmpDir4, 'spec.md')).mtimeMs;
+    // Set description.json mtime to future
+    fs.writeFileSync(path.join(tmpDir4, 'description.json'), '{}');
+    const descMtime = fs.statSync(path.join(tmpDir4, 'description.json')).mtimeMs;
+    // description.json was written after spec.md, so descMtime >= specMtime
+    expect(descMtime >= specMtime).toBe(true);
+    expect(isPerFolderDescriptionStale(tmpDir4)).toBe(false);
   });
 });

@@ -64,6 +64,11 @@ export async function writeFilesAtomically(
     const warnings = validateAnchors(content);
     if (warnings.length) console.warn(`   Warning: ${filename}: ${warnings.join(', ')}`);
     const filePath = path.join(contextDir, filename);
+    // Defense-in-depth: warn if target already exists
+    try {
+      await fs.access(filePath);
+      console.warn(`   Warning: overwriting existing file ${filename}`);
+    } catch { /* Expected: file doesn't exist */ }
     const tempPath = filePath + '.tmp';
     try {
       await fs.writeFile(tempPath, content, 'utf-8');

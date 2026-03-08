@@ -1,0 +1,1 @@
+../skill/mcp-clickup/INSTALL_GUIDE.md

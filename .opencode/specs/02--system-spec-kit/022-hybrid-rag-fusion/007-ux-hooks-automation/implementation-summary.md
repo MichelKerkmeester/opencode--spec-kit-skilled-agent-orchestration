@@ -23,7 +23,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 011-ux-hooks-automation |
+| **Spec Folder** | 007-ux-hooks-automation |
 | **Completed** | 2026-03-06 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -153,10 +153,10 @@ Two independent review agents scored the work 90/100 and 98/100 respectively. Tw
 | `.opencode/skill/system-spec-kit/mcp_server/tests/mcp-input-validation.vitest.ts` | Modified | Verified MCP input validation for the updated delete safety requirements |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts` | Modified | Verified mutation feedback behavior across CRUD and bulk mutation flows |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Modified | Verified duplicate-save no-op feedback and atomic-save parity behavior |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/tasks.md` | Modified | Marked implementation and verification tasks complete |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/checklist.md` | Modified | Added evidence-backed P0/P1 verification updates |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual-testing-playbook/manual-test-playbooks.md` | Modified | Added NEW-103+ manual scenarios for UX hooks and context-server hints |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/implementation-summary.md` | Modified | Updated the implementation record to reflect this remediation pass and pending evidence refresh |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/tasks.md` | Modified | Marked implementation and verification tasks complete |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/checklist.md` | Modified | Added evidence-backed P0/P1 verification updates |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-manual-testing-per-playbook/manual-test-playbooks.md` | Modified | Added NEW-103+ manual scenarios for UX hooks and context-server hints |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/implementation-summary.md` | Modified | Updated the implementation record to reflect this remediation pass and pending evidence refresh |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts` | Modified | Phase 4: Added `sanitizeErrorForHint()` and `redactPath()` security helpers (M1+M2) |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/mutation-hooks.ts` | Modified | Phase 4: try/catch around `toolCache.invalidateOnWrite()`, type extraction (M3+M4) |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-types.ts` | Modified | Phase 4: Added `MutationHookResult` interface (M4) |
@@ -222,8 +222,8 @@ This remediation pass reran the build, lint, the fresh combined 9-file / 485-tes
 | `npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts tests/memory-crud-extended.vitest.ts tests/memory-save-ux-regressions.vitest.ts tests/embeddings.vitest.ts tests/stdio-logging-safety.vitest.ts` | PASS (9 files, 485 tests) |
 | MCP SDK stdio client smoke test | PASS (connected to `dist/context-server.js` and listed 28 tools) |
 | Manual MCP client contract pass | PASS (`memory_health({ reportMode: "full", limit: 1 })` returned healthy output; `checkpoint_delete({ name: "__phase014_manual_nonexistent__", confirmName: "__phase014_manual_nonexistent__" })` returned `Checkpoint "__phase014_manual_nonexistent__" not found` with `safetyConfirmationUsed=true`) |
-| Memory snapshot save | PASS with follow-up limitation (direct phase-folder save rejected by policy; parent-spec save created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_16-41__here-is-a-review-of-the-work-completed-according.md`; `memory_index_scan` reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, so no new indexed memory ID is available because the database expects 1024-dim vectors and the provider returned 768) |
-| Manual playbook sync (`../manual-testing-playbook/manual-test-playbooks.md`) | PASS (NEW-103+ scenarios added for UX hook capabilities) |
+| Memory snapshot save | PASS with follow-up limitation (direct phase-folder save rejected by policy; parent-spec save created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`; `memory_index_scan` reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, so no new indexed memory ID is available because the database expects 1024-dim vectors and the provider returned 768) |
+| Manual playbook sync (`../016-manual-testing-per-playbook/manual-test-playbooks.md`) | PASS (NEW-103+ scenarios added for UX hook capabilities) |
 | Phase 4: `npx tsc --noEmit` | PASS (zero type errors after 13 fixes across 12 files) |
 | Phase 4: `npx vitest run` (4 affected suites) | PASS (416/416 tests, including 3 new tests from m5+s6+s7) |
 | Phase 4: Review agent 1 (Security+Types) | 90/100 PASS — 0 P0, 2 P1 (both fixed), 4 P2 |

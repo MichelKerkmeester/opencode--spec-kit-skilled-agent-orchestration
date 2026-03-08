@@ -19,7 +19,7 @@ This phase now reflects end-to-end closure through Phase 13: all 126 task entrie
 
 > **Note:** Test counts cited below are point-in-time snapshots captured at each phase's closure. Downstream work (e.g., spec 013) may have added tests to the same files, so re-running commands today may yield higher counts.
 
-As of 2026-03-05, former spec `030-architecture-boundary-remediation` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill. Phase 10 preserves the historical note that its direct-save seam was discovered only after Phase 9 had already closed in scope. Phase 11 closed the adjacent explicit-target routing bug by verifying direct CLI save targets remain authoritative. Phase 13 preserves the next follow-up history as well: after Phase 10/11 naming and routing closures, the remaining defect was narrowed to indexed direct-save render/quality output and root-save indexing quality, not another naming-selection regression.
+As of 2026-03-05, former spec `009-architecture-audit` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill. Phase 10 preserves the historical note that its direct-save seam was discovered only after Phase 9 had already closed in scope. Phase 11 closed the adjacent explicit-target routing bug by verifying direct CLI save targets remain authoritative. Phase 13 preserves the next follow-up history as well: after Phase 10/11 naming and routing closures, the remaining defect was narrowed to indexed direct-save render/quality output and root-save indexing quality, not another naming-selection regression.
 
 ## Approach
 
@@ -86,7 +86,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 | `mcp_server/tool-schemas.ts` | Public tool schema contract aligned to `memory_search.limit` 1-100 (T057) |
 | `scripts/core/file-writer.ts` | Empty-content and duplicate-content prevention gates added before write (T072) |
 | `scripts/core/workflow.ts` | Content-aware slug integration for generated memory filenames (T073) |
-| `../feature-catalog/feature_catalog.md` | Canonical feature-catalog parity updates from Phase 6 documentation sweep (T059-T068) |
+| `../011-feature-catalog/feature_catalog.md` | Canonical feature-catalog parity updates from Phase 6 documentation sweep (T059-T068) |
 
 ### Build Output
 | File | Purpose |
@@ -105,7 +105,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 - Clean-checkout CI remediation verification passed on 2026-03-06: `npm ci`, `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json`, `npm run check --workspace=scripts`, and `npm run check:ast --workspace=scripts` succeeded after reproducing the missing-declaration failure in GitHub Actions.
 - Alignment verifier passed on 2026-03-06: `verify_alignment_drift.py` reports PASS with 0 warnings.
 - Phase 8 README validation evidence passed on 2026-03-06: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passed for the edited README files, including 0-issue runs for `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
-- Final spec-folder validation passed on 2026-03-06: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` exited 0 with `Errors: 0  Warnings: 0`.
+- Final spec-folder validation passed on 2026-03-06: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` exited 0 with `Errors: 0  Warnings: 0`.
 - Phase 9 naming regression validation passed on 2026-03-06: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` returned PASS `27/27` tests.
 - Local boundary mirror hook verification passed on 2026-03-06: `.git/hooks/pre-commit` exists and runs `npm run check --workspace=scripts` followed by `npm run check:ast --workspace=scripts`.
 - README scan updates completed on 2026-03-06 for `.opencode/skill/system-spec-kit/scripts/README.md`, `.opencode/skill/system-spec-kit/scripts/tests/README.md`, `.opencode/skill/system-spec-kit/scripts/renderers/README.md`, and `.opencode/skill/system-spec-kit/scripts/memory/README.md`.
@@ -115,11 +115,11 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 - Scripts lint passed on 2026-03-06: `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"`.
 - Phase 10 closure evidence now includes both code-path proof and executable proof: `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` resolves `QUICK_SUMMARY` with `pickBestContentName()` across observation titles, `recentContext.request`, `recentContext.learning`, and `taskFromPrompt`, while `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` verifies direct-save output uses a specific slug and rejects the generic folder-derived suffix `__hybrid-rag-fusion`.
 - Phase 11 explicit-target routing regressions passed on 2026-03-06: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` returned PASS `29/29` tests.
-- Phase 11 direct CLI smoke verification passed on 2026-03-06: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` logged `Using spec folder from CLI argument: 022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_13-56__here-is-a-review-of-the-work-completed-according.md`.
+- Phase 11 direct CLI smoke verification passed on 2026-03-06: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` logged `Using spec folder from CLI argument: 022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md (note: original 13-56 artifact was a quality-0 duplicate and was removed during memory cleanup)`.
 - Explicit CLI authority behavior is now documented in operator docs: `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` (`CLI Authority`) and `.opencode/skill/system-spec-kit/scripts/tests/README.md` (`generate-context-cli-authority.vitest.ts` coverage).
 - Phase 13 indexed direct-save render/quality regressions passed on 2026-03-06: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` returned PASS `31/31` tests.
 - Phase 13 scripts lint passed on 2026-03-06: `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"`.
-- Phase 13 indexed root-save proof succeeded on 2026-03-06: `specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_15-07__phase-13-indexed-direct-save-quality-closure-for.md` was saved with a non-generic filename, indexed as memory `#1201`, and recorded no `QUALITY_GATE_FAIL` plus no skipped indexing.
+- Phase 13 indexed root-save proof succeeded on 2026-03-06: `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md` was saved with a non-generic filename, indexed as memory `#1201`, and recorded no `QUALITY_GATE_FAIL` plus no skipped indexing.
 
 ## Triple Ultra-Think Cross-AI Review (2026-03-04)
 
@@ -191,7 +191,7 @@ Phase 6 (`T050-T073`) is now closed with code-contract verification, documentati
 
 - `T057`: `memory_search.limit` contract aligned at 1-100 across schema, runtime clamp, and tool docs.
 - `T058`: targeted regression suites for `T050-T057` confirmed in test set.
-- `T059-T068`: canonical `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/feature-catalog/feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
+- `T059-T068`: canonical `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog/feature_catalog.md` and snippet docs synchronized to current runtime reality (pipeline/fallback wording, MPAB placement, normalization semantics, lifecycle guards, metric/graph semantics, governance/telemetry wording, stale implementation-detail cleanup, canonical metadata source consistency).
 - `T069`: 5-agent parity re-audit artifacts captured in `scratch/` with no unresolved HIGH findings and no unresolved MEDIUM findings.
 - `T070`: phase docs (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) updated with closure evidence.
 - `T071-T073`: generation-time memory quality gates added (content-aware slugging, empty-content prevention, duplicate-content prevention).
@@ -241,7 +241,7 @@ Phase 8 strict-pass remediation (`T091-T099`) is complete.
 
 - `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passed for the edited README files.
 - 0-issue validation runs were recorded for `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
-- `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` passed after the doc changes.
+- `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` passed after the doc changes.
 - Final re-verification verdict: substantive non-spec Phase 8 drift resolved; remaining work was spec evidence only, and that evidence is now recorded.
 
 No remaining accepted exceptions.
@@ -256,7 +256,7 @@ Phase 9 memory-naming follow-up work (`T100-T104`) is complete.
 - `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts` keeps the remediation scoped to naming candidate precedence: `task -> specTitle -> sessionCandidates -> folderBase`, with `pickBestContentName()` still enforcing generic-name and contamination guardrails.
 - `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` records the regression expectation for the file-backed root-save seam: the winning filename slug is `hybrid-rag-fusion-recall-regression-audit`, and the previous generic fallback slug `hybrid-rag-fusion` is explicitly rejected.
 - Executable validation now confirms the regression is closed: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed and reported PASS `27/27` tests.
-- Final phase-doc closure was synchronized across `plan.md`, `tasks.md`, `checklist.md`, and this summary, then revalidated with `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` (`Errors: 0  Warnings: 0`).
+- Final phase-doc closure was synchronized across `plan.md`, `tasks.md`, `checklist.md`, and this summary, then revalidated with `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` (`Errors: 0  Warnings: 0`).
 
 No remaining Phase 9 verification gap remains in this spec folder.
 
@@ -277,7 +277,7 @@ Phase 10 direct-save naming follow-up work (`T105-T109`) is complete.
 - `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `27/27`)
 - `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts -t "uses collector-derived quick summary during direct preloaded workflow saves"` (PASS)
 - `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` (PASS)
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` (PASS; exit code 0)
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` (PASS; exit code 0)
 
 No remaining Phase 10 verification gap remains in this spec folder.
 
@@ -296,7 +296,7 @@ Phase 11 explicit CLI target authority follow-up (`T110-T114`) is complete.
 
 - `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `29/29`)
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` (PASS; logs explicit CLI target usage and writes to target `memory/` folder)
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` (PASS; exit code 0)
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` (PASS; exit code 0)
 
 No remaining Phase 11 verification gap remains in this spec folder.
 
@@ -315,8 +315,8 @@ Phase 12 explicit phase-folder rejection follow-up (`T115-T118`) is complete.
 
 - `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `3/3`)
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` (PASS; saves under root `memory/` directory)
-- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit` (expected FAIL; exits before save with owning-root guidance and deterministic non-reroute message)
-- `./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit` (PASS; `0` errors, `0` warnings)
+- `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` (expected FAIL; exits before save with owning-root guidance and deterministic non-reroute message)
+- `./.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit` (PASS; `0` errors, `0` warnings)
 
 No remaining Phase 12 verification gap remains in this spec folder.
 
@@ -329,13 +329,13 @@ Phase 13 indexed direct-save render/quality follow-up (`T119-T123`) is complete.
 - Phase 13 remains a post-Phase-10 follow-up rather than a reopened naming phase: the remaining defect was isolated to rendered direct-save quality and downstream indexing evidence quality after the naming and routing fixes had already closed.
 - `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md` now keep direct saves clean and indexable: empty preflight/postflight sections no longer leak into saved output, lowercase captured facts increment tool counts consistently, and root direct saves retain a specific non-generic filename.
 - `.opencode/skill/system-spec-kit/scripts/tests/memory-render-fixture.vitest.ts` now preserves executable regression coverage for the indexed direct-save render/quality seam, paired with the existing task-enrichment checks.
-- The concrete root-save closure artifact is `specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/06-03-26_15-07__phase-13-indexed-direct-save-quality-closure-for.md`, which indexed successfully as memory `#1201` without `QUALITY_GATE_FAIL` and without skipped indexing.
+- The concrete root-save closure artifact is `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md`, which indexed successfully as memory `#1201` without `QUALITY_GATE_FAIL` and without skipped indexing.
 
 ### Verification Evidence
 
 - `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` (PASS `31/31`)
 - `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` (PASS)
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit"` (PASS; exit code 0)
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` (PASS; exit code 0)
 
 No remaining Phase 13 verification gap remains in this spec folder.
 
@@ -375,7 +375,7 @@ A 10-agent comprehensive review (`scratch/review-2026-03-06/`) produced a unifie
 
 ## Spec Consolidation (2026-03-05)
 
-- Former folder `030-architecture-boundary-remediation/` was merged into this spec to keep one canonical architecture-boundary track.
-- Archived source materials are preserved at `scratch/merged-030-architecture-boundary-remediation/`.
+- Former folder `009-architecture-audit/` was merged into this spec to keep one canonical architecture-boundary track.
+- Archived source materials are preserved at `scratch/merged-009-architecture-audit/`.
 - Decision history from former 030 ADR-001 is now canonicalized as ADR-006 in `decision-record.md`.
 - Carry-over implementation closure is tracked in `tasks.md` (Phase 7, `T074-T090`) and `checklist.md` (Phase 7 checks `CHK-500` through `CHK-522`; P2 now has CHK-521 and CHK-522 completed, with CHK-520 intentionally optional/pending).

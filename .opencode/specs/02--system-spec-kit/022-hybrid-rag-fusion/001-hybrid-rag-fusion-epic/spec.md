@@ -117,7 +117,7 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 | Indexing | `memory_index` schema, embedding pipeline | Modify |
 | Spec-Kit logic | Template processing, validation handlers | Modify |
 | Memory quality (NEW) | `memory-save.ts`, `composite-scoring.ts`, `fsrs-scheduler.ts`, `trigger-matcher.ts` | Modify |
-| Documentation artifacts (NEW) | `feature-catalog/**/**/feature.md` (generated from `feature_catalog.md` + `summary_of_new_features.md`) | Create/Update |
+| Documentation artifacts (NEW) | `011-feature-catalog/**/**/feature.md` (generated from `feature_catalog.md` + `summary_of_new_features.md`) | Create/Update |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -315,7 +315,7 @@ Ground truth corpus MUST include >=30 manually curated natural-language queries 
 
 | ID | Requirement | Acceptance Criteria | Sprint/Placement |
 |----|-------------|---------------------|------------------|
-| DOC-01 | Extract each canonical feature into per-folder markdown artifacts — parse all `###` features from `feature-catalog/feature_catalog.md`, enrich with optional matching content from `feature-catalog/summary_of_new_features.md`, and write `feature.md` in each corresponding numbered feature folder under `feature-catalog/` | 1) One `feature.md` per canonical feature folder (`feature-catalog/**/**/feature.md`), 2) each artifact contains canonical section + new/updated context section + source metadata, 3) folder mapping uses numbered group/feature ordering from the canonical catalog, 4) coverage check passes with missing=0 and extra=0 | Cross-cutting |
+| DOC-01 | Extract each canonical feature into per-folder markdown artifacts — parse all `###` features from `011-feature-catalog/feature_catalog.md`, enrich with optional matching content from `011-feature-catalog/summary_of_new_features.md`, and write `feature.md` in each corresponding numbered feature folder under `011-feature-catalog/` | 1) One `feature.md` per canonical feature folder (`011-feature-catalog/**/**/feature.md`), 2) each artifact contains canonical section + new/updated context section + source metadata, 3) folder mapping uses numbered group/feature ordering from the canonical catalog, 4) coverage check passes with missing=0 and extra=0 | Cross-cutting |
 
 ### 4.1 R13 Evaluation Schema Definition
 

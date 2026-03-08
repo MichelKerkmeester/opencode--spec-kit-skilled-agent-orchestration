@@ -4,6 +4,8 @@
 // ---------------------------------------------------------------
 
 import { createHash } from 'node:crypto';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 const GENERIC_TASK_SLUGS = new Set([
   'development-session',
@@ -115,6 +117,38 @@ export function truncateSlugAtWordBoundary(slug: string, max: number = 50): stri
     return truncated.slice(0, lastHyphen);
   }
   return truncated;
+}
+
+/**
+ * Ensure a memory filename is unique within a context directory.
+ * Appends `-1`, `-2`, etc. on collision. Falls back to SHA1 hash suffix.
+ *
+ * @param contextDir - Absolute path to the memory directory.
+ * @param filename   - Proposed filename (e.g. "08-03-26_10-24__my-slug.md").
+ * @returns The original filename if unique, or a collision-free variant.
+ */
+export function ensureUniqueMemoryFilename(contextDir: string, filename: string): string {
+  let entries: string[];
+  try {
+    entries = fs.readdirSync(contextDir).filter(f => f.endsWith('.md'));
+  } catch {
+    return filename; // Dir doesn't exist yet — no collision possible
+  }
+
+  const existing = new Set(entries);
+  if (!existing.has(filename)) return filename;
+
+  const ext = path.extname(filename);
+  const base = filename.slice(0, -ext.length);
+
+  for (let i = 1; i <= 100; i++) {
+    const candidate = `${base}-${i}${ext}`;
+    if (!existing.has(candidate)) return candidate;
+  }
+
+  // Fail-safe: append random hash
+  const hash = createHash('sha1').update(`${filename}:${Date.now()}`).digest('hex').slice(0, 6);
+  return `${base}-${hash}${ext}`;
 }
 
 export function generateContentSlug(task: string, fallback: string, alternatives: readonly string[] = []): string {

@@ -1,0 +1,75 @@
+// ---------------------------------------------------------------
+// CLI: Generate Per-Folder description.json
+// ---------------------------------------------------------------
+// Usage: node generate-description.js <folder-path> <base-path> [--description "text"]
+//
+// If --description is provided, uses it directly + keyword extraction.
+// Otherwise reads spec.md via generatePerFolderDescription().
+
+import * as path from 'node:path';
+import {
+  generatePerFolderDescription,
+  savePerFolderDescription,
+  extractKeywords,
+  slugifyFolderName,
+} from '@spec-kit/mcp-server/lib/search/folder-discovery';
+import type { PerFolderDescription } from '@spec-kit/mcp-server/lib/search/folder-discovery';
+
+function main(): void {
+  const args = process.argv.slice(2);
+  if (args.length < 2) {
+    console.error('Usage: generate-description.js <folder-path> <base-path> [--description "text"]');
+    process.exit(1);
+  }
+
+  const folderPath = path.resolve(args[0]);
+  const basePath = path.resolve(args[1]);
+
+  // Parse --description flag
+  let explicitDescription: string | null = null;
+  const descIdx = args.indexOf('--description');
+  if (descIdx !== -1 && args[descIdx + 1]) {
+    explicitDescription = args[descIdx + 1];
+  }
+
+  let desc: PerFolderDescription | null;
+
+  if (explicitDescription) {
+    // Build from explicit description
+    const folderName = path.basename(folderPath);
+    const numMatch = folderName.match(/^(\d+)/);
+    const specId = numMatch ? numMatch[1] : '';
+    const folderSlug = slugifyFolderName(folderName);
+
+    const relativePath = path.relative(basePath, folderPath).replace(/\\/g, '/');
+    const segments = relativePath.split('/').filter(Boolean);
+    const parentChain = segments.length > 1 ? segments.slice(0, -1) : [];
+    const normalizedRelativeFolder =
+      relativePath && !relativePath.startsWith('..') ? relativePath : folderName;
+
+    desc = {
+      specFolder: normalizedRelativeFolder,
+      description: explicitDescription.slice(0, 150),
+      keywords: extractKeywords(explicitDescription),
+      lastUpdated: new Date().toISOString(),
+      specId,
+      folderSlug,
+      parentChain,
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+  } else {
+    // Generate from spec.md
+    desc = generatePerFolderDescription(folderPath, basePath);
+  }
+
+  if (!desc) {
+    console.error('Could not generate description (no spec.md or empty content)');
+    process.exit(1);
+  }
+
+  savePerFolderDescription(desc, folderPath);
+  console.log(`description.json created in ${folderPath}`);
+}
+
+main();

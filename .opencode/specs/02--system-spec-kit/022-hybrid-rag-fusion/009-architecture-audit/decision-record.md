@@ -354,7 +354,7 @@ The implementation happened during audit remediation, but the architectural rati
 | **Status** | Accepted |
 | **Date** | 2026-03-05 |
 | **Deciders** | System-spec-kit maintainers |
-| **Source** | Merged from former `030-architecture-boundary-remediation` ADR-001 |
+| **Source** | Merged from former `009-architecture-audit` ADR-001 |
 
 ### Context
 
@@ -436,6 +436,6 @@ These vectors cannot be caught by static analysis and are accepted as inherent l
 
 ### Implementation
 
-- Merged from former `scratch/merged-030-architecture-boundary-remediation/decision-record.md` ADR-001.
+- Merged from former `scratch/merged-009-architecture-audit/decision-record.md` ADR-001.
 - Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
 <!-- /ANCHOR:adr-006 -->

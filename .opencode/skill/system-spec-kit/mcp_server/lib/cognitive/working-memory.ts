@@ -197,10 +197,11 @@ function cleanupOldSessions(): number {
   ensureSchema();
 
   try {
-    const cutoff = new Date(Date.now() - WORKING_MEMORY_CONFIG.sessionTimeoutMs).toISOString();
+    const timeoutSeconds = Math.floor(WORKING_MEMORY_CONFIG.sessionTimeoutMs / 1000);
+    const nowIso = new Date(Date.now()).toISOString();
     const result = (db.prepare(
-      'DELETE FROM working_memory WHERE last_focused < ?'
-    ) as Database.Statement).run(cutoff);
+      "DELETE FROM working_memory WHERE datetime(last_focused) < datetime(?, '-' || ? || ' seconds')"
+    ) as Database.Statement).run(nowIso, timeoutSeconds);
     return (result as { changes: number }).changes;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);

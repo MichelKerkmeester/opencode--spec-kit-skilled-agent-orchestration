@@ -181,7 +181,7 @@ contextType: "verification"
 - [x] CHK-134 [P1] Spec/plan/tasks synchronized with actual implementation [EVIDENCE: tasks.md has 70 implementation tasks marked [x] with [DONE] evidence; spec.md and plan.md consistent]
 - [x] CHK-135 [P1] Feature flags documented with defaults and descriptions [EVIDENCE: T124 completed; 6 flags documented in the system-spec-kit config reference and code-level gating functions]
 - [x] CHK-136 [P1] New MCP tools documented (memory_ingest_start, memory_ingest_status) [EVIDENCE: T050 completed; tool descriptions in TOOL_DEFINITIONS array in tool-schemas.ts]
-- [x] CHK-137 [P2] feature_catalog.md updated with new features [EVIDENCE: T126-T127 completed; `../feature-catalog/feature_catalog.md` and the feature-catalog summary doc were updated with IMPLEMENTED status for 7 features; 12 subfolder files updated]
+- [x] CHK-137 [P2] feature_catalog.md updated with new features [EVIDENCE: T126-T127 completed; `../011-feature-catalog/feature_catalog.md` and the feature-catalog summary doc were updated with IMPLEMENTED status for 7 features; 12 subfolder files updated]
 - [x] CHK-138 [P2] implementation-summary.md written after completion [EVIDENCE: T128 completed; expanded from stub to full summary with feature descriptions, file changes, flags, deferred items, verification results]
 <!-- /ANCHOR:docs -->
 
@@ -191,7 +191,7 @@ contextType: "verification"
 ## File Organization
 
 - [x] CHK-139 [P1] Temp files in scratch/ only [EVIDENCE: no temp files outside scratch/; research/ contains permanent reference documents]
-- [x] CHK-140 [P1] scratch/ cleaned before completion [EVIDENCE: no scratch/ directory present in 009-extra-features/; research/ contains permanent reference documents only]
+- [x] CHK-140 [P1] scratch/ cleaned before completion [EVIDENCE: no scratch/ directory present in 006-extra-features/; research/ contains permanent reference documents only]
 - [ ] CHK-141 [P2] Findings saved to memory/ via generate-context.js [EVIDENCE: script exists and workflow writes output into <spec>/memory/; generate-context.js:1,79; workflow.js:351,642; directory-setup.js:108]
 <!-- /ANCHOR:file-org -->
 

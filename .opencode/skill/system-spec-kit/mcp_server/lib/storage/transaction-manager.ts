@@ -212,9 +212,9 @@ function executeAtomicSave(
       fs.renameSync(pendingPath, filePath);
     } catch (renameError: unknown) {
       // Rename failed after DB committed — DB has new state but file wasn't renamed.
-      // Clean up pending file and report the failure with dbCommitted flag.
+      // Leave pending file for startup recovery and report failure with dbCommitted flag.
       const msg = renameError instanceof Error ? renameError.message : String(renameError);
-      try { if (fs.existsSync(pendingPath)) fs.unlinkSync(pendingPath); } catch { /* ignore */ }
+      console.warn(`[transaction-manager] rename failed after DB commit; pending file kept for recovery: ${pendingPath} (${msg})`);
       metrics.totalErrors++;
       return { success: false, filePath, error: `Rename failed after DB commit: ${msg}`, dbCommitted };
     }

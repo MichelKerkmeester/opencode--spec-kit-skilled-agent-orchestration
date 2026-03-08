@@ -43,7 +43,7 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 | **Status** | Draft |
 | **Created** | 2026-03-03 |
 | **Parent** | `022-hybrid-rag-fusion` |
-| **Research** | `009-extra-features/research/` (16 files) |
+| **Research** | `006-extra-features/research/` (16 files) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -400,8 +400,8 @@ interface PipelineRow {
 ## Phase Navigation
 
 | **Parent Spec** | ../spec.md |
-- Predecessor: `008-combined-bug-fixes` (includes folded historical continuity from retired `010-cross-ai-audit`)
-- Successor: `010-architecture-audit`
+- Predecessor: `008-combined-bug-fixes` (includes folded historical continuity from retired `009-architecture-audit`)
+- Successor: `009-architecture-audit`
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

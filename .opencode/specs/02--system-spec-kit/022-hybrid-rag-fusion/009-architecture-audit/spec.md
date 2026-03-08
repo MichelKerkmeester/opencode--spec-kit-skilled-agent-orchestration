@@ -20,7 +20,7 @@ contextType: "architecture"
 
 This phase performs a full architecture audit of `.opencode/skill/system-spec-kit/` with specific focus on the boundary between root `scripts/` and `mcp_server/`. The audit confirms overlapping concerns in memory/index/eval/tooling, partial boundary enforcement, and concrete dependency-direction risks that should be addressed with documentation and guardrails first, then selective refactoring.
 
-As of 2026-03-05, the follow-up boundary remediation work previously tracked in `030-architecture-boundary-remediation` is merged into this spec as continuation scope.
+As of 2026-03-05, the follow-up boundary remediation work previously tracked in `009-architecture-audit` is merged into this spec as continuation scope.
 
 **Key Decisions**: Define a strict runtime-vs-CLI boundary contract; use API-first imports for cross-boundary consumers.
 
@@ -35,7 +35,7 @@ As of 2026-03-05, the follow-up boundary remediation work previously tracked in 
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-04 |
-| **Branch** | `022-hybrid-rag-fusion/010-architecture-audit` |
+| **Branch** | `022-hybrid-rag-fusion/009-architecture-audit` |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
@@ -76,16 +76,16 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/spec.md` | Update | Level 3 audit specification |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/plan.md` | Update | Reorganization implementation plan |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/tasks.md` | Update | Atomic task map |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/checklist.md` | Create | P0/P1/P2 architecture verification checklist |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/decision-record.md` | Create | ADRs for boundary, compatibility, and consolidation |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/scratch/agent1-root-tree-readme-config.md` | Existing evidence | Complete root tree/readme/config inventory |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/scratch/agent2-mcp-tree-readme-config.md` | Existing evidence | Complete mcp_server tree/readme/config inventory |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/scratch/agent3-root-source-inventory.md` | Existing evidence | Per-file root source mapping |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/scratch/agent4-mcp-source-inventory.md` | Existing evidence | Per-file mcp source mapping |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-architecture-audit/scratch/agent5-architecture-analysis.md` | Existing evidence | Cross-boundary architecture findings |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/spec.md` | Update | Level 3 audit specification |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/plan.md` | Update | Reorganization implementation plan |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/tasks.md` | Update | Atomic task map |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/checklist.md` | Create | P0/P1/P2 architecture verification checklist |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/decision-record.md` | Create | ADRs for boundary, compatibility, and consolidation |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/scratch/agent1-root-tree-readme-config.md` | Existing evidence | Complete root tree/readme/config inventory |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/scratch/agent2-mcp-tree-readme-config.md` | Existing evidence | Complete mcp_server tree/readme/config inventory |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/scratch/agent3-root-source-inventory.md` | Existing evidence | Per-file root source mapping |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/scratch/agent4-mcp-source-inventory.md` | Existing evidence | Per-file mcp source mapping |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit/scratch/agent5-architecture-analysis.md` | Existing evidence | Cross-boundary architecture findings |
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:requirements -->
@@ -270,10 +270,10 @@ All remediation items are tracked as Phase 4 tasks (T021-T045) in `tasks.md`.
 ## 14. MERGED SPEC 030 CONTINUATION
 <!-- ANCHOR:merged-030 -->
 
-Former spec `030-architecture-boundary-remediation` is consolidated into this spec folder to keep one canonical architecture-boundary track.
+Former spec `009-architecture-audit` is consolidated into this spec folder to keep one canonical architecture-boundary track.
 
 ### Archived Source Location
-- Archived folder: `scratch/merged-030-architecture-boundary-remediation/`
+- Archived folder: `scratch/merged-009-architecture-audit/`
 - Preserved documents: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
 
 ### Carry-Over Scope (Completed 2026-03-06)
@@ -316,7 +316,7 @@ Former spec `030-architecture-boundary-remediation` is consolidated into this sp
 ## Phase Navigation
 
 | **Parent Spec** | ../spec.md |
-- Predecessor: `009-extra-features`
+- Predecessor: `006-extra-features`
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** a filesystem scan of root scripts scope, **When** the source file inventory is compared, **Then** the count matches the actual file total (REQ-001) and every file appears in the inventory artifact.

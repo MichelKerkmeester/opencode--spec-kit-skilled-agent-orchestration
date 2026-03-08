@@ -82,7 +82,7 @@ contextType: "implementation"
 - [x] T010 [P0] Run index handler tests and verify duplicate-source regression passes (`mcp_server/tests/handler-memory-index.vitest.ts`) [EVIDENCE: `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` PASS (52 tests)]
 - [x] T011 [P0] Run parser tests and verify tier precedence cases pass (`mcp_server/tests/memory-parser.vitest.ts`) [EVIDENCE: targeted + extended parser/spec runs PASS (52 + 186 tests)]
 - [x] T012 [P1] Run tier utility tests and verify defaults remain stable (`mcp_server/tests/importance-tiers.vitest.ts`) [EVIDENCE: targeted tier utility suite PASS (included in 52-test run)]
-- [x] T013 [P1] Run spec validation and resolve issues (`scripts/spec/validate.sh`) [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` PASS (0 errors, 0 warnings)]
+- [x] T013 [P1] Run spec validation and resolve issues (`scripts/spec/validate.sh`) [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` PASS (0 errors, 0 warnings)] (pre-consolidation path; now 002-indexing-normalization)
 - [x] T014 [P1] Update checklist and implementation-summary with evidence (`checklist.md`, `implementation-summary.md`) [EVIDENCE: documentation synchronized in spec folder]
 <!-- /ANCHOR:phase-3 -->
 

@@ -379,7 +379,7 @@ contextType: "implementation"
   - Sprint: Cross-cutting (all sprints) | Priority: Low
   - Update: configuration guide, troubleshooting playbook, migration notes
   - Cadence: Update at each sprint gate review
-- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate `feature.md` for every numbered feature folder in `feature-catalog/` using canonical sections from `feature_catalog.md` and optional enrichments from `summary_of_new_features.md` [6-10h] {} — DOC-01 (completed 2026-03-04)
+- [x] T061 [W-D] Execute DOC-01 feature-catalog decomposition — generate `feature.md` for every numbered feature folder in `011-feature-catalog/` using canonical sections from `feature_catalog.md` and optional enrichments from `summary_of_new_features.md` [6-10h] {} — DOC-01 (completed 2026-03-04)
   - Tooling: cli-gemini workflow with `gemini-3.1-pro-preview` + deterministic local mapping/validation pass
   - Output contract: each artifact includes title, canonical documentation, new/updated context, and source metadata
 - [x] T061a [W-D] Resolve numbering drift in feature catalog folders to preserve strict `##/###` order mapping [0.5-1h] {T061} — DOC-01 (completed 2026-03-04)

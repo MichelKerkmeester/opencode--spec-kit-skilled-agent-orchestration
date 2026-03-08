@@ -349,7 +349,7 @@ Following the 8-agent multi-perspective review (2026-03-06), 7 findings were ide
 
 ### Canonical Merge Context (2026-03-07)
 
-This file is now part of the canonical merged folder `008-combined-bug-fixes`, which supersedes active planning ownership from `009-post-review-remediation-epic` and `010-cross-ai-audit`.
+This file is now part of the canonical merged folder `008-combined-bug-fixes`, which supersedes the former remediation-epic track now folded into `008-combined-bug-fixes` and the prior audit follow-up folder `009-architecture-audit`.
 
 Completion statements inherited from prior folders are retained as historical snapshots only. Current truth for completion remains the open/closed state in `spec.md`, `tasks.md`, and `checklist.md`.
 
@@ -364,7 +364,7 @@ Completion statements inherited from prior folders are retained as historical sn
 - Session objective snapshot (2026-03-03 handover): close remaining test/build issues, verify standards alignment, update root-level docs, and complete commit/push cycle.
 - Important fixes snapshot: DB test mock hardening in `handler-helpers.vitest.ts`, root/scripts TypeScript config alignment, duplicate `escapeLikePattern` removal by import reuse, and modularization guard tightening.
 - Commit/test snapshot from 010 handover: commit `40891251` (`167 files`, `+25,694/-13,365`) with reported `230 files` and `7085 tests` passing at that historical point.
-- Continuity snapshot: Tier 3 follow-up remains delegated to `010-architecture-audit`.
+- Continuity snapshot: Tier 3 follow-up remains delegated to `009-architecture-audit`.
 - CR-P2-4 nuance resolution: 010 handover text still called `memory-save.ts` decomposition deferred, but 010 task ledger later marked CR-P2-4 complete with extracted `handlers/save/*` modules and a slim orchestrator path. In 015 this is treated as historical completion context, not an active deferment.
 
 All bullets above are historical records absorbed from 009/010 artifacts; they are not asserted as current-branch verification truth.
@@ -496,19 +496,19 @@ Earlier remediation waves implemented a substantial subset of P0/P1/P2 findings 
 
 | File | Action | Purpose |
 | --- | --- | --- |
-| `../feature-catalog/feature_catalog.md` | Modified | P2-002 em dashes, P2-003 HVR |
-| `../feature-catalog/07-evaluation/01-ablation-studies-evalrunablation.md` | Modified | P2-003 HVR |
-| `../feature-catalog/05-lifecycle/04-checkpoint-deletion-checkpointdelete.md` | Modified | P1-027 |
-| `../feature-catalog/13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Modified | P1-028 |
-| `../feature-catalog/16-tooling-and-scripts/02-architecture-boundary-enforcement.md` | Modified | P1-030 |
-| `../feature-catalog/16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md` | Modified | P1-029 |
+| `../011-feature-catalog/feature_catalog.md` | Modified | P2-002 em dashes, P2-003 HVR |
+| `../011-feature-catalog/07-evaluation/01-ablation-studies-evalrunablation.md` | Modified | P2-003 HVR |
+| `../011-feature-catalog/05-lifecycle/04-checkpoint-deletion-checkpointdelete.md` | Modified | P1-027 |
+| `../011-feature-catalog/13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Modified | P1-028 |
+| `../011-feature-catalog/16-tooling-and-scripts/02-architecture-boundary-enforcement.md` | Modified | P1-030 |
+| `../011-feature-catalog/16-tooling-and-scripts/03-progressive-validation-for-spec-documents.md` | Modified | P1-029 |
 | Historical 009 README (retired folder) | Rewritten | P2-004 |
 | `../002-indexing-normalization/README.md` | Rewritten | P2-004 |
-| `../011-ux-hooks-automation/README.md` | Rewritten | P2-004 |
+| `../007-ux-hooks-automation/README.md` | Rewritten | P2-004 |
 | Historical 009 implementation summary (retired folder) | Modified | P2-014 flag count |
 | Historical 009 checklist (retired folder) | Modified | P2-014 flag count |
-| `../000-hybrid-rag-fusion-epic/spec.md` | Modified | P2-013 status |
-| `../manual-testing-playbook/manual-test-playbooks.md` | Modified | P2-012 header |
+| `../001-hybrid-rag-fusion-epic/spec.md` | Modified | P2-013 status |
+| `../016-manual-testing-per-playbook/manual-test-playbooks.md` | Modified | P2-012 header |
 | Historical constitutional README (external snapshot) | Modified | P2-005 TOC |
 | Historical config README (external snapshot) | Modified | P2-005 TOC |
 

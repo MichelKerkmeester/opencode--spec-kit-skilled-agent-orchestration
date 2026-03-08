@@ -190,7 +190,7 @@ P0 items are blocking gates and must all be checked before completion is claimed
 - [x] CHK-006 [P0] Path security and MCP response contracts remain intact after edits. [EVIDENCE: `npx vitest run tests/unit-path-security.vitest.ts tests/mcp-error-format.vitest.ts` (pass)]
 - [x] CHK-007 [P0] Phase documentation validates via `validate.sh` for this folder. [EVIDENCE: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` (pass)]
 - [x] CHK-008 [P0] `implementation-summary.md` created only after implementation completion. [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality/implementation-summary.md`]
-- [x] CHK-009 [P0] Context saved via official `generate-context.js` script. [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` created `memory/23-02-26_14-34__spec-kit-code-quality.md`]
+- [x] CHK-009 [P0] Context saved via official `generate-context.js` script. [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-spec-kit-code-quality` created `memory/23-02-26_14-34__spec-kit-code-quality-session.md`]
 <!-- /ANCHOR:p0 -->
 
 ---

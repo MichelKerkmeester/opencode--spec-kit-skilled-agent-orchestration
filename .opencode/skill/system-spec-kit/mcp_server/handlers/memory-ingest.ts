@@ -5,7 +5,7 @@
 import { randomBytes } from 'node:crypto';
 import path from 'node:path';
 
-import { checkDatabaseUpdated } from '../core';
+import { ALLOWED_BASE_PATHS, DATABASE_PATH, checkDatabaseUpdated } from '../core';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import {
   createIngestJob,
@@ -86,6 +86,59 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
   if (paths.length === 0) {
     throw new Error('paths must be a non-empty array of file paths');
   }
+
+  const configuredMemoryRoot = process.env.MEMORY_BASE_PATH;
+  const derivedAllowedBasePath = configuredMemoryRoot && configuredMemoryRoot.trim().length > 0
+    ? path.resolve(process.cwd(), configuredMemoryRoot)
+    : path.resolve(path.dirname(DATABASE_PATH));
+  const allowedBasePaths = Array.from(
+    new Set([derivedAllowedBasePath, ...ALLOWED_BASE_PATHS].map((basePath) => path.resolve(basePath))),
+  );
+
+  const normalizedPaths: string[] = [];
+  const invalidPaths: Array<{ input: string; reason: string }> = [];
+
+  for (const inputPath of paths) {
+    const trimmedPath = inputPath.trim();
+    const normalizedInput = path.normalize(trimmedPath);
+    const resolvedPath = path.resolve(trimmedPath);
+
+    const hasTraversalInInput = normalizedInput.split(path.sep).includes('..');
+    const hasTraversalAfterResolve = resolvedPath.split(path.sep).includes('..');
+    if (hasTraversalInInput || hasTraversalAfterResolve) {
+      invalidPaths.push({ input: inputPath, reason: 'contains path traversal segments (..)' });
+      continue;
+    }
+
+    const isWithinAllowedBase = allowedBasePaths.some((basePath) => (
+      resolvedPath === basePath || resolvedPath.startsWith(`${basePath}${path.sep}`)
+    ));
+    if (!isWithinAllowedBase) {
+      invalidPaths.push({ input: inputPath, reason: 'is outside allowed memory roots' });
+      continue;
+    }
+
+    normalizedPaths.push(resolvedPath);
+  }
+
+  if (invalidPaths.length > 0) {
+    return createMCPErrorResponse({
+      tool: 'memory_ingest_start',
+      error: `Invalid path(s) rejected: ${invalidPaths.map((entry) => `"${entry.input}" (${entry.reason})`).join(', ')}`,
+      code: 'E_VALIDATION',
+      details: {
+        allowedBasePaths,
+        rejectedCount: invalidPaths.length,
+      },
+      recovery: {
+        hint: 'Provide file paths under an allowed memory base directory and remove traversal segments.',
+        actions: ['Use absolute paths rooted in the configured memory base path'],
+        severity: 'warning',
+      },
+    });
+  }
+
+  paths = normalizedPaths;
 
   const jobId = createJobId();
   const job = await createIngestJob({

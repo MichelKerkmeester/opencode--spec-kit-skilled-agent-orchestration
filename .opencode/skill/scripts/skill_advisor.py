@@ -370,7 +370,12 @@ INTENT_BOOSTERS = {
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
     # ─────────────────────────────────────────────────────────────────
-    "clickup": ("mcp-code-mode", 2.5),
+    "clickup": ("mcp-clickup", 2.5),
+    "clickup-cli": ("mcp-clickup", 1.5),
+    "cu": ("mcp-clickup", 2.0),
+    "sprint": ("mcp-clickup", 1.0),
+    "task-management": ("mcp-clickup", 1.0),
+    "standup": ("mcp-clickup", 1.0),
     "cms": ("mcp-code-mode", 0.5),
     "component": ("mcp-code-mode", 0.4),
     "external": ("mcp-code-mode", 0.4),
@@ -569,7 +574,7 @@ INTENT_NORMALIZATION_RULES = {
     "tooling": {
         "phrases": ["use mcp", "code mode", "chrome devtools", "use figma", "use webflow"],
         "tokens": {"mcp", "devtools", "chrome", "figma", "webflow", "clickup", "notion", "toolchain"},
-        "boosts": [("mcp-code-mode", 0.3), ("mcp-chrome-devtools", 0.3)],
+        "boosts": [("mcp-code-mode", 0.3), ("mcp-chrome-devtools", 0.3), ("mcp-clickup", 0.3)],
     },
 }
 

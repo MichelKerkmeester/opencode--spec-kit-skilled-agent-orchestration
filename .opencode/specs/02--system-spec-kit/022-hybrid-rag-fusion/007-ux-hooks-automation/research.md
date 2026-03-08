@@ -12,7 +12,7 @@ updated: "2026-03-06"
 
 | Field | Value |
 |---|---|
-| Research ID | `011-ux-hooks-automation-research-2026-03-06` |
+| Research ID | `007-ux-hooks-automation-research-2026-03-06` |
 | Status | Complete |
 | Scope | Active spec folder, current hook modules, handler integrations, schemas, tests, and local docs |
 | Writable artifact | `research.md` only |
@@ -22,7 +22,7 @@ updated: "2026-03-06"
 
 ### Request Summary
 
-Investigate the current UX hook system in the system-spec-kit MCP server, identify concrete improvement opportunities, and propose genuinely useful new hooks grounded in the existing codebase and test surface. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/spec.md:38-60]
+Investigate the current UX hook system in the system-spec-kit MCP server, identify concrete improvement opportunities, and propose genuinely useful new hooks grounded in the existing codebase and test surface. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/spec.md:38-60]
 
 ### Existing Hook Inventory
 
@@ -211,7 +211,7 @@ Maintenance risk is now concentrated in duplicated hint logic and legacy verific
 
 Research sources:
 
-- Active spec and plan documents. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/spec.md:38-60] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-ux-hooks-automation/plan.md:33-99]
+- Active spec and plan documents. [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/spec.md:38-60] [SOURCE: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation/plan.md:33-99]
 - Hook modules, handler integrations, schemas, envelope utilities, and tests listed throughout this report.
 
 Tools used: local code search and file inspection only; no external web sources were required because the request was codebase-grounded and the needed evidence was present in-repo. [CITATION: NONE - process note]

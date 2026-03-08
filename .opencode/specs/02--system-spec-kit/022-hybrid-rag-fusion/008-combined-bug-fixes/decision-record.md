@@ -384,10 +384,10 @@ Execution order:
 
 ### Context
 
-Folder `008-combined-bug-fixes` now acts as the canonical active destination for this remediation track, while two earlier folders contain unique history that should not be lost:
+Folder `008-combined-bug-fixes` now acts as the canonical active destination for this remediation track, while the folded remediation-epic lineage and an earlier audit folder contain unique history that should not be lost:
 
-- `009-post-review-remediation-epic` preserves remediation-epic lineage and root ADR context (including ADR-001 through ADR-003 in its inherited decision stream).
-- `010-cross-ai-audit` preserves cross-AI audit provenance and handover state, including historical test snapshot metadata (`243 files`, `7205 tests`).
+- The remediation-epic lineage now folded into `008-combined-bug-fixes` preserves root ADR context (including ADR-001 through ADR-003 in its inherited decision stream).
+- `009-architecture-audit` preserves cross-AI audit provenance and handover state, including historical test snapshot metadata (`243 files`, `7205 tests`).
 
 These records include contradictory completion statements across time. Blindly copying all claims into canonical 008 would re-introduce truth drift.
 
@@ -423,7 +423,7 @@ Operational rules:
 
 ### Context
 
-Folder `009-post-review-remediation-epic` contains the substantive rationale bodies for three historical decisions that were implemented before this archival fold-in but were not yet summarized in canonical 008 as historical context.
+The material now housed in folder `008-combined-bug-fixes` contains the substantive rationale bodies for three historical decisions that were implemented before this archival fold-in but were not yet summarized in canonical 008 as historical context.
 
 ### Decision
 
@@ -458,7 +458,7 @@ Unique historical content from 009 (ADR bodies + remediation execution details) 
 
 ### Decision
 
-**Retire `009-post-review-remediation-epic` and `010-cross-ai-audit` as live spec folders after archival fold-in sufficiency checks pass.**
+**Retire the formerly separate remediation-epic lineage now folded into `008-combined-bug-fixes` and `009-architecture-audit` as live spec folders after archival fold-in sufficiency checks pass.**
 
 Operational rules:
 1. 015 remains the only live canonical folder for this remediation track.

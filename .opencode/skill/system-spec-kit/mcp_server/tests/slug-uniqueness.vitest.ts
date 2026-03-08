@@ -1,0 +1,92 @@
+// ---------------------------------------------------------------
+// MODULE: Test — Slug Uniqueness
+// ---------------------------------------------------------------
+// Tests: ensureUniqueMemoryFilename collision detection and resolution
+// Note: Function is in scripts/utils/slug-utils.ts but tested here
+//       where vitest infrastructure exists.
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as os from 'node:os';
+import { createHash } from 'node:crypto';
+
+// Inline implementation for testing since the function is in the scripts project
+// and cannot be directly imported. This mirrors the exact logic in slug-utils.ts.
+function ensureUniqueMemoryFilename(contextDir: string, filename: string): string {
+  let entries: string[];
+  try {
+    entries = fs.readdirSync(contextDir).filter(f => f.endsWith('.md'));
+  } catch {
+    return filename;
+  }
+
+  const existing = new Set(entries);
+  if (!existing.has(filename)) return filename;
+
+  const ext = path.extname(filename);
+  const base = filename.slice(0, -ext.length);
+
+  for (let i = 1; i <= 100; i++) {
+    const candidate = `${base}-${i}${ext}`;
+    if (!existing.has(candidate)) return candidate;
+  }
+
+  const hash = createHash('sha1').update(`${filename}:${Date.now()}`).digest('hex').slice(0, 6);
+  return `${base}-${hash}${ext}`;
+}
+
+let tmpDir: string;
+
+beforeEach(() => {
+  tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-slug-'));
+});
+
+afterEach(() => {
+  try {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  } catch { /* best effort */ }
+});
+
+describe('ensureUniqueMemoryFilename', () => {
+  it('returns original filename when no collision', () => {
+    const result = ensureUniqueMemoryFilename(tmpDir, '08-03-26_10-24__my-slug.md');
+    expect(result).toBe('08-03-26_10-24__my-slug.md');
+  });
+
+  it('returns original filename when directory does not exist', () => {
+    const nonExistent = path.join(tmpDir, 'does-not-exist');
+    const result = ensureUniqueMemoryFilename(nonExistent, 'test.md');
+    expect(result).toBe('test.md');
+  });
+
+  it('appends -1 suffix on first collision', () => {
+    fs.writeFileSync(path.join(tmpDir, '08-03-26_10-24__my-slug.md'), 'existing');
+    const result = ensureUniqueMemoryFilename(tmpDir, '08-03-26_10-24__my-slug.md');
+    expect(result).toBe('08-03-26_10-24__my-slug-1.md');
+  });
+
+  it('appends incrementing suffix for multiple collisions', () => {
+    fs.writeFileSync(path.join(tmpDir, 'test.md'), 'existing');
+    fs.writeFileSync(path.join(tmpDir, 'test-1.md'), 'existing');
+    fs.writeFileSync(path.join(tmpDir, 'test-2.md'), 'existing');
+    const result = ensureUniqueMemoryFilename(tmpDir, 'test.md');
+    expect(result).toBe('test-3.md');
+  });
+
+  it('generates 10 unique filenames for 10 identical inputs', () => {
+    const filenames = new Set<string>();
+    for (let i = 0; i < 10; i++) {
+      const name = ensureUniqueMemoryFilename(tmpDir, 'collision.md');
+      filenames.add(name);
+      fs.writeFileSync(path.join(tmpDir, name), `content-${i}`);
+    }
+    expect(filenames.size).toBe(10);
+  });
+
+  it('ignores non-md files in collision check', () => {
+    fs.writeFileSync(path.join(tmpDir, 'test.json'), 'json content');
+    const result = ensureUniqueMemoryFilename(tmpDir, 'test.md');
+    expect(result).toBe('test.md');
+  });
+});

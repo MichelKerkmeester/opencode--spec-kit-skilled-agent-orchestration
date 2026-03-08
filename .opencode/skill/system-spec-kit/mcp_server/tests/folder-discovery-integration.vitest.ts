@@ -16,8 +16,11 @@ import {
   generateFolderDescriptions,
   saveDescriptionCache,
   loadDescriptionCache,
+  generatePerFolderDescription,
+  savePerFolderDescription,
+  isPerFolderDescriptionStale,
 } from '../lib/search/folder-discovery';
-import type { DescriptionCache } from '../lib/search/folder-discovery';
+import type { DescriptionCache, PerFolderDescription } from '../lib/search/folder-discovery';
 import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
 
 /* --- HELPER: env var backup/restore --- */
@@ -534,5 +537,100 @@ describe('CHK-PI-B3-004: Graceful degradation', () => {
   it('T046-21: getSpecsBasePaths returns empty for nonexistent workspace', () => {
     const result = getSpecsBasePaths('/nonexistent/workspace/path');
     expect(result).toEqual([]);
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   7. Per-Folder Description Integration
+   ═══════════════════════════════════════════════════════════════ */
+
+describe('PI-B3: Per-folder description preference', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = createTempWorkspace();
+  });
+
+  afterEach(() => {
+    cleanup(tmpDir);
+  });
+
+  it('T046-22: uses per-folder description.json when fresh', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const specDir = createSpecFolder(tmpDir, '001-auth', '# Authentication System');
+
+    // Create a per-folder description.json with custom description
+    const perFolder: PerFolderDescription = {
+      specFolder: '001-auth',
+      description: 'Custom per-folder description',
+      keywords: ['custom', 'per-folder'],
+      lastUpdated: new Date().toISOString(),
+      specId: '001',
+      folderSlug: 'auth',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(perFolder, specDir);
+
+    const cache = generateFolderDescriptions([specsDir]);
+    expect(cache.folders).toHaveLength(1);
+    expect(cache.folders[0].description).toBe('Custom per-folder description');
+  });
+
+  it('T046-23: falls back to spec.md when description.json is stale', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const specDir = createSpecFolder(tmpDir, '001-auth', '# Fresh Authentication Title');
+
+    // Create a stale description.json (written before spec.md)
+    const descPath = path.join(specDir, 'description.json');
+    const staleDesc: PerFolderDescription = {
+      specFolder: '001-auth',
+      description: 'Stale description',
+      keywords: ['stale'],
+      lastUpdated: new Date('2020-01-01').toISOString(),
+      specId: '001',
+      folderSlug: 'auth',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    fs.writeFileSync(descPath, JSON.stringify(staleDesc));
+    // Set description.json mtime to past to ensure staleness
+    const pastTime = new Date('2020-01-01');
+    fs.utimesSync(descPath, pastTime, pastTime);
+
+    const cache = generateFolderDescriptions([specsDir]);
+    expect(cache.folders).toHaveLength(1);
+    // Should fall back to spec.md extraction
+    expect(cache.folders[0].description).toBe('Fresh Authentication Title');
+  });
+
+  it('T046-24: mixed mode aggregation with fresh and stale descriptions', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const freshDir = createSpecFolder(tmpDir, '001-fresh', '# Fresh From SpecMd');
+    const perFolderDir = createSpecFolder(tmpDir, '002-perfolder', '# Ignored SpecMd Title');
+
+    // Only 002 has a fresh per-folder description
+    const perFolder: PerFolderDescription = {
+      specFolder: '002-perfolder',
+      description: 'Per-folder wins',
+      keywords: ['perfolder'],
+      lastUpdated: new Date().toISOString(),
+      specId: '002',
+      folderSlug: 'perfolder',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(perFolder, perFolderDir);
+
+    const cache = generateFolderDescriptions([specsDir]);
+    expect(cache.folders).toHaveLength(2);
+
+    const fresh = cache.folders.find(f => f.specFolder === '001-fresh');
+    const pf = cache.folders.find(f => f.specFolder === '002-perfolder');
+    expect(fresh!.description).toBe('Fresh From SpecMd');
+    expect(pf!.description).toBe('Per-folder wins');
   });
 });

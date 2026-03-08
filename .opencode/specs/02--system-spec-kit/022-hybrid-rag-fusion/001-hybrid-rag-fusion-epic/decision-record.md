@@ -258,13 +258,13 @@ This phase consolidates hybrid-retrieval intelligence features under strict late
 
 **Context:** The parent spec folder carried multiple active child folders and duplicate lifecycle surfaces, which made active-state ownership unclear after skill-graph deprecation.
 
-**Decision:** Keep exactly two active children: `001-deprecated-skill-graph-experiment` and `002-hybrid-rag-fusion`; record merged non-lifecycle evidence in `002-hybrid-rag-fusion/supplemental/`.
+**Decision:** Keep exactly two active children: the deprecated skill-graph experiment (now `001-hybrid-rag-fusion-epic`) and `002-hybrid-rag-fusion`; record merged non-lifecycle evidence in `002-hybrid-rag-fusion/supplemental/`.
 
 **Rationale:** This removes duplicate active lifecycle surfaces, preserves evidence, and keeps deprecation and RAG tracks clearly separated.
 
 **Consequences:**
 - Positive: single canonical active RAG lifecycle set in `002-hybrid-rag-fusion`.
-- Positive: deprecated skill-graph track remains isolated in `001-deprecated-skill-graph-experiment`.
+- Positive: deprecated skill-graph track remains isolated (now merged into `001-hybrid-rag-fusion-epic`).
 - Tradeoff: historical references in legacy memory artifacts remain descriptive rather than authoritative.
 
 ## Source: 006-hybrid-rag-fusion-logic-improvements
@@ -613,4 +613,3 @@ Treat deferred/skipped-path closure and self-healing runbook drills as release-g
 DECISION RECORD
 Level 3+ ADR set aligned to broadened cross-system hardening scope and continuity requirements.
 -->
-

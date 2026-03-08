@@ -158,49 +158,8 @@ async function indexChunkedMemoryFile(
 
     if (existing && !force) {
       pid = existing.id;
-
-      // Delete existing children to re-index
-      database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(pid);
-
-      // Update parent metadata
-      const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
-      const specLevel = isSpecDocumentType(parsed.documentType)
-        ? detectSpecLevelFromParsed(filePath)
-        : null;
-      const fileMetadata = incrementalIndex.getFileMetadata(filePath);
-      const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
-
-      database.prepare(`
-        UPDATE memory_index
-        SET content_hash = ?,
-            context_type = ?,
-            importance_tier = ?,
-            importance_weight = ?,
-            embedding_status = 'partial',
-            encoding_intent = COALESCE(?, encoding_intent),
-            content_text = ?,
-            updated_at = datetime('now'),
-            file_mtime_ms = ?,
-            document_type = ?,
-            spec_level = ?,
-            quality_score = ?,
-            quality_flags = ?
-        WHERE id = ?
-      `).run(
-        parsed.contentHash,
-        parsed.contextType,
-        parsed.importanceTier,
-        importanceWeight,
-        parentEncodingIntent,
-        chunkResult.parentSummary,
-        fileMtimeMs,
-        parsed.documentType || 'memory',
-        specLevel,
-        parsed.qualityScore ?? 0,
-        JSON.stringify(parsed.qualityFlags ?? []),
-        pid
-      );
-
+      // Safe-swap mode for re-chunking: keep existing children intact until
+      // replacement chunks are fully indexed and finalized in a transaction.
       return { parentId: pid, isUpdate: true };
     } else {
       // Delete old parent+children if force re-indexing
@@ -254,6 +213,7 @@ async function indexChunkedMemoryFile(
   const { parentId, isUpdate: existingParentUpdated } = setupParent();
   // Use existingParentUpdated below for mutation ledger (replaces `existing` variable)
   const existing = existingParentUpdated;
+  const useSafeSwap = existing;
 
   // Index BM25 for parent with summary
   if (bm25Index.isBm25Enabled()) {
@@ -335,9 +295,10 @@ async function indexChunkedMemoryFile(
         });
       }
 
-      // Set parent_id, chunk_index, chunk_label on the child
+      // Re-chunk updates stage children without parent_id; parent swap is finalized
+      // atomically after successful chunk indexing.
       applyMetadata(database, childId, {
-        parent_id: parentId,
+        ...(useSafeSwap ? {} : { parent_id: parentId }),
         chunk_index: i,
         chunk_label: chunk.label,
         content_hash: parsed.contentHash,
@@ -380,13 +341,12 @@ async function indexChunkedMemoryFile(
 
     try {
       const rollbackTx = database.transaction(() => {
-        database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
         if (parentRolledBack) {
+          database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
           database.prepare(`DELETE FROM memory_index WHERE id = ?`).run(parentId);
-        } else {
-          applyMetadata(database, parentId, {
-            embedding_status: 'pending',
-          });
+        } else if (childIds.length > 0) {
+          const placeholders = childIds.map(() => '?').join(', ');
+          database.prepare(`DELETE FROM memory_index WHERE id IN (${placeholders})`).run(...childIds);
         }
       });
       rollbackTx();
@@ -408,7 +368,7 @@ async function indexChunkedMemoryFile(
     toolCache.invalidateOnWrite('chunked-save-rollback', { filePath });
 
     return {
-      status: 'warning',
+      status: 'error',
       id: parentRolledBack ? 0 : parentId,
       specFolder: parsed.specFolder,
       title: parsed.title,
@@ -418,6 +378,89 @@ async function indexChunkedMemoryFile(
       embeddingStatus: parentRolledBack ? 'failed' : 'pending',
       message: rollbackMessage,
     };
+  }
+
+  if (useSafeSwap) {
+    const finalizeSwapTx = database.transaction((newChildIds: number[]) => {
+      const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
+      const specLevel = isSpecDocumentType(parsed.documentType)
+        ? detectSpecLevelFromParsed(filePath)
+        : null;
+      const fileMetadata = incrementalIndex.getFileMetadata(filePath);
+      const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
+
+      database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
+
+      const placeholders = newChildIds.map(() => '?').join(', ');
+      database.prepare(`
+        UPDATE memory_index
+        SET parent_id = ?,
+            updated_at = datetime('now')
+        WHERE id IN (${placeholders})
+      `).run(parentId, ...newChildIds);
+
+      database.prepare(`
+        UPDATE memory_index
+        SET content_hash = ?,
+            context_type = ?,
+            importance_tier = ?,
+            importance_weight = ?,
+            embedding_status = 'partial',
+            encoding_intent = COALESCE(?, encoding_intent),
+            content_text = ?,
+            updated_at = datetime('now'),
+            file_mtime_ms = ?,
+            document_type = ?,
+            spec_level = ?,
+            quality_score = ?,
+            quality_flags = ?
+        WHERE id = ?
+      `).run(
+        parsed.contentHash,
+        parsed.contextType,
+        parsed.importanceTier,
+        importanceWeight,
+        parentEncodingIntent,
+        chunkResult.parentSummary,
+        fileMtimeMs,
+        parsed.documentType || 'memory',
+        specLevel,
+        parsed.qualityScore ?? 0,
+        JSON.stringify(parsed.qualityFlags ?? []),
+        parentId
+      );
+    });
+
+    try {
+      finalizeSwapTx(childIds);
+    } catch (swapErr: unknown) {
+      const message = toErrorMessage(swapErr);
+      console.error(`[memory-save] Re-chunk swap failed for parent ${parentId}: ${message}`);
+
+      if (childIds.length > 0) {
+        try {
+          const placeholders = childIds.map(() => '?').join(', ');
+          database.prepare(`DELETE FROM memory_index WHERE id IN (${placeholders})`).run(...childIds);
+        } catch (cleanupErr: unknown) {
+          const cleanupMessage = toErrorMessage(cleanupErr);
+          console.error(`[memory-save] Failed to clean staged chunks for parent ${parentId}: ${cleanupMessage}`);
+        }
+      }
+
+      triggerMatcher.clearCache();
+      toolCache.invalidateOnWrite('chunked-save-rollback', { filePath });
+      return {
+        status: 'error',
+        id: parentId,
+        specFolder: parsed.specFolder,
+        title: parsed.title,
+        triggerPhrases: parsed.triggerPhrases,
+        contextType: parsed.contextType,
+        importanceTier: parsed.importanceTier,
+        embeddingStatus: 'pending',
+        message: `Chunked indexing aborted: failed to finalize safe swap (${message})`,
+      };
+    }
   }
 
   // Mutation ledger

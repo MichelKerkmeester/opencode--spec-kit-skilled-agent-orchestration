@@ -11,7 +11,7 @@ Consolidated sub-spec covering memory index deduplication, tier normalization, a
 
 ## Status
 
-**Draft** (index-tier-anomalies) / **Completed** (frontmatter-indexing)
+**Completed** (index-tier-anomalies) / **Completed** (frontmatter-indexing)
 
 ## Scope
 

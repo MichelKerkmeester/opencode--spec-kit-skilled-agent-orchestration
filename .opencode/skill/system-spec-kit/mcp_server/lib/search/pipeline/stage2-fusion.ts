@@ -613,7 +613,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   if (!isHybrid && config.intentWeights) {
     try {
       const weighted = applyIntentWeightsToResults(results, config.intentWeights);
-      results = weighted;
+      results = weighted.map((result) =>
+        typeof result.intentAdjustedScore === 'number'
+          ? { ...result, score: result.intentAdjustedScore }
+          : result
+      );
       metadata.intentWeightsApplied = true;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -682,6 +686,13 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[stage2-fusion] validation metadata enrichment failed: ${message}`);
+  }
+
+  // Keep intent-adjusted and canonical scores aligned after all score mutations.
+  for (const result of results) {
+    if (typeof result.intentAdjustedScore === 'number' && typeof result.score === 'number') {
+      result.intentAdjustedScore = Math.max(result.intentAdjustedScore, result.score);
+    }
   }
 
   // ── Trace ──

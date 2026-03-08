@@ -20,7 +20,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 009-extra-features |
+| **Spec Folder** | 006-extra-features |
 | **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
 | **Status** | Implementation complete; post-review remediation (2026-03-06), cross-AI review remediation (2026-03-06), and 8-agent review remediation (2026-03-06) applied; live runtime/eval verification still pending |

@@ -103,7 +103,7 @@ Delivery followed the plan's setup -> implementation -> verification progression
 | `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` | PASS (52 tests) |
 | `npm test -- tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts` | PASS (186 tests) |
 | `npx eslint handlers/memory-index.ts lib/parsing/memory-parser.ts lib/scoring/importance-tiers.ts tests/handler-memory-index.vitest.ts tests/memory-parser.vitest.ts tests/importance-tiers.vitest.ts` | PASS |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` | PASS (0 errors, 0 warnings) |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` (pre-consolidation path; now 002-indexing-normalization) | PASS (0 errors, 0 warnings) |
 <!-- /ANCHOR:verification -->
 
 ---

@@ -139,7 +139,7 @@ Current gate truth (2026-03-07):
 
 - [x] CHK-010 [P0] TypeScript compiles cleanly [0 errors] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-011 [P0] `test-subfolder-resolution.js`: 31 passed, 0 failed [Evidence: test output post-remediation]
-- [x] CHK-012 [P0] Bare name resolves: `007-skill-command-alignment` [Evidence: "Resolved child folder" output]
+- [x] CHK-012 [P0] Bare name resolves: `012-command-alignment` [Evidence: "Resolved child folder" output]
 - [x] CHK-013 [P0] Relative path resolves: `02--system-spec-kit/023-.../011-...` [Evidence: "Nested spec folder" output]
 - [x] CHK-014 [P1] `test-folder-detector-functional.js`: no new failures [28 passed, 1 pre-existing] [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
@@ -247,7 +247,7 @@ Current gate truth (2026-03-07):
 - [x] CHK-M003 [P1]: 010 audit provenance and handover state preserved in canonical 008 without editing the source handover file [EVIDENCE: `implementation-summary.md` inherited snapshot section]
 - [x] CHK-M004 [P1]: 009 ADR substance (legacy V1 removal, shared `resolveEffectiveScore()`, BM25 double-consonant handling) absorbed into canonical 008 decision records [EVIDENCE: `decision-record.md` ADR-008]
 - [x] CHK-M005 [P1]: 010 handover continuity snapshot absorbed with commit `40891251`, 230/7085 historical test snapshot, Tier 3 follow-up note, and CR-P2-4 completion nuance [EVIDENCE: `implementation-summary.md` historical continuity digest]
-- [x] CHK-M006 [P1]: Canonical mapping references updated to 008 in related docs; predecessor dependency no longer requires 010 as a live folder [EVIDENCE: `../feature-catalog/feature_catalog.md` mapping updates + `../009-extra-features/spec.md` phase navigation]
+- [x] CHK-M006 [P1]: Canonical mapping references updated to 008 in related docs; predecessor dependency no longer requires 010 as a live folder [EVIDENCE: `../011-feature-catalog/feature_catalog.md` mapping updates + `../006-extra-features/spec.md` phase navigation]
 - [x] CHK-M007 [P1]: Deletion safety check completed after absorption and mapping normalization [EVIDENCE: 009/010 retired after archival fold-in pass]
 
 #### Historical Test Count Reconciliation (Inherited)

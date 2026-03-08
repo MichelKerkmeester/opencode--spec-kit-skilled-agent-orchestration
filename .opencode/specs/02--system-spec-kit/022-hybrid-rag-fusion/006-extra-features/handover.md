@@ -2,7 +2,7 @@
 
 **CONTINUATION - Attempt 1**
 
-**Spec Folder**: `022-hybrid-rag-fusion/009-extra-features`
+**Spec Folder**: `022-hybrid-rag-fusion/006-extra-features`
 **Created**: 2026-03-04
 **Session Duration**: ~2 hours (continued session)
 
@@ -17,7 +17,7 @@
 - Created `check-architecture-boundaries.ts` enforcing GAP A (shared/ neutrality) and GAP B (wrapper-only) — integrated into the `scripts/` workspace check pipeline
 - Synced Phase 008 checklist: T046-T049 marked done, CHK-300-304 verified, 8 stale P2 items fixed
 - Synced Phase 004 checklist: 26 items marked `[x]` with evidence (from 4/88 to 30/88)
-- Updated `../feature-catalog/feature_catalog.md` and feature-catalog summary_of_new_features: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
+- Updated `../011-feature-catalog/feature_catalog.md` and feature-catalog summary_of_new_features: 7 features from "PLANNED"/"IMPLEMENTATION CANDIDATE" to "IMPLEMENTED"
 - Expanded implementation-summary.md with full implementation details and rollback documentation
 - Updated 7 feature catalog subfolder files (01-07) to "IMPLEMENTED" status
 - Fixed modularization test limits for Sprint 019 file growth
@@ -43,7 +43,7 @@
 
 ### Tasks Completed This Session
 - T046-T049 (Phase 008): Architecture boundary enforcement — checker created, pipeline integrated, docs updated
-- T126: `../feature-catalog/feature_catalog.md` updated with 7 implemented Sprint 019 features
+- T126: `../011-feature-catalog/feature_catalog.md` updated with 7 implemented Sprint 019 features
 - T127: feature-catalog summary_of_new_features updated from PLANNED to IMPLEMENTED
 - T128: implementation-summary.md expanded with full details and rollback docs
 - Post-review remediation (2026-03-06): fixed schema/public contract drift, ingest queue accounting, watcher delete handling, empty-result trace envelopes, provenance reporting, local reranker fail-closed behavior, and signal-shutdown cleanup
@@ -55,7 +55,7 @@
 | File | Purpose |
 |------|---------|
 | `scripts/evals/check-architecture-boundaries.ts` | GAP A + GAP B enforcement |
-| `feature-catalog/16-tooling-and-scripts/03-architecture-boundary-enforcement/` | Feature catalog subfolder |
+| `011-feature-catalog/16-tooling-and-scripts/03-architecture-boundary-enforcement/` | Feature catalog subfolder |
 
 ### Files Modified
 | File | Change |
@@ -63,14 +63,14 @@
 | `scripts/package.json` | Added stage 4 to `check` script |
 | `ARCHITECTURE_BOUNDARIES` | Added enforcement table row |
 | `scripts/evals/README` | Added inventory entry |
-| `../010-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
-| `../010-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
+| `../009-architecture-audit/tasks.md` | Phase 5 added, T046-T049 marked [x] |
+| `../009-architecture-audit/checklist.md` | Phase 5 section added, CHK-300-304 marked [x], 8 P2s fixed |
 | `tasks.md` | T126-T128 marked [x] |
 | `checklist.md` | Removed incorrect `88/88 verified` summary; added remediation note and targeted verification status |
 | `implementation-summary.md` | Expanded from stub to full summary |
 | `feature-catalog summary_of_new_features` | 7 features → IMPLEMENTED |
-| `../feature-catalog/feature_catalog.md` | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
-| `feature-catalog/23-extra-features-sprint-019/01-07*.md` | 7 files → IMPLEMENTED |
+| `../011-feature-catalog/feature_catalog.md` | 13 IMPLEMENTATION CANDIDATE → IMPLEMENTED |
+| `011-feature-catalog/23-extra-features-sprint-019/01-07*.md` | 7 files → IMPLEMENTED |
 | `mcp_server/package.json` | Added `check` and `check:full` validation commands |
 | `mcp_server/tests/checkpoints-extended.vitest.ts` | Updated checkpoint delete happy-path tests for `confirmName` |
 | `mcp_server/tests/modularization.vitest.ts` | Updated EXTENDED_LIMITS for Sprint 019 growth |
@@ -152,7 +152,7 @@ Run the remaining runtime/eval verification tasks still open in `tasks.md`. The 
 
 ### Resume Command
 ```
-/spec_kit:resume 022-hybrid-rag-fusion/009-extra-features
+/spec_kit:resume 022-hybrid-rag-fusion/006-extra-features
 ```
 
 ### Quick-Start Checklist
