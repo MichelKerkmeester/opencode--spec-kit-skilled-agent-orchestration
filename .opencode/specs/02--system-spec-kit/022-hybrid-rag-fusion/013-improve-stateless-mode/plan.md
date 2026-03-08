@@ -57,10 +57,13 @@ Quality scoring gap analysis [R06] revealed the legacy scorer **overestimates** 
 - [x] Dependencies identified (git, spec folder, optional Claude Code logs)
 
 ### Definition of Done
-- [ ] Stateless quality score >= 60/100 on repos with git history
+- [ ] `qualityValidation.valid === true` for stateless saves (primary gate)
+- [ ] No V8 (cross-spec contamination) or V9 (generic title) failures
+- [ ] Legacy quality score >= 60/100 on repos with git history (secondary signal)
 - [ ] No regression in stateful (JSON) mode quality
 - [ ] No new CLI arguments required
 - [ ] Semantic indexing succeeds for stateless saves
+- [ ] Synthetic data carries provenance markers (not treated as live session evidence)
 - [ ] All existing tests pass
 - [ ] New enrichment modules have tests
 <!-- /ANCHOR:quality-gates -->
@@ -75,13 +78,14 @@ Pipeline enrichment (additive data augmentation before fan-out)
 
 ### Key Components
 
-- **`scripts/extractors/git-context-extractor.ts`** (NEW): Mines git status, diff, and recent commits for file changes, observations, and context signals
-- **`scripts/extractors/spec-folder-extractor.ts`** (NEW): Parses spec.md, plan.md, tasks.md, checklist.md, decision-record.md, description.json for structured context
-- **`scripts/extractors/claude-code-capture.ts`** (NEW): Reads Claude Code session logs from `~/.claude/projects/` as alternate conversation source
-- **`scripts/core/workflow.ts`** (MODIFY): Insert enrichment step after data loading, before parallel extraction fan-out
-- **`scripts/loaders/data-loader.ts`** (MODIFY): Add Claude Code capture as Priority 2.5 fallback between OpenCode and simulation
-- **`scripts/extractors/collect-session-data.ts`** (MODIFY): Consume enriched SPEC_FOLDER field for related-doc detection
-- **`scripts/utils/input-normalizer.ts`** (MODIFY): Extend DataSource type, improve observation title quality
+- **`scripts/utils/input-normalizer.ts`** (MODIFY Phase 0): Fix snake_case/camelCase field mismatch, add prompt-level relevance filtering
+- **`scripts/extractors/collect-session-data.ts`** (MODIFY Phase 0): Backfill SPEC_FOLDER from CLI-known folder name
+- **`scripts/extractors/spec-folder-extractor.ts`** (NEW Phase 1): Parses spec.md, plan.md, tasks.md, checklist.md, decision-record.md, description.json for structured context
+- **`scripts/extractors/git-context-extractor.ts`** (NEW Phase 2): Mines git status, diff, and recent commits for file changes, observations, and context signals
+- **`scripts/extractors/file-extractor.ts`** (MODIFY Phase 2): Preserve ACTION field through extraction pipeline
+- **`scripts/core/workflow.ts`** (MODIFY Phase 1-2): Insert enrichment step AFTER alignment guards and spec resolution, before fan-out
+- **`scripts/extractors/claude-code-capture.ts`** (NEW Phase 3, deferred): Reads Claude Code session logs from `~/.claude/projects/`
+- **`scripts/loaders/data-loader.ts`** (MODIFY Phase 3, deferred): Add Claude Code capture as Priority 2.5 fallback
 
 ### Data Flow
 
@@ -94,14 +98,20 @@ CLI -> data-loader (file | OpenCode | simulation)
 
 **Proposed:**
 ```
-CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
-    -> enrichStatelessData()
-         -> git-context-extractor (status, diff, commits)
+CLI -> data-loader (file | OpenCode | simulation seed)
+    -> contamination/alignment guards (existing)
+    -> spec folder resolution (existing)
+    -> enrichStatelessData()  [AFTER guards, not before]
          -> spec-folder-extractor (spec.md, plan.md, tasks.md, etc.)
-         -> mergeAndDedupe()
+         -> git-context-extractor (status, diff, commits)
+         -> mergeAndDedupe() with provenance markers
     -> workflow fan-out (enriched collectedData)
     -> render + quality scoring
 ```
+
+> **Critical timing**: Enrichment runs AFTER the existing contamination/alignment guards
+> (workflow.ts:443-472) and spec folder resolution, not immediately after data loading.
+> This prevents synthetic files from masking cross-spec contamination.
 
 ### Enrichment Merge Rules [R10]
 
@@ -117,6 +127,23 @@ CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
+### Phase 0: OpenCode-Path Hardening (highest leverage, lowest risk)
+
+**Rationale**: The existing OpenCode capture path has field-name mismatches and missing prompt filtering that silently drop data. Fixing these before adding new extractors prevents building on a broken foundation. [Review finding: GPT-5.4]
+
+- [ ] Fix snake_case/camelCase metadata mismatch in `input-normalizer.ts` (~15-25 LOC)
+  - `opencode-capture.ts` emits snake_case fields (e.g., `tool_calls`, `file_path`)
+  - `input-normalizer.ts:399+` reads camelCase (e.g., `toolCalls`, `filePath`)
+  - Map both conventions so existing OpenCode data is not silently dropped
+- [ ] Add prompt-level relevance filtering in `input-normalizer.ts` (~20-30 LOC)
+  - `transformOpencodeCapture()` converts ALL exchanges into `userPrompts` (line 430)
+  - Filter prompts by spec-folder relevance to prevent V8 cross-spec contamination
+  - Reuse existing spec-folder-hint matching pattern
+- [ ] Backfill `SPEC_FOLDER` from CLI-known folder name in `collect-session-data.ts` (~10 LOC)
+  - When `collectedData.SPEC_FOLDER` is missing but `specFolderName` is known from CLI, set it
+  - Fixes data loss point 3: `detectRelatedDocs()` re-enabled
+  - Note: `detectRelatedDocs()` has a parent-doc assumption requiring grandparent to be `specs`; category-rooted `.opencode/specs/...` folders may still miss parent docs
+
 ### Phase 1: Enrichment Hook + Spec Folder Mining (highest impact)
 
 **Rationale**: Spec docs are always present in stateless runs (the spec folder IS the CLI target) and provide deterministic, high-quality context [R04].
@@ -131,54 +158,71 @@ CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
   - Parse `checklist.md` for verification status
   - Parse `decision-record.md` for explicit decision observations
   - Return `SpecFolderExtraction { observations, FILES, recentContext, summary, triggerPhrases, decisions, sessionPhase }`
+  - All returned items include `_provenance: 'spec-folder'` marker
 - [ ] Add `enrichStatelessData()` function in `scripts/core/workflow.ts` (~25-45 LOC)
-  - Gate: only runs when `_source !== 'file'` (stateless path)
+  - Gate: only runs for stateless path (match existing detection at workflow.ts:447)
+  - **Insert AFTER** contamination/alignment guards (workflow.ts:443-472) and spec resolution
   - Call spec-folder-extractor with resolved spec folder path
-  - Merge extracted data into collectedData object
-  - Set `collectedData.SPEC_FOLDER` from CLI-known folder name (fixes data loss point 3)
-- [ ] Fix `collect-session-data.ts` to use CLI-known spec folder for related-doc detection (~10 LOC)
-  - When `collectedData.SPEC_FOLDER` is missing but `specFolderName` is known from CLI, use it for `specFolderPath` computation
+  - Merge extracted data into collectedData object with provenance markers
+- [ ] Ensure synthetic timestamps use stable ordering (~5 LOC)
+  - Enriched observations get timestamps that do not distort `lastAction`/`nextAction`
+  - Use sentinel timestamps (e.g., epoch 0) or explicit `_synthetic: true` flag
 
 ### Phase 2: Git Context Mining (high impact)
 
 **Rationale**: Git provides the strongest evidence of what changed during a session, even when conversation logs are absent [R03, R08, R09].
 
+**Stale research note**: R02/R06 describe generic `Tool: read` observation titles, but current code already has `buildToolObservationTitle()` in `input-normalizer.ts:353`. Phase 2 observation title work should verify what is already fixed before adding changes.
+
 - [ ] Create `scripts/extractors/git-context-extractor.ts` (~140-190 LOC)
   - `git status --porcelain` for current uncommitted changes -> FILES with ACTION
-  - `git diff --name-status HEAD~5` for recent committed changes -> FILES
+  - `git diff --name-status HEAD~N` for recent committed changes -> FILES
+    - Check available rev count first: `git rev-list --count HEAD` to avoid HEAD~5 failure on shallow repos
   - `git log --format="%H%n%s%n%b%n---%n" --since="24 hours ago" -20` for recent commit subjects/bodies -> observations
   - Map conventional commit prefixes to observation types: `fix:` -> bugfix, `feat:` -> feature, `refactor:` -> refactor, `docs:` -> documentation
-  - `git diff --stat HEAD~5` for change magnitude -> summary context
-  - Error handling: graceful fallback if git unavailable (not in repo, git not installed)
+  - `git diff --stat HEAD~N` for change magnitude -> summary context
+  - Error handling: graceful fallback if git unavailable (not in repo, git not installed, shallow clone)
   - Performance: cap at 20 commits, 24h window, no full patch bodies
+  - All returned items include `_provenance: 'git'` marker
 - [ ] Extend `enrichStatelessData()` to call git-context-extractor
   - Merge git-derived FILES with spec-derived FILES (deduplicate by path)
   - Merge git-derived observations with spec-derived observations
   - Build enriched `recentContext` and `SUMMARY` from combined signals
-- [ ] Improve observation titles in `input-normalizer.ts` (~15-25 LOC)
-  - Change `Tool: ${tool.tool}` to `${tool.tool}: ${basename(file)} - ${tool.title || action}` for uniqueness
-  - Fixes observation dedup penalty (largest legacy scoring weakness per R06)
+  - Provenance-aware merge: downstream extractors can distinguish synthetic vs live data
+- [ ] Preserve ACTION field through file extraction in `file-extractor.ts` (~15-20 LOC)
+  - Current `extractFilesFromData()` drops everything except path and description
+  - Add optional `action` field (add/modify/delete/rename) so git rename/delete accuracy survives to render
+- [ ] Verify observation title uniqueness (check if already fixed) (~5-15 LOC)
+  - Audit current `buildToolObservationTitle()` output
+  - Only add changes if dedup ratio still below 0.7
 
-### Phase 3: Claude Code Capture (medium impact, higher risk)
+### Phase 3: Claude Code Capture (deferred — medium impact, higher risk)
 
-**Rationale**: Claude Code stores rich session logs at `~/.claude/projects/` with full tool call details and file-history snapshots [R05]. This provides conversation-level data when OpenCode capture is unavailable.
+**Rationale**: Claude Code stores rich session logs at `~/.claude/projects/` with full tool call details and file-history snapshots [R05]. However, schema drift, privacy concerns, and `thinking` content exposure require tighter specification before implementation. [Review recommendation: defer until OpenCode path is hardened]
+
+**Prerequisites**: Phases 0-2 complete and validated.
 
 - [ ] Create `scripts/extractors/claude-code-capture.ts` (~110-170 LOC)
   - Discover project folder: sanitize cwd to `~/.claude/projects/<sanitized-path>/`
   - Find latest session transcript: newest `*.jsonl` in project folder
   - Parse `assistant` records for tool calls (name, input, file_path)
+  - **Exclude** `thinking` content blocks from extraction (privacy/size)
   - Parse `file-history-snapshot` records for touched files
   - Read `~/.claude/history.jsonl` for matching session prompts
+  - **Require** exact project AND sessionId matching (prevent cross-project contamination)
   - Normalize into `TransformedCapture` shape (same as OpenCode output)
-  - Security: canonicalize paths, scope to current project, avoid cross-project contamination
+  - Security: canonicalize paths, scope to current project, redact sensitive content
+  - **Hard requirement**: Content minimization — summarize rather than verbatim capture
 - [ ] Integrate into `data-loader.ts` as Priority 2.5 (~35-70 LOC)
   - After OpenCode capture fails, before simulation fallback
   - Same error handling pattern: try/catch with graceful degradation
 - [ ] Add spec-folder relevance filtering (reuse existing pattern from `transformOpencodeCapture`)
 
-### Phase 4: Quality Scoring Calibration (nice to have)
+### Phase 4: Quality Scoring Calibration (deferred — nice to have)
 
-**Rationale**: R06 found scorers overestimate stateless quality. After enrichment raises real quality, calibrate scoring to differentiate truly rich vs thin saves.
+**Rationale**: R06 found scorers overestimate stateless quality. After enrichment raises real quality, calibrate scoring to differentiate truly rich vs thin saves. Consider splitting into a separate spec folder. [Review recommendation: defer or split]
+
+**Prerequisites**: Phases 0-2 complete and quality baselines established.
 
 - [ ] Add semantic density check to legacy scorer (file descriptions > 20 chars and not generic)
 - [ ] Add summary specificity check (not generic fallback text)
@@ -192,21 +236,33 @@ CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | spec-folder-extractor parsing, git-context-extractor parsing, observation title generation | Vitest |
-| Unit | Claude Code capture discovery, transcript parsing | Vitest |
+| Unit | snake_case/camelCase field mapping in input-normalizer | Vitest |
+| Unit | prompt relevance filtering (spec-folder hint matching) | Vitest |
+| Unit | spec-folder-extractor parsing, git-context-extractor parsing | Vitest |
+| Unit | Provenance marker propagation through extraction pipeline | Vitest |
+| Unit | Claude Code capture discovery, transcript parsing (Phase 3) | Vitest |
 | Integration | Full stateless workflow with enrichment (mock git, mock spec folder) | Vitest |
 | Regression | Stateful mode produces identical output with enrichment disabled | Vitest |
-| Manual | Run `node generate-context.js specs/folder` on real repo, verify score >= 60 | CLI |
+| Manual | Run `node generate-context.js specs/folder` on real repo, verify `qualityValidation.valid` | CLI |
 
 ### Key Test Cases
 
+- OpenCode capture with snake_case metadata fields (field-name mismatch)
+- Prompt filtering: foreign-spec prompts excluded, relevant prompts kept
 - Spec folder with all docs (spec.md, plan.md, tasks.md, checklist.md, decision-record.md)
 - Spec folder with only spec.md and description.json (early-phase)
 - Empty spec folder (only .gitkeep)
 - Repo with rich git history (many recent commits)
 - Repo with no git history (new repo)
+- Shallow repo where HEAD~5 is unavailable
+- Clean repo with no uncommitted changes
 - Git not available (not in a repo)
-- Claude Code logs present vs absent
+- Git rename/delete ACTION preserved through file extraction
+- Synthetic timestamps do not distort lastAction/nextAction ordering
+- Cross-spec contamination: mixed-spec userPrompts filtered
+- Provenance markers present on all enriched observations and files
+- Claude Code logs present vs absent (Phase 3)
+- Claude transcript with `thinking` blocks (must be excluded, Phase 3)
 - Stateful mode unchanged (no enrichment applied)
 <!-- /ANCHOR:testing -->
 
@@ -229,8 +285,8 @@ CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Stateful mode regression, enrichment causing errors, quality score decrease
-- **Procedure**: The enrichment step is gated by `_source !== 'file'`. Removing the enrichment call in `workflow.ts` restores original behavior. All new modules are additive with no existing file modifications beyond the insertion point.
+- **Trigger**: Stateful mode regression, enrichment causing errors, quality score decrease, V-rule failures
+- **Procedure**: The enrichment step is gated by stateless detection (matching workflow.ts:447). Removing the `enrichStatelessData()` call in `workflow.ts` restores original behavior. Phase 0 fixes (field mapping, prompt filtering) are standalone improvements that should NOT be rolled back.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -239,17 +295,19 @@ CLI -> data-loader (file | OpenCode | Claude Code | simulation seed)
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Spec Folder Mining) ─────────┐
-                                       ├──► Phase 3 (Claude Code) ──► Phase 4 (Scoring)
-Phase 2 (Git Mining) ─────────────────┘
+Phase 0 (OpenCode Hardening) ──► Phase 1 (Spec Folder Mining) ─────────┐
+                                                                        ├──► Phase 3 (Claude Code, deferred)
+                                 Phase 2 (Git Mining) ─────────────────┘         |
+                                                                        Phase 4 (Scoring, deferred)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Phase 1: Spec Folder Mining | None | Phase 3, Phase 4 |
-| Phase 2: Git Mining | None (parallel with Phase 1) | Phase 4 |
-| Phase 3: Claude Code Capture | Phase 1 (enrichment hook) | Phase 4 |
-| Phase 4: Scoring Calibration | Phases 1-3 | None |
+| Phase 0: OpenCode Hardening | None | Phases 1-4 |
+| Phase 1: Spec Folder Mining | Phase 0 | Phase 3, Phase 4 |
+| Phase 2: Git Mining | Phase 0 (parallel with Phase 1) | Phase 4 |
+| Phase 3: Claude Code Capture (deferred) | Phases 0-2 | Phase 4 |
+| Phase 4: Scoring Calibration (deferred) | Phases 0-2 | None |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -259,12 +317,14 @@ Phase 2 (Git Mining) ─────────────────┘
 
 | Phase | Complexity | Estimated LOC | Files |
 |-------|------------|---------------|-------|
-| Phase 1: Spec Folder Mining + Hook | Medium | 150-215 | 3 new + 2 modified |
-| Phase 2: Git Mining | Medium | 155-215 | 1 new + 1 modified |
-| Phase 3: Claude Code Capture | Medium-High | 145-240 | 1 new + 1 modified |
-| Phase 4: Scoring Calibration | Low | 30-50 | 1 modified |
-| Tests | Medium | 120-220 | 3-5 new test files |
-| **Total** | | **600-940 LOC** | **5-7 new + 4-5 modified** |
+| Phase 0: OpenCode Hardening | Low-Medium | 45-65 | 2 modified |
+| Phase 1: Spec Folder Mining + Hook | Medium | 150-220 | 1 new + 2 modified |
+| Phase 2: Git Mining + File Extraction | Medium | 160-225 | 1 new + 2 modified |
+| Phase 3: Claude Code Capture (deferred) | Medium-High | 145-240 | 1 new + 1 modified |
+| Phase 4: Scoring Calibration (deferred) | Low | 30-50 | 1 modified |
+| Tests (Phases 0-2) | Medium | 140-240 | 4-6 new test files |
+| **Total (Phases 0-2)** | | **495-750 LOC** | **2 new + 6 modified** |
+| **Total (all phases)** | | **670-1040 LOC** | **3 new + 7-8 modified** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -293,14 +353,15 @@ Phase 2 (Git Mining) ─────────────────┘
 
 | File Path | Change Type | Phase | Description |
 |-----------|-------------|-------|-------------|
-| `scripts/extractors/spec-folder-extractor.ts` | Create | 1 | Parse spec folder docs for structured context |
-| `scripts/core/workflow.ts` | Modify | 1 | Insert enrichment step before fan-out |
-| `scripts/extractors/collect-session-data.ts` | Modify | 1 | Use CLI-known folder for related-doc detection |
-| `scripts/extractors/git-context-extractor.ts` | Create | 2 | Mine git status, diff, commits |
-| `scripts/utils/input-normalizer.ts` | Modify | 2 | Improve observation titles, extend DataSource |
-| `scripts/extractors/claude-code-capture.ts` | Create | 3 | Read Claude Code session logs |
-| `scripts/loaders/data-loader.ts` | Modify | 3 | Add Claude Code as Priority 2.5 fallback |
-| `scripts/core/quality-scorer.ts` | Modify | 4 | Add semantic density checks |
+| `scripts/utils/input-normalizer.ts` | Modify | 0 | Fix snake_case/camelCase mismatch, add prompt relevance filtering |
+| `scripts/extractors/collect-session-data.ts` | Modify | 0 | Backfill SPEC_FOLDER from CLI-known folder name |
+| `scripts/extractors/spec-folder-extractor.ts` | Create | 1 | Parse spec folder docs for structured context with provenance |
+| `scripts/core/workflow.ts` | Modify | 1 | Insert enrichment step AFTER alignment guards |
+| `scripts/extractors/git-context-extractor.ts` | Create | 2 | Mine git status, diff, commits with provenance |
+| `scripts/extractors/file-extractor.ts` | Modify | 2 | Preserve ACTION field through extraction pipeline |
+| `scripts/extractors/claude-code-capture.ts` | Create | 3 (deferred) | Read Claude Code session logs with content minimization |
+| `scripts/loaders/data-loader.ts` | Modify | 3 (deferred) | Add Claude Code as Priority 2.5 fallback |
+| `scripts/core/quality-scorer.ts` | Modify | 4 (deferred) | Add semantic density checks |
 
 ## RESEARCH EVIDENCE
 
@@ -318,3 +379,27 @@ All findings documented in 10 scratch files by parallel research agents:
 | R08 | `scratch/R08-file-detection-enhancement.md` | Add git as Source 4 in extractFilesFromData |
 | R09 | `scratch/R09-observation-decision-building.md` | Git commits strongest stateless signal for observations |
 | R10 | `scratch/R10-integration-architecture.md` | Option B (enrichment layer) recommended architecture |
+
+### Stale Research Notes
+
+| Report | Issue | Status |
+|--------|-------|--------|
+| R02 | Describes generic `Tool: read` titles, but `buildToolObservationTitle()` already exists | Partly fixed in current code |
+| R04 | Claims "only spec.md + description.json" for early folders | Stale — current folders have more files |
+| R06 | Observation dedup analysis assumes generic titles | Verify against current `buildToolObservationTitle()` output |
+
+## REVIEW EVIDENCE
+
+**Reviewer**: GPT-5.4 (xhigh reasoning, 496K tokens)
+**Verdict**: REVISE (conditions applied)
+**Date**: 2026-03-08
+
+Fixes applied from review:
+1. Added Phase 0 for OpenCode-path defect hardening (snake_case mismatch, prompt filtering)
+2. Reframed acceptance criteria around `qualityValidation.valid` (primary) and legacy score (secondary)
+3. Added provenance markers as mandatory on all synthetic observations and files
+4. Added cross-spec contamination filtering as P0 requirement
+5. Moved enrichment insertion AFTER alignment guards (workflow.ts:443-472)
+6. Marked Phase 3 (Claude Code) and Phase 4 (scoring) as deferred
+7. Added shallow repo, git rename/delete, timestamp ordering test cases
+8. Noted stale research findings (R02, R04, R06) for verification before implementation
