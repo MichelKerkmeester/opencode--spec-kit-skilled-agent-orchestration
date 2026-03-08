@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: SpecKit Phase System [138-spec-kit-phase-system/spec]"
+title: "Feature Specification: SpecKit Phase System [021-spec-kit-phase-system/spec]"
 description: "Level 3+ (+Govern) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "phase"
   - "system"
   - "spec"
-  - "138"
+  - "021"
 importance_tier: "important"
 contextType: "decision"
 ---
@@ -53,7 +53,7 @@ The SpecKit Phase System formalizes the organic sub-folder pattern observed in s
 
 | Field | Value |
 |-------|-------|
-| **Spec ID** | 139 |
+| **Spec ID** | 021 |
 | **Level** | 3+ |
 | **Priority** | P1 |
 | **Status** | Draft |
@@ -137,7 +137,7 @@ AI agents proactively detect tasks that warrant phased execution, suggest struct
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | `recommend-level.sh` outputs phase recommendation alongside level recommendation | `--json` output includes `recommended_phases: true/false`, `phase_reason`, `suggested_phase_count` when score >= 70 AND (architectural OR files > 15 OR LOC > 800) |
+| REQ-001 | `recommend-level.sh` outputs phase recommendation alongside level recommendation | `--json` output includes `recommended_phases: true/false`, `phase_reason`, `suggested_phase_count` when level score >= 70 (100-point scale) AND (architectural OR files > 15 OR LOC > 800) |
 | REQ-002 | `create.sh --phase` creates parent spec folder with Phase Documentation Map section + first child phase folder with parent back-reference | Running `create.sh "Large Feature" --phase --level 3 --phases 3` creates `specs/NNN-large-feature/` with root docs + `001-phase-name/` child with linked docs |
 | REQ-003 | `validate.sh --recursive` discovers and validates all `[0-9][0-9][0-9]-*/` child phase folders within a parent, producing aggregated results | Exit code reflects worst child; JSON output includes `phases[]` array with per-phase results |
 | REQ-004 | `/spec_kit:phase` command exists with auto/confirm modes | `phase.md` + 2 YAML workflow assets follow existing command structure pattern |

@@ -1,5 +1,9 @@
 ---
-title: "Verification Checklist: Spec Folder Description System Refactor"
+title: "Spec Descriptions Checklist"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Verification Date: 2026-03-08"
 trigger_phrases:
   - "description verification"

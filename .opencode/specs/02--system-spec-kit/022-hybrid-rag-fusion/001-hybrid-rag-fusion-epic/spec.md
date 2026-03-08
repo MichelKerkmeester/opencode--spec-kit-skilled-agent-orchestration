@@ -1,3 +1,10 @@
+---
+title: "Hybrid RAG Fusion Epic"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
+---
 # Consolidated spec
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 
@@ -130,26 +137,25 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 >
 > **Note:** Phases map 1:1 to sprints (Phase 1 = Sprint 0, Phase 2 = Sprint 1, etc.) except Sprint 6 which is split into Phase 7a (Indexing) and Phase 7b (Graph Deepening).
 
+<!-- NOTE: Sprint child folders (006-measurement-foundation through 017-long-horizon) were consolidated into 005-core-rag-sprints-0-to-8. Folder names below are historical sprint references, not current folder paths. -->
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|--------------|--------|
-| 1 | `006-measurement-foundation/` | G1, G3, R17, R13-S1, G-NEW-1, B7, D4, TM-02, A2, Eval-the-eval, G-NEW-3 (Phase A) (50-77h) | None (BLOCKING) | Complete |
-| 2 | `011-graph-signal-activation/` | R4, A7, density measurement, G-NEW-2, TM-08, PI-A3, PI-A5 (42-61h) | Sprint 0 gate | Complete |
-| 3 | `012-scoring-calibration/` | R18, N4, G2, score normalization, TM-01, TM-03, FUT-5, PI-A1 (28-43h) | Sprint 0 gate | Complete |
-| 4 | `013-query-intelligence/` | R15, R14/N1, R2, R15-ext, FUT-7, PI-A2 (deferred), PI-B3 (34-53h) | Sprint 1 AND Sprint 2 gates | Complete |
-| 5 | `014-feedback-and-quality/` | R1, R11, R13-S2, A4, B2, TM-04, TM-06, G-NEW-3 (Phase C) (72-109h) | Sprint 3 gate + R13 2 eval cycles | Pending |
+| 1 | `005-core-rag-sprints-0-to-8` <!-- was 006-measurement-foundation --> | G1, G3, R17, R13-S1, G-NEW-1, B7, D4, TM-02, A2, Eval-the-eval, G-NEW-3 (Phase A) (50-77h) | None (BLOCKING) | Complete |
+| 2 | `005-core-rag-sprints-0-to-8` <!-- was 011-graph-signal-activation --> | R4, A7, density measurement, G-NEW-2, TM-08, PI-A3, PI-A5 (42-61h) | Sprint 0 gate | Complete |
+| 3 | `005-core-rag-sprints-0-to-8` <!-- was 012-scoring-calibration --> | R18, N4, G2, score normalization, TM-01, TM-03, FUT-5, PI-A1 (28-43h) | Sprint 0 gate | Complete |
+| 4 | `005-core-rag-sprints-0-to-8` <!-- was 013-query-intelligence --> | R15, R14/N1, R2, R15-ext, FUT-7, PI-A2 (deferred), PI-B3 (34-53h) | Sprint 1 AND Sprint 2 gates | Complete |
+| 5 | `005-core-rag-sprints-0-to-8` <!-- was 014-feedback-and-quality --> | R1, R11, R13-S2, A4, B2, TM-04, TM-06, G-NEW-3 (Phase C) (72-109h) | Sprint 3 gate + R13 2 eval cycles | Pending |
 
 > **Sprint 4 Split Recommendation:** Sprint 4 should be considered for decomposition into two sub-phases:
 > - **S4a** (R1/MPAB + R13-S2 enhanced eval + TM-04 quality gate, ~33-49h): Lower-risk scoring, evaluation, and save-quality gating work that can proceed immediately after Sprint 3 gate. TM-04 is placed in S4a (per child spec authoritative phasing) as a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin.
 > - **S4b** (R11 learned relevance feedback + TM-06, ~31-48h): Higher-risk work containing R11 with its CRITICAL FTS5 contamination risk (MR1). R11 should not share a sprint with 4 other deliverables given its irreversible failure mode. S4b also requires the R13 calendar dependency (minimum 28 days of eval logging before R11 activation).
 > This split isolates R11's contamination risk and allows S4a to complete faster, providing R13-S2 channel attribution data earlier.
-| 6 | `015-pipeline-refactor/` | R6, R9, R12, S2, S3, TM-05, PI-A4, PI-B1, PI-B2 (68-98h) | Sprint 4 gate | Pending |
-| 7a | `016-indexing-and-graph/` | R7, R16, S4, N3-lite, N2a, N2b, N2c (under N2) (33-51h) | Sprint 5 gate | Pending |
-| 7b | `016-indexing-and-graph/` | N2, R10 (37-53h heuristic; **ESTIMATION WARNING**: production quality 80-150h — see child spec for N2c 40-80h and R10 30-50h warnings) | Sprint 6a gate + feasibility spike | Pending (GATED) |
-| 8 | `017-long-horizon/` | R8, S1, S5, R13-S3 (REQ-061), R5 eval (REQ-062) (45-62h) | Sprint 6a gate | Pending |
+| 6 | `005-core-rag-sprints-0-to-8` <!-- was 015-pipeline-refactor --> | R6, R9, R12, S2, S3, TM-05, PI-A4, PI-B1, PI-B2 (68-98h) | Sprint 4 gate | Pending |
+| 7a | `005-core-rag-sprints-0-to-8` <!-- was 016-indexing-and-graph --> | R7, R16, S4, N3-lite, N2a, N2b, N2c (under N2) (33-51h) | Sprint 5 gate | Pending |
+| 7b | `005-core-rag-sprints-0-to-8` <!-- was 016-indexing-and-graph --> | N2, R10 (37-53h heuristic; **ESTIMATION WARNING**: production quality 80-150h — see child spec for N2c 40-80h and R10 30-50h warnings) | Sprint 6a gate + feasibility spike | Pending (GATED) |
+| 8 | `005-core-rag-sprints-0-to-8` <!-- was 017-long-horizon --> | R8, S1, S5, R13-S3 (REQ-061), R5 eval (REQ-062) (45-62h) | Sprint 6a gate | Pending |
+<!-- REMOVED: referenced non-existent folders 012-scoring-calibration, 013-query-intelligence, 014-feedback-and-quality as Phase 12-14 placeholders — these sprints are already covered above as Phases 3, 4, 5 -->
 
-| 12 | 012-scoring-calibration/ | [Phase 12 scope] | [deps] | Pending |
-| 13 | 013-query-intelligence/ | [Phase 13 scope] | [deps] | Pending |
-| 14 | 014-feedback-and-quality/ | [Phase 14 scope] | [deps] | Pending |
 ### Phase Transition Rules
 
 - Each phase MUST pass its sprint exit gate (metric-gated) before the next phase begins
@@ -162,20 +168,21 @@ Transform the system into a measurably improving, graph-differentiated, feedback
 
 | From | To | Criteria | Verification |
 |------|-----|----------|--------------|
-| 010-measurement-foundation | 011-graph-signal-activation | Graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, ground truth corpus meets diversity requirements (see below) | R13 eval metrics |
-| 010-measurement-foundation | 012-scoring-calibration | Same Sprint 0 exit gate (S1 and S2 run **in parallel** after S0) | R13 eval metrics |
+| Sprint 0 (in `005-core-rag-sprints-0-to-8`) | Sprint 1 (in `005-core-rag-sprints-0-to-8`) | Graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, ground truth corpus meets diversity requirements (see below) | R13 eval metrics |
+| Sprint 0 (in `005-core-rag-sprints-0-to-8`) | Sprint 2 (in `005-core-rag-sprints-0-to-8`) | Same Sprint 0 exit gate (S1 and S2 run **in parallel** after S0) | R13 eval metrics |
 
 **Sprint 0 Ground Truth Diversity Requirement (HARD GATE):**
 Ground truth corpus MUST include >=30 manually curated natural-language queries covering: graph relationship queries ("what decisions led to X?"), temporal queries ("what was discussed last week about Y?"), cross-document queries ("how does A relate to B?"), and hard negatives (queries where specific memories should NOT rank highly). Minimum: >=5 queries per intent type, >=3 query complexity tiers (simple single-concept, moderate multi-concept, complex cross-document/temporal). This diversity requirement is a hard exit gate criterion alongside the existing "at least 100 queries" minimum (50 minimum for initial baseline; >=100 required for BM25 contingency decision) — both must be satisfied.
-| 011-graph-signal-activation AND 012-scoring-calibration | 013-query-intelligence | S1: R4 MRR@5 delta >+2% absolute, edge density measured; S2: Cache hit >90%, score distributions normalized, G2 resolved | R13 eval metrics |
-| 013-query-intelligence | 014-feedback-and-quality | R15 p95 <30ms, RSF Kendall tau computed, R2 precision within 5% | R13 eval metrics |
-| 014-feedback-and-quality | 015-pipeline-refactor | R1 MRR@5 within 2%, R11 noise <5%, R13-S2 operational | R13 eval metrics |
-| 015-pipeline-refactor | 016-indexing-and-graph (6a) | R6 0 ordering differences, 158+ tests pass | R13 eval + test suite |
-| 016-indexing-and-graph (6a) | 017-long-horizon | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
-| 016-indexing-and-graph (6a) | 016-indexing-and-graph (6b) | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
-| 016-indexing-and-graph (6b) | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
+<!-- NOTE: Sprint references below use historical folder names; all consolidated in 005-core-rag-sprints-0-to-8 -->
+| Sprint 1 AND Sprint 2 | Sprint 3 | S1: R4 MRR@5 delta >+2% absolute, edge density measured; S2: Cache hit >90%, score distributions normalized, G2 resolved | R13 eval metrics |
+| Sprint 3 | Sprint 4 | R15 p95 <30ms, RSF Kendall tau computed, R2 precision within 5% | R13 eval metrics |
+| Sprint 4 | Sprint 5 | R1 MRR@5 within 2%, R11 noise <5%, R13-S2 operational | R13 eval metrics |
+| Sprint 5 | Sprint 6a | R6 0 ordering differences, 158+ tests pass | R13 eval + test suite |
+| Sprint 6a | Sprint 7 | R7 Recall@20 within 10%, R16 functional, S4 hierarchy functional, N3-lite contradiction detection verified, weight_history logging functional | R13 eval metrics |
+| Sprint 6a | Sprint 6b | Sprint 6a exit gate + feasibility spike completed + OQ-S6-001/002 resolved | R13 eval + spike results |
+| Sprint 6b | — | N2 attribution >10% or density-conditional deferral, R10 FP <20% (if executed) | R13 eval metrics |
 | 008-combined-bug-fixes | 021-cross-cutting-remediation | Subfolder path resolution fixes complete; P0 and P1 checklist gates fully checked | 008-combined-bug-fixes/checklist.md summary + testing section |
-| 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | 002-cross-cutting-remediation/checklist.md remediation exit gate + summary |
+| 021-cross-cutting-remediation | 022-post-review-remediation | Phase-1 remediation exit gate complete with all required checklist items verified | 003-speckit-quality-and-standards/checklist.md remediation exit gate + summary | <!-- AUDIT-2026-03-08: corrected from non-existent 002-cross-cutting-remediation -->
 | 022-post-review-remediation | 023-flag-catalog-remediation | Post-review remediation complete (P0/P1 fully verified) and implementation summary published | 022-post-review-remediation/checklist.md summary + 022-post-review-remediation/implementation-summary.md |
 <!-- /ANCHOR:phase-map -->
 

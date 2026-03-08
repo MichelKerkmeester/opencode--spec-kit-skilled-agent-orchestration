@@ -1,5 +1,9 @@
 ---
-title: "Consolidated spec: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/spec.md]"
+title: "SpecKit Quality and Standards"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated from spec.md (merged from the former templates phase) and spec.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:

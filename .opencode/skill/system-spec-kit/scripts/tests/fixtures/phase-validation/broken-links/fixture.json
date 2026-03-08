@@ -1,7 +1,15 @@
 {
   "scenario": "phased",
-  "phase_names": ["001-foundation", "002-implementation", "003-stabilization"],
+  "phase_names": ["001-design", "002-implement"],
   "mixed_levels": false,
   "broken_links": true,
-  "empty_child": false
+  "empty_child": false,
+  "expected_validate_exit": 1,
+  "expected_phase_links_exit": 1,
+  "description": "Phase structure with 3 broken links: parent references non-existent 003-missing, 001-design missing parent back-reference entirely, 002-implement missing predecessor link.",
+  "expected_issues": [
+    "Parent spec.md Phase Documentation Map references 003-missing which does not exist as a folder",
+    "001-design/spec.md missing parent back-reference (no ../spec.md, no | **Parent Spec** |, no parent: field)",
+    "002-implement/spec.md missing predecessor reference to 001-design"
+  ]
 }

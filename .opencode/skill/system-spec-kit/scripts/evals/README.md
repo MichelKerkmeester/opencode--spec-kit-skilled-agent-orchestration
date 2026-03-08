@@ -46,5 +46,5 @@ If a script requires direct internal runtime access:
 
 ## Reference
 
-- [Architecture Boundaries](../../ARCHITECTURE_BOUNDARIES.md)
+- [Architecture Boundaries](../../ARCHITECTURE.md)
 - [Import Policy Allowlist](./import-policy-allowlist.json)

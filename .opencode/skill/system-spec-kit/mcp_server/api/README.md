@@ -35,5 +35,5 @@ To migrate from internal runtime imports to `api/*`:
 
 ## Reference
 
-- [Architecture Boundaries](../../ARCHITECTURE_BOUNDARIES.md)
+- [Architecture Boundaries](../../ARCHITECTURE.md)
 - [Import Policy Allowlist](../../scripts/evals/import-policy-allowlist.json)

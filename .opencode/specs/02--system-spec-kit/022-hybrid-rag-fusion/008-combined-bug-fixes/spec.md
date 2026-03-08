@@ -1,5 +1,9 @@
 ---
-title: "Combined Specification: Bug Fixes (016)"
+title: "Combined Bug Fixes"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Merged spec combining 4 bug-fix and alignment workstreams from 022-hybrid-rag-fusion: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), and bug fixes and alignment (015)"
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 importance_tier: "high"

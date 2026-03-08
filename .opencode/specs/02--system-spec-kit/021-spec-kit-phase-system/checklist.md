@@ -1,5 +1,5 @@
 ---
-title: "Verification Checklist: SpecKit Phase System [138-spec-kit-phase-system/checklist]"
+title: "Verification Checklist: SpecKit Phase System [021-spec-kit-phase-system/checklist]"
 description: "State source of truth is tasks.md in this folder."
 trigger_phrases:
   - "verification"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "speckit"
   - "phase"
   - "system"
-  - "138"
+  - "021"
   - "spec"
 importance_tier: "normal"
 contextType: "implementation"

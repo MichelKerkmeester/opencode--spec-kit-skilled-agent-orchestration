@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation [template:level_3/spec.md]"
+title: "Architecture Audit"
+status: "complete"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
@@ -254,7 +258,7 @@ Agent 4 was dispatched after Agents 1-3 to provide a second code-quality perspec
 |----|----------|---------|---------|
 | CV-1 | MINOR | Block comment handling gap — only `//` skipped, `/* */` can trigger false positives | Gemini + Codex (x2) |
 | CV-2 | CRITICAL | Enforcement boundary narrower than architecture intent — `core/*` not blocked, `check-api-boundary.sh` not in pipeline | Codex (Agents 3+4) + Claude |
-| CV-3 | MAJOR | Exception table documentation drift — .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md missing `reindex-embeddings.ts` entry | Claude + Codex |
+| CV-3 | MAJOR | Exception table documentation drift — .opencode/skill/system-spec-kit/ARCHITECTURE.md missing `reindex-embeddings.ts` entry | Claude + Codex |
 | CV-4 | MAJOR | Quality extraction not frontmatter-bounded — body text can influence metadata | Codex (Agent 4) + Gemini (flagged regex rigidity) |
 | CV-5 | MAJOR | Relative `require` paths for `mcp_server/lib/` not detected by enforcement | Codex (Agents 3+4) |
 
@@ -294,7 +298,7 @@ Former spec `009-architecture-audit` is consolidated into this spec folder to ke
 | REQ-015 | API surface expansion is explicit and minimal | New exports documented with encapsulation rationale |
 | REQ-016 | CI-level enforcement is mandatory | Boundary checks run on every PR and fail the workflow on violations |
 | REQ-017 | TypeScript compilation remains clean | `npx tsc --noEmit` passes |
-| REQ-018 | Architecture exceptions documentation stays synchronized | .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md and allowlist reflect post-migration state |
+| REQ-018 | Architecture exceptions documentation stays synchronized | .opencode/skill/system-spec-kit/ARCHITECTURE.md and allowlist reflect post-migration state |
 
 ### Carry-Over Success Criteria
 

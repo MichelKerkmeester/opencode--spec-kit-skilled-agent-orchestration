@@ -7,6 +7,10 @@
 # Strict mode with guarded dynamic expansions.
 set -euo pipefail
 
+# ───────────────────────────────────────────────────────────────
+# 1. CONFIGURATION
+# ───────────────────────────────────────────────────────────────
+
 # Feature flag: Skip validation if SPECKIT_SKIP_VALIDATION is set
 if [[ -n "${SPECKIT_SKIP_VALIDATION:-}" ]]; then
     echo "Validation skipped (SPECKIT_SKIP_VALIDATION=${SPECKIT_SKIP_VALIDATION})" >&2
@@ -14,11 +18,15 @@ if [[ -n "${SPECKIT_SKIP_VALIDATION:-}" ]]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-RULES_DIR="$SCRIPT_DIR/../rules"
-VERSION="2.0.0"
+readonly RULES_DIR="$SCRIPT_DIR/../rules"
+readonly VERSION="2.0.0"
 
 # Source shared libraries
 source "${SCRIPT_DIR}/../lib/shell-common.sh"
+
+# ───────────────────────────────────────────────────────────────
+# 2. STATE & GLOBALS
+# ───────────────────────────────────────────────────────────────
 
 # State
 FOLDER_PATH="" DETECTED_LEVEL=1 LEVEL_METHOD="inferred" CONFIG_FILE_PATH=""
@@ -28,6 +36,10 @@ PHASE_RESULTS="" PHASE_COUNT=0
 
 # Rule execution order (empty = alphabetical)
 RULE_ORDER=()
+
+# ───────────────────────────────────────────────────────────────
+# 3. UTILITY FUNCTIONS
+# ───────────────────────────────────────────────────────────────
 
 # Timing helper - get current time in milliseconds
 get_time_ms() {
@@ -60,6 +72,10 @@ RULE_SEVERITY_LEVEL_DECLARED="info" RULE_SEVERITY_LEVEL="info"
 RULE_SEVERITY_PRIORITY_TAGS="warn" RULE_SEVERITY_EVIDENCE_CITED="warn"
 RULE_SEVERITY_ANCHORS_VALID="error" RULE_SEVERITY_ANCHORS="error"
 RULE_SEVERITY_EVIDENCE="warn" RULE_SEVERITY_PRIORITY="warn"
+
+# ───────────────────────────────────────────────────────────────
+# 4. HELP & ARGUMENT PARSING
+# ───────────────────────────────────────────────────────────────
 
 show_help() { cat << 'EOF'
 validate-spec.sh - Spec Folder Validation Orchestrator (v2.0)
@@ -104,6 +120,10 @@ parse_args() {
     [[ ! -d "$FOLDER_PATH" ]] && { echo "ERROR: Folder not found: $FOLDER_PATH" >&2; exit 2; }
     return 0
 }
+
+# ───────────────────────────────────────────────────────────────
+# 5. CONFIGURATION LOADING
+# ───────────────────────────────────────────────────────────────
 
 has_phase_children() {
     local parent_folder="$1"
@@ -193,6 +213,10 @@ validate_template_hashes() {
     return 0
 }
 
+# ───────────────────────────────────────────────────────────────
+# 6. LEVEL DETECTION
+# ───────────────────────────────────────────────────────────────
+
 detect_level() {
     local folder="$1"
     local spec_file="$folder/spec.md"
@@ -236,6 +260,10 @@ detect_level() {
     DETECTED_LEVEL=1; LEVEL_METHOD="inferred"
 }
 
+# ───────────────────────────────────────────────────────────────
+# 7. LOGGING
+# ───────────────────────────────────────────────────────────────
+
 log_pass() {
     ! $JSON_MODE && ! $QUIET_MODE && printf "${GREEN}✓${NC} ${BOLD}%s${NC}: %s\n" "$1" "$2"
     [[ -n "$RESULTS" ]] && RESULTS+=","
@@ -257,6 +285,10 @@ log_info() {
     [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"info\",\"message\":\"$(_json_escape "$2")\"}"
 }
 log_detail() { ! $JSON_MODE && ! $QUIET_MODE && printf "    - %s\n" "$1"; true; }
+
+# ───────────────────────────────────────────────────────────────
+# 8. RULE RESOLUTION
+# ───────────────────────────────────────────────────────────────
 
 get_rule_severity() {
     case "$1" in
@@ -339,6 +371,10 @@ get_rule_scripts() {
     fi
 }
 
+# ───────────────────────────────────────────────────────────────
+# 9. RULE EXECUTION
+# ───────────────────────────────────────────────────────────────
+
 run_all_rules() {
     local folder="$1" level="$2"
     # T501 FIX: Normalize level for numeric comparisons (strip "+" suffix)
@@ -396,6 +432,10 @@ run_all_rules() {
     done <<< "$rule_scripts"
 }
 
+# ───────────────────────────────────────────────────────────────
+# 10. OUTPUT
+# ───────────────────────────────────────────────────────────────
+
 print_header() {
     $JSON_MODE && return 0; $QUIET_MODE && return 0
     echo -e "\n${BLUE}───────────────────────────────────────────────────────────────${NC}"
@@ -449,6 +489,10 @@ generate_json() {
     fi
     echo "{\"version\":\"$VERSION\",\"folder\":\"$folder_escaped\",\"level\":$json_level,\"levelMethod\":\"$LEVEL_METHOD\",\"config\":$cfg,\"results\":[$RESULTS]${phases_json},\"summary\":{\"errors\":$ERRORS,\"warnings\":$WARNINGS,\"info\":$INFOS},\"passed\":$passed,\"strict\":$STRICT_MODE}"
 }
+
+# ───────────────────────────────────────────────────────────────
+# 11. PHASE VALIDATION
+# ───────────────────────────────────────────────────────────────
 
 # Recursive phase validation - validates parent + all [0-9][0-9][0-9]-*/ child folders
 run_recursive_validation() {
@@ -523,6 +567,10 @@ run_recursive_validation() {
 
     ! $JSON_MODE && ! $QUIET_MODE && echo -e "\n  ${BOLD}Phase Summary:${NC} ${#phase_dirs[@]} phases, $child_errors errors, $child_warnings warnings" || true
 }
+
+# ───────────────────────────────────────────────────────────────
+# 12. MAIN
+# ───────────────────────────────────────────────────────────────
 
 main() {
     parse_args "$@"

@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: SpecKit Phase System [138-spec-kit-phase-system/plan]"
+title: "Implementation Plan: SpecKit Phase System [021-spec-kit-phase-system/plan]"
 description: "This plan covers formalizing the organic phase decomposition pattern that emerged from specs 136 and 138 into a first-class SpecKit behavioral layer. The technical approach adds..."
 trigger_phrases:
   - "implementation"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "speckit"
   - "phase"
   - "system"
-  - "138"
+  - "021"
   - "spec"
 importance_tier: "important"
 contextType: "decision"
@@ -398,7 +398,7 @@ Run ALL existing 51 test fixtures with `--recursive` flag to verify no regressio
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Phase scoring produces excessive false positives (>20% error rate), path resolution failures occur in modified commands, or backward compatibility regressions are detected in the 51-fixture suite.
-- **Procedure**: All changes are additive with new flags (--recommend-phases, --phase, --recursive). Rollback is `git revert` of the relevant commits per phase. Existing specs are unaffected — no data migrations involved. Feature flags (new CLI flags) can be simply not invoked.
+- **Procedure**: All changes are additive with new flags (--recommend-phases, --phase, --recursive). Rollback is `git revert` of the relevant commits per phase. Existing specs are unaffected — no data migrations involved. Feature flags (new CLI flags) can be left uninvoked.
 
 **Risk-linked rollback triggers** (from spec.md Risk Matrix):
 - R-01 (Over-suggestion): Raise --phase-threshold from 25 to 35+ to reduce false positives without reverting
@@ -551,7 +551,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 ### Tier 1: Sequential Foundation (Phase 1)
 **Files**: recommend-level.sh (scoring logic), 5 new test fixtures
 **Duration**: ~3-5 hours
-**Agent**: @general (Sonnet) — script modification, straightforward scoring logic
+**Agent**: @general (Sonnet) — script modification, direct scoring logic
 
 ### Tier 2: Parallel Execution (Phase 2 + Phase 3 partial)
 
@@ -572,7 +572,7 @@ Phases 1 and 2 can be partially parallelized (scoring is independent of template
 
 | Phase | Recommended Agent | Model | Rationale |
 |-------|-------------------|-------|-----------|
-| Phase 1 | @general | Sonnet | Script modification, straightforward scoring logic |
+| Phase 1 | @general | Sonnet | Script modification, direct scoring logic |
 | Phase 2 | @speckit + @general | Opus (spec) + Sonnet (script) | Template creation needs @speckit exclusivity; create.sh needs @general |
 | Phase 3 | @general | Sonnet | Command system modifications, well-defined patterns |
 | Phase 4 | @speckit + @general | Opus (docs) + Sonnet (validation) | Reference docs need @speckit; validate.sh needs @general |

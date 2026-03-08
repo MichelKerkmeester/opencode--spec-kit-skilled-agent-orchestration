@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: Core RAG Sprints 0 to 8 Consolidation"
+title: "Core RAG Sprints 0 to 8"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated specification covering former sprint folders 010 through 018."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + consolidation-merge | v2.2"
 trigger_phrases:

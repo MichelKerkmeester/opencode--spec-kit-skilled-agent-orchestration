@@ -1,0 +1,7 @@
+{
+  "scenario": "flat",
+  "phase_count": 0,
+  "expected_validate_exit": 0,
+  "expected_phase_links_exit": 0,
+  "description": "Standard spec folder with no phase children. has_phase_children() returns false, no recursive validation attempted. PHASE_LINKS rule passes with info 'No phase folders detected'."
+}

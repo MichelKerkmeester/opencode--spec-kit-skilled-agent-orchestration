@@ -1,3 +1,9 @@
+/**
+ * @file structure-aware-chunker.ts
+ * @description AST-aware markdown chunking that keeps code blocks and tables atomic, groups headings with their content, and respects a configurable token size limit.
+ * @module scripts/lib/structure-aware-chunker
+ */
+
 // ---------------------------------------------------------------
 // MODULE: Structure-Aware Chunker
 // AST-aware markdown chunking that keeps code blocks and tables

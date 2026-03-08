@@ -1,3 +1,9 @@
+/**
+ * @file anchor-generator.ts
+ * @description Generates unique, searchable anchor IDs for decisions, files, and spec sections.
+ * @module scripts/lib/anchor-generator
+ */
+
 // ---------------------------------------------------------------
 // MODULE: Anchor Generator
 // Generates unique, searchable anchor IDs for decisions, files, and spec sections

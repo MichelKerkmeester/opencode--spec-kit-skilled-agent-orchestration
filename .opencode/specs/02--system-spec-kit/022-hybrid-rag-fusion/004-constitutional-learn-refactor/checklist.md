@@ -1,5 +1,9 @@
 ---
-title: "Checklist: Refactor /memory:learn"
+title: "Constitutional Learn Refactor Checklist"
+status: "complete"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 ---
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/checklist.md -->
 <!-- SPECKIT_LEVEL: 2 -->

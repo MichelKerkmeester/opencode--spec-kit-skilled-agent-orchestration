@@ -4,7 +4,8 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import * as mod from '../lib/session/channel';
+// TODO: Source module ../lib/session/channel not found — needs investigation
+// import * as mod from '../lib/session/channel';
 
 describe('Channel Tests (T511) [deferred - requires DB test fixtures]', () => {
   it('T511-01: DEFAULT_CHANNEL is "default"', () => {

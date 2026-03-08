@@ -1,5 +1,9 @@
 ---
-title: "Consolidated checklist: 002-indexing-normalization [002-indexing-normalization/checklist.md]"
+title: "Indexing Normalization Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> checklist.md and former child spec 004-frontmatter-indexing -> checklist.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:
@@ -65,7 +69,7 @@ contextType: "implementation"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npx eslint handlers/memory-index.ts lib/parsing/memory-parser.ts lib/scoring/importance-tiers.ts tests/handler-memory-index.vitest.ts tests/memory-parser.vitest.ts tests/importance-tiers.vitest.ts` PASS]
-- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: runtime warnings are legacy archive-only (non-fatal); documented as operational caveat in 004-frontmatter-indexing closure]
+- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: runtime warnings exist but are legacy archive-only (non-fatal); documented as operational caveat in 004-frontmatter-indexing closure. Note: residual warnings were observed — item kept checked per original scope decision but evidence text corrected for accuracy] <!-- AUDIT-2026-03-08: evidence text updated — original claimed "no warnings" but warnings were present; corrected to reflect actual state -->
 - [x] CHK-012 [P1] Error handling implemented [EVIDENCE: parser/index scan paths preserve safe fallback behavior; regression suites PASS]
 - [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: scoped ESLint PASS on touched implementation + tests]
 <!-- /ANCHOR:code-quality -->
@@ -121,11 +125,11 @@ contextType: "implementation"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 11 | 11/11 |
-| P1 Items | 20 | 20/20 |
+| P1 Items | 20 | 14/20 |
 | P2 Items | 10 | 0/10 |
 
-**Verification Date**: 2026-02-22 (updated 2026-03-08 — CHK-011, CHK-032, CHK-120 closed with cross-referenced evidence; CHK-110/111/122/123/130/131 closed with scope-approval deferral)
-**Status**: All P0 and P1 items verified. Remaining unchecked P2 items are optional follow-up controls.
+**Verification Date**: 2026-02-22 (updated 2026-03-08 — AUDIT: CHK-110/111/122/123/130/131 unchecked because evidence says "Deferred with scope approval"; CHK-011 evidence text corrected for accuracy)
+**Status**: All P0 items verified. 6 P1 items unchecked (deferred work cannot be marked complete). Remaining unchecked P2 items are optional follow-up controls.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -144,8 +148,8 @@ contextType: "implementation"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Scan overhead remains within target [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes dedicated runtime-budget benchmarking, consistent with 004-frontmatter-indexing section closure]
-- [x] CHK-111 [P1] Throughput unaffected in incremental mode [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes dedicated latency benchmarking, consistent with 004-frontmatter-indexing section closure]
+- [ ] CHK-110 [P1] Scan overhead remains within target [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes dedicated runtime-budget benchmarking, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-111 [P1] Throughput unaffected in incremental mode [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes dedicated latency benchmarking, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-112 [P2] Load testing completed
 - [ ] CHK-113 [P2] Benchmarks documented
 <!-- /ANCHOR:perf-verify -->
@@ -157,8 +161,8 @@ contextType: "implementation"
 
 - [x] CHK-120 [P0] Rollback procedure documented and tested [EVIDENCE: rollback path documented in decision-record.md ADR-001; validated pragmatically per 004-frontmatter-indexing section evidence (dry-run gate enforcement, idempotent rerun confirmation)]
 - [x] CHK-121 [P0] Feature flag strategy documented if applicable [EVIDENCE: no new feature flag introduced; change is deterministic fix path documented in ADR consequences]
-- [x] CHK-122 [P1] Monitoring/alerting expectations documented [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes monitoring and alerting integration work, consistent with 004-frontmatter-indexing section closure]
-- [x] CHK-123 [P1] Runbook created [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes runbook authoring work, consistent with 004-frontmatter-indexing section closure]
+- [ ] CHK-122 [P1] Monitoring/alerting expectations documented [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes monitoring and alerting integration work, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-123 [P1] Runbook created [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes runbook authoring work, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-124 [P2] Deployment runbook reviewed
 <!-- /ANCHOR:deploy-ready -->
 
@@ -167,8 +171,8 @@ contextType: "implementation"
 <!-- ANCHOR:compliance-verify -->
 ## L3+: COMPLIANCE VERIFICATION
 
-- [x] CHK-130 [P1] Security review completed [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes formal security review report artifact, consistent with 004-frontmatter-indexing section closure]
-- [x] CHK-131 [P1] Dependency licenses compatible [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes formal dependency license audit artifact, consistent with 004-frontmatter-indexing section closure]
+- [ ] CHK-130 [P1] Security review completed [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes formal security review report artifact, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-131 [P1] Dependency licenses compatible [EVIDENCE: Deferred with scope approval — remediation plan dated 2026-02-22 excludes formal dependency license audit artifact, consistent with 004-frontmatter-indexing section closure] <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-132 [P2] OWASP checklist reviewed where relevant
 - [ ] CHK-133 [P2] Data handling review completed
 <!-- /ANCHOR:compliance-verify -->
@@ -314,7 +318,7 @@ contextType: "implementation"
 
 ## P1 TRACKING SNAPSHOT
 
-- Remaining P1 blockers: none. Items CHK-051, CHK-110, CHK-111, CHK-122, CHK-123, CHK-130, and CHK-131 are deferred with scope approval from the remediation plan's out-of-scope policy in the user instruction dated 2026-02-22, and CHK-141 is completed with README evidence.
+- Remaining P1 blockers: CHK-110, CHK-111, CHK-122, CHK-123, CHK-130, CHK-131 (unchecked per AUDIT-2026-03-08 — deferred work cannot be marked complete). CHK-051 and CHK-141 remain checked with existing evidence.
 
 ---
 
@@ -332,8 +336,8 @@ contextType: "implementation"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] Reindex performance remains within expected runtime budget | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes dedicated runtime-budget benchmarking.
-- [x] CHK-111 [P1] Retrieval latency remains within acceptable bounds post-migration | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes dedicated latency benchmarking.
+- [ ] CHK-110 [P1] Reindex performance remains within expected runtime budget | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes dedicated runtime-budget benchmarking. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-111 [P1] Retrieval latency remains within acceptable bounds post-migration | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes dedicated latency benchmarking. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-112 [P2] Load-style replay completed for representative corpus | Deferred: No load replay artifact was provided.
 - [ ] CHK-113 [P2] Performance deltas documented | Deferred: No before/after performance delta report was provided.
 <!-- /ANCHOR:perf-verify -->
@@ -345,8 +349,8 @@ contextType: "implementation"
 
 - [x] CHK-120 [P0] Rollback procedure documented and validated | Evidence: Rollback path is documented in `decision-record.md` (ADR-001), and safety was validated pragmatically by dry-run gate enforcement, successful apply execution, and idempotent dry-run result (`changed: 0`) confirming reversible/controlled migration behavior.
 - [x] CHK-121 [P0] Migration dry-run gate enforced before apply | Evidence: Dry-run command `node scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive` passed with `changed: 0`, `failed: 0` in final idempotency report.
-- [x] CHK-122 [P1] Monitoring/alerting captures migration and reindex failures | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes monitoring and alerting integration work.
-- [x] CHK-123 [P1] Runbook created for normalization + rebuild workflow | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes runbook authoring work.
+- [ ] CHK-122 [P1] Monitoring/alerting captures migration and reindex failures | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes monitoring and alerting integration work. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-123 [P1] Runbook created for normalization + rebuild workflow | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes runbook authoring work. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-124 [P2] Deployment runbook reviewed | Deferred: No deployment runbook review evidence was provided.
 <!-- /ANCHOR:deploy-ready -->
 
@@ -355,8 +359,8 @@ contextType: "implementation"
 <!-- ANCHOR:compliance-verify -->
 ## L3+: COMPLIANCE VERIFICATION
 
-- [x] CHK-130 [P1] Security review completed for file rewrite path | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes a formal security review report artifact.
-- [x] CHK-131 [P1] Dependency license posture unchanged | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes a formal dependency license audit artifact.
+- [ ] CHK-130 [P1] Security review completed for file rewrite path | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes a formal security review report artifact. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
+- [ ] CHK-131 [P1] Dependency license posture unchanged | Evidence: Deferred with scope approval from the remediation plan instruction dated 2026-02-22, which excludes a formal dependency license audit artifact. <!-- AUDIT-2026-03-08: unchecked — evidence says "Deferred with scope approval" -->
 - [ ] CHK-132 [P2] OWASP style checklist completed where applicable | Deferred: OWASP checklist completion evidence was not provided.
 - [ ] CHK-133 [P2] Data handling remains within project requirements | Deferred: No dedicated data-handling compliance record was provided.
 <!-- /ANCHOR:compliance-verify -->

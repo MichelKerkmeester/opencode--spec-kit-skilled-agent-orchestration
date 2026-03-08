@@ -33,7 +33,7 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 ### New Files (18)
 | File | Purpose |
 |------|---------|
-| .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md | Canonical boundary contract |
+| .opencode/skill/system-spec-kit/ARCHITECTURE.md | Canonical boundary contract |
 | `.opencode/skill/system-spec-kit/mcp_server/api/README.md` | Public API consumer policy |
 | `.opencode/skill/system-spec-kit/scripts/evals/README.md` | Eval scripts import policy |
 | `shared/utils/token-estimate.ts` | Shared token estimation |
@@ -140,7 +140,7 @@ A post-implementation review was performed by three independent AI agents analyz
 **Documentation Drift (Claude, 88/100):** 4 MAJOR issues found:
 - `.opencode/skill/system-spec-kit/shared/README.md` structure tree omits Phase 8 modules
 - Checklist summary reported stale P1 count (12/14 vs actual 14/14)
-- .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md exception table missing 1 of 6 entries
+- .opencode/skill/system-spec-kit/ARCHITECTURE.md exception table missing 1 of 6 entries
 - `check-api-boundary.sh` documented but not in pipeline
 
 **Enforcement Evasion (Codex, 93/100):** 4 CRITICAL vectors found:
@@ -215,7 +215,7 @@ Phase 7 boundary-remediation carry-over work (`T074-T090`) is complete.
 
 - **Phase 7A (ownership/import migration):** `DB_UPDATED_FILE` is owned by `shared/config.ts`; `mcp_server/core/config.ts` re-exports it for compatibility; `scripts/core/memory-indexer.ts` now uses API/shared imports (`@spec-kit/mcp-server/api/search`, `@spec-kit/shared/config`); memory-indexer-specific allowlist exceptions were removed.
 - **Phase 7B (reindex audit + API decisioning):** new API surface `mcp_server/api/indexing.ts` added to expose minimal safe runtime bootstrap/index-scan hooks; `scripts/memory/reindex-embeddings.ts` now imports only `@spec-kit/mcp-server/api/indexing`; enforcement coverage includes internal runtime imports under `lib`, `core`, and `handlers`.
-- **Phase 7C (automation + docs sync):** PR workflow `.github/workflows/system-spec-kit-boundary-enforcement.yml` now prebuilds `shared` and `mcp_server` declaration outputs with `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json` before running scripts boundary checks (`check` + `check:ast`), closing the clean-checkout `TS6305` failure mode; .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md current exceptions table is synchronized with allowlist state; retained wildcard allowlist exceptions remain eval-only and include governance metadata with `lastReviewedAt: 2026-03-05`.
+- **Phase 7C (automation + docs sync):** PR workflow `.github/workflows/system-spec-kit-boundary-enforcement.yml` now prebuilds `shared` and `mcp_server` declaration outputs with `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json` before running scripts boundary checks (`check` + `check:ast`), closing the clean-checkout `TS6305` failure mode; .opencode/skill/system-spec-kit/ARCHITECTURE.md current exceptions table is synchronized with allowlist state; retained wildcard allowlist exceptions remain eval-only and include governance metadata with `lastReviewedAt: 2026-03-05`.
 
 ### Verification Evidence
 
@@ -232,7 +232,7 @@ Phase 8 strict-pass remediation (`T091-T099`) is complete.
 
 ### What Was Closed
 
-- .opencode/skill/system-spec-kit/ARCHITECTURE_BOUNDARIES.md now makes test-placement expectations explicit and states the canonical `dist/` policy: generated build output is not source-of-truth content expected in a fresh checkout.
+- .opencode/skill/system-spec-kit/ARCHITECTURE.md now makes test-placement expectations explicit and states the canonical `dist/` policy: generated build output is not source-of-truth content expected in a fresh checkout.
 - Boundary-adjacent docs were reconciled to that policy and current runtime/operator guidance: `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`.
 - The Phase 8 `dist/` strategy branch is now closed by explicit policy decision rather than ambiguity: build artifacts are generated as needed and documented as such.
 - Final spec evidence was backfilled in `tasks.md`, `checklist.md`, and this summary so the closure state matches the completed non-spec work.
@@ -341,7 +341,7 @@ No remaining Phase 13 verification gap remains in this spec folder.
 
 ## Post-Review Remediation (2026-03-06)
 
-A 10-agent comprehensive review (`scratch/review-2026-03-06/`) produced a unified synthesis with verdict **PASS WITH CONCERNS**. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed in a single remediation pass.
+A 10-agent thorough review (`scratch/review-2026-03-06/`) produced a unified synthesis with verdict **PASS WITH CONCERNS**. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed in a single remediation pass.
 
 ### What Was Fixed
 

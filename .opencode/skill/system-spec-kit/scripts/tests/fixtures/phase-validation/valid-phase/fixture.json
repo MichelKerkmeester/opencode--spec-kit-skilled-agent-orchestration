@@ -1,0 +1,10 @@
+{
+  "scenario": "phased",
+  "phase_names": ["001-design", "002-implement"],
+  "mixed_levels": false,
+  "broken_links": false,
+  "empty_child": false,
+  "expected_validate_exit": 0,
+  "expected_phase_links_exit": 0,
+  "description": "Correctly formed 2-phase parent. All links valid, all required files present."
+}

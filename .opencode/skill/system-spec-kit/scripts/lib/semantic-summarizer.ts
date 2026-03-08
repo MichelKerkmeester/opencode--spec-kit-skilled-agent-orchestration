@@ -1,3 +1,9 @@
+/**
+ * @file semantic-summarizer.ts
+ * @description Generates semantic summaries with trigger phrases, anchors, and importance scoring.
+ * @module scripts/lib/semantic-summarizer
+ */
+
 // ---------------------------------------------------------------
 // MODULE: Semantic Summarizer
 // Generates semantic summaries with trigger phrases, anchors, and importance scoring

@@ -235,7 +235,7 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 
 1. **Immediate (P0)**: Expand `PROHIBITED_PATTERNS` to cover `core/*`, integrate `check-api-boundary.sh` into pipeline, fix documentation drift.
 2. **Short-term (P1)**: Add dynamic import detection, path variant coverage, and allowlist governance schema.
-3. **Long-term (P2)**: Evaluate AST-based parsing upgrade for comprehensive detection including multi-line, re-exports, and computed paths.
+3. **Long-term (P2)**: Evaluate AST-based parsing upgrade for complete detection including multi-line, re-exports, and computed paths.
 
 ### Alternatives Considered
 
@@ -245,7 +245,7 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 | Immediate AST rewrite | Complete coverage now | High effort, risk of breaking pipeline, blocks P0 fixes | 5/10 |
 | Accept current limitations | Zero effort | Known evasion vectors persist | 2/10 |
 
-**Why this one**: Delivers immediate P0 safety while building toward comprehensive coverage.
+**Why this one**: Delivers immediate P0 safety while building toward complete coverage.
 
 ### Consequences
 

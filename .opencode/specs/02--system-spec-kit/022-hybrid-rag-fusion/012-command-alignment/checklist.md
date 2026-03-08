@@ -1,5 +1,9 @@
 ---
-title: "Verification Checklist: Skill & Command Alignment"
+title: "Command Alignment Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Verification Date: 2026-03-01"
 importance_tier: "normal"
 contextType: "implementation"

@@ -1,3 +1,9 @@
+/**
+ * @file topic-keywords.ts
+ * @description Shared lexical helpers for topic extraction across script extractors.
+ * @module scripts/lib/topic-keywords
+ */
+
 // --- MODULE: Topic Keywords ---
 // Shared lexical helpers for topic extraction across script extractors.
 

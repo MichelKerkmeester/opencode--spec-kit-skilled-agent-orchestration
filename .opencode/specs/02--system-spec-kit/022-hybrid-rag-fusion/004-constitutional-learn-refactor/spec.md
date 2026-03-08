@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager [002-constitutional-learn-refactor/spec.md]"
+title: "Constitutional Learn Refactor"
+status: "complete"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Refactor the /memory:learn command from a generic learning capture tool into a focused constitutional memory creator and manager."
 trigger_phrases:
   - "memory learn refactor"

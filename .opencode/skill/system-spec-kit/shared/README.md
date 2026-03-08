@@ -114,7 +114,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 - **Import convention**: Consumers should import via `@spec-kit/shared/*` path alias
 - **Stability**: Shared modules must be stable — breaking changes require coordination with both consumers
 - **New modules**: Document purpose and consumer expectations before adding
-- **Ownership**: See [Architecture Boundaries](../ARCHITECTURE_BOUNDARIES.md) for the full dependency matrix
+- **Ownership**: See [Architecture Boundaries](../ARCHITECTURE.md) for the full dependency matrix
 
 ---
 

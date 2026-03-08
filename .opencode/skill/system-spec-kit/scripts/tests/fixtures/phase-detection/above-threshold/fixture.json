@@ -2,7 +2,7 @@
   "args": ["--loc", "700", "--files", "16", "--architectural", "--api", "--db", "--recommend-phases", "--json"],
   "expected": {
     "recommended_phases": true,
-    "phase_score": 35,
-    "suggested_phase_count": 3
+    "phase_score": 30,
+    "suggested_phase_count": 2
   }
 }

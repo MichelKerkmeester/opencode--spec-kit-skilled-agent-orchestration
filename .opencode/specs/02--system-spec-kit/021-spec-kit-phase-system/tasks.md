@@ -1,12 +1,12 @@
 ---
-title: "Tasks: SpecKit Phase System [138-spec-kit-phase-system/tasks]"
+title: "Tasks: SpecKit Phase System [021-spec-kit-phase-system/tasks]"
 description: "Task Format: T### [priority] [P?] Description (file path) — Priority (e.g., [P0]) and parallelism ([P]) are independent markers."
 trigger_phrases:
   - "tasks"
   - "speckit"
   - "phase"
   - "system"
-  - "138"
+  - "021"
   - "spec"
 importance_tier: "normal"
 contextType: "implementation"

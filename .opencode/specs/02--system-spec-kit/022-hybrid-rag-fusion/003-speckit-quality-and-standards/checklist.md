@@ -1,5 +1,9 @@
 ---
-title: "Consolidated checklist: 003-speckit-quality-and-standards [003-speckit-quality-and-standards/checklist.md]"
+title: "SpecKit Quality and Standards Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated from checklist.md (merged from the former templates phase) and checklist.md (merged from former phase 008)."
 SPECKIT_TEMPLATE_SOURCE: "checklist + level2-verify | v2.2"
 trigger_phrases:

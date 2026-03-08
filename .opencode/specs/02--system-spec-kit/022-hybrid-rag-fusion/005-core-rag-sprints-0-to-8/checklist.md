@@ -1,5 +1,9 @@
 ---
-title: "Verification Checklist: Core RAG Sprints 0 to 8 Consolidation"
+title: "Core RAG Sprints 0 to 8 Checklist"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated verification checklist covering former sprint folders 010 through 018."
 SPECKIT_TEMPLATE_SOURCE: "checklist + consolidation-merge | v2.2"
 trigger_phrases:

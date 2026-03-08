@@ -1,5 +1,9 @@
 ---
-title: "Combined Verification Checklist: 016 Bug Fixes (Merged from 003, 008, 013, 015)"
+title: "Combined Bug Fixes Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Merged checklist covering all verification items from four source spec folders"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 importance_tier: "normal"

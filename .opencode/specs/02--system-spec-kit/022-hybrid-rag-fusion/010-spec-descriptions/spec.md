@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: Spec Folder Description System Refactor"
+title: "Spec Descriptions"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Refactor the centralized descriptions.json into per-folder description.json files, improve memory filename uniqueness and integrate description generation into spec folder creation automation."
 trigger_phrases:
   - "descriptions.json"

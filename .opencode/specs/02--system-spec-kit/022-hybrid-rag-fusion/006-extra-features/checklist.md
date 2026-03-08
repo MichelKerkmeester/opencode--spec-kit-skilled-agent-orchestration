@@ -1,5 +1,9 @@
 ---
-title: "Verification Checklist: Sprint 9 — Extra Features"
+title: "Extra Features Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Verification checklist for productization and operational tooling sprint."
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:

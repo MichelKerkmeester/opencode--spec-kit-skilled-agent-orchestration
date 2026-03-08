@@ -19,36 +19,36 @@ contextType: "general"
 
 ### Phase 1: Per-Folder Description Infrastructure
 
-- [ ] TASK-001: Define the per-folder description data model in `folder-discovery.ts`
-  - [ ] Add the `PerFolderDescription` interface with identity and memory naming fields.
-  - [ ] Keep the schema backward-compatible with the existing folder description shape.
-- [ ] TASK-002: Implement per-folder description generation logic
-  - [ ] Create `generatePerFolderDescription(specMdPath, folderPath, basePath)`.
-  - [ ] Extract the summary sentence, keywords, folder identity, and parent chain values.
-- [ ] TASK-003: Implement per-folder description loading and persistence helpers
-  - [ ] Create `loadPerFolderDescription(folderPath)` with null-safe handling for missing files.
-  - [ ] Create `savePerFolderDescription(desc, folderPath)` targeting `description.json` at the folder root.
-- [ ] TASK-004: Add safe write and freshness checks for per-folder description files
-  - [ ] Use atomic temp-then-rename writes for `description.json`.
-  - [ ] Compare `description.json` and `spec.md` mtimes to detect stale metadata.
-- [ ] TASK-005: Add unit coverage for the new per-folder description helpers
-  - [ ] Test generation output shape and extracted field values.
-  - [ ] Test load/save behavior and stale detection paths.
+- [x] TASK-001: Define the per-folder description data model in `folder-discovery.ts`
+  - [x] Add the `PerFolderDescription` interface with identity and memory naming fields.
+  - [x] Keep the schema backward-compatible with the existing folder description shape.
+- [x] TASK-002: Implement per-folder description generation logic
+  - [x] Create `generatePerFolderDescription(specMdPath, folderPath, basePath)`.
+  - [x] Extract the summary sentence, keywords, folder identity, and parent chain values.
+- [x] TASK-003: Implement per-folder description loading and persistence helpers
+  - [x] Create `loadPerFolderDescription(folderPath)` with null-safe handling for missing files.
+  - [x] Create `savePerFolderDescription(desc, folderPath)` targeting `description.json` at the folder root.
+- [x] TASK-004: Add safe write and freshness checks for per-folder description files
+  - [x] Use atomic temp-then-rename writes for `description.json`.
+  - [ ] Compare `description.json` and `spec.md` mtimes to detect stale metadata. <!-- AUDIT-2026-03-08: CHK-024 (stale detection test) is unchecked in checklist -->
+- [x] TASK-005: Add unit coverage for the new per-folder description helpers
+  - [x] Test generation output shape and extracted field values.
+  - [ ] Test load/save behavior and stale detection paths. <!-- AUDIT-2026-03-08: stale detection not yet tested per checklist -->
 
 ### Phase 2: create.sh Integration
 
-- [ ] TASK-006: Add spec folder description generation to `create.sh`
-  - [ ] Introduce a `generate_description_json()` helper in the script.
-  - [ ] Invoke it after template files are copied into a new spec folder.
-- [ ] TASK-007: Add a Node CLI wrapper for description generation
-  - [ ] Create `scripts/spec-folder/generate-description.ts` as a thin wrapper.
-  - [ ] Route the CLI through `generatePerFolderDescription()` for shared logic.
-- [ ] TASK-008: Wire the Bash and Node paths together for automated folder creation
-  - [ ] Call `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path>` from `create.sh`.
-  - [ ] Ensure failures surface clearly if description generation cannot complete.
-- [ ] TASK-009: Extend creation-time generation to phased spec folders
-  - [ ] Support `--phase` workflows so each child phase folder gets its own `description.json`.
-  - [ ] Preserve correct relative path handling for nested folders.
+- [x] TASK-006: Add spec folder description generation to `create.sh`
+  - [x] Introduce a `generate_description_json()` helper in the script.
+  - [x] Invoke it after template files are copied into a new spec folder.
+- [x] TASK-007: Add a Node CLI wrapper for description generation
+  - [x] Create `scripts/spec-folder/generate-description.ts` as a thin wrapper.
+  - [x] Route the CLI through `generatePerFolderDescription()` for shared logic.
+- [x] TASK-008: Wire the Bash and Node paths together for automated folder creation
+  - [x] Call `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path>` from `create.sh`.
+  - [x] Ensure failures surface clearly if description generation cannot complete.
+- [x] TASK-009: Extend creation-time generation to phased spec folders
+  - [x] Support `--phase` workflows so each child phase folder gets its own `description.json`.
+  - [x] Preserve correct relative path handling for nested folders.
 - [ ] TASK-010: Add integration coverage for creation-time description generation
   - [ ] Verify L1, L2, and L3 folder creation all produce `description.json`.
   - [ ] Verify generation works for nested and phase-based folder paths.
@@ -94,17 +94,19 @@ contextType: "general"
 
 ### Phase 5: Documentation & Testing Playbook
 
-- [ ] TASK-022: Update the feature catalog documentation for the refactored description system
-  - [ ] Revise `04-spec-folder-description-discovery.md` with the per-folder architecture flow.
-  - [ ] Update the source file inventory and uniqueness behavior notes.
-- [ ] TASK-023: Expand the testing playbook for the new description workflow
-  - [ ] Add scenarios for per-folder generation, stale detection, and aggregation behavior.
-  - [ ] Document rapid-save uniqueness verification steps.
+- [x] TASK-022: Update the feature catalog documentation for the refactored description system
+  - [x] Revise `04-spec-folder-description-discovery.md` with the per-folder architecture flow.
+  - [x] Update the source file inventory and uniqueness behavior notes.
+- [x] TASK-023: Expand the testing playbook for the new description workflow
+  - [x] Add scenarios for per-folder generation, stale detection, and aggregation behavior.
+  - [x] Document rapid-save uniqueness verification steps.
 - [ ] TASK-024: Extend integration tests to cover the new description system behavior
   - [ ] Update `folder-discovery-integration.vitest.ts` with per-folder description scenarios.
   - [ ] Add coverage for backward-compatible mixed-mode discovery.
 - [ ] TASK-025: Run regression verification for the full description system refactor
   - [ ] Ensure all existing relevant tests pass without regressions.
   - [ ] Confirm the final documentation and test suite reflect the implemented behavior.
+
+<!-- AUDIT-2026-03-08: Reconciled tasks.md with checklist.md. Phase 1 tasks (TASK-001 to TASK-005) marked done based on checked CHK-010, CHK-012, CHK-014, CHK-016, CHK-017, CHK-018, CHK-020, CHK-021, CHK-023. Phase 2 tasks (TASK-006 to TASK-009) marked done based on CHK-012 (create.sh integration verified). TASK-010 left open (integration coverage not in checklist). Phase 3 left open (CHK-011, CHK-015, CHK-022, CHK-026 all unchecked). Phase 4 left open (CHK-013, CHK-025 unchecked). Phase 5: TASK-022/023 marked done (CHK-040, CHK-041 checked); TASK-024/025 left open (CHK-024, CHK-028, CHK-029 unchecked). -->
 
 <!-- /ANCHOR:tasks -->

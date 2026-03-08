@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [138-spec-kit-phase-system/implementation-summary]"
+title: "Implementation Summary [021-spec-kit-phase-system/implementation-summary]"
 description: "The phase system moved from proposal into implemented behavior across scripts, command routing, and documentation surfaces. The core flow now exists end-to-end: phase recommenda..."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "implementation summary"
-  - "138"
+  - "021"
   - "spec"
 importance_tier: "normal"
 contextType: "implementation"
@@ -23,7 +23,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 139-spec-kit-phase-system |
+| **Spec Folder** | 021-spec-kit-phase-system |
 | **Completed** | 2026-02-21 (state-sync update) |
 | **Level** | 3+ |
 <!-- /ANCHOR:metadata -->

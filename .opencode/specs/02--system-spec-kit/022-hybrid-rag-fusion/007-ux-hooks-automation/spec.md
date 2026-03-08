@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: UX Hooks Automation"
+title: "UX Hooks Automation"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Define automated hook enforcement and command UX guardrails to reduce common operator mistakes in spec workflows."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:

@@ -1,3 +1,10 @@
+---
+title: "Feature Catalog"
+status: "in-progress"
+level: 1
+created: "2025-12-01"
+updated: "2026-03-08"
+---
 # Feature Catalog Source File Annotations
 
 ## Overview

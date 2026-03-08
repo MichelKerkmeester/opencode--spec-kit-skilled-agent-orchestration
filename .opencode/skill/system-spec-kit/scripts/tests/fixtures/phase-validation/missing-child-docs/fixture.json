@@ -1,0 +1,11 @@
+{
+  "scenario": "phased",
+  "phase_names": ["001-design"],
+  "mixed_levels": false,
+  "broken_links": false,
+  "empty_child": false,
+  "missing_files": true,
+  "expected_validate_exit": 2,
+  "expected_phase_links_exit": 0,
+  "description": "Phase child 001-design exists but is missing plan.md. validate.sh --recursive should detect missing required file in child."
+}

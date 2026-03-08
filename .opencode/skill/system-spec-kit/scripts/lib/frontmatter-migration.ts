@@ -1,3 +1,9 @@
+/**
+ * @file frontmatter-migration.ts
+ * @description Shared helpers for safe markdown frontmatter normalization and migration.
+ * @module scripts/lib/frontmatter-migration
+ */
+
 // ---------------------------------------------------------------
 // MODULE: Frontmatter Migration Utilities
 // ---------------------------------------------------------------

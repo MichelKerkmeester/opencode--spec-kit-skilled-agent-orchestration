@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: SpecKit Phase System [138-spec-kit-phase-system/decision-record]"
+title: "Decision Record: SpecKit Phase System [021-spec-kit-phase-system/decision-record]"
 description: "The phase system needed a home in the existing SpecKit architecture. Three options existed: introduce a new Level 4 tier for \"phased\" specs, implement phases as a behavioral lay..."
 trigger_phrases:
   - "decision"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "phase"
   - "system"
   - "decision record"
-  - "138"
+  - "021"
   - "spec"
 importance_tier: "important"
 contextType: "decision"
@@ -81,7 +81,7 @@ The phase system needed a home in the existing SpecKit architecture. Three optio
 - Phase templates are small addendums (parent section + child header), keeping overhead minimal
 
 **What it costs**:
-- Phase detection is a separate output from recommend-level.sh (two distinct outputs instead of one). Mitigation: Document the dual-output clearly in the script's --help and in CLAUDE.md
+- Phase detection is a separate output from recommend-level.sh (two distinct outputs instead of one). Mitigation: Document the dual-output in the script's --help and in CLAUDE.md
 
 **Risks**:
 
@@ -240,7 +240,7 @@ The existing `--subfolder` flag in create.sh creates versioned iterations within
 
 ### Context
 
-recommend-level.sh needs a threshold to decide when to suggest phases. The threshold could be aggressive (suggest phases for any L2+ task) or conservative (only for clearly large, complex tasks). Over-suggestion degrades the UX for the common case — the majority of tasks are straightforward and phases add overhead without benefit. Under-suggestion means large tasks miss the guidance, but users can always invoke /spec_kit:phase manually.
+recommend-level.sh needs a threshold to decide when to suggest phases. The threshold could be aggressive (suggest phases for any L2+ task) or conservative (only for demonstrably large, complex tasks). Over-suggestion degrades the UX for the common case — the majority of tasks are routine and phases add overhead without benefit. Under-suggestion means large tasks miss the guidance, but users can always invoke /spec_kit:phase manually.
 
 ### Constraints
 
@@ -268,7 +268,7 @@ recommend-level.sh needs a threshold to decide when to suggest phases. The thres
 |--------|------|------|-------|
 | **Conservative: score >= 25 AND level >= 3 (chosen)** | Validated against 136/138 retrospective; captures genuine complex tasks; rejects routine L2 | May under-suggest for borderline tasks in the 20-25 range | 9/10 |
 | Aggressive: score >= 15 OR level >= 2 | More discoverable; catches borderline cases | High false positive rate; phase suggestion becomes noise; degrades common case UX | 4/10 |
-| Fixed LOC only (>= 500 LOC) | Simple; easy to explain | Misses high-file-count or high-risk tasks with moderate LOC; ignores integration complexity | 5/10 |
+| Fixed LOC only (>= 500 LOC) | Simple; quick to explain | Misses high-file-count or high-risk tasks with moderate LOC; ignores integration complexity | 5/10 |
 
 **Why this one**: Retrospective validation confirmed the 25/50 threshold captures the two known real-world cases (spec 136: ~45/50, spec 138: ~35/50) while rejecting a typical L2 feature (~10/50). Conservative is better than aggressive because users can always escalate manually.
 <!-- /ANCHOR:adr-003-alternatives -->

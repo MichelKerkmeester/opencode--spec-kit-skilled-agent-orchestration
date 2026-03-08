@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)"
+title: "Extra Features"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "The 023 Hybrid RAG Fusion Refinement program delivered core retrieval architecture. A 6-agent cross-AI research effort identified 12 remaining gaps: 7 partial implementations needing completion, 5 genuinely new features. This sprint tackles interface polish, operational tooling, and API ergonomics."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch + level3plus-govern | v2.2"
 trigger_phrases:

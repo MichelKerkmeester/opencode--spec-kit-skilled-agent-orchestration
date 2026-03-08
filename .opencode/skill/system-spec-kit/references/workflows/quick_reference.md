@@ -328,7 +328,7 @@ Then verify placeholders are fully resolved:
 **Solution:**
 - When in doubt → choose **higher level**
 - Ask user if confidence <80%
-- Consider complexity and risk, not just LOC
+- Consider complexity and risk, not only LOC
 - Better to over-document than under-document
 
 ---
@@ -342,7 +342,7 @@ Then verify placeholders are fully resolved:
 
 ---
 
-### "What if it's just exploration?"
+### "What if it's only exploration?"
 
 **Rule:**
 - Pure exploration/reading = NO spec needed
@@ -353,7 +353,7 @@ Then verify placeholders are fully resolved:
 
 ### "Do I need specs for documentation changes?"
 
-**YES - Documentation changes require specs just like code changes.**
+**YES - Documentation changes require specs the same as code changes.**
 
 **Requires spec:**
 - ✅ Code files (*.js, *.ts, *.css, *.py)
@@ -496,7 +496,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js spe
 - `/spec_kit:handover:quick` (default) - Minimal handover for quick continuation
 - `/spec_kit:handover:full` - Comprehensive handover with full context
 
-**Purpose:** Creates a continuation document for seamless session transitions.
+**Purpose:** Creates a continuation document for smooth session transitions.
 
 **Use when:**
 - Ending a long session
@@ -658,7 +658,7 @@ For each checklist item:
 
 - **NEVER claim completion without running checklist verification**
 - **ALWAYS load checklist.md before stating work is done**
-- **ALWAYS mark items with evidence, not just [x]**
+- **ALWAYS mark items with evidence, not only [x]**
 - **ALWAYS complete all P0/P1 before claiming done**
 - **ALWAYS document why P2 items are deferred (if applicable)**
 

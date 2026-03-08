@@ -81,12 +81,12 @@ readonly POINTS_DB=7
 readonly POINTS_ARCHITECTURAL=20
 
 # Phase signal scoring (separate from level scoring)
-# Max phase score = 50 (15+10+10+10+5)
-readonly PHASE_POINTS_ARCHITECTURAL=15
+# Max phase score = 50 (10+10+10+10+10)
+readonly PHASE_POINTS_ARCHITECTURAL=10
 readonly PHASE_POINTS_MANY_FILES=10      # Files > 15
 readonly PHASE_POINTS_LARGE_LOC=10       # LOC > 800
 readonly PHASE_POINTS_MULTI_RISK=10      # Risk flags >= 2
-readonly PHASE_POINTS_EXTREME_SCALE=5    # Files > 30 OR LOC > 2000
+readonly PHASE_POINTS_EXTREME_SCALE=10   # Files > 30 OR LOC > 2000 (concrete thresholds for "exceeds any dimension by 2x+")
 readonly PHASE_MAX_SCORE=50
 readonly PHASE_DEFAULT_THRESHOLD=25
 
@@ -362,7 +362,7 @@ determine_phasing() {
   local reasons=""
   local risk_flag_count=0
 
-  # Signal 1: Architectural flag (+15)
+  # Signal 1: Architectural flag (+10)
   if [[ "$HAS_ARCHITECTURAL" = true ]]; then
     PHASE_SCORE=$((PHASE_SCORE + PHASE_POINTS_ARCHITECTURAL))
     reasons="Architectural change"
@@ -411,7 +411,7 @@ determine_phasing() {
     fi
   fi
 
-  # Signal 5: Extreme scale bonus (+5) — Files > 30 OR LOC > 2000
+  # Signal 5: Extreme scale bonus (+10) — Files > 30 OR LOC > 2000 (concrete thresholds for "exceeds any dimension by 2x+")
   if [[ "$FILES" -gt 30 ]] || [[ "$LOC" -gt 2000 ]]; then
     PHASE_SCORE=$((PHASE_SCORE + PHASE_POINTS_EXTREME_SCALE))
     if [[ -n "$reasons" ]]; then

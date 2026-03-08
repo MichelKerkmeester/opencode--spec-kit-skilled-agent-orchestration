@@ -1,5 +1,9 @@
 ---
-title: "Consolidated spec: 002-indexing-normalization [002-indexing-normalization/spec.md]"
+title: "Indexing Normalization"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Consolidated from former child spec 002-index-tier-anomalies -> spec.md and former child spec 004-frontmatter-indexing -> spec.md."
 SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
 trigger_phrases:

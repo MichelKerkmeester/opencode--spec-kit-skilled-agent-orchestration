@@ -1,5 +1,9 @@
 ---
-title: "Verification Checklist: UX Hooks Automation"
+title: "UX Hooks Automation Checklist"
+status: "in-progress"
+level: 2
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Verification Date: 2026-03-06"
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
@@ -38,9 +42,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md requirements and scope reviewed]
-- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md implementation approach reviewed]
-- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: plan.md dependencies section confirms availability]
+- [ ] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md requirements and scope reviewed] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [ ] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md implementation approach reviewed] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [ ] CHK-003 [P1] Dependencies identified and available [EVIDENCE: plan.md dependencies section confirms availability] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -49,7 +53,7 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run lint` passed in `.opencode/skill/system-spec-kit/mcp_server`; `npx tsc -b` passed in `.opencode/skill/system-spec-kit` after regenerating build artifacts; Phase 4: `npx tsc --noEmit` passed with zero type errors after 13 review fixes across 12 files]
-- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: stdout emitters on MCP server paths were redirected to stderr-safe logging, a real MCP SDK stdio client connected successfully to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and listed 28 tools, and the follow-up manual client pass exercised `memory_health(reportMode:"full")` plus `checkpoint_delete(name, confirmName)` without transport pollution; stderr still reported 3008 orphaned entries and an embedding dimension mismatch warning as residual operational signals outside this phase scope]
+- [ ] CHK-011 [P0] No console errors or warnings [EVIDENCE: stdout emitters on MCP server paths were redirected to stderr-safe logging, a real MCP SDK stdio client connected successfully to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and listed 28 tools, and the follow-up manual client pass exercised `memory_health(reportMode:"full")` plus `checkpoint_delete(name, confirmName)` without transport pollution; stderr still reported 3008 orphaned entries and an embedding dimension mismatch warning as residual operational signals outside this phase scope] <!-- AUDIT-2026-03-08: unchecked — evidence contradicts claim by admitting active stderr warnings -->
 - [x] CHK-012 [P1] Error handling implemented [EVIDENCE: stdio-path logging no longer pollutes transport output, `hooks/response-hints.ts` and `context-server.ts` preserve success-path behavior, and runtime hook/indexing paths use stderr-safe logging; Phase 4: all `runPostMutationHooks` call sites wrapped in try/catch (m4), `toolCache.invalidateOnWrite` guarded (M3), file-watcher path non-throwing (M3)]
 - [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: shared hook modules remain exported via hooks barrel, build artifacts were regenerated with `npx tsc -b`, and provider/model-aware embeddings cache identity is covered in `tests/embeddings.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
@@ -71,8 +75,8 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: secret scan found only mock tokens in `tests/retrieval-trace.vitest.ts` and `tests/retrieval-telemetry.vitest.ts`; no production hardcoded secrets; Phase 4: `sanitizeErrorForHint()` strips paths and stack traces from all user-facing hints (M1), `redactPath()` removes absolute paths from response payloads (M2), `repair.errors` sanitized per review P1 finding]
-- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: `confirmName` is enforced at handler, schema, tool-schema, and tool-type layers; delete without `confirmName` is rejected, and successful deletion reports `safetyConfirmationUsed=true`; Phase 4: `sanitizeErrorForHint` covers both Unix and Windows paths per review P1 finding]
-- [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `007-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified]
+- [ ] CHK-031 [P0] Input validation implemented [EVIDENCE: `confirmName` is enforced at handler, schema, tool-schema, and tool-type layers; delete without `confirmName` is rejected, and successful deletion reports `safetyConfirmationUsed=true`; Phase 4: `sanitizeErrorForHint` covers both Unix and Windows paths per review P1 finding] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [ ] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `007-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
 <!-- /ANCHOR:security -->
 
 ---
@@ -81,8 +85,8 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md now agree on the fresh remediation-pass verification evidence, including the combined `9 files / 485 tests` Vitest rerun, the `reportMode` and `confirmName` command signatures, and the root-spec memory-save outcome with no new indexed memory ID because indexing still fails on the 1024 vs 768 embedding mismatch]
-- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: touched hook/handler flows remain self-descriptive and aligned with existing comment conventions; no non-obvious logic requiring new inline commentary]
-- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: hooks README updated to document new modules and UX hint contract usage]
+- [ ] CHK-041 [P1] Code comments adequate [EVIDENCE: touched hook/handler flows remain self-descriptive and aligned with existing comment conventions; no non-obvious logic requiring new inline commentary] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [ ] CHK-042 [P2] README updated (if applicable) [EVIDENCE: hooks README updated to document new modules and UX hint contract usage] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
 - [x] CHK-043 [P1] Manual playbook synchronized with implementation [EVIDENCE: NEW-103+ rows remain aligned to the implemented UX hook behavior, EX-013/EX-018 use the current `memory_health(reportMode:...)` and `checkpoint_delete(name, confirmName)` signatures, and the remediation pass now includes fresh smoke/manual transcripts for those updated contracts]
 <!-- /ANCHOR:docs -->
 
@@ -91,8 +95,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: phase scratch directory contains only `.gitkeep`]
-- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: phase scratch directory contains only `.gitkeep`]
+- [ ] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: phase scratch directory contains only `.gitkeep`] <!-- AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) -->
+- [ ] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: phase scratch directory contains only `.gitkeep`] <!-- AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) -->
 - [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: direct save to phase folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation` was rejected by policy, so the rerun used parent spec folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`; `memory_index_scan({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` then reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, including that file failing with `Expected 1024 dimensions but received 768`, so no new indexed memory ID is available]
 <!-- /ANCHOR:file-org -->
 
@@ -103,9 +107,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 11 | 11/11 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 8 | 4/8 |
+| P1 Items | 11 | 5/11 |
+| P2 Items | 2 | 1/2 |
 
 **Verification Date**: 2026-03-06
 <!-- /ANCHOR:summary -->

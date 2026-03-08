@@ -104,7 +104,7 @@ This sequence keeps scope tight while preserving traceability and reduces repeat
 ---
 
 <!-- ANCHOR:adr-002 -->
-## ADR-002: Parallel multi-agent remediation for comprehensive codebase review
+## ADR-002: Parallel multi-agent remediation for full codebase review
 
 ### Metadata
 
@@ -118,7 +118,7 @@ This sequence keeps scope tight while preserving traceability and reduces repeat
 
 ### Context
 
-A 25-agent comprehensive review of the MCP server codebase identified ~65 issues spanning P0 blockers, P1 required fixes, and P2 suggestions. The issues touched ~50 files across handlers, lib modules, search pipeline, cognitive subsystem, eval framework, cache layer, and tests. Sequential remediation would be prohibitively slow given the scope.
+A 25-agent thorough review of the MCP server codebase identified ~65 issues spanning P0 blockers, P1 required fixes, and P2 suggestions. The issues touched ~50 files across handlers, lib modules, search pipeline, cognitive subsystem, eval framework, cache layer, and tests. Sequential remediation would be prohibitively slow given the scope.
 
 ---
 

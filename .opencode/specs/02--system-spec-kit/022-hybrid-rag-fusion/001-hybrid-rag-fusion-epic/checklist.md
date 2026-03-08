@@ -1,3 +1,10 @@
+---
+title: "Hybrid RAG Fusion Epic Checklist"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
+---
 # Consolidated checklist
 <!-- SPECKIT_TEMPLATE_SOURCE: consolidated-epic-merge | v1 -->
 

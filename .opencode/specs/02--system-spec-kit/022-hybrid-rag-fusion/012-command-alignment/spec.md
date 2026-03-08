@@ -1,5 +1,9 @@
 ---
-title: "Feature Specification: Skill & Command Alignment"
+title: "Command Alignment"
+status: "in-progress"
+level: 3
+created: "2025-12-01"
+updated: "2026-03-08"
 description: "Speckit agent definitions across 4 runtimes drifted out of sync with actual MCP tool inventory after Spec 140's documentation sprint."
 importance_tier: "normal"
 contextType: "implementation"

@@ -186,7 +186,7 @@ When in doubt, choose the higher level.
 
 ### MCP Server (`mcp_server/`)
 
-The cognitive memory engine. It provides 25 MCP tools over stdio for semantic search, memory management, causal graph operations, checkpoints and session learning.
+The cognitive memory engine. It provides 28 MCP tools over stdio for semantic search, memory management, causal graph operations, checkpoints and session learning.
 
 **Key characteristics after spec 138:**
 - Hybrid scatter-gather search pipeline
@@ -812,7 +812,7 @@ A: Yes. Major flags including `SPECKIT_ADAPTIVE_FUSION`, `SPECKIT_CAUSAL_BOOST` 
 │   └── dist/                  # Compiled JavaScript output
 ├── shared/                    # Shared workspace (@spec-kit/shared)
 ├── mcp_server/                # Spec Kit Memory MCP [TypeScript source]
-│   ├── context-server.ts      # MCP server entry (25 tools)
+│   ├── context-server.ts      # MCP server entry (28 tools)
 │   ├── core/                  # Core initialization
 │   ├── handlers/              # Tool handlers (9 functional + 2 infra)
 │   ├── lib/                   # Library modules

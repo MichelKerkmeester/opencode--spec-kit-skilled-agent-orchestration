@@ -184,6 +184,11 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Implemented: auto entity extraction](#implemented-auto-entity-extraction)
   - [Implemented: memory summary generation](#implemented-memory-summary-generation)
   - [Implemented: cross-document entity linking](#implemented-cross-document-entity-linking)
+- [Phase System](#phase-system)
+  - [Phase detection and scoring (recommend-level.sh --recommend-phases)](#phase-detection-and-scoring-recommend-levelsh---recommend-phases)
+  - [Phase folder creation (create.sh --phase)](#phase-folder-creation-createsh---phase)
+  - [Recursive phase validation (validate.sh --recursive)](#recursive-phase-validation-validatesh---recursive)
+  - [Phase link validation (check-phase-links.sh)](#phase-link-validation-check-phase-linkssh)
 - [Feature Flag Reference](#feature-flag-reference)
   - [1. Search Pipeline Features (SPECKIT_*)](#1-search-pipeline-features-speckit_)
   - [2. Session and Cache](#2-session-and-cache)
@@ -201,7 +206,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 
 You send a query or prompt. The system figures out what you need. That is the core idea behind `memory_context`: an L1 orchestration layer that auto-detects your task intent and routes to the best retrieval strategy without you having to pick one.
 
-Intent detection classifies your input into one of seven types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and maps it to a retrieval mode. Five modes are available: auto (default, intent-detected routing), quick (trigger matching for fast lookups), deep (comprehensive semantic search across the full corpus), focused (intent-optimized with tighter filtering) and resume (session recovery targeting state, next-steps, summary and blocker anchors with full content included).
+Intent detection classifies your input into one of seven types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and maps it to a retrieval mode. Five modes are available: auto (default, intent-detected routing), quick (trigger matching for fast lookups), deep (full semantic search across the entire corpus), focused (intent-optimized with tighter filtering) and resume (session recovery targeting state, next-steps, summary and blocker anchors with full content included).
 
 Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep gets 2,000. Resume gets 1,200. After retrieval, the orchestrator estimates token count (1 token per 4 characters) and enforces the budget by stripping lowest-scored results from the tail until the response fits. A dedicated `enforceTokenBudget()` function handles the truncation with detailed tracking of original and returned result counts. When your overall context is running high, a pressure policy kicks in. When the `tokenUsage` ratio exceeds 0.60, the system downgrades to focused mode. Above 0.80, it switches to quick mode. The pressure policy is gated by `SPECKIT_PRESSURE_POLICY` and subject to rollout percentage via `SPECKIT_ROLLOUT_PERCENT`. You can override the mode and intent manually, but the auto-detection handles most cases correctly.
 
@@ -214,7 +219,7 @@ Retrieval telemetry records mode selection and pressure-override fallbacks for o
 
 #### Source Files
 
-See [`01-retrieval/01-unified-context-retrieval-memorycontext.md`](01-retrieval/01-unified-context-retrieval-memorycontext.md) for full implementation and test file listings.
+See [`01--retrieval/01-unified-context-retrieval-memorycontext.md`](01--retrieval/01-unified-context-retrieval-memorycontext.md) for full implementation and test file listings.
 
 ### Semantic and lexical search (memory_search)
 
@@ -229,7 +234,7 @@ The parameter surface is wide. You control result count (`limit`, 1-100), spec f
 
 #### Source Files
 
-See [`01-retrieval/02-semantic-and-lexical-search-memorysearch.md`](01-retrieval/02-semantic-and-lexical-search-memorysearch.md) for full implementation and test file listings.
+See [`01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](01--retrieval/02-semantic-and-lexical-search-memorysearch.md) for full implementation and test file listings.
 
 ### Trigger phrase matching (memory_match_triggers)
 
@@ -244,7 +249,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 
 #### Source Files
 
-See [`01-retrieval/03-trigger-phrase-matching-memorymatchtriggers.md`](01-retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) for full implementation and test file listings.
+See [`01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md`](01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) for full implementation and test file listings.
 
 ### Hybrid search pipeline
 
@@ -263,7 +268,7 @@ The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_S
 
 #### Source Files
 
-See [`01-retrieval/04-hybrid-search-pipeline.md`](01-retrieval/04-hybrid-search-pipeline.md) for full implementation and test file listings.
+See [`01--retrieval/04-hybrid-search-pipeline.md`](01--retrieval/04-hybrid-search-pipeline.md) for full implementation and test file listings.
 
 ### 4-stage pipeline architecture
 
@@ -282,7 +287,7 @@ The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated  -- `
 
 #### Source Files
 
-See [`01-retrieval/05-4-stage-pipeline-architecture.md`](01-retrieval/05-4-stage-pipeline-architecture.md) for full implementation and test file listings.
+See [`01--retrieval/05-4-stage-pipeline-architecture.md`](01--retrieval/05-4-stage-pipeline-architecture.md) for full implementation and test file listings.
 
 ### BM25 trigger phrase re-index gate
 
@@ -291,7 +296,7 @@ The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-o
 
 #### Source Files
 
-See [`01-retrieval/06-bm25-trigger-phrase-re-index-gate.md`](01-retrieval/06-bm25-trigger-phrase-re-index-gate.md) for full implementation and test file listings.
+See [`01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`](01--retrieval/06-bm25-trigger-phrase-re-index-gate.md) for full implementation and test file listings.
 
 ### AST-level section retrieval tool
 
@@ -311,7 +316,7 @@ On quality failure, Tier 2 widens the search (minSimilarity=0.1, all channels fo
 
 #### Source Files
 
-See [`01-retrieval/08-quality-aware-3-tier-search-fallback.md`](01-retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
+See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-109](../manual-testing-playbook/manual-test-playbooks.md)
 
@@ -347,7 +352,7 @@ Document type affects importance weighting automatically: constitutional files g
 
 #### Source Files
 
-See [`02-mutation/01-memory-indexing-memorysave.md`](02-mutation/01-memory-indexing-memorysave.md) for full implementation and test file listings.
+See [`02--mutation/01-memory-indexing-memorysave.md`](02--mutation/01-memory-indexing-memorysave.md) for full implementation and test file listings.
 
 ### Memory metadata update (memory_update)
 
@@ -362,7 +367,7 @@ A pre-update hash snapshot is captured for the mutation ledger. Every update rec
 
 #### Source Files
 
-See [`02-mutation/02-memory-metadata-update-memoryupdate.md`](02-mutation/02-memory-metadata-update-memoryupdate.md) for full implementation and test file listings.
+See [`02--mutation/02-memory-metadata-update-memoryupdate.md`](02--mutation/02-memory-metadata-update-memoryupdate.md) for full implementation and test file listings.
 
 ### Single and folder delete (memory_delete)
 
@@ -375,7 +380,7 @@ Bulk deletes by spec folder are more involved. Unless the caller sets `skipCheck
 
 #### Source Files
 
-See [`02-mutation/03-single-and-folder-delete-memorydelete.md`](02-mutation/03-single-and-folder-delete-memorydelete.md) for full implementation and test file listings.
+See [`02--mutation/03-single-and-folder-delete-memorydelete.md`](02--mutation/03-single-and-folder-delete-memorydelete.md) for full implementation and test file listings.
 
 ### Tier-based bulk deletion (memory_bulk_delete)
 
@@ -388,7 +393,7 @@ Each deleted memory gets its causal graph edges removed. A single consolidated m
 
 #### Source Files
 
-See [`02-mutation/04-tier-based-bulk-deletion-memorybulkdelete.md`](02-mutation/04-tier-based-bulk-deletion-memorybulkdelete.md) for full implementation and test file listings.
+See [`02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md`](02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md) for full implementation and test file listings.
 
 ### Validation feedback (memory_validate)
 
@@ -407,7 +412,7 @@ The read-compute-write cycle runs within a single SQLite transaction to prevent 
 
 #### Source Files
 
-See [`02-mutation/05-validation-feedback-memoryvalidate.md`](02-mutation/05-validation-feedback-memoryvalidate.md) for full implementation and test file listings.
+See [`02--mutation/05-validation-feedback-memoryvalidate.md`](02--mutation/05-validation-feedback-memoryvalidate.md) for full implementation and test file listings.
 
 ### Transaction wrappers on mutation handlers
 
@@ -416,7 +421,7 @@ See [`02-mutation/05-validation-feedback-memoryvalidate.md`](02-mutation/05-vali
 
 #### Source Files
 
-See [`02-mutation/06-transaction-wrappers-on-mutation-handlers.md`](02-mutation/06-transaction-wrappers-on-mutation-handlers.md) for full implementation and test file listings.
+See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutation/06-transaction-wrappers-on-mutation-handlers.md) for full implementation and test file listings.
 
 ### Namespace management CRUD tools
 
@@ -425,7 +430,7 @@ See [`02-mutation/06-transaction-wrappers-on-mutation-handlers.md`](02-mutation/
 
 #### Source Files
 
-See [`02-mutation/07-namespace-management-crud-tools.md`](02-mutation/07-namespace-management-crud-tools.md) for full implementation and test file listings.
+See [`02--mutation/07-namespace-management-crud-tools.md`](02--mutation/07-namespace-management-crud-tools.md) for full implementation and test file listings.
 
 ### Prediction-error save arbitration
 
@@ -436,7 +441,7 @@ Contradiction detection uses regex patterns. All decisions are logged to the `me
 
 #### Source Files
 
-See [`02-mutation/08-prediction-error-save-arbitration.md`](02-mutation/08-prediction-error-save-arbitration.md) for full implementation and test file listings.
+See [`02--mutation/08-prediction-error-save-arbitration.md`](02--mutation/08-prediction-error-save-arbitration.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-110](../manual-testing-playbook/manual-test-playbooks.md)
 
@@ -453,7 +458,7 @@ This is the starting point for any manual memory management workflow. Need to de
 
 #### Source Files
 
-See [`03-discovery/01-memory-browser-memorylist.md`](03-discovery/01-memory-browser-memorylist.md) for full implementation and test file listings.
+See [`03--discovery/01-memory-browser-memorylist.md`](03--discovery/01-memory-browser-memorylist.md) for full implementation and test file listings.
 
 ### System statistics (memory_stats)
 
@@ -468,7 +473,7 @@ Graph channel metrics from hybrid search and a `vectorSearchEnabled` flag round 
 
 #### Source Files
 
-See [`03-discovery/02-system-statistics-memorystats.md`](03-discovery/02-system-statistics-memorystats.md) for full implementation and test file listings.
+See [`03--discovery/02-system-statistics-memorystats.md`](03--discovery/02-system-statistics-memorystats.md) for full implementation and test file listings.
 
 ### Health diagnostics (memory_health)
 
@@ -481,7 +486,7 @@ The `divergent_aliases` report mode narrows the focus. It finds files that exist
 
 #### Source Files
 
-See [`03-discovery/03-health-diagnostics-memoryhealth.md`](03-discovery/03-health-diagnostics-memoryhealth.md) for full implementation and test file listings.
+See [`03--discovery/03-health-diagnostics-memoryhealth.md`](03--discovery/03-health-diagnostics-memoryhealth.md) for full implementation and test file listings.
 
 ## Maintenance
 
@@ -504,7 +509,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 
 #### Source Files
 
-See [`04-maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](04-maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) for full implementation and test file listings.
+See [`04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) for full implementation and test file listings.
 
 ## Lifecycle
 
@@ -519,7 +524,7 @@ Checkpoints are the safety net for destructive operations. `memory_bulk_delete` 
 
 #### Source Files
 
-See [`05-lifecycle/01-checkpoint-creation-checkpointcreate.md`](05-lifecycle/01-checkpoint-creation-checkpointcreate.md) for full implementation and test file listings.
+See [`05--lifecycle/01-checkpoint-creation-checkpointcreate.md`](05--lifecycle/01-checkpoint-creation-checkpointcreate.md) for full implementation and test file listings.
 
 ### Checkpoint listing (checkpoint_list)
 
@@ -528,7 +533,7 @@ Returns a paginated list of available checkpoints with metadata: name, creation 
 
 #### Source Files
 
-See [`05-lifecycle/02-checkpoint-listing-checkpointlist.md`](05-lifecycle/02-checkpoint-listing-checkpointlist.md) for full implementation and test file listings.
+See [`05--lifecycle/02-checkpoint-listing-checkpointlist.md`](05--lifecycle/02-checkpoint-listing-checkpointlist.md) for full implementation and test file listings.
 
 ### Checkpoint restore (checkpoint_restore)
 
@@ -543,7 +548,7 @@ After restore, vectors are restored from the checkpoint snapshot when vector pay
 
 #### Source Files
 
-See [`05-lifecycle/03-checkpoint-restore-checkpointrestore.md`](05-lifecycle/03-checkpoint-restore-checkpointrestore.md) for full implementation and test file listings.
+See [`05--lifecycle/03-checkpoint-restore-checkpointrestore.md`](05--lifecycle/03-checkpoint-restore-checkpointrestore.md) for full implementation and test file listings.
 
 ### Checkpoint deletion (checkpoint_delete)
 
@@ -552,7 +557,7 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 
 #### Source Files
 
-See [`05-lifecycle/04-checkpoint-deletion-checkpointdelete.md`](05-lifecycle/04-checkpoint-deletion-checkpointdelete.md) for full implementation and test file listings.
+See [`05--lifecycle/04-checkpoint-deletion-checkpointdelete.md`](05--lifecycle/04-checkpoint-deletion-checkpointdelete.md) for full implementation and test file listings.
 
 ### Async ingestion job lifecycle
 
@@ -563,7 +568,7 @@ A dedicated background job queue in `lib/ops/job-queue.ts` manages ingestion tas
 
 #### Source Files
 
-See [`05-lifecycle/05-async-ingestion-job-lifecycle.md`](05-lifecycle/05-async-ingestion-job-lifecycle.md) for full implementation and test file listings.
+See [`05--lifecycle/05-async-ingestion-job-lifecycle.md`](05--lifecycle/05-async-ingestion-job-lifecycle.md) for full implementation and test file listings.
 
 ## Analysis
 
@@ -580,7 +585,7 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 
 #### Source Files
 
-See [`06-analysis/01-causal-edge-creation-memorycausallink.md`](06-analysis/01-causal-edge-creation-memorycausallink.md) for full implementation and test file listings.
+See [`06--analysis/01-causal-edge-creation-memorycausallink.md`](06--analysis/01-causal-edge-creation-memorycausallink.md) for full implementation and test file listings.
 
 ### Causal graph statistics (memory_causal_stats)
 
@@ -593,7 +598,7 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 
 #### Source Files
 
-See [`06-analysis/02-causal-graph-statistics-memorycausalstats.md`](06-analysis/02-causal-graph-statistics-memorycausalstats.md) for full implementation and test file listings.
+See [`06--analysis/02-causal-graph-statistics-memorycausalstats.md`](06--analysis/02-causal-graph-statistics-memorycausalstats.md) for full implementation and test file listings.
 
 ### Causal edge deletion (memory_causal_unlink)
 
@@ -604,7 +609,7 @@ A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing
 
 #### Source Files
 
-See [`06-analysis/03-causal-edge-deletion-memorycausalunlink.md`](06-analysis/03-causal-edge-deletion-memorycausalunlink.md) for full implementation and test file listings.
+See [`06--analysis/03-causal-edge-deletion-memorycausalunlink.md`](06--analysis/03-causal-edge-deletion-memorycausalunlink.md) for full implementation and test file listings.
 
 ### Causal chain tracing (memory_drift_why)
 
@@ -621,7 +626,7 @@ When contradictions are found, the response includes warning hints. Two memories
 
 #### Source Files
 
-See [`06-analysis/04-causal-chain-tracing-memorydriftwhy.md`](06-analysis/04-causal-chain-tracing-memorydriftwhy.md) for full implementation and test file listings.
+See [`06--analysis/04-causal-chain-tracing-memorydriftwhy.md`](06--analysis/04-causal-chain-tracing-memorydriftwhy.md) for full implementation and test file listings.
 
 ### Epistemic baseline capture (task_preflight)
 
@@ -634,7 +639,7 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 
 #### Source Files
 
-See [`06-analysis/05-epistemic-baseline-capture-taskpreflight.md`](06-analysis/05-epistemic-baseline-capture-taskpreflight.md) for full implementation and test file listings.
+See [`06--analysis/05-epistemic-baseline-capture-taskpreflight.md`](06--analysis/05-epistemic-baseline-capture-taskpreflight.md) for full implementation and test file listings.
 
 ### Post-task learning measurement (task_postflight)
 
@@ -649,7 +654,7 @@ You can track gaps closed during the task and new gaps discovered. Both are stor
 
 #### Source Files
 
-See [`06-analysis/06-post-task-learning-measurement-taskpostflight.md`](06-analysis/06-post-task-learning-measurement-taskpostflight.md) for full implementation and test file listings.
+See [`06--analysis/06-post-task-learning-measurement-taskpostflight.md`](06--analysis/06-post-task-learning-measurement-taskpostflight.md) for full implementation and test file listings.
 
 ### Learning history (memory_get_learning_history)
 
@@ -662,7 +667,7 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 
 #### Source Files
 
-See [`06-analysis/07-learning-history-memorygetlearninghistory.md`](06-analysis/07-learning-history-memorygetlearninghistory.md) for full implementation and test file listings.
+See [`06--analysis/07-learning-history-memorygetlearninghistory.md`](06--analysis/07-learning-history-memorygetlearninghistory.md) for full implementation and test file listings.
 
 ## Evaluation
 
@@ -677,7 +682,7 @@ Results are stored in `eval_metric_snapshots` with negative timestamp IDs to dis
 
 #### Source Files
 
-See [`07-evaluation/01-ablation-studies-evalrunablation.md`](07-evaluation/01-ablation-studies-evalrunablation.md) for full implementation and test file listings.
+See [`07--evaluation/01-ablation-studies-evalrunablation.md`](07--evaluation/01-ablation-studies-evalrunablation.md) for full implementation and test file listings.
 
 ### Reporting dashboard (eval_reporting_dashboard)
 
@@ -690,7 +695,7 @@ This is a read-only module. It queries the eval database and produces reports. N
 
 #### Source Files
 
-See [`07-evaluation/02-reporting-dashboard-evalreportingdashboard.md`](07-evaluation/02-reporting-dashboard-evalreportingdashboard.md) for full implementation and test file listings.
+See [`07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`](07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) for full implementation and test file listings.
 
 ## Bug fixes and data integrity
 
@@ -703,7 +708,7 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/01-graph-channel-id-fix.md`](08-bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md`](08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) for full implementation and test file listings.
 
 ### Chunk collapse deduplication
 
@@ -712,7 +717,7 @@ Duplicate chunk rows appeared in default search mode because the deduplication l
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`](08-bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`](08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) for full implementation and test file listings.
 
 ### Co-activation fan-effect divisor
 
@@ -723,7 +728,7 @@ The fix applies a `1 / sqrt(neighbor_count)` divisor that scales down score cont
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`](08-bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`](08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) for full implementation and test file listings.
 
 ### SHA-256 content-hash deduplication
 
@@ -734,7 +739,7 @@ An O(1) SHA-256 hash lookup in the `memory_index` table now catches exact duplic
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`](08-bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`](08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) for full implementation and test file listings.
 
 ### Database and schema safety
 
@@ -751,7 +756,7 @@ Four database-layer bugs were fixed:
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/05-database-and-schema-safety.md`](08-bug-fixes-and-data-integrity/05-database-and-schema-safety.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`](08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) for full implementation and test file listings.
 
 ### Guards and edge cases
 
@@ -768,7 +773,7 @@ Nine remediation targets across four tranches. Canonical spec folder: `008-combi
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`](08-bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) for full implementation and test file listings.
 
 ### Canonical ID dedup hardening
 
@@ -781,7 +786,7 @@ An 8-agent orchestrated review (5 Gemini + 3 Opus) identified 33 findings across
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`](08-bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`](08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) for full implementation and test file listings.
 
 ### Math.max/min stack overflow elimination
 
@@ -799,7 +804,7 @@ Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with 
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md`](08-bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md`](08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) for full implementation and test file listings.
 
 ### Session-manager transaction gap fixes
 
@@ -808,7 +813,7 @@ Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks 
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md`](08-bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md`](08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) for full implementation and test file listings.
 
 ### Chunking orchestrator safe swap
 
@@ -817,7 +822,7 @@ During re-chunking of parent memories, the orchestrator previously deleted exist
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md`](08-bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md`](08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) for full implementation and test file listings.
 
 ### Working memory session cleanup timestamp fix
 
@@ -826,7 +831,7 @@ The `cleanupOldSessions()` method in the working memory manager compared `last_f
 
 #### Source Files
 
-See [`08-bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`](08-bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) for full implementation and test file listings.
+See [`08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`](08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) for full implementation and test file listings.
 
 ## Evaluation and measurement
 
@@ -839,7 +844,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/01-evaluation-database-and-schema.md`](09-evaluation-and-measurement/01-evaluation-database-and-schema.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/01-evaluation-database-and-schema.md`](09--evaluation-and-measurement/01-evaluation-database-and-schema.md) for full implementation and test file listings.
 
 ### Core metric computation
 
@@ -852,7 +857,7 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/02-core-metric-computation.md`](09-evaluation-and-measurement/02-core-metric-computation.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/02-core-metric-computation.md`](09--evaluation-and-measurement/02-core-metric-computation.md) for full implementation and test file listings.
 
 ### Observer effect mitigation
 
@@ -861,7 +866,7 @@ Measurement infrastructure should not degrade the system it measures. Eval loggi
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/03-observer-effect-mitigation.md`](09-evaluation-and-measurement/03-observer-effect-mitigation.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/03-observer-effect-mitigation.md`](09--evaluation-and-measurement/03-observer-effect-mitigation.md) for full implementation and test file listings.
 
 ### Full-context ceiling evaluation
 
@@ -870,7 +875,7 @@ How good could retrieval be if the system had perfect recall? To answer that, an
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/04-full-context-ceiling-evaluation.md`](09-evaluation-and-measurement/04-full-context-ceiling-evaluation.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md`](09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md) for full implementation and test file listings.
 
 ### Quality proxy formula
 
@@ -883,7 +888,7 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/05-quality-proxy-formula.md`](09-evaluation-and-measurement/05-quality-proxy-formula.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/05-quality-proxy-formula.md`](09--evaluation-and-measurement/05-quality-proxy-formula.md) for full implementation and test file listings.
 
 ### Synthetic ground truth corpus
 
@@ -896,7 +901,7 @@ Hard negative queries are included to verify that irrelevant memories rank low. 
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/06-synthetic-ground-truth-corpus.md`](09-evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md`](09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) for full implementation and test file listings.
 
 ### BM25-only baseline
 
@@ -907,7 +912,7 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/07-bm25-only-baseline.md`](09-evaluation-and-measurement/07-bm25-only-baseline.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/07-bm25-only-baseline.md`](09--evaluation-and-measurement/07-bm25-only-baseline.md) for full implementation and test file listings.
 
 ### Agent consumption instrumentation
 
@@ -918,7 +923,7 @@ The earlier pattern-analysis outcome from this workstream still informed ground-
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/08-agent-consumption-instrumentation.md`](09-evaluation-and-measurement/08-agent-consumption-instrumentation.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/08-agent-consumption-instrumentation.md`](09--evaluation-and-measurement/08-agent-consumption-instrumentation.md) for full implementation and test file listings.
 
 ### Scoring observability
 
@@ -931,7 +936,7 @@ The 5% sample rate keeps storage costs low while still catching calibration drif
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/09-scoring-observability.md`](09-evaluation-and-measurement/09-scoring-observability.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/09-scoring-observability.md`](09--evaluation-and-measurement/09-scoring-observability.md) for full implementation and test file listings.
 
 ### Full reporting and ablation study framework
 
@@ -944,7 +949,7 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md`](09-evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md`](09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) for full implementation and test file listings.
 
 ### Shadow scoring and channel attribution
 
@@ -957,7 +962,7 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md`](09-evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md`](09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) for full implementation and test file listings.
 
 ### Test quality improvements
 
@@ -995,7 +1000,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 #### Source Files
 
-See [`09-evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md`](09-evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md) for full implementation and test file listings.
+See [`09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md`](09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md) for full implementation and test file listings.
 
 ### Cross-AI validation fixes
 
@@ -1031,7 +1036,7 @@ Constitutional memories are excluded from degree boosting because they already r
 
 #### Source Files
 
-See [`10-graph-signal-activation/01-typed-weighted-degree-channel.md`](10-graph-signal-activation/01-typed-weighted-degree-channel.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/01-typed-weighted-degree-channel.md`](10--graph-signal-activation/01-typed-weighted-degree-channel.md) for full implementation and test file listings.
 
 ### Co-activation boost strength increase
 
@@ -1042,7 +1047,7 @@ The new multiplier targets 15% or higher contribution, which is enough to matter
 
 #### Source Files
 
-See [`10-graph-signal-activation/02-co-activation-boost-strength-increase.md`](10-graph-signal-activation/02-co-activation-boost-strength-increase.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/02-co-activation-boost-strength-increase.md`](10--graph-signal-activation/02-co-activation-boost-strength-increase.md) for full implementation and test file listings.
 
 ### Edge density measurement
 
@@ -1051,7 +1056,7 @@ The current density metric used by runtime guards is global edge density: `total
 
 #### Source Files
 
-See [`10-graph-signal-activation/03-edge-density-measurement.md`](10-graph-signal-activation/03-edge-density-measurement.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/03-edge-density-measurement.md`](10--graph-signal-activation/03-edge-density-measurement.md) for full implementation and test file listings.
 
 ### Weight history audit tracking
 
@@ -1064,7 +1069,7 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 
 #### Source Files
 
-See [`10-graph-signal-activation/04-weight-history-audit-tracking.md`](10-graph-signal-activation/04-weight-history-audit-tracking.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/04-weight-history-audit-tracking.md`](10--graph-signal-activation/04-weight-history-audit-tracking.md) for full implementation and test file listings.
 
 ### Graph momentum scoring
 
@@ -1079,7 +1084,7 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 
 #### Source Files
 
-See [`10-graph-signal-activation/05-graph-momentum-scoring.md`](10-graph-signal-activation/05-graph-momentum-scoring.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/05-graph-momentum-scoring.md`](10--graph-signal-activation/05-graph-momentum-scoring.md) for full implementation and test file listings.
 
 ### Causal depth signal
 
@@ -1094,7 +1099,7 @@ The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This kee
 
 #### Source Files
 
-See [`10-graph-signal-activation/06-causal-depth-signal.md`](10-graph-signal-activation/06-causal-depth-signal.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/06-causal-depth-signal.md`](10--graph-signal-activation/06-causal-depth-signal.md) for full implementation and test file listings.
 
 ### Community detection
 
@@ -1109,7 +1114,7 @@ The Stage 2 `applyCommunityBoost()` step injects up to 3 community co-members (0
 
 #### Source Files
 
-See [`10-graph-signal-activation/07-community-detection.md`](10-graph-signal-activation/07-community-detection.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/07-community-detection.md`](10--graph-signal-activation/07-community-detection.md) for full implementation and test file listings.
 
 ### Graph and cognitive memory fixes
 
@@ -1128,7 +1133,7 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 
 #### Source Files
 
-See [`10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) for full implementation and test file listings.
 
 ### ANCHOR tags as graph nodes
 
@@ -1137,7 +1142,7 @@ See [`10-graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10-gra
 
 #### Source Files
 
-See [`10-graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10-graph-signal-activation/09-anchor-tags-as-graph-nodes.md) for full implementation and test file listings.
+See [`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) for full implementation and test file listings.
 
 ## Scoring and calibration
 
@@ -1152,7 +1157,7 @@ The normalization is batch-relative (the same memory can score differently acros
 
 #### Source Files
 
-See [`11-scoring-and-calibration/01-score-normalization.md`](11-scoring-and-calibration/01-score-normalization.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/01-score-normalization.md`](11--scoring-and-calibration/01-score-normalization.md) for full implementation and test file listings.
 
 ### Cold-start novelty boost
 
@@ -1167,7 +1172,7 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 
 #### Source Files
 
-See [`11-scoring-and-calibration/02-cold-start-novelty-boost.md`](11-scoring-and-calibration/02-cold-start-novelty-boost.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/02-cold-start-novelty-boost.md`](11--scoring-and-calibration/02-cold-start-novelty-boost.md) for full implementation and test file listings.
 
 ### Interference scoring
 
@@ -1180,7 +1185,7 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 
 #### Source Files
 
-See [`11-scoring-and-calibration/03-interference-scoring.md`](11-scoring-and-calibration/03-interference-scoring.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/03-interference-scoring.md`](11--scoring-and-calibration/03-interference-scoring.md) for full implementation and test file listings.
 
 ### Classification-based decay
 
@@ -1193,7 +1198,7 @@ The combined multiplier uses `Infinity` for never-decay cases, which produces `R
 
 #### Source Files
 
-See [`11-scoring-and-calibration/04-classification-based-decay.md`](11-scoring-and-calibration/04-classification-based-decay.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/04-classification-based-decay.md`](11--scoring-and-calibration/04-classification-based-decay.md) for full implementation and test file listings.
 
 ### Folder-level relevance scoring
 
@@ -1204,7 +1209,7 @@ This scoring enables two-phase retrieval: first rank folders by aggregated score
 
 #### Source Files
 
-See [`11-scoring-and-calibration/05-folder-level-relevance-scoring.md`](11-scoring-and-calibration/05-folder-level-relevance-scoring.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/05-folder-level-relevance-scoring.md`](11--scoring-and-calibration/05-folder-level-relevance-scoring.md) for full implementation and test file listings.
 
 ### Embedding cache
 
@@ -1217,7 +1222,7 @@ The cache has no feature flag because cache misses fall through to normal embedd
 
 #### Source Files
 
-See [`11-scoring-and-calibration/06-embedding-cache.md`](11-scoring-and-calibration/06-embedding-cache.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/06-embedding-cache.md`](11--scoring-and-calibration/06-embedding-cache.md) for full implementation and test file listings.
 
 ### Double intent weighting investigation
 
@@ -1230,7 +1235,7 @@ A minor inefficiency exists (recency boost from System A is discarded when Syste
 
 #### Source Files
 
-See [`11-scoring-and-calibration/07-double-intent-weighting-investigation.md`](11-scoring-and-calibration/07-double-intent-weighting-investigation.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/07-double-intent-weighting-investigation.md`](11--scoring-and-calibration/07-double-intent-weighting-investigation.md) for full implementation and test file listings.
 
 ### RRF K-value sensitivity analysis
 
@@ -1241,7 +1246,7 @@ A grid search over K values {20, 40, 60, 80, 100} measured MRR@5 delta per value
 
 #### Source Files
 
-See [`11-scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md`](11-scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md`](11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md) for full implementation and test file listings.
 
 ### Negative feedback confidence signal
 
@@ -1254,7 +1259,7 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 
 #### Source Files
 
-See [`11-scoring-and-calibration/09-negative-feedback-confidence-signal.md`](11-scoring-and-calibration/09-negative-feedback-confidence-signal.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/09-negative-feedback-confidence-signal.md`](11--scoring-and-calibration/09-negative-feedback-confidence-signal.md) for full implementation and test file listings.
 
 ### Auto-promotion on validation
 
@@ -1265,7 +1270,7 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 #### Source Files
 
-See [`11-scoring-and-calibration/10-auto-promotion-on-validation.md`](11-scoring-and-calibration/10-auto-promotion-on-validation.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/10-auto-promotion-on-validation.md`](11--scoring-and-calibration/10-auto-promotion-on-validation.md) for full implementation and test file listings.
 
 ### Scoring and ranking corrections
 
@@ -1282,7 +1287,7 @@ Four scoring-layer bugs were fixed:
 
 #### Source Files
 
-See [`11-scoring-and-calibration/11-scoring-and-ranking-corrections.md`](11-scoring-and-calibration/11-scoring-and-ranking-corrections.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/11-scoring-and-ranking-corrections.md`](11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) for full implementation and test file listings.
 
 ### Stage 3 effectiveScore fallback chain
 
@@ -1291,7 +1296,7 @@ See [`11-scoring-and-calibration/11-scoring-and-ranking-corrections.md`](11-scor
 
 #### Source Files
 
-See [`11-scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md`](11-scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md`](11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md) for full implementation and test file listings.
 
 ### Scoring and fusion corrections
 
@@ -1309,7 +1314,7 @@ Eight scoring issues were fixed:
 
 #### Source Files
 
-See [`11-scoring-and-calibration/13-scoring-and-fusion-corrections.md`](11-scoring-and-calibration/13-scoring-and-fusion-corrections.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`](11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) for full implementation and test file listings.
 
 ### Local GGUF reranker via node-llama-cpp
 
@@ -1320,7 +1325,7 @@ The system uses a quantized `bge-reranker-v2-m3.Q4_K_M.gguf` model (~350MB). Bef
 
 #### Source Files
 
-See [`11-scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](11-scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) for full implementation and test file listings.
+See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) for full implementation and test file listings.
 
 ## Query intelligence
 
@@ -1335,7 +1340,7 @@ When the `SPECKIT_COMPLEXITY_ROUTER` flag is disabled, the classifier returns "c
 
 #### Source Files
 
-See [`12-query-intelligence/01-query-complexity-router.md`](12-query-intelligence/01-query-complexity-router.md) for full implementation and test file listings.
+See [`12--query-intelligence/01-query-complexity-router.md`](12--query-intelligence/01-query-complexity-router.md) for full implementation and test file listings.
 
 ### Relative score fusion in shadow mode
 
@@ -1350,7 +1355,7 @@ Kendall tau correlation between RSF and RRF rankings is computed at sprint exit 
 
 #### Source Files
 
-See [`12-query-intelligence/02-relative-score-fusion-in-shadow-mode.md`](12-query-intelligence/02-relative-score-fusion-in-shadow-mode.md) for full implementation and test file listings.
+See [`12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md`](12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) for full implementation and test file listings.
 
 ### Channel min-representation
 
@@ -1363,7 +1368,7 @@ Promoted items are appended to the result list and the entire set is re-sorted b
 
 #### Source Files
 
-See [`12-query-intelligence/03-channel-min-representation.md`](12-query-intelligence/03-channel-min-representation.md) for full implementation and test file listings.
+See [`12--query-intelligence/03-channel-min-representation.md`](12--query-intelligence/03-channel-min-representation.md) for full implementation and test file listings.
 
 ### Confidence-based result truncation
 
@@ -1376,7 +1381,7 @@ Edge cases are handled: NaN and Infinity scores are filtered, and all-equal scor
 
 #### Source Files
 
-See [`12-query-intelligence/04-confidence-based-result-truncation.md`](12-query-intelligence/04-confidence-based-result-truncation.md) for full implementation and test file listings.
+See [`12--query-intelligence/04-confidence-based-result-truncation.md`](12--query-intelligence/04-confidence-based-result-truncation.md) for full implementation and test file listings.
 
 ### Dynamic token budget allocation
 
@@ -1389,7 +1394,7 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 
 #### Source Files
 
-See [`12-query-intelligence/05-dynamic-token-budget-allocation.md`](12-query-intelligence/05-dynamic-token-budget-allocation.md) for full implementation and test file listings.
+See [`12--query-intelligence/05-dynamic-token-budget-allocation.md`](12--query-intelligence/05-dynamic-token-budget-allocation.md) for full implementation and test file listings.
 
 ### Query expansion
 
@@ -1400,7 +1405,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 
 #### Source Files
 
-See [`12-query-intelligence/06-query-expansion.md`](12-query-intelligence/06-query-expansion.md) for full implementation and test file listings.
+See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-query-expansion.md) for full implementation and test file listings.
 
 ## Memory quality and indexing
 
@@ -1415,7 +1420,7 @@ Rejection rates are logged per spec folder so you can spot folders that consiste
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md`](13-memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md`](13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md) for full implementation and test file listings.
 
 ### Signal vocabulary expansion
 
@@ -1426,7 +1431,7 @@ Correction signals matter because they indicate the user is fixing a prior misun
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/02-signal-vocabulary-expansion.md`](13-memory-quality-and-indexing/02-signal-vocabulary-expansion.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md`](13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md) for full implementation and test file listings.
 
 ### Pre-flight token budget validation
 
@@ -1439,7 +1444,7 @@ Overflow events are logged with query ID, candidate count, total tokens, budget 
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/03-pre-flight-token-budget-validation.md`](13-memory-quality-and-indexing/03-pre-flight-token-budget-validation.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md`](13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md) for full implementation and test file listings.
 
 ### Spec folder description discovery
 
@@ -1450,7 +1455,7 @@ The `memory_context` orchestration layer checks descriptions before issuing vect
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/04-spec-folder-description-discovery.md`](13-memory-quality-and-indexing/04-spec-folder-description-discovery.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`](13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) for full implementation and test file listings.
 
 ### Pre-storage quality gate
 
@@ -1461,7 +1466,7 @@ The gate starts in warn-only mode for 14 days after activation per the MR12 miti
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/05-pre-storage-quality-gate.md`](13-memory-quality-and-indexing/05-pre-storage-quality-gate.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/05-pre-storage-quality-gate.md`](13--memory-quality-and-indexing/05-pre-storage-quality-gate.md) for full implementation and test file listings.
 
 ### Reconsolidation-on-save
 
@@ -1474,7 +1479,7 @@ A checkpoint must exist for the spec folder before reconsolidation can run. When
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/06-reconsolidation-on-save.md`](13-memory-quality-and-indexing/06-reconsolidation-on-save.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/06-reconsolidation-on-save.md`](13--memory-quality-and-indexing/06-reconsolidation-on-save.md) for full implementation and test file listings.
 
 ### Smarter memory content generation
 
@@ -1487,7 +1492,7 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/07-smarter-memory-content-generation.md`](13-memory-quality-and-indexing/07-smarter-memory-content-generation.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/07-smarter-memory-content-generation.md`](13--memory-quality-and-indexing/07-smarter-memory-content-generation.md) for full implementation and test file listings.
 
 ### Anchor-aware chunk thinning
 
@@ -1498,7 +1503,7 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md`](13-memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md`](13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md) for full implementation and test file listings.
 
 ### Encoding-intent capture at index time
 
@@ -1509,7 +1514,7 @@ The classification is stored as read-only metadata on the `encoding_intent` colu
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md`](13-memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md`](13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) for full implementation and test file listings.
 
 ### Auto entity extraction
 
@@ -1528,7 +1533,7 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/10-auto-entity-extraction.md`](13-memory-quality-and-indexing/10-auto-entity-extraction.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/10-auto-entity-extraction.md`](13--memory-quality-and-indexing/10-auto-entity-extraction.md) for full implementation and test file listings.
 
 ### Content-aware memory filename generation
 
@@ -1539,7 +1544,7 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md`](13-memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md`](13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) for full implementation and test file listings.
 
 ### Generation-time duplicate and empty content prevention
 
@@ -1550,7 +1555,7 @@ Both gates run inside `writeFilesAtomically()` before the atomic write operation
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md`](13-memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md`](13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) for full implementation and test file listings.
 
 ### Entity normalization consolidation
 
@@ -1567,7 +1572,7 @@ Two P1 issues from a Gemini code review (scores 88/100 and 85/100, both Conditio
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/13-entity-normalization-consolidation.md`](13-memory-quality-and-indexing/13-entity-normalization-consolidation.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/13-entity-normalization-consolidation.md`](13--memory-quality-and-indexing/13-entity-normalization-consolidation.md) for full implementation and test file listings.
 
 ### Quality gate timer persistence
 
@@ -1576,7 +1581,7 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](13-memory-quality-and-indexing/14-quality-gate-timer-persistence.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md) for full implementation and test file listings.
 
 ### Deferred lexical-only indexing
 
@@ -1587,7 +1592,7 @@ Deferred memories skip embedding dimension validation and `vec_memories` inserti
 
 #### Source Files
 
-See [`13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13-memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-111](../manual-testing-playbook/manual-test-playbooks.md)
 
@@ -1614,7 +1619,7 @@ Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual
 
 #### Source Files
 
-See [`14-pipeline-architecture/01-4-stage-pipeline-refactor.md`](14-pipeline-architecture/01-4-stage-pipeline-refactor.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/01-4-stage-pipeline-refactor.md`](14--pipeline-architecture/01-4-stage-pipeline-refactor.md) for full implementation and test file listings.
 
 ### MPAB chunk-to-memory aggregation
 
@@ -1625,7 +1630,7 @@ Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 a
 
 #### Source Files
 
-See [`14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`](14-pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`](14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md) for full implementation and test file listings.
 
 ### Chunk ordering preservation
 
@@ -1634,7 +1639,7 @@ When multi-chunk results collapse back into a single memory during MPAB aggregat
 
 #### Source Files
 
-See [`14-pipeline-architecture/03-chunk-ordering-preservation.md`](14-pipeline-architecture/03-chunk-ordering-preservation.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/03-chunk-ordering-preservation.md`](14--pipeline-architecture/03-chunk-ordering-preservation.md) for full implementation and test file listings.
 
 ### Template anchor optimization
 
@@ -1645,7 +1650,7 @@ This is a pure annotation step wired into Stage 2 as step 8. It never modifies a
 
 #### Source Files
 
-See [`14-pipeline-architecture/04-template-anchor-optimization.md`](14-pipeline-architecture/04-template-anchor-optimization.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/04-template-anchor-optimization.md`](14--pipeline-architecture/04-template-anchor-optimization.md) for full implementation and test file listings.
 
 ### Validation signals as retrieval metadata
 
@@ -1656,7 +1661,7 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 
 #### Source Files
 
-See [`14-pipeline-architecture/05-validation-signals-as-retrieval-metadata.md`](14-pipeline-architecture/05-validation-signals-as-retrieval-metadata.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md`](14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md) for full implementation and test file listings.
 
 ### Learned relevance feedback
 
@@ -1671,7 +1676,7 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 
 #### Source Files
 
-See [`14-pipeline-architecture/06-learned-relevance-feedback.md`](14-pipeline-architecture/06-learned-relevance-feedback.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/06-learned-relevance-feedback.md`](14--pipeline-architecture/06-learned-relevance-feedback.md) for full implementation and test file listings.
 
 ### Search pipeline safety
 
@@ -1686,7 +1691,7 @@ Three search pipeline issues were fixed:
 
 #### Source Files
 
-See [`14-pipeline-architecture/07-search-pipeline-safety.md`](14-pipeline-architecture/07-search-pipeline-safety.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/07-search-pipeline-safety.md`](14--pipeline-architecture/07-search-pipeline-safety.md) for full implementation and test file listings.
 
 ### Performance improvements
 
@@ -1701,7 +1706,7 @@ Thirteen performance improvements were applied:
 
 #### Source Files
 
-See [`14-pipeline-architecture/08-performance-improvements.md`](14-pipeline-architecture/08-performance-improvements.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/08-performance-improvements.md`](14--pipeline-architecture/08-performance-improvements.md) for full implementation and test file listings.
 
 ### Activation window persistence
 
@@ -1709,12 +1714,12 @@ The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.
 
 Current mapping: legacy Phase 017 content is canonically tracked under `008-combined-bug-fixes` (historical source folded from retired `009-post-review-remediation-epic`).
 
-A 10-agent comprehensive Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Canonical spec folder: `008-combined-bug-fixes` (historical source: retired `009-post-review-remediation-epic`, Level 3 snapshot). Historical test snapshot: 7,085/7,085.
+A 10-agent thorough Opus review identified 38 issues (4 P0 critical, 34 P1 important). 35 fixes were implemented across 5 sprints, 2 were deferred. Canonical spec folder: `008-combined-bug-fixes` (historical source: retired `009-post-review-remediation-epic`, Level 3 snapshot). Historical test snapshot: 7,085/7,085.
 
 
 #### Source Files
 
-See [`14-pipeline-architecture/09-activation-window-persistence.md`](14-pipeline-architecture/09-activation-window-persistence.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/09-activation-window-persistence.md`](14--pipeline-architecture/09-activation-window-persistence.md) for full implementation and test file listings.
 
 ### Legacy V1 pipeline removal
 
@@ -1725,7 +1730,7 @@ Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix:
 
 #### Source Files
 
-See [`14-pipeline-architecture/10-legacy-v1-pipeline-removal.md`](14-pipeline-architecture/10-legacy-v1-pipeline-removal.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`](14--pipeline-architecture/10-legacy-v1-pipeline-removal.md) for full implementation and test file listings.
 
 ### Pipeline and mutation hardening
 
@@ -1745,7 +1750,7 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 
 #### Source Files
 
-See [`14-pipeline-architecture/11-pipeline-and-mutation-hardening.md`](14-pipeline-architecture/11-pipeline-and-mutation-hardening.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/11-pipeline-and-mutation-hardening.md`](14--pipeline-architecture/11-pipeline-and-mutation-hardening.md) for full implementation and test file listings.
 
 ### DB_PATH extraction and import standardization
 
@@ -1758,7 +1763,7 @@ A 6-agent cross-AI research effort (3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-prev
 
 #### Source Files
 
-See [`14-pipeline-architecture/12-dbpath-extraction-and-import-standardization.md`](14-pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md`](14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md) for full implementation and test file listings.
 
 ### Strict Zod schema validation
 
@@ -1769,7 +1774,7 @@ Strict validation is controlled by the `SPECKIT_STRICT_SCHEMAS` flag, which defa
 
 #### Source Files
 
-See [`14-pipeline-architecture/13-strict-zod-schema-validation.md`](14-pipeline-architecture/13-strict-zod-schema-validation.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/13-strict-zod-schema-validation.md`](14--pipeline-architecture/13-strict-zod-schema-validation.md) for full implementation and test file listings.
 
 ### Dynamic server instructions at MCP initialization
 
@@ -1780,7 +1785,7 @@ The `buildServerInstructions()` function generates a concise overview: total mem
 
 #### Source Files
 
-See [`14-pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md`](14-pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md`](14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) for full implementation and test file listings.
 
 ### Warm server / daemon mode
 
@@ -1789,7 +1794,7 @@ See [`14-pipeline-architecture/14-dynamic-server-instructions-at-mcp-initializat
 
 #### Source Files
 
-See [`14-pipeline-architecture/15-warm-server-daemon-mode.md`](14-pipeline-architecture/15-warm-server-daemon-mode.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/15-warm-server-daemon-mode.md`](14--pipeline-architecture/15-warm-server-daemon-mode.md) for full implementation and test file listings.
 
 ### Backend storage adapter abstraction
 
@@ -1798,7 +1803,7 @@ See [`14-pipeline-architecture/15-warm-server-daemon-mode.md`](14-pipeline-archi
 
 #### Source Files
 
-See [`14-pipeline-architecture/16-backend-storage-adapter-abstraction.md`](14-pipeline-architecture/16-backend-storage-adapter-abstraction.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/16-backend-storage-adapter-abstraction.md`](14--pipeline-architecture/16-backend-storage-adapter-abstraction.md) for full implementation and test file listings.
 
 ### Cross-process DB hot rebinding
 
@@ -1809,7 +1814,7 @@ Concurrency is handled safely via a mutex with a race-condition fix (P4-13). The
 
 #### Source Files
 
-See [`14-pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14-pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
+See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-112](../manual-testing-playbook/manual-test-playbooks.md)
 
@@ -1824,7 +1829,7 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 
 #### Source Files
 
-See [`15-retrieval-enhancements/01-dual-scope-memory-auto-surface.md`](15-retrieval-enhancements/01-dual-scope-memory-auto-surface.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md`](15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md) for full implementation and test file listings.
 
 ### Constitutional memory as expert knowledge injection
 
@@ -1835,7 +1840,7 @@ Rule patterns are extracted from content using a ranked list of imperative verbs
 
 #### Source Files
 
-See [`15-retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md`](15-retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md`](15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) for full implementation and test file listings.
 
 ### Spec folder hierarchy as retrieval structure
 
@@ -1848,7 +1853,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 
 #### Source Files
 
-See [`15-retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md`](15-retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md`](15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) for full implementation and test file listings.
 
 ### Lightweight consolidation
 
@@ -1861,7 +1866,7 @@ All weight modifications are logged to the `weight_history` table. The cycle fir
 
 #### Source Files
 
-See [`15-retrieval-enhancements/04-lightweight-consolidation.md`](15-retrieval-enhancements/04-lightweight-consolidation.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/04-lightweight-consolidation.md`](15--retrieval-enhancements/04-lightweight-consolidation.md) for full implementation and test file listings.
 
 ### Memory summary search channel
 
@@ -1880,7 +1885,7 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 
 #### Source Files
 
-See [`15-retrieval-enhancements/05-memory-summary-search-channel.md`](15-retrieval-enhancements/05-memory-summary-search-channel.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/05-memory-summary-search-channel.md`](15--retrieval-enhancements/05-memory-summary-search-channel.md) for full implementation and test file listings.
 
 ### Cross-document entity linking
 
@@ -1899,7 +1904,7 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 #### Source Files
 
-See [`15-retrieval-enhancements/06-cross-document-entity-linking.md`](15-retrieval-enhancements/06-cross-document-entity-linking.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/06-cross-document-entity-linking.md`](15--retrieval-enhancements/06-cross-document-entity-linking.md) for full implementation and test file listings.
 
 ### Tier-2 fallback channel forcing
 
@@ -1908,18 +1913,18 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 
 #### Source Files
 
-See [`15-retrieval-enhancements/07-tier-2-fallback-channel-forcing.md`](15-retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md`](15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) for full implementation and test file listings.
 
 ### Provenance-rich response envelopes
 
-**IMPLEMENTED (Sprint 019).** *(Overlap note: extends existing `memory_search` result formatting, where internal PipelineRow scoring exists but was dropped at Stage 4 exit.)* The `FormattedSearchResult` type at `formatters/search-results.ts` now supports a comprehensive `MemoryResultEnvelope` with three new objects, opt-in via `includeTrace: true` (default `false` for backward compatibility).
+**IMPLEMENTED (Sprint 019).** *(Overlap note: extends existing `memory_search` result formatting, where internal PipelineRow scoring exists but was dropped at Stage 4 exit.)* The `FormattedSearchResult` type at `formatters/search-results.ts` now supports a full `MemoryResultEnvelope` with three new objects, opt-in via `includeTrace: true` (default `false` for backward compatibility).
 
 The `scores` object exposes: `semantic`, `lexical`, `fusion`, `intentAdjusted`, `composite`, `rerank`, `attention`. The `source` object exposes: `file`, `anchorIds`, `anchorTypes`, `lastModified`, `memoryState`. The `trace` object exposes: `channelsUsed`, `pipelineStages`, `fallbackTier`, `queryComplexity`, `expansionTerms`, `budgetTruncated`, `scoreResolution`. When `includeTrace` is `false`, these objects are omitted entirely. Controlled by the `SPECKIT_RESPONSE_TRACE` flag.
 
 
 #### Source Files
 
-See [`15-retrieval-enhancements/08-provenance-rich-response-envelopes.md`](15-retrieval-enhancements/08-provenance-rich-response-envelopes.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/08-provenance-rich-response-envelopes.md`](15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) for full implementation and test file listings.
 
 ### Contextual tree injection
 
@@ -1930,7 +1935,7 @@ Headers follow the format `[parent > child  -- description]`, capped at 100 char
 
 #### Source Files
 
-See [`15-retrieval-enhancements/09-contextual-tree-injection.md`](15-retrieval-enhancements/09-contextual-tree-injection.md) for full implementation and test file listings.
+See [`15--retrieval-enhancements/09-contextual-tree-injection.md`](15--retrieval-enhancements/09-contextual-tree-injection.md) for full implementation and test file listings.
 
 ## Tooling and scripts
 
@@ -1943,7 +1948,7 @@ Memory file thresholds differ: under 100 tokens for content-as-summary, 100-300 
 
 #### Source Files
 
-See [`16-tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md`](16-tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) for full implementation and test file listings.
+See [`16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md`](16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) for full implementation and test file listings.
 
 ### Architecture boundary enforcement
 
@@ -1956,7 +1961,7 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 
 #### Source Files
 
-See [`16-tooling-and-scripts/02-architecture-boundary-enforcement.md`](16-tooling-and-scripts/02-architecture-boundary-enforcement.md) for full implementation and test file listings.
+See [`16--tooling-and-scripts/02-architecture-boundary-enforcement.md`](16--tooling-and-scripts/02-architecture-boundary-enforcement.md) for full implementation and test file listings.
 
 ### Progressive validation for spec documents
 
@@ -2013,7 +2018,7 @@ The watcher implements a 2-second debounce and uses TM-02 SHA-256 content hashin
 
 #### Source Files
 
-See [`16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`](16-tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) for full implementation and test file listings.
+See [`16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`](16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) for full implementation and test file listings.
 
 ### Standalone admin CLI
 
@@ -2024,7 +2029,7 @@ Deletions are transaction-wrapped with automatic checkpoint creation before bulk
 
 #### Source Files
 
-See [`16-tooling-and-scripts/07-standalone-admin-cli.md`](16-tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
+See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-113](../manual-testing-playbook/manual-test-playbooks.md)
 
@@ -2046,13 +2051,13 @@ No dedicated source files  -- this describes governance process controls.
 
 ### Feature flag sunset audit
 
-A comprehensive audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+A thorough audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
 
 The current active flag-helper inventory in `search-flags.ts` is 23 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 
 **Phase 017 update:** `SPECKIT_PIPELINE_V2` is now deprecated. `isPipelineV2Enabled()` always returns `true` regardless of the env var. The legacy V1 pipeline code was removed, making the env var a no-op.
 
-**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed ~360 lines of dead code including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`), and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8) for the full accounting.
+**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 full remediation removed ~360 lines of dead code including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`), and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See [Full remediation (Sprint 8)](#full-remediation-sprint-8) for the full accounting.
 
 
 #### Source Files
@@ -2244,6 +2249,58 @@ Originally skipped at Sprint 7 because zero entities existed in the system. R10 
 #### Source Files
 
 See [`19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md`](19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) for full implementation and test file listings.
+
+## Phase System
+
+### Phase detection and scoring (recommend-level.sh --recommend-phases)
+
+The phase recommendation system uses a 5-dimension scoring algorithm to evaluate whether a specification benefits from decomposition into sequential phases. When invoked with `--recommend-phases`, `recommend-level.sh` analyzes the spec folder context and produces three outputs: `phase_recommended` (boolean indicating whether phase decomposition is advisable), `phase_score` (a composite numeric score reflecting the degree of benefit from phasing), and `suggested_phase_count` (the recommended number of child phases).
+
+The five scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
+
+
+#### Source Files
+
+Shell script: `.opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh`
+
+
+### Phase folder creation (create.sh --phase)
+
+The `--phase` flag on `create.sh` switches from single-folder creation to a parent-children phase structure. The parent spec folder is created with a Phase Documentation Map in its `spec.md` that links to all child phase folders. Each child phase folder is created with back-references to the parent and, where applicable, predecessor and successor links to adjacent phases.
+
+The `--phases <N>` option controls how many child phase folders are generated (default is determined by the phase scoring algorithm if `recommend-level.sh` was run first). The `--phase-names` option accepts a comma-separated list of descriptive names for each phase, which are used in both folder naming and the Phase Documentation Map entries. When `--phase-names` is omitted, child folders receive sequential numeric names. The parent folder receives the standard spec kit template files at the specified level, while each child phase folder receives its own independent set of template files.
+
+
+#### Source Files
+
+Shell script: `.opencode/skill/system-spec-kit/scripts/spec/create.sh`
+
+
+### Recursive phase validation (validate.sh --recursive)
+
+When `validate.sh` is invoked with `--recursive` on a parent phase folder, it discovers all child phase folders matching the `[0-9][0-9][0-9]-*/` naming pattern beneath the parent directory. Each child folder is validated independently using the same validation rules that apply to standalone spec folders. After individual validation completes, the results are aggregated into a combined report.
+
+The aggregated output includes a combined exit code (the highest severity exit code across all children), per-phase pass/fail status, and a JSON `phases` array containing the validation result for each child folder. Exit code 0 indicates all phases passed, exit code 1 indicates warnings in one or more phases, and exit code 2 indicates errors that must be fixed. This enables CI pipelines and automated workflows to validate an entire phase tree with a single command invocation.
+
+
+#### Source Files
+
+Shell script: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh`
+
+
+### Phase link validation (check-phase-links.sh)
+
+`check-phase-links.sh` validates the structural integrity of phase folder relationships by checking four types of inter-phase links. First, it validates the Phase Documentation Map in the parent `spec.md`, confirming that every listed child phase folder actually exists on disk. Second, it validates parent back-references in each child phase folder, confirming the parent folder path is correct and reachable. Third, it validates predecessor links, confirming that each phase (except the first) correctly references the phase that precedes it. Fourth, it validates successor links, confirming that each phase (except the last) correctly references the phase that follows it.
+
+All link validation issues are reported at warn severity rather than error severity, reflecting that missing links are a documentation gap rather than a structural failure. The script exits with code 0 when all links are valid and code 1 when any link check produces a warning.
+
+
+#### Source Files
+
+Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh`
+
+
+---
 
 ## Feature Flag Reference
 
