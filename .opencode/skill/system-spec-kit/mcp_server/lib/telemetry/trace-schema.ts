@@ -185,9 +185,7 @@ const validateRetrievalTracePayload = sanitizeRetrievalTracePayload;
 export {
   RETRIEVAL_TRACE_STAGES,
   sanitizeRetrievalTracePayload,
-  isTelemetryTracePayload,
   isRetrievalTracePayload,
-  validateRetrievalTracePayload,
 };
 
 export type {

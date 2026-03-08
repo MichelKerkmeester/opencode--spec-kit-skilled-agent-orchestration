@@ -155,7 +155,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/138 hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/138` | `hybrid` | `rag` | `fusion` | `sgqs` | 
+**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/022 hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion` | `sgqs` | 
 
 ---
 
@@ -862,11 +862,11 @@ key_topics:
   - "system"
   - "memory"
   - "skill graph"
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "skill"
   - "graph"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"
@@ -874,7 +874,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "skill graphs"
   - "in memory"
   - "context server"
@@ -902,7 +902,7 @@ trigger_phrases:
   - "pipeline without requiring external"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"

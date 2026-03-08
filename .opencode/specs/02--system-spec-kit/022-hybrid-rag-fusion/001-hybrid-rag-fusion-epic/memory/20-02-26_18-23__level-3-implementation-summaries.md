@@ -681,7 +681,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "is feature enabled"
   - "context"
   - "system speckit hybrid rag fusion"
@@ -709,7 +709,7 @@ trigger_phrases:
   - "lines lines needed enhancement"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"

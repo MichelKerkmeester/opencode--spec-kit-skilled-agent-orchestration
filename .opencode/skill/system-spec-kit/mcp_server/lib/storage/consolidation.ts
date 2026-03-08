@@ -519,5 +519,4 @@ export function runConsolidationCycleIfEnabled(
 
 export {
   CONTRADICTION_SIMILARITY_THRESHOLD,
-  NEGATION_KEYWORDS,
 };

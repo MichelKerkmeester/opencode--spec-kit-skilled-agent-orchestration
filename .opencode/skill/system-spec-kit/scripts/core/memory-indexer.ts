@@ -150,8 +150,6 @@ async function updateMetadataWithEmbedding(contextDir: string, memoryId: number)
 ------------------------------------------------------------------*/
 
 export {
-  DB_UPDATED_FILE,
-  notifyDatabaseUpdated,
   indexMemory,
   updateMetadataWithEmbedding,
 };

@@ -1,14 +1,13 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/decision-record.md -->
 ---
 title: "Decision Record: Combined Bug Fixes (016)"
 description: "Merged architectural decisions from 013 and 015 source spec folders"
-SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
 importance_tier: "normal"
 contextType: "implementation"
 ---
 # Decision Record: Combined Bug Fixes (016)
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
 ---
 

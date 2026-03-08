@@ -120,7 +120,7 @@ export function applyNegativeFeedback(
 }
 
 /** Ensure negative-feedback persistence structures exist (idempotent). */
-export function ensureNegativeFeedbackTable(db: Database): void {
+function ensureNegativeFeedbackTable(db: Database): void {
   db.exec(NEGATIVE_FEEDBACK_TABLE_SQL);
   db.exec(NEGATIVE_FEEDBACK_INDEX_SQL);
 }

@@ -10,12 +10,12 @@ export interface CognitiveConfig {
   coActivationPatternFlags: string;
 }
 
-export interface CognitiveConfigParseError {
+interface CognitiveConfigParseError {
   field: 'SPECKIT_COGNITIVE_COACTIVATION_PATTERN' | 'SPECKIT_COGNITIVE_COACTIVATION_FLAGS';
   message: string;
 }
 
-export interface CognitiveConfigParseResult {
+interface CognitiveConfigParseResult {
   success: boolean;
   data?: CognitiveConfig;
   errors: CognitiveConfigParseError[];

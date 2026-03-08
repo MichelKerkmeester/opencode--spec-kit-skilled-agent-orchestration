@@ -283,12 +283,10 @@ function resetExtractionMetrics(): void {
 export {
   RULES,
   initExtractionAdapter,
-  validateExtractionRules,
   applySummarizer,
   matchRule,
   getExtractionMetrics,
   resetExtractionMetrics,
-  isEnabled,
 };
 
 export type {

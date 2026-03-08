@@ -14,12 +14,12 @@ const SPECS_SEGMENT = '/specs/';
 const MAX_ALIAS_CONFLICT_SAMPLES = 5;
 const DIVERGENCE_RECONCILE_ACTOR = 'memory-index-scan';
 
-export interface AliasConflictRow {
+interface AliasConflictRow {
   file_path: string;
   content_hash: string | null;
 }
 
-export interface AliasConflictSample {
+interface AliasConflictSample {
   normalizedPath: string;
   hashState: 'identical' | 'divergent' | 'unknown';
   variants: string[];
@@ -56,7 +56,7 @@ export interface DivergenceReconcileSummary {
   errors: string[];
 }
 
-export interface DivergenceReconcileHookOptions {
+interface DivergenceReconcileHookOptions {
   maxRetries?: number;
   actor?: string;
   requireDatabase?: typeof requireDb;

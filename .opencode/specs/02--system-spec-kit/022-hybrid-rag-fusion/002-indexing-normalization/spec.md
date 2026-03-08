@@ -1,6 +1,6 @@
 ---
 title: "Indexing Normalization"
-status: "in-progress"
+status: "complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
@@ -286,6 +286,25 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
+
+---
+
+## Deferred Items (Close-Out 2026-03-08)
+
+The following 6 P1 checklist items were formally deferred at spec close-out. All core implementation work (P0 requirements, functional tests, code changes) is complete. These items represent operational hardening and compliance artifacts that were excluded from the 002 scope by remediation plan approval (2026-02-22).
+
+| ID | Item | Category | Deferral Rationale | Tracking |
+|----|------|----------|--------------------|----------|
+| CHK-110 | Scan overhead within runtime budget | Performance | No dedicated runtime-budget benchmarking was in scope. Functional correctness validated by regression suites (52 + 186 tests). | 022 epic backlog |
+| CHK-111 | Throughput unaffected in incremental mode | Performance | No dedicated latency benchmarking was in scope. Incremental mode correctness validated by handler regression tests. | 022 epic backlog |
+| CHK-122 | Monitoring/alerting expectations documented | Deployment Readiness | Monitoring and alerting integration was out of scope. Core indexing correctness validated by functional tests. | 022 epic backlog |
+| CHK-123 | Runbook created | Deployment Readiness | Runbook authoring was out of scope. Migration and reindex workflows are documented in implementation-summary.md. | 022 epic backlog |
+| CHK-130 | Security review completed | Compliance | Formal security review report was out of scope. Input validation and path safety verified by regression suites (CHK-030/031/032). | 022 epic backlog |
+| CHK-131 | Dependency licenses compatible | Compliance | No new dependencies introduced; existing posture unchanged. Formal license audit artifact was out of scope. | 022 epic backlog |
+
+**Note:** All 6 items are non-functional/operational controls. The functional implementation (canonical path dedup, tier normalization, frontmatter normalization, migration tooling, index rebuild) is fully delivered and verified.
+
+---
 
 ## Source: `former child spec 004-frontmatter-indexing -> spec.md`
 

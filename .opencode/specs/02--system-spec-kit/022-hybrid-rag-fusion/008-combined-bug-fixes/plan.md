@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---
 title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015"
 description: "Merged implementation plan consolidating four bug-fix spec folders: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), and bug fixes and alignment (015)."
@@ -7,7 +8,6 @@ contextType: "implementation"
 # Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015)
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 (merged) -->
 
 ---
 
@@ -281,7 +281,7 @@ Matches organizational containers like `02--system-spec-kit`. Used only for trav
 This unified plan captures the documented bug-fix workstreams for `008-combined-bug-fixes`:
 
 1. Stateless filename/generic-slug parity stabilization.
-2. Folder-discovery robustness follow-up, including the stale-cache shrink remediation.
+2. Folder-discovery reliability follow-up, including the stale-cache shrink remediation.
 3. Voyage 4 memory-index environment hardening so the MCP runtime uses the intended provider, reports that provider accurately in `memory_health`, and fails safe on dimension drift.
 
 Approach stayed intentionally narrow: adjust only the affected workflow/utilities/tests for workstream A, folder-discovery module/tests for workstream B, and the MCP launch/startup/test surface for workstream C.

@@ -25,12 +25,12 @@ export type MemoryTypeName =
   | 'autobiographical'
   | 'meta-cognitive';
 
-export interface PathTypePattern {
+interface PathTypePattern {
   pattern: RegExp;
   type: MemoryTypeName;
 }
 
-export interface HalfLifeValidationResult {
+interface HalfLifeValidationResult {
   valid: boolean;
   errors: string[];
 }
@@ -101,7 +101,7 @@ export const HALF_LIVES_DAYS: Readonly<Record<string, number | null>> = Object.f
   Object.entries(MEMORY_TYPES).map(([type, config]) => [type, config.halfLifeDays])
 ) as Record<string, number | null>;
 
-export const EXPECTED_TYPES: readonly MemoryTypeName[] = [
+const EXPECTED_TYPES: readonly MemoryTypeName[] = [
   'episodic',
   'semantic',
   'procedural',
@@ -240,7 +240,7 @@ export const KEYWORD_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 // 4. TYPE HELPER FUNCTIONS
 // ---------------------------------------------------------------
 
-export function getValidTypes(): MemoryTypeName[] {
+function getValidTypes(): MemoryTypeName[] {
   return [...EXPECTED_TYPES];
 }
 
@@ -251,14 +251,14 @@ export function isValidType(type: string | null | undefined): boolean {
   return (EXPECTED_TYPES as readonly string[]).includes(type.toLowerCase());
 }
 
-export function getTypeConfig(type: string | null | undefined): MemoryTypeConfig | null {
+function getTypeConfig(type: string | null | undefined): MemoryTypeConfig | null {
   if (!type || typeof type !== 'string') {
     return null;
   }
   return MEMORY_TYPES[type.toLowerCase() as MemoryTypeName] || null;
 }
 
-export function getHalfLife(type: string | null | undefined): number | null {
+function getHalfLife(type: string | null | undefined): number | null {
   if (!type || typeof type !== 'string') {
     return 60;
   }
@@ -266,7 +266,7 @@ export function getHalfLife(type: string | null | undefined): number | null {
   return halfLife !== undefined ? halfLife : 60;
 }
 
-export function isDecayEnabled(type: string | null | undefined): boolean {
+function isDecayEnabled(type: string | null | undefined): boolean {
   const config = getTypeConfig(type);
   return config ? config.decayEnabled : true;
 }
@@ -279,7 +279,7 @@ export function getDefaultType(): MemoryTypeName {
 // 5. RESET-TO-DEFAULTS
 // ---------------------------------------------------------------
 
-export function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
+function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
   return {
     working: 1,
     episodic: 7,
@@ -379,7 +379,7 @@ export function getSpecDocumentConfig(documentType: DocumentType): SpecDocumentC
 // 7. HALF-LIFE VALIDATION
 // ---------------------------------------------------------------
 
-export function validateHalfLifeConfig(config: Record<string, unknown> | null | undefined): HalfLifeValidationResult {
+function validateHalfLifeConfig(config: Record<string, unknown> | null | undefined): HalfLifeValidationResult {
   const errors: string[] = [];
 
   if (!config || typeof config !== 'object') {

@@ -1,6 +1,6 @@
 ---
 title: "Command Alignment Checklist"
-status: "in-progress"
+status: "complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
@@ -89,7 +89,7 @@ contextType: "implementation"
 
 - [x] CHK-050 [P1] No temp files outside scratch/ [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-051 [P1] scratch/ cleaned (no scratch/ folder used) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-- [ ] CHK-052 [P2] Findings saved to memory/
+- [ ] CHK-052 [P2] Findings saved to memory/ **DEFERRED [P2]:** Memory save verification deferred to epic-level close-out. Non-blocking for command alignment scope.
 <!-- /ANCHOR:file-org -->
 
 ---

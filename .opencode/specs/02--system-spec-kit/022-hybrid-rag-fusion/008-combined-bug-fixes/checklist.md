@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/checklist.md -->
 ---
 title: "Combined Bug Fixes Checklist"
 status: "in-progress"
@@ -5,14 +6,12 @@ level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
 description: "Merged checklist covering all verification items from four source spec folders"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 importance_tier: "normal"
 contextType: "implementation"
 ---
 # Combined Verification Checklist: 016 Bug Fixes
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 This is a **merged checklist** combining all verification items from four source spec folders under `022-hybrid-rag-fusion`.
 

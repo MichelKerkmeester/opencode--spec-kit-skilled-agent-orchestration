@@ -1,231 +1,65 @@
 ---
-title: "Consolidated implementation-summary: 002-indexing-normalization [002-indexing-normalization/implementation-summary.md]"
-description: "Consolidated from former child spec 002-index-tier-anomalies -> implementation-summary.md and former child spec 004-frontmatter-indexing -> implementation-summary.md."
-SPECKIT_TEMPLATE_SOURCE: "merge-consolidation | v1.0"
-trigger_phrases:
-  - "consolidated"
-  - "002-indexing-normalization"
+title: "Implementation Summary: Indexing Normalization"
+description: "Close-out summary for consolidated indexing deduplication, tier normalization, and frontmatter normalization work."
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Consolidated implementation-summary.md
-
-This document consolidates source documents from:
-- `former child spec 002-index-tier-anomalies -> implementation-summary.md`
-- `former child spec 004-frontmatter-indexing -> implementation-summary.md`
-
-## Source: `former child spec 002-index-tier-anomalies -> implementation-summary.md`
-
----
-title: "Implementation Summary [former child spec 002-index-tier-anomalies -> implementation-summary]"
-description: "The implementation delivered deterministic indexing and tier normalization for Spec 002."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
-trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "implementation summary"
-  - "003"
-  - "index"
-importance_tier: "normal"
-contextType: "implementation"
----
 # Implementation Summary
-
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-indexing-normalization |
-| **Completed** | 2026-02-22 |
+| **Completed** | 2026-03-08 |
 | **Level** | 3 |
-<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:what-built -->
-## What Was Built
+## Overview
 
-The implementation delivered deterministic indexing and tier normalization for Spec 002.
-
-### Code Changes
-
-- Added canonical-path-aware deduplication and filtering behavior in `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts`.
-- Enforced unique merged file set before batch indexing in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts`.
-- Normalized default tier mapping and precedence behavior in `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts`.
-
-### Test Coverage Updates
-
-- Updated `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts` for tier precedence and parser edge cases.
-- Updated `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts` for alias-root dedup regression protection.
-- Updated `.opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts` for tier mapping consistency.
-<!-- /ANCHOR:what-built -->
+This consolidated spec combined two delivered streams: canonical-path deduplication plus tier normalization for indexing, and frontmatter normalization plus reindex tooling for spec and memory documents. The implementation removed alias-root double indexing, made tier resolution deterministic, standardized frontmatter handling, and verified the resulting migration and rebuild workflow. This summary is updated as the close-out record for spec 002.
 
 ---
 
-<!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## Changes Made
 
-Delivery followed the plan's setup -> implementation -> verification progression with scoped changes only.
-
-1. Regression-oriented tests were used to verify alias-root and tier-precedence behavior.
-2. Core dedup/tier logic was implemented in parser, index handler, and tier utility modules.
-3. Verification evidence was captured with targeted/extended test runs, scoped ESLint, and spec validation.
-4. Level 3 documentation was synchronized to implemented state (tasks, checklist, ADR statuses, and this summary).
-5. Body-text normalization audit for stale spec-number references was rerun during fusion remediation and required no updates in this folder.
-<!-- /ANCHOR:how-delivered -->
+- `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` - Added canonical-path-aware scan/filter behavior and normalized frontmatter parse and compose handling.
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts` - Deduplicated merged scan batches before indexing so alias roots do not inflate counts or create duplicate work.
+- `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts` - Standardized tier precedence so metadata, inline markers, and defaults resolve in one deterministic order.
+- `.opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js` - Delivered dry-run/apply migration flow and idempotency checks for canonical frontmatter normalization.
+- `.opencode/skill/system-spec-kit/templates/level_3/spec.md` and `.opencode/skill/system-spec-kit/templates/level_3/plan.md` - Updated templates to emit canonical frontmatter structure.
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts`, `handler-memory-index.vitest.ts`, `importance-tiers.vitest.ts`, `memory-parser-extended.vitest.ts`, `spec126-full-spec-doc-indexing.vitest.ts`, and `index-refresh.vitest.ts` - Added and extended regression coverage for deduplication, tier precedence, normalized parsing, and index rebuild behavior.
 
 ---
 
-<!-- ANCHOR:decisions -->
-## Key Decisions
+## Testing Status
 
-| Decision | Why |
-|----------|-----|
-| Accept ADR-001 (canonical path dedup before indexing) | Eliminates alias-root duplication while preserving dual-root compatibility |
-| Accept ADR-002 (metadata -> inline marker -> default tier precedence) | Makes tier resolution deterministic and explainable across parser/scoring paths |
-| Keep verification scope targeted instead of full-repo lint | Project-wide lint has unrelated pre-existing failures. Scoped lint proves this change set is clean |
-<!-- /ANCHOR:decisions -->
-
----
-
-<!-- ANCHOR:verification -->
-## Verification
-
-| Check | Result |
-|-------|--------|
-| `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` | PASS (52 tests) |
-| `npm test -- tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts` | PASS (186 tests) |
-| `npx eslint handlers/memory-index.ts lib/parsing/memory-parser.ts lib/scoring/importance-tiers.ts tests/handler-memory-index.vitest.ts tests/memory-parser.vitest.ts tests/importance-tiers.vitest.ts` | PASS |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` (pre-consolidation path; now 002-indexing-normalization) | PASS (0 errors, 0 warnings) |
-<!-- /ANCHOR:verification -->
+- PASS - `npm test -- tests/memory-parser.vitest.ts tests/handler-memory-index.vitest.ts tests/importance-tiers.vitest.ts` (52 tests) verified alias-root deduplication and tier precedence behavior.
+- PASS - `npm test -- tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts` (186 tests) verified broader parser and spec-document indexing behavior.
+- PASS - `npm run build`, template compose verification, `test-template-system.js`, `test-template-comprehensive.js`, and `test-frontmatter-backfill.js` verified the frontmatter normalization toolchain.
+- PASS - Migration apply and dry-run idempotency evidence showed successful rewrite plus `changed 0` on the final dry-run rerun.
+- PASS - Reindex completed successfully after migration, with prior notes indicating `STATUS=OK` on repeated runs.
+- PASS - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .../003-index-tier-anomalies` passed before consolidation and remains the recorded validation evidence for the delivered child work.
 
 ---
 
-<!-- ANCHOR:limitations -->
-## Known Limitations
+## Known Issues / Deferred Items
 
-1. Project-wide `npm run lint` remains failing due to unrelated pre-existing issues outside this spec's file scope.
-2. Historical duplicate memory rows cleanup is not included in this spec and remains follow-up work.
-3. Dedicated scan performance/load benchmarks were not run in this implementation pass.
-<!-- /ANCHOR:limitations -->
-
-## Source: `former child spec 004-frontmatter-indexing -> implementation-summary.md`
-
----
-title: "Implementation Summary [former child spec 004-frontmatter-indexing -> implementation-summary]"
-description: "Completed implementation summary with build/test/migration/reindex verification evidence for frontmatter normalization and indexing."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
-trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "implementation summary"
-  - "004"
-  - "frontmatter"
-importance_tier: "normal"
-contextType: "implementation"
----
-# Implementation Summary
-
-<!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+1. Historical duplicate memory-row cleanup was explicitly left out of scope and remains follow-up work outside this spec.
+2. Dedicated performance benchmarking for scan overhead and incremental throughput was deferred during close-out.
+3. Operational artifacts such as monitoring, alerting, runbook, formal security review, and dependency-license audit were deferred to the 022 epic backlog during the 2026-03-08 close-out.
+4. Project-wide lint failures outside the touched indexing files were pre-existing and were not addressed by this scope.
+5. Archived-file invalid-anchor warnings observed during reindex remained non-fatal and were not remediated in this phase.
 
 ---
 
-<!-- ANCHOR:metadata -->
-## Metadata
+## Completion Status
 
-| Field | Value |
-|-------|-------|
-| **Spec Folder** | 002-indexing-normalization |
-| **Completed** | 2026-02-22 |
-| **Level** | 3 |
-<!-- /ANCHOR:metadata -->
+**Status:** Closed out on 2026-03-08.
 
----
-
-<!-- ANCHOR:what-built -->
-## What Was Built
-
-Frontmatter normalization and indexing completion was delivered for this child spec, including migration execution, idempotency validation, template composition verification, and retrieval quality checks.
-
-### Delivered Output
-
-1. Canonical frontmatter normalization flow validated across template/spec/memory corpora.
-2. Migration workflow exercised in apply and dry-run modes, including idempotency verification.
-3. Index rebuild completed successfully after migration (ran twice, `STATUS=OK`).
-4. Post-reindex data quality checks confirmed no generic `SESSION SUMMARY` leakage in memory rows.
-<!-- /ANCHOR:what-built -->
-
----
-
-<!-- ANCHOR:how-delivered -->
-## How It Was Delivered
-
-Delivery and verification evidence captured in this run:
-
-1. Build and template verification:
-- `npm run build` (in `.opencode/skill/system-spec-kit`) passed.
-- `scripts/templates/compose.sh` and `scripts/templates/compose.sh --verify` passed.
-
-2. Test execution:
-- `node scripts/tests/test-template-system.js` passed.
-- `node scripts/tests/test-template-comprehensive.js` passed.
-- `node scripts/tests/test-frontmatter-backfill.js` passed, including `T-FMB-008` (template-path coverage by default), `T-FMB-009` (malformed in-block list skip), and `T-FMB-010` (inline-array trailing-comment parsing).
-- `npm run test --workspace mcp_server -- tests/memory-parser.vitest.ts tests/memory-parser-extended.vitest.ts tests/spec126-full-spec-doc-indexing.vitest.ts tests/index-refresh.vitest.ts` passed.
-
-3. Migration execution and idempotency:
-- Apply pass evidence exists (`scratch/frontmatter-apply-report.json`: `changed 1789`, `failed 0`).
-- Final idempotency dry-run passed (`node scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive`):
-  `changed 0 / unchanged 1789 / failed 0`.
-- Final dry-run report: `scratch/frontmatter-final-dry-run-report-v3.json`.
-- Strict-policy validation dry-run (post-remediation): `scratch/frontmatter-proof-dry-run.json` (`total 1704`, `changed 1623`, `failed 0`, `malformed 0`).
-
-4. Coverage and reindex quality:
-- Coverage and parser/index regression tests passed in the executed command set listed above.
-- Reindex completed with `STATUS=OK` (ran twice), and legacy invalid-anchor warnings in archived files were non-fatal.
-- Expanded fusion audit report: `historical scratch artifact "full-tree-fusion-audit.md"` (commits `111fb30a`, `937f0b06`, `85cc0ce3`) confirms no stale active-spec references outside archive paths.
-
-5. Standards alignment checks:
-- `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server/lib/parsing --root .opencode/skill/system-spec-kit/scripts/lib --root .opencode/skill/system-spec-kit/scripts/memory --root .opencode/skill/system-spec-kit/mcp_server/tests --root .opencode/skill/system-spec-kit/scripts/tests` passed with `Errors: 0`. Warnings were in unrelated shell utilities, and no findings matched touched frontmatter/indexing files.
-- `python3 .opencode/skill/sk-doc/scripts/extract_structure.py` was run for active 003/004 remediation docs, and all scoped docs reported `style_issues=0` and `content_issues=0` after plan code-fence language tagging.
-<!-- /ANCHOR:how-delivered -->
-
----
-
-<!-- ANCHOR:decisions -->
-## Key Decisions
-
-| Decision | Why |
-|----------|-----|
-| Keep archived-file invalid-anchor warnings as non-blocking | Reindex status was OK and warnings were legacy archive-only, not active migration failures. |
-| Treat idempotency as release gate | `changed: 0` on final dry-run confirms deterministic reruns before completion claim. |
-| Record deferred controls in checklist instead of forcing assumptions | Preserves strict evidence standard for unresolved controls. |
-<!-- /ANCHOR:decisions -->
-
----
-
-<!-- ANCHOR:verification -->
-## Verification
-
-| Check | Result |
-|-------|--------|
-| Implementation completed | PASS - build, compose verification, migration, and reindex execution completed |
-| Verification evidence captured | PASS - commands, reports, and DB quality metrics documented with concrete values |
-<!-- /ANCHOR:verification -->
-
----
-
-<!-- ANCHOR:limitations -->
-## Known Limitations
-
-1. **Open non-functional controls remain** Some checklist controls (for example monitoring/alerting coverage, normalization/rebuild runbook items, formal security/compliance reviews, performance budget/latency evidence, and final sign-off items) remain deferred and are explicitly tracked in `checklist.md`.
-2. **Legacy archive warnings still present** Reindex warnings for invalid anchors in archived files are non-fatal but not remediated in this scope.
-<!-- /ANCHOR:limitations -->
+Functional implementation for both consolidated child specs is complete: canonical deduplication, tier normalization, frontmatter normalization, migration tooling, and reindex verification are all delivered and evidenced in the spec artifacts. Remaining items are non-functional or operational deferrals tracked at epic level rather than blockers for this spec.

@@ -157,7 +157,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | None |
 
-**Key Topics:** `rag` | `decision` | `spec` | `memory mcp` | `system` | `hybrid` | `fusion` | `system spec kit/138 hybrid rag fusion` | `kit/138` | `decision autonomous` | `autonomous single` | `current` | 
+**Key Topics:** `rag` | `decision` | `spec` | `memory mcp` | `system` | `hybrid` | `fusion` | `system spec kit/022 hybrid rag fusion` | `kit/022` | `decision autonomous` | `autonomous single` | `current` | 
 
 ---
 
@@ -207,7 +207,7 @@ Hybrid RAG comparative analysis was completed for system-spec-kit memory MCP by 
 
 **Key Outcomes**:
 - Hybrid RAG comparative analysis was completed for system-spec-kit memory MCP by reading local...
-- Decision: Use autonomous single-agent execution in spec folder 138 because unint
+- Decision: Use autonomous single-agent execution in spec folder 022 because unint
 - Decision: Compare current memory MCP internals with graphrag_mcp, WiredBrain-Hie
 - Decision: Produce two deliverables (deep analysis plus recommendations) with exp
 - Technical Implementation Details
@@ -276,7 +276,7 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
 <!-- ANCHOR:decision-autonomous-single-1865cfda -->
 ### Decision 1: Use autonomous single-agent execution for uninterrupted research
 
-**Context**: Agent execution in spec folder 138 because uninterrupted end-to-end research and drafting were required.
+**Context**: Agent execution in spec folder 022 because uninterrupted end-to-end research and drafting were required.
 
 **Timestamp**: 2026-02-20T07:32:30Z
 
@@ -291,7 +291,7 @@ rootCause: Need stronger hybrid retrieval guidance for memory MCP evolution with
 
 **Selected**: Chosen Approach
 
-**Rationale**: agent execution in spec folder 138 because uninterrupted end-to-end research and drafting were required.
+**Rationale**: agent execution in spec folder 022 because uninterrupted end-to-end research and drafting were required.
 
 #### Trade-offs
 
@@ -400,7 +400,7 @@ Hybrid RAG comparative analysis was completed for system-spec-kit memory MCP by 
 |----------|----------|-----------------|
 | Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -412,7 +412,7 @@ Hybrid RAG comparative analysis was completed for system-spec-kit memory MCP by 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic", limit: 10 })
 
 # Verify memory file integrity
 ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
@@ -494,7 +494,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771569150826-e72g94i4l"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 channel: "main"
 
 # Classification
@@ -569,15 +569,15 @@ key_topics:
   - "system"
   - "hybrid"
   - "fusion"
-  - "system spec kit/138 hybrid rag fusion"
-  - "kit/138"
+  - "system spec kit/022 hybrid rag fusion"
+  - "kit/022"
   - "decision autonomous"
   - "autonomous single"
   - "current"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "code grounded"
   - "implementation focused"
   - "end to end"
@@ -605,7 +605,7 @@ trigger_phrases:
   - "analysis completed system-spec-kit memory"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"
@@ -621,7 +621,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:
 
   []

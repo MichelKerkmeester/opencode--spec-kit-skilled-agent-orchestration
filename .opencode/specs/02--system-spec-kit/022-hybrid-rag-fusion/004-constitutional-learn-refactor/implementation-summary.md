@@ -1,5 +1,10 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---
 title: "Implementation Summary: Refactor /memory:learn → Constitutional Memory Manager"
+status: done
+level: 2
+created: 2025-12-01
+updated: 2026-03-08
 description: "Complete rewrite of /memory:learn from a generic learning capture tool into a focused constitutional memory manager with 5 subcommands."
 trigger_phrases:
   - "learn refactor summary"
@@ -7,12 +12,10 @@ trigger_phrases:
   - "memory learn rewrite"
 importance_tier: "normal"
 contextType: "implementation"
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

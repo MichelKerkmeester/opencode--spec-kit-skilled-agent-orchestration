@@ -11,7 +11,7 @@ contextType: "general"
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
-# Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A...
+# Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A...
 
 ## SESSION SUMMARY
 
@@ -75,7 +75,7 @@ contextType: "general"
 
 **Decisions:** 5 decisions recorded
 
-**Summary:** Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) re...
+**Summary:** Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) re...
 
 ### Pending Work
 
@@ -98,7 +98,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/skill/system-spec-kit/scripts/package.json, .opencode/.../010-architecture-audit/spec.md, .opencode/.../010-architecture-audit/decision-record.md
+- Files modified: .opencode/skill/system-spec-kit/scripts/package.json, .opencode/.../009-architecture-audit/spec.md, .opencode/.../009-architecture-audit/decision-record.md
 
 - Last: Technical Implementation Details
 
@@ -129,23 +129,23 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A...** - Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder.
+- **Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A...** - Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder.
 
-- **Technical Implementation Details** - rootCause: 10-agent comprehensive review of 010-architecture-audit found 2 P0 (status stale, allowlist expiry disconnected) and 4 P1 (ADR-006 narrative stale, task count inconsistency, Phase 12 missing from metadata, ADR-004 verb) plus 8 minor documentation hygiene issues; solution: Single remediation pass editing 7 files with ~20 precise edits, followed by 2-agent verification review and spec folder documentation update; patterns: Parallel agent dispatch for complex multi-edit files (3 agents for plan.
+- **Technical Implementation Details** - rootCause: 10-agent comprehensive review of 009-architecture-audit found 2 P0 (status stale, allowlist expiry disconnected) and 4 P1 (ADR-006 narrative stale, task count inconsistency, Phase 12 missing from metadata, ADR-004 verb) plus 8 minor documentation hygiene issues; solution: Single remediation pass editing 7 files with ~20 precise edits, followed by 2-agent verification review and spec folder documentation update; patterns: Parallel agent dispatch for complex multi-edit files (3 agents for plan.
 
 **Key Files and Their Roles**:
 
 - `.opencode/skill/system-spec-kit/scripts/package.json` - File modified (description pending)
 
-- `.opencode/.../010-architecture-audit/spec.md` - Documentation
+- `.opencode/.../009-architecture-audit/spec.md` - Documentation
 
-- `.opencode/.../010-architecture-audit/decision-record.md` - Documentation
+- `.opencode/.../009-architecture-audit/decision-record.md` - Documentation
 
-- `.opencode/.../010-architecture-audit/plan.md` - Documentation
+- `.opencode/.../009-architecture-audit/plan.md` - Documentation
 
-- `.opencode/.../010-architecture-audit/implementation-summary.md` - Documentation
+- `.opencode/.../009-architecture-audit/implementation-summary.md` - Documentation
 
-- `.opencode/.../010-architecture-audit/checklist.md` - Documentation
+- `.opencode/.../009-architecture-audit/checklist.md` - Documentation
 
 - `.opencode/.../review-2026-03-06/unified-review-synthesis.md` - Documentation
 
@@ -170,10 +170,10 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
+Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
 
 **Key Outcomes**:
-- Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A...
+- Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A...
 - Decision: Applied all P0+P1 review findings in a single remediation pass rather
 - Decision: Used 3 parallel Claude Code agents for complex files (plan.
 - Decision: Ran 2 independent review agents (cross-file consistency + content accu
@@ -186,7 +186,7 @@ Executed a comprehensive post-review remediation of the 010-architecture-audit s
 | **File** | **Description** |
 |:---------|:----------------|
 | `.opencode/skill/system-spec-kit/scripts/(merged-small-files)` | Tree-thinning merged 1 small files (package.json). package.json: File modified (description pending) |
-| `.opencode/.../010-architecture-audit/(merged-small-files)` | Tree-thinning merged 5 small files (spec.md, decision-record.md, plan.md, implementation-summary.md, checklist.md). spec.md: Scripts/package | decision-record.md: Updated decision record |
+| `.opencode/.../009-architecture-audit/(merged-small-files)` | Tree-thinning merged 5 small files (spec.md, decision-record.md, plan.md, implementation-summary.md, checklist.md). spec.md: Scripts/package | decision-record.md: Updated decision record |
 | `.opencode/.../review-2026-03-06/(merged-small-files)` | Tree-thinning merged 1 small files (unified-review-synthesis.md). unified-review-synthesis.md: Updated unified review synthesis |
 
 <!-- /ANCHOR:summary -->
@@ -199,17 +199,17 @@ Executed a comprehensive post-review remediation of the 010-architecture-audit s
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-executed-comprehensive-postreview-remediation-00a2645a -->
-### FEATURE: Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A...
+### FEATURE: Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A...
 
-Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
+Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
 
-**Details:** 010-architecture-audit review remediation | 10-agent review findings | post-review remediation | P0 P1 review fix | spec folder review closure | ADR-006 AST enforcement addendum | task count reconciliation 126 | Phase 12 effort table critical path | allowlist expiry checker pipeline | cross-file consistency verification
+**Details:** 009-architecture-audit review remediation | 10-agent review findings | post-review remediation | P0 P1 review fix | spec folder review closure | ADR-006 AST enforcement addendum | task count reconciliation 126 | Phase 12 effort table critical path | allowlist expiry checker pipeline | cross-file consistency verification
 <!-- /ANCHOR:implementation-executed-comprehensive-postreview-remediation-00a2645a -->
 
 <!-- ANCHOR:implementation-technical-implementation-details-47ca6faf -->
 ### IMPLEMENTATION: Technical Implementation Details
 
-rootCause: 10-agent comprehensive review of 010-architecture-audit found 2 P0 (status stale, allowlist expiry disconnected) and 4 P1 (ADR-006 narrative stale, task count inconsistency, Phase 12 missing from metadata, ADR-004 verb) plus 8 minor documentation hygiene issues; solution: Single remediation pass editing 7 files with ~20 precise edits, followed by 2-agent verification review and spec folder documentation update; patterns: Parallel agent dispatch for complex multi-edit files (3 agents for plan.md, decision-record.md, spec.md), direct Edit tool for simple single-edit files, dual-perspective review verification (structural + factual), spec folder self-documentation of remediation work
+rootCause: 10-agent comprehensive review of 009-architecture-audit found 2 P0 (status stale, allowlist expiry disconnected) and 4 P1 (ADR-006 narrative stale, task count inconsistency, Phase 12 missing from metadata, ADR-004 verb) plus 8 minor documentation hygiene issues; solution: Single remediation pass editing 7 files with ~20 precise edits, followed by 2-agent verification review and spec folder documentation update; patterns: Parallel agent dispatch for complex multi-edit files (3 agents for plan.md, decision-record.md, spec.md), direct Edit tool for simple single-edit files, dual-perspective review verification (structural + factual), spec folder self-documentation of remediation work
 
 <!-- /ANCHOR:implementation-technical-implementation-details-47ca6faf -->
 
@@ -404,7 +404,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-03-06 @ 20:32:54
 
-Executed a comprehensive post-review remediation of the 010-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
+Executed a comprehensive post-review remediation of the 009-architecture-audit spec folder. A 10-agent review (scratch/review-2026-03-06/) produced verdict PASS WITH CONCERNS. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed across 7 files: scripts/package.json (wired check-allowlist-expiry.ts into pipeline), spec.md (status Complete, traceability backfill, open questions resolved), decision-record.md (ADR-004 verb fix, ADR-002 Five Checks fix, ADR-006 AST enforcement addendum), plan.md (Phase 12 in effort table/critical path/milestones, task count 126, Phase 8 range fix), implementation-summary.md (trigger phrase, task count, breakdown 6/9, test snapshot note), checklist.md (CHK-201 count 6→2), and unified-review-synthesis.md (remediation log appended). Two verification review agents confirmed all edits: cross-file consistency (PASS 100/100) and content accuracy (14/14 VERIFIED after 373→372 line count fix). Spec folder docs updated with Post-Review Remediation section in implementation-summary.md and 11 new checklist items (CHK-700 through CHK-724). Final spec validation PASSED with 0 errors, 0 warnings.
 
 ---
 
@@ -600,7 +600,7 @@ trigger_phrases:
 
 key_files:
   - ".opencode/skill/system-spec-kit/scripts/(merged-small-files)"
-  - ".opencode/.../010-architecture-audit/(merged-small-files)"
+  - ".opencode/.../009-architecture-audit/(merged-small-files)"
   - ".opencode/.../review-2026-03-06/(merged-small-files)"
 
 # Relationships

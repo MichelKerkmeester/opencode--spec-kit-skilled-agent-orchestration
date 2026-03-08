@@ -1,7 +1,11 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Refactor /memory:learn"
+status: done
+level: 2
+created: 2025-12-01
+updated: 2026-03-08
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 <!-- ANCHOR:tasks -->
 # Tasks
 

@@ -683,7 +683,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "broken anchor"
   - "set timeout"
   - "root level"
@@ -711,7 +711,7 @@ trigger_phrases:
   - "references workstream implementation-summary.md providing"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"

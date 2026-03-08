@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Combined Bug Fixes (016)"
 description: "Merged task list from specs 003, 008, 013, 015"
@@ -7,7 +8,6 @@ contextType: "implementation"
 # Tasks: Combined Bug Fixes (016)
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 This file merges tasks from four source spec folders into a single canonical reference.
 

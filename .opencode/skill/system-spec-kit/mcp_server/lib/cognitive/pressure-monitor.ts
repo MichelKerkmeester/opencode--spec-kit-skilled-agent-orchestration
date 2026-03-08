@@ -7,10 +7,10 @@ export interface RuntimeContextStats {
   tokenBudget?: number;
 }
 
-export type PressureSource = 'caller' | 'estimator' | 'unavailable';
-export type PressureLevel = 'none' | 'focused' | 'quick';
+type PressureSource = 'caller' | 'estimator' | 'unavailable';
+type PressureLevel = 'none' | 'focused' | 'quick';
 
-export interface PressureMonitorResult {
+interface PressureMonitorResult {
   level: PressureLevel;
   ratio: number | null;
   source: PressureSource;

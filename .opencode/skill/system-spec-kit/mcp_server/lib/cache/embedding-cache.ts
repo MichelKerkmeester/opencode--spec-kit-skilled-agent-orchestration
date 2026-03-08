@@ -212,7 +212,6 @@ export {
   getCacheStats,
   clearCache,
   computeContentHash,
-  MAX_CACHE_ENTRIES,
 };
 
 export type {

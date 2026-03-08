@@ -27,7 +27,7 @@ let filesReindexed = 0;
 let totalReindexTimeMs = 0;
 
 /** Return accumulated watcher metrics for diagnostics. */
-export function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs: number } {
+function getWatcherMetrics(): { filesReindexed: number; avgReindexTimeMs: number } {
   return {
     filesReindexed,
     avgReindexTimeMs: filesReindexed > 0 ? Math.round(totalReindexTimeMs / filesReindexed) : 0,

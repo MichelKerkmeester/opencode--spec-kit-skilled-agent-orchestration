@@ -1,6 +1,6 @@
 ---
 title: "Command Alignment"
-status: "in-progress"
+status: "complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
@@ -31,7 +31,7 @@ After Spec 140's documentation sprint documented 32/32 features across SKILL.md,
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-01 |
 <!-- /ANCHOR:metadata -->
 
@@ -110,6 +110,8 @@ Bring all 4 speckit agent files into full alignment with the Spec 140 MCP tool i
 - **SC-003**: Level 3 spec folder passes validate.sh
 - **SC-004**: Context saved via generate-context.js
 <!-- /ANCHOR:success-criteria -->
+
+> **Deferred P2 Item:** CHK-052 (memory save to `memory/`) deferred to epic-level close-out. All P0 (12/12) and P1 (9/9) items verified. 1 of 2 P2 items complete; the remaining P2 is non-blocking for command alignment scope.
 
 ---
 

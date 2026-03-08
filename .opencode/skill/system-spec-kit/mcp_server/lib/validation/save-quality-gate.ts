@@ -210,7 +210,7 @@ function clearActivationTimestampFromDb(): void {
  * P1-015: Also persisted to SQLite config table. On access, lazy-loads
  * from DB if in-memory value is null.
  */
-export let qualityGateActivatedAt: number | null = null;
+let qualityGateActivatedAt: number | null = null;
 
 /**
  * Check if the quality gate feature flag is enabled.
@@ -722,8 +722,6 @@ export {
   SEMANTIC_DEDUP_THRESHOLD,
   MIN_CONTENT_LENGTH,
   WARN_ONLY_PERIOD_MS,
-  DIMENSION_WEIGHTS,
-  GENERIC_TITLE_PATTERNS,
 };
 
 export type { FindSimilarFn };

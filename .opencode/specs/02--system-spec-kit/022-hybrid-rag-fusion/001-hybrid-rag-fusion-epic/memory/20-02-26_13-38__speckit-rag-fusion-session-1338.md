@@ -122,13 +122,13 @@ contextType: "general"
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -155,7 +155,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `system` | `hybrid` | `rag` | `memory` | `skill graph` | `system spec kit/138 hybrid rag fusion/001 system speckit hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/138` | `fusion/001` | `speckit` | 
+**Key Topics:** `system` | `hybrid` | `rag` | `memory` | `skill graph` | `system spec kit/022 hybrid rag fusion/001 system speckit hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/022` | `fusion/001` | `speckit` | 
 
 ---
 
@@ -694,9 +694,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -708,16 +708,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic --force
 ```
 
 ### Recovery Priority
@@ -790,7 +790,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771591123151-7sszv1xhc"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 channel: "main"
 
 # Classification
@@ -863,17 +863,17 @@ key_topics:
   - "rag"
   - "memory"
   - "skill graph"
-  - "system spec kit/138 hybrid rag fusion/001 system speckit hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion/001 system speckit hybrid rag fusion"
   - "skill"
   - "graph"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "fusion/001"
   - "speckit"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion/001 system speckit hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion/001 system speckit hybrid rag fusion"
   - "skill graphs"
   - "in memory"
   - "context server"
@@ -901,7 +901,7 @@ trigger_phrases:
   - "pipeline without requiring external"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion/001"
@@ -1862,7 +1862,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:
 
   []

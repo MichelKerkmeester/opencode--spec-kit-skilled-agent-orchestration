@@ -17,7 +17,7 @@ import type { MemoryTypeName, MemoryTypeConfig } from './memory-types';
 // 1. TYPES
 // ---------------------------------------------------------------
 
-export interface InferMemoryTypeParams {
+interface InferMemoryTypeParams {
   filePath?: string;
   content?: string;
   title?: string;
@@ -25,23 +25,23 @@ export interface InferMemoryTypeParams {
   importanceTier?: string | null;
 }
 
-export interface InferenceResult {
+interface InferenceResult {
   type: MemoryTypeName;
   source: 'frontmatter_explicit' | 'importance_tier' | 'file_path' | 'keywords' | 'default';
   confidence: number;
 }
 
-export interface DetailedTypeSuggestion extends InferenceResult {
+interface DetailedTypeSuggestion extends InferenceResult {
   explanation: string;
   typeConfig: MemoryTypeConfig;
 }
 
-export interface TypeValidationResult {
+interface TypeValidationResult {
   valid: boolean;
   warnings: string[];
 }
 
-export interface MemoryForBatchInference {
+interface MemoryForBatchInference {
   filePath?: string;
   file_path?: string;
   content?: string;
@@ -55,7 +55,7 @@ export interface MemoryForBatchInference {
 // 2. IMPORTANCE TIER TO TYPE MAPPING
 // ---------------------------------------------------------------
 
-export const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
+const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
   constitutional: 'meta-cognitive',  // Rules that never decay
   critical: 'semantic',              // Core concepts, high persistence
   important: 'declarative',          // Important facts
@@ -257,7 +257,7 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
   };
 }
 
-export function inferMemoryTypesBatch(
+function inferMemoryTypesBatch(
   memories: MemoryForBatchInference[]
 ): Map<string, InferenceResult> {
   const results = new Map<string, InferenceResult>();
@@ -290,7 +290,7 @@ const SOURCE_EXPLANATIONS: Record<string, string> = {
   default: 'No patterns matched, using default type',
 };
 
-export function getTypeSuggestionDetailed(params: InferMemoryTypeParams): DetailedTypeSuggestion {
+function getTypeSuggestionDetailed(params: InferMemoryTypeParams): DetailedTypeSuggestion {
   const result = inferMemoryType(params);
 
   return {
@@ -300,7 +300,7 @@ export function getTypeSuggestionDetailed(params: InferMemoryTypeParams): Detail
   };
 }
 
-export function validateInferredType(
+function validateInferredType(
   inferredType: string,
   filePath: string | null | undefined
 ): TypeValidationResult {

@@ -155,7 +155,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `skill` | `graph` | `system` | `memory` | `skill graph` | `system spec kit/138 hybrid rag fusion/013 deprecate skill graph and readme indexing` | `spec` | `kit/138` | `hybrid` | `rag` | `fusion/013` | `deprecate` | 
+**Key Topics:** `skill` | `graph` | `system` | `memory` | `skill graph` | `system spec kit/022 hybrid rag fusion/013 deprecate skill graph and readme indexing` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/013` | `deprecate` | 
 
 ---
 
@@ -841,9 +841,9 @@ key_topics:
   - "system"
   - "memory"
   - "skill graph"
-  - "system spec kit/138 hybrid rag fusion/013 deprecate skill graph and readme indexing"
+  - "system spec kit/022 hybrid rag fusion/013 deprecate skill graph and readme indexing"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion/013"
@@ -851,7 +851,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion/013 deprecate skill graph and readme indexing 2"
+  - "system spec kit/022 hybrid rag fusion/013 deprecate skill graph and readme indexing 2"
   - "skill graphs"
   - "in memory"
   - "context server"
@@ -879,7 +879,7 @@ trigger_phrases:
   - "pipeline without requiring external"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion/013"

@@ -188,7 +188,7 @@ Next: Program closure review for 139-hybrid-rag-fusion
 - [`checklist.md`](./checklist.md) - QA checklist
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 
-**Key Topics:** `spec` | `validation` | `quality` | `system spec kit/139 hybrid rag fusion/008 spec kit code quality` | `anchor` | `system` | `kit/139` | `hybrid` | `rag` | `fusion/008` | `kit` | `strict` | 
+**Key Topics:** `spec` | `validation` | `quality` | `system spec kit/022 hybrid rag fusion/008 spec kit code quality` | `anchor` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/008` | `kit` | `strict` | 
 
 ---
 
@@ -632,7 +632,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/139 hybrid rag fusion/008 spec kit code quality"
+  - "system spec kit/022 hybrid rag fusion/008 spec kit code quality"
   - "not failed"
   - "and fail"
   - "memory save extended"
@@ -660,7 +660,7 @@ trigger_phrases:
   - "touched-files manifest generation aligned"
   - "system"
   - "spec"
-  - "kit/139"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion/008"

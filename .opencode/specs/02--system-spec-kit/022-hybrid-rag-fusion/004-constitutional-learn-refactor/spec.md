@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/spec.md -->
 ---
 title: "Constitutional Learn Refactor"
 status: "complete"
@@ -10,14 +11,12 @@ trigger_phrases:
   - "constitutional memory"
   - "constitutional learn"
   - "memory learn constitutional"
-SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify | v2.2"
 importance_tier: "critical"
 contextType: "implementation"
 ---
 # Feature Specification: Refactor /memory:learn → Constitutional Memory Manager
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 

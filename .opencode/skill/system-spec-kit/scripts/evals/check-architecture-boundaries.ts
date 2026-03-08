@@ -1,6 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Architecture Boundary Checker
-// Enforces two rules from ARCHITECTURE_BOUNDARIES.md that were
+// Enforces two rules from ARCHITECTURE.md that were
 // previously documentation-only:
 //   GAP A — shared/ must not import from mcp_server/ or scripts/
 //   GAP B — mcp_server/scripts/ files must be thin wrappers only

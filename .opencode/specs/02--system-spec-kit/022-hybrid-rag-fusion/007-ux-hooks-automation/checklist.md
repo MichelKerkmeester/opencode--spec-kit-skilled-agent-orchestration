@@ -42,9 +42,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md requirements and scope reviewed] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
-- [ ] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md implementation approach reviewed] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
-- [ ] CHK-003 [P1] Dependencies identified and available [EVIDENCE: plan.md dependencies section confirms availability] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: spec.md:97-124 defines Section 4 REQUIREMENTS with REQ-001 through REQ-007, P0/P1 priorities, acceptance criteria per requirement, and 7 acceptance scenarios covering mutation hooks, checkpoint safety, repair metadata, schema/type alignment, duplicate-save behavior, envelope hints, and manual playbook coverage]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: plan.md:55-70 defines the shared post-mutation architecture, 6 key components, and end-to-end data flow; plan.md:76-110 defines 4 implementation phases and marks every phase task complete]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: plan.md:42-45 marks "Dependencies identified" complete in Definition of Ready; plan.md:128-135 lists the two internal dependencies, their Green/Yellow status, and the rollout impact if blocked]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -53,7 +53,7 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run lint` passed in `.opencode/skill/system-spec-kit/mcp_server`; `npx tsc -b` passed in `.opencode/skill/system-spec-kit` after regenerating build artifacts; Phase 4: `npx tsc --noEmit` passed with zero type errors after 13 review fixes across 12 files]
-- [ ] CHK-011 [P0] No console errors or warnings [EVIDENCE: stdout emitters on MCP server paths were redirected to stderr-safe logging, a real MCP SDK stdio client connected successfully to `node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js` and listed 28 tools, and the follow-up manual client pass exercised `memory_health(reportMode:"full")` plus `checkpoint_delete(name, confirmName)` without transport pollution; stderr still reported 3008 orphaned entries and an embedding dimension mismatch warning as residual operational signals outside this phase scope] <!-- AUDIT-2026-03-08: unchecked — evidence contradicts claim by admitting active stderr warnings -->
+- [ ] CHK-011 [P0] No console errors or warnings [NOTE: Missing clean no-warning runtime evidence. tests/stdio-logging-safety.vitest.ts:50-57 proves runtime sources avoid stdout pollution, but implementation-summary.md:243-244 documents active stderr warnings (3008 orphaned entries and a 1024-vs-768 embedding mismatch), so this item cannot be checked honestly.]
 - [x] CHK-012 [P1] Error handling implemented [EVIDENCE: stdio-path logging no longer pollutes transport output, `hooks/response-hints.ts` and `context-server.ts` preserve success-path behavior, and runtime hook/indexing paths use stderr-safe logging; Phase 4: all `runPostMutationHooks` call sites wrapped in try/catch (m4), `toolCache.invalidateOnWrite` guarded (M3), file-watcher path non-throwing (M3)]
 - [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: shared hook modules remain exported via hooks barrel, build artifacts were regenerated with `npx tsc -b`, and provider/model-aware embeddings cache identity is covered in `tests/embeddings.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
@@ -75,8 +75,8 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: secret scan found only mock tokens in `tests/retrieval-trace.vitest.ts` and `tests/retrieval-telemetry.vitest.ts`; no production hardcoded secrets; Phase 4: `sanitizeErrorForHint()` strips paths and stack traces from all user-facing hints (M1), `redactPath()` removes absolute paths from response payloads (M2), `repair.errors` sanitized per review P1 finding]
-- [ ] CHK-031 [P0] Input validation implemented [EVIDENCE: `confirmName` is enforced at handler, schema, tool-schema, and tool-type layers; delete without `confirmName` is rejected, and successful deletion reports `safetyConfirmationUsed=true`; Phase 4: `sanitizeErrorForHint` covers both Unix and Windows paths per review P1 finding] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
-- [ ] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A in scope for phase `007-ux-hooks-automation` (retrieval/telemetry hooks automation only); no auth/authz code paths introduced or modified] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: handlers/checkpoints.ts:277-286 rejects missing, non-string, and non-matching `confirmName`; schemas/tool-input-schemas.ts:230-233 and :367-368 require `confirmName`; tool-schemas.ts:289-303 requires `confirmName` in the public tool schema; tools/types.ts:178-180 types it explicitly; tests/handler-checkpoints.vitest.ts:246-266 and tests/tool-input-schema.vitest.ts:181-190 verify rejection/acceptance paths]
+- [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: N/A for this phase scope — spec.md:54-68 limits the work to mutation hooks, checkpoint safety, schema/type updates, and playbook coverage; implementation-summary.md:132-145 lists only those touched runtime files and no auth/authz layer changes]
 <!-- /ANCHOR:security -->
 
 ---
@@ -85,8 +85,8 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md now agree on the fresh remediation-pass verification evidence, including the combined `9 files / 485 tests` Vitest rerun, the `reportMode` and `confirmName` command signatures, and the root-spec memory-save outcome with no new indexed memory ID because indexing still fails on the 1024 vs 768 embedding mismatch]
-- [ ] CHK-041 [P1] Code comments adequate [EVIDENCE: touched hook/handler flows remain self-descriptive and aligned with existing comment conventions; no non-obvious logic requiring new inline commentary] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
-- [ ] CHK-042 [P2] README updated (if applicable) [EVIDENCE: hooks README updated to document new modules and UX hint contract usage] <!-- AUDIT-2026-03-08: unchecked — evidence was generic boilerplate, needs specific file/test references -->
+- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: hooks/response-hints.ts:38-54 explains the token-count convergence loop and the intentional extra serialization pass; handlers/checkpoints.ts:197-213 documents the restore index rebuild and its non-fatal fallback; handlers/checkpoints.ts:273-286 adds targeted delete-handler intent and validation context; hooks/memory-surface.ts:55-57 documents the single-process cache assumption]
+- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: hooks/README.md:33-53 documents the implemented exports, including `buildMutationHookFeedback` and `appendAutoSurfaceHints`, plus the mutation feedback and response-hint data shapes; implementation-summary.md:140-145 records the README update in the changed-files list]
 - [x] CHK-043 [P1] Manual playbook synchronized with implementation [EVIDENCE: NEW-103+ rows remain aligned to the implemented UX hook behavior, EX-013/EX-018 use the current `memory_health(reportMode:...)` and `checkpoint_delete(name, confirmName)` signatures, and the remediation pass now includes fresh smoke/manual transcripts for those updated contracts]
 <!-- /ANCHOR:docs -->
 
@@ -95,8 +95,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: phase scratch directory contains only `.gitkeep`] <!-- AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) -->
-- [ ] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: phase scratch directory contains only `.gitkeep`] <!-- AUDIT-2026-03-08: unchecked — evidence contradicted by actual scratch/ contents (codex-review-report.md, review-report.md present) -->
+- [ ] CHK-050 [P1] Temp files in scratch/ only [NOTE: Missing corrected evidence statement. The prior ".gitkeep only" claim is false because `scratch/` currently contains `.gitkeep`, `codex-review-report.md`, `review-report.md`, and `w1-a4-evidence-quality-audit.md`; this item needs an explicit retention-vs-temp classification before it can be checked.]
+- [ ] CHK-051 [P1] scratch/ cleaned before completion [NOTE: Missing cleanup or retention decision. `scratch/` still contains `codex-review-report.md`, `review-report.md`, and `w1-a4-evidence-quality-audit.md`, so this item must remain unchecked until those files are removed or a documented reason for keeping them is added.]
 - [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: direct save to phase folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-ux-hooks-automation` was rejected by policy, so the rerun used parent spec folder `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` and created `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_16-41__sgqs-comprehensive-review-blocked.md`; `memory_index_scan({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion" })` then reported `0 indexed, 0 updated, 71 unchanged, 93 failed`, including that file failing with `Expected 1024 dimensions but received 768`, so no new indexed memory ID is available]
 <!-- /ANCHOR:file-org -->
 
@@ -107,11 +107,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 4/8 |
-| P1 Items | 11 | 5/11 |
-| P2 Items | 2 | 1/2 |
+| P0 Items | 8 | 7/8 |
+| P1 Items | 11 | 9/11 |
+| P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-06
+**Verification Date**: 2026-03-08
 <!-- /ANCHOR:summary -->
 
 ---

@@ -155,7 +155,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | None |
 
-**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/138 hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/138` | `hybrid` | `rag` | `fusion` | `sgqs` | 
+**Key Topics:** `system` | `memory` | `skill graph` | `system spec kit/022 hybrid rag fusion` | `skill` | `graph` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion` | `sgqs` | 
 
 ---
 
@@ -502,7 +502,7 @@ User initiated conversation
 |----------|----------|-----------------|
 | Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -514,7 +514,7 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic", limit: 10 })
 
 # Verify memory file integrity
 ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
@@ -596,7 +596,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771587148773-1xvdpdld7"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 channel: "main"
 
 # Classification
@@ -667,11 +667,11 @@ key_topics:
   - "system"
   - "memory"
   - "skill graph"
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "skill"
   - "graph"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"
@@ -679,7 +679,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "skill graphs"
   - "in memory"
   - "implementation summary"
@@ -707,7 +707,7 @@ trigger_phrases:
   - "pipeline without requiring external"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"
@@ -1662,7 +1662,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:
 
   []

@@ -544,7 +544,6 @@ export {
   isQualityLoopEnabled,
   QUALITY_WEIGHTS,
   DEFAULT_TOKEN_BUDGET,
-  CHARS_PER_TOKEN,
   DEFAULT_CHAR_BUDGET,
 };
 

@@ -73,11 +73,13 @@ async function main(): Promise<void> {
     let totalCleaned = 0;
 
     // ---------------------------------------------------------
-    // STEP 1: Clean orphaned memory_history entries
+    // STEP 1: Discover orphaned entries across all tables
     // ---------------------------------------------------------
     console.log('\n[Step 1] Finding orphaned memory_history entries...');
+    let orphanedHistory: OrphanedEntry[] = [];
+    let hasHistoryTable = true;
     try {
-      const orphanedHistory: OrphanedEntry[] = database.prepare(`
+      orphanedHistory = database.prepare(`
         SELECT h.memory_id
         FROM memory_history h
         LEFT JOIN memory_index m ON h.memory_id = m.id
@@ -86,36 +88,18 @@ async function main(): Promise<void> {
 
       if (orphanedHistory.length > 0) {
         console.log(`Found ${orphanedHistory.length} orphaned history entries`);
-
-        if (dryRun) {
-          console.log(`[DRY-RUN] Would delete ${orphanedHistory.length} orphaned history entries`);
-          totalCleaned += orphanedHistory.length;
-        } else {
-          const deleteHistory = database.transaction((ids: OrphanedEntry[]) => {
-            if (!database) throw new Error('Database connection lost');
-            const stmt = database.prepare('DELETE FROM memory_history WHERE memory_id = ?');
-            for (const { memory_id } of ids) {
-              stmt.run(memory_id);
-            }
-          });
-
-          deleteHistory(orphanedHistory);
-          console.log(`Deleted ${orphanedHistory.length} orphaned history entries`);
-          totalCleaned += orphanedHistory.length;
-        }
       } else {
         console.log('No orphaned history entries found');
       }
     } catch (e: unknown) {
       const errMsg = e instanceof Error ? e.message : String(e);
-      if (!errMsg.includes('no such table')) {
-        console.warn('memory_history cleanup warning:', errMsg);
+      if (errMsg.includes('no such table')) {
+        hasHistoryTable = false;
+      } else {
+        console.warn('memory_history discovery warning:', errMsg);
       }
     }
 
-    // ---------------------------------------------------------
-    // STEP 2: Clean orphaned vec_memories entries
-    // ---------------------------------------------------------
     console.log('\n[Step 2] Finding orphaned vector entries...');
     const orphanedVectors: OrphanedVector[] = database.prepare(`
       SELECT v.rowid
@@ -126,35 +110,54 @@ async function main(): Promise<void> {
 
     console.log(`Found ${orphanedVectors.length} orphaned vectors`);
 
-    if (orphanedVectors.length > 0) {
-      if (dryRun) {
+    // ---------------------------------------------------------
+    // STEP 2: Delete all orphans in a single atomic transaction
+    // AI-WHY: ISS-B04-002 fix — wrapping history + vector cleanup in one
+    // transaction prevents partial commits on mid-run failure.
+    // ---------------------------------------------------------
+    if (dryRun) {
+      if (orphanedHistory.length > 0) {
+        console.log(`[DRY-RUN] Would delete ${orphanedHistory.length} orphaned history entries`);
+        totalCleaned += orphanedHistory.length;
+      }
+      if (orphanedVectors.length > 0) {
         console.log(`[DRY-RUN] Would delete ${orphanedVectors.length} orphaned vectors`);
         totalCleaned += orphanedVectors.length;
-      } else {
-        let deleted = 0;
-        const deleteStmt = database.prepare('DELETE FROM vec_memories WHERE rowid = ?');
-        const deleteBatch = database.transaction((rows: OrphanedVector[]) => {
-          for (const row of rows) {
-            deleteStmt.run(BigInt(row.rowid));
-            deleted++;
-          }
-        });
+      }
+    } else if (orphanedHistory.length > 0 || orphanedVectors.length > 0) {
+      console.log('\n[Step 3] Deleting all orphans in a single atomic transaction...');
 
-        const chunkSize = 100;
-        for (let i = 0; i < orphanedVectors.length; i += chunkSize) {
-          const chunk = orphanedVectors.slice(i, i + chunkSize);
-          deleteBatch(chunk);
-          console.log(`Deleted ${deleted}/${orphanedVectors.length} vectors`);
+      const atomicCleanup = database.transaction(() => {
+        if (!database) throw new Error('Database connection lost');
+
+        // Delete orphaned history entries
+        if (hasHistoryTable && orphanedHistory.length > 0) {
+          const deleteHistoryStmt = database.prepare('DELETE FROM memory_history WHERE memory_id = ?');
+          for (const { memory_id } of orphanedHistory) {
+            deleteHistoryStmt.run(memory_id);
+          }
+          console.log(`Deleted ${orphanedHistory.length} orphaned history entries`);
         }
 
-        totalCleaned += deleted;
-      }
+        // Delete orphaned vector entries
+        if (orphanedVectors.length > 0) {
+          const deleteVectorStmt = database.prepare('DELETE FROM vec_memories WHERE rowid = ?');
+          for (const row of orphanedVectors) {
+            deleteVectorStmt.run(BigInt(row.rowid));
+          }
+          console.log(`Deleted ${orphanedVectors.length} orphaned vectors`);
+        }
+      });
+
+      atomicCleanup();
+      totalCleaned += orphanedHistory.length + orphanedVectors.length;
+      console.log(`Atomic cleanup committed: ${totalCleaned} total entries removed`);
     }
 
     // ---------------------------------------------------------
-    // STEP 3: Verify and report
+    // STEP 4: Verify and report
     // ---------------------------------------------------------
-    console.log('\n[Step 3] Verification...');
+    console.log('\n[Step 4] Verification...');
     const memoryCount: CountResult = database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as CountResult;
     const vectorCount: CountResult = database.prepare('SELECT COUNT(*) as count FROM vec_memories').get() as CountResult;
 

@@ -79,12 +79,14 @@ Phase workflow additions (specs 138-139):
 ## 4. BUILD AND RUNTIME
 
 
-TypeScript sources compile to `dist/`:
+TypeScript sources compile to `dist/` (generated build output; do not edit or commit by hand):
 
 ```bash
 cd .opencode/skill/system-spec-kit/scripts
 npm run build
 ```
+
+> **Note:** `dist/` directories contain build output generated from TypeScript sources via `tsc --build`. They are not source of truth and should not be checked into version control. Edit the `.ts` source files and rebuild instead. See [ARCHITECTURE.md](../ARCHITECTURE.md) for the full dist/ policy.
 
 Memory save entrypoint (required by Memory Save Rule):
 

@@ -62,7 +62,7 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 (Sprints 0-1), P1 (Sprints 2-6; S5-S6 elevated for safety-critical NFRs), P2 (Sprint 7) |
-| **Status** | In Progress (85%+ complete) |
+| **Status** | In Progress (78.9% complete) |
 | **Created** | 2026-02-26 |
 | **Complexity** | 90/100 |
 <!-- /ANCHOR:metadata -->

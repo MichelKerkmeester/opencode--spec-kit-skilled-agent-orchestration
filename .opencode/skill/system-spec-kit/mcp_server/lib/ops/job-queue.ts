@@ -501,12 +501,9 @@ function initIngestJobQueue(config: JobQueueConfig): { resetCount: number } {
 }
 
 export {
-  ensureIngestJobsTable,
-  resetIncompleteJobsToQueued,
   initIngestJobQueue,
   createIngestJob,
   getIngestJob,
-  setIngestJobState,
   cancelIngestJob,
   enqueueIngestJob,
 };

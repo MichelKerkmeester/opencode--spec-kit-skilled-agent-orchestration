@@ -139,7 +139,7 @@ Next: Continue implementation
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-recommendations-unified-speckit-memory-mcp.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-analysis-unified-hybrid-rag-fusion.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md
+- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-recommendations-unified-speckit-memory-mcp.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-analysis-unified-hybrid-rag-fusion.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
 
 - Last: I have completed the comprehensive technical research and created the two reques
 
@@ -159,7 +159,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | I encountered an issue where the `Task` tool (which spawns sub-agents) returned a `ProviderModelNotF |
 
-**Key Topics:** `spec` | `system` | `hybrid` | `rag` | `fusion` | `system spec kit/138 hybrid rag fusion` | `kit/138` | `observation decision` | `detected` | `observation` | `decision` | `answer` | 
+**Key Topics:** `spec` | `system` | `hybrid` | `rag` | `fusion` | `system spec kit/022 hybrid rag fusion` | `kit/022` | `observation decision` | `detected` | `observation` | `decision` | `answer` | 
 
 ---
 
@@ -191,15 +191,15 @@ File: specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/20-02-26_09-32__hyb
 
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-analysis-unified-hybrid-rag-fusion.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md` - Documentation
 
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md` - Documentation
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md` - Documentation
 
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/handover.md` - Documentation
 
@@ -258,11 +258,11 @@ Spec folder: 0
 |:---------|:----------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-recommendations-unified-speckit-memory-mcp.md` | Updated 000   final recommendations unified speckit memory mcp |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-analysis-unified-hybrid-rag-fusion.md` | Updated 000   final analysis unified hybrid rag fusion |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md` | Updated spec |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md` | Updated plan |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md` | Updated tasks |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md` | Updated checklist |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md` | Updated decision record |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md` | Updated spec |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md` | Updated plan |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md` | Updated tasks |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md` | Updated checklist |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md` | Updated decision record |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/handover.md` | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion... |
 | `specs/02--system-spec-kit/022-hybrid-rag-fusion/handover.md` | Created via write tool |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research` | Updated research |
@@ -374,7 +374,7 @@ I have successfully added massive detail to both documents, introducing deep arc
 
 Both files have been securely written to your requested `.opencode` path and retain all necessary standard spec kit anchor tags:
 
-1.  `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/003-system-spec-k (repeated 2 times)
+1.  `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/` (repeated 2 times)
 
 <!-- /ANCHOR:implementation-successfully-massive-detail-both-dc1c1cda -->
 
@@ -517,90 +517,90 @@ Executed task
 <!-- ANCHOR:implementation-tool-write-c8c81bec -->
 ### IMPLEMENTATION: Tool: write
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md (repeated 3 times)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md (repeated 3 times)
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:implementation-tool-write-c8c81bec -->
 
 <!-- ANCHOR:implementation-tool-write-c8c81bec-2 -->
 ### IMPLEMENTATION: Tool: write
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md (repeated 3 times)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md (repeated 3 times)
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:implementation-tool-write-c8c81bec-2 -->
 
 <!-- ANCHOR:implementation-tool-write-c8c81bec-3 -->
 ### IMPLEMENTATION: Tool: write
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md (repeated 3 times)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md (repeated 3 times)
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:implementation-tool-write-c8c81bec-3 -->
 
 <!-- ANCHOR:implementation-tool-write-c8c81bec-4 -->
 ### IMPLEMENTATION: Tool: write
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md (repeated 3 times)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md (repeated 3 times)
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:implementation-tool-write-c8c81bec-4 -->
 
 <!-- ANCHOR:implementation-tool-write-c8c81bec-5 -->
 ### IMPLEMENTATION: Tool: write
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md (repeated 3 times)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md (repeated 3 times)
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:implementation-tool-write-c8c81bec-5 -->
 
 <!-- ANCHOR:implementation-tool-read-0d718153 -->
 ### OBSERVATION: Tool: read
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:implementation-tool-read-0d718153 -->
 
 <!-- ANCHOR:implementation-tool-read-0d718153-2 -->
 ### OBSERVATION: Tool: read
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:implementation-tool-read-0d718153-2 -->
 
 <!-- ANCHOR:implementation-tool-read-0d718153-3 -->
 ### OBSERVATION: Tool: read
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:implementation-tool-read-0d718153-3 -->
 
 <!-- ANCHOR:implementation-tool-read-0d718153-4 -->
 ### OBSERVATION: Tool: read
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:implementation-tool-read-0d718153-4 -->
 
 <!-- ANCHOR:implementation-tool-read-0d718153-5 -->
 ### OBSERVATION: Tool: read
 
-.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:implementation-tool-read-0d718153-5 -->
 
@@ -1156,7 +1156,7 @@ Tool: sequential_thinking_sequentialthinking
 |----------|----------|-----------------|
 | Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -1168,7 +1168,7 @@ Tool: sequential_thinking_sequentialthinking
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic", limit: 10 })
 
 # Verify memory file integrity
 ls -la 02--system-spec-kit/022-hybrid-rag-fusion/memory/
@@ -1250,7 +1250,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771584876690-s2ufc7yiq"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 channel: "main"
 
 # Classification
@@ -1323,8 +1323,8 @@ key_topics:
   - "hybrid"
   - "rag"
   - "fusion"
-  - "system spec kit/138 hybrid rag fusion"
-  - "kit/138"
+  - "system spec kit/022 hybrid rag fusion"
+  - "kit/022"
   - "observation decision"
   - "detected"
   - "observation"
@@ -1333,7 +1333,7 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "system spec kit/138 hybrid rag fusion"
+  - "system spec kit/022 hybrid rag fusion"
   - "auto detected"
   - "pre handover"
   - "final recommendations unified speckit memory mcp"
@@ -1361,7 +1361,7 @@ trigger_phrases:
   - "select different cancel pre-handover"
   - "system"
   - "spec"
-  - "kit/138"
+  - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion"
@@ -2310,11 +2310,11 @@ trigger_phrases:
 key_files:
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-recommendations-unified-speckit-memory-mcp.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research/000 - final-analysis-unified-hybrid-rag-fusion.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/spec.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/plan.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/tasks.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/checklist.md"
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic/decision-record.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/tasks.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/checklist.md"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/decision-record.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/handover.md"
   - "specs/02--system-spec-kit/022-hybrid-rag-fusion/handover.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/research"
@@ -2324,7 +2324,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/000-hybrid-rag-fusion-epic"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:
 
   []

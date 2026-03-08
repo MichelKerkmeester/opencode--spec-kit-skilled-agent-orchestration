@@ -158,9 +158,9 @@ Each zone has a clear owner and purpose. Cross-zone imports follow strict direct
 | `scripts/` | `mcp_server/handlers{,/*}` | Runtime handlers stay behind `api/` |
 | `mcp_server/lib/` | `mcp_server/api/` | `api/` wraps `lib/`, not the reverse |
 
-### Build Artifact Rule
+### Build Artifact Rule (Dist Policy)
 
-`dist/` directories under `shared/`, `scripts/` and `mcp_server/` are generated build outputs. They can run at runtime, but they are not source-of-truth code or documentation. Edit the authored `.ts` and `.md` files in package roots, then rebuild.
+`dist/` directories under `shared/`, `scripts/` and `mcp_server/` are generated build outputs produced from TypeScript sources via the build process (`tsc --build`). They can run at runtime, but they are not source-of-truth code or documentation and should not be committed to version control. Edit the authored `.ts` and `.md` files in package roots, then rebuild. Scripts or documentation that reference `dist/` files for execution (e.g., `node scripts/dist/memory/generate-context.js`) are referencing the generated runtime entry point, not canonical source.
 
 ### Test Placement Rule
 

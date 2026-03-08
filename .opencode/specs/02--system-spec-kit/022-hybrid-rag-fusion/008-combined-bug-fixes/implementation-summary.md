@@ -1,3 +1,4 @@
+<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/implementation-summary.md -->
 ---
 title: "Combined Implementation Summary: Bug Fixes (003, 008, 013, 015)"
 description: "Merged implementation summary covering auto-detected session bug, subfolder resolution fix, memory search bug fixes, and bug fixes and alignment"
@@ -7,7 +8,6 @@ contextType: "implementation"
 # Combined Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
 

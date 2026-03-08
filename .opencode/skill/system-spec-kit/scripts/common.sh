@@ -12,6 +12,7 @@ set -euo pipefail
 # 1. REPOSITORY ROOT DETECTION
 # ───────────────────────────────────────────────────────────────
 
+# Resolve the project repository root via git or fall back to relative path from script location
 get_repo_root() {
     if git rev-parse --show-toplevel >/dev/null 2>&1; then
         git rev-parse --show-toplevel
@@ -29,6 +30,7 @@ get_repo_root() {
 # 2. BRANCH DETECTION
 # ───────────────────────────────────────────────────────────────
 
+# Detect the current feature branch via env var, git, or latest numbered specs/ folder
 get_current_branch() {
     # Priority 1: Environment variable
     if [[ -n "${SPECIFY_FEATURE:-}" ]]; then
@@ -67,6 +69,7 @@ get_current_branch() {
     echo "main"
 }
 
+# Return success (0) if the current directory is inside a git repository
 has_git() {
     git rev-parse --show-toplevel >/dev/null 2>&1
 }
@@ -75,6 +78,7 @@ has_git() {
 # 3. BRANCH VALIDATION
 # ───────────────────────────────────────────────────────────────
 
+# Validate that the given branch name matches the NNN-feature-name convention
 check_feature_branch() {
     local branch="$1" has_git_repo="${2:-false}"
 
@@ -95,10 +99,12 @@ check_feature_branch() {
 # 4. PATH RESOLUTION
 # ───────────────────────────────────────────────────────────────
 
+# Build the absolute path to a feature's spec directory: $repo_root/specs/$branch_name
 get_feature_dir() {
     echo "$1/specs/$2"
 }
 
+# Resolve a spec folder path by matching the 3-digit numeric prefix from the branch name
 find_feature_dir_by_prefix() {
     local repo_root="$1" branch_name="$2"
     local specs_dir="$repo_root/specs"
@@ -151,10 +157,12 @@ get_feature_paths() {
 # 5. DISPLAY HELPERS
 # ───────────────────────────────────────────────────────────────
 
+# Print a checkmark or cross indicating whether a file exists at the given path
 check_file() {
     [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"
 }
 
+# Print a checkmark or cross indicating whether a non-empty directory exists at the given path
 check_dir() {
     [[ -d "$1" && -n "$(ls -A "$1" 2>/dev/null)" ]] && echo "  ✓ $2" || echo "  ✗ $2"
 }

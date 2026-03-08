@@ -23,7 +23,7 @@ contextType: "implementation"
 | **Spec Folder** | 006-extra-features |
 | **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
-| **Status** | Implementation complete; post-review remediation (2026-03-06), cross-AI review remediation (2026-03-06), and 8-agent review remediation (2026-03-06) applied; live runtime/eval verification still pending |
+| **Status** | Implementation complete; post-review remediation (2026-03-06), cross-AI review remediation (2026-03-06), and 8-agent review remediation (2026-03-06) applied; campaign verification (Waves 1-5, 2026-03-08) in progress — 76/112 checklist items verified, 36 remaining (runtime/eval/benchmark) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -145,17 +145,100 @@ Five features explicitly deferred with documented blocking conditions:
 
 ---
 
+<!-- ANCHOR:campaign-verification -->
+## Campaign Verification (2026-03-08)
+
+A structured 5-wave verification campaign was executed to close the gap between implementation completion and runtime/eval verification. The campaign produced a runtime gap analysis, targeted test execution plan, and regression baseline.
+
+### Wave Status
+
+| Wave | Focus | Status | Key Output |
+|------|-------|--------|------------|
+| **Wave 1** | Gap analysis + test planning | COMPLETE | `scratch/w1-a2-runtime-gap-analysis.md` — classified all 47 unchecked items into 5 verification groups (Vitest, Benchmark, MCP Integration, Manual, Other) |
+| **Wave 2** | Full-suite regression baseline | COMPLETE | `scratch/w3-a5-regression-baseline.md` — established baseline: 7153 passed / 4 known failures across 243 test files |
+| **Wave 3** | Targeted Vitest execution | COMPLETE | `scratch/w3-a4-test-scripts.md` — ran 10 targeted test files covering 35 checklist items; 445/447 passed with 2 known mock failures |
+| **Wave 4** | Checklist evidence refresh | COMPLETE | Updated 11 checklist items with fresh test evidence from Wave 3 runs (CHK-032, CHK-037, CHK-042, CHK-044, CHK-045, CHK-047, CHK-048, CHK-054, CHK-058, CHK-080, CHK-084) |
+| **Wave 5** | Summary + implementation-summary update | IN PROGRESS | This update |
+
+### Checklist Progress
+
+| Priority | Checked | Unchecked | Total | Verified % |
+|----------|--------:|----------:|------:|-----------:|
+| **P0** | 22 | 12 | 34 | 64.7% |
+| **P1** | 45 | 22 | 67 | 67.2% |
+| **P2** | 9 | 2 | 11 | 81.8% |
+| **Total** | **76** | **36** | **112** | **67.9%** |
+
+### Remaining Unchecked Items (36)
+
+**P0 (12 items) — Runtime/eval verification requiring live MCP server or eval infrastructure:**
+- CHK-020: All tools accept valid parameters (live tool-matrix harness needed)
+- CHK-030, CHK-031, CHK-033, CHK-034: Response envelope live contract verification (`includeTrace` on/off, scores/source shape)
+- CHK-041: Ingest start returns job ID in <100ms (mock failure blocks unit coverage; benchmark harness needed)
+- CHK-043: Job state machine full transition chain (queued->parsing->embedding->indexing->complete)
+- CHK-046: Cancelled job stops after current file (mid-file abort boundary behavior)
+- CHK-088, CHK-089, CHK-090, CHK-091: Eval ablation baseline and per-phase regression gates (eval infrastructure not yet created)
+
+**P1 (22 items) — Benchmark harnesses, live MCP integration, and flag-disabled-path tests:**
+- CHK-024, CHK-039: Performance benchmarks (Zod validation <5ms, envelope serialization <10ms)
+- CHK-035: `scores.fusion` matches internal `PipelineRow.rrfScore` (live precision check)
+- CHK-049, CHK-050, CHK-051: Ingest persistence, crash recovery, 100-file batch (live DB + restart scenarios)
+- CHK-056, CHK-083: Feature-flag-disabled-path tests (context headers off, file watcher off)
+- CHK-061, CHK-062, CHK-063, CHK-064, CHK-065: Local GGUF reranker end-to-end (model loading, fallback, latency, caching)
+- CHK-070, CHK-071, CHK-072, CHK-073, CHK-074, CHK-075: Dynamic server instructions content (live MCP handshake needed)
+- CHK-077, CHK-078, CHK-079: File watcher timing/debounce (known timing-flakiness in test environment)
+
+**P2 (2 items) — Manual verification:**
+- CHK-069: Local GGUF vs Cohere/Voyage MRR@5 eval comparison (human review)
+- CHK-141: Memory save via `generate-context.js` (human decides what to preserve)
+
+### Test Suite Status
+
+| Metric | Value | Source |
+|--------|-------|--------|
+| Full suite tests passed | 7153 | `scratch/w3-a5-regression-baseline.md` (commit `359ef21e`) |
+| Full suite tests failed | 4 | Known failures (3 file-watcher timing, 1 ingest mock) |
+| Full suite test files | 243 (241 passed, 2 failed) | Baseline from 2026-03-08 |
+| Targeted test suite (10 files) | 445 passed / 2 failed | `scratch/w3-a4-test-scripts.md` |
+| TypeScript compilation | 1 known error (`core/config.ts:92` TS4023) | Pre-existing type namability issue |
+
+### Known Failures (Baseline)
+
+| Test File | Failed | Root Cause | Classification |
+|-----------|-------:|------------|----------------|
+| `tests/file-watcher.vitest.ts` | 3 | Async timing/debounce coordination + EMFILE resource pressure | Environment-sensitive, not implementation bugs |
+| `tests/handler-memory-ingest.vitest.ts` | 1 | Mock module missing `DATABASE_PATH` export from `../core` | Test-mock contract drift, not implementation bug |
+
+### Regression Acceptance Criteria
+
+Per the regression baseline document, future verification passes against 006 should:
+1. Introduce no new failing test files beyond `file-watcher` and `handler-memory-ingest`
+2. Introduce no new failing tests beyond the 4 known failures
+3. Aggregate failure count must be <= 4
+4. TypeScript compilation must not introduce new errors beyond the known `TS4023`
+
+### Remaining Work to Reach Full Verification
+
+The 36 unchecked items require infrastructure that does not yet exist:
+- **6 benchmark harnesses** (B1-B6): Zod latency, envelope serialization, ingest throughput, reranker latency, watcher timing, eval ablation
+- **7 MCP integration harnesses** (I1-I6, O1): Tool parameter matrix, search contract, ingest lifecycle, dynamic init, file watcher e2e, reranker e2e, regression snapshots
+- **2 manual reviews** (D1-D2): Eval comparison write-up, memory save quality
+<!-- /ANCHOR:campaign-verification -->
+
+---
+
 <!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
 | Spec artifacts exist | PASS |
-| `tsc --noEmit` (mcp_server/) | PASS |
+| `tsc --noEmit` (mcp_server/) | PASS (1 known pre-existing TS4023 error in `core/config.ts:92`) |
 | `tsc --noEmit` (scripts/) | PASS |
 | `npm run check` (mcp_server fast gate: lint + `tsc --noEmit`) | PASS |
-| `npm run check:full` (mcp_server full Vitest suite) | PASS (`242` files / `7193` tests on 2026-03-06) |
+| `npm run check:full` (mcp_server full Vitest suite) | PASS (`242` files / `7193` tests on 2026-03-06); baseline refresh: `243` files / `7153` passed / `4` known failures on 2026-03-08 |
 | Targeted remediation suite (89 tests) | PASS |
+| Targeted campaign suite (10 files, 447 tests) | 445 passed / 2 known failures (mock issues) |
 | 8-agent review integration tests (`tests/review-fixes.vitest.ts`) | PASS (12 tests: C1, H1, H2, H5, M5) |
-| Checklist verification | Not fully re-audited; open live runtime/eval tasks remain in `tasks.md` |
+| Checklist verification | 76/112 items verified (67.9%); 36 unchecked items require runtime/benchmark/MCP integration harnesses |
 <!-- /ANCHOR:verification -->

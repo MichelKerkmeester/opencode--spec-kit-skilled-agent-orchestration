@@ -83,8 +83,6 @@ function applyRedactionGate(inputText: string): RedactionResult {
 
 export {
   applyRedactionGate,
-  GIT_SHA_40,
-  UUID_PATTERN,
   GENERIC_HIGH_ENTROPY_MIN_LENGTH,
 };
 
