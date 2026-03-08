@@ -75,6 +75,8 @@ export interface Observation {
   title?: string;
   timestamp?: string;
   files?: string[];
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
 }
 
 /** User prompt metadata consumed by the session extractor. */

@@ -137,7 +137,14 @@ export interface CollectedDataFull {
   observations?: Observation[];
   userPrompts?: UserPrompt[];
   SPEC_FOLDER?: string;
-  FILES?: Array<{ FILE_PATH?: string; path?: string; DESCRIPTION?: string; description?: string }>;
+  FILES?: Array<{
+    FILE_PATH?: string;
+    path?: string;
+    DESCRIPTION?: string;
+    description?: string;
+    _provenance?: 'git' | 'spec-folder';
+    _synthetic?: boolean;
+  }>;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   _manualDecisions?: unknown[];
   _manualTriggerPhrases?: string[];
@@ -191,7 +198,10 @@ function calculateLearningIndex(
   const dk = deltaKnow ?? 0;
   const du = deltaUncert ?? 0;
   const dc = deltaContext ?? 0;
-  const index = (dk * 0.4) + (du * 0.35) + (dc * 0.25);
+  const index =
+    (dk * CONFIG.LEARNING_WEIGHTS.knowledge) +
+    (du * CONFIG.LEARNING_WEIGHTS.context) +
+    (dc * CONFIG.LEARNING_WEIGHTS.uncertainty);
   return Math.round(Math.max(0, Math.min(100, index)));
 }
 
@@ -719,6 +729,10 @@ async function collectSessionData(
 
   let SPEC_FILES: SpecFileEntry[] = [];
   const activeSpecsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
+  // Backfill SPEC_FOLDER from CLI-known folder name (spec 013 Phase 0)
+  if (!collectedData.SPEC_FOLDER && folderName) {
+    collectedData.SPEC_FOLDER = folderName;
+  }
   // Path traversal guard: reject SPEC_FOLDER values that escape the specs directory
   let specFolderPath: string | null = null;
   if (collectedData.SPEC_FOLDER) {

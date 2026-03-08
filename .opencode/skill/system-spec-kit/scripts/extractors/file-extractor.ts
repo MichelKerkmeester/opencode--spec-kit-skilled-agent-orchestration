@@ -26,6 +26,8 @@ export interface FileChange {
   FILE_PATH: string;
   DESCRIPTION: string;
   ACTION?: string;
+  _provenance?: 'git' | 'spec-folder';
+  _synthetic?: boolean;
 }
 
 /** Raw observation input used during file extraction. */
@@ -53,7 +55,14 @@ export interface ObservationDetailed {
 
 /** File-focused subset of collected session data. */
 export interface CollectedDataForFiles {
-  FILES?: Array<{ FILE_PATH?: string; path?: string; DESCRIPTION?: string; description?: string }>;
+  FILES?: Array<{
+    FILE_PATH?: string;
+    path?: string;
+    DESCRIPTION?: string;
+    description?: string;
+    _provenance?: 'git' | 'spec-folder';
+    _synthetic?: boolean;
+  }>;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   [key: string]: unknown;
 }
@@ -105,25 +114,52 @@ function extractFilesFromData(
   collectedData: CollectedDataForFiles | null,
   observations: ObservationInput[] | null
 ): FileChange[] {
-  const filesMap = new Map<string, { description: string; action?: string }>();
+  const filesMap = new Map<string, {
+    description: string;
+    action?: string;
+    _provenance?: 'git' | 'spec-folder';
+    _synthetic?: boolean;
+  }>();
 
   if (!collectedData) collectedData = {} as CollectedDataForFiles;
   if (!observations) observations = [];
 
-  const addFile = (rawPath: string, description: string, action?: string): void => {
+  const addFile = (
+    rawPath: string,
+    description: string,
+    action?: string,
+    provenance?: 'git' | 'spec-folder',
+    synthetic?: boolean
+  ): void => {
     const normalized = toRelativePath(rawPath, CONFIG.PROJECT_ROOT);
     if (!normalized) return;
 
     const existing = filesMap.get(normalized);
     const cleaned = cleanDescription(description);
+    const nextProvenance = provenance ?? existing?._provenance;
+    const nextSynthetic = synthetic ?? existing?._synthetic;
 
     if (existing) {
       // Prefer a valid, more descriptive (longer) description over a generic one
       if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing.description) || cleaned.length > existing.description.length)) {
-        filesMap.set(normalized, { description: cleaned, action: action || existing.action });
+        filesMap.set(normalized, {
+          description: cleaned,
+          action: action || existing.action,
+          ...(nextProvenance ? { _provenance: nextProvenance, _synthetic: nextSynthetic } : {}),
+        });
+      } else if (nextProvenance && (!existing._provenance || existing._synthetic !== nextSynthetic)) {
+        filesMap.set(normalized, {
+          ...existing,
+          _provenance: nextProvenance,
+          _synthetic: nextSynthetic,
+        });
       }
     } else {
-      filesMap.set(normalized, { description: cleaned || 'Modified during session', action });
+      filesMap.set(normalized, {
+        description: cleaned || 'Modified during session',
+        action,
+        ...(nextProvenance ? { _provenance: nextProvenance, _synthetic: nextSynthetic } : {}),
+      });
     }
   };
 
@@ -133,7 +169,7 @@ function extractFilesFromData(
       const filePath = fileInfo.FILE_PATH || fileInfo.path;
       const description = fileInfo.DESCRIPTION || fileInfo.description || 'Modified during session';
       const action = (fileInfo as any).ACTION || (fileInfo as any).action;
-      if (filePath) addFile(filePath, description, action);
+      if (filePath) addFile(filePath, description, action, fileInfo._provenance, fileInfo._synthetic);
     }
   }
 
@@ -180,6 +216,7 @@ function extractFilesFromData(
       FILE_PATH: filePath,
       DESCRIPTION: data.description,
       ...(data.action ? { ACTION: data.action } : {}),
+      ...(data._provenance ? { _provenance: data._provenance, _synthetic: data._synthetic } : {}),
     }));
 }
 

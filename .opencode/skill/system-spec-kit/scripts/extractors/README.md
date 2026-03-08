@@ -36,10 +36,12 @@ The `extractors/` directory converts collected session input into structured dat
 - `decision-extractor.ts`
 - `diagram-extractor.ts`
 - `file-extractor.ts`
+- `git-context-extractor.ts` - Mines git history for stateless enrichment (spec 013)
 - `implementation-guide-extractor.ts`
+- `opencode-capture.ts`
 - `quality-scorer.ts` - Scores extraction quality for validation
 - `session-extractor.ts`
-- `opencode-capture.ts`
+- `spec-folder-extractor.ts` - Parses spec folder docs for stateless enrichment (spec 013)
 - `index.ts`
 
 

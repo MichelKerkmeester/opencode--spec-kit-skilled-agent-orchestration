@@ -431,7 +431,7 @@ function injectQualityMetadata(content: string, qualityScore: number, qualityFla
 }
 
 async function enrichStatelessData(
-  collectedData: Record<string, any>,
+  collectedData: CollectedDataFull,
   specFolder: string,
   projectRoot: string
 ): Promise<void> {
@@ -456,10 +456,10 @@ async function enrichStatelessData(
       // Merge FILES (deduplicate by path, prefer existing descriptions)
       const existingFiles = collectedData.FILES || [];
       const existingPaths = new Set(
-        existingFiles.map((f: any) => (f.FILE_PATH || f.path || '').toLowerCase())
+        existingFiles.map((f) => (f.FILE_PATH || f.path || '').toLowerCase())
       );
       const newFiles = specContext.FILES.filter(
-        (f: any) => !existingPaths.has(f.FILE_PATH.toLowerCase())
+        (f) => !existingPaths.has(f.FILE_PATH.toLowerCase())
       );
       collectedData.FILES = [...existingFiles, ...newFiles];
 
@@ -504,10 +504,10 @@ async function enrichStatelessData(
       // Merge FILES (deduplicate by path)
       const existingFiles = collectedData.FILES || [];
       const existingPaths = new Set(
-        existingFiles.map((f: any) => (f.FILE_PATH || f.path || '').toLowerCase())
+        existingFiles.map((f) => (f.FILE_PATH || f.path || '').toLowerCase())
       );
       const newFiles = gitContext.FILES.filter(
-        (f: any) => !existingPaths.has(f.FILE_PATH.toLowerCase())
+        (f) => !existingPaths.has(f.FILE_PATH.toLowerCase())
       );
       collectedData.FILES = [...existingFiles, ...newFiles];
 
@@ -583,6 +583,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (isStatelessMode && activeSpecFolderArg && collectedData.observations) {
       const specFolderLeaf = path.basename(activeSpecFolderArg).replace(/^\d+-/, '').toLowerCase();
       const specKeywords = specFolderLeaf.split('-').filter((w: string) => w.length >= 3);
+      if (specKeywords.length === 0 && specFolderLeaf.length >= 2) {
+        specKeywords.push(specFolderLeaf);
+      }
 
       const allFilePaths = (collectedData.observations || [])
         .flatMap((obs: { files?: string[] }) => obs.files || [])

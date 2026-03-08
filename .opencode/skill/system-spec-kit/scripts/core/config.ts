@@ -29,6 +29,11 @@ export interface WorkflowConfig {
   toolPreviewLines: number;
   toolOutputMaxLength: number;
   timestampMatchToleranceMs: number;
+  learningWeights: {
+    knowledge: number;
+    context: number;
+    uncertainty: number;
+  };
 }
 
 /** Represents spec kit config. */
@@ -53,6 +58,7 @@ export interface SpecKitConfig {
   MAX_CONTENT_PREVIEW: number;
   TOOL_OUTPUT_MAX_LENGTH: number;
   TIMESTAMP_MATCH_TOLERANCE_MS: number;
+  LEARNING_WEIGHTS: WorkflowConfig['learningWeights'];
 }
 
 /* -----------------------------------------------------------------
@@ -153,6 +159,11 @@ function loadConfig(): WorkflowConfig {
     toolPreviewLines: 10,
     toolOutputMaxLength: 500,
     timestampMatchToleranceMs: 5000,
+    learningWeights: {
+      knowledge: 0.4,
+      context: 0.35,
+      uncertainty: 0.25,
+    },
   };
 
   const configPath: string = path.join(SCRIPTS_DIR, '..', 'config', 'config.jsonc');
@@ -237,7 +248,8 @@ const CONFIG: SpecKitConfig = {
   MIN_PROMPT_LENGTH: userConfig.minPromptLength,
   MAX_CONTENT_PREVIEW: userConfig.maxContentPreview,
   TOOL_OUTPUT_MAX_LENGTH: userConfig.toolOutputMaxLength,
-  TIMESTAMP_MATCH_TOLERANCE_MS: userConfig.timestampMatchToleranceMs
+  TIMESTAMP_MATCH_TOLERANCE_MS: userConfig.timestampMatchToleranceMs,
+  LEARNING_WEIGHTS: userConfig.learningWeights,
 };
 
 /* -----------------------------------------------------------------

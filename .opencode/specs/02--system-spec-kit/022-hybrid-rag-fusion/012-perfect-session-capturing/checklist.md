@@ -28,7 +28,7 @@
 - [x] HTML stripping is code-block-safe — VERIFIED: workflow.ts splits on code fences before stripping
 - [x] memoryId zero handled correctly — VERIFIED: workflow.ts `!== null` check
 - [x] File description dedup prefers richer content — VERIFIED: file-extractor.ts longer-is-better
-- [x] Learning index weights configurable via config.ts — VERIFIED: Agent 06 moved weights to config.ts, imported in collect-session-data.ts
+- [ ] Learning index weights configurable via config.ts — NOT YET: weights hardcoded in collect-session-data.ts
 - [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed in runtime test
-- [x] All MEDIUM findings from audit resolved — VERIFIED: 10-agent Copilot delegation addressed remaining P0 (4) + P1 (8) findings; P2 triaged with top-10 priority ranking
+- [ ] All MEDIUM findings from audit resolved — PARTIAL: ~67 medium findings remain (see implementation-summary.md)
 - [x] Generated memory files pass manual quality inspection (5 samples) — VERIFIED: 08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines
