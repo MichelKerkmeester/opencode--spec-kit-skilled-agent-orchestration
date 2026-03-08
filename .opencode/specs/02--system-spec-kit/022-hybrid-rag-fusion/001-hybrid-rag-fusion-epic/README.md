@@ -2,8 +2,8 @@
 
 This folder consolidates:
 - `000-feature-overview`
-- `002-hybrid-rag-fusion`
-- `006-hybrid-rag-fusion-logic-improvements`
+- `002-hybrid-rag-fusion` <!-- AUDIT-2026-03-08: pre-consolidation name; current folder is 002-indexing-normalization -->
+- `006-hybrid-rag-fusion-logic-improvements` <!-- AUDIT-2026-03-08: pre-consolidation name; content merged into this epic -->
 
 ## Structure
 - Top-level consolidated docs:

@@ -6,6 +6,14 @@ Consolidated from the following source docs:
 - sources/002-hybrid-rag-fusion/decision-record.md
 - sources/006-hybrid-rag-fusion-logic-improvements/decision-record.md
 
+<!-- AUDIT-2026-03-08: Historical folder name mapping for consolidated source references below.
+  Pre-consolidation name         → Current folder
+  002-hybrid-rag-fusion          → 002-indexing-normalization
+  003-index-tier-anomalies       → 002-indexing-normalization
+  004-frontmatter-indexing       → 002-indexing-normalization
+  006-hybrid-rag-fusion-logic-improvements → content merged into this epic (001-hybrid-rag-fusion-epic)
+-->
+
 ## Source: 000-feature-overview
 
 ---

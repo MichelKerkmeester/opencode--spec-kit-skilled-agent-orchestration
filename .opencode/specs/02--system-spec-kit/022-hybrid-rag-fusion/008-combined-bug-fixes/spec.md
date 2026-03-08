@@ -545,7 +545,7 @@ The remediation-epic lineage now lives inside `008-combined-bug-fixes`, while `0
 <!-- ANCHOR:problem_statement-015 -->
 ### 1. Problem Statement
 
-A 40-agent comprehensive audit of the 022-hybrid-rag-fusion system (618 spec files, 100+ source files, 20 feature catalog categories) revealed 5 P0 blockers, 40 P1 required fixes, and ~60 P2 suggestions across code, documentation, and spec alignment.
+A 40-agent full audit of the 022-hybrid-rag-fusion system (618 spec files, 100+ source files, 20 feature catalog categories) revealed 5 P0 blockers, 40 P1 required fixes, and ~60 P2 suggestions across code, documentation, and spec alignment.
 
 The most critical findings are: (1) a data loss bug in checkpoint merge-mode restore that triggers CASCADE deletes on live session state, (2) scoring pipeline NaN propagation and division-by-zero bugs, and (3) documentation accuracy errors and missing architecture mappings.
 

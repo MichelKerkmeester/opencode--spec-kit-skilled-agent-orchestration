@@ -318,7 +318,7 @@ On quality failure, Tier 2 widens the search (minSimilarity=0.1, all channels fo
 
 See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-109](../manual-testing-playbook/manual-test-playbooks.md)
+> **Playbook:** [NEW-109](../manual_testing_playbook/manual_testing_playbook.md)
 
 
 ---
@@ -443,7 +443,7 @@ Contradiction detection uses regex patterns. All decisions are logged to the `me
 
 See [`02--mutation/08-prediction-error-save-arbitration.md`](02--mutation/08-prediction-error-save-arbitration.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-110](../manual-testing-playbook/manual-test-playbooks.md)
+> **Playbook:** [NEW-110](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## Discovery
 
@@ -1594,7 +1594,7 @@ Deferred memories skip embedding dimension validation and `vec_memories` inserti
 
 See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-111](../manual-testing-playbook/manual-test-playbooks.md)
+> **Playbook:** [NEW-111](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## Pipeline architecture
 
@@ -1816,7 +1816,7 @@ Concurrency is handled safely via a mutex with a race-condition fix (P4-13). The
 
 See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-112](../manual-testing-playbook/manual-test-playbooks.md)
+> **Playbook:** [NEW-112](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## Retrieval enhancements
 
@@ -2031,7 +2031,7 @@ Deletions are transaction-wrapped with automatic checkpoint creation before bulk
 
 See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-113](../manual-testing-playbook/manual-test-playbooks.md)
+> **Playbook:** [NEW-113](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## Governance
 
@@ -2080,7 +2080,7 @@ Shared post-mutation hook automation now runs for `memory_save`, `memory_update`
 
 #### Source Files
 
-See [`18-ux-hooks/01-shared-post-mutation-hook-wiring.md`](18-ux-hooks/01-shared-post-mutation-hook-wiring.md) for full implementation and test file listings.
+See [`18--ux-hooks/01-shared-post-mutation-hook-wiring.md`](18--ux-hooks/01-shared-post-mutation-hook-wiring.md) for full implementation and test file listings.
 
 ### Memory health autoRepair metadata
 
@@ -2089,7 +2089,7 @@ See [`18-ux-hooks/01-shared-post-mutation-hook-wiring.md`](18-ux-hooks/01-shared
 
 #### Source Files
 
-See [`18-ux-hooks/02-memory-health-autorepair-metadata.md`](18-ux-hooks/02-memory-health-autorepair-metadata.md) for full implementation and test file listings.
+See [`18--ux-hooks/02-memory-health-autorepair-metadata.md`](18--ux-hooks/02-memory-health-autorepair-metadata.md) for full implementation and test file listings.
 
 ### Checkpoint delete confirmName safety
 
@@ -2098,7 +2098,7 @@ Checkpoint deletion now requires a matching `confirmName` and returns metadata a
 
 #### Source Files
 
-See [`18-ux-hooks/03-checkpoint-delete-confirmname-safety.md`](18-ux-hooks/03-checkpoint-delete-confirmname-safety.md) for full implementation and test file listings.
+See [`18--ux-hooks/03-checkpoint-delete-confirmname-safety.md`](18--ux-hooks/03-checkpoint-delete-confirmname-safety.md) for full implementation and test file listings.
 
 ### Schema and type contract synchronization
 
@@ -2107,7 +2107,7 @@ The mutation-safety parameters and outputs were aligned across runtime validatio
 
 #### Source Files
 
-See [`18-ux-hooks/04-schema-and-type-contract-synchronization.md`](18-ux-hooks/04-schema-and-type-contract-synchronization.md) for full implementation and test file listings.
+See [`18--ux-hooks/04-schema-and-type-contract-synchronization.md`](18--ux-hooks/04-schema-and-type-contract-synchronization.md) for full implementation and test file listings.
 
 ### Dedicated UX hook modules
 
@@ -2116,7 +2116,7 @@ Phase 014 extracted UX-oriented post-mutation behavior into dedicated modules fo
 
 #### Source Files
 
-See [`18-ux-hooks/05-dedicated-ux-hook-modules.md`](18-ux-hooks/05-dedicated-ux-hook-modules.md) for full implementation and test file listings.
+See [`18--ux-hooks/05-dedicated-ux-hook-modules.md`](18--ux-hooks/05-dedicated-ux-hook-modules.md) for full implementation and test file listings.
 
 ### Mutation hook result contract expansion
 
@@ -2125,7 +2125,7 @@ The shared mutation hook result contract now includes `latencyMs` and explicit c
 
 #### Source Files
 
-See [`18-ux-hooks/06-mutation-hook-result-contract-expansion.md`](18-ux-hooks/06-mutation-hook-result-contract-expansion.md) for full implementation and test file listings.
+See [`18--ux-hooks/06-mutation-hook-result-contract-expansion.md`](18--ux-hooks/06-mutation-hook-result-contract-expansion.md) for full implementation and test file listings.
 
 ### Mutation response UX payload exposure
 
@@ -2134,7 +2134,7 @@ Mutation tool responses now expose UX payload data from the hook pipeline, inclu
 
 #### Source Files
 
-See [`18-ux-hooks/07-mutation-response-ux-payload-exposure.md`](18-ux-hooks/07-mutation-response-ux-payload-exposure.md) for full implementation and test file listings.
+See [`18--ux-hooks/07-mutation-response-ux-payload-exposure.md`](18--ux-hooks/07-mutation-response-ux-payload-exposure.md) for full implementation and test file listings.
 
 ### Context-server success-path hint append
 
@@ -2143,7 +2143,7 @@ The context server success path now appends hint content through `appendAutoSurf
 
 #### Source Files
 
-See [`18-ux-hooks/08-context-server-success-hint-append.md`](18-ux-hooks/08-context-server-success-hint-append.md) for full implementation and test file listings.
+See [`18--ux-hooks/08-context-server-success-hint-append.md`](18--ux-hooks/08-context-server-success-hint-append.md) for full implementation and test file listings.
 
 ### Duplicate-save no-op feedback hardening
 
@@ -2152,7 +2152,7 @@ Duplicate-content save no-op responses no longer emit false `postMutationHooks`,
 
 #### Source Files
 
-See [`18-ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`](18-ux-hooks/09-duplicate-save-no-op-feedback-hardening.md) for full implementation and test file listings.
+See [`18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`](18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md) for full implementation and test file listings.
 
 ### Atomic-save parity and partial-indexing hints
 
@@ -2161,7 +2161,7 @@ See [`18-ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`](18-ux-hooks/09
 
 #### Source Files
 
-See [`18-ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md`](18-ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) for full implementation and test file listings.
+See [`18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md`](18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) for full implementation and test file listings.
 
 ### Final token metadata recomputation
 
@@ -2170,7 +2170,7 @@ Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)
 
 #### Source Files
 
-See [`18-ux-hooks/11-final-token-metadata-recomputation.md`](18-ux-hooks/11-final-token-metadata-recomputation.md) for full implementation and test file listings.
+See [`18--ux-hooks/11-final-token-metadata-recomputation.md`](18--ux-hooks/11-final-token-metadata-recomputation.md) for full implementation and test file listings.
 
 ### Hooks README and export alignment
 
@@ -2179,7 +2179,7 @@ The hooks barrel and hooks README were brought back into sync with the implement
 
 #### Source Files
 
-See [`18-ux-hooks/12-hooks-readme-and-export-alignment.md`](18-ux-hooks/12-hooks-readme-and-export-alignment.md) for full implementation and test file listings.
+See [`18--ux-hooks/12-hooks-readme-and-export-alignment.md`](18--ux-hooks/12-hooks-readme-and-export-alignment.md) for full implementation and test file listings.
 
 ### End-to-end success-envelope verification
 
@@ -2188,7 +2188,7 @@ Phase 014 verification now includes an end-to-end appended-envelope assertion in
 
 #### Source Files
 
-See [`18-ux-hooks/13-end-to-end-success-envelope-verification.md`](18-ux-hooks/13-end-to-end-success-envelope-verification.md) for full implementation and test file listings.
+See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks/13-end-to-end-success-envelope-verification.md) for full implementation and test file listings.
 
 ## Decisions and deferrals
 
@@ -2215,7 +2215,7 @@ Originally deferred at Sprint 6b pending a feasibility spike. Three graph capabi
 
 #### Source Files
 
-See [`19-decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`](19-decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md) for full implementation and test file listings.
+See [`19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`](19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md) for full implementation and test file listings.
 
 ### Implemented: auto entity extraction
 
@@ -2226,7 +2226,7 @@ Originally deferred at Sprint 6b pending a feasibility spike alongside N2. Rule-
 
 #### Source Files
 
-See [`19-decisions-and-deferrals/03-implemented-auto-entity-extraction.md`](19-decisions-and-deferrals/03-implemented-auto-entity-extraction.md) for full implementation and test file listings.
+See [`19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md`](19--decisions-and-deferrals/03-implemented-auto-entity-extraction.md) for full implementation and test file listings.
 
 ### Implemented: memory summary generation
 
@@ -2237,7 +2237,7 @@ Originally skipped at Sprint 7 because the scale gate measured 2,411 active memo
 
 #### Source Files
 
-See [`19-decisions-and-deferrals/04-implemented-memory-summary-generation.md`](19-decisions-and-deferrals/04-implemented-memory-summary-generation.md) for full implementation and test file listings.
+See [`19--decisions-and-deferrals/04-implemented-memory-summary-generation.md`](19--decisions-and-deferrals/04-implemented-memory-summary-generation.md) for full implementation and test file listings.
 
 ### Implemented: cross-document entity linking
 
@@ -2248,7 +2248,7 @@ Originally skipped at Sprint 7 because zero entities existed in the system. R10 
 
 #### Source Files
 
-See [`19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md`](19-decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) for full implementation and test file listings.
+See [`19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md`](19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) for full implementation and test file listings.
 
 ## Phase System
 

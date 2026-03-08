@@ -4,6 +4,16 @@ Consolidated from the following source docs:
 - sources/002-hybrid-rag-fusion/research.md
 - sources/006-hybrid-rag-fusion-logic-improvements/research.md
 
+<!-- AUDIT-2026-03-08: Historical folder name mapping for consolidated source references below.
+  Pre-consolidation name         → Current folder
+  002-hybrid-rag-fusion          → 002-indexing-normalization
+  003-index-tier-anomalies       → 002-indexing-normalization
+  004-frontmatter-indexing       → 002-indexing-normalization
+  002-auto-detected-session-bug  → 002-indexing-normalization
+  006-hybrid-rag-fusion-logic-improvements → content merged into this epic (001-hybrid-rag-fusion-epic)
+  SOURCE citations referencing these paths are historical and point to pre-consolidation locations.
+-->
+
 ## Source: 002-hybrid-rag-fusion
 
 ---
@@ -1080,9 +1090,9 @@ This investigation analyzed current system behavior and upgrade opportunities fo
 
 - `006` scope emphasizes audit-first seam hardening across parse -> index -> fusion -> routing, confidence-policy unification, and prevention controls for recurrence from `002`, `004`, and `003`. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-hybrid-rag-fusion-logic-improvements/spec.md:63-67`]
 - `002` established tri-hybrid fusion baseline (vector + lexical + graph) with MMR/TRM and explicitly documented deferred operational risks (latency not fully validated; some modules created but not fully wired at that point). [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md:48-49`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-hybrid-rag-fusion/implementation-summary.md:271-281`]
-- `003` delivered canonical-path dedup and deterministic tier precedence as invariants. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md:41-44`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md:73-75`]
+- `003` delivered canonical-path dedup and deterministic tier precedence as invariants. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md:41-44`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-index-tier-anomalies/implementation-summary.md:73-75`] <!-- AUDIT-2026-03-08: 002-index-tier-anomalies is now 002-indexing-normalization -->
 - `004` delivered frontmatter normalization + migration idempotency and successful reindex, while deferring some operational controls. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md:41-44`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md:65-74`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/004-frontmatter-indexing/implementation-summary.md:105-106`]
-- `005` completed session auto-detection hardening, with residual mtime-bias risk documented. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md:37`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md:95-96`]
+- `005` completed session auto-detection hardening, with residual mtime-bias risk documented. [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md:37`] [SOURCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/implementation-summary.md:95-96`] <!-- AUDIT-2026-03-08: 002-auto-detected-session-bug is now 002-indexing-normalization -->
 
 ### Top Current-State Findings
 

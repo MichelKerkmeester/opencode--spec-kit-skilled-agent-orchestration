@@ -13,6 +13,16 @@ Consolidated from the following source docs:
 - sources/002-hybrid-rag-fusion/spec.md
 - sources/006-hybrid-rag-fusion-logic-improvements/spec.md
 
+<!-- AUDIT-2026-03-08: Historical folder name mapping for consolidated source references below.
+  Pre-consolidation name         → Current folder
+  002-hybrid-rag-fusion          → 002-indexing-normalization
+  003-index-tier-anomalies       → 002-indexing-normalization
+  004-frontmatter-indexing       → 002-indexing-normalization
+  002-auto-detected-session-bug  → 002-indexing-normalization
+  006-hybrid-rag-fusion-logic-improvements → content merged into this epic (001-hybrid-rag-fusion-epic)
+  006-measurement-foundation through 017-long-horizon → 005-core-rag-sprints-0-to-8
+-->
+
 ## Source: 000-feature-overview
 
 ---

@@ -278,7 +278,7 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 |---|-------|--------|----------|
 | 1 | **Necessary?** | PASS | Index quality depends on consistent metadata contracts. |
 | 2 | **Beyond Local Maxima?** | PASS | Compared normalize-first vs reindex-as-is approaches. |
-| 3 | **Sufficient?** | PASS | Canonical schema + idempotent migration is the simplest robust path. |
+| 3 | **Sufficient?** | PASS | Canonical schema + idempotent migration is the simplest reliable path. |
 | 4 | **Fits Goal?** | PASS | Directly targets frontmatter normalization and rebuild objective. |
 | 5 | **Open Horizons?** | PASS | Enables stable future schema evolution and validation tooling. |
 
