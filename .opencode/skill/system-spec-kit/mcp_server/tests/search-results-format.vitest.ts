@@ -2,27 +2,45 @@
 // MODULE: Search Results Format Vitest
 // ---------------------------------------------------------------
 
-// @ts-nocheck
-// ---------------------------------------------------------------
-// MODULE: Search Results Format Tests
-// ---------------------------------------------------------------
-
 // Converted from: search-results-format.test.ts (custom runner)
 import { describe, it, expect } from 'vitest';
-import { safeJsonParse, validateFilePathLocal, formatSearchResults } from '../formatters/search-results';
+import {
+  safeJsonParse,
+  validateFilePathLocal,
+  formatSearchResults,
+  type MemoryResultEnvelope,
+} from '../formatters/search-results';
 import { formatAgeString } from '../lib/utils/format-helpers';
+import type { MCPEnvelope, MCPResponse } from '../lib/response/envelope';
 import path from 'path';
 
 /* ==================================================================
    Helper: Parse MCP response envelope
 ================================================================== */
 
-function parseEnvelope(response: any): any {
+interface SearchResultsResponseData {
+  count: number;
+  results: MemoryResultEnvelope[];
+  constitutionalCount?: number;
+  searchType?: string;
+  evidenceGapWarning?: string;
+  retrievalTrace?: unknown;
+  appliedBoosts?: unknown;
+  myExtra?: string;
+}
+
+type SearchResultsEnvelope = MCPEnvelope<SearchResultsResponseData>;
+
+function parseEnvelope(response: MCPResponse): SearchResultsEnvelope {
   expect(response.content).toBeDefined();
   expect(Array.isArray(response.content)).toBe(true);
   expect(response.content.length).toBeGreaterThan(0);
-  expect(response.content[0].type).toBe('text');
-  return JSON.parse(response.content[0].text);
+  const firstContent = response.content[0];
+  expect(firstContent?.type).toBe('text');
+  if (firstContent?.type !== 'text') {
+    throw new Error('Expected text MCP content');
+  }
+  return JSON.parse(firstContent.text) as SearchResultsEnvelope;
 }
 
 /* ==================================================================
@@ -283,7 +301,7 @@ describe('formatSearchResults', () => {
     const result = envelope.data.results[0];
     expect(result.content).toBe(null);
     expect(typeof result.contentError).toBe('string');
-    expect(result.contentError.length).toBeGreaterThan(0);
+    expect(result.contentError?.length ?? 0).toBeGreaterThan(0);
   });
 
   it('C15: precomputed chunk content bypasses file read', async () => {
@@ -337,8 +355,10 @@ describe('formatSearchResults', () => {
       true,
     );
     const envelope = parseEnvelope(res);
-    expect(envelope.data.results[0].trace.channelsUsed).toEqual(expect.arrayContaining(['vector', 'fts', 'trigger']));
-    expect(envelope.data.results[0].trace.channelsUsed).not.toContain('graph');
+    const trace = envelope.data.results[0]?.trace;
+    expect(trace).toBeDefined();
+    expect(trace?.channelsUsed).toEqual(expect.arrayContaining(['vector', 'fts', 'trigger']));
+    expect(trace?.channelsUsed).not.toContain('graph');
   });
 });
 

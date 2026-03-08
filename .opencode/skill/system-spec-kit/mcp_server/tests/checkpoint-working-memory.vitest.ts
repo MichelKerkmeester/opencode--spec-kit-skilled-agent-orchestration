@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CHECKPOINT WORKING MEMORY
 // ---------------------------------------------------------------
@@ -11,9 +10,33 @@ import * as zlib from 'zlib';
 import * as checkpointsMod from '../lib/storage/checkpoints';
 import BetterSqlite3 from 'better-sqlite3';
 
+type CheckpointsModule = typeof checkpointsMod;
+type TestDatabase = InstanceType<typeof BetterSqlite3>;
+type MemorySnapshotRow = { memory_snapshot: Buffer };
+type CountRow = { cnt: number };
+type WorkingMemoryRow = {
+  session_id: string;
+  memory_id: number;
+  attention_score: number;
+  focus_count: number;
+};
+type SnapshotWorkingMemoryEntry = {
+  session_id: string;
+  memory_id: number;
+  attention_score: number;
+};
+type SnapshotPayload = {
+  workingMemory: SnapshotWorkingMemoryEntry[];
+};
+
+function expectDefined<T>(value: T | null | undefined): T {
+  expect(value).toBeDefined();
+  return value as T;
+}
+
 describe('T213: Checkpoint Working Memory Restore', () => {
-  let mod: any;
-  let testDb: any;
+  let mod: CheckpointsModule;
+  let testDb: TestDatabase;
   let tmpDbPath: string;
 
   function createTestDb() {
@@ -106,25 +129,25 @@ describe('T213: Checkpoint Working Memory Restore', () => {
         VALUES (?, ?, ?, ?, ?, ?)
       `).run('session-alpha', 2, 0.6, now, now, 1);
 
-      const checkpoint = mod.createCheckpoint({ name: 't213-snapshot-test' });
+      const checkpoint = expectDefined(mod.createCheckpoint({ name: 't213-snapshot-test' }));
       expect(checkpoint).not.toBeNull();
       expect(checkpoint.id).toBeDefined();
       expect(checkpoint.name).toBe('t213-snapshot-test');
     });
 
     it('T213-02: Snapshot contains correct working memory data', () => {
-      const raw = testDb.prepare('SELECT memory_snapshot FROM checkpoints WHERE name = ?').get('t213-snapshot-test');
-      expect(raw).toBeDefined();
+      const raw = expectDefined(testDb
+        .prepare<unknown[], MemorySnapshotRow>('SELECT memory_snapshot FROM checkpoints WHERE name = ?')
+        .get('t213-snapshot-test'));
       expect(raw.memory_snapshot).toBeDefined();
 
       const decompressed = zlib.gunzipSync(raw.memory_snapshot);
-      const snapshot = JSON.parse(decompressed.toString());
+      const snapshot = JSON.parse(decompressed.toString()) as SnapshotPayload;
 
       expect(Array.isArray(snapshot.workingMemory)).toBe(true);
       expect(snapshot.workingMemory.length).toBe(2);
 
-      const entry = snapshot.workingMemory.find((e: any) => e.memory_id === 1);
-      expect(entry).toBeDefined();
+      const entry = expectDefined(snapshot.workingMemory.find(entry => entry.memory_id === 1));
       expect(entry.session_id).toBe('session-alpha');
       expect(entry.attention_score).toBe(0.85);
     });
@@ -132,11 +155,11 @@ describe('T213: Checkpoint Working Memory Restore', () => {
 
   describe('Working memory survives save/restore cycle', () => {
     it('T213-03: Working memory restored count correct', () => {
-      const wmBefore = testDb.prepare('SELECT COUNT(*) as cnt FROM working_memory').get();
+      const wmBefore = expectDefined(testDb.prepare<unknown[], CountRow>('SELECT COUNT(*) as cnt FROM working_memory').get());
       expect(wmBefore.cnt).toBeGreaterThanOrEqual(1);
 
       testDb.prepare('DELETE FROM working_memory').run();
-      const wmAfterClear = testDb.prepare('SELECT COUNT(*) as cnt FROM working_memory').get();
+      const wmAfterClear = expectDefined(testDb.prepare<unknown[], CountRow>('SELECT COUNT(*) as cnt FROM working_memory').get());
       expect(wmAfterClear.cnt).toBe(0);
 
       const result = mod.restoreCheckpoint('t213-snapshot-test');
@@ -146,14 +169,13 @@ describe('T213: Checkpoint Working Memory Restore', () => {
     });
 
     it('T213-04: Working memory table has correct row count', () => {
-      const wmAfterRestore = testDb.prepare('SELECT * FROM working_memory ORDER BY id').all();
+      const wmAfterRestore = testDb.prepare<unknown[], WorkingMemoryRow>('SELECT * FROM working_memory ORDER BY id').all();
       expect(wmAfterRestore.length).toBe(2);
     });
 
     it('T213-05: Working memory data integrity preserved', () => {
-      const wmAfterRestore = testDb.prepare('SELECT * FROM working_memory ORDER BY id').all();
-      const entry1 = wmAfterRestore.find((e: any) => e.memory_id === 1);
-      expect(entry1).toBeDefined();
+      const wmAfterRestore = testDb.prepare<unknown[], WorkingMemoryRow>('SELECT * FROM working_memory ORDER BY id').all();
+      const entry1 = expectDefined(wmAfterRestore.find(entry => entry.memory_id === 1));
       expect(entry1.session_id).toBe('session-alpha');
       expect(entry1.attention_score).toBe(0.85);
       expect(entry1.focus_count).toBe(3);
@@ -172,12 +194,12 @@ describe('T213: Checkpoint Working Memory Restore', () => {
       expect(result).toBeDefined();
       expect(result.errors.length).toBe(0);
 
-      const betaEntry = testDb.prepare(
+      const betaEntry = testDb.prepare<unknown[], WorkingMemoryRow>(
         "SELECT * FROM working_memory WHERE session_id = 'session-beta'"
       ).get();
       expect(betaEntry).toBeUndefined();
 
-      const wmAfterRestore = testDb.prepare('SELECT COUNT(*) as cnt FROM working_memory').get();
+      const wmAfterRestore = expectDefined(testDb.prepare<unknown[], CountRow>('SELECT COUNT(*) as cnt FROM working_memory').get());
       expect(wmAfterRestore.cnt).toBe(2);
     });
 

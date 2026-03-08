@@ -1,13 +1,10 @@
 // ---------------------------------------------------------------
-// MODULE: JsoncStrip
+// MODULE: JSONC Strip
 // ---------------------------------------------------------------
 // Strips comments from JSONC content, correctly handling comments inside strings.
 // Handles: // line comments, /* block comments */, escaped quotes, string literals
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. HELPERS
-// ---------------------------------------------------------------
 
 /**
  * Checks whether the quote character at `index` is escaped by counting

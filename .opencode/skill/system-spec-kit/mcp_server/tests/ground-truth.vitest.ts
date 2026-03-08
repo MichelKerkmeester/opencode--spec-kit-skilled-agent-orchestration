@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Ground Truth
 // ---------------------------------------------------------------
@@ -33,9 +32,10 @@ import {
 import {
   GROUND_TRUTH_QUERIES,
   QUERY_DISTRIBUTION,
-  type GroundTruthQuery,
   type IntentType,
   type ComplexityTier,
+  type QueryCategory,
+  type QuerySource,
 } from '../lib/eval/ground-truth-data';
 
 /* ---------------------------------------------------------------
@@ -54,7 +54,7 @@ const VALID_INTENT_TYPES: IntentType[] = [
 
 const VALID_COMPLEXITY_TIERS: ComplexityTier[] = ['simple', 'moderate', 'complex'];
 
-const VALID_CATEGORIES = [
+const VALID_CATEGORIES: QueryCategory[] = [
   'factual',
   'temporal',
   'graph_relationship',
@@ -64,7 +64,7 @@ const VALID_CATEGORIES = [
   'scope_filtered',
 ];
 
-const VALID_SOURCES = ['manual', 'trigger_derived', 'pattern_derived', 'seed'];
+const VALID_SOURCES: QuerySource[] = ['manual', 'trigger_derived', 'pattern_derived', 'seed'];
 
 /* ---------------------------------------------------------------
    TEST SETUP: in-memory eval DB for T007.9
@@ -156,7 +156,7 @@ describe('T007.1: generateGroundTruth() total query count', () => {
 ════════════════════════════════════════════════════════════ */
 
 describe('T007.2: Intent type coverage (≥5 per type)', () => {
-  let intentCounts: Record<string, number>;
+  let intentCounts: Partial<Record<IntentType, number>>;
 
   beforeEach(() => {
     intentCounts = {};
@@ -185,7 +185,7 @@ describe('T007.2: Intent type coverage (≥5 per type)', () => {
 ════════════════════════════════════════════════════════════ */
 
 describe('T007.3: Complexity tier coverage', () => {
-  let tierCounts: Record<string, number>;
+  let tierCounts: Partial<Record<ComplexityTier, number>>;
 
   beforeEach(() => {
     tierCounts = {};

@@ -2,7 +2,6 @@
 // MODULE: Mpab Quality Gate Integration Vitest
 // ---------------------------------------------------------------
 
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MPAB Quality Gate Integration
 // Cross-module wiring tests for MPAB, Quality Gate, Reconsolidation,
@@ -10,6 +9,7 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type Database from 'better-sqlite3';
 
 // Modules under test
 import {
@@ -18,7 +18,7 @@ import {
   collapseAndReassembleChunkResults,
   MPAB_BONUS_COEFFICIENT,
 } from '../lib/scoring/mpab-aggregation';
-import type { ChunkResult, CollapsedResult } from '../lib/scoring/mpab-aggregation';
+import type { ChunkResult } from '../lib/scoring/mpab-aggregation';
 
 import {
   isQualityGateEnabled,
@@ -39,7 +39,7 @@ import {
 import type {
   SimilarMemory,
   NewMemoryData,
-  ReconsolidationResult,
+  GenerateEmbeddingFn,
 } from '../lib/storage/reconsolidation';
 
 import {
@@ -345,7 +345,7 @@ describe('Sprint 4 Integration: Reconsolidation + Save', () => {
       const memory = makeNewMemory();
 
       // When disabled, reconsolidate returns null — caller uses normal save path
-      const result = await reconsolidate(memory, null as any, {
+      const result = await reconsolidate(memory, null as unknown as Database.Database, {
         findSimilar: () => [],
         storeMemory: () => 1,
       });
@@ -374,13 +374,15 @@ describe('Sprint 4 Integration: Reconsolidation + Save', () => {
           get: vi.fn(),
           all: vi.fn().mockReturnValue([]),
         }),
-        transaction: vi.fn((fn: any) => fn),
-      };
+        transaction: vi.fn((fn: (...args: never[]) => unknown) => fn),
+      } as unknown as Database.Database;
 
-      const result = await reconsolidate(memory, mockDb as any, {
+      const generateEmbedding: GenerateEmbeddingFn = async () => makeEmbedding(10);
+
+      const result = await reconsolidate(memory, mockDb, {
         findSimilar: () => [existingMemory],
         storeMemory: () => 99,
-        generateEmbedding: async () => makeEmbedding(10) as any,
+        generateEmbedding,
       });
 
       expect(result).not.toBeNull();
@@ -477,7 +479,7 @@ This ensures only quality content gets merged or stored.
       expect(qgResult.gateEnabled).toBe(false);
 
       // Reconsolidation returns null
-      const reconResult = await reconsolidate(makeNewMemory(), null as any, {
+      const reconResult = await reconsolidate(makeNewMemory(), null as unknown as Database.Database, {
         findSimilar: () => [],
         storeMemory: () => 1,
       });
@@ -672,10 +674,10 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
     expect(qgResult.wouldReject).toBe(false);
 
     // Reconsolidation returns null when disabled
-    const reconResult = await reconsolidate(makeNewMemory(), null as any, {
-      findSimilar: () => [],
-      storeMemory: () => 1,
-    });
+      const reconResult = await reconsolidate(makeNewMemory(), null as unknown as Database.Database, {
+        findSimilar: () => [],
+        storeMemory: () => 1,
+      });
     expect(reconResult).toBeNull();
   });
 

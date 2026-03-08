@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION SESSION DEDUP
 // ---------------------------------------------------------------
@@ -6,7 +5,19 @@
 import { describe, it, expect } from 'vitest';
 import * as searchHandler from '../handlers/memory-search';
 import * as triggerHandler from '../handlers/memory-triggers';
-import * as sessionManager from '../lib/session/session-manager';
+
+async function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Timeout: ${name} exceeded ${ms}ms`)), ms)
+    ),
+  ]);
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures]', () => {
 
@@ -26,7 +37,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // sessionId should not be the cause of error
-        expect(error.message).not.toContain('sessionId');
+        expect(getErrorMessage(error)).not.toContain('sessionId');
       }
     });
 
@@ -43,7 +54,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // enableDedup should not be the cause of error
-        expect(error.message).not.toContain('enableDedup');
+        expect(getErrorMessage(error)).not.toContain('enableDedup');
       }
     });
   });
@@ -64,7 +75,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // session_id should not be the cause of error
-        expect(error.message).not.toContain('session_id');
+        expect(getErrorMessage(error)).not.toContain('session_id');
       }
     });
 
@@ -80,7 +91,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // Should not fail due to missing session
-        expect(error.message).not.toContain('session');
+        expect(getErrorMessage(error)).not.toContain('session');
       }
     });
   });
@@ -101,7 +112,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // dedup should not be the cause of error
-        expect(error.message).not.toContain('dedup');
+        expect(getErrorMessage(error)).not.toContain('dedup');
       }
     });
 
@@ -118,7 +129,7 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
         );
       } catch (error: unknown) {
         // enableDedup should not be the cause of error
-        expect(error.message).not.toContain('enableDedup');
+        expect(getErrorMessage(error)).not.toContain('enableDedup');
       }
     });
   });

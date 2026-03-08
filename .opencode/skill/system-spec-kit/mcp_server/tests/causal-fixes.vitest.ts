@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CAUSAL FIXES
 // ---------------------------------------------------------------
@@ -7,8 +6,17 @@ import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import * as causalEdges from '../lib/storage/causal-edges';
 import * as causalGraphHandler from '../handlers/causal-graph';
 import BetterSqlite3 from 'better-sqlite3';
+import type { CausalChainNode } from '../lib/storage/causal-edges';
 
-let testDb: any = null;
+let testDb!: BetterSqlite3.Database;
+
+function expectDefined<T>(value: T | null | undefined): T {
+  expect(value).toBeDefined();
+  if (value == null) {
+    throw new Error('Expected value to be defined');
+  }
+  return value;
+}
 
 describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB test fixtures]', () => {
   beforeAll(() => {
@@ -85,11 +93,10 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
     });
 
     it('T202-2: CausalChainNode child has edgeId', () => {
-      const edgeId1 = causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
+      causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
       causalEdges.insertEdge('2', '3', 'enabled', 0.8, null);
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const child = chain.children[0];
-      expect(child).toBeDefined();
+      const child = expectDefined(chain.children[0]);
       expect(child.edgeId).toBeDefined();
       expect(child.edgeId).not.toBeNull();
     });
@@ -98,7 +105,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
       const edgeId1 = causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
       causalEdges.insertEdge('2', '3', 'enabled', 0.8, null);
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const child = chain.children[0];
+      const child = expectDefined(chain.children[0]);
       expect(child.edgeId).toBe(edgeId1);
     });
 
@@ -106,8 +113,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
       causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
       const edgeId2 = causalEdges.insertEdge('2', '3', 'enabled', 0.8, null);
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const grandchild = chain.children[0]?.children?.[0];
-      expect(grandchild).toBeDefined();
+      const grandchild = expectDefined(chain.children[0]?.children?.[0]);
       expect(grandchild.edgeId).toBe(edgeId2);
     });
 
@@ -115,8 +121,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
       causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
       causalEdges.insertEdge('2', '3', 'enabled', 0.8, null);
       const backChain = causalEdges.getCausalChain('3', 3, 'backward');
-      const backChild = backChain.children[0];
-      expect(backChild).toBeDefined();
+      const backChild = expectDefined(backChain.children[0]);
       expect(typeof backChild.edgeId).toBe('number');
       expect(backChild.edgeId).toBeGreaterThan(0);
     });
@@ -125,9 +130,8 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
       causalEdges.insertEdge('1', '2', 'caused', 1.0, null);
       causalEdges.insertEdge('2', '3', 'enabled', 0.8, null);
       const backChain = causalEdges.getCausalChain('3', 3, 'backward');
-      const backChild = backChain.children[0];
-      const deleteTarget = backChild?.edgeId;
-      expect(deleteTarget).toBeDefined();
+      const backChild = expectDefined(backChain.children[0]);
+      const deleteTarget = expectDefined(backChild.edgeId);
       const deleted = causalEdges.deleteEdge(deleteTarget);
       expect(deleted).toBe(true);
     });
@@ -150,7 +154,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
 
     it('T203-2: Chain children have relation types', () => {
       const fullChain = causalEdges.getCausalChain('1', 3, 'forward');
-      const relations = fullChain.children.map((c: any) => c.relation);
+      const relations = fullChain.children.map((child) => child.relation);
       expect(relations).toContain('caused');
       expect(relations).toContain('enabled');
       expect(relations).toContain('supports');
@@ -159,7 +163,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
 
     it('T203-3: Filter caused returns 1 edge (node 2)', () => {
       const fullChain = causalEdges.getCausalChain('1', 3, 'forward');
-      const causedOnly = fullChain.children.filter((c: any) => c.relation === 'caused');
+      const causedOnly = fullChain.children.filter((child) => child.relation === 'caused');
       expect(causedOnly.length).toBe(1);
       expect(causedOnly[0].id).toBe('2');
     });
@@ -167,7 +171,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
     it('T203-4: Filter caused+enabled returns 2 edges', () => {
       const fullChain = causalEdges.getCausalChain('1', 3, 'forward');
       const allowedSet = new Set(['caused', 'enabled']);
-      const filtered = fullChain.children.filter((c: any) => allowedSet.has(c.relation));
+      const filtered = fullChain.children.filter((child) => allowedSet.has(child.relation));
       expect(filtered.length).toBe(2);
     });
 
@@ -178,7 +182,7 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
 
     it('T203-6: Filter non-existent relation returns 0', () => {
       const fullChain = causalEdges.getCausalChain('1', 3, 'forward');
-      const noneFilter = fullChain.children.filter((c: any) => c.relation === 'supersedes');
+      const noneFilter = fullChain.children.filter((child) => child.relation === 'supersedes');
       expect(noneFilter.length).toBe(0);
     });
 
@@ -199,34 +203,33 @@ describe('T202 + T203: FlatEdge id & Relations Filter [deferred - requires DB te
     it('T202+T203-1: All chain children have edgeId', () => {
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
       const allHaveEdgeId = chain.children.every(
-        (c: any) => typeof c.edgeId === 'number' && c.edgeId > 0
+        (child: CausalChainNode) => typeof child.edgeId === 'number' && child.edgeId > 0
       );
       expect(allHaveEdgeId).toBe(true);
     });
 
     it('T202+T203-2: Caused filter returns 1 child', () => {
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const causedChildren = chain.children.filter((c: any) => c.relation === 'caused');
+      const causedChildren = chain.children.filter((child) => child.relation === 'caused');
       expect(causedChildren.length).toBe(1);
     });
 
     it('T202+T203-3: Unlink filtered edge by id', () => {
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const causedChildren = chain.children.filter((c: any) => c.relation === 'caused');
-      const edgeIdToDelete = causedChildren[0]?.edgeId;
-      expect(edgeIdToDelete).toBeDefined();
+      const causedChildren = chain.children.filter((child) => child.relation === 'caused');
+      const edgeIdToDelete = expectDefined(causedChildren[0]?.edgeId);
       const deleted = causalEdges.deleteEdge(edgeIdToDelete);
       expect(deleted).toBe(true);
     });
 
     it('T202+T203-4: Edge confirmed deleted from chain', () => {
       const chain = causalEdges.getCausalChain('1', 3, 'forward');
-      const causedChildren = chain.children.filter((c: any) => c.relation === 'caused');
-      const edgeIdToDelete = causedChildren[0]?.edgeId;
+      const causedChildren = chain.children.filter((child) => child.relation === 'caused');
+      const edgeIdToDelete = expectDefined(causedChildren[0]?.edgeId);
       causalEdges.deleteEdge(edgeIdToDelete);
 
       const afterChain = causalEdges.getCausalChain('1', 3, 'forward');
-      const causedAfter = afterChain.children.filter((c: any) => c.relation === 'caused');
+      const causedAfter = afterChain.children.filter((child) => child.relation === 'caused');
       expect(causedAfter.length).toBe(0);
     });
   });

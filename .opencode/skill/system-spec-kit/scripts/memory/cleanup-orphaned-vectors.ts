@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: CleanupOrphanedVectors
+// MODULE: Cleanup Orphaned Vectors
 // ---------------------------------------------------------------
 // Database maintenance — removes orphaned vector embeddings and history entries
-// ---------------------------------------------------------------
 
 // External packages
 import Database from 'better-sqlite3';

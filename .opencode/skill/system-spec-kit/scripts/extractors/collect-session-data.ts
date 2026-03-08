@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: CollectSessionData
+// MODULE: Collect Session Data
 // ---------------------------------------------------------------
 // Orchestrates session data collection — gathers observations, files, decisions, and context
-// ---------------------------------------------------------------
 
 // Node stdlib
 import * as path from 'path';

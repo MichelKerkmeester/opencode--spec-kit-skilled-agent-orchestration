@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: VECTOR INDEX IMPL
 // ---------------------------------------------------------------
@@ -15,11 +14,19 @@ import os from 'node:os';
 // DB-dependent (uses better-sqlite3 + sqlite-vec).
 // ───────────────────────────────────────────────────────────────
 
-import type mod from '../lib/search/vector-index-impl';  // DB-dependent
+type VectorIndexModule = typeof import('../lib/search/vector-index-impl');
+type MemoryRecord = NonNullable<ReturnType<VectorIndexModule['getMemory']>>;
+type KeywordSearchResult = ReturnType<VectorIndexModule['keywordSearch']>[number];
+type VectorSearchResult = ReturnType<VectorIndexModule['vectorSearch']>[number];
+type SmartRankingInput = Parameters<VectorIndexModule['applySmartRanking']>[0][number];
+type DiversityInput = Parameters<VectorIndexModule['applyDiversity']>[0][number];
+type CleanupCandidate = ReturnType<VectorIndexModule['findCleanupCandidates']>[number];
+type IntegrityReport = ReturnType<VectorIndexModule['verifyIntegrity']>;
+type MemoryPreview = NonNullable<ReturnType<VectorIndexModule['getMemoryPreview']>>;
 
 describe('Vector Index Implementation [deferred - requires DB test fixtures]', () => {
   // Module reference (renamed from `vi` to avoid conflict with Vitest's `vi`)
-  let mod: typeof import('../lib/search/vector-index-impl');
+  let mod!: VectorIndexModule;
   let importError: Error | null = null;
   let sqliteVecAvailable = false;
 
@@ -120,8 +127,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       ];
 
       const missingExports: string[] = [];
+      const moduleExports = mod as Record<string, unknown>;
       for (const name of requiredExports) {
-        if (mod[name] === undefined) {
+        if (moduleExports[name] === undefined) {
           missingExports.push(name);
         }
       }
@@ -396,7 +404,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       const db = mod.getDb();
       const versionRow = db!.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version: number } | undefined;
       expect(versionRow).toBeTruthy();
-      expect(versionRow.version).toBeGreaterThanOrEqual(12);
+      expect(versionRow!.version).toBeGreaterThanOrEqual(12);
     });
 
     it('reports isVectorSearchAvailable status', () => {
@@ -464,8 +472,8 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(id).toBeGreaterThan(0);
       const mem = mod.getMemory(id);
       expect(mem).toBeTruthy();
-      expect(mem.embedding_status).toBe('pending');
-      expect(mem.failure_reason).toBe('API key missing');
+      expect(mem!.embedding_status).toBe('pending');
+      expect(mem!.failure_reason).toBe('API key missing');
     });
 
     it('upserts existing memory (same folder+path)', () => {
@@ -528,11 +536,11 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     it('getMemory returns correct memory with parsed trigger_phrases', () => {
       const mem = mod.getMemory(deferredId1!);
       expect(mem).toBeTruthy();
-      expect(mem.id).toBe(deferredId1);
-      expect(mem.spec_folder).toBe('specs/test-001');
-      expect(mem.title).toBe('Updated Title Alpha');
-      expect(Array.isArray(mem.trigger_phrases)).toBe(true);
-      expect(mem.trigger_phrases).toContain('alpha');
+      expect(mem!.id).toBe(deferredId1);
+      expect(mem!.spec_folder).toBe('specs/test-001');
+      expect(mem!.title).toBe('Updated Title Alpha');
+      expect(Array.isArray(mem!.trigger_phrases)).toBe(true);
+      expect(mem!.trigger_phrases).toContain('alpha');
     });
 
     it('getMemory returns null for non-existent ID', () => {
@@ -670,7 +678,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       const results = mod.keywordSearch('alpha', { limit: 10 });
       expect(Array.isArray(results)).toBe(true);
       expect(results.length).toBeGreaterThan(0);
-        const firstResult = results[0] as { keyword_score: number };
+        const firstResult = results[0] as KeywordSearchResult;
         expect(firstResult.keyword_score).toBeGreaterThan(0);
     });
 
@@ -719,7 +727,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       ];
 
       const ranked = mod.applySmartRanking(
-        mockResults as Array<{ similarity: number; created_at: string; access_count: number; specFolder: string }>
+        mockResults as SmartRankingInput[]
       );
       expect(ranked.length).toBe(2);
       expect(ranked[0].smartScore).toBeDefined();
@@ -733,12 +741,12 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
   describe('applyDiversity', () => {
     it('returns input unchanged for <=3 results', () => {
       const small = [{ id: 1 }, { id: 2 }];
-      const diverse = mod.applyDiversity(small as Array<{ id: number }>, 0.3);
+      const diverse = mod.applyDiversity(small as DiversityInput[], 0.3);
       expect(diverse.length).toBe(2);
     });
 
     it('handles null input', () => {
-      const diverse = mod.applyDiversity(null as unknown as Array<{ id: number }>);
+      const diverse = mod.applyDiversity(null as unknown as Parameters<VectorIndexModule['applyDiversity']>[0]);
       expect(!diverse || diverse.length === 0).toBe(true);
     });
 
@@ -750,7 +758,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         { id: 4, smartScore: 0.75, specFolder: 'c', date: '2025-01-03' },
       ];
       const diverse = mod.applyDiversity(
-        mockResults as Array<{ id: number; smartScore: number; specFolder: string; date: string }>,
+        mockResults as DiversityInput[],
         0.5
       );
       expect(diverse.length).toBe(4);
@@ -898,11 +906,12 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(Array.isArray(candidates)).toBe(true);
       if (candidates.length > 0) {
         const c = candidates[0];
-        expect(c).toHaveProperty('id');
-        expect(c).toHaveProperty('specFolder');
-        expect(c).toHaveProperty('filePath');
-        expect(c).toHaveProperty('reasons');
-        expect(Array.isArray(c.reasons)).toBe(true);
+        const candidate = c as CleanupCandidate;
+        expect(candidate).toHaveProperty('id');
+        expect(candidate).toHaveProperty('specFolder');
+        expect(candidate).toHaveProperty('filePath');
+        expect(candidate).toHaveProperty('reasons');
+        expect(Array.isArray(candidate.reasons)).toBe(true);
       }
     });
   });
@@ -912,7 +921,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
   // ─────────────────────────────────────────────────────────────
   describe('verifyIntegrity', () => {
     it('returns integrity report with expected fields', () => {
-      const report = mod.verifyIntegrity({ autoClean: false });
+      const report = mod.verifyIntegrity({ autoClean: false }) as IntegrityReport;
       expect(typeof report).toBe('object');
       expect(report).toHaveProperty('totalMemories');
       expect(report).toHaveProperty('totalVectors');
@@ -958,7 +967,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       const store = new mod.SQLiteVectorStore({ dbPath: TMP_DB_PATH });
       const mem = await store.get(deferredId1!);
       expect(mem).toBeTruthy();
-      expect(mem.id).toBe(deferredId1);
+      expect(mem!.id).toBe(deferredId1);
     });
 
     it('get returns null for non-existent', async () => {
@@ -1077,7 +1086,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(Array.isArray(searchResults)).toBe(true);
       expect(searchResults.length).toBeGreaterThan(0);
       if (searchResults.length > 0) {
-        const firstResult = searchResults[0] as { similarity: number };
+        const firstResult = searchResults[0] as VectorSearchResult;
         expect(firstResult.similarity).toBeGreaterThan(0);
       }
     });
@@ -1273,15 +1282,16 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
 
       const preview = mod.getMemoryPreview(deferredId1!);
       expect(preview).toBeTruthy();
-      expect(preview.id).toBe(deferredId1);
-      expect(preview.specFolder).toBe('specs/test-001');
-      expect(preview.title).toBe('Updated Title Alpha');
-      expect(typeof preview.content).toBe('string');
-      expect((preview.content as string)).toContain('Preview Test File');
-      expect((preview.content as string)).toContain('line 3');
-      expect(typeof preview.ageString).toBe('string');
-      expect(typeof preview.accessCount).toBe('number');
-      expect(typeof preview.confidence).toBe('number');
+      const resolvedPreview = preview as MemoryPreview;
+      expect(resolvedPreview.id).toBe(deferredId1);
+      expect(resolvedPreview.specFolder).toBe('specs/test-001');
+      expect(resolvedPreview.title).toBe('Updated Title Alpha');
+      expect(typeof resolvedPreview.content).toBe('string');
+      expect(resolvedPreview.content).toContain('Preview Test File');
+      expect(resolvedPreview.content).toContain('line 3');
+      expect(typeof resolvedPreview.ageString).toBe('string');
+      expect(typeof resolvedPreview.accessCount).toBe('number');
+      expect(typeof resolvedPreview.confidence).toBe('number');
     });
 
     it('respects maxLines truncation', () => {
@@ -1289,10 +1299,11 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
 
       const preview = mod.getMemoryPreview(deferredId1!, 3);
       expect(preview).toBeTruthy();
-      const contentLines = (preview.content as string).split('\n');
+      const resolvedPreview = preview as MemoryPreview;
+      const contentLines = resolvedPreview.content.split('\n');
       // Should have 3 content lines + possible truncation message
       expect(contentLines.length).toBeLessThanOrEqual(5);
-      expect((preview.content as string)).toContain('more lines');
+      expect(resolvedPreview.content).toContain('more lines');
     });
 
     it('returns null for non-existent memory', () => {
@@ -1308,8 +1319,8 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       });
       const preview = mod.getMemoryPreview(noFileId);
       expect(preview).toBeTruthy();
-      expect(preview.title).toBe('No File Memory');
-      expect(preview.content).toBe('');
+      expect(preview!.title).toBe('No File Memory');
+      expect(preview!.content).toBe('');
     });
   });
 

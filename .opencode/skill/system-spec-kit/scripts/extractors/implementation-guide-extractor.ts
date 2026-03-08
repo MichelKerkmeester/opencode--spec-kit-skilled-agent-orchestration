@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: ImplementationGuideExtractor
+// MODULE: Implementation Guide Extractor
 // ---------------------------------------------------------------
 // Extracts implementation guidance and step-by-step instructions from session observations
-// ---------------------------------------------------------------
 
 import { createHash } from 'node:crypto';
 import { detectObservationType } from './file-extractor';

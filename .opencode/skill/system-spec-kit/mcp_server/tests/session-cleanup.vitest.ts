@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SESSION CLEANUP
 // ---------------------------------------------------------------
@@ -12,29 +11,38 @@ import * as wm from '../lib/cache/cognitive/working-memory';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('T302: Session Cleanup Tests', () => {
-  let testDb: any = null;
+  type TestDatabase = InstanceType<typeof BetterSqlite3>;
+  let testDb: TestDatabase | null = null;
   let tmpDbPath: string = '';
 
+  function getTestDb(): TestDatabase {
+    if (!testDb) {
+      throw new Error('Test database not initialized');
+    }
+    return testDb;
+  }
+
   function insertWorkingMemory(sessionId: string, memoryId: number, score: number = 0.8) {
-    testDb.prepare(`
+    getTestDb().prepare(`
       INSERT OR REPLACE INTO working_memory (session_id, memory_id, attention_score, added_at, last_focused, focus_count)
       VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1)
     `).run(sessionId, memoryId, score);
   }
 
   function countWorkingMemory(sessionId: string): number {
-    const row = testDb.prepare(
+    const row = getTestDb().prepare(
       'SELECT COUNT(*) as count FROM working_memory WHERE session_id = ?'
-    ).get(sessionId);
+    ).get(sessionId) as { count: number } | undefined;
     return row ? row.count : 0;
   }
 
   beforeAll(() => {
     tmpDbPath = path.join(os.tmpdir(), `t302-session-cleanup-${Date.now()}.db`);
     testDb = new BetterSqlite3(tmpDbPath);
+    const database = getTestDb();
 
     // Create memory_index table (needed for FK reference in working_memory)
-    testDb.exec(`
+    database.exec(`
       CREATE TABLE IF NOT EXISTS memory_index (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         spec_folder TEXT NOT NULL,
@@ -60,17 +68,17 @@ describe('T302: Session Cleanup Tests', () => {
     // Seed test memories for FK references
     const now = new Date().toISOString();
     for (let i = 1; i <= 10; i++) {
-      testDb.prepare(`
+      database.prepare(`
         INSERT INTO memory_index (id, spec_folder, file_path, title, created_at)
         VALUES (?, ?, ?, ?, ?)
       `).run(i, 'test-spec', `/test/mem${i}.md`, `Memory ${i}`, now);
     }
 
     // Init working memory module first (creates working_memory table)
-    wm.init(testDb);
+    wm.init(database);
 
     // Init session manager (creates session_sent_memories, session_state, sets up intervals)
-    const smResult = sm.init(testDb);
+    const smResult = sm.init(database as unknown as Parameters<typeof sm.init>[0]);
     expect(smResult.success).toBe(true);
   });
 
@@ -90,7 +98,7 @@ describe('T302: Session Cleanup Tests', () => {
     });
 
     it('T302-03: init() succeeds after shutdown() (intervals re-created)', () => {
-      const result = sm.init(testDb);
+      const result = sm.init(getTestDb() as unknown as Parameters<typeof sm.init>[0]);
       expect(result.success).toBe(true);
     });
   });
@@ -119,8 +127,8 @@ describe('T302: Session Cleanup Tests', () => {
       expect(countAfter).toBe(0);
 
       // Cleanup
-      testDb.prepare('DELETE FROM working_memory WHERE session_id = ?').run(sessionId);
-      testDb.prepare('DELETE FROM session_state WHERE session_id = ?').run(sessionId);
+      getTestDb().prepare('DELETE FROM working_memory WHERE session_id = ?').run(sessionId);
+      getTestDb().prepare('DELETE FROM session_state WHERE session_id = ?').run(sessionId);
     });
   });
 
@@ -136,7 +144,7 @@ describe('T302: Session Cleanup Tests', () => {
       expect(countBefore).toBe(2);
 
       // Also add a sent_memories entry
-      testDb.prepare(`
+      getTestDb().prepare(`
         INSERT INTO session_sent_memories (session_id, memory_hash, memory_id, sent_at)
         VALUES (?, ?, ?, CURRENT_TIMESTAMP)
       `).run(sessionId, 'test-hash-123', 4);
@@ -150,14 +158,14 @@ describe('T302: Session Cleanup Tests', () => {
       expect(countAfter).toBe(0);
 
       // Verify sent_memories also cleared
-      const sentCount = testDb.prepare(
+      const sentCount = getTestDb().prepare(
         'SELECT COUNT(*) as count FROM session_sent_memories WHERE session_id = ?'
-      ).get(sessionId);
+      ).get(sessionId) as { count: number };
       expect(sentCount.count).toBe(0);
 
       // Cleanup
-      testDb.prepare('DELETE FROM working_memory WHERE session_id = ?').run(sessionId);
-      testDb.prepare('DELETE FROM session_sent_memories WHERE session_id = ?').run(sessionId);
+      getTestDb().prepare('DELETE FROM working_memory WHERE session_id = ?').run(sessionId);
+      getTestDb().prepare('DELETE FROM session_sent_memories WHERE session_id = ?').run(sessionId);
     });
   });
 

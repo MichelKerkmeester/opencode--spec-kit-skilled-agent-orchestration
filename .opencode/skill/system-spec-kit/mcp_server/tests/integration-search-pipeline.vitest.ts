@@ -1,15 +1,45 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION SEARCH PIPELINE
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import * as searchHandler from '../handlers/memory-search';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as bm25Index from '../lib/search/bm25-index';
+import type { MCPResponse } from '../handlers/types';
 import { isMMREnabled, isTRMEnabled, isMultiQueryEnabled } from '../lib/search/search-flags';
+
+interface SearchEnvelopePayload {
+  error?: unknown;
+  results?: unknown;
+}
+
+async function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`Timeout: ${name} exceeded ${ms}ms`)), ms)
+    ),
+  ]);
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function getErrorCode(error: unknown): string | undefined {
+  if (typeof error !== 'object' || error === null || !('code' in error)) {
+    return undefined;
+  }
+  const code = error.code;
+  return typeof code === 'string' ? code : undefined;
+}
+
+function parseResponsePayload(response: MCPResponse): SearchEnvelopePayload {
+  return JSON.parse(response.content[0].text) as SearchEnvelopePayload;
+}
 
 describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtures]', () => {
 
@@ -45,19 +75,20 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
         // If it returns, it passed input validation
       } catch (error: unknown) {
         // DB/infra errors are acceptable — input validation errors are not
+        const message = getErrorMessage(error);
         const isInfraError =
-          error.message?.includes('database') ||
-          error.message?.includes('SQLITE') ||
-          error.message?.includes('DB') ||
-          error.message?.includes('no such table') ||
-          error.message?.includes('embed') ||
-          error.message?.includes('initialize') ||
-          error.code === 'E010' ||
-          error.code === 'E020';
-        const isTimeout = error.message?.includes('Timeout');
+          message.includes('database') ||
+          message.includes('SQLITE') ||
+          message.includes('DB') ||
+          message.includes('no such table') ||
+          message.includes('embed') ||
+          message.includes('initialize') ||
+          getErrorCode(error) === 'E010' ||
+          getErrorCode(error) === 'E020';
+        const isTimeout = message.includes('Timeout');
 
         if (!isInfraError && !isTimeout) {
-          expect.unreachable(`Unexpected error: ${error.message}`);
+          expect.unreachable(`Unexpected error: ${message}`);
         }
       }
     });
@@ -70,19 +101,20 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
           'T525-3'
         );
         // Handler may accept empty query and return results or error in response
-        if (result && (result as unknown).content) {
-          const text = JSON.parse((result as unknown).content[0].text);
+        if (result.content.length > 0) {
+          const text = parseResponsePayload(result);
           // Either an error response or results response is acceptable
           expect(text.error !== undefined || text.results !== undefined).toBe(true);
         }
         // If handler returned without throwing, that's acceptable
       } catch (error: unknown) {
-        const isTimeout = error.message?.includes('Timeout');
+        const message = getErrorMessage(error);
+        const isTimeout = message.includes('Timeout');
         if (isTimeout) {
           return; // skip on timeout
         }
         // Any error (including validation rejection) is acceptable for empty query
-        expect(typeof error.message).toBe('string');
+        expect(typeof message).toBe('string');
       }
     });
 
@@ -94,11 +126,12 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
           'T525-4'
         );
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
         // specFolder rejection is a failure; other errors are acceptable
-        expect(error.message?.includes('specFolder')).not.toBe(true);
+        expect(message.includes('specFolder')).not.toBe(true);
       }
     });
   });
@@ -116,10 +149,11 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
         );
         expect.unreachable('No error thrown for empty args');
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
-        expect(typeof error.message).toBe('string');
+        expect(typeof message).toBe('string');
       }
     });
 
@@ -145,11 +179,12 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
         );
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
         // Any error is acceptable — single concept should be rejected
-        expect(typeof error.message).toBe('string');
+        expect(typeof message).toBe('string');
       }
     });
 
@@ -161,11 +196,12 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
           'T525-8'
         );
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
         // Intent rejection is a failure; other errors are acceptable
-        expect(error.message?.includes('intent')).not.toBe(true);
+        expect(message.includes('intent')).not.toBe(true);
       }
     });
 
@@ -181,12 +217,13 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
           'T525-9'
         );
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
         // Dedup param rejection is a failure; other errors are acceptable
-        expect(error.message?.includes('sessionId')).not.toBe(true);
-        expect(error.message?.includes('enableDedup')).not.toBe(true);
+        expect(message.includes('sessionId')).not.toBe(true);
+        expect(message.includes('enableDedup')).not.toBe(true);
       }
     });
 
@@ -201,11 +238,12 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
           'T525-10'
         );
       } catch (error: unknown) {
-        if (error.message?.includes('Timeout')) {
+        const message = getErrorMessage(error);
+        if (message.includes('Timeout')) {
           return; // skip on timeout
         }
         // includeConstitutional rejection is a failure; other errors are acceptable
-        expect(error.message?.includes('includeConstitutional')).not.toBe(true);
+        expect(message.includes('includeConstitutional')).not.toBe(true);
       }
     });
   });

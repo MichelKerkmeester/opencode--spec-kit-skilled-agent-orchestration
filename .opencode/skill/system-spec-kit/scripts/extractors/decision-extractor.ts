@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: DecisionExtractor
+// MODULE: Decision Extractor
 // ---------------------------------------------------------------
 // Extracts decision records with options, rationale, confidence, and decision trees
-// ---------------------------------------------------------------
 
 import { formatTimestamp } from '../utils/message-utils';
 import { validateDataStructure } from '../utils/data-validator';

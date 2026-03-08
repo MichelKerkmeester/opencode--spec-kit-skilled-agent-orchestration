@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Context Server Tests
 // ---------------------------------------------------------------
@@ -25,6 +24,44 @@ let toolSchemasCode = ''
 let toolTypesCode = ''
 let startupChecksCode = ''
 let sharedTypesCode = ''
+
+type ErrorResponse = {
+  error?: unknown
+  message?: unknown
+  summary?: unknown
+}
+
+type ErrorsModule = {
+  buildErrorResponse?: (toolName: string, error: Error, args?: Record<string, unknown>) => ErrorResponse
+  getRecoveryHint?: (toolName: string, errorCode: string) => unknown
+  ErrorCodes?: Record<string, string>
+}
+
+type LayerDefinitionsModule = {
+  getTokenBudget?: (toolName: string) => number
+}
+
+type HooksModule = {
+  MEMORY_AWARE_TOOLS?: Set<string>
+  extractContextHint?: (args: unknown) => string | null
+}
+
+type UtilsModule = {
+  validateInputLengths?: (args: Record<string, unknown>) => void
+  INPUT_LIMITS?: Record<string, number>
+}
+
+async function importFirst<T>(loaders: Array<() => Promise<unknown>>): Promise<T | null> {
+  for (const load of loaders) {
+    try {
+      return await load() as T
+    } catch {
+      // Continue until one module variant loads successfully.
+    }
+  }
+
+  return null
+}
 
 describe('Context Server', () => {
   beforeAll(() => {
@@ -80,7 +117,7 @@ describe('Context Server', () => {
       const extraInput = { query: 'hello', unexpectedField: true, anotherExtra: 42 }
       const extraResult = parseArgs<{ query: string }>(extraInput)
       expect(extraResult.query).toBe('hello')
-      expect((extraResult as unknown).unexpectedField).toBe(true)
+      expect((extraResult as unknown as { unexpectedField: boolean }).unexpectedField).toBe(true)
     })
 
     // T7: parseArgs with type coercion edge cases (number as string)
@@ -163,7 +200,7 @@ describe('Context Server', () => {
       const sectionToolNames = (toolSchemasCode.match(/name:\s*'(\w+)'/g) || []).map((m: string) => {
         const match = m.match(/name:\s*'(\w+)'/)
         return match ? match[1] : null
-      }).filter(Boolean)
+      }).filter((name): name is string => name !== null)
       expect(sectionToolNames.length).toBe(EXPECTED_TOOLS.length)
     })
 
@@ -173,7 +210,7 @@ describe('Context Server', () => {
         const sectionToolNames = (toolSchemasCode.match(/name:\s*'(\w+)'/g) || []).map((m: string) => {
           const match = m.match(/name:\s*'(\w+)'/)
           return match ? match[1] : null
-        }).filter(Boolean)
+        }).filter((name): name is string => name !== null)
         expect(sectionToolNames).toContain(tool)
       })
     }
@@ -183,8 +220,8 @@ describe('Context Server', () => {
       const sectionToolNames = (toolSchemasCode.match(/name:\s*'(\w+)'/g) || []).map((m: string) => {
         const match = m.match(/name:\s*'(\w+)'/)
         return match ? match[1] : null
-      }).filter(Boolean)
-      const unexpected = sectionToolNames.filter((t: string) => !EXPECTED_TOOLS.includes(t))
+      }).filter((name): name is string => name !== null)
+      const unexpected = sectionToolNames.filter((toolName) => !EXPECTED_TOOLS.includes(toolName))
       expect(unexpected).toHaveLength(0)
     })
 
@@ -325,6 +362,7 @@ describe('Context Server', () => {
       autoSurfaceAtToolDispatchMock: ReturnType<typeof vi.fn>
       autoSurfaceAtCompactionMock: ReturnType<typeof vi.fn>
       appendAutoSurfaceHintsMock: ReturnType<typeof vi.fn>
+      processExitSpy: ReturnType<typeof vi.fn>
       callToolHandler: (request: unknown, extra: unknown) => Promise<unknown>
     }
 
@@ -931,16 +969,10 @@ describe('Context Server', () => {
 
     // T23: buildErrorResponse direct test
     it('T23: buildErrorResponse returns structured object', async () => {
-      let errorsModule: any = null
-      try {
-        errorsModule = await import('../lib/errors/index')
-      } catch {
-        try {
-          errorsModule = await import('../lib/errors')
-        } catch {
-          return // skip if not loadable
-        }
-      }
+      const errorsModule = await importFirst<ErrorsModule>([
+        async () => await import('../lib/errors/index'),
+        async () => await import('../lib/errors'),
+      ])
 
       if (!errorsModule?.buildErrorResponse) return
 
@@ -955,16 +987,10 @@ describe('Context Server', () => {
 
     // T24: Error response contains recovery hints (REQ-004)
     it('T24: getRecoveryHint returns RecoveryHint object', async () => {
-      let errorsModule: any = null
-      try {
-        errorsModule = await import('../lib/errors/index')
-      } catch {
-        try {
-          errorsModule = await import('../lib/errors')
-        } catch {
-          return
-        }
-      }
+      const errorsModule = await importFirst<ErrorsModule>([
+        async () => await import('../lib/errors/index'),
+        async () => await import('../lib/errors'),
+      ])
 
       if (!errorsModule?.getRecoveryHint) return
 
@@ -976,16 +1002,10 @@ describe('Context Server', () => {
 
     // T25: ErrorCodes enum/object exists
     it('T25: ErrorCodes defined', async () => {
-      let errorsModule: any = null
-      try {
-        errorsModule = await import('../lib/errors/index')
-      } catch {
-        try {
-          errorsModule = await import('../lib/errors')
-        } catch {
-          return
-        }
-      }
+      const errorsModule = await importFirst<ErrorsModule>([
+        async () => await import('../lib/errors/index'),
+        async () => await import('../lib/errors'),
+      ])
 
       if (!errorsModule?.ErrorCodes) return
 
@@ -1010,89 +1030,65 @@ describe('Context Server', () => {
 
     // T28: getTokenBudget direct tests
     it('T28: L1 budget = 2000 (memory_context)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_context')).toBe(2000)
     })
 
     it('T28b: L2 budget = 1500 (memory_search)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_search')).toBe(1500)
     })
 
     it('T28c: L3 budget = 800 (memory_list)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_list')).toBe(800)
     })
 
     it('T28d: Unknown tool budget = 1000 (default)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('nonexistent_tool')).toBe(1000)
     })
 
     it('T28e: L4 budget = 500 (memory_delete)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_delete')).toBe(500)
     })
 
     it('T28f: L5 budget = 600 (checkpoint_create)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('checkpoint_create')).toBe(600)
     })
 
     it('T28g: L6 budget = 1200 (memory_drift_why)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_drift_why')).toBe(1200)
     })
 
     it('T28h: L7 budget = 1000 (memory_index_scan)', async () => {
-      let layerDefs: any = null
-      try {
-        layerDefs = await import('../lib/architecture/layer-definitions')
-      } catch {
-        return
-      }
+      const layerDefs = await importFirst<LayerDefinitionsModule>([
+        async () => await import('../lib/architecture/layer-definitions'),
+      ])
       if (!layerDefs?.getTokenBudget) return
       expect(layerDefs.getTokenBudget('memory_index_scan')).toBe(1000)
     })
@@ -1114,20 +1110,11 @@ describe('Context Server', () => {
 
     // T31: Hooks module direct tests
     it('T31: MEMORY_AWARE_TOOLS is a Set', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (!hooksModule?.MEMORY_AWARE_TOOLS) return
 
       expect(hooksModule.MEMORY_AWARE_TOOLS).toBeInstanceOf(Set)
@@ -1136,20 +1123,11 @@ describe('Context Server', () => {
     const expectedAwareTools = ['memory_context', 'memory_search', 'memory_match_triggers', 'memory_list', 'memory_save', 'memory_index_scan']
     for (const t of expectedAwareTools) {
       it(`T31b: MEMORY_AWARE_TOOLS contains '${t}'`, async () => {
-        let hooksModule: any = null
-        try {
-          hooksModule = await import('../hooks/index')
-        } catch {
-          try {
-            hooksModule = await import('../hooks')
-          } catch {
-            try {
-              hooksModule = await import('../hooks/memory-surface')
-            } catch {
-              return
-            }
-          }
-        }
+        const hooksModule = await importFirst<HooksModule>([
+          async () => await import('../hooks/index'),
+          async () => await import('../hooks'),
+          async () => await import('../hooks/memory-surface'),
+        ])
         if (!hooksModule?.MEMORY_AWARE_TOOLS) return
         expect(hooksModule.MEMORY_AWARE_TOOLS.has(t)).toBe(true)
       })
@@ -1158,20 +1136,11 @@ describe('Context Server', () => {
     const nonAwareTools = ['memory_delete', 'checkpoint_create', 'task_preflight']
     for (const t of nonAwareTools) {
       it(`T31c: MEMORY_AWARE_TOOLS excludes '${t}'`, async () => {
-        let hooksModule: any = null
-        try {
-          hooksModule = await import('../hooks/index')
-        } catch {
-          try {
-            hooksModule = await import('../hooks')
-          } catch {
-            try {
-              hooksModule = await import('../hooks/memory-surface')
-            } catch {
-              return
-            }
-          }
-        }
+        const hooksModule = await importFirst<HooksModule>([
+          async () => await import('../hooks/index'),
+          async () => await import('../hooks'),
+          async () => await import('../hooks/memory-surface'),
+        ])
         if (!hooksModule?.MEMORY_AWARE_TOOLS) return
         expect(hooksModule.MEMORY_AWARE_TOOLS.has(t)).toBe(false)
       })
@@ -1179,134 +1148,71 @@ describe('Context Server', () => {
 
     // extractContextHint tests
     it('T31d: extractContextHint extracts query', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({ query: 'test search' })).toBe('test search')
     })
 
     it('T31e: extractContextHint extracts prompt', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({ prompt: 'trigger phrase' })).toBe('trigger phrase')
     })
 
     it('T31ea: extractContextHint extracts input', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({ input: 'memory context request' })).toBe('memory context request')
     })
 
     it('T31f: extractContextHint handles null', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint(null)).toBeNull()
     })
 
     it('T31g: extractContextHint handles empty object', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({})).toBeNull()
     })
 
     it('T31h: extractContextHint rejects strings < 3 chars', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({ query: 'ab' })).toBeNull()
     })
 
     it('T31i: extractContextHint joins concepts', async () => {
-      let hooksModule: any = null
-      try {
-        hooksModule = await import('../hooks/index')
-      } catch {
-        try {
-          hooksModule = await import('../hooks')
-        } catch {
-          try {
-            hooksModule = await import('../hooks/memory-surface')
-          } catch {
-            return
-          }
-        }
-      }
+      const hooksModule = await importFirst<HooksModule>([
+        async () => await import('../hooks/index'),
+        async () => await import('../hooks'),
+        async () => await import('../hooks/memory-surface'),
+      ])
       if (typeof hooksModule?.extractContextHint !== 'function') return
       expect(hooksModule.extractContextHint({ concepts: ['memory', 'search'] })).toBe('memory search')
     })
@@ -1330,135 +1236,76 @@ describe('Context Server', () => {
 
     // T33: validateInputLengths direct tests
     it('T33: validateInputLengths accepts normal input', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
-      if (!utilsModule?.validateInputLengths) return
-      expect(() => utilsModule.validateInputLengths({ query: 'normal search query' })).not.toThrow()
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
+      const validateInputLengths = utilsModule?.validateInputLengths
+      if (!validateInputLengths) return
+      expect(() => validateInputLengths({ query: 'normal search query' })).not.toThrow()
     })
 
     it('T33b: validateInputLengths accepts empty args', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
-      if (!utilsModule?.validateInputLengths) return
-      expect(() => utilsModule.validateInputLengths({})).not.toThrow()
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
+      const validateInputLengths = utilsModule?.validateInputLengths
+      if (!validateInputLengths) return
+      expect(() => validateInputLengths({})).not.toThrow()
     })
 
     it('T33c: validateInputLengths rejects oversized query', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
-      if (!utilsModule?.validateInputLengths) return
-      expect(() => utilsModule.validateInputLengths({ query: 'x'.repeat(20000) })).toThrow()
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
+      const validateInputLengths = utilsModule?.validateInputLengths
+      if (!validateInputLengths) return
+      expect(() => validateInputLengths({ query: 'x'.repeat(20000) })).toThrow()
     })
 
     it('T33d: validateInputLengths rejects oversized title', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
-      if (!utilsModule?.validateInputLengths) return
-      expect(() => utilsModule.validateInputLengths({ title: 'x'.repeat(1000) })).toThrow()
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
+      const validateInputLengths = utilsModule?.validateInputLengths
+      if (!validateInputLengths) return
+      expect(() => validateInputLengths({ title: 'x'.repeat(1000) })).toThrow()
     })
 
     // T34: INPUT_LIMITS constants
     it('T34: INPUT_LIMITS.query = 10000', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
       if (!utilsModule?.INPUT_LIMITS) return
       expect(utilsModule.INPUT_LIMITS.query).toBe(10000)
     })
 
     it('T34b: INPUT_LIMITS.title = 500', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
       if (!utilsModule?.INPUT_LIMITS) return
       expect(utilsModule.INPUT_LIMITS.title).toBe(500)
     })
 
     it('T34c: INPUT_LIMITS.filePath = 500', async () => {
-      let utilsModule: any = null
-      try {
-        utilsModule = await import('../utils/index')
-      } catch {
-        try {
-          utilsModule = await import('../utils')
-        } catch {
-          try {
-            utilsModule = await import('../utils/validators')
-          } catch {
-            return
-          }
-        }
-      }
+      const utilsModule = await importFirst<UtilsModule>([
+        async () => await import('../utils/index'),
+        async () => await import('../utils'),
+        async () => await import('../utils/validators'),
+      ])
       if (!utilsModule?.INPUT_LIMITS) return
       expect(utilsModule.INPUT_LIMITS.filePath).toBe(500)
     })

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Handler Memory Context Tests
 // ---------------------------------------------------------------
@@ -6,7 +5,7 @@
 // TEST: HANDLER MEMORY CONTEXT
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
 
@@ -16,7 +15,7 @@ import * as workingMemory from '../lib/cache/cognitive/working-memory';
 // { checkDatabaseUpdated, waitForEmbeddingModel } from '../core' which
 // re-exports from './db-state'.
 vi.mock('../core/db-state', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as Record<string, unknown>;
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
@@ -26,7 +25,7 @@ vi.mock('../core/db-state', async (importOriginal) => {
 });
 
 vi.mock('../core', async (importOriginal) => {
-  const actual = await importOriginal() as unknown;
+  const actual = await importOriginal() as Record<string, unknown>;
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
@@ -64,6 +63,45 @@ async function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Pr
   ]);
 }
 
+type ParsedContextResponse = {
+  meta: {
+    mode?: string;
+    requestedMode?: string;
+    tokenUsageSource?: string;
+    tokenUsagePressure?: number | null;
+    pressureLevel?: string;
+    pressurePolicy: {
+      applied?: boolean;
+      overrideMode?: string;
+      warning?: string | null;
+    };
+    sessionLifecycle: {
+      sessionScope?: string;
+      requestedSessionId?: string | null;
+      effectiveSessionId?: string;
+      resumed?: boolean;
+      eventCounterStart?: number;
+      resumedContextCount?: number;
+    };
+  };
+  data: {
+    mode?: string;
+    strategy?: string;
+    systemPromptContextInjected?: boolean;
+    systemPromptContext?: Array<{ memoryId: number }>;
+    details?: {
+      layer?: string;
+    };
+  };
+  hints?: string[];
+  error?: boolean;
+  mode?: string;
+};
+
+function parseResponse(result: Awaited<ReturnType<typeof handler.handleMemoryContext>>): ParsedContextResponse {
+  return JSON.parse(result.content[0].text) as ParsedContextResponse;
+}
+
 describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]', () => {
   const originalAutoResume = process.env.SPECKIT_AUTO_RESUME;
   const originalRolloutPercent = process.env.SPECKIT_ROLLOUT_PERCENT;
@@ -98,7 +136,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(result).toBeTruthy();
       expect(result.content).toBeTruthy();
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
 
       const mode =
         parsed.meta?.mode ??
@@ -120,7 +158,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(result).toBeTruthy();
       expect(result.content).toBeTruthy();
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
 
       const mode =
         parsed.meta?.mode ??
@@ -145,7 +183,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       const result = await withTimeout(
         handler.handleMemoryContext({
           input: 'test query for invalid mode',
-          mode: 'totally_invalid_mode',
+          mode: 'totally_invalid_mode' as unknown as Parameters<typeof handler.handleMemoryContext>[0]['mode'],
         }),
         5000,
         'T524-4'
@@ -154,7 +192,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(result).toBeTruthy();
       expect(result.content).toBeTruthy();
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
 
       const mode =
         parsed.meta?.mode ??
@@ -199,7 +237,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T018/T019-55'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.mode).toBe('focused');
       expect(parsed.meta.tokenUsageSource).toBe('caller');
       expect(parsed.meta.tokenUsagePressure).toBe(0.55);
@@ -218,7 +256,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T018/T019-65'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.requestedMode).toBe('auto');
       expect(parsed.meta.mode).toBe('focused');
       expect(parsed.meta.tokenUsageSource).toBe('caller');
@@ -239,7 +277,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T018/T019-85'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.mode).toBe('quick');
       expect(parsed.meta.tokenUsageSource).toBe('caller');
       expect(parsed.meta.tokenUsagePressure).toBe(0.85);
@@ -259,7 +297,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T018/T019-clamp'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.mode).toBe('quick');
       expect(parsed.meta.tokenUsageSource).toBe('caller');
       expect(parsed.meta.tokenUsagePressure).toBe(1);
@@ -286,7 +324,15 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('T017: estimator unavailable logs WARN and keeps auto-selected mode', async () => {
-      vi.spyOn(layerDefs, 'getLayerInfo').mockReturnValue({ tokenBudget: 0 } as any);
+      vi.spyOn(layerDefs, 'getLayerInfo').mockReturnValue({
+        id: 'L1',
+        name: 'Unavailable',
+        description: 'Unavailable token estimator for test coverage',
+        tokenBudget: 0,
+        priority: 1,
+        useCase: 'Test fallback behavior',
+        tools: [],
+      });
       const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
 
       const result = await withTimeout(
@@ -297,7 +343,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T017-unavailable'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.mode).toBe('focused');
       expect(parsed.meta.tokenUsageSource).toBe('unavailable');
       expect(parsed.meta.tokenUsagePressure).toBeNull();
@@ -319,7 +365,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T018/T019-explicit'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.mode).toBe('deep');
       expect(parsed.meta.tokenUsageSource).toBe('caller');
       expect(parsed.meta.tokenUsagePressure).toBe(0.95);
@@ -338,10 +384,10 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T020-warning-meta'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.pressurePolicy.applied).toBe(true);
       expect(parsed.meta.pressurePolicy.warning).toContain('Pressure policy override applied');
-      expect(parsed.hints.some((hint: string) => hint.includes('Pressure policy override applied'))).toBe(true);
+      expect(parsed.hints!.some((hint: string) => hint.includes('Pressure policy override applied'))).toBe(true);
     });
   });
 
@@ -395,7 +441,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           filePath: '/tmp/decision.md',
           attentionScore: 0.92,
         },
-      ] as any);
+      ]);
 
       const result = await withTimeout(
         handler.handleMemoryContext({
@@ -407,7 +453,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T027l-resume'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.meta.sessionLifecycle.sessionScope).toBe('caller');
       expect(parsed.meta.sessionLifecycle.requestedSessionId).toBe('session-abc');
       expect(parsed.meta.sessionLifecycle.effectiveSessionId).toBe('session-abc');
@@ -415,8 +461,8 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(7);
       expect(parsed.meta.sessionLifecycle.resumedContextCount).toBe(1);
       expect(parsed.data.systemPromptContextInjected).toBe(true);
-      expect(parsed.data.systemPromptContext.length).toBe(1);
-      expect(parsed.data.systemPromptContext[0].memoryId).toBe(101);
+      expect(parsed.data.systemPromptContext!.length).toBe(1);
+      expect(parsed.data.systemPromptContext![0].memoryId).toBe(101);
     });
 
     it('default-on contract: auto-resume injection runs when SPECKIT_AUTO_RESUME is unset', async () => {
@@ -431,7 +477,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           filePath: '/tmp/auto-resume.md',
           attentionScore: 0.81,
         },
-      ] as any);
+      ]);
 
       const result = await withTimeout(
         handler.handleMemoryContext({
@@ -443,10 +489,10 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'auto-resume-default-on'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.data.systemPromptContextInjected).toBe(true);
-      expect(parsed.data.systemPromptContext.length).toBe(1);
-      expect(parsed.data.systemPromptContext[0].memoryId).toBe(201);
+      expect(parsed.data.systemPromptContext!.length).toBe(1);
+      expect(parsed.data.systemPromptContext![0].memoryId).toBe(201);
     });
 
     it('opt-out contract: SPECKIT_AUTO_RESUME=false disables context injection', async () => {
@@ -461,7 +507,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           filePath: '/tmp/disabled-auto-resume.md',
           attentionScore: 0.77,
         },
-      ] as any);
+      ]);
 
       const result = await withTimeout(
         handler.handleMemoryContext({
@@ -473,7 +519,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'auto-resume-opt-out'
       );
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.data.systemPromptContextInjected).not.toBe(true);
       expect(parsed.data.systemPromptContext ?? []).toEqual([]);
     });
@@ -493,9 +539,9 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(result).toBeTruthy();
       expect(result.content).toBeTruthy();
 
-      const parsed = JSON.parse(result.content[0].text);
-      expect(parsed.data.details.layer).toBeTruthy();
-      expect(parsed.data.details.layer).toContain('L1');
+      const parsed = parseResponse(result);
+      expect(parsed.data.details!.layer).toBeTruthy();
+      expect(parsed.data.details!.layer).toContain('L1');
     });
 
     it('T524-8: Error includes actionable hint', async () => {
@@ -508,11 +554,11 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(result).toBeTruthy();
       expect(result.content).toBeTruthy();
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
       expect(parsed.hints).toBeTruthy();
       expect(Array.isArray(parsed.hints)).toBe(true);
-      expect(parsed.hints.length).toBeGreaterThan(0);
-      expect(typeof parsed.hints[0]).toBe('string');
+      expect(parsed.hints!.length).toBeGreaterThan(0);
+      expect(typeof parsed.hints![0]).toBe('string');
     });
   });
 });

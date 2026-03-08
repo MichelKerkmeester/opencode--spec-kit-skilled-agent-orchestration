@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: FileHelpers
+// MODULE: File Helpers
 // ---------------------------------------------------------------
 // Path normalization, description cleaning, and file categorization utilities
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. PATH UTILITIES
-// ---------------------------------------------------------------
 
 function toRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';

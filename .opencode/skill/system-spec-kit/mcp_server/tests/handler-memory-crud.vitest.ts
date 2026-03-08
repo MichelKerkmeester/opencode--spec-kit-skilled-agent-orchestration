@@ -1,13 +1,30 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER MEMORY CRUD
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-crud';
-import * as errors from '../lib/errors/index';
-const { MemoryError, ErrorCodes } = errors;
+import type { HealthArgs, StatsArgs } from '../handlers/memory-crud-types';
+
+type ErrorLike = {
+  name?: string;
+  code?: string;
+  message?: string;
+};
+
+type WritableStatsArgs = Exclude<Parameters<typeof handler.handleMemoryStats>[0], null>;
+
+function toErrorLike(error: unknown): ErrorLike {
+  if (error instanceof Error) {
+    return error as ErrorLike;
+  }
+  if (typeof error === 'object' && error !== null) {
+    return error as ErrorLike;
+  }
+
+  return { message: String(error) };
+}
 
 describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
@@ -18,7 +35,7 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
       'handleMemoryStats',
       'handleMemoryHealth',
       'setEmbeddingModelReady',
-    ];
+    ] as const satisfies readonly (keyof typeof handler)[];
 
     for (const name of expectedExports) {
       it(`T519-export: ${name} exported`, () => {
@@ -34,7 +51,7 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
         'handle_memory_stats',
         'handle_memory_health',
         'set_embedding_model_ready',
-      ];
+      ] as const satisfies readonly (keyof typeof handler)[];
 
       for (const alias of aliases) {
         expect(typeof handler[alias]).toBe('function');
@@ -48,7 +65,9 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
     });
 
     it('T519-D2: Non-string specFolder throws', async () => {
-      await expect(handler.handleMemoryDelete({ specFolder: 123 })).rejects.toThrow(/specFolder.*string|string.*specFolder/);
+      await expect(
+        handler.handleMemoryDelete({ specFolder: 123 } as unknown as Parameters<typeof handler.handleMemoryDelete>[0])
+      ).rejects.toThrow(/specFolder.*string|string.*specFolder/);
     });
 
     it('T519-D3: Bulk delete without confirm throws', async () => {
@@ -58,13 +77,17 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
     });
 
     it('T519-D4: Non-numeric id throws', async () => {
-      await expect(handler.handleMemoryDelete({ id: 'not-a-number' })).rejects.toThrow(
+      await expect(
+        handler.handleMemoryDelete({ id: 'not-a-number' } as unknown as Parameters<typeof handler.handleMemoryDelete>[0])
+      ).rejects.toThrow(
         /Invalid|number/
       );
     });
 
     it('T519-D5: Partially numeric id strings are rejected', async () => {
-      await expect(handler.handleMemoryDelete({ id: '12abc' })).rejects.toThrow(
+      await expect(
+        handler.handleMemoryDelete({ id: '12abc' } as unknown as Parameters<typeof handler.handleMemoryDelete>[0])
+      ).rejects.toThrow(
         /Invalid|integer|number/
       );
     });
@@ -73,13 +96,14 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
   describe('handleMemoryUpdate Input Validation', () => {
     it('T519-U1: Missing id throws MemoryError', async () => {
       try {
-        await handler.handleMemoryUpdate({});
+        await handler.handleMemoryUpdate({} as unknown as Parameters<typeof handler.handleMemoryUpdate>[0]);
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         const isMemoryError =
-          error.name === 'MemoryError' ||
-          error.code === 'E031' ||
-          (error.message.includes('id') && error.message.includes('required'));
+          typedError.name === 'MemoryError' ||
+          typedError.code === 'E031' ||
+          (typedError.message?.includes('id') === true && typedError.message?.includes('required') === true);
         expect(isMemoryError).toBe(true);
       }
     });
@@ -89,8 +113,9 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
         await handler.handleMemoryUpdate({ id: 1, importanceWeight: 1.5 });
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('importanceWeight'))
+          typedError.code === 'E030' || typedError.message?.includes('importanceWeight') === true
         ).toBe(true);
       }
     });
@@ -100,19 +125,24 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
         await handler.handleMemoryUpdate({ id: 1, importanceWeight: -0.5 });
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('importanceWeight'))
+          typedError.code === 'E030' || typedError.message?.includes('importanceWeight') === true
         ).toBe(true);
       }
     });
 
     it('T519-U4: Invalid importanceTier throws', async () => {
       try {
-        await handler.handleMemoryUpdate({ id: 1, importanceTier: 'invalid_tier' });
+        await handler.handleMemoryUpdate({
+          id: 1,
+          importanceTier: 'invalid_tier' as unknown as Parameters<typeof handler.handleMemoryUpdate>[0]['importanceTier'],
+        });
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('importance tier'))
+          typedError.code === 'E030' || typedError.message?.includes('importance tier') === true
         ).toBe(true);
       }
     });
@@ -120,7 +150,7 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
 
   describe('handleMemoryList Input Validation', () => {
     it('T519-L1: Non-string specFolder throws', async () => {
-      await expect(handler.handleMemoryList({ specFolder: 42 })).rejects.toThrow(
+      await expect(handler.handleMemoryList({ specFolder: 42 } as unknown as Parameters<typeof handler.handleMemoryList>[0])).rejects.toThrow(
         /specFolder.*string|string.*specFolder/
       );
     });
@@ -137,11 +167,12 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
         await handler.handleMemoryList({});
         // No validation error — pass
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         // DB errors are acceptable (means validation passed)
         expect(
-          error.message.includes('database') ||
-            error.message.includes('DB') ||
-            error.message.includes('getDb')
+          typedError.message?.includes('database') === true ||
+            typedError.message?.includes('DB') === true ||
+            typedError.message?.includes('getDb') === true
         ).toBe(true);
       }
     });
@@ -150,41 +181,48 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
   describe('handleMemoryStats Input Validation', () => {
     it('T519-S1: Invalid folderRanking throws', async () => {
       try {
-        await handler.handleMemoryStats({ folderRanking: 'invalid_ranking' });
+        await handler.handleMemoryStats({
+          folderRanking: 'invalid_ranking' as unknown as StatsArgs['folderRanking'],
+        });
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         // Either validation error or DB error is acceptable
         expect(
-          error.message.includes('folderRanking') ||
-            error.message.includes('Invalid') ||
-            error.message.includes('database') ||
-            error.message.includes('getDb')
+          typedError.message?.includes('folderRanking') === true ||
+            typedError.message?.includes('Invalid') === true ||
+            typedError.message?.includes('database') === true ||
+            typedError.message?.includes('getDb') === true
         ).toBe(true);
       }
     });
 
     it('T519-S2: Non-array excludePatterns throws', async () => {
       try {
-        await handler.handleMemoryStats({ excludePatterns: 'not-an-array' });
+        await handler.handleMemoryStats({
+          excludePatterns: 'not-an-array' as unknown as WritableStatsArgs['excludePatterns'],
+        });
         expect.unreachable('Should have thrown');
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         expect(
-          error.message.includes('excludePatterns') ||
-            error.message.includes('array') ||
-            error.message.includes('database') ||
-            error.message.includes('getDb')
+          typedError.message?.includes('excludePatterns') === true ||
+            typedError.message?.includes('array') === true ||
+            typedError.message?.includes('database') === true ||
+            typedError.message?.includes('getDb') === true
         ).toBe(true);
       }
     });
 
     it('T519-S3: Null args accepted (uses defaults)', async () => {
       try {
-        await handler.handleMemoryStats(null);
+        await handler.handleMemoryStats(null as unknown as Parameters<typeof handler.handleMemoryStats>[0]);
         // Defaults used — pass
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         // DB errors are acceptable (means validation passed)
         expect(
-          error.message.includes('database') || error.message.includes('getDb')
+          typedError.message?.includes('database') === true || typedError.message?.includes('getDb') === true
         ).toBe(true);
       }
     });
@@ -202,9 +240,10 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
           (parsed.data && typeof parsed.data.status === 'string') || parsed.summary
         ).toBeTruthy();
       } catch (error: unknown) {
+        const typedError = toErrorLike(error);
         // DB errors are acceptable
         expect(
-          error.message.includes('database') || error.message.includes('getDb')
+          typedError.message?.includes('database') === true || typedError.message?.includes('getDb') === true
         ).toBe(true);
       }
     });
@@ -219,7 +258,7 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
 
     it('T519-H3: Invalid reportMode throws', async () => {
       await expect(
-        handler.handleMemoryHealth({ reportMode: 'not-valid' })
+        handler.handleMemoryHealth({ reportMode: 'not-valid' } as unknown as HealthArgs)
       ).rejects.toThrow(/Invalid reportMode/);
     });
 

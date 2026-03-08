@@ -1,13 +1,18 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: memory_search per-channel eval logging (T056)
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-const mockLogSearchQuery = vi.fn(() => ({ queryId: 11, evalRunId: 22 }));
-const mockLogChannelResult = vi.fn(() => undefined);
-const mockLogFinalResult = vi.fn(() => undefined);
+interface EvalChannelCall {
+  channel: string;
+  resultMemoryIds: number[];
+  hitCount?: number;
+}
+
+const mockLogSearchQuery = vi.fn((_payload: unknown) => ({ queryId: 11, evalRunId: 22 }));
+const mockLogChannelResult = vi.fn((_payload: EvalChannelCall) => undefined);
+const mockLogFinalResult = vi.fn((_payload: unknown) => undefined);
 
 vi.mock('../core', () => ({
   checkDatabaseUpdated: vi.fn(async () => false),
@@ -91,9 +96,9 @@ vi.mock('../lib/search/causal-boost', () => ({
 }));
 
 vi.mock('../lib/eval/eval-logger', () => ({
-  logSearchQuery: (...args: unknown[]) => mockLogSearchQuery(...args),
-  logChannelResult: (...args: unknown[]) => mockLogChannelResult(...args),
-  logFinalResult: (...args: unknown[]) => mockLogFinalResult(...args),
+  logSearchQuery: (payload: unknown) => mockLogSearchQuery(payload),
+  logChannelResult: (payload: EvalChannelCall) => mockLogChannelResult(payload),
+  logFinalResult: (payload: unknown) => mockLogFinalResult(payload),
 }));
 
 import { handleMemorySearch, __testables } from '../handlers/memory-search';
@@ -117,15 +122,17 @@ describe('T056: memory_search emits per-channel eval rows', () => {
     expect(mockLogFinalResult).toHaveBeenCalledTimes(1);
     expect(mockLogChannelResult).toHaveBeenCalledTimes(2);
 
-    const channelCalls = mockLogChannelResult.mock.calls.map((entry) => entry[0]);
+    const channelCalls = mockLogChannelResult.mock.calls.map(([payload]) => payload);
     const byChannel = new Map(channelCalls.map((call) => [call.channel, call]));
+    const vectorPayload = byChannel.get('vector');
+    const bm25Payload = byChannel.get('bm25');
 
-    expect(byChannel.has('vector')).toBe(true);
-    expect(byChannel.has('bm25')).toBe(true);
+    expect(vectorPayload).toBeDefined();
+    expect(bm25Payload).toBeDefined();
 
-    expect(byChannel.get('vector').resultMemoryIds).toEqual([101]);
-    expect(byChannel.get('bm25').resultMemoryIds).toEqual([101, 202]);
-    expect(byChannel.get('bm25').hitCount).toBe(2);
+    expect(vectorPayload!.resultMemoryIds).toEqual([101]);
+    expect(bm25Payload!.resultMemoryIds).toEqual([101, 202]);
+    expect(bm25Payload!.hitCount).toBe(2);
   });
 
   it('buildEvalChannelPayloads falls back to hybrid channel when attribution is missing', () => {
@@ -135,8 +142,9 @@ describe('T056: memory_search emits per-channel eval rows', () => {
     ]);
 
     expect(payloads).toHaveLength(1);
-    expect(payloads[0].channel).toBe('hybrid');
-    expect(payloads[0].resultMemoryIds).toEqual([1, 2]);
+    const [payload] = payloads;
+    expect(payload).toBeDefined();
+    expect(payload!.channel).toBe('hybrid');
+    expect(payload!.resultMemoryIds).toEqual([1, 2]);
   });
 });
-

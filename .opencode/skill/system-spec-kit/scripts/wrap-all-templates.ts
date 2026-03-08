@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: WrapAllTemplates
+// MODULE: Wrap All Templates
 // ---------------------------------------------------------------
 // MODULE: Wrap All Templates
 /**

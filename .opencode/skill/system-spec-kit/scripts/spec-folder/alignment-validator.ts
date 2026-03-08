@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: AlignmentValidator
+// MODULE: Alignment Validator
 // ---------------------------------------------------------------
 // Validates conversation-to-spec-folder alignment using topic and keyword matching
-// ---------------------------------------------------------------
 
 // Node stdlib
 import * as fs from 'fs/promises';

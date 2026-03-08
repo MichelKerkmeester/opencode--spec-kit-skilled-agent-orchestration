@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: CollectRedactionCalibrationInputs
+// MODULE: Collect Redaction Calibration Inputs
 // ---------------------------------------------------------------
 
 import fs from 'fs';

@@ -1,9 +1,9 @@
-// @ts-nocheck -- Mock database and search functions use simplified shapes incompatible with full Database.Database type
 // ---------------------------------------------------------------
 // TEST: HYBRID SEARCH
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import type Database from 'better-sqlite3';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion';
@@ -13,7 +13,22 @@ import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion';
 ---------------------------------------------------------------- */
 
 // Mock documents for testing - each has >10 words for BM25 MIN_DOC_LENGTH requirement
-const MOCK_DOCS = [
+type InitDb = Parameters<typeof hybridSearch.init>[0];
+type VectorSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[1]>;
+type GraphSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[2]>;
+type HybridSearchResult = Awaited<ReturnType<typeof hybridSearch.hybridSearchEnhanced>>[number];
+type MaybeAsyncHybridResults = ReturnType<typeof hybridSearch.hybridSearchEnhanced> | HybridSearchResult[];
+type HybridModuleExport = keyof typeof hybridSearch;
+type RrfSource = (typeof rrfFusion.SOURCE_TYPES)[keyof typeof rrfFusion.SOURCE_TYPES];
+
+interface MockDoc {
+  id: number;
+  content: string;
+  spec_folder: string;
+  importance_tier: string;
+}
+
+const MOCK_DOCS: MockDoc[] = [
   { id: 1, content: 'Authentication module implementation details for secure user login and session management in the web application system', spec_folder: 'specs/auth', importance_tier: 'high' },
   { id: 2, content: 'Bug fix for login error handling when users enter incorrect credentials or session expires during authentication flow', spec_folder: 'specs/auth', importance_tier: 'medium' },
   { id: 3, content: 'Security audit findings and recommendations for improving application security posture and preventing common vulnerabilities', spec_folder: 'specs/security', importance_tier: 'critical' },
@@ -22,29 +37,32 @@ const MOCK_DOCS = [
 ];
 
 // Mock vector search function
-function mockVectorSearch(queryEmbedding: unknown, options: Record<string, unknown> = {}) {
-  const { limit = 10, spec_folder = null } = options;
+const mockVectorSearch: VectorSearchFn = (_queryEmbedding, options = {}) => {
+  const limit = typeof options.limit === 'number' ? options.limit : 10;
+  const specFolderOption = typeof options.specFolder === 'string'
+    ? options.specFolder
+    : null;
   let results = [...MOCK_DOCS];
-  if (spec_folder) {
-    results = results.filter(d => d.spec_folder === spec_folder);
+  if (specFolderOption) {
+    results = results.filter(d => d.spec_folder === specFolderOption);
   }
   return results.slice(0, limit).map((doc, i) => ({
     ...doc,
     similarity: 0.9 - (i * 0.1),
   }));
-}
+};
 
 // Mock graph search function
-function mockGraphSearch(memory_id: unknown, options: Record<string, unknown> = {}) {
-  const { limit = 10 } = options;
-  return MOCK_DOCS.filter(d => d.id !== memory_id).slice(0, limit).map((doc, i) => ({
+const mockGraphSearch: GraphSearchFn = (query, options = {}) => {
+  const limit = typeof options.limit === 'number' ? options.limit : 10;
+  return MOCK_DOCS.filter(d => d.content !== query).slice(0, limit).map((doc, i) => ({
     ...doc,
     graph_distance: i + 1,
   }));
-}
+};
 
 // Mock database with FTS5 table
-function createMockDb() {
+function createMockDb(): Database.Database {
   return {
     prepare: function(sql: string) {
       return {
@@ -67,11 +85,17 @@ function createMockDb() {
         },
       };
     },
-  };
+  } as unknown as Database.Database;
 }
 
 function approxEqual(a: number, b: number, epsilon: number = 0.0001): boolean {
   return Math.abs(a - b) < epsilon;
+}
+
+function isPromiseLike(
+  value: MaybeAsyncHybridResults
+): value is ReturnType<typeof hybridSearch.hybridSearchEnhanced> {
+  return typeof (value as PromiseLike<HybridSearchResult[]>).then === 'function';
 }
 
 /* -------------------------------------------------------------
@@ -85,11 +109,11 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
   describe('Initialization Tests', () => {
 
     it('T031-INIT-01: init() accepts null database', () => {
-      // init() does no validation — null db is accepted (graceful degradation)
-      expect(() => {
-        hybridSearch.init(null, mockVectorSearch);
-      }).not.toThrow();
-    });
+        // init() does no validation — null db is accepted (graceful degradation)
+        expect(() => {
+          hybridSearch.init(null as unknown as InitDb, mockVectorSearch);
+        }).not.toThrow();
+      });
 
     it('T031-INIT-02: init() accepts null vectorSearch', () => {
       const mockDb = createMockDb();
@@ -109,7 +133,7 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
     it('T031-INIT-04: init() works without graph search function', () => {
       const mockDb = createMockDb();
       expect(() => {
-        hybridSearch.init(mockDb, mockVectorSearch, null);
+        hybridSearch.init(mockDb, mockVectorSearch);
       }).not.toThrow();
     });
   });
@@ -205,7 +229,7 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
     it('T031-LEX-03: combined_lexical_search() handles source tracking', () => {
       const results = hybridSearch.combinedLexicalSearch('authentication', { limit: 10 });
       const valid = results.every((r: Record<string, unknown>) =>
-        ['fts5', 'bm25', 'both'].includes(r.source) ||
+        ['fts5', 'bm25', 'both'].includes(String(r.source)) ||
         typeof r.bm25Score === 'number' ||
         typeof r.fts_score === 'number'
       );
@@ -214,7 +238,7 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
 
     it('T031-LEX-04: combined_lexical_search() deduplicates by ID', () => {
       const results = hybridSearch.combinedLexicalSearch('authentication module', { limit: 10 });
-      const ids = results.map((r: Record<string, unknown>) => r.id);
+      const ids = results.map((r) => r.id);
       const uniqueIds = Array.from(new Set(ids));
       expect(ids.length).toBe(uniqueIds.length);
     });
@@ -259,14 +283,14 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
     });
 
     it('T031-HYB-01: hybridSearchEnhanced() returns results', () => {
-      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 });
+      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 }) as MaybeAsyncHybridResults;
       expect(result).toBeDefined();
       // Returns array or promise
-      expect(Array.isArray(result) || typeof result.then === 'function').toBe(true);
+      expect(Array.isArray(result) || isPromiseLike(result)).toBe(true);
     });
 
     it('T031-HYB-02: hybridSearchEnhanced() returns correct type', () => {
-      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 });
+      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 }) as MaybeAsyncHybridResults;
       // Production returns Promise<HybridSearchResult[]>, no metadata object
       expect(result).toBeDefined();
     });
@@ -284,10 +308,10 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
     });
 
     it('T031-HYB-05: hybridSearchEnhanced() results have scores', () => {
-      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 });
-      if (result && typeof result.then === 'function') {
+      const result = hybridSearch.hybridSearchEnhanced('authentication', mockEmbedding, { limit: 5 }) as MaybeAsyncHybridResults;
+      if (isPromiseLike(result)) {
         // Async function - just verify it returns a promise
-        expect(typeof result.then).toBe('function');
+        expect(isPromiseLike(result)).toBe(true);
       } else if (Array.isArray(result)) {
         const hasScore = result.every(r => typeof r.score === 'number' || typeof r.rrfScore === 'number');
         expect(hasScore || result.length === 0).toBe(true);
@@ -500,17 +524,17 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
 
   describe('Module Exports Verification', () => {
 
-    const expectedExports = [
-      'init',
-      'isFtsAvailable',
+      const expectedExports = [
+        'init',
+        'isFtsAvailable',
       'ftsSearch',
       'hybridSearch',
       'hybridSearchEnhanced',
       'searchWithFallback',
-      'bm25Search',
-      'isBm25Available',
-      'combinedLexicalSearch',
-    ];
+        'bm25Search',
+        'isBm25Available',
+        'combinedLexicalSearch',
+      ] as const satisfies readonly HybridModuleExport[];
 
     for (const name of expectedExports) {
       it(`Export: ${name}`, () => {
@@ -572,7 +596,7 @@ describe('C138: Hybrid Search Pipeline Enhancements', () => {
       { id: 'g2', title: 'Graph Result 2' },
     ];
     const fused = rrfFusion.fuseResultsMulti([
-      { source: rrfFusion.SOURCE_TYPES.GRAPH, results: graphResults },
+      { source: rrfFusion.SOURCE_TYPES.GRAPH as RrfSource, results: graphResults },
     ]);
     expect(fused).toHaveLength(2);
     expect(fused[0].sources).toContain('graph');
@@ -674,9 +698,9 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
       return [{ id: 999, score: 0.6, content: 'graph fallback candidate' }];
     };
 
-    try {
-      const mockDb = createMockDb();
-      hybridSearch.init(mockDb, lowRecallVectorSearch as any, trackingGraphSearch as any);
+      try {
+        const mockDb = createMockDb();
+        hybridSearch.init(mockDb, lowRecallVectorSearch as VectorSearchFn, trackingGraphSearch as GraphSearchFn);
 
       bm25Index.resetIndex();
       const bm25 = bm25Index.getIndex();

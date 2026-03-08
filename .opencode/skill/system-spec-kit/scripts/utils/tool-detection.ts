@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: ToolDetection
+// MODULE: Tool Detection
 // ---------------------------------------------------------------
 // Detects tool calls, classifies conversation phases, and identifies prose context
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. TYPES
-// ---------------------------------------------------------------
 
 /** Confidence level for tool call detection */
 export type ToolConfidence = 'high' | 'medium' | 'low';

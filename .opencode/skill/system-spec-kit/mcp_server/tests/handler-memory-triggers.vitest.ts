@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER MEMORY TRIGGERS
 // ---------------------------------------------------------------
@@ -14,9 +13,59 @@ import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
 import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 import * as consumptionLogger from '../lib/telemetry/consumption-logger';
+import type {
+  SignalDetection,
+  TriggerMatch,
+  TriggerMatchWithStats,
+} from '../lib/parsing/trigger-matcher';
 
-function parseEnvelope(response: Awaited<ReturnType<typeof handler.handleMemoryMatchTriggers>>) {
-  return JSON.parse(response.content[0].text);
+type TriggerResponse = Awaited<ReturnType<typeof handler.handleMemoryMatchTriggers>>;
+type AttentionDb = NonNullable<ReturnType<typeof attentionDecay.getDb>>;
+
+function parseEnvelope(response: TriggerResponse): Record<string, unknown> {
+  return JSON.parse(response.content[0].text) as Record<string, unknown>;
+}
+
+function getRecord(value: unknown): Record<string, unknown> | undefined {
+  return typeof value === 'object' && value !== null
+    ? value as Record<string, unknown>
+    : undefined;
+}
+
+function getArray(value: unknown): unknown[] {
+  return Array.isArray(value) ? value : [];
+}
+
+function buildTriggerMatch(overrides: Partial<TriggerMatch> = {}): TriggerMatch {
+  return {
+    memoryId: 1,
+    specFolder: 'specs/test',
+    filePath: '/tmp/test.md',
+    title: 'Test',
+    matchedPhrases: ['test'],
+    importanceWeight: 0.8,
+    ...overrides,
+  };
+}
+
+function buildTriggerMatchResult(
+  matches: TriggerMatch[],
+  stats: Partial<TriggerMatchWithStats['stats']> = {}
+): TriggerMatchWithStats {
+  return {
+    matches,
+    stats: {
+      promptLength: 4,
+      cacheSize: matches.length,
+      matchCount: matches.length,
+      totalMatchedPhrases: matches.reduce(
+        (total, match) => total + match.matchedPhrases.length,
+        0
+      ),
+      matchTimeMs: 0,
+      ...stats,
+    },
+  };
 }
 
 describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]', () => {
@@ -32,36 +81,43 @@ describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]'
 
   describe('Input Validation', () => {
     it('T517-3: Missing prompt returns MCP validation error', async () => {
+      // @ts-expect-error Intentional invalid runtime-validation input without prompt.
       const response = await handler.handleMemoryMatchTriggers({});
       const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
 
       expect(response.isError).toBe(true);
-      expect(payload.data.error).toMatch(/prompt.*required|required.*prompt/i);
-      expect(payload.data.code).toBe('E_VALIDATION');
+      expect(data.error).toMatch(/prompt.*required|required.*prompt/i);
+      expect(data.code).toBe('E_VALIDATION');
     });
 
     it('T517-4: Null prompt returns MCP validation error', async () => {
+      // @ts-expect-error Intentional invalid runtime-validation input with null prompt.
       const response = await handler.handleMemoryMatchTriggers({ prompt: null });
       const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
 
       expect(response.isError).toBe(true);
-      expect(payload.data.error).toMatch(/prompt/i);
+      expect(data.error).toMatch(/prompt/i);
     });
 
     it('T517-5: Empty string prompt returns MCP validation error', async () => {
       const response = await handler.handleMemoryMatchTriggers({ prompt: '' });
       const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
 
       expect(response.isError).toBe(true);
-      expect(payload.data.error).toMatch(/prompt/i);
+      expect(data.error).toMatch(/prompt/i);
     });
 
     it('T517-6: Non-string prompt returns MCP validation error', async () => {
+      // @ts-expect-error Intentional invalid runtime-validation input with numeric prompt.
       const response = await handler.handleMemoryMatchTriggers({ prompt: 12345 });
       const payload = parseEnvelope(response);
+      const data = getRecord(payload.data) ?? {};
 
       expect(response.isError).toBe(true);
-      expect(payload.data.error).toMatch(/prompt.*string|string.*prompt/i);
+      expect(data.error).toMatch(/prompt.*string|string.*prompt/i);
     });
   });
 
@@ -83,23 +139,23 @@ describe('Sprint-0 reliability fixes', () => {
   });
 
   it('logs final eval result even when no trigger matches are found', async () => {
-    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue({
-      matches: [],
-      stats: {
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+      buildTriggerMatchResult([], {
         promptLength: 7,
         cacheSize: 0,
         matchCount: 0,
         totalMatchedPhrases: 0,
         matchTimeMs: 0,
-      },
-    } as unknown as ReturnType<typeof triggerMatcher.matchTriggerPhrasesWithStats>);
+      })
+    );
     vi.spyOn(evalLogger, 'logSearchQuery').mockReturnValue({ queryId: 11, evalRunId: 22 });
     const finalSpy = vi.spyOn(evalLogger, 'logFinalResult').mockImplementation(() => undefined);
 
     const response = await handler.handleMemoryMatchTriggers({ prompt: 'no match' });
-    const payload = JSON.parse(response.content[0].text);
+    const payload = parseEnvelope(response);
+    const data = getRecord(payload.data) ?? {};
 
-    expect(payload.data.matchType).toContain('trigger-phrase');
+    expect(data.matchType).toContain('trigger-phrase');
     expect(finalSpy).toHaveBeenCalledWith(expect.objectContaining({
       evalRunId: 22,
       queryId: 11,
@@ -109,34 +165,24 @@ describe('Sprint-0 reliability fixes', () => {
   });
 
   it('routes through trigger signal vocabulary path without changing response shape', async () => {
-    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue({
-      matches: [
-        {
-          memoryId: 1,
-          specFolder: 'specs/test',
-          filePath: '/tmp/test.md',
-          title: 'Test',
-          matchedPhrases: ['test'],
-          importanceWeight: 0.8,
-        },
-      ],
-      stats: {
-        promptLength: 4,
-        cacheSize: 1,
-        matchCount: 1,
-        totalMatchedPhrases: 1,
-        matchTimeMs: 0,
-        signals: [{ category: 'correction', keywords: ['actually'], boost: 0.2 }],
-      },
-    } as unknown as ReturnType<typeof triggerMatcher.matchTriggerPhrasesWithStats>);
+    const signals: SignalDetection[] = [
+      { category: 'correction', keywords: ['actually'], boost: 0.2 },
+    ];
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+      buildTriggerMatchResult([buildTriggerMatch()], { signals })
+    );
 
     const response = await handler.handleMemoryMatchTriggers({ prompt: 'test', include_cognitive: false });
-    const payload = JSON.parse(response.content[0].text);
+    const payload = parseEnvelope(response);
+    const data = getRecord(payload.data) ?? {};
+    const meta = getRecord(payload.meta) ?? {};
+    const results = getArray(data.results).map((item) => getRecord(item) ?? {});
+    const triggerSignals = getArray(meta.triggerSignals);
 
-    expect(payload.data.count).toBe(1);
-    expect(Array.isArray(payload.data.results)).toBe(true);
-    expect(payload.data.results[0].importanceWeight).toBe(0.8);
-    expect(payload.meta.triggerSignals.length).toBe(1);
+    expect(data.count).toBe(1);
+    expect(Array.isArray(data.results)).toBe(true);
+    expect(results[0]?.importanceWeight).toBe(0.8);
+    expect(triggerSignals).toHaveLength(1);
   });
 
   it('enforces caller limit on cognitive path responses', async () => {
@@ -150,38 +196,38 @@ describe('Sprint-0 reliability fixes', () => {
       importanceWeight: 0.9,
     }));
 
-    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(undefined);
-    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue({
-      matches,
-      stats: {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrasesWithStats').mockReturnValue(
+      buildTriggerMatchResult(matches, {
         promptLength: 4,
         cacheSize: 5,
         matchCount: 5,
         totalMatchedPhrases: 5,
         matchTimeMs: 0,
         signals: [],
-      },
-    } as unknown as ReturnType<typeof triggerMatcher.matchTriggerPhrasesWithStats>);
+      })
+    );
 
     vi.spyOn(evalLogger, 'logSearchQuery').mockReturnValue({ queryId: 31, evalRunId: 32 });
     vi.spyOn(evalLogger, 'logFinalResult').mockImplementation(() => undefined);
 
     vi.spyOn(workingMemory, 'isEnabled').mockReturnValue(true);
     vi.spyOn(workingMemory, 'batchUpdateScores').mockReturnValue(0);
-    vi.spyOn(workingMemory, 'setAttentionScore').mockImplementation(() => undefined);
+    vi.spyOn(workingMemory, 'setAttentionScore').mockImplementation(() => false);
     vi.spyOn(workingMemory, 'getSessionMemories').mockReturnValue([]);
 
-    vi.spyOn(attentionDecay, 'getDb').mockReturnValue({
+    const mockDb = {
       prepare: vi.fn(() => ({
         get: vi.fn(() => undefined),
       })),
-    } as unknown as ReturnType<typeof attentionDecay.getDb>);
-    vi.spyOn(attentionDecay, 'activateMemory').mockImplementation(() => undefined);
+    } as unknown as AttentionDb;
+    vi.spyOn(attentionDecay, 'getDb').mockReturnValue(mockDb);
+    vi.spyOn(attentionDecay, 'activateMemory').mockImplementation(() => false);
 
     vi.spyOn(coActivation, 'isEnabled').mockReturnValue(false);
 
     const tierLimitSpy = vi.spyOn(tierClassifier, 'filterAndLimitByState')
-      .mockImplementation((memories: any[], _state: any = null, limit: number = 20) => memories.slice(0, limit));
+      .mockImplementation((memories, _state, limit = 20) => memories.slice(0, limit));
 
     vi.spyOn(tierClassifier, 'classifyState').mockReturnValue('HOT');
     vi.spyOn(consumptionLogger, 'initConsumptionLog').mockImplementation(() => undefined);
@@ -193,11 +239,13 @@ describe('Sprint-0 reliability fixes', () => {
       session_id: 'session-1',
       include_cognitive: true,
     });
-    const payload = JSON.parse(response.content[0].text);
+    const payload = parseEnvelope(response);
+    const data = getRecord(payload.data) ?? {};
+    const results = getArray(data.results);
 
-    expect(payload.data.matchType).toBe('trigger-phrase-cognitive');
+    expect(data.matchType).toBe('trigger-phrase-cognitive');
     expect(tierLimitSpy).toHaveBeenCalledWith(expect.any(Array), null, requestedLimit);
-    expect(payload.data.count).toBeLessThanOrEqual(requestedLimit);
-    expect(payload.data.results).toHaveLength(requestedLimit);
+    expect(data.count).toBeLessThanOrEqual(requestedLimit);
+    expect(results).toHaveLength(requestedLimit);
   });
 });

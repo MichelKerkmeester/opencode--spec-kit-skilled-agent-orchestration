@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Interference Scoring
 // ---------------------------------------------------------------
@@ -21,6 +20,7 @@ import {
   calculateFiveFactorScore,
   calculateCompositeScore,
 } from '../lib/scoring/composite-scoring';
+import type { ScoringInput } from '../lib/scoring/composite-scoring';
 
 // ---------------------------------------------------------------
 // Helpers
@@ -411,7 +411,7 @@ describe('Composite Scoring Integration with Interference', () => {
   it('5-factor score is unaffected when env var is off', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'false';
     const now = Date.now();
-    const row = {
+    const row: ScoringInput = {
       stability: 5.0,
       lastReview: new Date(now - 1000 * 60 * 60 * 24 * 2).toISOString(),
       access_count: 10,
@@ -435,7 +435,7 @@ describe('Composite Scoring Integration with Interference', () => {
   it('5-factor score is reduced when env var is on and interference > 0', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'true';
     const now = Date.now();
-    const baseRow = {
+    const baseRow: ScoringInput = {
       stability: 5.0,
       lastReview: new Date(now - 1000 * 60 * 60 * 24 * 2).toISOString(),
       access_count: 10,
@@ -460,7 +460,7 @@ describe('Composite Scoring Integration with Interference', () => {
   it('legacy composite score is reduced when env var is on', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'true';
     const now = Date.now();
-    const baseRow = {
+    const baseRow: ScoringInput = {
       similarity: 80,
       importance_weight: 0.5,
       importance_tier: 'normal',
@@ -483,7 +483,7 @@ describe('Composite Scoring Integration with Interference', () => {
   it('composite score never goes below 0 with high interference', () => {
     process.env.SPECKIT_INTERFERENCE_SCORE = 'true';
     const now = Date.now();
-    const row = {
+    const row: ScoringInput = {
       similarity: 20,
       importance_weight: 0.1,
       importance_tier: 'temporary',

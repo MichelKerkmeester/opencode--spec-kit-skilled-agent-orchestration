@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: RunQualityLegacyRemediation
+// MODULE: Run Quality Legacy Remediation
 // ---------------------------------------------------------------
 // SCRIPT: Quality Legacy Remediation (TQ040-TQ047)
-// ---------------------------------------------------------------
 
 import fs from 'fs';
 import path from 'path';

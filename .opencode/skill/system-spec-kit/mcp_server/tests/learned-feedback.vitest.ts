@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Learned Relevance Feedback (R11)
 // ---------------------------------------------------------------
@@ -48,6 +47,8 @@ import {
   LEARNED_TERM_TTL_MS,
   MIN_MEMORY_AGE_MS,
   TOP_N_EXCLUSION,
+  type AuditLogEntry,
+  type LearnedTriggerMatch,
 } from '../lib/search/learned-feedback';
 
 // Module under test: Auto-Promotion
@@ -76,8 +77,10 @@ import {
    HELPERS
    --------------------------------------------------------------- */
 
+type TestDatabase = InstanceType<typeof Database>;
+
 /** Create a fresh test database with memory_index table + FTS5. */
-function createTestDb(): any {
+function createTestDb(): { db: TestDatabase; path: string } {
   const tmpPath = path.join(os.tmpdir(), `learned-feedback-test-${Date.now()}-${Math.random().toString(36).slice(2)}.sqlite`);
   const testDb = new Database(tmpPath);
 
@@ -115,7 +118,7 @@ function createTestDb(): any {
 }
 
 /** Insert a test memory with known created_at timestamp. */
-function insertMemory(testDb: any, id: number, opts: {
+function insertMemory(testDb: TestDatabase, id: number, opts: {
   title?: string;
   triggerPhrases?: string[];
   createdAt?: string;
@@ -195,7 +198,7 @@ describe('Feedback Denylist', () => {
    --------------------------------------------------------------- */
 
 describe('Learned Triggers Schema', () => {
-  let testDb: any;
+  let testDb: TestDatabase;
   let testDbPath: string;
 
   beforeEach(() => {
@@ -215,8 +218,8 @@ describe('Learned Triggers Schema', () => {
     const result = migrateLearnedTriggers(testDb);
     expect(result).toBe(true);
 
-    const columns = testDb.prepare('PRAGMA table_info(memory_index)').all();
-    const hasColumn = columns.some((c: any) => c.name === 'learned_triggers');
+    const columns = testDb.prepare('PRAGMA table_info(memory_index)').all() as Array<{ name: string }>;
+    const hasColumn = columns.some(column => column.name === 'learned_triggers');
     expect(hasColumn).toBe(true);
   });
 

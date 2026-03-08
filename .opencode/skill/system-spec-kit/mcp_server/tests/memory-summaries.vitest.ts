@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Memory Summaries (TF-IDF Summarizer + Storage)
 // Covers: TF-IDF extractive summarizer and memory summary storage
@@ -27,11 +26,23 @@ import {
 
 const { cosineSimilarity, float32ToBuffer, bufferToFloat32 } = summaryTestables;
 
+interface StoredSummaryRow {
+  memory_id: number;
+  summary_text: string;
+  summary_embedding: Buffer | null;
+  key_sentences: string;
+}
+
+function expectRow<T>(row: T | undefined): T {
+  expect(row).toBeDefined();
+  return row as T;
+}
+
 /**
  * Deterministic mock embedding function.
  * Produces a fixed-size Float32Array (dim=8) derived from char codes.
  */
-function mockEmbeddingFn(text: string): Promise<Float32Array | null> {
+function mockEmbeddingFn(text: string): Promise<Float32Array> {
   const dim = 8;
   const arr = new Float32Array(dim);
   for (let i = 0; i < text.length; i++) {
@@ -352,7 +363,9 @@ describe('generateAndStoreSummary', () => {
 
     await generateAndStoreSummary(db, 1, content, mockEmbeddingFn);
 
-    const row = db.prepare('SELECT * FROM memory_summaries WHERE memory_id = ?').get(1) as any;
+    const row = expectRow(
+      db.prepare('SELECT * FROM memory_summaries WHERE memory_id = ?').get(1) as StoredSummaryRow | undefined,
+    );
     expect(row).toBeDefined();
     expect(row.summary_text).toBeTruthy();
     expect(row.memory_id).toBe(1);
@@ -380,10 +393,12 @@ describe('generateAndStoreSummary', () => {
 
     await generateAndStoreSummary(db, 1, content, mockEmbeddingFn);
 
-    const row = db.prepare('SELECT summary_embedding FROM memory_summaries WHERE memory_id = ?').get(1) as any;
+    const row = expectRow(
+      db.prepare('SELECT summary_embedding FROM memory_summaries WHERE memory_id = ?').get(1) as Pick<StoredSummaryRow, 'summary_embedding'> | undefined,
+    );
     expect(row).toBeDefined();
     expect(row.summary_embedding).toBeInstanceOf(Buffer);
-    expect(row.summary_embedding.length).toBeGreaterThan(0);
+    expect(row.summary_embedding?.length ?? 0).toBeGreaterThan(0);
   });
 
   it('stores key_sentences as JSON string', async () => {
@@ -396,9 +411,11 @@ describe('generateAndStoreSummary', () => {
 
     await generateAndStoreSummary(db, 1, content, mockEmbeddingFn);
 
-    const row = db.prepare('SELECT key_sentences FROM memory_summaries WHERE memory_id = ?').get(1) as any;
+    const row = expectRow(
+      db.prepare('SELECT key_sentences FROM memory_summaries WHERE memory_id = ?').get(1) as Pick<StoredSummaryRow, 'key_sentences'> | undefined,
+    );
     expect(row).toBeDefined();
-    const parsed = JSON.parse(row.key_sentences);
+    const parsed = JSON.parse(row.key_sentences) as string[];
     expect(Array.isArray(parsed)).toBe(true);
     expect(parsed.length).toBeGreaterThan(0);
   });
@@ -410,7 +427,9 @@ describe('generateAndStoreSummary', () => {
     const result = await generateAndStoreSummary(db, 1, content, nullEmbeddingFn);
     expect(result.stored).toBe(true);
 
-    const row = db.prepare('SELECT summary_embedding FROM memory_summaries WHERE memory_id = ?').get(1) as any;
+    const row = expectRow(
+      db.prepare('SELECT summary_embedding FROM memory_summaries WHERE memory_id = ?').get(1) as Pick<StoredSummaryRow, 'summary_embedding'> | undefined,
+    );
     expect(row.summary_embedding).toBeNull();
   });
 });
@@ -439,7 +458,7 @@ describe('querySummaryEmbeddings', () => {
     // Query with embedding similar to memory 1 and 3 (search/retrieval topic)
     const queryEmb = await mockEmbeddingFn('search pipeline vector similarity retrieval');
 
-    const results = querySummaryEmbeddings(db, queryEmb!, 10);
+    const results = querySummaryEmbeddings(db, queryEmb, 10);
     expect(results.length).toBe(3);
     // Results should be sorted by similarity descending
     for (let i = 1; i < results.length; i++) {
@@ -461,7 +480,7 @@ describe('querySummaryEmbeddings', () => {
     }
 
     const queryEmb = await mockEmbeddingFn('topic content');
-    const results = querySummaryEmbeddings(db, queryEmb!, 2);
+    const results = querySummaryEmbeddings(db, queryEmb, 2);
     expect(results).toHaveLength(2);
   });
 
@@ -475,7 +494,7 @@ describe('querySummaryEmbeddings', () => {
     const { summary } = generateSummary(content);
     const queryEmb = await mockEmbeddingFn(summary);
 
-    const results = querySummaryEmbeddings(db, queryEmb!, 10);
+    const results = querySummaryEmbeddings(db, queryEmb, 10);
     expect(results).toHaveLength(1);
     expect(results[0].similarity).toBeCloseTo(1.0, 1);
   });
@@ -499,7 +518,7 @@ describe('querySummaryEmbeddings', () => {
     await generateAndStoreSummary(db, 99, 'Summary content for memory ninety-nine about data visualization.', mockEmbeddingFn);
 
     const queryEmb = await mockEmbeddingFn('algorithm complexity');
-    const results = querySummaryEmbeddings(db, queryEmb!, 10);
+    const results = querySummaryEmbeddings(db, queryEmb, 10);
 
     const memoryIds = results.map(r => r.memoryId);
     expect(memoryIds).toContain(42);

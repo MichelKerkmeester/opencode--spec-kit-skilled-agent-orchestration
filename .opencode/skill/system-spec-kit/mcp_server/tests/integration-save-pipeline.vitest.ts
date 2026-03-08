@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION SAVE PIPELINE
 // ---------------------------------------------------------------
@@ -10,7 +9,10 @@ import * as os from 'os';
 import * as saveHandler from '../handlers/memory-save';
 import * as memoryParser from '../lib/parsing/memory-parser';
 import * as peGate from '../lib/cache/cognitive/prediction-error-gate';
-import * as errorsModule from '../lib/errors';
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures]', () => {
 
@@ -20,7 +22,7 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
   describe('Pipeline Module Integration', () => {
 
     it('T526-1: Save pipeline modules loaded', () => {
-      const modules: { name: string; ref: any }[] = [
+      const modules: Array<{ name: string; ref: unknown }> = [
         { name: 'saveHandler', ref: saveHandler },
       ];
       if (memoryParser) modules.push({ name: 'memoryParser', ref: memoryParser });
@@ -40,7 +42,7 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
 
     it('T526-2: Missing filePath rejected', async () => {
       await expect(
-        saveHandler.handleMemorySave({})
+        saveHandler.handleMemorySave({} as Parameters<typeof saveHandler.handleMemorySave>[0])
       ).rejects.toThrow(/filePath|required/);
     });
 
@@ -63,7 +65,7 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
         await saveHandler.handleMemorySave({ filePath: fakePath, force: true });
       } catch (error: unknown) {
         // Force flag should NOT be the reason for the error — file-not-found is expected
-        expect(error.message).not.toMatch(/force/);
+        expect(getErrorMessage(error)).not.toMatch(/force/);
       }
     });
 
@@ -73,7 +75,7 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
         await saveHandler.handleMemorySave({ filePath: fakePath, dryRun: true });
       } catch (error: unknown) {
         // dryRun flag should NOT be the reason for the error
-        expect(error.message).not.toMatch(/dryRun/);
+        expect(getErrorMessage(error)).not.toMatch(/dryRun/);
       }
     });
 
@@ -86,9 +88,9 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
 
     it('T526-7: Save errors have consistent response format', async () => {
       try {
-        await saveHandler.handleMemorySave({});
+        await saveHandler.handleMemorySave({} as Parameters<typeof saveHandler.handleMemorySave>[0]);
       } catch (error: unknown) {
-        expect(typeof error.message).toBe('string');
+        expect(typeof getErrorMessage(error)).toBe('string');
         return;
       }
       expect.unreachable('Expected an error to be thrown');

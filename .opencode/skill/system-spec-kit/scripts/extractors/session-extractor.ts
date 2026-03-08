@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: SessionExtractor
+// MODULE: Session Extractor
 // ---------------------------------------------------------------
 // Extracts session metadata — ID, title, duration, key topics, and learning delta
-// ---------------------------------------------------------------
 
 // Node stdlib
 import { execSync } from 'child_process';

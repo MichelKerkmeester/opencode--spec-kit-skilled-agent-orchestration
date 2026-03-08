@@ -1,4 +1,3 @@
-// @ts-nocheck — intentional: tests pass invalid arg types (empty object, wrong field types) to verify runtime input validation
 // ---------------------------------------------------------------
 // TEST: HANDLER MEMORY SEARCH
 // ---------------------------------------------------------------
@@ -6,6 +5,33 @@
 import { describe, it, expect } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-search';
+
+type MemorySearchResponse = Awaited<ReturnType<typeof handler.handleMemorySearch>>;
+type ChunkReassemblyInput =
+  Parameters<typeof handler.__testables.collapseAndReassembleChunkResults>[0][number];
+type MemorySearchModule = typeof handler & {
+  default?: {
+    handleMemorySearch?: unknown;
+  };
+};
+
+function parseEnvelope(response: MemorySearchResponse): Record<string, unknown> {
+  return JSON.parse(response.content[0].text) as Record<string, unknown>;
+}
+
+function getNestedRecord(
+  record: Record<string, unknown>,
+  key: string
+): Record<string, unknown> | undefined {
+  const value = record[key];
+  return typeof value === 'object' && value !== null
+    ? value as Record<string, unknown>
+    : undefined;
+}
+
+function getEnvelopeError(record: Record<string, unknown>): unknown {
+  return record.error ?? getNestedRecord(record, 'data')?.error;
+}
 
 describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
@@ -22,8 +48,8 @@ describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', 
     it('T516-3: Missing query and concepts returns MCP error', async () => {
       const result = await handler.handleMemorySearch({});
       expect(result).toBeDefined();
-      const text = JSON.parse(result.content[0].text);
-      expect(text.error || text.data?.error || result.isError).toBeTruthy();
+      const payload = parseEnvelope(result);
+      expect(getEnvelopeError(payload) || result.isError).toBeTruthy();
     });
 
     it('T516-4: Empty string query returns error', async () => {
@@ -32,8 +58,8 @@ describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', 
         // If it doesn't throw, it should return an error in the response
         expect(result).toBeDefined();
         expect(result.content).toBeDefined();
-        const text = JSON.parse(result.content[0].text);
-        const errorMsg = text.error || (text.data && text.data.error);
+        const payload = parseEnvelope(result);
+        const errorMsg = getEnvelopeError(payload);
         expect(errorMsg || result.isError).toBeTruthy();
       } catch (error: unknown) {
         // Also acceptable: throwing is valid behavior
@@ -42,17 +68,18 @@ describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', 
     });
 
     it('T516-5: Non-string specFolder rejected', async () => {
+      // @ts-expect-error Intentional invalid runtime-validation input for specFolder.
       const result = await handler.handleMemorySearch({ query: 'test query', specFolder: 123 });
       expect(result).toBeDefined();
-      const text = JSON.parse(result.content[0].text);
-      expect(text.error || text.data?.error || result.isError).toBeTruthy();
+      const payload = parseEnvelope(result);
+      expect(getEnvelopeError(payload) || result.isError).toBeTruthy();
     });
 
     it('T516-6: Single concept without query returns MCP error', async () => {
       const result = await handler.handleMemorySearch({ concepts: ['single'] });
       expect(result).toBeDefined();
-      const text = JSON.parse(result.content[0].text);
-      expect(text.error || text.data?.error || result.isError).toBeTruthy();
+      const payload = parseEnvelope(result);
+      expect(getEnvelopeError(payload) || result.isError).toBeTruthy();
     });
   });
 
@@ -63,7 +90,8 @@ describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', 
     });
 
     it('T516-8: Default export includes handleMemorySearch', () => {
-      const hasDefault = handler.default && typeof handler.default.handleMemorySearch === 'function';
+      const moduleWithDefault = handler as MemorySearchModule;
+      const hasDefault = typeof moduleWithDefault.default?.handleMemorySearch === 'function';
       const hasNamed = typeof handler.handleMemorySearch === 'function';
       expect(hasDefault || hasNamed).toBe(true);
     });
@@ -92,7 +120,11 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
   const { collapseAndReassembleChunkResults } = handler.__testables;
 
   // Minimal MemorySearchRow-compatible shape used across these tests.
-  function makeRow(id: number, parentId: number | null, extra: Record<string, unknown> = {}): Record<string, unknown> {
+  function makeRow(
+    id: number,
+    parentId: number | null,
+    extra: Partial<ChunkReassemblyInput> = {}
+  ): ChunkReassemblyInput {
     return {
       id,
       title: `Memory ${id}`,
@@ -106,7 +138,7 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
       importance_tier: 'normal',
       spec_folder: 'test',
       file_path: '/tmp/test.md',
-      context_type: null,
+      context_type: undefined,
       related_memories: null,
       ...extra,
     };

@@ -1,22 +1,32 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: ACCESS TRACKER
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/access-tracker';
 
-let Database: any = null;
-let db: any = null;
-let dbPath: string = '';
+type TestDatabase = Database.Database;
+type AccessCountRow = {
+  access_count: number;
+};
+
+let db: TestDatabase | null = null;
+let dbPath = '';
+
+function requireDb(): TestDatabase {
+  if (!db) {
+    throw new Error('Test database not initialized');
+  }
+  return db;
+}
 
 describe('Access Tracker (T507)', () => {
   beforeAll(() => {
-    Database = require('better-sqlite3');
     dbPath = path.join(os.tmpdir(), `access-tracker-test-${Date.now()}.sqlite`);
     db = new Database(dbPath);
 
@@ -46,7 +56,10 @@ describe('Access Tracker (T507)', () => {
       if (mod && typeof mod.reset === 'function') {
         mod.reset();
       }
-      if (db) db.close();
+      if (db) {
+        db.close();
+        db = null;
+      }
       if (dbPath && fs.existsSync(dbPath)) fs.unlinkSync(dbPath);
     } catch { /* ignore cleanup errors */ }
   });
@@ -68,7 +81,7 @@ describe('Access Tracker (T507)', () => {
   describe('Access Count Flush at Threshold (T507-02)', () => {
     it('T507-02: Access count flushed to database at threshold', () => {
       mod.reset();
-      mod.init(db);
+      mod.init(requireDb());
 
       // Track access 5 times for memory 2 (5 * 0.1 = 0.5 >= threshold)
       for (let i = 0; i < 4; i++) {
@@ -78,8 +91,7 @@ describe('Access Tracker (T507)', () => {
       // The 5th call should trigger flush (0.4 + 0.1 = 0.5 >= ACCUMULATOR_THRESHOLD)
       mod.trackAccess(2);
 
-      const row = db.prepare('SELECT access_count FROM memory_index WHERE id = 2').get();
-      expect(row).toBeDefined();
+      const row = requireDb().prepare('SELECT access_count FROM memory_index WHERE id = 2').get() as AccessCountRow;
       expect(row.access_count).toBeGreaterThanOrEqual(1);
     });
   });
@@ -87,7 +99,7 @@ describe('Access Tracker (T507)', () => {
   describe('Track Multiple Accesses (T507-03)', () => {
     it('T507-03: trackMultipleAccesses tracks correct count', () => {
       mod.reset();
-      mod.init(db);
+      mod.init(requireDb());
 
       const memoryIds = [3, 4, 5, 3, 4];
       const result = mod.trackMultipleAccesses(memoryIds);
@@ -136,7 +148,7 @@ describe('Access Tracker (T507)', () => {
   describe('Get Accumulator State (T507-06)', () => {
     it('T507-06a: Untracked memory has zero accumulator', () => {
       mod.reset();
-      mod.init(db);
+      mod.init(requireDb());
 
       const emptyState = mod.getAccumulatorState(999);
       expect(emptyState).toBeDefined();

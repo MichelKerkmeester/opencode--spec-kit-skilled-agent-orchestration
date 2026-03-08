@@ -1,10 +1,15 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: LAYER DEFINITIONS
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/architecture/layer-definitions';
+import type { LayerId, TaskType } from '../lib/architecture/layer-definitions';
+
+function expectLayerInfo(value: ReturnType<typeof mod.getLayerInfo>) {
+  expect(value).not.toBeNull();
+  return value as NonNullable<typeof value>;
+}
 
 /* -------------------------------------------------------------
    TEST SUITES
@@ -28,15 +33,15 @@ describe('Layer Definitions Tests', () => {
 
     it('T02: Each layer has all required fields', () => {
       const requiredFields = ['id', 'name', 'description', 'tokenBudget', 'priority', 'useCase', 'tools'];
-      for (const [layerId, layer] of Object.entries(LD)) {
-        const missing = requiredFields.filter(f => !(f in (layer as unknown)));
+      for (const [, layer] of Object.entries(LD)) {
+        const missing = requiredFields.filter(field => !(field in layer));
         expect(missing).toEqual([]);
       }
     });
 
     it('T03: Layer IDs match their keys', () => {
       for (const [key, layer] of Object.entries(LD)) {
-        expect((layer as unknown).id).toBe(key);
+        expect(layer.id).toBe(key);
       }
     });
 
@@ -45,27 +50,27 @@ describe('Layer Definitions Tests', () => {
         L1: 'Orchestration', L2: 'Core', L3: 'Discovery',
         L4: 'Mutation', L5: 'Lifecycle', L6: 'Analysis', L7: 'Maintenance',
       };
-      for (const [layerId, expectedName] of Object.entries(expectedNames)) {
+      for (const [layerId, expectedName] of Object.entries(expectedNames) as [LayerId, string][]) {
         expect(LD[layerId]?.name).toBe(expectedName);
       }
     });
 
     it('T05: Priorities are unique and sequential 1-7', () => {
-      const priorities = Object.values(LD).map((l: any) => l.priority).sort((a, b) => a - b);
+      const priorities = Object.values(LD).map(layer => layer.priority).sort((a, b) => a - b);
       expect(priorities).toEqual([1, 2, 3, 4, 5, 6, 7]);
     });
 
     it('T06: Token budgets are positive numbers', () => {
-      for (const [layerId, layer] of Object.entries(LD)) {
-        const budget = (layer as unknown).tokenBudget;
+      for (const [, layer] of Object.entries(LD)) {
+        const budget = layer.tokenBudget;
         expect(typeof budget).toBe('number');
         expect(budget).toBeGreaterThan(0);
       }
     });
 
     it('T07: Tools arrays are non-empty', () => {
-      for (const [layerId, layer] of Object.entries(LD)) {
-        const tools = (layer as unknown).tools;
+      for (const [, layer] of Object.entries(LD)) {
+        const tools = layer.tools;
         expect(Array.isArray(tools)).toBe(true);
         expect(tools.length).toBeGreaterThan(0);
       }
@@ -75,7 +80,7 @@ describe('Layer Definitions Tests', () => {
       const expectedBudgets: Record<string, number> = {
         L1: 2000, L2: 1500, L3: 800, L4: 500, L5: 600, L6: 1200, L7: 1000,
       };
-      for (const [layerId, expected] of Object.entries(expectedBudgets)) {
+      for (const [layerId, expected] of Object.entries(expectedBudgets) as [LayerId, number][]) {
         expect(LD[layerId]?.tokenBudget).toBe(expected);
       }
     });
@@ -97,7 +102,7 @@ describe('Layer Definitions Tests', () => {
     it('T10: All tools from LAYER_DEFINITIONS are mapped', () => {
       const allTools: string[] = [];
       for (const layer of Object.values(LD)) {
-        allTools.push(...(layer as unknown).tools);
+        allTools.push(...layer.tools);
       }
       const missing = allTools.filter(t => !(t in TLM));
       expect(missing).toEqual([]);
@@ -233,7 +238,7 @@ describe('Layer Definitions Tests', () => {
   describe('getLayerInfo()', () => {
 
     it('T23: Known tool returns full layer definition', () => {
-      const info = mod.getLayerInfo('memory_context');
+      const info = expectLayerInfo(mod.getLayerInfo('memory_context'));
       expect(info).toBeDefined();
       expect(info.id).toBe('L1');
       expect(info.name).toBe('Orchestration');
@@ -254,7 +259,7 @@ describe('Layer Definitions Tests', () => {
     });
 
     it('T26: Returned object has all required fields', () => {
-      const info = mod.getLayerInfo('memory_search');
+      const info = expectLayerInfo(mod.getLayerInfo('memory_search'));
       const requiredFields = ['id', 'name', 'description', 'tokenBudget', 'priority', 'useCase', 'tools'];
       const missing = requiredFields.filter(f => !(f in info));
       expect(missing).toEqual([]);
@@ -273,7 +278,7 @@ describe('Layer Definitions Tests', () => {
 
     it('T28: Sorted ascending by priority', () => {
       const layers = mod.getLayersByPriority();
-      const priorities = layers.map((l: any) => l.priority);
+      const priorities = layers.map(layer => layer.priority);
       for (let i = 1; i < priorities.length; i++) {
         expect(priorities[i]).toBeGreaterThanOrEqual(priorities[i - 1]);
       }
@@ -304,7 +309,7 @@ describe('Layer Definitions Tests', () => {
         maintenance: ['L7', 'L3'],
         default: ['L1', 'L3', 'L2'],
       };
-      for (const [taskType, expected] of Object.entries(expectations)) {
+      for (const [taskType, expected] of Object.entries(expectations) as [TaskType, LayerId[]][]) {
         expect(mod.getRecommendedLayers(taskType)).toEqual(expected);
       }
     });
@@ -319,13 +324,13 @@ describe('Layer Definitions Tests', () => {
     });
 
     it('T32: Unknown task type falls back to default', () => {
-      const result = mod.getRecommendedLayers('unknown_task_type');
+      const result = mod.getRecommendedLayers('unknown_task_type' as TaskType);
       const defaultResult = mod.getRecommendedLayers('default');
       expect(result).toEqual(defaultResult);
     });
 
     it('T33: All task types return non-empty arrays', () => {
-      const taskTypes = ['search', 'browse', 'modify', 'checkpoint', 'analyze', 'maintenance', 'default'];
+      const taskTypes: TaskType[] = ['search', 'browse', 'modify', 'checkpoint', 'analyze', 'maintenance', 'default'];
       for (const task of taskTypes) {
         const result = mod.getRecommendedLayers(task);
         expect(Array.isArray(result)).toBe(true);

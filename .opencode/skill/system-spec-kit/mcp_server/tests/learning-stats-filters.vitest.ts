@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: LEARNING STATS FILTERS
 // ---------------------------------------------------------------
@@ -8,12 +7,45 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
 
-function parseResponse(result: any) {
+type LearningHistoryRow = {
+  sessionId?: string;
+  phase?: string;
+};
+
+type LearningHistoryResponse = {
+  summary?: {
+    totalTasks: number;
+    completedTasks: number;
+  };
+  learningHistory: LearningHistoryRow[];
+};
+
+type JsonTextEnvelope = {
+  content?: Array<{ text?: string }>;
+};
+
+function isLearningHistoryResponse(
+  value: LearningHistoryResponse | { data?: LearningHistoryResponse }
+): value is LearningHistoryResponse {
+  return 'learningHistory' in value;
+}
+
+function parseResponse(result: JsonTextEnvelope | null | undefined): LearningHistoryResponse | null {
   if (result?.content?.[0]?.text) {
-    const envelope = JSON.parse(result.content[0].text);
-    return envelope?.data ?? envelope;
+    const envelope = JSON.parse(result.content[0].text) as LearningHistoryResponse | { data?: LearningHistoryResponse };
+    return isLearningHistoryResponse(envelope) ? envelope : (envelope.data ?? null);
   }
   return null;
+}
+
+function expectLearningResponse(data: LearningHistoryResponse | null): LearningHistoryResponse {
+  expect(data).not.toBeNull();
+  return data as LearningHistoryResponse;
+}
+
+function expectSummary(data: LearningHistoryResponse) {
+  expect(data.summary).toBeDefined();
+  return data.summary as NonNullable<LearningHistoryResponse['summary']>;
 }
 
 const SPEC = 'test/t503-stats-filters';
@@ -85,10 +117,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
-      expect(data?.summary).toBeDefined();
-      expect(data.summary.totalTasks).toBe(1);
-      expect(data.summary.completedTasks).toBe(1);
+      const data = expectLearningResponse(parseResponse(result));
+      const summary = expectSummary(data);
+      expect(summary.totalTasks).toBe(1);
+      expect(summary.completedTasks).toBe(1);
     });
 
     it('T503-01b: sessionId records filter consistent', async () => {
@@ -102,10 +134,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
+      const data = expectLearningResponse(parseResponse(result));
       expect(data?.learningHistory).toBeDefined();
 
-      const allMatch = data.learningHistory.every((r: any) => r.sessionId === sessA);
+      const allMatch = data.learningHistory.every(row => row.sessionId === sessA);
       expect(allMatch).toBe(true);
       expect(data.learningHistory.length).toBe(1);
     });
@@ -149,10 +181,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
-      expect(data?.summary).toBeDefined();
+      const data = expectLearningResponse(parseResponse(result));
+      expectSummary(data);
 
-      const allComplete = data.learningHistory.every((r: any) => r.phase === 'complete');
+      const allComplete = data.learningHistory.every(row => row.phase === 'complete');
       expect(allComplete).toBe(true);
     });
 
@@ -165,9 +197,9 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
-      expect(data?.summary).toBeDefined();
-      expect(data.summary.totalTasks).toBe(data.summary.completedTasks);
+      const data = expectLearningResponse(parseResponse(result));
+      const summary = expectSummary(data);
+      expect(summary.totalTasks).toBe(summary.completedTasks);
     });
   });
 
@@ -215,8 +247,8 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
-      expect(data?.summary).toBeDefined();
+      const data = expectLearningResponse(parseResponse(result));
+      expectSummary(data);
       expect(data.learningHistory.length).toBe(1);
       expect(data.learningHistory[0].phase).toBe('complete');
     });
@@ -233,10 +265,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
         includeSummary: true,
       });
 
-      const data = parseResponse(result);
-      expect(data?.summary).toBeDefined();
-      expect(data.summary.totalTasks).toBe(1);
-      expect(data.summary.completedTasks).toBe(1);
+      const data = expectLearningResponse(parseResponse(result));
+      const summary = expectSummary(data);
+      expect(summary.totalTasks).toBe(1);
+      expect(summary.completedTasks).toBe(1);
     });
   });
 });

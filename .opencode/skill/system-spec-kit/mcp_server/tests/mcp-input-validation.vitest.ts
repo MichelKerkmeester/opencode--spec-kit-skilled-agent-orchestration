@@ -1,21 +1,35 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MCP INPUT VALIDATION
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import * as handlers from '../handlers/index';
 
 // ---------------------------------------------------------------
 // Invalid input definitions for each of the 22 tools
 // ---------------------------------------------------------------
-const TOOL_INVALID_INPUTS: Array<{
+interface HandlerResponse {
+  content?: Array<{ type?: string; text?: string }>;
+  isError?: boolean;
+  [key: string]: unknown;
+}
+
+interface ToolInvalidInput {
   tool: string;
   handler: string;
-  invalidArgs: any;
+  invalidArgs: unknown;
   description: string;
-}> = [
+}
+
+type HandlerFunction = (args: unknown) => Promise<HandlerResponse>;
+
+function getHandler(handlerName: string): HandlerFunction | null {
+  const candidate = (handlers as Record<string, unknown>)[handlerName];
+  return typeof candidate === 'function' ? (candidate as HandlerFunction) : null;
+}
+
+const TOOL_INVALID_INPUTS: ToolInvalidInput[] = [
   // L1
   {
     tool: 'memory_context',
@@ -171,8 +185,8 @@ describe('MCP Protocol Input Validation (T534) [deferred - requires DB test fixt
       const testNum = i + 1;
 
       it(`T534-${testNum}: ${entry.tool} rejects invalid input (${entry.description})`, async () => {
-        const handlerFn = (handlers as unknown)[entry.handler];
-        if (typeof handlerFn !== 'function') {
+        const handlerFn = getHandler(entry.handler);
+        if (!handlerFn) {
           // Handler not found — skip
           return;
         }
@@ -214,8 +228,8 @@ describe('MCP Protocol Input Validation (T534) [deferred - requires DB test fixt
   describe('Null input handling', () => {
     CRITICAL_HANDLERS.forEach((entry) => {
       it(`T534-null: ${entry.tool} handles null input`, async () => {
-        const handlerFn = (handlers as unknown)[entry.handler];
-        if (typeof handlerFn !== 'function') {
+        const handlerFn = getHandler(entry.handler);
+        if (!handlerFn) {
           return;
         }
 
@@ -234,8 +248,8 @@ describe('MCP Protocol Input Validation (T534) [deferred - requires DB test fixt
   describe('Undefined input handling', () => {
     CRITICAL_HANDLERS.forEach((entry) => {
       it(`T534-undef: ${entry.tool} handles undefined input`, async () => {
-        const handlerFn = (handlers as unknown)[entry.handler];
-        if (typeof handlerFn !== 'function') {
+        const handlerFn = getHandler(entry.handler);
+        if (!handlerFn) {
           return;
         }
 

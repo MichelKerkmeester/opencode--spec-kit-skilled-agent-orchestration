@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: FileWriter
+// MODULE: File Writer
 // ---------------------------------------------------------------
 // Atomic file writing with validation and rollback on failure
-// ---------------------------------------------------------------
 
 import * as fs from 'fs/promises';
 import * as path from 'path';

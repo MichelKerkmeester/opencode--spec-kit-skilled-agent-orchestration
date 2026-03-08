@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Contextual Tree Headers (Sprint 9 P1-4 / T063-T065)
 // ---------------------------------------------------------------
@@ -6,10 +5,20 @@
 import { describe, expect, it } from 'vitest';
 import { __testables } from '../lib/search/hybrid-search';
 
+type InjectContextualTreeInput = Parameters<typeof __testables.injectContextualTree>[0];
+type InjectContextualTreeResult = ReturnType<typeof __testables.injectContextualTree>;
+
+function getContent(row: InjectContextualTreeResult): string | undefined {
+  const content = (row as Record<string, unknown>).content;
+  return typeof content === 'string' ? content : undefined;
+}
+
 describe('Contextual tree injection', () => {
   it('T063: injects contextual header in expected format', () => {
-    const row = {
+    const row: InjectContextualTreeInput = {
       id: 1,
+      score: 1,
+      source: 'hybrid',
       file_path: '/workspace/.opencode/specs/parent-seg/child-seg/memory/context.md',
       content: 'Original content body',
     };
@@ -22,7 +31,8 @@ describe('Contextual tree injection', () => {
     ]);
 
     const injected = __testables.injectContextualTree(row, cache);
-    const [header] = injected.content.split('\n');
+    const injectedContent = getContent(injected) ?? '';
+    const [header = ''] = injectedContent.split('\n');
 
     expect(header.startsWith('[parent-seg > child-seg')).toBe(true);
     expect(header.includes(' — ')).toBe(true);
@@ -31,8 +41,10 @@ describe('Contextual tree injection', () => {
   });
 
   it('T064: skips injection when content is null/undefined (includeContent=false mode)', () => {
-    const row = {
+    const row: InjectContextualTreeInput = {
       id: 2,
+      score: 1,
+      source: 'hybrid',
       file_path: '/workspace/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/019-sprint-9-extra-features/memory/context.md',
       content: undefined,
     };
@@ -43,6 +55,6 @@ describe('Contextual tree injection', () => {
 
     const injected = __testables.injectContextualTree(row, cache);
     expect(injected).toBe(row);
-    expect(injected.content).toBeUndefined();
+    expect(getContent(injected)).toBeUndefined();
   });
 });

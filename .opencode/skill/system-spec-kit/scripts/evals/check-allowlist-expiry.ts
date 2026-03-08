@@ -1,9 +1,8 @@
 // ---------------------------------------------------------------
-// MODULE: CheckAllowlistExpiry
+// MODULE: Check Allowlist Expiry
 // ---------------------------------------------------------------
 // Warns when allowlist exceptions are within 30 days of expiry.
 // Fails when allowlist exceptions are already expired.
-// ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';

@@ -2,7 +2,6 @@
 // MODULE: Search Limits Scoring Vitest
 // ---------------------------------------------------------------
 
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SEARCH LIMITS SCORING
 // ---------------------------------------------------------------
@@ -16,6 +15,15 @@ import * as crossEncoder from '../lib/search/cross-encoder';
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 describe('T210 + T211: Search Limits + Scoring Tests', () => {
+  type TestTier = 'HOT' | 'WARM' | 'COLD' | 'DORMANT';
+  interface TestMemory extends Record<string, unknown> {
+    id: number;
+    stability: number;
+    half_life_days: number;
+    created_at: string;
+    last_review: string;
+    importance_tier: 'normal';
+  }
 
   describe('T210 - Per-Tier Limit Configuration', () => {
     it('T210-CFG1: TIER_CONFIG has limits for all 5 tiers', () => {
@@ -57,7 +65,7 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       return d.toISOString();
     }
 
-    function makeMemByTier(id: number, tier: 'HOT' | 'WARM' | 'COLD' | 'DORMANT'): any {
+    function makeMemByTier(id: number, tier: TestTier): TestMemory {
       const elapsed: Record<string, number> = {
         HOT: 0,
         WARM: 1,
@@ -95,7 +103,7 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       ];
       const result = filterAndLimitByState(mems, null, 100);
       // _classification is stripped from returned objects; verify by ID ranges
-      const hotCount = result.filter((r: any) => r.id < 100).length;
+      const hotCount = result.filter((r) => typeof r.id === 'number' && r.id < 100).length;
 
       expect(hotCount).toBeGreaterThanOrEqual(5);
       expect(result.length).toBeLessThanOrEqual(34);
@@ -111,7 +119,7 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
       ];
       const result = filterAndLimitByState(mems, null, 100);
       // _classification is stripped; verify by ID range (COLD IDs start at 200)
-      const coldCount = result.filter((r: any) => r.id >= 200).length;
+      const coldCount = result.filter((r) => typeof r.id === 'number' && r.id >= 200).length;
 
       expect(coldCount).toBeGreaterThan(3);
     });
@@ -195,9 +203,26 @@ describe('T210 + T211: Search Limits + Scoring Tests', () => {
     it('T211-LP4: Long doc rerankerScore reduced by penalty', () => {
       if (!crossEncoder?.applyLengthPenalty) return;
 
-      const docs = [
-        { id: 1, content: 'a'.repeat(100), rerankerScore: 0.9 },
-        { id: 2, content: 'b'.repeat(5000), rerankerScore: 0.9 },
+      type PenalizedDocument = Parameters<typeof crossEncoder.applyLengthPenalty>[0][number];
+      const docs: PenalizedDocument[] = [
+        {
+          id: 1,
+          content: 'a'.repeat(100),
+          score: 0.9,
+          originalRank: 0,
+          rerankerScore: 0.9,
+          provider: 'test',
+          scoringMethod: 'fallback',
+        },
+        {
+          id: 2,
+          content: 'b'.repeat(5000),
+          score: 0.9,
+          originalRank: 1,
+          rerankerScore: 0.9,
+          provider: 'test',
+          scoringMethod: 'fallback',
+        },
       ];
       const penalized = crossEncoder.applyLengthPenalty(docs);
 

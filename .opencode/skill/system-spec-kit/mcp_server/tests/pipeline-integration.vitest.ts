@@ -1,4 +1,3 @@
-// @ts-nocheck -- Heavy vi.mock() dynamic typing requires runtime-only validation
 // ---------------------------------------------------------------
 // TEST: End-to-End Pipeline Integration
 // Validates the full search pipeline works with the graph channel
@@ -6,6 +5,19 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import type Database from 'better-sqlite3';
+import type { GraphSearchFn } from '../lib/search/hybrid-search';
+
+type MockFusionInput = {
+  source: string;
+  results: Array<Record<string, unknown> & { id: string | number; score?: number }>;
+};
+
+type MockFusionResult = Record<string, unknown> & {
+  id: string | number;
+  score: number;
+  source: string;
+};
 
 /* -------------------------------------------------------------
    MOCKS — declared before any module imports so vi.mock hoisting
@@ -23,13 +35,13 @@ vi.mock('../lib/search/bm25-index', () => ({
 
 // Mock the RRF fusion so we can control its output.
 vi.mock('../../shared/algorithms/rrf-fusion', () => ({
-  fuseResultsMulti: vi.fn((lists) => {
+  fuseResultsMulti: vi.fn((lists: MockFusionInput[]) => {
     // Flatten all results from all lists, deduplicate by id, return sorted.
-    const seen = new Map();
+    const seen = new Map<string | number, MockFusionResult>();
     for (const list of lists) {
       for (const r of list.results) {
         if (!seen.has(r.id)) {
-          seen.set(r.id, { ...r, score: (r.score as number) ?? 0.5, source: list.source });
+          seen.set(r.id, { ...r, score: r.score ?? 0.5, source: list.source });
         }
       }
     }
@@ -57,19 +69,21 @@ vi.mock('../lib/cache/cognitive/co-activation', () => ({
 
 const mockDb = {
   prepare: () => ({ all: () => [], get: () => undefined }),
-} as unknown as Record<string, unknown>;
+} as unknown as Database.Database;
 
 /* -------------------------------------------------------------
    FAKE GRAPH RESULTS (3 results as specified in T021)
 ---------------------------------------------------------------- */
 
-const FAKE_GRAPH_RESULTS = [
+const FAKE_GRAPH_RESULTS: ReturnType<GraphSearchFn> = [
   { id: 'graph-001', score: 0.9, source: 'graph', title: 'Graph Result Alpha' },
   { id: 'graph-002', score: 0.7, source: 'graph', title: 'Graph Result Beta' },
   { id: 'graph-003', score: 0.5, source: 'graph', title: 'Graph Result Gamma' },
 ];
 
-const mockGraphFn = vi.fn(() => FAKE_GRAPH_RESULTS);
+const mockGraphFn = vi.fn(
+  (_query: string, _options: Record<string, unknown>): ReturnType<GraphSearchFn> => FAKE_GRAPH_RESULTS,
+);
 
 /* -------------------------------------------------------------
    ENV HELPERS
@@ -216,8 +230,10 @@ describe('Suite 2 — Pipeline contract tests', () => {
     await hybridSearchEnhanced('test query', null, { useGraph: true, specFolder: '003-root/007-child' });
 
     expect(mockGraphFn).toHaveBeenCalled();
-    const [, options] = mockGraphFn.mock.calls[0];
-    expect(options.specFolder).toBe('003-root/007-child');
+    const firstCall = mockGraphFn.mock.calls[0];
+    expect(firstCall).toBeDefined();
+    const [, options] = firstCall!;
+    expect(options).toMatchObject({ specFolder: '003-root/007-child' });
   });
 
   it('getGraphMetrics().totalQueries increases after hybridSearchEnhanced calls', async () => {

@@ -1,9 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: GenerateDescription
-// ---------------------------------------------------------------
+// MODULE: Generate Description
 // ---------------------------------------------------------------
 // CLI: Generate Per-Folder description.json
-// ---------------------------------------------------------------
 // Usage: node generate-description.js <folder-path> <base-path> [--description "text"]
 //
 // If --description is provided, uses it directly + keyword extraction.

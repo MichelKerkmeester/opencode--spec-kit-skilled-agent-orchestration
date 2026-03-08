@@ -1,17 +1,26 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION TRIGGER PIPELINE
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
+import type { MCPResponse } from '../handlers/types';
 import * as triggerHandler from '../handlers/memory-triggers';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
+import type { MCPEnvelope } from '../lib/response/envelope';
 
-function parseEnvelope(response: Awaited<ReturnType<typeof triggerHandler.handleMemoryMatchTriggers>>) {
-  return JSON.parse(response.content[0].text);
+interface TriggerEnvelopeData {
+  error?: string;
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function parseEnvelope(response: MCPResponse): MCPEnvelope<TriggerEnvelopeData> {
+  return JSON.parse(response.content[0].text) as MCPEnvelope<TriggerEnvelopeData>;
 }
 
 describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtures]', () => {
@@ -22,7 +31,7 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
   describe('Pipeline Module Loading', () => {
 
     it('T527-1: Trigger pipeline modules loaded', () => {
-      const modules: { name: string; ref: any }[] = [
+      const modules: Array<{ name: string; ref: unknown }> = [
         { name: 'triggerHandler', ref: triggerHandler },
       ];
       if (triggerMatcher) modules.push({ name: 'triggerMatcher', ref: triggerMatcher });
@@ -42,7 +51,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
   describe('Pipeline Input Validation', () => {
 
     it('T527-2: Missing prompt returns validation envelope', async () => {
-      const response = await triggerHandler.handleMemoryMatchTriggers({});
+      const response = await triggerHandler.handleMemoryMatchTriggers(
+        {} as Parameters<typeof triggerHandler.handleMemoryMatchTriggers>[0]
+      );
       const payload = parseEnvelope(response);
 
       expect(response.isError).toBe(true);
@@ -68,8 +79,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
         });
       } catch (error: unknown) {
         // Fail only if the error is specifically about these params
-        expect(error.message).not.toMatch(/session_id/);
-        expect(error.message).not.toMatch(/turnNumber/);
+        const message = getErrorMessage(error);
+        expect(message).not.toMatch(/session_id/);
+        expect(message).not.toMatch(/turnNumber/);
       }
     });
 
@@ -81,7 +93,7 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
         });
       } catch (error: unknown) {
         // Fail only if the error is specifically about include_cognitive
-        expect(error.message).not.toMatch(/include_cognitive/);
+        expect(getErrorMessage(error)).not.toMatch(/include_cognitive/);
       }
     });
 
@@ -100,7 +112,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
     });
 
     it('T527-7: Invalid input propagates as MCP error response', async () => {
-      const response = await triggerHandler.handleMemoryMatchTriggers({});
+      const response = await triggerHandler.handleMemoryMatchTriggers(
+        {} as Parameters<typeof triggerHandler.handleMemoryMatchTriggers>[0]
+      );
       const payload = parseEnvelope(response);
 
       expect(response.isError).toBe(true);
@@ -109,7 +123,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
     });
 
     it('T527-8: Non-string prompt returns validation envelope', async () => {
-      const response = await triggerHandler.handleMemoryMatchTriggers({ prompt: 12345 });
+      const response = await triggerHandler.handleMemoryMatchTriggers(
+        { prompt: 12345 } as unknown as Parameters<typeof triggerHandler.handleMemoryMatchTriggers>[0]
+      );
       const payload = parseEnvelope(response);
 
       expect(response.isError).toBe(true);

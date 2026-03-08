@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Save Quality Gate (TM-04)
 // ---------------------------------------------------------------
@@ -24,7 +23,15 @@ import {
   MIN_CONTENT_LENGTH,
   WARN_ONLY_PERIOD_MS,
 } from '../lib/validation/save-quality-gate';
+import type { FindSimilarFn } from '../lib/validation/save-quality-gate';
 import * as vectorIndex from '../lib/search/vector-index';
+
+type VectorDb = NonNullable<ReturnType<typeof vectorIndex.getDb>>;
+
+interface MockConfigDb {
+  exec: ReturnType<typeof vi.fn>;
+  prepare: ReturnType<typeof vi.fn>;
+}
 
 // ───────────────────────────────────────────────────────────────
 // TEST HELPERS
@@ -49,9 +56,9 @@ function makeEmbedding(dim: number, fill: number = 1.0): number[] {
 }
 
 /** Create a mock config-table DB with minimal SQL behavior needed by quality-gate persistence. */
-function makeMockConfigDb(initial: Record<string, string> = {}) {
+function makeMockConfigDb(initial: Record<string, string> = {}): { db: MockConfigDb; store: Map<string, string> } {
   const store = new Map(Object.entries(initial));
-  const db = {
+  const db: MockConfigDb = {
     exec: vi.fn(),
     prepare: vi.fn((sql: string) => {
       if (sql === 'SELECT value FROM config WHERE key = ?') {
@@ -89,8 +96,12 @@ function makeMockConfigDb(initial: Record<string, string> = {}) {
 }
 
 /** Create a mock findSimilar function that returns preset results */
-function mockFindSimilar(results: Array<{ id: number; file_path: string; similarity: number }>) {
-  return (_embedding: any, _options: any) => results;
+function asVectorDb(db: MockConfigDb): VectorDb {
+  return db as unknown as VectorDb;
+}
+
+function mockFindSimilar(results: Array<{ id: number; file_path: string; similarity: number }>): FindSimilarFn {
+  return (_embedding, _options) => results;
 }
 
 describe('Save Quality Gate (TM-04)', () => {
@@ -209,8 +220,8 @@ describe('Save Quality Gate (TM-04)', () => {
       const dbB = makeMockConfigDb();
 
       getDbSpy
-        .mockReturnValueOnce(dbA.db as any)
-        .mockReturnValueOnce(dbB.db as any);
+        .mockReturnValueOnce(asVectorDb(dbA.db))
+        .mockReturnValueOnce(asVectorDb(dbB.db));
 
       setActivationTimestamp(Date.now() - 2000);
       setActivationTimestamp(Date.now() - 1000);
@@ -228,7 +239,7 @@ describe('Save Quality Gate (TM-04)', () => {
       const persistedDb = makeMockConfigDb({
         quality_gate_activated_at: String(fifteenDaysAgo),
       });
-      const getDbSpy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(persistedDb.db as any);
+      const getDbSpy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(asVectorDb(persistedDb.db));
 
       const result = runQualityGate({
         title: null,
@@ -242,7 +253,7 @@ describe('Save Quality Gate (TM-04)', () => {
 
       // No reset write should occur when persisted activation already exists.
       const insertCalls = persistedDb.db.prepare.mock.calls
-        .filter(([sql]: [string]) => sql === 'INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)');
+        .filter((call) => call[0] === 'INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)');
       expect(insertCalls.length).toBe(0);
 
       getDbSpy.mockRestore();
@@ -601,7 +612,7 @@ describe('Save Quality Gate (TM-04)', () => {
 
     it('SD-5: findSimilar error is non-fatal (passes through)', () => {
       const embedding = makeEmbedding(10);
-      const findSimilar = () => { throw new Error('Search failed'); };
+      const findSimilar: FindSimilarFn = () => { throw new Error('Search failed'); };
 
       const result = checkSemanticDedup(embedding, 'test-spec', findSimilar);
       expect(result.pass).toBe(true);

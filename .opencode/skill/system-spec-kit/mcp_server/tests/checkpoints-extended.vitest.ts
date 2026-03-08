@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
 // ───────────────────────────────────────────────────────────────
@@ -17,30 +16,61 @@ import * as checkpointStorage from '../lib/storage/checkpoints';
 import * as coreModule from '../core/db-state';
 import * as handler from '../handlers/checkpoints';
 
-let vectorIndexModule: any = null;
-let confidenceTracker: any = null;
+type TestDatabase = InstanceType<typeof BetterSqlite3>;
+type VectorIndexModule = typeof import('../lib/search/vector-index');
+type CheckpointHandlerResponse = Awaited<ReturnType<typeof handler.handleCheckpointList>>;
 
-try {
-  confidenceTracker = await import('../lib/scoring/confidence-tracker');
-} catch {
-  // Non-fatal
+interface CountRow {
+  cnt: number;
 }
 
-try {
-  vectorIndexModule = await import('../lib/search/vector-index');
-} catch {
-  // Non-fatal
+interface ExtendedMemoryRow {
+  canonical_file_path: string | null;
+  content_hash: string | null;
+  content_text: string | null;
+  quality_score: number;
+  quality_flags: string | null;
+  chunk_index: number | null;
+  chunk_label: string | null;
 }
 
-let testDb: any = null;
-let tmpDbPath: string = '';
+interface HexEmbeddingRow {
+  hex_embedding: string;
+}
+
+interface ParsedHandlerEnvelope {
+  summary?: string;
+  data?: Record<string, unknown>;
+  meta?: Record<string, unknown>;
+}
+
+type CheckpointMemoryRowInput = Record<string, unknown> | null;
+
+let vectorIndexModule: VectorIndexModule | null = null;
+let testDb!: TestDatabase;
+let tmpDbPath = '';
+
+function getCount(query: string, ...params: unknown[]): number {
+  const row = testDb.prepare(query).get(...params) as CountRow;
+  return row.cnt;
+}
+
+function parseHandlerResponse(response: CheckpointHandlerResponse): ParsedHandlerEnvelope {
+  return JSON.parse(response.content[0]?.text ?? '{}') as ParsedHandlerEnvelope;
+}
 
 /* ─────────────────────────────────────────────────────────────
    TEST SUITES
 ──────────────────────────────────────────────────────────────── */
 
 describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', () => {
-  beforeAll(() => {
+  beforeAll(async () => {
+    try {
+      vectorIndexModule = await import('../lib/search/vector-index');
+    } catch {
+      // Non-fatal
+    }
+
     // Database initialization
     tmpDbPath = path.join(os.tmpdir(), `checkpoints-ext-test-${Date.now()}.db`);
     testDb = new BetterSqlite3(tmpDbPath);
@@ -126,7 +156,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
     it('EXT-S2: getDatabase throws when not initialized', () => {
       const savedDb = testDb;
-      checkpointStorage.init(null as unknown);
+      // @ts-expect-error intentionally passing null to exercise uninitialized error path
+      checkpointStorage.init(null);
 
       expect(() => checkpointStorage.getDatabase()).toThrow(/not initialized/);
 
@@ -147,6 +178,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       if (!checkpointStorage.getGitBranch) return;
       const cp = checkpointStorage.createCheckpoint({ name: 'git-branch-test' });
       expect(cp).toBeDefined();
+      if (!cp) return;
 
       const branch = checkpointStorage.getGitBranch();
       // Both should be either string or null
@@ -169,11 +201,11 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
         VALUES (?, ?, ?, ?, ?)
       `).run('extra-spec', '/test/memory/extra.md', 'Extra Memory', now, 'normal');
 
-      const countBefore = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countBefore = getCount('SELECT COUNT(*) as cnt FROM memory_index');
 
       const result = checkpointStorage.restoreCheckpoint('clear-existing-test', true);
 
-      const countAfter = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countAfter = getCount('SELECT COUNT(*) as cnt FROM memory_index');
 
       expect(result).toBeDefined();
       expect(result.errors.length).toBe(0);
@@ -195,10 +227,9 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
       checkpointStorage.restoreCheckpoint('clear-extra-test', true);
 
-      const extraExists = testDb.prepare(
-        "SELECT COUNT(*) as cnt FROM memory_index WHERE file_path = '/test/memory/extra2.md'"
-      ).get() as unknown;
-      expect(extraExists.cnt).toBe(0);
+      expect(
+        getCount("SELECT COUNT(*) as cnt FROM memory_index WHERE file_path = '/test/memory/extra2.md'")
+      ).toBe(0);
 
       checkpointStorage.deleteCheckpoint('clear-extra-test');
     });
@@ -236,8 +267,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       let handled = false;
       try {
         checkpointStorage.createCheckpoint({ name: 'dup-name-test' });
-        const second = checkpointStorage.createCheckpoint({ name: 'dup-name-test' });
-        // null or upserted — both are acceptable
+        checkpointStorage.createCheckpoint({ name: 'dup-name-test' });
         handled = true;
       } catch {
         handled = true;
@@ -252,6 +282,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
       const fetched = checkpointStorage.getCheckpoint(cp.id);
       expect(fetched).toBeDefined();
+      if (!fetched) return;
       expect(fetched.name).toBe('id-lookup-test');
 
       checkpointStorage.deleteCheckpoint('id-lookup-test');
@@ -261,7 +292,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
   // 4.6 T101: Transaction rollback on corrupt restore
   describe('Storage: T101 Transaction Rollback on Corrupt Restore', () => {
     it('EXT-S11: transaction rollback preserves data on corrupt restore', () => {
-      const countBefore = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countBefore = getCount('SELECT COUNT(*) as cnt FROM memory_index');
       if (countBefore === 0) return;
 
       const cp = checkpointStorage.createCheckpoint({ name: 'rollback-test' });
@@ -281,14 +312,14 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
       const result = checkpointStorage.restoreCheckpoint('rollback-test', true);
 
-      const countAfter = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countAfter = getCount('SELECT COUNT(*) as cnt FROM memory_index');
       expect(countAfter).toBe(countBefore);
 
       checkpointStorage.deleteCheckpoint('rollback-test');
     });
 
     it('EXT-S12: rollback result reports errors', () => {
-      const countBefore = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countBefore = getCount('SELECT COUNT(*) as cnt FROM memory_index');
       if (countBefore === 0) return;
 
       const cp = checkpointStorage.createCheckpoint({ name: 'rollback-errors-test' });
@@ -313,7 +344,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
     });
 
     it('EXT-S13: rollback resets restored counter to 0', () => {
-      const countBefore = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countBefore = getCount('SELECT COUNT(*) as cnt FROM memory_index');
       if (countBefore === 0) return;
 
       const cp = checkpointStorage.createCheckpoint({ name: 'rollback-counter-test' });
@@ -405,9 +436,10 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
         SELECT canonical_file_path, content_hash, content_text, quality_score, quality_flags, chunk_index, chunk_label
         FROM memory_index
         WHERE id = ?
-      `).get(1) as unknown;
+      `).get(1) as ExtendedMemoryRow | undefined;
 
       expect(restored).toBeDefined();
+      if (!restored) return;
       expect(restored.canonical_file_path).toBe('/canonical/path/mem1.md');
       expect(restored.content_hash).toBe('abc123hash');
       expect(restored.content_text).toBe('restorable content payload');
@@ -442,13 +474,18 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       const result = checkpointStorage.restoreCheckpoint('anchor-aware-duplicate-test', false);
       expect(result.errors.length).toBe(0);
 
-      const restoredVariant = testDb.prepare(`
+      expect(
+        getCount(
+          `
         SELECT COUNT(*) as cnt
         FROM memory_index
         WHERE spec_folder = ? AND file_path = ? AND anchor_id = ?
-      `).get('anchor-spec', '/anchor-spec/shared.md', 'section-b') as unknown;
-
-      expect(restoredVariant.cnt).toBe(1);
+      `,
+          'anchor-spec',
+          '/anchor-spec/shared.md',
+          'section-b'
+        )
+      ).toBe(1);
 
       checkpointStorage.deleteCheckpoint('anchor-aware-duplicate-test');
       testDb.prepare('DELETE FROM memory_index WHERE id IN (?, ?)').run(9101, 9102);
@@ -487,14 +524,13 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
         SELECT hex(embedding) as hex_embedding
         FROM vec_memories
         WHERE rowid = ?
-      `).get(1) as unknown;
+      `).get(1) as HexEmbeddingRow | undefined;
 
       expect(restored).toBeDefined();
+      if (!restored) return;
       expect(restored.hex_embedding).toBe(originalEmbedding.toString('hex').toUpperCase());
 
-      const orphan = testDb.prepare('SELECT COUNT(*) as cnt FROM vec_memories WHERE rowid = ?')
-        .get(9999) as unknown;
-      expect(orphan.cnt).toBe(0);
+      expect(getCount('SELECT COUNT(*) as cnt FROM vec_memories WHERE rowid = ?', 9999)).toBe(0);
 
       checkpointStorage.deleteCheckpoint('vector-restore-test');
     });
@@ -502,7 +538,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
   // 4.8 T107: Schema validation rejects corrupt checkpoint rows
   describe('Storage: T107 Schema Validation Before Restore', () => {
-    function injectCheckpoint(name: string, memories: any[]): boolean {
+    function injectCheckpoint(name: string, memories: CheckpointMemoryRowInput[]): boolean {
       const snapshot = {
         memories,
         workingMemory: [],
@@ -620,7 +656,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
     });
 
     it('T107-08: validation rejects before DB mutation', () => {
-      const countBefore = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countBefore = getCount('SELECT COUNT(*) as cnt FROM memory_index');
 
       const ok = injectCheckpoint('t107-no-mutation', [
         { id: 9999, file_path: '/test/good.md', spec_folder: 'spec', title: 'Good', importance_weight: 0.5, created_at: '2025-01-01', updated_at: '2025-01-01', importance_tier: 'normal' },
@@ -629,7 +665,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       if (!ok) return;
 
       const result = checkpointStorage.restoreCheckpoint('t107-no-mutation', true);
-      const countAfter = (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index').get() as unknown).cnt;
+      const countAfter = getCount('SELECT COUNT(*) as cnt FROM memory_index');
 
       expect(result).toBeDefined();
       expect(result.errors.length).toBeGreaterThan(0);
@@ -672,10 +708,11 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
-      const isSuccess = (parsed.data && parsed.data.success === true) ||
-                        (parsed.summary && parsed.summary.includes('success'));
-      expect(isSuccess).toBe(true);
+        const parsed = parseHandlerResponse(result);
+        const isSuccess =
+          parsed.data?.success === true ||
+          (typeof parsed.summary === 'string' && parsed.summary.includes('success'));
+        expect(isSuccess).toBe(true);
 
       checkpointStorage.deleteCheckpoint('handler-create-test');
     });
@@ -690,8 +727,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
-      expect(parsed.data && parsed.data.success).toBe(true);
+        const parsed = parseHandlerResponse(result);
+        expect(parsed.data?.success).toBe(true);
 
       checkpointStorage.deleteCheckpoint('handler-create-spec');
     });
@@ -708,9 +745,9 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseHandlerResponse(result);
       expect(parsed.data).toBeDefined();
-      expect(typeof parsed.data.count).toBe('number');
+      expect(typeof parsed.data?.count).toBe('number');
 
       checkpointStorage.deleteCheckpoint('list-test-cp');
     });
@@ -734,9 +771,9 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseHandlerResponse(result);
       expect(parsed.data).toBeDefined();
-      expect(parsed.data.count).toBe(0);
+      expect(parsed.data?.count).toBe(0);
     });
   });
 
@@ -751,10 +788,11 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
-      const isSuccess = (parsed.data && parsed.data.success === true) ||
-                        (parsed.summary && parsed.summary.includes('restored'));
-      expect(isSuccess).toBe(true);
+        const parsed = parseHandlerResponse(result);
+        const isSuccess =
+          parsed.data?.success === true ||
+          (typeof parsed.summary === 'string' && parsed.summary.includes('restored'));
+        expect(isSuccess).toBe(true);
 
       checkpointStorage.deleteCheckpoint('restore-handler-test');
     });
@@ -771,8 +809,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
-      expect(parsed.data && parsed.data.success).toBe(true);
+        const parsed = parseHandlerResponse(result);
+        expect(parsed.data?.success).toBe(true);
 
       checkpointStorage.deleteCheckpoint('restore-clear-test');
     });
@@ -806,7 +844,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
 
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseHandlerResponse(result);
       // success=false or success=true are both acceptable
       expect(parsed.data).toBeDefined();
     });
@@ -827,9 +865,10 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
         expect(result.content).toBeDefined();
         expect(result.content.length).toBeGreaterThan(0);
 
-        const parsed = JSON.parse(result.content[0].text);
-        const hasData = (parsed.data && typeof parsed.data.confidence === 'number') ||
-                        (parsed.summary && parsed.summary.includes('validation'));
+        const parsed = parseHandlerResponse(result);
+        const hasData =
+          typeof parsed.data?.confidence === 'number' ||
+          (typeof parsed.summary === 'string' && parsed.summary.includes('validation'));
         expect(hasData).toBe(true);
       } finally {
         vi.restoreAllMocks();
@@ -849,8 +888,8 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
         expect(result.content).toBeDefined();
         expect(result.content.length).toBeGreaterThan(0);
 
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed.data && typeof parsed.data.confidence === 'number').toBe(true);
+        const parsed = parseHandlerResponse(result);
+        expect(typeof parsed.data?.confidence === 'number').toBe(true);
       } finally {
         vi.restoreAllMocks();
       }
@@ -868,10 +907,12 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       expect(Array.isArray(result.content)).toBe(true);
 
       const firstItem = result.content[0];
+      expect(firstItem).toBeDefined();
+      if (!firstItem) return;
       expect(firstItem.type).toBe('text');
       expect(typeof firstItem.text).toBe('string');
 
-      const parsed = JSON.parse(firstItem.text);
+      const parsed = JSON.parse(firstItem.text) as ParsedHandlerEnvelope;
       expect(parsed.summary).toBeDefined();
       expect(parsed.data).toBeDefined();
       expect(parsed.meta).toBeDefined();

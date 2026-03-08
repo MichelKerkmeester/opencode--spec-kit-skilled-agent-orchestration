@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: RETRY MANAGER
 // ---------------------------------------------------------------
@@ -7,8 +6,28 @@ import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import type Database from 'better-sqlite3';
 import * as mod from '../lib/providers/retry-manager';
 import * as vectorIndex from '../lib/search/vector-index';
+
+type RetryFunctionExportName =
+  | 'getRetryQueue'
+  | 'getFailedEmbeddings'
+  | 'getRetryStats'
+  | 'retryEmbedding'
+  | 'markAsFailed'
+  | 'resetForRetry'
+  | 'processRetryQueue'
+  | 'startBackgroundJob'
+  | 'stopBackgroundJob'
+  | 'isBackgroundJobRunning'
+  | 'runBackgroundJob';
+
+type RetryDb = Database.Database;
+type RetryQueueItem = ReturnType<typeof mod.getRetryQueue>[number];
+type FailedEmbeddingItem = ReturnType<typeof mod.getFailedEmbeddings>[number];
+type RetryContentLoader = NonNullable<Parameters<typeof mod.processRetryQueue>[1]>;
+type EmbeddingStatus = RetryQueueItem['embedding_status'];
 
 describe('retry-manager [deferred - requires DB test fixtures]', () => {
 
@@ -18,7 +37,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
 
   describe('1. Module Exports', () => {
     it('T01: All 11 function exports are functions', () => {
-      const functionExports = [
+      const functionExports: RetryFunctionExportName[] = [
         'getRetryQueue', 'getFailedEmbeddings', 'getRetryStats',
         'retryEmbedding', 'markAsFailed', 'resetForRetry',
         'processRetryQueue', 'startBackgroundJob', 'stopBackgroundJob',
@@ -160,32 +179,40 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
   // ═══════════════════════════════════════════════════════════
 
   describe('4. DB-Dependent Tests', () => {
-    let db: any;
+    let db: RetryDb | null = null;
     let testDbPath: string | null = null;
+
+    function getDbOrThrow(): RetryDb {
+      if (!db) {
+        throw new Error('Test database was not initialized');
+      }
+      return db;
+    }
 
     function insertTestMemory(
       id: number,
       filePath: string,
-      status: string = 'pending',
+      status: EmbeddingStatus = 'pending',
       retryCount: number = 0,
       lastRetryAt: string | null = null,
       failureReason: string | null = null,
     ) {
       const now = new Date().toISOString();
+      const activeDb = getDbOrThrow();
       try {
-        db.prepare(`
+        activeDb.prepare(`
           INSERT OR REPLACE INTO memory_index
             (id, spec_folder, file_path, title, created_at, updated_at,
              embedding_status, retry_count, last_retry_at, failure_reason,
              importance_weight, importance_tier)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `).run(
-          id, 'test/spec', filePath, `Test Memory ${id}`,
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         `).run(
+           id, 'test/spec', filePath, `Test Memory ${id}`,
           now, now, status, retryCount, lastRetryAt, failureReason,
-          0.5, 'normal',
-        );
+           0.5, 'normal',
+         );
       } catch (_error: unknown) {
-        db.prepare(`
+        activeDb.prepare(`
           UPDATE memory_index
           SET embedding_status = ?, retry_count = ?, last_retry_at = ?,
               failure_reason = ?, updated_at = ?
@@ -195,8 +222,9 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
     }
 
     function clearTestMemories() {
+      const activeDb = getDbOrThrow();
       try {
-        db.prepare("DELETE FROM memory_index WHERE spec_folder = 'test/spec'").run();
+        activeDb.prepare("DELETE FROM memory_index WHERE spec_folder = 'test/spec'").run();
       } catch { /* table might not exist yet */ }
     }
 
@@ -204,7 +232,11 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       if (!vectorIndex || typeof vectorIndex.initializeDb !== 'function') return;
       if (!db) {
         testDbPath = path.join(os.tmpdir(), `retry-mgr-test-${Date.now()}.sqlite`);
-        db = vectorIndex.initializeDb(testDbPath);
+        const initializedDb = vectorIndex.initializeDb(testDbPath);
+        if (!initializedDb) {
+          throw new Error('Failed to initialize retry-manager test database');
+        }
+        db = initializedDb;
       }
       if (db) clearTestMemories();
     });
@@ -273,7 +305,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(2002, '/tmp/pending2.md', 'pending');
 
         const queue = mod.getRetryQueue(10);
-        const testIds = queue.map((r: any) => r.id);
+        const testIds = queue.map((r) => r.id);
         expect(testIds).toContain(2001);
         expect(testIds).toContain(2002);
       });
@@ -283,7 +315,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(2011, '/tmp/ok.md', 'pending', 0);
 
         const queue = mod.getRetryQueue(10);
-        const ids = queue.map((r: any) => r.id);
+        const ids = queue.map((r) => r.id);
         expect(ids).not.toContain(2010);
         expect(ids).toContain(2011);
       });
@@ -304,8 +336,8 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
 
         const queue = mod.getRetryQueue(10);
         if (queue.length >= 2) {
-          const pendingIdx = queue.findIndex((r: any) => r.id === 2031);
-          const retryIdx = queue.findIndex((r: any) => r.id === 2030);
+          const pendingIdx = queue.findIndex((r) => r.id === 2031);
+          const retryIdx = queue.findIndex((r) => r.id === 2030);
           if (pendingIdx >= 0 && retryIdx >= 0) {
             expect(pendingIdx).toBeLessThan(retryIdx);
           }
@@ -320,7 +352,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(2041, '/tmp/old_retry.md', 'retry', 1, oldRetry);
 
         const queue = mod.getRetryQueue(10);
-        const ids = queue.map((r: any) => r.id);
+        const ids = queue.map((r) => r.id);
         expect(ids).not.toContain(2040);
         expect(ids).toContain(2041);
       });
@@ -346,7 +378,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(3002, '/tmp/success1.md', 'success');
 
         const failed = mod.getFailedEmbeddings();
-        const ids = failed.map((r: any) => r.id);
+        const ids = failed.map((r) => r.id);
         expect(ids).toContain(3001);
         expect(ids).not.toContain(3002);
       });
@@ -354,7 +386,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       it('T36: getFailedEmbeddings() preserves failure_reason', () => {
         insertTestMemory(3001, '/tmp/failed1.md', 'failed', 3, null, 'Test failure reason');
         const failed = mod.getFailedEmbeddings();
-        const item = failed.find((r: any) => r.id === 3001);
+        const item = failed.find((r) => r.id === 3001);
         if (item) {
           expect(item.failure_reason).toBe('Test failure reason');
         }
@@ -371,7 +403,8 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
 
         mod.markAsFailed(4001, 'Intentional test failure');
 
-        const row = db.prepare('SELECT embedding_status, failure_reason FROM memory_index WHERE id = ?').get(4001) as {
+        const activeDb = getDbOrThrow();
+        const row = activeDb.prepare('SELECT embedding_status, failure_reason FROM memory_index WHERE id = ?').get(4001) as {
           embedding_status: string;
           failure_reason: string | null;
         };
@@ -386,11 +419,12 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       it('T39: markAsFailed() updates updated_at timestamp', () => {
         const oldDate = '2020-01-01T00:00:00.000Z';
         insertTestMemory(4010, '/tmp/timestamp.md', 'pending');
-        db.prepare("UPDATE memory_index SET updated_at = ? WHERE id = ?").run(oldDate, 4010);
+        const activeDb = getDbOrThrow();
+        activeDb.prepare("UPDATE memory_index SET updated_at = ? WHERE id = ?").run(oldDate, 4010);
 
         mod.markAsFailed(4010, 'Testing timestamp');
 
-        const row = db.prepare('SELECT updated_at FROM memory_index WHERE id = ?').get(4010) as {
+        const row = activeDb.prepare('SELECT updated_at FROM memory_index WHERE id = ?').get(4010) as {
           updated_at: string;
         };
         expect(row.updated_at).not.toBe(oldDate);
@@ -408,7 +442,8 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         const result = mod.resetForRetry(5001);
         expect(result).toBe(true);
 
-        const row = db.prepare('SELECT embedding_status, retry_count, last_retry_at, failure_reason FROM memory_index WHERE id = ?').get(5001) as {
+        const activeDb = getDbOrThrow();
+        const row = activeDb.prepare('SELECT embedding_status, retry_count, last_retry_at, failure_reason FROM memory_index WHERE id = ?').get(5001) as {
           embedding_status: string;
           retry_count: number;
           last_retry_at: string | null;
@@ -486,7 +521,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(7001, '/tmp/withloader.md', 'pending');
 
         let loaderCalled = false;
-        const contentLoader = async (memory: any): Promise<string | null> => {
+        const contentLoader: RetryContentLoader = async (_memory: RetryQueueItem): Promise<string | null> => {
           loaderCalled = true;
           return null;
         };
@@ -506,6 +541,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       it('T49: runBackgroundJob() with empty queue reports empty', async () => {
         // Mock getDb to return null so getRetryStats() reports an empty queue,
         // avoiding interference from the real production database.
+        // @ts-expect-error testing runtime null-db fallback despite non-null typing
         const spy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(null);
         try {
           const result = await mod.runBackgroundJob(5);
@@ -537,7 +573,8 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         mod.markAsFailed(8001, 'First failure');
         mod.markAsFailed(8001, 'Second failure');
 
-        const row = db.prepare('SELECT failure_reason FROM memory_index WHERE id = ?').get(8001) as {
+        const activeDb = getDbOrThrow();
+        const row = activeDb.prepare('SELECT failure_reason FROM memory_index WHERE id = ?').get(8001) as {
           failure_reason: string | null;
         };
         expect(row.failure_reason).toBe('Second failure');
@@ -549,13 +586,14 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         const resetResult = mod.resetForRetry(8010);
         expect(resetResult).toBe(true);
 
-        const row1 = db.prepare('SELECT embedding_status FROM memory_index WHERE id = ?').get(8010) as {
+        const activeDb = getDbOrThrow();
+        const row1 = activeDb.prepare('SELECT embedding_status FROM memory_index WHERE id = ?').get(8010) as {
           embedding_status: string;
         };
         expect(row1.embedding_status).toBe('retry');
 
         mod.markAsFailed(8010, 'failed again');
-        const row2 = db.prepare('SELECT embedding_status FROM memory_index WHERE id = ?').get(8010) as {
+        const row2 = activeDb.prepare('SELECT embedding_status FROM memory_index WHERE id = ?').get(8010) as {
           embedding_status: string;
         };
         expect(row2.embedding_status).toBe('failed');
@@ -567,7 +605,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(8022, '/tmp/pending_item.md', 'pending');
 
         const queue = mod.getRetryQueue(10);
-        const ids = queue.map((r: any) => r.id);
+        const ids = queue.map((r) => r.id);
         expect(ids).not.toContain(8020);
         expect(ids).not.toContain(8021);
         expect(ids).toContain(8022);
@@ -588,7 +626,7 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
         insertTestMemory(8040, '/tmp/fields.md', 'pending');
 
         const queue = mod.getRetryQueue(10);
-        const item = queue.find((r: any) => r.id === 8040);
+        const item = queue.find((r) => r.id === 8040);
         if (item) {
           expect(typeof item.id).toBe('number');
           expect(typeof item.file_path).toBe('string');

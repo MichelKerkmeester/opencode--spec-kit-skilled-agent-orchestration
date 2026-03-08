@@ -1,9 +1,9 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: BM25 SECURITY
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
+import type BetterSqlite3 from 'better-sqlite3';
 import {
   BM25Index,
   sanitizeFTS5Query,
@@ -12,6 +12,8 @@ import {
   getIndex,
   resetIndex,
 } from '../lib/search/bm25-index';
+
+type BetterSqliteDatabase = InstanceType<typeof BetterSqlite3>;
 
 describe('BM25 Security & Coverage Gap Tests', () => {
   /* ═══════════════════════════════════════════════════════════
@@ -344,7 +346,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
       const mockDb = {
         prepare: () => { throw new Error('Database is locked'); },
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       expect(count).toBe(0);
     });
 
@@ -354,7 +356,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
       const mockDb = {
         prepare: () => ({ all: () => [] }),
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       const stats = index.getStats();
       expect(count).toBe(0);
       expect(stats.documentCount).toBe(0);
@@ -370,7 +372,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
           ],
         }),
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       const stats = index.getStats();
       expect(count).toBe(2);
       expect(stats.documentCount).toBe(2);
@@ -386,7 +388,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
           ],
         }),
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       const stats = index.getStats();
       expect(count).toBe(2);
       expect(stats.documentCount).toBe(2);
@@ -403,7 +405,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
           ],
         }),
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       const stats = index.getStats();
       expect(count).toBe(3);
       expect(stats.documentCount).toBe(1);
@@ -420,7 +422,7 @@ describe('BM25 Security & Coverage Gap Tests', () => {
           ],
         }),
       };
-      const count = index.rebuildFromDatabase(mockDb);
+      const count = index.rebuildFromDatabase(mockDb as unknown as BetterSqliteDatabase);
       const stats = index.getStats();
       expect(count).toBe(1);
       expect(stats.documentCount).toBe(1);

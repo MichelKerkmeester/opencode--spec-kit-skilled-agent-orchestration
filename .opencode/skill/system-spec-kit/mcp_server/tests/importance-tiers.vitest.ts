@@ -1,6 +1,7 @@
-// @ts-nocheck
 import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/scoring/importance-tiers';
+
+type ImportanceTier = keyof typeof mod.IMPORTANCE_TIERS;
 
 // ---------------------------------------------------------------
 // TEST: IMPORTANCE TIERS
@@ -14,7 +15,7 @@ describe('Importance Tiers (T504)', () => {
   // 4.1 TIER RECOGNITION (T504-01)
   describe('Tier Recognition (T504-01)', () => {
     it('T504-01: All 6 tiers recognized', () => {
-      const expectedTiers = ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'];
+      const expectedTiers: ImportanceTier[] = ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'];
       const allPresent = expectedTiers.every(t => mod.IMPORTANCE_TIERS[t] !== undefined);
       const tierCount = Object.keys(mod.IMPORTANCE_TIERS).length;
 
@@ -51,7 +52,7 @@ describe('Importance Tiers (T504)', () => {
   // 4.3 TIER BOOST VALUES (T504-03)
   describe('Tier Boost Values (T504-03)', () => {
     it('T504-03: Tier boost values are correct', () => {
-      const expectedBoosts = {
+      const expectedBoosts: Record<ImportanceTier, number> = {
         constitutional: 3.0,
         critical: 2.0,
         important: 1.5,
@@ -60,7 +61,7 @@ describe('Importance Tiers (T504)', () => {
         deprecated: 0.0,
       };
 
-      for (const [tier, expectedBoost] of Object.entries(expectedBoosts)) {
+      for (const [tier, expectedBoost] of Object.entries(expectedBoosts) as Array<[ImportanceTier, number]>) {
         const config = mod.IMPORTANCE_TIERS[tier];
         expect(config).toBeDefined();
         expect(config.searchBoost).toBe(expectedBoost);
@@ -100,7 +101,7 @@ describe('Importance Tiers (T504)', () => {
   // 4.5 TIER STRING NORMALIZATION (T504-05)
   describe('Tier String Normalization (T504-05)', () => {
     it('T504-05: Tier string normalization (case)', () => {
-      const tests = [
+      const tests: Array<{ input: string | null | undefined; expected: ImportanceTier }> = [
         { input: 'CRITICAL', expected: 'critical' },
         { input: 'Critical', expected: 'critical' },
         { input: 'NORMAL', expected: 'normal' },
@@ -120,7 +121,7 @@ describe('Importance Tiers (T504)', () => {
   // 4.6 TIER TRANSITIONS (T504-06)
   describe('Tier Transitions (T504-06)', () => {
     it('T504-06: Tier decay transitions work correctly', () => {
-      const decayExpectations = {
+      const decayExpectations: Record<ImportanceTier, boolean> = {
         constitutional: false,
         critical: false,
         important: false,
@@ -156,7 +157,7 @@ describe('Importance Tiers (T504)', () => {
   // 4.8 TIER VALUE AND MULTIPLIER (T504-08)
   describe('Tier Values (T504-08)', () => {
     it('T504-08: Tier value/multiplier values', () => {
-      const expectedValues = {
+      const expectedValues: Record<ImportanceTier, number> = {
         constitutional: 1.0,
         critical: 1.0,
         important: 0.8,
@@ -165,7 +166,7 @@ describe('Importance Tiers (T504)', () => {
         deprecated: 0.1,
       };
 
-      for (const [tier, expectedVal] of Object.entries(expectedValues)) {
+      for (const [tier, expectedVal] of Object.entries(expectedValues) as Array<[ImportanceTier, number]>) {
         const config = mod.IMPORTANCE_TIERS[tier];
         expect(config).toBeDefined();
         expect(config.value).toBe(expectedVal);

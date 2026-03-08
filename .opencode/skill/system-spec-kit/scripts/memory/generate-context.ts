@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: GenerateContext
+// MODULE: Generate Context
 // ---------------------------------------------------------------
 // CLI entry point -- parses arguments, validates spec folder, and runs the memory workflow
-// ---------------------------------------------------------------
 
 // Node stdlib
 import * as path from 'path';

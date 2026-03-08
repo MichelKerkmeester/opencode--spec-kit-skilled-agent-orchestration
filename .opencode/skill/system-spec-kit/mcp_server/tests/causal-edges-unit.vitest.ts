@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CAUSAL EDGES UNIT
 // ---------------------------------------------------------------
@@ -7,6 +6,10 @@ import { describe, it, expect, beforeEach, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
 import { clearDegreeCache, computeDegreeScores } from '../lib/search/graph-search-fn';
+
+type SqliteDatabase = InstanceType<typeof Database>;
+type CausalChainNode = ReturnType<typeof causalEdges.getCausalChain>;
+type OrphanedEdge = ReturnType<typeof causalEdges.findOrphanedEdges>[number];
 
 // ───────────────────────────────────────────────────────────────
 // TEST: CAUSAL EDGES UNIT (Vitest)
@@ -18,7 +21,7 @@ import { clearDegreeCache, computeDegreeScores } from '../lib/search/graph-searc
 // ───────────────────────────────────────────────────────────────
 
 /** DFS helper: collect all node IDs from a causal chain tree */
-function collectNodes(node: any): string[] {
+function collectNodes(node: CausalChainNode): string[] {
   const nodes: string[] = [node.id];
   for (const child of node.children) {
     nodes.push(...collectNodes(child));
@@ -27,7 +30,7 @@ function collectNodes(node: any): string[] {
 }
 
 describe('Causal Edges Unit Tests', () => {
-  let testDb: any;
+  let testDb: SqliteDatabase;
 
   function resetEdges() {
     testDb.exec('DELETE FROM causal_edges');
@@ -473,7 +476,7 @@ describe('Causal Edges Unit Tests', () => {
 
     beforeAll(() => {
       resetEdges();
-      edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.5, 'original');
+      edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.5, 'original')!;
     });
 
     it('UE1: Update strength succeeds', () => {
@@ -525,13 +528,13 @@ describe('Causal Edges Unit Tests', () => {
     });
 
     it('DE1: Delete existing edge returns true', () => {
-      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.9);
+      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.9)!;
       const ok = causalEdges.deleteEdge(edgeId);
       expect(ok).toBe(true);
     });
 
     it('DE2: Deleted edge no longer in DB', () => {
-      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.9);
+      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.9)!;
       causalEdges.deleteEdge(edgeId);
       const edges = causalEdges.getAllEdges();
       expect(edges).toHaveLength(0);
@@ -587,7 +590,7 @@ describe('Causal Edges Unit Tests', () => {
     });
 
     it('DC1: updateEdge invalidates cached degree scores', () => {
-      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.2);
+      const edgeId = causalEdges.insertEdge('1', '2', 'caused', 0.2)!;
       causalEdges.insertEdge('3', '4', 'caused', 1.0);
       const before = computeDegreeScores(testDb, [1]).get('1') ?? 0;
 
@@ -721,7 +724,7 @@ describe('Causal Edges Unit Tests', () => {
       causalEdges.insertEdge('1', '2', 'caused', 0.9);
       causalEdges.insertEdge('999', '1', 'supports', 0.5);
       const orphans = causalEdges.findOrphanedEdges();
-      const hasOrphan = orphans.some((e: any) => e.source_id === '999');
+      const hasOrphan = orphans.some((e: OrphanedEdge) => e.source_id === '999');
       expect(hasOrphan).toBe(true);
     });
 
@@ -729,7 +732,7 @@ describe('Causal Edges Unit Tests', () => {
       resetEdges();
       causalEdges.insertEdge('1', '888', 'contradicts', 0.5);
       const orphans = causalEdges.findOrphanedEdges();
-      const hasOrphan = orphans.some((e: any) => e.target_id === '888');
+      const hasOrphan = orphans.some((e: OrphanedEdge) => e.target_id === '888');
       expect(hasOrphan).toBe(true);
     });
 
@@ -754,6 +757,7 @@ describe('Causal Edges Unit Tests', () => {
   describe('Uninitialised DB Guards', () => {
     beforeAll(() => {
       // Simulate uninitialised state
+      // @ts-expect-error intentionally verifying uninitialised DB guards
       causalEdges.init(null);
     });
 

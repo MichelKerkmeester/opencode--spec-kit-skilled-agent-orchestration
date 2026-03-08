@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MEMORY CONTEXT
 // ---------------------------------------------------------------
@@ -29,6 +28,8 @@ interface ContextResult extends Record<string, unknown> {
   mode: string;
 }
 
+type MemoryContextArgs = Parameters<typeof handleMemoryContext>[0];
+
 /* -----------------------------------------------------------------
    TEST UTILITIES
 ------------------------------------------------------------------ */
@@ -51,6 +52,10 @@ function parseErrorEnvelope(result: MCPResponse): Record<string, unknown> {
     summary: envelope.summary as string | undefined,
     meta: envelope.meta as Record<string, unknown> | undefined,
   };
+}
+
+function invokeMemoryContext(args: Record<string, unknown>): Promise<MCPResponse> {
+  return handleMemoryContext(args as unknown as MemoryContextArgs);
 }
 
 /* -----------------------------------------------------------------
@@ -212,7 +217,7 @@ describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]',
   });
 
   it('T023: Returns error for null input', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: null });
+    const result: MCPResponse = await invokeMemoryContext({ input: null });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
@@ -252,7 +257,7 @@ describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]',
   });
 
   it('T030: Handles undefined input gracefully', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: undefined });
+    const result: MCPResponse = await invokeMemoryContext({ input: undefined });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
@@ -638,25 +643,25 @@ describe('T081-T090: L1 Orchestration Token Budget Tests [deferred - requires DB
 
 describe('T091-T100: Input Validation Tests [deferred - requires DB test fixtures]', () => {
   it('T091: Handles non-string input gracefully', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: 12345 });
+    const result: MCPResponse = await invokeMemoryContext({ input: 12345 });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
 
   it('T092: Handles array input gracefully', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: ['test', 'array'] });
+    const result: MCPResponse = await invokeMemoryContext({ input: ['test', 'array'] });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
 
   it('T093: Handles object input gracefully', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: { nested: 'object' } });
+    const result: MCPResponse = await invokeMemoryContext({ input: { nested: 'object' } });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
 
   it('T094: Handles boolean input gracefully', async () => {
-    const result: MCPResponse = await handleMemoryContext({ input: true });
+    const result: MCPResponse = await invokeMemoryContext({ input: true });
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });
@@ -694,7 +699,7 @@ describe('T091-T100: Input Validation Tests [deferred - requires DB test fixture
   });
 
   it('T100: Empty args object returns error', async () => {
-    const result: MCPResponse = await handleMemoryContext({});
+    const result: MCPResponse = await invokeMemoryContext({});
     const parsed = parseErrorEnvelope(result);
     expect(parsed.error).toBeDefined();
   });

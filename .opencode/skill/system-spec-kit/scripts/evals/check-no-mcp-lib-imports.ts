@@ -1,9 +1,8 @@
 // ---------------------------------------------------------------
-// MODULE: CheckNoMcpLibImports
+// MODULE: Check No MCP Lib Imports
 // ---------------------------------------------------------------
 // Scans scripts/ for prohibited internal runtime imports.
 // Violations not in the allowlist cause a non-zero exit.
-// ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';

@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: OpencodeCapture
+// MODULE: Opencode Capture
 // ---------------------------------------------------------------
 // Captures and parses OpenCode session data from JSONL conversation logs
-// ---------------------------------------------------------------
 
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';

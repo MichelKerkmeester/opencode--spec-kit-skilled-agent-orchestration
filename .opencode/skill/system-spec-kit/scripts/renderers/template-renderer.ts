@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: TemplateRenderer
+// MODULE: Template Renderer
 // ---------------------------------------------------------------
 // Mustache-based template engine — renders memory files from collected session data
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. IMPORTS
-// ---------------------------------------------------------------
 
 import fs from 'fs/promises';
 import path from 'path';

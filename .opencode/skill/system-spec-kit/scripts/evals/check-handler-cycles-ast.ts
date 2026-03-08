@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: CheckHandlerCyclesAst
+// MODULE: Check Handler Cycles AST
 // ---------------------------------------------------------------
 // Detects circular import/re-export dependencies in mcp_server/handlers.
-// ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';

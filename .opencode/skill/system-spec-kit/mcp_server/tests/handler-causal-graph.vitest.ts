@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER CAUSAL GRAPH
 // ---------------------------------------------------------------
@@ -6,9 +5,25 @@
 import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/causal-graph';
 
+type HandlerExportName = keyof typeof handler;
+
+function invalidArgs<T>(value: unknown): T {
+  return value as T;
+}
+
+function expectErrorMessage(
+  error: unknown,
+  matcher: (message: string) => boolean = () => true,
+): void {
+  expect(error).toBeInstanceOf(Error);
+  if (error instanceof Error) {
+    expect(matcher(error.message)).toBe(true);
+  }
+}
+
 describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
-    const expectedExports = [
+    const expectedExports: HandlerExportName[] = [
       'handleMemoryDriftWhy',
       'handleMemoryCausalLink',
       'handleMemoryCausalStats',
@@ -22,7 +37,7 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
     }
 
     it('T523-export-aliases: All snake_case aliases', () => {
-      const aliases = [
+      const aliases: HandlerExportName[] = [
         'handle_memory_drift_why',
         'handle_memory_causal_link',
         'handle_memory_causal_stats',
@@ -37,7 +52,9 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
 
   describe('handleMemoryDriftWhy Validation', () => {
     it('T523-DW1: Missing memoryId returns error response', async () => {
-      const result = await handler.handleMemoryDriftWhy({});
+      const result = await handler.handleMemoryDriftWhy(
+        invalidArgs<Parameters<typeof handler.handleMemoryDriftWhy>[0]>({}),
+      );
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       expect(result.content.length).toBeGreaterThan(0);
@@ -58,14 +75,16 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
         expect(parsed.data || parsed.summary).toBeTruthy();
       } catch (error: unknown) {
         // DB required — acceptable
-        expect(
-          error.message.includes('database') || error.message.includes('getDb')
-        ).toBe(true);
+        expectErrorMessage(error, (message) =>
+          message.includes('database') || message.includes('getDb'),
+        );
       }
     });
 
     it('T523-DW3: Null memoryId returns error', async () => {
-      const result = await handler.handleMemoryDriftWhy({ memoryId: null });
+      const result = await handler.handleMemoryDriftWhy(
+        invalidArgs<Parameters<typeof handler.handleMemoryDriftWhy>[0]>({ memoryId: null }),
+      );
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       const parsed = JSON.parse(result.content[0].text);
@@ -76,23 +95,27 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
   describe('handleMemoryCausalLink Validation', () => {
     it('T523-CL1: Missing params returns error', async () => {
       try {
-        const result = await handler.handleMemoryCausalLink({});
+        const result = await handler.handleMemoryCausalLink(
+          invalidArgs<Parameters<typeof handler.handleMemoryCausalLink>[0]>({}),
+        );
         if (result && result.content) {
           const parsed = JSON.parse(result.content[0].text);
           expect(parsed.data && parsed.data.error).toBeTruthy();
         }
       } catch (error: unknown) {
         // Any error thrown means handler rejected invalid input
-        expect(error.message).toBeDefined();
+        expectErrorMessage(error);
       }
     });
 
     it('T523-CL2: Missing sourceId listed in error', async () => {
       try {
-        const result = await handler.handleMemoryCausalLink({
-          targetId: '2',
-          relation: 'caused',
-        });
+        const result = await handler.handleMemoryCausalLink(
+          invalidArgs<Parameters<typeof handler.handleMemoryCausalLink>[0]>({
+            targetId: '2',
+            relation: 'caused',
+          }),
+        );
         if (result && result.content) {
           const parsed = JSON.parse(result.content[0].text);
           const sourceIdMentioned =
@@ -102,16 +125,18 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
         }
       } catch (error: unknown) {
         // Handler rejected invalid input
-        expect(error.message).toBeDefined();
+        expectErrorMessage(error);
       }
     });
 
     it('T523-CL3: Missing relation listed in error', async () => {
       try {
-        const result = await handler.handleMemoryCausalLink({
-          sourceId: '1',
-          targetId: '2',
-        });
+        const result = await handler.handleMemoryCausalLink(
+          invalidArgs<Parameters<typeof handler.handleMemoryCausalLink>[0]>({
+            sourceId: '1',
+            targetId: '2',
+          }),
+        );
         if (result && result.content) {
           const parsed = JSON.parse(result.content[0].text);
           const relationMentioned =
@@ -120,13 +145,15 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
           expect(relationMentioned).toBe(true);
         }
       } catch (error: unknown) {
-        expect(error.message).toBeDefined();
+        expectErrorMessage(error);
       }
     });
 
     it('T523-CL4: Error includes validRelations', async () => {
       try {
-        const result = await handler.handleMemoryCausalLink({});
+        const result = await handler.handleMemoryCausalLink(
+          invalidArgs<Parameters<typeof handler.handleMemoryCausalLink>[0]>({}),
+        );
         if (result && result.content) {
           const parsed = JSON.parse(result.content[0].text);
           if (parsed.data?.details?.validRelations) {
@@ -137,14 +164,16 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
         }
       } catch (error: unknown) {
         // Handler rejected invalid input
-        expect(error.message).toBeDefined();
+        expectErrorMessage(error);
       }
     });
   });
 
   describe('handleMemoryCausalUnlink Validation', () => {
     it('T523-UL1: Missing edgeId returns error', async () => {
-      const result = await handler.handleMemoryCausalUnlink({});
+      const result = await handler.handleMemoryCausalUnlink(
+        invalidArgs<Parameters<typeof handler.handleMemoryCausalUnlink>[0]>({}),
+      );
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       const parsed = JSON.parse(result.content[0].text);
@@ -152,7 +181,9 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
     });
 
     it('T523-UL2: Null edgeId returns error', async () => {
-      const result = await handler.handleMemoryCausalUnlink({ edgeId: null });
+      const result = await handler.handleMemoryCausalUnlink(
+        invalidArgs<Parameters<typeof handler.handleMemoryCausalUnlink>[0]>({ edgeId: null }),
+      );
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       const parsed = JSON.parse(result.content[0].text);
@@ -171,23 +202,27 @@ describe('Handler Causal Graph (T523) [deferred - requires DB test fixtures]', (
         expect(parsed.data || parsed.summary).toBeTruthy();
       } catch (error: unknown) {
         // DB required — acceptable
-        expect(
-          error.message.includes('database') || error.message.includes('getDb')
-        ).toBe(true);
+        expectErrorMessage(error, (message) =>
+          message.includes('database') || message.includes('getDb'),
+        );
       }
     });
   });
 
   describe('MCP Response Format', () => {
     it('T523-MCP1: content[0].type is text', async () => {
-      const result = await handler.handleMemoryDriftWhy({});
+      const result = await handler.handleMemoryDriftWhy(
+        invalidArgs<Parameters<typeof handler.handleMemoryDriftWhy>[0]>({}),
+      );
       expect(result).toBeDefined();
       expect(result.content).toBeDefined();
       expect(result.content[0].type).toBe('text');
     });
 
     it('T523-MCP2: content[0].text is valid JSON', async () => {
-      const result = await handler.handleMemoryDriftWhy({});
+      const result = await handler.handleMemoryDriftWhy(
+        invalidArgs<Parameters<typeof handler.handleMemoryDriftWhy>[0]>({}),
+      );
       const parsed = JSON.parse(result.content[0].text);
       expect(typeof parsed).toBe('object');
     });

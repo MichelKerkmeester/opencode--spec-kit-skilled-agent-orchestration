@@ -1,9 +1,8 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: ACCESS TRACKER EXTENDED
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/access-tracker';
 
@@ -17,10 +16,23 @@ import * as mod from '../lib/storage/access-tracker';
      reset               — flushes pending accumulators before clearing
 ──────────────────────────────────────────────────────────────── */
 
-let testDb: any = null;
+type TestDatabase = Database.Database;
+type AccessRow = {
+  access_count: number;
+  last_accessed: string | null;
+};
+
+let testDb: TestDatabase | null = null;
+
+function requireTestDb(): TestDatabase {
+  if (!testDb) {
+    throw new Error('Test database not initialized');
+  }
+  return testDb;
+}
 
 /** Create an in-memory DB with the memory_index table and N seed rows. */
-function createDb(rowCount = 10): any {
+function createDb(rowCount = 10): TestDatabase {
   const db = new Database(':memory:');
   db.exec(`
     CREATE TABLE IF NOT EXISTS memory_index (
@@ -70,7 +82,7 @@ describe('Access Tracker Extended', () => {
       mod.init(testDb);
 
       const result = mod.flushAccessCounts(1);
-      const row = testDb.prepare('SELECT access_count, last_accessed FROM memory_index WHERE id = 1').get();
+      const row = requireTestDb().prepare('SELECT access_count, last_accessed FROM memory_index WHERE id = 1').get() as AccessRow;
       expect(result).toBe(true);
       expect(row.access_count).toBe(1);
       expect(row.last_accessed).not.toBeNull();
@@ -83,7 +95,7 @@ describe('Access Tracker Extended', () => {
       mod.flushAccessCounts(1);
       mod.flushAccessCounts(1);
       mod.flushAccessCounts(1);
-      const row = testDb.prepare('SELECT access_count FROM memory_index WHERE id = 1').get();
+      const row = requireTestDb().prepare('SELECT access_count FROM memory_index WHERE id = 1').get() as Pick<AccessRow, 'access_count'>;
       expect(row.access_count).toBe(3);
     });
 
@@ -226,7 +238,7 @@ describe('Access Tracker Extended', () => {
       mod.reset();
       mod.init(testDb);
 
-      const row = testDb.prepare('SELECT access_count FROM memory_index WHERE id = 2').get();
+      const row = requireTestDb().prepare('SELECT access_count FROM memory_index WHERE id = 2').get() as Pick<AccessRow, 'access_count'>;
       expect(row.access_count).toBeGreaterThanOrEqual(1);
     });
 

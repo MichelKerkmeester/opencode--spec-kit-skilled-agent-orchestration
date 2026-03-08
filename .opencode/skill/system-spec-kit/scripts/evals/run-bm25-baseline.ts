@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: RunBm25Baseline
+// MODULE: Run BM25 Baseline
 // ---------------------------------------------------------------
 //
 // Sprint 0 closure: Execute the BM25-only baseline against the
@@ -15,7 +15,6 @@
 //   - Prints metrics, contingency decision, and bootstrap CI
 //   - Records results to speckit-eval.db (eval_metric_snapshots)
 //   - Writes full result JSON to /tmp/bm25-baseline-result.json
-// ---------------------------------------------------------------
 
 import Database from 'better-sqlite3';
 import * as path from 'path';

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: ImportPolicyRules
+// MODULE: Import Policy Rules
 // ---------------------------------------------------------------
 // Shared detection rules for prohibited scripts -> internal runtime imports.
 

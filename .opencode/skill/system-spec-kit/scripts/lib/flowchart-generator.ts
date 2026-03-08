@@ -1,15 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: FlowchartGenerator
-// ---------------------------------------------------------------
-/**
- * @file flowchart-generator.ts
- * @description Generates ASCII flowcharts from workflow steps, tool calls, and conversation phases.
- * @module scripts/lib/flowchart-generator
- */
-
-// ---------------------------------------------------------------
 // MODULE: Flowchart Generator
-// Generates ASCII flowcharts from workflow steps, tool calls, and conversation phases
 // ---------------------------------------------------------------
 
 // ---------------------------------------------------------------

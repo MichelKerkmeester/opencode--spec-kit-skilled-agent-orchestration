@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MEMORY TYPES
 // ---------------------------------------------------------------
@@ -6,13 +5,29 @@
 import { describe, it, expect } from 'vitest';
 import { MEMORY_TYPES, HALF_LIVES_DAYS } from '../lib/config/memory-types';
 import { inferTypeFromPath, extractExplicitType, inferTypeFromTier, inferTypeFromKeywords, inferMemoryType } from '../lib/config/type-inference';
+import type { MemoryTypeName } from '../lib/config/memory-types';
+
+interface PathInferenceCase {
+  path: string;
+  expected: MemoryTypeName;
+}
+
+interface ContentInferenceCase {
+  content: string;
+  expected: MemoryTypeName;
+}
+
+interface KeywordInferenceCase {
+  title: string;
+  expected: MemoryTypeName;
+}
 
 describe('Memory Types Tests (T068-T082)', () => {
 
   describe('Memory Types Structure - T068', () => {
     it('T068: MEMORY_TYPES contains 9 types', () => {
       const types = Object.keys(MEMORY_TYPES);
-      const expectedTypes = [
+      const expectedTypes: readonly MemoryTypeName[] = [
         'working',
         'episodic',
         'prospective',
@@ -83,7 +98,7 @@ describe('Memory Types Tests (T068-T082)', () => {
 
   describe('Type Inference - T078-T082', () => {
     it('T078: Type inference from file path patterns', () => {
-      const pathTests = [
+      const pathTests: readonly PathInferenceCase[] = [
         { path: '/project/scratch/temp-notes.md', expected: 'working' },
         { path: '/project/session-1-summary.md', expected: 'episodic' },
         { path: '/project/debug-log.md', expected: 'episodic' },
@@ -108,7 +123,7 @@ describe('Memory Types Tests (T068-T082)', () => {
     });
 
     it('T079: Type inference from frontmatter', () => {
-      const frontmatterTests = [
+      const frontmatterTests: readonly ContentInferenceCase[] = [
         { content: '---\nmemory_type: episodic\n---\n# Test', expected: 'episodic' },
         { content: '---\nmemoryType: procedural\n---\n# Test', expected: 'procedural' },
         { content: '---\nmemory_type: "semantic"\n---\n# Test', expected: 'semantic' },
@@ -121,7 +136,7 @@ describe('Memory Types Tests (T068-T082)', () => {
     });
 
     it('T080: Type inference from importance_tier mapping', () => {
-      const tierTests = [
+      const tierTests: readonly ContentInferenceCase[] = [
         { content: '---\nimportance_tier: constitutional\n---', expected: 'meta-cognitive' },
         { content: '---\nimportanceTier: critical\n---', expected: 'semantic' },
         { content: '---\nimportance_tier: important\n---', expected: 'declarative' },
@@ -138,7 +153,7 @@ describe('Memory Types Tests (T068-T082)', () => {
     });
 
     it('T081: Type inference from keywords in title', () => {
-      const keywordTests = [
+      const keywordTests: readonly KeywordInferenceCase[] = [
         { title: 'Session Summary for Jan 15', expected: 'episodic' },
         { title: 'Debug session notes', expected: 'episodic' },
         { title: 'TODO: Fix bug in nav', expected: 'prospective' },

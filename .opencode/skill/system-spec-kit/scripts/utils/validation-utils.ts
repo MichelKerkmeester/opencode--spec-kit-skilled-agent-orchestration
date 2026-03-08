@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: ValidationUtils
+// MODULE: Validation Utils
 // ---------------------------------------------------------------
 // Validates rendered output — detects leaked Mustache placeholders and empty sections
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. PLACEHOLDER VALIDATION
-// ---------------------------------------------------------------
 
 function validateNoLeakedPlaceholders(content: string, filename: string): void {
   const leaked: RegExpMatchArray | null = content.match(/\{\{[A-Z_]+\}\}/g);

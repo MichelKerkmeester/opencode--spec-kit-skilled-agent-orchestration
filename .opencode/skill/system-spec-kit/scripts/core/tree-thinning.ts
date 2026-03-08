@@ -1,12 +1,11 @@
 // ---------------------------------------------------------------
-// MODULE: TreeThinning
+// MODULE: Tree Thinning
 // ---------------------------------------------------------------
 // Bottom-up merging of small files during spec folder context
 // loading to reduce token overhead before the retrieval pipeline starts.
 //
 // This operates PRE-PIPELINE (context loading step) and does NOT affect
 // pipeline stages or scoring.
-// ---------------------------------------------------------------
 
 /* -----------------------------------------------------------------
    1. INTERFACES

@@ -1,15 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: SimulationFactory
-// ---------------------------------------------------------------
-/**
- * @file simulation-factory.ts
- * @description Generates placeholder/simulation data when real session data is unavailable.
- * @module scripts/lib/simulation-factory
- */
-
-// ---------------------------------------------------------------
 // MODULE: Simulation Factory
-// Generates placeholder/simulation data when real session data is unavailable
 // ---------------------------------------------------------------
 
 import crypto from 'crypto';

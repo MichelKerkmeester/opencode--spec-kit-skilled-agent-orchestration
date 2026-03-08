@@ -1,13 +1,29 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER SESSION LEARNING
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/session-learning';
-import { MemoryError, ErrorCodes } from '../lib/errors/index';
+
+function hasErrorCode(error: unknown, code: string): boolean {
+  return typeof error === 'object'
+    && error !== null
+    && 'code' in error
+    && (error as { code?: unknown }).code === code;
+}
+
+function hasErrorMessage(error: unknown, fragment: string): boolean {
+  if (error instanceof Error) {
+    return error.message.includes(fragment);
+  }
+  return typeof error === 'object'
+    && error !== null
+    && 'message' in error
+    && typeof (error as { message?: unknown }).message === 'string'
+    && (error as { message: string }).message.includes(fragment);
+}
 
 describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]', () => {
   // -------------------------------------------------------------
@@ -19,7 +35,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
       'handleTaskPostflight',
       'handleGetLearningHistory',
       'ensureSchema',
-    ];
+    ] as const satisfies ReadonlyArray<keyof typeof handler>;
 
     for (const name of expectedExports) {
       it(`T522-export: ${name} exported`, () => {
@@ -33,7 +49,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         'handle_task_postflight',
         'handle_get_learning_history',
         'ensure_schema',
-      ];
+      ] as const satisfies ReadonlyArray<keyof typeof handler>;
 
       for (const alias of aliases) {
         expect(typeof handler[alias]).toBe('function');
@@ -47,6 +63,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
   describe('handleTaskPreflight Validation', () => {
     it('T522-P1: Missing specFolder throws MemoryError', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without specFolder.
         await handler.handleTaskPreflight({
           taskId: 'test-task',
           knowledgeScore: 50,
@@ -56,13 +73,14 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('specFolder'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'specFolder')
         ).toBe(true);
       }
     });
 
     it('T522-P2: Missing taskId throws MemoryError', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without taskId.
         await handler.handleTaskPreflight({
           specFolder: 'specs/test',
           knowledgeScore: 50,
@@ -72,13 +90,14 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('taskId'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'taskId')
         ).toBe(true);
       }
     });
 
     it('T522-P3: Missing knowledgeScore throws MemoryError', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without knowledgeScore.
         await handler.handleTaskPreflight({
           specFolder: 'specs/test',
           taskId: 'test-task',
@@ -88,7 +107,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('knowledgeScore'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'knowledgeScore')
         ).toBe(true);
       }
     });
@@ -105,7 +124,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('0 and 100'))
+          hasErrorCode(error, 'E030') || hasErrorMessage(error, '0 and 100')
         ).toBe(true);
       }
     });
@@ -122,7 +141,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('0 and 100'))
+          hasErrorCode(error, 'E030') || hasErrorMessage(error, '0 and 100')
         ).toBe(true);
       }
     });
@@ -134,6 +153,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
   describe('handleTaskPostflight Validation', () => {
     it('T522-PF1: Missing specFolder throws', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without specFolder.
         await handler.handleTaskPostflight({
           taskId: 'test-task',
           knowledgeScore: 70,
@@ -143,13 +163,14 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('specFolder'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'specFolder')
         ).toBe(true);
       }
     });
 
     it('T522-PF2: Missing taskId throws', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without taskId.
         await handler.handleTaskPostflight({
           specFolder: 'specs/test',
           knowledgeScore: 70,
@@ -159,7 +180,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('taskId'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'taskId')
         ).toBe(true);
       }
     });
@@ -176,7 +197,7 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E030' || (error.message && error.message.includes('0 and 100'))
+          hasErrorCode(error, 'E030') || hasErrorMessage(error, '0 and 100')
         ).toBe(true);
       }
     });
@@ -188,11 +209,12 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
   describe('handleGetLearningHistory Validation', () => {
     it('T522-H1: Missing specFolder throws', async () => {
       try {
+        // @ts-expect-error Intentional invalid runtime-validation input without specFolder.
         await handler.handleGetLearningHistory({});
         expect.unreachable('No error thrown');
       } catch (error: unknown) {
         expect(
-          error.code === 'E031' || (error.message && error.message.includes('specFolder'))
+          hasErrorCode(error, 'E031') || hasErrorMessage(error, 'specFolder')
         ).toBe(true);
       }
     });

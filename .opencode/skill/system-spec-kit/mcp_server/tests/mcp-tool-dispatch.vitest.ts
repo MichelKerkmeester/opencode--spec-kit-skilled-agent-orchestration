@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MCP TOOL DISPATCH
 // ---------------------------------------------------------------
@@ -60,6 +59,19 @@ const SNAKE_CASE_MAP: Array<{ camel: string; snake: string }> = [
   { camel: 'handleMemoryContext', snake: 'handle_memory_context' },
 ];
 
+type ToolHandler = (args: Record<string, unknown>) => unknown;
+
+const handlerExports = handlers as Record<string, unknown>;
+
+function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'then' in value &&
+    typeof (value as { then?: unknown }).then === 'function'
+  );
+}
+
 describe('MCP Protocol Tool Dispatch (T533) [deferred - requires DB test fixtures]', () => {
 
   describe('Tool Dispatch Verification (24 tools)', () => {
@@ -67,7 +79,7 @@ describe('MCP Protocol Tool Dispatch (T533) [deferred - requires DB test fixture
       const testNum = i + 1;
 
       it(`T533-${testNum}: ${entry.tool} dispatches to ${entry.handler}`, async () => {
-        const handlerFn = handlers[entry.handler];
+        const handlerFn = handlerExports[entry.handler];
 
         // Handler exists as export
         expect(handlerFn).toBeDefined();
@@ -76,18 +88,20 @@ describe('MCP Protocol Tool Dispatch (T533) [deferred - requires DB test fixture
         expect(typeof handlerFn).toBe('function');
 
         // Verify it's callable (async or sync)
-        try {
-          const result = handlerFn({});
-          if (result && typeof result.then === 'function') {
-            // It's a promise — catch any rejection from invalid args
-            try {
-              await result;
-            } catch (_: unknown) {
-              // Expected: invalid args cause errors. That's fine.
+        if (typeof handlerFn === 'function') {
+          try {
+            const result = (handlerFn as ToolHandler)({});
+            if (isPromiseLike(result)) {
+              // It's a promise — catch any rejection from invalid args
+              try {
+                await result;
+              } catch (_: unknown) {
+                // Expected: invalid args cause errors. That's fine.
+              }
             }
+          } catch (_: unknown) {
+            // Synchronous throw — still confirms it's callable
           }
-        } catch (_: unknown) {
-          // Synchronous throw — still confirms it's callable
         }
       });
     });
@@ -96,7 +110,7 @@ describe('MCP Protocol Tool Dispatch (T533) [deferred - requires DB test fixture
   describe('Snake_case alias verification', () => {
     SNAKE_CASE_MAP.forEach((entry) => {
       it(`T533-alias: ${entry.snake} aliases ${entry.camel}`, () => {
-        const snakeFn = handlers[entry.snake];
+        const snakeFn = handlerExports[entry.snake];
         expect(typeof snakeFn).toBe('function');
       });
     });

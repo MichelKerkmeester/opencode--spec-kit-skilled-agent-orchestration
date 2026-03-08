@@ -1,9 +1,8 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION ERROR RECOVERY
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import * as searchHandlerModule from '../handlers/memory-search';
 import * as saveHandlerModule from '../handlers/memory-save';
@@ -12,26 +11,14 @@ import * as causalHandlerModule from '../handlers/causal-graph';
 import * as checkpointHandlerModule from '../handlers/checkpoints';
 import * as learningHandlerModule from '../handlers/session-learning';
 import * as handlersBarrelModule from '../handlers/index';
+import * as errorsModule from '../lib/errors/index';
+import { MemoryError } from '../lib/errors/core';
+import type { MCPResponse } from '../handlers/types';
 
-let errorsModule: any = null;
-let MemoryError: any = null;
+type ErrorHelpers = Partial<Record<'createMCPSuccessResponse' | 'createMCPErrorResponse', unknown>>;
 
-// Try multiple error module paths
-try {
-  errorsModule = require('../lib/errors/index');
-  MemoryError = errorsModule.MemoryError;
-} catch {
-  try {
-    errorsModule = require('../lib/errors');
-    MemoryError = errorsModule.MemoryError;
-  } catch {
-    try {
-      errorsModule = require('../lib/errors/core');
-      MemoryError = errorsModule.MemoryError;
-    } catch {
-      // None available
-    }
-  }
+function getErrorMessage(error: unknown): string | undefined {
+  return error instanceof Error ? error.message : undefined;
 }
 
 describe('Integration Error Recovery (T532) [deferred - requires DB test fixtures]', () => {
@@ -69,7 +56,6 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
 
   describe('Error Class Verification', () => {
     it('T532-1: MemoryError class has code property', () => {
-      if (!MemoryError) return; // skip if not loaded
       const err = new MemoryError('E030', 'Test error message');
       expect(err).toBeInstanceOf(Error);
       expect(typeof err.code).toBe('string');
@@ -77,16 +63,15 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
     });
 
     it('T532-2: Error includes layer information', () => {
-      if (!MemoryError) return;
       const err = new MemoryError('E030', 'Test with layer', { layer: 'validation' });
-      const hasLayer = err.layer === 'validation' || (err.details && err.details.layer === 'validation');
+      const hasLayer = err.details.layer === 'validation';
       // Layer may be stored internally — just verify construction succeeds
       expect(err).toBeInstanceOf(Error);
       expect(err.code).toBe('E030');
+      expect(hasLayer).toBe(true);
     });
 
     it('T532-3: Error includes recovery hint', () => {
-      if (!MemoryError) return;
       const err = new MemoryError('E030', 'Test with hint', { hint: 'Check parameter types' });
       expect(err).toBeInstanceOf(Error);
       expect(err.code).toBe('E030');
@@ -95,25 +80,43 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
 
   describe('Handler Error Format Consistency', () => {
     it('T532-4: All handlers return MCP-formatted errors (not raw throws)', async () => {
-      const handlers: { name: string; fn: any; args: any }[] = [];
+      const handlers: Array<{ name: string; run: () => Promise<MCPResponse> }> = [];
 
       if (searchHandlerModule?.handleMemorySearch) {
-        handlers.push({ name: 'search', fn: searchHandlerModule.handleMemorySearch, args: {} });
+        handlers.push({
+          name: 'search',
+          run: () => searchHandlerModule.handleMemorySearch({} as Parameters<typeof searchHandlerModule.handleMemorySearch>[0]),
+        });
       }
       if (saveHandlerModule?.handleMemorySave) {
-        handlers.push({ name: 'save', fn: saveHandlerModule.handleMemorySave, args: {} });
+        handlers.push({
+          name: 'save',
+          run: () => saveHandlerModule.handleMemorySave({} as Parameters<typeof saveHandlerModule.handleMemorySave>[0]),
+        });
       }
       if (triggerHandlerModule?.handleMemoryMatchTriggers) {
-        handlers.push({ name: 'triggers', fn: triggerHandlerModule.handleMemoryMatchTriggers, args: {} });
+        handlers.push({
+          name: 'triggers',
+          run: () => triggerHandlerModule.handleMemoryMatchTriggers({} as Parameters<typeof triggerHandlerModule.handleMemoryMatchTriggers>[0]),
+        });
       }
       if (causalHandlerModule?.handleMemoryCausalLink) {
-        handlers.push({ name: 'causal-link', fn: causalHandlerModule.handleMemoryCausalLink, args: {} });
+        handlers.push({
+          name: 'causal-link',
+          run: () => causalHandlerModule.handleMemoryCausalLink({} as Parameters<typeof causalHandlerModule.handleMemoryCausalLink>[0]),
+        });
       }
       if (checkpointHandlerModule?.handleCheckpointCreate) {
-        handlers.push({ name: 'checkpoint-create', fn: checkpointHandlerModule.handleCheckpointCreate, args: {} });
+        handlers.push({
+          name: 'checkpoint-create',
+          run: () => checkpointHandlerModule.handleCheckpointCreate({} as Parameters<typeof checkpointHandlerModule.handleCheckpointCreate>[0]),
+        });
       }
       if (learningHandlerModule?.handleTaskPreflight) {
-        handlers.push({ name: 'learning-preflight', fn: learningHandlerModule.handleTaskPreflight, args: {} });
+        handlers.push({
+          name: 'learning-preflight',
+          run: () => learningHandlerModule.handleTaskPreflight({} as Parameters<typeof learningHandlerModule.handleTaskPreflight>[0]),
+        });
       }
 
       expect(handlers.length).toBeGreaterThan(0);
@@ -122,13 +125,13 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
 
       for (const h of handlers) {
         try {
-          const result = await h.fn(h.args);
+          const result = await h.run();
           // If no error thrown, handler may return error in MCP response format
           if (!(result && result.isError === true)) {
             inconsistentHandlers.push(`${h.name} (no error thrown)`);
           }
         } catch (error: unknown) {
-          if (typeof error.message !== 'string') {
+          if (typeof getErrorMessage(error) !== 'string') {
             inconsistentHandlers.push(`${h.name} (missing message)`);
           }
         }
@@ -140,7 +143,7 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
 
   describe('Edge Case Error Scenarios', () => {
     it('T532-5: Unknown tool name not in exports', () => {
-      const unknownHandler = (handlersBarrelModule as unknown)['handleNonExistentTool'];
+      const unknownHandler = (handlersBarrelModule as Record<string, unknown>)['handleNonExistentTool'];
       expect(unknownHandler).toBeUndefined();
     });
 
@@ -148,17 +151,17 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
       if (!searchHandlerModule?.handleMemorySearch) return;
 
       try {
-        const result = await searchHandlerModule.handleMemorySearch({ query: 12345 } as unknown);
+        // @ts-expect-error intentional invalid runtime input for error-path coverage
+        const result = await searchHandlerModule.handleMemorySearch({ query: 12345 });
         // Handler accepted coerced input — valid behavior (type coercion handled)
         expect(result).toBeDefined();
       } catch (error: unknown) {
         // Error thrown is also valid — just verify it has a message
-        expect(typeof error.message).toBe('string');
+        expect(typeof getErrorMessage(error)).toBe('string');
       }
     });
 
     it('T532-7: Error format includes structured fields', () => {
-      if (!MemoryError) return;
       const err = new MemoryError('E040', 'Not found error', { layer: 'storage', hint: 'Check memory ID' });
       expect(typeof err.code).toBe('string');
       expect(err.code.length).toBeGreaterThan(0);
@@ -167,10 +170,10 @@ describe('Integration Error Recovery (T532) [deferred - requires DB test fixture
     });
 
     it('T532-8: MCP response helpers or MemoryError serialization available', () => {
-      if (!MemoryError || !errorsModule) return;
+      const errorHelpers = errorsModule as ErrorHelpers;
 
-      const hasCreateResponse = typeof errorsModule.createMCPSuccessResponse === 'function';
-      const hasCreateError = typeof errorsModule.createMCPErrorResponse === 'function';
+      const hasCreateResponse = typeof errorHelpers.createMCPSuccessResponse === 'function';
+      const hasCreateError = typeof errorHelpers.createMCPErrorResponse === 'function';
 
       if (hasCreateResponse || hasCreateError) {
         expect(hasCreateResponse || hasCreateError).toBe(true);

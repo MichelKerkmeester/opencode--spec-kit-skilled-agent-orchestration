@@ -1,21 +1,44 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MCP ERROR FORMAT
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import * as handlers from '../handlers/index';
 import * as errorsBarrel from '../lib/errors';
 import { MemoryError } from '../lib/errors/core';
 import { RECOVERY_HINTS } from '../lib/errors/recovery-hints';
 
+interface HandlerResponse {
+  content?: Array<{ type?: string; text?: string }>;
+  isError?: boolean;
+  [key: string]: unknown;
+}
+
+interface ParsedErrorEnvelope {
+  error?: unknown;
+  errors?: unknown;
+}
+
+type HandlerFunction = (args: unknown) => Promise<HandlerResponse>;
+type CapturedErrorResult = { error: unknown; response: HandlerResponse | null } | null;
+type StructuredError = Error & {
+  code?: string;
+  layer?: string;
+  details?: Record<string, unknown> & { layer?: string };
+};
+
+function getHandler(handlerName: string): HandlerFunction | null {
+  const candidate = (handlers as Record<string, unknown>)[handlerName];
+  return typeof candidate === 'function' ? (candidate as HandlerFunction) : null;
+}
+
 // ---------------------------------------------------------------
 // Helper: invoke handler and capture error
 // ---------------------------------------------------------------
-async function captureError(handlerName: string, invalidArgs: any): Promise<{ error: any; response: any } | null> {
-  const handlerFn = (handlers as unknown)[handlerName];
-  if (typeof handlerFn !== 'function') return null;
+async function captureError(handlerName: string, invalidArgs: unknown): Promise<CapturedErrorResult> {
+  const handlerFn = getHandler(handlerName);
+  if (!handlerFn) return null;
 
   try {
     const result = await handlerFn(invalidArgs);
@@ -47,19 +70,23 @@ describe('MCP Protocol Error Format Tests (T535) [deferred - requires DB test fi
 
     it('T535-4: MemoryError carries layer info', () => {
       const instance = new MemoryError('E030', 'Test error', { layer: 'L2' });
-      const hasLayer = instance.layer || (instance.details && instance.details.layer);
+      const layer =
+        (instance as MemoryError & { layer?: unknown }).layer ??
+        instance.details.layer;
+
       // Either has layer info directly or identifies as MemoryError
-      expect(hasLayer || instance.name === 'MemoryError').toBeTruthy();
+      expect(Boolean(layer) || instance.name === 'MemoryError').toBeTruthy();
     });
 
     it('T535-5: Error responses include recovery hint pattern', () => {
-      const recoverHints = RECOVERY_HINTS || (errorsBarrel as unknown).getRecoveryHint;
+      const recoverHints =
+        RECOVERY_HINTS || (errorsBarrel as { getRecoveryHint?: unknown }).getRecoveryHint;
+
       if (recoverHints && typeof recoverHints === 'object') {
         expect(Object.keys(recoverHints).length).toBeGreaterThan(0);
       } else if (typeof recoverHints === 'function') {
         expect(typeof recoverHints).toBe('function');
       } else {
-        // Check if MemoryError instance has recoveryHint property
         const instance = new MemoryError('E030', 'Test', {});
         expect('recoveryHint' in instance).toBe(true);
       }
@@ -112,30 +139,28 @@ describe('MCP Protocol Error Format Tests (T535) [deferred - requires DB test fi
       it(`${test.testId}: ${test.name}`, async () => {
         const result = await captureError(test.handler, test.invalidArgs);
 
-        // If handler not found, skip
         if (!result) {
-          return; // handler not available
+          return;
         }
 
         if (result.error) {
-          const error = result.error;
+          const error = result.error as StructuredError;
 
           const hasStructuredError =
             error.name === 'MemoryError' ||
-            error.layer ||
-            error.details?.layer ||
-            (error.code && error.code.startsWith('E'));
+            Boolean(error.layer) ||
+            Boolean(error.details?.layer) ||
+            (typeof error.code === 'string' && error.code.startsWith('E'));
 
-          // Either structured MemoryError or at least a descriptive error message
-          expect(hasStructuredError || !!error.message).toBe(true);
+          expect(hasStructuredError || Boolean(error.message)).toBe(true);
         } else if (result.response) {
+          const firstText = result.response.content?.[0]?.text;
+
           if (result.response.isError === true) {
-            // MCP error response format — valid
             expect(result.response.isError).toBe(true);
-          } else if (result.response.content?.[0]?.text) {
-            const parsed = JSON.parse(result.response.content[0].text);
-            // Response body should contain error info
-            expect(parsed.error || parsed.errors).toBeTruthy();
+          } else if (typeof firstText === 'string') {
+            const parsed = JSON.parse(firstText) as ParsedErrorEnvelope;
+            expect(Boolean(parsed.error || parsed.errors)).toBeTruthy();
           } else {
             expect.unreachable('No error thrown or error response returned');
           }

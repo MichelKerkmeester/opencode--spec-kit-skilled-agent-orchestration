@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CHECKPOINTS STORAGE
 // ---------------------------------------------------------------
@@ -6,6 +5,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 import * as mod from '../lib/storage/checkpoints';
+import type { CheckpointInfo } from '../lib/storage/checkpoints';
 import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as os from 'os';
@@ -16,14 +16,30 @@ import * as zlib from 'zlib';
    DATABASE HELPERS
 ──────────────────────────────────────────────────────────────── */
 
-let testDb: any = null;
+let testDb: Database.Database | null = null;
 let tmpDbPath: string = '';
+
+function getTestDb(): Database.Database {
+  if (!testDb) {
+    throw new Error('Test database not initialized');
+  }
+  return testDb;
+}
+
+function requireValue<T>(value: T | null | undefined): T {
+  expect(value).toBeDefined();
+  if (value == null) {
+    throw new Error('Expected value to be defined');
+  }
+  return value;
+}
 
 function createTestDb(): void {
   tmpDbPath = path.join(os.tmpdir(), `checkpoints-test-${Date.now()}.db`);
   testDb = new Database(tmpDbPath);
+  const database = getTestDb();
 
-  testDb.exec(`
+  database.exec(`
     CREATE TABLE IF NOT EXISTS memory_index (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       spec_folder TEXT NOT NULL,
@@ -78,7 +94,7 @@ function createTestDb(): void {
   `);
 
   // Seed some test memories
-  const stmt = testDb.prepare(`
+  const stmt = database.prepare(`
     INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, importance_tier)
     VALUES (?, ?, ?, ?, ?, ?)
   `);
@@ -87,20 +103,20 @@ function createTestDb(): void {
   stmt.run(2, 'test-spec', '/test/memory/mem2.md', 'Test Memory 2', now, 'important');
   stmt.run(3, 'other-spec', '/test/memory/mem3.md', 'Test Memory 3', now, 'critical');
 
-  testDb.prepare(`
+  database.prepare(`
     INSERT INTO causal_edges (id, source_id, target_id, relation)
     VALUES (?, ?, ?, ?)
   `).run(1, '1', '2', 'supports');
-  testDb.prepare(`
+  database.prepare(`
     INSERT INTO causal_edges (id, source_id, target_id, relation)
     VALUES (?, ?, ?, ?)
   `).run(2, '1', '3', 'derived_from');
-  testDb.prepare(`
+  database.prepare(`
     INSERT INTO causal_edges (id, source_id, target_id, relation)
     VALUES (?, ?, ?, ?)
   `).run(3, '3', '3', 'supports');
 
-  mod.init(testDb);
+  mod.init(database);
 }
 
 function cleanupDb(): void {
@@ -132,10 +148,10 @@ describe('Checkpoints Storage (T503)', () => {
         name: 'test-checkpoint-1',
         metadata: { testKey: 'testValue' },
       });
+      const createdCheckpoint = requireValue(checkpoint);
 
-      expect(checkpoint).toBeDefined();
-      expect(checkpoint.name).toBe('test-checkpoint-1');
-      expect(checkpoint.id).toBeGreaterThan(0);
+      expect(createdCheckpoint.name).toBe('test-checkpoint-1');
+      expect(createdCheckpoint.id).toBeGreaterThan(0);
     });
   });
 
@@ -228,13 +244,11 @@ describe('Checkpoints Storage (T503)', () => {
         specFolder: 'test-spec',
         metadata: { version: 2, author: 'test', tags: ['alpha', 'beta'] },
       });
-
-      expect(created).toBeDefined();
+      requireValue(created);
 
       const list = mod.listCheckpoints();
-      const found = list.find((cp: any) => cp.name === 'metadata-test');
+      const found = requireValue(list.find((cp: CheckpointInfo) => cp.name === 'metadata-test'));
 
-      expect(found).toBeDefined();
       expect(found.metadata).toBeDefined();
       expect(found.metadata.version).toBe(2);
       expect(found.metadata.author).toBe('test');
@@ -274,7 +288,7 @@ describe('Checkpoints Storage (T503)', () => {
       fs.unlinkSync(emptyDbPath);
 
       // Re-init with original test database
-      mod.init(testDb);
+       mod.init(getTestDb());
     });
   });
 
@@ -301,12 +315,11 @@ describe('Checkpoints Storage (T503)', () => {
         name: 'scoped-edge-snapshot',
         specFolder: 'test-spec',
       });
+      requireValue(checkpoint);
 
-      expect(checkpoint).toBeDefined();
-
-      const stored = testDb.prepare(
+      const stored = requireValue(getTestDb().prepare(
         'SELECT memory_snapshot FROM checkpoints WHERE name = ?'
-      ).get('scoped-edge-snapshot') as { memory_snapshot: Buffer };
+      ).get('scoped-edge-snapshot') as { memory_snapshot: Buffer } | undefined);
       const snapshot = JSON.parse(
         zlib.gunzipSync(stored.memory_snapshot).toString('utf-8')
       ) as { causalEdges?: Array<{ source_id: string; target_id: string }> };
@@ -324,15 +337,14 @@ describe('Checkpoints Storage (T503)', () => {
         name: 'scoped-edge-restore',
         specFolder: 'test-spec',
       });
-
-      expect(checkpoint).toBeDefined();
+      requireValue(checkpoint);
 
       const now = new Date().toISOString();
-      testDb.prepare(`
+      getTestDb().prepare(`
         INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, importance_tier)
         VALUES (?, ?, ?, ?, ?, ?)
       `).run(10, 'test-spec', '/test/memory/newer.md', 'Newer Memory', now, 'normal');
-      testDb.prepare(`
+      getTestDb().prepare(`
         INSERT OR REPLACE INTO causal_edges (id, source_id, target_id, relation)
         VALUES (?, ?, ?, ?)
       `).run(10, '2', '10', 'supports');
@@ -341,22 +353,22 @@ describe('Checkpoints Storage (T503)', () => {
 
       expect(result.errors).toEqual([]);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('other-spec') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('other-spec') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('test-spec') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('test-spec') as { cnt: number }).cnt
       ).toBe(2);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '10') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '10') as { cnt: number }).cnt
       ).toBe(0);
 
       mod.deleteCheckpoint('scoped-edge-restore');
@@ -367,11 +379,10 @@ describe('Checkpoints Storage (T503)', () => {
         name: 'scoped-edge-merge-restore',
         specFolder: 'test-spec',
       });
+      requireValue(checkpoint);
 
-      expect(checkpoint).toBeDefined();
-
-      testDb.prepare('DELETE FROM causal_edges WHERE source_id = ? AND target_id = ?').run('1', '2');
-      testDb.prepare(`
+      getTestDb().prepare('DELETE FROM causal_edges WHERE source_id = ? AND target_id = ?').run('1', '2');
+      getTestDb().prepare(`
         INSERT OR REPLACE INTO causal_edges (id, source_id, target_id, relation)
         VALUES (?, ?, ?, ?)
       `).run(11, '2', '3', 'supports');
@@ -380,16 +391,16 @@ describe('Checkpoints Storage (T503)', () => {
 
       expect(result.errors).toEqual([]);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
       ).toBe(1);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '3') as { cnt: number }).cnt
       ).toBe(0);
       expect(
-        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+        (getTestDb().prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
       ).toBe(1);
 
       mod.deleteCheckpoint('scoped-edge-merge-restore');

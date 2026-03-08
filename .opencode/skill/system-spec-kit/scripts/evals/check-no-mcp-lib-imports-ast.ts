@@ -1,9 +1,8 @@
 // ---------------------------------------------------------------
-// MODULE: CheckNoMcpLibImportsAst
+// MODULE: Check No MCP Lib Imports AST
 // ---------------------------------------------------------------
 // AST-based enforcement for prohibited internal runtime imports.
 // Includes deep transitive re-export traversal for local barrel files.
-// ---------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';

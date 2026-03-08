@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: RunChk210QualityBackfill
+// MODULE: Run CHK-210 Quality Backfill
 // ---------------------------------------------------------------
 // SCRIPT: CHK-210 Quality Metadata Backfill
-// ---------------------------------------------------------------
 
 const fs = require('fs');
 const { execFileSync } = require('child_process');

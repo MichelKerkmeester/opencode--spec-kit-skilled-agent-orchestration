@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: RunAblation
+// MODULE: Run Ablation
 // ---------------------------------------------------------------
 //
 // Runtime entry point for the ablation framework. Runs controlled
@@ -14,7 +14,6 @@
 //   - Prints formatted ablation report (markdown table)
 //   - Records results to speckit-eval.db (eval_metric_snapshots)
 //   - Writes full result JSON to /tmp/ablation-result.json
-// ---------------------------------------------------------------
 
 import * as path from 'path';
 import * as fs from 'fs';

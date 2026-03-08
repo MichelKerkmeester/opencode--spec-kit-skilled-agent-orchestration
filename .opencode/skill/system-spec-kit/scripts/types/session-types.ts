@@ -1,9 +1,8 @@
 // ---------------------------------------------------------------
-// MODULE: SessionTypes
+// MODULE: Session Types
 // ---------------------------------------------------------------
 // Canonical type definitions shared between simulation-factory and extractors.
 // Eliminates parallel type hierarchies (TECH-DEBT P6-05).
-// ---------------------------------------------------------------
 
 import type { FileChange, ObservationDetailed } from '../extractors/file-extractor';
 import type { ToolCounts, SpecFileEntry } from '../extractors/session-extractor';

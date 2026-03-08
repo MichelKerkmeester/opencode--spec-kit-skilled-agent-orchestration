@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SESSION MANAGER EXTENDED
 // ---------------------------------------------------------------
@@ -14,9 +13,39 @@ import * as sm from '../lib/session/session-manager';
    SCAFFOLDING
 ──────────────────────────────────────────────────────────────── */
 
-let testDb: any = null;
+interface MemoryObject {
+  id: number;
+  file_path: string;
+  anchorId: string;
+  content_hash?: string;
+  title: string;
+}
 
-function setup() {
+interface CountRow {
+  c: number;
+}
+
+interface SessionStateRow {
+  status: string;
+  spec_folder: string | null;
+  current_task: string | null;
+  last_action: string | null;
+  state_data: string | null;
+}
+
+interface TableRow {
+  name: string;
+}
+
+interface HashRow {
+  memory_hash: string;
+}
+
+type InterruptedSession = ReturnType<typeof sm.getInterruptedSessions>['sessions'][number];
+
+let testDb: InstanceType<typeof Database> | null = null;
+
+function setup(): void {
   testDb = new Database(':memory:');
   const r = sm.init(testDb);
   if (!r.success) throw new Error(`init failed: ${r.error}`);
@@ -24,33 +53,32 @@ function setup() {
   sm.ensureSessionStateSchema();
 }
 
-function teardown() {
+function teardown(): void {
   if (testDb) {
     testDb.close();
     testDb = null;
   }
 }
 
-function resetDb() {
+function resetDb(): void {
   if (!testDb) return;
   try { testDb.exec('DELETE FROM session_sent_memories'); } catch (_: unknown) {}
   try { testDb.exec('DELETE FROM session_state'); } catch (_: unknown) {}
 }
 
-function mem(overrides: any = {}) {
+function mem(overrides: Partial<MemoryObject> = {}): MemoryObject {
   return {
     id: 1,
     file_path: '/specs/test/memory/test.md',
     anchorId: 'test-anchor',
-    content_hash: null,
     title: 'Test Memory',
     ...overrides,
   };
 }
 
 /** Insert a sent-memory row with a custom sent_at timestamp */
-function insertSentRow(sessionId: string, hash: string, memoryId: number | null, sentAt: string) {
-  testDb.prepare(
+function insertSentRow(sessionId: string, hash: string, memoryId: number | null, sentAt: string): void {
+  testDb!.prepare(
     `INSERT OR IGNORE INTO session_sent_memories (session_id, memory_hash, memory_id, sent_at) VALUES (?, ?, ?, ?)`
   ).run(sessionId, hash, memoryId, sentAt);
 }
@@ -61,7 +89,7 @@ function makeTmpDir(): string {
 }
 
 /** Recursively remove a directory */
-function rmDir(dir: string) {
+function rmDir(dir: string): void {
   try { fs.rmSync(dir, { recursive: true, force: true }); } catch (_: unknown) {}
 }
 
@@ -165,8 +193,8 @@ describe('Session Manager Extended Tests', () => {
       expect(result.success).toBe(true);
       expect(result.deletedCount).toBe(2);
       // Recent row should survive
-      const remaining = testDb.prepare('SELECT COUNT(*) as c FROM session_sent_memories').get();
-      expect(remaining.c).toBe(1);
+        const remaining = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories').get() as CountRow;
+        expect(remaining.c).toBe(1);
     });
 
     it('no-op when nothing expired', () => {
@@ -193,8 +221,8 @@ describe('Session Manager Extended Tests', () => {
       expect(result.success).toBe(true);
       expect(result.deletedCount).toBe(2);
       // other-session should be untouched
-      const remaining = testDb.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get('other-session');
-      expect(remaining.c).toBe(1);
+        const remaining = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get('other-session') as CountRow;
+        expect(remaining.c).toBe(1);
     });
 
     it('returns failure for empty sessionId', () => {
@@ -262,10 +290,10 @@ describe('Session Manager Extended Tests', () => {
   describe('7. ensureSessionStateSchema', () => {
     it('creates session_state table', () => {
       // Schema already created in setup(), verify the table exists
-      const tables = testDb.prepare(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name='session_state'"
-      ).all();
-      expect(tables.length).toBe(1);
+        const tables = testDb!.prepare(
+          "SELECT name FROM sqlite_master WHERE type='table' AND name='session_state'"
+        ).all() as TableRow[];
+        expect(tables.length).toBe(1);
     });
 
     it('idempotent (safe to call twice)', () => {
@@ -290,13 +318,13 @@ describe('Session Manager Extended Tests', () => {
       });
       expect(r.success).toBe(true);
       // Verify in DB
-      const row = testDb.prepare('SELECT * FROM session_state WHERE session_id = ?').get('save-1');
-      expect(row).toBeTruthy();
-      expect(row.status).toBe('active');
-      expect(row.spec_folder).toBe('specs/001-test');
-      expect(row.current_task).toBe('implement feature X');
-      const data = JSON.parse(row.state_data);
-      expect(data.step).toBe(3);
+        const row = testDb!.prepare('SELECT * FROM session_state WHERE session_id = ?').get('save-1') as SessionStateRow | undefined;
+        expect(row).toBeTruthy();
+        expect(row!.status).toBe('active');
+        expect(row!.spec_folder).toBe('specs/001-test');
+        expect(row!.current_task).toBe('implement feature X');
+        const data = JSON.parse(row!.state_data! as string) as { step: number };
+        expect(data.step).toBe(3);
     });
 
     it('upsert preserves existing fields via COALESCE', () => {
@@ -305,9 +333,9 @@ describe('Session Manager Extended Tests', () => {
       sm.saveSessionState('save-2', { currentTask: 'task A', specFolder: 'specs/002' });
       // Update with partial state (should COALESCE, not overwrite with null)
       sm.saveSessionState('save-2', { lastAction: 'did something' });
-      const row = testDb.prepare('SELECT * FROM session_state WHERE session_id = ?').get('save-2');
-      expect(row.spec_folder).toBe('specs/002');
-      expect(row.last_action).toBe('did something');
+        const row = testDb!.prepare('SELECT * FROM session_state WHERE session_id = ?').get('save-2') as SessionStateRow;
+        expect(row.spec_folder).toBe('specs/002');
+        expect(row.last_action).toBe('did something');
     });
 
     it('rejects empty sessionId', () => {
@@ -324,8 +352,8 @@ describe('Session Manager Extended Tests', () => {
       sm.saveSessionState('complete-1', { currentTask: 'finishing up' });
       const r = sm.completeSession('complete-1');
       expect(r.success).toBe(true);
-      const row = testDb.prepare('SELECT status FROM session_state WHERE session_id = ?').get('complete-1');
-      expect(row.status).toBe('completed');
+        const row = testDb!.prepare('SELECT status FROM session_state WHERE session_id = ?').get('complete-1') as Pick<SessionStateRow, 'status'>;
+        expect(row.status).toBe('completed');
     });
 
     it('fails for empty sessionId', () => {
@@ -347,10 +375,10 @@ describe('Session Manager Extended Tests', () => {
       expect(r.success).toBe(true);
       expect(r.interruptedCount).toBe(1);
 
-      const row1 = testDb.prepare('SELECT status FROM session_state WHERE session_id = ?').get('reset-1');
-      expect(row1.status).toBe('interrupted');
-      const row2 = testDb.prepare('SELECT status FROM session_state WHERE session_id = ?').get('reset-2');
-      expect(row2.status).toBe('completed');
+        const row1 = testDb!.prepare('SELECT status FROM session_state WHERE session_id = ?').get('reset-1') as Pick<SessionStateRow, 'status'>;
+        expect(row1.status).toBe('interrupted');
+        const row2 = testDb!.prepare('SELECT status FROM session_state WHERE session_id = ?').get('reset-2') as Pick<SessionStateRow, 'status'>;
+        expect(row2.status).toBe('completed');
     });
 
     it('returns 0 when no active sessions', () => {
@@ -375,18 +403,22 @@ describe('Session Manager Extended Tests', () => {
       // Mark as interrupted first
       sm.resetInterruptedSessions();
 
-      const r = sm.recoverState('recover-1');
-      expect(r.success).toBe(true);
-      expect(r.state).toBeTruthy();
-      expect(r.state.sessionId).toBe('recover-1');
-      expect(r.state.specFolder).toBe('specs/003');
-      expect(r.state.currentTask).toBe('doing stuff');
-      expect(r._recovered).toBe(true);
-      expect(r.state.data).toEqual({ key: 'value' });
+        const r = sm.recoverState('recover-1');
+        expect(r.success).toBe(true);
+        expect(r.state).toBeTruthy();
+        const state = r.state;
+        if (!state) {
+          throw new Error('Expected recovered state');
+        }
+        expect(state.sessionId).toBe('recover-1');
+        expect(state.specFolder).toBe('specs/003');
+        expect(state.currentTask).toBe('doing stuff');
+        expect(r._recovered).toBe(true);
+        expect(state.data).toEqual({ key: 'value' });
 
       // After recovery, session should be reactivated
-      const row = testDb.prepare('SELECT status FROM session_state WHERE session_id = ?').get('recover-1');
-      expect(row.status).toBe('active');
+        const row = testDb!.prepare('SELECT status FROM session_state WHERE session_id = ?').get('recover-1') as Pick<SessionStateRow, 'status'>;
+        expect(row.status).toBe('active');
     });
 
     it('returns null state for unknown session', () => {
@@ -416,13 +448,13 @@ describe('Session Manager Extended Tests', () => {
       const r = sm.getInterruptedSessions();
       expect(r.success).toBe(true);
       expect(r.sessions.length).toBe(2);
-      const ids = r.sessions.map((s: any) => s.sessionId);
-      expect(ids).toContain('int-1');
-      expect(ids).toContain('int-2');
-      // Verify fields are populated
-      const s1 = r.sessions.find((s: any) => s.sessionId === 'int-1');
-      expect(s1.specFolder).toBe('specs/A');
-      expect(s1.currentTask).toBe('task A');
+        const ids = r.sessions.map((s: InterruptedSession) => s.sessionId);
+        expect(ids).toContain('int-1');
+        expect(ids).toContain('int-2');
+        // Verify fields are populated
+        const s1 = r.sessions.find((s: InterruptedSession) => s.sessionId === 'int-1');
+        expect(s1?.specFolder).toBe('specs/A');
+        expect(s1?.currentTask).toBe('task A');
     });
 
     it('returns empty array when none', () => {
@@ -486,9 +518,13 @@ describe('Session Manager Extended Tests', () => {
         expect(r.success).toBe(true);
         expect(r.filePath).toBeTruthy();
         // Verify file exists and has content
-        const content = fs.readFileSync(r.filePath, 'utf8');
-        expect(content).toContain('# CONTINUE SESSION');
-        expect(content).toContain('testing writes');
+          const filePath = r.filePath;
+          if (!filePath) {
+            throw new Error('Expected continue-session file path');
+          }
+          const content = fs.readFileSync(filePath, 'utf8');
+          expect(content).toContain('# CONTINUE SESSION');
+          expect(content).toContain('testing writes');
       } finally {
         rmDir(tmpDir);
       }
@@ -501,9 +537,13 @@ describe('Session Manager Extended Tests', () => {
         // No state saved for this session — should fall back to minimal
         const r = sm.writeContinueSessionMd('write-md-nostate', tmpDir);
         expect(r.success).toBe(true);
-        const content = fs.readFileSync(r.filePath, 'utf8');
-        expect(content).toContain('# CONTINUE SESSION');
-        expect(content).toContain('write-md-nostate');
+          const filePath = r.filePath;
+          if (!filePath) {
+            throw new Error('Expected continue-session file path');
+          }
+          const content = fs.readFileSync(filePath, 'utf8');
+          expect(content).toContain('# CONTINUE SESSION');
+          expect(content).toContain('write-md-nostate');
       } finally {
         rmDir(tmpDir);
       }
@@ -532,11 +572,15 @@ describe('Session Manager Extended Tests', () => {
         expect(r.success).toBe(true);
         expect(r.filePath).toBeTruthy();
         // Verify state saved in DB
-        const row = testDb.prepare('SELECT * FROM session_state WHERE session_id = ?').get('cp-1');
+        const row = testDb!.prepare('SELECT * FROM session_state WHERE session_id = ?').get('cp-1') as SessionStateRow | undefined;
         expect(row).toBeTruthy();
-        expect(row.current_task).toBe('checkpoint test');
+        expect(row!.current_task).toBe('checkpoint test');
         // Verify file written
-        const content = fs.readFileSync(r.filePath, 'utf8');
+        const filePath = r.filePath;
+        if (!filePath) {
+          throw new Error('Expected checkpoint file path');
+        }
+        const content = fs.readFileSync(filePath, 'utf8');
         expect(content).toContain('# CONTINUE SESSION');
       } finally {
         rmDir(tmpDir);
@@ -551,8 +595,8 @@ describe('Session Manager Extended Tests', () => {
       expect(r.note).toBeTruthy();
       expect(r.note).toContain('no spec folder');
       // Verify state in DB
-      const row = testDb.prepare('SELECT * FROM session_state WHERE session_id = ?').get('cp-2');
-      expect(row).toBeTruthy();
+        const row = testDb!.prepare('SELECT * FROM session_state WHERE session_id = ?').get('cp-2') as SessionStateRow | undefined;
+        expect(row).toBeTruthy();
     });
 
     it('falls back to DB-only when folder missing', () => {
@@ -579,8 +623,8 @@ describe('Session Manager Extended Tests', () => {
           sm.markMemorySent(sid, mem({ id: 1000 + i, anchorId: `anchor-${i}` }));
         }
         // enforceEntryLimit is called inside markMemorySent
-        const count = testDb.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get(sid);
-        expect(count.c).toBeLessThanOrEqual(3);
+          const count = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get(sid) as CountRow;
+          expect(count.c).toBeLessThanOrEqual(3);
       } finally {
         sm.CONFIG.maxEntriesPerSession = originalMax;
       }
@@ -596,8 +640,8 @@ describe('Session Manager Extended Tests', () => {
         for (let i = 1; i <= 3; i++) {
           sm.markMemorySent(sid, mem({ id: 2000 + i, anchorId: `anchor-${i}` }));
         }
-        const count = testDb.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get(sid);
-        expect(count.c).toBe(3);
+          const count = testDb!.prepare('SELECT COUNT(*) as c FROM session_sent_memories WHERE session_id = ?').get(sid) as CountRow;
+          expect(count.c).toBe(3);
       } finally {
         sm.CONFIG.maxEntriesPerSession = originalMax;
       }
@@ -621,13 +665,13 @@ describe('Session Manager Extended Tests', () => {
         sm.markMemorySent(sid, mem({ id: 3004, anchorId: 'trigger-enforce' }));
 
         // Should keep only the 2 newest
-        const rows = testDb.prepare(
+        const rows = testDb!.prepare(
           'SELECT memory_hash FROM session_sent_memories WHERE session_id = ? ORDER BY sent_at ASC'
-        ).all(sid);
+        ).all(sid) as HashRow[];
         // After inserting 4 rows with limit 2, the 2 oldest should be trimmed
         expect(rows.length).toBeLessThanOrEqual(2);
         // The newest hash should survive
-        const hashes = rows.map((r: any) => r.memory_hash);
+        const hashes = rows.map((r: HashRow) => r.memory_hash);
         expect(
           hashes.includes('newest_hash') || hashes.some((h: string) => h !== 'oldest_hash')
         ).toBe(true);

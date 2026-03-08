@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: DirectorySetup
+// MODULE: Directory Setup
 // ---------------------------------------------------------------
 // Creates and configures spec folder directory structure with memory subdirectories
-// ---------------------------------------------------------------
 
 // Node stdlib
 import * as fs from 'fs/promises';

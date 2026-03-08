@@ -1,13 +1,22 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: COGNITIVE GAPS
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
+import type { FsrsParams } from '../lib/cache/cognitive/fsrs-scheduler';
 import * as fsrs from '../lib/cache/cognitive/fsrs-scheduler';
 import * as archival from '../lib/cache/cognitive/archival-manager';
 import * as wm from '../lib/cache/cognitive/working-memory';
+
+interface TableInfoRow {
+  name: string;
+}
+
+interface WorkingMemoryRow {
+  session_id: string;
+  memory_id: number;
+}
 
 /* ─────────────────────────────────────────────────────────────
    DB HELPERS
@@ -186,7 +195,7 @@ describe('C. createInitialParams', () => {
 ═══════════════════════════════════════════════════════════════ */
 
 describe('D. processReview', () => {
-  let initial;
+  let initial: FsrsParams;
 
   beforeEach(() => {
     initial = fsrs.createInitialParams();
@@ -272,7 +281,7 @@ describe('E. ensureArchivedColumn', () => {
     archival.init(db);
     archival.ensureArchivedColumn();
     archival.ensureArchivedColumn();
-    const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((c: any) => c.name);
+    const columns = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
     expect(columns).toContain('is_archived');
     archival.cleanup();
     db.close();
@@ -286,11 +295,11 @@ describe('E. ensureArchivedColumn', () => {
         title TEXT
       )
     `);
-    const colsBefore = db.prepare('PRAGMA table_info(memory_index)').all().map((c: any) => c.name);
+    const colsBefore = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
     expect(colsBefore).not.toContain('is_archived');
 
     archival.init(db);
-    const colsAfter = db.prepare('PRAGMA table_info(memory_index)').all().map((c: any) => c.name);
+    const colsAfter = (db.prepare('PRAGMA table_info(memory_index)').all() as TableInfoRow[]).map((column) => column.name);
     expect(colsAfter).toContain('is_archived');
     archival.cleanup();
     db.close();
@@ -353,7 +362,7 @@ describe('F. getRecentErrors', () => {
     archival.init(db);
     archival.resetStats();
     const errors = archival.getRecentErrors();
-    expect(errors.every((e: any) => typeof e === 'string' || errors.length === 0)).toBe(true);
+    expect(errors.every((errorMessage) => typeof errorMessage === 'string')).toBe(true);
     archival.cleanup();
     db.close();
   });
@@ -386,14 +395,14 @@ describe('G. cleanupOldSessions', () => {
     const removed = wm.cleanupOldSessions();
     expect(removed).toBe(1);
 
-    const remaining = db.prepare('SELECT * FROM working_memory').all();
+    const remaining = db.prepare('SELECT session_id, memory_id FROM working_memory').all() as WorkingMemoryRow[];
     expect(remaining.length).toBe(1);
     expect(remaining[0].session_id).toBe('fresh-session');
     db.close();
   });
 
   it('G-03: returns 0 without db', () => {
-    wm.init(null as unknown);
+    wm.init(null as unknown as Database.Database);
     const removed = wm.cleanupOldSessions();
     expect(removed).toBe(0);
   });
@@ -455,14 +464,14 @@ describe('H. enforceMemoryLimit', () => {
 
     wm.enforceMemoryLimit('s1');
 
-    const remaining = db.prepare('SELECT memory_id FROM working_memory WHERE session_id = ? ORDER BY memory_id').all('s1');
-    const remainingIds = remaining.map((r: any) => r.memory_id);
+    const remaining = db.prepare('SELECT memory_id FROM working_memory WHERE session_id = ? ORDER BY memory_id').all('s1') as Array<Pick<WorkingMemoryRow, 'memory_id'>>;
+    const remainingIds = remaining.map((row) => row.memory_id);
     expect(remainingIds).not.toContain(1);
     db.close();
   });
 
   it('H-04: returns 0 without db', () => {
-    wm.init(null as unknown);
+    wm.init(null as unknown as Database.Database);
     const removed = wm.enforceMemoryLimit('any-session');
     expect(removed).toBe(0);
   });

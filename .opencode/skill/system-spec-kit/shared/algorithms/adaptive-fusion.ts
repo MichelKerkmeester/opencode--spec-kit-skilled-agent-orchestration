@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: AdaptiveFusion
+// MODULE: Adaptive Fusion
 // ---------------------------------------------------------------
 // Local
 import { fuseResultsMulti } from './rrf-fusion';

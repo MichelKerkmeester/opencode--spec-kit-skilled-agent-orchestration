@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER HELPERS
 // ---------------------------------------------------------------
@@ -6,6 +5,7 @@
 import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import path from 'path';
 import os from 'os';
+import type { CausalLinkMapping } from '../handlers/causal-links-processor';
 import * as dbHelpers from '../utils/db-helpers';
 
 // ---------------------------------------------------------------
@@ -19,7 +19,6 @@ import * as dbHelpers from '../utils/db-helpers';
 // ---------------------------------------------------------------
 
 // Mock core/config to prevent SERVER_DIR resolution issues during import
-const MCP_SERVER_DIR = path.resolve(path.join(__dirname, '..'));
 vi.mock('../core/config', () => {
   const mDir = path.resolve(path.join(__dirname, '..'));
   const dbDir = process.env.SPEC_KIT_DB_DIR
@@ -44,10 +43,23 @@ vi.mock('../core/config', () => {
   };
 });
 
-let memorySave: any = null;
-let memoryContext: any = null;
-let causalEdges: any = null;
-let BetterSqlite3: any = null;
+type MemorySaveModule = typeof import('../handlers/memory-save');
+type MemoryContextModule = typeof import('../handlers/memory-context');
+type CausalEdgesModule = typeof import('../lib/storage/causal-edges');
+type BetterSqlite3Constructor = typeof import('better-sqlite3');
+type BetterSqlite3Database = import('better-sqlite3').Database;
+type ProcessCausalLinksInput = Parameters<MemorySaveModule['processCausalLinks']>[2];
+
+interface CausalEdgeRow {
+  source_id: string;
+  target_id: string;
+  relation: string;
+}
+
+let memorySave: MemorySaveModule | null = null;
+let memoryContext: MemoryContextModule | null = null;
+let causalEdges: CausalEdgesModule | null = null;
+let BetterSqlite3Impl: BetterSqlite3Constructor | null = null;
 
 beforeAll(async () => {
   try {
@@ -67,9 +79,9 @@ beforeAll(async () => {
   }
   try {
     const bs3 = await import('better-sqlite3');
-    BetterSqlite3 = bs3.default || bs3;
+    BetterSqlite3Impl = bs3.default || bs3;
   } catch {
-    BetterSqlite3 = null;
+    BetterSqlite3Impl = null;
   }
 });
 
@@ -77,9 +89,11 @@ beforeAll(async () => {
    DB HELPERS
 ---------------------------------------------------------------- */
 
-function createTestDb(): any {
-  if (!BetterSqlite3) return null;
-  const db = new BetterSqlite3(':memory:');
+function createTestDb(): BetterSqlite3Database {
+  if (!BetterSqlite3Impl) {
+    throw new Error('better-sqlite3 unavailable for handler-helpers tests');
+  }
+  const db = new BetterSqlite3Impl(':memory:');
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS memory_index (
@@ -154,7 +168,7 @@ function createTestDb(): any {
   return db;
 }
 
-function seedTestMemories(db: any): void {
+function seedTestMemories(db: BetterSqlite3Database): void {
   const stmt = db.prepare(`
     INSERT INTO memory_index (id, spec_folder, file_path, title, content, content_hash, stability, difficulty)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -201,20 +215,20 @@ describe('escapeLikePattern', () => {
     expect(result).toBe('');
   });
 
-  it('throws TypeError on number input', () => {
-    if (!memorySave?.escapeLikePattern) return;
-    expect(() => memorySave.escapeLikePattern(123)).toThrow(TypeError);
-  });
+    it('throws TypeError on number input', () => {
+      if (!memorySave?.escapeLikePattern) return;
+      expect(() => memorySave!.escapeLikePattern(123 as unknown as string)).toThrow(TypeError);
+    });
 
-  it('throws TypeError on null', () => {
-    if (!memorySave?.escapeLikePattern) return;
-    expect(() => memorySave.escapeLikePattern(null)).toThrow(TypeError);
-  });
+    it('throws TypeError on null', () => {
+      if (!memorySave?.escapeLikePattern) return;
+      expect(() => memorySave!.escapeLikePattern(null as unknown as string)).toThrow(TypeError);
+    });
 
-  it('throws TypeError on undefined', () => {
-    if (!memorySave?.escapeLikePattern) return;
-    expect(() => memorySave.escapeLikePattern(undefined)).toThrow(TypeError);
-  });
+    it('throws TypeError on undefined', () => {
+      if (!memorySave?.escapeLikePattern) return;
+      expect(() => memorySave!.escapeLikePattern(undefined as unknown as string)).toThrow(TypeError);
+    });
 
   it('handles all-special-char string', () => {
     if (!memorySave?.escapeLikePattern) return;
@@ -247,15 +261,15 @@ describe('CAUSAL_LINK_MAPPINGS', () => {
     }
   });
 
-  it('all entries have relation (string) + reverse (boolean)', () => {
-    if (!memorySave?.CAUSAL_LINK_MAPPINGS) return;
-    const mappings = memorySave.CAUSAL_LINK_MAPPINGS;
-    for (const [key, mapping] of Object.entries(mappings)) {
-      const m = mapping as unknown;
-      expect(typeof m.relation).toBe('string');
-      expect(typeof m.reverse).toBe('boolean');
-    }
-  });
+    it('all entries have relation (string) + reverse (boolean)', () => {
+      if (!memorySave?.CAUSAL_LINK_MAPPINGS) return;
+      const mappings = memorySave.CAUSAL_LINK_MAPPINGS;
+      for (const [, mapping] of Object.entries(mappings)) {
+        const typedMapping = mapping as CausalLinkMapping;
+        expect(typeof typedMapping.relation).toBe('string');
+        expect(typeof typedMapping.reverse).toBe('boolean');
+      }
+    });
 
   it('caused_by has reverse=true', () => {
     if (!memorySave?.CAUSAL_LINK_MAPPINGS) return;
@@ -267,15 +281,15 @@ describe('CAUSAL_LINK_MAPPINGS', () => {
     expect(memorySave.CAUSAL_LINK_MAPPINGS.supersedes.reverse).toBe(false);
   });
 
-  it('relations match RELATION_TYPES', () => {
-    if (!memorySave?.CAUSAL_LINK_MAPPINGS || !causalEdges?.RELATION_TYPES) return;
-    const mappings = memorySave.CAUSAL_LINK_MAPPINGS;
-    const validRelations = Object.values(causalEdges.RELATION_TYPES);
-    for (const [key, mapping] of Object.entries(mappings)) {
-      const m = mapping as unknown;
-      expect(validRelations).toContain(m.relation);
-    }
-  });
+    it('relations match RELATION_TYPES', () => {
+      if (!memorySave?.CAUSAL_LINK_MAPPINGS || !causalEdges?.RELATION_TYPES) return;
+      const mappings = memorySave.CAUSAL_LINK_MAPPINGS;
+      const validRelations = Object.values(causalEdges.RELATION_TYPES);
+      for (const [, mapping] of Object.entries(mappings)) {
+        const typedMapping = mapping as CausalLinkMapping;
+        expect(validRelations).toContain(typedMapping.relation);
+      }
+    });
 });
 
 /* -------------------------------------------------------------
@@ -294,19 +308,18 @@ describe('CONTEXT_MODES', () => {
     }
   });
 
-  it('all modes have name, description, strategy', () => {
-    if (!memoryContext?.CONTEXT_MODES) return;
-    const modes = memoryContext.CONTEXT_MODES;
-    for (const [key, mode] of Object.entries(modes)) {
-      const m = mode as unknown;
-      expect(typeof m.name).toBe('string');
-      expect(m.name.length).toBeGreaterThan(0);
-      expect(typeof m.description).toBe('string');
-      expect(m.description.length).toBeGreaterThan(0);
-      expect(typeof m.strategy).toBe('string');
-      expect(m.strategy.length).toBeGreaterThan(0);
-    }
-  });
+    it('all modes have name, description, strategy', () => {
+      if (!memoryContext?.CONTEXT_MODES) return;
+      const modes = memoryContext.CONTEXT_MODES;
+      for (const [, mode] of Object.entries(modes)) {
+        expect(typeof mode.name).toBe('string');
+        expect(mode.name.length).toBeGreaterThan(0);
+        expect(typeof mode.description).toBe('string');
+        expect(mode.description.length).toBeGreaterThan(0);
+        expect(typeof mode.strategy).toBe('string');
+        expect(mode.strategy.length).toBeGreaterThan(0);
+      }
+    });
 
   it('auto strategy is "adaptive"', () => {
     if (!memoryContext?.CONTEXT_MODES) return;
@@ -401,12 +414,12 @@ describe('findSimilarMemories', () => {
     expect(result).toHaveLength(0);
   });
 
-  it('returns [] for undefined embedding', () => {
-    if (!memorySave?.findSimilarMemories) return;
-    const result = memorySave.findSimilarMemories(undefined);
-    expect(Array.isArray(result)).toBe(true);
-    expect(result).toHaveLength(0);
-  });
+    it('returns [] for undefined embedding', () => {
+      if (!memorySave?.findSimilarMemories) return;
+      const result = memorySave.findSimilarMemories(undefined as unknown as Float32Array | null);
+      expect(Array.isArray(result)).toBe(true);
+      expect(result).toHaveLength(0);
+    });
 
   it('accepts options param gracefully', () => {
     if (!memorySave?.findSimilarMemories) return;
@@ -421,7 +434,7 @@ describe('findSimilarMemories', () => {
 
 describe('resolveMemoryReference', () => {
   it('resolves numeric ID "1"', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, '1');
@@ -430,7 +443,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('returns null for non-existent ID', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, '999');
@@ -439,7 +452,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves session reference', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'session-2025-01-15');
@@ -448,7 +461,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves date-prefixed ref', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, '2024-12-01-session');
@@ -457,7 +470,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves specs/ path', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'specs/002-feature/memory/implementation-notes.md');
@@ -466,7 +479,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves Windows-style specs path', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'specs\\002-feature\\memory\\implementation-notes.md');
@@ -475,7 +488,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves exact title', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'Debug Log');
@@ -484,7 +497,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves partial title', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'Auth Decision');
@@ -493,7 +506,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('returns null for empty string', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, '');
@@ -501,17 +514,17 @@ describe('resolveMemoryReference', () => {
     db.close();
   });
 
-  it('returns null for null input', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
-    const result = memorySave.resolveMemoryReference(db, null);
-    expect(result).toBeNull();
-    db.close();
-  });
+    it('returns null for null input', () => {
+      if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
+      const result = memorySave.resolveMemoryReference(db, null as unknown as string);
+      expect(result).toBeNull();
+      db.close();
+    });
 
   it('returns null for whitespace', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, '   ');
@@ -520,7 +533,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('returns null for unresolvable ref', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'zzz-nonexistent-ref-xyz');
@@ -529,7 +542,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('resolves memory/ path', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
     const result = memorySave.resolveMemoryReference(db, 'memory/decision-auth.md');
@@ -538,7 +551,7 @@ describe('resolveMemoryReference', () => {
   });
 
   it('does not treat date-like reference as numeric ID prefix', () => {
-    if (!memorySave?.resolveMemoryReference || !BetterSqlite3) return;
+    if (!memorySave?.resolveMemoryReference || !BetterSqlite3Impl) return;
     const db = createTestDb();
     seedTestMemories(db);
 
@@ -568,109 +581,117 @@ describe('resolveMemoryReference', () => {
 ---------------------------------------------------------------- */
 
 describe('processCausalLinks', () => {
-  it('returns zero-result for null', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    const result = memorySave.processCausalLinks(db, 100, null);
-    expect(result.processed).toBe(0);
+    it('returns zero-result for null', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      const result = memorySave.processCausalLinks(db, 100, null as unknown as ProcessCausalLinksInput);
+      expect(result.processed).toBe(0);
     expect(result.inserted).toBe(0);
     expect(result.resolved).toBe(0);
     db.close();
   });
 
-  it('returns zero-result for {}', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    const result = memorySave.processCausalLinks(db, 100, {});
+    it('returns zero-result for {}', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      const result = memorySave.processCausalLinks(db, 100, {} as ProcessCausalLinksInput);
     expect(result.processed).toBe(0);
     expect(result.inserted).toBe(0);
     db.close();
   });
 
-  it('skips unknown link types', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    const result = memorySave.processCausalLinks(db, 100, { unknown_type: ['ref1'] });
+    it('skips unknown link types', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      const result = memorySave!.processCausalLinks(db, 100, { unknown_type: ['ref1'] } as unknown as ProcessCausalLinksInput);
     expect(result.processed).toBe(0);
     db.close();
   });
 
-  it('tracks unresolved refs', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
-    const result = memorySave.processCausalLinks(db, 100, { caused_by: ['nonexistent-ref'] });
+    it('tracks unresolved refs', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
+    const result = memorySave!.processCausalLinks(db, 100, { caused_by: ['nonexistent-ref'] } as ProcessCausalLinksInput);
     expect(result.processed).toBe(1);
     expect(result.unresolved).toHaveLength(1);
     expect(result.unresolved[0].reference).toBe('nonexistent-ref');
     db.close();
   });
 
-  it('resolves & inserts valid link', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
-    const result = memorySave.processCausalLinks(db, 10, { caused_by: ['1'] });
+    it('resolves & inserts valid link', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
+    const result = memorySave!.processCausalLinks(db, 10, { caused_by: ['1'] } as ProcessCausalLinksInput);
     expect(result.processed).toBe(1);
     expect(result.resolved).toBe(1);
     expect(result.inserted).toBe(1);
     db.close();
   });
 
-  it('handles mixed resolved/unresolved', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
-    const result = memorySave.processCausalLinks(db, 10, { caused_by: ['1', '2', 'nonexistent'] });
+    it('handles mixed resolved/unresolved', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
+    const result = memorySave!.processCausalLinks(db, 10, { caused_by: ['1', '2', 'nonexistent'] } as ProcessCausalLinksInput);
     expect(result.processed).toBe(3);
     expect(result.resolved).toBe(2);
     expect(result.unresolved).toHaveLength(1);
     db.close();
   });
 
-  it('skips empty arrays', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    const result = memorySave.processCausalLinks(db, 100, { caused_by: [], supersedes: [] });
+    it('skips empty arrays', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      const result = memorySave!.processCausalLinks(db, 100, { caused_by: [], supersedes: [] } as unknown as ProcessCausalLinksInput);
     expect(result.processed).toBe(0);
     db.close();
   });
 
-  it('skips non-array values', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    const result = memorySave.processCausalLinks(db, 100, { caused_by: 'not-an-array' });
+    it('skips non-array values', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      const result = memorySave.processCausalLinks(
+        db,
+        100,
+        { caused_by: 'not-an-array' } as unknown as ProcessCausalLinksInput
+      );
     expect(result.processed).toBe(0);
     db.close();
   });
 
-  it('caused_by edge direction correct (reverse=true)', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
+    it('caused_by edge direction correct (reverse=true)', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
     const memoryId = 10;
-    const result = memorySave.processCausalLinks(db, memoryId, { caused_by: ['1'] });
+    const result = memorySave!.processCausalLinks(db, memoryId, { caused_by: ['1'] } as ProcessCausalLinksInput);
     expect(result.inserted).toBe(1);
-    const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get();
+      const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get() as CausalEdgeRow | undefined;
     // caused_by has reverse=true: source=resolvedId(1), target=memoryId(10)
-    expect(edge).toBeDefined();
-    expect(edge.source_id).toBe('1');
+      if (!edge) {
+        expect.unreachable('Expected inserted caused_by edge');
+      }
+      expect(edge.source_id).toBe('1');
     expect(edge.target_id).toBe('10');
     expect(edge.relation).toBe('caused');
     db.close();
   });
 
-  it('supersedes edge direction correct (reverse=false)', () => {
-    if (!memorySave?.processCausalLinks || !BetterSqlite3) return;
-    const db = createTestDb();
-    seedTestMemories(db);
+    it('supersedes edge direction correct (reverse=false)', () => {
+      if (!memorySave?.processCausalLinks || !BetterSqlite3Impl) return;
+      const db = createTestDb();
+      seedTestMemories(db);
     const memoryId = 10;
-    const result = memorySave.processCausalLinks(db, memoryId, { supersedes: ['3'] });
+    const result = memorySave!.processCausalLinks(db, memoryId, { supersedes: ['3'] } as ProcessCausalLinksInput);
     expect(result.inserted).toBe(1);
-    const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get();
+      const edge = db.prepare('SELECT source_id, target_id, relation FROM causal_edges LIMIT 1').get() as CausalEdgeRow | undefined;
     // supersedes has reverse=false: source=memoryId(10), target=resolvedId(3)
-    expect(edge).toBeDefined();
-    expect(edge.source_id).toBe('10');
+      if (!edge) {
+        expect.unreachable('Expected inserted supersedes edge');
+      }
+      expect(edge.source_id).toBe('10');
     expect(edge.target_id).toBe('3');
     expect(edge.relation).toBe('supersedes');
     db.close();
@@ -681,10 +702,10 @@ describe('processCausalLinks', () => {
    SUITE: logPeDecision (console capture)
 ---------------------------------------------------------------- */
 
-describe('logPeDecision', () => {
-  beforeEach(() => {
-    const db = createTestDb();
-    db?.exec(`
+  describe('logPeDecision', () => {
+    beforeEach(() => {
+      const db = createTestDb();
+      db?.exec(`
       CREATE TABLE IF NOT EXISTS memory_conflicts (
         id INTEGER PRIMARY KEY,
         new_memory_hash TEXT,
@@ -719,7 +740,7 @@ describe('logPeDecision', () => {
       reason: 'test',
     };
     // This may warn to console but should not throw
-    expect(() => memorySave.logPeDecision(decision, 'test-hash', 'specs/test')).not.toThrow();
+    expect(() => memorySave!.logPeDecision(decision, 'test-hash', 'specs/test')).not.toThrow();
   });
 });
 
@@ -727,10 +748,11 @@ describe('logPeDecision', () => {
    SUITE: DB-dependent helpers (graceful handling)
 ---------------------------------------------------------------- */
 
-describe('DB-dependent helpers', () => {
-  beforeEach(() => {
-    vi.spyOn(dbHelpers, 'requireDb').mockReturnValue(createTestDb());
-  });
+  describe('DB-dependent helpers', () => {
+    beforeEach(() => {
+      const db = createTestDb();
+      vi.spyOn(dbHelpers, 'requireDb').mockReturnValue(db);
+    });
 
   afterEach(() => {
     vi.restoreAllMocks();
@@ -773,7 +795,7 @@ describe('Backward-compatible snake_case aliases', () => {
     ['log_pe_decision', 'logPeDecision'],
     ['process_causal_links', 'processCausalLinks'],
     ['resolve_memory_reference', 'resolveMemoryReference'],
-  ];
+  ] as const satisfies readonly (readonly [keyof MemorySaveModule, keyof MemorySaveModule])[];
 
   for (const [snakeCase, camelCase] of aliases) {
     it(`alias: ${snakeCase} === ${camelCase}`, () => {

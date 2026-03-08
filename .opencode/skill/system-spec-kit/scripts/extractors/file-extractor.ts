@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: FileExtractor
+// MODULE: File Extractor
 // ---------------------------------------------------------------
 // Extracts file references, descriptions, and observation types from session data
-// ---------------------------------------------------------------
 
 import { CONFIG } from '../core';
 import {

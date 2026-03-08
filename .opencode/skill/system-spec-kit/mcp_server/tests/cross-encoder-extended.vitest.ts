@@ -1,10 +1,10 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CROSS ENCODER EXTENDED
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterAll, vi } from 'vitest';
 import * as crossEncoder from '../lib/search/cross-encoder';
+import type { RerankDocument, RerankResult } from '../lib/search/cross-encoder';
 
 /* ─────────────────────────────────────────────────────────────
    TEST UTILITIES
@@ -34,7 +34,7 @@ function restoreAll() {
 }
 
 /** Helper: create a mock RerankResult-like object */
-function mockResult(id: number, content: string, rerankerScore: number) {
+function mockResult(id: number, content: string, rerankerScore: number): RerankResult & { content: string } {
   return {
     id,
     content,
@@ -47,17 +47,15 @@ function mockResult(id: number, content: string, rerankerScore: number) {
 }
 
 /** Helper: create a mock fetch that returns a controlled response */
-function mockFetch(status: number, body: any, shouldThrow = false) {
-  globalThis.fetch = async (_url: any, _opts: any) => {
+function mockFetch(status: number, body: unknown, shouldThrow = false): void {
+  globalThis.fetch = vi.fn(async (..._args: Parameters<typeof fetch>): Promise<Response> => {
     if (shouldThrow) throw new Error('Network error');
-    return {
-      ok: status >= 200 && status < 300,
+    return new Response(JSON.stringify(body), {
       status,
       statusText: status === 200 ? 'OK' : 'Internal Server Error',
-      json: async () => body,
-      text: async () => JSON.stringify(body),
-    } as unknown;
-  };
+      headers: { 'Content-Type': 'application/json' },
+    });
+  });
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -98,9 +96,16 @@ describe('Cross Encoder Extended Tests', () => {
     });
 
     it('missing content treated as empty (penalty 0.9)', () => {
-      const noContent = { id: 4, rerankerScore: 1.0, score: 1.0, originalRank: 0, provider: 'test', scoringMethod: 'cross-encoder' as const };
+      const noContent: RerankResult = {
+        id: 4,
+        rerankerScore: 1.0,
+        score: 1.0,
+        originalRank: 0,
+        provider: 'test',
+        scoringMethod: 'cross-encoder',
+      };
       // No 'content' property → falls back to '' → length 0 → penalty 0.9
-      const results = crossEncoder.applyLengthPenalty([noContent as unknown]);
+      const results = crossEncoder.applyLengthPenalty([noContent]);
       const expected = 1.0 * 0.9;
       expect(results[0].rerankerScore).toBeCloseTo(expected, 9);
     });
@@ -155,7 +160,7 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      const docs = [
+      const docs: RerankDocument[] = [
         { id: 'a', content: 'first document' },
         { id: 'b', content: 'second document' },
       ];
@@ -179,7 +184,7 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      const docs = [
+      const docs: RerankDocument[] = [
         { id: 'x', content: 'doc x' },
         { id: 'y', content: 'doc y' },
         { id: 'z', content: 'doc z' },
@@ -230,7 +235,7 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      const docs = [
+      const docs: RerankDocument[] = [
         { id: 10, content: 'alpha document' },
         { id: 20, content: 'beta document' },
       ];
@@ -273,7 +278,7 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      const docs = [
+      const docs: RerankDocument[] = [
         { id: 'loc-a', content: 'local doc one' },
         { id: 'loc-b', content: 'local doc two' },
       ];
@@ -295,7 +300,7 @@ describe('Cross Encoder Extended Tests', () => {
         ],
       });
 
-      const docs = [
+      const docs: RerankDocument[] = [
         { id: 'a', content: 'one' },
         { id: 'b', content: 'two' },
         { id: 'c', content: 'three' },
@@ -431,15 +436,14 @@ describe('Cross Encoder Extended Tests', () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
 
       let fetchCallCount = 0;
-      globalThis.fetch = async (_url: any, _opts: any) => {
+      globalThis.fetch = vi.fn(async (..._args: Parameters<typeof fetch>): Promise<Response> => {
         fetchCallCount++;
-        return {
-          ok: true,
+        return new Response(JSON.stringify({ data: [{ index: 0, relevance_score: 0.8 }] }), {
           status: 200,
           statusText: 'OK',
-          json: async () => ({ data: [{ index: 0, relevance_score: 0.8 }] }),
-        } as unknown;
-      };
+          headers: { 'Content-Type': 'application/json' },
+        });
+      });
 
       const docs = [{ id: 'cache-1', content: 'a'.repeat(100) }];
 
@@ -456,15 +460,14 @@ describe('Cross Encoder Extended Tests', () => {
       process.env.VOYAGE_API_KEY = 'voyage-key';
 
       let fetchCallCount = 0;
-      globalThis.fetch = async (_url: any, _opts: any) => {
+      globalThis.fetch = vi.fn(async (..._args: Parameters<typeof fetch>): Promise<Response> => {
         fetchCallCount++;
-        return {
-          ok: true,
+        return new Response(JSON.stringify({ data: [{ index: 0, relevance_score: 0.8 }] }), {
           status: 200,
           statusText: 'OK',
-          json: async () => ({ data: [{ index: 0, relevance_score: 0.8 }] }),
-        } as unknown;
-      };
+          headers: { 'Content-Type': 'application/json' },
+        });
+      });
 
       const docs = [{ id: 'nc-1', content: 'a'.repeat(100) }];
 

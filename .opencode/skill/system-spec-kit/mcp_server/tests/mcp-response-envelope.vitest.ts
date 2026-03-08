@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MCP RESPONSE ENVELOPE
 // ---------------------------------------------------------------
@@ -7,38 +6,72 @@ import { describe, it, expect } from 'vitest';
 
 import * as handlers from '../handlers/index';
 
-// ---------------------------------------------------------------
-// Helper: Check if a response follows the MCP envelope format
-// ---------------------------------------------------------------
-function validateMCPEnvelope(result: any): {
+interface ContentItem {
+  type?: string;
+  text?: string;
+  [key: string]: unknown;
+}
+
+interface HandlerResponse {
+  content?: ContentItem[];
+  isError?: boolean;
+  _error?: unknown;
+  [key: string]: unknown;
+}
+
+interface EnvelopeValidationResult {
   valid: boolean;
   hasContent: boolean;
   hasTypeText: boolean;
   hasTextString: boolean;
   isValidJSON: boolean;
-  parsedData: any;
+  parsedData: unknown;
   issues: string[];
-} {
+}
+
+type HandlerFunction = (args: unknown) => Promise<HandlerResponse>;
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function getHandler(handlerName: string): HandlerFunction | null {
+  const candidate = (handlers as Record<string, unknown>)[handlerName];
+  return typeof candidate === 'function' ? (candidate as HandlerFunction) : null;
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+// ---------------------------------------------------------------
+// Helper: Check if a response follows the MCP envelope format
+// ---------------------------------------------------------------
+function validateMCPEnvelope(result: unknown): EnvelopeValidationResult {
   const issues: string[] = [];
   let hasContent = false;
   let hasTypeText = false;
   let hasTextString = false;
   let isValidJSON = false;
-  let parsedData: any = null;
+  let parsedData: unknown = null;
 
-  if (!result) {
+  if (!isRecord(result)) {
     issues.push('Result is null/undefined');
     return { valid: false, hasContent, hasTypeText, hasTextString, isValidJSON, parsedData, issues };
   }
 
-  if (result.content && Array.isArray(result.content)) {
+  const content = Array.isArray(result.content) ? result.content : undefined;
+
+  if (content) {
     hasContent = true;
   } else {
     issues.push('Missing or non-array .content');
   }
 
-  if (hasContent && result.content.length > 0) {
-    const item = result.content[0];
+  const firstItem = content?.[0];
+
+  if (hasContent && firstItem) {
+    const item = isRecord(firstItem) ? firstItem : {};
 
     if (item.type === 'text') {
       hasTypeText = true;
@@ -71,10 +104,10 @@ function validateMCPEnvelope(result: any): {
 // ---------------------------------------------------------------
 async function callHandlerSafe(
   handlerName: string,
-  args: any,
-): Promise<{ result: any; skipped: boolean; skipReason?: string }> {
-  const handlerFn = (handlers as unknown)[handlerName];
-  if (typeof handlerFn !== 'function') {
+  args: unknown,
+): Promise<{ result: HandlerResponse | null; skipped: boolean; skipReason?: string }> {
+  const handlerFn = getHandler(handlerName);
+  if (!handlerFn) {
     return { result: null, skipped: true, skipReason: `Handler '${handlerName}' not found` };
   }
 
@@ -82,7 +115,7 @@ async function callHandlerSafe(
     const result = await handlerFn(args);
     return { result, skipped: false };
   } catch (error: unknown) {
-    const msg = error.message || '';
+    const msg = getErrorMessage(error);
     if (
       msg.includes('Database') ||
       msg.includes('SQLITE') ||
@@ -216,7 +249,7 @@ describe('MCP Protocol Response Envelope (T536) [deferred - requires DB test fix
 
         if (envelope.valid) {
           expect(envelope.valid).toBe(true);
-        } else if (result.isError === true) {
+        } else if (result?.isError === true) {
           // Error responses are also valid MCP format
           const envelope2 = validateMCPEnvelope(result);
           expect(envelope2.hasContent).toBe(true);

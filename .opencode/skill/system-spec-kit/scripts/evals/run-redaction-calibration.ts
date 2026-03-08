@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: RunRedactionCalibration
+// MODULE: Run Redaction Calibration
 // ---------------------------------------------------------------
 
 import fs from 'fs';

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: ValidateMemoryQuality
+// MODULE: Validate Memory Quality
 // ---------------------------------------------------------------
 // Post-render quality gate for generated memory files
-// ---------------------------------------------------------------
 
 import fs from 'fs';
 import path from 'path';

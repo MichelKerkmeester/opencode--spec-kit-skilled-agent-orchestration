@@ -1,9 +1,9 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: BM25 INDEX
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach } from 'vitest';
+import type BetterSqlite3 from 'better-sqlite3';
 import {
   BM25Index,
   tokenize,
@@ -16,8 +16,12 @@ import {
   DEFAULT_B,
 } from '../lib/search/bm25-index';
 
-let hybridSearch: any = null;
+type BetterSqliteDatabase = InstanceType<typeof BetterSqlite3>;
+type HybridSearchModule = typeof import('../lib/search/hybrid-search');
+
+let hybridSearch: HybridSearchModule | null = null;
 try {
+  // @ts-expect-error top-level await in test file
   hybridSearch = await import('../lib/search/hybrid-search');
 } catch {
   // hybrid-search not available
@@ -36,12 +40,12 @@ describe('BM25 Index Tests (T031-T039)', () => {
 
     it('T031.2: Default k1 = 1.2', () => {
       const index = new BM25Index();
-      expect(index.k1).toBe(1.2);
+      expect((index as unknown as { k1: number }).k1).toBe(1.2);
     });
 
     it('T031.3: Default b = 0.75', () => {
       const index = new BM25Index();
-      expect(index.b).toBe(0.75);
+      expect((index as unknown as { b: number }).b).toBe(0.75);
     });
 
     it('T031.4: Custom k1/b parameters accepted', () => {
@@ -113,12 +117,14 @@ describe('BM25 Index Tests (T031-T039)', () => {
     });
 
     it('T032.8: Null input returns []', () => {
+      // @ts-expect-error intentionally passing null to verify runtime guard
       const tokens = tokenize(null);
       expect(Array.isArray(tokens)).toBe(true);
       expect(tokens.length).toBe(0);
     });
 
     it('T032.9: Non-string input returns []', () => {
+      // @ts-expect-error intentionally passing number to verify runtime guard
       const tokens = tokenize(12345);
       expect(Array.isArray(tokens)).toBe(true);
       expect(tokens.length).toBe(0);
@@ -189,7 +195,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
   ════════════════════════════════════════════════════════════ */
 
   describe('T034: Inverted index construction from documents', () => {
-    let index: any;
+    let index: BM25Index;
 
     beforeEach(() => {
       index = new BM25Index();
@@ -266,7 +272,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
   ════════════════════════════════════════════════════════════ */
 
   describe('T035: IDF calculation for term importance', () => {
-    let index: any;
+    let index: BM25Index;
 
     beforeEach(() => {
       index = new BM25Index();
@@ -311,7 +317,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
   ════════════════════════════════════════════════════════════ */
 
   describe('T036: BM25 scoring with k1=1.2, b=0.75 parameters', () => {
-    let index: any;
+    let index: BM25Index;
 
     beforeEach(() => {
       index = new BM25Index();
@@ -434,15 +440,15 @@ describe('BM25 Index Tests (T031-T039)', () => {
 
   describe('T038: BM25 integration with hybrid search pipeline', () => {
     it.skipIf(!hybridSearch)('T038.1: bm25Search exported from hybrid-search', () => {
-      expect(typeof hybridSearch.bm25Search).toBe('function');
+      expect(typeof hybridSearch!.bm25Search).toBe('function');
     });
 
     it.skipIf(!hybridSearch)('T038.2: isBm25Available exported from hybrid-search', () => {
-      expect(typeof hybridSearch.isBm25Available).toBe('function');
+      expect(typeof hybridSearch!.isBm25Available).toBe('function');
     });
 
     it.skipIf(!hybridSearch)('T038.3: hybridSearchEnhanced exported', () => {
-      expect(typeof hybridSearch.hybridSearchEnhanced).toBe('function');
+      expect(typeof hybridSearch!.hybridSearchEnhanced).toBe('function');
     });
 
     it('T038.4: isBm25Available() true when index populated', () => {
@@ -450,7 +456,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       const bm25idx = getIndex();
       bm25idx.addDocument('int1', 'memory retrieval search testing document indexing vector semantic hybrid integration');
       bm25idx.addDocument('int2', 'context memory search testing retrieval document vector semantic hybrid integration');
-      const available = hybridSearch.isBm25Available();
+      const available = hybridSearch!.isBm25Available();
       if (isBm25Enabled()) {
         expect(available).toBe(true);
       } else {
@@ -463,14 +469,14 @@ describe('BM25 Index Tests (T031-T039)', () => {
       const bm25idx = getIndex();
       bm25idx.addDocument('int1', 'memory retrieval search testing document indexing vector semantic hybrid integration');
       bm25idx.addDocument('int2', 'context memory search testing retrieval document vector semantic hybrid integration');
-      const results = hybridSearch.bm25Search('memory search', { limit: 5 });
+      const results = hybridSearch!.bm25Search('memory search', { limit: 5 });
       expect(Array.isArray(results)).toBe(true);
       expect(results.length).toBeGreaterThan(0);
     });
 
     it.skipIf(!hybridSearch)('T038.6: Legacy camelCase aliases available', () => {
-      expect(typeof hybridSearch.bm25Search).toBe('function');
-      expect(typeof hybridSearch.isBm25Available).toBe('function');
+      expect(typeof hybridSearch!.bm25Search).toBe('function');
+      expect(typeof hybridSearch!.isBm25Available).toBe('function');
     });
   });
 
@@ -480,12 +486,12 @@ describe('BM25 Index Tests (T031-T039)', () => {
 
   describe('T039: combined_lexical_search() merges FTS5 + BM25', () => {
     it.skipIf(!hybridSearch)('T039.1: combinedLexicalSearch exported', () => {
-      expect(typeof hybridSearch.combinedLexicalSearch).toBe('function');
+      expect(typeof hybridSearch!.combinedLexicalSearch).toBe('function');
     });
 
     it.skipIf(!hybridSearch)('T039.2: combinedLexicalSearch returns array', () => {
       resetIndex();
-      const results = hybridSearch.combinedLexicalSearch('test query', { limit: 10 });
+      const results = hybridSearch!.combinedLexicalSearch('test query', { limit: 10 });
       expect(Array.isArray(results)).toBe(true);
     });
 
@@ -494,7 +500,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       const bm25comb = getIndex();
       bm25comb.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
       bm25comb.addDocument('comb2', 'context memory search testing retrieval document vector semantic hybrid combined');
-      const results = hybridSearch.combinedLexicalSearch('memory search', { limit: 5 });
+      const results = hybridSearch!.combinedLexicalSearch('memory search', { limit: 5 });
       expect(results.length).toBeGreaterThan(0);
     });
 
@@ -502,7 +508,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
-      const results = hybridSearch.combinedLexicalSearch('memory', { limit: 5 });
+      const results = hybridSearch!.combinedLexicalSearch('memory', { limit: 5 });
       expect(results.length).toBeGreaterThan(0);
       expect(typeof results[0].score).toBe('number');
     });
@@ -511,7 +517,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
-      const results = hybridSearch.combinedLexicalSearch('memory', { limit: 5 });
+      const results = hybridSearch!.combinedLexicalSearch('memory', { limit: 5 });
       expect(results.length).toBeGreaterThan(0);
       const hasSource = typeof results[0].source === 'string';
       const hasBm25Score = typeof results[0].score === 'number';
@@ -522,7 +528,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
-      const results = hybridSearch.combinedLexicalSearch('memory', { limit: 5 });
+      const results = hybridSearch!.combinedLexicalSearch('memory', { limit: 5 });
       expect(results.length).toBeGreaterThan(0);
       const hasCombinedScore = typeof results[0].combined_lexical_score === 'number';
       const hasBm25Score = typeof results[0].score === 'number';
@@ -534,7 +540,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
       bm25.addDocument('comb2', 'context memory search testing retrieval document vector semantic hybrid combined');
-      const results = hybridSearch.combinedLexicalSearch('memory', { limit: 1 });
+      const results = hybridSearch!.combinedLexicalSearch('memory', { limit: 1 });
       expect(results.length).toBeLessThanOrEqual(1);
     });
 
@@ -543,13 +549,13 @@ describe('BM25 Index Tests (T031-T039)', () => {
       const bm25 = getIndex();
       bm25.addDocument('filt1', 'memory retrieval search testing document indexing vector semantic hybrid filter');
       bm25.addDocument('filt2', 'memory retrieval search testing document indexing vector semantic hybrid filter');
-      const results = hybridSearch.combinedLexicalSearch('memory', { limit: 10 });
+      const results = hybridSearch!.combinedLexicalSearch('memory', { limit: 10 });
       expect(Array.isArray(results)).toBe(true);
       expect(results.length).toBeGreaterThanOrEqual(0);
     });
 
     it.skipIf(!hybridSearch)('T039.9: Legacy alias combinedLexicalSearch available', () => {
-      expect(typeof hybridSearch.combinedLexicalSearch).toBe('function');
+      expect(typeof hybridSearch!.combinedLexicalSearch).toBe('function');
     });
   });
 });

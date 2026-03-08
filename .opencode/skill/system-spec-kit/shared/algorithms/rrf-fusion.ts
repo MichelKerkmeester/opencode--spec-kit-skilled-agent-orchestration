@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: RrfFusion
+// MODULE: RRF Fusion
 // ---------------------------------------------------------------
 // Reciprocal Rank Fusion for combining search results
 // P3-11: TypeScript source (previously orphaned .js only)

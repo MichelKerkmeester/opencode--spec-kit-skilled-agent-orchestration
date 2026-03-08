@@ -175,7 +175,7 @@ t124Describe('T124: buildContinueSessionData', () => {
 // (SKIPPED — session-manager.js has DB-dependent imports)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section: dist/lib/session/session-manager.js
+// Type note: skipped section covers dist/lib/session/session-manager.js
 // imports Database type and working-memory module which trigger better-sqlite3
 
 describe('T017: generateContinueSessionMd() creates valid markdown (DB-dependent)', () => {

@@ -1,15 +1,12 @@
 // ---------------------------------------------------------------
-// MODULE: CheckArchitectureBoundaries
+// MODULE: Check Architecture Boundaries
 // ---------------------------------------------------------------
 // Enforces two rules from ARCHITECTURE.md that were
 // previously documentation-only:
 //   GAP A — shared/ must not import from mcp_server/ or scripts/
 //   GAP B — mcp_server/scripts/ files must be thin wrappers only
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
 // 1. IMPORTS
-// ---------------------------------------------------------------------------
 
 import * as fs from 'fs';
 import * as path from 'path';

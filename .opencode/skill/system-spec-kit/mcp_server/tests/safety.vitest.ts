@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SAFETY
 // ---------------------------------------------------------------
@@ -10,6 +9,11 @@ import * as os from 'os';
 import { processBatches } from '../utils/batch-processor';
 import * as incMod from '../lib/storage/incremental-index';
 import Database from 'better-sqlite3';
+import type { MemoryDbRow } from '@spec-kit/shared/types';
+
+type TestDb = Database.Database;
+type EmbeddingStatus = MemoryDbRow['embedding_status'];
+type FileMtimeRow = { file_mtime_ms: number | null };
 
 describe('T105 + T106 Safety Tests', () => {
   /* ═══════════════════════════════════════════════════════════
@@ -17,7 +21,7 @@ describe('T105 + T106 Safety Tests', () => {
   ═══════════════════════════════════════════════════════════ */
 
   describe('T105: batchSize Validation', () => {
-    const identity = async (x: any) => x;
+    const identity = async <T>(x: T): Promise<T> => x;
 
     it('CHK-114: batchSize=0 → immediate throw', async () => {
       await expect(processBatches([1, 2, 3], identity, 0)).rejects.toThrow('positive integer');
@@ -82,7 +86,7 @@ describe('T105 + T106 Safety Tests', () => {
   ═══════════════════════════════════════════════════════════ */
 
   describe('T106: Mtime Update After Successful Indexing', () => {
-    function createTestDb(): any {
+    function createTestDb(): TestDb {
       const db = new Database(':memory:');
       db.exec(`
         CREATE TABLE memory_index (
@@ -129,10 +133,10 @@ describe('T105 + T106 Safety Tests', () => {
       return db;
     }
 
-    function insertRow(db: any, opts: {
+    function insertRow(db: TestDb, opts: {
       file_path: string;
       file_mtime_ms?: number | null;
-      embedding_status?: string;
+      embedding_status?: EmbeddingStatus;
       spec_folder?: string;
     }): number {
       const stmt = db.prepare(`
@@ -169,9 +173,9 @@ describe('T105 + T106 Safety Tests', () => {
       const result = incMod.batchUpdateMtimes([tmpFile]);
       expect(result.updated).toBe(1);
 
-      const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(tmpFile);
+      const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(tmpFile) as FileMtimeRow | undefined;
       const stats = fs.statSync(tmpFile);
-      expect(row.file_mtime_ms).toBe(stats.mtimeMs);
+      expect(row?.file_mtime_ms).toBe(stats.mtimeMs);
 
       const decision = incMod.shouldReindex(tmpFile);
       expect(decision).toBe('skip');
@@ -282,6 +286,7 @@ describe('T105 + T106 Safety Tests', () => {
     });
 
     it('T106-NullDb: batchUpdateMtimes with null db → all failed', () => {
+      // @ts-expect-error exercising the module's null-db guard path
       incMod.init(null);
       const result = incMod.batchUpdateMtimes(['/some/file.md', '/another/file.md']);
       expect(result.updated).toBe(0);

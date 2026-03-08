@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: SlugUtils
+// MODULE: Slug Utils
 // ---------------------------------------------------------------
 // Content-aware slug generation for memory filenames
-// ---------------------------------------------------------------
 
 import { createHash } from 'node:crypto';
 import * as fs from 'node:fs';

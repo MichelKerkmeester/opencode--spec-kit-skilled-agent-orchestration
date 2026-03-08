@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SESSION MANAGER
 // ---------------------------------------------------------------
@@ -33,16 +32,13 @@ interface DedupStats {
   tokenSavingsEstimate: string;
 }
 
-interface FilterResult {
-  filtered: MemoryObject[];
-  dedupStats: DedupStats;
-}
+type FilterResult = ReturnType<typeof sessionManager.filterSearchResults>;
 
 interface MemoryObject {
   id: number;
   file_path: string;
   anchorId: string;
-  content_hash: string | null;
+  content_hash?: string;
   title: string;
 }
 
@@ -56,7 +52,6 @@ function createMemory(overrides: Partial<MemoryObject> = {}): MemoryObject {
     id: 1,
     file_path: '/specs/test-spec/memory/test.md',
     anchorId: 'test-anchor',
-    content_hash: null,
     title: 'Test Memory',
     ...overrides,
   };
@@ -324,7 +319,7 @@ describe('Session Manager Tests (T001-T008)', () => {
 
       expect(filtered).toHaveLength(3);
 
-      const filteredIds: number[] = filtered.map((m: MemoryObject) => m.id);
+      const filteredIds: number[] = filtered.map((m) => m.id!);
       expect(filteredIds).toContain(501);
       expect(filteredIds).toContain(503);
       expect(filteredIds).toContain(505);
@@ -348,7 +343,7 @@ describe('Session Manager Tests (T001-T008)', () => {
       ]);
 
       expect(filtered).toHaveLength(2);
-      const filteredIds: number[] = filtered.map((m: MemoryObject) => m.id);
+      const filteredIds: number[] = filtered.map((m) => m.id!);
       expect(filteredIds).toEqual([701, 702]);
 
       expect(dedupStats.filtered).toBe(1);

@@ -1,15 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: ContentFilter
-// ---------------------------------------------------------------
-/**
- * @file content-filter.ts
- * @description Filters, deduplicates, and quality-scores content for memory indexing.
- * @module scripts/lib/content-filter
- */
-
-// ---------------------------------------------------------------
 // MODULE: Content Filter
-// Filters, deduplicates, and quality-scores content for memory indexing
 // ---------------------------------------------------------------
 
 import crypto from 'crypto';

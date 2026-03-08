@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: TaskEnrichment
+// MODULE: Task Enrichment
 // ---------------------------------------------------------------
 // Shared helpers for memory task title enrichment decisions
-// ---------------------------------------------------------------
 
 import { isContaminatedMemoryName, isGenericContentTask, normalizeMemoryNameCandidate, pickBestContentName } from './slug-utils';
 

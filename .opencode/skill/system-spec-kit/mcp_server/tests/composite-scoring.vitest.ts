@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: COMPOSITE SCORING
 // ---------------------------------------------------------------
@@ -49,12 +48,12 @@ describe('Composite Scoring', () => {
     })
 
     it('T407: All weights sum to exactly 1.0', () => {
-      const sum = Object.values(weights).reduce((acc: any, w: any) => acc + w, 0) as number
+      const sum = Object.values(weights).reduce((acc, weight) => acc + weight, 0)
       expect(sum).toBeCloseTo(1.0, 4)
     })
 
     it('T408: No negative weights', () => {
-      const allNonNegative = Object.values(weights).every((w: any) => w >= 0)
+      const allNonNegative = Object.values(weights).every((weight) => weight >= 0)
       expect(allNonNegative).toBe(true)
     })
 
@@ -408,7 +407,15 @@ describe('Composite Scoring', () => {
         lastReview: new Date(now - 1000 * 60 * 60 * 24 * 3).toISOString(),
       }
 
-      const breakdown = compositeScoring.getScoreBreakdown(row)
+      const breakdown = compositeScoring.getScoreBreakdown(row) as ReturnType<typeof compositeScoring.getScoreBreakdown> & {
+        factors: {
+          retrievability: {
+            value: number
+            weight: number
+            contribution: number
+          }
+        }
+      }
       expect(breakdown.factors).toBeDefined()
       expect(breakdown.factors.retrievability).toBeDefined()
 
@@ -445,7 +452,7 @@ describe('Composite Scoring', () => {
         stability: null,
         lastReview: null,
       }
-      const score = calcScore(nullRow)
+      const score = calcScore(nullRow as unknown as Parameters<typeof calcScore>[0])
       expect(typeof score).toBe('number')
       expect(score).not.toBeNaN()
     })
@@ -565,7 +572,7 @@ describe('Composite Scoring', () => {
         },
       ]
 
-      const ranked = applyScoring(memories)
+      const ranked = applyScoring(memories as unknown as Parameters<typeof applyScoring>[0])
       expect(ranked[0].id).toBe('high-r')
     })
 
@@ -594,7 +601,7 @@ describe('Composite Scoring', () => {
         },
       ]
 
-      const ranked = applyScoring(memories)
+      const ranked = applyScoring(memories as unknown as Parameters<typeof applyScoring>[0])
       // Verify ranking produces valid results: both items scored, first has composite_score
       expect(ranked.length).toBe(2)
       expect(typeof ranked[0].composite_score).toBe('number')
@@ -636,7 +643,7 @@ describe('Composite Scoring', () => {
         },
       ]
 
-      const ranked = applyScoring(memories)
+      const ranked = applyScoring(memories as unknown as Parameters<typeof applyScoring>[0])
       expect(ranked[0].id).toBe('both-high')
     })
 
@@ -655,7 +662,7 @@ describe('Composite Scoring', () => {
         },
       ]
 
-      const ranked = applyScoring(memories)
+      const ranked = applyScoring(memories as unknown as Parameters<typeof applyScoring>[0])
       expect(ranked[0]._scoring).toBeDefined()
       expect(typeof ranked[0]._scoring.retrievability).toBe('number')
     })
@@ -958,7 +965,7 @@ describe('Composite Scoring', () => {
     })
 
     it('T093e: 5-factor weights sum to 1.0', () => {
-      const weightSum = Object.values(weights).reduce((acc: any, w: any) => acc + w, 0) as number
+      const weightSum = Object.values(weights).reduce((acc, weight) => acc + weight, 0)
       expect(weightSum).toBeCloseTo(1.0, 4)
     })
   })
@@ -995,7 +1002,7 @@ describe('Composite Scoring', () => {
       'calculateCompositeScore',
       'applyCompositeScoring',
       'getScoreBreakdown',
-    ]
+    ] as const satisfies ReadonlyArray<keyof typeof compositeScoring>
 
     for (const name of expectedExports) {
       it(`Export: ${name}`, () => {

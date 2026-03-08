@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: ConversationExtractor
+// MODULE: Conversation Extractor
 // ---------------------------------------------------------------
 // Extracts structured conversation data — exchanges, tool calls, phases, and flowcharts
-// ---------------------------------------------------------------
 
 import { CONFIG } from '../core';
 import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils';

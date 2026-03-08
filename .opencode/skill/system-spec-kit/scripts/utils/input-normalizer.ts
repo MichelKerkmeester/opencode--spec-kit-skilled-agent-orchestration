@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: InputNormalizer
+// MODULE: Input Normalizer
 // ---------------------------------------------------------------
 // Validates, normalizes, and transforms raw input data into structured session format
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. TYPES
-// ---------------------------------------------------------------
 
 /** Data source type indicating where loaded data came from */
 export type DataSource = 'file' | 'opencode-capture' | 'simulation';

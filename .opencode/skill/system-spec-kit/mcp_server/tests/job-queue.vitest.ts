@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Ingest Job Queue
 // ---------------------------------------------------------------
@@ -10,6 +9,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 import Database from 'better-sqlite3';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
+type JobQueueModule = typeof import('../lib/ops/job-queue');
 
 const tempFiles: string[] = [];
 const databases: Array<Database.Database> = [];
@@ -43,7 +44,7 @@ function createTestDb(): Database.Database {
   return db;
 }
 
-async function loadJobQueueModule(db: Database.Database) {
+async function loadJobQueueModule(db: Database.Database): Promise<JobQueueModule> {
   vi.resetModules();
   vi.doMock('../utils', () => ({
     requireDb: () => db,

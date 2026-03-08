@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: MapGroundTruthIds
+// MODULE: Map Ground Truth IDs
 // ---------------------------------------------------------------
 //
 // Sprint 0 closure task: resolve memoryId=-1 placeholders in
@@ -14,7 +14,6 @@
 //   - Prints mapping summary to stdout
 //   - Writes full mapping to /tmp/ground-truth-id-mapping.json
 //   - With --apply: updates ground-truth-data.ts in place
-// ---------------------------------------------------------------
 
 import Database from 'better-sqlite3';
 import * as path from 'path';

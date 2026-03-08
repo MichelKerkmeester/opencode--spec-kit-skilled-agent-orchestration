@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: PathSecurity
+// MODULE: Path Security
 // ---------------------------------------------------------------
 // Canonical location (moved from mcp_server/lib/utils/path-security.js)
-// ---------------------------------------------------------------
 
 import path from 'path';
 import fs from 'fs';

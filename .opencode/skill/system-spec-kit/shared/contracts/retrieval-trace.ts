@@ -1,10 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: RetrievalTrace
+// MODULE: Retrieval Trace
 // ---------------------------------------------------------------
 // Typed contracts for the retrieval pipeline that enforce end-to-end
 // type safety with trace stages and degraded-mode handling.
 // C136-08: Foundation for observability and pipeline instrumentation.
-// ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
    1. TYPES

@@ -1,14 +1,18 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CONFIDENCE TRACKER
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as mod from '../lib/scoring/confidence-tracker';
+import type {
+  ConfidenceInfo,
+  Database as ConfidenceTrackerDatabase,
+  ValidationResult,
+} from '../lib/scoring/confidence-tracker';
 import Database from 'better-sqlite3';
 
 // ───────────────────────────────────────────────────────────────
@@ -17,26 +21,34 @@ import Database from 'better-sqlite3';
 // Task ID: T510 (happy path), T103 (DB error safety)
 // ───────────────────────────────────────────────────────────────
 
-let db: any = null;
+type ConfidenceTrackerCall =
+  | ((db: ConfidenceTrackerDatabase) => ValidationResult)
+  | ((db: ConfidenceTrackerDatabase) => number)
+  | ((db: ConfidenceTrackerDatabase) => boolean)
+  | ((db: ConfidenceTrackerDatabase) => ConfidenceInfo);
+
+type ClosableConfidenceTrackerDatabase = ConfidenceTrackerDatabase & { close: () => void };
+
+let db: ClosableConfidenceTrackerDatabase | null = null;
 let dbPath: string = '';
 
 /**
  * Create a mock DB object that throws SQLITE_BUSY on all operations.
  * Simulates a locked or temporarily unavailable database.
  */
-function createBrokenDb() {
+function createBrokenDb(): ConfidenceTrackerDatabase {
   const busyError = new Error('SQLITE_BUSY: database is locked');
   return {
     prepare: () => { throw busyError; },
     transaction: () => { throw busyError; },
     exec: () => { throw busyError; },
-  };
+  } as unknown as ConfidenceTrackerDatabase;
 }
 
 describe('Confidence Tracker Tests (T510)', () => {
   beforeAll(() => {
     dbPath = path.join(os.tmpdir(), `confidence-tracker-test-${Date.now()}.sqlite`);
-    db = new Database(dbPath);
+    db = new Database(dbPath) as unknown as ClosableConfidenceTrackerDatabase;
 
     db.exec(`
       CREATE TABLE IF NOT EXISTS memory_index (
@@ -84,7 +96,7 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
 
     it('T510-01d: getConfidenceScore returns base for new memory', () => {
-      const score = mod.getConfidenceScore(db, 1);
+      const score = mod.getConfidenceScore(db!, 1);
       expect(score).toBe(0.5);
     });
   });
@@ -95,15 +107,15 @@ describe('Confidence Tracker Tests (T510)', () => {
 
   describe('Positive Feedback Adjusts Up (T510-02)', () => {
     it('T510-02a: Positive validation increases confidence', () => {
-      const before = mod.getConfidenceScore(db, 1);
-      const result = mod.recordValidation(db, 1, true);
+      const before = mod.getConfidenceScore(db!, 1);
+      const result = mod.recordValidation(db!, 1, true);
       expect(result).toBeTruthy();
       expect(result.confidence).toBeGreaterThan(before);
     });
 
     it('T510-02b: Validation count incremented', () => {
       // After T510-02a ran recordValidation once on memory 1
-      const result = mod.getConfidenceInfo(db, 1);
+      const result = mod.getConfidenceInfo(db!, 1);
       expect(result).toBeTruthy();
       expect(result.validationCount).toBe(1);
     });
@@ -111,7 +123,7 @@ describe('Confidence Tracker Tests (T510)', () => {
     it('T510-02c: Confidence increased by POSITIVE_INCREMENT', () => {
       // Memory 1 started at 0.5, one positive validation applied in T510-02a
       const expectedConfidence = 0.5 + mod.CONFIDENCE_POSITIVE_INCREMENT;
-      const score = mod.getConfidenceScore(db, 1);
+      const score = mod.getConfidenceScore(db!, 1);
       expect(score).toBeCloseTo(expectedConfidence, 3);
     });
   });
@@ -122,8 +134,8 @@ describe('Confidence Tracker Tests (T510)', () => {
 
   describe('Negative Feedback Adjusts Down (T510-03)', () => {
     it('T510-03a: Negative validation decreases confidence', () => {
-      const before = mod.getConfidenceScore(db, 4);
-      const result = mod.recordValidation(db, 4, false);
+      const before = mod.getConfidenceScore(db!, 4);
+      const result = mod.recordValidation(db!, 4, false);
       expect(result).toBeTruthy();
       expect(result.confidence).toBeLessThan(before);
     });
@@ -131,7 +143,7 @@ describe('Confidence Tracker Tests (T510)', () => {
     it('T510-03b: Confidence decreased by NEGATIVE_DECREMENT', () => {
       // Memory 4 started at 0.1, one negative validation applied in T510-03a
       const expectedConfidence = 0.1 - mod.CONFIDENCE_NEGATIVE_DECREMENT;
-      const score = mod.getConfidenceScore(db, 4);
+      const score = mod.getConfidenceScore(db!, 4);
       expect(score).toBeCloseTo(expectedConfidence, 3);
     });
   });
@@ -144,18 +156,18 @@ describe('Confidence Tracker Tests (T510)', () => {
     it('T510-04a: Confidence never goes below CONFIDENCE_MIN (0.0)', () => {
       // Push memory 4 to minimum by recording many negative validations
       for (let i = 0; i < 10; i++) {
-        mod.recordValidation(db, 4, false);
+        mod.recordValidation(db!, 4, false);
       }
-      const minScore = mod.getConfidenceScore(db, 4);
+      const minScore = mod.getConfidenceScore(db!, 4);
       expect(minScore).toBeGreaterThanOrEqual(0.0);
     });
 
     it('T510-04b: Confidence never exceeds CONFIDENCE_MAX (1.0)', () => {
       // Push memory 2 to maximum by recording many positive validations
       for (let i = 0; i < 10; i++) {
-        mod.recordValidation(db, 2, true);
+        mod.recordValidation(db!, 2, true);
       }
-      const maxScore = mod.getConfidenceScore(db, 2);
+      const maxScore = mod.getConfidenceScore(db!, 2);
       expect(maxScore).toBeLessThanOrEqual(1.0);
     });
   });
@@ -168,14 +180,14 @@ describe('Confidence Tracker Tests (T510)', () => {
     it('T510-05a: Promotion eligibility detected after meeting thresholds', () => {
       // Memory 5 has confidence=0.88, validation_count=4
       // Promotion requires confidence >= 0.9 AND validation_count >= 5
-      const result = mod.recordValidation(db, 5, true);
+      const result = mod.recordValidation(db!, 5, true);
       expect(result).toBeTruthy();
       expect(result.promotionEligible).toBe(true);
     });
 
     it('T510-05b: Auto-promotion occurred', () => {
       // Check if memory 5 was auto-promoted after T510-05a
-      const info = mod.getConfidenceInfo(db, 5);
+      const info = mod.getConfidenceInfo(db!, 5);
       // May not auto-promote depending on implementation
       // If wasPromoted is not available from getConfidenceInfo, check tier
       expect(info).toBeTruthy();
@@ -184,14 +196,14 @@ describe('Confidence Tracker Tests (T510)', () => {
     });
 
     it('T510-05c: getConfidenceInfo returns full info', () => {
-      const info = mod.getConfidenceInfo(db, 5);
+      const info = mod.getConfidenceInfo(db!, 5);
       expect(info).toBeTruthy();
       expect(typeof info.confidence).toBe('number');
       expect(typeof info.validationCount).toBe('number');
     });
 
     it('T510-05d: Already-critical memory not eligible for promotion', () => {
-      const critical = mod.checkPromotionEligible(db, 3);
+      const critical = mod.checkPromotionEligible(db!, 3);
       expect(critical).toBe(false);
     });
   });
@@ -211,12 +223,12 @@ describe('DB Error Safe Defaults (T103)', () => {
   // ─────────────────────────────────────────────────────────────
 
   describe('Closed DB Handle (T103-01)', () => {
-    let closedDb: any = null;
+    let closedDb: ClosableConfidenceTrackerDatabase | null = null;
     let closedDbPath: string;
 
     beforeAll(() => {
       closedDbPath = path.join(os.tmpdir(), `conf-tracker-closed-${Date.now()}.sqlite`);
-      closedDb = new Database(closedDbPath);
+      closedDb = new Database(closedDbPath) as unknown as ClosableConfidenceTrackerDatabase;
       closedDb.exec(`
         CREATE TABLE IF NOT EXISTS memory_index (
           id INTEGER PRIMARY KEY,
@@ -238,7 +250,7 @@ describe('DB Error Safe Defaults (T103)', () => {
     });
 
     it('T103-01b: recordValidation returns safe default on closed DB', () => {
-      const result = mod.recordValidation(closedDb, 1, true);
+      const result = mod.recordValidation(closedDb!, 1, true);
       expect(result).toBeTruthy();
       expect(result.confidence).toBe(0.5);
       expect(result.validationCount).toBe(0);
@@ -247,22 +259,22 @@ describe('DB Error Safe Defaults (T103)', () => {
     });
 
     it('T103-01c: getConfidenceScore returns CONFIDENCE_BASE on closed DB', () => {
-      const score = mod.getConfidenceScore(closedDb, 1);
+      const score = mod.getConfidenceScore(closedDb!, 1);
       expect(score).toBe(0.5);
     });
 
     it('T103-01d: checkPromotionEligible returns false on closed DB', () => {
-      const eligible = mod.checkPromotionEligible(closedDb, 1);
+      const eligible = mod.checkPromotionEligible(closedDb!, 1);
       expect(eligible).toBe(false);
     });
 
     it('T103-01e: promoteToCritical returns false on closed DB', () => {
-      const promoted = mod.promoteToCritical(closedDb, 1);
+      const promoted = mod.promoteToCritical(closedDb!, 1);
       expect(promoted).toBe(false);
     });
 
     it('T103-01f: getConfidenceInfo returns full safe default on closed DB', () => {
-      const info = mod.getConfidenceInfo(closedDb, 42);
+      const info = mod.getConfidenceInfo(closedDb!, 42);
       expect(info).toBeTruthy();
       expect(info.memoryId).toBe(42);
       expect(info.confidence).toBe(0.5);
@@ -277,7 +289,7 @@ describe('DB Error Safe Defaults (T103)', () => {
   // ─────────────────────────────────────────────────────────────
 
   describe('Mock SQLITE_BUSY (T103-02)', () => {
-    let brokenDb: any;
+    let brokenDb: ConfidenceTrackerDatabase;
 
     beforeAll(() => {
       brokenDb = createBrokenDb();
@@ -320,32 +332,29 @@ describe('DB Error Safe Defaults (T103)', () => {
   // ─────────────────────────────────────────────────────────────
 
   describe('Error Logging Verification (T103-03)', () => {
-    let brokenDb: any;
-    let consoleErrorSpy: any;
+    let brokenDb: ConfidenceTrackerDatabase;
 
     beforeAll(() => {
       brokenDb = createBrokenDb();
     });
 
-    const functions = [
-      { name: 'recordValidation', call: (bDb: any) => mod.recordValidation(bDb, 77, true), tag: 'recordValidation' },
-      { name: 'getConfidenceScore', call: (bDb: any) => mod.getConfidenceScore(bDb, 77), tag: 'getConfidenceScore' },
-      { name: 'checkPromotionEligible', call: (bDb: any) => mod.checkPromotionEligible(bDb, 77), tag: 'checkPromotionEligible' },
-      { name: 'promoteToCritical', call: (bDb: any) => mod.promoteToCritical(bDb, 77), tag: 'promoteToCritical' },
-      { name: 'getConfidenceInfo', call: (bDb: any) => mod.getConfidenceInfo(bDb, 77), tag: 'getConfidenceInfo' },
+    const functions: Array<{ name: string; call: ConfidenceTrackerCall; tag: string }> = [
+      { name: 'recordValidation', call: (brokenDatabase) => mod.recordValidation(brokenDatabase, 77, true), tag: 'recordValidation' },
+      { name: 'getConfidenceScore', call: (brokenDatabase) => mod.getConfidenceScore(brokenDatabase, 77), tag: 'getConfidenceScore' },
+      { name: 'checkPromotionEligible', call: (brokenDatabase) => mod.checkPromotionEligible(brokenDatabase, 77), tag: 'checkPromotionEligible' },
+      { name: 'promoteToCritical', call: (brokenDatabase) => mod.promoteToCritical(brokenDatabase, 77), tag: 'promoteToCritical' },
+      { name: 'getConfidenceInfo', call: (brokenDatabase) => mod.getConfidenceInfo(brokenDatabase, 77), tag: 'getConfidenceInfo' },
     ];
 
     for (const fn of functions) {
       it(`T103-03-${fn.name}: ${fn.name} logs error with function context`, () => {
         const captured: string[] = [];
-        const original = console.error;
-        console.error = (...args: any[]) => {
+        const errorSpy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
           captured.push(args.map(String).join(' '));
-        };
+        });
 
-        try { fn.call(brokenDb); } catch { /* swallow if any leak through */ }
-
-        console.error = original;
+        fn.call(brokenDb);
+        errorSpy.mockRestore();
 
         const hasContext = captured.some(msg => msg.includes(fn.tag));
         expect(hasContext).toBe(true);
@@ -360,12 +369,11 @@ describe('DB Error Safe Defaults (T103)', () => {
   describe('getConfidenceInfo Full Structure (T103-04)', () => {
     it('T103-04a: getConfidenceInfo safe default has all correct fields', () => {
       const brokenDb = createBrokenDb();
-      const original = console.error;
-      console.error = () => {}; // suppress error logging
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
       const info = mod.getConfidenceInfo(brokenDb, 55);
 
-      console.error = original;
+      errorSpy.mockRestore();
 
       expect(info).toBeTruthy();
       expect(info.memoryId).toBe(55);
@@ -377,12 +385,11 @@ describe('DB Error Safe Defaults (T103)', () => {
 
     it('T103-04b: getConfidenceInfo safe default has correct promotionProgress', () => {
       const brokenDb = createBrokenDb();
-      const original = console.error;
-      console.error = () => {}; // suppress error logging
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
       const info = mod.getConfidenceInfo(brokenDb, 55);
 
-      console.error = original;
+      errorSpy.mockRestore();
 
       const pp = info?.promotionProgress;
       expect(pp).toBeTruthy();

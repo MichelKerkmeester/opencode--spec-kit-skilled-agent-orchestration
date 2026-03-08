@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: ARCHIVAL MANAGER
 // ---------------------------------------------------------------
@@ -12,9 +11,35 @@ import Database from 'better-sqlite3';
    TEST SETUP
 ──────────────────────────────────────────────────────────────── */
 
-let db: any = null;
+type TestDatabase = Database.Database;
+type TestMemoryInput = {
+  spec_folder?: string;
+  file_path?: string;
+  title?: string;
+  importance_tier?: string;
+  created_at?: string;
+  last_accessed?: number;
+  access_count?: number;
+  confidence?: number;
+  is_pinned?: number;
+  stability?: number;
+  half_life_days?: number | null;
+};
 
-function setupTestDb(): any {
+let db: TestDatabase | null = null;
+
+function requireDb(): TestDatabase {
+  if (!db) {
+    throw new Error('Test database not initialized');
+  }
+  return db;
+}
+
+function toMemoryId(rowId: number | bigint): number {
+  return typeof rowId === 'bigint' ? Number(rowId) : rowId;
+}
+
+function setupTestDb(): TestDatabase {
   db = new Database(':memory:');
 
   db.exec(`
@@ -51,7 +76,10 @@ function teardownTestDb() {
   }
 }
 
-function insertTestMemory(data: Record<string, any>) {
+function insertTestMemory(data: TestMemoryInput): Database.RunResult {
+  if (!db) {
+    throw new Error('Test database not initialized');
+  }
   const stmt = db.prepare(`
     INSERT INTO memory_index (spec_folder, file_path, title, importance_tier, created_at, last_accessed, access_count, confidence, is_pinned, stability, half_life_days)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -84,13 +112,13 @@ describe('Archival Manager (T059)', () => {
 
     it('T059-001: Init with valid database succeeds', () => {
       setupTestDb();
-      expect(() => archivalManager.init(db)).not.toThrow();
+      expect(() => archivalManager.init(requireDb())).not.toThrow();
     });
 
     it('T059-002: is_archived column exists', () => {
       setupTestDb();
-      const columns = db.prepare('PRAGMA table_info(memory_index)').all().map((c: any) => c.name);
-      expect(columns).toContain('is_archived');
+      const columns = requireDb().prepare('PRAGMA table_info(memory_index)').all() as Array<{ name: string }>;
+      expect(columns.map(column => column.name)).toContain('is_archived');
     });
 
     it('T059-003: ARCHIVAL_CONFIG is exported', () => {
@@ -109,7 +137,7 @@ describe('Archival Manager (T059)', () => {
   describe('2. Archival Candidate Detection', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
     });
 
     afterEach(() => {
@@ -202,7 +230,7 @@ describe('Archival Manager (T059)', () => {
   describe('3. Archival Actions', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
     });
 
     afterEach(() => {
@@ -218,7 +246,7 @@ describe('Archival Manager (T059)', () => {
         created_at: oldDate.toISOString(),
         importance_tier: 'normal',
       });
-      const memory_id = result.lastInsertRowid;
+      const memory_id = toMemoryId(result.lastInsertRowid);
 
       const archiveResult = archivalManager.archiveMemory(memory_id);
       expect(archiveResult).toBe(true);
@@ -233,10 +261,10 @@ describe('Archival Manager (T059)', () => {
         created_at: oldDate.toISOString(),
         importance_tier: 'normal',
       });
-      const memory_id = result.lastInsertRowid;
+      const memory_id = toMemoryId(result.lastInsertRowid);
 
       archivalManager.archiveMemory(memory_id);
-      const row = db.prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id);
+      const row = requireDb().prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id) as { is_archived: number };
       expect(row.is_archived).toBe(1);
     });
 
@@ -249,13 +277,13 @@ describe('Archival Manager (T059)', () => {
         created_at: oldDate.toISOString(),
         importance_tier: 'normal',
       });
-      const memory_id = result.lastInsertRowid;
+      const memory_id = toMemoryId(result.lastInsertRowid);
 
       archivalManager.archiveMemory(memory_id);
       const unarchiveResult = archivalManager.unarchiveMemory(memory_id);
       expect(unarchiveResult).toBe(true);
 
-      const row = db.prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id);
+      const row = requireDb().prepare('SELECT is_archived FROM memory_index WHERE id = ?').get(memory_id) as { is_archived: number };
       expect(row.is_archived).toBe(0);
     });
 
@@ -263,14 +291,14 @@ describe('Archival Manager (T059)', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
-      const idsToArchive = [];
+      const idsToArchive: number[] = [];
       for (let i = 0; i < 3; i++) {
         const r = insertTestMemory({
           title: `Batch Memory ${i}`,
           created_at: oldDate.toISOString(),
           importance_tier: 'normal',
         });
-        idsToArchive.push(r.lastInsertRowid);
+        idsToArchive.push(toMemoryId(r.lastInsertRowid));
       }
 
       const batchResult = archivalManager.archiveBatch(idsToArchive);
@@ -287,7 +315,7 @@ describe('Archival Manager (T059)', () => {
         created_at: oldDate.toISOString(),
         importance_tier: 'normal',
       });
-      const memory_id = result.lastInsertRowid;
+      const memory_id = toMemoryId(result.lastInsertRowid);
 
       archivalManager.archiveMemory(memory_id);
       const alreadyArchived = archivalManager.archiveMemory(memory_id);
@@ -299,7 +327,7 @@ describe('Archival Manager (T059)', () => {
   describe('4. Archival Scan', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.resetStats();
     });
 
@@ -384,7 +412,7 @@ describe('Archival Manager (T059)', () => {
   describe('5. Background Job', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
     });
 
     afterEach(() => {
@@ -417,7 +445,7 @@ describe('Archival Manager (T059)', () => {
   describe('6. Statistics', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.resetStats();
     });
 
@@ -496,7 +524,7 @@ describe('Archival Manager (T059)', () => {
   describe('7. Check Memory Status', () => {
     beforeEach(() => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
     });
 
     afterEach(() => {
@@ -509,7 +537,7 @@ describe('Archival Manager (T059)', () => {
         created_at: new Date().toISOString(),
         importance_tier: 'normal',
       });
-      const recentId = result.lastInsertRowid;
+      const recentId = toMemoryId(result.lastInsertRowid);
 
       const recentStatus = archivalManager.checkMemoryArchivalStatus(recentId);
       expect(typeof recentStatus.isArchived).toBe('boolean');
@@ -522,7 +550,7 @@ describe('Archival Manager (T059)', () => {
         created_at: new Date().toISOString(),
         importance_tier: 'normal',
       });
-      const recentId = result.lastInsertRowid;
+      const recentId = toMemoryId(result.lastInsertRowid);
 
       const recentStatus = archivalManager.checkMemoryArchivalStatus(recentId);
       expect(recentStatus.isArchived).toBe(false);
@@ -543,7 +571,7 @@ describe('Archival Manager (T059)', () => {
 
     it('T059-029: cleanup stops background job', () => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.startBackgroundJob(60000);
       archivalManager.cleanup();
       expect(archivalManager.isBackgroundJobRunning()).toBe(false);
@@ -551,7 +579,7 @@ describe('Archival Manager (T059)', () => {
 
     it('T059-030: resetStats clears all stats', () => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.resetStats();
       const stats = archivalManager.getStats();
       expect(stats.totalScanned).toBe(0);
@@ -561,7 +589,7 @@ describe('Archival Manager (T059)', () => {
 
     it('T059-031: getArchivalCandidates returns [] without db', () => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.cleanup();
       const candidates = archivalManager.getArchivalCandidates();
       expect(Array.isArray(candidates)).toBe(true);
@@ -570,7 +598,7 @@ describe('Archival Manager (T059)', () => {
 
     it('T059-032: archiveMemory returns false without db', () => {
       setupTestDb();
-      archivalManager.init(db);
+      archivalManager.init(requireDb());
       archivalManager.cleanup();
       const result = archivalManager.archiveMemory(1);
       expect(result).toBe(false);

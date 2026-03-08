@@ -1,4 +1,3 @@
-// @ts-nocheck -- Intentional null/invalid-type arguments test runtime defensive guards
 // ---------------------------------------------------------------
 // TEST: INTENT CLASSIFIER
 // ---------------------------------------------------------------
@@ -6,12 +5,15 @@
 import { describe, it, expect } from 'vitest';
 import * as intentClassifier from '../lib/search/intent-classifier';
 import { INTENT_LAMBDA_MAP } from '../lib/search/intent-classifier';
+import type { IntentType, IntentWeights } from '../lib/search/intent-classifier';
+
+type ClassifiableIntent = Exclude<IntentType, 'find_spec' | 'find_decision'>;
 
 /* -------------------------------------------------------------
    TEST CONFIGURATION
 ---------------------------------------------------------------- */
 
-const TEST_QUERIES = {
+const TEST_QUERIES: Record<ClassifiableIntent, string[]> = {
   add_feature: [
     'add a new authentication module',
     'create user registration flow',
@@ -80,7 +82,7 @@ describe('T036: Intent Types', () => {
 
   it('All intent types have keyword definitions (flat array)', () => {
     for (const intent of Object.values(intentClassifier.INTENT_TYPES)) {
-      const keywords = intentClassifier.INTENT_KEYWORDS[intent as string];
+      const keywords = intentClassifier.INTENT_KEYWORDS[intent];
       expect(keywords).toBeTruthy();
       expect(Array.isArray(keywords) && keywords.length > 0).toBe(true);
     }
@@ -88,7 +90,7 @@ describe('T036: Intent Types', () => {
 
   it('All intent types have pattern definitions', () => {
     for (const intent of Object.values(intentClassifier.INTENT_TYPES)) {
-      const patterns = intentClassifier.INTENT_PATTERNS[intent as string];
+      const patterns = intentClassifier.INTENT_PATTERNS[intent];
       expect(patterns && patterns.length > 0).toBe(true);
       expect(patterns.every((p: unknown) => p instanceof RegExp)).toBe(true);
     }
@@ -115,6 +117,7 @@ describe('T037: Query Classifier', () => {
   });
 
   it('classify_intent handles null query', () => {
+    // @ts-expect-error intentional invalid input to verify runtime guard behavior
     const result = intentClassifier.classifyIntent(null);
     expect(result.intent).toBe('understand');
     expect(result.confidence).toBe(0);
@@ -150,23 +153,23 @@ describe('T037: Query Classifier', () => {
 describe('T038: Intent Weight Adjustments', () => {
   it('All intent types have weight adjustments', () => {
     for (const intent of Object.values(intentClassifier.INTENT_TYPES)) {
-      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent as string];
+      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent];
       expect(weights).toBeTruthy();
     }
   });
 
   it('Weight adjustments sum to ~1.0 for numeric fields', () => {
     for (const intent of Object.values(intentClassifier.INTENT_TYPES)) {
-      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent as string];
+      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent];
       const numericSum = weights.recency + weights.importance + weights.similarity;
       expect(Math.abs(numericSum - 1.0)).toBeLessThan(0.01);
     }
   });
 
   it('Weight adjustments contain required scoring factors', () => {
-    const requiredFactors = ['similarity', 'importance', 'recency'];
+    const requiredFactors: Array<keyof IntentWeights> = ['similarity', 'importance', 'recency'];
     for (const intent of Object.values(intentClassifier.INTENT_TYPES)) {
-      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent as string];
+      const weights = intentClassifier.INTENT_WEIGHT_ADJUSTMENTS[intent];
       for (const factor of requiredFactors) {
         expect(typeof weights[factor]).toBe('number');
       }
@@ -213,6 +216,7 @@ describe('T039: Validation Functions', () => {
   it('is_valid_intent returns false for invalid intents', () => {
     expect(intentClassifier.isValidIntent('invalid')).toBe(false);
     expect(intentClassifier.isValidIntent('')).toBe(false);
+    // @ts-expect-error intentional invalid input to verify runtime guard behavior
     expect(intentClassifier.isValidIntent(null)).toBe(false);
   });
 
@@ -227,6 +231,7 @@ describe('T039: Validation Functions', () => {
   });
 
   it('get_intent_description returns fallback for invalid intent', () => {
+    // @ts-expect-error intentional invalid input to verify runtime guard behavior
     const desc = intentClassifier.getIntentDescription('invalid');
     expect(desc).toBe('Unknown intent');
   });
@@ -601,7 +606,7 @@ describe('C138: Centroid-Based Classification & Lambda Mapping', () => {
   });
 
   it('C138-T0c: centroid score peak classifies canonical queries for all 7 intents', () => {
-    const canonicalQueries: Record<string, string> = {
+      const canonicalQueries: Record<IntentType, string> = {
       add_feature: 'add a new feature and implement support for integration',
       fix_bug: 'fix login bug and debug broken crash',
       refactor: 'refactor and simplify module architecture',
@@ -611,18 +616,18 @@ describe('C138: Centroid-Based Classification & Lambda Mapping', () => {
       find_decision: 'find decision record rationale and alternatives',
     };
 
-    for (const [expectedIntent, query] of Object.entries(canonicalQueries)) {
-      const scores = Object.keys(intentClassifier.INTENT_CENTROIDS).map((intent) => ({
-        intent,
-        score: intentClassifier.calculateCentroidScore(query, intent as never),
-      }));
+      for (const [expectedIntent, query] of Object.entries(canonicalQueries) as Array<[IntentType, string]>) {
+        const scores = Object.values(intentClassifier.INTENT_TYPES).map((intent) => ({
+          intent,
+          score: intentClassifier.calculateCentroidScore(query, intent),
+        }));
       const top = scores.sort((a, b) => b.score - a.score)[0];
       expect(top.intent).toBe(expectedIntent);
     }
   });
 
   it('C138-T1: classifyIntent returns one of 7 valid intent types', () => {
-    const validIntents = ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'];
+    const validIntents: IntentType[] = ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'];
     const result = intentClassifier.classifyIntent('fix the login error');
     expect(validIntents).toContain(result.intent);
   });
@@ -634,7 +639,7 @@ describe('C138: Centroid-Based Classification & Lambda Mapping', () => {
   });
 
   it('C138-T3: all 7 intent types are classifiable', () => {
-    const queries = {
+      const queries: Record<IntentType, string> = {
       add_feature: 'add a new feature',
       fix_bug: 'fix the broken login',
       refactor: 'refactor the module',

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INCREMENTAL INDEX V2
 // ---------------------------------------------------------------
@@ -9,6 +8,7 @@ import * as fs from 'node:fs';
 import * as os from 'node:os';
 import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/incremental-index';
+import type { StoredMetadata } from '../lib/storage/incremental-index';
 
 /* -------------------------------------------------------------
    DB HELPERS
@@ -18,7 +18,10 @@ import * as mod from '../lib/storage/incremental-index';
  * Create an in-memory SQLite DB with the memory_index schema
  * matching the production schema from vector-index-impl.js.
  */
-function createTestDb() {
+type InitDb = Parameters<typeof mod.init>[0];
+type EmbeddingStatus = StoredMetadata['embedding_status'];
+
+function createTestDb(): Database.Database {
   const db = new Database(':memory:');
   db.exec(`
     CREATE TABLE memory_index (
@@ -66,11 +69,11 @@ function createTestDb() {
 }
 
 /** Insert a row into memory_index for testing. */
-function insertRow(db: any, opts: {
+function insertRow(db: Database.Database, opts: {
   file_path: string;
   file_mtime_ms?: number | null;
   content_hash?: string | null;
-  embedding_status?: string;
+  embedding_status?: EmbeddingStatus;
   spec_folder?: string;
 }): number {
   const stmt = db.prepare(`
@@ -84,7 +87,7 @@ function insertRow(db: any, opts: {
     opts.content_hash ?? null,
     opts.embedding_status ?? 'success',
   );
-  return result.lastInsertRowid as number;
+  return Number(result.lastInsertRowid);
 }
 
 /** Create a temporary file on disk and return its path. */
@@ -125,7 +128,7 @@ describe('init()', () => {
   });
 
   it('init(null) — getStoredMetadata returns null when db is null', () => {
-    mod.init(null);
+    mod.init(null as unknown as InitDb);
     const result = mod.getStoredMetadata('/any/path.md');
     expect(result).toBeNull();
   });
@@ -190,6 +193,9 @@ describe('getStoredMetadata()', () => {
     });
     const row = mod.getStoredMetadata('/test/file.md');
     expect(row).not.toBeNull();
+    if (!row) {
+      throw new Error('Expected stored metadata row for /test/file.md');
+    }
     expect(row.file_path).toBe('/test/file.md');
     expect(row.file_mtime_ms).toBe(1700000000000);
     expect(row.content_hash).toBe('abc123');
@@ -208,13 +214,16 @@ describe('getStoredMetadata()', () => {
     });
     const row = mod.getStoredMetadata('/test/null-mtime.md');
     expect(row).not.toBeNull();
+    if (!row) {
+      throw new Error('Expected stored metadata row for /test/null-mtime.md');
+    }
     expect(row.file_mtime_ms).toBeNull();
     expect(row.content_hash).toBeNull();
     db.close();
   });
 
   it('returns null when db is null (not initialized)', () => {
-    mod.init(null);
+    mod.init(null as unknown as InitDb);
     const result = mod.getStoredMetadata('/any/file.md');
     expect(result).toBeNull();
   });
@@ -248,6 +257,9 @@ describe('getStoredMetadata()', () => {
 
     const row = mod.getStoredMetadata(aliasFile);
     expect(row).not.toBeNull();
+    if (!row) {
+      throw new Error('Expected stored metadata row for alias path');
+    }
     expect(row.file_path).toBe(canonicalFile);
     expect(row.content_hash).toBe('alias-hash');
 
@@ -354,7 +366,10 @@ describe('updateFileMtime()', () => {
     insertRow(db, { file_path: filePath, file_mtime_ms: 1000 });
     const ok = mod.updateFileMtime(filePath, 2000);
     expect(ok).toBe(true);
-    const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(filePath);
+    const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(filePath) as { file_mtime_ms: number } | undefined;
+    if (!row) {
+      throw new Error('Expected updated row for file mtime');
+    }
     expect(row.file_mtime_ms).toBe(2000);
     db.close();
   });
@@ -368,7 +383,7 @@ describe('updateFileMtime()', () => {
   });
 
   it('returns false when db is null', () => {
-    mod.init(null);
+    mod.init(null as unknown as InitDb);
     const ok = mod.updateFileMtime('/any/path.md', 1234);
     expect(ok).toBe(false);
   });
@@ -420,7 +435,10 @@ describe('setIndexedMtime()', () => {
     insertRow(db, { file_path: tmpFile, file_mtime_ms: 0 });
     const ok = mod.setIndexedMtime(tmpFile);
     expect(ok).toBe(true);
-    const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(tmpFile);
+    const row = db.prepare('SELECT file_mtime_ms FROM memory_index WHERE file_path = ?').get(tmpFile) as { file_mtime_ms: number } | undefined;
+    if (!row) {
+      throw new Error('Expected row after setting indexed mtime');
+    }
     const stats = fs.statSync(tmpFile);
     expect(row.file_mtime_ms).toBe(stats.mtimeMs);
     removeTempFile(tmpFile);
@@ -625,7 +643,7 @@ describe('batchUpdateMtimes()', () => {
   });
 
   it('returns {updated:0, failed:N} when db is null', () => {
-    mod.init(null);
+    mod.init(null as unknown as InitDb);
     const result = mod.batchUpdateMtimes(['/some/file.md']);
     expect(result.updated).toBe(0);
     expect(result.failed).toBe(1);
@@ -705,7 +723,7 @@ describe('Module exports', () => {
       'categorizeFilesForIndexing',
       'batchUpdateMtimes',
       'MTIME_FAST_PATH_MS',
-    ];
+    ] as const satisfies readonly (keyof typeof mod)[];
     const missing = expectedExports.filter(name => typeof mod[name] === 'undefined');
     expect(missing.length).toBe(0);
   });

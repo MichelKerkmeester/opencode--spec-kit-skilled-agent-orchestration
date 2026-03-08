@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: MPAB AGGREGATION
 // Multi-Parent Aggregated Bonus chunk-to-memory score aggregation
@@ -12,9 +11,7 @@ import {
   MPAB_BONUS_COEFFICIENT,
 } from '../lib/scoring/mpab-aggregation';
 import type {
-  MpabResult,
   ChunkResult,
-  CollapsedResult,
 } from '../lib/scoring/mpab-aggregation';
 
 // -------------------------------------------------------------

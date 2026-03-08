@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: ContaminationFilter
+// MODULE: Contamination Filter
 // ---------------------------------------------------------------
 // Removes orchestration chatter before semantic extraction
-// ---------------------------------------------------------------
 
 const DEFAULT_DENYLIST: RegExp[] = [
   /\bI'll execute this step by step\b/gi,

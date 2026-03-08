@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Reconsolidation-on-Save (TM-06)
 // ---------------------------------------------------------------
@@ -23,7 +22,10 @@ import type {
   SimilarMemory,
   NewMemoryData,
   ReconsolidationAction,
+  FindSimilarFn,
+  StoreMemoryFn,
 } from '../lib/storage/reconsolidation';
+
 
 // ---------------------------------------------------------------
 // TEST HELPERS
@@ -35,13 +37,16 @@ function makeEmbedding(dim: number, fill: number = 1.0): number[] {
 }
 
 /** Create a mock findSimilar function */
-function mockFindSimilar(results: SimilarMemory[]) {
-  return (_embedding: any, _options: any) => results;
+function mockFindSimilar(results: SimilarMemory[]): FindSimilarFn {
+  return (
+    _embedding: Parameters<FindSimilarFn>[0],
+    _options: Parameters<FindSimilarFn>[1],
+  ) => results;
 }
 
 /** Create a mock storeMemory function */
-function mockStoreMemory(returnId: number) {
-  return (_memory: any) => returnId;
+function mockStoreMemory(returnId: number): StoreMemoryFn {
+  return (_memory: NewMemoryData) => returnId;
 }
 
 /** Create a base valid new memory object */
@@ -74,7 +79,7 @@ function makeSimilarMemory(overrides: Partial<SimilarMemory> = {}): SimilarMemor
 }
 
 describe('Reconsolidation-on-Save (TM-06)', () => {
-  let testDb: any;
+  let testDb: Database.Database;
 
   beforeAll(() => {
     testDb = new Database(':memory:');
@@ -264,7 +269,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         mockFindSimilar(expected)
       );
       expect(results).toHaveLength(1);
-      expect(results[0].id).toBe(1);
+      expect(results[0]!.id).toBe(1);
     });
 
     it('FS2: Returns empty array on error', () => {
@@ -278,23 +283,23 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
     });
 
     it('FS3: Passes limit parameter', () => {
-      let capturedOptions: any = null;
-      const captureFn = (_emb: any, opts: any) => {
-        capturedOptions = opts;
+      let capturedLimit: number | undefined;
+      const captureFn: FindSimilarFn = (_emb, opts) => {
+        capturedLimit = (opts as { limit: number }).limit;
         return [];
       };
       findSimilarMemories(makeEmbedding(10), 'test-spec', captureFn, 5);
-      expect(capturedOptions.limit).toBe(5);
+      expect(capturedLimit).toBe(5);
     });
 
     it('FS4: Default limit is SIMILAR_MEMORY_LIMIT', () => {
-      let capturedOptions: any = null;
-      const captureFn = (_emb: any, opts: any) => {
-        capturedOptions = opts;
+      let capturedLimit: number | undefined;
+      const captureFn: FindSimilarFn = (_emb, opts) => {
+        capturedLimit = (opts as { limit: number }).limit;
         return [];
       };
       findSimilarMemories(makeEmbedding(10), 'test-spec', captureFn);
-      expect(capturedOptions.limit).toBe(SIMILAR_MEMORY_LIMIT);
+      expect(capturedLimit).toBe(SIMILAR_MEMORY_LIMIT);
     });
   });
 
@@ -361,7 +366,10 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result.similarity).toBe(0.90);
 
       // Verify DB update
-      const row = testDb.prepare('SELECT content_text, importance_weight FROM memory_index WHERE id = 100').get();
+      const row = testDb.prepare('SELECT content_text, importance_weight FROM memory_index WHERE id = 100').get() as {
+        content_text: string | null;
+        importance_weight: number;
+      };
       expect(row.importance_weight).toBeCloseTo(0.6);
       expect(row.content_text).toContain('Existing content line A');
       expect(row.content_text).toContain('New unique content line B');
@@ -452,8 +460,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result.causalEdgeId).not.toBeNull();
       const edges = causalEdges.getEdgesFrom('201');
       expect(edges).toHaveLength(1);
-      expect(edges[0].relation).toBe('supersedes');
-      expect(edges[0].target_id).toBe('200');
+      expect(edges[0]!.relation).toBe('supersedes');
+      expect(edges[0]!.target_id).toBe('200');
     });
 
     it('CP2: Supersedes edge has TM-06 evidence', () => {
@@ -468,8 +476,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       executeConflict(existing, newMem, testDb);
 
       const edges = causalEdges.getEdgesFrom('211');
-      expect(edges[0].evidence).toContain('TM-06');
-      expect(edges[0].evidence).toContain('reconsolidation');
+      expect(edges[0]!.evidence).toContain('TM-06');
+      expect(edges[0]!.evidence).toContain('reconsolidation');
     });
 
     it('CP3: Conflict with no new memory ID uses existing ID and avoids self-edge', () => {
@@ -520,8 +528,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     it('CMP3: Calls storeMemory with the new memory', () => {
       const newMem = makeNewMemory();
-      let capturedMemory: any = null;
-      const storeMemory = (mem: any) => {
+      let capturedMemory: NewMemoryData | null = null;
+      const storeMemory: StoreMemoryFn = (mem) => {
         capturedMemory = mem;
         return 302;
       };
@@ -745,11 +753,11 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
     });
 
     it('EC2: findSimilar throws -> complement (non-fatal)', async () => {
-      const errorFn = () => { throw new Error('vector search down'); };
+      const errorFn: FindSimilarFn = () => { throw new Error('vector search down'); };
       const result = await reconsolidate(
         makeNewMemory(),
         testDb,
-        { findSimilar: errorFn as any, storeMemory: mockStoreMemory(501) }
+        { findSimilar: errorFn, storeMemory: mockStoreMemory(501) }
       );
       // findSimilarMemories catches errors and returns [], leading to complement
       expect(result!.action).toBe('complement');

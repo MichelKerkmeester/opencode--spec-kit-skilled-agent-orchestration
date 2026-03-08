@@ -1,12 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: DataValidator
+// MODULE: Data Validator
 // ---------------------------------------------------------------
 // Validates data structures — syncs boolean flags with array contents, sanitizes strings
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------
 // 1. TYPES
-// ---------------------------------------------------------------
 
 /** Mapping of array field names to their corresponding boolean flag field names */
 export interface ArrayFlagMappings {

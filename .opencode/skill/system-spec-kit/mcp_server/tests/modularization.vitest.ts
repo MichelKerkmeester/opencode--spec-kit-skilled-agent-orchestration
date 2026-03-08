@@ -136,7 +136,6 @@ describe('Context Server Integration', () => {
 // 4. INDEX EXPORTS (SKIPPED — require() loads DB-dependent modules)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section: dist/ require() triggers better-sqlite3
 describe('Index Re-exports (DB-dependent)', () => {
   // Original: testIndexExports() — requires dist/{core,handlers,formatters,utils,hooks,tools}/index.js
   // Each require() loads modules that import Database/better-sqlite3
@@ -153,7 +152,6 @@ describe('Index Re-exports (DB-dependent)', () => {
 // 5. CORE EXPORTS (SKIPPED — DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Core Module Exports (DB-dependent)', () => {
   // Original: testCoreExports() — requires dist/core which imports DB modules
   const required = [
@@ -174,7 +172,6 @@ describe('Core Module Exports (DB-dependent)', () => {
 // 6. HANDLER EXPORTS (SKIPPED — DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Handler Module Exports (DB-dependent)', () => {
   // Original: testHandlerExports() — requires dist/handlers
   const required = [
@@ -199,7 +196,6 @@ describe('Handler Module Exports (DB-dependent)', () => {
 // 7. FORMATTER EXPORTS (SKIPPED — DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Formatter Module Exports (DB-dependent)', () => {
   // Original: testFormatterExports() — requires dist/formatters
   const required = [
@@ -217,7 +213,6 @@ describe('Formatter Module Exports (DB-dependent)', () => {
 // 8. UTILS EXPORTS (SKIPPED — DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Utils Module Exports (DB-dependent)', () => {
   // Original: testUtilsExports() — requires dist/utils
   const required = [
@@ -236,7 +231,6 @@ describe('Utils Module Exports (DB-dependent)', () => {
 // 9. HOOKS EXPORTS (SKIPPED — DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Hooks Module Exports (DB-dependent)', () => {
   // Original: testHooksExports() — requires dist/hooks
   const required = [
@@ -256,7 +250,6 @@ describe('Hooks Module Exports (DB-dependent)', () => {
 // 10. VALIDATOR FUNCTIONS (SKIPPED — requires dist/utils, DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Validator Function Tests (DB-dependent)', () => {
   // Original: testValidatorFunctions() — requires dist/utils which has DB deps
 
@@ -277,7 +270,6 @@ describe('Validator Function Tests (DB-dependent)', () => {
 // 11. TOKEN METRICS (SKIPPED — requires dist/formatters, DB-dependent)
 // -------------------------------------------------------------
 
-// @ts-nocheck — skipped section
 describe('Token Metrics Tests (DB-dependent)', () => {
   // Original: testTokenMetrics() — requires dist/formatters
 

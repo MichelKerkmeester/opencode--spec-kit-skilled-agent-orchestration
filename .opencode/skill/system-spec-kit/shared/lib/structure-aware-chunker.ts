@@ -1,14 +1,11 @@
 // ---------------------------------------------------------------
-// MODULE: StructureAwareChunker
+// MODULE: Structure Aware Chunker
 // ---------------------------------------------------------------
 // AST-aware markdown chunking that keeps code blocks and tables
 // atomic, groups headings with their content, and respects a
 // configurable maxTokens size limit.
-// ---------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
 // 1. TYPES
-// ---------------------------------------------------------------------------
 
 /** Options for controlling chunking behaviour */
 export interface ChunkOptions {

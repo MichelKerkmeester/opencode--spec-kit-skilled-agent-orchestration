@@ -1,9 +1,8 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER CHECKPOINTS
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -12,6 +11,7 @@ import * as vectorIndexMod from '../lib/search/vector-index';
 import * as bm25IndexMod from '../lib/search/bm25-index';
 import * as triggerMatcherMod from '../lib/parsing/trigger-matcher';
 import * as checkpointStorageMod from '../lib/storage/checkpoints';
+import type { CheckpointInfo, RestoreResult } from '../lib/storage/checkpoints';
 
 // Track which optional modules loaded
 const vectorIndexAvailable = false;
@@ -23,13 +23,19 @@ const triggerMatcherAvailable = false;
 // Covers: T521, T102
 // ─────────────────────────────────────────────────────────────
 
+type HandlerExportName = keyof typeof handler;
+
+function invalidArgs<T>(value: unknown): T {
+  return value as T;
+}
+
 describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures]', () => {
 
   // ─────────────────────────────────────────────────────────────
   // SUITE: Exports Validation
   // ─────────────────────────────────────────────────────────────
   describe('Exports Validation', () => {
-    const expectedExports = [
+    const expectedExports: HandlerExportName[] = [
       'handleCheckpointCreate',
       'handleCheckpointList',
       'handleCheckpointRestore',
@@ -44,7 +50,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     }
 
     it('T521-export-aliases: All snake_case aliases', () => {
-      const aliases = [
+      const aliases: HandlerExportName[] = [
         'handle_checkpoint_create',
         'handle_checkpoint_list',
         'handle_checkpoint_restore',
@@ -63,19 +69,38 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
   // ─────────────────────────────────────────────────────────────
   describe('handleCheckpointCreate Validation', () => {
     it('T521-C1: Missing name throws', async () => {
-      await expect(handler.handleCheckpointCreate({})).rejects.toThrow(/name.*required/);
+      await expect(
+        handler.handleCheckpointCreate(
+          invalidArgs<Parameters<typeof handler.handleCheckpointCreate>[0]>({}),
+        ),
+      ).rejects.toThrow(/name.*required/);
     });
 
     it('T521-C2: Null name throws', async () => {
-      await expect(handler.handleCheckpointCreate({ name: null })).rejects.toThrow(/name/);
+      await expect(
+        handler.handleCheckpointCreate(
+          invalidArgs<Parameters<typeof handler.handleCheckpointCreate>[0]>({ name: null }),
+        ),
+      ).rejects.toThrow(/name/);
     });
 
     it('T521-C3: Non-string name throws', async () => {
-      await expect(handler.handleCheckpointCreate({ name: 12345 })).rejects.toThrow(/name.*string/);
+      await expect(
+        handler.handleCheckpointCreate(
+          invalidArgs<Parameters<typeof handler.handleCheckpointCreate>[0]>({ name: 12345 }),
+        ),
+      ).rejects.toThrow(/name.*string/);
     });
 
     it('T521-C4: Non-string specFolder throws', async () => {
-      await expect(handler.handleCheckpointCreate({ name: 'test', specFolder: 123 })).rejects.toThrow();
+      await expect(
+        handler.handleCheckpointCreate(
+          invalidArgs<Parameters<typeof handler.handleCheckpointCreate>[0]>({
+            name: 'test',
+            specFolder: 123,
+          }),
+        ),
+      ).rejects.toThrow();
     });
 
     it('T521-C5: Returns MCP error response when checkpoint storage create fails', async () => {
@@ -91,11 +116,14 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     });
 
     it('T521-C6: Success hints include checkpoint_delete confirmName guidance', async () => {
-      const checkpoint = {
+      const checkpoint: CheckpointInfo = {
         id: 7,
         name: 'coverage-checkpoint',
         specFolder: 'specs/example',
         createdAt: '2026-03-06T12:00:00.000Z',
+        gitBranch: null,
+        snapshotSize: 0,
+        metadata: {},
       };
       const spy = vi.spyOn(checkpointStorageMod, 'createCheckpoint').mockReturnValue(checkpoint);
       try {
@@ -122,7 +150,11 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
   // ─────────────────────────────────────────────────────────────
   describe('handleCheckpointList Validation', () => {
     it('T521-L1: Non-string specFolder throws', async () => {
-      await expect(handler.handleCheckpointList({ specFolder: 123 })).rejects.toThrow(/specFolder.*string/);
+      await expect(
+        handler.handleCheckpointList(
+          invalidArgs<Parameters<typeof handler.handleCheckpointList>[0]>({ specFolder: 123 }),
+        ),
+      ).rejects.toThrow(/specFolder.*string/);
     });
 
     it('T521-L2: Empty args returns valid response', async () => {
@@ -135,13 +167,16 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(parsed.data?.count !== undefined || parsed.summary !== undefined).toBe(true);
       } catch (error: unknown) {
         // DB-dependent — acceptable to skip if DB not available
-        expect(
-          error.message.includes('database') ||
-          error.message.includes('getDb') ||
-          error.message.includes('Database') ||
-          error.message.includes('not initialized') ||
-          error.message.includes('SQLITE')
-        ).toBe(true);
+        expect(error).toBeInstanceOf(Error);
+        if (error instanceof Error) {
+          expect(
+            error.message.includes('database') ||
+            error.message.includes('getDb') ||
+            error.message.includes('Database') ||
+            error.message.includes('not initialized') ||
+            error.message.includes('SQLITE')
+          ).toBe(true);
+        }
       }
     });
 
@@ -182,15 +217,27 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
   // ─────────────────────────────────────────────────────────────
   describe('handleCheckpointRestore Validation', () => {
     it('T521-R1: Missing name throws', async () => {
-      await expect(handler.handleCheckpointRestore({})).rejects.toThrow(/name.*required/);
+      await expect(
+        handler.handleCheckpointRestore(
+          invalidArgs<Parameters<typeof handler.handleCheckpointRestore>[0]>({}),
+        ),
+      ).rejects.toThrow(/name.*required/);
     });
 
     it('T521-R2: Null name throws', async () => {
-      await expect(handler.handleCheckpointRestore({ name: null })).rejects.toThrow(/name/);
+      await expect(
+        handler.handleCheckpointRestore(
+          invalidArgs<Parameters<typeof handler.handleCheckpointRestore>[0]>({ name: null }),
+        ),
+      ).rejects.toThrow(/name/);
     });
 
     it('T521-R3: Non-string name throws', async () => {
-      await expect(handler.handleCheckpointRestore({ name: 999 })).rejects.toThrow(/name.*string/);
+      await expect(
+        handler.handleCheckpointRestore(
+          invalidArgs<Parameters<typeof handler.handleCheckpointRestore>[0]>({ name: 999 }),
+        ),
+      ).rejects.toThrow(/name.*string/);
     });
 
     it('T521-R4: Returns MCP error response when restore reports errors with no restored data', async () => {
@@ -199,7 +246,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         skipped: 0,
         errors: ['Checkpoint not found or empty'],
         workingMemoryRestored: 0,
-      });
+      } satisfies RestoreResult);
       try {
         const result = await handler.handleCheckpointRestore({ name: 'missing-checkpoint' });
         expect(result.isError).toBe(true);
@@ -216,7 +263,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         skipped: 1,
         errors: ['Memory 10: duplicate key'],
         workingMemoryRestored: 1,
-      });
+      } satisfies RestoreResult);
       try {
         const result = await handler.handleCheckpointRestore({ name: 'partial-checkpoint' });
         expect(result.isError).toBeFalsy();
@@ -236,7 +283,11 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
   // ─────────────────────────────────────────────────────────────
   describe('handleCheckpointDelete Validation', () => {
     it('T521-DEL1: Missing name throws', async () => {
-      await expect(handler.handleCheckpointDelete({})).rejects.toThrow(/name.*required/);
+      await expect(
+        handler.handleCheckpointDelete(
+          invalidArgs<Parameters<typeof handler.handleCheckpointDelete>[0]>({}),
+        ),
+      ).rejects.toThrow(/name.*required/);
     });
 
     it('T521-DEL2: Empty name throws', async () => {
@@ -244,7 +295,13 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     });
 
     it('T521-DEL3: Missing confirmName throws', async () => {
-      await expect(handler.handleCheckpointDelete({ name: 'checkpoint-without-confirm' })).rejects.toThrow(/confirmName.*required/);
+      await expect(
+        handler.handleCheckpointDelete(
+          invalidArgs<Parameters<typeof handler.handleCheckpointDelete>[0]>({
+            name: 'checkpoint-without-confirm',
+          }),
+        ),
+      ).rejects.toThrow(/confirmName.*required/);
     });
 
     it('T521-DEL4: Mismatched confirmName throws', async () => {
@@ -276,15 +333,30 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
   // ─────────────────────────────────────────────────────────────
   describe('handleMemoryValidate Validation', () => {
     it('T521-V1: Missing id throws', async () => {
-      await expect(handler.handleMemoryValidate({ wasUseful: true })).rejects.toThrow(/id.*required/);
+      await expect(
+        handler.handleMemoryValidate(
+          invalidArgs<Parameters<typeof handler.handleMemoryValidate>[0]>({ wasUseful: true }),
+        ),
+      ).rejects.toThrow(/id.*required/);
     });
 
     it('T521-V2: Missing wasUseful throws', async () => {
-      await expect(handler.handleMemoryValidate({ id: 1 })).rejects.toThrow(/wasUseful.*required/);
+      await expect(
+        handler.handleMemoryValidate(
+          invalidArgs<Parameters<typeof handler.handleMemoryValidate>[0]>({ id: 1 }),
+        ),
+      ).rejects.toThrow(/wasUseful.*required/);
     });
 
     it('T521-V3: Non-boolean wasUseful throws', async () => {
-      await expect(handler.handleMemoryValidate({ id: 1, wasUseful: 'yes' })).rejects.toThrow(/wasUseful.*boolean/);
+      await expect(
+        handler.handleMemoryValidate(
+          invalidArgs<Parameters<typeof handler.handleMemoryValidate>[0]>({
+            id: 1,
+            wasUseful: 'yes',
+          }),
+        ),
+      ).rejects.toThrow(/wasUseful.*boolean/);
     });
 
     it('T521-V4: Non-integer string id throws', async () => {
@@ -326,8 +398,17 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       const calls: string[] = [];
 
       // Use vi.spyOn instead of direct property assignment to avoid ESM readonly errors
-      const spyClearConstitutional = vi.spyOn(vectorIndexMod, 'clearConstitutionalCache').mockImplementation((..._args: any[]) => { calls.push('clearConstitutionalCache'); });
-      const spyClearSearch = vi.spyOn(vectorIndexMod, 'clearSearchCache').mockImplementation((..._args: any[]) => { calls.push('clearSearchCache'); return 0; });
+      const spyClearConstitutional = vi
+        .spyOn(vectorIndexMod, 'clearConstitutionalCache')
+        .mockImplementation((_specFolder: string | null = null) => {
+          calls.push('clearConstitutionalCache');
+        });
+      const spyClearSearch = vi
+        .spyOn(vectorIndexMod, 'clearSearchCache')
+        .mockImplementation((_specFolder: string | null = null) => {
+          calls.push('clearSearchCache');
+          return 0;
+        });
       const spyRefreshTrigger = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => { calls.push('refreshTriggerCache'); return []; });
 
       try {

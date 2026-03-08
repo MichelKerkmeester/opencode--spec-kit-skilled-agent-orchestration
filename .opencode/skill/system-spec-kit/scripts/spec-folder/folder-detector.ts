@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: FolderDetector
+// MODULE: Folder Detector
 // ---------------------------------------------------------------
 // Detects, lists, and resolves spec folders with interactive selection and alignment scoring
-// ---------------------------------------------------------------
 
 // Node stdlib
 import * as fs from 'fs/promises';

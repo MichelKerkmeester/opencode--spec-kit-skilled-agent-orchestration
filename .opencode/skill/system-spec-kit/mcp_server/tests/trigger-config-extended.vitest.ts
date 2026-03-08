@@ -1,5 +1,13 @@
-// @ts-nocheck
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
+import type { MemoryTypeConfig, MemoryTypeName } from '../lib/config/memory-types';
+import type {
+  CacheStats,
+  ExecutionLogEntry,
+  MemoryByPhrase,
+  TriggerCacheEntry,
+  TriggerMatchWithStats,
+  TriggerMatcherConfig,
+} from '../lib/parsing/trigger-matcher';
 
 // ───────────────────────────────────────────────────────────────
 // TEST: TRIGGER-MATCHER + MEMORY-TYPES + TYPE-INFERENCE (extended)
@@ -17,10 +25,85 @@ const isCompiledRun = __dirname.includes(`${path.sep}dist${path.sep}`) || __dirn
 const DIST = isCompiledRun
   ? path.resolve(__dirname, '..')       // dist/tests/ → dist/
   : path.resolve(__dirname, '..', 'dist'); // tests/ → ../dist/
-const Database = require('better-sqlite3');
+type DatabaseModule = typeof import('better-sqlite3');
+type DatabaseInstance = import('better-sqlite3').Database;
+type TriggerMatcherModule = typeof import('../lib/parsing/trigger-matcher');
+
+type InferenceSource =
+  | 'frontmatter_explicit'
+  | 'importance_tier'
+  | 'file_path'
+  | 'keywords'
+  | 'default';
+
+interface MockMemoryRow {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title: string;
+  trigger_phrases: string;
+  importance_weight: number;
+  embedding_status?: string;
+}
+
+interface VectorIndexMockExports {
+  initializeDb: () => void;
+  getDb: () => DatabaseInstance;
+}
+
+interface HalfLifeValidationResult {
+  valid: boolean;
+  errors: string[];
+}
+
+interface MemoryTypesModule {
+  getValidTypes: () => MemoryTypeName[];
+  isValidType: (type: string | null | undefined) => boolean;
+  getTypeConfig: (type: string | null | undefined) => MemoryTypeConfig | null;
+  getHalfLife: (type: string | null | undefined) => number | null;
+  isDecayEnabled: (type: string | null | undefined) => boolean;
+  getDefaultType: () => MemoryTypeName;
+  getDefaultHalfLives: () => Record<MemoryTypeName, number | null>;
+  validateHalfLifeConfig: (config: Record<string, unknown> | null | undefined) => HalfLifeValidationResult;
+}
+
+interface InferenceResult {
+  type: MemoryTypeName;
+  source: InferenceSource;
+  confidence: number;
+}
+
+interface DetailedTypeSuggestion extends InferenceResult {
+  explanation: string;
+  typeConfig: MemoryTypeConfig;
+}
+
+interface TypeValidationResult {
+  valid: boolean;
+  warnings: string[];
+}
+
+interface BatchInferenceMemory {
+  filePath?: string;
+  file_path?: string;
+  content?: string;
+  title?: string;
+  triggerPhrases?: string[] | string;
+  importanceTier?: string | null;
+  importance_tier?: string | null;
+}
+
+interface TypeInferenceModule {
+  TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>>;
+  inferMemoryTypesBatch: (memories: BatchInferenceMemory[]) => Map<string, InferenceResult>;
+  getTypeSuggestionDetailed: (params: BatchInferenceMemory) => DetailedTypeSuggestion;
+  validateInferredType: (inferredType: string, filePath: string | null | undefined) => TypeValidationResult;
+}
+
+const Database = require('better-sqlite3') as DatabaseModule;
 
 // Create in-memory DB with the memory_index table trigger-matcher expects
-function createMockDb(rows: any[] = []) {
+function createMockDb(rows: MockMemoryRow[] = []): DatabaseInstance {
   const db = new Database(':memory:');
   db.exec(`
     CREATE TABLE memory_index (
@@ -44,26 +127,31 @@ function createMockDb(rows: any[] = []) {
 }
 
 // Pre-mock vector-index in require cache before loading trigger-matcher
-let mockDb: any = createMockDb();
+let mockDb: DatabaseInstance = createMockDb();
 const vectorIndexPath = require.resolve(path.join(DIST, 'lib', 'search', 'vector-index.js'));
+const vectorIndexMockExports: VectorIndexMockExports = {
+  initializeDb: () => {},
+  getDb: () => mockDb,
+};
 require.cache[vectorIndexPath] = {
   id: vectorIndexPath,
   filename: vectorIndexPath,
   loaded: true,
-  exports: {
-    initializeDb: () => {},
-    getDb: () => mockDb,
-  },
-} as unknown;
+  exports: vectorIndexMockExports,
+} as unknown as NodeJS.Module;
 
-let triggerMatcher: any;
-let memoryTypes: any;
-let typeInference: any;
+let triggerMatcher: TriggerMatcherModule;
+let memoryTypes: MemoryTypesModule;
+let typeInference: TypeInferenceModule;
 
 /** Helper: replace the mock DB and clear cache so trigger-matcher re-reads */
-function setMockDb(rows: any[]) {
+function setMockDb(rows: MockMemoryRow[]): void {
   mockDb = createMockDb(rows);
-  require.cache[vectorIndexPath]!.exports.getDb = () => mockDb;
+  const cacheEntry = require.cache[vectorIndexPath] as (NodeJS.Module & { exports: VectorIndexMockExports }) | undefined;
+  if (!cacheEntry) {
+    throw new Error(`Missing mocked vector-index cache entry for ${vectorIndexPath}`);
+  }
+  cacheEntry.exports.getDb = () => mockDb;
   if (triggerMatcher?.clearCache) triggerMatcher.clearCache();
 }
 
@@ -73,9 +161,9 @@ function setMockDb(rows: any[]) {
 
 describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () => {
   beforeAll(() => {
-    triggerMatcher = require(path.join(DIST, 'lib', 'parsing', 'trigger-matcher.js'));
-    memoryTypes = require(path.join(DIST, 'lib', 'config', 'memory-types.js'));
-    typeInference = require(path.join(DIST, 'lib', 'config', 'type-inference.js'));
+    triggerMatcher = require(path.join(DIST, 'lib', 'parsing', 'trigger-matcher.js')) as TriggerMatcherModule;
+    memoryTypes = require(path.join(DIST, 'lib', 'config', 'memory-types.js')) as MemoryTypesModule;
+    typeInference = require(path.join(DIST, 'lib', 'config', 'type-inference.js')) as TypeInferenceModule;
   });
 
   // ──────────────────────────────────────────────────────────
@@ -90,10 +178,10 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return; // skip if not exported
       const entry = fn('test_op', 10, { foo: 'bar' });
       expect(entry).toBeDefined();
-      expect(entry.operation).toBe('test_op');
-      expect(entry.durationMs).toBe(10);
-      expect(entry.target).toBe('PASS');
-      expect(entry.foo).toBe('bar');
+      expect(entry!.operation).toBe('test_op');
+      expect(entry!.durationMs).toBe(10);
+      expect(entry!.target).toBe('PASS');
+      expect(entry!.foo).toBe('bar');
     });
 
     it('3.1.2 slow call returns SLOW entry', () => {
@@ -101,7 +189,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return;
       const entry = fn('slow_op', 200);
       expect(entry).toBeDefined();
-      expect(entry.target).toBe('SLOW');
+      expect(entry!.target).toBe('SLOW');
     });
 
     it('3.1.3 includes ISO timestamp', () => {
@@ -109,8 +197,8 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return;
       const entry = fn('ts_check', 5);
       expect(entry).toBeDefined();
-      expect(typeof entry.timestamp).toBe('string');
-      expect(entry.timestamp.length).toBeGreaterThan(0);
+      expect(typeof entry!.timestamp).toBe('string');
+      expect(entry!.timestamp.length).toBeGreaterThan(0);
     });
 
     it('3.1.4 disabled returns undefined', () => {
@@ -128,7 +216,7 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return;
       const entry = fn('details_op', 1, { extra: 42, nested: { a: 1 } });
       expect(entry).toBeDefined();
-      expect(entry.extra).toBe(42);
+      expect(entry!.extra).toBe(42);
     });
   });
 
@@ -500,9 +588,9 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return;
       const config = fn('working');
       expect(config).toBeDefined();
-      expect(config.halfLifeDays).toBe(1);
-      expect(typeof config.description).toBe('string');
-      expect(config.decayEnabled).toBe(true);
+      expect(config!.halfLifeDays).toBe(1);
+      expect(typeof config!.description).toBe('string');
+      expect(config!.decayEnabled).toBe(true);
     });
 
     it('4.3.2 invalid type returns null', () => {
@@ -523,8 +611,8 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       if (!fn) return;
       const config = fn('meta-cognitive');
       expect(config).toBeDefined();
-      expect(config.decayEnabled).toBe(false);
-      expect(config.halfLifeDays).toBeNull();
+      expect(config!.decayEnabled).toBe(false);
+      expect(config!.halfLifeDays).toBeNull();
     });
   });
 
@@ -709,8 +797,8 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const result = fn([{ filePath: '/project/scratch/temp.md' }]);
       const entry = result.get('/project/scratch/temp.md');
       expect(entry).toBeDefined();
-      expect(entry.type).toBe('working');
-      expect(entry.source).toBe('file_path');
+      expect(entry!.type).toBe('working');
+      expect(entry!.source).toBe('file_path');
     });
 
     it('5.2.3 multiple items with different sources', () => {
@@ -735,8 +823,8 @@ describe('EXTENDED TESTS: trigger-matcher + memory-types + type-inference', () =
       const result = fn(items);
       const entry = result.get('/todo-list.md');
       expect(entry).toBeDefined();
-      expect(entry.type).toBe('meta-cognitive');
-      expect(entry.source).toBe('importance_tier');
+      expect(entry!.type).toBe('meta-cognitive');
+      expect(entry!.source).toBe('importance_tier');
     });
   });
 

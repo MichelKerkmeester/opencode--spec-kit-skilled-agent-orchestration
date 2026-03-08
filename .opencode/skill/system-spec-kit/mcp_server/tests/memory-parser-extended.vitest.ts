@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Memory Parser Extended Tests
 // ---------------------------------------------------------------
@@ -22,6 +21,41 @@ import * as mod from '../lib/parsing/memory-parser';
 ---------------------------------------------------------------- */
 
 let tmpRoot: string = '';
+type ParsedMemory = mod.ParsedMemory;
+type ContextType = mod.ContextType;
+type CausalLinks = mod.CausalLinks;
+
+const EMPTY_CAUSAL_LINKS: CausalLinks = {
+  caused_by: [],
+  supersedes: [],
+  derived_from: [],
+  blocks: [],
+  related_to: [],
+};
+
+function createParsedMemory(overrides: Partial<ParsedMemory>): ParsedMemory {
+  return {
+    filePath: '/specs/003/memory/f.md',
+    specFolder: '003-test',
+    title: 'Test Memory',
+    triggerPhrases: ['test'],
+    contextType: 'implementation',
+    importanceTier: 'normal',
+    contentHash: 'abc123',
+    content: 'This is some valid content that is long enough.',
+    fileSize: 47,
+    lastModified: new Date().toISOString(),
+    memoryType: 'declarative',
+    memoryTypeSource: 'default',
+    memoryTypeConfidence: 0.5,
+    causalLinks: EMPTY_CAUSAL_LINKS,
+    hasCausalLinks: false,
+    documentType: 'memory',
+    qualityScore: 0.8,
+    qualityFlags: [],
+    ...overrides,
+  };
+}
 
 function createTmpWorkspace(): string {
   tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'mem-parser-ext-'));
@@ -184,7 +218,7 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     const map = mod.CONTEXT_TYPE_MAP;
 
     it('T06: canonical types map to themselves', () => {
-      const canonicals = ['implementation', 'research', 'decision', 'discovery', 'general'];
+      const canonicals: ContextType[] = ['implementation', 'research', 'decision', 'discovery', 'general'];
       const allSelfMap = canonicals.every(k => map[k] === k);
       expect(allSelfMap).toBe(true);
     });
@@ -196,8 +230,8 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
     });
 
     it('T08: all map values are valid ContextType', () => {
-      const validTypes = new Set(['implementation', 'research', 'decision', 'discovery', 'general']);
-      const allValid = Object.values(map).every((v: string) => validTypes.has(v));
+      const validTypes = new Set<ContextType>(['implementation', 'research', 'decision', 'discovery', 'general']);
+      const allValid = Object.values(map).every((v) => validTypes.has(v));
       expect(allValid).toBe(true);
     });
   });
@@ -298,115 +332,68 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
 
   describe('validateParsedMemory', () => {
     it('T23: valid parsed memory passes validation', () => {
-      const parsed = {
-        filePath: '/specs/003/memory/f.md',
-        specFolder: '003-test',
-        title: 'Test Memory',
-        triggerPhrases: ['test'],
-        contextType: 'implementation',
-        importanceTier: 'normal',
-        contentHash: 'abc123',
-        content: 'This is some valid content that is long enough.',
-        fileSize: 47,
-        lastModified: new Date().toISOString(),
-        memoryType: 'declarative',
-        memoryTypeSource: 'default',
-        memoryTypeConfidence: 0.5,
-        causalLinks: { caused_by: [], supersedes: [], derived_from: [], blocks: [], related_to: [] },
-        hasCausalLinks: false,
-      };
+      const parsed = createParsedMemory({});
       const result = mod.validateParsedMemory(parsed);
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
     });
 
     it('T24: missing specFolder triggers error', () => {
-      const parsed = {
+      const parsed = createParsedMemory({
         filePath: '/test.md',
         specFolder: '',
         title: null,
         triggerPhrases: [],
         contextType: 'general',
-        importanceTier: 'normal',
         contentHash: 'abc',
         content: 'Valid content here for testing.',
         fileSize: 30,
-        lastModified: new Date().toISOString(),
-        memoryType: 'declarative',
-        memoryTypeSource: 'default',
-        memoryTypeConfidence: 0.5,
-        causalLinks: { caused_by: [], supersedes: [], derived_from: [], blocks: [], related_to: [] },
-        hasCausalLinks: false,
-      };
+      });
       const result = mod.validateParsedMemory(parsed);
       expect(result.valid).toBe(false);
       expect(result.errors.some((e: string) => e.includes('spec folder'))).toBe(true);
     });
 
     it('T25: content too short triggers error', () => {
-      const parsed = {
+      const parsed = createParsedMemory({
         filePath: '/test.md',
-        specFolder: '003-test',
         title: 'X',
         triggerPhrases: [],
         contextType: 'general',
-        importanceTier: 'normal',
         contentHash: 'abc',
         content: 'Hi',
         fileSize: 2,
-        lastModified: new Date().toISOString(),
-        memoryType: 'declarative',
-        memoryTypeSource: 'default',
-        memoryTypeConfidence: 0.5,
-        causalLinks: { caused_by: [], supersedes: [], derived_from: [], blocks: [], related_to: [] },
-        hasCausalLinks: false,
-      };
+      });
       const result = mod.validateParsedMemory(parsed);
       expect(result.valid).toBe(false);
       expect(result.errors.some((e: string) => e.includes('too short'))).toBe(true);
     });
 
     it('T26: content too long triggers error', () => {
-      const parsed = {
+      const parsed = createParsedMemory({
         filePath: '/test.md',
-        specFolder: '003-test',
         title: 'Big',
         triggerPhrases: [],
         contextType: 'general',
-        importanceTier: 'normal',
         contentHash: 'abc',
         content: 'x'.repeat(250001),
         fileSize: 250001,
-        lastModified: new Date().toISOString(),
-        memoryType: 'declarative',
-        memoryTypeSource: 'default',
-        memoryTypeConfidence: 0.5,
-        causalLinks: { caused_by: [], supersedes: [], derived_from: [], blocks: [], related_to: [] },
-        hasCausalLinks: false,
-      };
+      });
       const result = mod.validateParsedMemory(parsed);
       expect(result.valid).toBe(false);
       expect(result.errors.some((e: string) => e.includes('too long'))).toBe(true);
     });
 
     it('T27: unclosed anchors produce warnings, not errors', () => {
-      const parsed = {
+      const parsed = createParsedMemory({
         filePath: '/test.md',
-        specFolder: '003-test',
         title: 'Anchors',
         triggerPhrases: [],
         contextType: 'general',
-        importanceTier: 'normal',
         contentHash: 'abc',
         content: '<!-- ANCHOR:open -->\nSome content without closing anchor tag. This is long enough.',
         fileSize: 60,
-        lastModified: new Date().toISOString(),
-        memoryType: 'declarative',
-        memoryTypeSource: 'default',
-        memoryTypeConfidence: 0.5,
-        causalLinks: { caused_by: [], supersedes: [], derived_from: [], blocks: [], related_to: [] },
-        hasCausalLinks: false,
-      };
+      });
       const result = mod.validateParsedMemory(parsed);
       expect(result.valid).toBe(true);
       expect(result.warnings.length).toBeGreaterThan(0);
@@ -440,13 +427,13 @@ describe('MEMORY PARSER EXTENDED TESTS', () => {
 
     it('T30: returns empty links when no causalLinks block', () => {
       const result = mod.extractCausalLinks('# No Causal Links\n\nJust content.');
-      const allEmpty = Object.values(result).every((arr: string[]) => arr.length === 0);
+      const allEmpty = (Object.values(result) as string[][]).every((arr) => arr.length === 0);
       expect(allEmpty).toBe(true);
     });
 
     it('T31: returns empty links for empty string', () => {
       const result = mod.extractCausalLinks('');
-      const allEmpty = Object.values(result).every((arr: string[]) => arr.length === 0);
+      const allEmpty = (Object.values(result) as string[][]).every((arr) => arr.length === 0);
       expect(allEmpty).toBe(true);
     });
   });

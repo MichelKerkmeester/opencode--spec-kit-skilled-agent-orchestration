@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER MEMORY SAVE
 // ---------------------------------------------------------------
@@ -47,7 +46,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         'log_pe_decision',
         'process_causal_links',
         'resolve_memory_reference',
-      ];
+      ] as const satisfies readonly (keyof typeof handler)[];
       for (const alias of aliases) {
         expect(typeof handler[alias]).toBe('function');
       }
@@ -60,15 +59,19 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
   describe('Input Validation', () => {
     it('T518-7: Missing filePath throws error', async () => {
-      await expect(handler.handleMemorySave({})).rejects.toThrow(/filePath.*required/);
+      await expect(handler.handleMemorySave({} as Parameters<typeof handler.handleMemorySave>[0])).rejects.toThrow(/filePath.*required/);
     });
 
     it('T518-8: Null filePath throws error', async () => {
-      await expect(handler.handleMemorySave({ filePath: null })).rejects.toThrow(/filePath/);
+      await expect(
+        handler.handleMemorySave({ filePath: null } as unknown as Parameters<typeof handler.handleMemorySave>[0])
+      ).rejects.toThrow(/filePath/);
     });
 
     it('T518-9: Non-string filePath throws error', async () => {
-      await expect(handler.handleMemorySave({ filePath: 12345 })).rejects.toThrow(/filePath.*string/);
+      await expect(
+        handler.handleMemorySave({ filePath: 12345 } as unknown as Parameters<typeof handler.handleMemorySave>[0])
+      ).rejects.toThrow(/filePath.*string/);
     });
 
     it('T518-10: Path traversal blocked', async () => {

@@ -1,11 +1,13 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: INTEGRATION LEARNING HISTORY
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import * as learningHandler from '../handlers/session-learning';
-import * as errorsModule from '../lib/errors/index';
+
+type PreflightArgs = Parameters<typeof learningHandler.handleTaskPreflight>[0];
+type PostflightArgs = Parameters<typeof learningHandler.handleTaskPostflight>[0];
+type LearningHistoryArgs = Parameters<typeof learningHandler.handleGetLearningHistory>[0];
 
 describe('Integration Learning History (T530) [deferred - requires DB test fixtures]', () => {
 
@@ -14,7 +16,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
   // -------------------------------------------------------------
   describe('Preflight Pipeline Validation', () => {
     it('T530-1: Missing all preflight params rejected', async () => {
-      await expect(learningHandler.handleTaskPreflight({})).rejects.toThrow();
+      await expect(learningHandler.handleTaskPreflight({} as PreflightArgs)).rejects.toThrow();
     });
 
     it('T530-1b: Missing taskId rejected in pipeline', async () => {
@@ -24,7 +26,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
           knowledgeScore: 50,
           uncertaintyScore: 30,
           contextScore: 40,
-        })
+        } as PreflightArgs)
       ).rejects.toThrow();
     });
   });
@@ -34,7 +36,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
   // -------------------------------------------------------------
   describe('Postflight Pipeline Validation', () => {
     it('T530-2: Missing all postflight params rejected', async () => {
-      await expect(learningHandler.handleTaskPostflight({})).rejects.toThrow();
+      await expect(learningHandler.handleTaskPostflight({} as PostflightArgs)).rejects.toThrow();
     });
   });
 
@@ -43,7 +45,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
   // -------------------------------------------------------------
   describe('Learning History Pipeline', () => {
     it('T530-3: Missing specFolder for history rejected', async () => {
-      await expect(learningHandler.handleGetLearningHistory({})).rejects.toThrow();
+      await expect(learningHandler.handleGetLearningHistory({} as LearningHistoryArgs)).rejects.toThrow();
     });
   });
 
@@ -59,7 +61,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
           knowledgeScore: 150,
           uncertaintyScore: 30,
           contextScore: 40,
-        })
+        } as PreflightArgs)
       ).rejects.toThrow();
     });
 
@@ -71,7 +73,7 @@ describe('Integration Learning History (T530) [deferred - requires DB test fixtu
           knowledgeScore: -5,
           uncertaintyScore: 30,
           contextScore: 40,
-        })
+        } as PostflightArgs)
       ).rejects.toThrow();
     });
   });

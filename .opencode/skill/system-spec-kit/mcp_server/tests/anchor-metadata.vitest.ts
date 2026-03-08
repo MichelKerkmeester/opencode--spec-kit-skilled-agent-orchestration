@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Anchor Metadata
 // ---------------------------------------------------------------
@@ -14,6 +13,9 @@ import {
   enrichResultsWithAnchorMetadata,
   type AnchorMetadata,
 } from '../lib/search/anchor-metadata';
+import type { PipelineRow } from '../lib/search/pipeline/types';
+
+type EnrichedPipelineRow = PipelineRow & { anchorMetadata?: AnchorMetadata[] };
 
 // ===============================================================
 // SECTION 1: extractAnchorMetadata — core parsing
@@ -321,7 +323,7 @@ describe('extractAnchorMetadata — type extraction', () => {
 describe('enrichResultsWithAnchorMetadata — annotation', () => {
   // ── Helpers ───────────────────────────────────────────────
 
-  function makeRow(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+  function makeRow(overrides: Partial<EnrichedPipelineRow> = {}): EnrichedPipelineRow {
     return { id: 1, score: 0.8, ...overrides };
   }
 
@@ -333,24 +335,24 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     });
 
     it('R02: null/undefined cast returns empty array', () => {
-      expect(enrichResultsWithAnchorMetadata(null as unknown as [])).toEqual([]);
+      expect(enrichResultsWithAnchorMetadata(null as unknown as PipelineRow[])).toEqual([]);
     });
 
     it('R03: row without content field is returned unchanged (same reference)', () => {
       const row = makeRow({ content: undefined });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]);
       expect(result[0]).toBe(row); // same reference — no unnecessary spread
     });
 
     it('R04: row with empty content string is returned unchanged', () => {
       const row = makeRow({ content: '' });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]);
       expect(result[0]).toBe(row);
     });
 
     it('R05: row with content but no anchors is returned unchanged', () => {
       const row = makeRow({ content: 'Plain content, no anchor tags at all.' });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]);
       expect(result[0]).toBe(row);
     });
   });
@@ -361,7 +363,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     it('R06: row with one anchor receives anchorMetadata array', () => {
       const content = '<!-- ANCHOR:summary -->\nSome text.\n<!-- /ANCHOR:summary -->';
       const row = makeRow({ content });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]) as EnrichedPipelineRow[];
 
       expect(result[0].anchorMetadata).toBeDefined();
       expect(Array.isArray(result[0].anchorMetadata)).toBe(true);
@@ -376,7 +378,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
       ].join('\n');
 
       const row = makeRow({ id: 42, content });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]) as EnrichedPipelineRow[];
       const anchors = result[0].anchorMetadata as AnchorMetadata[];
 
       expect(anchors[0].id).toBe('DECISION-use-rrf-001');
@@ -394,7 +396,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
         content,
       });
 
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]);
       const enriched = result[0];
 
       expect(enriched.id).toBe(7);
@@ -415,7 +417,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
       ].join('\n');
 
       const row = makeRow({ content });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]) as EnrichedPipelineRow[];
       const anchors = result[0].anchorMetadata as AnchorMetadata[];
 
       expect(anchors).toHaveLength(2);
@@ -426,12 +428,12 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
     it('R10: enriched row is a NEW object (not mutating the original)', () => {
       const content = '<!-- ANCHOR:preflight -->\ntext\n<!-- /ANCHOR:preflight -->';
       const row = makeRow({ content });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]) as EnrichedPipelineRow[];
 
       // The returned item must be a different reference
       expect(result[0]).not.toBe(row);
       // The original should still not have anchorMetadata
-      expect((row as any).anchorMetadata).toBeUndefined();
+      expect(row.anchorMetadata).toBeUndefined();
     });
   });
 
@@ -447,17 +449,17 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
         makeRow({ id: 4, content: withAnchorContent }),
       ];
 
-      const result = enrichResultsWithAnchorMetadata(rows as any[]);
+      const result = enrichResultsWithAnchorMetadata(rows) as EnrichedPipelineRow[];
 
       expect(result[0]).toBe(rows[0]); // unchanged reference
       expect(result[1]).not.toBe(rows[1]); // new object
       expect(result[2]).toBe(rows[2]); // unchanged reference
       expect(result[3]).not.toBe(rows[3]); // new object
 
-      expect((result[0] as any).anchorMetadata).toBeUndefined();
-      expect((result[1] as any).anchorMetadata).toHaveLength(1);
-      expect((result[2] as any).anchorMetadata).toBeUndefined();
-      expect((result[3] as any).anchorMetadata).toHaveLength(1);
+      expect(result[0].anchorMetadata).toBeUndefined();
+      expect(result[1].anchorMetadata).toHaveLength(1);
+      expect(result[2].anchorMetadata).toBeUndefined();
+      expect(result[3].anchorMetadata).toHaveLength(1);
     });
 
     it('R12: output array length equals input array length', () => {
@@ -467,7 +469,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
         makeRow({ id: 3, content: 'plain' }),
       ];
 
-      const result = enrichResultsWithAnchorMetadata(rows as any[]);
+      const result = enrichResultsWithAnchorMetadata(rows);
       expect(result).toHaveLength(rows.length);
     });
 
@@ -479,7 +481,7 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
         makeRow({ id: 30, content: withAnchorContent }),
       ];
 
-      const result = enrichResultsWithAnchorMetadata(rows as any[]);
+      const result = enrichResultsWithAnchorMetadata(rows);
       expect(result[0].id).toBe(10);
       expect(result[1].id).toBe(20);
       expect(result[2].id).toBe(30);
@@ -507,20 +509,20 @@ describe('enrichResultsWithAnchorMetadata — annotation', () => {
         content,
       });
 
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]);
       const enriched = result[0];
 
       for (const field of SCORE_FIELDS) {
-        expect(enriched[field]).toBe((row as any)[field]);
+        expect(enriched[field]).toBe(row[field]);
       }
     });
 
     it('R15: anchorMetadata field is not a score-like number', () => {
       const content = '<!-- ANCHOR:summary -->\ntext\n<!-- /ANCHOR:summary -->';
       const row = makeRow({ content });
-      const result = enrichResultsWithAnchorMetadata([row as any]);
+      const result = enrichResultsWithAnchorMetadata([row]) as EnrichedPipelineRow[];
 
-      const meta = (result[0] as any).anchorMetadata;
+      const meta = result[0].anchorMetadata;
       // Must be an array, not a numeric score field
       expect(Array.isArray(meta)).toBe(true);
       expect(typeof meta).not.toBe('number');

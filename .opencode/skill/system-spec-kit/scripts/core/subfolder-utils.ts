@@ -1,8 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: SubfolderUtils
+// MODULE: Subfolder Utils
 // ---------------------------------------------------------------
 // CORE: SUBFOLDER UTILS
-// ---------------------------------------------------------------
 
 import * as path from 'path';
 import * as fsSync from 'fs';
