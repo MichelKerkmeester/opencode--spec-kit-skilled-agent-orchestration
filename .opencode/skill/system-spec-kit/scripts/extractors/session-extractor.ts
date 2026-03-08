@@ -121,9 +121,9 @@ export interface ProjectStateParams {
 ------------------------------------------------------------------*/
 
 // Uses crypto.randomBytes (CSPRNG) for session ID generation.
-// Output format: session-{timestamp}-{9-char-random}
+// Output format: session-{timestamp}-{12-char-hex}  (48 bits entropy, [a-f0-9] only)
 function generateSessionId(): string {
-  const randomPart = crypto.randomBytes(8).toString('hex').slice(0, 9); // eslint-disable-line -- intentional 9-char truncation for format contract
+  const randomPart = crypto.randomBytes(6).toString('hex'); // 6 bytes = 12 hex chars = 48 bits
   return `session-${Date.now()}-${randomPart}`;
 }
 

@@ -234,7 +234,7 @@ function extractFileChanges(messages: SemanticMessage[], observations: SemanticO
           }
         }
 
-        if (action === 'read' && !content.match(/(?:renamed|moved)\s/i)) continue;
+        if (action === 'read' && !content.match(/(?:renamed|\bmoved\b|mv\s)/i)) continue;
 
         const fileIndex: number = findFilePosition(content, filePath, lastSearchPosition);
 
