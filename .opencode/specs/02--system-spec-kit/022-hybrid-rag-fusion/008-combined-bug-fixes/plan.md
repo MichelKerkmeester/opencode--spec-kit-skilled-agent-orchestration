@@ -29,6 +29,32 @@ Each section below preserves the full original plan content with source attribut
 <!-- /ANCHOR:overview -->
 
 ---
+
+## Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript (Node.js) + Markdown command specs |
+| **Framework** | SpecKit scripting/runtime modules |
+| **Storage** | Local filesystem + SQLite |
+| **Testing** | Node-based functional test suite (32 scenarios) |
+
+## Cross-Cutting Dependencies
+
+All four bug-fix streams share the same codebase root and test infrastructure:
+- `folder-detector.ts` / `folder-detector.js` — central to sources 003 and 008
+- Memory search pipeline (`search.ts`, `tier-classifier.ts`) — central to source 013
+- Command specs (resume.md, handover.md) — alignment target for source 015
+- Regression suite: `test-folder-detector-functional.js` — shared verification gate
+
+## Verification Strategy
+
+1. Run `npm run check` (lint + TypeScript noEmit) — must pass
+2. Run `npm run check:full` — full package verification
+3. Execute `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` — 32 pass, 0 fail
+4. Targeted post-fix verification for memory-crud-extended, checkpoints-storage, adaptive-fusion, task-enrichment
+5. Cross-AI review via scratch/cross-ai-review-report.md
+
 ---
 
 ## Source: 003 — Auto-Detected Session Selection Bug

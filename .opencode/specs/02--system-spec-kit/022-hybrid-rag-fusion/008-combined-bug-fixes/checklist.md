@@ -54,11 +54,11 @@ Current gate truth (2026-03-07):
 ### Pre-Implementation
 
 #### P0 - Blockers
-- [x] CHK-001 [P0] Requirements documented in `spec.md` with concrete acceptance criteria (Evidence: `spec.md` REQ-001 to REQ-004)
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` with deterministic selection strategy (Evidence: `plan.md` sections 3 and 4)
+- [x] CHK-001 [P0] Requirements documented in spec.md with concrete acceptance criteria [EVIDENCE: spec.md REQ-001 to REQ-004]
+- [x] CHK-002 [P0] Technical approach defined in plan.md with deterministic selection strategy [EVIDENCE: plan.md sections 3 and 4]
 
 #### P1 - Required
-- [x] CHK-003 [P1] Bug-only scope lock documented (Evidence: `spec.md` In Scope and Out of Scope)
+- [x] CHK-003 [P1] Bug-only scope lock documented [EVIDENCE: spec.md In Scope and Out of Scope]
 
 ---
 
@@ -91,7 +91,7 @@ Current gate truth (2026-03-07):
 
 ### Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` synchronized for this bug scope (Evidence: current spec folder docs)
+- [x] CHK-040 [P1] spec.md, plan.md, and tasks.md synchronized for this bug scope [EVIDENCE: current spec folder docs]
 - [x] CHK-041 [P1] Command docs aligned with implemented selection behavior [EVIDENCE: Verified existing command guidance alignment in `.opencode/command/spec_kit/resume.md` and `.opencode/command/spec_kit/handover.md` (no net diff in this pass).]
 - [x] CHK-042 [P2] `implementation-summary.md` finalized with delivered implementation evidence [EVIDENCE: `implementation-summary.md` in this spec folder.]
 

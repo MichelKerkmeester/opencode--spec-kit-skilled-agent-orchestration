@@ -85,8 +85,34 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 
 ---
 
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+- REQ-001: learn.md MUST be rewritten as a constitutional memory manager, replacing all 5 generic learning types
+- REQ-002: Old subcommands (correct, undo, history) MUST be removed and replaced with (list, edit, remove, budget)
+- REQ-003: Constitutional memory creation MUST include a budget check step enforcing ~2000 token limit
+- REQ-004: File creation MUST use Write tool targeting `.opencode/skill/system-spec-kit/constitutional/`
+- REQ-005: Indexing MUST use `memory_save()` MCP call (not `generate-context.js`)
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:acceptance -->
+## 5. ACCEPTANCE CRITERIA
+
+**Given** the learn command is invoked with no subcommand, **When** a user provides a rule, **Then** the CREATE workflow triggers with qualification, structuring, budget-check, and write+index steps.
+
+**Given** the learn command is invoked with `list`, **When** constitutional memories exist, **Then** all files in `.opencode/skill/system-spec-kit/constitutional/` are listed with token usage.
+
+**Given** the learn command is invoked with `budget`, **When** constitutional memories exist, **Then** current token usage vs ~2000 limit is displayed.
+
+**Given** the old learning types (pattern, mistake, insight), **When** grepping the learn command document, **Then** zero matches are found (except safe contextual uses).
+<!-- /ANCHOR:acceptance -->
+
+---
+
 <!-- ANCHOR:scope -->
-## 4. SCOPE
+## 6. SCOPE
 
 ### In Scope
 - Rewrite learn.md command definition
@@ -104,7 +130,7 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 ---
 
 <!-- ANCHOR:files -->
-## 5. FILES
+## 7. FILES
 
 | File | Action | LOC Est. |
 |------|--------|----------|

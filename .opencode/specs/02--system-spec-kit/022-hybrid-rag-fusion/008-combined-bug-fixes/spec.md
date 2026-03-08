@@ -36,6 +36,64 @@ This document merges the specifications from 4 related bug-fix and alignment wor
   - `scratch/verification-logs/2026-03-07-mcp-check-full.md`
 
 ---
+
+## Combined Requirements
+
+- REQ-001: Session auto-detection must prefer active (non-archived) spec folders over stale mtime matches
+- REQ-002: Alias resolution for `specs/` and `.opencode/specs/` must be deterministic (same input → same result)
+- REQ-003: Mtime distortion from bulk operations must not corrupt folder selection
+- REQ-004: Low-confidence detection must trigger confirmation or safe fallback, not silent wrong selection
+- REQ-005: Subfolder resolution must correctly resolve nested spec paths without false positives
+- REQ-006: Memory search state filters must not exclude valid results when combining tier and recency criteria
+- REQ-007: Memory search must handle empty result sets without runtime errors
+- REQ-008: Bug-only scope lock: no feature additions or refactoring in this workstream
+
+## Combined Acceptance Criteria
+
+**Given** a repo with active and archived spec folders, **When** the folder detector runs, **Then** it returns the active folder regardless of mtime ordering.
+
+**Given** a spec path using the `specs/` alias, **When** resolved by the detector, **Then** it produces the same result as the `.opencode/specs/` canonical path.
+
+**Given** a memory search with state filters, **When** the filter combination yields no results, **Then** the system returns an empty set without throwing.
+
+**Given** a subfolder path like `003-parent/121-child`, **When** resolved by the detector, **Then** it correctly identifies the child within the parent.
+
+**Given** a bulk file operation that updates mtimes, **When** the folder detector runs afterward, **Then** it does not select a stale folder based on inflated mtime.
+
+**Given** a low-confidence detection result, **When** presented to the user, **Then** the system requests confirmation before proceeding.
+
+## Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript (Node.js) + Markdown command specs |
+| **Framework** | SpecKit scripting/runtime modules (MCP server) |
+| **Storage** | Local filesystem + SQLite session_learning lookup |
+| **Testing** | Functional regression suite (32 test scenarios) |
+
+## Scope
+
+### In Scope
+- Folder detector: active-folder preference, alias normalization, mtime resilience, confidence gates
+- Subfolder resolution: nested path handling
+- Memory search: state filter fixes, empty result handling
+- Command doc alignment for resume/handover
+
+### Out of Scope
+- New features or capability additions
+- Performance optimizations beyond bug fixes
+- UI/UX changes beyond confirmation prompts
+
+---
+
+## Verification
+
+All sources share a unified verification gate:
+- `npm run check` (lint + TypeScript) — PASS
+- `npm run check:full` (full package) — PASS
+- Functional regression: 32 passed, 0 failed, 0 skipped
+- Cross-AI review: scratch/cross-ai-review-report.md
+
 ---
 
 ## Source: 003 -- Auto-Detected Session Selection Bug
