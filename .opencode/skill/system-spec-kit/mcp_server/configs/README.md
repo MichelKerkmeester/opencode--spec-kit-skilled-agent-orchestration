@@ -1,10 +1,12 @@
 ---
 title: "MCP Server Configuration Files"
-description: "Search-weight reference config and documented active/legacy sections for memory scoring behavior."
+description: "Search-weight reference config, cognitive co-activation pattern config, and documented active/legacy sections for memory scoring behavior."
 trigger_phrases:
   - "search weights"
   - "mcp config"
   - "ranking configuration"
+  - "cognitive config"
+  - "co-activation pattern"
 ---
 
 
@@ -27,9 +29,8 @@ This section provides an overview of the MCP Server Configuration Files director
 
 `configs/` currently contains:
 
-- `search-weights.json`
-
-This file is partly active and partly legacy/reference. Its inline notes are the source of truth for what is currently loaded at runtime.
+- `search-weights.json` — scoring weights and document-type multipliers for memory search ranking. Partly active, partly reference. Inline notes are the source of truth for what is currently loaded at runtime.
+- `cognitive.ts` — cognitive co-activation pattern configuration. Loads regex pattern from environment variables (`SPECKIT_COGNITIVE_COACTIVATION_PATTERN`, `SPECKIT_COGNITIVE_COACTIVATION_FLAGS`) with Zod validation and regex safety checks. Exports `COGNITIVE_CONFIG` singleton and `loadCognitiveConfigFromEnv`/`safeParseCognitiveConfigFromEnv` functions.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
@@ -38,11 +39,16 @@ This file is partly active and partly legacy/reference. Its inline notes are the
 
 Current sections in `search-weights.json`:
 
-- `documentTypeMultipliers` (Spec 126): active scoring reference for 11 document types.
+- `documentTypeMultipliers` (Spec 126): active scoring reference for 10 document types (spec, decision_record, plan, tasks, implementation_summary, checklist, handover, memory, constitutional, scratch).
 - `maxTriggersPerMemory`: active cap used by trigger-related flows.
-- `smartRanking`: marked as partially legacy in comments.
-- `rrfFusion`: marked as dead config in comments.
-- `crossEncoder`: marked as dead config in comments.
+- `smartRanking`: live config read by `vector-index-impl.ts` (weights: relevance 0.5, recency 0.3, access 0.2).
+- `rrfFusion` and `crossEncoder`: removed (P2-05 audit, 2026-02-08) as dead config with no .ts references.
+
+Exports from `cognitive.ts`:
+
+- `CognitiveConfig` interface and `COGNITIVE_CONFIG` singleton.
+- `loadCognitiveConfigFromEnv()` — throws on invalid env config.
+- `safeParseCognitiveConfigFromEnv()` — returns result object with success/errors.
 
 Important: canonical scoring behavior lives in TypeScript modules (not this README), primarily `lib/scoring/composite-scoring.ts` and related handlers.
 

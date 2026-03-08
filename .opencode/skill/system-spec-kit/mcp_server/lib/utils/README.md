@@ -1,15 +1,17 @@
 ---
 title: "Utils"
-description: "Utility functions for output formatting and path security."
+description: "Utility functions for output formatting, path security, canonical path deduplication, and structured logging."
 trigger_phrases:
   - "utility functions"
   - "format helpers"
   - "path security"
+  - "canonical path"
+  - "logger"
 ---
 
 # Utils
 
-> Utility functions for output formatting and path security.
+> Utility functions for output formatting, path security, canonical path deduplication, and structured logging.
 
 ---
 
@@ -41,7 +43,7 @@ The utils module provides foundational utilities used throughout the MCP server.
 | Metric | Value |
 |--------|-------|
 | Utility modules | 4 |
-| Source | `format-helpers.ts`, `retry.ts` and `logger.ts` are local. `path-security.ts` re-exports from `@spec-kit/shared` |
+| Source | `format-helpers.ts`, `canonical-path.ts` and `logger.ts` are local. `path-security.ts` re-exports from `@spec-kit/shared` |
 
 <!-- /ANCHOR:overview -->
 
@@ -50,8 +52,8 @@ The utils module provides foundational utilities used throughout the MCP server.
 
 ```
 utils/
+ canonical-path.ts   # Canonical path identity for deduplication
  format-helpers.ts   # Output formatting utilities
- retry.ts            # Retry logic with exponential backoff
  logger.ts           # Structured logging utilities
  path-security.ts    # Re-exports from @spec-kit/shared/utils/path-security
  README.md           # This file
@@ -61,8 +63,8 @@ utils/
 
 | File | Purpose |
 |------|---------|
+| `canonical-path.ts` | Canonical path identity for symlink-aware deduplication (`getCanonicalPathKey`) |
 | `format-helpers.ts` | Human-readable date formatting (`formatAgeString`) |
-| `retry.ts` | Retry wrapper with exponential backoff for transient failures |
 | `logger.ts` | Structured logging utilities for MCP server operations |
 | `path-security.ts` | Re-exports path validation and regex escaping from `@spec-kit/shared/utils/path-security` |
 
@@ -77,6 +79,12 @@ utils/
 |----------|-----------|---------|
 | `formatAgeString` | `(dateString: string \| null) => string` | Convert date to human-readable age ("2 days ago", "yesterday", "never") |
 
+### Canonical Path (`canonical-path.ts`)
+
+| Function | Purpose |
+|----------|---------|
+| `getCanonicalPathKey` | Resolve a file path to its canonical identity (via `realpathSync`), collapsing symlink aliases for deduplication |
+
 ### Path Security (`path-security.ts`)
 
 Re-exports from `@spec-kit/shared/utils/path-security`:
@@ -85,12 +93,6 @@ Re-exports from `@spec-kit/shared/utils/path-security`:
 |----------|---------|
 | `validateFilePath` | Validate path is within allowed directories |
 | `escapeRegex` | Escape special regex characters |
-
-### Retry (`retry.ts`)
-
-| Function | Purpose |
-|----------|---------|
-| `withRetry` | Wrap async operations with exponential backoff retry logic for transient failures |
 
 ### Logger (`logger.ts`)
 

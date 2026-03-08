@@ -159,7 +159,7 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
         console.log(`   \u2713 Captured ${conversation.exchanges.length} exchanges from OpenCode`);
         console.log(`   \u2713 Session: ${conversation.sessionTitle || 'Unnamed'}`);
 
-        const data = transformOpencodeCapture(conversation);
+        const data = transformOpencodeCapture(conversation, specFolderArg);
         return data as LoadedData;
       } else {
         structuredLog('debug', 'OpenCode capture returned empty data', {

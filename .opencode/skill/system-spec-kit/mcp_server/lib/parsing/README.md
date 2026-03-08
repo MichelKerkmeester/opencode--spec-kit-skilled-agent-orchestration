@@ -35,7 +35,7 @@ The parsing module provides core functionality for extracting structured data fr
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 3 | memory-parser, trigger-matcher, entity-scope |
+| Modules | 4 | memory-parser, trigger-matcher, entity-scope, content-normalizer |
 | Supported Encodings | 3 | UTF-8, UTF-16 LE, UTF-16 BE (with BOM detection) |
 | Trigger Match Target | <50ms | NFR-P03 performance requirement |
 
@@ -59,6 +59,7 @@ The parsing module provides core functionality for extracting structured data fr
 
 ```
 parsing/
+ content-normalizer.ts # Strip markdown noise (frontmatter, anchors, tables, fences) for embedding and BM25
  entity-scope.ts       # Context type detection, scope filtering, session ID generation
  memory-parser.ts      # Core memory file parsing with ANCHOR extraction
  trigger-matcher.ts    # Fast trigger phrase matching (<50ms target)
@@ -69,6 +70,7 @@ parsing/
 
 | File | Purpose |
 |------|---------|
+| `content-normalizer.ts` | Normalize raw markdown for embedding generation and BM25 indexing by stripping structural noise (frontmatter, anchors, HTML comments, code fences, pipe tables, list bullets, heading hashes) |
 | `entity-scope.ts` | Detect context types from content/tools, build SQL scope filters, generate session IDs |
 | `memory-parser.ts` | Parse memory files, extract metadata, titles, trigger phrases, anchors, causal links |
 | `trigger-matcher.ts` | Match prompts against trigger phrases with LRU regex caching |
@@ -150,6 +152,31 @@ parsing/
 **Exported types:** `TriggerCacheEntry`, `TriggerMatch`, `TriggerMatchWithStats`, `TriggerMatchStats`, `CacheStats`, `MemoryByPhrase`, `ExecutionLogEntry`, `TriggerMatcherConfig`
 
 **Exported constant:** `CONFIG`
+
+### Content Normalizer (`content-normalizer.ts`)
+
+**Purpose**: Normalize raw markdown content before embedding generation or BM25 indexing by stripping structural noise
+
+| Aspect | Details |
+|--------|---------|
+| **Pipeline** | 8-step normalization: strip frontmatter, anchors, HTML comments, code fences, pipe tables, list bullets, headings, then collapse whitespace |
+| **Embedding Entry Point** | `normalizeContentForEmbedding(content)` for semantic embedding models |
+| **BM25 Entry Point** | `normalizeContentForBM25(content)` for keyword indexing (currently delegates to embedding pipeline) |
+| **Integration** | Used before `generateDocumentEmbedding()` in memory-save and before token building in bm25-index |
+
+**Exported functions:**
+
+| Function | Signature | Purpose |
+|----------|-----------|---------|
+| `normalizeContentForEmbedding` | `(content: string) => string` | Full 8-step normalization for semantic embeddings |
+| `normalizeContentForBM25` | `(content: string) => string` | Full normalization for BM25 keyword indexing |
+| `stripYamlFrontmatter` | `(content: string) => string` | Remove YAML frontmatter block |
+| `stripAnchors` | `(content: string) => string` | Remove ANCHOR comment markers |
+| `stripHtmlComments` | `(content: string) => string` | Remove all HTML comments |
+| `stripCodeFences` | `(content: string) => string` | Remove fence markers, keep code body |
+| `normalizeMarkdownTables` | `(content: string) => string` | Convert pipe tables to plain prose |
+| `normalizeMarkdownLists` | `(content: string) => string` | Strip bullet, checkbox, and ordered list notation |
+| `normalizeHeadings` | `(content: string) => string` | Strip hash marks and numeric prefixes from headings |
 
 ### Entity Scope (`entity-scope.ts`)
 
@@ -239,5 +266,5 @@ console.log(`Match time: ${result.stats.matchTimeMs}ms`);
 
 ---
 
-**Version**: 1.7.3
-**Last Updated**: 2026-02-27
+**Version**: 1.8.0
+**Last Updated**: 2026-03-08

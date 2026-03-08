@@ -276,6 +276,19 @@ Captures the post-Phase-10 discovery that V6/V7 indexed direct-save flows still 
 - [x] T123 Update closure evidence across spec docs after verification passes - WHY: this follow-up needs a durable audit trail without rewriting the completion status of earlier phases - Acceptance: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` reflect the new Phase 13 closure evidence only after T119-T122 pass. [DONE: closure evidence is synchronized across the four phase docs; indexed root-save proof recorded final saved file `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md`, successful indexing as memory `#1201`, and no `QUALITY_GATE_FAIL` or skipped indexing.]
 <!-- /ANCHOR:phase-13 -->
 
+<!-- ANCHOR:phase-14 -->
+## Phase 14: README Documentation Audit
+
+Covers README coverage gaps (14 missing) and alignment verification for 50+ existing READMEs across all three code zones (mcp_server, scripts, shared).
+
+- [x] T124 Compile README coverage inventory across mcp_server, scripts, and shared zones - WHY: 14 code folders lack README documentation, blocking discoverability and onboarding - Acceptance: inventory table with folder path, file count, and README status for all code directories. [DONE: inventory verified via Explore agent; all 14 folders confirmed existing without READMEs; see `scratch/readme-audit-summary.md` Section 1]
+- [x] T125 Create 14 missing READMEs following sk-doc readme_template format - WHY: code folders without READMEs are undiscoverable to both humans and AI agents - Acceptance: all 14 folders have README.md files with YAML frontmatter, numbered ALL CAPS H2 sections, TOC, file listings matching actual contents, and no HVR-banned words. [DONE: agents A01-A07 created all 14 READMEs; `find` scan confirms 0 source folders without README; grep confirms 0 HVR-banned words; 83/83 READMEs have frontmatter]
+- [x] T126 Verify 50+ existing READMEs for content alignment with actual folder contents - WHY: existing READMEs may list stale files, missing files, or incorrect descriptions after code changes - Acceptance: each existing README verified for file listing accuracy, description correctness, and structural format compliance. [DONE: agents A08-A25 verified 50+ folders; 25 PASS, 26 UPDATED; see per-agent audit reports A08-A25]
+- [x] T127 Fix misaligned READMEs identified during verification - WHY: stale documentation is worse than no documentation because it misleads - Acceptance: all verified READMEs reflect current folder contents with accurate file listings and descriptions. [DONE: 26 READMEs updated with missing files, wrong counts, phantom entries, and format fixes; 4 required full rewrites (api, telemetry, contracts, evals)]
+- [x] T128 Cross-validate all READMEs against sk-doc format standards - WHY: consistency across 70+ READMEs requires uniform format adherence - Acceptance: no HVR-banned words, YAML frontmatter present, numbered ALL CAPS H2 sections, and TOC anchors in all READMEs. [DONE: grep scan shows 0 banned words; frontmatter check shows 83/83; all agents verified numbered ALL CAPS H2 format compliance]
+- [x] T129 Update spec folder with audit results and evidence - WHY: audit results must be traceable in the spec folder for future reference - Acceptance: scratch files contain per-agent audit reports and a synthesis summary. [DONE: 25 individual audit reports (readme-audit-A01.md through A25.md) plus synthesis summary (readme-audit-summary.md) written to scratch/; checklist CHK-300 through CHK-307 updated with evidence]
+<!-- /ANCHOR:phase-14 -->
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 

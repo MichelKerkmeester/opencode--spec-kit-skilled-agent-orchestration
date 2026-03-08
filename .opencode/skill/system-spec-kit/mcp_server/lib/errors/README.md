@@ -35,8 +35,8 @@ The errors subsystem provides standardized error handling for the Spec Kit Memor
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Error Codes | 49 | Organized by category (E001-E503) |
-| Tool-Specific Hints | 5 tools | memory_search, checkpoint_restore, memory_save, memory_index_scan, memory_drift_why |
+| Error Codes | 50 | Organized by category (E001-E503) |
+| Tool-Specific Hints | 6 tools | memory_search, checkpoint_restore, memory_save, memory_index_scan, memory_drift_why, memory_causal_link |
 | Severity Levels | 4 | low, medium, high, critical |
 
 ### Key Features

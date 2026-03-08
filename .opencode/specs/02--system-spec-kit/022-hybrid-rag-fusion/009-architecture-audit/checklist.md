@@ -383,6 +383,19 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 | P1 Items (Post-Review Remediation) | 4 | 4/4 | ADR-006 addendum, task count, Phase 12 metadata, ADR-004 verb verified |
 | P2 Items (Post-Review Remediation) | 5 | 5/5 | Traceability backfill, CHK-201 count, ADR-002 verb, open questions, 2-agent review |
 
+<!-- ANCHOR:readme-audit -->
+## README Documentation Audit (Phase 14)
+
+- [x] CHK-300 [P0] All 14 missing READMEs created with sk-doc format (frontmatter, TOC, numbered sections). [EVIDENCE: `find` scan returns 0 source folders without README; agents A01-A07 created all 14; see `scratch/readme-audit-summary.md` Section 1]
+- [x] CHK-301 [P0] File listings in all new READMEs match actual folder contents (verified by ls comparison). [EVIDENCE: each agent read all source files before creating README; file counts verified in audit reports A01-A07]
+- [x] CHK-302 [P0] No HVR-banned words in any new README (verified by grep scan). [EVIDENCE: `grep -rli 'leverage\|robust\|seamless\|ecosystem\|utilize\|holistic'` returns 0 matches in our READMEs (only node_modules hits)]
+- [x] CHK-303 [P1] All 50+ existing READMEs verified for content alignment with actual folder contents. [EVIDENCE: agents A08-A25 verified 50+ folders; 25 PASS, 26 UPDATED; see `scratch/readme-audit-summary.md` Section 2]
+- [x] CHK-304 [P1] Misaligned existing READMEs updated to reflect current file listings and descriptions. [EVIDENCE: 26 READMEs updated with missing files, wrong counts, stale entries, and format fixes; 4 required full rewrites (api, telemetry, contracts, evals)]
+- [x] CHK-305 [P1] YAML frontmatter present in all READMEs within skill directory (verified by head scan). [EVIDENCE: frontmatter check shows 83/83 READMEs have `---` on line 1]
+- [x] CHK-306 [P2] Cross-references between READMEs are valid (no broken relative links). [EVIDENCE: A25 noted root README lacks link to ARCHITECTURE.md and ARCHITECTURE.md lacks frontmatter -- cosmetic gaps documented but not blocking]
+- [x] CHK-307 [P2] Agent audit reports written to scratch/ with per-folder verification evidence. [EVIDENCE: 25 audit reports at `scratch/readme-audit-A01.md` through `scratch/readme-audit-A25.md` plus `scratch/readme-audit-summary.md`]
+<!-- /ANCHOR:readme-audit -->
+
 **Original Verification Date**: 2026-03-04
 **Review Findings Added**: 2026-03-04
 **Phase 4 Remediation Completed**: 2026-03-04

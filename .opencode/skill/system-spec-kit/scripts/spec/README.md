@@ -40,6 +40,7 @@ The `scripts/spec/` directory is the shell-based spec lifecycle layer.
 - `calculate-completeness.sh` - compute checklist completion metrics
 - `recommend-level.sh` - recommend level from task signals
 - `archive.sh` - archive completed or stale specs
+- `progressive-validate.sh` - progressive 4-level validation pipeline (detect, auto-fix, suggest, report)
 
 
 <!-- /ANCHOR:current-inventory -->

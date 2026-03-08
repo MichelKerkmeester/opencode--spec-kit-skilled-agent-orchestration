@@ -1,6 +1,6 @@
 ---
 title: "Contracts"
-description: "Typed contracts for the retrieval pipeline. Defines envelopes, traces, and degraded-mode handling for structured, observable retrieval."
+description: "Proxy README for retrieval pipeline contracts. Source of truth is @spec-kit/shared/contracts/retrieval-trace.ts."
 trigger_phrases:
   - "retrieval contracts"
   - "context envelope"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Contracts
 
-> Typed contracts for the retrieval pipeline. Defines envelopes, traces, and degraded-mode handling for structured, observable retrieval.
+> Proxy README for retrieval pipeline contracts. The source module has been relocated to `@spec-kit/shared/contracts/retrieval-trace.ts`.
 
 ---
 
@@ -29,26 +29,27 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The contracts module provides typed contracts for the retrieval pipeline. All retrieval results, pipeline traces, per-stage metrics, and failure-handling structures are defined here. Consumers depend on these types to interact with retrieval outputs in a consistent, traceable way.
+This directory previously contained `retrieval-trace.ts`. That module has been relocated to the shared package at `shared/contracts/retrieval-trace.ts` (importable as `@spec-kit/shared/contracts/retrieval-trace`). This README is retained as a pointer so that existing documentation links remain valid.
 
 ### Key Statistics
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 1 | `retrieval-trace.ts` |
+| Local Modules | 0 | All code relocated to `shared/contracts/` |
+| Canonical Source | 1 | `shared/contracts/retrieval-trace.ts` |
 | Retrieval Stages | 6 | candidate, filter, fusion, rerank, fallback, final-rank |
-| Factory Functions | 4 | createTrace, createEntry, createDegradedContract, createEnvelope |
+| Factory Functions | 4 | createTrace, addTraceEntry, createDegradedContract, createEnvelope |
 
 ### Key Features
 
 | Feature | Description |
 |---------|-------------|
-| **ContextEnvelope** | Wraps retrieval results with trace metadata for end-to-end observability |
-| **RetrievalTrace** | Full pipeline trace capturing stages, timing, and result counts |
-| **TraceEntry** | Per-stage metrics (stage name, duration, candidate count, filtered count) |
-| **DegradedModeContract** | Failure handling with confidence impact and retry recommendation |
-| **RetrievalStage enum** | Canonical stage identifiers used across the pipeline |
-| **Factory Functions** | Constructors with safe defaults for all contract types |
+| **ContextEnvelope\<T\>** | Generic typed wrapper for pipeline results with trace and degraded-mode metadata |
+| **RetrievalTrace** | Full pipeline trace capturing stages, timing, query, and intent |
+| **TraceEntry** | Per-stage metrics (stage name, timestamp, duration, candidate counts) |
+| **DegradedModeContract** | Failure description with confidence impact, retry recommendation, and affected stages |
+| **RetrievalStage type** | Union type of canonical stage identifiers used across the pipeline |
+| **EnvelopeMetadata** | Version and timestamp metadata attached to every envelope |
 
 <!-- /ANCHOR:overview -->
 
@@ -59,15 +60,17 @@ The contracts module provides typed contracts for the retrieval pipeline. All re
 
 ```
 contracts/
- retrieval-trace.ts    # Typed contracts, enums, and factory functions for the retrieval pipeline
- README.md             # This file
+ README.md                          # This file (proxy pointer)
+
+shared/contracts/
+ retrieval-trace.ts                 # Canonical source: types, interfaces, and factory functions
 ```
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `retrieval-trace.ts` | Defines all retrieval pipeline contracts: envelopes, traces, per-stage entries, degraded-mode structs, and the `RetrievalStage` enum |
+| File | Location | Purpose |
+|------|----------|---------|
+| `retrieval-trace.ts` | `shared/contracts/` | Defines all retrieval pipeline contracts: ContextEnvelope\<T\>, RetrievalTrace, TraceEntry, DegradedModeContract, EnvelopeMetadata, and the RetrievalStage union type |
 
 <!-- /ANCHOR:structure -->
 
@@ -76,15 +79,16 @@ contracts/
 ## 3. FEATURES
 <!-- ANCHOR:features -->
 
-### ContextEnvelope
+### ContextEnvelope\<T\>
 
-**Purpose**: Wrap retrieval results with trace and metadata for structured output.
+**Purpose**: Generic typed wrapper for pipeline results with trace and degraded-mode metadata.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `results` | `unknown[]` | Retrieved items from the pipeline |
+| `data` | `T` | The result payload from the pipeline |
 | `trace` | `RetrievalTrace` | Full pipeline trace attached to this retrieval |
-| `metadata` | `Record<string, unknown>` | Arbitrary metadata (e.g., query, specFolder, timestamp) |
+| `degradedMode` | `DegradedModeContract?` | Optional degraded mode contract if any stage failed |
+| `metadata` | `EnvelopeMetadata` | Version, timestamp, and optional server version |
 
 ### RetrievalTrace
 
@@ -92,12 +96,13 @@ contracts/
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `traceId` | `string` | Unique identifier for this retrieval run |
+| `traceId` | `string` | Unique identifier for this retrieval run (auto-generated `tr_` prefix) |
+| `sessionId` | `string?` | Optional session identifier |
+| `query` | `string` | The search query string |
+| `intent` | `string?` | Optional classified intent |
 | `stages` | `TraceEntry[]` | Per-stage execution records |
 | `totalDurationMs` | `number` | Wall-clock time for the full pipeline |
-| `inputCount` | `number` | Candidates entering the pipeline |
-| `outputCount` | `number` | Results exiting the pipeline |
-| `degraded` | `boolean` | Whether any stage entered degraded mode |
+| `finalResultCount` | `number` | Results exiting the pipeline |
 
 ### TraceEntry
 
@@ -106,9 +111,11 @@ contracts/
 | Field | Type | Description |
 |-------|------|-------------|
 | `stage` | `RetrievalStage` | Pipeline stage identifier |
-| `durationMs` | `number` | Time spent in this stage |
+| `timestamp` | `number` | Wall-clock timestamp when the stage executed |
 | `inputCount` | `number` | Candidates entering the stage |
 | `outputCount` | `number` | Candidates exiting the stage |
+| `durationMs` | `number` | Time spent in this stage |
+| `metadata` | `Record<string, unknown>?` | Optional per-stage metadata |
 
 ### DegradedModeContract
 
@@ -116,12 +123,23 @@ contracts/
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `stage` | `RetrievalStage` | Stage where degradation occurred |
-| `reason` | `string` | Human-readable failure reason |
-| `confidenceImpact` | `number` | Score penalty applied (0–1) |
-| `retryRecommended` | `boolean` | Whether a retry is advisable |
+| `failure_mode` | `string` | Type of failure that occurred |
+| `fallback_mode` | `string` | Fallback strategy applied |
+| `confidence_impact` | `number` | Confidence factor (0 = total loss, 1 = no impact), clamped to [0, 1] |
+| `retry_recommendation` | `'immediate' \| 'delayed' \| 'none'` | Retry strategy recommendation |
+| `degradedStages` | `RetrievalStage[]` | Stages affected by the degradation |
 
-### RetrievalStage Enum
+### EnvelopeMetadata
+
+**Purpose**: Version and timestamp metadata for every envelope.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `version` | `string` | Envelope format version (currently `1.0.0`) |
+| `generatedAt` | `string` | ISO 8601 timestamp of envelope creation |
+| `serverVersion` | `string?` | Optional server version string |
+
+### RetrievalStage Type
 
 | Value | Description |
 |-------|-------------|
@@ -136,10 +154,10 @@ contracts/
 
 | Function | Returns | Description |
 |----------|---------|-------------|
-| `createTrace(traceId, inputCount)` | `RetrievalTrace` | New trace with safe defaults |
-| `createEntry(stage, durationMs, inputCount, outputCount)` | `TraceEntry` | New stage entry |
-| `createDegradedContract(stage, reason, confidenceImpact, retryRecommended)` | `DegradedModeContract` | New degraded-mode record |
-| `createEnvelope(results, trace, metadata?)` | `ContextEnvelope` | New envelope wrapping results + trace |
+| `createTrace(query, sessionId?, intent?)` | `RetrievalTrace` | New trace with auto-generated traceId |
+| `addTraceEntry(trace, stage, inputCount, outputCount, durationMs, metadata?)` | `RetrievalTrace` | Append a stage entry to an existing trace (mutates in place, returns trace for chaining) |
+| `createDegradedContract(failure_mode, fallback_mode, confidence_impact, retry_recommendation, degradedStages)` | `DegradedModeContract` | New degraded-mode record with clamped confidence |
+| `createEnvelope(data, trace, degradedMode?, serverVersion?)` | `ContextEnvelope<T>` | New envelope wrapping results + trace + metadata |
 
 <!-- /ANCHOR:features -->
 
@@ -153,23 +171,19 @@ contracts/
 ```typescript
 import {
   createTrace,
-  createEntry,
+  addTraceEntry,
   createEnvelope,
-  RetrievalStage,
-} from './retrieval-trace';
+} from '@spec-kit/shared/contracts/retrieval-trace';
+import type { RetrievalStage } from '@spec-kit/shared/contracts/retrieval-trace';
 
 // Start a new trace
-const trace = createTrace('trace-abc-123', 50);
+const trace = createTrace('authentication flow', 'session-xyz');
 
 // Record a fusion stage entry
-const fusionEntry = createEntry(RetrievalStage.fusion, 12, 50, 30);
-trace.stages.push(fusionEntry);
-
-trace.totalDurationMs = 45;
-trace.outputCount = 10;
+addTraceEntry(trace, 'fusion', 50, 30, 12);
 
 // Wrap results in an envelope
-const envelope = createEnvelope(results, trace, { query: 'authentication flow' });
+const envelope = createEnvelope(results, trace);
 ```
 
 ### Example 2: Signal a Degraded Stage
@@ -177,29 +191,29 @@ const envelope = createEnvelope(results, trace, { query: 'authentication flow' }
 ```typescript
 import {
   createDegradedContract,
-  RetrievalStage,
-} from './retrieval-trace';
+} from '@spec-kit/shared/contracts/retrieval-trace';
 
-// Reranker timed out — signal degraded mode
+// Reranker timed out -- signal degraded mode
 const degraded = createDegradedContract(
-  RetrievalStage.rerank,
-  'Cross-encoder P95 threshold exceeded (512ms)',
+  'timeout',
+  'skip_rerank',
   0.15,
-  true
+  'delayed',
+  ['rerank']
 );
 
-console.log(`Stage: ${degraded.stage}, confidence impact: -${degraded.confidenceImpact}`);
-// Stage: rerank, confidence impact: -0.15
+console.log(`Failure: ${degraded.failure_mode}, confidence impact: ${degraded.confidence_impact}`);
+// Failure: timeout, confidence impact: 0.15
 ```
 
 ### Common Patterns
 
 | Pattern | Code | When to Use |
 |---------|------|-------------|
-| Start trace | `createTrace(traceId, inputCount)` | Beginning of a retrieval call |
-| Record stage | `createEntry(stage, durationMs, in, out)` | After each pipeline stage completes |
-| Signal failure | `createDegradedContract(stage, reason, impact, retry)` | When a stage falls back or fails |
-| Wrap output | `createEnvelope(results, trace, metadata)` | Before returning from retrieval handler |
+| Start trace | `createTrace(query, sessionId?)` | Beginning of a retrieval call |
+| Record stage | `addTraceEntry(trace, stage, in, out, ms)` | After each pipeline stage completes |
+| Signal failure | `createDegradedContract(failure, fallback, impact, retry, stages)` | When a stage falls back or fails |
+| Wrap output | `createEnvelope(data, trace, degraded?)` | Before returning from retrieval handler |
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -220,13 +234,14 @@ console.log(`Stage: ${degraded.stage}, confidence impact: -${degraded.confidence
 
 | Module | Purpose |
 |--------|---------|
+| `shared/contracts/retrieval-trace.ts` | Canonical source for all contract types |
 | `handlers/memory-search.ts` | Primary consumer of `ContextEnvelope` |
 | `handlers/memory-context.ts` | Secondary consumer of `ContextEnvelope` |
-| `lib/telemetry/retrieval-telemetry.ts` | Uses trace data for quality metrics |
+| `lib/telemetry/trace-schema.ts` | Trace schema definitions |
 
 <!-- /ANCHOR:related -->
 
 ---
 
-**Version**: 1.7.2
-**Last Updated**: 2026-02-19
+**Version**: 2.0.0
+**Last Updated**: 2026-03-08

@@ -86,7 +86,7 @@ node -e "const { sanitizePath } = require('./dist/utils/path-utils'); console.lo
 ```bash
 # Check all TypeScript source files exist
 ls -la utils/*.ts
-# Expected: 10 TypeScript files
+# Expected: 12 TypeScript files
 
 # Check compiled output exists
 ls -la dist/utils/*.js

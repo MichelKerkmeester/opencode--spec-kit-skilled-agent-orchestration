@@ -350,8 +350,36 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
 // 6. OPENCODE CAPTURE TRANSFORMATION
 // ---------------------------------------------------------------
 
-function transformOpencodeCapture(capture: OpencodeCapture): TransformedCapture {
+function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
   const { exchanges, toolCalls, metadata, sessionTitle } = capture;
+
+  // --- Spec-folder relevance filter ---
+  // When a spec folder hint is provided, filter tool calls to only those
+  // whose file paths relate to the target spec folder. This prevents
+  // unrelated session content (e.g., from prior conversations in the same
+  // OpenCode session) from polluting the memory file.
+  const relevanceKeywords: string[] = [];
+  if (specFolderHint) {
+    // Extract keywords from the spec folder path for relevance matching
+    // e.g., "02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog"
+    // yields segments like "feature-catalog", "hybrid-rag-fusion", "system-spec-kit"
+    const segments = specFolderHint.split('/').map(s => s.replace(/^\d+--?/, ''));
+    relevanceKeywords.push(...segments.filter(s => s.length > 2));
+    // Also include the full path for direct substring matching
+    relevanceKeywords.push(specFolderHint);
+  }
+
+  function isToolRelevant(tool: CaptureToolCall): boolean {
+    if (relevanceKeywords.length === 0) return true; // no filter
+    const filePath = tool.input?.filePath || tool.input?.file_path || tool.input?.path || '';
+    const title = tool.title || '';
+    const combined = `${filePath} ${title}`.toLowerCase();
+    return relevanceKeywords.some(kw => combined.includes(kw.toLowerCase()));
+  }
+
+  const filteredToolCalls = specFolderHint
+    ? (toolCalls || []).filter(isToolRelevant)
+    : (toolCalls || []);
 
   const userPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({
     prompt: ex.userInput || '',
@@ -373,6 +401,20 @@ function transformOpencodeCapture(capture: OpencodeCapture): TransformedCapture 
       const isPlaceholder: boolean = placeholderPatterns.some((p: string) => lowerResponse.includes(p.toLowerCase()));
 
       if (!isPlaceholder && ex.assistantResponse.length > 20) {
+        // When spec folder hint is provided, skip exchanges whose content
+        // doesn't mention any relevant keyword
+        if (specFolderHint && relevanceKeywords.length > 0) {
+          const responseRelevant = relevanceKeywords.some(kw =>
+            lowerResponse.includes(kw.toLowerCase())
+          );
+          const inputRelevant = ex.userInput
+            ? relevanceKeywords.some(kw => ex.userInput!.toLowerCase().includes(kw.toLowerCase()))
+            : false;
+          if (!responseRelevant && !inputRelevant) {
+            continue; // skip irrelevant exchange
+          }
+        }
+
         observations.push({
           type: 'feature',
           title: ex.assistantResponse.substring(0, 80),
@@ -385,7 +427,7 @@ function transformOpencodeCapture(capture: OpencodeCapture): TransformedCapture 
     }
   }
 
-  for (const tool of toolCalls || []) {
+  for (const tool of filteredToolCalls) {
     const toolObs: Observation = {
       type: tool.tool === 'edit' || tool.tool === 'write' ? 'implementation' : 'observation',
       title: `Tool: ${tool.tool}`,
@@ -416,7 +458,7 @@ function transformOpencodeCapture(capture: OpencodeCapture): TransformedCapture 
   const FILES: FileEntry[] = [];
   const seenPaths: Set<string> = new Set();
 
-  for (const tool of toolCalls || []) {
+  for (const tool of filteredToolCalls) {
     if ((tool.tool === 'edit' || tool.tool === 'write') && tool.input) {
       const filePath: string | undefined = tool.input.filePath || tool.input.file_path || tool.input.path;
       if (filePath && !seenPaths.has(filePath)) {

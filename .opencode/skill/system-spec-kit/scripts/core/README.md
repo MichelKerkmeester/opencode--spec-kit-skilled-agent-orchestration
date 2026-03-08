@@ -37,6 +37,7 @@ The `core/` directory contains orchestration modules used by `dist/memory/genera
 - `quality-scorer.ts` - quality scoring support for generated artifacts
 - `file-writer.ts` - write/validation helpers for generated files
 - `memory-indexer.ts` - indexing hooks and metadata preparation
+- `tree-thinning.ts` - bottom-up merging of small files during context loading to reduce token overhead (pre-pipeline)
 - `index.ts` - barrel exports
 
 

@@ -1,15 +1,18 @@
 ---
 title: "Telemetry"
-description: "Retrieval telemetry for observability and governance. Records latency, mode selection, fallback triggers, and composite quality scores for retrieval pipeline runs."
+description: "Retrieval telemetry, scoring observability, trace schema validation, and consumption logging for the MCP server pipeline."
 trigger_phrases:
   - "retrieval telemetry"
   - "latency metrics"
   - "quality metrics"
+  - "scoring observability"
+  - "consumption logger"
+  - "trace schema"
 ---
 
 # Telemetry
 
-> Retrieval telemetry for observability and governance. Records latency, mode selection, fallback triggers, and composite quality scores for retrieval pipeline runs.
+> Retrieval telemetry, scoring observability, trace schema validation, and consumption logging for the MCP server pipeline.
 
 ---
 
@@ -29,15 +32,15 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The telemetry module provides structured observability for the retrieval pipeline. It records per-stage latency, search mode selection, fallback triggers, and composite quality scores. Telemetry data flows to governance tooling and is used by retrieval handlers to surface pipeline health metrics.
+The telemetry module provides structured observability for the retrieval pipeline and scoring subsystem. It records per-stage latency, search mode selection, fallback triggers, composite quality scores, scoring observation samples, trace payload validation, and agent consumption events. Telemetry data flows to governance tooling and is used by retrieval handlers to surface pipeline health metrics.
 
 ### Key Statistics
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 1 | `retrieval-telemetry.ts` |
+| Modules | 4 | `retrieval-telemetry.ts`, `scoring-observability.ts`, `trace-schema.ts`, `consumption-logger.ts` |
 | Metric Groups | 4 | LatencyMetrics, ModeMetrics, FallbackMetrics, QualityMetrics |
-| Feature Flag | 1 | `SPECKIT_EXTENDED_TELEMETRY` (default: true) |
+| Feature Flags | 3 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE` |
 
 ### Key Features
 
@@ -47,9 +50,10 @@ The telemetry module provides structured observability for the retrieval pipelin
 | **LatencyMetrics** | Stage-by-stage timing: candidate, fusion, rerank, boost, and total |
 | **ModeMetrics** | Search mode selection, override flag, pressure level, and optional token usage ratio |
 | **FallbackMetrics** | Fallback trigger detection, optional reason string, and degraded-mode flag |
-| **QualityMetrics** | Composite 0–1 quality proxy derived from relevance, result count, and latency |
+| **QualityMetrics** | Composite 0-1 quality proxy derived from relevance, result count, and latency |
 | **TelemetryTracePayload** | Canonical retrieval trace payload (sanitized, no sensitive/extra fields) |
-| **Feature Flag** | `SPECKIT_EXTENDED_TELEMETRY` gates extended metric collection (default: enabled) |
+| **ScoringObservability** | Sampled logging of N4 cold-start boost and TM-01 interference scoring values |
+| **ConsumptionLogger** | Agent consumption event logging to SQLite for usage pattern analysis |
 
 <!-- /ANCHOR:overview -->
 
@@ -60,8 +64,11 @@ The telemetry module provides structured observability for the retrieval pipelin
 
 ```
 telemetry/
- retrieval-telemetry.ts    # Telemetry interfaces, types, and collection utilities
- README.md                 # This file
+├── retrieval-telemetry.ts    # Telemetry interfaces, types, and collection utilities
+├── scoring-observability.ts  # Sampled scoring observation logging (N4, TM-01)
+├── trace-schema.ts           # Canonical trace payload schema and validation
+├── consumption-logger.ts     # Agent consumption event logging (T004)
+└── README.md                 # This file
 ```
 
 ### Key Files
@@ -69,6 +76,9 @@ telemetry/
 | File | Purpose |
 |------|---------|
 | `retrieval-telemetry.ts` | Defines `RetrievalTelemetry`, `LatencyMetrics`, `ModeMetrics`, `FallbackMetrics`, and `QualityMetrics`; exposes collection helpers |
+| `scoring-observability.ts` | Sampled (5%) observability logging for N4 cold-start boost and TM-01 interference penalty values; SQLite-backed `scoring_observations` table |
+| `trace-schema.ts` | Canonical schema and runtime validation for `TelemetryTracePayload`; sanitizes unknown/sensitive fields from trace data |
+| `consumption-logger.ts` | Logs agent consumption events (`search`, `context`, `triggers`) to SQLite `consumption_log` table; pattern detection for zero-result, high-frequency, and intent-mismatch queries |
 
 <!-- /ANCHOR:structure -->
 
@@ -77,13 +87,16 @@ telemetry/
 ## 3. FEATURES
 <!-- ANCHOR:features -->
 
-### Feature Flag
+### Feature Flags
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `SPECKIT_EXTENDED_TELEMETRY` | `true` | Enable extended metric collection (latency breakdown, quality scoring) |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | Enable extended metric collection (latency breakdown, quality scoring). Set to `true` to activate |
+| `SPECKIT_NOVELTY_BOOST` | - | Gates N4 cold-start boost in scoring observability |
+| `SPECKIT_INTERFERENCE_SCORE` | - | Gates TM-01 interference penalty in scoring observability |
+| `SPECKIT_CONSUMPTION_LOG` | inert | Deprecated. Consumption logging is hardcoded to disabled after Sprint 7 audit |
 
-When disabled, only the minimal `RetrievalTelemetry` shell is populated; latency, mode, fallback, and quality sub-metrics are omitted.
+When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), only the minimal `RetrievalTelemetry` shell is populated; latency, mode, fallback, and quality sub-metrics are omitted.
 
 ### RetrievalTelemetry
 
@@ -120,7 +133,7 @@ When disabled, only the minimal `RetrievalTelemetry` shell is populated; latency
 | `selectedMode` | `string \| null` | Mode chosen for this run (e.g., `hybrid`, `auto`, `deep`) |
 | `modeOverrideApplied` | `boolean` | Whether the default mode was overridden by caller or pressure policy |
 | `pressureLevel` | `string \| null` | Pressure level label at the time of selection |
-| `tokenUsageRatio` | `number \| undefined` | Optional normalized token usage ratio (0–1) |
+| `tokenUsageRatio` | `number \| undefined` | Optional normalized token usage ratio (0-1) |
 
 ### FallbackMetrics
 
@@ -139,20 +152,66 @@ When disabled, only the minimal `RetrievalTelemetry` shell is populated; latency
 | Field | Type | Description |
 |-------|------|-------------|
 | `resultCount` | `number` | Number of retrieval results used in scoring |
-| `avgRelevanceScore` | `number` | Average relevance component (0–1) |
-| `topResultScore` | `number` | Highest result relevance score (0–1) |
+| `avgRelevanceScore` | `number` | Average relevance component (0-1) |
+| `topResultScore` | `number` | Highest result relevance score (0-1) |
 | `boostImpactDelta` | `number` | Delta contributed by boost stages |
 | `extractionCountInSession` | `number` | Session extraction count at scoring time |
-| `qualityProxyScore` | `number` | Composite quality proxy score (0–1) |
+| `qualityProxyScore` | `number` | Composite quality proxy score (0-1) |
 
 **Score Interpretation:**
 
 | Range | Meaning |
 |-------|---------|
-| 0.80–1.00 | High quality |
-| 0.60–0.79 | Acceptable |
-| 0.40–0.59 | Degraded |
-| < 0.40 | Poor — review fallback policy |
+| 0.80-1.00 | High quality |
+| 0.60-0.79 | Acceptable |
+| 0.40-0.59 | Degraded |
+| < 0.40 | Poor -- review fallback policy |
+
+### Scoring Observability (`scoring-observability.ts`)
+
+**Purpose**: Sampled logging of N4 cold-start boost and TM-01 interference penalty values.
+
+| Aspect | Value |
+|--------|-------|
+| **Sampling Rate** | 5% (logs ~1 in 20 scoring calls) |
+| **Storage** | SQLite table `scoring_observations` |
+| **Behavior** | Fail-safe -- never throws; all errors caught and logged |
+
+| Function | Purpose |
+|----------|---------|
+| `initScoringObservability(db)` | Create `scoring_observations` table (idempotent) |
+| `shouldSample()` | Returns `true` approximately 5% of the time |
+| `logScoringObservation(obs)` | Persist a `ScoringObservation` record to the DB |
+| `getScoringStats()` | Aggregate stats: avg novelty boost, avg interference penalty, percentages |
+| `getDb()` | Return current DB handle (for testing) |
+| `resetDb()` | Reset DB handle (for testing teardown) |
+
+### Trace Schema (`trace-schema.ts`)
+
+**Purpose**: Canonical schema and runtime validation for retrieval trace payloads.
+
+| Function | Purpose |
+|----------|---------|
+| `sanitizeRetrievalTracePayload(payload)` | Validate and strip unknown/sensitive fields from a trace payload |
+| `isRetrievalTracePayload(payload)` | Type guard: returns `true` if payload matches canonical schema exactly |
+
+| Constant | Purpose |
+|----------|---------|
+| `RETRIEVAL_TRACE_STAGES` | Allowed stage names: `candidate`, `filter`, `fusion`, `rerank`, `fallback`, `final-rank` |
+
+### Consumption Logger (`consumption-logger.ts`)
+
+**Purpose**: Agent consumption event logging for usage pattern analysis.
+
+> **Note**: The `SPECKIT_CONSUMPTION_LOG` feature flag is deprecated and inert. The `isConsumptionLogEnabled()` function is hardcoded to `false` after Sprint 7 audit. No new events are logged.
+
+| Function | Purpose |
+|----------|---------|
+| `initConsumptionLog(db)` | Create `consumption_log` table with indexes (idempotent) |
+| `logConsumptionEvent(db, event)` | Insert a consumption event row (no-op when disabled) |
+| `getConsumptionStats(db, options)` | Aggregate statistics from `consumption_log` |
+| `getConsumptionPatterns(db, options)` | Detect patterns: high-frequency, zero-result, low-selection, intent-mismatch, session-heavy |
+| `isConsumptionLogEnabled()` | Returns `false` (deprecated) |
 
 <!-- /ANCHOR:features -->
 
@@ -214,15 +273,55 @@ const telemetry: RetrievalTelemetry = {
 ### Example 2: Check Feature Flag Before Extended Collection
 
 ```typescript
-const extended = process.env.SPECKIT_EXTENDED_TELEMETRY !== 'false';
+const extended = process.env.SPECKIT_EXTENDED_TELEMETRY === 'true';
 
 if (extended) {
   // Collect full latency breakdown and quality score
   telemetry.latency = collectLatencyMetrics(stages);
   telemetry.quality = computeQualityScore(results, requestedLimit, telemetry.latency.totalLatencyMs);
 } else {
-  // Minimal telemetry only — consumer can emit { enabled: false }
+  // Minimal telemetry only
   telemetry.enabled = false;
+}
+```
+
+### Example 3: Scoring Observability
+
+```typescript
+import { shouldSample, logScoringObservation, getScoringStats } from './scoring-observability';
+
+if (shouldSample()) {
+  logScoringObservation({
+    memoryId: 42,
+    queryId: 'q-abc-123',
+    timestamp: new Date().toISOString(),
+    noveltyBoostApplied: true,
+    noveltyBoostValue: 0.15,
+    memoryAgeDays: 2,
+    interferenceApplied: false,
+    interferenceScore: 0,
+    interferencePenalty: 0,
+    scoreBeforeBoosts: 0.72,
+    scoreAfterBoosts: 0.87,
+    scoreDelta: 0.15,
+  });
+}
+
+const stats = getScoringStats();
+// { totalObservations: 50, avgNoveltyBoost: 0.12, ... }
+```
+
+### Example 4: Validate a Trace Payload
+
+```typescript
+import { sanitizeRetrievalTracePayload, isRetrievalTracePayload } from './trace-schema';
+
+const raw = getTraceFromPipeline();
+const canonical = sanitizeRetrievalTracePayload(raw);
+// Returns null if invalid, or a sanitized TelemetryTracePayload
+
+if (isRetrievalTracePayload(raw)) {
+  // raw matches canonical schema exactly
 }
 ```
 
@@ -234,6 +333,7 @@ if (extended) {
 | Check `fallback.fallbackTriggered` to gate quality alerts | Governance / SLO monitoring |
 | Use `quality.qualityProxyScore < 0.6` to log degraded-run warnings | Observability dashboards |
 | Compare `latency.rerankLatencyMs` to `0` | Detect runs where reranking was skipped |
+| Call `shouldSample()` before `logScoringObservation()` | Scoring hot path (avoid logging every call) |
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -250,6 +350,7 @@ if (extended) {
 | [lib/contracts/README.md](../contracts/README.md) | Retrieval pipeline contracts (envelopes, traces) |
 | [lib/search/README.md](../search/README.md) | Hybrid search pipeline |
 | [lib/cognitive/README.md](../cognitive/README.md) | Cognitive pressure monitoring |
+| [lib/scoring/README.md](../scoring/README.md) | Composite scoring (referenced by scoring observability) |
 
 ### Related Modules
 
@@ -262,5 +363,5 @@ if (extended) {
 
 ---
 
-**Version**: 1.7.2
-**Last Updated**: 2026-02-19
+**Version**: 1.8.0
+**Last Updated**: 2026-03-08

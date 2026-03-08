@@ -1,12 +1,35 @@
+---
+title: "Eval Scripts"
+description: "Evaluation and benchmarking runners for spec-kit memory system quality, performance, and correctness."
+trigger_phrases:
+  - "eval scripts"
+  - "run benchmarks"
+  - "import policy"
+  - "architecture boundaries"
+---
+
+
 # Eval Scripts
 
 > Evaluation and benchmarking runners for spec-kit memory system.
 
-## Purpose
+<!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. IMPORT POLICY](#2--import-policy)
+- [3. SCRIPT INVENTORY](#3--script-inventory)
+- [4. REFERENCE](#4--reference)
+
+<!-- /ANCHOR:table-of-contents -->
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Scripts in this directory evaluate memory system quality, performance, and correctness. They run as CLI tools via `npx tsx`.
 
-## Import Policy
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:import-policy -->
+## 2. IMPORT POLICY
 
 | Source | Status | Notes |
 |--------|--------|-------|
@@ -27,11 +50,19 @@ If a script requires direct internal runtime access:
 - `run-performance-benchmarks.ts` — allowlisted internal runtime imports for benchmark-specific metrics
 - `run-chk210-quality-backfill.ts` — allowlisted internal runtime import for quality backfill parsing
 
-## Script Inventory
+<!-- /ANCHOR:import-policy -->
+<!-- ANCHOR:script-inventory -->
+## 3. SCRIPT INVENTORY
 
 | Script | Purpose |
 |--------|---------|
+| `check-allowlist-expiry.ts` | Warn on near-expiry and fail on expired allowlist exceptions |
+| `check-architecture-boundaries.ts` | Enforce shared/ neutrality and mcp_server/scripts/ wrapper-only rules |
+| `check-handler-cycles-ast.ts` | Detect circular import/re-export dependencies in mcp_server/handlers via AST |
+| `check-no-mcp-lib-imports.ts` | Scan scripts/ for prohibited internal runtime imports against allowlist |
+| `check-no-mcp-lib-imports-ast.ts` | AST-based enforcement for prohibited internal runtime imports with transitive re-export traversal |
 | `collect-redaction-calibration-inputs.ts` | Collect input data for redaction calibration tuning |
+| `import-policy-rules.ts` | Shared detection rules for prohibited scripts-to-internal-runtime imports |
 | `map-ground-truth-ids.ts` | Map ground truth identifiers for evaluation datasets |
 | `run-ablation.ts` | Run channel ablation studies (disable channels to measure impact) |
 | `run-bm25-baseline.ts` | Run BM25 baseline benchmarks for search comparison |
@@ -42,9 +73,15 @@ If a script requires direct internal runtime access:
 | `run-phase3-telemetry-dashboard.ts` | Generate Phase 3 telemetry dashboard data |
 | `run-quality-legacy-remediation.ts` | Remediate legacy quality issues in memory entries |
 | `run-redaction-calibration.ts` | Calibrate redaction thresholds for sensitive content filtering |
-| `check-architecture-boundaries.ts` | Enforce shared/ neutrality and mcp_server/scripts/ wrapper-only rules |
 
-## Reference
+**Supporting data:**
+
+- `import-policy-allowlist.json` — Exception allowlist for prohibited import policy
+
+<!-- /ANCHOR:script-inventory -->
+<!-- ANCHOR:reference -->
+## 4. REFERENCE
 
 - [Architecture Boundaries](../../ARCHITECTURE.md)
 - [Import Policy Allowlist](./import-policy-allowlist.json)
+<!-- /ANCHOR:reference -->

@@ -32,26 +32,34 @@ This directory contains the shell and TypeScript tooling that powers spec creati
 
 
 Top-level files:
-- `common.sh`
+- `check-api-boundary.sh`
 - `check-links.sh`
+- `common.sh`
+- `package.json`
 - `registry-loader.sh`
 - `scripts-registry.json`
-- `package.json`
 - `tsconfig.json`
+- `wrap-all-templates.sh`
+- `wrap-all-templates.ts`
 
 Primary script directories:
-- `spec/` - 8 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`)
+- `spec/` - 10 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
 - `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
 - `memory/` - 7 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`)
-- `core/` - 8 TypeScript workflow modules
-- `extractors/` - 11 TypeScript extraction modules plus barrel export
-- `loaders/` - 2 TypeScript loading modules plus barrel export
-- `renderers/` - 2 TypeScript rendering modules plus barrel export
+- `core/` - 8 TypeScript workflow modules plus barrel export
+- `extractors/` - 10 TypeScript extraction modules plus barrel export
+- `loaders/` - 1 TypeScript loading module (`data-loader.ts`) plus barrel export
+- `renderers/` - 1 TypeScript rendering module (`template-renderer.ts`) plus barrel export
+- `utils/` - 11 TypeScript utility modules plus barrel export
+- `types/` - TypeScript type definitions (`session-types.ts`)
 - `lib/` - 12 TypeScript libraries plus 3 shell helper libraries
-- `evals/` - 18 evaluation and audit scripts
+- `evals/` - 18 evaluation and audit scripts plus policy allowlist
+- `ops/` - 5 shell healing/runbook scripts plus shared helper (`ops-common.sh`)
+- `setup/` - 4 prerequisite and native-module check scripts
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
 - `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
+- `test-fixtures/` - 51 numbered fixture directories for validation rule testing
 - `templates/` - wrapper/composition helpers for template packaging workflows
 
 
@@ -116,6 +124,13 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 - `extractors/README.md`
 - `loaders/README.md`
 - `renderers/README.md`
+- `utils/README.md`
+- `types/README.md`
 - `lib/README.md`
+- `evals/README.md`
+- `ops/README.md`
+- `setup/README.md`
+- `kpi/README.md`
+- `test-fixtures/README.md`
 - `templates/README.md`
 <!-- /ANCHOR:related-readmes -->

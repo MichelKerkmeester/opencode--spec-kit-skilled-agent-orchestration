@@ -35,7 +35,7 @@ This section provides an overview of the Tools: Dispatch Layer directory.
 ## 2. IMPLEMENTED STATE
 
 
-- Current footprint: 23 tools across 5 dispatch modules.
+- Current footprint: 28 tools across 5 dispatch modules.
 - Routing model: first dispatcher with `TOOL_NAMES.has(name)` handles the call.
 - `parseArgs<T>()` is the single protocol-boundary cast point.
 - Tool args include recent fields such as:

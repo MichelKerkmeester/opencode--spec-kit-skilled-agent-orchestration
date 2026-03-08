@@ -17,7 +17,7 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 
 - [1. OVERVIEW](#1--overview)
-- [2. KEY CONCEPTS]](#2--key-concepts)
+- [2. KEY CONCEPTS](#2--key-concepts)
 - [3. STRUCTURE](#3--structure)
 - [4. USAGE](#4--usage)
 - [5. RELATED RESOURCES](#5--related-resources)
@@ -131,7 +131,6 @@ config/
 |------|---------|
 | `memory-types.ts` | Type definitions, half-lives, path/keyword patterns |
 | `type-inference.ts` | Multi-source inference with confidence scoring |
-| Feature flags | 16 primary flags control subsystem behavior (see env configuration) |
 
 <!-- /ANCHOR:structure -->
 

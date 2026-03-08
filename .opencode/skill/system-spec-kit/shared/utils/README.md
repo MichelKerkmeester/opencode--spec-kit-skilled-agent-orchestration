@@ -1,6 +1,6 @@
 ---
 title: "Shared Utilities"
-description: "Low-level utility functions providing security-hardened path validation and resilient retry logic shared across system-spec-kit."
+description: "Low-level utility functions providing path validation, retry logic, JSONC parsing, and token estimation shared across system-spec-kit."
 trigger_phrases:
   - "shared utilities"
   - "path security validation"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Shared Utilities
 
-> Low-level utility functions shared across `system-spec-kit`, providing path validation, retry/backoff classification, and JSONC parsing helpers.
+> Low-level utility functions shared across `system-spec-kit`, providing path validation, retry/backoff classification, JSONC parsing helpers, and token count estimation.
 
 ---
 
@@ -20,7 +20,8 @@ trigger_phrases:
 - [2. STRUCTURE](#2--structure)
 - [3. PATH SECURITY](#3--path-security)
 - [4. RETRY](#4--retry)
-- [5. RELATED](#5--related)
+- [5. TOKEN ESTIMATE](#5--token-estimate)
+- [6. RELATED](#6--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -29,7 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Low-level utility functions shared across `system-spec-kit`. These modules provide **security-hardened path validation**, **resilient retry logic** with error classification, and **JSONC comment stripping** for config parsing.
+Low-level utility functions shared across `system-spec-kit`. These modules provide **security-hardened path validation**, **resilient retry logic** with error classification, **JSONC comment stripping** for config parsing, and **token count estimation**.
 
 `path-security.ts` and `retry.ts` were migrated from `mcp_server/lib/utils/` to enable reuse by scripts and other consumers outside the MCP server.
 
@@ -45,6 +46,7 @@ Low-level utility functions shared across `system-spec-kit`. These modules provi
 | `path-security.ts` | Filesystem path validation preventing traversal attacks |
 | `retry.ts` | Retry-with-exponential-backoff and error classification |
 | `jsonc-strip.ts` | JSONC comment stripping while preserving string literals |
+| `token-estimate.ts` | Token count estimation using chars/4 heuristic |
 
 <!-- /ANCHOR:structure -->
 
@@ -195,11 +197,40 @@ Imported from `shared/types`:
 
 ---
 
+<!-- ANCHOR:token-estimate -->
+## 5. TOKEN ESTIMATE
+
+**File:** `token-estimate.ts`
+
+Provides a shared token count estimation function using the chars/4 approximation. This is the canonical implementation, replacing duplicate copies that previously existed in `tree-thinning.ts` and `token-metrics.ts`.
+
+### Exports
+
+| Export              | Type       | Description                                              |
+| ------------------- | ---------- | -------------------------------------------------------- |
+| `estimateTokenCount` | `function` | Estimates token count for a string using `Math.ceil(text.length / 4)` |
+
+### Usage
+
+```typescript
+import { estimateTokenCount } from './token-estimate';
+
+const tokens = estimateTokenCount('Hello world');
+// => 3
+
+estimateTokenCount(null);  // => 0
+estimateTokenCount('');    // => 0
+```
+
+<!-- /ANCHOR:token-estimate -->
+
+---
+
 <!-- ANCHOR:related -->
-## 5. RELATED
+## 6. RELATED
 
 - **Types:** `shared/types.ts` contains `RetryConfig`, `ErrorClassification`, `RetryOptions`, `RetryAttemptLogEntry`
-- **Origin:** `path-security.ts` and `retry.ts` migrated from `mcp_server/lib/utils/`; `jsonc-strip.ts` is shared-native
+- **Origin:** `path-security.ts` and `retry.ts` migrated from `mcp_server/lib/utils/`; `jsonc-strip.ts` and `token-estimate.ts` are shared-native
 
 <!-- /ANCHOR:related -->
 

@@ -1,6 +1,6 @@
 ---
 title: "Handlers"
-description: "MCP tool handlers for context, search, CRUD, indexing, checkpoints, learning, and causal graph operations."
+description: "MCP tool handlers for context, search, CRUD, indexing, ingest, checkpoints, learning, causal graph, PE gating, eval reporting, and quality loop operations."
 trigger_phrases:
   - "MCP handlers"
   - "memory handlers"
@@ -28,27 +28,36 @@ This section provides an overview of the Handlers directory.
 `handlers/` is the business-logic layer behind the MCP tool surface.
 
 Current modules:
-- `memory-context.ts`
-- `memory-search.ts`
-- `memory-triggers.ts`
-- `memory-save.ts`
-- `memory-crud.ts` (stable facade + snake_case aliases)
-- `memory-crud-delete.ts`
-- `memory-crud-update.ts`
-- `memory-crud-list.ts`
-- `memory-crud-stats.ts`
-- `memory-crud-health.ts`
-- `memory-crud-types.ts`
-- `memory-crud-utils.ts`
-- `memory-bulk-delete.ts`
-- `memory-index.ts`
-- `memory-index-alias.ts`
-- `memory-index-discovery.ts`
-- `checkpoints.ts`
-- `session-learning.ts`
-- `causal-graph.ts`
-- `types.ts`
-- `index.ts`
+- `memory-context.ts` — L1 orchestration handler (T061)
+- `memory-search.ts` — hybrid search with retrieval telemetry
+- `memory-triggers.ts` — trigger phrase matching
+- `memory-save.ts` — save orchestrator (delegates to `save/` pipeline)
+- `memory-ingest.ts` — batch ingest start/status/cancel handlers
+- `memory-crud.ts` — stable CRUD facade + snake_case aliases
+- `memory-crud-delete.ts` — single-memory delete
+- `memory-crud-update.ts` — single-memory update
+- `memory-crud-list.ts` — memory listing with filters
+- `memory-crud-stats.ts` — database statistics
+- `memory-crud-health.ts` — health check handler
+- `memory-crud-types.ts` — shared CRUD type definitions
+- `memory-crud-utils.ts` — mutation ledger and CRUD utilities
+- `memory-bulk-delete.ts` — bulk delete handler
+- `memory-index.ts` — index scan, single-file indexing, constitutional file discovery
+- `memory-index-alias.ts` — index alias management
+- `memory-index-discovery.ts` — spec-folder discovery for indexing
+- `checkpoints.ts` — checkpoint create/list/restore/delete and memory validate
+- `session-learning.ts` — task preflight/postflight and learning history
+- `causal-graph.ts` — causal link/unlink, drift-why, causal stats (T043-T047)
+- `causal-links-processor.ts` — causal link extraction and processing
+- `chunking-orchestrator.ts` — document chunking orchestration
+- `eval-reporting.ts` — ablation runs and reporting dashboard (R13-S3)
+- `handler-utils.ts` — shared handler utility functions
+- `mutation-hooks.ts` — post-mutation hook runner (cache invalidation)
+- `pe-gating.ts` — prediction-error gate actions (findSimilarMemories, reinforce, etc.)
+- `quality-loop.ts` — quality feedback loop handler
+- `types.ts` — shared handler type definitions
+- `index.ts` — barrel re-exports
+- `save/` — decomposed save pipeline (see `save/README.md`)
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->

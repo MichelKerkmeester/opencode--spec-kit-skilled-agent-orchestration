@@ -36,7 +36,7 @@ The storage layer provides all persistence operations for the Spec Kit Memory MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 8 | Core persistence modules |
+| Modules | 12 | Core persistence modules |
 | Relationship Types | 6 | Causal edge types for decision lineage |
 
 ### Key Features
@@ -50,7 +50,11 @@ The storage layer provides all persistence operations for the Spec Kit Memory MC
 | **Atomic Transactions** | File write + index insert with pending file recovery |
 | **Access Tracking** | Batched accumulator updates minimize I/O while tracking usage for relevance boost |
 | **Schema v15** | Current database schema version (v15) with causal graph and retrieval-index storage tables |
+| **Schema Downgrade** | Targeted v16-to-v15 downgrade utility for removing chunking columns |
 | **Graph Storage** | Persists causal graph edges and graph-related metadata for retrieval enrichment |
+| **Consolidation** | N3-lite graph maintenance: contradiction scan, Hebbian strengthening, staleness detection |
+| **Reconsolidation** | Post-embedding similarity-based memory merge, conflict, or complement decisions |
+| **Learned Triggers** | Schema migration for learned_triggers column with FTS5 isolation verification |
 
 <!-- /ANCHOR:overview -->
 
@@ -61,15 +65,19 @@ The storage layer provides all persistence operations for the Spec Kit Memory MC
 
 ```
 storage/
- access-tracker.ts      # Track memory access for usage boost scoring
- causal-edges.ts        # Causal graph storage with 6 relationship types
- checkpoints.ts         # Gzip-compressed state snapshots
- history.ts             # Change history tracking (ADD/UPDATE/DELETE events)
- incremental-index.ts   # Mtime-based incremental indexing
- index-refresh.ts       # Embedding index freshness management
- mutation-ledger.ts     # Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types
- transaction-manager.ts # Atomic file + index operations
- README.md              # This file
+ access-tracker.ts          # Track memory access for usage boost scoring
+ causal-edges.ts            # Causal graph storage with 6 relationship types
+ checkpoints.ts             # Gzip-compressed state snapshots
+ consolidation.ts           # N3-lite graph maintenance (contradiction, Hebbian, staleness)
+ history.ts                 # Change history tracking (ADD/UPDATE/DELETE events)
+ incremental-index.ts       # Mtime-based incremental indexing
+ index-refresh.ts           # Embedding index freshness management
+ learned-triggers-schema.ts # Schema migration for learned_triggers column (R11)
+ mutation-ledger.ts         # Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types
+ reconsolidation.ts         # Post-embedding similarity-based memory merge/conflict/complement
+ schema-downgrade.ts        # Targeted v16->v15 schema downgrade utility
+ transaction-manager.ts     # Atomic file + index operations
+ README.md                  # This file
 ```
 
 ### Key Files
@@ -83,6 +91,10 @@ storage/
 | `incremental-index.ts` | Determines which files need re-indexing via mtime fast path |
 | `index-refresh.ts` | Manages embedding index freshness: status tracking, retry logic and unindexed document querying |
 | `mutation-ledger.ts` | Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types |
+| `consolidation.ts` | N3-lite graph maintenance: contradiction scan, Hebbian strengthening, staleness detection, edge bounds enforcement. Behind `SPECKIT_CONSOLIDATION` flag |
+| `learned-triggers-schema.ts` | Schema migration adding `learned_triggers` column to `memory_index` (excluded from FTS5). Exports `migrateLearnedTriggers()` and FTS5 isolation verification |
+| `reconsolidation.ts` | Post-embedding reconsolidation: merge (>=0.88 similarity), conflict (0.75-0.88), complement (<0.75). Behind `SPECKIT_RECONSOLIDATION` flag |
+| `schema-downgrade.ts` | Targeted v16-to-v15 schema downgrade removing chunking columns (`parent_id`, `chunk_index`, `chunk_label`). Creates safety checkpoint before downgrade |
 | `transaction-manager.ts` | Atomic file writes (temp+rename) with pending file crash recovery |
 
 <!-- /ANCHOR:structure -->

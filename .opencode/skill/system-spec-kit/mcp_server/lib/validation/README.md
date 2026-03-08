@@ -33,7 +33,9 @@ The validation subsystem provides pre-flight checks that run before expensive op
 
 | Category | Count | Details |
 |----------|-------|---------|
+| Modules | 2 | preflight.ts, save-quality-gate.ts |
 | Pre-flight Checks | 4 | Anchors, duplicates, tokens, content size |
+| Quality Gate Layers | 3 | Structural, content quality, semantic dedup |
 | Error Codes | 10 | PF001-PF031 range |
 | Config Options | 8 | Environment-configurable thresholds |
 
@@ -45,6 +47,7 @@ The validation subsystem provides pre-flight checks that run before expensive op
 | **Duplicate Detection** | Exact (SHA-256 hash) and similar (vector similarity) duplicate finding |
 | **Token Budget** | Estimates tokens and enforces limits before API calls |
 | **Unified Preflight** | Single `runPreflight()` runs all checks with dry-run support |
+| **Save Quality Gate** | 3-layer pre-storage validation (structural, content quality scoring, semantic dedup). Behind `SPECKIT_SAVE_QUALITY_GATE` flag |
 
 <!-- /ANCHOR:overview -->
 
@@ -53,8 +56,9 @@ The validation subsystem provides pre-flight checks that run before expensive op
 
 ```
 validation/
- preflight.ts  # Pre-flight validation before expensive operations
- README.md     # This file
+ preflight.ts         # Pre-flight validation before expensive operations
+ save-quality-gate.ts # 3-layer pre-storage quality gate (structural, content, semantic dedup)
+ README.md            # This file
 ```
 
 ### Key Files
@@ -62,6 +66,7 @@ validation/
 | File | Purpose |
 |------|---------|
 | `preflight.ts` | All validation logic: anchors, duplicates, tokens, content size, unified preflight |
+| `save-quality-gate.ts` | 3-layer pre-storage quality gate: structural validation, content quality scoring (title, triggers, length, anchors, metadata, signal density), and semantic dedup. Behind `SPECKIT_SAVE_QUALITY_GATE` flag with 14-day warn-only graduation period |
 
 <!-- /ANCHOR:structure -->
 
@@ -145,6 +150,39 @@ Default cap is `MCP_MAX_CONTENT_LENGTH=250000` (250KB), configurable via environ
 
 **Classes:** `PreflightError`
 
+### Save Quality Gate (TM-04)
+
+**Purpose**: 3-layer pre-storage quality gate before memory writes. Behind `SPECKIT_SAVE_QUALITY_GATE` flag.
+
+| Layer | Check | Details |
+|-------|-------|---------|
+| Layer 1 | Structural | Content length, spec folder format, title presence |
+| Layer 2 | Content Quality | Weighted signal density across 5 dimensions (title 0.25, triggers 0.20, length 0.20, anchors 0.15, metadata 0.20). Threshold: 0.4 |
+| Layer 3 | Semantic Dedup | Cosine similarity against existing memories. Threshold: 0.92 |
+
+**Warn-Only Mode**: First 14 days after activation, scores are logged but saves are not blocked. Activation timestamp is persisted to SQLite config table to survive restarts.
+
+**Exported functions (save-quality-gate.ts):**
+
+| Function | Purpose |
+|----------|---------|
+| `isQualityGateEnabled()` | Check if `SPECKIT_SAVE_QUALITY_GATE` flag is enabled |
+| `isWarnOnlyMode()` | Check if still in 14-day warn-only period |
+| `setActivationTimestamp(timestamp?)` | Persist activation timestamp to SQLite config |
+| `resetActivationTimestamp()` | Clear persisted activation timestamp |
+| `validateStructural(params)` | Layer 1: structural validation |
+| `scoreTitleQuality(title)` | Layer 2 dimension: title quality (0-1) |
+| `scoreTriggerQuality(triggerPhrases)` | Layer 2 dimension: trigger phrase quality (0-1) |
+| `scoreLengthQuality(content)` | Layer 2 dimension: content length quality (0-1) |
+| `scoreAnchorQuality(anchors)` | Layer 2 dimension: anchor quality (0-1) |
+| `scoreMetadataQuality(content)` | Layer 2 dimension: metadata quality (0-1) |
+| `scoreContentQuality(params)` | Layer 2: combined content quality scoring |
+| `cosineSimilarity(a, b)` | Cosine similarity between two vectors |
+| `checkSemanticDedup(params)` | Layer 3: semantic dedup check |
+| `runQualityGate(params)` | Run all 3 layers, returns `QualityGateResult` |
+
+**Exported types:** `StructuralValidationResult`, `ContentQualityDimensions`, `ContentQualityResult`, `SemanticDedupResult`, `QualityGateResult`, `QualityGateParams`, `FindSimilarFn`
+
 <!-- /ANCHOR:features -->
 
 ## 4. USAGE EXAMPLES
@@ -208,14 +246,38 @@ const result = runPreflight(
 // result.dry_run_would_pass shows actual validation result
 ```
 
+### Example 5: Run Save Quality Gate
+
+```typescript
+import { runQualityGate } from './save-quality-gate';
+
+const result = runQualityGate({
+  title: 'Architecture decision: use SQLite',
+  content: memoryContent,
+  specFolder: 'specs/<###-spec-name>',
+  triggerPhrases: ['architecture', 'sqlite'],
+  anchors: ['summary', 'decisions'],
+  embedding: embeddingVector,
+  findSimilar: (emb, opts) => vectorStore.search(emb, opts),
+});
+
+if (!result.pass) {
+  console.log('Quality gate rejected:', result.reasons);
+  console.log('Warn-only mode:', result.warnOnly);
+}
+```
+
 ### Common Patterns
 
 | Pattern | Function | When to Use |
 |---------|----------|-------------|
 | Full validation | `runPreflight()` | Before memory_save |
+| Quality gate | `runQualityGate()` | Before memory storage (flag-gated) |
 | Anchor check | `validateAnchorFormat()` | Editing memory files |
 | Token estimate | `estimateTokens()` | Before embedding API |
 | Hash compute | `computeContentHash()` | Duplicate detection |
+| Structural check | `validateStructural()` | Quick pre-save structural validation |
+| Content scoring | `scoreContentQuality()` | Evaluate memory content quality |
 | Recursive phase validation | `validate.sh --recursive` | Validate phase-based spec hierarchies (spec 139) |
 
 <!-- /ANCHOR:usage-examples -->

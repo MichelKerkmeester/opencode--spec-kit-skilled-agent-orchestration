@@ -61,7 +61,9 @@ The cache module provides in-memory caching for MCP tool outputs to reduce redun
 cache/
 ├── tool-cache.ts       # Core tool output caching implementation
 ├── embedding-cache.ts  # Persistent SQLite embedding cache with LRU eviction (Sprint 3)
-├── scoring/            # Cache-aware composite scoring (symlink to ../cognitive)
+├── scoring/            # Barrel re-export of composite scoring into cache namespace
+│   ├── composite-scoring.ts  # Re-exports from ../../scoring/composite-scoring
+│   └── README.md             # Scoring re-export documentation
 ├── cognitive -> ../cognitive  # Symlink to cognitive module
 └── README.md           # This file
 ```

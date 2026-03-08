@@ -17,7 +17,7 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 
 - [1. OVERVIEW](#1--overview)
-- [2. KEY CONCEPTS]](#2--key-concepts)
+- [2. KEY CONCEPTS](#2--key-concepts)
 - [3. STRUCTURE](#3--structure)
 - [4. USAGE](#4--usage)
 - [5. RELATED RESOURCES](#5--related-resources)
@@ -52,7 +52,7 @@ The scoring module provides multi-factor algorithms for ranking memories in the 
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 5 | Core scoring algorithms (.ts source files) |
+| Modules | 7 | Core scoring algorithms (.ts source files) |
 | Importance Tiers | 6 | constitutional, critical, important, normal, temporary, deprecated |
 | Scoring Factors | 5 | temporal, usage, importance, pattern, citation |
 | Export Functions | 40+ | Scoring utilities and helpers |
@@ -154,6 +154,8 @@ scoring/
  folder-scoring.ts        # Re-exports from @spec-kit/shared/scoring/folder-scoring
  confidence-tracker.ts    # User validation and promotion
  interference-scoring.ts  # TM-01 interference penalty for redundant memories (Sprint 2)
+ mpab-aggregation.ts      # Multi-Parent Aggregated Bonus for chunk-to-memory score aggregation
+ negative-feedback.ts     # Negative validation confidence multiplier with time-based recovery
  README.md                # This file
 ```
 
@@ -168,6 +170,8 @@ scoring/
 | `folder-scoring.ts` | Re-export from @spec-kit/shared/scoring/folder-scoring |
 | `confidence-tracker.ts` | Feedback loop: validation -> promotion |
 | `interference-scoring.ts` | TM-01 interference penalty: counts similar memories in same spec_folder, applied as scoring penalty to demote redundant results |
+| `mpab-aggregation.ts` | Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation; computes aggregated scores after RRF fusion, collapses and reassembles chunk results |
+| `negative-feedback.ts` | Negative validation confidence multiplier with 30-day half-life recovery; records negative feedback events and batch-loads stats for scoring pipeline |
 
 <!-- /ANCHOR:structure -->
 
@@ -283,11 +287,11 @@ const info = getConfidenceInfo(db, memoryId);
 
 ---
 
-**Version**: 1.8.0
-**Last Updated**: 2026-02-27
+**Version**: 1.9.0
+**Last Updated**: 2026-03-08
 
 **Migration Notes**:
-- 5 of 7 modules migrated to TypeScript (.ts) as source of truth
+- 7 of 9 modules migrated to TypeScript (.ts) as source of truth
 - `index.js` and `scoring.js` remain as compiled JS only in `dist/lib/scoring/` (barrel re-exports and base decay utilities, never had .ts source)
 - Compiled output in `dist/lib/scoring/`
 - `folder-scoring.ts` re-exports from `@spec-kit/shared/scoring/folder-scoring`

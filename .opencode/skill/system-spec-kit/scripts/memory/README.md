@@ -27,14 +27,10 @@ trigger_phrases:
 
 The `memory/` directory contains the CLI entrypoints for the Spec Kit memory pipeline.
 
-<!-- /ANCHOR:overview -->
-
-## Canonical Runbook
-
 This is the **canonical location** for reindex and memory operations documentation.
-
 Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database/README.md`
 
+<!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY
 

@@ -39,7 +39,7 @@ Validation rules are modular shell scripts that check spec folders for structura
 
 | Category             | Count | Details                                       |
 | -------------------- | ----- | --------------------------------------------- |
-| Rules                | 17    | Modular validation scripts                    |
+| Rules                | 18    | Modular validation scripts                    |
 | Severity Levels      | 3     | error, warn, info                             |
 | Documentation Levels | 4     | L1, L2, L3, L3+ with progressive requirements |
 
@@ -81,7 +81,7 @@ Validation rules are modular shell scripts that check spec folders for structura
 # Check that rules are executable
 ls -la .opencode/skill/system-spec-kit/scripts/rules/
 
-# Expected: 17 .sh files with execute permissions
+# Expected: 18 .sh files with execute permissions
 # -rwxr-xr-x check-files.sh
 # -rwxr-xr-x check-priority-tags.sh
 # -rwxr-xr-x check-complexity.sh
@@ -120,8 +120,9 @@ rules/
 ├── check-section-counts.sh # SECTION_COUNTS - Section count validation
 ├── check-sections.sh       # SECTIONS_PRESENT - Required markdown sections
 ├── check-toc-policy.sh     # TOC_POLICY - ToC allowed only in research.md
-├── check-template-source.sh# TEMPLATE_SOURCE - Template provenance marker checks
-└── README.md               # This file
+├── check-spec-doc-integrity.sh # SPEC_DOC_INTEGRITY - Markdown cross-reference validation
+├── check-template-source.sh   # TEMPLATE_SOURCE - Template provenance marker checks
+└── README.md                  # This file
 ```
 
 ### Key Files
@@ -139,6 +140,7 @@ rules/
 | `check-evidence.sh`       | Completion validation: ensures completed items cite evidence              |
 | `check-links.sh`          | Link validation: validates wikilinks across skill markdown trees          |
 | `check-phase-links.sh`    | Phase validation: checks parent/child phase chain references              |
+| `check-spec-doc-integrity.sh` | Reference validation: verifies inline markdown file references resolve |
 | `check-toc-policy.sh`     | Style validation: allows ToC only in `research.md`                        |
 | `check-template-source.sh`| Provenance validation: checks template-source metadata markers            |
 
@@ -379,6 +381,19 @@ L3+: 10+ major sections, detailed acceptance scenarios
 - Valid YAML syntax
 - No duplicate keys
 - Optional: validates expected fields (title, description, etc.)
+
+**Severity**: warn (advisory)
+
+---
+
+#### SPEC_DOC_INTEGRITY (check-spec-doc-integrity.sh)
+
+**Purpose**: Validates that inline backtick-quoted markdown file references (e.g., `` `plan.md` ``) point to files that actually exist
+
+**Checks**:
+- Scans all `.md` files in the spec folder for backtick-quoted `.md` references
+- Resolves references relative to the markdown file, the spec root, and the repo root
+- Reports any references that cannot be resolved to an existing file
 
 **Severity**: warn (advisory)
 

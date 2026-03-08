@@ -125,10 +125,12 @@ console.log(`Dimensions: ${embedding.length}`);
 embeddings/
 ├── profile.ts              # Defines EmbeddingProfile and slug management
 ├── factory.ts              # Factory that selects the appropriate provider
+├── README.md               # This file
 └── providers/
     ├── hf-local.ts         # HuggingFace local (fallback)
     ├── voyage.ts           # Voyage AI (recommended)
-    └── openai.ts           # OpenAI embeddings API
+    ├── openai.ts           # OpenAI embeddings API
+    └── README.md           # Provider comparison and interface docs
 ```
 
 ### Key Files

@@ -107,7 +107,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 
 ---
 
-## Boundary & Import Policy
+## 1B. BOUNDARY AND IMPORT POLICY
 
 `shared/` is the canonical source for modules consumed by **both** `scripts/` and `mcp_server/`.
 
@@ -178,6 +178,8 @@ shared/
 ├── embeddings.ts               # Multi-provider embedding generation
 ├── chunking.ts                 # Semantic chunking utilities
 ├── trigger-extractor.ts        # Trigger phrase extraction
+├── package.json                # @spec-kit/shared package manifest
+├── tsconfig.json               # TypeScript project configuration
 ├── algorithms/                 # Shared retrieval fusion and reranking algorithms
 │   ├── adaptive-fusion.ts      # Intent-aware weighted RRF profiles
 │   ├── mmr-reranker.ts         # Diversity-aware reranking helpers
@@ -192,9 +194,12 @@ shared/
 │   └── providers/
 │       ├── hf-local.ts         # HuggingFace local (fallback)
 │       ├── openai.ts           # OpenAI embeddings API
-│       └── voyage.ts           # Voyage AI (recommended)
+│       ├── voyage.ts           # Voyage AI (recommended)
+│       └── README.md           # Provider comparison and interface docs
 ├── lib/
 │   └── structure-aware-chunker.ts # Markdown-aware chunking helpers
+├── mcp_server/
+│   └── database/.db-updated    # Update marker for the database
 ├── parsing/
 │   ├── quality-extractors.ts   # Quality score/flags extraction
 │   └── quality-extractors.test.ts # Parsing coverage for quality extraction

@@ -1,10 +1,11 @@
 ---
 title: "MCP Server Utilities"
-description: "Shared validators, JSON helpers, batch processing helpers, and DB utility functions."
+description: "Shared validators, JSON helpers, batch processing helpers, DB utility functions, and tool input schema validation."
 trigger_phrases:
   - "MCP utilities"
   - "input validation"
   - "batch processing"
+  - "tool schema validation"
 ---
 
 
@@ -30,6 +31,7 @@ This section provides an overview of the MCP Server Utilities directory.
 - `json-helpers.ts`: safe parse/stringify helpers.
 - `batch-processor.ts`: retry-aware batch and sequential processors.
 - `db-helpers.ts`: DB guard and error-message helpers.
+- `tool-input-schema.ts`: runtime validation of tool arguments against MCP input schemas (required fields, types, enums, constraints).
 - `index.ts`: barrel exports.
 
 <!-- /ANCHOR:overview -->
@@ -42,6 +44,7 @@ Primary exports are camelCase (with TypeScript-first signatures):
 - `safeJsonParse`, `safeJsonStringify`, `safeJsonParseTyped`
 - `processWithRetry`, `processBatches`, `processSequentially`
 - `requireDb`, `toErrorMessage`
+- `validateToolInputSchema`
 
 Security and reliability behavior:
 - Input limits align with core constants (`MAX_QUERY_LENGTH`, `INPUT_LIMITS`).

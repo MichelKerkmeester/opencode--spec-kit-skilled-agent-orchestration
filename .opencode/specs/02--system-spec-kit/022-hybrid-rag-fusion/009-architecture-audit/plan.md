@@ -60,6 +60,7 @@ Subsequent post-Phase-10 verification then surfaced a separate V6/V7 indexed dir
 - [x] Phase 10 direct-save naming follow-up closes the newly discovered direct-save collector-path candidate-loss seam without weakening the Phase 9 generic/contamination guardrails. (Phase 10 closure verified 2026-03-06 with collector-path regression coverage, targeted direct-save proof, lint, and final spec validation)
 - [x] Phase 11 explicit CLI target authority closure confirms direct save targets are not rerouted by session-learning and are verified by regression + smoke tests. (Phase 11 closure verified 2026-03-06)
 - [x] Phase 13 indexed direct-save render/quality closure resolves the post-Phase-10 V6/V7 blocker, adds regression coverage for indexed direct-save quality, and records refreshed closure evidence only after targeted verification passes. (Phase 13 closure verified 2026-03-06: targeted vitest PASS `31/31`, scripts lint PASS, spec validation PASS, indexed root save recorded as memory `#1201` without `QUALITY_GATE_FAIL` or skipped indexing)
+- [x] Phase 14 README documentation audit creates all 14 missing READMEs, verifies and fixes 50+ existing READMEs, and confirms zero HVR-banned words and 83/83 frontmatter coverage. (Phase 14 closure verified 2026-03-08: 25 agents dispatched in 5 waves, 14 READMEs created, 26 existing READMEs updated, 25 passed without changes, automated verification confirms 0 missing source-folder READMEs and 0 banned words)
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -101,9 +102,10 @@ Contract-first layered architecture.
 | Phase 11: Explicit CLI Target Authority Closure | T110-T114 | ~80 (tests+docs+smoke verification) | Low (1-2h) | Medium |
 | Phase 12: Explicit Phase-Folder Rejection Rule | T115-T118 | ~60 (code+tests) | Low (1-2h) | Low |
 | Phase 13: Indexed Direct-Save Render/Quality Closure | T119-T123 | ~100 (investigation+fixes+tests+verification) | Low-Medium (2-4h) | Medium |
-| **Total** | **126 task entries (124 IDs; T013 split into T013a/b/c)** | **~2340** | **~46-75h** | **Medium** |
+| Phase 14: README Documentation Audit | T124-T129 | ~1500 (docs) | Medium-High (6-10h) | Low |
+| **Total** | **132 task entries (130 IDs; T013 split into T013a/b/c)** | **~3840** | **~52-85h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 12 → Phase 13 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 12 → Phase 13 → Phase 14 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -265,6 +267,27 @@ Derived from the 5-agent phase audit of `034-feature-catalog` groups 01-18.
 #### Verification and Closure Evidence
 - [x] Re-run targeted verification for indexed direct-save behavior, including render/quality checks and the spec validator, before claiming closure. [DONE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with PASS `31/31`; `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` passed; `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/009-architecture-audit"` passed.]
 - [x] Update closure evidence across `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` only after the indexed direct-save render/quality blocker is verified closed. [DONE: Phase 13 closure evidence is now synchronized across the four phase docs while preserving the historical note that this was a post-Phase-10 indexing-quality follow-up; root-save proof recorded final saved file `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md`, successful indexing as memory `#1201`, and no `QUALITY_GATE_FAIL` or skipped indexing.]
+### Phase 14: README Documentation Audit
+
+#### Coverage Gap Closure (14 Missing READMEs)
+- [x] Create READMEs for all 14 code folders that lack documentation: `mcp_server/lib/graph/`, `mcp_server/lib/chunking/`, `mcp_server/lib/ops/`, `mcp_server/lib/search/pipeline/`, `mcp_server/lib/cache/scoring/`, `mcp_server/handlers/save/`, `mcp_server/schemas/`, `shared/algorithms/`, `shared/contracts/`, `shared/lib/`, `shared/parsing/`, `shared/embeddings/providers/`, `shared/mcp_server/database/`, `scripts/kpi/`. [DONE: agents A01-A07]
+- [x] Each new README follows sk-doc readme_template format: YAML frontmatter, numbered ALL CAPS H2 sections, TOC with anchors, file listing matching actual folder contents, no HVR-banned words. [DONE: verified by automated checks -- 0 missing frontmatter, 0 banned words, 0 source folders without README]
+
+#### Alignment Verification (50+ Existing READMEs)
+- [x] Verify all existing READMEs in mcp_server zone (api, configs, core, database, formatters, handlers, hooks, lib and its 20+ subdirectories, scripts, tools, utils). [DONE: agents A08-A17, A23]
+- [x] Verify all existing READMEs in scripts zone (core, memory, evals, extractors, lib, loaders, renderers, spec, spec-folder, rules, ops, setup, templates, types, utils). [DONE: agents A18-A21, A24]
+- [x] Verify all existing READMEs in shared zone (root, embeddings, scoring, utils). [DONE: agent A22]
+- [x] Verify root READMEs (system-spec-kit root, mcp_server root, scripts root) and ARCHITECTURE.md cross-references. [DONE: agents A23-A25]
+
+#### Delegation Strategy
+- Agent-based parallel execution in 5 waves of 5 agents each (25 total).
+- Wave 1-2: Create missing READMEs. Wave 3-5: Verify and fix existing READMEs.
+- Agent output written to `scratch/readme-audit-A##.md` files.
+- Synthesis report compiled after all waves complete.
+
+#### Verification
+- Automated: find all code folders without README, grep for HVR-banned words, verify YAML frontmatter.
+- Manual: spot-check 5-10 READMEs across zones for file listing accuracy and cross-reference validity.
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -345,6 +368,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M9 | CLI authority closure | Explicit CLI save targets remain authoritative through generate-context control flow with regression + smoke evidence | Phase 11 |
 | M10 | Phase-folder rejection | Explicit phase-folder rejection rule guards memory-save from targeting phase subfolders | Phase 12 |
 | M11 | Indexed direct-save quality closure | V6/V7 indexed direct-save render/quality blocker is fixed with regression coverage and targeted verification evidence | Phase 13 |
+| M12 | README documentation audit | All 14 missing READMEs created, 50+ existing READMEs verified for alignment, no HVR-banned words | Phase 14 |
 
 ## AI Execution Protocol
 

@@ -31,6 +31,8 @@ This section provides an overview of the MCP Server Database Storage directory.
 
 - Tracked in repo (source view): `.db-updated`, `.gitkeep`, `README.md`.
 - Runtime-generated (canonical): `dist/database/context-index.sqlite` and WAL sidecars (`-wal`, `-shm`).
+- Embedding-profile database: `context-index__voyage__voyage-4__1024.sqlite` (and `-wal`, `-shm` sidecars) — profile-specific vector store.
+- Evaluation database: `speckit-eval.db` (and `-wal`, `-shm` sidecars) — stores ablation/baseline evaluation results.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->
@@ -61,8 +63,9 @@ This section provides an overview of the MCP Server Database Storage directory.
 
 
 - Database files are intentionally not committed; only control files are tracked.
-- Single-database policy (this environment): use `dist/database/context-index.sqlite` as the only authoritative SQLite file.
-- Source-path compatibility remains available through `database/context-index.sqlite` (symlink to canonical path).
+- Primary memory index: `dist/database/context-index.sqlite` (authoritative via symlink from `database/context-index.sqlite`).
+- Embedding-profile database: `context-index__voyage__voyage-4__1024.sqlite` stores profile-specific vectors (naming convention: `context-index__<provider>__<model>__<dims>.sqlite`).
+- Evaluation database: `speckit-eval.db` stores ablation and baseline evaluation results from `scripts/evals/`.
 - Use MCP tools (`memory_stats`, `memory_health`, `memory_index_scan`) for normal operations.
 - For reindex operations, see the canonical runbook at [`scripts/memory/README.md`](../../scripts/memory/README.md).
 

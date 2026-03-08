@@ -224,7 +224,7 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 | -------------------- | -------------------------------------------------------------------------------------------- |
 | **TypeScript**       | `hybrid-search.ts`, `cross-encoder.ts`, `intent-classifier.ts`, `bm25-index.ts`             |
 | **TypeScript**       | `vector-index.ts` (typed facade) -> `vector-index-impl.ts` (full implementation)             |
-| **TypeScript**       | `reranker.ts`, `rrf-fusion.ts`, `rsf-fusion.ts` (fusion algorithms)                          |
+| **TypeScript**       | `reranker.ts`, `rsf-fusion.ts` (local fusion); `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` relocated to `shared/algorithms/` |
 | **TypeScript**       | `query-classifier.ts`, `query-router.ts`, `query-expander.ts` (query pipeline)               |
 | **TypeScript**       | `channel-representation.ts`, `channel-enforcement.ts`, `confidence-truncation.ts` (quality)   |
 | **TypeScript**       | `dynamic-token-budget.ts`, `folder-discovery.ts`, `folder-relevance.ts` (budget & discovery)  |
@@ -257,19 +257,24 @@ vector-index-impl.ts     (3333 LOC)
 | -------------------------- | ------ | ---------- | --------------------------------------------------- |
 | `vector-index.ts`          | ~700   | TypeScript | Typed facade: interfaces, type exports, delegation  |
 | `vector-index-impl.ts`     | ~3333  | TypeScript | Full implementation: schema, CRUD, search, caching  |
+| `vector-index-types.ts`    | -      | TypeScript | Shared type definitions for vector index modules    |
+| `vector-index-schema.ts`   | -      | TypeScript | Schema creation and migration logic                 |
+| `vector-index-mutations.ts`| -      | TypeScript | Insert, update, and delete operations for vector index |
+| `vector-index-queries.ts`  | -      | TypeScript | Query builders and search operations for vector index |
+| `vector-index-aliases.ts`  | -      | TypeScript | Re-export aliases for backward-compatible imports   |
+| `vector-index-store.ts`    | -      | TypeScript | Low-level storage operations and reconsolidation helpers |
 | `hybrid-search.ts`         | ~900   | TypeScript | Orchestrates vector/FTS/BM25/graph/degree fusion via adaptive RRF |
 | `cross-encoder.ts`         | ~433   | TypeScript | Reranking with Voyage/Cohere providers              |
+| `local-reranker.ts`        | -      | TypeScript | Local GGUF-based cross-encoder reranking fallback   |
 | `intent-classifier.ts`     | ~500   | TypeScript | 7 intent types with keyword patterns                |
 | `bm25-index.ts`            | ~280   | TypeScript | Pure TypeScript BM25 (REQ-028, v1.2.0)              |
 | `reranker.ts`              | -      | TypeScript | Score-based reranking utility (sort + truncate)     |
-| `rrf-fusion.ts`            | -      | TypeScript | Reciprocal Rank Fusion scoring logic                |
 | `rsf-fusion.ts`            | -      | TypeScript | Relative Score Fusion used for evaluation and comparison runs |
 | `artifact-routing.ts`      | -      | TypeScript | 9 artifact classes with per-type retrieval strategy routing |
-| `adaptive-fusion.ts`       | -      | TypeScript | Intent-aware weighted RRF with dark-run mode, feature flag SPECKIT_ADAPTIVE_FUSION |
 | `causal-boost.ts`          | -      | TypeScript | Causal-neighbor score boosting for graph traversal  |
 | `session-boost.ts`         | -      | TypeScript | Session-attention score boosting                    |
 | `graph-search-fn.ts`       | -      | TypeScript | Graph-structure search channel with typed-weighted degree computation |
-| `query-classifier.ts`      | -      | TypeScript | Routes queries by complexity tier (simple ≤3 tokens, moderate, complex >8) (Sprint 3) |
+| `query-classifier.ts`      | -      | TypeScript | Routes queries by complexity tier (simple <=3 tokens, moderate, complex >8) (Sprint 3) |
 | `query-router.ts`          | -      | TypeScript | Tier-to-channel-subset routing for selective pipeline execution (Sprint 3) |
 | `query-expander.ts`        | -      | TypeScript | Rule-based synonym expansion for mode="deep" multi-query RAG |
 | `channel-representation.ts`| -      | TypeScript | Ensures minimum channel representation in top-k results (QUALITY_FLOOR=0.005) (Sprint 3) |
@@ -280,17 +285,27 @@ vector-index-impl.ts     (3333 LOC)
 | `folder-relevance.ts`      | -      | TypeScript | Folder-level relevance scoring via damped DocScore aggregation |
 | `context-budget.ts`        | -      | TypeScript | Token-budget-aware result selection with graph region diversity |
 | `evidence-gap-detector.ts` | -      | TypeScript | Z-score confidence check on RRF scores to detect low-confidence retrieval |
-| `mmr-reranker.ts`          | -      | TypeScript | Maximal Marginal Relevance for post-fusion diversity pruning |
 | `fsrs.ts`                  | -      | TypeScript | Temporal-structural coherence: FSRS stability augmented with graph centrality |
 | `sqlite-fts.ts`            | -      | TypeScript | SQLite FTS5 BM25 weighted scoring, extracted from hybrid-search for independent use |
 | `search-flags.ts`          | -      | TypeScript | Default-on runtime feature flags for search pipeline controls |
+| `search-types.ts`          | -      | TypeScript | Shared type definitions and interfaces for search modules |
 | `graph-flags.ts`           | -      | TypeScript | Legacy compatibility shim for graph channel gate (SPECKIT_GRAPH_UNIFIED) |
 | `tfidf-summarizer.ts`      | -      | TypeScript | TF-IDF extractive summarizer for memory content, produces key sentences (R8) |
 | `memory-summaries.ts`      | -      | TypeScript | Summary storage, embedding, and search channel for memory summaries (R8) |
 | `entity-linker.ts`         | -      | TypeScript | Cross-document entity linking via shared entities across spec folders (S5) |
 | `auto-promotion.ts`        | -      | TypeScript | Validation-count-based tier promotion engine (normal->important->critical) |
+| `learned-feedback.ts`      | -      | TypeScript | Selection-based relevance feedback with learned triggers (R11) |
+| `feedback-denylist.ts`     | -      | TypeScript | Stop-word denylist for learned feedback term filtering |
+| `anchor-metadata.ts`       | -      | TypeScript | ANCHOR tag extraction and metadata annotation for retrieval results |
+| `validation-metadata.ts`   | -      | TypeScript | Validation signal scoring multiplier for retrieval results |
+| `embedding-expansion.ts`   | -      | TypeScript | Embedding-based query expansion for R12 multi-vector retrieval |
+| `encoding-intent.ts`       | -      | TypeScript | Heuristic classification of memory content intent at index time (R16) |
+| `retrieval-directives.ts`  | -      | TypeScript | Retrieval directive parsing and application for search configuration |
+| `spec-folder-hierarchy.ts` | -      | TypeScript | Spec folder parent-child hierarchy resolution with WeakMap caching (S4) |
 
-**Total**: ~10,000+ LOC across 34 files (all TypeScript)
+**Total**: ~10,000+ LOC across 47 root files + 7 pipeline files (all TypeScript)
+
+**Relocated to `shared/algorithms/`**: `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` -- these are now imported from `@spec-kit/shared/algorithms/`.
 
 ### Data Flow
 
@@ -879,14 +894,14 @@ Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
 
 ---
 
-**Version**: 2.0.0
-**Last Updated**: 2026-03-01
+**Version**: 2.1.0
+**Last Updated**: 2026-03-08
 **Maintainer**: system-spec-kit MCP server
 
 **Migration Status**:
-- TypeScript migration is **complete**: all 34 code files are TypeScript (0 `.js` source files)
-- `vector-index.ts` is a typed facade. `vector-index-impl.ts` is the full implementation
-- `rrf-fusion.ts` and `rsf-fusion.ts` provide RRF and Relative Score Fusion algorithms
+- TypeScript migration is **complete**: all 47 root + 7 pipeline code files are TypeScript (0 `.js` source files)
+- `vector-index.ts` is a typed facade. `vector-index-impl.ts` is the full implementation. 6 additional vector-index split modules handle types, schema, mutations, queries, aliases, and store
+- `rrf-fusion.ts`, `adaptive-fusion.ts`, and `mmr-reranker.ts` relocated to `shared/algorithms/`. `rsf-fusion.ts` remains local
 - Query pipeline additions: query complexity routing, channel representation, confidence truncation, dynamic token budgets, folder discovery
 - Implemented: TF-IDF memory summaries (R8), cross-document entity linking (S5), graph signals (N2a/N2b/N2c), 4-stage pipeline (R6)
 - Sprint 8 remediation: 15 bug fixes, ~360 lines dead code removed, 13 performance improvements

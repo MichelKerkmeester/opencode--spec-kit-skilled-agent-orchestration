@@ -35,7 +35,7 @@ The eval module provides measurement infrastructure for search quality evaluatio
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 15 | eval-db, eval-logger, eval-metrics, eval-quality-proxy, eval-ceiling, bm25-baseline, edge-density, ground-truth-data, ground-truth-generator, k-value-analysis, channel-attribution, ground-truth-feedback, reporting-dashboard, shadow-scoring, ablation-framework |
+| Modules | 15 + 1 data file | eval-db, eval-logger, eval-metrics, eval-quality-proxy, eval-ceiling, bm25-baseline, edge-density, ground-truth-data, ground-truth-generator, k-value-analysis, channel-attribution, ground-truth-feedback, reporting-dashboard, shadow-scoring, ablation-framework, data/ground-truth.json |
 | Origin | Sprint 0+ | Foundation measurement established in Sprint 0, expanded in Sprints 1-7 |
 | Last Verified | 2026-03-01 | After Sprint 10 comprehensive remediation |
 
@@ -51,6 +51,8 @@ eval/
  ablation-framework.ts     # Controlled channel ablation studies (R13-S3, Sprint 7)
  bm25-baseline.ts          # BM25 MRR@5 baseline measurement
  channel-attribution.ts    # Per-result channel source tagging and Exclusive Contribution Rate (Sprint 4)
+ data/
+   ground-truth.json       # Static ground truth query-result pairs (JSON dataset)
  edge-density.ts           # Edge density measurement for graph analysis (Sprint 1)
  eval-ceiling.ts           # Ceiling evaluation (upper bound measurement)
  eval-db.ts                # Evaluation SQLite database management
@@ -74,7 +76,7 @@ eval/
 | `eval-metrics.ts` | MRR@5, precision@K, recall, F1 computation |
 | `bm25-baseline.ts` | BM25 baseline MRR@5 measurement (Sprint 0 foundation) |
 | `edge-density.ts` | Graph edge density measurement for R10 escalation decisions |
-| `ground-truth-data.ts` | Curated ground truth queries and expected results |
+| `ground-truth-data.ts` | Hand-verified ground truth queries and expected results |
 | `k-value-analysis.ts` | Grid search for optimal RRF K parameter |
 | `channel-attribution.ts` | Tags search results with source channel(s); computes Exclusive Contribution Rate |
 | `ground-truth-feedback.ts` | Collects implicit feedback from user selections; deterministic heuristic judge for relevance labeling |
@@ -103,7 +105,7 @@ Measures causal graph edge density to inform R10 escalation decisions. Added in 
 
 ### Ground Truth (`ground-truth-data.ts`, `ground-truth-generator.ts`)
 
-Curated query-result pairs for measuring retrieval quality. The generator creates ground truth from the live corpus.
+Hand-verified query-result pairs for measuring retrieval quality. The generator creates ground truth from the live corpus.
 
 ### K-Value Analysis (`k-value-analysis.ts`)
 

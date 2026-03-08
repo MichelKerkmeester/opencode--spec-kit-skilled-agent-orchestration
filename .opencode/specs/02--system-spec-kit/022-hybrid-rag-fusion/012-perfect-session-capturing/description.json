@@ -1,0 +1,6 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing",
+  "level": 3,
+  "description": "Perfect Session Capturing — Comprehensive audit and remediation of the generate-context pipeline",
+  "keywords": ["session", "capture", "memory", "generate-context", "quality"]
+}
