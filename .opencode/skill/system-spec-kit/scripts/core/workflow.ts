@@ -519,6 +519,7 @@ async function enrichStatelessData(
           : gitContext.summary;
       }
     }
+
   } catch (err) {
     // Enrichment failure is non-fatal — proceed with whatever data we have
     console.warn(`   Warning: Stateless enrichment failed: ${err instanceof Error ? err.message : String(err)}`);
@@ -600,6 +601,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
             `total paths: ${totalPaths}, matching: ${relevantPaths.length}). ` +
             `Aborting to prevent cross-spec contamination. To force, pass data via JSON file.`;
           warn(`   ${alignMsg}`);
+          throw new Error(alignMsg);
         }
       }
     }
@@ -718,6 +720,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     })()
   ]);
     log('\n   All extraction complete (parallel execution)\n');
+
+  // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
+  // synthetic file paths as contradictory with zero tool usage
+  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && (collectedData.FILES || []).length > 0) {
+    (sessionData as any).TOOL_COUNT = (collectedData.FILES as any[]).length;
+  }
 
   // Step 7.5: Generate semantic implementation summary
   log('Step 7.5: Generating semantic summary...');

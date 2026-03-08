@@ -162,11 +162,17 @@ function parseYamlListFromContent(content: string, key: string): string[] {
 
 function parseToolCount(content: string): number {
   const raw = extractYamlValueFromContent(content, 'tool_count');
-  if (!raw) {
-    return 0;
+  if (raw) {
+    const parsed = Number.parseInt(raw, 10);
+    if (Number.isFinite(parsed)) return parsed;
   }
-  const parsed = Number.parseInt(raw, 10);
-  return Number.isFinite(parsed) ? parsed : 0;
+  // Fallback: parse from rendered markdown table (| Tool Executions | N |)
+  const tableMatch = content.match(/\|\s*Tool Executions\s*\|\s*(\d+)\s*\|/i);
+  if (tableMatch) {
+    const parsed = Number.parseInt(tableMatch[1], 10);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return 0;
 }
 
 function countDistinctSpecIds(content: string): Map<string, number> {
