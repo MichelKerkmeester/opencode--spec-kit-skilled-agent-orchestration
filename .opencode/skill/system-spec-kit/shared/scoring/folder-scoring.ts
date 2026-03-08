@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Folder Scoring
+// MODULE: FolderScoring
+// ---------------------------------------------------------------
 // Canonical location (moved from mcp_server/lib/scoring/folder-scoring.js)
 // ---------------------------------------------------------------
 

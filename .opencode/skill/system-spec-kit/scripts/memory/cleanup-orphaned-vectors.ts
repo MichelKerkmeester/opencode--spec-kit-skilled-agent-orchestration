@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Cleanup Orphaned Vectors
+// MODULE: CleanupOrphanedVectors
+// ---------------------------------------------------------------
 // Database maintenance — removes orphaned vector embeddings and history entries
 // ---------------------------------------------------------------
 
@@ -165,7 +166,9 @@ async function main(): Promise<void> {
     try {
       historyCount = database.prepare('SELECT COUNT(*) as count FROM memory_history').get() as CountResult;
     } catch (_e: unknown) {
-      // Table may not exist
+      if (_e instanceof Error) {
+        // Table may not exist
+      }
     }
 
     console.log('\nFinal counts:');
@@ -184,7 +187,9 @@ async function main(): Promise<void> {
       try {
         database.close();
       } catch (_closeErr: unknown) {
-        // Ignore close errors
+        if (_closeErr instanceof Error) {
+          // Ignore close errors
+        }
       }
     }
     process.exit(1);

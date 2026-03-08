@@ -96,3 +96,6 @@ run_check() {
         RULE_REMEDIATION="Move items under P0/P1/P2 headers or add inline [P0]/[P1]/[P2] tags"
     fi
 }
+
+# Exit codes:
+#   0 - Success

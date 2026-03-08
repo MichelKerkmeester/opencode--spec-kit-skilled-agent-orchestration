@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Extractors Index
+// MODULE: Index
+// ---------------------------------------------------------------
 // Barrel export for all extractor modules (files, diagrams, conversations, decisions, sessions)
 // ---------------------------------------------------------------
 
@@ -8,6 +9,7 @@ export * from './diagram-extractor';
 export * from './conversation-extractor';
 export * from './decision-extractor';
 export * from './session-extractor';
+/** Re-export extractor functions and helpers. */
 export {
   buildImplementationGuideData,
   hasImplementationWork,
@@ -20,6 +22,7 @@ export {
   extractMainTopic as extract_main_topic,
   extractWhatBuilt as extract_what_built,
 } from './implementation-guide-extractor';
+/** Re-export shared extractor types. */
 export type {
   ImplementationGuideData,
   ImplementationStep,

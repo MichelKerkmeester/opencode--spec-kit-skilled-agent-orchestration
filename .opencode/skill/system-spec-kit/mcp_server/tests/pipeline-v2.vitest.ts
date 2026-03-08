@@ -33,7 +33,7 @@ import { isPipelineV2Enabled, isEmbeddingExpansionEnabled } from '../lib/search/
 // Stage testables
 import { __testables as stage4Testables } from '../lib/search/pipeline/stage4-filter';
 
-// ── Pipeline Type Tests ──
+// -- Pipeline Type Tests --
 
 describe('R6: Pipeline Types', () => {
   describe('PipelineRow', () => {
@@ -80,7 +80,7 @@ describe('R6: Pipeline Types', () => {
   });
 });
 
-// ── Score Snapshot Tests ──
+// -- Score Snapshot Tests --
 
 describe('R6: Score Snapshot & Invariant', () => {
   const testResults: Stage4ReadonlyRow[] = [
@@ -162,7 +162,7 @@ describe('R6: Score Snapshot & Invariant', () => {
   });
 });
 
-// ── Stage 4 Filter Tests ──
+// -- Stage 4 Filter Tests --
 
 describe('R6: Stage 4 — Filter + Annotate', () => {
   describe('filterByMemoryState', () => {
@@ -276,7 +276,7 @@ describe('R6: Stage 4 — Filter + Annotate', () => {
   });
 });
 
-// ── Feature Flag Tests ──
+// -- Feature Flag Tests --
 
 describe('R6: Feature Flags', () => {
   const originalEnv = process.env;
@@ -317,7 +317,7 @@ describe('R6: Feature Flags', () => {
   });
 });
 
-// ── Stage Interface Contract Tests ──
+// -- Stage Interface Contract Tests --
 
 describe('R6: Stage Interface Contracts', () => {
   it('R6-T23: Stage1Output structure is well-formed', () => {
@@ -389,7 +389,7 @@ describe('R6: Stage Interface Contracts', () => {
   });
 });
 
-// ── Pipeline Orchestrator Integration ──
+// -- Pipeline Orchestrator Integration --
 
 describe('R6: Pipeline Orchestrator', () => {
   it('R6-T27: executePipeline is exported from pipeline index', async () => {

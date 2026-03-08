@@ -15,7 +15,7 @@ import {
   queryHierarchyMemories,
 } from '../lib/search/spec-folder-hierarchy';
 
-// ─── TEST DB HELPERS ───
+// --- TEST DB HELPERS ---
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
@@ -45,7 +45,7 @@ function insertMemory(
   `).run(id, specFolder, title, opts?.parentId ?? null, opts?.tier ?? 'normal');
 }
 
-// ─── 1. getParentPath ───
+// --- 1. getParentPath ---
 
 describe('getParentPath', () => {
   it('returns parent for 3-segment path', () => {
@@ -82,7 +82,7 @@ describe('getParentPath', () => {
   });
 });
 
-// ─── 2. getAncestorPaths ───
+// --- 2. getAncestorPaths ---
 
 describe('getAncestorPaths', () => {
   it('returns full ancestor chain for 3-segment path', () => {
@@ -115,7 +115,7 @@ describe('getAncestorPaths', () => {
   });
 });
 
-// ─── 3. buildHierarchyTree ───
+// --- 3. buildHierarchyTree ---
 
 describe('buildHierarchyTree', () => {
   let db: Database.Database;
@@ -226,7 +226,7 @@ describe('buildHierarchyTree', () => {
   });
 });
 
-// ─── 4. getSiblingPaths ───
+// --- 4. getSiblingPaths ---
 
 describe('getSiblingPaths', () => {
   let db: Database.Database;
@@ -271,7 +271,7 @@ describe('getSiblingPaths', () => {
   });
 });
 
-// ─── 5. getDescendantPaths ───
+// --- 5. getDescendantPaths ---
 
 describe('getDescendantPaths', () => {
   let db: Database.Database;
@@ -310,7 +310,7 @@ describe('getDescendantPaths', () => {
   });
 });
 
-// ─── 6. getRelatedFolders ───
+// --- 6. getRelatedFolders ---
 
 describe('getRelatedFolders', () => {
   let db: Database.Database;
@@ -380,7 +380,7 @@ describe('getRelatedFolders', () => {
   });
 });
 
-// ─── 7. queryHierarchyMemories (DB integration) ───
+// --- 7. queryHierarchyMemories (DB integration) ---
 
 describe('queryHierarchyMemories', () => {
   let db: Database.Database;
@@ -495,7 +495,7 @@ describe('queryHierarchyMemories', () => {
   });
 });
 
-// ─── 8. EDGE CASES ───
+// --- 8. EDGE CASES ---
 
 describe('Edge Cases', () => {
   it('getParentPath handles path with only slashes', () => {

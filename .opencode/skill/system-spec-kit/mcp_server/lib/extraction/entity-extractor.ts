@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Auto Entity Extraction (R10)
+// MODULE: Entity Extractor
+// ---------------------------------------------------------------
 // Deferred feature — gated via SPECKIT_AUTO_ENTITIES
 // Pure-TS rule-based extraction, zero npm dependencies.
 // ---------------------------------------------------------------

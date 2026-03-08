@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Recovery Hints
+// ---------------------------------------------------------------
 // T009-T011: Error catalog with recovery hints (REQ-004, REQ-009)
 // ---------------------------------------------------------------
 
@@ -7,8 +8,14 @@
 // 1. TYPES
 // ---------------------------------------------------------------
 
+/**
+ * Defines the Severity type.
+ */
 export type Severity = 'low' | 'medium' | 'high' | 'critical';
 
+/**
+ * Describes the RecoveryHint shape.
+ */
 export interface RecoveryHint {
   hint: string;
   actions: string[];
@@ -16,8 +23,14 @@ export interface RecoveryHint {
   toolTip?: string;
 }
 
+/**
+ * Defines the RecoveryHintMap type.
+ */
 export type RecoveryHintMap = Record<string, RecoveryHint>;
 
+/**
+ * Defines the ToolSpecificHintMap type.
+ */
 export type ToolSpecificHintMap = Record<string, Record<string, RecoveryHint>>;
 
 // ---------------------------------------------------------------
@@ -27,6 +40,9 @@ export type ToolSpecificHintMap = Record<string, Record<string, RecoveryHint>>;
 // Zero runtime cost - static constants.
 // ---------------------------------------------------------------
 
+/**
+ * Defines the ERROR_CODES constant.
+ */
 export const ERROR_CODES = {
   // Embedding errors (E001-E009)
   EMBEDDING_FAILED: 'E001',
@@ -103,7 +119,13 @@ export const ERROR_CODES = {
   SERVICE_UNAVAILABLE: 'E503',
 } as const;
 
+/**
+ * Defines the ErrorCodeKey type.
+ */
 export type ErrorCodeKey = keyof typeof ERROR_CODES;
+/**
+ * Defines the ErrorCodeValue type.
+ */
 export type ErrorCodeValue = (typeof ERROR_CODES)[ErrorCodeKey];
 
 // ---------------------------------------------------------------
@@ -113,6 +135,9 @@ export type ErrorCodeValue = (typeof ERROR_CODES)[ErrorCodeKey];
 // REQ-009: Default hint is "Run memory_health() for diagnostics".
 // ---------------------------------------------------------------
 
+/**
+ * Defines the RECOVERY_HINTS constant.
+ */
 export const RECOVERY_HINTS: RecoveryHintMap = {
   // --- Embedding Errors ---
   [ERROR_CODES.EMBEDDING_FAILED]: {
@@ -621,6 +646,9 @@ export const RECOVERY_HINTS: RecoveryHintMap = {
 // 4. DEFAULT HINT (REQ-009)
 // ---------------------------------------------------------------
 
+/**
+ * Defines the DEFAULT_HINT constant.
+ */
 export const DEFAULT_HINT: RecoveryHint = {
   hint: 'An unexpected error occurred.',
   actions: [
@@ -636,6 +664,9 @@ export const DEFAULT_HINT: RecoveryHint = {
 // 5. TOOL-SPECIFIC HINTS
 // ---------------------------------------------------------------
 
+/**
+ * Defines the TOOL_SPECIFIC_HINTS constant.
+ */
 export const TOOL_SPECIFIC_HINTS: ToolSpecificHintMap = {
   // memory_search specific hints
   memory_search: {

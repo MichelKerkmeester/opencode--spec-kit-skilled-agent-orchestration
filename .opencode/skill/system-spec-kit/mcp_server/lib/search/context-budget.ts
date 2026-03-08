@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Context Budget Optimizer
+// MODULE: Context Budget
+// ---------------------------------------------------------------
 // Token-budget-aware result selection with graph region diversity.
 // ---------------------------------------------------------------
 

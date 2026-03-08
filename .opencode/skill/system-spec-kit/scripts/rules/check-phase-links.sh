@@ -122,3 +122,6 @@ run_check() {
         RULE_REMEDIATION="Fix phase back-references. Each child spec.md needs one of: '| **Parent Spec** | ../spec.md |' table row, 'parent:' YAML field, or '../spec.md' text reference. Parent spec.md needs a 'PHASE DOCUMENTATION MAP' section."
     fi
 }
+
+# Exit codes:
+#   0 - Success

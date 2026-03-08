@@ -188,6 +188,9 @@ export {
   isRetrievalTracePayload,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   TelemetryTracePayload,
   TelemetryTraceStagePayload,

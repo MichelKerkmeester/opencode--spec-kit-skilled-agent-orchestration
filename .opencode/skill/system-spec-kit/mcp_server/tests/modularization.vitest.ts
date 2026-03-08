@@ -5,15 +5,15 @@
 // Active tests: directory structure, module line counts, context-server imports
 // Skipped tests: index exports, core/handler/formatter/utils/hooks exports,
 //   validator functions, token metrics (all require dist/ with DB dependencies)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import path from 'path';
 import fs from 'fs';
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // Configuration
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 const MCP_SERVER_PATH = path.join(__dirname, '..');
 const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
@@ -39,9 +39,9 @@ function countLines(filePath: string): number {
   return content.split('\n').length;
 }
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 1. DIRECTORY STRUCTURE (ACTIVE — pure fs.existsSync checks)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Directory Structure', () => {
   const requiredDirs = ['core', 'handlers', 'formatters', 'utils', 'hooks', 'lib', 'tools'];
@@ -55,9 +55,9 @@ describe('Directory Structure', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 2. MODULE LINE COUNTS (ACTIVE — pure fs.readFileSync checks)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Module Line Counts (<300 lines)', () => {
   const modules = [
@@ -103,9 +103,9 @@ describe('Module Line Counts (<300 lines)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 3. CONTEXT SERVER INTEGRATION (ACTIVE — pure fs.readFileSync check)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Context Server Integration', () => {
   // The compiled JS uses double-quoted require() calls
@@ -132,9 +132,9 @@ describe('Context Server Integration', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 4. INDEX EXPORTS (SKIPPED — require() loads DB-dependent modules)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section: dist/ require() triggers better-sqlite3
 describe('Index Re-exports (DB-dependent)', () => {
@@ -149,9 +149,9 @@ describe('Index Re-exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 5. CORE EXPORTS (SKIPPED — DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Core Module Exports (DB-dependent)', () => {
@@ -170,9 +170,9 @@ describe('Core Module Exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 6. HANDLER EXPORTS (SKIPPED — DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Handler Module Exports (DB-dependent)', () => {
@@ -195,9 +195,9 @@ describe('Handler Module Exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 7. FORMATTER EXPORTS (SKIPPED — DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Formatter Module Exports (DB-dependent)', () => {
@@ -213,9 +213,9 @@ describe('Formatter Module Exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 8. UTILS EXPORTS (SKIPPED — DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Utils Module Exports (DB-dependent)', () => {
@@ -232,9 +232,9 @@ describe('Utils Module Exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 9. HOOKS EXPORTS (SKIPPED — DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Hooks Module Exports (DB-dependent)', () => {
@@ -252,9 +252,9 @@ describe('Hooks Module Exports (DB-dependent)', () => {
   }
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 10. VALIDATOR FUNCTIONS (SKIPPED — requires dist/utils, DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Validator Function Tests (DB-dependent)', () => {
@@ -273,9 +273,9 @@ describe('Validator Function Tests (DB-dependent)', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // 11. TOKEN METRICS (SKIPPED — requires dist/formatters, DB-dependent)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section
 describe('Token Metrics Tests (DB-dependent)', () => {

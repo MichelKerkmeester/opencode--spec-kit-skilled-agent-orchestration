@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: BATCH PROCESSOR
 // ---------------------------------------------------------------
@@ -12,6 +11,13 @@ import {
   BATCH_DELAY_MS,
   DEFAULT_RETRY_OPTIONS,
 } from '../utils/batch-processor';
+
+type RetryFailure = {
+  retries_failed: boolean;
+  error?: unknown;
+  item?: unknown;
+  errorDetail?: string;
+};
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -75,7 +81,7 @@ describe('Batch Processor', () => {
 
     it('T10: batchSize=0 throws even with empty items array', async () => {
       await expect(
-        processBatches([], async (x: any) => x, 0)
+        processBatches<number, number>([], async (x: number) => x, 0)
       ).rejects.toThrow();
     });
 
@@ -105,7 +111,7 @@ describe('Batch Processor', () => {
 
     it('T13: batchSize=5 with 12 items processes in 3 batches', async () => {
       let batchCount = 0;
-      const spy = vi.spyOn(console, 'error').mockImplementation((...args: any[]) => {
+      const spy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
         const msg = args.join(' ');
         if (msg.includes('[batch-processor] Processing batch')) batchCount++;
       });
@@ -124,7 +130,7 @@ describe('Batch Processor', () => {
     });
 
     it('T14: Empty items array returns empty results', async () => {
-      const results = await processBatches([], async (x: any) => x, 5, 0);
+      const results = await processBatches<number, number>([], async (x: number) => x, 5, 0);
       expect(results).toEqual([]);
     });
 
@@ -169,7 +175,7 @@ describe('Batch Processor', () => {
       expect(results.length).toBe(3);
       expect(results[0]).toBe(1);
       expect(results[2]).toBe(3);
-      const errResult = results[1] as unknown;
+      const errResult = results[1] as RetryFailure;
       expect(errResult.retries_failed).toBe(true);
       expect(errResult.error).toBeTruthy();
       expect(errResult.item).toBe(2);
@@ -200,7 +206,7 @@ describe('Batch Processor', () => {
 
     it('T20: batchSize larger than items count processes in 1 batch', async () => {
       let batchCount = 0;
-      const spy = vi.spyOn(console, 'error').mockImplementation((...args: any[]) => {
+      const spy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
         const msg = args.join(' ');
         if (msg.includes('[batch-processor] Processing batch')) batchCount++;
       });
@@ -218,7 +224,7 @@ describe('Batch Processor', () => {
 
     it('T22: Exact batch boundary (6 items / batchSize 3 = 2 batches)', async () => {
       let batchCount = 0;
-      const spy = vi.spyOn(console, 'error').mockImplementation((...args: any[]) => {
+      const spy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
         const msg = args.join(' ');
         if (msg.includes('[batch-processor] Processing batch')) batchCount++;
       });
@@ -245,7 +251,7 @@ describe('Batch Processor', () => {
         'test',
         async () => { throw new Error('permanent failure'); },
         { maxRetries: 2, retryDelay: 1 }
-      ) as unknown;
+      ) as RetryFailure;
       expect(result.retries_failed).toBe(true);
       expect(result.error).toBeTruthy();
       expect(result.item).toBe('test');
@@ -257,7 +263,7 @@ describe('Batch Processor', () => {
         'val',
         async () => { attempts++; throw new Error('SQLITE_BUSY transient'); },
         { maxRetries: 0, retryDelay: 1 }
-      ) as unknown;
+      ) as RetryFailure;
       expect(attempts).toBe(1);
       expect(result.retries_failed).toBe(true);
     });
@@ -276,7 +282,7 @@ describe('Batch Processor', () => {
           throw new Error('SQLITE_BUSY transient');
         },
         { maxRetries: -5, retryDelay: 0 }
-      ) as unknown;
+      ) as RetryFailure;
       expect(attempts).toBe(DEFAULT_RETRY_OPTIONS.maxRetries + 1);
       expect(result.retries_failed).toBe(true);
     });
@@ -288,7 +294,7 @@ describe('Batch Processor', () => {
           throw new Error('permanent failure');
         },
         { maxRetries: 0, retryDelay: Number.NaN }
-      ) as unknown;
+      ) as RetryFailure;
       expect(result.retries_failed).toBe(true);
       expect(result.errorDetail).toContain('permanent failure');
     });
@@ -314,7 +320,7 @@ describe('Batch Processor', () => {
     });
 
     it('T28: processSequentially with empty array returns []', async () => {
-      const results = await processSequentially([], async (x: any) => x);
+      const results = await processSequentially<number, number>([], async (x: number) => x);
       expect(results).toEqual([]);
     });
 
@@ -330,7 +336,7 @@ describe('Batch Processor', () => {
       );
       expect(results.length).toBe(3);
       expect(results[0]).toBe(1);
-      expect((results[1] as unknown).retries_failed).toBe(true);
+      expect((results[1] as RetryFailure).retries_failed).toBe(true);
       expect(results[2]).toBe(3);
     });
 

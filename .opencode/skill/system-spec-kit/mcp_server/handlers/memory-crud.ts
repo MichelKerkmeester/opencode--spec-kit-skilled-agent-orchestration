@@ -1,4 +1,6 @@
-// ------- MODULE: Memory CRUD -------
+// ---------------------------------------------------------------
+// MODULE: Memory Crud
+// ---------------------------------------------------------------
 
 import { handleMemoryDelete } from './memory-crud-delete';
 import { handleMemoryUpdate } from './memory-crud-update';

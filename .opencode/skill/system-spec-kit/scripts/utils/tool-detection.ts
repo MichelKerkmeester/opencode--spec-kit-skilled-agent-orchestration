@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Tool Detection
+// MODULE: ToolDetection
+// ---------------------------------------------------------------
 // Detects tool calls, classifies conversation phases, and identifies prose context
 // ---------------------------------------------------------------
 

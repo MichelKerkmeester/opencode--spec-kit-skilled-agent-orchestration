@@ -285,7 +285,8 @@ export function compareShadowResults(
   const shadowIds = new Set(shadow.map(r => r.memoryId));
 
   for (const memoryId of prodIds) {
-    const p = prodMap.get(memoryId)!;
+    const p = prodMap.get(memoryId);
+    if (!p) continue;
     const s = shadowMap.get(memoryId);
     if (s) {
       deltas.push({

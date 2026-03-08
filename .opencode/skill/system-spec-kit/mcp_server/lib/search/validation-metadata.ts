@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Validation Metadata Enrichment (Sprint 5 Phase B)
+// MODULE: Validation Metadata
+// ---------------------------------------------------------------
 // AI-GUARD: 
 // PURPOSE: Extract validation signals from spec document metadata
 // and surface them as retrieval metadata on PipelineRow results.
@@ -14,11 +15,10 @@
 // AI-INVARIANT: This module is metadata-only. It NEVER modifies score
 // fields (score, rrfScore, similarity, intentAdjustedScore). It only
 // adds the `validationMetadata` key to enriched rows.
-// ---------------------------------------------------------------
 
 import type { PipelineRow } from './pipeline/types';
 
-// ── Constants ──
+// -- Constants --
 
 /**
  * Importance tier → quality score mapping.
@@ -51,7 +51,7 @@ const VALIDATION_COMPLETE_MARKERS = [
   '<!-- CHECKLIST: COMPLETE -->',
 ];
 
-// ── Interfaces ──
+// -- Interfaces --
 
 /**
  * Validation metadata extracted from a memory row's stored signals.
@@ -74,7 +74,7 @@ export interface ValidationMetadata {
   validationDate?: string;
 }
 
-// ── Internal helpers ──
+// -- Internal helpers --
 
 /**
  * Derive a normalised quality score from importance_tier, clamped to [0, 1].
@@ -151,7 +151,7 @@ function extractValidationDate(content: string): string | undefined {
   return match ? match[1] : undefined;
 }
 
-// ── Public API ──
+// -- Public API --
 
 /**
  * Extract validation signals from a single memory pipeline row.
@@ -176,7 +176,7 @@ export function extractValidationMetadata(
   const result: ValidationMetadata = {};
   let hasAnySignal = false;
 
-  // ── 1. Quality score (DB column takes priority) ──
+  // -- 1. Quality score (DB column takes priority) --
   // A positive, finite quality_score from the DB is the authoritative signal.
   // Zero is treated as absent (not yet scored) and falls back to tier-derived score.
   // Values above 1.0 are clamped to 1.0; negative values are treated as absent.
@@ -196,7 +196,7 @@ export function extractValidationMetadata(
     }
   }
 
-  // ── 2. Content-based signals ──
+  // -- 2. Content-based signals --
   const content = typeof row.content === 'string' ? row.content : '';
   const precomputed = typeof row.precomputedContent === 'string' ? row.precomputedContent : '';
   // Prefer precomputed content (reassembled chunks) when available.
@@ -226,14 +226,14 @@ export function extractValidationMetadata(
     }
   }
 
-  // ── 3. Checklist heuristic from file path ──
+  // -- 3. Checklist heuristic from file path --
   const hasChecklist = checklistFromFilePath(row.file_path);
   if (hasChecklist) {
     result.hasChecklist = true;
     hasAnySignal = true;
   }
 
-  // AI-WHY: ── 4. Importance tier signal (even without quality score fallback above) ──
+  // AI-WHY: -- 4. Importance tier signal (even without quality score fallback above) --
   // If we have a tier name at all, it's a signal — record qualityScore if not yet set.
   if (!hasAnySignal && typeof row.importance_tier === 'string') {
     const tierScore = qualityScoreFromTier(row.importance_tier);
@@ -274,6 +274,9 @@ export function enrichResultsWithValidationMetadata(
   });
 }
 
-// ── Exported constants (available to tests and consumers) ──
+// -- Exported constants (available to tests and consumers) --
 
+/**
+ * Validation metadata constants exposed for tests and downstream consumers.
+ */
 export { TIER_QUALITY_SCORES, SPECKIT_LEVEL_REGEX, VALIDATION_COMPLETE_MARKERS };

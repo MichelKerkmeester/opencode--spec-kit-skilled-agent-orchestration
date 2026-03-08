@@ -96,3 +96,6 @@ const output = {
 console.log(JSON.stringify(output, null, 2));
 console.error(`KPI Summary: files=${totals.total}, placeholder=${output.rates.placeholderRate}%, fallback=${output.rates.fallbackRate}%, contamination=${output.rates.contaminationRate}%, empty_trigger=${output.rates.emptyTriggerPhrasesRate}%`);
 NODE
+
+# Exit codes:
+#   0 - Success

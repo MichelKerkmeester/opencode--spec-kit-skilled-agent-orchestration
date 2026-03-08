@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Type Inference Config
+// MODULE: Type Inference
+// ---------------------------------------------------------------
 // CONFIG: TYPE INFERENCE
 // ---------------------------------------------------------------
 
@@ -68,6 +69,9 @@ const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 // 3. TYPE INFERENCE FROM FILE PATH
 // ---------------------------------------------------------------
 
+/**
+ * Provides the inferTypeFromPath helper.
+ */
 export function inferTypeFromPath(filePath: string | null | undefined): MemoryTypeName | null {
   if (!filePath || typeof filePath !== 'string') {
     return null;
@@ -89,6 +93,9 @@ export function inferTypeFromPath(filePath: string | null | undefined): MemoryTy
 // 4. TYPE INFERENCE FROM FRONTMATTER
 // ---------------------------------------------------------------
 
+/**
+ * Provides the extractExplicitType helper.
+ */
 export function extractExplicitType(content: string | null | undefined): MemoryTypeName | null {
   if (!content || typeof content !== 'string') {
     return null;
@@ -106,6 +113,9 @@ export function extractExplicitType(content: string | null | undefined): MemoryT
   return null;
 }
 
+/**
+ * Provides the inferTypeFromTier helper.
+ */
 export function inferTypeFromTier(content: string | null | undefined): MemoryTypeName | null {
   if (!content || typeof content !== 'string') {
     return null;
@@ -133,6 +143,9 @@ export function inferTypeFromTier(content: string | null | undefined): MemoryTyp
 // 5. TYPE INFERENCE FROM KEYWORDS
 // ---------------------------------------------------------------
 
+/**
+ * Provides the inferTypeFromKeywords helper.
+ */
 export function inferTypeFromKeywords(
   title: string | null | undefined,
   triggerPhrases: string[] | string | null | undefined,
@@ -192,6 +205,9 @@ export function inferTypeFromKeywords(
 // 6. MAIN INFERENCE FUNCTION
 // ---------------------------------------------------------------
 
+/**
+ * Provides the inferMemoryType helper.
+ */
 export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult {
   const {
     filePath,

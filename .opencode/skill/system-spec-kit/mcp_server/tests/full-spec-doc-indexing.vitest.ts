@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: FULL SPEC DOC INDEXING
 // ---------------------------------------------------------------
@@ -50,6 +49,7 @@ import {
   calculateCompositeScore,
   calculatePatternScore,
 } from '../lib/scoring/composite-scoring';
+import type { ScoringInput } from '../lib/scoring/composite-scoring';
 
 // Phase 8: Intent classifier
 import * as intentClassifier from '../lib/search/intent-classifier';
@@ -62,6 +62,8 @@ import { getDefaultTierForDocumentType } from '../lib/scoring/importance-tiers';
 
 // Normalization: round-trip converters
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
+
+type NormalizedDbRow = Parameters<typeof dbRowToMemory>[0];
 
 /* ═══════════════════════════════════════════════════════════════
    PHASE 2: TYPE CONFIGURATION
@@ -486,7 +488,7 @@ describe('Spec 126 Phase 6: Scoring & Priority', () => {
 
   describe('T066: Pattern alignment bonus for doc types', () => {
     it('Spec doc gets bonus for "spec" query', () => {
-      const row = {
+      const row: ScoringInput = {
         similarity: 50,
         title: 'Feature Spec',
         document_type: 'spec',
@@ -501,7 +503,7 @@ describe('Spec 126 Phase 6: Scoring & Priority', () => {
     });
 
     it('Decision record gets bonus for "why" query', () => {
-      const row = {
+      const row: ScoringInput = {
         similarity: 50,
         title: 'Decision Record',
         document_type: 'decision_record',
@@ -840,7 +842,7 @@ describe('Spec 126 Normalization: document_type / spec_level', () => {
         decay_half_life_days: 60,
         is_pinned: 0,
         access_count: 0,
-        last_accessed: null,
+        last_accessed: 0,
         importance_tier: 'normal',
         session_id: null,
         context_type: 'general',
@@ -883,7 +885,7 @@ describe('Spec 126 Normalization: document_type / spec_level', () => {
         decay_half_life_days: 60,
         is_pinned: 0,
         access_count: 0,
-        last_accessed: null,
+        last_accessed: 0,
         importance_tier: 'normal',
         session_id: null,
         context_type: 'general',

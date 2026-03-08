@@ -9,9 +9,9 @@ import * as causalEdges from '../lib/storage/causal-edges';
 
 describe('Integration Causal Graph (T528) [deferred - requires DB test fixtures]', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Module Loading
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Module Loading', () => {
     it('T528-1: Causal graph modules loaded', () => {
       expect(causalHandler).toBeDefined();
@@ -20,9 +20,9 @@ describe('Integration Causal Graph (T528) [deferred - requires DB test fixtures]
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Handler Parameter Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Handler Parameter Validation', () => {
     it('T528-2: Missing params for CausalLink rejected', async () => {
       try {
@@ -73,9 +73,9 @@ describe('Integration Causal Graph (T528) [deferred - requires DB test fixtures]
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Relation Types & Direction Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Relation Types & Direction Validation', () => {
     it('T528-6: Valid relation types accepted by pipeline', async () => {
       const validRelations = ['caused', 'enabled', 'supersedes', 'contradicts', 'derived_from', 'supports'];

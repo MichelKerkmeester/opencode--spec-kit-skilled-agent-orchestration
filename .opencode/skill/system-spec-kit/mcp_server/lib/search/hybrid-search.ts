@@ -536,7 +536,7 @@ async function hybridSearchEnhanced(
     // Sprint 3: Pipeline metadata collector (populated by flag-gated stages)
     const s3meta: Sprint3PipelineMeta = {};
 
-    // AI-WHY: ── Sprint 3 Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) ──
+    // AI-WHY: -- Sprint 3 Stage A: Query Classification + Routing (SPECKIT_COMPLEXITY_ROUTER) --
     // When enabled, classifies query complexity and restricts channels to a
     // subset (e.g., simple queries skip graph+degree). When disabled, all channels run.
     const routeResult = routeQuery(query, options.triggerPhrases);
@@ -545,7 +545,7 @@ async function hybridSearchEnhanced(
       ? new Set<ChannelName>(allPossibleChannels)
       : new Set<ChannelName>(routeResult.channels);
 
-    // AI-WHY: ── Ablation override: allow callers to force-disable channels (BUG-1 fix) ──
+    // AI-WHY: -- Ablation override: allow callers to force-disable channels (BUG-1 fix) --
     // The ablation framework passes useVector/useBm25/useFts=false to disable
     // specific channels for contribution analysis. Without this intersection, ablation
     // channel disable was a no-op because only routeQuery() controlled activeChannels.
@@ -563,7 +563,7 @@ async function hybridSearchEnhanced(
       };
     }
 
-    // AI-WHY: ── Sprint 3 Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) ──
+    // AI-WHY: -- Sprint 3 Stage E: Dynamic Token Budget (SPECKIT_DYNAMIC_TOKEN_BUDGET) --
     // Compute tier-aware budget early so it's available for downstream truncation.
     // When disabled, getDynamicTokenBudget returns the default 4000 budget with applied=false.
     const budgetResult = getDynamicTokenBudget(routeResult.tier);
@@ -728,7 +728,7 @@ async function hybridSearchEnhanced(
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
 
-      // AI-WHY: ── Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) ──
+      // AI-WHY: -- Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) --
       // When enabled, collapses chunk-level results back to their parent memory
       // documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
       // multiple chunks from the same document dominating the result list.
@@ -763,11 +763,12 @@ async function hybridSearchEnhanced(
           }
         } catch (_mpabErr: unknown) {
           // AI-GUARD: Non-critical — MPAB failure does not block pipeline
-          console.error('[hybrid-search] MPAB error (non-fatal):', (_mpabErr as Error).message);
+          const msg = _mpabErr instanceof Error ? _mpabErr.message : String(_mpabErr);
+          console.error('[hybrid-search] MPAB error (non-fatal):', msg);
         }
       }
 
-      // AI-WHY: ── Sprint 3 Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) ──
+      // AI-WHY: -- Sprint 3 Stage C: Channel Enforcement (SPECKIT_CHANNEL_MIN_REP) --
       // Ensures every channel that returned results has at least one representative
       // in the top-k window. Prevents single-channel dominance in fusion output.
       // When disabled, passes results through unchanged.
@@ -803,7 +804,7 @@ async function hybridSearchEnhanced(
         // AI-GUARD: Non-critical — enforcement failure does not block pipeline
       }
 
-      // AI-WHY: ── Sprint 3 Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) ──
+      // AI-WHY: -- Sprint 3 Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
       // Trims low-confidence tail from fused results using gap analysis.
       // A gap > 2x median signals a relevance cliff — results below are noise.
       // When disabled, passes results through unchanged.

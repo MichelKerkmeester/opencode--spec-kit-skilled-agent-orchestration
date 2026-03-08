@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: SimulationFactory
+// ---------------------------------------------------------------
 /**
  * @file simulation-factory.ts
  * @description Generates placeholder/simulation data when real session data is unavailable.

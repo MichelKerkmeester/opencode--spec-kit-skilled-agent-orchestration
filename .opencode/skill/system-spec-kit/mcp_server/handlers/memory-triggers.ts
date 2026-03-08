@@ -154,7 +154,7 @@ async function getTieredContent(
     if (tier === 'HOT') return content;
     // AI-WHY: WARM tier returns truncated summary
     return content.substring(0, 150) + (content.length > 150 ? '...' : '');
-  } catch {
+  } catch (_error: unknown) {
     return '';
   }
 }
@@ -207,7 +207,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     });
     _evalQueryId = evalEntry.queryId;
     _evalRunId = evalEntry.evalRunId;
-  } catch { /* eval logging must never break triggers handler */ }
+  } catch (_error: unknown) { /* eval logging must never break triggers handler */ }
 
   const logFinalTriggerEval = (memoryIds: number[], latencyMs: number): void => {
     try {
@@ -221,7 +221,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
           latencyMs,
         });
       }
-    } catch {
+    } catch (_error: unknown) {
       /* eval logging must never break triggers handler */
     }
   };
@@ -453,7 +453,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         latency_ms: latencyMs,
       });
     }
-  } catch { /* instrumentation must never cause triggers handler to fail */ }
+  } catch (_error: unknown) { /* instrumentation must never cause triggers handler to fail */ }
 
   // AI-TRACE: T005: Eval logger — capture final trigger results at exit (fail-safe)
   const triggerMemoryIds = formattedResults.map(r => r.memoryId).filter(id => typeof id === 'number');

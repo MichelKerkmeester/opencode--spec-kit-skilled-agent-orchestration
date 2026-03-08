@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Import Policy Checker
+// MODULE: CheckNoMcpLibImports
+// ---------------------------------------------------------------
 // Scans scripts/ for prohibited internal runtime imports.
 // Violations not in the allowlist cause a non-zero exit.
 // ---------------------------------------------------------------

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Template Renderer
+// MODULE: TemplateRenderer
+// ---------------------------------------------------------------
 // Mustache-based template engine — renders memory files from collected session data
 // ---------------------------------------------------------------
 
@@ -167,6 +168,9 @@ async function populateTemplate(templateName: string, data: TemplateContext): Pr
     // Check if template exists before reading
     await fs.access(templatePath);
   } catch (_accessError: unknown) {
+    if (_accessError instanceof Error) {
+      // Access failures are normalized into the template-not-found error below.
+    }
     throw new Error(
       `Template not found: "${templateName}" (expected at: ${templatePath}). ` +
       `Available templates should be in: ${templateDir}`

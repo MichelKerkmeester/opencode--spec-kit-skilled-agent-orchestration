@@ -1,13 +1,13 @@
-// @ts-nocheck
 // Converted from: unit-normalization-roundtrip.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: NORMALIZATION — ROUND-TRIP EDGE CASES
 // Validates cast-removal edge cases: minimal inputs, null vs
 // undefined, boolean↔integer round-trips, extra unknown fields.
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
+import type { Memory, MemoryDbRow } from '@spec-kit/shared/types';
 
 /* --- Tests --- */
 
@@ -50,17 +50,21 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         last_review: null,
         review_count: null,
         file_mtime_ms: null,
+        document_type: 'memory',
+        spec_level: null,
       };
 
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       const backRow = memoryToDbRow(memory);
       backRow.id = memory.id;
+      // @ts-expect-error Testing invalid input shape
       const roundTrip = dbRowToMemory(backRow);
 
       expect(roundTrip.id).toBe(1);
       expect(roundTrip.specFolder).toBe('specs/001');
 
-      const nullableFields = [
+      const nullableFields: Array<keyof Memory> = [
         'anchorId', 'title', 'lastRetryAt', 'failureReason',
         'embeddingGeneratedAt', 'contentHash', 'expiresAt', 'lastReview',
       ];
@@ -78,6 +82,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
     });
 
     it('T-NR-03: empty object {}', () => {
+      // @ts-expect-error Testing invalid input shape
       const memory = partialDbRowToMemory({});
       expect(typeof memory).toBe('object');
       expect(memory).not.toBeNull();
@@ -94,17 +99,20 @@ describe('Normalization — Round-Trip Edge Cases', () => {
   // 4.3 is_pinned boolean↔integer round-trip
   describe('is_pinned ↔ isPinned boolean/integer round-trip', () => {
     it('T-NR-05: is_pinned 0 → false → 0 → false', () => {
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory({ id: 1, is_pinned: 0, spec_folder: 'a', file_path: 'b' });
       expect(memory.isPinned).toBe(false);
 
       const backRow = memoryToDbRow(memory);
       expect(backRow.is_pinned).toBe(0);
 
+      // @ts-expect-error Testing invalid input shape
       const finalMemory = dbRowToMemory({ ...backRow, id: 1 });
       expect(finalMemory.isPinned).toBe(false);
     });
 
     it('T-NR-06: is_pinned 1 → true → 1', () => {
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory({ id: 2, is_pinned: 1, spec_folder: 'a', file_path: 'b' });
       expect(memory.isPinned).toBe(true);
 
@@ -113,6 +121,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
     });
 
     it('T-NR-07: is_pinned null → isPinned false/null', () => {
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory({ id: 3, is_pinned: null, spec_folder: 'a', file_path: 'b' });
       expect(memory.isPinned === false || memory.isPinned === null).toBe(true);
     });
@@ -131,6 +140,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         last_review: null,
         is_pinned: 0,
       };
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       expect(memory.title).toBeNull();
     });
@@ -140,6 +150,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         id: 1, spec_folder: 'specs/001', file_path: 'specs/001/memory/a.md',
         anchor_id: null, is_pinned: 0,
       };
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       expect(memory.anchorId).toBeNull();
     });
@@ -149,6 +160,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         id: 1, spec_folder: 'specs/001', file_path: 'specs/001/memory/a.md',
         stability: null, is_pinned: 0,
       };
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       expect(memory.stability).toBeNull();
     });
@@ -158,6 +170,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         id: 1, spec_folder: 'specs/001', file_path: 'specs/001/memory/a.md',
         last_review: null, is_pinned: 0,
       };
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       expect(memory.lastReview).toBeNull();
     });
@@ -186,6 +199,7 @@ describe('Normalization — Round-Trip Edge Cases', () => {
         composite_score: 0.87,
       };
 
+      // @ts-expect-error Testing invalid input shape
       const memory = dbRowToMemory(row);
       expect(memory.id).toBe(1);
       expect(memory.specFolder).toBe('specs/001');

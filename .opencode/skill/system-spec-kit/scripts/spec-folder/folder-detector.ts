@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Folder Detector
+// MODULE: FolderDetector
+// ---------------------------------------------------------------
 // Detects, lists, and resolves spec folders with interactive selection and alignment scoring
 // ---------------------------------------------------------------
 
@@ -420,6 +421,9 @@ async function pathIsDirectory(candidatePath: string): Promise<boolean> {
     const stat = await fs.stat(candidatePath);
     return stat.isDirectory();
   } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      return false;
+    }
     return false;
   }
 }
@@ -442,6 +446,10 @@ async function collectSpecParentCache(specsDirs: string[]): Promise<Map<string, 
 
       parentCache.set(specsDir, parentFolders);
     } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        parentCache.set(specsDir, []);
+        continue;
+      }
       parentCache.set(specsDir, []);
     }
   }
@@ -639,6 +647,9 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
     try {
       topEntries = await fs.readdir(specsDir);
     } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        continue;
+      }
       continue;
     }
 
@@ -650,6 +661,9 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
       try {
         topStat = await fs.stat(topPath);
       } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          continue;
+        }
         continue;
       }
       if (!topStat.isDirectory()) continue;
@@ -660,6 +674,9 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
       try {
         childEntries = await fs.readdir(topPath);
       } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      }
         continue;
       }
 
@@ -672,7 +689,9 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
             upsertCandidate(childPath, childStat.mtimeMs);
           }
         } catch (_error: unknown) {
-          // Unreadable child, skip and continue scanning.
+          if (_error instanceof Error) {
+            // Unreadable child, skip and continue scanning.
+          }
         }
       }
     }
@@ -837,7 +856,9 @@ async function detectSpecFolder(
             console.log(`   Using spec folder from CLI argument (nested): ${argParts.join('/')}`);
             return nestedPath;
           } catch (_error: unknown) {
-            // Not found in this specs dir, continue searching
+            if (_error instanceof Error) {
+              // Not found in this specs dir, continue searching
+            }
           }
         }
       }
@@ -867,7 +888,9 @@ async function detectSpecFolder(
           });
         }
       } catch (_error: unknown) {
-        // Silently ignore if we can't read specs directory
+        if (_error instanceof Error) {
+          // Silently ignore if we can't read specs directory
+        }
       }
 
       console.error('\nUsage: node generate-context.js [spec-folder-name] OR node generate-context.js <data-file> [spec-folder]\n');
@@ -932,13 +955,18 @@ async function detectSpecFolder(
                   await fs.access(altPath);
                   return altPath;
                 } catch (_error: unknown) {
-                  // Alternative not found as nested, use original
+                  if (_error instanceof Error) {
+                    // Alternative not found as nested, use original
+                  }
                 }
               }
             }
 
             return nestedPath;
           } catch (nestedError: unknown) {
+      if (nestedError instanceof Error) {
+        void nestedError.message;
+      }
             if (!isNotFoundFsError(nestedError)) {
               throw nestedError;
             }
@@ -1010,9 +1038,13 @@ async function detectSpecFolder(
       db.close();
     }
   } catch (err: unknown) {
+    if (err instanceof Error && process.env.DEBUG) {
+      console.debug(`   [Priority 2.5] Session learning lookup skipped: ${err.message}`);
+    }
+
     // DB not available, table missing, or folder doesn't exist — fall through to next priority
-    if (process.env.DEBUG) {
-      console.debug(`   [Priority 2.5] Session learning lookup skipped: ${err instanceof Error ? err.message : String(err)}`);
+    if (process.env.DEBUG && !(err instanceof Error)) {
+      console.debug(`   [Priority 2.5] Session learning lookup skipped: ${String(err)}`);
     }
   }
 

@@ -1,5 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: Learned Relevance Feedback Engine (R11)
+// MODULE: Learned Feedback
+// ---------------------------------------------------------------
+//
 //
 // Learns from user memory selections to improve future search results.
 // Writes to a SEPARATE `learned_triggers` column (NOT FTS5 index).
@@ -286,7 +288,7 @@ export function recordSelection(
       try {
         const parsed = JSON.parse(memory.trigger_phrases);
         existingTriggers = Array.isArray(parsed) ? parsed : [memory.trigger_phrases];
-      } catch {
+      } catch (_error: unknown) {
         existingTriggers = memory.trigger_phrases.split(',').map((t: string) => t.trim());
       }
     }

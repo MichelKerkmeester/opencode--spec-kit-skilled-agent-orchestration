@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: TriggerExtractor
+// ---------------------------------------------------------------
 /**
  * @file trigger-extractor.ts
  * @description Re-export shim for the canonical trigger-phrase extraction module in shared/.

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Scoring Observability
 // ---------------------------------------------------------------
@@ -657,7 +656,7 @@ describe('T010-8: N4 calculateNoveltyBoost', () => {
 
   it('T010-8b: returns 0 always regardless of input (REMOVED)', () => {
     process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    expect(calculateNoveltyBoost(null)).toBe(0);
+    expect(calculateNoveltyBoost(undefined)).toBe(0);
   });
 
   it('T010-8c: boost at 0h returns 0 (REMOVED — flag is inert)', () => {

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Slug Utils
+// MODULE: SlugUtils
+// ---------------------------------------------------------------
 // Content-aware slug generation for memory filenames
 // ---------------------------------------------------------------
 
@@ -46,6 +47,7 @@ function hashFallbackSlug(seed: string): string {
   return `session-${digest}`;
 }
 
+/** Normalizes a candidate memory name before slug generation. */
 export function normalizeMemoryNameCandidate(raw: string): string {
   if (typeof raw !== 'string') {
     return '';
@@ -62,11 +64,13 @@ export function normalizeMemoryNameCandidate(raw: string): string {
     .replace(/[\s\-:;,]+$/, '');
 }
 
+/** Converts arbitrary text into a filesystem-safe slug. */
 export function slugify(text: string): string {
   if (!text || typeof text !== 'string') return '';
   return toUnicodeSafeSlug(text);
 }
 
+/** Returns whether a candidate memory name contains contaminated prompt text. */
 export function isContaminatedMemoryName(candidate: string): boolean {
   const normalized = normalizeMemoryNameCandidate(candidate);
   if (normalized.length === 0) {
@@ -76,6 +80,7 @@ export function isContaminatedMemoryName(candidate: string): boolean {
   return CONTAMINATED_NAME_PATTERNS.some((pattern) => pattern.test(normalized));
 }
 
+/** Returns whether a task label is too generic for memory naming. */
 export function isGenericContentTask(task: string): boolean {
   const taskSlug = slugify(normalizeMemoryNameCandidate(task));
   if (taskSlug.length === 0) {
@@ -84,6 +89,7 @@ export function isGenericContentTask(task: string): boolean {
   return GENERIC_TASK_SLUGS.has(taskSlug);
 }
 
+/** Picks the strongest content-derived name from available candidates. */
 export function pickBestContentName(candidates: readonly string[]): string {
   const seen = new Set<string>();
 
@@ -109,6 +115,7 @@ export function pickBestContentName(candidates: readonly string[]): string {
   return '';
 }
 
+/** Truncates a slug without cutting through the middle of a word when possible. */
 export function truncateSlugAtWordBoundary(slug: string, max: number = 50): string {
   if (slug.length <= max) return slug;
   const truncated = slug.slice(0, max);
@@ -131,7 +138,10 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
   let entries: string[];
   try {
     entries = fs.readdirSync(contextDir).filter(f => f.endsWith('.md'));
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return filename; // Dir doesn't exist yet — no collision possible
+    }
     return filename; // Dir doesn't exist yet — no collision possible
   }
 
@@ -151,6 +161,7 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
   return `${base}-${hash}${ext}`;
 }
 
+/** Generates the final content slug used for memory filenames. */
 export function generateContentSlug(task: string, fallback: string, alternatives: readonly string[] = []): string {
   const bestCandidate = pickBestContentName([task, ...alternatives]);
   if (bestCandidate.length > 0) {

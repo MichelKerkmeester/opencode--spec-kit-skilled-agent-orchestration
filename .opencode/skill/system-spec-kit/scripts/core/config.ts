@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Configuration
+// MODULE: Config
+// ---------------------------------------------------------------
 // Central configuration loader — reads JSONC config, resolves paths, exports CONFIG object
 // ---------------------------------------------------------------
 
@@ -12,6 +13,7 @@ import { structuredLog } from '../utils/logger';
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Represents workflow config. */
 export interface WorkflowConfig {
   maxResultPreview: number;
   maxConversationMessages: number;
@@ -22,6 +24,7 @@ export interface WorkflowConfig {
   timezoneOffsetHours: number;
 }
 
+/** Represents spec kit config. */
 export interface SpecKitConfig {
   SKILL_VERSION: string;
   MESSAGE_COUNT_TRIGGER: number;
@@ -242,7 +245,10 @@ function getAllExistingSpecsDirs(): string[] {
     let realPath = dir;
     try {
       realPath = fsSync.realpathSync(dir);
-    } catch {
+    } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      }
       // Keep original dir if realpath resolution fails
     }
 

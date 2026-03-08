@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Import Policy Rules
+// MODULE: ImportPolicyRules
 // ---------------------------------------------------------------
 // Shared detection rules for prohibited scripts -> internal runtime imports.
 
@@ -31,6 +31,7 @@ function normalizeRelativeImportPath(importPath: string): string {
   return normalizedPath.startsWith('./') ? normalizedPath : `./${normalizedPath}`;
 }
 
+/** Returns whether the import path violates the evaluation policy rules. */
 export function isProhibitedImportPath(importPath: string): boolean {
   const normalizedImportPath = normalizeRelativeImportPath(importPath);
 

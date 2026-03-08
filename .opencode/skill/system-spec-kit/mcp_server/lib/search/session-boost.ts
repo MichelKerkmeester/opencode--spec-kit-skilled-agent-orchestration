@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Session Attention Boost
+// MODULE: Session Boost
 // ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
@@ -203,6 +203,9 @@ export {
   applySessionBoost,
 };
 
+/**
+ * Session boost types exposed for search pipeline consumers.
+ */
 export type {
   RankedSearchResult,
   SessionBoostMetadata,

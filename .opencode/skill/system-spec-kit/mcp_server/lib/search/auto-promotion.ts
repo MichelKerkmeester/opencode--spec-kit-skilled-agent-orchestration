@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Auto-Promotion Engine (T002a)
+// MODULE: Auto Promotion
+// ---------------------------------------------------------------
 //
 // Promotes memory importance tier based on positive validation count:
 // - >=5 positive validations: normal -> important
@@ -75,7 +76,7 @@ function getNegativeValidationCount(db: Database, memoryId: number): number {
     return typeof row?.count === 'number' && Number.isFinite(row.count)
       ? Math.max(0, Math.floor(row.count))
       : 0;
-  } catch {
+  } catch (_error: unknown) {
     return 0;
   }
 }

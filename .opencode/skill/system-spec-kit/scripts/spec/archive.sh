@@ -350,3 +350,7 @@ main() {
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   1 - ${RED}ERROR:${NC} $1

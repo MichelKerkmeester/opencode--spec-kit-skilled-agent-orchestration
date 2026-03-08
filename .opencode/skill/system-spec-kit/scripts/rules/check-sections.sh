@@ -76,3 +76,6 @@ run_check() {
         RULE_REMEDIATION="Add missing sections to improve documentation completeness"
     fi
 }
+
+# Exit codes:
+#   0 - Success

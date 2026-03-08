@@ -54,12 +54,12 @@ echo "  upgrade-level.sh Test Suite"
 echo "────────────────────────────────────────────────────"
 
 if [[ ! -f "$UPGRADE_SCRIPT" ]]; then
-    echo "ERROR: upgrade-level.sh not found at $UPGRADE_SCRIPT"
+    echo "ERROR: upgrade-level.sh not found at $UPGRADE_SCRIPT" >&2
     exit 1
 fi
 
 if [[ ! -f "$SHELL_COMMON" ]]; then
-    echo "ERROR: shell-common.sh not found at $SHELL_COMMON"
+    echo "ERROR: shell-common.sh not found at $SHELL_COMMON" >&2
     exit 1
 fi
 
@@ -291,7 +291,7 @@ fi
 
 echo ""
 echo "────────────────────────────────────────────────────"
-echo "  Results: $PASS passed, $FAIL failed, $SKIP skipped (of $TOTAL)"
+echo "  Results: $PASS passed, $FAIL failed, $SKIP skipped (of $TOTAL)" >&2
 echo "────────────────────────────────────────────────────"
 echo ""
 
@@ -302,3 +302,7 @@ elif [[ "$SKIP" -eq "$TOTAL" ]] && [[ "$TOTAL" -gt 0 ]]; then
 else
     exit 0
 fi
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: upgrade-level.sh not found at $UPGRADE_SCRIPT

@@ -326,7 +326,7 @@ export function enrichWithRetrievalDirectives(
         if (fs.existsSync(result.filePath)) {
           content = fs.readFileSync(result.filePath, 'utf-8');
         }
-      } catch {
+      } catch (_error: unknown) {
         // AI-GUARD: File read failure is non-fatal; fall back to title-only directive
         content = '';
       }

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: JSON Helpers
+// MODULE: Json Helpers
+// ---------------------------------------------------------------
 // UTILS: JSON HELPERS
 // ---------------------------------------------------------------
 
@@ -14,6 +15,7 @@ export type ExpectedJsonType = 'array' | 'object' | 'string' | 'number';
    2. SAFE JSON PARSING
    --------------------------------------------------------------- */
 
+/** Parses JSON and returns a fallback value on failure. */
 export function safeJsonParse<T = unknown>(str: string | null | undefined, fallback: T): T {
   if (!str) return fallback;
   try {
@@ -23,6 +25,7 @@ export function safeJsonParse<T = unknown>(str: string | null | undefined, fallb
   }
 }
 
+/** Stringifies JSON and returns a fallback value on failure. */
 export function safeJsonStringify(value: unknown, fallback: string = 'null', space?: number): string {
   try {
     return JSON.stringify(value, null, space);
@@ -31,6 +34,7 @@ export function safeJsonStringify(value: unknown, fallback: string = 'null', spa
   }
 }
 
+/** Parses JSON and validates the expected top-level value type. */
 export function safeJsonParseTyped<T = unknown>(str: string | null | undefined, expectedType: ExpectedJsonType, fallback: T): T {
   const parsed = safeJsonParse(str, fallback);
 

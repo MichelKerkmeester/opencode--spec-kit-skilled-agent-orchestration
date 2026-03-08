@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Tree Thinning
+// MODULE: TreeThinning
+// ---------------------------------------------------------------
 // Bottom-up merging of small files during spec folder context
 // loading to reduce token overhead before the retrieval pipeline starts.
 //
@@ -11,6 +12,7 @@
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Represents thinning config. */
 export interface ThinningConfig {
   /** Files under this token count are merged into parent document */
   mergeThreshold: number;
@@ -22,6 +24,7 @@ export interface ThinningConfig {
   memoryTextThreshold: number;
 }
 
+/** Defines default thinning config. */
 export const DEFAULT_THINNING_CONFIG: ThinningConfig = {
   mergeThreshold: 200,
   contentAsTextThreshold: 500,
@@ -29,11 +32,13 @@ export const DEFAULT_THINNING_CONFIG: ThinningConfig = {
   memoryTextThreshold: 100,
 };
 
+/** Represents file entry. */
 export interface FileEntry {
   path: string;
   content: string;
 }
 
+/** Represents thin file entry. */
 export interface ThinFileEntry {
   path: string;
   content: string;
@@ -41,12 +46,14 @@ export interface ThinFileEntry {
   action: 'keep' | 'content-as-summary' | 'merged-into-parent';
 }
 
+/** Represents merged file entry. */
 export interface MergedFileEntry {
   parentPath: string;
   childPaths: string[];
   mergedSummary: string;
 }
 
+/** Represents thinning result. */
 export interface ThinningResult {
   thinned: ThinFileEntry[];
   merged: MergedFileEntry[];

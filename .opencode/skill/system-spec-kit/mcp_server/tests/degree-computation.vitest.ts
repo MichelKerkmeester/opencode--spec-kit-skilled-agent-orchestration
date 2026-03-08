@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Degree Computation
 // ---------------------------------------------------------------
@@ -22,9 +21,9 @@ import {
 // TEST SETUP
 // ---------------------------------------------------------------
 
-let testDb: any;
+let testDb: InstanceType<typeof Database>;
 
-function createTestSchema(db: any) {
+function createTestSchema(db: InstanceType<typeof Database>) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS causal_edges (
       id INTEGER PRIMARY KEY,
@@ -66,7 +65,7 @@ function createTestSchema(db: any) {
   `);
 }
 
-function seedTestData(db: any) {
+function seedTestData(db: InstanceType<typeof Database>) {
   // Insert memory records
   const insertMem = db.prepare(
     `INSERT INTO memory_index (id, spec_folder, file_path, title, importance_tier) VALUES (?, ?, ?, ?, ?)`
@@ -330,10 +329,14 @@ describe('Typed-Weighted Degree Computation', () => {
 
     it('higher-degree nodes get higher scores', () => {
       const scores = computeDegreeScores(testDb, [1, 2, 3, 5]);
+      const scoreOne = scores.get('1');
+      const scoreTwo = scores.get('2');
       // Memory 1 has degree ~2.72 (3 edges)
       // Memory 2 has degree: as source 2->3 (enabled, 0.5) = 0.4, as target 1->2 (caused, 1.0) = 1.0 => 1.4
       // Memory 1 should score higher than Memory 2
-      expect(scores.get('1')).toBeGreaterThan(scores.get('2'));
+      expect(scoreOne).toBeDefined();
+      expect(scoreTwo).toBeDefined();
+      expect(scoreOne!).toBeGreaterThan(scoreTwo!);
     });
 
     it('handles numeric IDs by converting to strings', () => {

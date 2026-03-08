@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Memory Indexer
+// MODULE: MemoryIndexer
+// ---------------------------------------------------------------
 // Handles persisting memory files to the vector index: embedding generation,
 // database storage, metadata updates, and DB-change notifications.
 // ---------------------------------------------------------------

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: FOLDER SCORING
 // ---------------------------------------------------------------
@@ -7,10 +6,13 @@ import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/scoring/folder-scoring';
 
 describe('Folder Scoring Tests (T506)', () => {
-  function createMemory(overrides: Record<string, any> = {}): Record<string, any> {
+  type FolderMemory = Parameters<typeof mod.computeSingleFolderScore>[1][number];
+  type FolderScore = ReturnType<typeof mod.computeFolderScores>[number];
+
+  function createMemory(overrides: Partial<FolderMemory> = {}): FolderMemory {
     const now = new Date();
     return {
-      id: '1',
+      id: 1,
       specFolder: 'test-spec',
       spec_folder: 'test-spec',
       title: 'Test Memory',
@@ -51,7 +53,7 @@ describe('Folder Scoring Tests (T506)', () => {
       ];
 
       const score = mod.computeSingleFolderScore('test-spec', memories);
-      const components = ['recencyScore', 'importanceScore', 'activityScore', 'validationScore'];
+      const components: Array<'recencyScore' | 'importanceScore' | 'activityScore' | 'validationScore'> = ['recencyScore', 'importanceScore', 'activityScore', 'validationScore'];
 
       for (const c of components) {
         expect(typeof score[c]).toBe('number');
@@ -106,6 +108,7 @@ describe('Folder Scoring Tests (T506)', () => {
     });
 
     it('T506-03c: Null input returns empty folder list', () => {
+      // @ts-expect-error Testing invalid input shape
       const scored = mod.computeFolderScores(null);
       expect(Array.isArray(scored)).toBe(true);
       expect(scored.length).toBe(0);
@@ -160,9 +163,9 @@ describe('Folder Scoring Tests (T506)', () => {
       const run2 = mod.computeFolderScores(memories);
       const run3 = mod.computeFolderScores(memories);
 
-      const order1 = run1.map((f: any) => f.folder).join(',');
-      const order2 = run2.map((f: any) => f.folder).join(',');
-      const order3 = run3.map((f: any) => f.folder).join(',');
+      const order1 = run1.map((f: FolderScore) => f.folder).join(',');
+      const order2 = run2.map((f: FolderScore) => f.folder).join(',');
+      const order3 = run3.map((f: FolderScore) => f.folder).join(',');
 
       expect(order1).toBe(order2);
       expect(order2).toBe(order3);
@@ -178,8 +181,8 @@ describe('Folder Scoring Tests (T506)', () => {
       const run1 = mod.computeFolderScores(memories);
       const run2 = mod.computeFolderScores(memories);
 
-      const scores1 = run1.map((f: any) => f.score);
-      const scores2 = run2.map((f: any) => f.score);
+      const scores1 = run1.map((f: FolderScore) => f.score);
+      const scores2 = run2.map((f: FolderScore) => f.score);
 
       scores1.forEach((s: number, i: number) => {
         expect(s).toBe(scores2[i]);

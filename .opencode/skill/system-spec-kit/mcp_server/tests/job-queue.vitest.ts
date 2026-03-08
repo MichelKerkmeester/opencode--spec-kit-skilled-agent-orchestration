@@ -190,3 +190,36 @@ describe('ingest job queue processing', () => {
     expect(updated?.errors[0]?.message).toBe('index failure');
   });
 });
+
+describe('ingest job queue batch processing (CHK-051)', () => {
+  it('processes 120-file batch to completion without timeout', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+    mod.initIngestJobQueue({
+      processFile: async () => undefined,
+    });
+
+    const paths: string[] = [];
+    for (let i = 0; i < 120; i++) {
+      paths.push(createTempFile(`batch-file-${i}`));
+    }
+
+    const job = await mod.createIngestJob({
+      id: 'job_batch_120',
+      paths,
+      specFolder: 'specs/test',
+    });
+
+    mod.enqueueIngestJob(job.id);
+    await waitFor(() => {
+      const current = mod.getIngestJob(job.id);
+      return current?.state === 'complete' || current?.state === 'failed';
+    }, { timeoutMs: 15000 });
+
+    const updated = mod.getIngestJob(job.id);
+    expect(updated?.state).toBe('complete');
+    expect(updated?.filesTotal).toBe(120);
+    expect(updated?.filesProcessed).toBe(120);
+    expect(updated?.errors).toHaveLength(0);
+  });
+});

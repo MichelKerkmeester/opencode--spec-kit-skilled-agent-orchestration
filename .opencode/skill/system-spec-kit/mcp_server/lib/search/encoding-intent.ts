@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Encoding-Intent Capture at Index Time (R16)
+// MODULE: Encoding Intent
+// ---------------------------------------------------------------
 // Sprint 6a — classify content intent for metadata enrichment.
 //
 // Classifies each memory's content at index time into one of three

@@ -35,9 +35,9 @@ function makeItem(id: number | string, score?: number, similarity?: number): Rrf
 
 describe('T023: RSF Fusion (Relative Score Fusion)', () => {
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.1: Basic 2-list fusion produces valid ranking
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.1: Basic 2-list fusion', () => {
     it('T023.1.1: produces a non-empty result array', () => {
       const listA = makeList('vector', [
@@ -90,9 +90,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.2: Overlapping items get averaged scores
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.2: Overlapping items get averaged scores', () => {
     it('T023.2.1: overlapping item has both sources listed', () => {
       const listA = makeList('vector', [
@@ -170,9 +170,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.3: Single-source items get 0.5 penalty
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.3: Single-source items get 0.5 penalty', () => {
     it('T023.3.1: item only in list A gets normalizedScore * 0.5', () => {
       // List A: items 1 (0.9), 2 (0.5) → min=0.5, max=0.9
@@ -232,9 +232,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.4: All scores in [0, 1] range
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.4: Score clamping to [0, 1]', () => {
     it('T023.4.1: all rsfScores are between 0 and 1', () => {
       const listA = makeList('vector', [
@@ -273,9 +273,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.5: Sort order is descending by rsfScore
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.5: Sort order descending', () => {
     it('T023.5.1: results are sorted descending by rsfScore', () => {
       const listA = makeList('vector', [
@@ -296,9 +296,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.6: Empty list handling
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.6: Empty list handling', () => {
     it('T023.6.1: both lists empty returns empty array', () => {
       const listA = makeList('vector', []);
@@ -338,9 +338,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.7: Single-item lists
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.7: Single-item lists', () => {
     it('T023.7.1: single item in each list, no overlap', () => {
       const listA = makeList('vector', [makeItem(1, 0.8)]);
@@ -378,9 +378,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.8: All-same-scores edge case
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.8: All-same-scores edge case', () => {
     it('T023.8.1: all items in list A have same score', () => {
       const listA = makeList('vector', [
@@ -436,9 +436,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.10: Rank-based fallback when no score/similarity field
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.10: Rank-based fallback', () => {
     it('T023.10.1: items without score or similarity use rank-based scoring', () => {
       const listA = makeList('vector', [
@@ -487,9 +487,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.11: Helper function unit tests
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.11: Helper functions', () => {
     it('T023.11.1: minMaxNormalize standard case', () => {
       expect(minMaxNormalize(0.5, 0.0, 1.0)).toBeCloseTo(0.5, 5);
@@ -511,9 +511,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.12: String IDs
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.12: String IDs', () => {
     it('T023.12.1: handles string IDs correctly', () => {
       const listA = makeList('vector', [
@@ -532,9 +532,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.13: Large list stress test
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.13: Larger lists', () => {
     it('T023.13.1: handles 100 items per list', () => {
       const itemsA: RrfItem[] = Array.from({ length: 100 }, (_, i) => makeItem(i, 1.0 - i * 0.01));
@@ -558,9 +558,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.14: Item properties preserved
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.14: Item properties preserved', () => {
     it('T023.14.1: extra properties from source items are preserved', () => {
       const listA = makeList('vector', [
@@ -596,9 +596,9 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T023.15: Computed scores verification
-     ───────────────────────────────────────────────────────────── */
+     ------------------------------------------------------------- */
   describe('T023.15: Detailed score computation verification', () => {
     it('T023.15.1: verifies full computation for a known scenario', () => {
       // List A: [id1: 1.0, id2: 0.6, id3: 0.2] → min=0.2, max=1.0, range=0.8

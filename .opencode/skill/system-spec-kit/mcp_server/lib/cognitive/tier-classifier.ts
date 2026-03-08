@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Tier Classifier (5-State Model)
+// MODULE: Tier Classifier
 // ---------------------------------------------------------------
 
 // fs and path removed — unused in this module

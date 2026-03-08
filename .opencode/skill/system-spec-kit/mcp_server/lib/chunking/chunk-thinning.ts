@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Anchor-Aware Chunk Thinning (R7)
+// MODULE: Chunk Thinning
+// ---------------------------------------------------------------
 // Scores chunks by anchor presence + content density, then
 // applies a thinning threshold to drop low-quality chunks.
 // Used BEFORE indexing to filter out low-value chunks.
@@ -11,6 +12,9 @@ import type { AnchorChunk } from './anchor-chunker';
    1. TYPES
 --------------------------------------------------------------- */
 
+/**
+ * Describes the ChunkScore shape.
+ */
 export interface ChunkScore {
   chunk: AnchorChunk;
   score: number;        // 0-1 composite score
@@ -19,6 +23,9 @@ export interface ChunkScore {
   retained: boolean;    // true if above threshold
 }
 
+/**
+ * Describes the ThinningResult shape.
+ */
 export interface ThinningResult {
   original: AnchorChunk[];
   retained: AnchorChunk[];

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Alignment Validator
+// MODULE: AlignmentValidator
+// ---------------------------------------------------------------
 // Validates conversation-to-spec-folder alignment using topic and keyword matching
 // ---------------------------------------------------------------
 
@@ -14,6 +15,7 @@ import { promptUserChoice } from '../utils/prompt-utils';
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Configuration for alignment validation checks. */
 export interface AlignmentConfig {
   THRESHOLD: number;
   WARNING_THRESHOLD: number;
@@ -24,12 +26,14 @@ export interface AlignmentConfig {
   INFRASTRUCTURE_THRESHOLD: number;
 }
 
+/** Result returned from a spec-folder alignment validation run. */
 export interface AlignmentResult {
   proceed: boolean;
   useAlternative: boolean;
   selectedFolder?: string;
 }
 
+/** Work-domain classification derived during alignment validation. */
 export interface WorkDomainResult {
   domain: 'opencode' | 'project';
   subpath: string | null;
@@ -37,6 +41,7 @@ export interface WorkDomainResult {
   patterns: string[];
 }
 
+/** Alignment-focused subset of collected session data. */
 export interface CollectedDataForAlignment {
   recentContext?: Array<{ request?: string; files?: string[] }>;
   observations?: Array<{
@@ -48,12 +53,14 @@ export interface CollectedDataForAlignment {
   [key: string]: unknown;
 }
 
+/** Describes a field-level diff between telemetry schema sources. */
 export interface TelemetrySchemaFieldDiff {
   interfaceName: string;
   schemaOnlyFields: string[];
   docsOnlyFields: string[];
 }
 
+/** Options controlling telemetry schema documentation validation. */
 export interface TelemetrySchemaDocsValidationOptions {
   schemaPath?: string;
   docsPath?: string;
@@ -233,7 +240,10 @@ async function fileExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
     return true;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return false;
+    }
     return false;
   }
 }
@@ -562,13 +572,19 @@ async function validateContentAlignment(
 
         console.log(`   Continuing with "${specFolderName}" as requested`);
         return { proceed: true, useAlternative: false };
-      } catch {
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(`   Warning: Proceeding with "${specFolderName}"`);
+          return { proceed: true, useAlternative: false };
+        }
         console.log(`   Warning: Proceeding with "${specFolderName}"`);
         return { proceed: true, useAlternative: false };
       }
     }
-  } catch {
-    // Could not read alternatives - proceed with warning
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // Could not read alternatives - proceed with warning
+    }
   }
 
   console.log(`   Warning: No better alternatives found - proceeding with "${specFolderName}"`);
@@ -661,8 +677,10 @@ async function validateFolderAlignment(
         return { proceed: false, useAlternative: false };
       }
     }
-  } catch {
-    // If we can't find alternatives, just proceed with warning
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // If we can't find alternatives, just proceed with warning
+    }
   }
 
   console.log(`   Warning: Proceeding with "${specFolderName}" (no better alternatives found)`);

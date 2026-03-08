@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: DECAY DELETE RACE
 // ---------------------------------------------------------------
@@ -12,7 +11,7 @@ import { DECAY_FLOOR, DELETE_THRESHOLD } from '../lib/cache/cognitive/working-me
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('T214: Decay/Delete Race Condition', () => {
-  let testDb: any;
+  let testDb: InstanceType<typeof BetterSqlite3>;
   let tmpDbPath: string;
 
   function setScoreDirectly(sessionId: string, memoryId: number, score: number) {
@@ -25,14 +24,14 @@ describe('T214: Decay/Delete Race Condition', () => {
   function getScoreDirectly(sessionId: string, memoryId: number): number | null {
     const row = testDb.prepare(
       'SELECT attention_score FROM working_memory WHERE session_id = ? AND memory_id = ?'
-    ).get(sessionId, memoryId);
+    ).get(sessionId, memoryId) as { attention_score: number } | undefined;
     return row ? row.attention_score : null;
   }
 
   function countEntries(sessionId: string): number {
     const row = testDb.prepare(
       'SELECT COUNT(*) as count FROM working_memory WHERE session_id = ?'
-    ).get(sessionId);
+    ).get(sessionId) as { count: number } | undefined;
     return row ? row.count : 0;
   }
 
@@ -172,7 +171,8 @@ describe('T214: Decay/Delete Race Condition', () => {
 
       const finalScore = getScoreDirectly(sessionId, 4);
       expect(finalScore).not.toBeNull();
-      expect(Math.abs(finalScore - 0.15)).toBeLessThan(0.001);
+      expect(finalScore).not.toBeNull();
+      expect(Math.abs(finalScore! - 0.15)).toBeLessThan(0.001);
     });
   });
 

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Response Envelope
+// MODULE: Envelope
 // ---------------------------------------------------------------
 
 import { estimateTokens } from '../../formatters/token-metrics';
@@ -8,6 +8,9 @@ import { estimateTokens } from '../../formatters/token-metrics';
 // 1. TYPES
 // ---------------------------------------------------------------
 
+/**
+ * Describes the ResponseMeta shape.
+ */
 export interface ResponseMeta {
   tool: string;
   tokenCount: number;
@@ -19,6 +22,9 @@ export interface ResponseMeta {
   [key: string]: unknown;
 }
 
+/**
+ * Describes the MCPEnvelope shape.
+ */
 export interface MCPEnvelope<T = unknown> {
   summary: string;
   data: T;
@@ -26,6 +32,9 @@ export interface MCPEnvelope<T = unknown> {
   meta: ResponseMeta;
 }
 
+/**
+ * Describes the CreateResponseOptions shape.
+ */
 export interface CreateResponseOptions<T = unknown> {
   tool: string;
   summary: string;
@@ -36,6 +45,9 @@ export interface CreateResponseOptions<T = unknown> {
   extraMeta?: Record<string, unknown>;
 }
 
+/**
+ * Describes the CreateEmptyResponseOptions shape.
+ */
 export interface CreateEmptyResponseOptions {
   tool: string;
   summary?: string;
@@ -44,6 +56,9 @@ export interface CreateEmptyResponseOptions {
   startTime?: number | null;
 }
 
+/**
+ * Describes the RecoveryInfo shape.
+ */
 export interface RecoveryInfo {
   hint?: string;
   actions?: string[];
@@ -51,6 +66,9 @@ export interface RecoveryInfo {
   severity?: string;
 }
 
+/**
+ * Describes the CreateErrorResponseOptions shape.
+ */
 export interface CreateErrorResponseOptions {
   tool: string;
   error: Error | string;
@@ -61,9 +79,15 @@ export interface CreateErrorResponseOptions {
 }
 
 // Re-export canonical MCPResponse from shared (REC-010)
+/**
+ * Re-exports related public types.
+ */
 export type { MCPResponse } from '@spec-kit/shared/types';
 import type { MCPResponse } from '@spec-kit/shared/types';
 
+/**
+ * Describes the DefaultHints shape.
+ */
 export interface DefaultHints {
   empty_results: string[];
   success: string[];
@@ -74,6 +98,9 @@ export interface DefaultHints {
 // 2. CONSTANTS
 // ---------------------------------------------------------------
 
+/**
+ * Defines the DEFAULT_HINTS constant.
+ */
 export const DEFAULT_HINTS: DefaultHints = {
   empty_results: [
     'Try broadening your search query',
@@ -91,6 +118,9 @@ export const DEFAULT_HINTS: DefaultHints = {
 // 3. RESPONSE ENVELOPE FACTORY
 // ---------------------------------------------------------------
 
+/**
+ * Provides the createResponse helper.
+ */
 export function createResponse<T = unknown>(options: CreateResponseOptions<T>): MCPEnvelope<T> {
   const {
     tool,
@@ -126,6 +156,9 @@ export function createResponse<T = unknown>(options: CreateResponseOptions<T>): 
   };
 }
 
+/**
+ * Provides the createSuccessResponse helper.
+ */
 export function createSuccessResponse<T = unknown>(options: CreateResponseOptions<T>): MCPEnvelope<T> {
   return createResponse({
     ...options,
@@ -133,6 +166,9 @@ export function createSuccessResponse<T = unknown>(options: CreateResponseOption
   });
 }
 
+/**
+ * Provides the createEmptyResponse helper.
+ */
 export function createEmptyResponse(options: CreateEmptyResponseOptions): MCPEnvelope<{ count: number; results: never[]; [key: string]: unknown }> {
   const {
     tool,
@@ -155,6 +191,9 @@ export function createEmptyResponse(options: CreateEmptyResponseOptions): MCPEnv
   });
 }
 
+/**
+ * Provides the createErrorResponse helper.
+ */
 export function createErrorResponse(options: CreateErrorResponseOptions): MCPEnvelope<{ error: string; code: string; details: Record<string, unknown> }> {
   const {
     tool,
@@ -196,6 +235,9 @@ export function createErrorResponse(options: CreateErrorResponseOptions): MCPEnv
 // 4. MCP RESPONSE WRAPPER
 // ---------------------------------------------------------------
 
+/**
+ * Provides the wrapForMCP helper.
+ */
 export function wrapForMCP<T>(envelope: MCPEnvelope<T>, isError: boolean = false): MCPResponse {
   // Check if envelope meta indicates an error
   const isErrorResponse = isError || envelope.meta?.isError || false;
@@ -209,21 +251,33 @@ export function wrapForMCP<T>(envelope: MCPEnvelope<T>, isError: boolean = false
   };
 }
 
+/**
+ * Provides the createMCPResponse helper.
+ */
 export function createMCPResponse<T = unknown>(options: CreateResponseOptions<T>): MCPResponse {
   const envelope = createResponse(options);
   return wrapForMCP(envelope);
 }
 
+/**
+ * Provides the createMCPSuccessResponse helper.
+ */
 export function createMCPSuccessResponse<T = unknown>(options: CreateResponseOptions<T>): MCPResponse {
   const envelope = createSuccessResponse(options);
   return wrapForMCP(envelope);
 }
 
+/**
+ * Provides the createMCPEmptyResponse helper.
+ */
 export function createMCPEmptyResponse(options: CreateEmptyResponseOptions): MCPResponse {
   const envelope = createEmptyResponse(options);
   return wrapForMCP(envelope);
 }
 
+/**
+ * Provides the createMCPErrorResponse helper.
+ */
 export function createMCPErrorResponse(options: CreateErrorResponseOptions): MCPResponse {
   const envelope = createErrorResponse(options);
   return wrapForMCP(envelope, true);

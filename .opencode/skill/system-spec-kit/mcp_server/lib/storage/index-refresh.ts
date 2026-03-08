@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Index Refresh
+// ---------------------------------------------------------------
 // Manages embedding index freshness on the memory_index table
 // ---------------------------------------------------------------
 
@@ -16,6 +17,9 @@ const RETRY_THRESHOLD = 3;
    2. INTERFACES
 ----------------------------------------------------------------*/
 
+/**
+ * Describes the IndexStats shape.
+ */
 export interface IndexStats {
   total: number;
   success: number;
@@ -25,6 +29,9 @@ export interface IndexStats {
   partial: number;
 }
 
+/**
+ * Describes the UnindexedDocument shape.
+ */
 export interface UnindexedDocument {
   id: number;
   spec_folder: string;
@@ -43,6 +50,9 @@ let db: Database.Database | null = null;
    4. INIT
 ----------------------------------------------------------------*/
 
+/**
+ * Provides the init helper.
+ */
 export function init(database: Database.Database): void {
   db = database;
 }
@@ -57,6 +67,7 @@ export function init(database: Database.Database): void {
 export function getIndexStats(): IndexStats {
   assertDb();
 
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
   const rows = db!.prepare(`
     SELECT embedding_status, COUNT(*) as cnt
     FROM memory_index
@@ -93,6 +104,8 @@ export function getIndexStats(): IndexStats {
 export function needsRefresh(): boolean {
   assertDb();
 
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
   const row = db!.prepare(`
     SELECT COUNT(*) as cnt
     FROM memory_index
@@ -109,6 +122,7 @@ export function needsRefresh(): boolean {
 export function getUnindexedDocuments(): UnindexedDocument[] {
   assertDb();
 
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
   return db!.prepare(`
     SELECT id, spec_folder, file_path, embedding_status, retry_count
     FROM memory_index
@@ -131,6 +145,8 @@ export function getUnindexedDocuments(): UnindexedDocument[] {
 export function markIndexed(id: number, modelName: string): boolean {
   assertDb();
 
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
+  // AI-SAFETY: assertDb() above throws unless db has been initialized
   const result = db!.prepare(`
     UPDATE memory_index
     SET embedding_status = 'success',

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: K-Value Sensitivity Analysis (T004a)
+// ---------------------------------------------------------------
 // Measures the impact of different RRF K-values on ranking stability.
 // This is a measurement/analysis tool, not production code.
 // ---------------------------------------------------------------
@@ -63,10 +64,13 @@ function kendallTau(rankingA: (number | string)[], rankingB: (number | string)[]
     for (let j = i + 1; j < n; j++) {
       const idI = commonIds[i];
       const idJ = commonIds[j];
-      const aI = posA.get(idI)!;
-      const aJ = posA.get(idJ)!;
-      const bI = posB.get(idI)!;
-      const bJ = posB.get(idJ)!;
+      const aI = posA.get(idI);
+      const aJ = posA.get(idJ);
+      const bI = posB.get(idI);
+      const bJ = posB.get(idJ);
+      if (aI === undefined || aJ === undefined || bI === undefined || bJ === undefined) {
+        continue;
+      }
 
       const diffA = aI - aJ;
       const diffB = bI - bJ;
@@ -164,8 +168,8 @@ function analyzeKValueSensitivity(
   const allIds = new Set<number | string>();
 
   for (const k of K_VALUES) {
-    const fused = fusedByK.get(k)!;
-    const ranking = rankingsByK.get(k)!;
+    const fused = fusedByK.get(k) ?? [];
+    const ranking = rankingsByK.get(k) ?? [];
 
     for (const id of ranking) allIds.add(id);
 

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Dual-Scope Memory Auto-Surface Hooks
 // ---------------------------------------------------------------
@@ -82,6 +81,7 @@ describe('TM-05: Token Budget Constants', () => {
 describe('TM-05: autoSurfaceAtToolDispatch — basic behavior', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([]);
   });
@@ -118,6 +118,7 @@ describe('TM-05: autoSurfaceAtToolDispatch — basic behavior', () => {
 describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([makeTriggerMatch()]);
   });
@@ -182,6 +183,7 @@ describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => 
 describe('TM-05: autoSurfaceAtToolDispatch — config flag disabling', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([makeTriggerMatch()]);
   });
@@ -225,6 +227,7 @@ describe('TM-05: autoSurfaceAtToolDispatch — config flag disabling', () => {
 describe('TM-05: autoSurfaceAtToolDispatch — context hint extraction from args', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([]);
   });
@@ -277,6 +280,7 @@ describe('TM-05: autoSurfaceAtToolDispatch — context hint extraction from args
 describe('TM-05: autoSurfaceAtToolDispatch — result structure', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
   });
 
@@ -342,6 +346,7 @@ describe('TM-05: autoSurfaceAtToolDispatch — result structure', () => {
 describe('TM-05: autoSurfaceAtCompaction — basic behavior', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([]);
   });
@@ -393,6 +398,7 @@ describe('TM-05: autoSurfaceAtCompaction — basic behavior', () => {
 describe('TM-05: autoSurfaceAtCompaction — config flag disabling', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([makeTriggerMatch()]);
   });
@@ -434,6 +440,7 @@ describe('TM-05: autoSurfaceAtCompaction — config flag disabling', () => {
 describe('TM-05: autoSurfaceAtCompaction — whitespace trimming', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
     vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([]);
   });
@@ -456,6 +463,7 @@ describe('TM-05: autoSurfaceAtCompaction — whitespace trimming', () => {
 describe('TM-05: autoSurfaceAtCompaction — result structure', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
   });
 
@@ -505,6 +513,7 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
 
   it('trigger-matcher is limited to 5 results per surface call (per-budget control)', async () => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
 
     const matchSpy = vi.mocked(triggerMatcher.matchTriggerPhrases);
@@ -522,6 +531,7 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
 
   it('compaction hook also enforces result limit via matchTriggerPhrases', async () => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
 
     const matchSpy = vi.mocked(triggerMatcher.matchTriggerPhrases);
@@ -544,6 +554,7 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
 describe('TM-05: No regression in existing autoSurfaceMemories', () => {
   beforeEach(() => {
     clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
     vi.mocked(vectorIndex.getDb).mockReturnValue(null);
   });
 

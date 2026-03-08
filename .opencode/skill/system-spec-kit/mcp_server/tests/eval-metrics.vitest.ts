@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Eval Metrics
 // ---------------------------------------------------------------
@@ -17,6 +16,9 @@ import {
   computeColdStartDetectionRate,
   computeIntentWeightedNDCG,
   computeAllMetrics,
+  computePrecision,
+  computeF1,
+  computeMAP,
 } from '../lib/eval/eval-metrics';
 import type { EvalResult, GroundTruthEntry } from '../lib/eval/eval-metrics';
 
@@ -428,7 +430,7 @@ describe('T006e: Intent-Weighted NDCG', () => {
 --------------------------------------------------------------- */
 
 describe('computeAllMetrics (convenience wrapper)', () => {
-  it('T006-E01: Returns all 9 metric keys', () => {
+  it('T006-E01: Returns all 12 metric keys', () => {
     const results = [makeResult(1, 1), makeResult(2, 2)];
     const gt = [makeGT(1, 3), makeGT(2, 1)];
     const metrics = computeAllMetrics({ results, groundTruth: gt });
@@ -439,6 +441,7 @@ describe('computeAllMetrics (convenience wrapper)', () => {
       'recall',
       'precision',
       'f1',
+      'map',
       'hitRate',
       'inversionRate',
       'constitutionalSurfacingRate',
@@ -516,5 +519,56 @@ describe('Edge Cases', () => {
     for (const value of Object.values(metrics)) {
       expect(Number.isFinite(value)).toBe(true);
     }
+  });
+});
+
+/* ---------------------------------------------------------------
+   computeMAP — Mean Average Precision (CHK-088)
+--------------------------------------------------------------- */
+
+describe('computeMAP', () => {
+  it('MAP-01: Perfect ranking — MAP equals 1.0', () => {
+    // Results perfectly ordered: relevant items at top
+    const results = [makeResult(1, 1), makeResult(2, 2), makeResult(3, 3)];
+    const gt = [makeGT(1, 3), makeGT(2, 2), makeGT(3, 1)];
+    expect(computeMAP(results, gt, 3)).toBeCloseTo(1.0, 4);
+  });
+
+  it('MAP-02: Partial ranking — relevant items not all at top', () => {
+    // Relevant: 1, 3. Results: 1, 99, 3 → P@1=1/1, P@3=2/3
+    // AP = (1/2)(1 + 2/3) = 5/6 ≈ 0.8333
+    const results = [makeResult(1, 1), makeResult(99, 2), makeResult(3, 3)];
+    const gt = [makeGT(1, 2), makeGT(3, 1)];
+    expect(computeMAP(results, gt, 3)).toBeCloseTo(5 / 6, 4);
+  });
+
+  it('MAP-03: No relevant results — MAP is 0', () => {
+    const results = [makeResult(99, 1), makeResult(98, 2)];
+    const gt = [makeGT(1, 3)];
+    expect(computeMAP(results, gt, 2)).toBe(0);
+  });
+
+  it('MAP-04: Empty results — MAP is 0', () => {
+    const gt = [makeGT(1, 3)];
+    expect(computeMAP([], gt, 5)).toBe(0);
+  });
+
+  it('MAP-05: Empty ground truth — MAP is 0', () => {
+    const results = [makeResult(1, 1)];
+    expect(computeMAP(results, [], 5)).toBe(0);
+  });
+
+  it('MAP-06: Single relevant result at position 1 — MAP is 1.0', () => {
+    const results = [makeResult(1, 1), makeResult(2, 2)];
+    const gt = [makeGT(1, 2)];
+    expect(computeMAP(results, gt, 2)).toBeCloseTo(1.0, 4);
+  });
+
+  it('MAP-07: computeAllMetrics includes map field', () => {
+    const results = [makeResult(1, 1)];
+    const gt = [makeGT(1, 2)];
+    const metrics = computeAllMetrics({ results, groundTruth: gt });
+    expect(metrics).toHaveProperty('map');
+    expect(typeof metrics.map).toBe('number');
   });
 });

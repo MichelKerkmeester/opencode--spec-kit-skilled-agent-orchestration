@@ -1,10 +1,10 @@
 // ---------------------------------------------------------------
-// MODULE: Search Feature Flags
+// MODULE: Search Flags
+// ---------------------------------------------------------------
 // Default-on runtime gates for search pipeline controls
 //
 // Production-ready flags graduated to default-ON.
 // Set SPECKIT_<FLAG>=false to disable any graduated feature.
-// ---------------------------------------------------------------
 
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
@@ -56,7 +56,7 @@ export function isFolderDiscoveryEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_FOLDER_DISCOVERY');
 }
 
-// ── Hybrid RAG Fusion Refinement flags ──
+// -- Hybrid RAG Fusion Refinement flags --
 
 /**
  * R1 MPAB: Document-level chunk-to-memory score aggregation.
@@ -90,7 +90,7 @@ export function isNegativeFeedbackEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_NEGATIVE_FEEDBACK');
 }
 
-// ── Pipeline Refactor flags ──
+// -- Pipeline Refactor flags --
 
 /**
  * R6: 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant).
@@ -111,7 +111,7 @@ export function isEmbeddingExpansionEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_EMBEDDING_EXPANSION');
 }
 
-// ── Indexing and Graph flags ──
+// -- Indexing and Graph flags --
 
 /**
  * N3-lite: Consolidation engine — contradiction scan, Hebbian strengthening,
@@ -131,7 +131,7 @@ export function isEncodingIntentEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_ENCODING_INTENT');
 }
 
-// ── Deferred Features (graduated to default-ON) ──
+// -- Deferred Features (graduated to default-ON) --
 
 /**
  * N2a+N2b: Graph momentum scoring and causal depth signals.

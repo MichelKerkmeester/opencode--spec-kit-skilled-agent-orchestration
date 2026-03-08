@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Transaction Manager
+// ---------------------------------------------------------------
 // AI-GUARD: Atomic file + index operations with pending file recovery
 // ---------------------------------------------------------------
 
@@ -351,6 +352,9 @@ export {
   recoverAllPendingFiles,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   TransactionMetrics,
   AtomicSaveResult,

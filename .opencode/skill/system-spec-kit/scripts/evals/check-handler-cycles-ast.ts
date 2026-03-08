@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Handler Cycle Checker (AST)
+// MODULE: CheckHandlerCyclesAst
+// ---------------------------------------------------------------
 // Detects circular import/re-export dependencies in mcp_server/handlers.
 // ---------------------------------------------------------------
 

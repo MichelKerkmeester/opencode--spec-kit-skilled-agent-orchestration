@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Provider Resolution and Factory for Embeddings
+// MODULE: Factory
 // ---------------------------------------------------------------
 
 import { HfLocalProvider } from './providers/hf-local';
@@ -212,6 +212,9 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
           try {
             await provider.warmup();
           } catch (fallbackWarmupError: unknown) {
+            if (fallbackWarmupError instanceof Error) {
+              void fallbackWarmupError.message;
+            }
             console.warn(`[factory] Fallback warmup failed: ${getErrorMessage(fallbackWarmupError)}`);
             // Continue anyway - provider will attempt lazy initialization on first use
           }
@@ -222,6 +225,9 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
     return provider;
 
   } catch (error: unknown) {
+    if (error instanceof Error) {
+      void error.message;
+    }
     console.error(`[factory] Error creating provider ${providerName}:`, getErrorMessage(error));
 
     // Fallback to hf-local for cloud providers when auto-detected (not explicitly set)
@@ -244,6 +250,9 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
         try {
           await provider.warmup();
         } catch (fallbackWarmupError: unknown) {
+          if (fallbackWarmupError instanceof Error) {
+            void fallbackWarmupError.message;
+          }
           console.warn(`[factory] Fallback warmup failed: ${getErrorMessage(fallbackWarmupError)}`);
           // Continue anyway - provider will attempt lazy initialization on first use
         }
@@ -417,6 +426,9 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
     };
 
   } catch (error: unknown) {
+    if (error instanceof Error) {
+      void error.message;
+    }
     clearTimeout(timeoutId);
 
     if (isAbortError(error)) {

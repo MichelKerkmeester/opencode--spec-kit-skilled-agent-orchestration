@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Collect Session Data
+// MODULE: CollectSessionData
+// ---------------------------------------------------------------
 // Orchestrates session data collection — gathers observations, files, decisions, and context
 // ---------------------------------------------------------------
 
@@ -50,6 +51,7 @@ export type { SessionData, OutcomeEntry };
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Preflight learning metrics captured before task execution. */
 export interface PreflightData {
   knowledgeScore?: number;
   uncertaintyScore?: number;
@@ -61,6 +63,7 @@ export interface PreflightData {
   readiness?: string;
 }
 
+/** Postflight learning metrics captured after task execution. */
 export interface PostflightData {
   knowledgeScore?: number;
   uncertaintyScore?: number;
@@ -69,10 +72,12 @@ export interface PostflightData {
   newGaps?: string[];
 }
 
+/** Describes an identified gap between preflight and postflight state. */
 export interface GapDescription {
   GAP_DESCRIPTION: string;
 }
 
+/** Aggregates preflight and postflight comparison results. */
 export interface PreflightPostflightResult {
   HAS_PREFLIGHT_BASELINE: boolean;
   HAS_POSTFLIGHT_DELTA: boolean;
@@ -102,16 +107,19 @@ export interface PreflightPostflightResult {
   NEW_GAPS: GapDescription[];
 }
 
+/** Represents a pending task extracted from session context. */
 export interface PendingTask {
   TASK_ID: string;
   TASK_DESCRIPTION: string;
   TASK_PRIORITY: string;
 }
 
+/** Represents a context item included in continue-session payloads. */
 export interface ContextItem {
   CONTEXT_ITEM: string;
 }
 
+/** Captures the synthesized data needed to continue a session. */
 export interface ContinueSessionData {
   SESSION_STATUS: string;
   COMPLETION_PERCENT: number;
@@ -124,6 +132,7 @@ export interface ContinueSessionData {
   RESUME_CONTEXT: ContextItem[];
 }
 
+/** Full collected session payload used by downstream extractors. */
 export interface CollectedDataFull {
   recentContext?: RecentContextEntry[];
   observations?: Observation[];

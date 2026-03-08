@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Contamination Filter
+// MODULE: ContaminationFilter
+// ---------------------------------------------------------------
 // Removes orchestration chatter before semantic extraction
 // ---------------------------------------------------------------
 

@@ -10,9 +10,9 @@ import * as os from 'node:os';
 import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/incremental-index';
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DB HELPERS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 /**
  * Create an in-memory SQLite DB with the memory_index schema
@@ -100,9 +100,9 @@ function removeTempFile(p: string) {
   try { fs.unlinkSync(p); } catch {}
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    TESTS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 describe('MTIME_FAST_PATH_MS constant', () => {
   it('MTIME_FAST_PATH_MS is a positive number', () => {

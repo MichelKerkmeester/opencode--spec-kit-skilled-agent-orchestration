@@ -166,3 +166,7 @@ check_file() {
 check_dir() {
     [[ -d "$1" && -n "$(ls -A "$1" 2>/dev/null)" ]] && echo "  ✓ $2" || echo "  ✗ $2"
 }
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: Not on a feature branch. Current: $branch

@@ -1,9 +1,8 @@
-// @ts-nocheck
 // Converted from: trigger-extractor.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: TRIGGER EXTRACTOR
 // TF-IDF + N-gram hybrid trigger phrase extraction
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import {
@@ -151,7 +150,8 @@ describe('Trigger Extractor (T515)', () => {
 
   describe('Empty content returns empty (T515-05)', () => {
     it('T515-05a: null input returns empty array', () => {
-      const result = extractTriggerPhrases(null as unknown);
+      // @ts-expect-error Testing invalid input shape
+      const result = extractTriggerPhrases(null);
       expect(Array.isArray(result)).toBe(true);
       expect(result.length).toBe(0);
     });

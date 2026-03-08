@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Stable Providers API
+// MODULE: Providers
 // ---------------------------------------------------------------
 // @public — scripts should import from here, not lib/ internals.
 // AI-WHY: ARCH-1 re-exports provider functions through a stable surface.

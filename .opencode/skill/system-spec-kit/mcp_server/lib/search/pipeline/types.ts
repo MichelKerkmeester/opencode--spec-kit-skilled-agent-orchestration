@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Pipeline Types — 4-Stage Retrieval Pipeline Architecture
+// MODULE: Types
+// ---------------------------------------------------------------
 // Sprint 5 (R6): Stage interfaces with Stage 4 immutability invariant
 // ---------------------------------------------------------------
 
@@ -102,8 +103,11 @@ export interface Stage4ReadonlyRow extends Readonly<Pick<PipelineRow,
   evidenceGap?: { gapDetected: boolean; warning?: string };
 }
 
-// ── Pipeline Configuration ──
+// -- Pipeline Configuration --
 
+/**
+ * Normalized configuration consumed by the four-stage retrieval pipeline.
+ */
 export interface PipelineConfig {
   query: string;
   queryEmbedding?: Float32Array;
@@ -148,12 +152,18 @@ export interface PipelineConfig {
   trace?: RetrievalTrace;
 }
 
+/**
+ * Intent-aware weighting factors applied during fusion.
+ */
 export interface IntentWeightsConfig {
   similarity: number;
   importance: number;
   recency: number;
 }
 
+/**
+ * Artifact-class routing decision passed into the pipeline.
+ */
 export interface ArtifactRoutingConfig {
   detectedClass: string;
   confidence: number;
@@ -163,7 +173,7 @@ export interface ArtifactRoutingConfig {
   };
 }
 
-// ── Stage Interfaces ──
+// -- Stage Interfaces --
 
 /**
  * Stage 1: Candidate Generation
@@ -174,6 +184,9 @@ export interface Stage1Input {
   config: PipelineConfig;
 }
 
+/**
+ * Stage 1 output containing candidate rows and generation metadata.
+ */
 export interface Stage1Output {
   candidates: PipelineRow[];
   metadata: {
@@ -197,6 +210,9 @@ export interface Stage2Input {
   stage1Metadata: Stage1Output['metadata'];
 }
 
+/**
+ * Stage 2 output containing scored rows and fusion metadata.
+ */
 export interface Stage2Output {
   scored: PipelineRow[];
   metadata: {
@@ -220,6 +236,9 @@ export interface Stage3Input {
   config: PipelineConfig;
 }
 
+/**
+ * Stage 3 output containing reranked rows and reranking metadata.
+ */
 export interface Stage3Output {
   reranked: PipelineRow[];
   metadata: {
@@ -250,6 +269,9 @@ export interface Stage4Input {
   stage1Metadata?: { constitutionalInjected?: number };
 }
 
+/**
+ * Stage 4 output containing final rows, filter metadata, and annotations.
+ */
 export interface Stage4Output {
   final: Stage4ReadonlyRow[];
   metadata: {
@@ -265,8 +287,11 @@ export interface Stage4Output {
   };
 }
 
-// ── Pipeline Result ──
+// -- Pipeline Result --
 
+/**
+ * Final pipeline response returned to retrieval callers.
+ */
 export interface PipelineResult {
   results: Stage4ReadonlyRow[];
   metadata: {
@@ -279,20 +304,35 @@ export interface PipelineResult {
   trace?: RetrievalTrace;
 }
 
-// ── Stage Function Types ──
+// -- Stage Function Types --
 
+/**
+ * Executor signature for Stage 1 candidate generation.
+ */
 export type Stage1Fn = (input: Stage1Input) => Promise<Stage1Output>;
+/**
+ * Executor signature for Stage 2 fusion and signal integration.
+ */
 export type Stage2Fn = (input: Stage2Input) => Promise<Stage2Output>;
+/**
+ * Executor signature for Stage 3 reranking and aggregation.
+ */
 export type Stage3Fn = (input: Stage3Input) => Promise<Stage3Output>;
+/**
+ * Executor signature for Stage 4 filtering and annotation.
+ */
 export type Stage4Fn = (input: Stage4Input) => Promise<Stage4Output>;
 
-// ── Pipeline Orchestrator ──
+// -- Pipeline Orchestrator --
 
+/**
+ * Contract implemented by pipeline orchestrators.
+ */
 export interface PipelineOrchestrator {
   execute(config: PipelineConfig): Promise<PipelineResult>;
 }
 
-// ── Score Snapshot Utility (Runtime assertion for Stage 4 invariant) ──
+// -- Score Snapshot Utility (Runtime assertion for Stage 4 invariant) --
 
 /**
  * Captures score values from results for invariant checking.

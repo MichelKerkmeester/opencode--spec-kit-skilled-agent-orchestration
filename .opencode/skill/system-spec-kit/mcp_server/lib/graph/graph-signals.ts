@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Graph Signals — Momentum + Causal Depth (N2a + N2b)
+// MODULE: Graph Signals
+// ---------------------------------------------------------------
 // Deferred feature — gated via SPECKIT_GRAPH_SIGNALS
 // ---------------------------------------------------------------
 
@@ -212,7 +213,9 @@ function buildAdjacencyList(db: Database.Database): { adjacency: Map<number, num
 
       // Forward adjacency: source -> target
       if (!adjacency.has(source)) adjacency.set(source, []);
-      adjacency.get(source)!.push(target);
+      const sourceTargets = adjacency.get(source);
+      if (!sourceTargets) continue;
+      sourceTargets.push(target);
 
       // Track in-degree for root detection
       inDegree.set(target, (inDegree.get(target) ?? 0) + 1);

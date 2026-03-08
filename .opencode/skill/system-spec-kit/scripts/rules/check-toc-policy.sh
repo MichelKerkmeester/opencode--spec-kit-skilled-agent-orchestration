@@ -71,3 +71,6 @@ run_check() {
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     run_check "$@"
 fi
+
+# Exit codes:
+#   0 - Success

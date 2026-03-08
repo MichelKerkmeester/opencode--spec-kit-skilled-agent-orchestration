@@ -85,9 +85,18 @@ interface ExtractImportanceTierOptions {
    2. CONFIGURATION
    --------------------------------------------------------------- */
 
+/**
+ * Defines the MEMORY_FILE_PATTERN constant.
+ */
 export const MEMORY_FILE_PATTERN: RegExp = /specs\/([^/]+)(?:\/[^/]+)*\/memory\/[^/]+\.(?:md|txt)$/i;
+/**
+ * Defines the MAX_CONTENT_LENGTH constant.
+ */
 export const MAX_CONTENT_LENGTH: number = parseInt(process.env.MCP_MAX_CONTENT_LENGTH || '250000', 10);
 
+/**
+ * Defines the CONTEXT_TYPE_MAP constant.
+ */
 export const CONTEXT_TYPE_MAP: Record<string, ContextType> = {
   'implementation': 'implementation',
   'research': 'research',

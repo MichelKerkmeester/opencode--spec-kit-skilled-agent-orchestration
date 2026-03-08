@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Path Security
+// MODULE: PathSecurity
+// ---------------------------------------------------------------
 // Canonical location (moved from mcp_server/lib/utils/path-security.js)
 // ---------------------------------------------------------------
 
@@ -37,12 +38,18 @@ export function validateFilePath(filePath: string, allowedBasePaths: string[]): 
     let realResolved: string;
     try {
       realResolved = fs.realpathSync(resolved);
-    } catch {
+    } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      }
       // New files may not exist yet, so we canonicalize the parent and rebuild the target path.
       try {
         const parentReal = fs.realpathSync(path.dirname(resolved));
         realResolved = path.join(parentReal, path.basename(resolved));
-      } catch {
+      } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          void _error.message;
+        }
         // AI-WHY: When neither the target file nor its parent directory exist on disk
         // (e.g. a new file in a not-yet-created directory), realpathSync cannot
         // canonicalize the path. Falling back to path.resolve() is safe here because
@@ -62,12 +69,18 @@ export function validateFilePath(filePath: string, allowedBasePaths: string[]): 
         let realBase: string;
         try {
           realBase = fs.realpathSync(normalizedBase);
-        } catch {
+        } catch (_error: unknown) {
+          if (_error instanceof Error) {
+            void _error.message;
+          }
           realBase = normalizedBase;
         }
         const relative = path.relative(realBase, realResolved);
         return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
-      } catch {
+      } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          void _error.message;
+        }
         return false;
       }
     });

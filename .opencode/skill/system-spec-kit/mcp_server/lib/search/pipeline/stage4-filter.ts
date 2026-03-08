@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Stage 4 — Filter + Annotate
+// MODULE: Stage4 Filter
+// ---------------------------------------------------------------
 // AI-WHY: Sprint 5 (R6): Final stage of the 4-stage retrieval pipeline.
 //
 // ARCHITECTURAL INVARIANT: Stage 4 MUST NOT modify scores.
@@ -32,7 +33,6 @@
 //
 // NOT in Stage 4: session dedup — that happens after cache in the
 // main handler to avoid double-counting and cache pollution.
-// ---------------------------------------------------------------
 
 import type { Stage4Input, Stage4Output, Stage4ReadonlyRow } from './types';
 import { captureScoreSnapshot, verifyScoreInvariant } from './types';
@@ -141,21 +141,21 @@ export function filterByMemoryState(
   const minPriority = STATE_PRIORITY[normalizedMinState ?? ''] ?? UNKNOWN_STATE_PRIORITY;
   const fallbackState = normalizedMinState ?? 'ARCHIVED';
 
-  // ── 3a. Tally states before filtering ──
+  // -- 3a. Tally states before filtering --
   const statsBefore: StateStats = {};
   for (const row of results) {
     const state = normalizeStateValue(row.memoryState) ?? 'UNKNOWN';
     statsBefore[state] = (statsBefore[state] ?? 0) + 1;
   }
 
-  // ── 3b. State-priority filter ──
+  // -- 3b. State-priority filter --
   let passing = results.filter(row => {
     const state = resolveStateForFiltering(row, fallbackState);
     const priority = STATE_PRIORITY[state] ?? UNKNOWN_STATE_PRIORITY;
     return priority >= minPriority;
   });
 
-  // ── 3c. Per-tier limits (optional) ──
+  // -- 3c. Per-tier limits (optional) --
   if (applyStateLimits) {
     const tierCounters: Record<string, number> = {};
     const limitPassing: Stage4ReadonlyRow[] = [];
@@ -175,7 +175,7 @@ export function filterByMemoryState(
     passing = limitPassing;
   }
 
-  // ── 3d. Tally states after filtering ──
+  // -- 3d. Tally states after filtering --
   const statsAfter: StateStats = {};
   for (const row of passing) {
     const state = resolveStateForFiltering(row, fallbackState);
@@ -238,7 +238,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   const stageStart = Date.now();
   const { results, config } = input;
 
-  // ── Step 1: Capture score snapshot (runtime invariant) ──
+  // -- Step 1: Capture score snapshot (runtime invariant) --
   //
   // This snapshot is the source-of-truth for the "no score changes" assertion.
   // It is taken over the FULL input set BEFORE any operations, so rows that
@@ -246,7 +246,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   // verifyScoreInvariant call skips rows not present in the after-set.
   const scoresBefore = captureScoreSnapshot(results);
 
-  // ── Step 2: State filtering ──
+  // -- Step 2: State filtering --
   const filterResult = filterByMemoryState(
     results,
     config.minState,
@@ -256,7 +256,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
   let workingResults: Stage4ReadonlyRow[] = filterResult.filtered;
   const stateFiltered = filterResult.removedCount;
 
-  // ── Step 3: Evidence gap detection (TRM) ──
+  // -- Step 3: Evidence gap detection (TRM) --
   let evidenceGapDetected = false;
   let evidenceGapWarning: string | undefined;
 
@@ -277,7 +277,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
     }
   }
 
-  // ── Step 4: Build annotation metadata ──
+  // -- Step 4: Build annotation metadata --
   const featureFlags: Record<string, boolean> = {
     trmEnabled: isTRMEnabled(),
     multiQueryEnabled: isMultiQueryEnabled(),
@@ -297,7 +297,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
     featureFlags,
   };
 
-  // ── Step 5: Verify score invariant (defence-in-depth) ──
+  // -- Step 5: Verify score invariant (defence-in-depth) --
   //
   // verifyScoreInvariant checks every row that survived filtering.
   // Rows removed by filterByMemoryState are absent from workingResults,
@@ -307,7 +307,7 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
 
   const durationMs = Date.now() - stageStart;
 
-  // AI-WHY: ── Trace entry ──
+  // AI-WHY: -- Trace entry --
   if (config.trace) {
     addTraceEntry(
       config.trace,

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Embedding-Based Query Expansion (R12)
+// MODULE: Embedding Expansion
+// ---------------------------------------------------------------
 // AI-WHY: Sprint 5 Phase B — semantic query expansion using embedding similarity.
 //
 // R12/R15 Mutual Exclusion:
@@ -180,12 +181,12 @@ export async function expandQueryWithEmbeddings(
   embedding: Float32Array,
   options?: EmbeddingExpansionOptions,
 ): Promise<ExpandedQuery> {
-  // AI-GUARD: ── Guard 1: Feature flag ──────────────────────────────────────────────────
+  // AI-GUARD: -- Guard 1: Feature flag --------------------------------------------------
   if (!isEmbeddingExpansionEnabled()) {
     return identityResult(query);
   }
 
-  // AI-GUARD: ── Guard 2: R15 mutual exclusion ─────────────────────────────────────────
+  // AI-GUARD: -- Guard 2: R15 mutual exclusion -----------------------------------------
   // classifyQueryComplexity() returns "complex" when SPECKIT_COMPLEXITY_ROUTER
   // is disabled (its own feature flag). When R15 is active and classifies the
   // query as "simple", R12 expansion is suppressed to avoid latency overhead
@@ -195,7 +196,7 @@ export async function expandQueryWithEmbeddings(
     return identityResult(query);
   }
 
-  // AI-GUARD: ── Guard 3: Valid embedding ───────────────────────────────────────────────
+  // AI-GUARD: -- Guard 3: Valid embedding -----------------------------------------------
   if (!embedding || embedding.length === 0) {
     console.warn('[embedding-expansion] Received empty embedding — skipping expansion');
     return identityResult(query);
@@ -205,7 +206,7 @@ export async function expandQueryWithEmbeddings(
   const maxTerms = Math.min(options?.maxTerms ?? MAX_EXPANSION_TERMS, MAX_EXPANSION_TERMS);
 
   try {
-    // ── Step a: Vector similarity search ──────────────────────────────────────
+    // -- Step a: Vector similarity search --------------------------------------
     // Use the query embedding to find semantically similar memories.
     // includeConstitutional=false keeps expansion focused on regular content;
     // constitutional memories are injected separately in Stage 1.
@@ -214,12 +215,12 @@ export async function expandQueryWithEmbeddings(
       includeConstitutional: false,
     }) as Array<Record<string, unknown>>;
 
-    // AI-GUARD: ── Guard 4: No candidates ─────────────────────────────────────────────────
+    // AI-GUARD: -- Guard 4: No candidates -------------------------------------------------
     if (!similarMemories || similarMemories.length === 0) {
       return identityResult(query);
     }
 
-    // ── Step b: Collect content strings ───────────────────────────────────────
+    // -- Step b: Collect content strings ---------------------------------------
     const contents: string[] = [];
     for (const mem of similarMemories) {
       if (typeof mem.content === 'string' && mem.content.length > 0) {
@@ -238,7 +239,7 @@ export async function expandQueryWithEmbeddings(
       return identityResult(query);
     }
 
-    // ── Step c: Extract expansion terms ───────────────────────────────────────
+    // -- Step c: Extract expansion terms ---------------------------------------
     // Build the set of tokens already present in the original query so we
     // don't redundantly add terms that are already covered.
     const queryTokens = new Set(
@@ -253,7 +254,7 @@ export async function expandQueryWithEmbeddings(
       return identityResult(query);
     }
 
-    // AI-WHY: ── Step d: Combine ───────────────────────────────────────────────────────
+    // AI-WHY: -- Step d: Combine -------------------------------------------------------
     // Append the top expanded terms to the original query.
     // A space-separated suffix keeps the combined query compatible with both
     // FTS and embedding re-encoding without requiring a separator token.

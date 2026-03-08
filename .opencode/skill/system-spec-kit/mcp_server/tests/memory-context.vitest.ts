@@ -5,7 +5,13 @@
 
 import { describe, it, expect } from 'vitest';
 import type { MCPResponse } from '@spec-kit/shared/types';
-import { handleMemoryContext, CONTEXT_MODES, INTENT_TO_MODE, enforceTokenBudget } from '../handlers/memory-context';
+import {
+  handleMemoryContext,
+  handle_memory_context,
+  CONTEXT_MODES,
+  INTENT_TO_MODE,
+  enforceTokenBudget,
+} from '../handlers/memory-context';
 
 /* -----------------------------------------------------------------
    TYPE DEFINITIONS
@@ -242,7 +248,7 @@ describe('T021-T030: Main Handler Tests [deferred - requires DB test fixtures]',
   });
 
   it('T029: handleMemoryContext is alias for handle_memory_context', () => {
-    expect(handleMemoryContext).toBe(handleMemoryContext);
+    expect(handleMemoryContext).toBe(handle_memory_context);
   });
 
   it('T030: Handles undefined input gracefully', async () => {
@@ -289,11 +295,7 @@ describe('T031-T040: Quick Mode Configuration Tests [deferred - requires DB test
     expect(CONTEXT_MODES.quick.tokenBudget).toBe(minBudget);
   });
 
-  it('T037: Quick mode is not the default', () => {
-    // Default is 'auto' based on the implementation
-    // Quick is for explicit use only
-    expect(true).toBe(true);
-  });
+  it.todo('T037: Quick mode is not the default — needs routing fixtures for a real default-mode assertion');
 
   it('T038: Quick strategy differs from search strategies', () => {
     const quickStrategy: string = CONTEXT_MODES.quick.strategy;
@@ -514,10 +516,7 @@ describe('T071-T080: Auto Mode Configuration Tests [deferred - requires DB test 
     expect(autoBudget).toBeUndefined();
   });
 
-  it('T075: Auto mode is the default when no mode specified', () => {
-    // This is verified by the implementation: mode: requested_mode = 'auto'
-    expect(true).toBe(true);
-  });
+  it.todo('T075: Auto mode is the default when no mode specified — needs handler invocation fixtures for a real default-mode assertion');
 
   it('T076: Auto strategy differs from all other strategies', () => {
     const autoStrategy: string = CONTEXT_MODES.auto.strategy;
@@ -573,7 +572,8 @@ describe('T081-T090: L1 Orchestration Token Budget Tests [deferred - requires DB
 
   it('T083: CHK-071 - Layer structure matches L1 Orchestration pattern', () => {
     // L1 is the unified entry point per layer-definitions.js
-    expect(handleMemoryContext).toBeDefined();
+    expect(typeof handleMemoryContext).toBe('function');
+    expect(handleMemoryContext).toHaveLength(1);
   });
 
   it('T084: CHK-072 - L1 token budget is 2000 (from layer-definitions)', () => {
@@ -710,11 +710,16 @@ describe('T101-T105: Module Exports Tests [deferred - requires DB test fixtures]
   });
 
   it('T102: CONTEXT_MODES is exported', () => {
-    expect(typeof CONTEXT_MODES).toBe('object');
+    expect(Object.keys(CONTEXT_MODES).sort()).toEqual(['auto', 'deep', 'focused', 'quick', 'resume']);
   });
 
   it('T103: INTENT_TO_MODE is exported', () => {
-    expect(typeof INTENT_TO_MODE).toBe('object');
+    expect(INTENT_TO_MODE).toMatchObject({
+      add_feature: 'deep',
+      fix_bug: 'focused',
+      refactor: 'deep',
+      understand: 'focused',
+    });
   });
 
   it('T104: handleMemoryContext backward compatibility alias exists', () => {
@@ -722,7 +727,7 @@ describe('T101-T105: Module Exports Tests [deferred - requires DB test fixtures]
   });
 
   it('T105: handleMemoryContext is same as handle_memory_context', () => {
-    expect(handleMemoryContext).toBe(handleMemoryContext);
+    expect(handleMemoryContext).toBe(handle_memory_context);
   });
 });
 
@@ -846,12 +851,12 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
     };
 
     const { result: truncated, enforcement } = enforceTokenBudget(mockResult, 500);
-    if (enforcement.truncated) {
-      const contentArr = (truncated as Record<string, unknown>).content as Array<{ type: string; text: string }>;
-      const parsed = JSON.parse(contentArr[0].text);
-      expect(parsed.data.count).toBe(parsed.data.results.length);
-    }
-    expect(true).toBe(true);
+    expect(enforcement.truncated).toBe(true);
+
+    const contentArr = (truncated as Record<string, unknown>).content as Array<{ type: string; text: string }>;
+    const parsed = JSON.parse(contentArr[0].text);
+    expect(parsed.data.count).toBe(parsed.data.results.length);
+    expect(parsed.data.count).toBeLessThan(results.length);
   });
 
   it('T209: Each mode token budget matches CONTEXT_MODES definition', () => {

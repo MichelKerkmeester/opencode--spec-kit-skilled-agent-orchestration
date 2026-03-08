@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Session Extractor
+// MODULE: SessionExtractor
+// ---------------------------------------------------------------
 // Extracts session metadata — ID, title, duration, key topics, and learning delta
 // ---------------------------------------------------------------
 
@@ -20,6 +21,7 @@ import {
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Counts tool usage by category within a session. */
 export interface ToolCounts {
   Read: number;
   Edit: number;
@@ -34,6 +36,7 @@ export interface ToolCounts {
   [key: string]: number;
 }
 
+/** High-level characteristics inferred from the session. */
 export interface SessionCharacteristics {
   contextType: string;
   importanceTier: string;
@@ -41,11 +44,13 @@ export interface SessionCharacteristics {
   toolCounts: ToolCounts;
 }
 
+/** Progress summary for an individual tracked file. */
 export interface FileProgressEntry {
   FILE_NAME: string;
   FILE_STATUS: string;
 }
 
+/** Snapshot of the project state captured for session output. */
 export interface ProjectStateSnapshot {
   projectPhase: string;
   activeFile: string;
@@ -55,12 +60,14 @@ export interface ProjectStateSnapshot {
   fileProgress: FileProgressEntry[];
 }
 
+/** Related documentation entry referenced by the session. */
 export interface RelatedDoc {
   FILE_NAME: string;
   FILE_PATH: string;
   DESCRIPTION: string;
 }
 
+/** Observation item consumed by the session extractor. */
 export interface Observation {
   type?: string;
   narrative?: string;
@@ -70,23 +77,27 @@ export interface Observation {
   files?: string[];
 }
 
+/** User prompt metadata consumed by the session extractor. */
 export interface UserPrompt {
   prompt: string;
   timestamp?: string;
 }
 
+/** File entry metadata consumed by the session extractor. */
 export interface FileEntry {
   FILE_PATH: string;
   FILE_NAME?: string;
   DESCRIPTION?: string;
 }
 
+/** Spec file entry metadata consumed by the session extractor. */
 export interface SpecFileEntry {
   FILE_NAME: string;
   FILE_PATH?: string;
   DESCRIPTION?: string;
 }
 
+/** Recent context entry used for session summarization. */
 export interface RecentContextEntry {
   learning?: string;
   request?: string;
@@ -94,6 +105,7 @@ export interface RecentContextEntry {
   files?: string[];
 }
 
+/** Input parameters required to build a project state snapshot. */
 export interface ProjectStateParams {
   toolCounts: ToolCounts;
   observations: Observation[];
@@ -123,7 +135,10 @@ function getChannel(): string {
     return branch === 'HEAD'
       ? `detached:${execSync('git rev-parse --short HEAD', { encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'] }).trim()}`
       : branch;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return 'default';
+    }
     return 'default';
   }
 }
@@ -307,7 +322,10 @@ async function detectRelatedDocs(specFolderPath: string): Promise<RelatedDoc[]> 
     try {
       await fs.access(filePath);
       return true;
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return false;
+      }
       return false;
     }
   };

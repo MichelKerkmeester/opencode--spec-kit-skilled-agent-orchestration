@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Retrieval Trace & Context Envelope Contracts
+// MODULE: RetrievalTrace
 // ---------------------------------------------------------------
 // Typed contracts for the retrieval pipeline that enforce end-to-end
 // type safety with trace stages and degraded-mode handling.

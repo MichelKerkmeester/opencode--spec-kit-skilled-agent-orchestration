@@ -686,7 +686,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     });
     _evalQueryId = evalEntry.queryId;
     _evalRunId = evalEntry.evalRunId;
-  } catch { /* eval logging must never break search */ }
+  } catch (_error: unknown) { /* eval logging must never break search */ }
 
   const artifactRoutingQuery = resolveArtifactRoutingQuery(
     normalizedQuery,
@@ -889,7 +889,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
               parsed.summary = `${pipelineResult.annotations.evidenceGapWarning}\n\n${parsed.summary}`;
               formatted.content[0].text = JSON.stringify(parsed, null, 2);
             }
-          } catch {
+          } catch (_error: unknown) {
             // Non-fatal
           }
         }
@@ -979,7 +979,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   // AI-TRACE:T004: Consumption instrumentation — log search event (fail-safe, never throws)
   try {
-    const db = (() => { try { return requireDb(); } catch { return null; } })();
+    const db = (() => { try { return requireDb(); } catch (_error: unknown) { return null; } })();
     if (db) {
       initConsumptionLog(db);
       let resultIds: number[] = [];
@@ -992,7 +992,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           resultIds = results.map(r => r.id as number).filter(id => typeof id === 'number');
           resultCount = Array.isArray(data?.results) ? (data.results as unknown[]).length : 0;
         }
-      } catch { /* ignore parse errors */ }
+      } catch (_error: unknown) { /* ignore parse errors */ }
       logConsumptionEvent(db, {
         event_type: 'search',
         query_text: normalizedQuery ?? (Array.isArray(concepts) ? concepts.join(', ') : null),
@@ -1004,7 +1004,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         spec_folder_filter: specFolder ?? null,
       });
     }
-  } catch { /* instrumentation must never cause search to fail */ }
+  } catch (_error: unknown) { /* instrumentation must never cause search to fail */ }
 
   // AI-TRACE:T005: Eval logger — capture final results at pipeline exit (fail-safe)
   try {

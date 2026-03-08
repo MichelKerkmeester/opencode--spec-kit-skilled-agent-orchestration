@@ -22,14 +22,14 @@ function runPostMutationHooks(
   try {
     triggerMatcher.clearCache();
     triggerCacheCleared = true;
-  } catch {
+  } catch (_error: unknown) {
     triggerCacheCleared = false;
   }
 
   let toolCacheInvalidated = 0;
   try {
     toolCacheInvalidated = toolCache.invalidateOnWrite(operation, context);
-  } catch {
+  } catch (_error: unknown) {
     toolCacheInvalidated = 0;
   }
 
@@ -37,7 +37,7 @@ function runPostMutationHooks(
   try {
     clearConstitutionalCache();
     constitutionalCacheCleared = true;
-  } catch {
+  } catch (_error: unknown) {
     constitutionalCacheCleared = false;
   }
 
@@ -45,7 +45,7 @@ function runPostMutationHooks(
   try {
     clearGraphSignalsCache();
     graphSignalsCacheCleared = true;
-  } catch {
+  } catch (_error: unknown) {
     graphSignalsCacheCleared = false;
   }
 
@@ -53,7 +53,7 @@ function runPostMutationHooks(
   try {
     clearRelatedCache();
     coactivationCacheCleared = true;
-  } catch {
+  } catch (_error: unknown) {
     coactivationCacheCleared = false;
   }
 

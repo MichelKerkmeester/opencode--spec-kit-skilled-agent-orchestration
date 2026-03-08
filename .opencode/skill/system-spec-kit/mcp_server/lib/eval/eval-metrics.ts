@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Metrics
+// ---------------------------------------------------------------
 // T006a-e: Pure computation functions for 11 evaluation metrics
 // (6 core + 5 diagnostic). No DB access, no side effects.
 // ---------------------------------------------------------------
@@ -50,6 +51,7 @@ export interface AllMetrics {
   coldStartDetectionRate: number;
   precision: number;
   f1: number;
+  map: number;
   intentWeightedNdcg: number;
 }
 
@@ -234,6 +236,46 @@ export function computeF1(
   const r = hits / relevantIds.size;
   if (p + r === 0) return 0;
   return 2 * (p * r) / (p + r);
+}
+
+/**
+ * Mean Average Precision (MAP).
+ *
+ * AP = (1 / |relevant|) × Σ(Precision@k × rel(k)) for k = 1..K
+ * where rel(k) is 1 if the k-th result is relevant, 0 otherwise.
+ *
+ * MAP is the mean of AP across queries (single query here since
+ * results are pre-filtered per call).
+ *
+ * @param results - Retrieved results for the query.
+ * @param groundTruth - Ground truth relevance judgments.
+ * @param k - Cutoff. Defaults to 20.
+ * @returns Value in [0, 1]. Returns 0 for empty inputs.
+ */
+export function computeMAP(
+  results: EvalResult[],
+  groundTruth: GroundTruthEntry[],
+  k: number = 20,
+): number {
+  if (results.length === 0 || groundTruth.length === 0) return 0;
+
+  const relevantIds = new Set(
+    groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
+  );
+  if (relevantIds.size === 0) return 0;
+
+  const topResults = topK(results, k);
+  let hits = 0;
+  let sumPrecision = 0;
+
+  for (let i = 0; i < topResults.length; i++) {
+    if (relevantIds.has(topResults[i].memoryId)) {
+      hits++;
+      sumPrecision += hits / (i + 1); // Precision@(i+1)
+    }
+  }
+
+  return sumPrecision / relevantIds.size;
 }
 
 /**
@@ -534,6 +576,7 @@ export function computeAllMetrics(params: {
     recall: computeRecall(results, groundTruth),
     precision: computePrecision(results, groundTruth),
     f1: computeF1(results, groundTruth),
+    map: computeMAP(results, groundTruth),
     hitRate: computeHitRate(results, groundTruth),
     inversionRate: computeInversionRate(results, groundTruth),
     constitutionalSurfacingRate: computeConstitutionalSurfacingRate(results, constitutionalIds),

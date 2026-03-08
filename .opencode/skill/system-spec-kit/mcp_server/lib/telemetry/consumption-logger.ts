@@ -15,8 +15,14 @@ import Database from 'better-sqlite3';
    1. TYPES
 --------------------------------------------------------------- */
 
+/**
+ * Defines the ConsumptionEventType type.
+ */
 export type ConsumptionEventType = 'search' | 'context' | 'triggers';
 
+/**
+ * Describes the ConsumptionEvent shape.
+ */
 export interface ConsumptionEvent {
   event_type: ConsumptionEventType;
   query_text?: string | null;
@@ -30,6 +36,9 @@ export interface ConsumptionEvent {
   metadata?: Record<string, unknown> | null;
 }
 
+/**
+ * Describes the ConsumptionStatsOptions shape.
+ */
 export interface ConsumptionStatsOptions {
   event_type?: ConsumptionEventType;
   session_id?: string;
@@ -37,6 +46,9 @@ export interface ConsumptionStatsOptions {
   limit?: number;
 }
 
+/**
+ * Describes the ConsumptionStats shape.
+ */
 export interface ConsumptionStats {
   total_events: number;
   by_event_type: Record<string, number>;
@@ -46,6 +58,9 @@ export interface ConsumptionStats {
   unique_sessions: number;
 }
 
+/**
+ * Describes the ConsumptionPattern shape.
+ */
 export interface ConsumptionPattern {
   category: string;
   description: string;
@@ -53,6 +68,9 @@ export interface ConsumptionPattern {
   examples: string[];
 }
 
+/**
+ * Describes the ConsumptionPatternsOptions shape.
+ */
 export interface ConsumptionPatternsOptions {
   limit?: number;
 }

@@ -5,7 +5,7 @@
 // Free Spaced Repetition Scheduler v4 algorithm implementation
 //
 // T301: TWO-DOMAIN DECAY MODEL (Single Source of Truth)
-// ─────────────────────────────────────────────────────
+// -----------------------------------------------------
 // Long-term memory (this file):
 //   FSRS v4 power-law: R(t) = (1 + FSRS_FACTOR * t/S)^FSRS_DECAY
 //   Timescale: days/weeks. Constants: FSRS_FACTOR=19/81, FSRS_DECAY=-0.5

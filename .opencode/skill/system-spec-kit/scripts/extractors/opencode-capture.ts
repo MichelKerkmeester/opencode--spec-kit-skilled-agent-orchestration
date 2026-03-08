@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Opencode Capture
+// MODULE: OpencodeCapture
+// ---------------------------------------------------------------
 // Captures and parses OpenCode session data from JSONL conversation logs
 // ---------------------------------------------------------------
 
@@ -12,6 +13,7 @@ import * as readline from 'readline';
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** A prompt entry captured from a session transcript. */
 export interface PromptEntry {
   input: string;
   timestamp: string | null;
@@ -19,6 +21,7 @@ export interface PromptEntry {
   mode: string;
 }
 
+/** Metadata describing a captured session. */
 export interface SessionInfo {
   id: string;
   title: string;
@@ -28,6 +31,7 @@ export interface SessionInfo {
   parent_id: string | null;
 }
 
+/** Metadata describing a captured message. */
 export interface MessageInfo {
   id: string;
   session_id: string;
@@ -40,6 +44,7 @@ export interface MessageInfo {
   summary: Record<string, unknown>;
 }
 
+/** Metadata describing a captured response. */
 export interface ResponseInfo {
   content: string;
   timestamp: number;
@@ -47,6 +52,7 @@ export interface ResponseInfo {
   agent: string;
 }
 
+/** Captures one tool execution observed in the transcript. */
 export interface ToolExecution {
   tool: string;
   call_id: string | null;
@@ -59,6 +65,7 @@ export interface ToolExecution {
   messageId: string;
 }
 
+/** Represents a normalized user-assistant exchange. */
 export interface Exchange {
   userInput: string;
   assistantResponse: string;
@@ -68,6 +75,7 @@ export interface Exchange {
   mode: string;
 }
 
+/** Full conversation capture payload assembled from OpenCode artifacts. */
 export interface ConversationCapture {
   session_id: string;
   session_title: string;
@@ -108,7 +116,10 @@ async function pathExists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
     return true;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return false;
+    }
     return false;
   }
 }
@@ -117,7 +128,10 @@ async function readJsonSafe<T = unknown>(filePath: string): Promise<T | null> {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) as T;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return null;
+    }
     return null;
   }
 }
@@ -146,8 +160,10 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
           if (buffer.length > limit * 2) {
             buffer.splice(0, buffer.length - limit);
           }
-        } catch {
-          // Skip malformed lines
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            // Skip malformed lines
+          }
         }
       }
     }
@@ -206,7 +222,10 @@ function getProjectId(directory: string): string | null {
         }
       }
     }
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return null;
+    }
     return null;
   }
 
@@ -243,7 +262,10 @@ async function getRecentSessions(projectId: string, limit: number = 10): Promise
 
     sessions.sort((a, b) => b.updated - a.updated);
     return sessions.slice(0, limit);
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return [];
+    }
     return [];
   }
 }
@@ -290,7 +312,10 @@ async function getSessionMessages(sessionId: string): Promise<MessageInfo[]> {
 
     messages.sort((a, b) => a.created - b.created);
     return messages;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return [];
+    }
     return [];
   }
 }
@@ -326,7 +351,10 @@ async function getMessageParts(messageId: string): Promise<Record<string, unknow
       return aTime - bTime;
     });
     return parts;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return [];
+    }
     return [];
   }
 }

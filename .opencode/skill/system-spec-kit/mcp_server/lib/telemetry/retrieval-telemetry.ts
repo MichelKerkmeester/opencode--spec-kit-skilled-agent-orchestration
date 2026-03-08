@@ -309,6 +309,9 @@ export {
   toJSON,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   RetrievalTelemetry,
   LatencyMetrics,

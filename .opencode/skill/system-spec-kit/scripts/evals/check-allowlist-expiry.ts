@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Allowlist Expiry Checker
+// MODULE: CheckAllowlistExpiry
+// ---------------------------------------------------------------
 // Warns when allowlist exceptions are within 30 days of expiry.
 // Fails when allowlist exceptions are already expired.
 // ---------------------------------------------------------------

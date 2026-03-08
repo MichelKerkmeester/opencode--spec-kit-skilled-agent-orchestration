@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Phase 3 Telemetry Dashboard (T056)
+// MODULE: RunPhase3TelemetryDashboard
 // ---------------------------------------------------------------
 
 import fs from 'fs';

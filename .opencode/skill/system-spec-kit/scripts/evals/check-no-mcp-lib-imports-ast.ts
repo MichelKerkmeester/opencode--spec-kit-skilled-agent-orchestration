@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Import Policy Checker (AST)
+// MODULE: CheckNoMcpLibImportsAst
+// ---------------------------------------------------------------
 // AST-based enforcement for prohibited internal runtime imports.
 // Includes deep transitive re-export traversal for local barrel files.
 // ---------------------------------------------------------------

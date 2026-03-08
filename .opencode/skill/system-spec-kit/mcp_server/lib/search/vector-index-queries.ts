@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Queries — Read operations + search
+// MODULE: Vector Index Queries
 // ---------------------------------------------------------------
 // Split from vector-index-store.ts — contains ALL query/search functions,
 // content extraction, ranking, stats, cleanup, and integrity checks.
@@ -90,10 +90,15 @@ type CleanupOptions = {
   limit?: number;
 };
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    SIMPLE QUERIES
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Gets one indexed memory by identifier.
+ * @param id - The memory identifier.
+ * @returns The matching memory row, if found.
+ */
 export function get_memory(id: number): MemoryRow | null {
   const database = initialize_db();
 
@@ -108,6 +113,11 @@ export function get_memory(id: number): MemoryRow | null {
   return row || null;
 }
 
+/**
+ * Gets indexed memories for a spec folder.
+ * @param spec_folder - The spec folder to query.
+ * @returns The memory rows for the folder.
+ */
 export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
   const database = initialize_db();
 
@@ -122,14 +132,22 @@ export function get_memories_by_folder(spec_folder: string): MemoryRow[] {
   });
 }
 
-export function get_memory_count() {
+/**
+ * Gets the total number of indexed memories.
+ * @returns The total memory count.
+ */
+export function get_memory_count(): number {
   const database = initialize_db();
   const stmts = init_prepared_statements(database);
   const result = stmts.count_all.get();
   return result?.count ?? 0;
 }
 
-export function get_status_counts() {
+/**
+ * Gets memory counts grouped by embedding status.
+ * @returns The counts for each embedding status.
+ */
+export function get_status_counts(): { pending: number; success: number; failed: number; retry: number } {
   const database = initialize_db();
 
   const rows = database.prepare(`
@@ -146,7 +164,11 @@ export function get_status_counts() {
   return counts;
 }
 
-export function get_stats() {
+/**
+ * Gets summary counts for indexed memories.
+ * @returns The aggregate memory statistics.
+ */
+export function get_stats(): { total: number; pending: number; success: number; failed: number; retry: number } {
   const counts = get_status_counts();
   const total = counts.pending + counts.success + counts.failed + counts.retry;
 
@@ -156,10 +178,16 @@ export function get_stats() {
   };
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    VECTOR SEARCH
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Searches indexed memories by vector similarity.
+ * @param query_embedding - The query embedding to search with.
+ * @param options - Search options.
+ * @returns The matching memory rows.
+ */
 export function vector_search(query_embedding: EmbeddingInput, options: VectorSearchOptions = {}): MemoryRow[] {
   const sqlite_vec = get_sqlite_vec_available();
   if (!sqlite_vec) {
@@ -262,6 +290,11 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
   return [...constitutional_results, ...regular_results];
 }
 
+/**
+ * Gets constitutional memories for prompt assembly.
+ * @param options - Retrieval options.
+ * @returns The constitutional memory rows.
+ */
 export function get_constitutional_memories_public(
   options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {}
 ): MemoryRow[] {
@@ -279,6 +312,12 @@ export function get_constitutional_memories_public(
   return results;
 }
 
+/**
+ * Searches indexed memories with multiple concept embeddings.
+ * @param concept_embeddings - The concept embeddings to search with.
+ * @param options - Search options.
+ * @returns The matching memory rows.
+ */
 export function multi_concept_search(
   concept_embeddings: EmbeddingInput[],
   options: { limit?: number; specFolder?: string | null; minSimilarity?: number; includeArchived?: boolean } = {}
@@ -363,11 +402,17 @@ export function multi_concept_search(
   });
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    CONTENT EXTRACTION HELPERS
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
-export function extract_title(content: unknown, filename?: string) {
+/**
+ * Extracts a display title from indexed content.
+ * @param content - The content to inspect.
+ * @param filename - The optional source filename.
+ * @returns The extracted title.
+ */
+export function extract_title(content: unknown, filename?: string): string {
   if (!content || typeof content !== 'string') {
     return filename ? path.basename(filename, path.extname(filename)) : 'Untitled';
   }
@@ -396,7 +441,13 @@ export function extract_title(content: unknown, filename?: string) {
   return filename ? path.basename(filename, path.extname(filename)) : 'Untitled';
 }
 
-export function extract_snippet(content: unknown, max_length = 200) {
+/**
+ * Extracts a preview snippet from indexed content.
+ * @param content - The content to inspect.
+ * @param max_length - The maximum snippet length.
+ * @returns The extracted snippet.
+ */
+export function extract_snippet(content: unknown, max_length = 200): string {
   if (!content || typeof content !== 'string') {
     return '';
   }
@@ -441,6 +492,11 @@ export function extract_snippet(content: unknown, max_length = 200) {
   return snippet;
 }
 
+/**
+ * Extracts tags from indexed content.
+ * @param content - The content to inspect.
+ * @returns The extracted tags.
+ */
 export function extract_tags(content: unknown): string[] {
   if (!content || typeof content !== 'string') {
     return [];
@@ -477,7 +533,13 @@ export function extract_tags(content: unknown): string[] {
   return Array.from(tags);
 }
 
-export function extract_date(content: unknown, file_path?: string) {
+/**
+ * Extracts a relevant date from indexed content or path.
+ * @param content - The content to inspect.
+ * @param file_path - The optional source file path.
+ * @returns The extracted date, if available.
+ */
+export function extract_date(content: unknown, file_path?: string): string | null {
   if (content && typeof content === 'string') {
     const date_match = content.match(/^---[\s\S]*?^date:\s*(.+)$/m);
     if (date_match && date_match[1]) {
@@ -511,10 +573,15 @@ export function extract_date(content: unknown, file_path?: string) {
   return null;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    EMBEDDING GENERATION WRAPPER
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Generates an embedding for a search query.
+ * @param query - The search query.
+ * @returns A promise that resolves to the embedding, if generated.
+ */
 export async function generate_query_embedding(query: string): Promise<Float32Array | null> {
   if (!query || typeof query !== 'string' || query.trim().length === 0) {
     console.warn('[vector-index] Empty query provided for embedding');
@@ -531,10 +598,16 @@ export async function generate_query_embedding(query: string): Promise<Float32Ar
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    KEYWORD SEARCH FALLBACK
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Searches indexed memories using keyword matching.
+ * @param query - The search query.
+ * @param options - Search options.
+ * @returns The matching memory rows.
+ */
 export function keyword_search(
   query: string,
   options: { limit?: number; specFolder?: string | null; includeArchived?: boolean } = {}
@@ -608,10 +681,17 @@ export function keyword_search(
   });
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ENRICHED VECTOR SEARCH
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Runs enriched vector search for a text query.
+ * @param query - The search query.
+ * @param limit - The maximum number of results to return.
+ * @param options - Search options.
+ * @returns A promise that resolves to enriched search results.
+ */
 export async function vector_search_enriched(
   query: string,
   limit = 20,
@@ -678,10 +758,17 @@ export async function vector_search_enriched(
   return enriched_results;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    MULTI-CONCEPT ENRICHED SEARCH
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Runs enriched search across multiple concepts.
+ * @param concepts - The concept queries or embeddings.
+ * @param limit - The maximum number of results to return.
+ * @param options - Search options.
+ * @returns A promise that resolves to enriched search results.
+ */
 export async function multi_concept_search_enriched(
   concepts: Array<string | EmbeddingInput>,
   limit = 20,
@@ -752,6 +839,13 @@ export async function multi_concept_search_enriched(
   return enriched_results;
 }
 
+/**
+ * Runs keyword search for multiple concepts.
+ * @param concepts - The concept terms to search for.
+ * @param limit - The maximum number of results to return.
+ * @param options - Search options.
+ * @returns A promise that resolves to enriched search results.
+ */
 export async function multi_concept_keyword_search(
   concepts: string[],
   limit = 20,
@@ -819,6 +913,11 @@ export async function multi_concept_keyword_search(
   return enriched_results;
 }
 
+/**
+ * Parses quoted phrases from a search query.
+ * @param query - The search query.
+ * @returns The quoted search terms.
+ */
 export function parse_quoted_terms(query: string): string[] {
   if (!query || typeof query !== 'string') {
     return [];
@@ -837,11 +936,16 @@ export function parse_quoted_terms(query: string): string[] {
   return quoted;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    SMART RANKING AND DIVERSITY
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // BUG-012 FIX: Weights read from config instead of hardcoded
+/**
+ * Applies smart ranking weights to enriched results.
+ * @param results - The results to rank.
+ * @returns The ranked results.
+ */
 export function apply_smart_ranking(results: EnrichedSearchResult[]): EnrichedSearchResult[] {
   if (!results || results.length === 0) return results;
 
@@ -876,6 +980,12 @@ export function apply_smart_ranking(results: EnrichedSearchResult[]): EnrichedSe
 }
 
 // Apply diversity filtering using MMR (Maximal Marginal Relevance)
+/**
+ * Applies diversity reordering to enriched results.
+ * @param results - The results to diversify.
+ * @param diversity_factor - The diversity weight to apply.
+ * @returns The diversified results.
+ */
 export function apply_diversity(results: EnrichedSearchResult[], diversity_factor = 0.3): EnrichedSearchResult[] {
   if (!results || results.length <= 3) return results;
 
@@ -914,10 +1024,15 @@ export function apply_diversity(results: EnrichedSearchResult[], diversity_facto
   return selected;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    RELATED MEMORIES AND USAGE TRACKING
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Gets memories related to a stored memory.
+ * @param memory_id - The memory identifier.
+ * @returns The related memory rows.
+ */
 export function get_related_memories(memory_id: number): MemoryRow[] {
   try {
     const database = initialize_db();
@@ -948,7 +1063,12 @@ export function get_related_memories(memory_id: number): MemoryRow[] {
   }
 }
 
-export function get_usage_stats(options: UsageStatsOptions = {}) {
+/**
+ * Gets usage statistics for indexed memories.
+ * @param options - Sorting and limit options.
+ * @returns The usage statistics rows.
+ */
+export function get_usage_stats(options: UsageStatsOptions = {}): Array<{ id: number; title: string | null; spec_folder: string; file_path: string; access_count: number; last_accessed: number | null; confidence: number | null; created_at: string }> {
   const {
     sortBy = 'access_count',
     order = 'DESC',
@@ -968,16 +1088,30 @@ export function get_usage_stats(options: UsageStatsOptions = {}) {
     WHERE access_count > 0
     ORDER BY ${sort_field} ${sort_order}
     LIMIT ?
-  `).all(limit);
+  `).all(limit) as Array<{
+    id: number;
+    title: string | null;
+    spec_folder: string;
+    file_path: string;
+    access_count: number;
+    last_accessed: number | null;
+    confidence: number | null;
+    created_at: string;
+  }>;
 
   return rows;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    CLEANUP FUNCTIONS
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
-export function find_cleanup_candidates(options: CleanupOptions = {}) {
+/**
+ * Finds memory records that are candidates for cleanup.
+ * @param options - Cleanup thresholds and limits.
+ * @returns The cleanup candidate details.
+ */
+export function find_cleanup_candidates(options: CleanupOptions = {}): Array<{ id: number; specFolder: string; filePath: string; title: string; createdAt: string | undefined; lastAccessedAt: number | undefined; accessCount: number; confidence: number; ageString: string; lastAccessString: string; reasons: string[] }> {
   const database = initialize_db();
 
   const {
@@ -1063,7 +1197,13 @@ export function find_cleanup_candidates(options: CleanupOptions = {}) {
   });
 }
 
-export function get_memory_preview(memory_id: number, max_lines = 50) {
+/**
+ * Builds a preview payload for a stored memory.
+ * @param memory_id - The memory identifier.
+ * @param max_lines - The maximum number of file lines to include.
+ * @returns The memory preview, if found.
+ */
+export function get_memory_preview(memory_id: number, max_lines = 50): { id: number; specFolder: string; filePath: string; title: string; createdAt: string | undefined; lastAccessedAt: number | undefined; accessCount: number; confidence: number; ageString: string; lastAccessString: string; content: string } | null {
   const database = initialize_db();
 
   let memory: MemoryRow | undefined;
@@ -1113,12 +1253,17 @@ export function get_memory_preview(memory_id: number, max_lines = 50) {
   };
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DATABASE INTEGRITY
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // BUG-013 FIX: Added autoClean option for automatic orphan cleanup
-export function verify_integrity(options: { autoClean?: boolean } = {}) {
+/**
+ * Verifies vector-index consistency and optional cleanup results.
+ * @param options - Integrity verification options.
+ * @returns The integrity summary.
+ */
+export function verify_integrity(options: { autoClean?: boolean } = {}): { totalMemories: number; totalVectors: number; orphanedVectors: number; missingVectors: number; orphanedFiles: Array<{ id: number; file_path: string; reason: string }>; orphanedChunks: number; isConsistent: boolean; cleaned?: { vectors: number; chunks: number } } {
   const { autoClean = false } = options;
   const database = initialize_db();
   const sqlite_vec = get_sqlite_vec_available();

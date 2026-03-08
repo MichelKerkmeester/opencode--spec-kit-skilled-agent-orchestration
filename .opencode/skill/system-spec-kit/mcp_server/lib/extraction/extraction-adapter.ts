@@ -289,6 +289,9 @@ export {
   resetExtractionMetrics,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   ExtractionRule,
   ExtractionMetrics,

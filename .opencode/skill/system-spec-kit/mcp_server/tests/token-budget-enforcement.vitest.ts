@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: TOKEN BUDGET ENFORCEMENT
 // ---------------------------------------------------------------
@@ -53,7 +52,7 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
     it('T205-A3: All 7 layers have positive token budgets', () => {
       const layers = layerDefs.LAYER_DEFINITIONS;
       for (const [id, layer] of Object.entries(layers)) {
-        expect((layer as unknown).tokenBudget, `${id} should have positive budget`).toBeGreaterThan(0);
+        expect((layer as { tokenBudget: number }).tokenBudget, `${id} should have positive budget`).toBeGreaterThan(0);
       }
     });
   });
@@ -65,7 +64,11 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
     it('T205-B1: Small result under budget is not truncated', () => {
       if (!memoryContext?.enforceTokenBudget) return;
 
-      const smallResult = { content: [{ type: 'text', text: '{"data":{"results":[{"id":1}]},"meta":{}}' }] };
+      const smallResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
+        content: [{ type: 'text', text: '{"data":{"results":[{"id":1}]},"meta":{}}' }],
+      };
       const { enforcement } = memoryContext.enforceTokenBudget(smallResult, 2000);
       expect(enforcement.enforced).toBe(false);
       expect(enforcement.truncated).toBe(false);
@@ -81,7 +84,9 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
         content: 'A'.repeat(200),
         score: 1.0 - (i * 0.01),
       }));
-      const mockResult = {
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
         content: [{
           type: 'text',
           text: JSON.stringify({ data: { results, count: 50 }, meta: {} })
@@ -105,7 +110,9 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
         content: 'B'.repeat(300),
         score: 1.0 - (i * 0.01),
       }));
-      const mockResult = {
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
         content: [{
           type: 'text',
           text: JSON.stringify({ data: { results, count: 20 }, meta: {} })
@@ -114,8 +121,9 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
 
       const { result: truncatedResult, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
       if (enforcement.truncated) {
-        const parsed = JSON.parse(truncatedResult.content[0].text);
-        const returnedIds = parsed.data.results.map((r: any) => r.id);
+        const content = truncatedResult.content as Array<{ text: string }>;
+        const parsed = JSON.parse(content[0].text) as { data: { results: Array<{ id: number }> } };
+        const returnedIds = parsed.data.results.map((r) => r.id);
         expect(returnedIds[0]).toBe(0);
       }
       // If not truncated, it fit within budget — also acceptable
@@ -186,9 +194,20 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       if (!memoryContext?.CONTEXT_MODES) return;
 
       const modes = memoryContext.CONTEXT_MODES;
-      expect(modes.quick.tokenBudget).toBeLessThan(modes.resume.tokenBudget);
-      expect(modes.resume.tokenBudget).toBeLessThan(modes.focused.tokenBudget);
-      expect(modes.focused.tokenBudget).toBeLessThan(modes.deep.tokenBudget);
+      const quickBudget = modes.quick.tokenBudget;
+      const resumeBudget = modes.resume.tokenBudget;
+      const focusedBudget = modes.focused.tokenBudget;
+      const deepBudget = modes.deep.tokenBudget;
+      expect(quickBudget).toBeDefined();
+      expect(resumeBudget).toBeDefined();
+      expect(focusedBudget).toBeDefined();
+      expect(deepBudget).toBeDefined();
+      if (quickBudget === undefined || resumeBudget === undefined || focusedBudget === undefined || deepBudget === undefined) {
+        throw new Error('Expected all non-auto mode budgets to be defined');
+      }
+      expect(quickBudget).toBeLessThan(resumeBudget);
+      expect(resumeBudget).toBeLessThan(focusedBudget);
+      expect(focusedBudget).toBeLessThan(deepBudget);
     });
   });
 });

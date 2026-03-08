@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Co-Activation
+// MODULE: Co Activation
 // ---------------------------------------------------------------
 // Spreading activation for related memory retrieval
 

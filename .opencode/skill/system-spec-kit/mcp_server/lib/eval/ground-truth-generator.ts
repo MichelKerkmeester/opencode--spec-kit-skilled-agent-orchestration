@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Ground Truth Generator
+// ---------------------------------------------------------------
 // T007: Functions for generating, loading, and validating the
 // synthetic ground truth dataset for retrieval evaluation.
 //

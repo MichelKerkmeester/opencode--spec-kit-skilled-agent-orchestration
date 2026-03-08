@@ -1,0 +1,437 @@
+# Fix Report F40
+
+Scanned `.opencode/skill/system-spec-kit/**/*.ts` and applied surgical standards fixes for the requested patterns.
+
+## Files changed
+
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/eval/ablation-framework.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/interfaces/vector-store.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/learning/corrections.ts`
+  - replaced Unicode separator characters in 11 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/learning/index.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/manage/pagerank.ts`
+  - converted 1 `// WHY:` comment(s) to `// AI-WHY:`
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/anchor-metadata.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/embedding-expansion.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts`
+  - replaced Unicode separator characters in 22 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/spec-folder-hierarchy.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/validation-metadata.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-aliases.ts`
+  - replaced Unicode separator characters in 5 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts`
+  - replaced Unicode separator characters in 11 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv-formats/src/formats.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv/lib/compile/index.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv/lib/compile/jtd/parse.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv/lib/compile/jtd/serialize.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv/lib/core.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/ajv/lib/runtime/parseJson.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/express-rate-limit/node_modules/ip-address/src/ipv4.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/@modelcontextprotocol/sdk/node_modules/express-rate-limit/node_modules/ip-address/src/ipv6.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/eslint/node_modules/find-up/index.d.ts`
+  - replaced Unicode separator characters in 7 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/vitest/node_modules/vite/node_modules/postcss/lib/css-syntax-error.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v3/tests/all-errors.test.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v3/tests/catch.test.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v3/tests/nullable.test.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v3/tests/optional.test.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v3/tests/string.test.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v4/classic/tests/catch.test.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/node_modules/zod/src/v4/classic/tests/error.test.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/anchor-id-simplification.vitest.ts`
+  - replaced Unicode separator characters in 7 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/anchor-prefix-matching.vitest.ts`
+  - replaced Unicode separator characters in 7 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/archival-manager.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/attention-decay.vitest.ts`
+  - replaced Unicode separator characters in 17 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges-unit.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/ceiling-quality.vitest.ts`
+  - replaced Unicode separator characters in 31 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoint-limit.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-extended.vitest.ts`
+  - replaced Unicode separator characters in 5 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-storage.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts`
+  - replaced Unicode separator characters in 11 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cognitive-gaps.vitest.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/composite-scoring.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/confidence-tracker.vitest.ts`
+  - replaced Unicode separator characters in 22 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/consumption-logger.vitest.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/content-hash-dedup.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/content-normalizer.vitest.ts`
+  - replaced Unicode separator characters in 22 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/continue-session.vitest.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/corrections.vitest.ts`
+  - replaced Unicode separator characters in 13 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cross-feature-integration-eval.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/deferred-features-integration.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/embedding-expansion.vitest.ts`
+  - replaced Unicode separator characters in 17 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/entity-linker.vitest.ts`
+  - replaced Unicode separator characters in 19 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/entity-scope.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/envelope.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/eval-db.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/eval-logger.vitest.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/feature-eval-graph-signals.vitest.ts`
+  - replaced Unicode separator characters in 5 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/feature-eval-scoring-calibration.vitest.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/fsrs-scheduler.vitest.ts`
+  - replaced Unicode separator characters in 28 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/graph-regression-flag-off.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handler-checkpoints.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handler-helpers.vitest.ts`
+  - replaced Unicode separator characters in 13 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-context.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handler-session-learning.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search.vitest.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-138-pipeline.vitest.ts`
+  - converted 2 `// WHY:` comment(s) to `// AI-WHY:`
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-learning-history.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-save-pipeline.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-search-pipeline.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-session-dedup.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-trigger-pipeline.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`
+  - replaced Unicode separator characters in 7 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/interfaces.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser-extended.vitest.ts`
+  - replaced Unicode separator characters in 15 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-extended.vitest.ts`
+  - replaced Unicode separator characters in 12 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts`
+  - replaced Unicode separator characters in 25 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/mpab-aggregation.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts`
+  - replaced Unicode separator characters in 20 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/n3lite-consolidation.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/pipeline-integration.vitest.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/pipeline-v2.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts`
+  - replaced Unicode separator characters in 12 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts`
+  - replaced Unicode separator characters in 12 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/query-classifier.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation.vitest.ts`
+  - replaced Unicode separator characters in 13 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/recovery-hints.vitest.ts`
+  - replaced Unicode separator characters in 29 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-directives.vitest.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/retry-manager.vitest.ts`
+  - replaced Unicode separator characters in 18 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/review-fixes.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/rsf-fusion.vitest.ts`
+  - replaced Unicode separator characters in 14 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/rsf-multi.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/save-quality-gate.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/scoring-gaps.vitest.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts`
+  - replaced Unicode separator characters in 19 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/session-manager.vitest.ts`
+  - replaced Unicode separator characters in 18 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/signal-vocab.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/spec-folder-hierarchy.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/spec-folder-prefilter.vitest.ts`
+  - replaced Unicode separator characters in 4 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/tier-classifier.vitest.ts`
+  - replaced Unicode separator characters in 16 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/tool-cache.vitest.ts`
+  - replaced Unicode separator characters in 11 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-extended.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/trigger-config-extended.vitest.ts`
+  - replaced Unicode separator characters in 10 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/trigger-extractor.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/trigger-matcher.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/trigger-setAttentionScore.vitest.ts`
+  - replaced Unicode separator characters in 6 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-composite-scoring-types.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-folder-scoring-types.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-fsrs-formula.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-normalization-roundtrip.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-normalization.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-path-security.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-tier-classifier-types.vitest.ts`
+  - replaced Unicode separator characters in 8 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-transaction-metrics-types.vitest.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/validation-metadata.vitest.ts`
+  - replaced Unicode separator characters in 1 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/vector-index-impl.vitest.ts`
+  - replaced Unicode separator characters in 74 header/comment line(s)
+- `.opencode/skill/system-spec-kit/mcp_server/tests/working-memory.vitest.ts`
+  - replaced Unicode separator characters in 9 header/comment line(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-node/lib/backend.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/onnxjs/backends/backend-webgl.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/onnxjs/backends/webgl/webgl-context-factory.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/onnxjs/graph.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/onnxjs/model.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/jsep/backend-webgpu.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/jsep/init.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/proxy-wrapper.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/run-options.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/session-options.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/wasm-core-impl.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/wasm-factory.ts`
+  - added `: unknown` to 3 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/lib/wasm/wasm-utils-load-file.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/node_modules/onnxruntime-web/node_modules/onnxruntime-common/lib/backend-impl.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@huggingface/transformers/types/models.d.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/async_hooks.d.ts`
+  - added `: unknown` to 2 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/events.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/fs.d.ts`
+  - replaced Unicode separator characters in 2 header/comment line(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/http.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/inspector.generated.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/stream.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/@types/node/worker_threads.d.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/node_modules/onnxruntime-common/lib/backend-impl.ts`
+  - added `: unknown` to 1 catch parameter(s)
+- `.opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts`
+  - replaced Unicode separator characters in 7 header/comment line(s)
+- `.opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/scripts/evals/run-bm25-baseline.ts`
+  - replaced Unicode separator characters in 3 header/comment line(s)
+- `.opencode/skill/system-spec-kit/scripts/lib/topic-keywords.ts`
+  - replaced 1 one-line MODULE header(s) with 3-line ASCII header(s)
+- `.opencode/skill/system-spec-kit/scripts/tests/progressive-validation.vitest.ts`
+  - replaced Unicode separator characters in 39 header/comment line(s)
+
+## Additional unicode separator cleanup pass
+
+- `.opencode/skill/system-spec-kit/mcp_server/cli.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/lib/learning/corrections.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-aliases.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/archival-manager.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/attention-decay.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges-unit.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-storage.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cognitive-gaps.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/content-hash-dedup.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/corrections.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/eval-db.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/eval-logger.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/graph-regression-flag-off.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/handler-helpers.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-save-pipeline.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/pipeline-integration.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/query-classifier.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/rsf-fusion.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/rsf-multi.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/save-quality-gate.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/scoring-gaps.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/tier-classifier.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/tool-cache.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/trigger-config-extended.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/unit-tier-classifier-types.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/mcp_server/tests/working-memory.vitest.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/scripts/evals/run-ablation.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens
+- `.opencode/skill/system-spec-kit/scripts/evals/run-bm25-baseline.ts`
+  - replaced remaining Unicode box-drawing separator characters with ASCII hyphens

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Channel Enforcement (T003b)
+// MODULE: Channel Enforcement
+// ---------------------------------------------------------------
 // Pipeline-ready wrapper around the channel min-representation check.
 // Provides a single enforceChannelRepresentation() entry point for
 // use inside the hybrid-search pipeline after RRF/RSF fusion.

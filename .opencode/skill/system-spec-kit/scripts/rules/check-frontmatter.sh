@@ -73,3 +73,6 @@ run_check() {
         RULE_MESSAGE="Frontmatter validation passed"
     fi
 }
+
+# Exit codes:
+#   0 - Success

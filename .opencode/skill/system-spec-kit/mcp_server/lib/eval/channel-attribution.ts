@@ -105,10 +105,12 @@ export function attributeChannels(
 
   for (const [channel, memoryIds] of Object.entries(channelSources)) {
     for (const id of memoryIds) {
-      if (!idToChannels.has(id)) {
-        idToChannels.set(id, new Set());
+      let channels = idToChannels.get(id);
+      if (!channels) {
+        channels = new Set();
+        idToChannels.set(id, channels);
       }
-      idToChannels.get(id)!.add(channel);
+      channels.add(channel);
     }
   }
 

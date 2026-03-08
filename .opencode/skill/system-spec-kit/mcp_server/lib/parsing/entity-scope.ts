@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Entity Scope
+// ---------------------------------------------------------------
 // Provides context type detection, scope filtering, and session ID
 // generation for the spec-kit memory system.
 // ---------------------------------------------------------------

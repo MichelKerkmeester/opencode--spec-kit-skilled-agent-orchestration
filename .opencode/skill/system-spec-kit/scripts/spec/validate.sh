@@ -599,3 +599,7 @@ main() {
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

@@ -80,7 +80,7 @@ function extractClosingAnchors(content: string): string[] {
 // ===============================================================
 
 describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
-  // ─── 0. Precondition ────────────────────────────────────────
+  // --- 0. Precondition ----------------------------------------
 
   it('S00: template file exists and is readable', () => {
     expect(fs.existsSync(TEMPLATE_PATH)).toBe(true);
@@ -88,7 +88,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     expect(content.length).toBeGreaterThan(100);
   });
 
-  // ─── 1. No composite anchor IDs ────────────────────────────
+  // --- 1. No composite anchor IDs ----------------------------
 
   describe('No composite/dynamic anchor IDs', () => {
     it('S01: NO anchor contains {{SESSION_ID}}', () => {
@@ -139,7 +139,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     });
   });
 
-  // ─── 2. Anchor format validation ───────────────────────────
+  // --- 2. Anchor format validation ---------------------------
 
   describe('Anchor format validation', () => {
     it('S05: all static anchors match VALID_ANCHOR_PATTERN', () => {
@@ -184,7 +184,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     });
   });
 
-  // ─── 3. Opening/closing pairs ──────────────────────────────
+  // --- 3. Opening/closing pairs ------------------------------
 
   describe('Opening/closing anchor pairs', () => {
     it('S08: every opening anchor has a matching closing anchor', () => {
@@ -239,7 +239,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     });
   });
 
-  // ─── 4. No duplicate static anchor IDs ─────────────────────
+  // --- 4. No duplicate static anchor IDs ---------------------
 
   describe('No duplicate anchor IDs', () => {
     it('S12: no two static anchors share the same ID', () => {
@@ -277,7 +277,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     });
   });
 
-  // ─── 5. Known anchor list ──────────────────────────────────
+  // --- 5. Known anchor list ----------------------------------
 
   describe('Known anchor list', () => {
     it('S14: all expected anchors exist in the template', () => {
@@ -321,7 +321,7 @@ describe('ANCHOR ID SIMPLIFICATION — context_template.md', () => {
     });
   });
 
-  // ─── 6. Template content integrity ─────────────────────────
+  // --- 6. Template content integrity -------------------------
 
   describe('Template content integrity', () => {
     it('S17: template version is v2.2', () => {

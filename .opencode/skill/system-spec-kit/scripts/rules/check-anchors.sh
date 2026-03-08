@@ -173,3 +173,6 @@ run_check() {
 3. Use anchor-generator.ts to auto-wrap sections with ANCHOR tags"
     fi
 }
+
+# Exit codes:
+#   0 - Success

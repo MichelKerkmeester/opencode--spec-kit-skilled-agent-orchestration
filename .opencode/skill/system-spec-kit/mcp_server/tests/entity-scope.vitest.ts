@@ -7,9 +7,9 @@ import { describe, it, expect } from 'vitest';
 import * as mod from '../lib/parsing/entity-scope';
 
 describe('Entity Scope (T514)', () => {
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Context Type Detection from Content
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Context Type Detection from Content (T514-01)', () => {
     it('T514-01a: Detects research context from content', () => {
       const research = mod.detectContextType(
@@ -40,9 +40,9 @@ describe('Entity Scope (T514)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Context Type Detection from Tools
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Context Type Detection from Tools (T514-02)', () => {
     it('T514-02a: AskUserQuestion triggers decision context', () => {
       const decisionTools = [
@@ -78,9 +78,9 @@ describe('Entity Scope (T514)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Empty Scope Handling
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Empty Scope Handling (T514-03)', () => {
     it('T514-03a: Non-matching content returns general', () => {
       const general = mod.detectContextType(
@@ -97,9 +97,9 @@ describe('Entity Scope (T514)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Build Scope Filter
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Build Scope Filter (T514-04)', () => {
     it('T514-04a: specFolder filter builds correct clause', () => {
       const folderScope = mod.buildScopeFilter({ specFolder: 'specs/001-test' });
@@ -132,9 +132,9 @@ describe('Entity Scope (T514)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Validation and Session ID
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Validation and Session ID (T514-05)', () => {
     it('T514-05a: isValidContextType accepts valid type', () => {
       expect(mod.isValidContextType('research')).toBe(true);

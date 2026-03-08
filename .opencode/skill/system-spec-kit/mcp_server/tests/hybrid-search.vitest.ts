@@ -8,9 +8,9 @@ import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion';
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    MOCK DATABASE & SEARCH FUNCTIONS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 // Mock documents for testing - each has >10 words for BM25 MIN_DOC_LENGTH requirement
 const MOCK_DOCS = [
@@ -74,9 +74,9 @@ function approxEqual(a: number, b: number, epsilon: number = 0.0001): boolean {
   return Math.abs(a - b) < epsilon;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    TEST SUITES
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 describe('Hybrid Search Unit Tests (T031+)', () => {
 
@@ -790,7 +790,7 @@ describe('Sprint 1 Search-Core Fixes (Task #2)', () => {
   });
 });
 
-// ── BUG-1 fix: Ablation channel disable integration tests ──
+// -- BUG-1 fix: Ablation channel disable integration tests --
 describe('BUG-1: Ablation channel disable via useVector/useBm25/useFts options', () => {
   let vectorCallCount: number;
 

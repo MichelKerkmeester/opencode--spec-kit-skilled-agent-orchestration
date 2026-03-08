@@ -9,37 +9,55 @@ import path from 'path';
 // @ts-ignore -- vitest runs as ESM; tsc sees CommonJS from tsconfig
 const customRequire = createRequire(import.meta.url);
 
-let collectSessionData: any;
+type ContinueSessionData = {
+  SESSION_STATUS: string;
+  COMPLETION_PERCENT: number;
+  LAST_ACTIVITY_TIMESTAMP?: string;
+  SESSION_DURATION: string;
+  CONTINUATION_COUNT: number;
+  CONTEXT_SUMMARY: string;
+  PENDING_TASKS: unknown[];
+  NEXT_CONTINUATION_COUNT: number;
+  RESUME_CONTEXT: unknown;
+};
+
+type CollectSessionDataModule = {
+  determineSessionStatus: (blockers: string, observations: Array<{ title: string; narrative?: string }>, messageCount: number) => string;
+  estimateCompletionPercent: (observations: Array<{ title: string }>, messageCount: number, toolCounts: Record<string, number>, status: string) => number;
+  buildContinueSessionData: (params: Record<string, unknown>) => ContinueSessionData;
+};
+
+let collectSessionData: CollectSessionDataModule | null = null;
 let collectSessionDataLoaded = false;
 
 try {
   const collectSessionDataPath = path.join(__dirname, '../../scripts/dist/extractors/collect-session-data.js');
-  collectSessionData = customRequire(collectSessionDataPath);
+  collectSessionData = customRequire(collectSessionDataPath) as CollectSessionDataModule;
   collectSessionDataLoaded = true;
 } catch (_err: unknown) {
 }
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // T124: CONTINUE_SESSION AUTO-GENERATION TESTS
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 const t124Describe = collectSessionDataLoaded ? describe : describe.skip;
 
 t124Describe('T124: determineSessionStatus', () => {
   it('T124-01: Returns BLOCKED when blockers exist', () => {
-    const { determineSessionStatus } = collectSessionData;
+    const { determineSessionStatus } = collectSessionData!;
     const status = determineSessionStatus('Build failing due to missing dependency', [], 5);
     expect(status).toBe('BLOCKED');
   });
 
   it('T124-02: Returns IN_PROGRESS when blockers is "None"', () => {
-    const { determineSessionStatus } = collectSessionData;
+    const { determineSessionStatus } = collectSessionData!;
     const status = determineSessionStatus('None', [], 5);
     expect(status).toBe('IN_PROGRESS');
   });
 
   it('T124-03: Returns COMPLETED when last observation indicates completion', () => {
-    const { determineSessionStatus } = collectSessionData;
+    const { determineSessionStatus } = collectSessionData!;
     const observations = [
       { title: 'Initial setup', narrative: 'Started work' },
       { title: 'Final verification', narrative: 'All tests passed. Implementation complete!' },
@@ -49,7 +67,7 @@ t124Describe('T124: determineSessionStatus', () => {
   });
 
   it('T124-04: Returns IN_PROGRESS with low message count', () => {
-    const { determineSessionStatus } = collectSessionData;
+    const { determineSessionStatus } = collectSessionData!;
     const status = determineSessionStatus('None', [], 2);
     expect(status).toBe('IN_PROGRESS');
   });
@@ -57,19 +75,19 @@ t124Describe('T124: determineSessionStatus', () => {
 
 t124Describe('T124: estimateCompletionPercent', () => {
   it('T124-05: Returns 100 for COMPLETED status', () => {
-    const { estimateCompletionPercent } = collectSessionData;
+    const { estimateCompletionPercent } = collectSessionData!;
     const percent = estimateCompletionPercent([], 5, {}, 'COMPLETED');
     expect(percent).toBe(100);
   });
 
   it('T124-06: Returns capped value for BLOCKED status', () => {
-    const { estimateCompletionPercent } = collectSessionData;
+    const { estimateCompletionPercent } = collectSessionData!;
     const percent = estimateCompletionPercent([], 20, {}, 'BLOCKED');
     expect(percent).toBeLessThanOrEqual(90);
   });
 
   it('T124-07: Estimates based on message count and tool usage', () => {
-    const { estimateCompletionPercent } = collectSessionData;
+    const { estimateCompletionPercent } = collectSessionData!;
     const toolCounts = { Write: 5, Edit: 3, Read: 10 };
     const observations = [{ title: 'test' }, { title: 'test2' }];
     const percent = estimateCompletionPercent(observations, 10, toolCounts, 'IN_PROGRESS');
@@ -78,7 +96,7 @@ t124Describe('T124: estimateCompletionPercent', () => {
   });
 
   it('T124-08: Caps at 95% for IN_PROGRESS', () => {
-    const { estimateCompletionPercent } = collectSessionData;
+    const { estimateCompletionPercent } = collectSessionData!;
     const toolCounts = { Write: 100, Edit: 100 };
     const observations = Array(20).fill({ title: 'obs' });
     const percent = estimateCompletionPercent(observations, 50, toolCounts, 'IN_PROGRESS');
@@ -104,7 +122,7 @@ t124Describe('T124: buildContinueSessionData', () => {
   };
 
   it('T124-09: Returns all required fields', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const data = buildContinueSessionData(baseParams);
     const requiredFields = [
       'SESSION_STATUS', 'COMPLETION_PERCENT', 'LAST_ACTIVITY_TIMESTAMP',
@@ -117,7 +135,7 @@ t124Describe('T124: buildContinueSessionData', () => {
   });
 
   it('T124-10: Calculates continuation count correctly', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const params = { ...baseParams, recentContext: [{ continuationCount: 3 }] };
     const data = buildContinueSessionData(params);
     expect(data.CONTINUATION_COUNT).toBe(3);
@@ -125,26 +143,26 @@ t124Describe('T124: buildContinueSessionData', () => {
   });
 
   it('T124-11: Defaults continuation count to 1', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const data = buildContinueSessionData(baseParams);
     expect(data.CONTINUATION_COUNT).toBe(1);
     expect(data.NEXT_CONTINUATION_COUNT).toBe(2);
   });
 
   it('T124-12: Includes session duration', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const data = buildContinueSessionData(baseParams);
     expect(data.SESSION_DURATION).toBe('30m');
   });
 
   it('T124-13: PENDING_TASKS is an array', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const data = buildContinueSessionData(baseParams);
     expect(Array.isArray(data.PENDING_TASKS)).toBe(true);
   });
 
   it('T124-14: Handles blocked session correctly', () => {
-    const { buildContinueSessionData } = collectSessionData;
+    const { buildContinueSessionData } = collectSessionData!;
     const params = { ...baseParams, blockers: 'Missing API key for deployment' };
     const data = buildContinueSessionData(params);
     expect(data.SESSION_STATUS).toBe('BLOCKED');
@@ -152,10 +170,10 @@ t124Describe('T124: buildContinueSessionData', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // T017-T020: CONTINUE_SESSION.md GENERATION TESTS
 // (SKIPPED — session-manager.js has DB-dependent imports)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 // @ts-nocheck — skipped section: dist/lib/session/session-manager.js
 // imports Database type and working-memory module which trigger better-sqlite3

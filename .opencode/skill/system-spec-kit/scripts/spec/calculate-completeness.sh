@@ -309,7 +309,7 @@ output_text() {
 
     if [[ ! -f "$stats_file" ]]; then
       echo "File: ${SINGLE_FILE}"
-      echo "Status: NOT FOUND"
+      echo "Status: NOT FOUND" >&2
       echo ""
       return 0
     fi
@@ -318,7 +318,7 @@ output_text() {
 
     if [[ "$exists" = "false" ]]; then
       echo "File: ${SINGLE_FILE}"
-      echo "Status: NOT FOUND"
+      echo "Status: NOT FOUND" >&2
       echo ""
       return 0
     fi
@@ -396,7 +396,7 @@ output_text() {
     echo "───────────────────────────────────────────────────────────────────"
     echo ""
     for warning in "${QUALITY_WARNINGS[@]}"; do
-      echo "  ⚠️  $warning"
+      echo "  ⚠️  $warning" >&2
     done
     echo ""
     echo "───────────────────────────────────────────────────────────────────"
@@ -574,3 +574,7 @@ else
 fi
 
 exit 0
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: Cannot create temp directory: $STATS_DIR

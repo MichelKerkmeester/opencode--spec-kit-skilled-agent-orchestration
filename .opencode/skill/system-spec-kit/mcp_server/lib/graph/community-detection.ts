@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Community Detection — BFS + Louvain (N2c)
+// MODULE: Community Detection
+// ---------------------------------------------------------------
 // Deferred feature — gated via SPECKIT_COMMUNITY_DETECTION
 // ---------------------------------------------------------------
 
@@ -68,9 +69,12 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
 
       if (!adj.has(s)) adj.set(s, new Set());
       if (!adj.has(t)) adj.set(t, new Set());
+      const sourceNeighbors = adj.get(s);
+      const targetNeighbors = adj.get(t);
+      if (!sourceNeighbors || !targetNeighbors) continue;
 
-      adj.get(s)!.add(t);
-      adj.get(t)!.add(s);
+      sourceNeighbors.add(t);
+      targetNeighbors.add(s);
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -210,8 +214,11 @@ export function detectCommunitiesLouvain(
   // Sum of degrees per community (Σ_tot)
   const sigmaTot = new Map<number, number>();
   for (const node of nodes) {
-    const cid = community.get(node)!;
-    sigmaTot.set(cid, (sigmaTot.get(cid) ?? 0) + degree.get(node)!);
+    const cid = community.get(node);
+    const nodeDegree = degree.get(node);
+    if (cid === undefined || nodeDegree === undefined) continue;
+
+    sigmaTot.set(cid, (sigmaTot.get(cid) ?? 0) + nodeDegree);
   }
 
   // Iterate
@@ -220,15 +227,18 @@ export function detectCommunitiesLouvain(
     let moved = false;
 
     for (const node of nodes) {
-      const currentCommunity = community.get(node)!;
-      const ki = degree.get(node)!;
+      const currentCommunity = community.get(node);
+      const ki = degree.get(node);
+      if (currentCommunity === undefined || ki === undefined) continue;
+
       const neighbors = adjacency.get(node);
       if (!neighbors || neighbors.size === 0) continue;
 
       // Count edges from node to each neighbouring community
       const edgesToCommunity = new Map<number, number>();
       for (const neighbor of neighbors) {
-        const nc = community.get(neighbor)!;
+        const nc = community.get(neighbor);
+        if (nc === undefined) continue;
         edgesToCommunity.set(nc, (edgesToCommunity.get(nc) ?? 0) + 1);
       }
 
@@ -555,6 +565,9 @@ export function applyCommunityBoost(
 // 12. TEST-ONLY EXPORTS
 // ---------------------------------------------------------------------------
 
+/**
+ * Defines the __testables constant.
+ */
 export const __testables = {
   buildAdjacencyList,
   loadStoredAssignments,

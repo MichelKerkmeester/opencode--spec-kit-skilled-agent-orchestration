@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: File watcher reliability and path filtering
 // ---------------------------------------------------------------
@@ -236,5 +235,66 @@ describe('file-watcher runtime behavior', () => {
       activeWatchers.splice(watcherIndex, 1);
       await watcher.close();
     }
+  });
+
+  // CHK-077: File watcher timing test — changed file re-indexed within 5 seconds
+  it('CHK-077: changed .md file re-indexed within 5 seconds of save', async () => {
+    const tempDir = await createTempDir();
+    const filePath = path.join(tempDir, 'timing-test.md');
+    await fs.writeFile(filePath, 'initial content', 'utf8');
+    const reindexFn = vi.fn(async () => undefined);
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      debounceMs: 100,
+    });
+    activeWatchers.push(watcher);
+
+    // Wait for watcher to initialize
+    await delay(200);
+
+    const startTime = performance.now();
+    await fs.writeFile(filePath, 'updated content for timing', 'utf8');
+    await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 5000 });
+    const elapsed = performance.now() - startTime;
+
+    expect(reindexFn).toHaveBeenCalled();
+    expect(elapsed).toBeLessThan(5000);
+  });
+
+  // CHK-078: Debounce coalescing — 5 rapid writes produce exactly 1 reindex
+  it('CHK-078: rapid consecutive saves debounced to exactly 1 re-index', async () => {
+    const tempDir = await createTempDir();
+    const filePath = path.join(tempDir, 'debounce-test.md');
+    await fs.writeFile(filePath, 'initial', 'utf8');
+    const reindexFn = vi.fn(async () => undefined);
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      debounceMs: 200,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(200);
+
+    // Write 5 times rapidly (20ms gaps) with unique content each time
+    for (let i = 0; i < 5; i++) {
+      await fs.writeFile(filePath, `content-${i}-${Date.now()}`, 'utf8');
+      await delay(20);
+    }
+
+    // Wait for stability + debounce + buffer to settle
+    await delay(1500);
+
+    // Wait for at least one reindex call
+    await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 3000 });
+
+    // Give a bit more time to check no additional calls
+    await delay(500);
+
+    // Should have coalesced to exactly 1 reindex call
+    expect(reindexFn.mock.calls.length).toBe(1);
   });
 });

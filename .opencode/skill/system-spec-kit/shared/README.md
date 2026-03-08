@@ -81,7 +81,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 | Category                 | Count         | Details                                          |
 | ------------------------ | ------------- | ------------------------------------------------ |
 | Top-Level TS Modules     | 8             | index, embeddings, chunking, trigger extractor, types, normalization, config, paths |
-| Top-Level Subdirectories | 7             | algorithms, contracts, embeddings, lib, parsing, scoring, utils |
+| Top-Level Subdirectories | 9             | algorithms, contracts, dist, embeddings, lib, mcp_server, parsing, scoring, utils |
 | Provider Implementations | 3             | OpenAI, HF Local, Voyage                         |
 | Embedding Dimensions     | 768/1024/1536 | Provider-dependent                               |
 

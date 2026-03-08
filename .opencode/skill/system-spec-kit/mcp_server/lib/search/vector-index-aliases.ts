@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Aliases — Caching, learning, enhanced search
+// MODULE: Vector Index Aliases
 // ---------------------------------------------------------------
 // Split from vector-index-store.ts — contains LRUCache, query caching,
 // learning from selections, and enhanced search with ranking+diversity.
@@ -51,9 +51,9 @@ type EnhancedSearchOptions = {
 
 const MAX_TRIGGERS_PER_MEMORY = search_weights.maxTriggersPerMemory || 10;
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    LRU CACHE
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // LRU Cache with O(1) eviction using doubly-linked list
 type CacheNode<TValue> = {
@@ -64,6 +64,7 @@ type CacheNode<TValue> = {
   next: CacheNode<TValue> | null;
 };
 
+/** Maintains a TTL-based least-recently-used cache for search helpers. */
 export class LRUCache<TValue> {
   max_size: number;
   ttl_ms: number;
@@ -158,27 +159,45 @@ export class LRUCache<TValue> {
   get size() { return this.cache.size; }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    QUERY CACHE
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 let query_cache: LRUCache<{ results: EnrichedSearchResult[] }> | null = null;
 
-export function get_query_cache() {
+/**
+ * Returns the shared query cache instance.
+ * @returns The initialized query cache.
+ */
+export function get_query_cache(): LRUCache<{ results: EnrichedSearchResult[] }> {
   if (!query_cache) {
     query_cache = new LRUCache(500, 15 * 60 * 1000);
   }
   return query_cache;
 }
 
-export function get_cache_key(query: string, limit: number, options: Record<string, unknown>) {
+/**
+ * Builds a stable cache key for a search request.
+ * @param query - The search query.
+ * @param limit - The requested result limit.
+ * @param options - Additional search options.
+ * @returns The cache key string.
+ */
+export function get_cache_key(query: string, limit: number, options: Record<string, unknown>): string {
   const hash = crypto.createHash('sha256');
   hash.update(JSON.stringify({ query, limit, options }));
   return hash.digest('hex').substring(0, 16);
 }
 
 // Cached version of vector_search_enriched with LRU cache
-export async function cached_search(query: string, limit = 20, options: Record<string, unknown> = {}) {
+/**
+ * Runs an enriched search with LRU caching.
+ * @param query - The search query.
+ * @param limit - The maximum number of results to return.
+ * @param options - Additional search options.
+ * @returns The enriched search results.
+ */
+export async function cached_search(query: string, limit = 20, options: Record<string, unknown> = {}): Promise<EnrichedSearchResult[]> {
   const cache = get_query_cache();
   const key = get_cache_key(query, limit, options);
 
@@ -194,7 +213,12 @@ export async function cached_search(query: string, limit = 20, options: Record<s
   return results;
 }
 
-export function clear_search_cache(spec_folder: string | null = null) {
+/**
+ * Clears cached search results globally or for one spec folder.
+ * @param spec_folder - The optional spec folder to clear.
+ * @returns The number of cleared cache entries.
+ */
+export function clear_search_cache(spec_folder: string | null = null): number {
   if (!query_cache) {
     return 0;
   }
@@ -217,11 +241,17 @@ export function clear_search_cache(spec_folder: string | null = null) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    LEARNING FROM SELECTIONS
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
-export function learn_from_selection(search_query: string, selected_memory_id: number) {
+/**
+ * Learns new trigger phrases from a selected result.
+ * @param search_query - The original search query.
+ * @param selected_memory_id - The selected memory identifier.
+ * @returns True when trigger phrases were updated.
+ */
+export function learn_from_selection(search_query: string, selected_memory_id: number): boolean {
   if (!search_query || !selected_memory_id) return false;
 
   const database = initialize_db();
@@ -279,12 +309,18 @@ export function learn_from_selection(search_query: string, selected_memory_id: n
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    RELATED MEMORIES AND ACCESS TRACKING
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // Find and link related memories when saving a new memory
-export async function link_related_on_save(new_memory_id: number, content: string) {
+/**
+ * Links a new memory to similar existing memories.
+ * @param new_memory_id - The saved memory identifier.
+ * @param content - The memory content to analyze.
+ * @returns A promise that resolves when related links are updated.
+ */
+export async function link_related_on_save(new_memory_id: number, content: string): Promise<void> {
   if (!content || typeof content !== 'string' || content.trim().length === 0) {
     return;
   }
@@ -320,7 +356,12 @@ export async function link_related_on_save(new_memory_id: number, content: strin
 }
 
 // Record memory access for usage tracking
-export function record_access(memory_id: number) {
+/**
+ * Records an access event for a memory.
+ * @param memory_id - The memory identifier.
+ * @returns True when the access update succeeds.
+ */
+export function record_access(memory_id: number): boolean {
   try {
     const database = initialize_db();
     const now = Date.now();
@@ -339,11 +380,18 @@ export function record_access(memory_id: number) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    ENHANCED SEARCH
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
-export async function enhanced_search(query: string, limit = 20, options: EnhancedSearchOptions = {}) {
+/**
+ * Runs enriched search with smart ranking and diversity controls.
+ * @param query - The search query.
+ * @param limit - The maximum number of results to return.
+ * @param options - Search tuning options.
+ * @returns The ranked search results.
+ */
+export async function enhanced_search(query: string, limit = 20, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
   const start_time = Date.now();
 
   const fetch_limit = Math.min(limit * 2, 100);

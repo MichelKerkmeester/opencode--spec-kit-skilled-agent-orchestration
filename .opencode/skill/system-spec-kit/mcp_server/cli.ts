@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: CLI Entry Point
+// MODULE: Cli
 // ---------------------------------------------------------------
 // Standalone CLI for bulk database operations, runnable from any
 // directory. Resolves its own modules via __dirname so
@@ -103,7 +103,7 @@ function runStats(): void {
   // Total count
   const totalRow = db.prepare('SELECT COUNT(*) as count FROM memory_index').get() as { count: number };
   console.log(`\nMemory Database Statistics`);
-  console.log(`${'─'.repeat(50)}`);
+  console.log(`${'-'.repeat(50)}`);
   console.log(`  Database:  ${DATABASE_PATH}`);
   console.log(`  Total:     ${totalRow.count} memories`);
 
@@ -219,7 +219,7 @@ function runBulkDelete(): void {
   const affectedCount = countResult.count;
 
   console.log(`\nBulk Delete Preview`);
-  console.log(`${'─'.repeat(50)}`);
+  console.log(`${'-'.repeat(50)}`);
   console.log(`  Tier:        ${tier}`);
   if (specFolder) console.log(`  Folder:      ${specFolder}`);
   if (olderThanDays) console.log(`  Older than:  ${olderThanDays} days`);
@@ -352,7 +352,7 @@ async function runReindex(): Promise<void> {
   const eagerWarmup = getFlag('eager-warmup');
 
   console.log(`\nReindex Memory Files`);
-  console.log(`${'─'.repeat(50)}`);
+  console.log(`${'-'.repeat(50)}`);
   console.log(`  Mode:  ${force ? 'force (all files)' : 'incremental (changed only)'}`);
   console.log(`  Warmup: ${eagerWarmup ? 'eager (startup)' : 'lazy (on demand)'}`);
 
@@ -430,7 +430,7 @@ function runSchemaDowngrade(): void {
   }
 
   console.log(`\nSchema Downgrade`);
-  console.log(`${'─'.repeat(50)}`);
+  console.log(`${'-'.repeat(50)}`);
   console.log(`  From: v16`);
   console.log(`  To:   v15`);
   if (specFolder) {

@@ -14,9 +14,9 @@ import type { GraphSearchFn } from '../lib/search/hybrid-search';
 import { isGraphUnifiedEnabled } from '../lib/search/graph-flags';
 import { init, hybridSearch, hybridSearchEnhanced, getGraphMetrics, resetGraphMetrics } from '../lib/search/hybrid-search';
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // HELPERS
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 /**
  * Build a minimal in-memory SQLite-compatible stub that satisfies
@@ -34,15 +34,15 @@ function buildStubDb() {
   };
 }
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // SUITE: T022 — Graph Channel Bypassed When Flag Is Off
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 describe('T022: Graph Channel Feature Flag Regression', () => {
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Group 1: isGraphUnifiedEnabled() — flag reading contract
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('isGraphUnifiedEnabled() — env-var contract', () => {
 
@@ -105,10 +105,10 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Group 2: Graph search function NOT called during hybridSearch
               when the module is initialised with graphFn = null
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('T022-2: hybridSearch — graph search fn NOT called when graphFn is null', () => {
     let graphFnSpy: ReturnType<typeof vi.fn>;
@@ -173,9 +173,9 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Group 3: hybridSearchEnhanced — graph channel bypass
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('T022-2e: hybridSearchEnhanced — graph search fn NOT called when graphFn is null', () => {
     let graphFnSpy: ReturnType<typeof vi.fn>;
@@ -221,9 +221,9 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Group 4: Graph channel metrics — getGraphMetrics / resetGraphMetrics
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('T022: Graph channel metrics', () => {
     const savedComplexityRouter = process.env.SPECKIT_COMPLEXITY_ROUTER;
@@ -289,10 +289,10 @@ describe('T022: Graph Channel Feature Flag Regression', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Group 5: End-to-end wiring — isGraphUnifiedEnabled() gates
               createUnifiedGraphSearchFn() reaching init()
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('T022: Flag gating controls graphFn wiring (simulation)', () => {
 

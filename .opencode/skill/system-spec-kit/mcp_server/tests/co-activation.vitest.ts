@@ -1,8 +1,8 @@
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: CO-ACTIVATION (vitest)
 // Converted from: co-activation.test.ts (custom runner)
 // Aligned with production co-activation.ts named exports
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
@@ -11,9 +11,9 @@ type CoActivationDb = Parameters<typeof coActivation.init>[0];
 const coActivationExports = coActivation as unknown as Record<string, unknown>;
 
 describe('Co-Activation Module', () => {
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      Module Exports
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('Module Exports', () => {
     // Production exports: CO_ACTIVATION_CONFIG (not CONFIG), init, isEnabled,
@@ -33,9 +33,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      CO_ACTIVATION_CONFIG values
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('CO_ACTIVATION_CONFIG values', () => {
     it('boostFactor is 0.25 (configurable via SPECKIT_COACTIVATION_STRENGTH)', () => {
@@ -63,9 +63,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      boostScore()
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('boostScore()', () => {
     // Production signature: boostScore(baseScore, relatedCount, avgSimilarity)
@@ -101,9 +101,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      init()
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('init()', () => {
     // Production init(database) just sets db = database, does NOT throw on null
@@ -118,9 +118,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      getRelatedMemories() without DB
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('getRelatedMemories() without DB', () => {
     // Production returns [] when db is null (warns to console)
@@ -138,9 +138,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      spreadActivation() without DB
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('spreadActivation() without DB', () => {
     // Production signature: spreadActivation(seedIds: number[], maxHops?, limit?)
@@ -159,9 +159,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      populateRelatedMemories() without DB
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('populateRelatedMemories() without DB', () => {
     // Production signature: populateRelatedMemories(memoryId, vectorSearchFn): Promise<number>
@@ -173,9 +173,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      C138: Pipeline Integration Tests
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('C138: Post-RRF Pipeline Integration', () => {
     it('C138-T1: spreadActivation export is a function', () => {
@@ -205,9 +205,9 @@ describe('Co-Activation Module', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      T003: Fan-Effect Divisor (R17) Tests
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('T003: Co-Activation Boost Behavior', () => {
     it('T003-1: boost scales sublinearly with relatedCount (R17 fan-effect divisor)', () => {

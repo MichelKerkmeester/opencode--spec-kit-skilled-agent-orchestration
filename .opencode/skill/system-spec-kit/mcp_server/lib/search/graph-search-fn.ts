@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Unified Graph Search Function
+// MODULE: Graph Search Fn
 // ---------------------------------------------------------------
 // Causal graph search channel — uses FTS5 for node matching
 
@@ -9,7 +9,7 @@ import { queryHierarchyMemories } from './spec-folder-hierarchy';
 import type Database from 'better-sqlite3';
 import type { GraphSearchFn } from './search-types';
 
-// ─── 1. TYPES ───
+// --- 1. TYPES ---
 
 interface CausalEdgeRow {
   id: string;
@@ -19,7 +19,7 @@ interface CausalEdgeRow {
   strength: number;
 }
 
-// ─── 2. TYPED-DEGREE CONSTANTS ───
+// --- 2. TYPED-DEGREE CONSTANTS ---
 
 /** Edge type weights for typed-degree computation (R4 5th RRF channel) */
 const EDGE_TYPE_WEIGHTS: Record<string, number> = {
@@ -40,7 +40,7 @@ const MAX_TOTAL_DEGREE = 50;
 /** Maximum normalized boost score */
 const DEGREE_BOOST_CAP = 0.15;
 
-// ─── 3. CAUSAL EDGE CHANNEL (FTS5-BACKED) ───
+// --- 3. CAUSAL EDGE CHANNEL (FTS5-BACKED) ---
 
 /**
  * Check whether the FTS5 table exists in the database.
@@ -247,7 +247,7 @@ function queryCausalEdgesLikeFallback(
   return candidates;
 }
 
-// ─── 4. TYPED-DEGREE COMPUTATION ───
+// --- 4. TYPED-DEGREE COMPUTATION ---
 
 /**
  * In-memory degree cache. Keys are stringified memory IDs.
@@ -424,7 +424,7 @@ function clearDegreeCache(): void {
   degreeCache.clear();
 }
 
-// ─── 5. FACTORY FUNCTION ───
+// --- 5. FACTORY FUNCTION ---
 
 /**
  * Creates a graph search function backed by causal_edges only.
@@ -457,7 +457,7 @@ function createUnifiedGraphSearchFn(
   };
 }
 
-// ─── 6. EXPORTS ───
+// --- 6. EXPORTS ---
 
 export {
   createUnifiedGraphSearchFn,

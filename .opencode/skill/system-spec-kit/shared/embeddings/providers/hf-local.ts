@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Hugging Face Local Embeddings Provider
+// MODULE: HfLocal
 // ---------------------------------------------------------------
 
 import { EmbeddingProfile } from '../profile';
@@ -18,6 +18,7 @@ const MODEL_LOAD_TIMEOUT: number = 120000; // 2 minutes (model is ~274MB)
 
 // Task prefixes required by nomic-embed-text-v1.5
 // See: https://huggingface.co/nomic-ai/nomic-embed-text-v1.5
+/** Defines task prefix. */
 export const TASK_PREFIX: TaskPrefixMap = {
   DOCUMENT: 'search_document: ',
   QUERY: 'search_query: ',
@@ -69,6 +70,7 @@ function getErrorCode(error: unknown): string | undefined {
   return typeof code === 'string' ? code : undefined;
 }
 
+/** Provides hf local provider. */
 export class HfLocalProvider implements IEmbeddingProvider {
   modelName: string;
   dim: number;
@@ -136,6 +138,9 @@ export class HfLocalProvider implements IEmbeddingProvider {
           this.extractor = await loadWithTimeout(targetDevice);
           currentDevice = targetDevice;
         } catch (deviceError: unknown) {
+          if (deviceError instanceof Error) {
+            void deviceError.message;
+          }
           // MPS unavailable, fallback to CPU
           if (targetDevice !== 'cpu' && !getErrorMessage(deviceError).includes('timed out')) {
             console.warn(`[hf-local] ${targetDevice.toUpperCase()} unavailable (${getErrorMessage(deviceError)}), using CPU`);
@@ -151,6 +156,9 @@ export class HfLocalProvider implements IEmbeddingProvider {
 
         return this.extractor!;
       } catch (error: unknown) {
+        if (error instanceof Error) {
+          void error.message;
+        }
         this.loadingPromise = null;
         this.isHealthy = false;
 
@@ -217,6 +225,9 @@ export class HfLocalProvider implements IEmbeddingProvider {
       return embedding;
 
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[hf-local] Generation failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       throw error;
@@ -246,6 +257,9 @@ export class HfLocalProvider implements IEmbeddingProvider {
       console.error('[hf-local] Model successfully pre-warmed');
       return true;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[hf-local] Warmup failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       return false;
@@ -278,6 +292,9 @@ export class HfLocalProvider implements IEmbeddingProvider {
       this.isHealthy = result !== null;
       return this.isHealthy;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       this.isHealthy = false;
       return false;
     }

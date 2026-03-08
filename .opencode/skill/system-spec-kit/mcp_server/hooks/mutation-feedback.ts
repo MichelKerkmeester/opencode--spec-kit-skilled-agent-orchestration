@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Mutation Feedback Hook
+// MODULE: Mutation Feedback
 // ---------------------------------------------------------------
 
 import type { MutationHookResult } from '../handlers/memory-crud-types';

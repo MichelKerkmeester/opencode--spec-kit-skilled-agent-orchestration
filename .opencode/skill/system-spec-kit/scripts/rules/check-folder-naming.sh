@@ -54,3 +54,6 @@ run_check() {
         RULE_MESSAGE="Folder name '$folder_name' follows naming convention"
     fi
 }
+
+# Exit codes:
+#   0 - Success

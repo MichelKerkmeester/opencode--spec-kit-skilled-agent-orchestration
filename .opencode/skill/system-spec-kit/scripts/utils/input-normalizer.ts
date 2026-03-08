@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Input Normalizer
+// MODULE: InputNormalizer
+// ---------------------------------------------------------------
 // Validates, normalizes, and transforms raw input data into structured session format
 // ---------------------------------------------------------------
 

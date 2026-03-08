@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Directory Setup
+// MODULE: DirectorySetup
+// ---------------------------------------------------------------
 // Creates and configures spec folder directory structure with memory subdirectories
 // ---------------------------------------------------------------
 
@@ -45,8 +46,8 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
       throw new Error(`Path exists but is not a directory: ${sanitizedPath}`);
     }
   } catch (err: unknown) {
-    const nodeErr = err as NodeJS.ErrnoException;
-    if (nodeErr.code === 'ENOENT') {
+    const nodeErr = err instanceof Error ? (err as NodeJS.ErrnoException) : undefined;
+    if (nodeErr?.code === 'ENOENT') {
       const specsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
       let availableFolders: string[] = [];
       try {
@@ -55,8 +56,10 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
           .filter((e) => e.isDirectory())
           .map((e) => e.name)
           .slice(0, 10);
-      } catch {
-        // specs/ doesn't exist or can't be read
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          // specs/ doesn't exist or can't be read
+        }
       }
 
       let errorMsg = `Spec folder does not exist: ${sanitizedPath}`;
@@ -81,17 +84,17 @@ async function setupContextDirectory(specFolder: string): Promise<string> {
   try {
     await fs.mkdir(contextDir, { recursive: true });
   } catch (mkdirError: unknown) {
-    const nodeErr = mkdirError as NodeJS.ErrnoException;
+    const nodeErr = mkdirError instanceof Error ? (mkdirError as NodeJS.ErrnoException) : undefined;
     structuredLog('error', 'Failed to create memory directory', {
       contextDir,
-      error: nodeErr.message,
-      code: nodeErr.code
+      error: nodeErr?.message ?? String(mkdirError),
+      code: nodeErr?.code
     });
 
     let errorMsg = `Failed to create memory directory: ${contextDir}`;
-    if (nodeErr.code === 'EACCES') {
+    if (nodeErr?.code === 'EACCES') {
       errorMsg += ' (Permission denied. Check directory permissions.)';
-    } else if (nodeErr.code === 'ENOSPC') {
+    } else if (nodeErr?.code === 'ENOSPC') {
       errorMsg += ' (No space left on device.)';
     }
     throw new Error(errorMsg);

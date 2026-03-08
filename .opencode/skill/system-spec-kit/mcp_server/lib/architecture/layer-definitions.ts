@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Layer Definitions
+// ---------------------------------------------------------------
 // LIB: LAYER DEFINITIONS
 // T060: 7-Layer MCP Architecture with Token Budgets
 // ---------------------------------------------------------------
@@ -36,6 +37,9 @@ export type TaskType = 'search' | 'browse' | 'modify' | 'checkpoint' | 'analyze'
    - Cognitive load: Reduce choices at each decision point
    --------------------------------------------------------------- */
 
+/**
+ * Defines the LAYER_DEFINITIONS constant.
+ */
 export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
   L1: {
     id: 'L1',
@@ -117,6 +121,9 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
    Maps each tool to its layer for quick lookup.
    --------------------------------------------------------------- */
 
+/**
+ * Defines the TOOL_LAYER_MAP constant.
+ */
 export const TOOL_LAYER_MAP: Record<string, LayerId> = {} as Record<string, LayerId>;
 for (const [layerId, layer] of Object.entries(LAYER_DEFINITIONS)) {
   for (const tool of layer.tools) {

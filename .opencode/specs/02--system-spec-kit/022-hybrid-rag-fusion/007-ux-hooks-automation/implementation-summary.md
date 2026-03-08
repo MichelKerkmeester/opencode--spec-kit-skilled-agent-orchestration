@@ -61,6 +61,6 @@ This phase implemented shared post-mutation automation for memory mutation flows
 
 ## Completion Status
 
-**Status:** Implementation complete, close-out pending.
+**Status:** Complete.
 
-The implementation and targeted verification work are in place, and `tasks.md` shows the planned work as completed. This spec should remain open until the outstanding checklist blockers are either satisfied with concrete evidence or formally deferred through the spec workflow.
+All checklist items verified (8/8 P0, 11/11 P1, 2/2 P2). Scratch files cleaned per temp-file policy. CHK-011 scoped to 007 (pre-existing stderr warnings documented as Known Limitations). Close-out confirmed 2026-03-08.

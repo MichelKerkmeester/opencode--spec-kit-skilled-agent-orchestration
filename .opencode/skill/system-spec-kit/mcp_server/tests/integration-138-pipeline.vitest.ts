@@ -105,7 +105,7 @@ function applyMMRLocal(results: SearchResult[], lambda: number, limit: number): 
   // Re-merge metadata from original results
   return selected.map(sel => {
     const orig = results.find(r => r.id === sel.id);
-    // WHY: `sel.content` is optional in MMRCandidate; coerce to string so the
+    // AI-WHY: `sel.content` is optional in MMRCandidate; coerce to string so the
     // fallback satisfies SearchResult.content (required string).
     return orig ?? {
       ...sel,
@@ -226,7 +226,7 @@ describe('C138 Integration Pipeline', () => {
   it('T5: evidence gap warning in payload iff trm.evidenceGapDetected is true', () => {
     const response = hybridSearchEnhanced('bake bread recipe', 'auto', ALL_FLAGS_ON);
 
-    // WHY: Assert both directions so the test cannot silently pass regardless
+    // AI-WHY: Assert both directions so the test cannot silently pass regardless
     // of whether a gap was detected — an unconditional check avoids vacuous truths.
     if (response.trm.evidenceGapDetected) {
       expect(response.payload).toContain('EVIDENCE GAP DETECTED');

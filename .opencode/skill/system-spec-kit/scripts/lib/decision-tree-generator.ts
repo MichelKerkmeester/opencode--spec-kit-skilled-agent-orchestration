@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: DecisionTreeGenerator
+// ---------------------------------------------------------------
 /**
  * @file decision-tree-generator.ts
  * @description Renders ASCII decision trees with options, rationale, and evidence boxes.

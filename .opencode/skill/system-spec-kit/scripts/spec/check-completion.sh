@@ -321,7 +321,7 @@ output_text() {
 
     if [[ $P0_MISSING_EVIDENCE -gt 0 || $P1_MISSING_EVIDENCE -gt 0 ]]; then
         local total_missing_evidence=$((P0_MISSING_EVIDENCE + P1_MISSING_EVIDENCE))
-        echo -e "    ${RED}✗${NC} Evidence on completed P0/P1: missing on $total_missing_evidence item(s) ${RED}(BLOCKING)${NC}"
+        echo -e "    ${RED}✗${NC} Evidence on completed P0/P1: missing on $total_missing_evidence item(s) ${RED}(BLOCKING)${NC}" >&2
     else
         echo -e "    ${GREEN}✓${NC} Evidence present for all completed P0/P1 items"
     fi
@@ -350,11 +350,11 @@ output_text() {
             ;;
         PRIORITY_CONTEXT_MISSING)
             echo -e "  ${RED}${BOLD}RESULT: BLOCKED${NC}"
-            echo -e "  Missing priority context on checklist items. Add P0/P1/P2 headers or inline tags."
+            echo -e "  Missing priority context on checklist items. Add P0/P1/P2 headers or inline tags." >&2
             ;;
         EVIDENCE_MISSING)
             echo -e "  ${RED}${BOLD}RESULT: BLOCKED${NC}"
-            echo -e "  Completed P0/P1 items are missing evidence markers. Add [EVIDENCE:] before claiming completion."
+            echo -e "  Completed P0/P1 items are missing evidence markers. Add [EVIDENCE:] before claiming completion." >&2
             ;;
     esac
 
@@ -372,7 +372,7 @@ main() {
 
     if [[ ! -f "$checklist_file" ]]; then
         if $JSON_MODE; then
-            echo '{"error": "checklist.md not found", "folder": "'"$FOLDER_PATH"'"}'
+            echo '{"error": "checklist.md not found", "folder": "'"$FOLDER_PATH"'"}' >&2
         else
             echo -e "${YELLOW}⚠${NC} No checklist.md found in $FOLDER_PATH"
             echo "  This may be a Level 1 spec (checklist not required)."
@@ -402,3 +402,8 @@ main() {
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   1 - General error
+#   2 - ERROR: Unknown option '$1'

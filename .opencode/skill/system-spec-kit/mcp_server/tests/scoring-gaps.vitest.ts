@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: SCORING GAPS
 // ---------------------------------------------------------------
@@ -9,9 +8,9 @@ import * as confMod from '../lib/scoring/confidence-tracker';
 import * as tierMod from '../lib/scoring/importance-tiers';
 import Database from 'better-sqlite3';
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    DB HELPER
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 function createTestDb() {
   const db = new Database(':memory:');
@@ -29,7 +28,7 @@ function createTestDb() {
   return db;
 }
 
-function insertMemory(db: any, id: number, opts: {
+function insertMemory(db: InstanceType<typeof Database>, id: number, opts: {
   confidence?: number;
   validation_count?: number;
   importance_tier?: string;
@@ -46,9 +45,9 @@ function insertMemory(db: any, id: number, opts: {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    CONFIDENCE-TRACKER TESTS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 describe('Scoring Gaps', () => {
   describe('PROMOTION_CONFIDENCE_THRESHOLD', () => {
@@ -93,7 +92,7 @@ describe('Scoring Gaps', () => {
       const result = confMod.promoteToCritical(db, 1);
       expect(result).toBe(true);
 
-      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get();
+      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get() as { importance_tier: string };
       expect(row.importance_tier).toBe('critical');
       db.close();
     });
@@ -103,7 +102,7 @@ describe('Scoring Gaps', () => {
       insertMemory(db, 1, { confidence: 0.95, validation_count: 7, importance_tier: 'important' });
 
       confMod.promoteToCritical(db, 1);
-      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get();
+      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get() as { importance_tier: string };
       expect(row.importance_tier).toBe('critical');
       db.close();
     });
@@ -115,7 +114,7 @@ describe('Scoring Gaps', () => {
       ).run(1, 'Old', 0.95, 6, 'normal', '2020-01-01T00:00:00.000Z');
 
       confMod.promoteToCritical(db, 1);
-      const row = db.prepare('SELECT updated_at FROM memory_index WHERE id = 1').get();
+      const row = db.prepare('SELECT updated_at FROM memory_index WHERE id = 1').get() as { updated_at: string };
       expect(row.updated_at).not.toBe('2020-01-01T00:00:00.000Z');
       db.close();
     });
@@ -159,7 +158,7 @@ describe('Scoring Gaps', () => {
       insertMemory(db, 1, { confidence: 0.4, validation_count: 2, importance_tier: 'normal' });
 
       try { confMod.promoteToCritical(db, 1); } catch {}
-      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get();
+      const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 1').get() as { importance_tier: string };
       expect(row.importance_tier).toBe('normal');
       db.close();
     });
@@ -198,9 +197,9 @@ describe('Scoring Gaps', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      IMPORTANCE-TIERS TESTS
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('getConstitutionalFilter', () => {
     it('T-IT01 returns a string', () => {

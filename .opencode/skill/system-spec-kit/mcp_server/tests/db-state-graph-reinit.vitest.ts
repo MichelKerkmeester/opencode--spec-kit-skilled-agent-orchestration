@@ -4,10 +4,11 @@
 
 import { describe, expect, it, vi } from 'vitest';
 import { init, reinitializeDatabase } from '../core/db-state';
+import type { DatabaseLike } from '../core/db-state';
 
 describe('db-state graph search wiring', () => {
   it('reuses configured graphSearchFn during database reinitialization', async () => {
-    const fakeDb = {} as any;
+    const fakeDb = {} as unknown as DatabaseLike;
     const fakeGraphFn = vi.fn();
 
     const vectorIndex = {

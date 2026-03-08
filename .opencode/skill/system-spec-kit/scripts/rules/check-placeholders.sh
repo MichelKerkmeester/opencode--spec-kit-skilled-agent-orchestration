@@ -118,3 +118,6 @@ run_check() {
         RULE_REMEDIATION="Replace [YOUR_VALUE_HERE:], [NEEDS CLARIFICATION:], and {{placeholder}} with actual values"
     fi
 }
+
+# Exit codes:
+#   0 - Success

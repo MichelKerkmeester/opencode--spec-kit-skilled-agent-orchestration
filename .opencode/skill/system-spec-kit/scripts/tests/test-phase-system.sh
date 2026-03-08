@@ -25,7 +25,7 @@ pass() {
 fail() {
   FAIL=$((FAIL + 1))
   TOTAL=$((TOTAL + 1))
-  echo "  FAIL: $1"
+  echo "  FAIL: $1" >&2
 }
 
 cleanup_all() {
@@ -72,7 +72,7 @@ echo "  test-phase-system.sh"
 echo "---------------------------------------------------------------"
 
 if [[ ! -f "$SOURCE_SCRIPTS_DIR/create.sh" ]]; then
-  echo "ERROR: create.sh not found at $SOURCE_SCRIPTS_DIR/create.sh"
+  echo "ERROR: create.sh not found at $SOURCE_SCRIPTS_DIR/create.sh" >&2
   exit 1
 fi
 
@@ -139,7 +139,7 @@ fi
 
 echo ""
 echo "---------------------------------------------------------------"
-echo "  Results: ${PASS} passed, ${FAIL} failed (of ${TOTAL})"
+echo "  Results: ${PASS} passed, ${FAIL} failed (of ${TOTAL})" >&2
 echo "---------------------------------------------------------------"
 echo ""
 
@@ -148,3 +148,7 @@ if [[ "$FAIL" -gt 0 ]]; then
 fi
 
 exit 0
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: create.sh not found at $SOURCE_SCRIPTS_DIR/create.sh

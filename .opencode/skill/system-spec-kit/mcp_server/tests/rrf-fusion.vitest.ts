@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: RRF FUSION
 // ---------------------------------------------------------------
@@ -18,6 +17,17 @@ import {
   isRrfEnabled,
 } from '@spec-kit/shared/algorithms/rrf-fusion';
 
+type FusedResult = ReturnType<typeof fuseResults>[number];
+type MultiFusedResult = ReturnType<typeof fuseResultsMulti>[number];
+
+function expectDefined<T>(value: T | undefined, label: string): T {
+  expect(value).toBeDefined();
+  if (value === undefined) {
+    throw new Error(`Expected ${label} to be defined`);
+  }
+  return value;
+}
+
 describe('RRF Fusion Core Tests (T021-T030)', () => {
   it('T021: RRF fusion with default k=60 parameter', () => {
     expect(DEFAULT_K).toBe(60);
@@ -36,8 +46,8 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
 
     const fused = fuseResults(vectorResults, ftsResults);
 
-    const doc1 = fused.find((r: any) => r.id === 'doc1');
-    const doc3 = fused.find((r: any) => r.id === 'doc3');
+    const doc1 = expectDefined(fused.find((r: FusedResult) => r.id === 'doc1'), 'doc1');
+    const doc3 = expectDefined(fused.find((r: FusedResult) => r.id === 'doc3'), 'doc3');
 
     // doc1: vector rank=0, fts rank=1 => 1/61 + 1/62 + 0.10 convergence bonus
     const expectedDoc1Base = 1 / (60 + 0 + 1) + 1 / (60 + 1 + 1);
@@ -58,9 +68,9 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
 
     const fused = fuseResultsMulti(lists);
 
-    const vecDoc = fused.find((r: any) => r.id === 'vec_only');
-    const ftsDoc = fused.find((r: any) => r.id === 'fts_only');
-    const graphDoc = fused.find((r: any) => r.id === 'graph_only');
+    const vecDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'vec_only'), 'vec_only');
+    const ftsDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'fts_only'), 'fts_only');
+    const graphDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'graph_only'), 'graph_only');
 
     expect(vecDoc.sources).toContain('vector');
     expect(ftsDoc.sources).toContain('fts');
@@ -76,8 +86,8 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
 
     const fused = fuseResultsMulti(lists);
 
-    const multiDoc = fused.find((r: any) => r.id === 'multi');
-    const singleDoc = fused.find((r: any) => r.id === 'vec_only');
+    const multiDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'multi'), 'multi');
+    const singleDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'vec_only'), 'vec_only');
 
     expect(multiDoc.sources.length).toBe(3);
     expect(singleDoc.sources.length).toBe(1);
@@ -88,7 +98,7 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const ftsResults = [{ id: 'dual', content: 'dual source' }];
 
     const fused = fuseResults(vectorResults, ftsResults);
-    const dualDoc = fused.find((r: any) => r.id === 'dual');
+    const dualDoc = expectDefined(fused.find((r: FusedResult) => r.id === 'dual'), 'dual');
 
     const baseRrf = 1 / (60 + 0 + 1) + 1 / (60 + 0 + 1);
     const expectedWithBonus = baseRrf + CONVERGENCE_BONUS;
@@ -98,10 +108,10 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
 
   it('T026: Convergence bonus NOT applied for single-source results', () => {
     const vectorResults = [{ id: 'single', content: 'single source' }];
-    const ftsResults: any[] = [];
+    const ftsResults: Array<{ id: string; content: string }> = [];
 
     const fused = fuseResults(vectorResults, ftsResults);
-    const singleDoc = fused.find((r: any) => r.id === 'single');
+    const singleDoc = expectDefined(fused.find((r: FusedResult) => r.id === 'single'), 'single');
 
     const expectedNoBonus = 1 / (60 + 0 + 1);
 
@@ -121,7 +131,7 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const fused = fuseResultsMulti(lists);
 
     expect(fused.length).toBe(2);
-    expect(fused.every((r: any) => r.convergenceBonus === 0)).toBe(true);
+    expect(fused.every((r: MultiFusedResult) => r.convergenceBonus === 0)).toBe(true);
   });
 
   it('T029: fuseResultsMulti tracks sources correctly', () => {
@@ -142,9 +152,9 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
 
     const fused = fuseResultsMulti(lists);
 
-    const doc1 = fused.find((r: any) => r.id === 'doc1');
-    const doc2 = fused.find((r: any) => r.id === 'doc2');
-    const doc3 = fused.find((r: any) => r.id === 'doc3');
+    const doc1 = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'doc1'), 'doc1');
+    const doc2 = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'doc2'), 'doc2');
+    const doc3 = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'doc3'), 'doc3');
 
     expect(doc1.sources).toContain('vector');
     expect(doc1.sources).toContain('fts');
@@ -170,14 +180,14 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     ];
 
     const fused = fuseResultsMulti(lists);
-    const ids = fused.map((r: any) => r.id);
+    const ids = fused.map((r: MultiFusedResult) => r.id);
 
     expect(ids).toContain('shared');
     expect(ids).toContain('vec_only');
     expect(ids).toContain('bm25_only');
     expect(ids).toContain('graph_only');
 
-    const sharedDoc = fused.find((r: any) => r.id === 'shared');
+    const sharedDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'shared'), 'shared');
     expect(sharedDoc.convergenceBonus).toBeGreaterThan(0);
   });
 });

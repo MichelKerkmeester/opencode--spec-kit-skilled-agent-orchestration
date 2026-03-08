@@ -55,6 +55,33 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
 
 ---
 
+## Child Folder Status Dashboard
+
+| Folder | Name | Status | Last Updated |
+|--------|------|--------|--------------|
+| 001 | `001-hybrid-rag-fusion-epic` | In Progress (epic) | 2026-03-08 |
+| 002 | `002-indexing-normalization` | Complete (closed out in Wave 2) | 2026-03-08 |
+| 003 | `003-speckit-quality-and-standards` | In Progress | 2026-03-08 |
+| 004 | `004-constitutional-learn-refactor` | Complete | 2026-03-08 |
+| 005 | `005-core-rag-sprints-0-to-8` | In Progress (Sprint 0 complete; S1-S7 not started) | 2026-03-08 |
+| 006 | `006-extra-features` | Complete (112/112 items verified; close-out 2026-03-08) | 2026-03-08 |
+| 007 | `007-ux-hooks-automation` | Complete (21/21 items verified; close-out 2026-03-08) | 2026-03-08 |
+| 008 | `008-combined-bug-fixes` | In Progress | 2026-03-08 |
+| 009 | `009-architecture-audit` | Complete (closed out in Wave 3) | 2026-03-08 |
+| 010 | `010-spec-descriptions` | Complete (30/30 P0+P1 verified; CHK-027 P2 deferred; close-out 2026-03-08) | 2026-03-08 |
+| 011 | `011-feature-catalog` | In Progress | 2026-03-08 |
+| 012 | `012-command-alignment` | Complete (closed out in Wave 2) | 2026-03-08 |
+| 013 | `013-skill-alignment` | Not Started / Empty | 2026-03-08 |
+| 014 | `014-agents-alignment` | Not Started / Empty | 2026-03-08 |
+| 015 | `015-agents-md-alignment` | Not Started / Empty | 2026-03-08 |
+| 016 | `016-manual-testing-per-playbook` | Not Started / Empty | 2026-03-08 |
+| 017 | `017-update-install-guide` | Not Started / Empty | 2026-03-08 |
+| 018 | `018-rewrite-memory-mcp-readme` | Not Started / Empty | 2026-03-08 |
+| 019 | `019-rewrite-system-speckit-readme` | Not Started / Empty | 2026-03-08 |
+| 020 | `020-rewrite-repo-readme` | Not Started / Empty | 2026-03-08 |
+
+---
+
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
 
@@ -1679,4 +1706,3 @@ Initial Level 3+ specification for hybrid RAG fusion logic improvements.
 LEVEL 3+ SPEC
 Governance-focused high complexity specification with expanded cross-system continuity mapping.
 -->
-

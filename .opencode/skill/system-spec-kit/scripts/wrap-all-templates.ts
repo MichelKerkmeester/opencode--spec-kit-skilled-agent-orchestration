@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+// ---------------------------------------------------------------
+// MODULE: WrapAllTemplates
+// ---------------------------------------------------------------
 // MODULE: Wrap All Templates
 /**
  * Wraps all level_1-3+ template files with ANCHOR tags
@@ -69,7 +72,7 @@ async function processTemplate(filePath: string): Promise<ProcessResult> {
       collisions: result.collisions.length,
       error: result.collisions.length > 0 ? `Collisions: ${result.collisions.join(', ')}` : undefined
     };
-  } catch (error) {
+  } catch (error: unknown) {
     return {
       file: relativePath,
       success: false,

@@ -1,0 +1,149 @@
+# H11 TypeScript Standards Audit
+
+Scope: 25 exact TypeScript source files in `.opencode/skill/system-spec-kit/shared/` (excluding `dist/` and `node_modules/`).
+
+## P0 CHECK RESULTS
+- File header exact 3-line MODULE block: 6 issues
+- No 'any' in exports: 0 issues
+- PascalCase types: 0 issues
+- No commented-out code: 0 issues
+- WHY comments AI-prefixed only: 0 issues
+
+## P1 CHECK RESULTS
+- Explicit return types: 2 issues
+- Named interfaces for object params: 1 issues
+- Non-null assertion justification: 0 issues
+- TSDoc on exports: 64 issues
+- catch 'unknown' + instanceof: 30 issues
+
+## Findings (103 total)
+- **P0** [algorithms/mmr-reranker.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P0** [lib/structure-aware-chunker.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P0** [scoring/folder-scoring.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P0** [utils/jsonc-strip.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P0** [utils/path-security.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P0** [utils/retry.ts:1] File header is not exact 3-line MODULE block — Lines 1-3 must be separator, MODULE label, separator.
+- **P1** [algorithms/adaptive-fusion.ts:12] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [algorithms/adaptive-fusion.ts:25] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [algorithms/adaptive-fusion.ts:36] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [algorithms/adaptive-fusion.ts:43] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [algorithms/adaptive-fusion.ts:254] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [algorithms/adaptive-fusion.ts:333] Exported function lacks explicit return type — Add explicit return type annotation.
+- **P1** [chunking.ts:20] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [chunking.ts:21] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [chunking.ts:22] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [config.ts:8] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [config.ts:39] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [contracts/retrieval-trace.ts:14] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings.ts:178] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings.ts:331] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings.ts:530] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/factory.ts:119] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/factory.ts:214] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/factory.ts:224] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/factory.ts:246] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/factory.ts:264] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/factory.ts:298] Inline object parameter type in export — Use a named interface/type for object params.
+- **P1** [embeddings/factory.ts:369] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/factory.ts:369] Catch parameter is not typed unknown — Use catch (error: unknown).
+- **P1** [embeddings/factory.ts:419] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/profile.ts:12] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/profile.ts:47] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/hf-local.ts:21] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/hf-local.ts:72] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/hf-local.ts:128] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/hf-local.ts:128] Catch parameter is not typed unknown — Use catch (error: unknown).
+- **P1** [embeddings/providers/hf-local.ts:138] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/hf-local.ts:153] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/hf-local.ts:219] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/hf-local.ts:248] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/hf-local.ts:280] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/openai.ts:18] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/openai.ts:82] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/openai.ts:135] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/openai.ts:135] Catch parameter is not typed unknown — Use catch (error: unknown).
+- **P1** [embeddings/providers/openai.ts:155] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/openai.ts:226] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/openai.ts:255] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/openai.ts:288] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/voyage.ts:18] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/voyage.ts:94] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [embeddings/providers/voyage.ts:153] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/voyage.ts:153] Catch parameter is not typed unknown — Use catch (error: unknown).
+- **P1** [embeddings/providers/voyage.ts:173] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/voyage.ts:244] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/voyage.ts:272] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [embeddings/providers/voyage.ts:305] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [lib/structure-aware-chunker.ts:13] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [lib/structure-aware-chunker.ts:149] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [paths.ts:11] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:19] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:35] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:51] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:63] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:89] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:134] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:167] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:174] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:181] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:237] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:317] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:360] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:402] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:436] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [trigger-extractor.ts:511] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:23] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:151] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:183] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:259] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:300] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:353] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:371] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:479] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [types.ts:499] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/path-security.ts:93] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:12] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:23] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:37] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:47] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:58] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:72] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:97] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:122] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:139] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:206] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:210] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:218] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:224] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:236] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:251] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:358] Catch block lacks instanceof narrowing — Narrow unknown with instanceof before property access.
+- **P1** [utils/retry.ts:372] Export missing TSDoc block — Add /** ... */ immediately above export.
+- **P1** [utils/retry.ts:372] Exported function lacks explicit return type — Add explicit return type annotation.
+
+## Files Audited
+- algorithms/adaptive-fusion.ts
+- algorithms/index.ts
+- algorithms/mmr-reranker.ts
+- algorithms/rrf-fusion.ts
+- chunking.ts
+- config.ts
+- contracts/retrieval-trace.ts
+- embeddings.ts
+- embeddings/factory.ts
+- embeddings/profile.ts
+- embeddings/providers/hf-local.ts
+- embeddings/providers/openai.ts
+- embeddings/providers/voyage.ts
+- index.ts
+- lib/structure-aware-chunker.ts
+- normalization.ts
+- parsing/quality-extractors.ts
+- paths.ts
+- scoring/folder-scoring.ts
+- trigger-extractor.ts
+- types.ts
+- utils/jsonc-strip.ts
+- utils/path-security.ts
+- utils/retry.ts
+- utils/token-estimate.ts

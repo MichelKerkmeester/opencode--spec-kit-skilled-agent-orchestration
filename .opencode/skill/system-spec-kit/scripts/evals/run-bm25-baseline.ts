@@ -1,6 +1,7 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: Run BM25-Only Baseline Measurement (T008)
+// MODULE: RunBm25Baseline
+// ---------------------------------------------------------------
 //
 // Sprint 0 closure: Execute the BM25-only baseline against the
 // live production context-index.sqlite and record results in the
@@ -27,7 +28,7 @@ import {
   type BM25SearchFn, type BM25SearchResult, type BM25BaselineResult,
 } from '../../mcp_server/api';
 
-// ── Config ──────────────────────────────────────────────────────
+// -- Config ------------------------------------------------------
 
 const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
@@ -37,7 +38,7 @@ const args = process.argv.slice(2);
 const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const SKIP_HARD_NEGATIVES = args.includes('--skip-hard-negatives');
 
-// ── Helpers ─────────────────────────────────────────────────────
+// -- Helpers -----------------------------------------------------
 
 function log(msg: string): void {
   console.log(msg);
@@ -48,10 +49,10 @@ function verbose(msg: string): void {
 }
 
 function divider(): void {
-  log('─'.repeat(60));
+  log('-'.repeat(60));
 }
 
-// ── Main ────────────────────────────────────────────────────────
+// -- Main --------------------------------------------------------
 
 async function main(): Promise<void> {
   log('');

@@ -94,6 +94,9 @@ export interface TriggerMatcherConfig {
 
 /* --- 2. CONFIGURATION --- */
 
+/**
+ * Defines the CONFIG constant.
+ */
 export const CONFIG: TriggerMatcherConfig = {
   CACHE_TTL_MS: 60000,
   DEFAULT_LIMIT: 3,
@@ -145,10 +148,12 @@ export function getCachedRegex(phrase: string): RegExp {
   // Check if already in cache
   if (regexLruCache.has(phrase)) {
     // Move to end (most recently used) by deleting and re-adding
-    const regex = regexLruCache.get(phrase)!;
-    regexLruCache.delete(phrase);
-    regexLruCache.set(phrase, regex);
-    return regex;
+    const regex = regexLruCache.get(phrase);
+    if (regex) {
+      regexLruCache.delete(phrase);
+      regexLruCache.set(phrase, regex);
+      return regex;
+    }
   }
 
   // AI-WHY: Unicode-aware word boundary avoids false matches on accented characters (BUG-026 fix)
@@ -434,18 +439,20 @@ export function matchTriggerPhrases(userPrompt: string, limit: number = CONFIG.D
     if (matchPhraseWithBoundary(promptNormalized, entry.phrase, entry.regex)) {
       const key = entry.memoryId;
 
-      if (!matchesByMemory.has(key)) {
-        matchesByMemory.set(key, {
+      let match = matchesByMemory.get(key);
+      if (!match) {
+        match = {
           memoryId: entry.memoryId,
           specFolder: entry.specFolder,
           filePath: entry.filePath,
           title: entry.title,
           importanceWeight: entry.importanceWeight,
           matchedPhrases: [],
-        });
+        };
+        matchesByMemory.set(key, match);
       }
 
-      matchesByMemory.get(key)!.matchedPhrases.push(entry.phrase);
+      match.matchedPhrases.push(entry.phrase);
     }
   }
 
@@ -537,4 +544,3 @@ export function refreshTriggerCache(): TriggerCacheEntry[] {
   clearCache();
   return loadTriggerCache();
 }
-

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Working Memory
+// ---------------------------------------------------------------
 // AI-WHY: Session-based attention management
 // DECAY STRATEGY (ADR-004): This module handles SESSION-SCOPED decay
 // only (event-distance based: score * pow(0.85, eventsElapsed)). It operates on

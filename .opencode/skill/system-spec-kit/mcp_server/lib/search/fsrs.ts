@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Temporal-Structural Coherence (FSRS + Graph Centrality)
+// MODULE: FSRS
 // ---------------------------------------------------------------
 // AI-WHY: Augments FSRS stability scores with graph centrality so that
 // central nodes decay slower and peripheral nodes decay faster.

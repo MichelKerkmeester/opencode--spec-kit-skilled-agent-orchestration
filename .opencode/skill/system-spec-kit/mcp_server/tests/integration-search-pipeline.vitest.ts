@@ -13,9 +13,9 @@ import { isMMREnabled, isTRMEnabled, isMultiQueryEnabled } from '../lib/search/s
 
 describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtures]', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Module Loading
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Module Loading', () => {
     it('T525-1: Search pipeline modules loaded', () => {
       expect(searchHandler).toBeDefined();
@@ -31,9 +31,9 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Input Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Input Validation', () => {
     it('T525-2: Valid args accepted by pipeline', async () => {
       try {
@@ -103,9 +103,9 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Error Handling
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Error Handling', () => {
     it('T525-5: Pipeline error format consistency', async () => {
       try {
@@ -132,9 +132,9 @@ describe('Integration Search Pipeline (T525) [deferred - requires DB test fixtur
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Multi-Concept & Advanced Parameters
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Multi-Concept & Advanced Parameters', () => {
     it('T525-7: Single concept without query rejected', async () => {
       try {

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Mutations — Write operations
+// MODULE: Vector Index Mutations
 // ---------------------------------------------------------------
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // index, update, delete, and status/confidence updates.
@@ -61,7 +61,12 @@ type UpdateMemoryParams = {
   qualityFlags?: string[];
 };
 
-export function index_memory(params: IndexMemoryParams) {
+/**
+ * Indexes a memory with an embedding payload.
+ * @param params - The memory values to index.
+ * @returns The indexed memory identifier.
+ */
+export function index_memory(params: IndexMemoryParams): number {
   const database = initialize_db();
 
   const {
@@ -151,7 +156,12 @@ export function index_memory(params: IndexMemoryParams) {
 }
 
 // REQ-031: Deferred indexing - entry searchable via BM25/FTS5 only
-export function index_memory_deferred(params: IndexMemoryDeferredParams) {
+/**
+ * Indexes a memory record without storing an embedding yet.
+ * @param params - The deferred memory values to index.
+ * @returns The indexed memory identifier.
+ */
+export function index_memory_deferred(params: IndexMemoryDeferredParams): number {
   const database = initialize_db();
 
   const {
@@ -218,7 +228,12 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams) {
   return Number(row_id);
 }
 
-export function update_memory(params: UpdateMemoryParams) {
+/**
+ * Updates stored memory metadata and embeddings.
+ * @param params - The memory values to update.
+ * @returns The updated memory identifier.
+ */
+export function update_memory(params: UpdateMemoryParams): number {
   const database = initialize_db();
 
   const {
@@ -327,7 +342,12 @@ export function update_memory(params: UpdateMemoryParams) {
   return update_memory_tx();
 }
 
-export function delete_memory(id: number) {
+/**
+ * Deletes a memory and its related index records.
+ * @param id - The memory identifier.
+ * @returns True when a memory was deleted.
+ */
+export function delete_memory(id: number): boolean {
   const database = initialize_db();
   const sqlite_vec = get_sqlite_vec_available();
 
@@ -350,11 +370,11 @@ export function delete_memory(id: number) {
       'DELETE FROM memory_entities WHERE memory_id = ?',
     ];
     for (const sql of ancillaryTables) {
-      try { database.prepare(sql).run(id); } catch { /* table may not exist */ }
+      try { database.prepare(sql).run(id); } catch (_error: unknown) { /* table may not exist */ }
     }
     try {
       database.prepare('DELETE FROM causal_edges WHERE source_id = ? OR target_id = ?').run(id, id);
-    } catch { /* table may not exist */ }
+    } catch (_error: unknown) { /* table may not exist */ }
 
     const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
 
@@ -371,12 +391,19 @@ export function delete_memory(id: number) {
       if (bm25Index.isBm25Enabled()) {
         bm25Index.getIndex().removeDocument(String(id));
       }
-    } catch { /* BM25 cleanup is best-effort */ }
+    } catch (_error: unknown) { /* BM25 cleanup is best-effort */ }
   }
   return deleted;
 }
 
-export function delete_memory_by_path(spec_folder: string, file_path: string, anchor_id: string | null = null) {
+/**
+ * Deletes the latest memory for a file path and optional anchor.
+ * @param spec_folder - The owning spec folder.
+ * @param file_path - The file path to delete.
+ * @param anchor_id - The optional anchor identifier.
+ * @returns True when a memory was deleted.
+ */
+export function delete_memory_by_path(spec_folder: string, file_path: string, anchor_id: string | null = null): boolean {
   const database = initialize_db();
   const canonicalPath = getCanonicalPathKey(file_path);
 
@@ -395,7 +422,12 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
   return false;
 }
 
-export function delete_memories(memory_ids: number[]) {
+/**
+ * Deletes multiple memories in a single transaction.
+ * @param memory_ids - The memory identifiers to delete.
+ * @returns Counts for deleted and failed items.
+ */
+export function delete_memories(memory_ids: number[]): { deleted: number; failed: number } {
   if (!memory_ids || memory_ids.length === 0) {
     return { deleted: 0, failed: 0 };
   }
@@ -453,7 +485,13 @@ export function delete_memories(memory_ids: number[]) {
 }
 
 // Valid statuses: 'pending', 'success', 'failed', 'retry', 'partial'
-export function update_embedding_status(id: number, status: string) {
+/**
+ * Updates the embedding status for a memory.
+ * @param id - The memory identifier.
+ * @param status - The new embedding status.
+ * @returns True when the status was updated.
+ */
+export function update_embedding_status(id: number, status: string): boolean {
   const valid_statuses = ['pending', 'success', 'failed', 'retry', 'partial'];
   if (!valid_statuses.includes(status)) {
     console.warn(`[vector-index] Invalid embedding status: ${status}`);
@@ -475,7 +513,13 @@ export function update_embedding_status(id: number, status: string) {
   }
 }
 
-export function update_confidence(memory_id: number, confidence: number) {
+/**
+ * Updates the confidence value for a memory.
+ * @param memory_id - The memory identifier.
+ * @param confidence - The confidence value to store.
+ * @returns True when the confidence was updated.
+ */
+export function update_confidence(memory_id: number, confidence: number): boolean {
   if (typeof confidence !== 'number' || confidence < 0 || confidence > 1) {
     console.warn(`[vector-index] Invalid confidence value: ${confidence}`);
     return false;

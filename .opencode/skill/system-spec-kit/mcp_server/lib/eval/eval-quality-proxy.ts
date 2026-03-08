@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Quality Proxy (T006g)
+// ---------------------------------------------------------------
 // Automated quality proxy metric that correlates with manual
 // quality assessment. Pure function, no DB access, no side effects.
 //

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Errors Core
+// MODULE: Core
+// ---------------------------------------------------------------
 // Memory error class and utility functions
 // Migrated from lib/errors.js for proper folder organization
 // ---------------------------------------------------------------
@@ -19,18 +20,27 @@ import type { RecoveryHint, Severity } from './recovery-hints';
 // 1. TYPES
 // ---------------------------------------------------------------
 
+/**
+ * Describes the ErrorResponseData shape.
+ */
 export interface ErrorResponseData {
   error: string;
   code: string;
   details: Record<string, unknown> | null;
 }
 
+/**
+ * Describes the ErrorResponseMeta shape.
+ */
 export interface ErrorResponseMeta {
   tool: string;
   isError: true;
   severity: Severity;
 }
 
+/**
+ * Describes the ErrorResponse shape.
+ */
 export interface ErrorResponse {
   summary: string;
   data: ErrorResponseData;
@@ -45,6 +55,9 @@ export interface ErrorResponse {
 // New code should use ERROR_CODES from recovery-hints.ts.
 // ---------------------------------------------------------------
 
+/**
+ * Defines the ErrorCodes constant.
+ */
 export const ErrorCodes = {
   EMBEDDING_FAILED: 'E001',
   EMBEDDING_DIMENSION_INVALID: 'E002',
@@ -67,12 +80,18 @@ export const ErrorCodes = {
   RATE_LIMITED: 'E429',
 } as const;
 
+/**
+ * Defines the LegacyErrorCodeKey type.
+ */
 export type LegacyErrorCodeKey = keyof typeof ErrorCodes;
 
 // ---------------------------------------------------------------
 // 3. MEMORY ERROR CLASS
 // ---------------------------------------------------------------
 
+/**
+ * Represents the MemoryError type.
+ */
 export class MemoryError extends Error {
   public code: string;
   public details: Record<string, unknown>;
@@ -97,6 +116,9 @@ export class MemoryError extends Error {
 // ---------------------------------------------------------------
 
 // T121: Fixed timer leak - now properly clears timeout on success or rejection
+/**
+ * Provides the withTimeout helper.
+ */
 export function withTimeout<T>(promise: Promise<T>, ms: number, operation: string): Promise<T> {
   let timeoutId: ReturnType<typeof setTimeout>;
 
@@ -128,6 +150,9 @@ interface ErrorPattern {
   message: string;
 }
 
+/**
+ * Provides the userFriendlyError helper.
+ */
 export function userFriendlyError(error: Error): string {
   const internalPatterns: ErrorPattern[] = [
     { pattern: /SQLITE_BUSY/, message: 'Database is temporarily busy. Please retry.' },

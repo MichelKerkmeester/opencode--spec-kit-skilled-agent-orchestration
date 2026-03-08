@@ -86,6 +86,9 @@ export {
   GENERIC_HIGH_ENTROPY_MIN_LENGTH,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   RedactionResult,
   RedactionMatch,

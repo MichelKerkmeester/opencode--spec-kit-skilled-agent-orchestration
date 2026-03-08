@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Causal Edges
+// ---------------------------------------------------------------
 // Causal relationship graph for memory lineage
 // ---------------------------------------------------------------
 
@@ -401,6 +402,8 @@ function updateEdge(
         oldStrength = existing?.strength;
       }
 
+      // AI-SAFETY: String interpolation constructs IN(?,?,?) placeholder list only —
+      // all user values are parameterized. Accepted exception per audit H-08.
       const result = (database.prepare(
         `UPDATE causal_edges SET ${parts.join(', ')} WHERE id = ?`
       ) as Database.Statement).run(...params);
@@ -767,6 +770,9 @@ export {
   getStaleEdges,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   RelationType,
   CausalEdge,

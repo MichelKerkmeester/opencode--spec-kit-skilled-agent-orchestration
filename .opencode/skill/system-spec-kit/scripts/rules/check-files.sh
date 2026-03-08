@@ -88,3 +88,6 @@ run_check() {
         RULE_REMEDIATION="Create missing files: $missing_list. Use templates from .opencode/skill/system-spec-kit/templates/"
     fi
 }
+
+# Exit codes:
+#   0 - Success

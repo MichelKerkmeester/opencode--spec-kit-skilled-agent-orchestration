@@ -232,7 +232,7 @@ ${test_entry}"
         local end_time elapsed
         end_time=$(get_time_ms)
         elapsed=$((end_time - start_time))
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture not found: $fixture)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture not found: $fixture)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         CURRENT_CAT_TIME=$((CURRENT_CAT_TIME + elapsed))
@@ -244,7 +244,7 @@ ${test_entry}"
         local end_time elapsed
         end_time=$(get_time_ms)
         elapsed=$((end_time - start_time))
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(validator not found)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(validator not found)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         CURRENT_CAT_TIME=$((CURRENT_CAT_TIME + elapsed))
@@ -273,7 +273,7 @@ ${test_entry}"
     if [[ "$actual" = "$expect" ]]; then
         if [[ -n "$expected_rule" ]] && ! printf '%s\n' "$output" | grep -Fq "$expected_rule"; then
             echo -e "${RED}✗${NC} $name ${DIM}[${time_display}]${NC}"
-            echo -e "  ${RED}Expected rule marker not found:${NC} $expected_rule"
+            echo -e "  ${RED}Expected rule marker not found:${NC} $expected_rule" >&2
             echo -e "  ${DIM}Output:${NC}"
             echo "$output" | sed 's/^/    /'
             FAILED=$((FAILED + 1))
@@ -322,7 +322,7 @@ ${test_entry}"; else TEST_LIST="$test_entry"; fi
         local end_time elapsed
         end_time=$(get_time_ms)
         elapsed=$((end_time - start_time))
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture/validator not found)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture/validator not found)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         return
@@ -394,7 +394,7 @@ ${test_entry}"; else TEST_LIST="$test_entry"; fi
     start_time=$(get_time_ms)
 
     if [[ ! -d "$fixture_path" ]] || [[ ! -f "$VALIDATOR" ]]; then
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(not found)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(not found)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         return
@@ -472,7 +472,7 @@ ${test_entry}"; else TEST_LIST="$test_entry"; fi
     start_time=$(get_time_ms)
 
     if [[ ! -d "$fixture_path" ]] || [[ ! -f "$VALIDATOR" ]]; then
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(not found)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(not found)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         return
@@ -535,14 +535,14 @@ ${test_entry}"; else TEST_LIST="$test_entry"; fi
     start_time=$(get_time_ms)
 
     if [[ ! -f "$rule_path" ]]; then
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(rule script not found: $rule_script)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(rule script not found: $rule_script)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         return
     fi
 
     if [[ ! -d "$fixture_path" ]]; then
-        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture not found: $fixture)${NC}"
+        echo -e "${YELLOW}⊘${NC} $name ${DIM}(fixture not found: $fixture)${NC}" >&2
         SKIPPED=$((SKIPPED + 1))
         CURRENT_CAT_SKIPPED=$((CURRENT_CAT_SKIPPED + 1))
         return
@@ -948,7 +948,7 @@ TOTAL=$((PASSED + FAILED + SKIPPED))
 TOTAL_TIME_FMT=$(format_time "$TOTAL_TIME")
 
 echo -e "  ${GREEN}Passed:${NC}  $PASSED"
-echo -e "  ${RED}Failed:${NC}  $FAILED"
+echo -e "  ${RED}Failed:${NC}  $FAILED" >&2
 echo -e "  ${YELLOW}Skipped:${NC} $SKIPPED"
 echo -e "  ─────────────"
 echo -e "  Total:   $TOTAL"
@@ -960,12 +960,12 @@ echo ""
 # ───────────────────────────────────────────────────────────────
 
 if [[ $FAILED -gt 0 ]]; then
-    echo -e "${RED}${BOLD}RESULT: FAILED${NC}"
+    echo -e "${RED}${BOLD}RESULT: FAILED${NC}" >&2
     echo ""
     exit 1
 elif [[ $SKIPPED -eq $TOTAL ]] && [[ $TOTAL -gt 0 ]]; then
     echo -e "${YELLOW}${BOLD}RESULT: SKIPPED${NC}"
-    echo "Validator or fixtures not found."
+    echo "Validator or fixtures not found." >&2
     echo ""
     exit 0
 elif [[ $TOTAL -eq 0 ]]; then
@@ -978,3 +978,7 @@ else
     echo ""
     exit 0
 fi
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

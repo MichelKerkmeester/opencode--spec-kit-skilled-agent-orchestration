@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Message Utils
+// MODULE: MessageUtils
+// ---------------------------------------------------------------
 // Timestamp formatting, exchange summarization, and tool output truncation
 // ---------------------------------------------------------------
 

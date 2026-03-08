@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------
-// MODULE: Query Expander (C138-P3)
+// MODULE: Query Expander
+// ---------------------------------------------------------------
 // Rule-based synonym expansion for mode="deep" multi-query RAG.
 // No LLM calls — purely rule-based template substitution.
-// ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
    1. CONSTANTS

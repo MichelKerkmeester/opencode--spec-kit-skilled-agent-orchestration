@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Shared Session Types
+// MODULE: SessionTypes
+// ---------------------------------------------------------------
 // Canonical type definitions shared between simulation-factory and extractors.
 // Eliminates parallel type hierarchies (TECH-DEBT P6-05).
 // ---------------------------------------------------------------

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
 # COMPONENT: Shell Common
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
 # Shared shell utilities for spec-kit scripts.
 # Source this file: source "$(dirname "$0")/../lib/shell-common.sh"
 #
@@ -12,10 +12,7 @@
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# AI-WHY: Conditional strict mode is intentional for sourced libraries.
-# Calling scripts (create.sh, validate.sh, archive.sh) set -euo pipefail
-# at their own file level. Making it unconditional here would override
-# the caller's shell options when this file is sourced.
+# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -63,3 +60,7 @@ find_repo_root() {
     done
     return 1
 }
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

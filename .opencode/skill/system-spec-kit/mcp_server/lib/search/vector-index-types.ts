@@ -3,8 +3,10 @@
 // ---------------------------------------------------------------
 
 // SCHEMA_VERSION is now canonical in vector-index-schema.ts
+/** Maximum trigger phrases stored for each memory. */
 export const MAX_TRIGGERS_PER_MEMORY = 10;
 
+/** Represents a row from the memory index table. */
 export interface MemoryIndexRow {
   id: number;
   spec_folder?: string;
@@ -44,6 +46,7 @@ export interface MemoryIndexRow {
   [key: string]: unknown;
 }
 
+/** Describes the inputs required to index a memory. */
 export interface IndexMemoryParams {
   specFolder: string;
   filePath: string;
@@ -60,6 +63,7 @@ export interface IndexMemoryParams {
   qualityFlags?: string[];
 }
 
+/** Describes the fields that can be updated for a memory. */
 export interface UpdateMemoryParams {
   id: number;
   title?: string;
@@ -75,6 +79,7 @@ export interface UpdateMemoryParams {
   qualityFlags?: string[];
 }
 
+/** Controls vector search filtering and ranking behavior. */
 export interface VectorSearchOptions {
   limit?: number;
   specFolder?: string | null;
@@ -86,6 +91,7 @@ export interface VectorSearchOptions {
   includeArchived?: boolean;
 }
 
+/** Represents an enriched search result returned to callers. */
 export interface EnrichedSearchResult {
   rank: number;
   similarity?: number;
@@ -104,6 +110,11 @@ export interface EnrichedSearchResult {
   [key: string]: unknown;
 }
 
+/**
+ * Converts an embedding vector into a binary buffer for sqlite-vec storage.
+ * @param embedding - The embedding values to serialize.
+ * @returns A binary buffer representing the embedding.
+ */
 export function to_embedding_buffer(embedding: Float32Array | number[]): Buffer {
   if (embedding instanceof Float32Array) {
     return Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
@@ -111,6 +122,11 @@ export function to_embedding_buffer(embedding: Float32Array | number[]): Buffer 
   return Buffer.from(new Float32Array(embedding).buffer);
 }
 
+/**
+ * Parses trigger phrase storage into a normalized string array.
+ * @param value - The stored trigger phrase payload.
+ * @returns Parsed trigger phrases, or an empty array on invalid input.
+ */
 export function parse_trigger_phrases(value: string | string[] | undefined): string[] {
   if (!value) return [];
   if (Array.isArray(value)) return value;
@@ -122,6 +138,11 @@ export function parse_trigger_phrases(value: string | string[] | undefined): str
   }
 }
 
+/**
+ * Extracts a human-readable message from an unknown error payload.
+ * @param error - The caught error value.
+ * @returns A descriptive error message.
+ */
 export function get_error_message(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
@@ -137,6 +158,11 @@ export function get_error_message(error: unknown): string {
   return String(error);
 }
 
+/**
+ * Extracts a string error code from an unknown error payload.
+ * @param error - The caught error value.
+ * @returns The error code when present.
+ */
 export function get_error_code(error: unknown): string | undefined {
   if (typeof error === 'object' && error !== null && 'code' in error) {
     const code = (error as { code?: unknown }).code;

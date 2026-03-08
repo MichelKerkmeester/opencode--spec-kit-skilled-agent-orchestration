@@ -547,19 +547,19 @@ get_suggestion_for_rule() {
     local rule="$1"
     case "$rule" in
         FILE_EXISTS|FILES)
-            echo "Create the missing file using the spec-kit template: .opencode/skill/system-spec-kit/templates/"
+            echo "Create the missing file using the spec-kit template: .opencode/skill/system-spec-kit/templates/" >&2
             ;;
         PLACEHOLDER_FILLED|PLACEHOLDERS)
             echo "Search the file for [PLACEHOLDER] patterns and replace them with real content."
             ;;
         SECTIONS_PRESENT|SECTIONS)
-            echo "Add the missing section heading. Refer to the template for the expected structure."
+            echo "Add the missing section heading. Refer to the template for the expected structure." >&2
             ;;
         LEVEL_DECLARED|LEVEL)
             echo "Add a Level row to the spec.md metadata table: | **Level** | 1 | (or 2, 3, 3+)"
             ;;
         PRIORITY_TAGS|PRIORITY)
-            echo "Tag tasks with [P0], [P1], or [P2] priority markers. Remove invalid priority tags."
+            echo "Tag tasks with [P0], [P1], or [P2] priority markers. Remove invalid priority tags." >&2
             ;;
         EVIDENCE_CITED|EVIDENCE)
             echo "Add evidence to completed P0/P1 items: [SOURCE: file:line], [TESTED:], [VERIFIED:], etc."

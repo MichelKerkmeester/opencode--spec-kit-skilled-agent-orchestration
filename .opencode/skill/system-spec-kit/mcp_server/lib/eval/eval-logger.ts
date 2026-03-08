@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Logger
+// ---------------------------------------------------------------
 // AI-TRACE: T005: Non-blocking, fail-safe logging hooks for search, context,
 // and trigger handlers. All writes go to the eval DB (speckit-eval.db).
 //

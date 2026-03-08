@@ -1,6 +1,6 @@
 ---
 title: "Spec Descriptions"
-status: "in-progress"
+status: "complete"
 level: 2
 created: "2025-12-01"
 updated: "2026-03-08"

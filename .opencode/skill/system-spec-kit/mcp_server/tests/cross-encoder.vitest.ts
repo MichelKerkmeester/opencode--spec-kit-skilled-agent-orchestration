@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CROSS ENCODER
 // ---------------------------------------------------------------
@@ -7,9 +6,9 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import * as crossEncoder from '../lib/search/cross-encoder';
 
 describe('Cross-Encoder Reranking (T040-T051)', () => {
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Configuration Tests
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Configuration Tests', () => {
     it('LENGTH_PENALTY has shortThreshold of 50', () => {
       expect(crossEncoder.LENGTH_PENALTY.shortThreshold).toBe(50);
@@ -34,9 +33,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Provider Configuration Tests (T040-T042)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Provider Configuration Tests (T040-T042)', () => {
     it('T040: Voyage provider has correct configuration', () => {
       const voyageConfig = crossEncoder.PROVIDER_CONFIG.voyage;
@@ -68,9 +67,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Provider Auto-Resolution Tests (T043)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Provider Auto-Resolution Tests (T043)', () => {
     it('T043: Provider auto-resolution checks environment', () => {
       expect(typeof crossEncoder.resolveProvider).toBe('function');
@@ -82,9 +81,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Length Penalty Tests (REQ-008, T049)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Length Penalty Tests (REQ-008, T049)', () => {
     it('calculateLengthPenalty returns 1.0 for content in mid-range', () => {
       const penalty = crossEncoder.calculateLengthPenalty(100);
@@ -122,9 +121,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Cache Tests (T044-T047)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Cache Tests (T044-T047)', () => {
     it('T044: generateCacheKey is deterministic for same inputs', () => {
       const key1 = crossEncoder.generateCacheKey('test query', ['a', 'b']);
@@ -144,9 +143,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Provider Availability Tests
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Provider Availability Tests', () => {
     it('resolveProvider returns null when no providers configured', () => {
       crossEncoder.resetProvider();
@@ -156,9 +155,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Reranker Status Tests
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Reranker Status Tests', () => {
     it('isRerankerAvailable returns boolean', () => {
       const result = crossEncoder.isRerankerAvailable();
@@ -184,9 +183,9 @@ describe('Cross-Encoder Reranking (T040-T051)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Rerank Function Tests (T050)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Rerank Function Tests (T050)', () => {
     it('rerankResults returns array for valid input', async () => {
       const results = [

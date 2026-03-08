@@ -3,20 +3,20 @@
 // ---------------------------------------------------------------
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// ── Query Classifier ──
+// -- Query Classifier --
 import {
   classifyQueryComplexity,
   type ClassificationResult,
 } from '../lib/search/query-classifier';
 
-// ── Dynamic Token Budget ──
+// -- Dynamic Token Budget --
 import {
   getDynamicTokenBudget,
   DEFAULT_BUDGET,
   DEFAULT_TOKEN_BUDGET_CONFIG,
 } from '../lib/search/dynamic-token-budget';
 
-// ── Intent Classifier ──
+// -- Intent Classifier --
 import {
   classifyIntent,
   getIntentWeights,
@@ -24,7 +24,7 @@ import {
   type IntentType,
 } from '../lib/search/intent-classifier';
 
-// ── RRF Fusion ──
+// -- RRF Fusion --
 import {
   fuseResults,
   fuseResultsMulti,
@@ -35,7 +35,7 @@ import {
   type RankedList,
 } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-// ── RSF Fusion ──
+// -- RSF Fusion --
 import {
   fuseResultsRsf,
   fuseResultsRsfMulti,
@@ -43,14 +43,14 @@ import {
   type RsfResult,
 } from '../lib/search/rsf-fusion';
 
-// ── Channel Min-Representation ──
+// -- Channel Min-Representation --
 import {
   analyzeChannelRepresentation,
   isChannelMinRepEnabled,
   QUALITY_FLOOR,
 } from '../lib/search/channel-representation';
 
-// ── Composite Scoring ──
+// -- Composite Scoring --
 import {
   calculateCompositeScore,
   calculateNoveltyBoost,
@@ -62,21 +62,21 @@ import {
   type ScoringInput,
 } from '../lib/scoring/composite-scoring';
 
-// ── Interference Scoring ──
+// -- Interference Scoring --
 import {
   applyInterferencePenalty,
   INTERFERENCE_PENALTY_COEFFICIENT,
   computeTextSimilarity,
 } from '../lib/scoring/interference-scoring';
 
-// ── Co-Activation ──
+// -- Co-Activation --
 import {
   boostScore,
   CO_ACTIVATION_CONFIG,
   DEFAULT_COACTIVATION_STRENGTH,
 } from '../lib/cache/cognitive/co-activation';
 
-// ── Confidence Truncation ──
+// -- Confidence Truncation --
 import {
   truncateByConfidence,
   computeGaps,

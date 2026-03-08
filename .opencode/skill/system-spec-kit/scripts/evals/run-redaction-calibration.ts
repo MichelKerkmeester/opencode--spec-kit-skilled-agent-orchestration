@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Redaction Calibration Runner (T027f-T027j)
+// MODULE: RunRedactionCalibration
 // ---------------------------------------------------------------
 
 import fs from 'fs';

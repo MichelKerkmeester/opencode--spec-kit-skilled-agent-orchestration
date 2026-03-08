@@ -17,8 +17,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "08-03-26_13-58__spec-folder-description-system-refactor.md"
+    "08-03-26_13-58__spec-folder-description-system-refactor.md",
+    "08-03-26_16-50__spec-descriptions.md"
   ]
 }

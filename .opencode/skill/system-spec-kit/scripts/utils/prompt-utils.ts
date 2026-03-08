@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Prompt Utils
+// MODULE: PromptUtils
+// ---------------------------------------------------------------
 // Interactive CLI prompt utilities — confirmation dialogs and user input handling
 // ---------------------------------------------------------------
 

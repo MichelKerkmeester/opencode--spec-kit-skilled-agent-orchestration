@@ -1,15 +1,15 @@
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: TIER CLASSIFIER — TYPE UNIFICATION (TierInput)
 // Validates cast-removal: deprecated MemoryRow → TierInput accepts
 // partial objects, mixed casing, and extra arbitrary fields.
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    1. classifyTier with TierInput partial objects
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 describe('Tier Classifier — Type Unification (TierInput)', () => {
 
@@ -60,9 +60,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      2. classifyTier with extra arbitrary fields
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('classifyTier() with extra arbitrary fields (Record<string, unknown>)', () => {
 
@@ -104,9 +104,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      3. filterAndLimitByState with mixed-shape TierInput[]
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('filterAndLimitByState() with mixed-shape objects', () => {
 
@@ -136,14 +136,14 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
 
       const filtered = tierClassifier.filterAndLimitByState(memories, 'HOT');
       // Constitutional should always be HOT
-      const hasConstitutional = filtered.some((m: any) => m.id === 1);
+      const hasConstitutional = filtered.some((m) => m.id === 1);
       expect(hasConstitutional).toBe(true);
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      4. getStateStats with TierInput[]
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('getStateStats() with TierInput objects', () => {
 
@@ -173,9 +173,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      5. formatStateResponse with TierInput[]
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('formatStateResponse() with TierInput objects', () => {
 
@@ -191,7 +191,7 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
       expect(formatted).toHaveLength(2);
 
       // Both should have all required fields
-      const allValid = formatted.every((e: any) =>
+      const allValid = formatted.every((e) =>
         'id' in e && 'title' in e && 'state' in e && 'retrievability' in e
       );
       expect(allValid).toBe(true);
@@ -206,9 +206,9 @@ describe('Tier Classifier — Type Unification (TierInput)', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      6. shouldArchive with TierInput
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('shouldArchive() with TierInput objects', () => {
 

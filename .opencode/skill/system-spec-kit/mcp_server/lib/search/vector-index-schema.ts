@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Schema — Migrations, DDL, and DB init helpers
+// MODULE: Vector Index Schema
 // ---------------------------------------------------------------
 // Split from vector-index-store.ts — contains ALL schema creation,
 // migration, and companion-table logic.
@@ -33,12 +33,20 @@ const logger = createLogger('VectorIndex');
 // v19: degree_snapshots + community_assignments (N2 graph centrality)
 // v20: memory_summaries + memory_entities + entity_catalog (R8/R10/S5)
 // v21: Add learned_triggers column (R11 learned feedback)
+/** Current schema version for vector-index migrations. */
 export const SCHEMA_VERSION = 21;
 
 // AI-TRACE: Run schema migrations from one version to another
 // Each migration is idempotent - safe to run multiple times
 // BUG-019 FIX: Wrap migrations in transaction for atomicity
-export function run_migrations(database: Database.Database, from_version: number, to_version: number) {
+/**
+ * Runs schema migrations between two schema versions.
+ * @param database - The database connection to migrate.
+ * @param from_version - The current schema version.
+ * @param to_version - The target schema version.
+ * @returns Nothing.
+ */
+export function run_migrations(database: Database.Database, from_version: number, to_version: number): void {
   const migrations: Record<number, () => void> = {
     1: () => {
       // v0 -> v1: Initial schema (already exists via create_schema)
@@ -710,7 +718,12 @@ export function run_migrations(database: Database.Database, from_version: number
 }
 
 // AI-GUARD: Ensure schema version table exists and run any pending migrations
-export function ensure_schema_version(database: Database.Database) {
+/**
+ * Ensures the schema version table is current.
+ * @param database - The database connection to check.
+ * @returns The previous schema version.
+ */
+export function ensure_schema_version(database: Database.Database): number {
   database.exec(`
     CREATE TABLE IF NOT EXISTS schema_version (
       id INTEGER PRIMARY KEY CHECK (id = 1),
@@ -737,7 +750,12 @@ export function ensure_schema_version(database: Database.Database) {
   return current_version;
 }
 
-export function migrate_confidence_columns(database: Database.Database) {
+/**
+ * Adds legacy confidence-related columns when needed.
+ * @param database - The database connection to migrate.
+ * @returns Nothing.
+ */
+export function migrate_confidence_columns(database: Database.Database): void {
   const columns = database.prepare(`PRAGMA table_info(memory_index)`).all() as Array<{ name: string }>;
   const column_names = columns.map((c) => c.name);
 
@@ -900,7 +918,12 @@ export function migrate_confidence_columns(database: Database.Database) {
   }
 }
 
-export function ensure_canonical_file_path_support(database: Database.Database) {
+/**
+ * Ensures canonical file path columns and indexes exist.
+ * @param database - The database connection to migrate.
+ * @returns Nothing.
+ */
+export function ensure_canonical_file_path_support(database: Database.Database): void {
   const columns = database.prepare('PRAGMA table_info(memory_index)').all() as Array<{ name: string }>;
   const hasCanonicalColumn = columns.some((column) => column.name === 'canonical_file_path');
 
@@ -958,7 +981,12 @@ export function ensure_canonical_file_path_support(database: Database.Database) 
 }
 
 // Migrate existing database to support constitutional tier
-export function migrate_constitutional_tier(database: Database.Database) {
+/**
+ * Checks legacy databases for constitutional tier support.
+ * @param database - The database connection to inspect.
+ * @returns Nothing.
+ */
+export function migrate_constitutional_tier(database: Database.Database): void {
   const table_info = database.prepare(`
     SELECT sql FROM sqlite_master
     WHERE type='table' AND name='memory_index'
@@ -985,7 +1013,12 @@ export function migrate_constitutional_tier(database: Database.Database) {
 }
 
 // P2-001: Create indexes for commonly queried columns
-export function create_common_indexes(database: Database.Database) {
+/**
+ * Creates common indexes used by vector-index queries.
+ * @param database - The database connection to update.
+ * @returns Nothing.
+ */
+export function create_common_indexes(database: Database.Database): void {
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_file_path ON memory_index(file_path)`);
     logger.info('Created idx_file_path index');
@@ -1035,7 +1068,7 @@ export function create_common_indexes(database: Database.Database) {
 /**
  * Ensure companion tables exist alongside memory_index.
  */
-export function ensureCompanionTables(database: Database.Database) {
+export function ensureCompanionTables(database: Database.Database): void {
   database.exec(`
     CREATE TABLE IF NOT EXISTS memory_history (
       id TEXT PRIMARY KEY,
@@ -1094,6 +1127,12 @@ export function ensureCompanionTables(database: Database.Database) {
 }
 
 // Create database schema
+/**
+ * Creates or upgrades the vector-index schema.
+ * @param database - The database connection to initialize.
+ * @param options - Schema creation options.
+ * @returns Nothing.
+ */
 export function create_schema(database: Database.Database, options: { sqlite_vec_available: boolean; get_embedding_dim: () => number }) {
   const { sqlite_vec_available, get_embedding_dim } = options;
 

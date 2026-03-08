@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Archival Manager
+// ---------------------------------------------------------------
 // Background archival job for dormant/archived memories
 // ---------------------------------------------------------------
 
@@ -446,6 +447,7 @@ function archiveBatch(memoryIds: number[]): { archived: number; failed: number }
   const batchTransaction = db.transaction(() => {
     for (const id of memoryIds) {
       try {
+        // AI-SAFETY: db is guaranteed non-null because archiveBatch returns early when the module database is missing
         const result = (db!.prepare(`
           UPDATE memory_index
           SET is_archived = 1,

@@ -773,3 +773,7 @@ else
 fi
 
 exit 0
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: --loc requires a numeric value

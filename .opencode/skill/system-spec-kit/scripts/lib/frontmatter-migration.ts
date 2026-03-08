@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: FrontmatterMigration
+// ---------------------------------------------------------------
 /**
  * @file frontmatter-migration.ts
  * @description Shared helpers for safe markdown frontmatter normalization and migration.
@@ -15,13 +18,16 @@ import * as path from 'path';
    1. TYPES
 ------------------------------------------------------------------*/
 
+/** Defines frontmatter value. */
 export type FrontmatterValue = string | string[];
 
+/** Represents frontmatter section. */
 export interface FrontmatterSection {
   key: string;
   lines: string[];
 }
 
+/** Represents frontmatter detection. */
 export interface FrontmatterDetection {
   found: boolean;
   malformed: boolean;
@@ -32,8 +38,10 @@ export interface FrontmatterDetection {
   rawBlock: string;
 }
 
+/** Defines document kind. */
 export type DocumentKind = 'template' | 'memory' | 'spec_doc' | 'unknown';
 
+/** Represents classified document. */
 export interface ClassifiedDocument {
   kind: DocumentKind;
   documentType: string;
@@ -46,6 +54,7 @@ export interface ClassifiedDocument {
   suffix: string;
 }
 
+/** Represents managed frontmatter. */
 export interface ManagedFrontmatter {
   title: string;
   description?: string;
@@ -54,11 +63,13 @@ export interface ManagedFrontmatter {
   contextType: string;
 }
 
+/** Represents build frontmatter options. */
 export interface BuildFrontmatterOptions {
   templatesRoot: string;
   maxTitleLength?: number;
 }
 
+/** Represents build frontmatter result. */
 export interface BuildFrontmatterResult {
   changed: boolean;
   content: string;
@@ -362,6 +373,7 @@ function isLikelyYamlFrontmatter(block: string): boolean {
   return topLevelCount > 0;
 }
 
+/** Provides detect frontmatter. */
 export function detectFrontmatter(content: string): FrontmatterDetection {
   if (!content) {
     return { found: false, malformed: false, start: -1, end: -1, sections: [], rawBlock: '' };
@@ -427,6 +439,7 @@ export function detectFrontmatter(content: string): FrontmatterDetection {
   };
 }
 
+/** Parse frontmatter sections. */
 export function parseFrontmatterSections(rawBlock: string): FrontmatterSection[] {
   const lines = rawBlock.replace(/\r/g, '').split('\n');
   const sections: FrontmatterSection[] = [];
@@ -559,6 +572,7 @@ function stripTrailingYamlComment(value: string): string {
   return value.trimEnd();
 }
 
+/** Parse section value. */
 export function parseSectionValue(section: FrontmatterSection): FrontmatterValue | undefined {
   if (!section.lines.length) {
     return undefined;
@@ -663,6 +677,7 @@ function extractSpecPathFromNormalizedPath(normalizedPath: string): string | nul
   return null;
 }
 
+/** Classify document. */
 export function classifyDocument(filePath: string, templatesRoot: string): ClassifiedDocument {
   const normalized = normalizePath(filePath);
   const normalizedTemplatesRoot = normalizePath(templatesRoot).replace(/\/+$/, '');
@@ -1043,6 +1058,7 @@ function frontmatterForContextTemplate(
   };
 }
 
+/** Build managed frontmatter. */
 export function buildManagedFrontmatter(
   content: string,
   sections: FrontmatterSection[],
@@ -1159,6 +1175,7 @@ function serializeFrontmatter(
   return `${lines.join('\n')}`;
 }
 
+/** Build frontmatter content. */
 export function buildFrontmatterContent(
   originalContent: string,
   options: BuildFrontmatterOptions,

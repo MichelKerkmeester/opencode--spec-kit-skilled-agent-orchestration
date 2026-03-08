@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Cross-Encoder Reranker
+// MODULE: Cross Encoder
+// ---------------------------------------------------------------
 //
 // Neural reranking via external APIs (Voyage rerank-2, Cohere
 // rerank-english-v3.0) or a local cross-encoder model

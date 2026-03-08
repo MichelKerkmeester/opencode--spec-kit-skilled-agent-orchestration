@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Stage 1 — Candidate Generation
+// MODULE: Stage1 Candidate Gen
+// ---------------------------------------------------------------
 // Sprint 5 (R6): 4-Stage Retrieval Pipeline Architecture
 // ---------------------------------------------------------------
 //
@@ -44,7 +45,7 @@ import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 
-// ── Constants ──
+// -- Constants --
 
 /** Maximum number of deep-mode query variants to generate (original + expanded). */
 const MAX_DEEP_QUERY_VARIANTS = 3;
@@ -58,7 +59,7 @@ const CONSTITUTIONAL_INJECT_LIMIT = 5;
 /** Number of similar memories to mine for R12 embedding-based query expansion terms. */
 const DEFAULT_EXPANSION_CANDIDATE_LIMIT = 5;
 
-// ── Helper Functions ──
+// -- Helper Functions --
 
 /**
  * Filter results by a minimum quality score threshold.
@@ -137,7 +138,7 @@ async function buildDeepQueryVariants(query: string): Promise<string[]> {
   }
 }
 
-// ── Stage 1 ──
+// -- Stage 1 --
 
 /**
  * Execute Stage 1: Candidate Generation.
@@ -178,7 +179,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   let candidates: PipelineRow[] = [];
   let channelCount = 0;
 
-  // ── Channel: Multi-Concept ──────────────────────────────────────────────────
+  // -- Channel: Multi-Concept --------------------------------------------------
 
   if (searchType === 'multi-concept' && Array.isArray(concepts) && concepts.length >= 2) {
     // Validate concept list: 2-5 non-empty strings
@@ -213,7 +214,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }) as PipelineRow[];
   }
 
-  // ── Channel: Hybrid (with optional deep-mode query expansion) ───────────────
+  // -- Channel: Hybrid (with optional deep-mode query expansion) ---------------
 
   else if (searchType === 'hybrid') {
     // AI-WHY: Resolve the query embedding — either pre-computed in config or generate now
@@ -284,7 +285,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         )) as PipelineRow[];
       }
     } else {
-      // ── R12: Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION) ──
+      // -- R12: Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION) --
       //
       // When R12 is enabled and R15 does not classify the query as "simple",
       // we expand the query using embedding similarity to find related terms
@@ -402,7 +403,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }
   }
 
-  // ── Channel: Vector ─────────────────────────────────────────────────────────
+  // -- Channel: Vector ---------------------------------------------------------
 
   else if (searchType === 'vector') {
     const effectiveEmbedding: Float32Array | number[] | null =
@@ -423,7 +424,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }) as PipelineRow[];
   }
 
-  // ── Unknown search type ─────────────────────────────────────────────────────
+  // -- Unknown search type -----------------------------------------------------
 
   else {
     throw new Error(
@@ -431,7 +432,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  // AI-WHY: ── Tier and contextType filtering ─────────────────────────────────────────
+  // AI-WHY: -- Tier and contextType filtering -----------------------------------------
   //
   // Applied after candidate collection but before constitutional injection so
   // injected constitutional rows are evaluated by the same filters.
@@ -450,7 +451,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  // ── Constitutional Memory Injection ────────────────────────────────────────
+  // -- Constitutional Memory Injection ----------------------------------------
   //
   // If includeConstitutional is requested and no constitutional results exist
   // in the current candidate set, fetch them separately via vector search.
@@ -500,11 +501,11 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     );
   }
 
-  // ── Quality Score Filtering ────────────────────────────────────────────────
+  // -- Quality Score Filtering ------------------------------------------------
 
   candidates = filterByMinQualityScore(candidates, qualityThreshold);
 
-  // ── R8: Summary Embedding Channel ───────────────────────────────────────
+  // -- R8: Summary Embedding Channel ---------------------------------------
   // When SPECKIT_MEMORY_SUMMARIES is enabled (default-ON) and scale gate is
   // met (>5000 indexed), run a parallel search on summary embeddings and merge
   // results. Pattern follows R12 embedding expansion: run in parallel, merge
@@ -564,7 +565,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }
   }
 
-  // AI-WHY: ── Trace ──────────────────────────────────────────────────────────────────
+  // AI-WHY: -- Trace ------------------------------------------------------------------
 
   const durationMs = Date.now() - startTime;
 
@@ -597,7 +598,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   };
 }
 
-// ── Test Exports ────────────────────────────────────────────────────────────
+// -- Test Exports ------------------------------------------------------------
 
 /**
  * Internal functions exposed for unit testing.

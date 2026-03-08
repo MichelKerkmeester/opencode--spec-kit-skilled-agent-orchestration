@@ -1,10 +1,12 @@
+// ---------------------------------------------------------------
+// MODULE: TopicKeywords
+// ---------------------------------------------------------------
 /**
  * @file topic-keywords.ts
  * @description Shared lexical helpers for topic extraction across script extractors.
  * @module scripts/lib/topic-keywords
  */
-
-// --- MODULE: Topic Keywords ---
+// ---------------------------------------------------------------\n// MODULE: Topic Keywords\n// ---------------------------------------------------------------
 // Shared lexical helpers for topic extraction across script extractors.
 
 const WORD_PATTERN = /\b[a-z][a-z0-9]+\b/g;
@@ -14,10 +16,12 @@ const BASE_VALID_SHORT_TERMS = [
   'mcp', 'ml', 'os', 'qa', 'rx', 'sql', 'ts', 'ui', 'ux', 'vm', 'wp',
 ];
 
+/** Tokenize topic words. */
 export function tokenizeTopicWords(text: string): string[] {
   return text.toLowerCase().match(WORD_PATTERN) || [];
 }
 
+/** Create valid short terms. */
 export function createValidShortTerms(extraTerms: string[] = []): Set<string> {
   return new Set([
     ...BASE_VALID_SHORT_TERMS,
@@ -25,6 +29,7 @@ export function createValidShortTerms(extraTerms: string[] = []): Set<string> {
   ]);
 }
 
+/** Provides should include topic word. */
 export function shouldIncludeTopicWord(
   word: string,
   stopwords: Set<string>,

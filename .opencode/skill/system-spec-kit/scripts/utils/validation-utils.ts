@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Validation Utils
+// MODULE: ValidationUtils
+// ---------------------------------------------------------------
 // Validates rendered output — detects leaked Mustache placeholders and empty sections
 // ---------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Folder Discovery (PI-B3)
+// MODULE: Folder Discovery
 // ---------------------------------------------------------------
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -101,10 +101,10 @@ function cachedFoldersMatchDiscoveredState(
 function resolveRealPathSafe(targetPath: string): string | null {
   try {
     return fs.realpathSync.native(targetPath);
-  } catch {
+  } catch (_error: unknown) {
     try {
       return fs.realpathSync(targetPath);
-    } catch {
+    } catch (_nestedError: unknown) {
       return null;
     }
   }
@@ -120,7 +120,7 @@ function normalizeBasePaths(basePaths: string[]): string[] {
     let stat: fs.Stats;
     try {
       stat = fs.statSync(absoluteCandidate);
-    } catch {
+    } catch (_error: unknown) {
       continue;
     }
 
@@ -155,7 +155,7 @@ function discoverSpecFolders(basePath: string): DiscoveredSpecFolder[] {
     let entries: fs.Dirent[];
     try {
       entries = fs.readdirSync(currentPath, { withFileTypes: true });
-    } catch {
+    } catch (_error: unknown) {
       return;
     }
 
@@ -171,7 +171,7 @@ function discoverSpecFolders(basePath: string): DiscoveredSpecFolder[] {
       let folderStat: fs.Stats;
       try {
         folderStat = fs.statSync(canonicalFolderPath);
-      } catch {
+      } catch (_error: unknown) {
         continue;
       }
       if (!folderStat.isDirectory()) continue;
@@ -191,7 +191,7 @@ function discoverSpecFolders(basePath: string): DiscoveredSpecFolder[] {
             canonicalFolderPath,
           });
         }
-      } catch {
+      } catch (_error: unknown) {
         // No spec.md in this folder
       }
 
@@ -221,7 +221,18 @@ function collectDiscoveredSpecState(basePaths: string[]): DiscoveredSpecState {
         if (mtime > latestMtime) {
           latestMtime = mtime;
         }
-      } catch {
+        // AI-WHY: Also check description.json mtime so aggregate cache staleness
+        // detects per-folder description edits (CHK-024 / REQ-008).
+        try {
+          const descPath = path.join(discoveredFolder.folderPath, 'description.json');
+          const descMtime = fs.statSync(descPath).mtimeMs;
+          if (descMtime > latestMtime) {
+            latestMtime = descMtime;
+          }
+        } catch (_error: unknown) {
+          // description.json may not exist yet — ignore.
+        }
+      } catch (_error: unknown) {
         // Ignore unreadable spec.md entries during staleness probing.
       }
     }
@@ -548,7 +559,7 @@ export function generatePerFolderDescription(
   let content: string;
   try {
     content = fs.readFileSync(specMdPath, 'utf-8');
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 
@@ -603,7 +614,7 @@ export function loadPerFolderDescription(folderPath: string): PerFolderDescripti
       return null; // Structurally invalid — triggers spec.md fallback
     }
     return parsed as PerFolderDescription;
-  } catch {
+  } catch (_error: unknown) {
     return null;
   }
 }
@@ -644,7 +655,7 @@ export function isPerFolderDescriptionStale(folderPath: string): boolean {
     const descMtime = fs.statSync(descPath).mtimeMs;
     const specMtime = fs.statSync(specPath).mtimeMs;
     return specMtime > descMtime;
-  } catch {
+  } catch (_error: unknown) {
     return true;
   }
 }
@@ -724,7 +735,7 @@ export function isCacheStale(cache: DescriptionCache | null, basePaths: string[]
   try {
     cacheTime = new Date(cache.generated).getTime();
     if (isNaN(cacheTime)) return true;
-  } catch {
+  } catch (_error: unknown) {
     return true;
   }
 
@@ -770,11 +781,11 @@ export function ensureDescriptionCache(basePaths: string[]): DescriptionCache | 
     const fresh = generateFolderDescriptions(normalizedBasePaths);
     try {
       saveDescriptionCache(fresh, cachePath);
-    } catch {
+    } catch (_error: unknown) {
       // AI-GUARD: Cache write failure — still return the generated cache
     }
     return fresh;
-  } catch {
+  } catch (_error: unknown) {
     // AI-GUARD: Never throw — return null for graceful degradation
     return null;
   }
@@ -805,7 +816,7 @@ export function discoverSpecFolder(
     if (best.relevanceScore < threshold) return null;
 
     return best.specFolder;
-  } catch {
+  } catch (_error: unknown) {
     // AI-GUARD: CHK-PI-B3-004: Never throw — graceful degradation
     return null;
   }

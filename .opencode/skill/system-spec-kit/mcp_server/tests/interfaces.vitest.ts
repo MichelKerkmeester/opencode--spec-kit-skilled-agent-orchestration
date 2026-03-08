@@ -1,17 +1,17 @@
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TESTS: Protocol Abstractions (T084, T085, T086)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import { IVectorStore } from '../lib/interfaces/vector-store';
 // Note: SQLiteVectorStore import deferred to Phase 2 (DB-dependent tests)
 // because vector-index-impl.js has deep dependency chain (format-helpers, etc.)
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // Mock implementations (these classes were planned but never
 // implemented in the codebase — we implement them here as
 // test-local utilities)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 /**
  * In-memory mock of IVectorStore for testing interface compliance.
@@ -237,9 +237,9 @@ function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // Test Suite: IVectorStore Interface (T084)
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Protocol Abstractions', () => {
 
@@ -365,9 +365,9 @@ describe('Protocol Abstractions', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // Test Suite: IEmbeddingProvider Interface (T085)
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('IEmbeddingProvider Interface (T085)', () => {
 
@@ -483,11 +483,11 @@ describe('Protocol Abstractions', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // Test Suite: SQLiteVectorStore (T086)
   // Deferred to Phase 2 — requires DB dependencies (better-sqlite3,
   // sqlite-vec, format-helpers) that aren't available in pure-logic context.
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('SQLiteVectorStore (T086) [deferred to Phase 2]', () => {
 

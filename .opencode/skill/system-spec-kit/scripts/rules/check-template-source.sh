@@ -87,3 +87,6 @@ This header proves files were created from official templates, not from scratch 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     run_check "$@"
 fi
+
+# Exit codes:
+#   0 - Success

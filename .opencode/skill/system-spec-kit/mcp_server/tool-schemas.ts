@@ -15,6 +15,7 @@ export {
 
 // --- 1. TYPES ---
 
+/** Defines an MCP tool schema entry. */
 export interface ToolDefinition {
   name: string;
   description: string;

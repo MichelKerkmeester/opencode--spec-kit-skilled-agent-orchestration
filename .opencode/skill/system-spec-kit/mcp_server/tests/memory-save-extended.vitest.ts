@@ -10,14 +10,14 @@ function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: MEMORY SAVE EXTENDED
 // Covers untested functions in handlers/memory-save.ts
 // Functions: resolveMemoryReference, processCausalLinks,
 //   reinforceExistingMemory, markMemorySuperseded,
 //   updateExistingMemory, logPeDecision,
 //   atomicSaveMemory, getAtomicityMetrics, indexMemoryFile
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 // Initialize a test DB at module scope so skipIf conditions can evaluate correctly.
 // The DB must be available before it() registrations (skipIf evaluates at registration time).
@@ -39,9 +39,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     try { fs.rmSync(TEST_DB_DIR, { recursive: true, force: true }); } catch { /* ignore */ }
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      DB HELPERS
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   function createTestDb(): Database.Database {
     const db = new Database(':memory:');
@@ -134,9 +134,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     stmt.run(5, 'specs/003-refactor', '/specs/003-refactor/memory/2024-12-01-session.md', 'Refactor Plan', 'Test memory content 5', 'hash5', 1.2, 5.0);
   }
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: resolveMemoryReference
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('resolveMemoryReference', () => {
     const resolveFn = typeof handler.resolveMemoryReference === 'function'
@@ -237,9 +237,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: processCausalLinks
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('processCausalLinks', () => {
     const processFn = typeof handler.processCausalLinks === 'function'
@@ -340,9 +340,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: logPeDecision
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('logPeDecision', () => {
     const logPeFn = typeof handler.logPeDecision === 'function'
@@ -407,9 +407,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: reinforceExistingMemory
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('reinforceExistingMemory', () => {
     const reinforceFn = typeof handler.reinforceExistingMemory === 'function'
@@ -534,9 +534,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: markMemorySuperseded
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('markMemorySuperseded', () => {
     const markSupersededFn = typeof handler.markMemorySuperseded === 'function'
@@ -594,9 +594,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: updateExistingMemory
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('updateExistingMemory', () => {
     const updateFn = typeof handler.updateExistingMemory === 'function'
@@ -669,9 +669,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: getAtomicityMetrics
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('getAtomicityMetrics', () => {
     const getMetricsFn = typeof handler.getAtomicityMetrics === 'function'
@@ -707,9 +707,9 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: atomicSaveMemory
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('atomicSaveMemory', () => {
     const atomicSaveFn = typeof handler.atomicSaveMemory === 'function'
@@ -756,9 +756,9 @@ This is test content.
     });
   });
 
-  /* ─────────────────────────────────────────────────────────────
+  /* -------------------------------------------------------------
      SUITE: indexMemoryFile
-  ──────────────────────────────────────────────────────────────── */
+  ---------------------------------------------------------------- */
 
   describe('indexMemoryFile', () => {
     const indexFileFn = typeof handler.indexMemoryFile === 'function'

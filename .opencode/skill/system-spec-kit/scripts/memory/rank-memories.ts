@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: Rank Memories
+// MODULE: RankMemories
+// ---------------------------------------------------------------
 // Computes composite ranking scores for memories and folders with recency decay
 // ---------------------------------------------------------------
 
@@ -30,6 +31,7 @@ import type { FolderMemoryInput } from '@spec-kit/shared/scoring/folder-scoring'
    2. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Raw memory record read from input data. */
 export interface RawMemory {
   id?: number;
   title?: string;
@@ -42,6 +44,7 @@ export interface RawMemory {
   importanceWeight?: number;
 }
 
+/** Memory record normalized for ranking and reporting. */
 export interface NormalizedMemory {
   id: string | number;
   title: string;
@@ -56,6 +59,7 @@ export interface NormalizedMemory {
   [key: string]: unknown;
 }
 
+/** Ranked constitutional memory entry included in output summaries. */
 export interface ConstitutionalEntry {
   id: string | number;
   title: string;
@@ -63,6 +67,7 @@ export interface ConstitutionalEntry {
   simplified: string;
 }
 
+/** Folder-level aggregate score entry used in ranking output. */
 export interface FolderScoreEntry {
   folder: string;
   simplified: string;
@@ -74,6 +79,7 @@ export interface FolderScoreEntry {
   isArchived: boolean;
 }
 
+/** Recent memory entry included in ranking summaries. */
 export interface RecentMemoryEntry {
   id: string | number;
   title: string;
@@ -84,6 +90,7 @@ export interface RecentMemoryEntry {
   tier: string;
 }
 
+/** Aggregate result returned from ranking memory records. */
 export interface ProcessingResult {
   constitutional: ConstitutionalEntry[];
   recentlyActive: FolderScoreEntry[];
@@ -98,12 +105,14 @@ export interface ProcessingResult {
   };
 }
 
+/** Options controlling memory ranking and output generation. */
 export interface ProcessingOptions {
   showArchived?: boolean;
   folderLimit?: number;
   memoryLimit?: number;
 }
 
+/** CLI options accepted by the memory ranking script. */
 export interface CLIOptions extends ProcessingOptions {
   format?: string;
   filePath?: string | null;

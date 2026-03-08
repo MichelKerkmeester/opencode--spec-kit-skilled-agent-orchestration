@@ -18,6 +18,7 @@ import {
   loadDescriptionCache,
   generatePerFolderDescription,
   savePerFolderDescription,
+  loadPerFolderDescription,
   isPerFolderDescriptionStale,
 } from '../lib/search/folder-discovery';
 import type { DescriptionCache, PerFolderDescription } from '../lib/search/folder-discovery';
@@ -632,5 +633,87 @@ describe('PI-B3: Per-folder description preference', () => {
     const pf = cache.folders.find(f => f.specFolder === '002-perfolder');
     expect(fresh!.description).toBe('Fresh From SpecMd');
     expect(pf!.description).toBe('Per-folder wins');
+  });
+});
+
+/* --- 010-CHK-024: Stale detection incorporates description.json mtime --- */
+
+describe('CHK-024: description.json mtime staleness', () => {
+  let td: string;
+  beforeEach(() => { td = createTempWorkspace(); });
+  afterEach(() => { cleanup(td); });
+
+  it('T046-25: editing description.json makes aggregate cache stale', () => {
+    const specsDir = path.join(td, 'specs');
+    const folderDir = createSpecFolder(td, '001-test', '# Test Spec');
+
+    // Generate initial cache
+    const cache = generateFolderDescriptions([specsDir]);
+    const cachePath = path.join(specsDir, 'descriptions.json');
+    saveDescriptionCache(cache, cachePath);
+
+    // Touch description.json to make it newer than cache
+    const descPath = path.join(folderDir, 'description.json');
+    fs.writeFileSync(descPath, JSON.stringify({ specFolder: '001-test', description: 'updated' }));
+    const futureTime = new Date(Date.now() + 5000);
+    fs.utimesSync(descPath, futureTime, futureTime);
+
+    expect(isCacheStale(cache, [specsDir])).toBe(true);
+  });
+});
+
+/* --- 010-CHK-028: loadPerFolderDescription performance benchmark --- */
+
+describe('CHK-028: Per-folder description.json read performance', () => {
+  let td: string;
+  beforeEach(() => { td = createTempWorkspace(); });
+  afterEach(() => { cleanup(td); });
+
+  it('T046-26: loadPerFolderDescription completes in <5ms', () => {
+    const folderDir = createSpecFolder(td, '001-perf', '# Perf Test');
+    const perFolder: PerFolderDescription = {
+      specFolder: '001-perf',
+      description: 'Performance test folder',
+      keywords: ['perf', 'test', 'benchmark'],
+      lastUpdated: new Date().toISOString(),
+      specId: '001',
+      folderSlug: 'perf',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(perFolder, folderDir);
+
+    const start = performance.now();
+    const result = loadPerFolderDescription(folderDir);
+    const elapsed = performance.now() - start;
+
+    expect(result).not.toBeNull();
+    expect(elapsed).toBeLessThan(5);
+  });
+});
+
+/* --- 010-CHK-029: Full aggregation scan performance benchmark --- */
+
+describe('CHK-029: generateFolderDescriptions scan performance', () => {
+  let td: string;
+  beforeEach(() => { td = createTempWorkspace(); });
+  afterEach(() => { cleanup(td); });
+
+  it('T046-27: generateFolderDescriptions scan completes in <500ms', () => {
+    const specsDir = path.join(td, 'specs');
+
+    // Create 20 spec folders to exercise the scan path
+    for (let i = 1; i <= 20; i++) {
+      const id = String(i).padStart(3, '0');
+      createSpecFolder(td, `${id}-bench-folder`, `# Bench Folder ${i}`);
+    }
+
+    const start = performance.now();
+    const cache = generateFolderDescriptions([specsDir]);
+    const elapsed = performance.now() - start;
+
+    expect(cache.folders.length).toBeGreaterThanOrEqual(20);
+    expect(elapsed).toBeLessThan(500);
   });
 });

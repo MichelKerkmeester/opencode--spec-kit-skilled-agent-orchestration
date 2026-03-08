@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Workflow
+// ---------------------------------------------------------------
 // Main workflow orchestrator -- coordinates data loading, extraction, rendering, and file output
 // ---------------------------------------------------------------
 
@@ -59,6 +60,7 @@ import type {
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Represents workflow options. */
 export interface WorkflowOptions {
   dataFile?: string;
   specFolderArg?: string;
@@ -71,6 +73,7 @@ export interface WorkflowOptions {
   silent?: boolean;
 }
 
+/** Represents workflow result. */
 export interface WorkflowResult {
   contextDir: string;
   specFolder: string;
@@ -345,7 +348,10 @@ function extractSpecTitle(specFolderPath: string): string {
     const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
     if (!titleMatch || !titleMatch[1]) return '';
     return normalizeSpecTitleForMemory(titleMatch[1]);
-  } catch {
+  } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    }
     return '';
   }
 }
@@ -853,7 +859,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ];
       savePFD(existing, specFolderAbsolute);
     }
-  } catch { /* Non-fatal — description tracking is best-effort */ }
+  } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    } /* Non-fatal — description tracking is best-effort */ }
   log();
 
   // Step 9.5: State embedded in memory file

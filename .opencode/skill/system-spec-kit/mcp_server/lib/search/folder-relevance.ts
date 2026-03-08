@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Folder Relevance Scoring (DocScore)
+// MODULE: Folder Relevance
+// ---------------------------------------------------------------
 // Computes folder-level relevance scores from individual memory
 // scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
 //

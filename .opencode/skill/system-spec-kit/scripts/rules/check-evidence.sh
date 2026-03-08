@@ -106,3 +106,6 @@ run_check() {
         RULE_REMEDIATION="Add [EVIDENCE: description] to completed P0/P1 items"
     fi
 }
+
+# Exit codes:
+#   0 - Success

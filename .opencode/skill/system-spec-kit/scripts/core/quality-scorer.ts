@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Quality Scorer
+// MODULE: QualityScorer
+// ---------------------------------------------------------------
 // Scores the quality of generated memory files based on multiple criteria
 // ---------------------------------------------------------------
 
@@ -21,6 +22,7 @@ interface QualityBreakdown {
   observationDedup: number;
 }
 
+/** Represents quality score. */
 export interface QualityScore {
   score: number;
   warnings: string[];

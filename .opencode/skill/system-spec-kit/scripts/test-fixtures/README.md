@@ -452,7 +452,7 @@ ls test-fixtures/ | grep "priority"
 | [../../references/validation/validation_rules.md](../../references/validation/validation_rules.md) | Validation rule reference |
 | [../../references/validation/phase_checklists.md](../../references/validation/phase_checklists.md) | Validation phase definitions |
 | [../../references/templates/template_guide.md](../../references/templates/template_guide.md) | Template usage guide |
-| [.opencode/skill/system-spec-kit/scripts/spec/validate.sh](.opencode/skill/system-spec-kit/scripts/spec/validate.sh) | Main validation script |
+| [../spec/validate.sh](../spec/validate.sh) | Main validation script |
 
 ### Testing Resources
 

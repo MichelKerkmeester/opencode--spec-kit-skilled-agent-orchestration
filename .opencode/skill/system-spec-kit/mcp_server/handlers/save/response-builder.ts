@@ -191,7 +191,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     let postMutationHooks: import('../mutation-hooks').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('save', { specFolder: result.specFolder, filePath });
-    } catch {
+    } catch (_error: unknown) {
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,

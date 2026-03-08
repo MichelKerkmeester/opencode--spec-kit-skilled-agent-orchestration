@@ -42,14 +42,14 @@ Top-level files:
 Primary script directories:
 - `spec/` - 8 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
-- `rules/` - 16 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
+- `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
 - `memory/` - 7 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`)
 - `core/` - 8 TypeScript workflow modules
 - `extractors/` - 11 TypeScript extraction modules plus barrel export
 - `loaders/` - 2 TypeScript loading modules plus barrel export
 - `renderers/` - 2 TypeScript rendering modules plus barrel export
-- `lib/` - 11 TypeScript libraries plus 3 shell helper libraries
-- `evals/` - 8 evaluation scripts (redaction calibration, phase1-5 shadow eval, quality backfill, performance benchmarks, closure metrics, telemetry dashboard, quality legacy remediation)
+- `lib/` - 12 TypeScript libraries plus 3 shell helper libraries
+- `evals/` - 18 evaluation and audit scripts
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
 - `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
 - `templates/` - wrapper/composition helpers for template packaging workflows

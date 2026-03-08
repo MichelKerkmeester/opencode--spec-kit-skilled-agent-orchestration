@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Data Validator
+// MODULE: DataValidator
+// ---------------------------------------------------------------
 // Validates data structures — syncs boolean flags with array contents, sanitizes strings
 // ---------------------------------------------------------------
 

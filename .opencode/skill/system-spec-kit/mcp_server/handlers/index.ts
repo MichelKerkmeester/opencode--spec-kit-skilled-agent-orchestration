@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Handlers (Barrel Export)
+// MODULE: Index
 // ---------------------------------------------------------------
 
 import * as memorySearch from './memory-search';

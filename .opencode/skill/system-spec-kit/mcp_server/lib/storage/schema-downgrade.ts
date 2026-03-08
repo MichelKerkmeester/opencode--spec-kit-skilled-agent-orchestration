@@ -318,6 +318,9 @@ export {
   downgradeSchemaV16ToV15,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   SchemaDowngradeOptions,
   SchemaDowngradeResult,

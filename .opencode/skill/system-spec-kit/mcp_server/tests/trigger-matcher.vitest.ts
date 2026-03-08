@@ -1,9 +1,9 @@
 // Converted from: trigger-matcher.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: TRIGGER MATCHER
 // Validates phrase matching, Unicode normalization, word boundary
 // detection, regex caching, and matching performance.
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Generate Context
+// MODULE: GenerateContext
+// ---------------------------------------------------------------
 // CLI entry point -- parses arguments, validates spec folder, and runs the memory workflow
 // ---------------------------------------------------------------
 
@@ -26,6 +27,7 @@ import { collectSessionData } from '../extractors/collect-session-data';
 // 1. INTERFACES
 // ---------------------------------------------------------------
 
+/** Result of validating a requested spec folder reference. */
 export interface SpecFolderValidation {
   valid: boolean;
   reason?: string;
@@ -350,10 +352,18 @@ function validateArguments(): void {
                   for (const gc of gcMatches) {
                     deepMatches.push(`${topEntry}/${midEntry}/${gc}`);
                   }
-                } catch (_error: unknown) { /* skip unreadable dirs */ }
+                } catch (_error: unknown) {
+                  if (_error instanceof Error) {
+                    /* skip unreadable dirs */
+                  }
+                }
               }
             }
-          } catch (_error: unknown) { /* skip unreadable dirs */ }
+          } catch (_error: unknown) {
+            if (_error instanceof Error) {
+              /* skip unreadable dirs */
+            }
+          }
         }
 
         if (deepMatches.length > 0) {

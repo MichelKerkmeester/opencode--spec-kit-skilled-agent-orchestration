@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Causal Boost
+// ---------------------------------------------------------------
 // Graph-traversal score boosting via causal edge relationships.
 // Walks the causal_edges graph up to MAX_HOPS, amplifying scores
 // for results related to top seed results via weighted CTE.

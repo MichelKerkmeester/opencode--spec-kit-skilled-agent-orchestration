@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Feature Evaluation — Scoring Calibration
 // ---------------------------------------------------------------
@@ -9,7 +8,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 
-// ─── T001: Embedding Cache ───
+// --- T001: Embedding Cache ---
 import {
   initEmbeddingCache,
   lookupEmbedding,
@@ -19,7 +18,7 @@ import {
   computeContentHash,
 } from '../lib/cache/embedding-cache';
 
-// ─── T002 + T004: Composite Scoring (novelty boost, normalization) ───
+// --- T002 + T004: Composite Scoring (novelty boost, normalization) ---
 import {
   calculateNoveltyBoost,
   calculateFiveFactorScore,
@@ -30,20 +29,19 @@ import {
   isCompositeNormalizationEnabled,
 } from '../lib/scoring/composite-scoring';
 
-// ─── T005: Interference Scoring ───
+// --- T005: Interference Scoring ---
 import {
   applyInterferencePenalty,
   INTERFERENCE_PENALTY_COEFFICIENT,
 } from '../lib/scoring/interference-scoring';
 
-// ─── T006: Classification-based Decay ───
-import {
+// --- T006: Classification-based Decay ---
+const {
   IMPORTANCE_TIER_STABILITY_MULTIPLIER,
   CONTEXT_TYPE_STABILITY_MULTIPLIER,
   getClassificationDecayMultiplier,
   applyClassificationDecay,
-  calculateRetrievability,
-} from '../lib/cognitive/fsrs-scheduler';
+} = require('../lib/cognitive/fsrs-scheduler.ts');
 
 // ═══════════════════════════════════════════════════════════════════
 // HELPERS

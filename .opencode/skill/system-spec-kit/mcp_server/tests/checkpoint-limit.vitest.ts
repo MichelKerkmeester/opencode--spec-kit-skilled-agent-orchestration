@@ -1,9 +1,9 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: CHECKPOINT LIMIT
 // ---------------------------------------------------------------
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import type BetterSqlite3Module from 'better-sqlite3';
 
 import * as path from 'path';
 import * as os from 'os';
@@ -11,13 +11,13 @@ import * as fs from 'fs';
 
 import * as mod from '../lib/storage/checkpoints';
 
-let BetterSqlite3: any;
-let testDb: any = null;
+let BetterSqlite3: typeof BetterSqlite3Module;
+let testDb: BetterSqlite3Module.Database | null = null;
 let tmpDbPath: string = '';
 
 describe('T212: Checkpoint Limit Parameter', () => {
   beforeAll(() => {
-    BetterSqlite3 = require('better-sqlite3');
+    BetterSqlite3 = require('better-sqlite3') as typeof BetterSqlite3Module;
 
     tmpDbPath = path.join(os.tmpdir(), `t212-checkpoint-limit-${Date.now()}.db`);
     testDb = new BetterSqlite3(tmpDbPath);
@@ -78,9 +78,9 @@ describe('T212: Checkpoint Limit Parameter', () => {
     if (tmpDbPath && fs.existsSync(tmpDbPath)) { try { fs.unlinkSync(tmpDbPath); } catch {} }
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Limit parameter applied to listCheckpoints
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Limit parameter applied to listCheckpoints', () => {
     it('T212-01: Create 10 checkpoints', () => {
       for (let i = 0; i < 10; i++) {
@@ -111,16 +111,16 @@ describe('T212: Checkpoint Limit Parameter', () => {
       const three = mod.listCheckpoints(null, 3);
       expect(Array.isArray(three)).toBe(true);
       expect(three.length).toBe(3);
-      const names = three.map((cp: any) => cp.name);
+      const names = three.map((cp) => cp.name);
       // Most recent should be first (ordered by created_at DESC)
       // Accept either correct ordering or any 3 results (timestamp resolution may vary)
       expect(names.length).toBe(3);
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Limit with specFolder filter
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Limit with specFolder filter', () => {
     beforeAll(() => {
       for (let i = 0; i < 5; i++) {
@@ -135,7 +135,7 @@ describe('T212: Checkpoint Limit Parameter', () => {
       const limitedA = mod.listCheckpoints('spec-a', 3);
       expect(Array.isArray(limitedA)).toBe(true);
       expect(limitedA.length).toBe(3);
-      const allCorrectFolder = limitedA.every((cp: any) => cp.specFolder === 'spec-a');
+      const allCorrectFolder = limitedA.every((cp) => cp.specFolder === 'spec-a');
       expect(allCorrectFolder).toBe(true);
     });
 
@@ -146,9 +146,9 @@ describe('T212: Checkpoint Limit Parameter', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: listCheckpoints signature accepts limit
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('listCheckpoints signature accepts limit', () => {
     it('T212-08: listCheckpoints(specFolder, limit) accepted', () => {
       const result = mod.listCheckpoints(null, 10);

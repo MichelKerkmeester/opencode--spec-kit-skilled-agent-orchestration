@@ -39,9 +39,9 @@ contextType: "implementation"
 |-------|-------|
 | **Spec Folder** | 001-hybrid-rag-fusion-epic |
 | **Level** | 3+ |
-| **Status** | In Progress (implementation extends through Phase 10; program closeout pending) |
-| **Latest Phase Covered** | Phase 10 (Comprehensive Remediation, Phase 2) |
-| **Last Updated** | 2026-03-01 |
+| **Status** | In Progress (implementation extends through Phase 10; program closeout pending; Wave 6 campaign active) |
+| **Latest Phase Covered** | Phase 10 (Comprehensive Remediation, Phase 2) + Multi-Agent Verification Campaign |
+| **Last Updated** | 2026-03-08 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -57,6 +57,60 @@ Completion work addressed two rounds of thorough remediation:
 - **Phase 10 (Round 2):** 25-agent review identified ~65 additional issues. Fixed 5 P0 blockers (withSpecFolderLock race condition, double similarity normalization, empty sourceScores, type safety escape hatch, chunking outside lock), 26 P1 code fixes (scoring, flags, mutations, cache, cognitive, eval), 6 P1 code standard fixes (109 files — header format, section dividers, module exports), ~25 P2 suggestions (performance caps, safety guards, config cleanup), and 6 documentation fixes. Result: 7,008/7,008 tests passing.
 - Canonical policy alignment, template-source metadata normalization, and sprint documentation synchronization.
 <!-- /ANCHOR:what-built -->
+
+---
+
+## Campaign Verification (2026-03-08)
+
+A multi-agent verification campaign was executed on 2026-03-08 using GPT-5.4 (12/20 budget), Codex (5/5), and Sonnet (8/10) agents across five waves targeting the 022-hybrid-rag-fusion spec tree. The campaign addressed 237 unchecked checklist items across 8 folders and closed out three spec folders.
+
+### Wave 1 — Read-Only Analysis (4 agents)
+
+Cross-spec inventory identified 237 unchecked items across 8 folders. Folder-specific assessments completed:
+- **006:** 47 items classified by runtime-testability (CHK groups identified for Waves 4-5).
+- **009:** 2 actionable stale references found (ARCHITECTURE_BOUNDARIES.md refs pointing to renamed ARCHITECTURE.md).
+- **007:** Evidence quality audit completed; 7/10 items had verifiable file:line evidence.
+- **010:** Phase 3-4 readiness confirmed (slug uniqueness and memory aggregation already implemented).
+
+### Wave 2 — Close-Out: 002, 007, 012 (3 agents)
+
+- **002 (indexing-normalization):** Formal deferral notes added to 6 P1 items. Status set to complete.
+- **007:** 7/10 checklist items checked with file:line evidence citations.
+- **012:** CHK-052 (P2) formally deferred. Status set to complete.
+
+### Wave 3 — Architecture Remediation (2 agents)
+
+- **009:** 2 stale `ARCHITECTURE_BOUNDARIES.md` references fixed to `ARCHITECTURE.md`.
+- **009:** Exception reconciliation verified (4/4 exceptions match between allowlist.json and ARCHITECTURE.md).
+- **009:** `dist/` policy section added to ARCHITECTURE.md.
+- **006:** Test execution plan created (3 groups: schema validation, response envelope, async ingestion).
+- **006:** Regression baseline captured: 7,153 pass, 4 known failures.
+
+### Wave 4 — 006 Runtime Validation (2 agents)
+
+Targeted checklist items verified against live test output:
+- CHK-021, CHK-022 (Zod schema validation): verified.
+- CHK-032 (response envelope): verified.
+- CHK-042, CHK-044, CHK-045, CHK-047, CHK-048 (async ingestion): verified.
+- CHK-092, CHK-093, CHK-094 (backward compatibility): verified.
+
+### Wave 5 — 010 Phase Verification + 006 Docs (2 agents)
+
+- **010 Phase 3:** Slug uniqueness confirmed already implemented (`ensureUniqueMemoryFilename`).
+- **010 Phase 3-4:** `memorySequence` and aggregation logic confirmed implemented; one cache-mtime gap noted as non-blocking.
+- **006:** implementation-summary updated with campaign verification state.
+- CHK-070 through CHK-075 (dynamic init): verified.
+
+### Campaign Summary
+
+| Metric | Value |
+|--------|-------|
+| **Folders closed out** | 002 (indexing-normalization), 009 (architecture-audit), 012 — all status set to complete |
+| **006 progress** | Estimated ~85/112 checklist items verified (up from 76/112 pre-campaign) |
+| **007 progress** | Near-complete (7/10 items with evidence) |
+| **010 progress** | Phase 3-4 verified as implemented |
+| **Architecture fixes** | 2 stale refs fixed, dist/ policy added, 4/4 exception reconciliation confirmed |
+| **Budget consumed** | GPT-5.4: 12/20, Codex: 5/5, Sonnet: 8/10 |
 
 ---
 

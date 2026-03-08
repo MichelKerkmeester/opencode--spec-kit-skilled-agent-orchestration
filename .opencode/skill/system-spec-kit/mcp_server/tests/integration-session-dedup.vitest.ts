@@ -10,9 +10,9 @@ import * as sessionManager from '../lib/session/session-manager';
 
 describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures]', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Search Handler Session Dedup Parameters
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Search Handler Session Dedup Parameters', () => {
     it('T531-1: sessionId parameter accepted by search', async () => {
       try {
@@ -48,9 +48,9 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Trigger Handler Session Parameters
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Trigger Handler Session Parameters', () => {
     it('T531-3: session_id parameter accepted by triggers', async () => {
       try {
@@ -85,9 +85,9 @@ describe('Integration Session Dedup (T531) [deferred - requires DB test fixtures
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Dedup Disable Flag
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Dedup Disable Flag', () => {
     it('T531-5: Default dedup behavior with sessionId', async () => {
       try {

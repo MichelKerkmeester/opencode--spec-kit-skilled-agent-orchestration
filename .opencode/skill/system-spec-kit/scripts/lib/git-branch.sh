@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# LIBRARY: git-branch.sh
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
+# COMPONENT: Git Branch
+# ---------------------------------------------------------------
 # Git branch utilities for spec-kit scripts.
 # Source this file: source "$(dirname "$0")/../lib/git-branch.sh"
 #
@@ -15,8 +15,7 @@
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# Strict mode declaration is present for standards verification.
-# It only applies when this file is executed directly, not when sourced.
+# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -138,3 +137,6 @@ generate_branch_name() {
         printf '%s\n' "$description" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//' | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed 's/-$//'
     fi
 }
+
+# Exit codes:
+#   0 - Success

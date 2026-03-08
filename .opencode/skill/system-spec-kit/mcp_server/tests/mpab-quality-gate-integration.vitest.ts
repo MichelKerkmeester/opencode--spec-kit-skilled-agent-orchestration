@@ -54,9 +54,9 @@ import {
   isReconsolidationEnabled as isReconsolidationFlag,
 } from '../lib/search/search-flags';
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST HELPERS
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 /** Save and restore env vars around tests */
 function withEnvVars(vars: Record<string, string | undefined>, fn: () => void | Promise<void>) {
@@ -134,9 +134,9 @@ function makeSimilarMemory(overrides: Partial<SimilarMemory> = {}): SimilarMemor
   };
 }
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // Feature flag env var names
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 const S4_FLAGS = {
   SPECKIT_DOCSCORE_AGGREGATION: 'SPECKIT_DOCSCORE_AGGREGATION',
   SPECKIT_SHADOW_SCORING: 'SPECKIT_SHADOW_SCORING',
@@ -144,9 +144,9 @@ const S4_FLAGS = {
   SPECKIT_RECONSOLIDATION: 'SPECKIT_RECONSOLIDATION',
 };
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 1: MPAB + Pipeline Integration
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: MPAB + Pipeline', () => {
   afterEach(() => {
@@ -241,9 +241,9 @@ describe('Sprint 4 Integration: MPAB + Pipeline', () => {
   ));
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 2: Quality Gate + Save Integration
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: Quality Gate + Save', () => {
   afterEach(() => {
@@ -328,9 +328,9 @@ anchor quality, and metadata quality dimensions. The threshold is set at ${SIGNA
   ));
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 3: Reconsolidation + Save Integration
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: Reconsolidation + Save', () => {
   afterEach(() => {
@@ -407,9 +407,9 @@ describe('Sprint 4 Integration: Reconsolidation + Save', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 4: TM-04/TM-06 Interaction
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: TM-04 + TM-06 Interaction', () => {
   afterEach(() => {
@@ -486,9 +486,9 @@ This ensures only quality content gets merged or stored.
   ));
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 5: Shadow Scoring + Channel Attribution
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   afterEach(() => {
@@ -537,9 +537,9 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 6: Feature Flag Independence
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: Feature Flag Independence', () => {
   const allFlags = [
@@ -637,9 +637,9 @@ describe('Sprint 4 Integration: Feature Flag Independence', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 7: All Flags OFF — Backward Compatibility
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
   beforeEach(() => {
@@ -708,9 +708,9 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 // SUITE 8: Cross-Module Threshold Consistency
-// ─────────────────────────────────────────────────────────────
+// -------------------------------------------------------------
 
 describe('Sprint 4 Integration: Cross-Module Threshold Consistency', () => {
   it('S4-INT-23: Quality gate semantic dedup threshold (0.92) > reconsolidation merge threshold (0.88)', () => {

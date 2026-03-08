@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: TRIGGER SETATTENTIONSCORE
 // ---------------------------------------------------------------
@@ -13,9 +12,9 @@ const HANDLERS_PATH = path.join(__dirname, '..', 'handlers');
 
 describe('T209: Wire setAttentionScore for Trigger Matches', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: T209 — setAttentionScore export and signature
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('setAttentionScore export and signature', () => {
     it('T209-1: setAttentionScore is exported from working-memory', () => {
       expect(typeof workingMemory.setAttentionScore).toBe('function');
@@ -28,9 +27,9 @@ describe('T209: Wire setAttentionScore for Trigger Matches', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: T209 — Handler source includes setAttentionScore call
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Handler wires setAttentionScore', () => {
     let handlerSource: string | null = null;
     let handlerJs: string | null = null;
@@ -100,9 +99,9 @@ describe('T209: Wire setAttentionScore for Trigger Matches', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: T209 — Task ID documented in source
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Task ID documented in source', () => {
     it('T209-7: T209 task ID documented in handler source', () => {
       let source: string;

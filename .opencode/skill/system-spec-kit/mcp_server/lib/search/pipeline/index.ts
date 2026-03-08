@@ -1,9 +1,16 @@
 // ---------------------------------------------------------------
-// MODULE: Pipeline Index
+// MODULE: Index
+// ---------------------------------------------------------------
 // Sprint 5 (R6): Public API for the 4-stage retrieval pipeline
 // ---------------------------------------------------------------
 
+/**
+ * Execute the four-stage retrieval pipeline.
+ */
 export { executePipeline } from './orchestrator';
+/**
+ * Public pipeline data contracts.
+ */
 export type {
   PipelineConfig,
   PipelineResult,
@@ -21,4 +28,7 @@ export type {
   IntentWeightsConfig,
   ArtifactRoutingConfig,
 } from './types';
+/**
+ * Score snapshot helpers for Stage 4 invariants.
+ */
 export { captureScoreSnapshot, verifyScoreInvariant } from './types';

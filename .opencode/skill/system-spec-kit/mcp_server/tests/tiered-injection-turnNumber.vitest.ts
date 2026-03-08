@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: TIERED INJECTION TURNNUMBER
 // ---------------------------------------------------------------
@@ -183,7 +182,8 @@ describe('T201 + T208: Tiered Injection + Turn Decay [deferred - requires DB tes
     });
 
     it('T208-7: Snake_case alias exported', () => {
-      expect(typeof (handler as unknown).handle_memory_match_triggers).toBe('function');
+      const handlerExports = handler as Record<string, unknown>;
+      expect(typeof handlerExports.handle_memory_match_triggers).toBe('function');
     });
   });
 

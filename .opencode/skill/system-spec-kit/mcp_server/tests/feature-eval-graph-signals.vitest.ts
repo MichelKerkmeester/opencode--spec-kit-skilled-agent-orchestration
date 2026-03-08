@@ -5,7 +5,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-// ─── T001/T002: Degree computation & RRF channel ───
+// --- T001/T002: Degree computation & RRF channel ---
 import {
   EDGE_TYPE_WEIGHTS,
   DEFAULT_MAX_TYPED_DEGREE,
@@ -18,28 +18,28 @@ import {
   clearDegreeCache,
 } from '../lib/search/graph-search-fn';
 
-// ─── T002: RRF fusion ───
+// --- T002: RRF fusion ---
 import {
   fuseResultsMulti,
   SOURCE_TYPES,
 } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-// ─── T003a: Co-activation ───
+// --- T003a: Co-activation ---
 import {
   boostScore,
   CO_ACTIVATION_CONFIG,
   DEFAULT_COACTIVATION_STRENGTH,
 } from '../lib/cache/cognitive/co-activation';
 
-// ─── T005a: Signal vocabulary ───
+// --- T005a: Signal vocabulary ---
 import {
   detectSignals,
   applySignalBoosts,
 } from '../lib/parsing/trigger-matcher';
 import type { TriggerMatch } from '../lib/parsing/trigger-matcher';
 
-// ─── T007: Token budget ───
+// --- T007: Token budget ---
 import {
   getDynamicTokenBudget,
   DEFAULT_BUDGET,

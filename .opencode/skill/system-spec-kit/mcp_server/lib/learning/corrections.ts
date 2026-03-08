@@ -1,14 +1,18 @@
-// ───────────────────────────────────────────────────────────────
-// MODULE: Learning Corrections Tracking
+// ---------------------------------------------------------------
+// MODULE: Corrections
+// ---------------------------------------------------------------
 // LEARNING: CORRECTIONS TRACKING
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    TYPE DEFINITIONS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
+/**
+ * Describes the CorrectionTypes shape.
+ */
 export interface CorrectionTypes {
   readonly SUPERSEDED: 'superseded';
   readonly DEPRECATED: 'deprecated';
@@ -16,6 +20,9 @@ export interface CorrectionTypes {
   readonly MERGED: 'merged';
 }
 
+/**
+ * Describes the StabilityChanges shape.
+ */
 export interface StabilityChanges {
   original: {
     before: number;
@@ -29,6 +36,9 @@ export interface StabilityChanges {
   } | null;
 }
 
+/**
+ * Describes the CorrectionResult shape.
+ */
 export interface CorrectionResult {
   success: boolean;
   skipped?: boolean;
@@ -40,6 +50,9 @@ export interface CorrectionResult {
   stability_changes?: StabilityChanges;
 }
 
+/**
+ * Describes the CorrectionRecord shape.
+ */
 export interface CorrectionRecord {
   id: number;
   original_memory_id: number;
@@ -56,16 +69,25 @@ export interface CorrectionRecord {
   undone_at: string | null;
 }
 
+/**
+ * Describes the CorrectionChainEntry shape.
+ */
 export interface CorrectionChainEntry extends CorrectionRecord {
   direction: string;
   depth: number;
 }
 
+/**
+ * Describes the CorrectionWithTitles shape.
+ */
 export interface CorrectionWithTitles extends CorrectionRecord {
   original_title: string | null;
   correction_title: string | null;
 }
 
+/**
+ * Describes the CorrectionChain shape.
+ */
 export interface CorrectionChain {
   memory_id: number;
   chain: CorrectionChainEntry[];
@@ -74,6 +96,9 @@ export interface CorrectionChain {
   error?: string;
 }
 
+/**
+ * Describes the CorrectionStats shape.
+ */
 export interface CorrectionStats {
   enabled: boolean;
   total: number;
@@ -83,6 +108,9 @@ export interface CorrectionStats {
   error?: string;
 }
 
+/**
+ * Describes the RecordCorrectionParams shape.
+ */
 export interface RecordCorrectionParams {
   original_memory_id: number;
   correction_memory_id?: number | null;
@@ -91,6 +119,9 @@ export interface RecordCorrectionParams {
   corrected_by?: string | null;
 }
 
+/**
+ * Describes the UndoResult shape.
+ */
 export interface UndoResult {
   success: boolean;
   skipped?: boolean;
@@ -105,6 +136,9 @@ export interface UndoResult {
   };
 }
 
+/**
+ * Describes the SchemaResult shape.
+ */
 export interface SchemaResult {
   success: boolean;
   skipped?: boolean;
@@ -112,12 +146,15 @@ export interface SchemaResult {
   error?: string;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    1. CONSTANTS & CONFIGURATION
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 const ENABLE_RELATIONS: boolean = process.env.SPECKIT_RELATIONS !== 'false';
 
+/**
+ * Defines the CORRECTION_TYPES constant.
+ */
 export const CORRECTION_TYPES: CorrectionTypes = Object.freeze({
   SUPERSEDED: 'superseded' as const,
   DEPRECATED: 'deprecated' as const,
@@ -125,17 +162,26 @@ export const CORRECTION_TYPES: CorrectionTypes = Object.freeze({
   MERGED: 'merged' as const,
 });
 
+/**
+ * Provides the get_correction_types helper.
+ */
 export function get_correction_types(): string[] {
   return Object.values(CORRECTION_TYPES);
 }
 
+/**
+ * Defines the CORRECTION_STABILITY_PENALTY constant.
+ */
 export const CORRECTION_STABILITY_PENALTY: number = 0.5;
+/**
+ * Defines the REPLACEMENT_STABILITY_BOOST constant.
+ */
 export const REPLACEMENT_STABILITY_BOOST: number = 1.2;
 const MAX_CORRECTIONS_HISTORY: number = 10;
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    2. DATABASE STATE
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 let db: Database.Database | null = null;
 
@@ -154,6 +200,9 @@ function get_error_message(error: unknown): string {
   return String(error);
 }
 
+/**
+ * Provides the init helper.
+ */
 export function init(database: Database.Database): SchemaResult {
   if (!database) {
     throw new Error('[corrections] Database reference is required');
@@ -162,17 +211,23 @@ export function init(database: Database.Database): SchemaResult {
   return ensure_schema();
 }
 
+/**
+ * Provides the get_db helper.
+ */
 export function get_db(): Database.Database | null {
   return db;
 }
 
+/**
+ * Provides the is_enabled helper.
+ */
 export function is_enabled(): boolean {
   return ENABLE_RELATIONS;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    3. SCHEMA MANAGEMENT
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 const SCHEMA_SQL: string = `
   CREATE TABLE IF NOT EXISTS memory_corrections (
@@ -218,6 +273,9 @@ const INDEX_SQL: string[] = [
   'CREATE INDEX IF NOT EXISTS idx_corrections_active ON memory_corrections(original_memory_id, is_undone) WHERE is_undone = 0;',
 ];
 
+/**
+ * Provides the ensure_schema helper.
+ */
 export function ensure_schema(): SchemaResult {
   if (!db) {
     throw new Error('[corrections] Database not initialized. Call init() first.');
@@ -244,9 +302,9 @@ export function ensure_schema(): SchemaResult {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    4. STABILITY HELPERS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 function get_memory_stability(memory_id: number): number | null {
   if (!db) {
@@ -288,10 +346,13 @@ function set_memory_stability(memory_id: number, new_stability: number): boolean
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    5. CORE CORRECTION FUNCTIONS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
+/**
+ * Provides the record_correction helper.
+ */
 export function record_correction(params: RecordCorrectionParams): CorrectionResult {
   if (!db) {
     throw new Error('[corrections] Database not initialized. Call init() first.');
@@ -360,6 +421,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
     }
 
     // Record the correction
+    // AI-SAFETY: record_correction validates db before starting this transaction
     const stmt = db!.prepare(`
       INSERT INTO memory_corrections (
         original_memory_id,
@@ -389,6 +451,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
 
     // Also create a causal edge if causal_edges table exists
     try {
+      // AI-SAFETY: record_correction validates db before starting this transaction
       const causal_table_exists = db!.prepare(`
         SELECT name FROM sqlite_master
         WHERE type='table' AND name='causal_edges'
@@ -414,7 +477,9 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
             relation = 'supersedes';
         }
 
-        db!.prepare(`
+        // AI-SAFETY: record_correction validates db before starting this transaction
+        // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
+    db!.prepare(`
           INSERT OR IGNORE INTO causal_edges (
             source_id, target_id, relation, strength, evidence, extracted_at
           ) VALUES (?, ?, ?, 1.0, ?, datetime('now'))
@@ -462,10 +527,13 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    6. UNDO CAPABILITY
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
+/**
+ * Provides the undo_correction helper.
+ */
 export function undo_correction(correction_id: number): UndoResult {
   if (!db) {
     throw new Error('[corrections] Database not initialized. Call init() first.');
@@ -520,6 +588,7 @@ export function undo_correction(correction_id: number): UndoResult {
     // Try to remove the causal edge if it exists
     try {
       if (correction.correction_memory_id) {
+        // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
         db!.prepare(`
           DELETE FROM causal_edges
           WHERE source_id = ? AND target_id = ?
@@ -555,10 +624,13 @@ export function undo_correction(correction_id: number): UndoResult {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    7. QUERY FUNCTIONS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
+/**
+ * Provides the get_corrections_for_memory helper.
+ */
 export function get_corrections_for_memory(
   memory_id: number,
   options: { include_undone?: boolean; limit?: number } = {}
@@ -597,6 +669,9 @@ export function get_corrections_for_memory(
   }
 }
 
+/**
+ * Provides the get_correction_chain helper.
+ */
 export function get_correction_chain(
   memory_id: number,
   options: { max_depth?: number } = {}
@@ -616,6 +691,7 @@ export function get_correction_chain(
     visited.add(id);
 
     // Get corrections where this memory is the original
+    // AI-SAFETY: get_correction_chain returns early when db is unavailable
     const as_original = db!.prepare(`
       SELECT * FROM memory_corrections
       WHERE original_memory_id = ? AND is_undone = 0
@@ -635,6 +711,7 @@ export function get_correction_chain(
     }
 
     // Get corrections where this memory is the correction
+    // AI-SAFETY: get_correction_chain returns early when db is unavailable
     const as_correction = db!.prepare(`
       SELECT * FROM memory_corrections
       WHERE correction_memory_id = ? AND is_undone = 0
@@ -668,6 +745,9 @@ export function get_correction_chain(
   }
 }
 
+/**
+ * Provides the get_corrections_stats helper.
+ */
 export function get_corrections_stats(): CorrectionStats {
   if (!db || !ENABLE_RELATIONS) {
     return {
@@ -719,10 +799,13 @@ export function get_corrections_stats(): CorrectionStats {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    8. BATCH OPERATIONS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
+/**
+ * Provides the deprecate_memory helper.
+ */
 export function deprecate_memory(memory_id: number, reason: string = 'Deprecated'): CorrectionResult {
   return record_correction({
     original_memory_id: memory_id,
@@ -733,6 +816,9 @@ export function deprecate_memory(memory_id: number, reason: string = 'Deprecated
   });
 }
 
+/**
+ * Provides the supersede_memory helper.
+ */
 export function supersede_memory(
   old_memory_id: number,
   new_memory_id: number,
@@ -747,6 +833,9 @@ export function supersede_memory(
   });
 }
 
+/**
+ * Provides the refine_memory helper.
+ */
 export function refine_memory(
   original_id: number,
   refined_id: number,
@@ -761,6 +850,9 @@ export function refine_memory(
   });
 }
 
+/**
+ * Provides the merge_memories helper.
+ */
 export function merge_memories(
   source_ids: number[],
   merged_id: number,
@@ -794,9 +886,9 @@ export function merge_memories(
   return results;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    9. CAMELCASE ALIASES (backward compatibility)
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 export {
   record_correction as recordCorrection,

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Conversation Extractor
+// MODULE: ConversationExtractor
+// ---------------------------------------------------------------
 // Extracts structured conversation data — exchanges, tool calls, phases, and flowcharts
 // ---------------------------------------------------------------
 
@@ -27,6 +28,7 @@ export type {
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Conversation-focused subset of collected session data. */
 export interface CollectedDataForConversation {
   userPrompts?: Array<{ prompt: string; timestamp?: string }>;
   observations?: Array<{

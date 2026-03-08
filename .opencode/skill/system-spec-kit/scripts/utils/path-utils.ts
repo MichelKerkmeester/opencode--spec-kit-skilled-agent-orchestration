@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Path Utils
+// MODULE: PathUtils
+// ---------------------------------------------------------------
 // Secure path sanitization and resolution with traversal protection (CWE-22)
 // ---------------------------------------------------------------
 
@@ -35,12 +36,17 @@ function sanitizePath(inputPath: string, allowedBases: string[] | null = null): 
   let canonicalResolved = resolved;
   try {
     canonicalResolved = fs.realpathSync(resolved);
-  } catch {
-    // Path may not exist yet. Canonicalize parent when possible.
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // Path may not exist yet. Canonicalize parent when possible.
+    }
     try {
       const parentCanonical = fs.realpathSync(path.dirname(resolved));
       canonicalResolved = path.join(parentCanonical, path.basename(resolved));
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Fall back to the unresolved path when the parent cannot be canonicalized.
+      }
       canonicalResolved = resolved;
     }
   }
@@ -57,12 +63,18 @@ function sanitizePath(inputPath: string, allowedBases: string[] | null = null): 
       let canonicalBase = resolvedBase;
       try {
         canonicalBase = fs.realpathSync(resolvedBase);
-      } catch {
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          // Fall back to the unresolved base path when realpath fails.
+        }
         canonicalBase = resolvedBase;
       }
       const relative = path.relative(canonicalBase, canonicalResolved);
       return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return false;
+      }
       return false;
     }
   });

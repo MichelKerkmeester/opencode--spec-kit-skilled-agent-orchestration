@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: Backfill Frontmatter
+// MODULE: BackfillFrontmatter
 // ---------------------------------------------------------------
 // Bulk normalizes markdown frontmatter for templates, spec docs, and memories.
 
@@ -237,7 +237,10 @@ function discoverSpecsRoots(baseDir: string): string[] {
     let entries: fs.Dirent[] = [];
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        continue;
+      }
       continue;
     }
 
@@ -267,7 +270,11 @@ function discoverSpecsRoots(baseDir: string): string[] {
       if (!deduped.has(realPath)) {
         deduped.set(realPath, root);
       }
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error && !deduped.has(root)) {
+        deduped.set(root, root);
+        continue;
+      }
       if (!deduped.has(root)) {
         deduped.set(root, root);
       }
@@ -294,7 +301,10 @@ function collectTemplateFiles(rootPath: string): string[] {
     let entries: fs.Dirent[] = [];
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        continue;
+      }
       continue;
     }
 
@@ -331,7 +341,10 @@ function collectSpecFiles(rootPath: string, includeArchive: boolean): string[] {
     let entries: fs.Dirent[] = [];
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        continue;
+      }
       continue;
     }
 

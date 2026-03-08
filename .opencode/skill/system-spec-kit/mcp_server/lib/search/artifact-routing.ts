@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Artifact-Class Routing Table (C136-09)
+// MODULE: Artifact Routing
+// ---------------------------------------------------------------
 // Splits retrieval strategy by artifact class for class-specific
 // retrieval policies with deterministic branch behavior.
 // ---------------------------------------------------------------

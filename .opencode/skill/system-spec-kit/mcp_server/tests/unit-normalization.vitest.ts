@@ -1,15 +1,15 @@
-// @ts-nocheck
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: NORMALIZATION LAYER (vitest migration POC)
 // Converted from: unit-normalization.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import { dbRowToMemory, memoryToDbRow, partialDbRowToMemory } from '@spec-kit/shared/normalization';
+import type { Memory, MemoryDbRow } from '@spec-kit/shared/types';
 
 /* --- Fixtures --- */
 
-function makeFullDbRow(): Record<string, unknown> {
+function makeFullDbRow(): MemoryDbRow {
   return {
     id: 42,
     spec_folder: 'specs/007-auth',
@@ -44,10 +44,12 @@ function makeFullDbRow(): Record<string, unknown> {
     last_review: '2025-02-01T12:00:00Z',
     review_count: 5,
     file_mtime_ms: 1706800000000,
+    document_type: 'memory',
+    spec_level: 1,
   };
 }
 
-function makeFullMemory(): Record<string, unknown> {
+function makeFullMemory(): Memory {
   return {
     id: 42,
     specFolder: 'specs/007-auth',
@@ -82,6 +84,8 @@ function makeFullMemory(): Record<string, unknown> {
     lastReview: '2025-02-01T12:00:00Z',
     reviewCount: 5,
     fileMtimeMs: 1706800000000,
+    documentType: 'memory',
+    specLevel: 1,
   };
 }
 
@@ -145,10 +149,10 @@ describe('Normalization Layer (T001-T007)', () => {
   it('T004: Round-trip preserves all fields', () => {
     const originalMemory = makeFullMemory();
     const dbRow = memoryToDbRow(originalMemory);
-    dbRow.id = originalMemory.id; // memoryToDbRow omits id
-    const roundTripped = dbRowToMemory(dbRow);
+    const roundTrippedRow: MemoryDbRow = { ...dbRow, id: originalMemory.id } as MemoryDbRow;
+    const roundTripped = dbRowToMemory(roundTrippedRow);
 
-    for (const key of Object.keys(originalMemory)) {
+    for (const key of Object.keys(originalMemory) as Array<keyof Memory>) {
       expect(roundTripped[key]).toEqual(originalMemory[key]);
     }
   });
@@ -166,7 +170,7 @@ describe('Normalization Layer (T001-T007)', () => {
 
     const memory = dbRowToMemory(row);
 
-    const nullFields = [
+    const nullFields: Array<keyof Memory> = [
       'anchorId', 'lastRetryAt', 'failureReason',
       'embeddingGeneratedAt', 'contentHash', 'expiresAt',
       'lastReview', 'fileMtimeMs',

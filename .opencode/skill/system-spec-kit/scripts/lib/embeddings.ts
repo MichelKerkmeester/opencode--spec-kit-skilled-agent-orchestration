@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: Embeddings
+// ---------------------------------------------------------------
 /**
  * @file embeddings.ts
  * @description Re-export shim for the canonical embeddings module in shared/.

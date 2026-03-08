@@ -223,3 +223,7 @@ run_check() {
 
     return 0
 }
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

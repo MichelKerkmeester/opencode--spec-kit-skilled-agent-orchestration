@@ -133,3 +133,7 @@ run_check() {
         RULE_REMEDIATION="Fix missing markdown references, align Spec Folder metadata to the actual folder name, and ensure handover spec/resume targets resolve to real paths."
     fi
 }
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

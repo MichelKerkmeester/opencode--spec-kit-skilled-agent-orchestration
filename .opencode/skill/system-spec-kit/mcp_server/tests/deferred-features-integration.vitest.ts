@@ -37,7 +37,7 @@ import {
   isEntityLinkingEnabled,
 } from '../lib/search/search-flags';
 
-/* ── Test Database Helper ── */
+/* -- Test Database Helper -- */
 
 function createIntegrationDb(): Database.Database {
   const db = new Database(':memory:');
@@ -158,7 +158,7 @@ function seedEdges(db: Database.Database): void {
     .run('3', '4', 'caused');
 }
 
-/* ── Tests ── */
+/* -- Tests -- */
 
 describe('Deferred Features: Integration Tests', () => {
   let db: Database.Database;
@@ -175,7 +175,7 @@ describe('Deferred Features: Integration Tests', () => {
     db.close();
   });
 
-  // ── Feature Flags: Default-ON behavior ──
+  // -- Feature Flags: Default-ON behavior --
 
   describe('Feature flags — default ON, disable with =false', () => {
     afterEach(() => {
@@ -223,7 +223,7 @@ describe('Deferred Features: Integration Tests', () => {
     });
   });
 
-  // ── R10 → S5: Entity Extraction → Entity Linking Dependency Chain ──
+  // -- R10 → S5: Entity Extraction → Entity Linking Dependency Chain --
 
   describe('R10 → S5 dependency chain', () => {
     it('extracts entities from content and stores them', () => {
@@ -332,7 +332,7 @@ const middleware = createAuthMiddleware();
     });
   });
 
-  // ── N2: Graph Signals Pipeline Integration ──
+  // -- N2: Graph Signals Pipeline Integration --
 
   describe('N2 graph signals pipeline integration', () => {
     it('snapshotDegrees captures current graph state', () => {
@@ -369,7 +369,7 @@ const middleware = createAuthMiddleware();
     });
   });
 
-  // ── N2c: Community Detection Integration ──
+  // -- N2c: Community Detection Integration --
 
   describe('N2c community detection integration', () => {
     it('detects communities and stores assignments', () => {
@@ -410,7 +410,7 @@ const middleware = createAuthMiddleware();
     });
   });
 
-  // ── R8: Summary Generation + Search Channel ──
+  // -- R8: Summary Generation + Search Channel --
 
   describe('R8 memory summaries integration', () => {
     it('generates and stores summary for content', async () => {
@@ -470,7 +470,7 @@ signatures, and rate limiting scenarios.
     });
   });
 
-  // ── Cross-Feature: Combined Pipeline Behavior ──
+  // -- Cross-Feature: Combined Pipeline Behavior --
 
   describe('cross-feature interactions', () => {
     it('N2 graph signals work alongside community detection', () => {

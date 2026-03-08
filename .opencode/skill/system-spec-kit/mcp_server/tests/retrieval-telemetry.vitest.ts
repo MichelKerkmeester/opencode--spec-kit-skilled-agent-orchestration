@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Retrieval Telemetry (C136-12)
 // ---------------------------------------------------------------
@@ -16,12 +15,48 @@ import {
   isExtendedTelemetryEnabled,
 } from '../lib/telemetry/retrieval-telemetry';
 
+type TelemetryJson = ReturnType<typeof toJSON> & {
+  latency?: { candidateLatencyMs?: number; totalLatencyMs?: number };
+  mode?: { selectedMode?: string | null; apiKey?: unknown };
+  fallback?: { authorization?: unknown };
+  quality?: { resultCount?: number; password?: unknown };
+  tracePayload?: {
+    traceId?: string;
+    totalDurationMs?: number;
+    finalResultCount?: number;
+    query?: unknown;
+    sessionId?: unknown;
+    token?: unknown;
+    apiKey?: unknown;
+    stages?: Array<Record<string, unknown>>;
+  };
+};
+
+type TelemetryWithExtras = Omit<
+  ReturnType<typeof createTelemetry>,
+  'mode' | 'fallback' | 'quality' | 'tracePayload'
+> & {
+  mode: ReturnType<typeof createTelemetry>['mode'] & Record<string, unknown>;
+  fallback: ReturnType<typeof createTelemetry>['fallback'] & Record<string, unknown>;
+  quality: ReturnType<typeof createTelemetry>['quality'] & Record<string, unknown>;
+  tracePayload?: Record<string, unknown>;
+};
+
+function expectPresent<T>(value: T | null | undefined, message: string): T {
+  expect(value).toBeDefined();
+  expect(value).not.toBeNull();
+  if (value == null) {
+    throw new Error(message);
+  }
+  return value;
+}
+
 /** Create a telemetry object with enabled=true for testing recording mechanics.
  *  The isExtendedTelemetryEnabled flag is REMOVED (always false), so
  *  createTelemetry() returns disabled objects. Force-enable for recording tests. */
-function createEnabledTelemetry() {
+function createEnabledTelemetry(): ReturnType<typeof createTelemetry> {
   const t = createTelemetry();
-  (t as any).enabled = true;
+  t.enabled = true;
   return t;
 }
 
@@ -251,9 +286,9 @@ describe('C136-12: retrieval-telemetry', () => {
     const json = toJSON(t);
     expect(json.enabled).toBe(true);
     expect(json.timestamp).toBeTruthy();
-    expect((json.latency as any).candidateLatencyMs).toBe(42);
-    expect((json.mode as any).selectedMode).toBe('deep');
-    expect((json.quality as any).resultCount).toBe(1);
+    expect((json as TelemetryJson).latency?.candidateLatencyMs).toBe(42);
+    expect((json as TelemetryJson).mode?.selectedMode).toBe('deep');
+    expect((json as TelemetryJson).quality?.resultCount).toBe(1);
 
     // Should be serializable without errors
     const serialized = JSON.stringify(json);
@@ -344,24 +379,25 @@ describe('C136-12: retrieval-telemetry', () => {
 
     expect(accepted).toBe(true);
 
-    const json = toJSON(t) as any;
-    expect(json.tracePayload).toBeDefined();
-    expect(json.tracePayload.traceId).toBe('tr_abc123');
-    expect(json.tracePayload.totalDurationMs).toBe(8);
-    expect(json.tracePayload.finalResultCount).toBe(25);
-    expect(json.tracePayload.query).toBeUndefined();
-    expect(json.tracePayload.sessionId).toBeUndefined();
-    expect(json.tracePayload.token).toBeUndefined();
-    expect(json.tracePayload.stages[0].metadata).toBeUndefined();
+    const json = toJSON(t as unknown as ReturnType<typeof createTelemetry>) as TelemetryJson;
+    const tracePayload = expectPresent(json.tracePayload, 'Expected trace payload in telemetry JSON');
+    expect(tracePayload.traceId).toBe('tr_abc123');
+    expect(tracePayload.totalDurationMs).toBe(8);
+    expect(tracePayload.finalResultCount).toBe(25);
+    expect(tracePayload.query).toBeUndefined();
+    expect(tracePayload.sessionId).toBeUndefined();
+    expect(tracePayload.token).toBeUndefined();
+    const firstStage = expectPresent(tracePayload.stages?.[0], 'Expected first trace stage');
+    expect(firstStage.metadata).toBeUndefined();
   });
 
   it('T11b: toJSON excludes non-canonical telemetry fields', () => {
-    const t = createEnabledTelemetry() as any;
+    const t = createEnabledTelemetry() as TelemetryWithExtras;
 
     t.mode.apiKey = 'secret';
     t.fallback.authorization = 'Bearer token';
     t.quality.password = 'should-not-leak';
-    t.tracePayload = {
+    t.tracePayload = ({
       traceId: 'tr_clean',
       stages: [
         {
@@ -376,15 +412,20 @@ describe('C136-12: retrieval-telemetry', () => {
       totalDurationMs: 3,
       finalResultCount: 1,
       apiKey: 'hidden',
-    };
+    }) as unknown as Record<string, unknown>;
 
-    const json = toJSON(t) as any;
+    const json = toJSON(t as unknown as ReturnType<typeof createTelemetry>) as TelemetryJson;
+    const mode = expectPresent(json.mode, 'Expected mode payload');
+    const fallback = expectPresent(json.fallback, 'Expected fallback payload');
+    const quality = expectPresent(json.quality, 'Expected quality payload');
+    const tracePayload = expectPresent(json.tracePayload, 'Expected trace payload in telemetry JSON');
+    const firstStage = expectPresent(tracePayload.stages?.[0], 'Expected first trace stage');
 
-    expect(json.mode.apiKey).toBeUndefined();
-    expect(json.fallback.authorization).toBeUndefined();
-    expect(json.quality.password).toBeUndefined();
-    expect(json.tracePayload.apiKey).toBeUndefined();
-    expect(json.tracePayload.stages[0].secret).toBeUndefined();
+    expect(mode.apiKey).toBeUndefined();
+    expect(fallback.authorization).toBeUndefined();
+    expect(quality.password).toBeUndefined();
+    expect(tracePayload.apiKey).toBeUndefined();
+    expect(firstStage.secret).toBeUndefined();
   });
 
   it('T11c: invalid trace payload is rejected and omitted', () => {
@@ -404,7 +445,7 @@ describe('C136-12: retrieval-telemetry', () => {
 
     expect(accepted).toBe(false);
 
-    const json = toJSON(t) as any;
+    const json = toJSON(t) as TelemetryJson;
     expect(json.tracePayload).toBeUndefined();
   });
 });

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# Runbook helper for deterministic self-healing classes.
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
+# COMPONENT: Runbook
+# ---------------------------------------------------------------
 
 set -euo pipefail
 
@@ -163,3 +163,8 @@ EOF
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   1 - General error
+#   2 - ERROR: Unknown failure class: $1

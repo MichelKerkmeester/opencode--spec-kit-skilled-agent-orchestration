@@ -16,15 +16,15 @@ import type {
   CorrectionTypes,
 } from '../lib/learning/corrections';
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TESTS: CORRECTIONS MODULE
 // Phase 3 of SpecKit Reimagined - Learning from Corrections
 // Tasks: T052-T055, T142-T147
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    TEST SETUP
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 let db: InstanceType<typeof Database>;
 let test_db_path: string;
@@ -105,9 +105,9 @@ function teardownTestDb(): void {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    TESTS
-──────────────────────────────────────────────────────────────── */
+---------------------------------------------------------------- */
 
 describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
   beforeAll(() => {
@@ -118,7 +118,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     teardownTestDb();
   });
 
-  // ─── T052: Schema creation ──────────────────────────────────
+  // --- T052: Schema creation ----------------------------------
 
   describe('T052: Schema Creation', () => {
     it('T052: memory_corrections table should exist', () => {
@@ -149,7 +149,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── T053: Record correction with stability penalty ─────────
+  // --- T053: Record correction with stability penalty ---------
 
   describe('T053: Record Correction with 0.5x Stability Penalty', () => {
     it('T053/CHK-067: applies 0.5x penalty to original memory', () => {
@@ -195,7 +195,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── T054: Correction types ─────────────────────────────────
+  // --- T054: Correction types ---------------------------------
 
   describe('T054: Correction Type Tracking', () => {
     it('T054: deprecated type works (no replacement)', () => {
@@ -217,7 +217,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── CHK-070: Undo capability ───────────────────────────────
+  // --- CHK-070: Undo capability -------------------------------
 
   describe('CHK-070: Undo Capability', () => {
     it('CHK-070: undo restores stability and marks correction as undone', () => {
@@ -251,7 +251,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── CHK-069: Feature flag ──────────────────────────────────
+  // --- CHK-069: Feature flag ----------------------------------
 
   describe('CHK-069: Feature Flag', () => {
     it('CHK-069: isEnabled returns a boolean', () => {
@@ -260,7 +260,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── Correction chain traversal ─────────────────────────────
+  // --- Correction chain traversal -----------------------------
 
   describe('Correction Chain Traversal', () => {
     it('correction chain traversal works for memory 1', () => {
@@ -269,7 +269,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── Causal edge integration ────────────────────────────────
+  // --- Causal edge integration --------------------------------
 
   describe('Causal Edge Integration', () => {
     it('corrections may create causal edges', () => {
@@ -283,7 +283,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── Input Validation ───────────────────────────────────────
+  // --- Input Validation ---------------------------------------
 
   describe('Input Validation', () => {
     it('should throw on invalid correction type', () => {
@@ -315,7 +315,7 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
     });
   });
 
-  // ─── T142-T147: CORRECTIONS ENHANCEMENTS ────────────────────
+  // --- T142-T147: CORRECTIONS ENHANCEMENTS --------------------
 
   describe('T142: memory_corrections table schema (v9 migration)', () => {
     it('T142: all required columns present', () => {

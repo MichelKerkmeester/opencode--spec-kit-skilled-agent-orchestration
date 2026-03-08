@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Memory Quality Scorer
+// MODULE: QualityScorer
+// ---------------------------------------------------------------
 // Computes deterministic quality score and flags for rendered memories
 // ---------------------------------------------------------------
 

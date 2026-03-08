@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Shared DB Normalization Layer
+// MODULE: Normalization
 // ---------------------------------------------------------------
 // Converts between snake_case (database) and camelCase (application).
 // This is the SINGLE SOURCE OF TRUTH for DB ↔ App type conversions.

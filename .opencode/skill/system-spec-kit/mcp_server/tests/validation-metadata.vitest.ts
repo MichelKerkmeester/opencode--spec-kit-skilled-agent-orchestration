@@ -26,7 +26,7 @@ import type { ValidationMetadata } from '../lib/search/validation-metadata';
 import type { PipelineRow } from '../lib/search/pipeline/types';
 import { __testables as stage2Testables } from '../lib/search/pipeline/stage2-fusion';
 
-// ── Helpers ──
+// -- Helpers --
 
 function makeRow(overrides: Partial<PipelineRow> = {}): PipelineRow {
   return {

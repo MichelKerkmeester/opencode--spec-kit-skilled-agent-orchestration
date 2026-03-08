@@ -42,3 +42,6 @@ run_check() {
         RULE_REMEDIATION="Add '| **Level** | $level |' to spec.md metadata table"
     fi
 }
+
+# Exit codes:
+#   0 - Success

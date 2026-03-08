@@ -16,9 +16,9 @@ function parseEnvelope(response: Awaited<ReturnType<typeof triggerHandler.handle
 
 describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtures]', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Module Loading
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Module Loading', () => {
 
     it('T527-1: Trigger pipeline modules loaded', () => {
@@ -36,9 +36,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
 
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Input Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Input Validation', () => {
 
     it('T527-2: Missing prompt returns validation envelope', async () => {
@@ -87,9 +87,9 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
 
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Response & Error Handling
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Response & Error Handling', () => {
 
     it('T527-6: Trigger handler is async (returns MCP envelope)', () => {

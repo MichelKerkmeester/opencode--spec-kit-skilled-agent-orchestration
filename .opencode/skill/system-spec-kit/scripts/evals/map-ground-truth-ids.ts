@@ -1,6 +1,7 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: Map Ground Truth Placeholder IDs to Real Production DB IDs
+// MODULE: MapGroundTruthIds
+// ---------------------------------------------------------------
 //
 // Sprint 0 closure task: resolve memoryId=-1 placeholders in
 // ground-truth-data.ts by matching queries against real memories
@@ -19,7 +20,7 @@ import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as fs from 'fs';
 
-// ── Config ──────────────────────────────────────────────────────
+// -- Config ------------------------------------------------------
 
 const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
@@ -30,7 +31,7 @@ const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const DRY_RUN = args.includes('--dry-run');
 const APPLY = args.includes('--apply');
 
-// ── Types ───────────────────────────────────────────────────────
+// -- Types -------------------------------------------------------
 
 interface GroundTruthQuery {
   id: number;
@@ -76,7 +77,7 @@ interface CountRow {
   cnt: number;
 }
 
-// ── Query Dataset (imported dynamically) ────────────────────────
+// -- Query Dataset (imported dynamically) ------------------------
 
 // We can't import TS directly — load the ground truth from the
 // compiled JS or parse the TS source. Using a lightweight approach:
@@ -215,7 +216,7 @@ function loadGroundTruthQueries(): GroundTruthQuery[] {
   return queries;
 }
 
-// ── Search Strategies ───────────────────────────────────────────
+// -- Search Strategies -------------------------------------------
 
 function extractKeywords(text: string): string[] {
   // Remove common words and extract meaningful terms
@@ -275,7 +276,7 @@ function buildFTS5Query(terms: string[]): string {
   return cleaned.map(t => `"${t}"`).join(' OR ');
 }
 
-// ── Main Mapping Logic ──────────────────────────────────────────
+// -- Main Mapping Logic ------------------------------------------
 
 function mapQueryToMemories(
   db: Database.Database,
@@ -315,8 +316,10 @@ function mapQueryToMemories(
           matchStrategy: 'fts5_query',
         });
       }
-    } catch (_e) {
-      // FTS5 query may fail with certain terms — skip
+    } catch (_e: unknown) {
+      if (_e instanceof Error) {
+        // FTS5 query may fail with certain terms — skip
+      }
     }
   }
 
@@ -349,8 +352,10 @@ function mapQueryToMemories(
           matchStrategy: 'fts5_description',
         });
       }
-    } catch (_e) {
-      // FTS5 query may fail — skip
+    } catch (_e: unknown) {
+      if (_e instanceof Error) {
+        // FTS5 query may fail — skip
+      }
     }
   }
 
@@ -378,8 +383,10 @@ function mapQueryToMemories(
           matchStrategy: `file_match:${fileName}`,
         });
       }
-    } catch (_e) {
-      // Skip on error
+    } catch (_e: unknown) {
+      if (_e instanceof Error) {
+        // Skip on error
+      }
     }
   }
 
@@ -439,12 +446,14 @@ function mapQueryToMemories(
           matchStrategy: `spec_folder:${pattern}`,
         });
       }
-    } catch (_e) {
-      // Skip on error
+    } catch (_e: unknown) {
+      if (_e instanceof Error) {
+        // Skip on error
+      }
     }
   }
 
-  // ── Deduplicate and rank candidates ───────────────────────────
+  // -- Deduplicate and rank candidates ---------------------------
 
   const seen = new Map<number, MemoryCandidate>();
   for (const c of candidates) {
@@ -518,7 +527,7 @@ function mapQueryToMemories(
   return mappings;
 }
 
-// ── Main ────────────────────────────────────────────────────────
+// -- Main --------------------------------------------------------
 
 function main() {
   console.log('=== Ground Truth ID Mapping Script ===');

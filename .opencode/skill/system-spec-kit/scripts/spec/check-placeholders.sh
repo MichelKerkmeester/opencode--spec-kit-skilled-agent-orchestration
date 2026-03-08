@@ -168,7 +168,7 @@ else
     if [[ $TOTAL -eq 0 ]]; then
         echo -e "${GREEN}${BOLD}PASS${NC} — Zero placeholder patterns found in ${FOLDER_PATH}"
     else
-        echo -e "${RED}${BOLD}FAIL${NC} — ${TOTAL} placeholder pattern(s) found in ${FOLDER_PATH}"
+        echo -e "${RED}${BOLD}FAIL${NC} — ${TOTAL} placeholder pattern(s) found in ${FOLDER_PATH}" >&2
         if [[ "$VERBOSE" == "true" && -n "$MATCHES" ]]; then
             echo ""
             echo -e "$MATCHES"

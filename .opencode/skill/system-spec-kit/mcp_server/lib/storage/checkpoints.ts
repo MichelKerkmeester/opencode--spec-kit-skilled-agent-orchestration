@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Checkpoints
+// ---------------------------------------------------------------
 // Gzip-compressed database checkpoints with embedding preservation
 // ---------------------------------------------------------------
 
@@ -968,6 +969,9 @@ export {
   deleteCheckpoint,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   CheckpointEntry,
   CheckpointInfo,

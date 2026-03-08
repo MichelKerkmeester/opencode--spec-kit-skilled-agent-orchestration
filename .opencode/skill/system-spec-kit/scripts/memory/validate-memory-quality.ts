@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // ---------------------------------------------------------------
-// MODULE: Validate Memory Quality
+// MODULE: ValidateMemoryQuality
+// ---------------------------------------------------------------
 // Post-render quality gate for generated memory files
 // ---------------------------------------------------------------
 
@@ -96,8 +97,10 @@ function parseYamlList(frontMatter: string, key: string): string[] {
           .map((item) => item.trim())
           .filter((item) => item.length > 0);
       }
-    } catch {
-      // Fall through to comma-delimited parsing.
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        // Fall through to comma-delimited parsing.
+      }
     }
 
     return rawInline

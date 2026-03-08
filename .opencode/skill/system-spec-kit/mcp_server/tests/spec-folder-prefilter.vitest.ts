@@ -1,4 +1,3 @@
-// @ts-nocheck -- vi.mock hoisting requires runtime-only validation
 // ---------------------------------------------------------------
 // TEST: Spec Folder Pre-filter
 //
@@ -21,7 +20,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 
-// ── Module-level mocks (vi.mock hoisted before all imports) ───
+// -- Module-level mocks (vi.mock hoisted before all imports) ---
 //
 // Rule: mocks must be declared with vi.mock() at the top so Vitest
 // hoisting places them before the module-under-test is imported.
@@ -46,7 +45,7 @@ vi.mock('../lib/search/vector-index', () => ({
 const mockHybridSearchCalls: Array<[unknown, unknown, unknown]> = [];
 
 vi.mock('../lib/search/hybrid-search', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal<typeof import('../lib/search/hybrid-search')>();
   return {
     ...actual,
     searchWithFallback: vi.fn(async (...args) => {
@@ -96,12 +95,12 @@ vi.mock('../lib/search/search-flags', () => ({
   isMemorySummariesEnabled: vi.fn(() => false),
 }));
 
-// ── Import module under test AFTER mocks ──────────────────────
+// -- Import module under test AFTER mocks ----------------------
 import { executeStage1 } from '../lib/search/pipeline/stage1-candidate-gen';
 import type { Stage1Input, PipelineConfig } from '../lib/search/pipeline/types';
 import { structuralSearch, init } from '../lib/search/hybrid-search';
 
-// ── Helpers ───────────────────────────────────────────────────
+// -- Helpers ---------------------------------------------------
 
 /**
  * Build a minimal valid PipelineConfig for Stage 1 testing.
@@ -144,7 +143,7 @@ function clearCallLogs(): void {
   mockHybridSearchCalls.length = 0;
 }
 
-// ── In-memory DB helpers (for structuralSearch tests) ─────────
+// -- In-memory DB helpers (for structuralSearch tests) ---------
 
 function createTestDb(): Database.Database {
   const db = new Database(':memory:');
@@ -225,8 +224,8 @@ describe('R9: Stage 1 spec-folder forwarding — vector channel', () => {
     expect(mockVectorSearchCalls.length).toBeGreaterThanOrEqual(1);
 
     // When no specFolder is set, the option must be absent or null/undefined.
-    const firstCallOptions = mockVectorSearchCalls[0]?.[1] ?? {};
-    expect(firstCallOptions.specFolder == null).toBe(true);
+    const firstCallOptions = mockVectorSearchCalls[0]?.[1] as { specFolder?: string | null } | undefined;
+    expect(firstCallOptions?.specFolder == null).toBe(true);
   });
 });
 
@@ -266,8 +265,8 @@ describe('R9: Stage 1 spec-folder forwarding — hybrid channel', () => {
 
     expect(mockHybridSearchCalls.length).toBeGreaterThanOrEqual(1);
 
-    const callOptions = mockHybridSearchCalls[0]?.[2] ?? {};
-    expect(callOptions.specFolder == null).toBe(true);
+    const callOptions = mockHybridSearchCalls[0]?.[2] as { specFolder?: string | null } | undefined;
+    expect(callOptions?.specFolder == null).toBe(true);
   });
 });
 
@@ -309,8 +308,8 @@ describe('R9: Stage 1 spec-folder forwarding — multi-concept channel', () => {
 
     expect(mockMultiConceptSearchCalls.length).toBeGreaterThanOrEqual(1);
 
-    const callOptions = mockMultiConceptSearchCalls[0]?.[1] ?? {};
-    expect(callOptions.specFolder == null).toBe(true);
+    const callOptions = mockMultiConceptSearchCalls[0]?.[1] as { specFolder?: string | null } | undefined;
+    expect(callOptions?.specFolder == null).toBe(true);
   });
 
   it('R9-06b: multi-concept rejects more than 5 concepts', async () => {

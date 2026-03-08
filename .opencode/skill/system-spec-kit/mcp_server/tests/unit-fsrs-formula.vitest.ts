@@ -1,7 +1,7 @@
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: FSRS FORMULA (vitest migration POC)
 // Converted from: unit-fsrs-formula.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
 import { halfLifeToStability, calculateRetrievability } from '../lib/cache/cognitive/tier-classifier';

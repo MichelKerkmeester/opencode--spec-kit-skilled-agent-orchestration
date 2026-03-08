@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Task Enrichment
+// MODULE: TaskEnrichment
+// ---------------------------------------------------------------
 // Shared helpers for memory task title enrichment decisions
 // ---------------------------------------------------------------
 
@@ -9,10 +10,12 @@ function hasJsonDataFile(dataFilePath: string | null | undefined): boolean {
   return typeof dataFilePath === 'string' && dataFilePath.trim().length > 0;
 }
 
+/** Normalizes a spec title for reuse in memory task enrichment. */
 export function normalizeSpecTitleForMemory(title: string): string {
   return normalizeMemoryNameCandidate(title);
 }
 
+/** Returns whether the spec title should enrich the stored memory task. */
 export function shouldEnrichTaskFromSpecTitle(
   task: string,
   source: unknown,
@@ -26,6 +29,7 @@ export function shouldEnrichTaskFromSpecTitle(
   return isGenericContentTask(normalizedTask) || isContaminatedMemoryName(normalizedTask);
 }
 
+/** Picks the preferred task label for memory storage. */
 export function pickPreferredMemoryTask(
   task: string,
   specTitle: string,

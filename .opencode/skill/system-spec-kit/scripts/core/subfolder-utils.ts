@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Subfolder Utils
+// MODULE: SubfolderUtils
+// ---------------------------------------------------------------
 // CORE: SUBFOLDER UTILS
 // ---------------------------------------------------------------
 
@@ -20,11 +21,13 @@ export const CATEGORY_FOLDER_PATTERN: RegExp = /^\d{2}--[a-z][a-z0-9-]*$/;
 /** Maximum recursive search depth for child folder resolution. */
 export const SEARCH_MAX_DEPTH = 4;
 
+/** Represents find child options. */
 export interface FindChildOptions {
   /** Called when ambiguous matches are found. Defaults to console.error. */
   onAmbiguity?: (childName: string, paths: string[]) => void;
 }
 
+/** Represents phase folder rejection. */
 export interface PhaseFolderRejection {
   phaseFolderPath: string;
   owningRootSpecFolder: string;
@@ -41,6 +44,9 @@ function isDirectorySync(filePath: string): boolean {
   try {
     return fsSync.statSync(filePath).isDirectory();
   } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    }
     return false;
   }
 }
@@ -52,6 +58,9 @@ function readFileIfExistsSync(filePath: string): string | null {
     }
     return fsSync.readFileSync(filePath, 'utf8');
   } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    }
     return null;
   }
 }
@@ -80,6 +89,9 @@ function listImmediateChildSpecFoldersSync(parentPath: string): string[] {
       return isDirectorySync(path.join(parentPath, entry));
     });
   } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    }
     return [];
   }
 }
@@ -116,6 +128,7 @@ function buildPhaseFolderRejection(
   };
 }
 
+/** Get phase folder rejection sync. */
 export function getPhaseFolderRejectionSync(specFolderPath: string): PhaseFolderRejection | null {
   if (!specFolderPath) {
     return null;
@@ -165,7 +178,10 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
   for (const specsDir of specsDirs) {
     if (!fsSync.existsSync(specsDir)) continue;
     let realRoot: string;
-    try { realRoot = fsSync.realpathSync(specsDir); } catch (_error: unknown) { realRoot = path.resolve(specsDir); }
+    try { realRoot = fsSync.realpathSync(specsDir); } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      } realRoot = path.resolve(specsDir); }
     if (!uniqueRoots.has(realRoot)) {
       uniqueRoots.set(realRoot, specsDir);
     }
@@ -178,7 +194,10 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
     }
     // Prevent cycle revisits via real-path tracking
     let realDir: string;
-    try { realDir = fsSync.realpathSync(dir); } catch (_error: unknown) { realDir = path.resolve(dir); }
+    try { realDir = fsSync.realpathSync(dir); } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      } realDir = path.resolve(dir); }
     if (visited.has(realDir)) return;
     visited.add(realDir);
 
@@ -218,7 +237,10 @@ export function findChildFolderSync(childName: string, options?: FindChildOption
   if (matches.length > 1) {
     // Deduplicate aliased results (belt-and-suspenders with root dedup)
     const uniqueReal = [...new Set(matches.map((m) => {
-      try { return fsSync.realpathSync(m); } catch (_error: unknown) { return m; }
+      try { return fsSync.realpathSync(m); } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          void _error.message;
+        } return m; }
     }))];
     if (uniqueReal.length === 1) {
       return matches[0];
@@ -248,11 +270,17 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
     try {
       await fs.access(specsDir);
       let realRoot: string;
-      try { realRoot = await fs.realpath(specsDir); } catch (_error: unknown) { realRoot = path.resolve(specsDir); }
+      try { realRoot = await fs.realpath(specsDir); } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          void _error.message;
+        } realRoot = path.resolve(specsDir); }
       if (!uniqueRoots.has(realRoot)) {
         uniqueRoots.set(realRoot, specsDir);
       }
     } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      }
       continue;
     }
   }
@@ -263,7 +291,10 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
       return;
     }
     let realDir: string;
-    try { realDir = await fs.realpath(dir); } catch (_error: unknown) { realDir = path.resolve(dir); }
+    try { realDir = await fs.realpath(dir); } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      } realDir = path.resolve(dir); }
     if (visited.has(realDir)) return;
     visited.add(realDir);
 
@@ -302,7 +333,10 @@ export async function findChildFolderAsync(childName: string, options?: FindChil
 
   if (matches.length > 1) {
     const uniqueReal = [...new Set(await Promise.all(matches.map(async (m) => {
-      try { return await fs.realpath(m); } catch (_error: unknown) { return m; }
+      try { return await fs.realpath(m); } catch (_error: unknown) {
+        if (_error instanceof Error) {
+          void _error.message;
+        } return m; }
     })))];
     if (uniqueReal.length === 1) {
       return matches[0];

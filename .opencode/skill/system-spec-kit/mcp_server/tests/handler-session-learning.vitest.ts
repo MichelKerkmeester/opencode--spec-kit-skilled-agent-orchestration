@@ -10,9 +10,9 @@ import * as handler from '../handlers/session-learning';
 import { MemoryError, ErrorCodes } from '../lib/errors/index';
 
 describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]', () => {
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Exports Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Exports Validation', () => {
     const expectedExports = [
       'handleTaskPreflight',
@@ -41,9 +41,9 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: handleTaskPreflight Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('handleTaskPreflight Validation', () => {
     it('T522-P1: Missing specFolder throws MemoryError', async () => {
       try {
@@ -128,9 +128,9 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: handleTaskPostflight Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('handleTaskPostflight Validation', () => {
     it('T522-PF1: Missing specFolder throws', async () => {
       try {
@@ -182,9 +182,9 @@ describe('Handler Session Learning (T522) [deferred - requires DB test fixtures]
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: handleGetLearningHistory Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('handleGetLearningHistory Validation', () => {
     it('T522-H1: Missing specFolder throws', async () => {
       try {

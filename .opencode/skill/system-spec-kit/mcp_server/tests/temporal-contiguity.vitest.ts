@@ -11,7 +11,7 @@ import * as mod from '../lib/cache/cognitive/temporal-contiguity';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('Temporal Contiguity Tests (T502)', () => {
-  let testDb: any = null;
+  let testDb!: InstanceType<typeof BetterSqlite3>;
   let tmpDbPath: string = '';
 
   function seedMemories(memories: Array<{ title: string; spec_folder: string; created_at: string; importance_tier?: string }>) {
@@ -69,7 +69,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
       ];
 
       const boosted = mod.vectorSearchWithContiguity(results_arr, 3600); // 1-hour window
-      const mem2 = boosted!.find((r: any) => r.id === 2);
+      const mem2 = boosted!.find((r: { id: number }) => r.id === 2);
 
       expect(mem2).toBeDefined();
       expect(mem2!.similarity).toBeGreaterThan(50);
@@ -84,7 +84,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
 
       // Use a 30-minute window - memory 2 is outside
       const boosted = mod.vectorSearchWithContiguity(results_arr, 1800);
-      const mem2 = boosted!.find((r: any) => r.id === 2);
+      const mem2 = boosted!.find((r: { id: number }) => r.id === 2);
 
       expect(mem2).toBeDefined();
       // Memory 2 should NOT get a significant boost (outside window)
@@ -100,7 +100,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
       ];
 
       const boosted = mod.vectorSearchWithContiguity(results_arr, 3600); // 1 hour window
-      const mem2 = boosted!.find((r: any) => r.id === 2);
+      const mem2 = boosted!.find((r: { id: number }) => r.id === 2);
 
       expect(mem2).toBeDefined();
       // 2 days away from anchor, should not get boosted beyond original
@@ -140,7 +140,7 @@ describe('Temporal Contiguity Tests (T502)', () => {
       const neighbors = mod.getTemporalNeighbors(1, 3600); // 1-hour window
       expect(Array.isArray(neighbors)).toBe(true);
 
-      const nearbyCount = neighbors.filter((n: any) => n.time_delta_seconds <= 3600).length;
+      const nearbyCount = neighbors.filter((n: { time_delta_seconds: number }) => n.time_delta_seconds <= 3600).length;
       expect(nearbyCount).toBeGreaterThan(0);
     });
 

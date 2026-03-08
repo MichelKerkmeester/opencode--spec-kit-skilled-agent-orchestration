@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: RSF Fusion Edge Cases (A3-P2-5)
 // Tests edge-case behavior for fuseResultsRsfCrossVariant()
@@ -12,6 +11,16 @@ import {
   fuseResultsRsfMulti,
   clamp01,
 } from '../lib/search/rsf-fusion';
+
+type CrossVariantResult = ReturnType<typeof fuseResultsRsfCrossVariant>[number];
+
+function expectDefined<T>(value: T | undefined, label: string): T {
+  expect(value).toBeDefined();
+  if (value === undefined) {
+    throw new Error(`Expected ${label} to be defined`);
+  }
+  return value;
+}
 
 describe('RSF Cross-Variant Fusion – Zero Variants', () => {
   it('returns empty array when given an empty variants array', () => {
@@ -99,8 +108,8 @@ describe('RSF Cross-Variant Fusion – Extreme Scores', () => {
 
     expect(results.length).toBe(2);
     // The item with score=1 should rank above the item with score=0
-    const highIdx = results.findIndex((r: any) => r.id === 'high');
-    const lowIdx = results.findIndex((r: any) => r.id === 'low');
+    const highIdx = results.findIndex((r: CrossVariantResult) => r.id === 'high');
+    const lowIdx = results.findIndex((r: CrossVariantResult) => r.id === 'low');
     expect(highIdx).toBeLessThan(lowIdx);
   });
 
@@ -137,14 +146,16 @@ describe('RSF Cross-Variant Fusion – Duplicate IDs Across Variants', () => {
       mkVariantList('bm25'),
     ]);
 
-    const shared = results.find((r: any) => r.id === 'shared');
-    expect(shared).toBeDefined();
+    const shared = expectDefined(results.find((r: CrossVariantResult) => r.id === 'shared'), 'shared');
 
     // Compare against single-variant result to verify cross-variant bonus
     const singleVariant = fuseResultsRsfCrossVariant([
       mkVariantList('vector'),
     ]);
-    const sharedSingle = singleVariant.find((r: any) => r.id === 'shared');
+    const sharedSingle = expectDefined(
+      singleVariant.find((r: CrossVariantResult) => r.id === 'shared'),
+      'shared'
+    );
     expect(shared.rsfScore).toBeGreaterThan(sharedSingle.rsfScore);
   });
 
@@ -160,13 +171,9 @@ describe('RSF Cross-Variant Fusion – Duplicate IDs Across Variants', () => {
       ]}],
     ]);
 
-    const shared = results.find((r: any) => r.id === 'shared');
-    const uniqueA = results.find((r: any) => r.id === 'unique_a');
-    const uniqueB = results.find((r: any) => r.id === 'unique_b');
-
-    expect(shared).toBeDefined();
-    expect(uniqueA).toBeDefined();
-    expect(uniqueB).toBeDefined();
+    const shared = expectDefined(results.find((r: CrossVariantResult) => r.id === 'shared'), 'shared');
+    const uniqueA = expectDefined(results.find((r: CrossVariantResult) => r.id === 'unique_a'), 'unique_a');
+    const uniqueB = expectDefined(results.find((r: CrossVariantResult) => r.id === 'unique_b'), 'unique_b');
 
     // Shared item should rank higher due to cross-variant bonus
     expect(shared.rsfScore).toBeGreaterThan(uniqueA.rsfScore);
@@ -187,8 +194,7 @@ describe('RSF Cross-Variant Fusion – Duplicate IDs Across Variants', () => {
       mkVariantList('fts'),
     ]);
 
-    const triple = results.find((r: any) => r.id === 'triple');
-    expect(triple).toBeDefined();
+    const triple = expectDefined(results.find((r: CrossVariantResult) => r.id === 'triple'), 'triple');
 
     // 3 variants: bonus = 0.10 * (3-1) = 0.20
     // Compare against 2-variant result which gets bonus = 0.10 * (2-1) = 0.10
@@ -196,7 +202,10 @@ describe('RSF Cross-Variant Fusion – Duplicate IDs Across Variants', () => {
       mkVariantList('vector'),
       mkVariantList('bm25'),
     ]);
-    const tripleTwoVar = twoVariant.find((r: any) => r.id === 'triple');
+    const tripleTwoVar = expectDefined(
+      twoVariant.find((r: CrossVariantResult) => r.id === 'triple'),
+      'triple'
+    );
 
     expect(triple.rsfScore).toBeGreaterThan(tripleTwoVar.rsfScore);
   });

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Retry With Exponential Backoff
+// MODULE: Retry
+// ---------------------------------------------------------------
 // Canonical location (moved from mcp_server/lib/utils/retry.js)
 // ---------------------------------------------------------------
 
@@ -9,6 +10,7 @@ import type { RetryConfig, ErrorClassification, RetryOptions, RetryAttemptLogEnt
 // 1. CONFIGURATION
 // ---------------------------------------------------------------
 
+/** Defines default config. */
 export const DEFAULT_CONFIG: RetryConfig = {
   maxRetries: 3,
   baseDelayMs: 1000,  // 1 second base delay
@@ -20,6 +22,7 @@ export const DEFAULT_CONFIG: RetryConfig = {
 // 2. ERROR CLASSIFICATION
 // ---------------------------------------------------------------
 
+/** Defines transient http status codes. */
 export const TRANSIENT_HTTP_STATUS_CODES: Set<number> = new Set([
   408, // Request Timeout
   429, // Too Many Requests (Rate Limited)
@@ -34,6 +37,7 @@ export const TRANSIENT_HTTP_STATUS_CODES: Set<number> = new Set([
   524, // Cloudflare: A Timeout Occurred
 ]);
 
+/** Defines permanent http status codes. */
 export const PERMANENT_HTTP_STATUS_CODES: Set<number> = new Set([
   400, // Bad Request
   401, // Unauthorized
@@ -44,6 +48,7 @@ export const PERMANENT_HTTP_STATUS_CODES: Set<number> = new Set([
   422, // Unprocessable Entity
 ]);
 
+/** Defines transient network errors. */
 export const TRANSIENT_NETWORK_ERRORS: Set<string> = new Set([
   'ETIMEDOUT',     // Connection timed out
   'ECONNRESET',    // Connection reset by peer
@@ -55,6 +60,7 @@ export const TRANSIENT_NETWORK_ERRORS: Set<string> = new Set([
   'EAI_AGAIN',     // DNS lookup timeout
 ]);
 
+/** Defines transient error patterns. */
 export const TRANSIENT_ERROR_PATTERNS: readonly RegExp[] = [
   /timeout/i,
   /timed out/i,
@@ -69,6 +75,7 @@ export const TRANSIENT_ERROR_PATTERNS: readonly RegExp[] = [
   /SQLITE_LOCKED/, // SQLite table is locked
 ];
 
+/** Defines permanent error patterns. */
 export const PERMANENT_ERROR_PATTERNS: readonly RegExp[] = [
   /unauthorized/i,
   /authentication failed/i,
@@ -94,6 +101,7 @@ interface ErrorWithStatus extends Error {
   cause?: unknown;
 }
 
+/** Extract status code. */
 export function extractStatusCode(error: ErrorWithStatus): number | null {
   // Direct status property (common in fetch/axios)
   if (typeof error.status === 'number') {
@@ -119,6 +127,7 @@ export function extractStatusCode(error: ErrorWithStatus): number | null {
   return null;
 }
 
+/** Extract error code. */
 export function extractErrorCode(error: ErrorWithStatus): string | null {
   // Standard Node.js error code
   if (typeof error.code === 'string') {
@@ -136,6 +145,7 @@ export function extractErrorCode(error: ErrorWithStatus): string | null {
   return null;
 }
 
+/** Classify error. */
 export function classifyError(error: Error | null): ErrorClassification {
   if (!error) {
     return { type: 'unknown', reason: 'No error provided', shouldRetry: false };
@@ -203,10 +213,12 @@ export function classifyError(error: Error | null): ErrorClassification {
   };
 }
 
+/** Is transient error. */
 export function isTransientError(error: Error): boolean {
   return classifyError(error).shouldRetry;
 }
 
+/** Is permanent error. */
 export function isPermanentError(error: Error): boolean {
   return classifyError(error).type === 'permanent';
 }
@@ -215,12 +227,14 @@ export function isPermanentError(error: Error): boolean {
 // 4. BACKOFF CALCULATION
 // ---------------------------------------------------------------
 
+/** Provides calculate backoff. */
 export function calculateBackoff(attempt: number, config: RetryConfig = DEFAULT_CONFIG): number {
   const { baseDelayMs, exponentialBase, maxDelayMs } = config;
   const delay = baseDelayMs * Math.pow(exponentialBase, attempt);
   return Math.min(delay, maxDelayMs);
 }
 
+/** Get backoff sequence. */
 export function getBackoffSequence(config: RetryConfig = DEFAULT_CONFIG): number[] {
   const delays: number[] = [];
   for (let i = 0; i < config.maxRetries; i++) {
@@ -233,6 +247,7 @@ export function getBackoffSequence(config: RetryConfig = DEFAULT_CONFIG): number
 // 5. RETRY UTILITY
 // ---------------------------------------------------------------
 
+/** Sleep. */
 export function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -248,6 +263,7 @@ function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+/** Provides retry with backoff. */
 export async function retryWithBackoff<T>(fn: () => Promise<T>, options: RetryOptions = {}): Promise<T> {
   const {
     operationName = 'operation',
@@ -356,6 +372,9 @@ export async function retryWithBackoff<T>(fn: () => Promise<T>, options: RetryOp
         try {
           await onRetry(attempt, lastError, delay);
         } catch (callbackError: unknown) {
+          if (callbackError instanceof Error) {
+            void callbackError.message;
+          }
           console.error(`[retry] onRetry callback error: ${getErrorMessage(callbackError)}`);
         }
       }
@@ -369,6 +388,7 @@ export async function retryWithBackoff<T>(fn: () => Promise<T>, options: RetryOp
   throw lastError;
 }
 
+/** Provides with retry. */
 export function withRetry<T, TArgs extends unknown[]>(
   fn: (...args: TArgs) => Promise<T>,
   options: RetryOptions = {}

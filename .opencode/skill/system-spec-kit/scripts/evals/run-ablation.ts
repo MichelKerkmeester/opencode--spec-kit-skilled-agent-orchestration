@@ -1,6 +1,7 @@
 #!/usr/bin/env npx tsx
 // ---------------------------------------------------------------
-// MODULE: Run Ablation Study (R13-S3)
+// MODULE: RunAblation
+// ---------------------------------------------------------------
 //
 // Runtime entry point for the ablation framework. Runs controlled
 // ablation studies that selectively disable one search channel at
@@ -26,7 +27,7 @@ import {
   type AblationChannel, type AblationSearchFn, type AblationReport,
 } from '../../mcp_server/api';
 
-// ── Config ──────────────────────────────────────────────────────
+// -- Config ------------------------------------------------------
 
 const DB_DIR = path.resolve(__dirname, '../../mcp_server/database');
 const PROD_DB_PATH = path.join(DB_DIR, 'context-index.sqlite');
@@ -48,7 +49,7 @@ function parseChannels(): AblationChannel[] {
   return valid;
 }
 
-// ── Helpers ─────────────────────────────────────────────────────
+// -- Helpers -----------------------------------------------------
 
 function log(msg: string): void {
   console.log(msg);
@@ -59,10 +60,10 @@ function verbose(msg: string): void {
 }
 
 function divider(): void {
-  log('─'.repeat(60));
+  log('-'.repeat(60));
 }
 
-// ── Main ────────────────────────────────────────────────────────
+// -- Main --------------------------------------------------------
 
 async function main(): Promise<void> {
   log('');

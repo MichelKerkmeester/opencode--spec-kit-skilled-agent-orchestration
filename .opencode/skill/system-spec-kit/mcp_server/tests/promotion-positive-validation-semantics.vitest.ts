@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Promotion Thresholds Use Positive Validation Semantics (T055)
 // ---------------------------------------------------------------
@@ -17,7 +16,7 @@ import {
 } from '../lib/search/auto-promotion';
 import { recordNegativeFeedbackEvent } from '../lib/scoring/negative-feedback';
 
-let db: any = null;
+let db!: BetterSqlite3.Database;
 let dbPath = '';
 
 function insertMemory(
@@ -112,7 +111,9 @@ describe('T055: positive-validation semantics for promotion thresholds', () => {
 
     const executed = executeAutoPromotion(db, 4);
     expect(executed.promoted).toBe(true);
-    const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 4').get();
+    const row = db.prepare('SELECT importance_tier FROM memory_index WHERE id = 4').get() as {
+      importance_tier: string;
+    };
     expect(row.importance_tier).toBe('important');
   });
 
@@ -127,4 +128,3 @@ describe('T055: positive-validation semantics for promotion thresholds', () => {
     expect(eligible[0].reason).toContain('positive_validation_count=5>=5');
   });
 });
-

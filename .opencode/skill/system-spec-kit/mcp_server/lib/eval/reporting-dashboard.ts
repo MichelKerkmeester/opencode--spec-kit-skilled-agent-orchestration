@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Reporting Dashboard (R13-S3)
+// ---------------------------------------------------------------
 // Sprint 7: Full reporting dashboard for eval infrastructure.
 // Aggregates metrics per sprint/eval-run, per-channel views,
 // trend analysis, and formatted report output.
@@ -287,6 +288,7 @@ function groupBySprint(
     if (!groups.has(label)) {
       groups.set(label, []);
     }
+    // AI-SAFETY: groups.set(label, []) above ensures the group exists before push
     groups.get(label)!.push(snap);
   }
 
@@ -330,6 +332,7 @@ function buildSprintReport(
     if (!metricGroups.has(snap.metric_name)) {
       metricGroups.set(snap.metric_name, []);
     }
+    // AI-SAFETY: metricGroups.set(...) above ensures this metric bucket exists before push
     metricGroups.get(snap.metric_name)!.push(snap.metric_value);
 
     const existing = metricLatest.get(snap.metric_name);
@@ -357,6 +360,7 @@ function buildSprintReport(
     if (!channelGroups.has(row.channel)) {
       channelGroups.set(row.channel, []);
     }
+    // AI-SAFETY: channelGroups.set(...) above ensures this channel bucket exists before push
     channelGroups.get(row.channel)!.push(row);
   }
 

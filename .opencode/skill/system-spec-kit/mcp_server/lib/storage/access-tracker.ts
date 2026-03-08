@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Access Tracker
+// ---------------------------------------------------------------
 // Batched access tracking with accumulator
 // ---------------------------------------------------------------
 
@@ -261,6 +262,9 @@ export {
   cleanupExitHandlers,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   AccumulatorState,
 };

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Voyage AI Embeddings Provider
+// MODULE: Voyage
 // ---------------------------------------------------------------
 
 import { EmbeddingProfile } from '../profile';
@@ -15,6 +15,7 @@ const DEFAULT_DIM: number = 1024;
 const DEFAULT_BASE_URL: string = 'https://api.voyageai.com/v1';
 const REQUEST_TIMEOUT: number = 30000;
 
+/** Defines model dimensions. */
 export const MODEL_DIMENSIONS: ModelDimensions = {
   // Voyage 4 family (Shared embedding space)
   'voyage-4-large': 1024, // Supports 256/512/1024/2048 - default to 1024 for compat
@@ -91,6 +92,7 @@ function parseVoyageErrorBody(payload: unknown): VoyageErrorBody {
   };
 }
 
+/** Provides voyage provider. */
 export class VoyageProvider implements IEmbeddingProvider {
   private readonly apiKey: string;
   readonly baseUrl: string;
@@ -171,6 +173,9 @@ export class VoyageProvider implements IEmbeddingProvider {
       return data;
 
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       clearTimeout(timeoutId);
 
       if (isAbortError(error)) {
@@ -242,6 +247,9 @@ export class VoyageProvider implements IEmbeddingProvider {
       return embedding;
 
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[voyage] Generation failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       throw error;
@@ -270,6 +278,9 @@ export class VoyageProvider implements IEmbeddingProvider {
       console.error('[voyage] Connectivity verified successfully');
       return this.isHealthy;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[voyage] Warmup failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       return false;
@@ -303,6 +314,9 @@ export class VoyageProvider implements IEmbeddingProvider {
       this.isHealthy = result !== null;
       return this.isHealthy;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       this.isHealthy = false;
       return false;
     }

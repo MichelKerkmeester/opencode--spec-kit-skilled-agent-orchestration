@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Consumption Logger
 // ---------------------------------------------------------------
@@ -20,7 +19,7 @@ import {
   isConsumptionLogEnabled,
 } from '../lib/telemetry/consumption-logger';
 
-// ── Force-log helper ──────────────────────────────────────────────────────
+// -- Force-log helper ------------------------------------------------------
 // isConsumptionLogEnabled() is REMOVED (always false), so logConsumptionEvent
 // short-circuits before inserting. To test logging mechanics we bypass the
 // flag check by inserting directly with the same SQL the source uses.

@@ -1,9 +1,9 @@
 // ---------------------------------------------------------------
-// MODULE: SQLite FTS5 BM25 Search (C138-P2)
+// MODULE: Sqlite Fts
+// ---------------------------------------------------------------
 // Weighted BM25 scoring for FTS5 full-text search.
 // Extracted from hybrid-search.ts ftsSearch() for independent
 // testing and future delegation.
-// ---------------------------------------------------------------
 
 import { sanitizeQueryTokens } from './bm25-index';
 
@@ -129,7 +129,10 @@ function isFts5Available(db: Database.Database): boolean {
       `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_fts'`
     ) as Database.Statement).get() as { name: string } | undefined;
     return !!result;
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return false;
+    }
     return false;
   }
 }
@@ -144,6 +147,9 @@ export {
   isFts5Available,
 };
 
+/**
+ * BM25 FTS result and option types exposed by the SQLite FTS module.
+ */
 export type {
   FtsBm25Result,
   FtsBm25Options,

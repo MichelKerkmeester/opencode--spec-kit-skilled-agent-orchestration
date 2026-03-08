@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Stable Eval API
+// MODULE: Eval
 // ---------------------------------------------------------------
 // @public — scripts should import from here, not lib/ internals.
 // AI-WHY: ARCH-1 stable re-export surface so eval scripts in scripts/evals/

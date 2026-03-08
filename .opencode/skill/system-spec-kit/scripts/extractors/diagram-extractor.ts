@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Diagram Extractor
+// MODULE: DiagramExtractor
+// ---------------------------------------------------------------
 // Extracts and generates ASCII flowcharts and diagrams from conversation data
 // ---------------------------------------------------------------
 
@@ -35,6 +36,7 @@ export type {
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Diagram-focused subset of collected session data. */
 export interface CollectedDataForDiagrams {
   observations?: Array<{
     type?: string;

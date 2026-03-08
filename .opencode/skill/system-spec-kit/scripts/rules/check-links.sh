@@ -64,7 +64,7 @@ scan_wikilinks() {
 
             if [[ ! -f "$dir/$target" ]] && [[ ! -f "$skill_dir/$target" ]] && \
                { [[ -z "$skill_subdir" ]] || [[ ! -f "$skill_subdir/$target" ]]; }; then
-                echo "File: $file - Broken link: [[$inner]] (Target not found: $target)" >> "$output_file"
+                echo "File: $file - Broken link: [[$inner]] (Target not found: $target)" >> "$output_file" >&2
                 has_errors=1
             fi
         done <<< "$links"
@@ -143,3 +143,7 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     main "$@"
 fi
+
+# Exit codes:
+#   0 - Success
+#   1 - General error

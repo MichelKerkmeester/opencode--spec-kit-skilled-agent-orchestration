@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Store — Core DB singleton, init, constitutional cache
+// MODULE: Vector Index Store
 // ---------------------------------------------------------------
 // AI-GUARD: SEARCH: VECTOR INDEX
 // TypeScript port of the vector index implementation.
@@ -52,6 +52,7 @@ try {
   console.warn(`[vector-index] Failed to read search-weights.json: ${error instanceof Error ? error.message : String(error)}. Using defaults.`);
   _search_weights = {};
 }
+/** Loaded search weight configuration for vector-index ranking. */
 export const search_weights = _search_weights;
 
 type EmbeddingInput = Float32Array | number[];
@@ -109,13 +110,18 @@ type EnhancedSearchOptions = {
 };
 type JsonObject = Record<string, unknown>;
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    1. CONFIGURATION — Embedding Dimension
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/** Default embedding dimension used by the vector index. */
 export const EMBEDDING_DIM = 768;
 
-export function get_embedding_dim() {
+/**
+ * Gets the active embedding dimension for the current provider.
+ * @returns The embedding dimension.
+ */
+export function get_embedding_dim(): number {
   try {
     const embeddings = embeddingsProvider;
 
@@ -138,7 +144,12 @@ export function get_embedding_dim() {
   return EMBEDDING_DIM;
 }
 
-export async function get_confirmed_embedding_dimension(timeout_ms = 5000) {
+/**
+ * Waits for the embedding provider to report a stable dimension.
+ * @param timeout_ms - The maximum time to wait in milliseconds.
+ * @returns A promise that resolves to the confirmed embedding dimension.
+ */
+export async function get_confirmed_embedding_dimension(timeout_ms = 5000): Promise<number> {
   const start = Date.now();
   while (Date.now() - start < timeout_ms) {
     const dim = get_embedding_dim();
@@ -151,7 +162,11 @@ export async function get_confirmed_embedding_dimension(timeout_ms = 5000) {
   return 768;
 }
 
-export function validate_embedding_dimension() {
+/**
+ * Validates that stored vector dimensions match the provider.
+ * @returns The validation result.
+ */
+export function validate_embedding_dimension(): { valid: boolean; stored: number | null; current: number | null; reason?: string; warning?: string } {
   if (!db || !sqlite_vec_available_flag) {
     return { valid: true, stored: null, current: null, reason: 'No database or sqlite-vec unavailable' };
   }
@@ -191,14 +206,15 @@ export function validate_embedding_dimension() {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    2. DATABASE PATH AND SECURITY
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // P1-05 FIX: Unified env var precedence
 const DEFAULT_DB_DIR = process.env.SPEC_KIT_DB_DIR ||
   process.env.MEMORY_DB_DIR ||
   path.resolve(__dirname, '../../database');
+/** Default path for the vector-index database file. */
 export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH ||
   path.join(DEFAULT_DB_DIR, 'context-index.sqlite');
 const DB_PERMISSIONS = 0o600;
@@ -227,7 +243,12 @@ const ALLOWED_BASE_PATHS = [
   ...(process.env.MEMORY_ALLOWED_PATHS ? process.env.MEMORY_ALLOWED_PATHS.split(path.delimiter) : [])
 ].filter(Boolean).map(p => path.resolve(p));
 
-export function validate_file_path_local(file_path: unknown) {
+/**
+ * Validates a file path against allowed local base paths.
+ * @param file_path - The file path to validate.
+ * @returns The validated file path, if allowed.
+ */
+export function validate_file_path_local(file_path: unknown): string | null {
   if (typeof file_path !== 'string') {
     return null;
   }
@@ -236,7 +257,12 @@ export function validate_file_path_local(file_path: unknown) {
 }
 
 // HIGH-004 FIX: Async version for non-blocking concurrent file reads
-export async function safe_read_file_async(file_path: unknown) {
+/**
+ * Reads a file asynchronously after validating the path.
+ * @param file_path - The file path to read.
+ * @returns A promise that resolves to the file contents or an empty string.
+ */
+export async function safe_read_file_async(file_path: unknown): Promise<string> {
   const valid_path = validate_file_path_local(file_path);
   if (!valid_path) {
     return '';
@@ -253,7 +279,13 @@ export async function safe_read_file_async(file_path: unknown) {
 }
 
 // Safely parse JSON with validation (CWE-502: Deserialization mitigation)
-export function safe_parse_json(json_string: unknown, default_value = []) {
+/**
+ * Parses JSON with prototype-pollution safeguards.
+ * @param json_string - The JSON string to parse.
+ * @param default_value - The fallback value to return on failure.
+ * @returns The parsed JSON value or the fallback.
+ */
+export function safe_parse_json(json_string: unknown, default_value = []): unknown {
   if (!json_string || typeof json_string !== 'string') {
     return default_value;
   }
@@ -285,9 +317,9 @@ export function safe_parse_json(json_string: unknown, default_value = []) {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    3. DATABASE SINGLETON
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 let db: Database.Database | null = null;
 let db_path = DEFAULT_DB_PATH;
@@ -326,9 +358,9 @@ function is_constitutional_cache_valid() {
   return true;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    4. PREPARED STATEMENT CACHING
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 type PreparedStatements = {
   count_all: Database.Statement<[], { count: number }>;
@@ -341,6 +373,11 @@ type PreparedStatements = {
 };
 let prepared_statements: PreparedStatements | null = null;
 
+/**
+ * Initializes cached prepared statements for common queries.
+ * @param database - The database connection to prepare against.
+ * @returns The prepared statements cache.
+ */
 export function init_prepared_statements(database: Database.Database): PreparedStatements {
   if (prepared_statements) return prepared_statements;
 
@@ -364,16 +401,27 @@ export function init_prepared_statements(database: Database.Database): PreparedS
   return prepared_statements;
 }
 
-export function clear_prepared_statements() {
+/**
+ * Clears cached prepared statements.
+ * @returns Nothing.
+ */
+export function clear_prepared_statements(): void {
   prepared_statements = null;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    5. CONSTITUTIONAL MEMORIES CACHE
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // AI-TRACE: BUG-004 FIX: Checks external DB modifications before using cache
 // BUG-012 FIX: Prevent thundering herd when cache expires
+/**
+ * Gets cached constitutional memories from the index.
+ * @param database - The database connection to query.
+ * @param spec_folder - The optional spec folder filter.
+ * @param includeArchived - Whether archived memories should be included.
+ * @returns The constitutional memory rows.
+ */
 export function get_constitutional_memories(
   database: Database.Database,
   spec_folder: string | null = null,
@@ -434,7 +482,12 @@ export function get_constitutional_memories(
   }
 }
 
-export function clear_constitutional_cache(spec_folder: string | null = null) {
+/**
+ * Clears cached constitutional memories.
+ * @param spec_folder - The optional spec folder cache key to clear.
+ * @returns Nothing.
+ */
+export function clear_constitutional_cache(spec_folder: string | null = null): void {
   if (spec_folder) {
     constitutional_cache.delete(spec_folder);
   } else {
@@ -442,6 +495,12 @@ export function clear_constitutional_cache(spec_folder: string | null = null) {
   }
 }
 
+/**
+ * Refreshes interference scores for memories in a folder.
+ * @param database - The database connection to update.
+ * @param specFolder - The spec folder whose scores should be refreshed.
+ * @returns Nothing.
+ */
 export function refresh_interference_scores_for_folder(database: Database.Database, specFolder: string): void {
   if (!specFolder) return;
 
@@ -463,10 +522,15 @@ export function refresh_interference_scores_for_folder(database: Database.Databa
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    6. DATABASE INITIALIZATION
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/**
+ * Initializes the vector-index database connection.
+ * @param custom_path - An optional database path override.
+ * @returns The initialized database connection.
+ */
 export function initialize_db(custom_path: string | null = null): Database.Database {
   if (db && !custom_path) {
     return db;
@@ -535,11 +599,15 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   return db;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    7. DATABASE UTILITIES
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
-export function close_db() {
+/**
+ * Closes the shared vector-index database connection.
+ * @returns Nothing.
+ */
+export function close_db(): void {
   clear_prepared_statements();
   if (db) {
     db.close();
@@ -547,23 +615,36 @@ export function close_db() {
   }
 }
 
-export function get_db_path() {
+/**
+ * Gets the active vector-index database path.
+ * @returns The database path.
+ */
+export function get_db_path(): string {
   return db_path;
 }
 
+/**
+ * Gets the shared vector-index database connection.
+ * @returns The database connection.
+ */
 export function get_db(): Database.Database {
   return initialize_db();
 }
 
 // Check if vector search is available (sqlite-vec loaded)
-export function is_vector_search_available() {
+/**
+ * Reports whether sqlite-vec vector search is available.
+ * @returns True when vector search is available.
+ */
+export function is_vector_search_available(): boolean {
   return sqlite_vec_available_flag;
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    8. IVECTORSTORE IMPLEMENTATION
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
+/** Implements the vector-store interface on top of SQLite. */
 export class SQLiteVectorStore extends IVectorStore {
   dbPath: string | null;
   _initialized: boolean;
@@ -714,9 +795,9 @@ export class SQLiteVectorStore extends IVectorStore {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------
    9. CAMELCASE ALIASES
-────────────────────────────────────────────────────────────────*/
+----------------------------------------------------------------*/
 
 // AI-WHY: camelCase aliases for backward compatibility (functions already exported above)
 export { initialize_db as initializeDb };

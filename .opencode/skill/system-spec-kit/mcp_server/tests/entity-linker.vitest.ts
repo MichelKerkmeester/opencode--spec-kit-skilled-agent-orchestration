@@ -274,7 +274,7 @@ describe('S8 Entity Linker', () => {
 
       createEntityLinks(db, matches);
 
-      const edges = db.prepare(`SELECT * FROM causal_edges WHERE relation = 'supports'`).all() as any[];
+      const edges = db.prepare(`SELECT * FROM causal_edges WHERE relation = 'supports'`).all() as Array<{ relation: string }>;
       expect(edges).toHaveLength(1);
       expect(edges[0].relation).toBe('supports');
     });
@@ -291,7 +291,7 @@ describe('S8 Entity Linker', () => {
 
       createEntityLinks(db, matches);
 
-      const edge = db.prepare(`SELECT strength FROM causal_edges`).get() as any;
+      const edge = db.prepare(`SELECT strength FROM causal_edges`).get() as { strength: number };
       expect(edge.strength).toBeCloseTo(0.7);
     });
 
@@ -307,7 +307,7 @@ describe('S8 Entity Linker', () => {
 
       createEntityLinks(db, matches);
 
-      const edge = db.prepare(`SELECT created_by FROM causal_edges`).get() as any;
+      const edge = db.prepare(`SELECT created_by FROM causal_edges`).get() as { created_by: string };
       expect(edge.created_by).toBe('entity_linker');
     });
 
@@ -323,7 +323,7 @@ describe('S8 Entity Linker', () => {
 
       createEntityLinks(db, matches);
 
-      const edge = db.prepare(`SELECT evidence FROM causal_edges`).get() as any;
+      const edge = db.prepare(`SELECT evidence FROM causal_edges`).get() as { evidence: string };
       expect(edge.evidence).toContain('memory system');
       expect(edge.evidence).toBe('Cross-doc entity: memory system');
     });
@@ -344,7 +344,7 @@ describe('S8 Entity Linker', () => {
 
       // Second call should create 0 new links (INSERT OR IGNORE)
       // Total edges in table should still be 1
-      const count = db.prepare(`SELECT COUNT(*) AS cnt FROM causal_edges`).get() as any;
+      const count = db.prepare(`SELECT COUNT(*) AS cnt FROM causal_edges`).get() as { cnt: number };
       expect(count.cnt).toBe(1);
     });
 
@@ -531,7 +531,7 @@ describe('S8 Entity Linker', () => {
       expect(result.entitiesProcessed).toBe(1);
 
       // Verify the edge was actually created
-      const edges = db.prepare(`SELECT * FROM causal_edges WHERE created_by = 'entity_linker'`).all() as any[];
+      const edges = db.prepare(`SELECT * FROM causal_edges WHERE created_by = 'entity_linker'`).all() as Array<{ relation: string }>;
       expect(edges).toHaveLength(1);
       expect(edges[0].relation).toBe('supports');
     });
@@ -639,7 +639,7 @@ describe('S8 Entity Linker', () => {
 
       runEntityLinking(db);
 
-      const edge = db.prepare(`SELECT source_id, target_id FROM causal_edges WHERE created_by = 'entity_linker'`).get() as any;
+      const edge = db.prepare(`SELECT source_id, target_id FROM causal_edges WHERE created_by = 'entity_linker'`).get() as { source_id: string; target_id: string };
       expect(typeof edge.source_id).toBe('string');
       expect(typeof edge.target_id).toBe('string');
     });

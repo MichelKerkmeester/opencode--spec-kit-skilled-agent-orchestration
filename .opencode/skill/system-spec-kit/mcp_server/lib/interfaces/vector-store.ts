@@ -1,12 +1,13 @@
-// ───────────────────────────────────────────────────────────────
-// MODULE: Vector Store Interface
+// ---------------------------------------------------------------
+// MODULE: Vector Store
+// ---------------------------------------------------------------
 // INTERFACE: IVectorStore (abstract base class)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // Concrete base class providing the IVectorStore contract for JS consumers.
 // TypeScript consumers use the interface in @spec-kit/shared/types.ts;
 // this file exists for plain-JS files (e.g., vector-index-impl.js)
 // that need a real class to extend at runtime.
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 /**
  * Abstract base class for vector store implementations.
  * All methods throw by default — subclasses must override them.

@@ -14,9 +14,9 @@ import * as errorsModule from '../lib/errors';
 
 describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures]', () => {
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Module Integration
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Module Integration', () => {
 
     it('T526-1: Save pipeline modules loaded', () => {
@@ -33,9 +33,9 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
 
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Input Validation
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Input Validation', () => {
 
     it('T526-2: Missing filePath rejected', async () => {
@@ -79,9 +79,9 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
 
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Error Response Format
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Error Response Format', () => {
 
     it('T526-7: Save errors have consistent response format', async () => {
@@ -102,9 +102,9 @@ describe('Integration Save Pipeline (T526) [deferred - requires DB test fixtures
 
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // SUITE: Pipeline Function Signatures
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   describe('Pipeline Function Signatures', () => {
 
     it('T526-9: indexMemoryFile signature', () => {

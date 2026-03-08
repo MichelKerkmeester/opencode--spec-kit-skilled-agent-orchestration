@@ -1,12 +1,5 @@
-/**
- * @file ascii-boxes.ts
- * @description ASCII box-drawing utilities for decision trees, headers, and formatted text output.
- * @module scripts/lib/ascii-boxes
- */
-
 // ---------------------------------------------------------------
-// MODULE: Ascii Boxes
-// ASCII box-drawing utilities for decision trees, headers, and formatted text output
+// MODULE: AsciiBoxes
 // ---------------------------------------------------------------
 
 // ---------------------------------------------------------------

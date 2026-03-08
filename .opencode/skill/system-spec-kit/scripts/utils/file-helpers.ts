@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: File Helpers
+// MODULE: FileHelpers
+// ---------------------------------------------------------------
 // Path normalization, description cleaning, and file categorization utilities
 // ---------------------------------------------------------------
 

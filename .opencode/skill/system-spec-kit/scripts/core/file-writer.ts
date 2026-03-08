@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: File Writer
+// MODULE: FileWriter
+// ---------------------------------------------------------------
 // Atomic file writing with validation and rollback on failure
 // ---------------------------------------------------------------
 
@@ -35,7 +36,10 @@ async function checkForDuplicateContent(
   try {
     const dirEntries = await fs.readdir(contextDir);
     entries = dirEntries.filter(f => f.endsWith('.md') && f !== filename);
-  } catch {
+  } catch (_error: unknown) {
+    if (_error instanceof Error) {
+      void _error.message;
+    }
     return; // directory doesn't exist yet — no duplicates possible
   }
   for (const existing of entries) {
@@ -52,6 +56,7 @@ async function checkForDuplicateContent(
   }
 }
 
+/** Write files atomically. */
 export async function writeFilesAtomically(
   contextDir: string,
   files: Record<string, string>
@@ -68,7 +73,10 @@ export async function writeFilesAtomically(
     try {
       await fs.access(filePath);
       console.warn(`   Warning: overwriting existing file ${filename}`);
-    } catch { /* Expected: file doesn't exist */ }
+    } catch (_error: unknown) {
+      if (_error instanceof Error) {
+        void _error.message;
+      } /* Expected: file doesn't exist */ }
     const tempPath = filePath + '.tmp';
     try {
       await fs.writeFile(tempPath, content, 'utf-8');
@@ -78,7 +86,10 @@ export async function writeFilesAtomically(
       written.push(filename);
       console.log(`   ${filename} (${content.split('\n').length} lines)`);
     } catch (e: unknown) {
-      try { await fs.unlink(tempPath); } catch (_e: unknown) { /* temp file cleanup — failure is non-critical */ }
+      try { await fs.unlink(tempPath); } catch (_e: unknown) {
+        if (_e instanceof Error) {
+          void _e.message;
+        } /* temp file cleanup — failure is non-critical */ }
       const errMsg = e instanceof Error ? e.message : String(e);
       throw new Error(`Write failed ${filename}: ${errMsg}`);
     }

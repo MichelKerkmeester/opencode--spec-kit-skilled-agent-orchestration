@@ -724,4 +724,7 @@ export {
   WARN_ONLY_PERIOD_MS,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type { FindSimilarFn };

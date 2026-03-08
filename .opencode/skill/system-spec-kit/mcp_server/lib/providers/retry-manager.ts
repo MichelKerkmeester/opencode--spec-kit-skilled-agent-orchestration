@@ -409,6 +409,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
     failed: 0,
     details: [],
   };
+  const details = results.details ?? (results.details = []);
 
   for (const memory of queue) {
     let content: string | null = null;
@@ -425,7 +426,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
     if (!content) {
       // AI-TRACE: P2-08 FIX: Count content load failure as a retry attempt to prevent infinite retry loops
       incrementRetryCount(memory.id, 'Content load failed: file unreadable or missing');
-      results.details!.push({ id: memory.id, success: false, error: 'Could not load content (counted as retry)' });
+      details.push({ id: memory.id, success: false, error: 'Could not load content (counted as retry)' });
       results.failed++;
       results.processed++;
       continue;
@@ -440,7 +441,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
       results.failed++;
     }
 
-    results.details!.push({ id: memory.id, ...result } as RetryDetailEntry);
+    details.push({ id: memory.id, ...result } as RetryDetailEntry);
   }
 
   return results;

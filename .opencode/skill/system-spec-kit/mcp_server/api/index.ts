@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Public API Barrel
+// MODULE: Index
 // ---------------------------------------------------------------
 // @public — single entry point for all public API surfaces.
 // AI-WHY: ARCH-1 consumer scripts import from '../../mcp_server/api'

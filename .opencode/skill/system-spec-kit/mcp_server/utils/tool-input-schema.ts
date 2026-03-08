@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Tool Input Schema Validation
+// MODULE: Tool Input Schema
 // ---------------------------------------------------------------
 
 import type { ToolDefinition } from '../tool-schemas';

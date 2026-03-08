@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Decision Extractor
+// MODULE: DecisionExtractor
+// ---------------------------------------------------------------
 // Extracts decision records with options, rationale, confidence, and decision trees
 // ---------------------------------------------------------------
 
@@ -18,6 +19,7 @@ export type { DecisionOption, DecisionRecord, DecisionData };
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Decision-focused subset of collected session data. */
 export interface CollectedDataForDecisions {
   _manualDecisions?: Array<string | Record<string, string>>;
   SPEC_FOLDER?: string;

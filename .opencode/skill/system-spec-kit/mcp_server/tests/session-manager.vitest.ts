@@ -8,9 +8,9 @@ import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
 import * as sessionManager from '../lib/session/session-manager';
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TESTS: SESSION MANAGER (T001-T008)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // T001-T008: Core session deduplication functionality
 // REQ-001: Session Deduplication - Hash-based duplicate prevention
 
@@ -92,9 +92,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T001: SESSION MANAGER INSTANTIATION
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T001: SessionManager class instantiation with default config', () => {
     it('T001: SessionManager exports all required functions', () => {
@@ -129,9 +129,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T002: HASH GENERATION
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T002: Hash generation for memory content fingerprinting', () => {
     it('T002: Hash generated with content_hash', () => {
@@ -180,9 +180,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T003: shouldSendMemory() RETURNS TRUE FOR NEW MEMORIES
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T003: shouldSendMemory() returns true for new memories', () => {
     beforeEach(() => {
@@ -203,9 +203,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T004: shouldSendMemory() RETURNS FALSE FOR ALREADY-SENT
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T004: shouldSendMemory() returns false for already-sent memories', () => {
     beforeEach(() => {
@@ -227,9 +227,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T005: markMemorySent() TRACKS SENT MEMORY IDS
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T005: markMemorySent() correctly tracks sent memory IDs', () => {
     beforeEach(() => {
@@ -263,9 +263,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T006: SESSION ID GENERATION IS UNIQUE
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T006: Session ID generation is unique per session', () => {
     beforeEach(() => {
@@ -297,9 +297,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T007: MEMORY FILTERING REMOVES DUPLICATES
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T007: Memory filtering removes duplicates from search results', () => {
     beforeEach(() => {
@@ -357,9 +357,9 @@ describe('Session Manager Tests (T001-T008)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // T008: DEDUP_SAVINGS_TOKENS CALCULATION
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('T008: dedup_savings_tokens calculation accuracy', () => {
     beforeEach(() => {

@@ -214,6 +214,9 @@ export {
   computeContentHash,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   EmbeddingCacheEntry,
   EmbeddingCacheStats,

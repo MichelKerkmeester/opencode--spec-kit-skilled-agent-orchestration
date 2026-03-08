@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: File Extractor
+// MODULE: FileExtractor
+// ---------------------------------------------------------------
 // Extracts file references, descriptions, and observation types from session data
 // ---------------------------------------------------------------
 
@@ -21,12 +22,14 @@ import {
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Captures a file change discovered in session data. */
 export interface FileChange {
   FILE_PATH: string;
   DESCRIPTION: string;
   ACTION?: string;
 }
 
+/** Raw observation input used during file extraction. */
 export interface ObservationInput {
   type?: string;
   title?: string;
@@ -36,6 +39,7 @@ export interface ObservationInput {
   timestamp?: string;
 }
 
+/** Normalized observation details enriched with anchors and metadata. */
 export interface ObservationDetailed {
   TYPE: string;
   TITLE: string;
@@ -48,12 +52,14 @@ export interface ObservationDetailed {
   IS_DECISION: boolean;
 }
 
+/** File-focused subset of collected session data. */
 export interface CollectedDataForFiles {
   FILES?: Array<{ FILE_PATH?: string; path?: string; DESCRIPTION?: string; description?: string }>;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   [key: string]: unknown;
 }
 
+/** Semantic summary for a file referenced by the session. */
 export interface SemanticFileInfo {
   description: string;
   action: string;

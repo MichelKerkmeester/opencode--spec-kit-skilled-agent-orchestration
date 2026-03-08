@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Implementation Guide Extractor
+// MODULE: ImplementationGuideExtractor
+// ---------------------------------------------------------------
 // Extracts implementation guidance and step-by-step instructions from session observations
 // ---------------------------------------------------------------
 
@@ -11,25 +12,30 @@ import { slugify } from '../utils/slug-utils';
    1. INTERFACES
 ------------------------------------------------------------------*/
 
+/** Describes a concrete implementation step for the guide output. */
 export interface ImplementationStep {
   FEATURE_NAME: string;
   DESCRIPTION: string;
 }
 
+/** Associates an important file with its role in the implementation. */
 export interface KeyFileWithRole {
   FILE_PATH: string;
   ROLE: string;
 }
 
+/** Describes how the implementation can be extended safely. */
 export interface ExtensionGuide {
   GUIDE_TEXT: string;
 }
 
+/** Summarizes a reusable code pattern identified in the implementation. */
 export interface CodePattern {
   PATTERN_NAME: string;
   USAGE: string;
 }
 
+/** Output payload for the implementation guide extractor. */
 export interface ImplementationGuideData {
   HAS_IMPLEMENTATION_GUIDE: boolean;
   TOPIC: string;
@@ -39,6 +45,7 @@ export interface ImplementationGuideData {
   PATTERNS: CodePattern[];
 }
 
+/** Observation input used by the implementation guide extractor. */
 export interface ObservationInput {
   type?: string;
   title?: string;
@@ -47,6 +54,7 @@ export interface ObservationInput {
   files?: string[];
 }
 
+/** File input used by the implementation guide extractor. */
 export interface FileInput {
   FILE_PATH?: string;
   path?: string;

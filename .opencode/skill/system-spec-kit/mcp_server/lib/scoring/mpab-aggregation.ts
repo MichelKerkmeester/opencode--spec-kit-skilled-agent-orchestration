@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: MPAB Aggregation
+// MODULE: Mpab Aggregation
 // ---------------------------------------------------------------
 // Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation.
 // Pipeline position: after RRF fusion, before state filtering.

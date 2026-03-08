@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: History
+// ---------------------------------------------------------------
 // Tracks change history for memory entries (ADD, UPDATE, DELETE)
 // ---------------------------------------------------------------
 
@@ -10,6 +11,9 @@ import type Database from 'better-sqlite3';
    1. INTERFACES
 ----------------------------------------------------------------*/
 
+/**
+ * Describes the HistoryEntry shape.
+ */
 export interface HistoryEntry {
   id: string;
   memory_id: number;
@@ -21,6 +25,9 @@ export interface HistoryEntry {
   actor: string;
 }
 
+/**
+ * Describes the HistoryStats shape.
+ */
 export interface HistoryStats {
   total: number;
   adds: number;
@@ -38,6 +45,9 @@ let db: Database.Database | null = null;
    3. INITIALIZATION
 ----------------------------------------------------------------*/
 
+/**
+ * Provides the init helper.
+ */
 export function init(database: Database.Database): void {
   db = database;
 
@@ -65,6 +75,9 @@ function getDatabase(): Database.Database {
    4. UUID GENERATION
 ----------------------------------------------------------------*/
 
+/**
+ * Provides the generateUuid helper.
+ */
 export function generateUuid(): string {
   // Generate a v4 UUID (xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx)
   const hex = '0123456789abcdef';
@@ -88,6 +101,9 @@ export function generateUuid(): string {
    5. HISTORY OPERATIONS
 ----------------------------------------------------------------*/
 
+/**
+ * Provides the recordHistory helper.
+ */
 export function recordHistory(
   memoryId: number,
   event: 'ADD' | 'UPDATE' | 'DELETE',
@@ -106,6 +122,9 @@ export function recordHistory(
   return id;
 }
 
+/**
+ * Provides the getHistory helper.
+ */
 export function getHistory(memoryId: number, limit?: number): HistoryEntry[] {
   const database = getDatabase();
 
@@ -118,6 +137,9 @@ export function getHistory(memoryId: number, limit?: number): HistoryEntry[] {
   return database.prepare(sql).all(...params) as HistoryEntry[];
 }
 
+/**
+ * Provides the getHistoryStats helper.
+ */
 export function getHistoryStats(specFolder?: string): HistoryStats {
   const database = getDatabase();
 

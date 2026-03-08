@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Ingest Job Queue
+// MODULE: Job Queue
 // ---------------------------------------------------------------
 // Sprint 9 fixes: true sequential worker, meaningful state transitions,
 // continue-on-error for bulk ingestion, SQLITE_BUSY async retry on DB writes,
@@ -7,6 +7,9 @@
 
 import { requireDb, toErrorMessage } from '../../utils';
 
+/**
+ * Defines the IngestJobState type.
+ */
 export type IngestJobState =
   | 'queued'
   | 'parsing'
@@ -16,12 +19,18 @@ export type IngestJobState =
   | 'failed'
   | 'cancelled';
 
+/**
+ * Describes the IngestJobError shape.
+ */
 export interface IngestJobError {
   filePath: string;
   message: string;
   timestamp: string;
 }
 
+/**
+ * Describes the IngestJob shape.
+ */
 export interface IngestJob {
   id: string;
   state: IngestJobState;
@@ -352,6 +361,9 @@ async function cancelIngestJob(jobId: string): Promise<IngestJob> {
   return setIngestJobState(jobId, 'cancelled');
 }
 
+/**
+ * Provides the getIngestProgressPercent helper.
+ */
 export function getIngestProgressPercent(job: Pick<IngestJob, 'filesProcessed' | 'filesTotal'>): number {
   if (job.filesTotal <= 0) return 0;
   const raw = Math.round((job.filesProcessed / job.filesTotal) * 100);
@@ -411,7 +423,10 @@ async function processQueuedJob(jobId: string): Promise<void> {
       await access(nextPath);
       await processFileFn(nextPath);
     } catch (error: unknown) {
-      const normalizedError = (error as { code?: string })?.code === 'ENOENT'
+      const normalizedError = error instanceof Error
+        && 'code' in error
+        && typeof error.code === 'string'
+        && error.code === 'ENOENT'
         ? new Error('File not accessible')
         : error;
       await appendIngestError(jobId, nextPath, normalizedError);
@@ -445,6 +460,7 @@ async function drainQueue(): Promise<void> {
 
   try {
     while (pendingQueue.length > 0) {
+      // AI-SAFETY: pendingQueue.length > 0 in the loop condition guarantees shift() returns a job id
       const jobId = pendingQueue.shift()!;
       try {
         await processQueuedJob(jobId);
@@ -506,4 +522,5 @@ export {
   getIngestJob,
   cancelIngestJob,
   enqueueIngestJob,
+  resetIncompleteJobsToQueued,
 };

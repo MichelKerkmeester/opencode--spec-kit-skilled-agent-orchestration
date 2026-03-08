@@ -541,12 +541,12 @@ describe('applyCommunityBoost', () => {
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (2, 0, 'bfs');
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (3, 0, 'bfs');
     `);
-    const rows = [{ id: 1, score: 1.0 }];
+    const rows: Array<{ id: number; score: number; _communityBoosted?: boolean }> = [{ id: 1, score: 1.0 }];
     const result = applyCommunityBoost(rows, db);
     // Original + 2 injected co-members (2 and 3)
     expect(result.length).toBe(3);
     // Injected rows should have 0.3 * 1.0 = 0.3
-    const injected = result.filter((r) => (r as any)._communityBoosted === true);
+    const injected = result.filter((r) => r._communityBoosted === true);
     expect(injected).toHaveLength(2);
     for (const row of injected) {
       expect(row.score).toBeCloseTo(0.3);
@@ -565,7 +565,7 @@ describe('applyCommunityBoost', () => {
     `);
     const rows = [{ id: 1, score: 0.8 }];
     const result = applyCommunityBoost(rows, db);
-    const injected = result.filter((r) => (r as any)._communityBoosted === true);
+    const injected = result.filter((r) => r._communityBoosted === true);
     expect(injected.length).toBeLessThanOrEqual(3);
   });
 
@@ -576,7 +576,7 @@ describe('applyCommunityBoost', () => {
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (3, 0, 'bfs');
     `);
     // Row 2 is already in the result set
-    const rows = [
+    const rows: Array<{ id: number; score: number; _communityBoosted?: boolean }> = [
       { id: 1, score: 0.9 },
       { id: 2, score: 0.7 },
     ];
@@ -585,14 +585,14 @@ describe('applyCommunityBoost', () => {
     const id2Count = result.filter((r) => r.id === 2).length;
     expect(id2Count).toBe(1);
     // Only id 3 should be injected (id 2 already present)
-    const injected = result.filter((r) => (r as any)._communityBoosted === true);
+    const injected = result.filter((r) => r._communityBoosted === true);
     expect(injected).toHaveLength(1);
     expect(injected[0].id).toBe(3);
   });
 
   it('rows without community get no boost', () => {
     // No community_assignments stored
-    const rows = [{ id: 1, score: 0.9 }];
+    const rows: Array<{ id: number; score: number; _communityBoosted?: boolean }> = [{ id: 1, score: 0.9 }];
     const result = applyCommunityBoost(rows, db);
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe(1);
@@ -603,9 +603,9 @@ describe('applyCommunityBoost', () => {
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (1, 0, 'bfs');
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (2, 0, 'bfs');
     `);
-    const rows = [{ id: 1, score: 0.5 }];
+    const rows: Array<{ id: number; score: number; _communityBoosted?: boolean }> = [{ id: 1, score: 0.5 }];
     const result = applyCommunityBoost(rows, db);
-    const injected = result.filter((r) => (r as any)._communityBoosted === true);
+    const injected = result.filter((r) => r._communityBoosted === true);
     expect(injected).toHaveLength(1);
     expect(injected[0]).toHaveProperty('_communityBoosted', true);
     expect(injected[0].id).toBe(2);

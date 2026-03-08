@@ -557,6 +557,9 @@ export {
   SIMILAR_MEMORY_LIMIT,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   FindSimilarFn,
   StoreMemoryFn,

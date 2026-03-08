@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Tool Types
+// MODULE: Types
 // ---------------------------------------------------------------
 // Shared types for tool dispatch modules (T303).
 // ---------------------------------------------------------------
@@ -39,6 +39,7 @@ export function parseValidatedArgs<T>(toolName: string, args: Record<string, unk
    Handler Arg Types
 --------------------------------------------------------------- */
 
+/** Arguments for memory context requests. */
 export interface ContextArgs {
   input: string;
   mode?: string;
@@ -53,6 +54,7 @@ export interface ContextArgs {
   anchors?: string[];
 }
 
+/** Arguments for memory search requests. */
 export interface SearchArgs {
   query?: string;
   concepts?: string[];
@@ -84,6 +86,7 @@ export interface SearchArgs {
   includeTrace?: boolean;
 }
 
+/** Arguments for trigger matching requests. */
 export interface TriggerArgs {
   prompt: string;
   limit?: number;
@@ -92,12 +95,14 @@ export interface TriggerArgs {
   include_cognitive?: boolean;
 }
 
+/** Arguments for memory deletion requests. */
 export interface DeleteArgs {
   id?: number | string;
   specFolder?: string;
   confirm?: boolean;
 }
 
+/** Arguments for memory update requests. */
 export interface UpdateArgs {
   id: number;
   title?: string;
@@ -107,6 +112,7 @@ export interface UpdateArgs {
   allowPartialUpdate?: boolean;
 }
 
+/** Arguments for memory listing requests. */
 export interface ListArgs {
   limit?: number;
   offset?: number;
@@ -115,6 +121,7 @@ export interface ListArgs {
   includeChunks?: boolean;
 }
 
+/** Arguments for memory statistics requests. */
 export interface StatsArgs {
   folderRanking?: string;
   excludePatterns?: string[];
@@ -123,6 +130,7 @@ export interface StatsArgs {
   limit?: number;
 }
 
+/** Arguments for memory health checks. */
 export interface HealthArgs {
   reportMode?: 'full' | 'divergent_aliases';
   limit?: number;
@@ -130,6 +138,7 @@ export interface HealthArgs {
   autoRepair?: boolean;
 }
 
+/** Arguments for memory validation feedback requests. */
 export interface MemoryValidateArgs {
   id: number | string;
   wasUseful: boolean;
@@ -143,6 +152,7 @@ export interface MemoryValidateArgs {
   notes?: string;
 }
 
+/** Arguments for memory save requests. */
 export interface SaveArgs {
   filePath: string;
   force?: boolean;
@@ -151,6 +161,7 @@ export interface SaveArgs {
   asyncEmbedding?: boolean; // T306: When true, embedding generation is deferred (non-blocking)
 }
 
+/** Arguments for memory index scan requests. */
 export interface ScanArgs {
   specFolder?: string | null;
   force?: boolean;
@@ -159,27 +170,32 @@ export interface ScanArgs {
   incremental?: boolean;
 }
 
+/** Arguments for checkpoint creation requests. */
 export interface CheckpointCreateArgs {
   name: string;
   specFolder?: string;
   metadata?: Record<string, unknown>;
 }
 
+/** Arguments for checkpoint listing requests. */
 export interface CheckpointListArgs {
   specFolder?: string;
   limit?: number;
 }
 
+/** Arguments for checkpoint restore requests. */
 export interface CheckpointRestoreArgs {
   name: string;
   clearExisting?: boolean;
 }
 
+/** Arguments for checkpoint deletion requests. */
 export interface CheckpointDeleteArgs {
   name: string;
   confirmName: string;
 }
 
+/** Arguments for task preflight requests. */
 export interface PreflightArgs {
   specFolder: string;
   taskId: string;
@@ -190,6 +206,7 @@ export interface PreflightArgs {
   sessionId?: string | null;
 }
 
+/** Arguments for task postflight requests. */
 export interface PostflightArgs {
   specFolder: string;
   taskId: string;
@@ -200,6 +217,7 @@ export interface PostflightArgs {
   newGapsDiscovered?: string[];
 }
 
+/** Arguments for learning history requests. */
 export interface LearningHistoryArgs {
   specFolder: string;
   sessionId?: string;
@@ -208,6 +226,7 @@ export interface LearningHistoryArgs {
   includeSummary?: boolean;
 }
 
+/** Arguments for causal drift trace requests. */
 export interface DriftWhyArgs {
   memoryId: string | number;
   maxDepth?: number;
@@ -216,6 +235,7 @@ export interface DriftWhyArgs {
   includeMemoryDetails?: boolean;
 }
 
+/** Arguments for causal link creation requests. */
 export interface CausalLinkArgs {
   sourceId: string | number;
   targetId: string | number;
@@ -224,14 +244,17 @@ export interface CausalLinkArgs {
   evidence?: string | null;
 }
 
+/** Arguments for causal statistics requests. */
 export interface CausalStatsArgs {
   _?: never;
 }
 
+/** Arguments for causal link removal requests. */
 export interface CausalUnlinkArgs {
   edgeId: number;
 }
 
+/** Arguments for bulk memory deletion requests. */
 export interface BulkDeleteArgs {
   tier: string;
   specFolder?: string;
@@ -240,6 +263,7 @@ export interface BulkDeleteArgs {
   skipCheckpoint?: boolean;
 }
 
+/** Arguments for evaluation ablation runs. */
 export interface EvalRunAblationArgs {
   channels?: Array<'vector' | 'bm25' | 'fts5' | 'graph' | 'trigger'>;
   groundTruthQueryIds?: number[];
@@ -248,6 +272,7 @@ export interface EvalRunAblationArgs {
   includeFormattedReport?: boolean;
 }
 
+/** Arguments for evaluation dashboard requests. */
 export interface EvalReportingDashboardArgs {
   sprintFilter?: string[];
   channelFilter?: string[];
@@ -256,15 +281,18 @@ export interface EvalReportingDashboardArgs {
   format?: 'text' | 'json';
 }
 
+/** Arguments for ingestion job start requests. */
 export interface IngestStartArgs {
   paths: string[];
   specFolder?: string;
 }
 
+/** Arguments for ingestion job status requests. */
 export interface IngestStatusArgs {
   jobId: string;
 }
 
+/** Arguments for ingestion job cancellation requests. */
 export interface IngestCancelArgs {
   jobId: string;
 }

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Learned Triggers Schema Migration (R11)
+// ---------------------------------------------------------------
 // AI-GUARD: Schema migration for the learned_triggers column.
 //
 // ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]';

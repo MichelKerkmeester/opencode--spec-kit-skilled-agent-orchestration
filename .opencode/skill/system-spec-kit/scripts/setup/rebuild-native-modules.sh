@@ -30,7 +30,7 @@ cd "$ROOT_DIR/shared"
 if [[ -d "node_modules" ]]; then
   npm rebuild 2>/dev/null || echo "   (no native modules in shared/)"
 else
-  echo "   (shared/node_modules not found — run npm install first)"
+  echo "   (shared/node_modules not found — run npm install first)" >&2
 fi
 echo "   ✓ shared modules rebuilt"
 
@@ -59,3 +59,6 @@ echo ""
 echo "╔══════════════════════════════════════════════════════════╗"
 echo "║  Done! Restart the MCP server to apply changes.         ║"
 echo "╚══════════════════════════════════════════════════════════╝"
+
+# Exit codes:
+#   0 - Success

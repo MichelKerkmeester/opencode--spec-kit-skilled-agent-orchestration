@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Embedding Profile and Slug Utilities
+// MODULE: Profile
 // ---------------------------------------------------------------
 
 import type { ParsedProfileSlug, ProfileJson } from '../types';
@@ -44,6 +44,7 @@ interface EmbeddingProfileOptions {
   baseUrl?: string | null;
 }
 
+/** Provides embedding profile. */
 export class EmbeddingProfile {
   provider: string;
   model: string;

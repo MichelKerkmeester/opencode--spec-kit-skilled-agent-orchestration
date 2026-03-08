@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: ERRORS COMPREHENSIVE
 // ---------------------------------------------------------------
@@ -142,7 +141,10 @@ describe('C. withTimeout', () => {
       await withTimeout(slow, 10, 'my-operation');
       expect.unreachable('Should have thrown');
     } catch (e: unknown) {
-      expect(e.code === ErrorCodes.SEARCH_FAILED || e.code === 'E040').toBe(true);
+      expect(e).toBeInstanceOf(MemoryError);
+      if (e instanceof MemoryError) {
+        expect(e.code === ErrorCodes.SEARCH_FAILED || e.code === 'E040').toBe(true);
+      }
     }
   });
 
@@ -172,9 +174,12 @@ describe('C. withTimeout', () => {
       await withTimeout(slow, 15, 'details-test');
       expect.unreachable('Should have thrown');
     } catch (e: unknown) {
-      expect(e.details).toBeTruthy();
-      expect(e.details.timeout).toBeTruthy();
-      expect(e.details.operation).toBeTruthy();
+      expect(e).toBeInstanceOf(MemoryError);
+      if (e instanceof MemoryError) {
+        expect(e.details).toBeTruthy();
+        expect(e.details.timeout).toBeTruthy();
+        expect(e.details.operation).toBeTruthy();
+      }
     }
   });
 });
@@ -354,7 +359,7 @@ describe('G. createErrorWithHint', () => {
   });
 
   it('G4: No recoveryHint when toolName is null', () => {
-    const err = createErrorWithHint('E040', 'fail', {}, null as unknown);
+    const err = createErrorWithHint('E040', 'fail', {}, null);
     expect(err.recoveryHint).toBeUndefined();
   });
 });
@@ -407,7 +412,7 @@ describe('I. RECOVERY_HINTS', () => {
   });
 
   it('I2: Every hint has hint, actions[], severity', () => {
-    for (const [code, hint] of Object.entries(RECOVERY_HINTS) as unknown) {
+    for (const [, hint] of Object.entries(RECOVERY_HINTS)) {
       expect(typeof hint.hint).toBe('string');
       expect(Array.isArray(hint.actions)).toBe(true);
       expect(typeof hint.severity).toBe('string');
@@ -416,7 +421,7 @@ describe('I. RECOVERY_HINTS', () => {
 
   it('I3: All severities are low|medium|high|critical', () => {
     const validSeverities = new Set(['low', 'medium', 'high', 'critical']);
-    for (const [code, hint] of Object.entries(RECOVERY_HINTS) as unknown) {
+    for (const [, hint] of Object.entries(RECOVERY_HINTS)) {
       expect(validSeverities.has(hint.severity)).toBe(true);
     }
   });
@@ -475,7 +480,7 @@ describe('K. TOOL_SPECIFIC_HINTS', () => {
     expect(typeof searchHints).toBe('object');
     const codes = Object.keys(searchHints);
     expect(codes.length).toBeGreaterThanOrEqual(1);
-    for (const [code, hint] of Object.entries(searchHints) as unknown) {
+    for (const [, hint] of Object.entries(searchHints)) {
       expect(typeof hint.hint).toBe('string');
       expect(Array.isArray(hint.actions)).toBe(true);
     }

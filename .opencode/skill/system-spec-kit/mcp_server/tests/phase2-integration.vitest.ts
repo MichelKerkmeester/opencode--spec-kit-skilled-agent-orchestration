@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: PHASE 2 INTEGRATION (T048-T049)
 // ---------------------------------------------------------------
@@ -8,6 +7,8 @@ import Database from 'better-sqlite3';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
 import * as causalBoost from '../lib/search/causal-boost';
 import { initExtractionAdapter } from '../lib/extraction/extraction-adapter';
+
+type CausalBoostResults = Parameters<typeof causalBoost.applyCausalBoost>[0];
 
 describe('T048-T049 integration path', () => {
   let db: Database.Database | null = null;
@@ -106,8 +107,8 @@ describe('T048-T049 integration path', () => {
   });
 
   it('T049: causal boost promotes related memory into top results', () => {
-    const baseResults = [{ id: 11, score: 0.9 }];
-    const { results, metadata } = causalBoost.applyCausalBoost(baseResults as any);
+    const baseResults: CausalBoostResults = [{ id: 11, score: 0.9 }];
+    const { results, metadata } = causalBoost.applyCausalBoost(baseResults);
 
     expect(metadata.applied).toBe(true);
     expect(results.some((item) => item.id === 12)).toBe(true);

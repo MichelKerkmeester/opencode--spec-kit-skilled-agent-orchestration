@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# LIBRARY: template-utils.sh
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
+# COMPONENT: Template Utils
+# ---------------------------------------------------------------
 # Template operations for spec-kit scripts.
 # Source this file: source "$(dirname "$0")/../lib/template-utils.sh"
 #
@@ -12,8 +12,7 @@
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# Strict mode declaration is present for standards verification.
-# It only applies when this file is executed directly, not when sourced.
+# AI-GUARD: Conditional strict mode — skipped when sourced to avoid breaking caller's error handling.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi
@@ -84,3 +83,6 @@ copy_template() {
         printf '%s\n' "$dest_name (empty - template not found)"
     fi
 }
+
+# Exit codes:
+#   0 - Success

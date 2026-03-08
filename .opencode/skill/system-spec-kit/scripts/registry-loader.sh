@@ -62,7 +62,7 @@ EOF
 
 check_jq() {
     if ! command -v jq &> /dev/null; then
-        echo -e "${RED}Error: jq is required but not installed.${NC}"
+        echo -e "${RED}Error: jq is required but not installed.${NC}" >&2
         echo "Install with: brew install jq (macOS) or apt install jq (Linux)"
         exit 1
     fi
@@ -70,7 +70,7 @@ check_jq() {
 
 check_registry() {
     if [[ ! -f "$REGISTRY_FILE" ]]; then
-        echo -e "${RED}Error: Registry file not found: $REGISTRY_FILE${NC}"
+        echo -e "${RED}Error: Registry file not found: $REGISTRY_FILE${NC}" >&2
         exit 1
     fi
 }
@@ -401,3 +401,7 @@ main() {
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   1 - ${RED}Error: jq is required but not installed.${NC}

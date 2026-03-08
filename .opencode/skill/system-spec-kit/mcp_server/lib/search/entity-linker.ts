@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Cross-Document Entity Linking (S5)
+// MODULE: Entity Linker
+// ---------------------------------------------------------------
 // Gated via SPECKIT_ENTITY_LINKING
 // Creates causal edges between memories sharing entities across spec folders.
 // ---------------------------------------------------------------
@@ -334,8 +335,9 @@ export function createEntityLinks(
       for (let j = i + 1; j < memoryIds.length; j++) {
         const idA = memoryIds[i];
         const idB = memoryIds[j];
-        const folderA = memoryFolders.get(idA)!;
-        const folderB = memoryFolders.get(idB)!;
+        const folderA = memoryFolders.get(idA);
+        const folderB = memoryFolders.get(idB);
+        if (!folderA || !folderB) continue;
 
         // Only link memories from different spec folders
         if (folderA === folderB) continue;

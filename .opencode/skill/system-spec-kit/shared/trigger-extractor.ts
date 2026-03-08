@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Shared Trigger Phrase Extractor
+// MODULE: TriggerExtractor
 // ---------------------------------------------------------------
 
 import type {
@@ -16,6 +16,7 @@ import type {
 // 1. STOP WORD LISTS
 // ---------------------------------------------------------------
 
+/** Defines stop words english. */
 export const STOP_WORDS_ENGLISH: Set<string> = new Set([
   'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
   'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
@@ -32,6 +33,7 @@ export const STOP_WORDS_ENGLISH: Set<string> = new Set([
   'both', 'over', 'out', 'up', 'down', 'off', 'while', 'until', 'since',
 ]);
 
+/** Defines stop words tech. */
 export const STOP_WORDS_TECH: Set<string> = new Set([
   'function', 'variable', 'const', 'let', 'var', 'class', 'method',
   'file', 'folder', 'directory', 'code', 'line', 'object', 'array',
@@ -48,6 +50,7 @@ export const STOP_WORDS_TECH: Set<string> = new Set([
   'message', 'user', 'assistant', 'processed', 'initiated', 'conversation',
 ]);
 
+/** Defines stop words artifacts. */
 export const STOP_WORDS_ARTIFACTS: Set<string> = new Set([
   'section', 'chapter', 'example', 'note', 'warning', 'info', 'tip',
   'todo', 'fixme', 'hack', 'bug', 'issue', 'feature', 'update',
@@ -60,6 +63,7 @@ export const STOP_WORDS_ARTIFACTS: Set<string> = new Set([
 // 2. CONFIGURATION
 // ---------------------------------------------------------------
 
+/** Defines config. */
 export const CONFIG: TriggerConfig = {
   MIN_PHRASE_COUNT: 8,
   MAX_PHRASE_COUNT: 25,
@@ -164,6 +168,7 @@ export function countNgrams(tokens: string[], n: number): NgramCount[] {
 // 5. PROBLEM TERM EXTRACTION
 // ---------------------------------------------------------------
 
+/** Defines problem indicators. */
 export const PROBLEM_INDICATORS: Set<string> = new Set([
   'short', 'missing', 'broken', 'failed', 'error', 'bug', 'issue',
   'wrong', 'incorrect', 'invalid', 'unexpected', 'crash', 'timeout',
@@ -171,6 +176,7 @@ export const PROBLEM_INDICATORS: Set<string> = new Set([
   'overflow', 'underflow', 'null', 'undefined', 'empty', 'truncated',
 ]);
 
+/** Defines state keywords. */
 export const STATE_KEYWORDS: Set<string> = new Set([
   'simulation', 'placeholder', 'fallback', 'mock', 'stub', 'fake',
   'debug', 'verbose', 'silent', 'readonly', 'disabled', 'enabled',

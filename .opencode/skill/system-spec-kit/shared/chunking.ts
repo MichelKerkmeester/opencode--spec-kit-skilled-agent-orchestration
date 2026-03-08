@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Shared Semantic Chunking
+// MODULE: Chunking
 // ---------------------------------------------------------------
 
 import type { PriorityPatterns, PriorityBuckets } from './types';
@@ -17,8 +17,11 @@ import type { PriorityPatterns, PriorityBuckets } from './types';
  * Based on nomic-embed-text-v1.5 context window (~8192 tokens).
  */
 export const MAX_TEXT_LENGTH: number = 8000;
+/** Defines reserved overview. */
 export const RESERVED_OVERVIEW: number = 500;
+/** Defines reserved outcome. */
 export const RESERVED_OUTCOME: number = 300;
+/** Defines min section length. */
 export const MIN_SECTION_LENGTH: number = 20;
 
 const PRIORITY_PATTERNS: PriorityPatterns = {

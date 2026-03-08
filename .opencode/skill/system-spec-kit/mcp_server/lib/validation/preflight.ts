@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Preflight Quality Gates
+// MODULE: Preflight
 // ---------------------------------------------------------------
 
 import crypto from 'crypto';
@@ -163,6 +163,9 @@ type FindSimilarFn = (embedding: Float32Array | number[], options: {
    2. CONFIGURATION
    --------------------------------------------------------------- */
 
+/**
+ * Defines the PreflightErrorCodes constant.
+ */
 export const PreflightErrorCodes: Readonly<PreflightErrorCodes> = {
   ANCHOR_FORMAT_INVALID: 'PF001',
   ANCHOR_UNCLOSED: 'PF002',
@@ -176,6 +179,9 @@ export const PreflightErrorCodes: Readonly<PreflightErrorCodes> = {
   CONTENT_TOO_SMALL: 'PF031',
 } as const;
 
+/**
+ * Defines the PREFLIGHT_CONFIG constant.
+ */
 export const PREFLIGHT_CONFIG: PreflightConfig = {
   // Token budget estimation (~3.5 chars/token for mixed content)
   charsPerToken: parseFloat(process.env.MCP_CHARS_PER_TOKEN || '3.5'),
@@ -198,6 +204,9 @@ export const PREFLIGHT_CONFIG: PreflightConfig = {
    3. PREFLIGHT ERROR CLASS
    --------------------------------------------------------------- */
 
+/**
+ * Represents the PreflightError type.
+ */
 export class PreflightError extends Error {
   public code: string;
   public details: PreflightErrorDetails;
@@ -233,6 +242,9 @@ export class PreflightError extends Error {
 const VALID_ANCHOR_ID_PATTERN: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9-/]*$/;
 const ANCHOR_OPENING_PATTERN: RegExp = /<!--\s*(?:ANCHOR|anchor):\s*([^>\s]+)\s*-->/gi;
 
+/**
+ * Provides the validateAnchorFormat helper.
+ */
 export function validateAnchorFormat(content: string, options: { strict?: boolean } = {}): AnchorValidationResult {
   const { strict = PREFLIGHT_CONFIG.anchor_validation_strict } = options;
 
@@ -340,10 +352,16 @@ export function validateAnchorFormat(content: string, options: { strict?: boolea
    5. DUPLICATE DETECTION
    --------------------------------------------------------------- */
 
+/**
+ * Provides the computeContentHash helper.
+ */
 export function computeContentHash(content: string): string {
   return crypto.createHash('sha256').update(content, 'utf-8').digest('hex');
 }
 
+/**
+ * Provides the checkDuplicate helper.
+ */
 export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateCheckOptions = {}): DuplicateCheckResult {
   const {
     content,
@@ -433,12 +451,18 @@ export function checkDuplicate(params: DuplicateCheckParams, options: DuplicateC
    6. TOKEN BUDGET ESTIMATION
    --------------------------------------------------------------- */
 
+/**
+ * Provides the estimateTokens helper.
+ */
 export function estimateTokens(content: string | unknown): number {
   if (!content) return 0;
   const text = typeof content === 'string' ? content : JSON.stringify(content);
   return Math.max(1, Math.ceil(text.length / PREFLIGHT_CONFIG.charsPerToken));
 }
 
+/**
+ * Provides the checkTokenBudget helper.
+ */
 export function checkTokenBudget(content: string, options: {
   maxTokens?: number;
   warning_threshold?: number;
@@ -501,6 +525,9 @@ export function checkTokenBudget(content: string, options: {
    7. CONTENT SIZE VALIDATION
    --------------------------------------------------------------- */
 
+/**
+ * Provides the validateContentSize helper.
+ */
 export function validateContentSize(content: string, options: {
   min_length?: number;
   maxLength?: number;
@@ -560,6 +587,9 @@ export function validateContentSize(content: string, options: {
    8. UNIFIED PREFLIGHT CHECK
    --------------------------------------------------------------- */
 
+/**
+ * Provides the runPreflight helper.
+ */
 export function runPreflight(params: PreflightParams, options: PreflightOptions = {}): PreflightResult {
   const {
     content,

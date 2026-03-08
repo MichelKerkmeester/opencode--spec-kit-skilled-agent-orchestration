@@ -1,12 +1,12 @@
-// @ts-nocheck
 // Converted from: unit-composite-scoring-types.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: COMPOSITE SCORING — TYPE UNIFICATION (ScoringInput)
 // Validates cast-removal: deprecated MemoryRow → ScoringInput accepts
 // partial objects, mixed casing, and extra arbitrary fields.
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
+import type { ScoringInput } from '../lib/scoring/composite-scoring';
 import {
   calculateRetrievabilityScore,
   calculateFiveFactorScore,
@@ -101,7 +101,7 @@ describe('Composite Scoring — Type Unification (ScoringInput)', () => {
   // 4.3 applyFiveFactorScoring with mixed memory batch
   describe('applyFiveFactorScoring with mixed memory batch', () => {
     it('T-CS-09: batch of mixed memories scored', () => {
-      const memories = [
+      const memories: ScoringInput[] = [
         { id: 1, importance_tier: 'constitutional', stability: 100, similarity: 90 },
         { id: 2, importance_tier: 'normal', access_count: 5 },
         { id: 3 },  // Truly minimal
@@ -113,7 +113,7 @@ describe('Composite Scoring — Type Unification (ScoringInput)', () => {
       expect(Array.isArray(ranked)).toBe(true);
       expect(ranked.length).toBe(4);
 
-      const allScored = ranked.every((m: any) =>
+      const allScored = ranked.every((m) =>
         typeof m.composite_score === 'number' && !isNaN(m.composite_score)
       );
       expect(allScored).toBe(true);
@@ -129,7 +129,7 @@ describe('Composite Scoring — Type Unification (ScoringInput)', () => {
   // 4.4 applyCompositeScoring with ScoringInput
   describe('applyCompositeScoring accepts ScoringInput objects', () => {
     it('T-CS-11: snake_case-only ScoringInput', () => {
-      const memories = [
+      const memories: ScoringInput[] = [
         {
           id: 1,
           similarity: 80,
@@ -147,7 +147,7 @@ describe('Composite Scoring — Type Unification (ScoringInput)', () => {
     });
 
     it('T-CS-12: camelCase ScoringInput accepted', () => {
-      const memories = [
+      const memories: ScoringInput[] = [
         {
           id: 2,
           similarity: 80,
@@ -166,7 +166,7 @@ describe('Composite Scoring — Type Unification (ScoringInput)', () => {
     });
 
     it('T-CS-13: extra unknown fields accepted', () => {
-      const memories = [
+      const memories: ScoringInput[] = [
         {
           id: 3,
           similarity: 60,

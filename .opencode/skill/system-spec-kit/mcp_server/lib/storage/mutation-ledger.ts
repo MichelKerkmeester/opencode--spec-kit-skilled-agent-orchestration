@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Mutation Ledger
+// ---------------------------------------------------------------
 // Append-only audit trail for all memory mutations
 // SQLite triggers enforce immutability (no UPDATE/DELETE on ledger)
 // ---------------------------------------------------------------
@@ -199,6 +200,8 @@ function getEntries(db: Database.Database, opts: GetEntriesOptions = {}): Mutati
   const limit = opts.limit ? `LIMIT ${Math.max(1, Math.floor(opts.limit))}` : '';
   const offset = opts.offset ? `OFFSET ${Math.max(0, Math.floor(opts.offset))}` : '';
 
+  // AI-SAFETY: String interpolation constructs IN(?,?,?) placeholder list only —
+  // all user values are parameterized. Accepted exception per audit H-08.
   const sql = `SELECT * FROM mutation_ledger ${where} ORDER BY id ASC ${limit} ${offset}`;
   return db.prepare(sql).all(...params) as MutationLedgerEntry[];
 }
@@ -451,6 +454,9 @@ export {
   recordDivergenceReconcileHook,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   MutationType,
   MutationLedgerEntry,

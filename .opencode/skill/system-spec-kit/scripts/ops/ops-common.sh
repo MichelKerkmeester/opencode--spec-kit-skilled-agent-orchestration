@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# Shared deterministic retry + escalation helpers for self-healing ops scripts.
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
+# COMPONENT: Ops Common
+# ---------------------------------------------------------------
 
 set -euo pipefail
 
@@ -132,3 +132,7 @@ ops_validate_common_options() {
     fi
 }
 
+# Exit codes:
+#   0 - Success
+#   1 - General error
+#   2 - ERROR: ${field} must be an unsigned integer (got: ${value})

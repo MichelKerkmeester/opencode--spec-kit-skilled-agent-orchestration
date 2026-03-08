@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Dynamic Token Budget
+// ---------------------------------------------------------------
 //
 // ADVISORY-ONLY: This module computes a token budget for a query
 // based on its complexity tier, but does NOT enforce that budget

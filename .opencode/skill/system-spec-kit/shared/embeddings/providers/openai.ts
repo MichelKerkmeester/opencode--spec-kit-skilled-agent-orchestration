@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: OpenAI Embeddings Provider
+// MODULE: Openai
 // ---------------------------------------------------------------
 
 import { EmbeddingProfile } from '../profile';
@@ -15,6 +15,7 @@ const DEFAULT_DIM: number = 1536;
 const DEFAULT_BASE_URL: string = 'https://api.openai.com/v1';
 const REQUEST_TIMEOUT: number = 30000;
 
+/** Defines model dimensions. */
 export const MODEL_DIMENSIONS: ModelDimensions = {
   'text-embedding-3-small': 1536,
   'text-embedding-3-large': 3072,
@@ -79,6 +80,7 @@ function parseOpenAIErrorBody(payload: unknown): OpenAIErrorBody {
   };
 }
 
+/** Provides open aiprovider. */
 export class OpenAIProvider implements IEmbeddingProvider {
   private readonly apiKey: string;
   readonly baseUrl: string;
@@ -153,6 +155,9 @@ export class OpenAIProvider implements IEmbeddingProvider {
       return data;
 
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       clearTimeout(timeoutId);
 
       if (isAbortError(error)) {
@@ -224,6 +229,9 @@ export class OpenAIProvider implements IEmbeddingProvider {
       return embedding;
 
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[openai] Generation failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       throw error;
@@ -253,6 +261,9 @@ export class OpenAIProvider implements IEmbeddingProvider {
       console.error('[openai] Connectivity verified successfully');
       return this.isHealthy;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       console.warn(`[openai] Warmup failed: ${getErrorMessage(error)}`);
       this.isHealthy = false;
       return false;
@@ -286,6 +297,9 @@ export class OpenAIProvider implements IEmbeddingProvider {
       this.isHealthy = result !== null;
       return this.isHealthy;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       this.isHealthy = false;
       return false;
     }

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: HANDLER MEMORY INGEST
 // ---------------------------------------------------------------
@@ -19,6 +18,8 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('../core', () => ({
   checkDatabaseUpdated: mocks.mockCheckDatabaseUpdated,
+  DATABASE_PATH: ':memory:',
+  ALLOWED_BASE_PATHS: ['/tmp'],
 }));
 
 vi.mock('../lib/ops/job-queue', () => ({

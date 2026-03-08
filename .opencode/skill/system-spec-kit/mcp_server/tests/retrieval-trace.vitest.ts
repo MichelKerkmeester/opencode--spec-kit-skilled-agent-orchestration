@@ -273,14 +273,20 @@ describe('C136-08: Retrieval Trace Contracts', () => {
       token: 'secret-token',
     };
 
-    const sanitized = sanitizeRetrievalTracePayload(rawPayload) as any;
+    const sanitized = sanitizeRetrievalTracePayload(rawPayload);
     expect(sanitized).toBeDefined();
+    if (!sanitized) {
+      throw new Error('Expected payload to sanitize successfully');
+    }
+    const sanitizedRecord = sanitized as unknown as Record<string, unknown> & {
+      stages: Array<Record<string, unknown>>;
+    };
     expect(sanitized.traceId).toBe('tr_sanitize');
     expect(sanitized.stages).toHaveLength(1);
-    expect(sanitized.query).toBeUndefined();
-    expect(sanitized.sessionId).toBeUndefined();
-    expect(sanitized.token).toBeUndefined();
-    expect(sanitized.stages[0].metadata).toBeUndefined();
+    expect(sanitizedRecord.query).toBeUndefined();
+    expect(sanitizedRecord.sessionId).toBeUndefined();
+    expect(sanitizedRecord.token).toBeUndefined();
+    expect(sanitizedRecord.stages[0]?.metadata).toBeUndefined();
   });
 
   it('isRetrievalTracePayload validates only canonical strict payloads', () => {

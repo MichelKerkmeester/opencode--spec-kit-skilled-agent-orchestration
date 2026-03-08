@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Temporal Contiguity
+// ---------------------------------------------------------------
 // Boost search results when memories are temporally adjacent,
 // query temporal neighbors, and build spec-folder timelines.
 // ---------------------------------------------------------------

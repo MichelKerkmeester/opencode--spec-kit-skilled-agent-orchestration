@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: N3-lite Consolidation Engine
+// ---------------------------------------------------------------
 // Lightweight graph maintenance: contradiction scan, Hebbian
 // strengthening, staleness detection, edge bounds enforcement.
 // Sprint 6a — behind SPECKIT_CONSOLIDATION flag.
@@ -24,6 +25,9 @@ import type { CausalEdge } from './causal-edges';
    1. TYPES
 ----------------------------------------------------------------*/
 
+/**
+ * Describes the ContradictionPair shape.
+ */
 export interface ContradictionPair {
   memoryA: { id: number; title: string | null; content: string | null };
   memoryB: { id: number; title: string | null; content: string | null };
@@ -31,6 +35,9 @@ export interface ContradictionPair {
   conflictType: 'keyword_negation' | 'semantic_opposition';
 }
 
+/**
+ * Describes the ContradictionCluster shape.
+ */
 export interface ContradictionCluster {
   /** The initially detected pair */
   seedPair: ContradictionPair;
@@ -38,6 +45,9 @@ export interface ContradictionCluster {
   members: number[];
 }
 
+/**
+ * Describes the ConsolidationResult shape.
+ */
 export interface ConsolidationResult {
   contradictions: ContradictionCluster[];
   hebbian: { strengthened: number; decayed: number };
@@ -298,7 +308,8 @@ export function buildContradictionClusters(
           }
         }
       } catch (err: unknown) {
-        console.warn('[consolidation] cluster expansion error:', err);
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn('[consolidation] cluster expansion error:', message);
       }
     }
 
@@ -508,7 +519,8 @@ export function runConsolidationCycleIfEnabled(
     return result;
   } catch (err: unknown) {
     // AI-GUARD: Fail-closed: broken bookkeeping must not cause unbounded cycle runs
-    console.warn('[consolidation] cadence bookkeeping error:', err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.warn('[consolidation] cadence bookkeeping error:', message);
     return null;
   }
 }

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Stage 2 — Fusion + Signal Integration
+// MODULE: Stage2 Fusion
+// ---------------------------------------------------------------
 // AI-GUARD: Sprint 5 (R6): 4-Stage Retrieval Pipeline
 //
 // I/O CONTRACT:
@@ -42,7 +43,6 @@
 // score fields (e.g. rerankScore, finalScore) rather than mutating the
 // existing `score` produced here. This preserves auditability and
 // prevents silent ranking regressions caused by in-place score mutation.
-// ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
 
@@ -65,7 +65,7 @@ import { enrichResultsWithValidationMetadata } from '../validation-metadata';
 import { applyCommunityBoost } from '../../graph/community-detection';
 import { applyGraphSignals } from '../../graph/graph-signals';
 
-// ── Internal type aliases ──
+// -- Internal type aliases --
 
 /** A row with a resolved numeric base score for internal use. */
 interface ScoredRow extends PipelineRow {
@@ -85,7 +85,7 @@ interface ValidationMetadataLike {
   hasChecklist?: boolean;
 }
 
-// ── Constants ──
+// -- Constants --
 
 /** Number of top results used as seeds for co-activation spreading. */
 const SPREAD_ACTIVATION_TOP_N = 5;
@@ -141,7 +141,7 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
   return adjusted.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
 }
 
-// ── Internal helpers ──
+// -- Internal helpers --
 
 /**
  * AI-WHY: Fix #11 (017-refinement-phase-6) — Replaced with shared resolveEffectiveScore()
@@ -209,7 +209,7 @@ function strengthenOnAccess(
   }
 }
 
-// ── Exported internal functions (also exposed via __testables) ──
+// -- Exported internal functions (also exposed via __testables) --
 
 /**
  * Apply intent-based weights to search results.
@@ -340,12 +340,16 @@ function applyFeedbackSignals(
   let db: Database.Database | null = null;
   try {
     db = requireDb();
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      // AI-WHY: DB not available — skip feedback signals gracefully
+      return results;
+    }
     // AI-WHY: DB not available — skip feedback signals gracefully
     return results;
   }
 
-  // ── Learned trigger boosts ──
+  // -- Learned trigger boosts --
   let learnedBoostMap = new Map<number, number>();
   try {
     const learnedMatches = queryLearnedTriggers(query, db as Parameters<typeof queryLearnedTriggers>[1]);
@@ -360,7 +364,7 @@ function applyFeedbackSignals(
     learnedBoostMap = new Map();
   }
 
-  // ── Negative feedback stats (batch load) ──
+  // -- Negative feedback stats (batch load) --
   let negativeFeedbackStats = new Map<number, { negativeCount: number; lastNegativeAt: number | null }>();
   if (isNegativeFeedbackEnabled()) {
     try {
@@ -372,7 +376,7 @@ function applyFeedbackSignals(
     }
   }
 
-  // ── Apply combined adjustments ──
+  // -- Apply combined adjustments --
   return results.map((row) => {
     let currentScore = resolveBaseScore(row);
 
@@ -448,7 +452,7 @@ function applyTestingEffect(
   }
 }
 
-// ── Main Stage 2 entry point ──
+// -- Main Stage 2 entry point --
 
 /**
  * Execute Stage 2: Fusion + Signal Integration.
@@ -491,7 +495,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   let results: PipelineRow[] = [...candidates];
   const isHybrid = config.searchType === 'hybrid';
 
-  // ── 1. Session boost ──
+  // -- 1. Session boost --
   // Only for hybrid search type — session attention signals are most meaningful
   // when the full hybrid result set is available for ordering.
   if (isHybrid && config.enableSessionBoost && config.sessionId) {
@@ -508,7 +512,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 2. Causal boost ──
+  // -- 2. Causal boost --
   // Only for hybrid search type — causal graph traversal is seeded from the
   // top results after session boost has re-ordered them.
   if (isHybrid && config.enableCausalBoost) {
@@ -522,7 +526,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 2a. Co-activation spreading ──
+  // -- 2a. Co-activation spreading --
   // Gated behind SPECKIT_COACTIVATION flag. Takes the top-N results as seeds,
   // performs spreading activation traversal, and boosts scores of results that
   // appear in the co-activation graph. Matches V1 hybrid-search behavior.
@@ -561,7 +565,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 2b. Community co-retrieval (N2c) ──
+  // -- 2b. Community co-retrieval (N2c) --
   // Inject community co-members into result set before graph signals
   // so injected rows also receive momentum/depth adjustments.
   if (isCommunityDetectionEnabled()) {
@@ -578,7 +582,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 2c. Graph signals (N2a + N2b) ──
+  // -- 2c. Graph signals (N2a + N2b) --
   // Additive score adjustments for graph momentum and causal depth.
   if (isGraphSignalsEnabled()) {
     try {
@@ -592,7 +596,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // AI-GUARD: ── 3. Testing effect (FSRS write-back) ──
+  // AI-GUARD: -- 3. Testing effect (FSRS write-back) --
   // P3-09 FIX: Only when explicitly opted in via trackAccess.
   // Write-back is fire-and-forget; errors per-row are swallowed inside
   // applyTestingEffect so they never abort the pipeline.
@@ -606,7 +610,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // AI-WHY: ── 4. Intent weights ──
+  // AI-WHY: -- 4. Intent weights --
   // G2 PREVENTION: Only apply for non-hybrid search types.
   // Hybrid search (RRF / RSF) incorporates intent weighting during fusion —
   // applying it again here would double-count, causing the G2 bug.
@@ -625,7 +629,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 5. Artifact routing weights ──
+  // -- 5. Artifact routing weights --
   if (config.artifactRouting && config.artifactRouting.confidence > 0) {
     try {
       const routed = applyArtifactRouting(results, config.artifactRouting);
@@ -637,7 +641,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── 6. Feedback signals ──
+  // -- 6. Feedback signals --
   try {
     const withFeedback = applyFeedbackSignals(results, config.query);
     // Detect if any score actually changed
@@ -651,7 +655,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     console.warn(`[stage2-fusion] feedback signals failed: ${message}`);
   }
 
-  // ── 7. Artifact-based result limiting ──
+  // -- 7. Artifact-based result limiting --
   // The routing strategy may specify a maxResults count stricter than the
   // overall pipeline limit. Apply it here so Stage 3 reranks a pre-trimmed set.
   results.sort((a, b) => resolveEffectiveScore(b) - resolveEffectiveScore(a));
@@ -665,7 +669,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     results = results.slice(0, config.artifactRouting.strategy.maxResults);
   }
 
-  // AI-GUARD: ── 8. Anchor metadata annotation ──
+  // AI-GUARD: -- 8. Anchor metadata annotation --
   // Pure annotation: attach AnchorMetadata[] to rows that contain ANCHOR tags.
   // No scores are changed — this satisfies the Stage 4 score-immutability
   // invariant and does not conflict with the G2 double-weighting guard.
@@ -676,7 +680,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     console.warn(`[stage2-fusion] anchor metadata enrichment failed: ${message}`);
   }
 
-  // ── 9. Validation metadata enrichment + scoring ──
+  // -- 9. Validation metadata enrichment + scoring --
   // Extract spec quality signals (SPECKIT_LEVEL, quality_score,
   // importance_tier, completion markers) and attach as `validationMetadata` key,
   // then apply bounded quality scoring multipliers at this single scoring point.
@@ -695,7 +699,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     }
   }
 
-  // ── Trace ──
+  // -- Trace --
   if (config.trace) {
     addTraceEntry(
       config.trace,
@@ -723,7 +727,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   };
 }
 
-// ── Test surface ──
+// -- Test surface --
 
 /**
  * Internal functions exposed for unit testing.

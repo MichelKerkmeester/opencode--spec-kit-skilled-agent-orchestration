@@ -408,7 +408,7 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
     let originalGaps: string[] = [];
     try {
       originalGaps = preflightRecord.knowledge_gaps ? JSON.parse(preflightRecord.knowledge_gaps) : [];
-    } catch {
+    } catch (_error: unknown) {
       originalGaps = [];
     }
 
@@ -514,9 +514,9 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
       let gapsClosed: string[] = [];
       let newGapsDiscovered: string[] = [];
 
-      try { knowledgeGaps = row.knowledge_gaps ? JSON.parse(row.knowledge_gaps as string) : []; } catch { /* ignore */ }
-      try { gapsClosed = row.gaps_closed ? JSON.parse(row.gaps_closed as string) : []; } catch { /* ignore */ }
-      try { newGapsDiscovered = row.new_gaps_discovered ? JSON.parse(row.new_gaps_discovered as string) : []; } catch { /* ignore */ }
+      try { knowledgeGaps = row.knowledge_gaps ? JSON.parse(row.knowledge_gaps as string) : []; } catch (_error: unknown) { /* ignore */ }
+      try { gapsClosed = row.gaps_closed ? JSON.parse(row.gaps_closed as string) : []; } catch (_error: unknown) { /* ignore */ }
+      try { newGapsDiscovered = row.new_gaps_discovered ? JSON.parse(row.new_gaps_discovered as string) : []; } catch (_error: unknown) { /* ignore */ }
 
       const result: Record<string, unknown> = {
         taskId: row.task_id,
@@ -676,4 +676,3 @@ export {
   handle_get_learning_history,
   ensure_schema,
 };
-

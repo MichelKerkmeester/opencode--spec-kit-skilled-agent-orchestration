@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: Vector Index Facade
-// AI-WHY: Backward-compatible export surface across split modules.
+// MODULE: Vector Index
 // ---------------------------------------------------------------
+// AI-WHY: Backward-compatible export surface across split modules.
 
 export * from './vector-index-types';
 export * from './vector-index-schema';

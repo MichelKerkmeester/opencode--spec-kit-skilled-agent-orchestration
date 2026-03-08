@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: SemanticSummarizer
+// ---------------------------------------------------------------
 /**
  * @file semantic-summarizer.ts
  * @description Generates semantic summaries with trigger phrases, anchors, and importance scoring.

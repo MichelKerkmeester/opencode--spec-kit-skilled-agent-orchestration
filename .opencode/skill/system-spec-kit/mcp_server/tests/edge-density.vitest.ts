@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // MODULE: Test — Edge Density
 // ---------------------------------------------------------------
@@ -19,7 +18,7 @@ import { measureEdgeDensity, formatDensityReport } from '../lib/eval/edge-densit
    HELPERS — build an in-memory test DB with required tables
 --------------------------------------------------------------- */
 
-function createTestDb(): any {
+function createTestDb(): InstanceType<typeof Database> {
   const db = new Database(':memory:');
 
   db.exec(`
@@ -58,7 +57,7 @@ function createTestDb(): any {
 }
 
 /** Insert edges by (source, target) pairs. IDs are auto-generated. */
-function insertEdges(db: any, pairs: Array<[string, string]>): void {
+function insertEdges(db: InstanceType<typeof Database>, pairs: Array<[string, string]>): void {
   const stmt = db.prepare(
     'INSERT INTO causal_edges (id, source_id, target_id, relation) VALUES (?, ?, ?, ?)',
   );
@@ -68,7 +67,7 @@ function insertEdges(db: any, pairs: Array<[string, string]>): void {
 }
 
 /** Insert N memory rows (IDs 1..n). */
-function insertMemories(db: any, count: number): void {
+function insertMemories(db: InstanceType<typeof Database>, count: number): void {
   const stmt = db.prepare(
     'INSERT INTO memory_index (id, title) VALUES (?, ?)',
   );
@@ -82,7 +81,7 @@ function insertMemories(db: any, count: number): void {
 --------------------------------------------------------------- */
 
 describe('Edge Density (T011)', () => {
-  let db: any;
+  let db: InstanceType<typeof Database>;
 
   beforeEach(() => {
     db = createTestDb();

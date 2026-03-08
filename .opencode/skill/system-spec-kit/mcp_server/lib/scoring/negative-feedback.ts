@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Negative Feedback Confidence Signal (T002b / A4)
+// MODULE: Negative Feedback
+// ---------------------------------------------------------------
 // AI-GUARD: 
 // When wasUseful=false is recorded via memory_validate, reduce the
 // memory's composite score via a confidence multiplier.

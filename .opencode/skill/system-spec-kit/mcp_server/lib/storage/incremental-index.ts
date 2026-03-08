@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Incremental Index
+// ---------------------------------------------------------------
 // Mtime-based incremental indexing for fast re-indexing
 // ---------------------------------------------------------------
 
@@ -412,6 +413,9 @@ export {
   batchUpdateMtimes,
 };
 
+/**
+ * Re-exports related public types.
+ */
 export type {
   FileMetadata,
   StoredMetadata,

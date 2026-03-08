@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: FIVE FACTOR SCORING
 // ---------------------------------------------------------------
@@ -24,6 +23,7 @@ import {
   applyCompositeScoring,
   getScoreBreakdown,
 } from '../lib/scoring/composite-scoring';
+import type { ScoringInput } from '../lib/scoring/composite-scoring';
 import {
   calculateCompositeAttention,
   getAttentionBreakdown,
@@ -33,6 +33,8 @@ import {
 /* -----------------------------------------------------------------
    3. FIVE FACTOR WEIGHTS (T032)
 ------------------------------------------------------------------ */
+
+type BatchScoreInput = ScoringInput & { id: number };
 
 describe('Five-Factor Weight Configuration (T032)', () => {
   it('T032-01: FIVE_FACTOR_WEIGHTS exists', () => {
@@ -198,7 +200,7 @@ describe('Factor 5: Citation Recency Score (T033)', () => {
 
   it('T033-07: No last_accessed fallback — uncited memory scores 0', () => {
     const now = new Date();
-    const score = calculateCitationScore({ last_accessed: now.toISOString() });
+    const score = calculateCitationScore({ last_accessed: Date.now() });
     expect(score).toBe(0);
   });
 
@@ -312,15 +314,15 @@ describe('Five-Factor Batch Operations', () => {
   it('T032-28: Batch scoring sorts by composite score', () => {
     const now = new Date();
     const results = [
-      { id: 'low', access_count: 0 },
-      { id: 'high', access_count: 10, lastReview: now.toISOString() },
+      { id: 1, access_count: 0 },
+      { id: 2, access_count: 10, lastReview: now.toISOString() },
     ];
     const scored = applyFiveFactorScoring(results, {});
-    expect(scored[0].id).toBe('high');
+    expect(scored[0].id).toBe(2);
   });
 
   it('T032-29: Batch scoring includes _scoring breakdown', () => {
-    const results = [{ id: 'test', access_count: 5 }];
+    const results: BatchScoreInput[] = [{ id: 1, access_count: 5 }];
     const scored = applyFiveFactorScoring(results, {});
     const factors = Object.keys(scored[0]._scoring);
     expect(factors).toContain('temporal');
@@ -443,14 +445,18 @@ describe('Backward Compatibility', () => {
   });
 
   it('Legacy: apply_composite_scoring still works', () => {
-    const results = [{ id: 'test', similarity: 50 }];
+    const results: BatchScoreInput[] = [{ id: 1, similarity: 50 }];
     const scored = applyCompositeScoring(results, {});
     expect(scored[0].composite_score).toBeDefined();
   });
 
   it('Legacy: get_score_breakdown still works', () => {
     const breakdown = getScoreBreakdown({ similarity: 50 }, {});
-    expect(breakdown.factors.similarity).toBeDefined();
+    if ('similarity' in breakdown.factors) {
+      expect(breakdown.factors.similarity).toBeDefined();
+    } else {
+      expect.unreachable('Expected legacy breakdown factors');
+    }
   });
 
   it('Legacy: use_five_factor_model option switches to 5-factor', () => {
@@ -584,11 +590,13 @@ describe('Edge Cases: Usage Factor', () => {
   });
 
   it('EDGE-U02: Null access count treated as 0', () => {
+    // @ts-expect-error Testing invalid input shape
     const score = calculateUsageScore(null);
     expect(score).toBe(0);
   });
 
   it('EDGE-U03: Undefined access count treated as 0', () => {
+    // @ts-expect-error Testing invalid input shape
     const score = calculateUsageScore(undefined);
     expect(score).toBe(0);
   });
@@ -638,6 +646,7 @@ describe('Edge Cases: Importance Factor', () => {
   });
 
   it('EDGE-I03: Null tier defaults to normal', () => {
+    // @ts-expect-error Testing invalid input shape
     const score = calculateImportanceScore(null, 0.5);
     const normalScore = calculateImportanceScore('normal', 0.5);
     expect(score).toBe(normalScore);
@@ -853,8 +862,9 @@ describe('Edge Cases: Batch Operations', () => {
   it('EDGE-BATCH-01: Handles array with null elements', () => {
     try {
       // Filter out nulls before passing
-      const results = [{ id: 'a' }, null, { id: 'b' }].filter(Boolean);
-      const scored = applyFiveFactorScoring(results, {});
+      const results: Array<BatchScoreInput | null> = [{ id: 1 }, null, { id: 2 }];
+      const filteredResults = results.filter((result): result is BatchScoreInput => result !== null);
+      const scored = applyFiveFactorScoring(filteredResults, {});
       expect(Array.isArray(scored)).toBe(true);
     } catch (err: unknown) {
       // AI: Fix F17 — surface actual errors instead of masking.
@@ -865,8 +875,8 @@ describe('Edge Cases: Batch Operations', () => {
   it('EDGE-BATCH-02: Stable sort for equal scores', () => {
     const now = new Date();
     const results = [
-      { id: 'first', access_count: 5, created_at: now.toISOString() },
-      { id: 'second', access_count: 5, created_at: now.toISOString() },
+      { id: 1, access_count: 5, created_at: now.toISOString() },
+      { id: 2, access_count: 5, created_at: now.toISOString() },
     ];
     const scored = applyFiveFactorScoring(results, {});
     // Both should have similar scores
@@ -875,9 +885,9 @@ describe('Edge Cases: Batch Operations', () => {
   });
 
   it('EDGE-BATCH-03: Large batch performance', () => {
-    const results = [];
+    const results: BatchScoreInput[] = [];
     for (let i = 0; i < 100; i++) {
-      results.push({ id: `item-${i}`, access_count: i % 20 });
+      results.push({ id: i, access_count: i % 20 });
     }
     const start = Date.now();
     const scored = applyFiveFactorScoring(results, {});

@@ -4,7 +4,7 @@
 
 import { describe, it, expect } from 'vitest';
 
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: Review Fixes Verification (Vitest)
 // Validates critical fixes from the 8-agent cross-AI review:
 //   H1 — fail-closed on unknown tool
@@ -12,7 +12,7 @@ import { describe, it, expect } from 'vitest';
 //   H2 — bounded paths array (max 50)
 //   H5 — additionalProperties: false on all schemas
 //   M5 — ingest schema minItems/minLength constraints
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import {
   validateToolArgs,

@@ -165,3 +165,7 @@ else
     check_dir "$DECISIONS_DIR" "decisions/"
     $INCLUDE_TASKS && check_file "$TASKS" "tasks.md"
 fi
+
+# Exit codes:
+#   0 - Success
+#   1 - ERROR: Unknown option '$arg'. Use --help for usage

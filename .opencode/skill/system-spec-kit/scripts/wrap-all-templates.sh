@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Wraps all level_1-3+ template files with ANCHOR tags
-# Uses Node.js script with anchor-generator function
+# ---------------------------------------------------------------
+# COMPONENT: Wrap All Templates
+# ---------------------------------------------------------------
 
 set -euo pipefail
 
@@ -25,7 +26,7 @@ for level in level_1 level_2 level_3 "level_3+"; do
     total_files=$((total_files + 1))
     
     if [ ! -f "${filepath}" ]; then
-      echo "  - ${template}: File not found (skipped)"
+      echo "  - ${template}: File not found (skipped)" >&2
       continue
     fi
     
@@ -72,11 +73,15 @@ done
 echo "## Summary"
 echo "Total files processed: ${total_files}"
 echo "Success: ${total_success}"
-echo "Failed: ${total_errors}"
+echo "Failed: ${total_errors}" >&2
 echo "Total anchors added: ${total_anchors_added}"
 
-if [ ${total_errors} -gt 0 ]; then
+if [ "${total_errors}" -gt 0 ]; then
   exit 1
 fi
 
 exit 0
+
+# Exit codes:
+#   0 - Success
+#   1 - Failed: ${total_errors}

@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Memory Types Config
+// MODULE: Memory Types
+// ---------------------------------------------------------------
 // CONFIG: MEMORY TYPES
 // ---------------------------------------------------------------
 
@@ -7,6 +8,9 @@
 // 1. TYPES
 // ---------------------------------------------------------------
 
+/**
+ * Describes the MemoryTypeConfig shape.
+ */
 export interface MemoryTypeConfig {
   halfLifeDays: number | null;
   description: string;
@@ -14,6 +18,9 @@ export interface MemoryTypeConfig {
   decayEnabled: boolean;
 }
 
+/**
+ * Defines the MemoryTypeName type.
+ */
 export type MemoryTypeName =
   | 'working'
   | 'episodic'
@@ -39,6 +46,9 @@ interface HalfLifeValidationResult {
 // 2. MEMORY TYPES CONFIGURATION
 // ---------------------------------------------------------------
 
+/**
+ * Defines the MEMORY_TYPES constant.
+ */
 export const MEMORY_TYPES: Readonly<Record<MemoryTypeName, MemoryTypeConfig>> = {
   working: {
     halfLifeDays: 1,
@@ -97,6 +107,9 @@ export const MEMORY_TYPES: Readonly<Record<MemoryTypeName, MemoryTypeConfig>> = 
 };
 
 // Half-life lookup for efficient access
+/**
+ * Defines the HALF_LIVES_DAYS constant.
+ */
 export const HALF_LIVES_DAYS: Readonly<Record<string, number | null>> = Object.fromEntries(
   Object.entries(MEMORY_TYPES).map(([type, config]) => [type, config.halfLifeDays])
 ) as Record<string, number | null>;
@@ -117,6 +130,9 @@ const EXPECTED_TYPES: readonly MemoryTypeName[] = [
 // 3. TYPE INFERENCE CONFIGURATION
 // ---------------------------------------------------------------
 
+/**
+ * Defines the PATH_TYPE_PATTERNS constant.
+ */
 export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   // Episodic patterns (sessions, events) - more specific, check first
   { pattern: /session[-_]?\d+/i, type: 'episodic' },
@@ -173,6 +189,9 @@ export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   { pattern: /invariant/i, type: 'meta-cognitive' },
 ] as const;
 
+/**
+ * Defines the KEYWORD_TYPE_MAP constant.
+ */
 export const KEYWORD_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
   // Working
   'session context': 'working',
@@ -244,6 +263,9 @@ function getValidTypes(): MemoryTypeName[] {
   return [...EXPECTED_TYPES];
 }
 
+/**
+ * Provides the isValidType helper.
+ */
 export function isValidType(type: string | null | undefined): boolean {
   if (!type || typeof type !== 'string') {
     return false;
@@ -271,6 +293,9 @@ function isDecayEnabled(type: string | null | undefined): boolean {
   return config ? config.decayEnabled : true;
 }
 
+/**
+ * Provides the getDefaultType helper.
+ */
 export function getDefaultType(): MemoryTypeName {
   return 'declarative';
 }
@@ -297,6 +322,9 @@ function getDefaultHalfLives(): Record<MemoryTypeName, number | null> {
 // 6. DOCUMENT TYPES (Spec 126: Full Spec Folder Document Indexing)
 // ---------------------------------------------------------------
 
+/**
+ * Defines the DocumentType type.
+ */
 export type DocumentType =
   | 'spec'
   | 'plan'
@@ -309,6 +337,9 @@ export type DocumentType =
   | 'memory'
   | 'constitutional';
 
+/**
+ * Describes the SpecDocumentConfig shape.
+ */
 export interface SpecDocumentConfig {
   filePattern: RegExp;
   documentType: DocumentType;

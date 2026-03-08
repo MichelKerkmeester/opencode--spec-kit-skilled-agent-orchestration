@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Topic Extractor
+// MODULE: TopicExtractor
+// ---------------------------------------------------------------
 // Extracts key topics from session data using weighted scoring and bigram analysis
 // ---------------------------------------------------------------
 
@@ -9,6 +10,7 @@ import {
   tokenizeTopicWords,
 } from '../lib/topic-keywords';
 
+/** Represents decision for topics. */
 export interface DecisionForTopics {
   TITLE?: string;
   RATIONALE?: string;
@@ -21,6 +23,7 @@ const SIMULATION_MARKER = 'SIMULATION';
 // - Accepts `string` only (session-extractor accepts `string | undefined`)
 // - Includes spec folder name tokens as high-priority topics
 // - Processes TITLE/RATIONALE from decisions with higher weight
+/** Extract key topics. */
 export function extractKeyTopics(
   summary: string,
   decisions: DecisionForTopics[] = [],

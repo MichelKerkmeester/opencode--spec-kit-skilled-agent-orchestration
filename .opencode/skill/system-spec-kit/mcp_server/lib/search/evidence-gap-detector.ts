@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Evidence Gap Detector (C138-P1)
+// MODULE: Evidence Gap Detector
+// ---------------------------------------------------------------
 // Transparent Reasoning Module (TRM): Z-score confidence check
 // on RRF scores to detect low-confidence retrieval and inject
 // warnings for the MCP markdown output layer.

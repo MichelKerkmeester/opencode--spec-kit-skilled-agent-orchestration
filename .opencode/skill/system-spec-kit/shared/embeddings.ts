@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Shared Embeddings Module
+// MODULE: Embeddings
 // ---------------------------------------------------------------
 
 // Node stdlib
@@ -176,6 +176,9 @@ async function getProvider(): Promise<IEmbeddingProvider> {
       console.error(`[embeddings] Provider created lazily (${initTime}ms)`);
       return providerInstance;
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        void error.message;
+      }
       providerInitPromise = null;
       providerInitStartTime = null;
       throw error;
@@ -329,6 +332,9 @@ async function generateBatchEmbeddings(
         // Success: decay backoff
         currentBackoff = Math.max(0, Math.floor(currentBackoff / 2));
       } catch (error: unknown) {
+        if (error instanceof Error) {
+          void error.message;
+        }
         const errMsg = getErrorMessage(error);
         const errStatus = getErrorStatus(error);
         const is429 = errStatus === 429 || /429|rate limit|too many requests/i.test(errMsg);
@@ -528,6 +534,9 @@ async function preWarmModel(): Promise<boolean> {
     console.error('[embeddings] Provider warmed up successfully');
     return true;
   } catch (error: unknown) {
+    if (error instanceof Error) {
+      void error.message;
+    }
     console.error('[embeddings] Pre-warmup failed:', getErrorMessage(error));
     return false;
   }

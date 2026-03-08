@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Errors (Barrel Export)
+// MODULE: Index
 // ---------------------------------------------------------------
 export * from './recovery-hints';
 export * from './core';

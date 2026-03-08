@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Redaction Calibration Input Collector (T027e)
+// MODULE: CollectRedactionCalibrationInputs
 // ---------------------------------------------------------------
 
 import fs from 'fs';

@@ -19,6 +19,7 @@ interface NodeVersionMarker {
   createdAt: string;
 }
 
+/** Logs a warning when the active Node.js version differs from the project marker. */
 export function detectNodeVersionMismatch(): void {
   try {
     const markerPath = path.resolve(__dirname, '../.node-version-marker');

@@ -29,6 +29,19 @@ export interface PostInsertEnrichmentResult {
   causalLinksResult: CausalLinksResult | null;
 }
 
+/**
+ * Run post-insert enrichment pipeline for a newly saved memory.
+ *
+ * Sequentially executes: causal links processing, entity extraction (R10),
+ * summary generation (R8), and cross-document entity linking (S5).
+ * Each step is independently guarded by its feature flag and wrapped
+ * in try-catch so a single failure does not block the others.
+ *
+ * @param database - The SQLite database instance.
+ * @param id - The memory row ID to enrich.
+ * @param parsed - Parsed memory file data from the memory parser.
+ * @returns PostInsertEnrichmentResult with causal links outcome.
+ */
 export async function runPostInsertEnrichment(
   database: BetterSqlite3.Database,
   id: number,
@@ -51,7 +64,7 @@ export async function runPostInsertEnrichment(
     }
   }
 
-  // ── AI-TRACE:R10: Auto Entity Extraction ──
+  // -- AI-TRACE:R10: Auto Entity Extraction --
   if (isAutoEntitiesEnabled()) {
     try {
       const rawEntities = extractEntities(parsed.content);
@@ -67,7 +80,7 @@ export async function runPostInsertEnrichment(
     }
   }
 
-  // ── R8: Memory Summary Generation ──
+  // -- R8: Memory Summary Generation --
   if (isMemorySummariesEnabled()) {
     try {
       const summaryResult = await generateAndStoreSummary(
@@ -85,7 +98,7 @@ export async function runPostInsertEnrichment(
     }
   }
 
-  // ── S5: Cross-Document Entity Linking ──
+  // -- S5: Cross-Document Entity Linking --
   // Runs after R10 entity storage; links entities across spec folders.
   if (isEntityLinkingEnabled() && isAutoEntitiesEnabled()) {
     try {

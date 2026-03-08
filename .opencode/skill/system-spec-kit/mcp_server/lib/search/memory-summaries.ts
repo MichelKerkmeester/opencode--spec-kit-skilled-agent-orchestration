@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
-// MODULE: Memory Summary Storage + Search Channel (R8)
-// Gated via SPECKIT_MEMORY_SUMMARIES
+// MODULE: Memory Summaries
 // ---------------------------------------------------------------
+// Gated via SPECKIT_MEMORY_SUMMARIES
 
 import type Database from 'better-sqlite3';
 import { generateSummary } from './tfidf-summarizer';

@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------
+// MODULE: ContentFilter
+// ---------------------------------------------------------------
 /**
  * @file content-filter.ts
  * @description Filters, deduplicates, and quality-scores content for memory indexing.

@@ -47,7 +47,7 @@ const GROUND_TRUTH: GroundTruthEntry[] = [
 --------------------------------------------------------------- */
 
 describe('T006f: computeCeilingFromGroundTruth', () => {
-  // ── T006f-01 ──────────────────────────────────────────────────
+  // -- T006f-01 --------------------------------------------------
   it('T006f-01: perfect ranking → ceilingMRR = 1.0', () => {
     const options: CeilingEvalOptions = {
       queries: [{ id: 1, query: 'test query' }],
@@ -63,7 +63,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.perQueryCeiling[0].ceilingRank).toBe(1);
   });
 
-  // ── T006f-02 ──────────────────────────────────────────────────
+  // -- T006f-02 --------------------------------------------------
   it('T006f-02: no relevant results in ground truth → ceilingMRR = 0.0', () => {
     const options: CeilingEvalOptions = {
       queries: [{ id: 1, query: 'test query' }],
@@ -76,7 +76,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.perQueryCeiling[0].reciprocalRank).toBe(0);
   });
 
-  // ── T006f-03 ──────────────────────────────────────────────────
+  // -- T006f-03 --------------------------------------------------
   it('T006f-03: gap = ceilingMRR − systemMRR when systemMRR provided', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -92,7 +92,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.gap).toBeCloseTo(1.0 - 0.4, 5);
   });
 
-  // ── T006f-04 ──────────────────────────────────────────────────
+  // -- T006f-04 --------------------------------------------------
   it('T006f-04: gap equals ceilingMRR when systemMRR is not provided', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -105,7 +105,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.gap).toBeCloseTo(result.ceilingMRR, 5);
   });
 
-  // ── T006f-05 ──────────────────────────────────────────────────
+  // -- T006f-05 --------------------------------------------------
   it('T006f-05: per-query ceiling has correct shape for each query', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -129,7 +129,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(q2!.reciprocalRank).toBeCloseTo(1.0, 5);
   });
 
-  // ── T006f-06 ──────────────────────────────────────────────────
+  // -- T006f-06 --------------------------------------------------
   it('T006f-06: ceiling rank reflects ideal ordering (less-relevant item not at rank 1)', () => {
     // Query with two relevant items: m1=relevance 1, m2=relevance 3
     // Ideal ordering: m2 first, then m1 → first relevant at rank 1
@@ -151,7 +151,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.ceilingMRR).toBeCloseTo(1.0, 5);
   });
 
-  // ── T006f-07 ──────────────────────────────────────────────────
+  // -- T006f-07 --------------------------------------------------
   it('T006f-07: empty queries → ceilingMRR = 0 and empty perQueryCeiling', () => {
     const options: CeilingEvalOptions = {
       queries: [],
@@ -164,7 +164,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.perQueryCeiling).toHaveLength(0);
   });
 
-  // ── T006f-08 ──────────────────────────────────────────────────
+  // -- T006f-08 --------------------------------------------------
   it('T006f-08: empty groundTruth → ceilingMRR = 0', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -176,7 +176,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.ceilingMRR).toBe(0);
   });
 
-  // ── T006f-09 ──────────────────────────────────────────────────
+  // -- T006f-09 --------------------------------------------------
   it('T006f-09: ceilingMRR is always in [0, 1]', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -189,7 +189,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
     expect(result.ceilingMRR).toBeLessThanOrEqual(1);
   });
 
-  // ── T006f-10 ──────────────────────────────────────────────────
+  // -- T006f-10 --------------------------------------------------
   it('T006f-10: interpretation string is non-empty', () => {
     const options: CeilingEvalOptions = {
       queries: QUERIES,
@@ -208,7 +208,7 @@ describe('T006f: computeCeilingFromGroundTruth', () => {
 --------------------------------------------------------------- */
 
 describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
-  // ── T006f-11 ──────────────────────────────────────────────────
+  // -- T006f-11 --------------------------------------------------
   it('T006f-11: high ceiling + low baseline → under-performing quadrant', () => {
     const result = interpretCeilingVsBaseline(0.8, 0.3);
 
@@ -218,7 +218,7 @@ describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
     expect(result.recommendation.length).toBeGreaterThan(0);
   });
 
-  // ── T006f-12 ──────────────────────────────────────────────────
+  // -- T006f-12 --------------------------------------------------
   it('T006f-12: high ceiling + high baseline → performing well quadrant', () => {
     const result = interpretCeilingVsBaseline(0.9, 0.75);
 
@@ -226,7 +226,7 @@ describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
     expect(result.interpretation).toMatch(/performing well|diminishing/i);
   });
 
-  // ── T006f-13 ──────────────────────────────────────────────────
+  // -- T006f-13 --------------------------------------------------
   it('T006f-13: low ceiling + low baseline → data quality issue quadrant', () => {
     const result = interpretCeilingVsBaseline(0.3, 0.2);
 
@@ -234,7 +234,7 @@ describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
     expect(result.interpretation).toMatch(/data quality/i);
   });
 
-  // ── T006f-14 ──────────────────────────────────────────────────
+  // -- T006f-14 --------------------------------------------------
   it('T006f-14: low ceiling + high baseline → near optimal quadrant', () => {
     const result = interpretCeilingVsBaseline(0.5, 0.65);
 
@@ -242,7 +242,7 @@ describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
     expect(result.interpretation).toMatch(/near optimal|ceiling/i);
   });
 
-  // ── T006f-15 ──────────────────────────────────────────────────
+  // -- T006f-15 --------------------------------------------------
   it('T006f-15: boundary value 0.6 is treated as high (≥ threshold)', () => {
     const highCeilingHighBaseline = interpretCeilingVsBaseline(0.6, 0.6);
     expect(highCeilingHighBaseline.quadrant).toBe('high-ceiling-high-baseline');
@@ -257,7 +257,7 @@ describe('T006f: interpretCeilingVsBaseline — 2×2 matrix', () => {
 --------------------------------------------------------------- */
 
 describe('T006g: computeQualityProxy', () => {
-  // ── T006g-01 ──────────────────────────────────────────────────
+  // -- T006g-01 --------------------------------------------------
   it('T006g-01: all perfect inputs → score = 1.0', () => {
     const result = computeQualityProxy({
       avgRelevance: 1.0,
@@ -272,7 +272,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.interpretation).toBe('excellent');
   });
 
-  // ── T006g-02 ──────────────────────────────────────────────────
+  // -- T006g-02 --------------------------------------------------
   it('T006g-02: all zero inputs → score = 0.0', () => {
     const result = computeQualityProxy({
       avgRelevance: 0,
@@ -290,7 +290,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.interpretation).toBe('poor');
   });
 
-  // ── T006g-03 ──────────────────────────────────────────────────
+  // -- T006g-03 --------------------------------------------------
   it('T006g-03: only top result is good → weighted contribution = 0.25', () => {
     const result = computeQualityProxy({
       avgRelevance: 0,
@@ -309,7 +309,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.components.latencyPenalty).toBeCloseTo(0, 5);
   });
 
-  // ── T006g-04 ──────────────────────────────────────────────────
+  // -- T006g-04 --------------------------------------------------
   it('T006g-04: latency at target → latencyPenalty component = 0', () => {
     const result = computeQualityProxy({
       avgRelevance: 0,
@@ -324,7 +324,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.components.latencyPenalty).toBeCloseTo(0, 5);
   });
 
-  // ── T006g-05 ──────────────────────────────────────────────────
+  // -- T006g-05 --------------------------------------------------
   it('T006g-05: latency at 0 ms → latencyPenalty component = 0.15 (full credit)', () => {
     const result = computeQualityProxy({
       avgRelevance: 0,
@@ -339,7 +339,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.components.latencyPenalty).toBeCloseTo(WEIGHTS.latencyPenalty, 5);
   });
 
-  // ── T006g-06 ──────────────────────────────────────────────────
+  // -- T006g-06 --------------------------------------------------
   it('T006g-06: resultCount over expectedCount → countSaturation capped at 1.0', () => {
     const result = computeQualityProxy({
       avgRelevance: 0,
@@ -354,7 +354,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.components.countSaturation).toBeCloseTo(WEIGHTS.countSaturation, 5);
   });
 
-  // ── T006g-07 ──────────────────────────────────────────────────
+  // -- T006g-07 --------------------------------------------------
   it('T006g-07: components sum correctly to composite score', () => {
     const input = {
       avgRelevance: 0.7,
@@ -375,7 +375,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeCloseTo(expectedSum, 10);
   });
 
-  // ── T006g-08 ──────────────────────────────────────────────────
+  // -- T006g-08 --------------------------------------------------
   it('T006g-08: interpretation threshold — excellent (≥ 0.8)', () => {
     // Force all components to max
     const result = computeQualityProxy({
@@ -389,7 +389,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeGreaterThanOrEqual(0.8);
   });
 
-  // ── T006g-09 ──────────────────────────────────────────────────
+  // -- T006g-09 --------------------------------------------------
   it('T006g-09: interpretation threshold — good (≥ 0.6, < 0.8)', () => {
     // avgRelevance=0.6 → 0.24, topResult=0.6 → 0.15, count full=0.20, latency@0→0.15 = 0.74
     // Use a combination that lands in [0.6, 0.8)
@@ -406,7 +406,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeLessThan(0.8);
   });
 
-  // ── T006g-10 ──────────────────────────────────────────────────
+  // -- T006g-10 --------------------------------------------------
   it('T006g-10: interpretation threshold — acceptable (≥ 0.4, < 0.6)', () => {
     // avgRelevance=0.3 → 0.12, topResult=0.3 → 0.075, count=0/10=0, latency@500→0
     // 0.12 + 0.075 = 0.195 too low; adjust
@@ -423,7 +423,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeLessThan(0.6);
   });
 
-  // ── T006g-11 ──────────────────────────────────────────────────
+  // -- T006g-11 --------------------------------------------------
   it('T006g-11: interpretation threshold — poor (< 0.4)', () => {
     const result = computeQualityProxy({
       avgRelevance: 0.1,
@@ -438,7 +438,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeLessThan(0.4);
   });
 
-  // ── T006g-12 ──────────────────────────────────────────────────
+  // -- T006g-12 --------------------------------------------------
   it('T006g-12: score is always in [0, 1] regardless of inputs', () => {
     const edgeCases = [
       { avgRelevance: 2.0, topResultRelevance: 2.0, resultCount: 100, expectedCount: 1, latencyMs: -100 },
@@ -453,7 +453,7 @@ describe('T006g: computeQualityProxy', () => {
     }
   });
 
-  // ── T006g-13 ──────────────────────────────────────────────────
+  // -- T006g-13 --------------------------------------------------
   it('T006g-13: weights sum to 1.0 (design invariant)', () => {
     const weightSum =
       WEIGHTS.avgRelevance +
@@ -464,7 +464,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(weightSum).toBeCloseTo(1.0, 10);
   });
 
-  // ── T006g-14 ──────────────────────────────────────────────────
+  // -- T006g-14 --------------------------------------------------
   it('T006g-14: default latencyTargetMs is 500 when omitted', () => {
     // At 500ms latency with default target → latency component = 0
     const withDefault = computeQualityProxy({
@@ -488,7 +488,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(withDefault.score).toBeCloseTo(withExplicit.score, 10);
   });
 
-  // ── T006g-15 ──────────────────────────────────────────────────
+  // -- T006g-15 --------------------------------------------------
   it('T006g-15: expectedCount = 0 is handled safely (no division by zero)', () => {
     expect(() =>
       computeQualityProxy({
@@ -513,7 +513,7 @@ describe('T006g: computeQualityProxy', () => {
     expect(result.score).toBeLessThanOrEqual(1);
   });
 
-  // ── T006g-16 ──────────────────────────────────────────────────
+  // -- T006g-16 --------------------------------------------------
   it('T006g-16: each component weight matches specification (0.40 / 0.25 / 0.20 / 0.15)', () => {
     expect(WEIGHTS.avgRelevance).toBeCloseTo(0.40, 10);
     expect(WEIGHTS.topResult).toBeCloseTo(0.25, 10);

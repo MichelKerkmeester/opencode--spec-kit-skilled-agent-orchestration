@@ -1,9 +1,8 @@
-// @ts-nocheck
 // Converted from: transaction-manager-extended.test.ts (custom runner)
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 // TEST: deleteFileIfExists (transaction-manager extended)
 // Covers the single untested export from transaction-manager.ts
-// ───────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';

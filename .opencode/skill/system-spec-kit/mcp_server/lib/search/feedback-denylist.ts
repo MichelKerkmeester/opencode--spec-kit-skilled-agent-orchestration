@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Feedback Denylist (R11)
+// MODULE: Feedback Denylist
+// ---------------------------------------------------------------
 // AI-GUARD: 100+ stop words that should never be learned as trigger phrases.
 // AI-WHY: Prevents noise injection into learned relevance feedback.
 // ---------------------------------------------------------------

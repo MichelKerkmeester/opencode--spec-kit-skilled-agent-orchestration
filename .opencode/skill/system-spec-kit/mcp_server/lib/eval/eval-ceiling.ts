@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Ceiling (T006f)
+// ---------------------------------------------------------------
 // Full-Context Ceiling Evaluation — computes the theoretical
 // maximum MRR@5 assuming access to ALL memory content and
 // perfect ranking ability. Pure functions, no DB writes,

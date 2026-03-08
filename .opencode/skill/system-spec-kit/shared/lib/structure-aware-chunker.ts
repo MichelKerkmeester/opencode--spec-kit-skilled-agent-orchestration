@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Structure-Aware Chunker
+// MODULE: StructureAwareChunker
+// ---------------------------------------------------------------
 // AST-aware markdown chunking that keeps code blocks and tables
 // atomic, groups headings with their content, and respects a
 // configurable maxTokens size limit.
@@ -146,6 +147,7 @@ export function chunkMarkdown(markdown: string, options?: ChunkOptions): Chunk[]
  */
 export function chunkMarkdown(markdown: string, maxTokens?: number): Chunk[];
 
+/** Chunk markdown. */
 export function chunkMarkdown(
   markdown: string,
   optionsOrMaxTokens?: ChunkOptions | number,

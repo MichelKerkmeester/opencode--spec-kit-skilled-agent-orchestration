@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Anchor Metadata Extraction
+// MODULE: Anchor Metadata
+// ---------------------------------------------------------------
 // Sprint 5 Phase B — S2 template anchor optimization
 //
 // PURPOSE: Parse ANCHOR tags from memory content and attach the
@@ -24,7 +25,7 @@
 
 import type { PipelineRow } from './pipeline/types';
 
-// ── Public Interface ──
+// -- Public Interface --
 
 /**
  * Metadata describing a single ANCHOR region found in a memory file.
@@ -45,7 +46,7 @@ export interface AnchorMetadata {
   endLine: number;
 }
 
-// ── Regex constants ──
+// -- Regex constants --
 
 /**
  * Matches an opening ANCHOR comment.
@@ -60,7 +61,7 @@ const ANCHOR_OPEN_RE = /<!--\s*ANCHOR:\s*(\S+)\s*-->/;
  */
 const ANCHOR_CLOSE_RE = /<!--\s*\/ANCHOR:\s*(\S+)\s*-->/;
 
-// ── Internal helpers ──
+// -- Internal helpers --
 
 /**
  * Derive the semantic type from an anchor ID.
@@ -84,7 +85,7 @@ function extractType(id: string): string {
   return id;
 }
 
-// ── Exported functions ──
+// -- Exported functions --
 
 /**
  * Parse ANCHOR tags from memory content and return metadata for each found region.

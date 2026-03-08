@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Anchor-Aware Chunker
+// MODULE: Anchor Chunker
+// ---------------------------------------------------------------
 // Splits large memory files into chunks using ANCHOR tags as
 // natural boundaries. Falls back to structure-aware markdown
 // splitting when anchors are absent.
@@ -9,6 +10,9 @@
    1. TYPES
 --------------------------------------------------------------- */
 
+/**
+ * Describes the AnchorChunk shape.
+ */
 export interface AnchorChunk {
   /** The text content of this chunk */
   content: string;
@@ -20,6 +24,9 @@ export interface AnchorChunk {
   charCount: number;
 }
 
+/**
+ * Describes the ChunkingResult shape.
+ */
 export interface ChunkingResult {
   /** Strategy used: 'anchor' or 'structure' */
   strategy: 'anchor' | 'structure';

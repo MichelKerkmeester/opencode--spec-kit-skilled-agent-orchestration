@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: MCP-Safe Logger
+// MODULE: Logger
+// ---------------------------------------------------------------
 // Structured logging that writes ALL output to stderr.
 // In MCP servers, stdout is reserved for JSON-RPC — diagnostic
 // output on stdout corrupts the protocol stream.

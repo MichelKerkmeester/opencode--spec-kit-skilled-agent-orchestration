@@ -1,10 +1,11 @@
 // ---------------------------------------------------------------
-// MODULE: Shared Config
+// MODULE: Config
 // ---------------------------------------------------------------
 
 import fs from 'fs';
 import path from 'path';
 
+/** Get db dir. */
 export function getDbDir(): string | undefined {
   return process.env.SPEC_KIT_DB_DIR || process.env.SPECKIT_DB_DIR || undefined;
 }
@@ -36,6 +37,7 @@ function resolvePackageRoot(): string {
 const PACKAGE_ROOT = resolvePackageRoot();
 const DEFAULT_DB_DIR = path.join(PACKAGE_ROOT, 'mcp_server', 'database');
 
+/** Defines database updated file. */
 export const DB_UPDATED_FILE: string = (() => {
   const configuredDir = getDbDir();
   if (configuredDir) {

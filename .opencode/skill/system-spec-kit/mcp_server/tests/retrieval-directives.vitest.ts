@@ -1,4 +1,4 @@
-// ─── TEST: Retrieval Directives ───
+// --- TEST: Retrieval Directives ---
 // Constitutional memory as retrieval directives
 //
 // Tests cover:

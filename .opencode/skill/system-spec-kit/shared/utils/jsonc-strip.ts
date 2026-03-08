@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: JSONC Strip
+// MODULE: JsoncStrip
+// ---------------------------------------------------------------
 // Strips comments from JSONC content, correctly handling comments inside strings.
 // Handles: // line comments, /* block comments */, escaped quotes, string literals
 // ---------------------------------------------------------------

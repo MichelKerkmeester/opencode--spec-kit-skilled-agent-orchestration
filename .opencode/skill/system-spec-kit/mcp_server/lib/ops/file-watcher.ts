@@ -6,6 +6,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 
+/**
+ * Describes the WatcherConfig shape.
+ */
 export interface WatcherConfig {
   paths: string[];
   reindexFn: (filePath: string) => Promise<unknown>;
@@ -13,6 +16,9 @@ export interface WatcherConfig {
   debounceMs?: number;
 }
 
+/**
+ * Describes the FSWatcher shape.
+ */
 export interface FSWatcher {
   on: (event: string, listener: (...args: unknown[]) => void) => FSWatcher;
   close: () => Promise<void>;
@@ -99,6 +105,9 @@ async function withBusyRetry(operation: () => Promise<void>): Promise<void> {
   }
 }
 
+/**
+ * Provides the startFileWatcher helper.
+ */
 export function startFileWatcher(config: WatcherConfig): FSWatcher {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const chokidar = require('chokidar') as {
@@ -207,7 +216,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         try {
           resolvedPath = await fs.realpath(filePath);
         } catch (realpathErr: unknown) {
-          const code = (realpathErr as { code?: string })?.code;
+          const code = realpathErr instanceof Error && 'code' in realpathErr && typeof realpathErr.code === 'string'
+            ? realpathErr.code
+            : undefined;
           if (code === 'ENOENT') return;
           throw realpathErr;
         }
@@ -219,7 +230,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
           try {
             return await fs.realpath(normalizedRoot);
           } catch (rootErr: unknown) {
-            const code = (rootErr as { code?: string })?.code;
+            const code = rootErr instanceof Error && 'code' in rootErr && typeof rootErr.code === 'string'
+              ? rootErr.code
+              : undefined;
             if (code === 'ENOENT') return normalizedRoot;
             throw rootErr;
           }
@@ -239,7 +252,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
         try {
           nextHash = await hashFileContent(filePath);
         } catch (hashErr: unknown) {
-          const code = (hashErr as { code?: string })?.code;
+          const code = hashErr instanceof Error && 'code' in hashErr && typeof hashErr.code === 'string'
+            ? hashErr.code
+            : undefined;
           if (code === 'ENOENT') return; // File was deleted — silently ignore
           throw hashErr;
         }
@@ -329,6 +344,9 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
   return watcher;
 }
 
+/**
+ * Defines the __testables constant.
+ */
 export const __testables = {
   isDotfilePath,
   isMarkdownPath,

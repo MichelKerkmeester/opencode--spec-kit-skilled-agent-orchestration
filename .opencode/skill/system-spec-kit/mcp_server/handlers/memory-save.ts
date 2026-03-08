@@ -90,7 +90,7 @@ const SPEC_FOLDER_LOCKS = new Map<string, Promise<unknown>>();
 async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): Promise<T> {
   const normalizedFolder = specFolder || '__global__';
   const chain = (SPEC_FOLDER_LOCKS.get(normalizedFolder) ?? Promise.resolve())
-    .catch(() => {})
+    .catch((_error: unknown) => {})
     .then(() => fn());
   SPEC_FOLDER_LOCKS.set(normalizedFolder, chain);
   try {
@@ -183,7 +183,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   const embeddingResult = await generateOrCacheEmbedding(database, parsed, filePath, asyncEmbedding);
   const { embedding, status: embeddingStatus, failureReason: embeddingFailureReason } = embeddingResult;
 
-  // ── Sprint 4: TM-04 Quality Gate (before PE gating, after embedding) ──
+  // -- Sprint 4: TM-04 Quality Gate (before PE gating, after embedding) --
   if (isSaveQualityGateEnabled() && isQualityGateEnabled()) {
     try {
       const qualityGateResult = runQualityGate({
@@ -236,7 +236,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   );
   if (peResult.earlyReturn) return peResult.earlyReturn;
 
-  // ── Sprint 4: TM-06 Reconsolidation-on-Save ──
+  // -- Sprint 4: TM-06 Reconsolidation-on-Save --
   const reconResult = await runReconsolidationIfEnabled(database, parsed, filePath, force, embedding);
   if (reconResult.earlyReturn) return reconResult.earlyReturn;
 
@@ -455,7 +455,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         specFolder: indexResult.specFolder,
         memoryId: indexResult.id,
       });
-    } catch {
+    } catch (_error: unknown) {
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,

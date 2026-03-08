@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------
 // MODULE: Query Router
+// ---------------------------------------------------------------
 // Tier-to-channel-subset routing for query complexity (Sprint 3, T001b)
 // Maps classifier tiers to channel subsets for selective pipeline execution.
-// ---------------------------------------------------------------
 
 import {
   classifyQueryComplexity,

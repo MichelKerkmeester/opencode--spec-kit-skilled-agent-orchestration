@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# ───────────────────────────────────────────────────────────────
-# Self-healing workflow: ledger mismatch.
-# ───────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------
+# COMPONENT: Heal Ledger Mismatch
+# ---------------------------------------------------------------
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -107,3 +107,7 @@ main() {
 }
 
 main "$@"
+
+# Exit codes:
+#   0 - Success
+#   2 - ERROR: Unknown option: $1

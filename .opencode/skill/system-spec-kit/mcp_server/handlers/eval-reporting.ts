@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Eval Reporting + Ablation Handlers
+// MODULE: Eval Reporting
 // ---------------------------------------------------------------
 
 import { checkDatabaseUpdated } from '../core';

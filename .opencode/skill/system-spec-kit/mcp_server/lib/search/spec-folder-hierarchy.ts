@@ -10,7 +10,7 @@
 
 import type Database from 'better-sqlite3';
 
-// ─── 0. HIERARCHY TREE CACHE ───
+// --- 0. HIERARCHY TREE CACHE ---
 //
 // buildHierarchyTree does a full scan of spec_folder values on every call.
 // The hierarchy changes only when new spec folders are created, so we cache
@@ -37,8 +37,11 @@ export function invalidateHierarchyCache(database: Database.Database): void {
   hierarchyCache.delete(database);
 }
 
-// ─── 1. TYPES ───
+// --- 1. TYPES ---
 
+/**
+ * Node in the spec-folder hierarchy tree.
+ */
 export interface HierarchyNode {
   path: string;
   children: HierarchyNode[];
@@ -46,12 +49,15 @@ export interface HierarchyNode {
   memoryCount: number;
 }
 
+/**
+ * Cached hierarchy tree with root nodes and path lookups.
+ */
 export interface HierarchyTree {
   roots: HierarchyNode[];
   nodeMap: Map<string, HierarchyNode>;
 }
 
-// ─── 2. TREE CONSTRUCTION ───
+// --- 2. TREE CONSTRUCTION ---
 
 /**
  * Build a spec folder hierarchy tree from all spec_folder values in the database.
@@ -87,8 +93,8 @@ export function buildHierarchyTree(database: Database.Database): HierarchyTree {
     const parentPath = getParentPath(path);
     if (parentPath && nodeMap.has(parentPath)) {
       node.parent = parentPath;
-      const parentNode = nodeMap.get(parentPath)!;
-      if (!parentNode.children.some(c => c.path === path)) {
+      const parentNode = nodeMap.get(parentPath);
+      if (parentNode && !parentNode.children.some(c => c.path === path)) {
         parentNode.children.push(node);
       }
     } else {
@@ -113,9 +119,11 @@ function ensureNodeExists(
   memoryCount: number,
 ): HierarchyNode {
   if (nodeMap.has(folderPath)) {
-    const existing = nodeMap.get(folderPath)!;
-    existing.memoryCount = Math.max(existing.memoryCount, memoryCount);
-    return existing;
+    const existing = nodeMap.get(folderPath);
+    if (existing) {
+      existing.memoryCount = Math.max(existing.memoryCount, memoryCount);
+      return existing;
+    }
   }
 
   const node: HierarchyNode = {
@@ -135,7 +143,7 @@ function ensureNodeExists(
   return node;
 }
 
-// ─── 3. PATH UTILITIES ───
+// --- 3. PATH UTILITIES ---
 
 /**
  * Get the parent path of a spec folder path.
@@ -164,7 +172,7 @@ export function getAncestorPaths(folderPath: string): string[] {
   return ancestors;
 }
 
-// ─── 4. TREE TRAVERSAL ───
+// --- 4. TREE TRAVERSAL ---
 
 /**
  * Get all sibling folder paths (same parent) for a given spec folder.
@@ -228,7 +236,7 @@ export function getRelatedFolders(
   return related;
 }
 
-// ─── 5. HIERARCHY-AWARE QUERY ───
+// --- 5. HIERARCHY-AWARE QUERY ---
 
 /**
  * Query memories from related spec folders using hierarchy traversal.

@@ -191,3 +191,32 @@ describe('checkpoint_delete schema', () => {
     }).not.toThrow();
   });
 });
+
+// CHK-024: Schema validation overhead <5ms benchmark
+describe('schema validation performance (CHK-024)', () => {
+  it('validateToolInputSchema completes in <5ms per tool', () => {
+    for (const tool of TOOL_DEFINITIONS) {
+      const toolName = tool.name;
+      // Build a minimal valid args payload
+      const args: Record<string, unknown> = {};
+      const schema = tool.inputSchema as { properties?: Record<string, unknown>; required?: string[] };
+      for (const key of schema.required ?? []) {
+        const prop = (schema.properties ?? {})[key] as { type?: string } | undefined;
+        if (prop?.type === 'string') args[key] = 'test';
+        else if (prop?.type === 'number' || prop?.type === 'integer') args[key] = 1;
+        else if (prop?.type === 'boolean') args[key] = true;
+        else args[key] = 'test';
+      }
+
+      const start = performance.now();
+      try {
+        validateToolInputSchema(toolName, args, TOOL_DEFINITIONS);
+      } catch {
+        // Some tools may reject minimal args — that's fine, we're measuring time
+      }
+      const elapsed = performance.now() - start;
+
+      expect(elapsed).toBeLessThan(5);
+    }
+  });
+});

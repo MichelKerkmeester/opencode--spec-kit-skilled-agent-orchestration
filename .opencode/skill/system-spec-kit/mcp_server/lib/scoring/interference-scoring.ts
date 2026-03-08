@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Interference Scoring (TM-01)
+// MODULE: Interference Scoring
+// ---------------------------------------------------------------
 // Sprint 2, Task T005
 // ---------------------------------------------------------------
 // Computes interference scores for memories — a measure of how many
@@ -174,10 +175,12 @@ export function computeInterferenceScoresBatch(
   const byFolder = new Map<string, typeof rows>();
   for (const row of rows) {
     const folder = row.spec_folder || '';
-    if (!byFolder.has(folder)) {
-      byFolder.set(folder, []);
+    let folderRows = byFolder.get(folder);
+    if (!folderRows) {
+      folderRows = [];
+      byFolder.set(folder, folderRows);
     }
-    byFolder.get(folder)!.push(row);
+    folderRows.push(row);
   }
 
   // For each folder, get all memories and compute pairwise interference

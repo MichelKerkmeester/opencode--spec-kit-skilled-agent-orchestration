@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: BM25-Only Baseline Runner (T008)
+// ---------------------------------------------------------------
 //
 // Runs the ground truth query set through the BM25/FTS5-only
 // search path (disabling vector, graph, and trigger channels)

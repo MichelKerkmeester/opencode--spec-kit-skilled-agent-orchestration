@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Adaptive Fusion
+// MODULE: AdaptiveFusion
 // ---------------------------------------------------------------
 // Local
 import { fuseResultsMulti } from './rrf-fusion';
@@ -9,6 +9,7 @@ import type { RrfItem, FusionResult, RankedList } from './rrf-fusion';
 
 /* --- 1. INTERFACES --- */
 
+/** Represents fusion weights. */
 export interface FusionWeights {
   /** Weight for semantic/vector search results (0-1) */
   semanticWeight: number;
@@ -22,6 +23,7 @@ export interface FusionWeights {
   graphCausalBias?: number;
 }
 
+/** Represents degraded mode contract. */
 export interface DegradedModeContract {
   /** What failed */
   failureMode: string;
@@ -33,6 +35,7 @@ export interface DegradedModeContract {
   retryRecommendation: 'immediate' | 'delayed' | 'none';
 }
 
+/** Represents adaptive fusion result. */
 export interface AdaptiveFusionResult {
   results: FusionResult[];
   weights: FusionWeights;
@@ -40,6 +43,7 @@ export interface AdaptiveFusionResult {
   darkRunDiff?: DarkRunDiff;
 }
 
+/** Represents dark run diff. */
 export interface DarkRunDiff {
   standardCount: number;
   adaptiveCount: number;
@@ -252,6 +256,9 @@ function applyRecencyBoost(results: FusionResult[], recencyWeight: number): void
       const freshness = Math.exp(-ageDays / MAX_AGE_DAYS);
       r.rrfScore += freshness * recencyWeight * RECENCY_BOOST_SCALE;
     } catch (_err: unknown) {
+      if (_err instanceof Error) {
+        void _err.message;
+      }
       /* AI-GUARD: Skip items with invalid dates — never fail the fusion pipeline */
     }
   }

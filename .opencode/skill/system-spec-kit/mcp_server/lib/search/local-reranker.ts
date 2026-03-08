@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: Local GGUF Reranker (node-llama-cpp)
+// MODULE: Local Reranker
 // ---------------------------------------------------------------
 // AI-WHY: Optional local reranker for Stage 3. This module is fully gated by
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any

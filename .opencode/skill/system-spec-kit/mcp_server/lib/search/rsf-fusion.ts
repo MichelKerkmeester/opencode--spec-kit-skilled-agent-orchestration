@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------
-// MODULE: RSF Fusion (Relative Score Fusion)
+// MODULE: RSF Fusion
 // ---------------------------------------------------------------
 import type { RrfItem, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
@@ -151,11 +151,12 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
       sourceScores[listA.source] = entryA.normalizedScore;
       mergedItem = { ...entryA.item };
     } else {
+      if (!entryB) continue;
       // Item in B only: apply single-source penalty
-      rsfScore = entryB!.normalizedScore * 0.5;
+      rsfScore = entryB.normalizedScore * 0.5;
       sources.push(listB.source);
-      sourceScores[listB.source] = entryB!.normalizedScore;
-      mergedItem = { ...entryB!.item };
+      sourceScores[listB.source] = entryB.normalizedScore;
+      mergedItem = { ...entryB.item };
     }
 
     // Clamp to [0, 1]

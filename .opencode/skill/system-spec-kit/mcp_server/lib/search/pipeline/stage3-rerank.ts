@@ -1,5 +1,6 @@
 // ---------------------------------------------------------------
-// MODULE: Stage 3 — Rerank + Aggregate
+// MODULE: Stage3 Rerank
+// ---------------------------------------------------------------
 // AI-GUARD: 4-Stage Retrieval Pipeline: Stage 3 of 4
 //
 // Responsibilities (in execution order):
@@ -23,7 +24,6 @@
 //     - DB reads to fetch parent content during MPAB reassembly
 //
 // Score changes: YES
-// ---------------------------------------------------------------
 
 import { resolveEffectiveScore } from './types';
 import type { Stage3Input, Stage3Output, PipelineRow } from './types';
@@ -38,7 +38,7 @@ import { requireDb } from '../../../utils';
 import { toErrorMessage } from '../../../utils';
 import type Database from 'better-sqlite3';
 
-// ── Constants ──────────────────────────────────────────────────
+// -- Constants --------------------------------------------------
 
 /** Minimum number of results required before cross-encoder is worth invoking. */
 const MIN_RESULTS_FOR_RERANK = 2;
@@ -52,7 +52,7 @@ const MMR_DEFAULT_LAMBDA = 0.7;
 /** Column order priority for assembling display text sent to cross-encoder. */
 const TEXT_FIELD_PRIORITY = ['content', 'file_path'] as const;
 
-// ── Internal Interfaces ────────────────────────────────────────
+// -- Internal Interfaces ----------------------------------------
 
 /**
  * Document format consumed by the cross-encoder reranker.
@@ -91,7 +91,7 @@ interface ChunkGroup {
   bestChunk: PipelineRow;
 }
 
-// ── Stage 3 Entry Point ────────────────────────────────────────
+// -- Stage 3 Entry Point ----------------------------------------
 
 /**
  * Execute Stage 3: Rerank + Aggregate.
@@ -112,7 +112,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   let results = scored;
   let rerankApplied = false;
 
-  // ── Step 1: Cross-encoder reranking ───────────────────────────
+  // -- Step 1: Cross-encoder reranking ---------------------------
   const rerankStart = Date.now();
   const beforeRerank = results.length;
 
@@ -137,7 +137,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     );
   }
 
-  // ── Step 2: MMR diversity pruning ────────────────────────────
+  // -- Step 2: MMR diversity pruning ----------------------------
   // Gated behind SPECKIT_MMR feature flag. Retrieves embeddings from
   // vec_memories and applies Maximal Marginal Relevance to diversify
   // the result set, matching the V1 hybrid-search behavior.
@@ -199,7 +199,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     }
   }
 
-  // AI-GUARD: ── Step 3: MPAB chunk collapse + parent reassembly ───────────
+  // AI-GUARD: -- Step 3: MPAB chunk collapse + parent reassembly -----------
   //
   // MPAB must remain AFTER RRF (Stage 2 constraint). This step runs
   // here in Stage 3 — never move it upstream.
@@ -237,7 +237,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   };
 }
 
-// ── Internal: Cross-Encoder Reranking ─────────────────────────
+// -- Internal: Cross-Encoder Reranking -------------------------
 
 /**
  * Apply cross-encoder reranking to a list of pipeline results.
@@ -388,7 +388,7 @@ function resolveDisplayText(row: PipelineRow): string {
   return '';
 }
 
-// ── Internal: MPAB Chunk Collapse + Parent Reassembly ─────────
+// -- Internal: MPAB Chunk Collapse + Parent Reassembly ---------
 
 /**
  * Collapse chunk-level hits and reassemble parent memory documents.
@@ -600,7 +600,7 @@ function markFallback(chunk: PipelineRow): PipelineRow {
   };
 }
 
-// ── Test Exports ───────────────────────────────────────────────
+// -- Test Exports -----------------------------------------------
 
 /**
  * Internal functions exported for unit testing.

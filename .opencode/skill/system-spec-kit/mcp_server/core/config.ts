@@ -89,6 +89,7 @@ export const CONSTITUTIONAL_CACHE_TTL: number = 60000;
    8. COGNITIVE CONFIGURATION
    --------------------------------------------------------------- */
 
+/** Loaded cognitive configuration values. */
 export const COGNITIVE_CONFIG = LOADED_COGNITIVE_CONFIG;
 
 /* ---------------------------------------------------------------

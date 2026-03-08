@@ -21,7 +21,14 @@
 // ---------------------------------------------------------------
 
 import { initEvalDb, getEvalDb } from './eval-db';
-import { computeRecall } from './eval-metrics';
+import {
+  computeRecall,
+  computeMRR,
+  computeNDCG,
+  computePrecision,
+  computeMAP,
+  computeHitRate,
+} from './eval-metrics';
 import type { EvalResult, GroundTruthEntry } from './eval-metrics';
 import {
   GROUND_TRUTH_QUERIES,
@@ -98,6 +105,28 @@ export interface AblationResult {
   queriesUnchanged: number;
   /** Total queries evaluated. */
   queryCount: number;
+  /** Full multi-metric breakdown (9 metrics). */
+  metrics?: AblationMetrics;
+}
+
+/** A single metric entry comparing baseline vs ablated. */
+export interface AblationMetricEntry {
+  baseline: number;
+  ablated: number;
+  delta: number;
+}
+
+/** All 9 metrics tracked per ablation channel. */
+export interface AblationMetrics {
+  'MRR@5': AblationMetricEntry;
+  'precision@5': AblationMetricEntry;
+  'recall@5': AblationMetricEntry;
+  'NDCG@5': AblationMetricEntry;
+  'MAP': AblationMetricEntry;
+  'hit_rate': AblationMetricEntry;
+  'latency_p50': AblationMetricEntry;
+  'latency_p95': AblationMetricEntry;
+  'token_usage': AblationMetricEntry;
 }
 
 /** Failure captured for a single channel ablation run. */
@@ -233,6 +262,80 @@ function meanRecall(recalls: number[]): number {
   return sum / recalls.length;
 }
 
+/**
+ * Compute all 6 retrieval metrics for a single query at K=5.
+ */
+function computeQueryMetrics(
+  results: EvalResult[],
+  gt: GroundTruthEntry[],
+): { mrr: number; precision: number; recall: number; ndcg: number; map: number; hitRate: number } {
+  return {
+    mrr: computeMRR(results, gt, 5),
+    precision: computePrecision(results, gt, 5),
+    recall: computeRecall(results, gt, 5),
+    ndcg: computeNDCG(results, gt, 5),
+    map: computeMAP(results, gt, 5),
+    hitRate: computeHitRate(results, gt, 5),
+  };
+}
+
+/**
+ * Compute percentile from a sorted array using linear interpolation.
+ */
+function percentile(sorted: number[], p: number): number {
+  if (sorted.length === 0) return 0;
+  if (sorted.length === 1) return sorted[0];
+  const idx = (p / 100) * (sorted.length - 1);
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+/**
+ * Build aggregated AblationMetrics from per-query metric maps.
+ */
+function buildAggregatedMetrics(
+  baselinePerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }>,
+  ablatedPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }>,
+): AblationMetrics {
+  const bMetrics = [...baselinePerQuery.values()];
+  const aMetrics = [...ablatedPerQuery.values()];
+
+  function avg(vals: number[]): number {
+    return vals.length === 0 ? 0 : vals.reduce((a, b) => a + b, 0) / vals.length;
+  }
+
+  function entry(bVals: number[], aVals: number[]): AblationMetricEntry {
+    const b = avg(bVals);
+    const a = avg(aVals);
+    return { baseline: b, ablated: a, delta: a - b };
+  }
+
+  const bLatencies = bMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
+  const aLatencies = aMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
+
+  return {
+    'MRR@5': entry(bMetrics.map(m => m.metrics.mrr), aMetrics.map(m => m.metrics.mrr)),
+    'precision@5': entry(bMetrics.map(m => m.metrics.precision), aMetrics.map(m => m.metrics.precision)),
+    'recall@5': entry(bMetrics.map(m => m.metrics.recall), aMetrics.map(m => m.metrics.recall)),
+    'NDCG@5': entry(bMetrics.map(m => m.metrics.ndcg), aMetrics.map(m => m.metrics.ndcg)),
+    'MAP': entry(bMetrics.map(m => m.metrics.map), aMetrics.map(m => m.metrics.map)),
+    'hit_rate': entry(bMetrics.map(m => m.metrics.hitRate), aMetrics.map(m => m.metrics.hitRate)),
+    'latency_p50': {
+      baseline: percentile(bLatencies, 50),
+      ablated: percentile(aLatencies, 50),
+      delta: percentile(aLatencies, 50) - percentile(bLatencies, 50),
+    },
+    'latency_p95': {
+      baseline: percentile(bLatencies, 95),
+      ablated: percentile(aLatencies, 95),
+      delta: percentile(aLatencies, 95) - percentile(bLatencies, 95),
+    },
+    'token_usage': { baseline: 0, ablated: 0, delta: 0 },
+  };
+}
+
 /* --- 4. PUBLIC API --- */
 
 /**
@@ -269,28 +372,34 @@ export async function runAblation(
   }
 
   try {
-    // ── Step 1: Compute baseline (all channels enabled) ──
+    // -- Step 1: Compute baseline (all channels enabled) --
     const baselineRecalls: Map<number, number> = new Map();
+    const baselineMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }> = new Map();
     const noDisabled = new Set<AblationChannel>();
 
     for (const q of queries) {
       const gt = getGroundTruthForQuery(q.id);
       if (gt.length === 0) continue; // Skip queries with no ground truth
 
+      const t0 = performance.now();
       const results = await Promise.resolve(searchFn(q.query, noDisabled));
+      const latencyMs = performance.now() - t0;
+
       const recall = computeRecall(results, gt, recallK);
       baselineRecalls.set(q.id, recall);
+      baselineMetricsPerQuery.set(q.id, { metrics: computeQueryMetrics(results, gt), latencyMs });
     }
 
     const overallBaselineRecall = meanRecall([...baselineRecalls.values()]);
 
-    // ── Step 2: Ablate each channel ──
+    // -- Step 2: Ablate each channel --
     const ablationResults: AblationResult[] = [];
     const channelFailures: AblationChannelFailure[] = [];
 
     for (const channel of config.channels) {
       const disabledSet = new Set<AblationChannel>([channel]);
       const ablatedRecalls: Map<number, number> = new Map();
+      const ablatedMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }> = new Map();
       let failedQuery: GroundTruthQuery | null = null;
 
       try {
@@ -299,12 +408,16 @@ export async function runAblation(
           if (gt.length === 0) continue;
 
           failedQuery = q;
+          const t0 = performance.now();
           const results = await Promise.resolve(searchFn(q.query, disabledSet));
+          const latencyMs = performance.now() - t0;
+
           const recall = computeRecall(results, gt, recallK);
           ablatedRecalls.set(q.id, recall);
+          ablatedMetricsPerQuery.set(q.id, { metrics: computeQueryMetrics(results, gt), latencyMs });
         }
 
-        // ── Step 3: Compute deltas ──
+        // -- Step 3: Compute deltas --
         let queriesChannelHelped = 0;   // ablated < baseline (removing channel decreased quality — channel was helpful)
         let queriesChannelHurt = 0;    // ablated > baseline (removing channel increased quality — channel was harmful)
         let queriesUnchanged = 0;
@@ -330,6 +443,9 @@ export async function runAblation(
         // queriesChannelHurt = channel was harmful (removing it helped quality)
         const pValue = signTestPValue(queriesChannelHelped, queriesChannelHurt);
 
+        // Build aggregated multi-metric breakdown
+        const metrics = buildAggregatedMetrics(baselineMetricsPerQuery, ablatedMetricsPerQuery);
+
         ablationResults.push({
           channel,
           baselineRecall20: overallBaselineRecall,
@@ -340,6 +456,7 @@ export async function runAblation(
           queriesChannelHurt,
           queriesUnchanged,
           queryCount: queryDeltas.length,
+          metrics,
         });
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : String(err);
@@ -451,6 +568,25 @@ export function storeAblationResults(report: AblationReport): boolean {
           }),
           report.timestamp,
         );
+
+        // Store all 9 multi-metric entries per channel
+        if (result.metrics) {
+          for (const [metricName, entry] of Object.entries(result.metrics)) {
+            insertSnapshot.run(
+              evalRunId,
+              `ablation_${metricName}_delta`,
+              (entry as AblationMetricEntry).delta,
+              result.channel,
+              result.queryCount,
+              JSON.stringify({
+                runId: report.runId,
+                baseline: (entry as AblationMetricEntry).baseline,
+                ablated: (entry as AblationMetricEntry).ablated,
+              }),
+              report.timestamp,
+            );
+          }
+        }
       }
     });
 
@@ -523,6 +659,35 @@ export function formatAblationReport(report: AblationReport): string {
       const queryInfo = failure.queryId !== undefined ? ` (queryId=${failure.queryId})` : '';
       lines.push(`- \`${failure.channel}\`${queryInfo}: ${failure.error}`);
     }
+    lines.push(``);
+  }
+
+  // Full Metric Breakdown (multi-metric table)
+  const hasMetrics = sorted.some(r => r.metrics);
+  if (hasMetrics) {
+    lines.push(`### Full Metric Breakdown`);
+    lines.push(``);
+    lines.push(`| Channel | MRR@5 | P@5 | R@5 | NDCG@5 | MAP | Hit Rate | Lat p50 | Lat p95 | Tokens |`);
+    lines.push(`|---------|-------|-----|-----|--------|-----|----------|---------|---------|--------|`);
+
+    for (const r of sorted) {
+      if (!r.metrics) continue;
+      const m = r.metrics;
+      lines.push(
+        `| ${r.channel} ` +
+        `| ${m['MRR@5'].delta >= 0 ? '+' : ''}${m['MRR@5'].delta.toFixed(4)} ` +
+        `| ${m['precision@5'].delta >= 0 ? '+' : ''}${m['precision@5'].delta.toFixed(4)} ` +
+        `| ${m['recall@5'].delta >= 0 ? '+' : ''}${m['recall@5'].delta.toFixed(4)} ` +
+        `| ${m['NDCG@5'].delta >= 0 ? '+' : ''}${m['NDCG@5'].delta.toFixed(4)} ` +
+        `| ${m['MAP'].delta >= 0 ? '+' : ''}${m['MAP'].delta.toFixed(4)} ` +
+        `| ${m['hit_rate'].delta >= 0 ? '+' : ''}${m['hit_rate'].delta.toFixed(4)} ` +
+        `| ${m['latency_p50'].delta >= 0 ? '+' : ''}${m['latency_p50'].delta.toFixed(1)}ms ` +
+        `| ${m['latency_p95'].delta >= 0 ? '+' : ''}${m['latency_p95'].delta.toFixed(1)}ms ` +
+        `| ${m['token_usage'].delta >= 0 ? '+' : ''}${m['token_usage'].delta.toFixed(0)} |`,
+      );
+    }
+    lines.push(``);
+    lines.push(`**Note:** Delta values shown (ablated - baseline). Negative = channel contributes positively to that metric.`);
     lines.push(``);
   }
 

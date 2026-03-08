@@ -29,6 +29,8 @@ import type {
   AblationConfig,
   AblationReport,
   AblationResult,
+  AblationMetrics,
+  AblationMetricEntry,
 } from '../lib/eval/ablation-framework';
 import type { EvalResult } from '../lib/eval/eval-metrics';
 import { initEvalDb, closeEvalDb, getEvalDb } from '../lib/eval/eval-db';
@@ -73,6 +75,26 @@ function createMockSearchFn(
 }
 
 /**
+ * Build mock AblationMetrics for testing multi-metric report/storage.
+ */
+function buildMockMetrics(recallDelta: number): AblationMetrics {
+  function entry(b: number, delta: number): AblationMetricEntry {
+    return { baseline: b, ablated: b + delta, delta };
+  }
+  return {
+    'MRR@5': entry(0.65, recallDelta * 0.8),
+    'precision@5': entry(0.5, recallDelta * 0.7),
+    'recall@5': entry(0.6, recallDelta),
+    'NDCG@5': entry(0.7, recallDelta * 0.9),
+    'MAP': entry(0.55, recallDelta * 0.6),
+    'hit_rate': entry(0.9, recallDelta * 0.3),
+    'latency_p50': entry(12, 0.5),
+    'latency_p95': entry(25, 1.2),
+    'token_usage': entry(0, 0),
+  };
+}
+
+/**
  * Build a minimal AblationReport for testing formatAblationReport and storeAblationResults.
  */
 function buildMockReport(overrides: Partial<AblationReport> = {}): AblationReport {
@@ -87,6 +109,7 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       queriesChannelHurt: 1,
       queriesUnchanged: 1,
       queryCount: 10,
+      metrics: buildMockMetrics(-0.3),
     },
     {
       channel: 'bm25',
@@ -98,6 +121,7 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       queriesChannelHurt: 2,
       queriesUnchanged: 4,
       queryCount: 10,
+      metrics: buildMockMetrics(-0.05),
     },
     {
       channel: 'fts5',
@@ -109,6 +133,7 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
       queriesChannelHurt: 3,
       queriesUnchanged: 5,
       queryCount: 10,
+      metrics: buildMockMetrics(0.02),
     },
   ];
 
@@ -145,9 +170,9 @@ describe('Ablation Framework (R13-S3)', () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 1. isAblationEnabled() — feature flag gating
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('isAblationEnabled()', () => {
     it('returns false when SPECKIT_ABLATION is not set', () => {
@@ -186,9 +211,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 2. ALL_CHANNELS constant
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('ALL_CHANNELS', () => {
     it('contains exactly 5 known channels', () => {
@@ -204,9 +229,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 3. toHybridSearchFlags()
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('toHybridSearchFlags()', () => {
     it('returns all true when no channels are disabled', () => {
@@ -285,9 +310,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 4. runAblation() — returns null when disabled
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('runAblation() — gating', () => {
     it('returns null when SPECKIT_ABLATION is not set', async () => {
@@ -305,9 +330,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 5. runAblation() — computes correct baseline and ablated recalls
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('runAblation() — computation', () => {
     beforeEach(() => {
@@ -502,9 +527,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 6. formatAblationReport()
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('formatAblationReport()', () => {
     it('produces valid markdown with table headers', () => {
@@ -542,10 +567,13 @@ describe('Ablation Framework (R13-S3)', () => {
       const md = formatAblationReport(report);
       const lines = md.split('\n');
 
-      // Find the data rows (after the header separator)
-      const dataRows = lines.filter(
-        l => l.startsWith('| ') && !l.startsWith('| Channel') && !l.startsWith('|---'),
-      );
+      // Find the recall-delta table data rows (first table only — between first header and first blank line after it)
+      const headerIdx = lines.findIndex(l => l.startsWith('| Channel | Baseline'));
+      const dataRows: string[] = [];
+      for (let i = headerIdx + 2; i < lines.length; i++) {
+        if (!lines[i].startsWith('| ')) break;
+        dataRows.push(lines[i]);
+      }
 
       // vector (|delta|=0.3) should come before bm25 (|delta|=0.05) before fts5 (|delta|=0.02)
       expect(dataRows.length).toBe(3);
@@ -652,9 +680,9 @@ describe('Ablation Framework (R13-S3)', () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
   // 7. storeAblationResults() — gating
-  // ─────────────────────────────────────────────────────────────
+  // -------------------------------------------------------------
 
   describe('storeAblationResults() — gating', () => {
     it('returns false when SPECKIT_ABLATION is not set', () => {
@@ -730,8 +758,8 @@ describe('Ablation Framework — DB Integration (R13-S3)', () => {
       metadata: string;
     }>;
 
-    // Should have 1 baseline row + 3 channel delta rows = 4 total
-    expect(rows.length).toBe(4);
+    // Should have 1 baseline + 3 channels * (1 recall_delta + 9 metric deltas) = 31 total
+    expect(rows.length).toBe(31);
 
     // First row should be the baseline
     const baselineRow = rows.find(r => r.metric_name === 'ablation_baseline_recall@20');
@@ -942,6 +970,163 @@ describe('Ablation Framework — Channel Isolation (R13-S3 acceptance)', () => {
     const md = formatAblationReport(report);
     for (const channel of ['vector', 'bm25', 'fts5']) {
       expect(md).toContain(channel);
+    }
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// MULTI-METRIC WIRING (CHK-088–091)
+// ═══════════════════════════════════════════════════════════════════
+
+describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
+  const ALL_METRIC_KEYS: (keyof AblationMetrics)[] = [
+    'MRR@5', 'precision@5', 'recall@5', 'NDCG@5', 'MAP',
+    'hit_rate', 'latency_p50', 'latency_p95', 'token_usage',
+  ];
+
+  it('report.results[*].metrics contains all 9 metric keys with baseline/ablated/delta', () => {
+    const report = buildMockReport();
+    for (const result of report.results) {
+      expect(result.metrics).toBeDefined();
+      for (const key of ALL_METRIC_KEYS) {
+        const entry = result.metrics![key];
+        expect(entry).toBeDefined();
+        expect(typeof entry.baseline).toBe('number');
+        expect(typeof entry.ablated).toBe('number');
+        expect(typeof entry.delta).toBe('number');
+        expect(entry.delta).toBeCloseTo(entry.ablated - entry.baseline, 6);
+      }
+    }
+  });
+
+  it('latency_p50 and latency_p95 are non-negative', () => {
+    const report = buildMockReport();
+    for (const result of report.results) {
+      expect(result.metrics!['latency_p50'].baseline).toBeGreaterThanOrEqual(0);
+      expect(result.metrics!['latency_p95'].baseline).toBeGreaterThanOrEqual(0);
+      expect(result.metrics!['latency_p50'].ablated).toBeGreaterThanOrEqual(0);
+      expect(result.metrics!['latency_p95'].ablated).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  it('token_usage defaults to 0', () => {
+    const report = buildMockReport();
+    for (const result of report.results) {
+      expect(result.metrics!['token_usage'].baseline).toBe(0);
+      expect(result.metrics!['token_usage'].ablated).toBe(0);
+      expect(result.metrics!['token_usage'].delta).toBe(0);
+    }
+  });
+
+  it('formatAblationReport includes "Full Metric Breakdown" section', () => {
+    const report = buildMockReport();
+    const md = formatAblationReport(report);
+    expect(md).toContain('### Full Metric Breakdown');
+    expect(md).toContain('| Channel | MRR@5');
+    expect(md).toContain('| vector ');
+    expect(md).toContain('| bm25 ');
+  });
+
+  describe('storeAblationResults — multi-metric rows', () => {
+    let testDataDir: string;
+    let savedEnv: string | undefined;
+
+    beforeAll(() => {
+      savedEnv = process.env.SPECKIT_ABLATION;
+      process.env.SPECKIT_ABLATION = 'true';
+      testDataDir = path.join(os.tmpdir(), `ablation-mm-test-${Date.now()}`);
+      fs.mkdirSync(testDataDir, { recursive: true });
+      initEvalDb(testDataDir);
+    });
+
+    afterAll(() => {
+      closeEvalDb();
+      if (savedEnv !== undefined) {
+        process.env.SPECKIT_ABLATION = savedEnv;
+      } else {
+        delete process.env.SPECKIT_ABLATION;
+      }
+      try { fs.rmSync(testDataDir, { recursive: true, force: true }); } catch {}
+    });
+
+    it('stores 9 additional metric rows per channel plus baseline + recall delta', () => {
+      const report = buildMockReport();
+      const success = storeAblationResults(report);
+      expect(success).toBe(true);
+
+      const db = getEvalDb();
+      const rows = db.prepare(
+        `SELECT metric_name, channel FROM eval_metric_snapshots WHERE metric_name LIKE 'ablation%' ORDER BY id`,
+      ).all() as Array<{ metric_name: string; channel: string }>;
+
+      // 1 baseline + 3 channels * (1 recall_delta + 9 metric deltas) = 1 + 30 = 31
+      expect(rows.length).toBe(31);
+
+      // Verify multi-metric rows exist for vector
+      const vectorMetricRows = rows.filter(
+        r => r.channel === 'vector' && r.metric_name.startsWith('ablation_') && r.metric_name !== 'ablation_recall@20_delta' && r.metric_name !== 'ablation_baseline_recall@20',
+      );
+      expect(vectorMetricRows.length).toBe(9);
+
+      // Check specific metric names
+      const metricNames = vectorMetricRows.map(r => r.metric_name);
+      expect(metricNames).toContain('ablation_MRR@5_delta');
+      expect(metricNames).toContain('ablation_precision@5_delta');
+      expect(metricNames).toContain('ablation_recall@5_delta');
+      expect(metricNames).toContain('ablation_NDCG@5_delta');
+      expect(metricNames).toContain('ablation_MAP_delta');
+      expect(metricNames).toContain('ablation_hit_rate_delta');
+      expect(metricNames).toContain('ablation_latency_p50_delta');
+      expect(metricNames).toContain('ablation_latency_p95_delta');
+      expect(metricNames).toContain('ablation_token_usage_delta');
+    });
+  });
+
+  it('runAblation populates metrics on each result', async () => {
+    const savedEnv = process.env.SPECKIT_ABLATION;
+    process.env.SPECKIT_ABLATION = 'true';
+
+    try {
+      const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
+        '../lib/eval/ground-truth-data'
+      );
+
+      const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
+        GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
+      );
+      if (!queryWithGT) return;
+
+      const relevances = GROUND_TRUTH_RELEVANCES.filter(
+        r => r.queryId === queryWithGT.id && r.relevance > 0,
+      );
+      const relevantIds = relevances.map(r => r.memoryId);
+
+      const mockSearchFn: AblationSearchFn = (_q, disabled) => {
+        let ids = [...relevantIds];
+        if (disabled.has('vector')) ids = ids.slice(Math.ceil(ids.length / 2));
+        return ids.map((id, idx) => ({ memoryId: id, score: 1 - idx * 0.01, rank: idx + 1 }));
+      };
+
+      const report = await runAblation(mockSearchFn, {
+        channels: ['vector'],
+        groundTruthQueryIds: [queryWithGT.id],
+      });
+
+      expect(report).not.toBeNull();
+      if (!report) return;
+
+      for (const result of report.results) {
+        expect(result.metrics).toBeDefined();
+        for (const key of ALL_METRIC_KEYS) {
+          expect(result.metrics![key]).toBeDefined();
+        }
+      }
+    } finally {
+      if (savedEnv !== undefined) {
+        process.env.SPECKIT_ABLATION = savedEnv;
+      } else {
+        delete process.env.SPECKIT_ABLATION;
+      }
     }
   });
 });

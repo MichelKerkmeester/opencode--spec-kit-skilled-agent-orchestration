@@ -1,4 +1,3 @@
-// @ts-nocheck
 // ---------------------------------------------------------------
 // TEST: Progressive Validation Pipeline
 // ---------------------------------------------------------------
@@ -46,6 +45,63 @@ const EXEC_OPTS: ExecSyncOptionsWithStringEncoding = {
   },
 };
 
+type ProgressiveReport = Record<string, unknown> & {
+  pipelineLevel?: number;
+  report?: Record<string, unknown>;
+  version?: string;
+  folder?: string;
+  detectExitCode?: number;
+  passed?: boolean;
+  strict?: boolean;
+  dryRun?: boolean;
+  results?: unknown;
+  autoFixes?: {
+    count: number;
+    applied?: boolean;
+    items: Array<{
+      type: string;
+      description: string;
+      file: string;
+    }>;
+    diffs: string;
+  };
+  suggestions?: {
+    count: number;
+    items: Array<{
+      remediation: string;
+    }>;
+  };
+};
+
+type ExecSyncFailure = Error & {
+  stdout?: string | Buffer;
+  stderr?: string | Buffer;
+  status?: number | null;
+};
+
+function toOutputText(value: string | Buffer | undefined): string {
+  if (typeof value === 'string') {
+    return value;
+  }
+  return value?.toString() ?? '';
+}
+
+function asExecSyncFailure(error: unknown): ExecSyncFailure {
+  if (error instanceof Error) {
+    return error as ExecSyncFailure;
+  }
+  return new Error(String(error)) as ExecSyncFailure;
+}
+
+function expectPresent<T>(value: T | null | undefined, message: string): T {
+  expect(value).toBeDefined();
+  expect(value).not.toBeNull();
+  if (value == null) {
+    throw new Error(message);
+  }
+  return value;
+}
+
 // --- Helpers ---------------------------------------------------
 
 /** Create a temporary spec folder with given files. Returns folder path. */
@@ -72,10 +128,11 @@ function runProgressive(
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     return { stdout: stdout.toString(), exitCode: 0 };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const failure = asExecSyncFailure(err);
     return {
-      stdout: (err.stdout || '').toString() + (err.stderr || '').toString(),
-      exitCode: err.status ?? 2,
+      stdout: toOutputText(failure.stdout) + toOutputText(failure.stderr),
+      exitCode: failure.status ?? 2,
     };
   }
 }
@@ -92,10 +149,11 @@ function runValidate(
       stdio: ['pipe', 'pipe', 'pipe'],
     });
     return { stdout: stdout.toString(), exitCode: 0 };
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const failure = asExecSyncFailure(err);
     return {
-      stdout: (err.stdout || '').toString() + (err.stderr || '').toString(),
-      exitCode: err.status ?? 2,
+      stdout: toOutputText(failure.stdout) + toOutputText(failure.stderr),
+      exitCode: failure.status ?? 2,
     };
   }
 }
@@ -155,7 +213,7 @@ let tempDirs: string[] = [];
  * and the progressive report JSON. We want the progressive report which
  * contains "pipelineLevel".
  */
-function extractProgressiveJson(stdout: string): any | null {
+function extractProgressiveJson(stdout: string): ProgressiveReport | null {
   // The progressive report is emitted last and contains "pipelineLevel"
   // Try to find the last complete JSON object containing pipelineLevel
   const lines = stdout.split('\n');
@@ -408,19 +466,21 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
-      expect(report.autoFixes).toBeDefined();
-      expect(report.autoFixes.count).toBeGreaterThan(0);
-      expect(report.autoFixes.items).toBeDefined();
-      expect(Array.isArray(report.autoFixes.items)).toBe(true);
-      expect(report.autoFixes.items.length).toBeGreaterThan(0);
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const autoFixes = expectPresent(report.autoFixes, 'Expected autoFixes in progressive report');
+      expect(autoFixes.count).toBeGreaterThan(0);
+      expect(autoFixes.items).toBeDefined();
+      expect(Array.isArray(autoFixes.items)).toBe(true);
+      expect(autoFixes.items.length).toBeGreaterThan(0);
 
       // Verify diff content is present
-      expect(report.autoFixes.diffs).toBeDefined();
-      expect(typeof report.autoFixes.diffs).toBe('string');
-      if (report.autoFixes.diffs.length > 0) {
-        expect(report.autoFixes.diffs).toContain('DIFF');
+      expect(autoFixes.diffs).toBeDefined();
+      expect(typeof autoFixes.diffs).toBe('string');
+      if (autoFixes.diffs.length > 0) {
+        expect(autoFixes.diffs).toContain('DIFF');
       }
     });
 
@@ -429,10 +489,13 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const autoFixes = expectPresent(report.autoFixes, 'Expected autoFixes in progressive report');
 
-      for (const item of report.autoFixes.items) {
+      for (const item of autoFixes.items) {
         expect(item.type).toBeDefined();
         expect(typeof item.type).toBe('string');
         expect(item.description).toBeDefined();
@@ -475,11 +538,17 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
-      expect(report.suggestions).toBeDefined();
-      expect(report.suggestions.count).toBeDefined();
-      expect(Array.isArray(report.suggestions.items)).toBe(true);
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const suggestions = expectPresent(
+        report.suggestions,
+        'Expected suggestions in progressive report'
+      );
+      expect(suggestions).toBeDefined();
+      expect(suggestions.count).toBeDefined();
+      expect(Array.isArray(suggestions.items)).toBe(true);
     });
 
     it('suggestions include remediation guidance', () => {
@@ -491,10 +560,16 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
-      if (report.suggestions.count > 0) {
-        for (const item of report.suggestions.items) {
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const suggestions = expectPresent(
+        report.suggestions,
+        'Expected suggestions in progressive report'
+      );
+      if (suggestions.count > 0) {
+        for (const item of suggestions.items) {
           expect(item.remediation).toBeDefined();
           expect(typeof item.remediation).toBe('string');
           expect(item.remediation.length).toBeGreaterThan(0);
@@ -510,8 +585,10 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
       expect(report.version).toBeDefined();
       expect(report.pipelineLevel).toBe(4);
       expect(report.folder).toBeDefined();
@@ -547,10 +624,13 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json', '--dry-run']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const autoFixes = expectPresent(report.autoFixes, 'Expected autoFixes in progressive report');
       expect(report.dryRun).toBe(true);
-      expect(report.autoFixes.applied).toBe(false);
+      expect(autoFixes.applied).toBe(false);
     });
   });
 
@@ -632,12 +712,15 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json', '--dry-run']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const autoFixes = expectPresent(report.autoFixes, 'Expected autoFixes in progressive report');
       // Should have fixes counted
-      expect(report.autoFixes.count).toBeGreaterThan(0);
+      expect(autoFixes.count).toBeGreaterThan(0);
       // But applied should be false
-      expect(report.autoFixes.applied).toBe(false);
+      expect(autoFixes.applied).toBe(false);
     });
 
     it('files are unmodified after dry-run with whitespace issues', () => {
@@ -667,12 +750,16 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
       const folder = tracked(createMinimalLevel1Folder());
       const { stdout } = runValidate(folder, ['--json']);
 
-      let parsed: any;
+      let parsedReport: ProgressiveReport | undefined;
       expect(() => {
-        parsed = JSON.parse(stdout.trim());
+        parsedReport = JSON.parse(stdout.trim()) as ProgressiveReport;
       }).not.toThrow();
-      expect(parsed.results).toBeDefined();
-      expect(parsed.version).toBeDefined();
+      expect(parsedReport).toBeDefined();
+      if (!parsedReport) {
+        throw new Error('Expected validate.sh JSON report');
+      }
+      expect(parsedReport.results).toBeDefined();
+      expect(parsedReport.version).toBeDefined();
     });
 
     it('validate.sh error exit codes are unchanged', () => {
@@ -736,10 +823,13 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--level', '4', '--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
+      const autoFixes = expectPresent(report.autoFixes, 'Expected autoFixes in progressive report');
       // Should have at least 2 fixes (date + whitespace on spec.md)
-      expect(report.autoFixes.count).toBeGreaterThanOrEqual(2);
+      expect(autoFixes.count).toBeGreaterThanOrEqual(2);
     });
 
     it('empty spec folder (no .md files) handled gracefully', () => {
@@ -790,8 +880,10 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
 
       const { stdout } = runProgressive(folder, ['--json']);
 
-      const report = extractProgressiveJson(stdout);
-      expect(report).not.toBeNull();
+      const report = expectPresent(
+        extractProgressiveJson(stdout),
+        'Expected progressive validation JSON report'
+      );
       expect(report.pipelineLevel).toBe(4);
     });
   });

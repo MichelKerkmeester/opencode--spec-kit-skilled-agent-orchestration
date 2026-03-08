@@ -1176,3 +1176,7 @@ else
     echo ""
     echo "───────────────────────────────────────────────────────────────────"
 fi
+
+# Exit codes:
+#   0 - Success
+#   1 - --level requires a value (1, 2, or 3)
