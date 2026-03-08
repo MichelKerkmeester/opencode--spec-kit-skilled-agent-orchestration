@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // AI-WHY: Legacy compatibility shim retained for test/runtime imports.
 
-import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
 /**
  * Unified graph channel gate (default-on, explicit opt-out with `'false'`).
