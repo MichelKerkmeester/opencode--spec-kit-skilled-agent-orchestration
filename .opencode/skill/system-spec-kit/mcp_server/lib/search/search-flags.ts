@@ -193,7 +193,7 @@ export function isContextHeadersEnabled(): boolean {
  * Honors SPECKIT_ROLLOUT_PERCENT global rollout policy.
  */
 export function isFileWatcherEnabled(): boolean {
-  if (process.env.SPECKIT_FILE_WATCHER !== 'true') return false;
+  if (process.env.SPECKIT_FILE_WATCHER?.toLowerCase().trim() !== 'true') return false;
   return isFeatureEnabled('SPECKIT_FILE_WATCHER');
 }
 
@@ -203,6 +203,6 @@ export function isFileWatcherEnabled(): boolean {
  * Honors SPECKIT_ROLLOUT_PERCENT global rollout policy.
  */
 export function isLocalRerankerEnabled(): boolean {
-  if (process.env.RERANKER_LOCAL !== 'true') return false;
+  if (process.env.RERANKER_LOCAL?.toLowerCase().trim() !== 'true') return false;
   return isFeatureEnabled('RERANKER_LOCAL');
 }

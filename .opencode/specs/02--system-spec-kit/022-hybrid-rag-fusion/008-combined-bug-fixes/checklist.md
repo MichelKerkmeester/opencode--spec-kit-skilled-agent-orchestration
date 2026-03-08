@@ -7,7 +7,7 @@ contextType: "implementation"
 ---
 # Combined Verification Checklist: 016 Bug Fixes
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 This is a **merged checklist** combining all verification items from four source spec folders under `022-hybrid-rag-fusion`.
@@ -18,11 +18,16 @@ This is a **merged checklist** combining all verification items from four source
 
 | Source Folder | Description | P0 | P1 | P2 | Total | Verified |
 |---------------|-------------|----|----|----|-------|----------|
-| **003** | Auto-Detected Session Bug | 10 | 8 | 2 | 20 | 19/20 |
+| **003** | Auto-Detected Session Bug | 10 | 9 | 2 | 21 | 20/21 |
 | **008** | Subfolder Resolution Fix | 9 | 2 | 0 | 11 | 11/11 |
-| **013** | Memory Search Bug Fixes | 10 | 13 | 2 | 25 | 25/25 |
-| **015** | Bug Fixes and Alignment | 4 | 42 | 9 | 55 | 47/55 |
-| **Combined** | | **33** | **65** | **13** | **111** | **102/111** |
+| **013** | Memory Search Bug Fixes | 10 | 13 | 2 | 25 | 22/25 |
+| **015** | Bug Fixes and Alignment | 9 | 54 | 15 | 78 | 69/78 |
+| **Combined** | | **38** | **78** | **19** | **135** | **122/135** |
+
+Current gate truth (2026-03-07):
+- `npm run check`: PASS
+- `npm run check:full`: PASS
+- Targeted post-fix verification: PASS (see `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`)
 
 ---
 
@@ -41,7 +46,7 @@ This is a **merged checklist** combining all verification items from four source
 
 ## Source: 003 -- Auto-Detected Session Bug
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/checklist.md`
+> Source lineage: `003` stream merged into canonical `checklist.md`.
 > Verification Date: 2026-02-22
 
 ---
@@ -95,7 +100,7 @@ This is a **merged checklist** combining all verification items from four source
 ### File Organization
 
 - [x] CHK-050 [P1] No temporary files created outside allowed folders during documentation setup [EVIDENCE: Spec folder contains only documentation artifacts and existing `memory/` directory.]
-- [x] CHK-051 [P1] Implementation temporary artifacts cleaned before completion [EVIDENCE: No `scratch/` residue for this work scope; final artifact set is documentation-only in this folder.]
+- [x] CHK-051 [P1] Implementation temporary artifacts are scoped to allowed evidence locations [EVIDENCE: scratch evidence retained under `scratch/cross-ai-review-report.md` and `scratch/verification-logs/*` only.]
 - [ ] CHK-052 [P2] Memory snapshot saved after implementation completion if requested [DEFERRED: Not requested in this finalization pass and intentionally skipped per task constraints.]
 
 ---
@@ -105,7 +110,7 @@ This is a **merged checklist** combining all verification items from four source
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 10 | 10/10 |
-| P1 Items | 8 | 8/8 |
+| P1 Items | 9 | 9/9 |
 | P2 Items | 2 | 1/2 |
 
 **Verification Date**: 2026-02-22
@@ -115,7 +120,7 @@ This is a **merged checklist** combining all verification items from four source
 
 ## Source: 008 -- Subfolder Resolution Fix
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/checklist.md`
+> Source lineage: `008` stream merged into canonical `checklist.md`.
 > Verification Date: 2026-03-01 (original), 2026-03-06 (post-review remediation)
 
 ---
@@ -160,8 +165,8 @@ This is a **merged checklist** combining all verification items from four source
 
 ## Source: 013 -- Memory Search Bug Fixes
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/checklist.md`
-> Verification Date: 2026-03-06
+> Source lineage: `013` stream merged into canonical `checklist.md`.
+> Verification Date: 2026-03-07 (truth refresh)
 
 ---
 
@@ -184,14 +189,14 @@ This is a **merged checklist** combining all verification items from four source
 
 ### Testing
 
-- [x] CHK-020 [P0] Stateless regression tests pass, including preferred-task fallback guarding, workflow seam loader-path proof, and overlapping-call concurrency coverage [EVIDENCE: `npm run test:task-enrichment` -> PASS (30 passed); raw log: `scratch/verification-logs/02-task-enrichment.txt`]
-- [x] CHK-021 [P0] Folder-discovery unit tests pass [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery.vitest.ts` -> PASS (45 passed); raw log: `scratch/verification-logs/03-folder-discovery-unit.txt`]
-- [x] CHK-022 [P0] Stale-cache shrink follow-up coverage, folder-set mismatch invalidation for future-dated caches, and alias-root order determinism coverage are present in integration verification [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> PASS (28 passed), including stale-cache shrink coverage, folder-set mismatch invalidation, and alias-root order determinism assertions; raw log: `scratch/verification-logs/04-folder-discovery-integration.txt`]
-- [x] CHK-023 [P0] Folder-discovery integration suite is fully green [EVIDENCE: `npm run test --workspace=mcp_server -- tests/folder-discovery-integration.vitest.ts` -> PASS (28 passed); raw log: `scratch/verification-logs/04-folder-discovery-integration.txt`]
-- [x] CHK-024 [P1] Typecheck baseline passes [EVIDENCE: `npx tsc --noEmit` PASS; raw log: `scratch/verification-logs/01-tsc-noemit.txt`]
-- [x] CHK-025 [P1] Full workspace typecheck/build passes [EVIDENCE: `npm run typecheck` -> PASS and `npm run build` -> PASS in `.opencode/skill/system-spec-kit`; raw log: `scratch/verification-logs/07-typecheck-build.txt`]
-- [x] CHK-026 [P1] Alignment drift check pass [EVIDENCE: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` -> PASS; raw log: `scratch/verification-logs/05-alignment-drift.txt`]
-- [x] CHK-027 [P1] Spec validator pass [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` PASS; raw log: `scratch/verification-logs/06-spec-validate.txt`]
+- [x] CHK-020 [P0] Targeted MCP regression tests pass for this fix set [EVIDENCE: `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`]
+- [x] CHK-021 [P0] Targeted scripts regression test passes for workflow/task enrichment path [EVIDENCE: `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`]
+- [x] CHK-022 [P0] Checkpoint scoping and adaptive-fusion fixes are covered by targeted test run [EVIDENCE: `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`]
+- [x] CHK-023 [P0] Workspace typecheck and build pass in post-fix verification run [EVIDENCE: `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`]
+- [x] CHK-024 [P1] `npm run check` gate is green (lint + `npx tsc --noEmit`) [EVIDENCE: `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
+- [x] CHK-025 [P1] `npm run check:full` gate is fully green [EVIDENCE: `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
+- [ ] CHK-026 [P1] Alignment drift check rerun captured for this post-fix pass [DEFERRED: not rerun in the 2026-03-07 truth refresh]
+- [ ] CHK-027 [P1] Spec validator rerun captured for this post-fix pass [DEFERRED: not rerun in the 2026-03-07 truth refresh]
 - [x] CHK-028 [P0] Context-server regression suite passes with fatal mismatch startup coverage [EVIDENCE: `npm run test --workspace=mcp_server -- tests/context-server.vitest.ts` -> PASS (307 passed)]
 - [x] CHK-029 [P1] Managed startup and direct runtime probes confirm Voyage 4 on the active 1024d database, and the health handler reports that profile accurately during lazy startup [EVIDENCE: `~/.opencode/bin/opencode --print-logs --log-level DEBUG mcp list` showed `spec_kit_memory` connected plus startup logs `API key validated (provider: voyage)` and `Embedding dimension validated: 1024`; `npx vitest run tests/memory-crud-extended.vitest.ts` -> PASS (68 passed); real MCP SDK client against `dist/context-server.js` returned `Memory system healthy: 963 memories indexed` with `embeddingProvider { provider: voyage, model: voyage-4, dimension: 1024, healthy: true }`]
 - [x] CHK-029a [P1] Direct built-runtime packet indexing succeeds after the fix [EVIDENCE: direct `handleMemoryIndexScan` for `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` completed with `failed: 0`]
@@ -210,7 +215,7 @@ This is a **merged checklist** combining all verification items from four source
 - [x] CHK-040 [P1] Canonical Level 2 packet exists with standard filenames only [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `handover.md`]
 - [x] CHK-041 [P1] Cross-references resolve using standard filenames only [EVIDENCE: references normalized in tasks/spec/plan]
 - [x] CHK-042 [P1] Implementation summary and handover reflect the updated remediation state, including the placeholder-env root cause, lazy-profile health fix, and prior workflow/discovery decision rationale [EVIDENCE: `implementation-summary.md`, `handover.md`, `decision-record.md`]
-- [x] CHK-043 [P2] Closure memory is saved and packet docs are refreshed in memory indexing [EVIDENCE: direct packet save rejection captured in `scratch/verification-logs/08-memory-save.txt`; owning-root save completed in `scratch/verification-logs/09-memory-save-root.txt`; packet docs refreshed via `memory_index_scan` for `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`]
+- [ ] CHK-043 [P2] Closure memory save evidence for this post-fix pass is captured in scratch artifacts [DEFERRED: no 2026-03-07 memory-save artifact was added in this packet refresh]
 - [x] CHK-044 [P2] Residual out-of-scope auth-failure diagnostic limitation is documented honestly [EVIDENCE: packet docs note that true startup auth failures still exit before `memory_health` is available, and that broader boot-order behavior was not reopened in this spec]
 
 ---
@@ -220,8 +225,8 @@ This is a **merged checklist** combining all verification items from four source
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 10 | 10/10 |
-| P1 Items | 13 | 13/13 |
-| P2 Items | 2 | 2/2 |
+| P1 Items | 13 | 11/13 |
+| P2 Items | 2 | 1/2 |
 
 **Verification Date**: 2026-03-06
 
@@ -230,19 +235,19 @@ This is a **merged checklist** combining all verification items from four source
 
 ## Source: 015 -- Bug Fixes and Alignment
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/checklist.md`
+> Source lineage: `015` stream merged into canonical `checklist.md`.
 > SPECKIT_LEVEL: 3
 
 ---
 
 ### Canonical Merge History Checks (009 + 010)
 
-- [x] CHK-M001 [P1]: 015 explicitly supersedes 009 and 010 as the canonical active folder [EVIDENCE: `spec.md` canonical merge notice section]
+- [x] CHK-M001 [P1]: 008 explicitly supersedes prior 015/009/010 active ownership as the canonical active folder [EVIDENCE: `spec.md` canonical merge notice section]
 - [x] CHK-M002 [P1]: 009 cross-phase test-count reconciliation preserved as historical context [EVIDENCE: table below copied from 009 reconciliation model]
-- [x] CHK-M003 [P1]: 010 audit provenance and handover state preserved in 015 without editing the source handover file [EVIDENCE: `implementation-summary.md` inherited snapshot section]
-- [x] CHK-M004 [P1]: 009 ADR substance (legacy V1 removal, shared `resolveEffectiveScore()`, BM25 double-consonant handling) absorbed into 015 decision records [EVIDENCE: `decision-record.md` ADR-008]
+- [x] CHK-M003 [P1]: 010 audit provenance and handover state preserved in canonical 008 without editing the source handover file [EVIDENCE: `implementation-summary.md` inherited snapshot section]
+- [x] CHK-M004 [P1]: 009 ADR substance (legacy V1 removal, shared `resolveEffectiveScore()`, BM25 double-consonant handling) absorbed into canonical 008 decision records [EVIDENCE: `decision-record.md` ADR-008]
 - [x] CHK-M005 [P1]: 010 handover continuity snapshot absorbed with commit `40891251`, 230/7085 historical test snapshot, Tier 3 follow-up note, and CR-P2-4 completion nuance [EVIDENCE: `implementation-summary.md` historical continuity digest]
-- [x] CHK-M006 [P1]: Canonical mapping references updated to 015 in related docs; predecessor dependency no longer requires 010 as a live folder [EVIDENCE: `../feature-catalog/feature_catalog.md` mapping updates + `../009-extra-features/spec.md` phase navigation]
+- [x] CHK-M006 [P1]: Canonical mapping references updated to 008 in related docs; predecessor dependency no longer requires 010 as a live folder [EVIDENCE: `../feature-catalog/feature_catalog.md` mapping updates + `../009-extra-features/spec.md` phase navigation]
 - [x] CHK-M007 [P1]: Deletion safety check completed after absorption and mapping normalization [EVIDENCE: 009/010 retired after archival fold-in pass]
 
 #### Historical Test Count Reconciliation (Inherited)
@@ -394,6 +399,8 @@ This is a **merged checklist** combining all verification items from four source
 ### Global Verification
 
 - [x] CHK-200 [P0]: TypeScript compilation passes with zero errors [EVIDENCE: `tsc --noEmit` exit 0]
+- [x] CHK-206 [P0]: `npm run check` passes in current tree [EVIDENCE: `npm run check` pass captured in `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
+- [x] CHK-207 [P0]: `npm run check:full` passes in current tree [EVIDENCE: `scratch/verification-logs/2026-03-07-mcp-check-full.md`]
 - [ ] CHK-201 [P1]: `verify_alignment_drift.py` passes on shared/ directory [DEFERRED: T065]
 - [ ] CHK-202 [P1]: `verify_alignment_drift.py` passes on mcp_server/ directory [DEFERRED: T065]
 - [ ] CHK-203 [P1]: `verify_alignment_drift.py` passes on scripts/ directory [DEFERRED: T065]
@@ -406,8 +413,8 @@ This is a **merged checklist** combining all verification items from four source
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 4 | 2/4 |
-| P1 Items | 42 | 39/42 |
-| P2 Items | 9 | 6/9 |
+| P0 Items | 9 | 7/9 |
+| P1 Items | 54 | 50/54 |
+| P2 Items | 15 | 12/15 |
 
 **Verification Date**: 2026-03-07

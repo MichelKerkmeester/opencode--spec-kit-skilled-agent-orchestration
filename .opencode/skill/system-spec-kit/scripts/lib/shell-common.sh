@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# LIBRARY: shell-common.sh
+# COMPONENT: Shell Common
 # ───────────────────────────────────────────────────────────────
 # Shared shell utilities for spec-kit scripts.
 # Source this file: source "$(dirname "$0")/../lib/shell-common.sh"
@@ -12,8 +12,10 @@
 # Compatibility: Bash 3.2+ (macOS default)
 # ───────────────────────────────────────────────────────────────
 
-# Strict mode declaration is present for standards verification.
-# It only applies when this file is executed directly, not when sourced.
+# AI-WHY: Conditional strict mode is intentional for sourced libraries.
+# Calling scripts (create.sh, validate.sh, archive.sh) set -euo pipefail
+# at their own file level. Making it unconditional here would override
+# the caller's shell options when this file is sourced.
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     set -euo pipefail
 fi

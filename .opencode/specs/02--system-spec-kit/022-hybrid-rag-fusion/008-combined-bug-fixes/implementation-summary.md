@@ -6,7 +6,7 @@ contextType: "implementation"
 ---
 # Combined Implementation Summary
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -32,9 +32,9 @@ This document merges implementation summaries from 4 spec folders under `022-hyb
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` |
+| **Spec Folder** | 008-combined-bug-fixes |
 | **Completed** | 2026-02-22 |
-| **Level** | 2 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -222,7 +222,7 @@ This spec now captures all completed workstreams in one canonical Level 2 packet
 - Added explicit stateless-only guard so JSON/file-backed mode remains unchanged.
 - Prevented file-backed/JSON mode from reselecting `specTitle` later through preferred-task fallback.
 - Added a workflow serialization guard so overlapping `runWorkflow()` calls do not interleave invocation-local state.
-- Restored invocation-local config state after `runWorkflow()` so a file-backed run cannot leak `CONFIG.DATA_FILE` into a later stateless run, and the seam test now proves the later stateless invocation reaches the loader path with `CONFIG.DATA_FILE === null`.
+- Propagated `specFolderArg` explicitly through the workflow/data-loader path so file-backed runs no longer rely on global `CONFIG` mutation, and the seam test proves the later stateless invocation reaches the loader path with `CONFIG.DATA_FILE === null`.
 - Aligned generic-task semantics with slug behavior including `Implementation and updates`.
 - Preserved template honesty (`IMPL_TASK` still reflects original task field).
 - Added regression tests proving JSON-vs-stateless divergence, workflow-level seam isolation, overlapping-call serialization, and slug outcomes.
@@ -253,7 +253,7 @@ This spec now captures all completed workstreams in one canonical Level 2 packet
 
 | File | Changes |
 |------|---------|
-| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Stateless enrichment consumption, preferred-task fallback guarding for file-backed/JSON mode, overlapping-call serialization guard, fallback handling for descriptive slug/title generation, and invocation-local config restoration after `runWorkflow()` |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Stateless enrichment consumption, preferred-task fallback guarding for file-backed/JSON mode, overlapping-call serialization guard, fallback handling for descriptive slug/title generation, and explicit `specFolderArg` propagation with no global `CONFIG` mutation |
 | `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts` | Stateless-only enrichment guard helper |
 | `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts` | Generic classification parity for `implementation-and-updates` |
 | `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` | Regression coverage for mode divergence, preferred-task fallback guarding, workflow seam loader-path proof, overlapping-call serialization, and slug outcomes |
@@ -518,6 +518,7 @@ Earlier remediation waves implemented a substantial subset of P0/P1/P2 findings 
 
 | Check | Result |
 | --- | --- |
+| `npm run check:full` | PASS (final green after follow-up fixes and contract alignment) |
 | `tsc --noEmit` | Pass -- zero errors |
 | Em dashes in feature_catalog.md | 0 remaining |
 | HVR "robust" in authored prose | 0 remaining |

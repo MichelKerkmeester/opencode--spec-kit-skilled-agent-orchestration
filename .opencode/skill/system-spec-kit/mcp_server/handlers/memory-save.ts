@@ -446,16 +446,24 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   }
 
   const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate';
-  const postMutationFeedback = shouldEmitPostMutationFeedback
-    ? buildMutationHookFeedback(
-        'atomic-save',
-        runPostMutationHooks('atomic-save', {
-          filePath: file_path,
-          specFolder: indexResult.specFolder,
-          memoryId: indexResult.id,
-        })
-      )
-    : null;
+  let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
+  if (shouldEmitPostMutationFeedback) {
+    let postMutationHooks: import('./mutation-hooks').MutationHookResult;
+    try {
+      postMutationHooks = runPostMutationHooks('atomic-save', {
+        filePath: file_path,
+        specFolder: indexResult.specFolder,
+        memoryId: indexResult.id,
+      });
+    } catch {
+      postMutationHooks = {
+        latencyMs: 0, triggerCacheCleared: false,
+        constitutionalCacheCleared: false, toolCacheInvalidated: 0,
+        graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+      };
+    }
+    postMutationFeedback = buildMutationHookFeedback('atomic-save', postMutationHooks);
+  }
 
   const message = indexResult.message ?? (
     indexResult.status === 'duplicate'

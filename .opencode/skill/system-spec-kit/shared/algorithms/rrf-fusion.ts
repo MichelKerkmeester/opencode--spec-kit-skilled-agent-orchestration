@@ -146,8 +146,11 @@ function fuseResults(
       existing.rrfScore += rrfScore;
       existing.sourceScores[sourceB] = rrfScore;
       existing.sources.push(sourceB);
-      existing.convergenceBonus = CONVERGENCE_BONUS;
-      existing.rrfScore += CONVERGENCE_BONUS;
+      // AI: Fix F16 — apply convergence bonus only once per ID.
+      if (existing.convergenceBonus === 0) {
+        existing.convergenceBonus = CONVERGENCE_BONUS;
+        existing.rrfScore += CONVERGENCE_BONUS;
+      }
     } else {
       scoreMap.set(key, {
         ...item,
@@ -185,7 +188,8 @@ function fuseResultsMulti(
     // AI-WHY: Use ?? so explicit weight=0 is honoured (|| would treat 0 as falsy).
     // Graph source gets GRAPH_WEIGHT_BOOST when no weight is given because curated
     // causal edges are higher-signal than unweighted lexical/vector channels.
-    const weight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0);
+    const rawWeight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0);
+    const weight = Number.isFinite(rawWeight) ? rawWeight : 1.0; // AI: Fix F2 — guard against NaN/Infinity weights.
     for (let i = 0; i < list.results.length; i++) {
       const item = list.results[i];
       const rrfScore = weight * (1 / (k + i + 1));
@@ -213,9 +217,7 @@ function fuseResultsMulti(
     // times when the same channel contributes via different code paths.
     const uniqueSourceCount = new Set(result.sources).size;
     if (uniqueSourceCount >= 2) {
-      const maxRrfPerSource = 1 / (k + 1);
-      const normalizedBonus = convergenceBonus * maxRrfPerSource;
-      const bonus = normalizedBonus * (uniqueSourceCount - 1);
+      const bonus = convergenceBonus * (uniqueSourceCount - 1);
       result.convergenceBonus = bonus;
       result.rrfScore += bonus;
     }
@@ -351,18 +353,15 @@ function fuseResultsCrossVariant(
     }
   }
 
-  // Step 3: Merge all variant results, accumulating RRF scores
-  // AI-WHY: Fix #9 (017-refinement-phase-6) — Each per-variant result already includes
-  // an intra-variant convergence bonus from fuseResultsMulti(). When merging, we subtract
-  // that per-variant bonus so Step 4's cross-variant bonus doesn't double-count.
+  // Step 3: Merge all variant results, accumulating RRF scores.
+  // AI: Fix F1 — do not subtract raw convergenceBonus from normalized scores.
   const mergedMap = new Map<string, FusionResult>();
   for (const variantResults of perVariantFused) {
     for (const result of variantResults) {
       const key = canonicalRrfId(result.id);
       const existing = mergedMap.get(key);
       if (existing) {
-        // Accumulate base RRF scores (minus per-variant convergence bonus to avoid double-count)
-        existing.rrfScore += (result.rrfScore - result.convergenceBonus);
+        existing.rrfScore += result.rrfScore;
         for (const src of result.sources) {
           if (!existing.sources.includes(src)) {
             existing.sources.push(src);
@@ -372,7 +371,7 @@ function fuseResultsCrossVariant(
           existing.sourceScores[key] = (existing.sourceScores[key] || 0) + val;
         }
       } else {
-        mergedMap.set(key, { ...result, rrfScore: result.rrfScore - result.convergenceBonus, convergenceBonus: 0 });
+        mergedMap.set(key, { ...result, rrfScore: result.rrfScore, convergenceBonus: 0 });
       }
     }
   }
@@ -381,9 +380,7 @@ function fuseResultsCrossVariant(
   for (const [id, result] of mergedMap) {
     const variantCount = variantAppearances.get(id)?.size || 1;
     if (variantCount >= 2) {
-      const maxRrfPerSource = 1 / (k + 1);
-      const normalizedBonus = convergenceBonusPerVariant * maxRrfPerSource;
-      const crossVariantBonus = normalizedBonus * (variantCount - 1);
+      const crossVariantBonus = convergenceBonusPerVariant * (variantCount - 1);
       result.convergenceBonus = crossVariantBonus;
       result.rrfScore += crossVariantBonus;
     }
@@ -437,19 +434,28 @@ function normalizeRrfScores(results: FusionResult[]): void {
   // "Maximum call stack size exceeded". A simple for-loop is O(n) and safe.
   let maxScore = -Infinity;
   let minScore = Infinity;
+  const invalidResults = new Set<FusionResult>();
   for (const r of results) {
+    if (!Number.isFinite(r.rrfScore)) {
+      r.rrfScore = 0; // AI: Fix F2 — guard against NaN/Infinity weights.
+      invalidResults.add(r);
+      continue;
+    }
     if (r.rrfScore > maxScore) maxScore = r.rrfScore;
     if (r.rrfScore < minScore) minScore = r.rrfScore;
   }
+  if (maxScore === -Infinity || minScore === Infinity) return;
   const range = maxScore - minScore;
 
   if (range > 0) {
     for (const result of results) {
+      if (invalidResults.has(result)) continue;
       result.rrfScore = (result.rrfScore - minScore) / range;
     }
   } else {
     // All same score (or single result) — normalize to 1.0
     for (const result of results) {
+      if (invalidResults.has(result)) continue;
       result.rrfScore = 1.0;
     }
   }

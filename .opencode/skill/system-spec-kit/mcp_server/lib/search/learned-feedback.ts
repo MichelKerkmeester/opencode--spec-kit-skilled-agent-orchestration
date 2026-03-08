@@ -17,7 +17,7 @@
 // 10. Provenance/audit log -- track what was learned and why
 //
 // Query weight: 0.7x (learned triggers weighted lower than organic triggers)
-// Feature flag: SPECKIT_LEARN_FROM_SELECTION (default OFF)
+// Feature flag: SPECKIT_LEARN_FROM_SELECTION (default ON — graduated)
 // ---------------------------------------------------------------
 
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
@@ -388,16 +388,6 @@ export function applyLearnedTriggers(
   }
 }
 
-/**
- * Query learned triggers for search results, applying 0.7x weight.
- *
- * Searches the learned_triggers column (NOT FTS5) for matches against
- * the query terms. Returns matching memories with a weighted score.
- *
- * @param query - Search query string
- * @param db - SQLite database connection
- * @returns Array of matching memories with 0.7x weighted scores
- */
 /** Shadow period duration: 7 days in milliseconds (Safeguard #6). */
 const SHADOW_PERIOD_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -429,6 +419,16 @@ function isInShadowPeriod(db: Database): boolean {
   }
 }
 
+/**
+ * Query learned triggers for search results, applying 0.7x weight.
+ *
+ * Searches the learned_triggers column (NOT FTS5) for matches against
+ * the query terms. Returns matching memories with a weighted score.
+ *
+ * @param query - Search query string
+ * @param db - SQLite database connection
+ * @returns Array of matching memories with 0.7x weighted scores
+ */
 export function queryLearnedTriggers(
   query: string,
   db: Database

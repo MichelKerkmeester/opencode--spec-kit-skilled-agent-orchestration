@@ -42,7 +42,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/003-index-tier-anomalies` |
+| **Spec Folder** | `specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization` |
 | **Completed** | 2026-02-22 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

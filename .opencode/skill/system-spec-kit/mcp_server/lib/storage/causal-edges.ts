@@ -138,6 +138,7 @@ function insertEdge(
     console.warn('[causal-edges] Database not initialized. Server may still be starting up.');
     return null;
   }
+  const database = db;
 
   // NFR-R01: Auto edges capped at MAX_AUTO_STRENGTH
   const effectiveStrength = createdBy === 'auto'
@@ -165,17 +166,17 @@ function insertEdge(
     const clampedStrength = Math.max(0, Math.min(1, effectiveStrength));
 
     // AI-WHY: Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
-    const rowId = db.transaction(() => {
+    const rowId = database.transaction(() => {
       // AI-WHY: Check if edge exists (for weight_history logging on conflict update).
       // This SELECT is intentional: we need the old strength to decide whether
       // to write a weight_history row after the upsert. The subsequent INSERT
       // uses last_insert_rowid() to avoid a second post-upsert SELECT.
-      const existing = (db.prepare(`
+      const existing = (database.prepare(`
         SELECT id, strength FROM causal_edges
         WHERE source_id = ? AND target_id = ? AND relation = ?
       `) as Database.Statement).get(sourceId, targetId, relation) as { id: number; strength: number } | undefined;
 
-      (db.prepare(`
+      (database.prepare(`
         INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
         VALUES (?, ?, ?, ?, ?, ?)
         ON CONFLICT(source_id, target_id, relation) DO UPDATE SET
@@ -183,7 +184,7 @@ function insertEdge(
           evidence = COALESCE(excluded.evidence, causal_edges.evidence)
       `) as Database.Statement).run(sourceId, targetId, relation, clampedStrength, evidence, createdBy);
 
-      const row = (db.prepare(`
+      const row = (database.prepare(`
         SELECT id FROM causal_edges WHERE source_id = ? AND target_id = ? AND relation = ?
       `) as Database.Statement).get(sourceId, targetId, relation) as { id: number } | undefined;
       const rowId = row ? row.id : 0;
@@ -370,6 +371,7 @@ function updateEdge(
   reason: string | null = null,
 ): boolean {
   if (!db) return false;
+  const database = db;
 
   try {
     const parts: string[] = [];
@@ -389,17 +391,17 @@ function updateEdge(
     params.push(edgeId);
 
     // AI-WHY: Wrap SELECT + UPDATE + logWeightChange in a transaction for atomicity
-    const changed = db.transaction(() => {
+    const changed = database.transaction(() => {
       // T001d: Capture old strength for weight_history logging
       let oldStrength: number | undefined;
       if (updates.strength !== undefined) {
-        const existing = (db.prepare(
+        const existing = (database.prepare(
           'SELECT strength FROM causal_edges WHERE id = ?'
         ) as Database.Statement).get(edgeId) as { strength: number } | undefined;
         oldStrength = existing?.strength;
       }
 
-      const result = (db.prepare(
+      const result = (database.prepare(
         `UPDATE causal_edges SET ${parts.join(', ')} WHERE id = ?`
       ) as Database.Statement).run(...params);
 
@@ -522,9 +524,13 @@ function cleanupOrphanedEdges(): { deleted: number } {
   try {
     const orphaned = findOrphanedEdges();
     let deleted = 0;
-    for (const edge of orphaned) {
-      if (deleteEdge(edge.id)) deleted++;
-    }
+    // AI: Fix F20 — wrap multi-step mutation in transaction for atomicity.
+    const runInTransaction = db.transaction(() => {
+      for (const edge of orphaned) {
+        if (deleteEdge(edge.id)) deleted++;
+      }
+    });
+    runInTransaction();
     return { deleted };
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -622,18 +628,19 @@ function getWeightHistory(edgeId: number, limit: number = 50): WeightHistoryEntr
 
 function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
   if (!db) return false;
+  const database = db;
   try {
     // AI-WHY: Wrap SELECTs + UPDATE + logWeightChange in a transaction for atomicity
-    const changed = db.transaction(() => {
+    const changed = database.transaction(() => {
       // Get current strength before rollback
-      const current = (db.prepare(
+      const current = (database.prepare(
         'SELECT strength FROM causal_edges WHERE id = ?'
       ) as Database.Statement).get(edgeId) as { strength: number } | undefined;
       if (!current) return null;
 
       // Find the earliest history entry at or after the target timestamp
       // If no exact match, fall back to the first entry for this edge
-      let entry = (db.prepare(`
+      let entry = (database.prepare(`
         SELECT old_strength FROM weight_history
         WHERE edge_id = ? AND changed_at >= ?
         ORDER BY changed_at ASC LIMIT 1
@@ -641,7 +648,7 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
 
       if (!entry) {
         // Fall back: get the oldest entry's old_strength (pre-change baseline)
-        entry = (db.prepare(`
+        entry = (database.prepare(`
           SELECT old_strength FROM weight_history
           WHERE edge_id = ?
           ORDER BY changed_at ASC LIMIT 1
@@ -650,7 +657,7 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
       if (!entry) return null;
 
       // Restore the edge to the old_strength value
-      const result = (db.prepare(
+      const result = (database.prepare(
         'UPDATE causal_edges SET strength = ? WHERE id = ?'
       ) as Database.Statement).run(entry.old_strength, edgeId);
 

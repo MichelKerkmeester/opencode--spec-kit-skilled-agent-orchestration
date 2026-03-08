@@ -2,7 +2,7 @@
 // MODULE: Memory Crud Extended Vitest
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 
 // ───────────────────────────────────────────────────────────────
 // TEST: HANDLER - MEMORY CRUD (EXTENDED) (Vitest)
@@ -58,6 +58,8 @@ vi.mock('../lib/storage/causal-edges', async (importOriginal) => {
     ...actual,
     init: vi.fn((...args: any[]) => actual.init?.(...args)),
     deleteEdgesForMemory: vi.fn((...args: any[]) => actual.deleteEdgesForMemory?.(...args)),
+    // AI: Fix F23 — include cleanupOrphanedEdges in mock for health auto-repair coverage.
+    cleanupOrphanedEdges: vi.fn((...args: any[]) => actual.cleanupOrphanedEdges?.(...args)),
   };
 });
 
@@ -1229,8 +1231,33 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.reportMode).toBe('divergent_aliases');
     expect(parsed?.data?.totalDivergentGroups).toBe(1);
     expect(parsed?.data?.returnedGroups).toBe(1);
-    expect(parsed?.data?.groups?.[0]?.normalizedPath).toContain('/workspace/specs/02--system-spec-kit/010-test/memory/a.md');
+    expect(parsed?.data?.groups?.[0]?.normalizedPath).toBe('specs/02--system-spec-kit/010-test/memory/a.md');
+    expect(parsed?.data?.groups?.[0]?.variants?.map((variant: { filePath: string }) => variant.filePath)).toEqual([
+      '.opencode/specs/02--system-spec-kit/010-test/memory/a.md',
+      'specs/02--system-spec-kit/010-test/memory/a.md',
+    ]);
     expect(parsed?.data?.embeddingProvider).toBeUndefined();
+  });
+
+  it('EXT-H10b: divergent_aliases mode normalizes Windows alias paths without leaking absolute prefixes', async () => {
+    if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      aliasRows: [
+        { file_path: 'C:\\workspace\\specs\\02--system-spec-kit\\011-test\\memory\\b.md', content_hash: 'hash-1', spec_folder: '02--system-spec-kit/011-test' },
+        { file_path: 'C:\\workspace\\.opencode\\specs\\02--system-spec-kit\\011-test\\memory\\b.md', content_hash: 'hash-2', spec_folder: '02--system-spec-kit/011-test' },
+      ],
+    });
+    const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 20 });
+    const parsed = parseResponse(result);
+    expect(parsed?.data?.totalDivergentGroups).toBe(1);
+    expect(parsed?.data?.returnedGroups).toBe(1);
+    expect(parsed?.data?.groups?.[0]?.normalizedPath).toBe('specs/02--system-spec-kit/011-test/memory/b.md');
+    expect(parsed?.data?.groups?.[0]?.variants?.map((variant: { filePath: string }) => variant.filePath)).toEqual([
+      '.opencode/specs/02--system-spec-kit/011-test/memory/b.md',
+      'specs/02--system-spec-kit/011-test/memory/b.md',
+    ]);
   });
 
   it('EXT-H11: divergent_aliases mode respects limit', async () => {

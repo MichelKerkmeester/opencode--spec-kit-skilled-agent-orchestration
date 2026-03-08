@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# SPECKIT: VALIDATE SPEC
+# COMPONENT: Validate Spec
 # ───────────────────────────────────────────────────────────────
 # Spec Folder Validation Orchestrator - Bash 3.2+ compatible
 

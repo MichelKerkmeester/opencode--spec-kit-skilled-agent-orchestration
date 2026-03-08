@@ -186,12 +186,20 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
   }
 
   const shouldEmitPostMutationFeedback = result.status !== 'duplicate';
-  const postMutationFeedback = shouldEmitPostMutationFeedback
-    ? buildMutationHookFeedback(
-        'save',
-        runPostMutationHooks('save', { specFolder: result.specFolder, filePath })
-      )
-    : null;
+  let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
+  if (shouldEmitPostMutationFeedback) {
+    let postMutationHooks: import('../mutation-hooks').MutationHookResult;
+    try {
+      postMutationHooks = runPostMutationHooks('save', { specFolder: result.specFolder, filePath });
+    } catch {
+      postMutationHooks = {
+        latencyMs: 0, triggerCacheCleared: false,
+        constitutionalCacheCleared: false, toolCacheInvalidated: 0,
+        graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+      };
+    }
+    postMutationFeedback = buildMutationHookFeedback('save', postMutationHooks);
+  }
 
   const response: Record<string, unknown> = {
     status: result.status,

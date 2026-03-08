@@ -399,10 +399,18 @@ describe('T017-G2: Score Distribution Characteristics', () => {
     for (const intent of intents) {
       const weights = getAdaptiveWeights(intent);
       const expected = INTENT_WEIGHT_PROFILES[intent];
+      const coreSum = expected!.semanticWeight + expected!.keywordWeight + expected!.recencyWeight;
+      const normalizedExpected = Math.abs(coreSum - 1.0) > 0.001
+        ? {
+            semanticWeight: expected!.semanticWeight / coreSum,
+            keywordWeight: expected!.keywordWeight / coreSum,
+            recencyWeight: expected!.recencyWeight / coreSum,
+          }
+        : expected!;
 
-      expect(weights.semanticWeight).toBe(expected!.semanticWeight);
-      expect(weights.keywordWeight).toBe(expected!.keywordWeight);
-      expect(weights.recencyWeight).toBe(expected!.recencyWeight);
+      expect(weights.semanticWeight).toBeCloseTo(normalizedExpected.semanticWeight, 10);
+      expect(weights.keywordWeight).toBeCloseTo(normalizedExpected.keywordWeight, 10);
+      expect(weights.recencyWeight).toBeCloseTo(normalizedExpected.recencyWeight, 10);
     }
   });
 });

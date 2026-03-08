@@ -391,6 +391,10 @@ async function processQueuedJob(jobId: string): Promise<void> {
 
   // Resume from filesProcessed against the original submitted path order.
   let currentIndex = job.filesProcessed;
+  // AI-WHY: Track actual failure count independently of the truncated errors array.
+  // The errors array is capped at MAX_STORED_ERRORS, so using errors.length for
+  // terminal state decisions would misclassify all-fail jobs with >50 files as "complete".
+  let failCount = 0;
 
   while (currentIndex < job.paths.length) {
     const current = getIngestJob(jobId);
@@ -411,6 +415,7 @@ async function processQueuedJob(jobId: string): Promise<void> {
         ? new Error('File not accessible')
         : error;
       await appendIngestError(jobId, nextPath, normalizedError);
+      failCount += 1;
       console.warn(`[job-queue] File error (continuing): ${nextPath} — ${toErrorMessage(normalizedError)}`);
     }
 
@@ -418,12 +423,12 @@ async function processQueuedJob(jobId: string): Promise<void> {
     currentIndex = job.filesProcessed;
   }
 
-  // Determine terminal state: complete if no errors, failed if some files errored.
+  // Determine terminal state: complete if no errors, failed if all files errored.
   const done = getIngestJob(jobId);
   if (!done) return;
   if (done.state === 'cancelled') return;
 
-  if (done.errors.length > 0 && done.errors.length >= done.filesTotal) {
+  if (failCount > 0 && failCount >= done.filesTotal) {
     // All files failed — mark as failed.
     await setIngestJobState(jobId, 'failed');
   } else {

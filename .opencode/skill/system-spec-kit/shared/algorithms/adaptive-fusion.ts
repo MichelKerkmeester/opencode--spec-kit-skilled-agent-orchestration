@@ -94,7 +94,7 @@ function isFeatureEnabled(flagName: string, identity?: string): boolean {
 
   if (clampedRollout >= 100) return true;
   if (clampedRollout <= 0) return false;
-  if (!identity || identity.trim().length === 0) return true;
+  if (!identity || identity.trim().length === 0) return false;
 
   let hash = 0;
   for (let i = 0; i < identity.length; i += 1) {
@@ -187,7 +187,7 @@ export function adaptiveFuse(
 ): FusionResult[] {
   const lists: RankedList[] = [];
 
-  if (semanticResults.length > 0) {
+  if (semanticResults.length > 0 && weights.semanticWeight > 0) {
     lists.push({
       source: 'vector',
       results: semanticResults,
@@ -195,7 +195,7 @@ export function adaptiveFuse(
     });
   }
 
-  if (keywordResults.length > 0) {
+  if (keywordResults.length > 0 && weights.keywordWeight > 0) {
     lists.push({
       source: 'keyword',
       results: keywordResults,
@@ -204,6 +204,7 @@ export function adaptiveFuse(
   }
 
   if (lists.length === 0) {
+    // AI: Fix F3 — return empty on all-zero weights.
     return [];
   }
 

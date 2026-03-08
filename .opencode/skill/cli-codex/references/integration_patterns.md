@@ -212,7 +212,7 @@ tail -f /tmp/generated-tests.ts
 
 | Dimension | GPT-5.4 | GPT-5.3-Codex |
 |-----------|---------|---------------|
-| Reasoning depth | Frontier (configurable effort) | High (xhigh fixed) |
+| Reasoning depth | Frontier (configurable via `-c model_reasoning_effort`) | High (xhigh fixed) |
 | Code generation | Strong | Optimized |
 | Architecture analysis | Best choice | Good |
 | Security reasoning | Best choice | Good |

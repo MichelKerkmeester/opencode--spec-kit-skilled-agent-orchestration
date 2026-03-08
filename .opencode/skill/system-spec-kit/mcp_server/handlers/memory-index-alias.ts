@@ -2,8 +2,12 @@
 // MODULE: Memory Index Alias Conflict Helpers
 // ---------------------------------------------------------------
 
+/* ------- 1. DEPENDENCIES ------- */
+
 import { requireDb, toErrorMessage } from '../utils';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
+
+/* ------- 2. TYPES ------- */
 
 const DOT_OPENCODE_SPECS_SEGMENT = '/.opencode/specs/';
 const SPECS_SEGMENT = '/specs/';
@@ -91,15 +95,12 @@ function toSpecAliasKey(filePath: string): string {
   return toNormalizedPath(filePath).replace(DOT_OPENCODE_SPECS_SEGMENT, SPECS_SEGMENT);
 }
 
-export function summarizeAliasConflicts(rows: AliasConflictRow[]): AliasConflictSummary {
-  if (!rows.length) {
-    return { ...EMPTY_ALIAS_CONFLICT_SUMMARY };
-  }
+/* ------- 3. ALIAS CONFLICT ANALYSIS ------- */
 
+/** Build alias conflict buckets from index rows. */
+function buildAliasBuckets(rows: AliasConflictRow[]): Map<string, AliasConflictBucket> {
   const buckets = new Map<string, AliasConflictBucket>();
-  const sortedRows = [...rows].sort((a, b) => a.file_path.localeCompare(b.file_path));
-
-  for (const row of sortedRows) {
+  for (const row of rows) {
     if (!row || typeof row.file_path !== 'string' || row.file_path.length === 0) {
       continue;
     }
@@ -129,6 +130,16 @@ export function summarizeAliasConflicts(rows: AliasConflictRow[]): AliasConflict
       bucket.hashes.add(row.content_hash.trim());
     }
   }
+  return buckets;
+}
+
+export function summarizeAliasConflicts(rows: AliasConflictRow[]): AliasConflictSummary {
+  if (!rows.length) {
+    return { ...EMPTY_ALIAS_CONFLICT_SUMMARY };
+  }
+
+  const sortedRows = [...rows].sort((a, b) => a.file_path.localeCompare(b.file_path));
+  const buckets = buildAliasBuckets(sortedRows);
 
   const summary: AliasConflictSummary = { ...EMPTY_ALIAS_CONFLICT_SUMMARY, samples: [] };
 
@@ -199,37 +210,7 @@ function listDivergentAliasConflictCandidates(
     ORDER BY file_path ASC
   `).all() as AliasConflictRow[];
 
-  const buckets = new Map<string, AliasConflictBucket>();
-  for (const row of rows) {
-    if (!row || typeof row.file_path !== 'string' || row.file_path.length === 0) {
-      continue;
-    }
-
-    const normalizedPath = toNormalizedPath(row.file_path);
-    const aliasKey = toSpecAliasKey(normalizedPath);
-    let bucket = buckets.get(aliasKey);
-    if (!bucket) {
-      bucket = {
-        hasDotOpencodeVariant: false,
-        hasSpecsVariant: false,
-        variants: new Set<string>(),
-        hashes: new Set<string>(),
-      };
-      buckets.set(aliasKey, bucket);
-    }
-
-    if (normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
-      bucket.hasDotOpencodeVariant = true;
-    }
-    if (normalizedPath.includes(SPECS_SEGMENT) && !normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
-      bucket.hasSpecsVariant = true;
-    }
-    bucket.variants.add(normalizedPath);
-
-    if (typeof row.content_hash === 'string' && row.content_hash.trim().length > 0) {
-      bucket.hashes.add(row.content_hash.trim());
-    }
-  }
+  const buckets = buildAliasBuckets(rows);
 
   const candidates: DivergenceReconcileCandidate[] = [];
   for (const [normalizedPath, bucket] of buckets.entries()) {
@@ -251,6 +232,8 @@ function listDivergentAliasConflictCandidates(
 
   return candidates.sort((a, b) => a.normalizedPath.localeCompare(b.normalizedPath));
 }
+
+/* ------- 4. EXPORTS ------- */
 
 export function runDivergenceReconcileHooks(
   aliasConflicts: AliasConflictSummary,

@@ -35,7 +35,6 @@ const COMMUNITY_EDGE_WEIGHT_THRESHOLD = 0.3;
 // 4. MODULE-LEVEL DEBOUNCE STATE
 // ---------------------------------------------------------------------------
 
-let lastEdgeCount: number = -1;
 let lastDebounceHash: string = '';
 let computedThisSession: boolean = false;
 
@@ -43,7 +42,7 @@ let computedThisSession: boolean = false;
  * Reset module-level debounce state. Exported for testing only.
  */
 export function resetCommunityDetectionState(): void {
-  lastEdgeCount = -1;
+  lastDebounceHash = '';
   computedThisSession = false;
 }
 
@@ -321,7 +320,11 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
       .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId FROM causal_edges")
       .get() as { cnt: number; maxId: number | null } | undefined;
     const currentEdgeCount = edgeStatsRow?.cnt ?? 0;
-    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}`;
+    // AI: Fix F22 — include SUM of source/target IDs for update-sensitive fingerprint.
+    const edgeChecksumRow = db
+      .prepare("SELECT COALESCE(SUM(CAST(source_id AS INTEGER) + CAST(target_id AS INTEGER)), 0) AS cksum FROM causal_edges")
+      .get() as { cksum: number } | undefined;
+    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}:${edgeChecksumRow?.cksum ?? 0}`;
 
     if (
       computedThisSession &&
@@ -347,7 +350,6 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
     }
 
     // --- Update debounce state -----------------------------------------------
-    lastEdgeCount = currentEdgeCount;
     lastDebounceHash = currentDebounceHash;
     computedThisSession = true;
 

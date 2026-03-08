@@ -62,6 +62,18 @@ function isIndexResult(result: IndexResult | RetryErrorResult): result is IndexR
   return 'status' in result;
 }
 
+/** Individual file result from a memory index scan. */
+interface ScanFileEntry {
+  file: string;
+  filePath?: string;
+  status?: string;
+  specFolder?: string;
+  id?: number;
+  isConstitutional?: boolean;
+  error?: string;
+  errorDetail?: string;
+}
+
 interface ScanResults {
   scanned: number;
   indexed: number;
@@ -73,7 +85,7 @@ interface ScanResults {
   mtimeUpdates: number;
   staleDeleted: number;
   staleDeleteFailed: number;
-  files: { file: string; filePath?: string; status?: string; specFolder?: string; id?: number; isConstitutional?: boolean; error?: string; errorDetail?: string }[];
+  files: ScanFileEntry[];
   constitutional: {
     found: number;
     indexed: number;
@@ -216,7 +228,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
         } else {
           failed++;
         }
-      } catch {
+      } catch (error: unknown) {
         failed++;
       }
     }

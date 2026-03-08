@@ -345,7 +345,7 @@ export async function formatSearchResults(
       specFolder: rawResult.spec_folder,
       filePath: rawResult.file_path,
       title: rawResult.title,
-      similarity: rawResult.similarity || rawResult.averageSimilarity,
+      similarity: rawResult.similarity ?? rawResult.averageSimilarity,
       isConstitutional: rawResult.isConstitutional || false,
       importanceTier: rawResult.importance_tier,
       triggerPhrases: Array.isArray(rawResult.triggerPhrases) ? rawResult.triggerPhrases :
@@ -357,7 +357,7 @@ export async function formatSearchResults(
       chunkLabel: (typeof rawResult.chunkLabel === 'string'
         ? rawResult.chunkLabel
         : (typeof rawResult.chunk_label === 'string' ? rawResult.chunk_label : null)),
-      chunkCount: toNullableNumber(rawResult.chunkCount),
+      chunkCount: toNullableNumber(rawResult.chunkCount ?? rawResult.chunk_count),
       contentSource: (rawResult.contentSource === 'reassembled_chunks' || rawResult.contentSource === 'file_read_fallback')
         ? rawResult.contentSource
         : undefined,
@@ -512,9 +512,11 @@ export async function formatSearchResults(
     constitutionalCount: constitutionalCount,
     results: formatted,
   };
-  // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.)
+  // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.).
+  // AI-WHY: Spread extraData first, then re-assert canonical keys to prevent overwrites.
   if (extraData && Object.keys(extraData).length > 0) {
-    Object.assign(responseData, extraData);
+    const { searchType: _s, count: _c, constitutionalCount: _cc, results: _r, ...safeExtra } = extraData as Record<string, unknown>;
+    Object.assign(responseData, safeExtra);
   }
 
   return createMCPSuccessResponse({

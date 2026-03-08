@@ -18,12 +18,18 @@ const workflowHarness = vi.hoisted(() => ({
   contextDir: '',
   writtenFiles: [] as Array<{ contextDir: string; files: Record<string, string> }>,
   loaderSnapshots: [] as Array<{ dataFile: string | null; specFolderArg: string | null }>,
+  detectSnapshots: [] as Array<{ specFolderArg: string | null }>,
   loaderDataWithFile: null as Record<string, unknown> | null,
   loaderDataWithoutFile: null as Record<string, unknown> | null,
 }));
 
 vi.mock('../spec-folder', () => ({
-  detectSpecFolder: vi.fn(async () => workflowHarness.specFolderPath),
+  detectSpecFolder: vi.fn(async (_collectedData: unknown, options?: { specFolderArg?: string | null }) => {
+    workflowHarness.detectSnapshots.push({
+      specFolderArg: options?.specFolderArg ?? null,
+    });
+    return workflowHarness.specFolderPath;
+  }),
   setupContextDirectory: vi.fn(async () => workflowHarness.contextDir),
 }));
 
@@ -83,14 +89,13 @@ vi.mock('../core/file-writer', () => ({
 }));
 
 vi.mock('../loaders/data-loader', () => ({
-  loadCollectedData: vi.fn(async () => {
-    const { CONFIG } = await import('../core');
+  loadCollectedData: vi.fn(async (options?: { dataFile?: string | null; specFolderArg?: string | null }) => {
     workflowHarness.loaderSnapshots.push({
-      dataFile: CONFIG.DATA_FILE,
-      specFolderArg: CONFIG.SPEC_FOLDER_ARG,
+      dataFile: options?.dataFile ?? null,
+      specFolderArg: options?.specFolderArg ?? null,
     });
 
-    if (CONFIG.DATA_FILE) {
+    if (options?.dataFile) {
       return workflowHarness.loaderDataWithFile ?? {
         _source: 'file',
         userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:00:00Z' }],
@@ -223,6 +228,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   workflowHarness.writtenFiles = [];
   workflowHarness.loaderSnapshots = [];
+  workflowHarness.detectSnapshots = [];
   workflowHarness.loaderDataWithFile = null;
   workflowHarness.loaderDataWithoutFile = null;
 });
@@ -649,17 +655,16 @@ describe('workflow seam guardrail', () => {
     const { CONFIG } = await import('../core');
     const specFolderModule = await import('../spec-folder');
     const detectSpecFolderMock = vi.mocked(specFolderModule.detectSpecFolder);
-    const configSnapshots: Array<{ dataFile: string | null; specFolderArg: string | null }> = [];
+    const detectSnapshots: Array<{ specFolderArg: string | null }> = [];
     const firstLoadStarted = createDeferred<void>();
     const releaseFirstLoad = createDeferred<void>();
 
     CONFIG.DATA_FILE = null;
     CONFIG.SPEC_FOLDER_ARG = null;
 
-    detectSpecFolderMock.mockImplementation(async () => {
-      configSnapshots.push({
-        dataFile: CONFIG.DATA_FILE,
-        specFolderArg: CONFIG.SPEC_FOLDER_ARG,
+    detectSpecFolderMock.mockImplementation(async (_collectedData: unknown, options?: { specFolderArg?: string | null }) => {
+      detectSnapshots.push({
+        specFolderArg: options?.specFolderArg ?? null,
       });
       return workflowHarness.specFolderPath;
     });
@@ -700,9 +705,9 @@ describe('workflow seam guardrail', () => {
 
     await Promise.all([firstRunPromise, secondRunPromise]);
 
-    expect(configSnapshots).toEqual([
-      { dataFile: '/tmp/first.json', specFolderArg: '001-first-run' },
-      { dataFile: '/tmp/second.json', specFolderArg: '002-second-run' },
+    expect(detectSnapshots).toEqual([
+      { specFolderArg: '001-first-run' },
+      { specFolderArg: '002-second-run' },
     ]);
     expect(CONFIG.DATA_FILE).toBeNull();
     expect(CONFIG.SPEC_FOLDER_ARG).toBeNull();

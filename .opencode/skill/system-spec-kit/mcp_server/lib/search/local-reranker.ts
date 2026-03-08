@@ -178,7 +178,7 @@ async function scorePrompt(context: unknown, prompt: string): Promise<number> {
 }
 
 export async function canUseLocalReranker(): Promise<boolean> {
-  if (process.env.RERANKER_LOCAL !== 'true') {
+  if (process.env.RERANKER_LOCAL?.toLowerCase().trim() !== 'true') {
     return false;
   }
 
@@ -240,9 +240,16 @@ export async function rerankLocal<T extends LocalRerankRow>(
         for (const candidate of rerankCandidates.slice(0, rerankCount)) {
           const content = resolveRowText(candidate);
           const prompt = `query: ${query}\ndocument: ${content}`;
-          const boundedPrompt = Buffer.byteLength(prompt, 'utf8') > MAX_PROMPT_BYTES
-            ? Buffer.from(prompt, 'utf8').subarray(0, MAX_PROMPT_BYTES).toString('utf8')
-            : prompt;
+          // AI-WHY: Truncate by character count after converting from bytes to avoid
+          // splitting multi-byte UTF-8 sequences (which produces replacement chars).
+          let boundedPrompt = prompt;
+          if (Buffer.byteLength(prompt, 'utf8') > MAX_PROMPT_BYTES) {
+            const buf = Buffer.from(prompt, 'utf8');
+            let end = MAX_PROMPT_BYTES;
+            // Walk back to a valid UTF-8 boundary (continuation bytes start with 10xxxxxx).
+            while (end > 0 && (buf[end] & 0xC0) === 0x80) { end -= 1; }
+            boundedPrompt = buf.subarray(0, end).toString('utf8');
+          }
           const rerankScore = await scorePrompt(context, boundedPrompt);
           scored.push({ candidate, rerankScore });
         }

@@ -15,6 +15,10 @@ import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 import * as consumptionLogger from '../lib/telemetry/consumption-logger';
 
+function parseEnvelope(response: Awaited<ReturnType<typeof handler.handleMemoryMatchTriggers>>) {
+  return JSON.parse(response.content[0].text);
+}
+
 describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
     it('T517-1: handleMemoryMatchTriggers exported', () => {
@@ -27,20 +31,37 @@ describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]'
   });
 
   describe('Input Validation', () => {
-    it('T517-3: Missing prompt throws error', async () => {
-      await expect(handler.handleMemoryMatchTriggers({})).rejects.toThrow(/prompt.*required|required.*prompt/);
+    it('T517-3: Missing prompt returns MCP validation error', async () => {
+      const response = await handler.handleMemoryMatchTriggers({});
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt.*required|required.*prompt/i);
+      expect(payload.data.code).toBe('E_VALIDATION');
     });
 
-    it('T517-4: Null prompt throws error', async () => {
-      await expect(handler.handleMemoryMatchTriggers({ prompt: null })).rejects.toThrow(/prompt/);
+    it('T517-4: Null prompt returns MCP validation error', async () => {
+      const response = await handler.handleMemoryMatchTriggers({ prompt: null });
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt/i);
     });
 
-    it('T517-5: Empty string prompt throws error', async () => {
-      await expect(handler.handleMemoryMatchTriggers({ prompt: '' })).rejects.toThrow(/prompt/);
+    it('T517-5: Empty string prompt returns MCP validation error', async () => {
+      const response = await handler.handleMemoryMatchTriggers({ prompt: '' });
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt/i);
     });
 
-    it('T517-6: Non-string prompt throws error', async () => {
-      await expect(handler.handleMemoryMatchTriggers({ prompt: 12345 })).rejects.toThrow(/prompt.*string|string.*prompt/);
+    it('T517-6: Non-string prompt returns MCP validation error', async () => {
+      const response = await handler.handleMemoryMatchTriggers({ prompt: 12345 });
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt.*string|string.*prompt/i);
     });
   });
 

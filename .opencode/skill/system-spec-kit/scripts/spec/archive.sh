@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
-# SPEC-KIT: ARCHIVE SPEC
+# COMPONENT: Archive Spec
 # ───────────────────────────────────────────────────────────────
 #
 # Archive completed spec folders to specs/z_archive/

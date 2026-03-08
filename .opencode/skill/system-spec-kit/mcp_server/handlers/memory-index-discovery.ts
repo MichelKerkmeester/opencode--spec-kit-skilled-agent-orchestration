@@ -2,11 +2,15 @@
 // MODULE: Memory Index Discovery Helpers
 // ---------------------------------------------------------------
 
+/* ------- 1. DEPENDENCIES ------- */
+
 import fs from 'fs';
 import path from 'path';
 
 import { toErrorMessage } from '../utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
+
+/* ------- 2. CONSTANTS ------- */
 
 /** Well-known spec folder document filenames. */
 const SPEC_DOCUMENT_FILENAMES = new Set([
@@ -25,6 +29,8 @@ const SPEC_DOC_EXCLUDE_DIRS = new Set(['scratch', 'memory', 'node_modules']);
 
 /** Constitutional markdown basenames intentionally excluded from indexing. */
 const EXCLUDED_CONSTITUTIONAL_BASENAMES = new Set(['readme.md', 'readme.txt']);
+
+/* ------- 3. DISCOVERY FUNCTIONS ------- */
 
 export interface SpecDiscoveryOptions {
   specFolder?: string | null;
@@ -81,7 +87,7 @@ export function findSpecDocuments(workspacePath: string, options: SpecDiscoveryO
           results.push(fullPath);
         }
       }
-    } catch {
+    } catch (error: unknown) {
       // Skip directories we can't read.
     }
   }
@@ -145,10 +151,10 @@ export function detectSpecLevel(specPath: string): number | null {
       if (hasDecisionRecord) return 3;
       if (hasChecklist) return 2;
       return 1;
-    } catch {
+    } catch (error: unknown) {
       return null;
     }
-  } catch {
+  } catch (error: unknown) {
     return null;
   }
 }

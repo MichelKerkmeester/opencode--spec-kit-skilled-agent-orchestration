@@ -180,7 +180,7 @@ function resolveProvider(): string | null {
   // Check API keys in priority order
   if (process.env.VOYAGE_API_KEY) return 'voyage';
   if (process.env.COHERE_API_KEY) return 'cohere';
-  if (process.env.RERANKER_LOCAL === 'true') return 'local';
+  if (process.env.RERANKER_LOCAL?.toLowerCase().trim() === 'true') return 'local';
 
   return null;
 }

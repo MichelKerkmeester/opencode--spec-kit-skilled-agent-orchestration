@@ -30,6 +30,7 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 | ------------------------------ | ----------------------------------------------------------------------------------- |
 | `--model gpt-5.4`              | GPT-5.4: frontier reasoning, complex analysis, architecture, security              |
 | `--model gpt-5.3-codex`        | GPT-5.3-Codex: code generation, standard review, implementation, docs              |
+| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium`, `high`, `xhigh` (GPT-5.4 only) |
 | `--sandbox read-only`          | Safe mode: read files, no writes or shell commands                                  |
 | `--sandbox workspace-write`    | Allow file writes and build commands within workspace                               |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval**                             |

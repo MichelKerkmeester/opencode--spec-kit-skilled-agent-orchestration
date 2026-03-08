@@ -1019,7 +1019,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           finalMemoryIds = results.map(r => r.id as number).filter(id => typeof id === 'number');
           finalScores = results.map(r => (r.score ?? r.similarity ?? 0) as number);
         }
-      } catch { /* ignore parse errors */ }
+      } catch (error: unknown) { /* ignore parse errors */ }
       logFinalResult({
         evalRunId: _evalRunId,
         queryId: _evalQueryId,
@@ -1040,7 +1040,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         });
       }
     }
-  } catch { /* eval logging must never break search */ }
+  } catch (error: unknown) { /* eval logging must never break search */ }
 
   return responseToReturn;
 }

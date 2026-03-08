@@ -1,3 +1,10 @@
+---
+title: "Decision Record: Combined Bug Fixes (016)"
+description: "Merged architectural decisions from 013 and 015 source spec folders"
+SPECKIT_TEMPLATE_SOURCE: "decision-record | v2.2"
+importance_tier: "normal"
+contextType: "implementation"
+---
 # Decision Record: Combined Bug Fixes (016)
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -11,8 +18,8 @@ This is a **combined decision record** merging architectural decisions from two 
 
 | # | Source Folder | ADR Count | Date Range |
 |---|---------------|-----------|------------|
-| 1 | `008-combined-bug-fixes` | ADR-001, ADR-002 | 2026-03-06 |
-| 2 | `008-combined-bug-fixes` | ADR-001 through ADR-009 | 2026-03-07 |
+| 1 | `013-memory-search-bug-fixes` (merged) | ADR-001, ADR-002 | 2026-03-06 |
+| 2 | `015-bug-fixes-and-alignment` (merged) | ADR-001 through ADR-009 | 2026-03-07 |
 
 **Total decisions preserved:** 11 ADRs across workflow serialization, alias-root stability, fix-in-place strategy, provider resolution, dead code removal, documentation inflation, database fallback paths, verification prioritization, canonical merge governance, inherited ADR digests, and folder retirement.
 
@@ -33,7 +40,7 @@ This is a **combined decision record** merging architectural decisions from two 
 |-------|-------|
 | **Status** | Accepted |
 | **Date** | 2026-03-06 |
-| **Deciders** | OpenCode @speckit packet authoring for spec 013 |
+| **Deciders** | OpenCode @speckit packet authoring in canonical packet `008-combined-bug-fixes` (source stream 013) |
 
 ---
 
@@ -116,7 +123,7 @@ This is a **combined decision record** merging architectural decisions from two 
 |-------|-------|
 | **Status** | Accepted |
 | **Date** | 2026-03-06 |
-| **Deciders** | OpenCode @speckit packet authoring for spec 013 |
+| **Deciders** | OpenCode @speckit packet authoring in canonical packet `008-combined-bug-fixes` (source stream 013) |
 
 ---
 
@@ -345,14 +352,14 @@ The audit found 35 P1 code bugs across algorithms, scoring, graph, handlers, mut
 
 ### Context
 
-This spec currently contains a large inherited backlog from a prior 40-agent audit. New direct verification has reproduced a smaller set of concrete blockers (gate failures, search/runtime contract mismatches, checkpoint restore mismatch, and documentation truthfulness gaps). Treating all inherited findings as equally current creates planning noise and hides the immediate release blockers.
+This spec currently contains a large inherited backlog from a prior 40-agent audit. New direct verification plus post-fix refresh evidence on 2026-03-07 shows a narrower active set: `npm run check` is green, `npm run check:full` is now green after follow-up fixes and contract alignment, and checkpoint/scope fixes in this packet are confirmed. Treating all inherited findings as equally current still creates planning noise and hides immediate release blockers.
 
 ### Decision
 
 **Prioritize reproduced findings first, keep inherited audit findings as provisional backlog.**
 
 Execution order:
-1. Resolve verification-aligned findings (VF-001 through VF-008) and restore green gate status.
+1. Resolve verification-aligned findings with current-state evidence, preserving green `npm run check` and `npm run check:full` gates after follow-up fixes and contract alignment.
 2. Track inherited P0/P1/P2 findings as candidate backlog until each item is reproduced or explicitly deprioritized.
 3. Gate release-readiness on current verification health and documentation truthfulness, not inherited count totals.
 
@@ -367,7 +374,7 @@ Execution order:
 ---
 
 <!-- ANCHOR:adr-015-007 -->
-## ADR-007: Canonical Merge Governance for 015 (Supersede 009 + 010)
+## ADR-007: Canonical Merge Governance for 008 (Supersede 009 + 010)
 
 | Field     | Value                                                       |
 | --------- | ----------------------------------------------------------- |
@@ -382,17 +389,17 @@ Folder `008-combined-bug-fixes` now acts as the canonical active destination for
 - `009-post-review-remediation-epic` preserves remediation-epic lineage and root ADR context (including ADR-001 through ADR-003 in its inherited decision stream).
 - `010-cross-ai-audit` preserves cross-AI audit provenance and handover state, including historical test snapshot metadata (`243 files`, `7205 tests`).
 
-These records include contradictory completion statements across time. Blindly copying all claims into 015 would re-introduce truth drift.
+These records include contradictory completion statements across time. Blindly copying all claims into canonical 008 would re-introduce truth drift.
 
 ### Decision
 
-**Use 015 as the single active canonical folder and treat 009/010 as historical source artifacts.**
+**Use 008 as the single active canonical folder and treat 009/010 plus 015 source streams as historical artifacts.**
 
 Operational rules:
-1. 015 is the only active planning truth for open/closed status.
-2. 009 and 010 remain preserved and receive superseded pointers to 015.
+1. 008 is the only active planning truth for open/closed status.
+2. 009 and 010 remain preserved and receive superseded pointers to 008.
 3. Inherited completion claims are retained only as historical snapshots unless reproduced in current verification.
-4. Handover provenance from 010 is referenced in 015 summaries, but the source handover file in folder 010 is not edited in this merge.
+4. Handover provenance from 010 is referenced in canonical 008 summaries, but the source handover file in folder 010 is not edited in this merge.
 
 ### Consequences
 
@@ -416,11 +423,11 @@ Operational rules:
 
 ### Context
 
-Folder `009-post-review-remediation-epic` contains the substantive rationale bodies for three historical decisions that were implemented before this archival fold-in but were not yet summarized in 015 as canonical historical context.
+Folder `009-post-review-remediation-epic` contains the substantive rationale bodies for three historical decisions that were implemented before this archival fold-in but were not yet summarized in canonical 008 as historical context.
 
 ### Decision
 
-**Absorb the decision substance from 009 ADR-001..003 into 015 as inherited historical decisions already implemented.**
+**Absorb the decision substance from 009 ADR-001..003 into canonical 008 as inherited historical decisions already implemented.**
 
 Inherited decision digest:
 1. **Legacy V1 pipeline removal:** remove dead V1 pipeline code and keep V2 as sole runtime path to eliminate dead-path P0 exposure.
@@ -455,7 +462,7 @@ Unique historical content from 009 (ADR bodies + remediation execution details) 
 
 Operational rules:
 1. 015 remains the only live canonical folder for this remediation track.
-2. 009/010 content persists only through historical digests in 015 and normalized downstream references.
+2. 009/010 content persists only through historical digests in canonical 008 and normalized downstream references.
 3. Resume/navigation pointers must target 015 or subsequent active folders (for example, 011/012), not deleted legacy folders.
 
 ### Consequences
@@ -463,7 +470,7 @@ Operational rules:
 - Positive: Removes split-canonical ambiguity and folder-level drift.
 - Positive: Preserves unique historical context while reducing maintenance surface.
 - Negative: Legacy direct folder paths for 009/010 become invalid.
-- Mitigation: Keep explicit historical snapshot language in 015 and canonical mapping notes in related docs.
+- Mitigation: Keep explicit historical snapshot language in canonical 008 and mapping notes in related docs.
 <!-- /ANCHOR:adr-015-009 -->
 
 <!-- /ANCHOR:source-015 -->

@@ -187,7 +187,13 @@ export function parseLearnedTriggers(raw: string | null | undefined): LearnedTri
   try {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed as LearnedTriggerEntry[];
+    return parsed.filter(
+      (e: unknown): e is LearnedTriggerEntry =>
+        typeof e === 'object' && e !== null &&
+        typeof (e as LearnedTriggerEntry).term === 'string' &&
+        typeof (e as LearnedTriggerEntry).addedAt === 'number' &&
+        typeof (e as LearnedTriggerEntry).expiresAt === 'number'
+    );
   } catch {
     return [];
   }

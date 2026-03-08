@@ -162,6 +162,40 @@ describe('C136-10 Adaptive Fusion', () => {
     expect(result.weights.keywordWeight).toBe(0.2);
   });
 
+  it('T10b: partial rollout without identity fails closed to standard fusion', () => {
+    setEnv(FEATURE_FLAG, 'true');
+    setEnv('SPECKIT_ROLLOUT_PERCENT', '25');
+
+    expect(isAdaptiveFusionEnabled()).toBe(false);
+    expect(isAdaptiveFusionEnabled('   ')).toBe(false);
+
+    const semantic = makeItems(3, 'sem');
+    const keyword = makeItems(3, 'kw');
+    const result = hybridAdaptiveFuse(semantic, keyword, 'understand');
+    const standard = standardFuse(semantic, keyword);
+
+    expect(result.results.map(r => r.id)).toEqual(standard.map(r => r.id));
+  });
+
+  it('T10c: partial rollout still honors deterministic identity bucketing', () => {
+    setEnv(FEATURE_FLAG, 'true');
+    setEnv('SPECKIT_ROLLOUT_PERCENT', '25');
+
+    expect(isAdaptiveFusionEnabled('session-0')).toBe(false);
+    expect(isAdaptiveFusionEnabled('session-3')).toBe(true);
+
+    const semantic = makeItems(3, 'sem');
+    const keyword = makeItems(3, 'kw');
+
+    const outOfBucket = hybridAdaptiveFuse(semantic, keyword, 'understand', { identity: 'session-0' });
+    const inBucket = hybridAdaptiveFuse(semantic, keyword, 'understand', { identity: 'session-3' });
+    const standard = standardFuse(semantic, keyword);
+
+    expect(outOfBucket.results.map(r => r.id)).toEqual(standard.map(r => r.id));
+    expect(inBucket.weights.semanticWeight).toBe(0.7);
+    expect(inBucket.weights.keywordWeight).toBe(0.2);
+  });
+
   // ---- T11: Dark-run mode computes diff ----
   it('T11: dark-run mode returns standard results with diff', () => {
     setEnv(FEATURE_FLAG, 'false');
@@ -185,31 +219,31 @@ describe('C136-10 Adaptive Fusion', () => {
     // Validate the DegradedModeContract interface shape directly.
     // The contract is returned by hybridAdaptiveFuse when adaptive fusion fails.
     const contract: DegradedModeContract = {
-      failure_mode: 'adaptive_fusion_error: simulated failure',
-      fallback_mode: 'standard_rrf',
-      confidence_impact: 0.3,
-      retry_recommendation: 'none',
+      failureMode: 'adaptive_fusion_error: simulated failure',
+      fallbackMode: 'standard_rrf',
+      confidenceImpact: 0.3,
+      retryRecommendation: 'none',
     };
 
     // Validate contract field types and constraints
-    expect(typeof contract.failure_mode).toBe('string');
-    expect(contract.failure_mode).toContain('adaptive_fusion_error');
-    expect(contract.fallback_mode).toBe('standard_rrf');
-    expect(contract.confidence_impact).toBeGreaterThan(0);
-    expect(contract.confidence_impact).toBeLessThanOrEqual(1.0);
-    expect(contract.retry_recommendation).toBe('none');
+    expect(typeof contract.failureMode).toBe('string');
+    expect(contract.failureMode).toContain('adaptive_fusion_error');
+    expect(contract.fallbackMode).toBe('standard_rrf');
+    expect(contract.confidenceImpact).toBeGreaterThan(0);
+    expect(contract.confidenceImpact).toBeLessThanOrEqual(1.0);
+    expect(contract.retryRecommendation).toBe('none');
 
     // Verify empty_results degraded contract (total failure)
     const totalFailure: DegradedModeContract = {
-      failure_mode: 'standard_fusion_error: catastrophic',
-      fallback_mode: 'empty_results',
-      confidence_impact: 1.0,
-      retry_recommendation: 'immediate',
+      failureMode: 'standard_fusion_error: catastrophic',
+      fallbackMode: 'empty_results',
+      confidenceImpact: 1.0,
+      retryRecommendation: 'immediate',
     };
 
-    expect(totalFailure.confidence_impact).toBe(1.0);
-    expect(totalFailure.retry_recommendation).toBe('immediate');
-    expect(totalFailure.fallback_mode).toBe('empty_results');
+    expect(totalFailure.confidenceImpact).toBe(1.0);
+    expect(totalFailure.retryRecommendation).toBe('immediate');
+    expect(totalFailure.fallbackMode).toBe('empty_results');
 
     // Also verify that when flag is ON and results exist, no degraded contract is set
     setEnv(FEATURE_FLAG, 'true');

@@ -64,9 +64,9 @@ This implementation introduces a canonical-path dedup pass before index batching
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (targeted + full suite subset)
-- [ ] Docs updated (spec/plan/tasks/checklist/implementation summary)
+- [x] All acceptance criteria met
+- [x] Tests passing (targeted + full suite subset)
+- [x] Docs updated (spec/plan/tasks/checklist/implementation summary)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -97,20 +97,20 @@ Targeted pipeline hardening with deterministic normalization stages.
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Add failing regression tests for alias-root duplication.
-- [ ] Add failing tier-resolution tests for mixed metadata signals.
-- [ ] Confirm current baseline behavior and capture outputs.
+- [x] Add failing regression tests for alias-root duplication.
+- [x] Add failing tier-resolution tests for mixed metadata signals.
+- [x] Confirm current baseline behavior and capture outputs.
 
 ### Phase 2: Core Implementation
-- [ ] Add canonical-path dedup in scan assembly path.
-- [ ] Keep specFolder filtering correct after canonicalization.
-- [ ] Apply deterministic tier precedence in parser/scoring flow.
-- [ ] Ensure counters and unchanged metrics use deduped set.
+- [x] Add canonical-path dedup in scan assembly path.
+- [x] Keep specFolder filtering correct after canonicalization.
+- [x] Apply deterministic tier precedence in parser/scoring flow.
+- [x] Ensure counters and unchanged metrics use deduped set.
 
 ### Phase 3: Verification
-- [ ] Run targeted Vitest files and confirm new assertions pass.
-- [ ] Run broader MCP server test subset for regression safety.
-- [ ] Update checklist with command-level evidence.
+- [x] Run targeted Vitest files and confirm new assertions pass.
+- [x] Run broader MCP server test subset for regression safety.
+- [x] Update checklist with command-level evidence.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -265,7 +265,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 
 ### ADR-001: Canonical dedup and explicit tier precedence
 
-**Status**: Proposed
+**Status**: Accepted
 
 **Context**: Duplicate alias roots and inconsistent tier interpretation undermine deterministic indexing and ranking.
 

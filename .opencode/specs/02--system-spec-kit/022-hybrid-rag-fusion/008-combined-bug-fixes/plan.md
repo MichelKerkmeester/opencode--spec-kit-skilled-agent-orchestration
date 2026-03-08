@@ -6,7 +6,7 @@ contextType: "implementation"
 ---
 # Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015)
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 (merged) -->
 
 ---
@@ -18,10 +18,12 @@ This document merges the implementation plans from four related bug-fix spec fol
 
 | # | Source Folder | Title | Status |
 |---|--------------|-------|--------|
-| 1 | `008-combined-bug-fixes` | Auto-Detected Session Selection Bug | Complete |
-| 2 | `008-combined-bug-fixes` | Subfolder Resolution Fix | Complete |
-| 3 | `008-combined-bug-fixes` | Memory Search Bug Fixes (Unified) | Complete |
-| 4 | `008-combined-bug-fixes` | Bug Fixes and Alignment | In Progress |
+| 1 | `003-auto-detected-session-bug` (merged) | Auto-Detected Session Selection Bug | Complete |
+| 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | Complete |
+| 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | Complete |
+| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress |
+
+Current gate truth (2026-03-07): `npm run check` passes, `npm run check:full` passes. Targeted post-fix verification remains green per `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`.
 
 Each section below preserves the full original plan content with source attribution.
 <!-- /ANCHOR:overview -->
@@ -31,7 +33,7 @@ Each section below preserves the full original plan content with source attribut
 
 ## Source: 003 — Auto-Detected Session Selection Bug
 
-> **Original file:** `008-combined-bug-fixes/plan.md`
+> **Source lineage:** `003` stream merged into canonical `plan.md`.
 
 ---
 
@@ -102,7 +104,7 @@ Input sources (CLI arg, JSON data, session-learning DB, CWD, auto-detect scan) a
 
 #### Phase 3: Verification and Documentation
 - [x] Add or update functional regression tests covering REQ-001 through REQ-004.
-- [x] Update command docs (`resume.md`, `handover.md`) for behavior parity.
+- [x] Update command docs (`.opencode/command/spec_kit/resume.md`, `.opencode/command/spec_kit/handover.md`) for behavior parity.
 - [x] Run validation/tests and capture evidence in checklist + implementation summary.
 <!-- /ANCHOR:003-phases -->
 
@@ -197,7 +199,7 @@ Phase 1.5 (Test Matrix) ┘
 
 ## Source: 008 — Subfolder Resolution Fix
 
-> **Original file:** `008-combined-bug-fixes/plan.md`
+> **Source lineage:** `008` stream merged into canonical `plan.md`.
 
 ---
 
@@ -243,7 +245,7 @@ Matches organizational containers like `02--system-spec-kit`. Used only for trav
 
 ## Source: 013 — Memory Search Bug Fixes
 
-> **Original file:** `008-combined-bug-fixes/plan.md`
+> **Source lineage:** `013` stream merged into canonical `plan.md`.
 
 ---
 
@@ -277,7 +279,7 @@ Approach stayed intentionally narrow: adjust only the affected workflow/utilitie
 ### Architecture
 
 The solution keeps architecture unchanged and applies targeted behavior fixes:
-- Stateless enrichment routing remains in workflow path with explicit JSON/file-backed guard and invocation-local config restoration after `runWorkflow()`.
+- Stateless enrichment routing remains in workflow path with explicit JSON/file-backed guard and explicit `specFolderArg` propagation, with no global `CONFIG` mutation.
 - Generic-task parity remains centralized in slug/enrichment utility semantics.
 - Folder discovery stays in existing module, expanded with bounded recursion, canonical root dedupe, and graceful invalid-path handling.
 - MCP memory runtime remains on the existing 1024d database path, keeps `EMBEDDINGS_PROVIDER=auto`, avoids literal `${...}` key interpolation in `opencode.json`, resolves lazy provider metadata before formatting `memory_health`, and aborts startup if provider/database dimensions disagree.
@@ -291,7 +293,7 @@ The solution keeps architecture unchanged and applies targeted behavior fixes:
 - Preserve spec-title fallback enrichment for stateless generic tasks.
 - Enforce explicit stateless-only guard (`JSON/file-backed` path bypasses enrichment).
 - Prevent file-backed/JSON mode from reselecting `specTitle` later through preferred-task fallback.
-- Restore invocation-local config state after each `runWorkflow()` call so file-backed runs cannot leak `CONFIG.DATA_FILE` into later stateless runs.
+- Propagate `specFolderArg` explicitly through `runWorkflow()` paths so file-backed runs cannot leak state into later stateless runs, with no global `CONFIG` mutation.
 - Align generic-task classification with slug behavior (`implementation-and-updates` included).
 - Keep template rendering honest by preserving original `implSummary.task` in `IMPL_TASK`.
 
@@ -393,7 +395,7 @@ The solution keeps architecture unchanged and applies targeted behavior fixes:
 
 ## Source: 015 — Bug Fixes and Alignment
 
-> **Original file:** `008-combined-bug-fixes/plan.md`
+> **Source lineage:** `015` stream merged into canonical `plan.md`.
 
 ---
 
@@ -423,12 +425,12 @@ The solution keeps architecture unchanged and applies targeted behavior fixes:
 
 ### Phase M: Canonical Merge Normalization (009 + 010 -> 015)
 
-**Goal:** Keep `015` as the single active spec while preserving unique historical context from merged source folders.
+**Goal:** Keep `008-combined-bug-fixes` as the single active spec while preserving unique historical context from merged source folders.
 
 - Carry forward 009 remediation-epic lineage context and ADR roots (ADR-001 through ADR-003) as inherited decision history.
 - Carry forward 010 cross-AI audit provenance and handover state as historical context, without editing the source handover file.
-- Normalize status truth: inherited "complete" claims remain historical snapshots; active truth is controlled by current open items in 015 spec/tasks/checklist.
-- Keep 009 and 010 as historical source folders with superseded pointers to 015.
+- Normalize status truth: inherited "complete" claims remain historical snapshots; active truth is controlled by current open items in 008 spec/tasks/checklist.
+- Keep 009 and 010 as historical source folders with superseded pointers to 008.
 
 Execution rule for this plan: complete Phase M documentation normalization before continuing any new implementation claims in this folder.
 
@@ -440,9 +442,9 @@ Execution rule for this plan: complete Phase M documentation normalization befor
 
 #### 0.1 Re-establish Current Gate Health (VF-001)
 - Commands: `npx tsc --noEmit`, `npm run check`, `npm run check:full`
-- Current status: failing; fix order starts with currently implicated files
+- Current status: `npm run check` PASS, `npm run check:full` PASS (legacy baseline failures resolved for this packet)
 - Files: `mcp_server/tests/memory-crud-extended.vitest.ts` (line 5, 161), `mcp_server/lib/cache/cognitive/tier-classifier.ts` (line 416), `mcp_server/lib/storage/causal-edges.ts` (line 173)
-- Exit criterion: all three commands pass without local overrides
+- Exit criterion: preserve both `npm run check` and `npm run check:full` as PASS, with VF-001 fully resolved
 
 #### 0.2 Search and Runtime Contract Alignment (VF-002, VF-003, VF-004)
 - Hybrid score-contract mismatch: align producer/consumer contract in `mcp_server/lib/search/hybrid-search.ts` (line 85, 109)

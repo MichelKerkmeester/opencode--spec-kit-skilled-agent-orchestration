@@ -530,11 +530,22 @@ async function buildSessionCandidates(
   for (const row of rows) {
     const specFolder = getSpecFolderFromSessionRow(row);
     if (!specFolder) continue;
+    const trimmedSpecFolder = specFolder.trim();
+    // AI: Fix F6 — validate session-learning paths against approved roots.
+    if (path.isAbsolute(trimmedSpecFolder)) {
+      const resolvedAbsoluteSpecFolder = path.resolve(trimmedSpecFolder);
+      if (!isUnderApprovedSpecsRoots(resolvedAbsoluteSpecFolder)) {
+        console.warn(
+          `[folder-detector] Skipping session-learning row with unapproved absolute spec_folder: ${resolvedAbsoluteSpecFolder}`
+        );
+        continue;
+      }
+    }
 
     const typedRow = (row || {}) as SessionLearningRow;
     const recencyMs = getSessionTimestamp(typedRow);
     const recencyIso = recencyMs > 0 ? new Date(recencyMs).toISOString() : 'unknown';
-    const resolvedPaths = await resolveSessionSpecFolderPaths(specFolder, specsDirs, parentCache);
+    const resolvedPaths = await resolveSessionSpecFolderPaths(trimmedSpecFolder, specsDirs, parentCache);
 
     for (const resolvedPath of resolvedPaths) {
       const canonicalKey = getCanonicalSpecKey(resolvedPath, specsDirs);
@@ -760,8 +771,14 @@ function printNoSpecFolderError(commandName: string = 'memory'): void {
    3. FOLDER DETECTION
 ------------------------------------------------------------------*/
 
-async function detectSpecFolder(collectedData: CollectedDataForAlignment | null = null): Promise<string> {
+async function detectSpecFolder(
+  collectedData: CollectedDataForAlignment | null = null,
+  options: { specFolderArg?: string | null } = {},
+): Promise<string> {
   const cwd = process.cwd();
+  const explicitSpecFolderArg = options.specFolderArg !== undefined
+    ? options.specFolderArg
+    : CONFIG.SPEC_FOLDER_ARG;
 
   const existingSpecsDirs = getAllExistingSpecsDirs();
   const specsDirsForDetection = existingSpecsDirs.length > 0 ? existingSpecsDirs : [];
@@ -773,8 +790,8 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
   const defaultSpecsDir = path.join(CONFIG.PROJECT_ROOT, 'specs');
 
   // Priority 1: CLI argument
-  if (CONFIG.SPEC_FOLDER_ARG) {
-    const specArg: string = CONFIG.SPEC_FOLDER_ARG;
+  if (explicitSpecFolderArg) {
+    const specArg: string = explicitSpecFolderArg;
     const specFolderPath: string = path.isAbsolute(specArg)
       ? specArg
       : specArg.startsWith('specs/')
@@ -831,7 +848,7 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
         return childResult;
       }
 
-      console.error(`\n Specified spec folder not found: ${CONFIG.SPEC_FOLDER_ARG}\n`);
+      console.error(`\n Specified spec folder not found: ${explicitSpecFolderArg}\n`);
       console.error('Expected format: ###-feature-name (e.g., "122-skill-standardization")\n');
 
       try {
@@ -854,7 +871,7 @@ async function detectSpecFolder(collectedData: CollectedDataForAlignment | null 
       }
 
       console.error('\nUsage: node generate-context.js [spec-folder-name] OR node generate-context.js <data-file> [spec-folder]\n');
-      throw new Error(`Spec folder not found: ${CONFIG.SPEC_FOLDER_ARG}`);
+      throw new Error(`Spec folder not found: ${explicitSpecFolderArg}`);
     }
   }
 

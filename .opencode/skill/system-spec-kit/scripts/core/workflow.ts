@@ -402,8 +402,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       silent = false
     } = options;
 
-    const priorDataFile = CONFIG.DATA_FILE;
-    const priorSpecFolderArg = CONFIG.SPEC_FOLDER_ARG;
     const hasDirectDataContext = (
       dataFile !== undefined ||
       preloadedData !== undefined ||
@@ -417,10 +415,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const warn = silent ? (): void => {} : console.warn.bind(console);
 
     log('Starting memory skill workflow...\n');
-    CONFIG.DATA_FILE = activeDataFile;
-    CONFIG.SPEC_FOLDER_ARG = activeSpecFolderArg;
-
-    try {
     // Step 1: Load collected data
     log('Step 1: Loading collected data...');
 
@@ -443,7 +437,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     // Step 2: Detect spec folder with context alignment
     log('Step 2: Detecting spec folder...');
-    const specFolder: string = await detectSpecFolder(collectedData);
+    const specFolder: string = await detectSpecFolder(collectedData, {
+      specFolderArg: activeSpecFolderArg,
+    });
     const specsDir: string = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
     const normalizedSpecFolder = path.resolve(specFolder).replace(/\\/g, '/');
     const candidateSpecsDirs = Array.from(new Set([
@@ -788,10 +784,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 8.5: Content cleaning...');
   const rawContent = files[ctxFilename];
   // Strip <summary> and </summary> tags that leak from conversation data
-  // Also strip other common leaked HTML tags, but preserve <!-- comment --> anchors
   let cleanedContent = rawContent
     .replace(/<\/?summary>/gi, '')
     .replace(/<\/?details>/gi, '');
+  // AI: Fix F7 — strip all HTML tags, not just summary/details.
+  cleanedContent = cleanedContent.replace(/<[^>]+>/g, '');
   // Only update if cleaning made changes
   if (cleanedContent !== rawContent) {
     files[ctxFilename] = cleanedContent;
@@ -914,10 +911,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           isSimulation
         }
       };
-    } finally {
-      CONFIG.DATA_FILE = priorDataFile;
-      CONFIG.SPEC_FOLDER_ARG = priorSpecFolderArg;
-    }
   });
 }
 

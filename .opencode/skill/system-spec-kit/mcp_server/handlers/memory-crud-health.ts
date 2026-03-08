@@ -35,13 +35,16 @@ function sanitizeErrorForHint(msg: string): string {
 
 /** Redact absolute paths: keep only project-relative portion or basename. */
 function redactPath(absolutePath: string): string {
-  const specsIdx = absolutePath.indexOf('/specs/');
-  const opencodeIdx = absolutePath.indexOf('/.opencode/');
-  if (specsIdx !== -1) return absolutePath.slice(specsIdx + 1);
-  if (opencodeIdx !== -1) return absolutePath.slice(opencodeIdx + 1);
+  const normalizedPath = toNormalizedPath(absolutePath);
+  const opencodeIdx = normalizedPath.indexOf('/.opencode/');
+  const specsIdx = normalizedPath.indexOf('/specs/');
+  if (opencodeIdx !== -1) return normalizedPath.slice(opencodeIdx + 1);
+  if (specsIdx !== -1) return normalizedPath.slice(specsIdx + 1);
+  if (normalizedPath.startsWith('.opencode/')) return normalizedPath;
+  if (normalizedPath.startsWith('specs/')) return normalizedPath;
   // AI-WHY: Fallback: basename only
-  const lastSlash = absolutePath.lastIndexOf('/');
-  return lastSlash !== -1 ? absolutePath.slice(lastSlash + 1) : absolutePath;
+  const lastSlash = normalizedPath.lastIndexOf('/');
+  return lastSlash !== -1 ? normalizedPath.slice(lastSlash + 1) : normalizedPath;
 }
 
 /* ---------------------------------------------------------------
@@ -112,6 +115,16 @@ function toSpecAliasKey(filePath: string): string {
   return toNormalizedPath(filePath).replace(DOT_OPENCODE_SPECS_SEGMENT, SPECS_SEGMENT);
 }
 
+function isSpecsAliasPath(filePath: string): boolean {
+  const normalizedPath = toNormalizedPath(filePath);
+  return (
+    normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT) ||
+    normalizedPath.includes(SPECS_SEGMENT) ||
+    normalizedPath.startsWith('.opencode/specs/') ||
+    normalizedPath.startsWith('specs/')
+  );
+}
+
 function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): DivergentAliasGroup[] {
   if (!rows.length) {
     return [];
@@ -168,8 +181,9 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
       .map(([filePath, contentHash]) => ({ filePath: redactPath(filePath), contentHash }));
 
     groups.push({
-      normalizedPath,
-      specFolders: Array.from(bucket.specFolders).sort(),
+      normalizedPath: redactPath(normalizedPath),
+      // AI: Fix F21 — redact specFolders to prevent path disclosure.
+      specFolders: Array.from(bucket.specFolders).sort().map(sf => redactPath(sf)),
       distinctHashCount: bucket.hashes.size,
       variants,
     });
@@ -224,7 +238,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
       const whereParts: string[] = [
         'parent_id IS NULL',
-        "file_path LIKE '%/specs/%'",
       ];
       const params: unknown[] = [];
       if (specFolder) {
@@ -238,7 +251,8 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         WHERE ${whereParts.join(' AND ')}
       `;
 
-      aliasRows = database.prepare(aliasSql).all(...params) as AliasConflictDbRow[];
+      aliasRows = (database.prepare(aliasSql).all(...params) as AliasConflictDbRow[])
+        .filter((row) => typeof row?.file_path === 'string' && isSpecsAliasPath(row.file_path));
       aliasConflicts = summarizeAliasConflicts(aliasRows);
       divergentAliasGroups = getDivergentAliasGroups(aliasRows, safeLimit);
     }
@@ -284,10 +298,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         totalRowsScanned: aliasRows.length,
         totalDivergentGroups: aliasConflicts.divergentHashGroups,
         returnedGroups: divergentAliasGroups.length,
-        groups: divergentAliasGroups.map(g => ({
-          ...g,
-          variants: g.variants.map(v => ({ ...v, filePath: redactPath(v.filePath) })),
-        })),
+        groups: divergentAliasGroups,
       },
       hints,
       startTime,
@@ -383,6 +394,8 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   // (referencing deleted memories) are cleaned up during health checks.
   if (autoRepair && database) {
     try {
+      // AI: Fix F8 — ensure causal-edges DB init before orphan cleanup.
+      causalEdges.init(database);
       const orphanResult = causalEdges.cleanupOrphanedEdges();
       if (orphanResult.deleted > 0) {
         repair.attempted = true;

@@ -2,7 +2,7 @@
 name: cli-codex
 description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.1.0
+version: 1.2.0
 ---
 
 <!-- Keywords: codex, codex-cli, openai, cross-ai, web-search, code-generation, code-review, second-opinion, agent-delegation, gpt-5, session-management -->
@@ -269,6 +269,7 @@ codex exec "prompt" --model gpt-5.3-codex 2>&1
 | Flag / Option | Purpose |
 |---------------|---------|
 | `--model <id>` | Model selection — `gpt-5.4` or `gpt-5.3-codex` |
+| `-c model_reasoning_effort="<level>"` | Reasoning effort override — `none`, `minimal`, `low`, `medium`, `high`, `xhigh` |
 | `--sandbox read-only` | Safe mode: read files, no writes or shell commands |
 | `--sandbox workspace-write` | Allow file writes within the workspace |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval** |
@@ -285,8 +286,21 @@ Codex CLI supports 2 models with distinct strengths:
 
 | Model | ID | Use Case | Reasoning Effort |
 |-------|----|----------|-----------------|
-| **GPT-5.4** | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, deep review, security audit | configurable |
+| **GPT-5.4** | `gpt-5.4` | Frontier reasoning, complex analysis, architecture, deep review, security audit | configurable via `-c model_reasoning_effort` |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | Code generation, standard review, implementation, documentation, tests | `xhigh` (fixed) |
+
+**Reasoning Effort Levels** (valid values for `-c model_reasoning_effort="<level>"`):
+
+| Level | Use Case |
+|-------|----------|
+| `none` | No reasoning — fastest, cheapest |
+| `minimal` | Trivial tasks |
+| `low` | Simple lookups, formatting |
+| `medium` | Standard tasks, Plan mode default |
+| `high` | Complex analysis (global default in `~/.codex/config.toml`) |
+| `xhigh` | Maximum reasoning depth (profile default for all agents) |
+
+> **Note:** There is no `--reasoning-effort` CLI flag. Set reasoning effort via `-c model_reasoning_effort="high"` on the command line, or `model_reasoning_effort` in `config.toml` / profile sections. GPT-5.3-Codex uses `xhigh` reasoning regardless of the configured value.
 
 **Selection Strategy:**
 - **GPT-5.4** — Choose for reasoning-heavy tasks: architecture decisions, security audits, complex planning, multi-strategy analysis, deep code review

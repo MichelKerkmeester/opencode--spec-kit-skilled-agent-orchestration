@@ -10,6 +10,10 @@ import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 
+function parseEnvelope(response: Awaited<ReturnType<typeof triggerHandler.handleMemoryMatchTriggers>>) {
+  return JSON.parse(response.content[0].text);
+}
+
 describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtures]', () => {
 
   // ─────────────────────────────────────────────────────────────
@@ -37,16 +41,20 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
   // ─────────────────────────────────────────────────────────────
   describe('Pipeline Input Validation', () => {
 
-    it('T527-2: Missing prompt rejected', async () => {
-      await expect(
-        triggerHandler.handleMemoryMatchTriggers({})
-      ).rejects.toThrow(/prompt|required/);
+    it('T527-2: Missing prompt returns validation envelope', async () => {
+      const response = await triggerHandler.handleMemoryMatchTriggers({});
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt|required/i);
     });
 
-    it('T527-3: Empty prompt rejected', async () => {
-      await expect(
-        triggerHandler.handleMemoryMatchTriggers({ prompt: '' })
-      ).rejects.toThrow();
+    it('T527-3: Empty prompt returns validation envelope', async () => {
+      const response = await triggerHandler.handleMemoryMatchTriggers({ prompt: '' });
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt/i);
     });
 
     it('T527-4: Session cognitive params accepted', async () => {
@@ -91,21 +99,21 @@ describe('Integration Trigger Pipeline (T527) [deferred - requires DB test fixtu
       expect(isAsync).toBe(true);
     });
 
-    it('T527-7: Error propagation through pipeline', async () => {
-      try {
-        await triggerHandler.handleMemoryMatchTriggers({});
-      } catch (error: unknown) {
-        expect(typeof error.message).toBe('string');
-        return;
-      }
-      // If we reach here, no error was thrown — fail
-      expect.unreachable('Expected an error to be thrown for invalid input');
+    it('T527-7: Invalid input propagates as MCP error response', async () => {
+      const response = await triggerHandler.handleMemoryMatchTriggers({});
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(typeof payload.data.error).toBe('string');
+      expect(payload.meta.isError).toBe(true);
     });
 
-    it('T527-8: Non-string prompt rejected', async () => {
-      await expect(
-        triggerHandler.handleMemoryMatchTriggers({ prompt: 12345 })
-      ).rejects.toThrow();
+    it('T527-8: Non-string prompt returns validation envelope', async () => {
+      const response = await triggerHandler.handleMemoryMatchTriggers({ prompt: 12345 });
+      const payload = parseEnvelope(response);
+
+      expect(response.isError).toBe(true);
+      expect(payload.data.error).toMatch(/prompt.*string|string.*prompt/i);
     });
 
   });

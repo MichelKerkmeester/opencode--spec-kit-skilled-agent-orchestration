@@ -10,6 +10,7 @@ import Database from 'better-sqlite3';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
+import * as zlib from 'zlib';
 
 /* ─────────────────────────────────────────────────────────────
    DATABASE HELPERS
@@ -61,17 +62,43 @@ function createTestDb(): void {
       value TEXT,
       created_at TEXT
     );
+
+    CREATE TABLE IF NOT EXISTS causal_edges (
+      id INTEGER PRIMARY KEY,
+      source_id TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      relation TEXT NOT NULL,
+      strength REAL DEFAULT 1.0,
+      evidence TEXT,
+      extracted_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      created_by TEXT DEFAULT 'manual',
+      last_accessed TEXT,
+      UNIQUE(source_id, target_id, relation)
+    );
   `);
 
   // Seed some test memories
   const stmt = testDb.prepare(`
-    INSERT INTO memory_index (spec_folder, file_path, title, created_at, importance_tier)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, importance_tier)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
   const now = new Date().toISOString();
-  stmt.run('test-spec', '/test/memory/mem1.md', 'Test Memory 1', now, 'normal');
-  stmt.run('test-spec', '/test/memory/mem2.md', 'Test Memory 2', now, 'important');
-  stmt.run('other-spec', '/test/memory/mem3.md', 'Test Memory 3', now, 'critical');
+  stmt.run(1, 'test-spec', '/test/memory/mem1.md', 'Test Memory 1', now, 'normal');
+  stmt.run(2, 'test-spec', '/test/memory/mem2.md', 'Test Memory 2', now, 'important');
+  stmt.run(3, 'other-spec', '/test/memory/mem3.md', 'Test Memory 3', now, 'critical');
+
+  testDb.prepare(`
+    INSERT INTO causal_edges (id, source_id, target_id, relation)
+    VALUES (?, ?, ?, ?)
+  `).run(1, '1', '2', 'supports');
+  testDb.prepare(`
+    INSERT INTO causal_edges (id, source_id, target_id, relation)
+    VALUES (?, ?, ?, ?)
+  `).run(2, '1', '3', 'derived_from');
+  testDb.prepare(`
+    INSERT INTO causal_edges (id, source_id, target_id, relation)
+    VALUES (?, ?, ?, ?)
+  `).run(3, '3', '3', 'supports');
 
   mod.init(testDb);
 }
@@ -265,6 +292,107 @@ describe('Checkpoints Storage (T503)', () => {
       expect(Array.isArray(filteredCheckpoints)).toBe(true);
       const allWithFolder = filteredCheckpoints.every(cp => cp.specFolder === 'test-spec');
       expect(allWithFolder || filteredCheckpoints.length === 0).toBe(true);
+    });
+  });
+
+  describe('Scoped causal edge snapshots', () => {
+    it('T503-11: spec-folder checkpoint snapshots only in-folder causal edges', () => {
+      const checkpoint = mod.createCheckpoint({
+        name: 'scoped-edge-snapshot',
+        specFolder: 'test-spec',
+      });
+
+      expect(checkpoint).toBeDefined();
+
+      const stored = testDb.prepare(
+        'SELECT memory_snapshot FROM checkpoints WHERE name = ?'
+      ).get('scoped-edge-snapshot') as { memory_snapshot: Buffer };
+      const snapshot = JSON.parse(
+        zlib.gunzipSync(stored.memory_snapshot).toString('utf-8')
+      ) as { causalEdges?: Array<{ source_id: string; target_id: string }> };
+
+      expect(snapshot.causalEdges).toEqual([
+        expect.objectContaining({ source_id: '1', target_id: '2' }),
+        expect.objectContaining({ source_id: '1', target_id: '3' }),
+      ]);
+
+      mod.deleteCheckpoint('scoped-edge-snapshot');
+    });
+
+    it('T503-12: scoped clearExisting restore preserves other spec data and unrelated edges', () => {
+      const checkpoint = mod.createCheckpoint({
+        name: 'scoped-edge-restore',
+        specFolder: 'test-spec',
+      });
+
+      expect(checkpoint).toBeDefined();
+
+      const now = new Date().toISOString();
+      testDb.prepare(`
+        INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, importance_tier)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `).run(10, 'test-spec', '/test/memory/newer.md', 'Newer Memory', now, 'normal');
+      testDb.prepare(`
+        INSERT OR REPLACE INTO causal_edges (id, source_id, target_id, relation)
+        VALUES (?, ?, ?, ?)
+      `).run(10, '2', '10', 'supports');
+
+      const result = mod.restoreCheckpoint('scoped-edge-restore', true);
+
+      expect(result.errors).toEqual([]);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('other-spec') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM memory_index WHERE spec_folder = ?').get('test-spec') as { cnt: number }).cnt
+      ).toBe(2);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '10') as { cnt: number }).cnt
+      ).toBe(0);
+
+      mod.deleteCheckpoint('scoped-edge-restore');
+    });
+
+    it('T503-13: scoped merge restore replaces stale in-folder edges without touching unrelated ones', () => {
+      const checkpoint = mod.createCheckpoint({
+        name: 'scoped-edge-merge-restore',
+        specFolder: 'test-spec',
+      });
+
+      expect(checkpoint).toBeDefined();
+
+      testDb.prepare('DELETE FROM causal_edges WHERE source_id = ? AND target_id = ?').run('1', '2');
+      testDb.prepare(`
+        INSERT OR REPLACE INTO causal_edges (id, source_id, target_id, relation)
+        VALUES (?, ?, ?, ?)
+      `).run(11, '2', '3', 'supports');
+
+      const result = mod.restoreCheckpoint('scoped-edge-merge-restore', false);
+
+      expect(result.errors).toEqual([]);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '2') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('1', '3') as { cnt: number }).cnt
+      ).toBe(1);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('2', '3') as { cnt: number }).cnt
+      ).toBe(0);
+      expect(
+        (testDb.prepare('SELECT COUNT(*) as cnt FROM causal_edges WHERE source_id = ? AND target_id = ?').get('3', '3') as { cnt: number }).cnt
+      ).toBe(1);
+
+      mod.deleteCheckpoint('scoped-edge-merge-restore');
     });
   });
 });

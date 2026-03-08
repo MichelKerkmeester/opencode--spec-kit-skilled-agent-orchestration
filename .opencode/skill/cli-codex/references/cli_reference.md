@@ -106,6 +106,7 @@ codex logout
 | Flag | Short | Values | Description |
 |------|-------|--------|-------------|
 | `--model` | `-m` | `gpt-5.4`, `gpt-5.3-codex` | Model to use (2 supported models) |
+| `--config` | `-c` | `key=value` | Override a config.toml value (e.g., `-c model_reasoning_effort="high"`) |
 | `--sandbox` | `-s` | `read-only`, `workspace-write`, `danger-full-access` | Sandbox mode controlling file/shell access |
 | `--ask-for-approval` | `-a` | `untrusted`, `on-request`, `never` | When to prompt for approval before executing actions |
 | `--profile` | `-p` | profile-name | Load a named configuration profile |
@@ -136,6 +137,21 @@ codex logout
 | `read-only` | Read files only | Restricted | Exploration, analysis, review |
 | `workspace-write` | Read + write workspace files | Controlled | Code generation, documentation |
 | `danger-full-access` | Full filesystem + shell | Unrestricted | Migration, scripted automation |
+
+### Config Override Flag (-c)
+
+The `-c` / `--config` flag overrides any `config.toml` value at runtime. Uses dotted paths for nested values. The value is parsed as TOML; if parsing fails, it's used as a literal string.
+
+```bash
+# Override reasoning effort
+codex exec "Analyze this architecture" -m gpt-5.4 -c model_reasoning_effort="high"
+
+# Override model via -c
+codex exec "Review code" -c model="gpt-5.4"
+
+# Multiple overrides
+codex exec "Task" -c model_reasoning_effort="xhigh" -c sandbox_mode="read-only"
+```
 
 ### Usage Examples
 
@@ -178,8 +194,30 @@ codex exec "Refactor this function" --oss
 
 | Model | ID | Reasoning Effort | Best For |
 |-------|----|-----------------|----------|
-| **GPT-5.4** | `gpt-5.4` | configurable | Frontier reasoning, complex analysis, architecture, security audit, deep review |
-| **GPT-5.3-Codex** | `gpt-5.3-codex` | `xhigh` (fixed) | Code generation, standard review, implementation, refactoring, documentation |
+| **GPT-5.4** | `gpt-5.4` | configurable via `-c model_reasoning_effort` | Frontier reasoning, complex analysis, architecture, security audit, deep review |
+| **GPT-5.3-Codex** | `gpt-5.3-codex` | `xhigh` (fixed, ignores configured value) | Code generation, standard review, implementation, refactoring, documentation |
+
+### Reasoning Effort Configuration
+
+Reasoning effort controls how much "thinking" the model does. There is **no `--reasoning-effort` CLI flag**. Set it via:
+
+1. **CLI override:** `-c model_reasoning_effort="high"`
+2. **config.toml:** `model_reasoning_effort = "high"` (global default)
+3. **Profile:** `[profiles.review]` → `model_reasoning_effort = "xhigh"`
+4. **Plan mode:** `plan_mode_reasoning_effort = "medium"` (Plan-mode-specific override)
+
+**Valid values** (from `codex-rs/core/config.schema.json`):
+
+| Value | Description |
+|-------|-------------|
+| `none` | No reasoning — fastest, lowest cost |
+| `minimal` | Minimal reasoning |
+| `low` | Low reasoning effort |
+| `medium` | Standard reasoning (Plan mode default when unset) |
+| `high` | High reasoning effort |
+| `xhigh` | Maximum reasoning depth |
+
+> GPT-5.3-Codex always uses `xhigh` reasoning regardless of the configured value. Only GPT-5.4 respects this setting.
 
 ### Selection Strategy
 

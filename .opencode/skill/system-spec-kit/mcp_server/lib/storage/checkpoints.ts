@@ -147,6 +147,90 @@ function toBuffer(value: unknown): Buffer | null {
   return null;
 }
 
+function getMemoryIds(memories: Array<Record<string, unknown>>): number[] {
+  const ids = new Set<number>();
+  for (const memory of memories) {
+    if (!memory || typeof memory !== 'object') {
+      continue;
+    }
+    const rawId = memory.id;
+    if (typeof rawId === 'number' && Number.isSafeInteger(rawId)) {
+      ids.add(rawId);
+      continue;
+    }
+    if (typeof rawId === 'string' && /^\d+$/.test(rawId)) {
+      ids.add(Number.parseInt(rawId, 10));
+    }
+  }
+  return Array.from(ids);
+}
+
+function getCurrentMemoryIdsForSpecFolder(database: Database.Database, specFolder: string): number[] {
+  try {
+    const rows = database.prepare(
+      'SELECT id FROM memory_index WHERE spec_folder = ?'
+    ).all(specFolder) as Array<{ id: number | string }>;
+    return getMemoryIds(rows as Array<Record<string, unknown>>);
+  } catch (_error: unknown) {
+    return [];
+  }
+}
+
+function deleteRowsByIds(
+  database: Database.Database,
+  tableName: string,
+  columnName: string,
+  ids: number[],
+): void {
+  if (ids.length === 0) {
+    return;
+  }
+
+  const placeholders = ids.map(() => '?').join(', ');
+  database.prepare(
+    `DELETE FROM ${tableName} WHERE ${columnName} IN (${placeholders})`
+  ).run(...ids);
+}
+
+function snapshotCausalEdgesForMemoryIds(
+  database: Database.Database,
+  memoryIds: number[],
+): Array<Record<string, unknown>> {
+  if (memoryIds.length === 0 || !tableExists(database, 'causal_edges')) {
+    return [];
+  }
+
+  try {
+    const edgeIds = memoryIds.map((id) => String(id));
+    const placeholders = edgeIds.map(() => '?').join(', ');
+    return database.prepare(
+      `
+        SELECT * FROM causal_edges
+        WHERE source_id IN (${placeholders})
+           OR target_id IN (${placeholders})
+      `
+    ).all(...edgeIds, ...edgeIds) as Array<Record<string, unknown>>;
+  } catch (_error: unknown) {
+    return [];
+  }
+}
+
+function deleteCausalEdgesForMemoryIds(database: Database.Database, memoryIds: number[]): void {
+  if (memoryIds.length === 0 || !tableExists(database, 'causal_edges')) {
+    return;
+  }
+
+  const edgeIds = memoryIds.map((id) => String(id));
+  const placeholders = edgeIds.map(() => '?').join(', ');
+  database.prepare(
+    `
+      DELETE FROM causal_edges
+      WHERE source_id IN (${placeholders})
+         OR target_id IN (${placeholders})
+    `
+  ).run(...edgeIds, ...edgeIds);
+}
+
 function normalizeMemoryColumnValue(column: string, value: unknown): unknown {
   if (value === undefined) {
     if (column === 'confidence') return 0.5;
@@ -313,6 +397,7 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
       const memories = database.prepare(
         `SELECT * FROM memory_index ${folderFilter}`
       ).all(...params) as Array<Record<string, unknown>>;
+      const scopedMemoryIds = getMemoryIds(memories);
 
       // Snapshot vectors from vec_memories when enabled/available.
       // This preserves semantic search state across clearExisting restores.
@@ -337,9 +422,19 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
       // Snapshot working memory if exists
       let workingMemorySnapshot: Array<Record<string, unknown>> = [];
       try {
-        workingMemorySnapshot = database.prepare(
-          'SELECT * FROM working_memory'
-        ).all() as Array<Record<string, unknown>>;
+        const workingMemoryColumns = getTableColumns(database, 'working_memory');
+        if (specFolder && workingMemoryColumns.includes('memory_id')) {
+          if (scopedMemoryIds.length > 0) {
+            const placeholders = scopedMemoryIds.map(() => '?').join(', ');
+            workingMemorySnapshot = database.prepare(
+              `SELECT * FROM working_memory WHERE memory_id IN (${placeholders})`
+            ).all(...scopedMemoryIds) as Array<Record<string, unknown>>;
+          }
+        } else {
+          workingMemorySnapshot = database.prepare(
+            'SELECT * FROM working_memory'
+          ).all() as Array<Record<string, unknown>>;
+        }
       } catch (_error: unknown) {
         // Table may not exist
       }
@@ -348,9 +443,11 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
       let causalEdgesSnapshot: Array<Record<string, unknown>> = [];
       if (tableExists(database, 'causal_edges')) {
         try {
-          causalEdgesSnapshot = database.prepare(
-            'SELECT * FROM causal_edges'
-          ).all() as Array<Record<string, unknown>>;
+          causalEdgesSnapshot = specFolder
+            ? snapshotCausalEdgesForMemoryIds(database, scopedMemoryIds)
+            : database.prepare(
+              'SELECT * FROM causal_edges'
+            ).all() as Array<Record<string, unknown>>;
         } catch (_error: unknown) {
           // Table may not exist or be empty
         }
@@ -491,6 +588,14 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
     const hasVecMemories = tableExists(database, 'vec_memories');
     const checkpointVectors = Array.isArray(snapshot.vectors) ? snapshot.vectors : [];
     const hasVectorSnapshot = hasVecMemories && checkpointVectors.length > 0;
+    const checkpointSpecFolder = checkpoint.spec_folder ?? null;
+    const snapshotMemoryIds = getMemoryIds(snapshot.memories);
+    const currentScopedMemoryIds = checkpointSpecFolder
+      ? getCurrentMemoryIdsForSpecFolder(database, checkpointSpecFolder)
+      : [];
+    const scopedMemoryIdsToReplace = Array.from(
+      new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])
+    );
 
     // AI-GUARD: T107 FIX: Validate every row BEFORE any DB mutations.
     // Reject the entire restore on schema violations to prevent
@@ -540,11 +645,12 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
     // corrupt a surrounding transaction. Run DDL outside the transaction boundary.
     if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
       try {
+        // AI: Fix F4 — prevent CASCADE delete chain on working_memory.
         database.exec(`
           CREATE TABLE IF NOT EXISTS working_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             session_id TEXT NOT NULL,
-            memory_id INTEGER NOT NULL,
+            memory_id INTEGER,
             attention_score REAL DEFAULT 1.0,
             added_at TEXT DEFAULT CURRENT_TIMESTAMP,
             last_focused TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -556,7 +662,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
             extraction_rule_id TEXT,
             redaction_applied INTEGER NOT NULL DEFAULT 0,
             UNIQUE(session_id, memory_id),
-            FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE CASCADE
+            FOREIGN KEY (memory_id) REFERENCES memory_index(id) ON DELETE SET NULL
           )
         `);
 
@@ -593,11 +699,22 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
     const restoreTx = database.transaction(() => {
       // Clear existing data if requested
       if (clearExisting) {
-        database.prepare('DELETE FROM memory_index').run();
-        // AI-WHY: Only clear vec table when checkpoint contains vectors to restore.
-        // This keeps backward compatibility for older checkpoints that lacked vector snapshots.
-        if (hasVectorSnapshot) {
-          try { database.prepare('DELETE FROM vec_memories').run(); } catch (_error: unknown) { /* table may not exist */ }
+        if (checkpointSpecFolder) {
+          if (hasVectorSnapshot) {
+            try { deleteRowsByIds(database, 'vec_memories', 'rowid', scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
+          }
+          try { deleteRowsByIds(database, 'working_memory', 'memory_id', scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist or use a legacy schema */ }
+          try { deleteCausalEdgesForMemoryIds(database, scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
+          database.prepare('DELETE FROM memory_index WHERE spec_folder = ?').run(checkpointSpecFolder);
+        } else {
+          database.prepare('DELETE FROM memory_index').run();
+          // AI-WHY: Only clear vec table when checkpoint contains vectors to restore.
+          // This keeps backward compatibility for older checkpoints that lacked vector snapshots.
+          if (hasVectorSnapshot) {
+            try { database.prepare('DELETE FROM vec_memories').run(); } catch (_error: unknown) { /* table may not exist */ }
+          }
+          try { database.prepare('DELETE FROM working_memory').run(); } catch (_error: unknown) { /* table may not exist */ }
+          try { database.prepare('DELETE FROM causal_edges').run(); } catch (_error: unknown) { /* table may not exist */ }
         }
       }
 
@@ -699,11 +816,12 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       // survive checkpoint save/restore cycles.
       // DDL (CREATE TABLE, ALTER TABLE) is executed BEFORE the transaction above.
       if (Array.isArray(snapshot.workingMemory) && snapshot.workingMemory.length > 0) {
-        if (clearExisting) {
-          try { database.prepare('DELETE FROM working_memory').run(); } catch (_error: unknown) { /* table may not exist */ }
-        }
-
         for (const wmEntry of snapshot.workingMemory) {
+          // AI: Fix F19 — validate required fields before INSERT.
+          if (!wmEntry || typeof wmEntry.session_id !== 'string') {
+            console.warn('[checkpoints] Skipping working_memory entry with missing session_id');
+            continue;
+          }
           try {
             database.prepare(`
               INSERT OR REPLACE INTO working_memory (
@@ -736,13 +854,23 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       }
 
       // P1-036: Restore causal_edges from checkpoint snapshot.
-      if (Array.isArray(snapshot.causalEdges) && snapshot.causalEdges.length > 0 && tableExists(database, 'causal_edges')) {
-        if (clearExisting) {
-          try { database.prepare('DELETE FROM causal_edges').run(); } catch (_error: unknown) { /* table may not exist */ }
+      if (tableExists(database, 'causal_edges')) {
+        if (checkpointSpecFolder && restoredMemoryIds.size > 0) {
+          try {
+            deleteCausalEdgesForMemoryIds(database, Array.from(restoredMemoryIds));
+          } catch (_error: unknown) {
+            // Table may not exist
+          }
         }
 
+        if (!Array.isArray(snapshot.causalEdges) || snapshot.causalEdges.length === 0) {
+          // No edges captured for this checkpoint state — leave the scoped graph cleared.
+        } else {
         const edgeColumns = getTableColumns(database, 'causal_edges');
         if (edgeColumns.length > 0) {
+          const memoryExistsStmt = database.prepare(
+            'SELECT 1 FROM memory_index WHERE id = ? LIMIT 1'
+          ) as Database.Statement;
           const edgeInsertStmt = database.prepare(`
             INSERT OR IGNORE INTO causal_edges (${edgeColumns.join(', ')})
             VALUES (${edgeColumns.map(() => '?').join(', ')})
@@ -750,6 +878,18 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
 
           for (const edge of snapshot.causalEdges) {
             try {
+              if (checkpointSpecFolder) {
+                const sourceExists = !!memoryExistsStmt.get(edge.source_id);
+                const targetExists = !!memoryExistsStmt.get(edge.target_id);
+                if (!sourceExists || !targetExists) {
+                  continue;
+                }
+              }
+              // AI: Fix F5 — reject self-loops during checkpoint restore.
+              if (edge.source_id === edge.target_id) {
+                console.warn(`[checkpoints] Skipping self-loop causal edge during restore: ${String(edge.source_id)}`);
+                continue;
+              }
               const edgeValues = edgeColumns.map(col => edge[col] ?? null);
               edgeInsertStmt.run(...edgeValues);
             } catch (e: unknown) {
@@ -758,6 +898,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
             }
           }
         }
+      }
       }
 
       // T101: When clearExisting=true, any insert error means data loss risk.

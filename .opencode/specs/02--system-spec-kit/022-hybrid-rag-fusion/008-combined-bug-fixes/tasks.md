@@ -6,22 +6,28 @@ contextType: "implementation"
 ---
 # Tasks: Combined Bug Fixes (016)
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 This file merges tasks from four source spec folders into a single canonical reference.
 
 ---
 
+<!-- ANCHOR:tasks-overview -->
 ## Overview
 
 | Source | Spec Folder | Total Tasks | Completed | Deferred/Pending |
 |--------|-------------|-------------|-----------|------------------|
 | 003 | Auto-Detected Session Bug | 12 | 12 | 0 |
 | 008 | Subfolder Resolution Fix | 31 | 31 | 0 |
-| 013 | Memory Search Bug Fixes | 37 | 37 | 0 |
-| 015 | Bug Fixes and Alignment | 84 | 73 | 11 |
-| **Total** | | **164** | **153** | **11** |
+| 013 | Memory Search Bug Fixes | 40 | 40 | 0 |
+| 015 | Bug Fixes and Alignment | 84 | 69 | 15 |
+| **Total** | | **167** | **152** | **15** |
+
+Current verification truth snapshot (2026-03-07):
+- `npm run check` is green.
+- `npm run check:full` is green.
+- Final verification evidence is recorded in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md` and `scratch/verification-logs/2026-03-07-mcp-check-full.md`.
 
 ---
 
@@ -34,6 +40,8 @@ This file merges tasks from four source spec folders into a single canonical ref
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
+<!-- /ANCHOR:tasks-overview -->
+
 **Task Format**: `T### [P?] Description (file path)`
 
 ---
@@ -41,7 +49,7 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 ## Source: 003 -- Auto-Detected Session Bug
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/tasks.md`
+> Source lineage: `003` stream merged into canonical `tasks.md`.
 
 ---
 
@@ -67,8 +75,8 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 - [x] T009 Add regression tests: active non-archived preference and alias determinism (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Test file updated and executed with pass result: 32 passed, 0 failed, 0 skipped.]
 - [x] T010 Add regression tests: mtime distortion resilience and low-confidence confirmation path (`.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js`) [EVIDENCE: Same detector functional suite run confirms regression matrix pass: 32 passed, 0 failed, 0 skipped.]
-- [x] T011 Run targeted validation/tests and record evidence in checklist (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/checklist.md`) [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` passed; checklist updated with concrete file and command references.]
-- [x] T012 Review scope lock and confirm no unrelated detector behavior changed (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-auto-detected-session-bug/spec.md`) [EVIDENCE: Review gate PASS (score 88/100, no P0/P1); detector implementation confirmed active with no net diff required for `folder-detector.ts` and dist artifact.]
+- [x] T011 Run targeted validation/tests and record evidence in checklist (`checklist.md`) [EVIDENCE: `node .opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js` passed; checklist updated with concrete file and command references.]
+- [x] T012 Review scope lock and confirm no unrelated detector behavior changed (`spec.md`) [EVIDENCE: Review gate PASS (score 88/100, no P0/P1); detector implementation confirmed active with no net diff required for `folder-detector.ts` and dist artifact.]
 
 ---
 
@@ -82,16 +90,16 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 ### Cross-References (003)
 
-- **Specification**: See `008-combined-bug-fixes/spec.md`
-- **Plan**: See `008-combined-bug-fixes/plan.md`
-- **Verification**: See `008-combined-bug-fixes/checklist.md`
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Verification**: See `checklist.md`
 
 ---
 ---
 
 ## Source: 008 -- Subfolder Resolution Fix
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/tasks.md`
+> Source lineage: `008` stream merged into canonical `tasks.md`.
 
 ---
 
@@ -158,7 +166,7 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 ## Source: 013 -- Memory Search Bug Fixes
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/tasks.md`
+> Source lineage: `013` stream merged into canonical `tasks.md`.
 
 ---
 
@@ -243,32 +251,32 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 ### Cross-References (013)
 
-- Specification: `008-combined-bug-fixes/spec.md`
-- Plan: `008-combined-bug-fixes/plan.md`
-- Checklist: `008-combined-bug-fixes/checklist.md`
-- Decision Record: `008-combined-bug-fixes/decision-record.md`
-- Implementation Summary: `008-combined-bug-fixes/implementation-summary.md`
-- Handover: `008-combined-bug-fixes/handover.md`
+- Specification: `spec.md`
+- Plan: `plan.md`
+- Checklist: `checklist.md`
+- Decision Record: `decision-record.md`
+- Implementation Summary: `implementation-summary.md`
+- Handover: `handover.md`
 
 ---
 ---
 
 ## Source: 015 -- Bug Fixes and Alignment
 
-> Original: `022-hybrid-rag-fusion/008-combined-bug-fixes/tasks.md`
+> Source lineage: `015` stream merged into canonical `tasks.md`.
 
 ---
 
-### Phase M: Canonical Merge Normalization (009 + 010 -> 015)
+### Phase M: Canonical Merge Normalization (009 + 010 -> 008)
 
-- [x] T077: Add canonical-merge notice in `spec.md` and mark 015 as superseding 009 + 010
-- [x] T078: Preserve 009 lineage context in 015 (remediation-epic roots, ADR lineage, cross-phase test snapshot context)
-- [x] T079: Preserve 010 provenance context in 015 (cross-AI audit handover state + historical test snapshot)
+- [x] T077: Add canonical-merge notice in `spec.md` and mark 008 as superseding prior 015/009/010 active ownership
+- [x] T078: Preserve 009 lineage context in canonical 008 docs (remediation-epic roots, ADR lineage, cross-phase test snapshot context)
+- [x] T079: Preserve 010 provenance context in canonical 008 docs (cross-AI audit handover state + historical test snapshot)
 - [x] T080: Reframe `implementation-summary.md` as historical snapshot context, not current completion truth
 - [x] T081: Absorb 009 ADR-001..003 decision substance into `decision-record.md` as inherited implemented history
 - [x] T082: Absorb 009 remediation execution digest and 010 handover continuity digest (including commit `40891251` and 230/7085 snapshot) into `implementation-summary.md`
 - [x] T083: Resolve D-12 contradiction in `spec.md` by excluding historical CR-P2-4 from active deferred inventory
-- [x] T084: Normalize canonical mapping references to 015 (`../feature-catalog/feature_catalog.md`, `../009-extra-features/spec.md`) and complete deletion safety check for 009/010
+- [x] T084: Normalize canonical mapping references to 008 (`../feature-catalog/feature_catalog.md`, `../009-extra-features/spec.md`) and complete deletion safety check for 009/010
 
 ---
 
@@ -404,7 +412,7 @@ This file merges tasks from four source spec folders into a single canonical ref
 
 ### Verification (015)
 
-- [x] T064: Run full test suite -- tsc --noEmit passes with zero errors
+- [x] T064: Re-verify current gate status (`npm run check` PASS; `npm run check:full` PASS) with evidence in `scratch/verification-logs/2026-03-07-mcp-check-full.md`
 - [ ] T065: Run `verify_alignment_drift.py` on all modified source directories [DEFERRED]
 - [x] T066: Grep for remaining TODO/FIXME in modified files -- 0 found
 - [x] T067: Verify feature catalog em dash count is 0 -- confirmed

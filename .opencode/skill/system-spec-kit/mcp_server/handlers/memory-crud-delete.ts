@@ -204,7 +204,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
     let postMutationHooks: import('./mutation-hooks').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('delete', { specFolder, deletedCount });
-    } catch {
+    } catch (error: unknown) {
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,

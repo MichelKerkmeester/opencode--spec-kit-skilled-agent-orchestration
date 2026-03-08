@@ -20,10 +20,20 @@ This document merges the specifications from 4 related bug-fix and alignment wor
 
 | # | Source Folder | Title | Level | Priority |
 |---|---------------|-------|-------|----------|
-| 1 | `008-combined-bug-fixes` | Auto-Detected Session Selection Bug | 2 | P0 |
-| 2 | `008-combined-bug-fixes` | Subfolder Resolution Fix | 2 | Normal |
-| 3 | `008-combined-bug-fixes` | Memory Search Bug Fixes (Unified) | 2 | Normal |
-| 4 | `008-combined-bug-fixes` | Bug Fixes and Alignment | 3 | P0-P1 |
+| 1 | `003-auto-detected-session-bug` (merged) | Auto-Detected Session Selection Bug | 2 | P0 |
+| 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | 2 | Normal |
+| 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | 2 | Normal |
+| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | 3 | P0-P1 |
+
+### Current Verification Snapshot (2026-03-07)
+
+- `npm run check`: PASS (lint + `npx tsc --noEmit`)
+- `npm run check:full`: PASS (full package verification green; see `scratch/verification-logs/2026-03-07-mcp-check-full.md`)
+- Targeted post-fix verification: PASS (`memory-crud-extended`, `checkpoints-storage`, `adaptive-fusion`, `task-enrichment`, workspace typecheck/build)
+- Evidence artifacts:
+  - `scratch/cross-ai-review-report.md`
+  - `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`
+  - `scratch/verification-logs/2026-03-07-mcp-check-full.md`
 
 ---
 ---
@@ -52,7 +62,7 @@ This document merges the specifications from 4 related bug-fix and alignment wor
 Spec-folder auto-detection can select stale or archived paths when recent modification time is misleading. In the reported failure, detection selected an archived folder instead of active work under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/`. This misroutes `/spec_kit:resume`, `/spec_kit:handover`, and related workflows to the wrong session context.
 
 #### Purpose
-Ensure spec-folder auto-detection consistently prefers active non-archived work, handles `specs/` and `.opencode/specs/` aliases deterministically, and requires user confirmation when confidence is low.
+Spec-folder auto-detection must consistently prefer active non-archived work, handle `specs/` and `.opencode/specs/` aliases deterministically, and require user confirmation when confidence is low.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -449,7 +459,7 @@ Memory-search bug-fix work was split across duplicate root and addendum document
 | ---------------- | ---------------------------------------------------- |
 | Spec ID          | 022-015                                              |
 | Title            | Bug Fixes and Alignment                              |
-| Status           | In Progress (historical fixes merged; open verification and follow-up work remains) |
+| Status           | Partially complete (historical 015 stream merged; canonical current-state tracking lives in 008) |
 | Priority         | P0-P1 (mixed)                                        |
 | Level            | 3                                                    |
 | Parent           | 022-hybrid-rag-fusion                                |
@@ -466,7 +476,7 @@ It supersedes active planning ownership from:
 - `009-post-review-remediation-epic` (historical remediation-epic lineage, including consolidated 002/022/023/024/025/026 roots)
 - `010-cross-ai-audit` (cross-AI audit provenance and session handover state)
 
-Source folders `009-post-review-remediation-epic` and `010-cross-ai-audit` are retired after archival fold-in; 015 is the only live canonical folder.
+Source folders `009-post-review-remediation-epic` and `010-cross-ai-audit` are retained as historical lineage; `008-combined-bug-fixes` is the live canonical folder.
 
 ---
 
@@ -507,7 +517,7 @@ Verification-aligned note: audit counts above are inherited backlog from prior m
 | --- | --- | --- |
 | REQ-001 | Resolve or explicitly defer VF-001 through VF-008 with evidence linked in checklist/tasks. | Keeps active work tied to reproduced findings, not stale backlog counts. |
 | REQ-002 | Restore gate health for `npx tsc --noEmit`, `npm run check`, and `npm run check:full`. | Prevents shipping with known build and validation failures. |
-| REQ-003 | Preserve canonical merge truth model where 015 is active and 009/010 remain historical context only. | Avoids split-canonical drift and contradictory status claims. |
+| REQ-003 | Preserve canonical merge truth model where 008 is active and 009/010 plus 015 streams remain historical context only. | Avoids split-canonical drift and contradictory status claims. |
 | REQ-004 | Keep P0 checkpoint merge restore safe by preventing CASCADE side effects. | Protects live session state from destructive restore behavior. |
 | REQ-005 | Keep scoring and formatter contracts aligned so valid zero-values are not dropped. | Preserves deterministic ranking and response correctness. |
 | REQ-006 | Keep documentation references truthful and path-resolvable from this canonical folder. | Ensures validator integrity checks and operator traceability. |
@@ -547,18 +557,19 @@ Current release truth for this folder is defined by this spec's current checklis
 
 | ID     | Category | Finding | Location |
 | ------ | -------- | ------- | -------- |
-| VF-001 | Gate | Current verification gate is not green: `npx tsc --noEmit`, `npm run check`, and `npm run check:full` are failing now | mcp_server/tests/memory-crud-extended.vitest.ts:5,161; mcp_server/lib/cache/cognitive/tier-classifier.ts:416; mcp_server/lib/storage/causal-edges.ts:173 |
+| VF-001 | Gate | Gate status green in current tree: `npm run check` and `npm run check:full` both pass | scratch/verification-logs/2026-03-07-mcp-check-full.md |
 | VF-002 | Search | Hybrid search score-contract mismatch between scorer output and consumer assumptions | mcp_server/lib/search/hybrid-search.ts:85,109 |
 | VF-003 | Search | Valid `similarity=0` is dropped via `||` fallback path | mcp_server/formatters/search-results.ts:348 |
 | VF-004 | Runtime | Server error-envelope contract mismatch between handler and envelope/core error utilities | context-server.ts:399; lib/response/envelope.ts:11; lib/errors/core.ts:251 |
-| VF-005 | Checkpoint | `clearExisting` restore flow and vector restore behavior are misaligned | lib/storage/checkpoints.ts:477,569; handlers/checkpoints.ts:200 |
+| VF-005 | Checkpoint | `clearExisting` restore scoping/causal-edge convergence has been fixed in current tree; retained as resolved lineage item | scratch/cross-ai-review-report.md |
 | VF-006 | Documentation | Documentation truthfulness gaps: stale README tool counts and incomplete feature/playbook coverage | README.md:106,183,189,730; tool-schemas.ts:450; undocumented-features-scan.md:11; manual-test-playbooks.md:341,356; feature_catalog.md:296,1767,1776 |
-| VF-007 | Scope | Review scope must include touched non-`mcp_server` surfaces, not only MCP server files | scripts/core/subfolder-utils.ts:17; scripts/memory/generate-context.ts:213; scripts/spec-folder/folder-detector.ts:502; shared/config.ts:12; opencode.json:25 |
+| VF-007 | Scope | Touched non-`mcp_server` surfaces are now explicitly included and updated in this packet | scratch/cross-ai-review-report.md |
 | VF-008 | Deferral | Explicit deferral marker still present in active code path (`TODO(CHK-069)`) | mcp_server/lib/search/local-reranker.ts:8 |
 
 Status model for this spec:
 - Inherited backlog: existing P0/P1/P2 audit findings (candidate work queue until reproduced)
-- Verification-aligned findings: VF-001 through VF-008 above (directly reproduced and prioritized)
+- Active verification findings: Gate and documentation truth issues are resolved in the refreshed packet; only explicitly deferred historical items remain (VF-008 / D-11).
+- Resolved-in-current-tree findings: VF-005 and VF-007 (see scratch evidence)
 
 #### P0 -- Blockers (4)
 
@@ -712,9 +723,9 @@ Active deferrals intentionally exclude historical CR-P2-4 (`memory-save.ts` deco
 
 ### 6. Success Criteria
 
-- [ ] Verification-aligned findings VF-001 through VF-008 are resolved or explicitly deferred with rationale
-- [ ] Current branch gate is green: `npx tsc --noEmit`, `npm run check`, and `npm run check:full` all pass
-- [ ] Documentation truthfulness is restored for tool counts, feature catalog status entries, and manual playbook coverage
+- [x] Verification-aligned findings VF-001 through VF-008 are resolved or explicitly deferred with rationale
+- [x] Current branch gate is green: `npx tsc --noEmit`, `npm run check`, and `npm run check:full` all pass
+- [x] Documentation truthfulness is restored for tool counts, feature catalog status entries, and manual playbook coverage
 
 - [ ] All P0 code bugs fixed with tests
 - [ ] All P1 code bugs fixed with tests
