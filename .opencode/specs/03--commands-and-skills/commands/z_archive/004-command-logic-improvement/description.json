@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+  "description": "Command Logic Improvement",
+  "keywords": [
+    "command",
+    "logic",
+    "improvement"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.350Z",
+  "specId": "004",
+  "folderSlug": "command-logic-improvement",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

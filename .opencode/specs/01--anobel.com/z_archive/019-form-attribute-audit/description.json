@@ -1,0 +1,19 @@
+{
+  "specFolder": "01--anobel.com/z_archive/019-form-attribute-audit",
+  "description": "Spec: Form Attribute Audit",
+  "keywords": [
+    "spec",
+    "form",
+    "attribute",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.599Z",
+  "specId": "019",
+  "folderSlug": "form-attribute-audit",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

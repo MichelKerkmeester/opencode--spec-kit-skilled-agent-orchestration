@@ -1,0 +1,23 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/005-subagent-delegation",
+  "description": "Feature Specification: Sub-Agent Delegation for Memory/Handover Commands",
+  "keywords": [
+    "feature",
+    "specification",
+    "sub-agent",
+    "delegation",
+    "memory",
+    "handover",
+    "commands"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.399Z",
+  "specId": "005",
+  "folderSlug": "subagent-delegation",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

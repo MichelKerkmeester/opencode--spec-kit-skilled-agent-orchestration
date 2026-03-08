@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+  "description": "Feature Specification: cli-claude-code Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli-claude-code",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.809Z",
+  "specId": "003",
+  "folderSlug": "cli-claude-code",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-cli"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

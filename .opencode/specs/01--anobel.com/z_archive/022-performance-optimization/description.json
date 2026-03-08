@@ -1,0 +1,19 @@
+{
+  "specFolder": "01--anobel.com/z_archive/022-performance-optimization",
+  "description": "Performance Optimization - anobel.com",
+  "keywords": [
+    "performance",
+    "optimization",
+    "anobel",
+    "com"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.749Z",
+  "specId": "022",
+  "folderSlug": "performance-optimization",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

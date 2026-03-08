@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+  "description": "Feature Specification: create:prompt Command",
+  "keywords": [
+    "feature",
+    "specification",
+    "create",
+    "prompt",
+    "command"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.089Z",
+  "specId": "015",
+  "folderSlug": "create-prompt-command",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

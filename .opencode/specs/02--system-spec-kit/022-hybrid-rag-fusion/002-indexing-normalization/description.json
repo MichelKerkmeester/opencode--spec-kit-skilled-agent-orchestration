@@ -1,0 +1,17 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
+  "description": "Consolidated spec.md",
+  "keywords": [
+    "consolidated",
+    "spec"
+  ],
+  "lastUpdated": "2026-03-08T11:08:52.222Z",
+  "specId": "002",
+  "folderSlug": "indexing-normalization",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

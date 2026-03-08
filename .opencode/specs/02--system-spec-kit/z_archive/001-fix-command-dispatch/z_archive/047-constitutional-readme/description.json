@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/047-constitutional-readme",
+  "description": "Spec: Constitutional Memory System README",
+  "keywords": [
+    "spec",
+    "constitutional",
+    "memory",
+    "system",
+    "readme"
+  ],
+  "lastUpdated": "2026-03-08T11:08:55.919Z",
+  "specId": "047",
+  "folderSlug": "constitutional-readme",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

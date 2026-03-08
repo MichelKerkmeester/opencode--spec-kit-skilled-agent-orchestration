@@ -1,0 +1,18 @@
+{
+  "specFolder": "01--anobel.com/z_archive/016-form-persistence",
+  "description": "Form Data Persistence",
+  "keywords": [
+    "form",
+    "data",
+    "persistence"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.444Z",
+  "specId": "016",
+  "folderSlug": "form-persistence",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

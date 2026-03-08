@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture/test-fixtures/valid-evidence",
+  "description": "Spec: Valid Evidence Fixture",
+  "keywords": [
+    "spec",
+    "valid",
+    "evidence",
+    "fixture"
+  ],
+  "lastUpdated": "2026-03-08T11:08:54.246Z",
+  "specId": "",
+  "folderSlug": "valid-evidence",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "023-path-scoped-rules",
+    "002-modular-architecture",
+    "test-fixtures"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

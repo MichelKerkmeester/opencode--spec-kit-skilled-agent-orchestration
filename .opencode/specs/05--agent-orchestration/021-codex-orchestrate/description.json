@@ -1,0 +1,21 @@
+{
+  "specFolder": "05--agent-orchestration/021-codex-orchestrate",
+  "description": "Feature Specification: ChatGPT Agent Suite Codex Optimization",
+  "keywords": [
+    "feature",
+    "specification",
+    "chatgpt",
+    "agent",
+    "suite",
+    "codex",
+    "optimization"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.609Z",
+  "specId": "021",
+  "folderSlug": "codex-orchestrate",
+  "parentChain": [
+    "05--agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

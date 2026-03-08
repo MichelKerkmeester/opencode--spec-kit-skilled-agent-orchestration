@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Spec Folder Description System Refactor"
-description: "Refactor the centralized descriptions.json into per-folder description.json files, improve memory filename uniqueness, and integrate description generation into spec folder creation automation."
+description: "Refactor the centralized descriptions.json into per-folder description.json files, improve memory filename uniqueness and integrate description generation into spec folder creation automation."
 trigger_phrases:
   - "descriptions.json"
   - "description system"
@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Ready |
 | **Created** | 2026-03-08 |
 | **Branch** | `010-spec-descriptions` |
 <!-- /ANCHOR:metadata -->
@@ -35,10 +35,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The current descriptions.json system stores ALL spec folder descriptions in a single centralized file at `specs/descriptions.json` (103KB, 400+ entries). This creates three problems: (1) AI agents cannot reliably generate unique memory names when multiple memories are saved to the same spec folder because the description context is global rather than local, (2) the `create.sh` spec folder creation script does not generate a `description.json` on folder creation, requiring a separate cache regeneration step, and (3) the centralized file becomes a bottleneck for concurrent operations and grows unboundedly.
+The current descriptions.json system stores ALL spec folder descriptions in a single centralized file at `specs/descriptions.json` (103KB, 400+ entries). This creates three problems: (1) AI agents cannot reliably generate unique memory names when multiple memories are saved to the same spec folder because the description context is global rather than local, (2) the `create.sh` spec folder creation script does not generate a `description.json` on folder creation, requiring a separate cache regeneration step and (3) the centralized file becomes a bottleneck for concurrent operations and grows unboundedly.
 
 ### Purpose
-Each spec folder at any nesting depth automatically gets its own `description.json` containing its description, keywords, and metadata — enabling AI agents to always generate unique memory filenames even when saving 10+ memories to the same folder in rapid succession.
+Each spec folder at any nesting depth automatically gets its own `description.json` containing its description, keywords and metadata, which enables AI agents to always generate unique memory filenames even when saving 10+ memories to the same folder in rapid succession.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -56,7 +56,7 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 - Update testing playbook with description system test scenarios
 
 ### Out of Scope
-- Changing the memory MCP server's search/indexing pipeline — only the description discovery layer
+- Changing any part of the memory MCP server's search/indexing pipeline beyond the description discovery layer
 - Migrating existing `specs/descriptions.json` data (backward compatibility maintained during transition)
 - Changing the memory anchor format or template system
 
@@ -68,6 +68,8 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 | `scripts/spec/create.sh` | Modify | Add description.json generation on folder creation |
 | `scripts/utils/slug-utils.ts` | Modify | Add collision-resistant slug generation with sequence suffix |
 | `scripts/core/workflow.ts` | Modify | Use per-folder description for unique memory name context |
+| `scripts/core/file-writer.ts` | Modify | Extend atomic write support for description.json |
+| `scripts/spec-folder/generate-description.ts` | Create | CLI wrapper calling generatePerFolderDescription() |
 | `mcp_server/tests/folder-discovery.vitest.ts` | Modify | Add per-folder description tests |
 | `mcp_server/tests/folder-discovery-integration.vitest.ts` | Modify | Integration tests for per-folder files |
 | `feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md` | Modify | Update feature catalog documentation |
@@ -104,7 +106,7 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 
 - **SC-001**: Every new spec folder created via `create.sh` contains a `description.json` at its root
 - **SC-002**: 10 consecutive memory saves to a single spec folder produce 10 files with distinct names
-- **SC-003**: All existing tests pass; new tests cover per-folder generation, aggregation, and uniqueness
+- **SC-003**: All existing tests pass. New tests cover per-folder generation, aggregation and uniqueness
 - **SC-004**: Centralized `specs/descriptions.json` is buildable from per-folder files (aggregation)
 <!-- /ANCHOR:success-criteria -->
 
@@ -120,10 +122,6 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 | Risk | Performance regression from reading many small files vs. one large file | Low | Lazy loading + in-memory cache of per-folder descriptions |
 | Dependency | `folder-discovery.ts` API used by MCP handlers | High | Preserve existing public API signatures |
 <!-- /ANCHOR:risks -->
-
----
-
-<!-- ANCHOR:questions -->
 
 ---
 
@@ -170,7 +168,7 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 15/25 | 7 files across 3 domains (search, scripting, memory) |
+| Scope | 15/25 | 9 files across 4 domains |
 | Risk | 12/25 | Backward compat required, public API preservation |
 | Research | 8/20 | Well-understood codebase, patterns clear |
 | **Total** | **35/70** | **Level 2** |
@@ -178,10 +176,11 @@ Each spec folder at any nesting depth automatically gets its own `description.js
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- Q1: Should per-folder `description.json` include memory name history to prevent slug collisions?
-- Q2: Should the centralized `descriptions.json` be deprecated entirely or kept as a build artifact?
+- Q1: Should per-folder `description.json` include memory name history to prevent slug collisions? RESOLVED: Yes, via memoryNameHistory ring buffer (max 20) and memorySequence counter.
+- Q2: Should the centralized `descriptions.json` be deprecated entirely or kept as a build artifact? RESOLVED: Retain centralized descriptions.json as build-time aggregation artifact derived from per-folder files.
 <!-- /ANCHOR:questions -->
 
 ---

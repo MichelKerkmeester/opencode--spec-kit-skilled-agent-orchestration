@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/056-spec-kit-references-reorganization",
+  "description": "system-spec-kit References Reorganization",
+  "keywords": [
+    "system-spec-kit",
+    "references",
+    "reorganization"
+  ],
+  "lastUpdated": "2026-03-08T11:08:56.387Z",
+  "specId": "056",
+  "folderSlug": "spec-kit-references-reorganization",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

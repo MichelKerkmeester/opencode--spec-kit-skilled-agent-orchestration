@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-doc/006-anchor-implementation",
+  "description": "Spec: Retrieval Anchors for Skill Documentation",
+  "keywords": [
+    "spec",
+    "retrieval",
+    "anchors",
+    "skill",
+    "documentation"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.034Z",
+  "specId": "006",
+  "folderSlug": "anchor-implementation",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-doc"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

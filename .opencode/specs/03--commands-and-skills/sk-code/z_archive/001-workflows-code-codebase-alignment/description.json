@@ -1,0 +1,24 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment",
+  "description": "Feature Specification: Workflows-Code Skill Alignment - Codebase Analysis & Updates",
+  "keywords": [
+    "feature",
+    "specification",
+    "workflows-code",
+    "skill",
+    "alignment",
+    "codebase",
+    "analysis",
+    "updates"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.015Z",
+  "specId": "001",
+  "folderSlug": "workflows-code-codebase-alignment",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

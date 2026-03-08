@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/004-script-audit-comprehensive",
+  "description": "Feature Specification: Comprehensive Script Audit",
+  "keywords": [
+    "feature",
+    "specification",
+    "comprehensive",
+    "script",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.235Z",
+  "specId": "004",
+  "folderSlug": "script-audit-comprehensive",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

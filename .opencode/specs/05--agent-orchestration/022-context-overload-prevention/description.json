@@ -1,0 +1,19 @@
+{
+  "specFolder": "05--agent-orchestration/022-context-overload-prevention",
+  "description": "Feature Specification: Context Overload Prevention",
+  "keywords": [
+    "feature",
+    "specification",
+    "context",
+    "overload",
+    "prevention"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.664Z",
+  "specId": "022",
+  "folderSlug": "context-overload-prevention",
+  "parentChain": [
+    "05--agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

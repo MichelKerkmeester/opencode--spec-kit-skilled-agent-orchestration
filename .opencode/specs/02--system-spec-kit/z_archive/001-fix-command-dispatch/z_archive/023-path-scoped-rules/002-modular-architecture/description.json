@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules/002-modular-architecture",
+  "description": "Modular Validation Architecture",
+  "keywords": [
+    "modular",
+    "validation",
+    "architecture"
+  ],
+  "lastUpdated": "2026-03-08T11:08:53.979Z",
+  "specId": "002",
+  "folderSlug": "modular-architecture",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "023-path-scoped-rules"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "01--anobel.com/z_archive/005-minify-javascript",
+  "description": "Feature Specification: minify-javascript - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "minify-javascript",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.878Z",
+  "specId": "005",
+  "folderSlug": "minify-javascript",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

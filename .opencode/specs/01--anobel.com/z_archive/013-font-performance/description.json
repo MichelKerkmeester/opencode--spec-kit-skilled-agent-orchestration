@@ -1,0 +1,19 @@
+{
+  "specFolder": "01--anobel.com/z_archive/013-font-performance",
+  "description": "Specification: Font Performance Optimization",
+  "keywords": [
+    "specification",
+    "font",
+    "performance",
+    "optimization"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.293Z",
+  "specId": "013",
+  "folderSlug": "font-performance",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-02-skill-speckit-alignment",
+  "description": "Task 02 — SKILL.md & References Audit",
+  "keywords": [
+    "task",
+    "skill",
+    "references",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.845Z",
+  "specId": "",
+  "folderSlug": "task-02-skill-speckit-alignment",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "013-memory-overhaul-and-agent-upgrade-release"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

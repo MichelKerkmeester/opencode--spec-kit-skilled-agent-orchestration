@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/001-scratch-enforcement",
+  "description": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis",
+  "keywords": [
+    "feature",
+    "specification",
+    "speckit",
+    "scratch",
+    "folder",
+    "enforcement",
+    "requirements",
+    "analysis"
+  ],
+  "lastUpdated": "2026-03-08T11:08:52.993Z",
+  "specId": "001",
+  "folderSlug": "scratch-enforcement",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

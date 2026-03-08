@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/003-barter-alignment",
+  "description": "workflows-code Skill Alignment with Barter Patterns",
+  "keywords": [
+    "workflows-code",
+    "skill",
+    "alignment",
+    "barter",
+    "patterns"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.122Z",
+  "specId": "003",
+  "folderSlug": "barter-alignment",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

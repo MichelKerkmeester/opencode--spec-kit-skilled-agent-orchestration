@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/011-upgrade-auto-populate",
+  "description": "Feature Specification: AI Auto-Populate on Spec Upgrade",
+  "keywords": [
+    "feature",
+    "specification",
+    "auto-populate",
+    "spec",
+    "upgrade"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.585Z",
+  "specId": "011",
+  "folderSlug": "upgrade-auto-populate",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/051-lib-consolidation",
+  "description": "Lib Consolidation - Shared Module Unification",
+  "keywords": [
+    "lib",
+    "consolidation",
+    "shared",
+    "module",
+    "unification"
+  ],
+  "lastUpdated": "2026-03-08T11:08:56.129Z",
+  "specId": "051",
+  "folderSlug": "lib-consolidation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

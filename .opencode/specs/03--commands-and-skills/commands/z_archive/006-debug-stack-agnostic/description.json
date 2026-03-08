@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/006-debug-stack-agnostic",
+  "description": "Spec: Make Debug Command Stack-Agnostic",
+  "keywords": [
+    "spec",
+    "make",
+    "debug",
+    "command",
+    "stack-agnostic"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.451Z",
+  "specId": "006",
+  "folderSlug": "debug-stack-agnostic",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

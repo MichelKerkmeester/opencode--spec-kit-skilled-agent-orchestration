@@ -657,7 +657,7 @@ mcp_server/
 │   ├── providers/          # Embedding providers and retry manager
 │   ├── response/           # MCP response envelope helpers
 │   ├── scoring/            # Composite scoring, tiers, folder scoring, interference scoring
-│   ├── search/             # Vector, BM25, RRF, RSF, adaptive fusion, MMR, graph search and budgets
+│   ├── search/             # Vector, BM25, RRF, RSF, adaptive fusion, MMR, graph search, budgets, folder discovery
 │   ├── session/            # Session deduplication
 │   ├── storage/            # SQLite, causal edges, mutation ledger, incremental index, schema downgrade
 │   ├── telemetry/          # Retrieval telemetry and scoring observability

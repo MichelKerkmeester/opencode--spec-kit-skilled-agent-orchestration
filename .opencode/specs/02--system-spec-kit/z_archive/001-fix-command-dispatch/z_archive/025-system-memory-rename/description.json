@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/025-system-memory-rename",
+  "description": "Spec: Rename workflows-memory → system-memory",
+  "keywords": [
+    "spec",
+    "rename",
+    "workflows-memory",
+    "system-memory"
+  ],
+  "lastUpdated": "2026-03-08T11:08:54.463Z",
+  "specId": "025",
+  "folderSlug": "system-memory-rename",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

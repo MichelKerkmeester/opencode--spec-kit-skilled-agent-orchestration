@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-04-agent-alignment",
+  "description": "Task 04 — Agent Configs Audit",
+  "keywords": [
+    "task",
+    "agent",
+    "configs",
+    "audit"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.948Z",
+  "specId": "",
+  "folderSlug": "task-04-agent-alignment",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "013-memory-overhaul-and-agent-upgrade-release"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

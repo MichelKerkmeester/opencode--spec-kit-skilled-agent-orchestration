@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/sk-doc/008-sk-doc-template-folders",
+  "description": "Feature Specification: sk-doc Template Folder Reorganization",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-doc",
+    "template",
+    "folder",
+    "reorganization"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.138Z",
+  "specId": "008",
+  "folderSlug": "sk-doc-template-folders",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-doc"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

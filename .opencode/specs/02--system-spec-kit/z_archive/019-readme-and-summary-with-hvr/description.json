@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr",
+  "description": "Feature Specification: Human Voice Rules — Template Integration",
+  "keywords": [
+    "feature",
+    "specification",
+    "human",
+    "voice",
+    "rules",
+    "template",
+    "integration"
+  ],
+  "lastUpdated": "2026-03-08T11:08:59.415Z",
+  "specId": "019",
+  "folderSlug": "readme-and-summary-with-hvr",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

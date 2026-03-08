@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/005-post-research-wave-2-controlled-delivery",
+  "description": "Phase Package Spec: Post-Research Wave 2 (Controlled Delivery)",
+  "keywords": [
+    "phase",
+    "package",
+    "spec",
+    "post-research",
+    "wave",
+    "controlled",
+    "delivery"
+  ],
+  "lastUpdated": "2026-03-08T11:08:59.723Z",
+  "specId": "005",
+  "folderSlug": "post-research-wave-2-controlled-delivery",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "020-mcp-working-memory-hybrid-rag"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

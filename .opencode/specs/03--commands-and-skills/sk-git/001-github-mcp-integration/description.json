@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-git/001-github-mcp-integration",
+  "description": "GitHub MCP Integration for sk-git Skill",
+  "keywords": [
+    "github",
+    "mcp",
+    "integration",
+    "sk-git",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.188Z",
+  "specId": "001",
+  "folderSlug": "github-mcp-integration",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-git"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

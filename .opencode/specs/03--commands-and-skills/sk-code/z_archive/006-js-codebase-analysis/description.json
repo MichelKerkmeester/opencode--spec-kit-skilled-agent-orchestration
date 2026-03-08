@@ -1,0 +1,23 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis",
+  "description": "Feature Specification: JavaScript Codebase Alignment with workflows-code Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "javascript",
+    "codebase",
+    "alignment",
+    "workflows-code",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.276Z",
+  "specId": "006",
+  "folderSlug": "js-codebase-analysis",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

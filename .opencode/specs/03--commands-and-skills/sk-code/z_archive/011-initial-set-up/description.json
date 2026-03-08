@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/011-initial-set-up",
+  "description": "Feature Specification: workflows-code-opencode Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "workflows-code-opencode",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.589Z",
+  "specId": "011",
+  "folderSlug": "initial-set-up",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

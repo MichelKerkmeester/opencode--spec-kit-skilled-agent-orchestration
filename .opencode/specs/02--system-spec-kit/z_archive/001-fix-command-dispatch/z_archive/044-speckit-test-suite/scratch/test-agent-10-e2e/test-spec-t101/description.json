@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/044-speckit-test-suite/scratch/test-agent-10-e2e/test-spec-t101",
+  "description": "Test Spec T10.1",
+  "keywords": [
+    "test",
+    "spec",
+    "t10"
+  ],
+  "lastUpdated": "2026-03-08T11:08:55.757Z",
+  "specId": "",
+  "folderSlug": "test-spec-t101",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive",
+    "044-speckit-test-suite",
+    "scratch",
+    "test-agent-10-e2e"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

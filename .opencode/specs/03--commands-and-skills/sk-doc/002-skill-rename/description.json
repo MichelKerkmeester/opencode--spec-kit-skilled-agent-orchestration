@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-doc/002-skill-rename",
+  "description": "Spec: sk-doc Skill Functional Testing",
+  "keywords": [
+    "spec",
+    "sk-doc",
+    "skill",
+    "functional",
+    "testing"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.799Z",
+  "specId": "002",
+  "folderSlug": "skill-rename",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-doc"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

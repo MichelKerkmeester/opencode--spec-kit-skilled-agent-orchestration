@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/028-memory-alignment-fix",
+  "description": "Memory Alignment Fix - Three-Layer Defense System",
+  "keywords": [
+    "memory",
+    "alignment",
+    "fix",
+    "three-layer",
+    "defense",
+    "system"
+  ],
+  "lastUpdated": "2026-03-08T11:08:54.670Z",
+  "specId": "028",
+  "folderSlug": "memory-alignment-fix",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

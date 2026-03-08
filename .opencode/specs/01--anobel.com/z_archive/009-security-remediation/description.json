@@ -1,0 +1,18 @@
+{
+  "specFolder": "01--anobel.com/z_archive/009-security-remediation",
+  "description": "Security Vulnerability Remediation",
+  "keywords": [
+    "security",
+    "vulnerability",
+    "remediation"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.088Z",
+  "specId": "009",
+  "folderSlug": "security-remediation",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

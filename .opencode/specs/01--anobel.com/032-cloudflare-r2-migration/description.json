@@ -1,0 +1,18 @@
+{
+  "specFolder": "01--anobel.com/032-cloudflare-r2-migration",
+  "description": "Spec: Cloudflare R2 + Worker Migration",
+  "keywords": [
+    "spec",
+    "cloudflare",
+    "worker",
+    "migration"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.414Z",
+  "specId": "032",
+  "folderSlug": "cloudflare-r2-migration",
+  "parentChain": [
+    "01--anobel.com"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

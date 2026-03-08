@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/sk-cli/004-cli-copilot",
+  "description": "Feature Specification: cli-copilot Skill",
+  "keywords": [
+    "feature",
+    "specification",
+    "cli-copilot",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.858Z",
+  "specId": "004",
+  "folderSlug": "cli-copilot",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-cli"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

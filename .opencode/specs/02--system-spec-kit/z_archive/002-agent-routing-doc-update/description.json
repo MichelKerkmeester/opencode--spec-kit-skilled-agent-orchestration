@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/002-agent-routing-doc-update",
+  "description": "Feature Specification: Agent Routing Documentation Update",
+  "keywords": [
+    "feature",
+    "specification",
+    "agent",
+    "routing",
+    "documentation",
+    "update"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.132Z",
+  "specId": "002",
+  "folderSlug": "agent-routing-doc-update",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,24 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement",
+  "description": "Feature Specification: Code Quality Enforcement - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "code",
+    "quality",
+    "enforcement",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.174Z",
+  "specId": "004",
+  "folderSlug": "code-quality-enforcement",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

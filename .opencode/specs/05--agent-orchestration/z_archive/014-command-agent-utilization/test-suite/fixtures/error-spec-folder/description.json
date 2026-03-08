@@ -1,0 +1,22 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/fixtures/error-spec-folder",
+  "description": "Feature Specification: Notification System",
+  "keywords": [
+    "feature",
+    "specification",
+    "notification",
+    "system"
+  ],
+  "lastUpdated": "2026-03-08T11:09:03.712Z",
+  "specId": "",
+  "folderSlug": "error-spec-folder",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive",
+    "014-command-agent-utilization",
+    "test-suite",
+    "fixtures"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

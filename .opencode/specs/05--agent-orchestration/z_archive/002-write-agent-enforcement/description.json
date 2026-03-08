@@ -1,0 +1,21 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/002-write-agent-enforcement",
+  "description": "Spec: @write Agent Enforcement for /create Commands",
+  "keywords": [
+    "spec",
+    "write",
+    "agent",
+    "enforcement",
+    "create",
+    "commands"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.980Z",
+  "specId": "002",
+  "folderSlug": "write-agent-enforcement",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/017-command-adherence",
+  "description": "Feature Specification: Plan-to-Implementation Gate Bypass Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "plan-to-implementation",
+    "gate",
+    "bypass",
+    "fix"
+  ],
+  "lastUpdated": "2026-03-08T11:08:59.309Z",
+  "specId": "017",
+  "folderSlug": "command-adherence",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

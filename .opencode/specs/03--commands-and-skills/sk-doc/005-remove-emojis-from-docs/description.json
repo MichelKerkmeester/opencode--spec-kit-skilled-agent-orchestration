@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs",
+  "description": "Feature Specification: Remove Emojis from All Documentation",
+  "keywords": [
+    "feature",
+    "specification",
+    "remove",
+    "emojis",
+    "documentation"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.979Z",
+  "specId": "005",
+  "folderSlug": "remove-emojis-from-docs",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-doc"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

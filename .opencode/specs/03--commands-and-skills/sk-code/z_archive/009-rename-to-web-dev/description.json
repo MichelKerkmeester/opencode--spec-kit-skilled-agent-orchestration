@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/009-rename-to-web-dev",
+  "description": "Feature Specification: Rename workflows-code to workflows-code--web-dev",
+  "keywords": [
+    "feature",
+    "specification",
+    "rename",
+    "workflows-code",
+    "workflows-code-web-dev"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.484Z",
+  "specId": "009",
+  "folderSlug": "rename-to-web-dev",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

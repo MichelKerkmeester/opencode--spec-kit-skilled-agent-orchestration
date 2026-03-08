@@ -1,0 +1,21 @@
+{
+  "specFolder": "01--anobel.com/z_archive/003-btn-download-alignment",
+  "description": "Spec: Download Button Code Standards Alignment",
+  "keywords": [
+    "spec",
+    "download",
+    "button",
+    "code",
+    "standards",
+    "alignment"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.677Z",
+  "specId": "003",
+  "folderSlug": "btn-download-alignment",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

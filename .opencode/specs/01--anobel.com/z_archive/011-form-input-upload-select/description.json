@@ -1,0 +1,20 @@
+{
+  "specFolder": "01--anobel.com/z_archive/011-form-input-upload-select",
+  "description": "Spec: Form Input Components Enhancement",
+  "keywords": [
+    "spec",
+    "form",
+    "input",
+    "components",
+    "enhancement"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.190Z",
+  "specId": "011",
+  "folderSlug": "form-input-upload-select",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/010-speckit-codex-compatibility",
+  "description": "Feature Specification: Make spec_kit Commands Codex-Compatible",
+  "keywords": [
+    "feature",
+    "specification",
+    "make",
+    "commands",
+    "codex-compatible"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.653Z",
+  "specId": "010",
+  "folderSlug": "speckit-codex-compatibility",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

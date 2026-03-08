@@ -1,0 +1,21 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/004-multi-agent-dispatch",
+  "description": "Spec: Multi-Agent Dispatch for Research and Debug Commands",
+  "keywords": [
+    "spec",
+    "multi-agent",
+    "dispatch",
+    "research",
+    "debug",
+    "commands"
+  ],
+  "lastUpdated": "2026-03-08T11:09:03.087Z",
+  "specId": "004",
+  "folderSlug": "multi-agent-dispatch",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/014-command-agent-utilization/test-suite/workspaces/debug-escalation",
+  "description": "Feature Specification: JWT Authentication",
+  "keywords": [
+    "feature",
+    "specification",
+    "jwt",
+    "authentication"
+  ],
+  "lastUpdated": "2026-03-08T11:09:03.867Z",
+  "specId": "",
+  "folderSlug": "debug-escalation",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive",
+    "014-command-agent-utilization",
+    "test-suite",
+    "workspaces"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

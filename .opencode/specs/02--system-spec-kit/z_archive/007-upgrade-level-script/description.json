@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/007-upgrade-level-script",
+  "description": "Feature Specification: Spec Folder Level Upgrade Script",
+  "keywords": [
+    "feature",
+    "specification",
+    "spec",
+    "folder",
+    "level",
+    "upgrade",
+    "script"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.381Z",
+  "specId": "007",
+  "folderSlug": "upgrade-level-script",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

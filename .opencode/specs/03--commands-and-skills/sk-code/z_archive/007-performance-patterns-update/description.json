@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update",
+  "description": "Performance Patterns Update - workflows-code Skill",
+  "keywords": [
+    "performance",
+    "patterns",
+    "update",
+    "workflows-code",
+    "skill"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.379Z",
+  "specId": "007",
+  "folderSlug": "performance-patterns-update",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

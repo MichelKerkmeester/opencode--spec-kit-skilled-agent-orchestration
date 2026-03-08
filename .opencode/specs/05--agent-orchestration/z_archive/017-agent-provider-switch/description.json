@@ -1,0 +1,23 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/017-agent-provider-switch",
+  "description": "Spec 017: Agent Provider Switching with Primary Runtime Path",
+  "keywords": [
+    "spec",
+    "017",
+    "agent",
+    "provider",
+    "switching",
+    "primary",
+    "runtime",
+    "path"
+  ],
+  "lastUpdated": "2026-03-08T11:09:04.433Z",
+  "specId": "017",
+  "folderSlug": "agent-provider-switch",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "01--anobel.com/z_archive/026-mobile-btn-link-feedback",
+  "description": "Feature Specification: Mobile Button/Link Tap Feedback",
+  "keywords": [
+    "feature",
+    "specification",
+    "mobile",
+    "button",
+    "link",
+    "tap",
+    "feedback"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.964Z",
+  "specId": "026",
+  "folderSlug": "mobile-btn-link-feedback",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

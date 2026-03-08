@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/052-codebase-fixes",
+  "description": "Spec: Codebase Fixes - Embedding Dimension & Performance",
+  "keywords": [
+    "spec",
+    "codebase",
+    "fixes",
+    "embedding",
+    "dimension",
+    "performance"
+  ],
+  "lastUpdated": "2026-03-08T11:08:56.180Z",
+  "specId": "052",
+  "folderSlug": "codebase-fixes",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

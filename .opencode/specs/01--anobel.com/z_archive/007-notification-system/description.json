@@ -1,0 +1,22 @@
+{
+  "specFolder": "01--anobel.com/z_archive/007-notification-system",
+  "description": "Feature Specification: Notification System - Requirements & User Stories",
+  "keywords": [
+    "feature",
+    "specification",
+    "notification",
+    "system",
+    "requirements",
+    "user",
+    "stories"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.981Z",
+  "specId": "007",
+  "folderSlug": "notification-system",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

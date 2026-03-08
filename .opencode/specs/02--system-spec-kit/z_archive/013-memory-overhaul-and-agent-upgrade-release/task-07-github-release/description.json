@@ -1,0 +1,19 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/task-07-github-release",
+  "description": "Task 07 — Tagged Release",
+  "keywords": [
+    "task",
+    "tagged",
+    "release"
+  ],
+  "lastUpdated": "2026-03-08T11:08:59.106Z",
+  "specId": "",
+  "folderSlug": "task-07-github-release",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "013-memory-overhaul-and-agent-upgrade-release"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

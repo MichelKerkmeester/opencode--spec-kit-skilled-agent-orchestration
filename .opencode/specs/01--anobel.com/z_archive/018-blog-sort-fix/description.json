@@ -1,0 +1,20 @@
+{
+  "specFolder": "01--anobel.com/z_archive/018-blog-sort-fix",
+  "description": "Spec: Blog Sort Dropdown Fix",
+  "keywords": [
+    "spec",
+    "blog",
+    "sort",
+    "dropdown",
+    "fix"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.547Z",
+  "specId": "018",
+  "folderSlug": "blog-sort-fix",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

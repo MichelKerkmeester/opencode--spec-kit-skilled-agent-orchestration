@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/009-full-spec-doc-indexing",
+  "description": "Feature Specification: Full Spec Folder Document Indexing",
+  "keywords": [
+    "feature",
+    "specification",
+    "full",
+    "spec",
+    "folder",
+    "document",
+    "indexing"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.481Z",
+  "specId": "009",
+  "folderSlug": "full-spec-doc-indexing",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

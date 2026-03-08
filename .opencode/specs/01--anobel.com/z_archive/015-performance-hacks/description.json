@@ -1,0 +1,19 @@
+{
+  "specFolder": "01--anobel.com/z_archive/015-performance-hacks",
+  "description": "Specification: Additional Performance Hacks",
+  "keywords": [
+    "specification",
+    "additional",
+    "performance",
+    "hacks"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.394Z",
+  "specId": "015",
+  "folderSlug": "performance-hacks",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

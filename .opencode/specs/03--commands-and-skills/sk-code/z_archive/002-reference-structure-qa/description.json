@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa",
+  "description": "Specification: Workflows-Code Reference QA",
+  "keywords": [
+    "specification",
+    "workflows-code",
+    "reference"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.067Z",
+  "specId": "002",
+  "folderSlug": "reference-structure-qa",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

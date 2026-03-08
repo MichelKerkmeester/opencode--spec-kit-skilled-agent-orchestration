@@ -1,0 +1,21 @@
+{
+  "specFolder": "01--anobel.com/034-form-bot-problem",
+  "description": "Feature Specification: Contact Form Bot Submission Investigation",
+  "keywords": [
+    "feature",
+    "specification",
+    "contact",
+    "form",
+    "bot",
+    "submission",
+    "investigation"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.522Z",
+  "specId": "034",
+  "folderSlug": "form-bot-problem",
+  "parentChain": [
+    "01--anobel.com"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

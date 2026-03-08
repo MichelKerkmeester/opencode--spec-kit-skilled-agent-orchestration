@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+  "description": "Spec: Document Specialist Refactor",
+  "keywords": [
+    "spec",
+    "document",
+    "specialist",
+    "refactor"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.748Z",
+  "specId": "001",
+  "folderSlug": "doc-specialist-refactor",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-doc"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

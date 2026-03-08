@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-spec-descriptions",
+  "description": "Feature Specification: Spec Folder Description System Refactor",
+  "keywords": [
+    "feature",
+    "specification",
+    "spec",
+    "folder",
+    "description",
+    "system",
+    "refactor"
+  ],
+  "lastUpdated": "2026-03-08T11:08:52.726Z",
+  "specId": "010",
+  "folderSlug": "spec-descriptions",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "08-03-26_13-58__spec-folder-description-system-refactor.md"
+  ]
+}

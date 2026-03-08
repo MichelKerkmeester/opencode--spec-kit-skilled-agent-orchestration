@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/014-code-review-skill",
+  "description": "Feature Specification: sk-code--review Promotion",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-code-review",
+    "promotion"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.912Z",
+  "specId": "014",
+  "folderSlug": "code-review-skill",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

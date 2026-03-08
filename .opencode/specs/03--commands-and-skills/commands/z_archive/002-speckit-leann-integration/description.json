@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+  "description": "SpecKit LEANN Integration",
+  "keywords": [
+    "speckit",
+    "leann",
+    "integration"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.247Z",
+  "specId": "002",
+  "folderSlug": "speckit-leann-integration",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

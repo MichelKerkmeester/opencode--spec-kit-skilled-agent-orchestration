@@ -1,0 +1,20 @@
+{
+  "specFolder": "01--anobel.com/z_archive/012-notification-time-scheduling",
+  "description": "Feature Specification: Notification Time-Based Scheduling",
+  "keywords": [
+    "feature",
+    "specification",
+    "notification",
+    "time-based",
+    "scheduling"
+  ],
+  "lastUpdated": "2026-03-08T11:08:51.240Z",
+  "specId": "012",
+  "folderSlug": "notification-time-scheduling",
+  "parentChain": [
+    "01--anobel.com",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

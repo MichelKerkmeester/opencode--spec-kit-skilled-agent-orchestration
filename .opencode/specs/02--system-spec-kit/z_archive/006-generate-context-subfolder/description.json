@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/006-generate-context-subfolder",
+  "description": "Feature Specification: generate-context.ts Subfolder Support",
+  "keywords": [
+    "feature",
+    "specification",
+    "generate-context",
+    "subfolder",
+    "support"
+  ],
+  "lastUpdated": "2026-03-08T11:08:58.333Z",
+  "specId": "006",
+  "folderSlug": "generate-context-subfolder",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/083-speckit-reimagined-bug-fixes",
+  "description": "Spec Kit Reimagined Bug Fixes (Consolidated)",
+  "keywords": [
+    "spec",
+    "kit",
+    "reimagined",
+    "bug",
+    "fixes",
+    "consolidated"
+  ],
+  "lastUpdated": "2026-03-08T11:08:57.590Z",
+  "specId": "083",
+  "folderSlug": "speckit-reimagined-bug-fixes",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

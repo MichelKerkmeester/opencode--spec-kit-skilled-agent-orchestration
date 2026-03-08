@@ -1,0 +1,23 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/009-create-yaml-architecture",
+  "description": "Feature Specification: Create Commands YAML-First Architecture Refactor",
+  "keywords": [
+    "feature",
+    "specification",
+    "create",
+    "commands",
+    "yaml-first",
+    "architecture",
+    "refactor"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.603Z",
+  "specId": "009",
+  "folderSlug": "create-yaml-architecture",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

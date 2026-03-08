@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog",
+  "description": "Feature Catalog Source File Annotations",
+  "keywords": [
+    "feature",
+    "catalog",
+    "source",
+    "file",
+    "annotations"
+  ],
+  "lastUpdated": "2026-03-08T11:08:52.780Z",
+  "specId": "011",
+  "folderSlug": "feature-catalog",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

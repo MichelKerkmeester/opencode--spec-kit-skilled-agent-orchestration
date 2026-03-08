@@ -1,0 +1,25 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/008-fix-create-dispatch",
+  "description": "Feature Specification: Fix Create Command Dispatch Vulnerability + Defensive Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "fix",
+    "create",
+    "command",
+    "dispatch",
+    "vulnerability",
+    "defensive",
+    "hardening"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.552Z",
+  "specId": "008",
+  "folderSlug": "fix-create-dispatch",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

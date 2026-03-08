@@ -1,0 +1,22 @@
+{
+  "specFolder": "01--anobel.com/033-form-upload-issues",
+  "description": "Feature Specification: CV Upload Form File Type Validation Fix",
+  "keywords": [
+    "feature",
+    "specification",
+    "upload",
+    "form",
+    "file",
+    "type",
+    "validation",
+    "fix"
+  ],
+  "lastUpdated": "2026-03-08T11:08:50.465Z",
+  "specId": "033",
+  "folderSlug": "form-upload-issues",
+  "parentChain": [
+    "01--anobel.com"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

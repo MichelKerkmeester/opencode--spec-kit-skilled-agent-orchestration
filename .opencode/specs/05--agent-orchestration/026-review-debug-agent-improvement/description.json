@@ -1,0 +1,21 @@
+{
+  "specFolder": "05--agent-orchestration/026-review-debug-agent-improvement",
+  "description": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents",
+  "keywords": [
+    "spec",
+    "adversarial",
+    "self-check",
+    "review",
+    "debug",
+    "ultra-think",
+    "agents"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.822Z",
+  "specId": "026",
+  "folderSlug": "review-debug-agent-improvement",
+  "parentChain": [
+    "05--agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

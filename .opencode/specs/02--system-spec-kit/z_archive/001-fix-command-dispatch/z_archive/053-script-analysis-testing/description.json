@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/053-script-analysis-testing",
+  "description": "Feature Specification: Script Analysis Testing - End-to-End Workflow Validation",
+  "keywords": [
+    "feature",
+    "specification",
+    "script",
+    "analysis",
+    "testing",
+    "end-to-end",
+    "workflow",
+    "validation"
+  ],
+  "lastUpdated": "2026-03-08T11:08:56.232Z",
+  "specId": "053",
+  "folderSlug": "script-analysis-testing",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "001-fix-command-dispatch",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

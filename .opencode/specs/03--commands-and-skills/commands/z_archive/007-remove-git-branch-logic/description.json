@@ -1,0 +1,24 @@
+{
+  "specFolder": "03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic",
+  "description": "Spec 007: Remove Git Branch Logic from YAML Commands",
+  "keywords": [
+    "spec",
+    "007",
+    "remove",
+    "git",
+    "branch",
+    "logic",
+    "yaml",
+    "commands"
+  ],
+  "lastUpdated": "2026-03-08T11:09:00.501Z",
+  "specId": "007",
+  "folderSlug": "remove-git-branch-logic",
+  "parentChain": [
+    "03--commands-and-skills",
+    "commands",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

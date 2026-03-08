@@ -214,6 +214,7 @@ CLI tools for day-to-day spec kit operations:
 | `memory/generate-context.ts` | Memory file generation (source) |
 | `memory/backfill-frontmatter.ts` | Bulk frontmatter normalization for templates/spec docs/memory files with dry-run/apply/report modes |
 | `memory/reindex-embeddings.ts` | Force embedding refresh after metadata migrations or parser/template updates |
+| `spec-folder/generate-description.ts` | Generate per-folder `description.json` metadata from `spec.md` or explicit `--description` override |
 | `templates/compose.sh` | Compose level templates |
 
 **Memory generation is mandatory via script:**
@@ -310,6 +311,7 @@ Every file modification requires a spec folder. Level is determined by estimated
 
 ```
 specs/<###-feature-name>/
+├── description.json             # Spec identity + memory tracking metadata
 ├── spec.md                    # Feature specification
 ├── plan.md                    # Implementation plan
 ├── tasks.md                   # Task breakdown
@@ -658,6 +660,17 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 # Generate for nested phase folder
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/121-child-name
+```
+
+### Spec Folder Description Generator
+
+Generate a `description.json` file for a spec folder:
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path> <base-path>
+
+# With explicit description override
+node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js <folder-path> <base-path> --description "Short summary"
 ```
 
 ---

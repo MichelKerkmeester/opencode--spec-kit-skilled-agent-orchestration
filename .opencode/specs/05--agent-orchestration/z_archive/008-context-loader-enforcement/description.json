@@ -1,0 +1,18 @@
+{
+  "specFolder": "05--agent-orchestration/z_archive/008-context-loader-enforcement",
+  "description": "Spec: Aggressive @context_loader Enforcement",
+  "keywords": [
+    "spec",
+    "aggressive",
+    "enforcement"
+  ],
+  "lastUpdated": "2026-03-08T11:09:03.295Z",
+  "specId": "008",
+  "folderSlug": "context-loader-enforcement",
+  "parentChain": [
+    "05--agent-orchestration",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

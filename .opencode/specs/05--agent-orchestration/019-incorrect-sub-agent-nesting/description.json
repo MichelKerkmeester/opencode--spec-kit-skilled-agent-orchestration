@@ -1,0 +1,20 @@
+{
+  "specFolder": "05--agent-orchestration/019-incorrect-sub-agent-nesting",
+  "description": "Feature Specification: Sub-Agent Nesting Depth Control",
+  "keywords": [
+    "feature",
+    "specification",
+    "sub-agent",
+    "nesting",
+    "depth",
+    "control"
+  ],
+  "lastUpdated": "2026-03-08T11:09:02.504Z",
+  "specId": "019",
+  "folderSlug": "incorrect-sub-agent-nesting",
+  "parentChain": [
+    "05--agent-orchestration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

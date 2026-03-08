@@ -1,0 +1,20 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/008-workflows-code-multi-stack",
+  "description": "workflows-code-multi-stack Skill - Conversion Spec",
+  "keywords": [
+    "workflows-code-multi-stack",
+    "skill",
+    "conversion",
+    "spec"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.431Z",
+  "specId": "008",
+  "folderSlug": "workflows-code-multi-stack",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

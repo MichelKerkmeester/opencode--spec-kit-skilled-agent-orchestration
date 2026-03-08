@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3",
+  "description": "Phase Package Spec: Extraction and Rollout (Phase 2, Phase 3)",
+  "keywords": [
+    "phase",
+    "package",
+    "spec",
+    "extraction",
+    "rollout"
+  ],
+  "lastUpdated": "2026-03-08T11:08:59.570Z",
+  "specId": "002",
+  "folderSlug": "extraction-rollout-phases-2-3",
+  "parentChain": [
+    "02--system-spec-kit",
+    "z_archive",
+    "020-mcp-working-memory-hybrid-rag"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

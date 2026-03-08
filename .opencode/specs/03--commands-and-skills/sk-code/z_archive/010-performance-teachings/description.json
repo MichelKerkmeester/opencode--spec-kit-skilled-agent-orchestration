@@ -1,0 +1,22 @@
+{
+  "specFolder": "03--commands-and-skills/sk-code/z_archive/010-performance-teachings",
+  "description": "Spec: Update workflows-code--web-dev with Spec 031 Performance Teachings",
+  "keywords": [
+    "spec",
+    "update",
+    "workflows-code-web-dev",
+    "031",
+    "performance",
+    "teachings"
+  ],
+  "lastUpdated": "2026-03-08T11:09:01.534Z",
+  "specId": "010",
+  "folderSlug": "performance-teachings",
+  "parentChain": [
+    "03--commands-and-skills",
+    "sk-code",
+    "z_archive"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
