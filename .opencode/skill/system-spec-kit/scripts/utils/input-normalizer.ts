@@ -163,7 +163,7 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
   const finalChosenApproach: string = chosenApproach || title;
   const hasMultipleAlternativesMentioned: boolean = alternatives.length > 1
     || /alternatives?\s+considered:\s*[^.]+,\s*[^.]+/i.test(decisionText);
-  const confidence: number = finalChosenApproach
+  const confidence: number = chosenApproach
     ? (hasMultipleAlternativesMentioned ? 70 : 65)
     : 50;
 

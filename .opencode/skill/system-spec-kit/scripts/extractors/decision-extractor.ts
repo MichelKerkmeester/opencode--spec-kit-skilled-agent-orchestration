@@ -262,8 +262,9 @@ async function extractDecisions(
     const confidenceMatch = narrative.match(/confidence:?\s*(\d+)%?/i);
     // Default confidence based on evidence strength: options + rationale = higher confidence
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
-    const CONFIDENCE: number = confidenceMatch
-      ? Math.max(0, Math.min(100, parseInt(confidenceMatch[1], 10)))
+    const parsedConfidence = confidenceMatch ? parseInt(confidenceMatch[1], 10) : NaN;
+    const CONFIDENCE: number = Number.isFinite(parsedConfidence)
+      ? Math.max(0, Math.min(100, parsedConfidence))
       : baseConfidence;
 
     const PROS = facts

@@ -27,10 +27,19 @@ function main(): void {
   const folderPath = path.resolve(args[0]);
   const basePath = path.resolve(args[1]);
 
-  // AI-WHY: Path containment check — prevent directory traversal attacks
-  const realFolder = fs.realpathSync(folderPath);
-  const realBase = fs.realpathSync(basePath);
-  if (!realFolder.startsWith(realBase)) {
+  // AI-WHY: Path containment check — prevent directory traversal attacks.
+  // try/catch guards against crash on broken symlinks (realpathSync throws ENOENT).
+  // path.sep boundary prevents prefix bypass (e.g. /specs-evil passing for /specs).
+  let realFolder: string;
+  let realBase: string;
+  try {
+    realFolder = fs.realpathSync(folderPath);
+    realBase = fs.realpathSync(basePath);
+  } catch (err: unknown) {
+    console.error(`Error: cannot resolve real path — ${(err as NodeJS.ErrnoException).message}`);
+    process.exit(1);
+  }
+  if (!(realFolder === realBase || realFolder.startsWith(realBase + path.sep))) {
     console.error(`Error: folder path escapes base path (${realFolder} not under ${realBase})`);
     process.exit(1);
   }

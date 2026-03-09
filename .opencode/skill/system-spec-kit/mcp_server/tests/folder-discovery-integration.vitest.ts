@@ -636,6 +636,26 @@ describe('PI-B3: Per-folder description preference', () => {
   });
 });
 
+/* --- C2 path containment integration test --- */
+
+describe('C2: generatePerFolderDescription path containment', () => {
+  let td: string;
+  beforeEach(() => { td = createTempWorkspace(); });
+  afterEach(() => { cleanup(td); });
+
+  it('T046-28: rejects specs-evil sibling via path.sep boundary check', () => {
+    const specsDir = path.join(td, 'specs');
+    const evilDir = path.join(td, 'specs-evil', '001-bad');
+    fs.mkdirSync(path.join(specsDir, '001-ok'), { recursive: true });
+    fs.mkdirSync(evilDir, { recursive: true });
+    fs.writeFileSync(path.join(specsDir, '001-ok', 'spec.md'), '# OK Spec', 'utf-8');
+    fs.writeFileSync(path.join(evilDir, 'spec.md'), '# Evil Spec', 'utf-8');
+
+    const result = generatePerFolderDescription(evilDir, specsDir);
+    expect(result).toBeNull();
+  });
+});
+
 /* --- 010-CHK-024: Stale detection incorporates description.json mtime --- */
 
 describe('CHK-024: description.json mtime staleness', () => {
@@ -730,7 +750,7 @@ describe('CHK-029: generateFolderDescriptions scan performance', () => {
   beforeEach(() => { td = createTempWorkspace(); });
   afterEach(() => { cleanup(td); });
 
-  it('T046-27: generateFolderDescriptions scan completes in <2s for 500 folders', { timeout: 30000 }, () => {
+  it('T046-27: generateFolderDescriptions scan completes in <2s for 500 folders', { timeout: 10000 }, () => {
     const specsDir = path.join(td, 'specs');
 
     // Create 500 spec folders to exercise the scan path at production scale

@@ -83,14 +83,18 @@ export async function writeFilesAtomically(
     // Backup existing file before overwrite
     let existedBefore = false;
     let backupPath: string | undefined;
+    let fileExists = false;
     try {
       await fs.access(filePath);
+      fileExists = true;
+    } catch { /* Expected: file doesn't exist */ }
+    if (fileExists) {
       const backupSuffix = crypto.randomBytes(4).toString('hex');
       backupPath = `${filePath}.bak.${backupSuffix}`;
       await fs.copyFile(filePath, backupPath);
       existedBefore = true;
       console.warn(`   Warning: overwriting existing file ${filename}`);
-    } catch { /* Expected: file doesn't exist */ }
+    }
     const tempSuffix = crypto.randomBytes(4).toString('hex');
     const tempPath = `${filePath}.tmp.${tempSuffix}`;
     try {

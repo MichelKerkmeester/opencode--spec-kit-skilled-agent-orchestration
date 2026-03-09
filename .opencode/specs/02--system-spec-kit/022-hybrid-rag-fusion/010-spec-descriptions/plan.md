@@ -85,9 +85,9 @@ Module Extension: extend existing `folder-discovery.ts` with per-folder capabili
 
 - **`create.sh`** (extended): Post-creation hook generates `description.json` in new folder. Uses Node.js helper for consistent extraction logic.
 
-- **`slug-utils.ts`** (extended): New `ensureUniqueSlug()` function that checks existing filenames in `memory/` directory and appends sequence suffix (`-1`, `-2`, etc.) on collision.
+- **`slug-utils.ts`** (extended): New `ensureUniqueMemoryFilename()` function that checks existing filenames in `memory/` directory and appends sequence suffix (`-1`, `-2`, etc.) on collision.
 
-- **`workflow.ts`** (modified): Uses `ensureUniqueSlug()` before constructing `ctxFilename`.
+- **`workflow.ts`** (modified): Uses `ensureUniqueMemoryFilename()` before constructing `ctxFilename`.
 
 - **`file-writer.ts`** (modified): Add filename existence check before atomic write (defense-in-depth). Note: check-then-write is subject to TOCTOU race. For production safety, use `O_EXCL` (exclusive create) semantics on the target file.
 
@@ -152,13 +152,13 @@ interface PerFolderDescription {
 ### Phase 3: Memory Best-Effort Uniqueness
 **Goal**: Best-effort unique memory filenames even with 10+ rapid saves
 
-- [ ] Add `ensureUniqueSlug(contextDir, baseSlug, dateTime): string` to `slug-utils.ts`
+- [ ] Add `ensureUniqueMemoryFilename(contextDir, filename): string` to `slug-utils.ts`
   - Scan existing `*.md` files in `contextDir`
   - If `${dateTime}__${baseSlug}.md` exists → try `${dateTime}__${baseSlug}-1.md`, `-2`, etc.
-  - Returns: the unique slug string (without file extension). The caller is responsible for appending the `.md` extension and date prefix to form the complete filename.
+  - Returns: the unique filename string (including `.md` extension). Caller uses it directly as the output filename.
   - Max 100 iterations (fail-safe)
-  - On iteration 101 (exhaustion): fall back to appending a 6-character random hex suffix to guarantee uniqueness.
-- [ ] Integrate `ensureUniqueSlug()` in `workflow.ts` before `ctxFilename` construction (line ~644)
+  - On iteration 101 (exhaustion): fall back to appending a 12-character random hex suffix (from `crypto.randomBytes(6).toString('hex')`) to guarantee uniqueness.
+- [ ] Integrate `ensureUniqueMemoryFilename()` in `workflow.ts` before `ctxFilename` construction (line ~644)
 - [ ] Update per-folder `description.json` `memorySequence` counter on each save
   - Concurrency: `memorySequence` uses read-modify-write without locking. Concurrent saves may read the same value. This is acceptable for the single-user CLI use case.
 - [ ] Update `memoryNameHistory` ring buffer (last 20 slugs)
@@ -197,8 +197,8 @@ interface PerFolderDescription {
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `generatePerFolderDescription()`, `ensureUniqueSlug()`, `loadPerFolderDescription()` | Vitest |
-| Unit | `ensureUniqueSlug()` collision scenarios (same second, 10+ saves) | Vitest |
+| Unit | `generatePerFolderDescription()`, `ensureUniqueMemoryFilename()`, `loadPerFolderDescription()` | Vitest |
+| Unit | `ensureUniqueMemoryFilename()` collision scenarios (same second, 10+ saves) | Vitest |
 | Integration | `create.sh` → `description.json` generation | Vitest + bash |
 | Integration | Aggregation: per-folder → centralized cache | Vitest |
 | Regression | All existing `folder-discovery.vitest.ts` tests | Vitest |
@@ -314,7 +314,7 @@ Phase 4 (Aggregation) ───────────────────�
 ### Data Reversal
 - **Has data migrations?** No; per-folder files are new additions, not replacements
 - **Reversal procedure**: N/A; old code simply ignores `description.json` files in spec folders
-- **Migration note**: 400+ existing spec folders received per-folder `description.json` files via one-shot backfill (279/279 folders generated successfully). New folders receive `description.json` automatically at creation time via `create.sh`.
+- **Migration note**: 281 existing spec folders received per-folder `description.json` files via one-shot backfill (281/281 folders generated successfully, including `025-git-context-extractor` gap filled in hardening round 2). New folders receive `description.json` automatically at creation time via `create.sh`.
 <!-- /ANCHOR:enhanced-rollback -->
 
 ---

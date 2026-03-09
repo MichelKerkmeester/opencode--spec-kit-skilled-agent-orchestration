@@ -21,7 +21,7 @@ contextType: "implementation"
 |-------|-------|
 | **Spec Folder** | `010-spec-descriptions` |
 | **Status** | Complete — all P0/P1 items verified; CHK-027 (P2) deferred |
-| **Verification Run** | Targeted Vitest run passed: 3 files, 110 tests, 0 failures |
+| **Verification Run** | Targeted Vitest run passed: 3 files, 122 tests, 0 failures |
 
 ---
 
@@ -49,10 +49,10 @@ The spec folder description system refactor is implemented across creation-time 
 
 ## Test Coverage
 
-- `mcp_server/tests/folder-discovery.vitest.ts` — 68 tests covering extraction, cache operations, per-folder description helpers, frontmatter stripping, and schema validation
-- `mcp_server/tests/slug-uniqueness.vitest.ts` — 6 tests covering filename collision handling and rapid-save uniqueness
-- `mcp_server/tests/folder-discovery-integration.vitest.ts` — 36 tests for stale detection (incl. T046-25b per-folder cycle), aggregation, mixed mode, and 500-folder benchmark
-- 2026-03-09 targeted verification run: **110/110 tests passed** across the three requested files
+- `mcp_server/tests/folder-discovery.vitest.ts` — 76 tests covering extraction, cache operations, per-folder description helpers, frontmatter stripping, schema validation, C2 path containment, C1 element types, and CRLF frontmatter
+- `mcp_server/tests/slug-uniqueness.vitest.ts` — 7 tests covering filename collision handling, rapid-save uniqueness, and >100 collision randomBytes fallback
+- `mcp_server/tests/folder-discovery-integration.vitest.ts` — 37 tests for stale detection (incl. T046-25b per-folder cycle), aggregation, mixed mode, C2 path containment integration, and 500-folder benchmark
+- 2026-03-09 targeted verification run: **122/122 tests passed** across the three requested files (hardening round 3: +2 tests)
 
 ---
 
@@ -66,7 +66,7 @@ The spec folder description system refactor is implemented across creation-time 
 
 ## Campaign Notes
 
-- **W5-A1** confirmed that slug uniqueness was already implemented: `ensureUniqueMemoryFilename()` exists in `slug-utils.ts`, is called from workflow, and its dedicated test file passes 6/6.
+- **W5-A1** confirmed that slug uniqueness was already implemented: `ensureUniqueMemoryFilename()` exists in `slug-utils.ts`, is called from workflow, and its dedicated test file passes 7/7.
 - **W5-A2** confirmed that Phase 3-4 behavior was already implemented: `memorySequence`, bounded `memoryNameHistory`, per-folder description preference, and stale-per-folder fallback logic are present.
 - **W5-A5** refreshed checklist evidence, ran the requested targeted tests, and documented the remaining verification gaps without requiring code changes.
 
@@ -90,3 +90,36 @@ Applied 8 code fixes (C1-C8) and 3 test fix groups (T1-T3) based on GPT 5.4 trip
 - **T1**: Benchmark increased from 20 to 500 folders (T046-27) with 30s timeout
 - **T2**: New test T046-25b: spec.md edit → stale detection → regeneration → freshness verification
 - **T3**: New unit tests for frontmatter stripping, frontmatter-only content, exact 150-char truncation, and schema violation rejection; slug-uniqueness.vitest.ts inline copy updated for C5
+
+---
+
+## Code Hardening Round 2 (2026-03-09)
+
+Applied 13 findings from GPT 5.4 triple-agent re-review across 8 code + 3 doc files:
+
+### Code Fixes
+- **F1 (HIGH)**: C2 path containment prefix bypass — added `path.sep` boundary check (`realFolder === realBase || realFolder.startsWith(realBase + path.sep)`) in both `folder-discovery.ts:572` and `generate-description.ts:42`; prevents `/specs-evil` passing for `/specs`
+- **F4 (MEDIUM)**: C1 array element type validation — added `.every((e: unknown) => typeof e === 'string')` guards for `keywords`, `parentChain`, and `memoryNameHistory` in `loadPerFolderDescription()`
+- **F5 (MEDIUM)**: C7 frontmatter regex — replaced inline regex with imported `stripYamlFrontmatter()` from `content-normalizer.ts` (single source of truth, CRLF-safe)
+- **F9 (LOW)**: C3/C4 directory fsync — documented as acceptable omission (AI-WHY comment on `savePerFolderDescription`)
+- **F13 (LOW)**: C8 — added AI-WHY comment explaining undefined-tolerant validation strategy
+
+### Test Additions
+- **F3**: C2 traversal boundary test (specs-evil vs specs, unit + integration T046-28)
+- **F3**: C1 element type tests (parentChain, memoryNameHistory, keywords with non-string elements)
+- **F3**: C7 CRLF frontmatter test
+- **F3**: C5 >100 collision fallback test (randomBytes hex suffix)
+- **F10**: Reduced T046-27 benchmark timeout from 30s to 10s
+- **F11**: Removed unused `createHash` import from slug-uniqueness.vitest.ts
+
+### Documentation Fixes
+- **F2**: Marked 2 unchecked subtasks in tasks.md (TASK-004/005) with evidence
+- **F6**: Fixed 3 stale `ensureUniqueSlug()` references → `ensureUniqueMemoryFilename()` in plan.md
+- **F7**: Updated backfill count from 279/279 to 281/281 (gap in 025-git-context-extractor filled)
+- **F8**: Added file:line security evidence citations to CHK-031/CHK-032 in checklist.md
+- **F12**: Updated verification date to 2026-03-09
+
+### Verification
+- TypeScript: `tsc --noEmit` — 0 errors
+- Tests: 3 suites, 122 tests, 0 failures
+- description.json coverage: 281/281 (gap in 025-git-context-extractor closed)

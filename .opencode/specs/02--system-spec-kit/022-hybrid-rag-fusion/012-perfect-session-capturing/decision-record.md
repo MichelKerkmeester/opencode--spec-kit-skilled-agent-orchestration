@@ -52,11 +52,11 @@
 
 **Context:** Stateless mode captures can match the wrong spec folder, contaminating unrelated memory files.
 
-**Decision:** Block saves when captured file paths show less than 5% overlap with leaf-folder keywords from the target spec folder.
+**Decision:** Block saves when captured file paths show less than 15% overlap (pre-enrichment) or 10% overlap (post-enrichment) with leaf-folder keywords from the target spec folder.
 
-**Rationale:** 5% is permissive enough for exploration sessions that touch a few relevant files, while blocking captures that clearly targeted a different spec. Uses leaf-folder name keywords to avoid false positives from generic parent folder names.
+**Rationale:** The two-stage threshold (15% pre-enrichment, 10% post-enrichment) balances permissiveness for exploration sessions with protection against cross-spec contamination. The pre-enrichment check catches clearly unrelated captures early, while the post-enrichment check validates after context enrichment has refined the file set. Uses leaf-folder name keywords to avoid false positives from generic parent folder names. Originally 5%, raised via RC-4 to reduce false negatives.
 
 **Alternatives Considered:**
-- 10% threshold: too strict for broad file touches
+- 5% threshold: too permissive, allowed cross-spec contamination (original value, replaced by RC-4)
 - No blocking: allows cross-spec contamination
 - Full path matching: too brittle, breaks on restructuring

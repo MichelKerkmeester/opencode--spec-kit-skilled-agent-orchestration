@@ -1,0 +1,20 @@
+{
+  "specFolder": "025-git-context-extractor",
+  "description": "Feature Specification: Git Context Extractor for Stateless Memory Saves",
+  "keywords": [
+    "feature",
+    "specification",
+    "git",
+    "context",
+    "extractor",
+    "stateless",
+    "memory",
+    "saves"
+  ],
+  "lastUpdated": "2026-03-09T11:22:12.400Z",
+  "specId": "025",
+  "folderSlug": "git-context-extractor",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

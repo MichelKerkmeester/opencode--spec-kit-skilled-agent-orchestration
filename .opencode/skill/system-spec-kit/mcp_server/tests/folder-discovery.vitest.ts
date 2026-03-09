@@ -795,6 +795,151 @@ describe('T009 loadPerFolderDescription / savePerFolderDescription', () => {
   });
 });
 
+/* -----------------------------------------------------------
+   8. C2 path containment boundary tests
+----------------------------------------------------------------*/
+
+describe('T009 generatePerFolderDescription path containment (C2)', () => {
+  let tmpDir5: string;
+
+  beforeEach(() => {
+    tmpDir5 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-c2-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir5, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  it('rejects sibling directory with similar prefix (specs-evil vs specs)', () => {
+    const specsBase = path.join(tmpDir5, 'specs');
+    const evilBase = path.join(tmpDir5, 'specs-evil', '001-bad');
+    fs.mkdirSync(path.join(specsBase, '001-ok'), { recursive: true });
+    fs.mkdirSync(evilBase, { recursive: true });
+    fs.writeFileSync(path.join(specsBase, '001-ok', 'spec.md'), '# OK Spec');
+    fs.writeFileSync(path.join(evilBase, 'spec.md'), '# Evil Spec');
+
+    const result = generatePerFolderDescription(evilBase, specsBase);
+    expect(result).toBeNull();
+  });
+
+  it('accepts folder that is exactly the base path', () => {
+    const specsBase = path.join(tmpDir5, 'specs');
+    fs.mkdirSync(specsBase, { recursive: true });
+    fs.writeFileSync(path.join(specsBase, 'spec.md'), '# Base Spec');
+
+    const result = generatePerFolderDescription(specsBase, specsBase);
+    expect(result).not.toBeNull();
+  });
+
+  it('returns null for non-existent folder path (broken symlink scenario)', () => {
+    const result = generatePerFolderDescription('/nonexistent/broken/symlink/path', tmpDir5);
+    expect(result).toBeNull();
+  });
+});
+
+/* -----------------------------------------------------------
+   9. C1 array element type validation tests
+----------------------------------------------------------------*/
+
+describe('T009 loadPerFolderDescription element type validation (C1)', () => {
+  let tmpDir6: string;
+
+  beforeEach(() => {
+    tmpDir6 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-c1-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir6, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  const validBase = {
+    specFolder: 'test',
+    description: 'Valid',
+    lastUpdated: new Date().toISOString(),
+    specId: '010',
+    folderSlug: 'test',
+    memorySequence: 0,
+  };
+
+  it('rejects parentChain with non-string elements', () => {
+    fs.writeFileSync(path.join(tmpDir6, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: ['test'],
+      parentChain: [123],
+      memoryNameHistory: [],
+    }));
+    expect(loadPerFolderDescription(tmpDir6)).toBeNull();
+  });
+
+  it('rejects memoryNameHistory with non-string elements', () => {
+    fs.writeFileSync(path.join(tmpDir6, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: ['test'],
+      parentChain: [],
+      memoryNameHistory: [true, false],
+    }));
+    expect(loadPerFolderDescription(tmpDir6)).toBeNull();
+  });
+
+  it('rejects keywords with non-string elements', () => {
+    fs.writeFileSync(path.join(tmpDir6, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: [1, 2, 3],
+      parentChain: [],
+      memoryNameHistory: [],
+    }));
+    expect(loadPerFolderDescription(tmpDir6)).toBeNull();
+  });
+
+  it('accepts valid arrays with all string elements', () => {
+    fs.writeFileSync(path.join(tmpDir6, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: ['test', 'valid'],
+      parentChain: ['parent'],
+      memoryNameHistory: ['a.md', 'b.md'],
+    }));
+    const result = loadPerFolderDescription(tmpDir6);
+    expect(result).not.toBeNull();
+    expect(result!.keywords).toEqual(['test', 'valid']);
+    expect(result!.parentChain).toEqual(['parent']);
+    expect(result!.memoryNameHistory).toEqual(['a.md', 'b.md']);
+  });
+
+  it('accepts empty arrays for optional array fields', () => {
+    fs.writeFileSync(path.join(tmpDir6, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: [],
+      parentChain: [],
+      memoryNameHistory: [],
+    }));
+    const result = loadPerFolderDescription(tmpDir6);
+    expect(result).not.toBeNull();
+    expect(result!.keywords).toEqual([]);
+    expect(result!.parentChain).toEqual([]);
+    expect(result!.memoryNameHistory).toEqual([]);
+  });
+});
+
+/* -----------------------------------------------------------
+   10. C7 CRLF frontmatter test
+----------------------------------------------------------------*/
+
+describe('T009 extractDescription CRLF frontmatter (C7)', () => {
+  it('strips CRLF frontmatter correctly', () => {
+    const content = '---\r\ntitle: X\r\n---\r\n# Real Title';
+    expect(extractDescription(content)).toBe('Real Title');
+  });
+
+  it('strips LF frontmatter correctly', () => {
+    const content = '---\ntitle: X\n---\n# Real Title';
+    expect(extractDescription(content)).toBe('Real Title');
+  });
+});
+
 describe('T009 isPerFolderDescriptionStale', () => {
   let tmpDir4: string;
 

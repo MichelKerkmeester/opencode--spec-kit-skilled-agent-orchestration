@@ -30,10 +30,10 @@ contextType: "general"
   - [x] Create `savePerFolderDescription(desc, folderPath)` targeting `description.json` at the folder root.
 - [x] TASK-004: Add safe write and freshness checks for per-folder description files
   - [x] Use atomic temp-then-rename writes for `description.json`.
-  - [ ] Compare `description.json` and `spec.md` mtimes to detect stale metadata. <!-- AUDIT-2026-03-08: CHK-024 (stale detection test) is unchecked in checklist -->
+  - [x] Compare `description.json` and `spec.md` mtimes to detect stale metadata. [EVIDENCE: isPerFolderDescriptionStale() at folder-discovery.ts:690-700; T046-25b verifies stale detection → regeneration → freshness cycle]
 - [x] TASK-005: Add unit coverage for the new per-folder description helpers
   - [x] Test generation output shape and extracted field values.
-  - [ ] Test load/save behavior and stale detection paths. <!-- AUDIT-2026-03-08: stale detection not yet tested per checklist -->
+  - [x] Test load/save behavior and stale detection paths. [EVIDENCE: T009 loadPerFolderDescription/savePerFolderDescription suite (5 tests); T046-25/25b stale detection tests]
 
 ### Phase 2: create.sh Integration
 
@@ -107,6 +107,6 @@ contextType: "general"
   - [x] Ensure all existing relevant tests pass without regressions.
   - [x] Confirm the final documentation and test suite reflect the implemented behavior.
 
-<!-- AUDIT-2026-03-09: All 25 tasks marked complete. Phase 1-2 verified in prior rounds. Phase 3-4 verified via W5 campaign (slug uniqueness, memorySequence, aggregation preference all implemented). Phase 5 tasks TASK-024/025 completed with T046-25b stale detection test and 110-test regression pass. Code hardening round (C1-C8) applied 2026-03-09. -->
+<!-- AUDIT-2026-03-09: All 25 tasks marked complete. Phase 1-2 verified in prior rounds. Phase 3-4 verified via W5 campaign (slug uniqueness, memorySequence, aggregation preference all implemented). Phase 5 tasks TASK-024/025 completed with T046-25b stale detection test and 122-test regression pass. Code hardening round (C1-C8) applied 2026-03-09. -->
 
 <!-- /ANCHOR:tasks -->

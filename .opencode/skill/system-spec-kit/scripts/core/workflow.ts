@@ -1166,6 +1166,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const specFolderAbsolute = path.resolve(specFolder);
       const existing = loadPFD(specFolderAbsolute);
       if (existing) {
+        // AI-WHY: Number() coercion handles description.json files where memorySequence
+        // was persisted as a string (e.g. "5") or is undefined — coerces safely to 0 via || 0.
         existing.memorySequence = (Number(existing.memorySequence) || 0) + 1;
         existing.memoryNameHistory = [
           ...(existing.memoryNameHistory || []).slice(-19),

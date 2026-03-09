@@ -4,6 +4,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
+import { stripYamlFrontmatter } from '../parsing/content-normalizer';
 
 /* --- 1. TYPES --- */
 
@@ -268,8 +269,9 @@ export function extractDescription(specContent: string): string {
     return '';
   }
 
-  // AI-WHY: Strip YAML frontmatter (---...---) so frontmatter-only spec.md returns ''
-  content = content.replace(/^---\n[\s\S]*?\n---\n?/, '').trim();
+  // AI-WHY: Reuse library stripYamlFrontmatter() instead of inline regex — single source
+  // of truth for frontmatter stripping, handles CRLF via [\s\S]*? matching.
+  content = stripYamlFrontmatter(content).trim();
   if (content.length === 0) {
     return '';
   }
@@ -565,7 +567,9 @@ export function generatePerFolderDescription(
   // AI-WHY: Path containment check — prevent directory traversal attacks
   const realFolder = resolveRealPathSafe(path.resolve(folderPath));
   const realBase = resolveRealPathSafe(path.resolve(basePath));
-  if (!realFolder || !realBase || !realFolder.startsWith(realBase)) {
+  // AI-WHY: Equality check covers the case where folderPath IS basePath; path.sep boundary
+  // prevents prefix bypass (e.g. /specs-evil passing for /specs).
+  if (!realFolder || !realBase || !(realFolder === realBase || realFolder.startsWith(realBase + path.sep))) {
     return null;
   }
 
@@ -624,16 +628,21 @@ export function loadPerFolderDescription(folderPath: string): PerFolderDescripti
   try {
     const raw = fs.readFileSync(descPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    // AI-WHY: Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback
+    // AI-WHY: Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback.
+    // Array element type checks (every() guards) prevent non-string elements from silently
+    // passing Array.isArray() and causing downstream TypeError on string operations.
     if (
       !parsed ||
+      typeof parsed.specFolder !== 'string' ||
+      typeof parsed.lastUpdated !== 'string' ||
       typeof parsed.description !== 'string' ||
       !Array.isArray(parsed.keywords) ||
+      !parsed.keywords.every((e: unknown) => typeof e === 'string') ||
       (parsed.specId !== undefined && typeof parsed.specId !== 'string') ||
       (parsed.folderSlug !== undefined && typeof parsed.folderSlug !== 'string') ||
-      (parsed.parentChain !== undefined && !Array.isArray(parsed.parentChain)) ||
+      (parsed.parentChain !== undefined && (!Array.isArray(parsed.parentChain) || !parsed.parentChain.every((e: unknown) => typeof e === 'string'))) ||
       (parsed.memorySequence !== undefined && typeof parsed.memorySequence !== 'number') ||
-      (parsed.memoryNameHistory !== undefined && !Array.isArray(parsed.memoryNameHistory))
+      (parsed.memoryNameHistory !== undefined && (!Array.isArray(parsed.memoryNameHistory) || !parsed.memoryNameHistory.every((e: unknown) => typeof e === 'string')))
     ) {
       return null; // Structurally invalid — triggers spec.md fallback
     }
@@ -671,6 +680,8 @@ export function savePerFolderDescription(desc: PerFolderDescription, folderPath:
       fs.closeSync(fd);
     }
     fs.renameSync(tempPath, descPath);
+    // AI-WHY: Directory fsync omitted — Node.js has no portable dirent fsync;
+    // OS atomic rename provides sufficient durability for this non-critical metadata.
   } finally {
     // Cleanup temp file on failure
     try { fs.unlinkSync(tempPath); } catch (_e: unknown) { /* already renamed or missing */ }

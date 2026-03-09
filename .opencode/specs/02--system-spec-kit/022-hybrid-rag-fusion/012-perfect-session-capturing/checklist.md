@@ -31,4 +31,4 @@
 - [x] Learning index weights configurable via config.ts — VERIFIED: config.ts exposes learningWeights with [0,1] validation and deep merge; collect-session-data.ts uses CONFIG.LEARNING_WEIGHTS
 - [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed in runtime test
 - [ ] All MEDIUM findings from audit resolved — PARTIAL: ~67 medium findings remain (see implementation-summary.md)
-- [x] Generated memory files pass manual quality inspection (5 samples) — VERIFIED: 08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines
+- [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines); 4 samples remaining

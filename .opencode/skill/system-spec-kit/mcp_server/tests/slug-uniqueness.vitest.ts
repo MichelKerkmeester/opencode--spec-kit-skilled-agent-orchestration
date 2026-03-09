@@ -9,7 +9,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { createHash, randomBytes } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 
 // Inline implementation for testing since the function is in the scripts project
 // and cannot be directly imported. This mirrors the exact logic in slug-utils.ts.
@@ -89,5 +89,19 @@ describe('ensureUniqueMemoryFilename', () => {
     fs.writeFileSync(path.join(tmpDir, 'test.json'), 'json content');
     const result = ensureUniqueMemoryFilename(tmpDir, 'test.md');
     expect(result).toBe('test.md');
+  });
+
+  it('falls back to random hex suffix after 100 collisions (C5)', () => {
+    // Create test.md plus test-1.md through test-100.md (101 files total)
+    fs.writeFileSync(path.join(tmpDir, 'test.md'), 'base');
+    for (let i = 1; i <= 100; i++) {
+      fs.writeFileSync(path.join(tmpDir, `test-${i}.md`), `collision-${i}`);
+    }
+
+    const result = ensureUniqueMemoryFilename(tmpDir, 'test.md');
+    // Should match test-<12-char-hex>.md pattern (randomBytes(6) → 12 hex chars)
+    expect(result).toMatch(/^test-[0-9a-f]{12}\.md$/);
+    // Must not collide with any existing file
+    expect(fs.existsSync(path.join(tmpDir, result))).toBe(false);
   });
 });

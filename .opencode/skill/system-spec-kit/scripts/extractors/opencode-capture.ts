@@ -438,9 +438,10 @@ function truncateOutput(output: string | undefined, maxLength?: number): string 
   if (!output || typeof output !== 'string') return '';
   const limit = maxLength ?? CONFIG.TOOL_OUTPUT_MAX_LENGTH;
   if (output.length <= limit) return output;
-
-  const half = Math.max(1, Math.floor(limit / 2) - 10);
-  return output.substring(0, half) + '\n... [truncated] ...\n' + output.substring(output.length - half);
+  const marker = '\n... [truncated] ...\n';
+  if (limit <= marker.length) return output.substring(0, Math.max(0, limit));
+  const half = Math.floor((limit - marker.length) / 2);
+  return output.substring(0, half) + marker + output.substring(output.length - half);
 }
 
 function calculateDuration(time: Record<string, number> | undefined): number | null {
