@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [035-memory-speckit-merger/25-12-25_17-47__memory-speckit-merger]"
-importance_tier: "normal"
-contextType: "general"
+title: Documentation cleanup for memory-speckit-merger 2025-12-25 [035-memory-speckit-merger/25-12-25_17-47__memory-speckit-merger]
+importance_tier: normal
+contextType: general
+description: This session completed the final documentation cleanup for the system-memory
+  to system-spec-kit migration. It updated outdated path and component references
+  across seven .opencode files, while preserving the intentional historical notes
+  that still explain the merger.
+trigger_phrases:
+- system spec-kit migration cleanup
+- documentation path updates
+- memory speckit merger cleanup
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

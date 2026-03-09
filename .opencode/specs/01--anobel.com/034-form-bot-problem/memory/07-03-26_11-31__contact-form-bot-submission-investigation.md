@@ -1,12 +1,15 @@
 ---
-title: "Contact Form Bot Submission [034-form-bot-problem/07-03-26_11-31__contact-form-bot-submission-investigation]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Contact form bot submission investigation [034-form-bot-problem/07-03-26_11-31__contact-form-bot-submission-investigation]"
+description: "This memory is filed under the form-bot problem spec and is labeled as a contact-form bot submission investigation. The body currently contains unrelated SGQS and 036-skill-graphs implementation analysis, so the record needs manual review before it is reused for form-bot debugging."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "contact form bot submission"
+  - "form bot memory contamination"
+  - "sgqs skill graphs mismatch"
 importance_tier: "critical"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

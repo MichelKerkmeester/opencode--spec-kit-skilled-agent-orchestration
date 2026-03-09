@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [070-memory-ranking/16-01-26_16-09__memory-ranking]"
+title: "Memory ranking validation and bug fixes 2026-01-16 [070-memory-ranking/16-01-26_16-09__memory-ranking]"
+description: "Captured the validation and bug-fixing pass for the memory and folder ranking implementation. It summarizes the parallel-agent review, the overall quality score achieved, and the corrective work applied to ranking behavior before completion."
+trigger_phrases:
+  - "memory ranking bug fixes"
+  - "folder ranking validation"
+  - "parallel agent ranking audit"
+  - "ranking implementation quality review"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

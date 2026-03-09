@@ -1,7 +1,21 @@
 ---
-title: "To promote a memory to [132-anchor-enforcement-automation/17-02-26_09-11__anchor-enforcement-automation]"
-importance_tier: "normal"
-contextType: "general"
+title: Strict-mode validation hardening for [015-anchor-enforcement-automation/17-02-26_09-11__anchor-enforcement-automation]
+importance_tier: normal
+contextType: general
+description: This session captures research work for anchor enforcement automation
+  on 2026-02-17. Completed a strict-mode hardening pass for the system-spec-kit validation
+  pipeline to align with sk-code--opencode expectations. Standardized remaining rule
+  scripts to set -euo pipefail, fixed ... It references work on .opencode/.../rules/check-ai-protocols.sh,
+  .opencode/.../rules/check-anchors.sh, .opencode/.../rules/check-complexity.sh and
+  preserves the current in_progress checkpoint.
+trigger_phrases:
+- anchor enforcement automation
+- CHANGELOG review checkpoint
+- validation pipeline hardening
+- anchor rules audit
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

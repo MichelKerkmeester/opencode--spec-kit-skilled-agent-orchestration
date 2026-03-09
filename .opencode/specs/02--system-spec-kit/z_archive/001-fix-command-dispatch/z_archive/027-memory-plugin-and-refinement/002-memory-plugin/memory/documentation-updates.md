@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [002-memory-plugin/documentation-updates]"
-importance_tier: "normal"
-contextType: "general"
+title: Documenting MCP Server v2.1.0 updates [002-memory-plugin/documentation-updates]
+description: This migrated memory records the documentation pass for MCP Server v2.1.0 in the 002-memory-plugin workstream. It captures README and INSTALL_GUIDE updates for hybrid search, embedding regeneration, and batch-processing behavior, plus the final documentation verification.
+trigger_phrases:
+- mcp server documentation
+- hybrid search docs
+- embedding regeneration docs
+- batch processing docs
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

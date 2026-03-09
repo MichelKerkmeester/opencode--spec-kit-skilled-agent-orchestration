@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [033-ux-deep-analysis/25-12-25_11-36__ux-deep-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Coordinating UX deep analysis cleanup [033-ux-deep-analysis/25-12-25_11-36__ux-deep-analysis]
+description: This migrated memory captures the large parallel-agent cleanup session tied to ux-deep-analysis. It summarizes the 20-agent system health audit, creation of the 033-ux-deep-analysis spec folder, and the subsequent 10-agent fix deployment while mixing in system-health-audit cleanup details.
+trigger_phrases:
+- ux deep analysis
+- parallel agent cleanup
+- system health audit
+- spec folder remediation
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

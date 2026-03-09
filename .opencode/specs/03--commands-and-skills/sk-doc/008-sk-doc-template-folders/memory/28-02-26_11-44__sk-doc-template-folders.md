@@ -1,11 +1,14 @@
 ---
-title: "sk doc template folders session 28-02-26 [048-sk-doc-template-folders/28-02-26_11-44__sk-doc-template-folders]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory analysis for sk-doc-template-folders 2026-02-28 [048-sk-doc-template-folders/28-02-26_11-44__sk-doc-template-folders]"
+description: "This memory captures an SGQS and semantic memory integration analysis saved under the sk-doc-template-folders spec. It summarizes in-memory graph architecture, MCP handler changes, and related tests even though the body appears to belong to another spec."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph memory analysis"
+  - "sgqs memory integration"
+  - "template folders memory audit"
 importance_tier: "critical"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

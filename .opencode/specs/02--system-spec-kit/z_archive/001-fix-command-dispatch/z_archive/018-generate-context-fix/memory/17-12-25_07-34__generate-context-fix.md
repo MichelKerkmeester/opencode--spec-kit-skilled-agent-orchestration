@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: normalizeinputdata | inconsistencies | [018-generate-context-fix/17-12-25_07-34__generate-context-fix]"
+title: "NormalizeInputData fix review for 018-generate-context-fix 2025-12-17 [018-generate-context-fix/17-12-25_07-34__generate-context-fix]"
+description: "This session focused on generate-context fixes around NormalizeInputData inconsistencies, readability, and simulation documentation. The archived memory preserves the completed investigation into simplifying generation behavior and documenting the resulting changes."
+trigger_phrases:
+  - "normalize input data fix"
+  - "generate context inconsistencies"
+  - "simulation documentation fix"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

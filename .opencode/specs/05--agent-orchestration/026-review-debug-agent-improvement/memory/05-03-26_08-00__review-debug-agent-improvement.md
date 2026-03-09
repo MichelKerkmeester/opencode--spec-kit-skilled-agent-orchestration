@@ -1,12 +1,15 @@
 ---
-title: "review debug agent improvement [026-review-debug-agent-improvement/05-03-26_08-00__review-debug-agent-improvement]"
-description: "Session context memory template for Spec Kit indexing."
+title: Skill graph integration analysis for review debug agent improvement 2026-03-05 [026-review-debug-agent-improvement/05-03-26_08-00__review-debug-agent-improvement]
+description: This memory summarizes a research session that analyzed the 036-skill-graphs implementation from the review-debug-agent-improvement stream. It preserves the SGQS architecture notes, referenced server files, and migration-complete findings captured from the implementation summary.
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "critical"
-contextType: "general"
+- skill graph analysis
+- review debug agent improvement
+- sgqs architecture notes
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

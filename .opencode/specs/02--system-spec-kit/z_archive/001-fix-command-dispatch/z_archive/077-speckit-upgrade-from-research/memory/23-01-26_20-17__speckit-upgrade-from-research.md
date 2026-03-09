@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to [077-speckit-upgrade-from-research/23-01-26_20-17__speckit-upgrade-from-research]"
+title: "In-progress upgrade session snapshot 2026-01-23 [077-speckit-upgrade-from-research/23-01-26_20-17__speckit-upgrade-from-research]"
+description: "Captured a minimal in-progress snapshot for the SpecKit upgrade-from-research work during a research phase with no recorded blockers. It mainly preserves resume metadata and generic continuation scaffolding, so the body should be treated as a thin session checkpoint rather than a rich implementation record."
+trigger_phrases:
+  - "upgrade session snapshot"
+  - "research phase handoff"
+  - "thin session checkpoint"
+  - "speckit resume metadata"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

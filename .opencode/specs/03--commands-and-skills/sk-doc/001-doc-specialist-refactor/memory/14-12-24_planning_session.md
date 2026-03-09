@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-doc-specialist-refactor/14-12-24_planning_session]"
+title: "Planning session for doc-specialist-refactor 2024-12-14 [001-doc-specialist-refactor/14-12-24_planning_session]"
+description: "This planning session designed a script-assisted AI replacement for the fake c7score workflow in the create-documentation skill. It defined the extract_structure.py architecture, verification checklist, and phased implementation plan for the refactor."
+trigger_phrases:
+  - "script assisted ai planning"
+  - "extract structure design"
+  - "document specialist plan"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

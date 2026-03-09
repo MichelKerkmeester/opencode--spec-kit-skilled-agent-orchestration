@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [021-codex-orchestrate/19-02-26_09-24__codex-orchestrate]"
-importance_tier: "normal"
-contextType: "general"
+title: Keyboard background memory-save workflow for codex orchestrate 2026-02-19 [021-codex-orchestrate/19-02-26_09-24__codex-orchestrate]
+description: This memory captures execution of the /memory:save workflow for keyboard background fix research while working in the codex-orchestrate stream. It documents the Phase 0 and Phase 1 checks, JSON-mode conversation export, and no-app-source-edit approach used to generate deterministic memory context.
+trigger_phrases:
+- keyboard background fix
+- memory save workflow
+- json mode export
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

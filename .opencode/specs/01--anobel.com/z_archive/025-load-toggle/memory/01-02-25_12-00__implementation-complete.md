@@ -1,7 +1,19 @@
 ---
-title: "Epistemic state captured at session start for learning delta [027-load-toggle/01-02-25_12-00__implementation-complete]"
-importance_tier: "normal"
-contextType: "general"
+title: Load toggle implementation completion for load-toggle 2025-02-01 [027-load-toggle/01-02-25_12-00__implementation-complete]
+description: Implemented a reusable Webflow load toggle component with CMS-bindable
+  button text, CSS-only icon animation, and support for multiple independent instances.
+  The migrated session also records the required Webflow attribute fixes and deployment
+  steps needed to finish the rollout.
+trigger_phrases:
+- load toggle component implementation
+- CMS bindable button text
+- Webflow load icon attribute
+- expand collapse component
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [012-form-input-upload-select/25-01-26_11-09__form-input-upload-select]"
+title: "Mobile label fix for FilePond upload select [011-form-input-upload-select/25-01-26_11-09__form-input-upload-select]"
+description: "This archived session documents the fix for mobile labels not appearing on the FilePond upload component. It records the duplicate Webflow DOM root cause, the switch from querySelector to querySelectorAll, and the mobile-specific label handling that resolved the issue."
+trigger_phrases:
+  - "mobile filepond labels fix"
+  - "webflow duplicate dom labels"
+  - "queryselectorall upload labels"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

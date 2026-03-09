@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [052-codebase-fixes/31-12-25_19-45__codebase-fixes]"
-importance_tier: "normal"
-contextType: "general"
+title: Codebase fixes memory audit and checkpoint run [052-codebase-fixes/31-12-25_19-45__codebase-fixes]
+description: This memory captures a completed codebase-fixes audit session on 2025-12-31. The session verified memory health and stats, then ran search, trigger-match, list, index-scan, and checkpoint operations in parallel. It ended with no blockers and the next recorded step was to continue implementation.
+trigger_phrases:
+- codebase fixes audit
+- memory health check
+- parallel trigger testing
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

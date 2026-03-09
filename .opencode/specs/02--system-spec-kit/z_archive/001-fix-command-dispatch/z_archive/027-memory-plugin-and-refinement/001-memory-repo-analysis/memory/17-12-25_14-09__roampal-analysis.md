@@ -1,7 +1,17 @@
 ---
-title: "Related Documentation [001-memory-repo-analysis/17-12-25_14-09__roampal-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Compatibility test for decision formats in roampal analysis 2025-12-17 [001-memory-repo-analysis/17-12-25_14-09__roampal-analysis]
+description: This session continues testing support for object and string decision
+  formats in the roampal analysis work. It preserves the compatibility rationale and
+  the structured decision examples used during the test.
+trigger_phrases:
+- decision format compatibility
+- object format support
+- string format fallback
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

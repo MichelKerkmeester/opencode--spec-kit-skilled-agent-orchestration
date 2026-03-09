@@ -1,6 +1,15 @@
 ---
-title: "To promote a [075-post-speckit-template-upgrade-testing/20-01-26_09-10__speckit-template-optimization-refinement]"
+title: "Post-upgrade template testing handoff 2026-01-20 [075-post-speckit-template-upgrade-testing/20-01-26_09-10__speckit-template-optimization-refinement]"
+description: "Captured post-upgrade testing context associated with the SpecKit template refinement rollout. The stored session details describe the large implementation pass and its verification artifacts, but the embedded body metadata still points at the prior 074 spec lineage and should be treated carefully."
+trigger_phrases:
+  - "post upgrade template testing"
+  - "template refinement verification"
+  - "spec lineage mismatch"
+  - "speckit rollout handoff"
 importance_tier: "critical"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

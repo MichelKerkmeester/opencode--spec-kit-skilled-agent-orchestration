@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier [135-mcp-issues-after-update/18-02-26_09-47__mcp-issues-after-update]"
-importance_tier: "normal"
-contextType: "general"
+title: CHANGELOG review checkpoint for [018-mcp-issues-after-update/18-02-26_09-47__mcp-issues-after-update]
+importance_tier: normal
+contextType: general
+description: This session captures research work for mcp issues after update on 2026-02-18.
+  The recorded activity was limited to reading CHANGELOG.md and setting up the next
+  investigation step. It preserves the in_progress checkpoint with no blockers noted.
+trigger_phrases:
+- mcp update investigation
+- CHANGELOG review checkpoint
+- post update regression review
+- mcp issue triage
+quality_score: 0.4
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

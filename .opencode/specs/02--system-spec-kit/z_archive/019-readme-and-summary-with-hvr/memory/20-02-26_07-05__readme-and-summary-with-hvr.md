@@ -1,7 +1,21 @@
 ---
-title: "To promote a memory to constitutional [137-readme-and-summary-with-hvr/20-02-26_07-05__readme-and-summary-with-hvr]"
-importance_tier: "critical"
-contextType: "general"
+title: HVR integration path cleanup for [019-readme-and-summary-with-hvr/20-02-26_07-05__readme-and-summary-with-hvr]
+importance_tier: critical
+contextType: general
+description: This session captures research work for readme and summary with hvr on
+  2026-02-20. Completed the HVR integration work by relocating hvr_rules.md from assets/documentation/
+  to references/ (it is loaded into agent context, not used as an output template).
+  Updated 19 path references ac... It references work on .opencode/.../references/hvr_rules.md,
+  .opencode/skill/sk-doc/SKILL.md, .opencode/.../documentation/install_guide_template.md
+  and preserves the current in_progress checkpoint.
+trigger_phrases:
+- hvr documentation update
+- README summary alignment
+- hvr rules relocation
+- documentation path cleanup
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

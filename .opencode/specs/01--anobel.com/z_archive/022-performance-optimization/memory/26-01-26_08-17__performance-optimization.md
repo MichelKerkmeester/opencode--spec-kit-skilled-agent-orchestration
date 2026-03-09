@@ -1,7 +1,20 @@
 ---
-title: "To promote a memory to constitutional tier [024-performance-optimization/26-01-26_08-17__performance-optimization]"
-importance_tier: "normal"
-contextType: "general"
+title: Performance optimization session record for performance-optimization 2026-01-26
+  [024-performance-optimization/26-01-26_08-17__performance-optimization]
+description: This memory preserves a generic migrated record for the performance optimization
+  session and its resume metadata. The file notes implementation and testing activity
+  but does not retain specific optimization decisions, metrics, or file-level changes
+  in the body content.
+trigger_phrases:
+- performance optimization session
+- generic optimization memory
+- resume performance optimization
+- migrated implementation testing record
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

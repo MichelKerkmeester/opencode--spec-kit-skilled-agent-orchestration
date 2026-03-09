@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [006-auto-indexing/16-12-25_v12-references-removed]"
+title: "V12 reference removal for 006-auto-indexing 2025-12-16 [006-auto-indexing/16-12-25_v12-references-removed]"
+description: "This memory captures the removal of v12 version references from the Semantic Memory README for the archived 006-auto-indexing work. The session focused on making active documentation version-neutral while intentionally preserving historical references inside archived records. It was migrated into v2.2 format from a 2025-12-16 legacy session."
+trigger_phrases:
+  - "v12 reference removal"
+  - "version neutral documentation"
+  - "README cleanup"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

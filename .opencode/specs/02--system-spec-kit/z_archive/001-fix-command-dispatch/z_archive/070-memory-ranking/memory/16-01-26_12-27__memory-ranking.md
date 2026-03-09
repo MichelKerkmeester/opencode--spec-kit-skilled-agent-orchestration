@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [070-memory-ranking/16-01-26_12-27__memory-ranking]"
+title: "Memory ranking documentation review 2026-01-16 [070-memory-ranking/16-01-26_12-27__memory-ranking]"
+description: "Captured the session that created and reviewed Level 3 documentation for memory and folder ranking improvements. It summarizes the ranking formula, phased rollout plan, and quality fixes applied to the documentation set, including the constitutional decay exemption and added research coverage."
+trigger_phrases:
+  - "memory ranking documentation review"
+  - "folder ranking formula"
+  - "constitutional decay exemption"
+  - "level 3 ranking spec"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

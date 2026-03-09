@@ -1,11 +1,14 @@
 ---
-title: "cli claude code session 02-03-26 [003-cli-claude-code/02-03-26_21-14__cli-claude-code]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory analysis for cli-claude-code 2026-03-02 [003-cli-claude-code/02-03-26_21-14__cli-claude-code]"
+description: "This memory captures an SGQS and semantic memory integration analysis saved under the cli-claude-code spec. It summarizes in-memory graph architecture, MCP handler changes, and related tests even though the body appears to belong to another spec."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph memory analysis"
+  - "sgqs memory integration"
+  - "claude code memory audit"
 importance_tier: "critical"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

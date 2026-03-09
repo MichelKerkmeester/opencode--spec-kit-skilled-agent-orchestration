@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning [011-docs-alignment/17-12-25__speckit-docs-alignment-complete]"
+title: "SpecKit docs alignment for 011-docs-alignment 2025-12-17 [011-docs-alignment/17-12-25__speckit-docs-alignment-complete]"
+description: "This memory records the documentation alignment pass for SpecKit after the workflows-spec-kit to system-spec-kit rename. The archived session focused on updating README.md and SKILL.md so the docs matched the actual filesystem layout after the rename. It was preserved as a migrated v2.2 record from 2025-12-17."
+trigger_phrases:
+  - "SpecKit docs alignment"
+  - "filesystem reality update"
+  - "rename documentation sync"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

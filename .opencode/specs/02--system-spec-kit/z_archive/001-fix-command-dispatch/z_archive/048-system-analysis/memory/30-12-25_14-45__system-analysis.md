@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [048-system-analysis/30-12-25_14-45__system-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Bash verification for system-analysis 2025-12-30 [048-system-analysis/30-12-25_14-45__system-analysis]
+importance_tier: normal
+contextType: general
+description: This migrated session records only that a bash-based verification step
+  ran during the system-analysis work. It does not preserve enough outcome detail
+  to explain which part of the broader remediation effort was being checked.
+trigger_phrases:
+- system analysis verification
+- bash verification step
+- minimal remediation memory
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+- needs_review
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

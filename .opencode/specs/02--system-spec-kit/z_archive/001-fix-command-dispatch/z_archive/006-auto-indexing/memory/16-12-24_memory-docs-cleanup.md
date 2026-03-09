@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [006-auto-indexing/16-12-24_memory-docs-cleanup]"
+title: "Memory documentation cleanup for 006-auto-indexing 2025-12-24 [006-auto-indexing/16-12-24_memory-docs-cleanup]"
+description: "This memory captures documentation cleanup and MCP bug-fix work for the archived 006-auto-indexing effort. The session removed incorrect claims about a non-existent OpenCode auto-save-on-message-count feature and aligned the docs with the actual runtime constraints. It was preserved as a migrated legacy record from 2025-12-24."
+trigger_phrases:
+  - "memory documentation cleanup"
+  - "OpenCode hook mismatch"
+  - "MCP bug fixes"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

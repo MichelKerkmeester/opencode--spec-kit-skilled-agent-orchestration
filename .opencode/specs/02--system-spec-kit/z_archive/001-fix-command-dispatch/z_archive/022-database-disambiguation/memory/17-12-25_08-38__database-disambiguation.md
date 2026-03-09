@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: troubleshooting | disambiguation | [022-database-disambiguation/17-12-25_08-38__database-disambiguation]"
+title: "Database disambiguation troubleshooting for 022-database-disambiguation 2025-12-17 [022-database-disambiguation/17-12-25_08-38__database-disambiguation]"
+description: "This session captured troubleshooting work for database disambiguation across conversations, documentation, and subsection comparisons. The archived memory preserves the completed checkpoint that clarified how similar database concepts should be distinguished."
+trigger_phrases:
+  - "database disambiguation troubleshooting"
+  - "conversation database comparison"
+  - "spec kit database distinction"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

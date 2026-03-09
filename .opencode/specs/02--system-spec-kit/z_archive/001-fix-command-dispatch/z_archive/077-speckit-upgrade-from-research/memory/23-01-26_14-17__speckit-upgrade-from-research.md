@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to [077-speckit-upgrade-from-research/23-01-26_14-17__speckit-upgrade-from-research]"
+title: "Research-to-upgrade compliance remediation 2026-01-23 [077-speckit-upgrade-from-research/23-01-26_14-17__speckit-upgrade-from-research]"
+description: "Captured the Level 3+ compliance remediation session that consolidated several research specs into the unified SpecKit upgrade effort. It summarizes the governance fixes, documentation alignment, and upgrade planning needed to transition research findings into an executable spec."
+trigger_phrases:
+  - "research to upgrade remediation"
+  - "level 3 plus compliance"
+  - "spec consolidation workflow"
+  - "speckit upgrade planning"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

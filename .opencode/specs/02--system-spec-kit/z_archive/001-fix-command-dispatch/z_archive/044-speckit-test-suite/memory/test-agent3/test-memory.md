@@ -1,7 +1,18 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [044-speckit-test-suite/test-memory]"
-importance_tier: "normal"
-contextType: "general"
+title: Agent 3 test memory for speckit-test-suite unknown [044-speckit-test-suite/test-memory]
+importance_tier: normal
+contextType: general
+description: This migrated legacy memory preserves a small test artifact used to validate
+  memory save behavior for Agent 3. It keeps the original test-memory content so future
+  reviewers can understand why the file existed and which trigger phrases were intended
+  to surface it.
+trigger_phrases:
+- agent 3 test memory
+- memory save validation
+- speckit legacy test artifact
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

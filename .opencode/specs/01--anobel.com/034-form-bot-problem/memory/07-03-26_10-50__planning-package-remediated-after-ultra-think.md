@@ -1,12 +1,15 @@
 ---
-title: "Planning package remediated after [034-form-bot-problem/07-03-26_10-50__planning-package-remediated-after-ultra-think]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Planning package remediated after Ultra-Think review [034-form-bot-problem/07-03-26_10-50__planning-package-remediated-after-ultra-think]"
+description: "This session captures the Ultra-Think review follow-up that corrected the planning package for the form-bot investigation. It records the evidence-labeling changes, checklist and dependency fixes, and the decision to treat implementation as blocked until provider evidence prerequisites are met."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "ultra think planning remediation"
+  - "form bot provider evidence prerequisites"
+  - "server side first investigation"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

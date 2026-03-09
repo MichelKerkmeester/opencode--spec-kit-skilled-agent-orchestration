@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [044-speckit-test-suite/26-12-25_10-09__speckit-test-suite]"
-importance_tier: "normal"
-contextType: "general"
+title: Bash verification for speckit-test-suite 2025-12-26 [044-speckit-test-suite/26-12-25_10-09__speckit-test-suite]
+importance_tier: normal
+contextType: general
+description: This migrated session records only that a bash-based verification step
+  was started for the speckit test suite. The memory lacks enough preserved findings
+  or outputs to explain what was checked or what the result meant.
+trigger_phrases:
+- speckit bash verification
+- test suite verification pass
+- minimal bash result
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+- needs_review
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

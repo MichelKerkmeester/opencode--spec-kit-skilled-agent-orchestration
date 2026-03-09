@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-mvp-monolithic/24-12-25_12-33__path-scoped-rules]"
+title: "Path-scoped rules implementation checkpoint for 023-path-scoped-rules 2025-12-24 [001-mvp-monolithic/24-12-25_12-33__path-scoped-rules]"
+description: "This session recorded implementation work on path-scoped rules, including documentation, spec-folder creation, and level-based rule handling. The archived memory preserves a completed checkpoint, though the body includes an external project path that should be reviewed for cross-spec contamination."
+trigger_phrases:
+  - "path scoped rules implementation"
+  - "spec folder path rules"
+  - "level based rule handling"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

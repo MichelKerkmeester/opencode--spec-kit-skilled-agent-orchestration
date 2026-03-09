@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning [082-speckit-reimagined/01-02-26_11-53__speckit-reimagined]"
-importance_tier: "normal"
-contextType: "general"
+title: Session record for speckit reimagined 2026-02-01 [082-speckit-reimagined/01-02-26_11-53__speckit-reimagined]
+description: This memory captures a session record for speckit reimagined on 2026-02-01.
+  It preserves continuation context, project state snapshots, and recovery hints for
+  a session marked completed.
+trigger_phrases:
+- speckit reimagined
+- session continuation
+- project state snapshot
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

@@ -1,6 +1,14 @@
 ---
-title: "To promote a memory to constitutional tier [012-form-input-upload-select/04-01-26_13-51__form-input-components]"
-importance_tier: "important"
+title: "Form script performance optimizations for [011-form-input-upload-select/04-01-26_13-51__form-input-components]"
+description: "This archived session records performance optimizations for the form input scripts, including delegated option handlers and shared click listeners for selects. It also captures the validation cache work that reduced repeated DOM traversal during error-container lookup."
+trigger_phrases:
+  - "form script performance optimization"
+  - "shared select click listener"
+  - "validation error container cache"
+importance_tier: "high"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

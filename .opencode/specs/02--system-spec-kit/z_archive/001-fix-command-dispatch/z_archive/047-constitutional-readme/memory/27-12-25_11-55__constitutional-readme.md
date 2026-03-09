@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [047-constitutional-readme/27-12-25_11-55__constitutional-readme]"
-importance_tier: "critical"
-contextType: "general"
+title: Constitutional README optimization for constitutional-readme 2025-12-27 [047-constitutional-readme/27-12-25_11-55__constitutional-readme]
+importance_tier: critical
+contextType: general
+description: This session optimized the constitutional memory system and wrote a detailed
+  README for the constitutional folder. It expanded the constitutional token budget,
+  improved gate-enforcement retrieval anchors and trigger phrases, cleaned orphaned
+  vectors, and re-indexed the updated constitutional memory set.
+trigger_phrases:
+- constitutional readme update
+- constitutional token budget
+- gate enforcement optimization
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

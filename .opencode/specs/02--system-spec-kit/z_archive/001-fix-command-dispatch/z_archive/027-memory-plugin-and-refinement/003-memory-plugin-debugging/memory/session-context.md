@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [003-memory-plugin-debugging/session-context]"
-importance_tier: "normal"
-contextType: "general"
+title: Capturing bun sqlite migration context [003-memory-plugin-debugging/session-context]
+description: This migrated memory captures the session context for the bun:sqlite migration in 003-memory-plugin-debugging. It summarizes the zero-memories symptom, the Bun-versus-Node runtime discovery, and the restart and rollback guidance for validating the one-line fix.
+trigger_phrases:
+- session context migration
+- bun sqlite migration
+- zero memories dashboard
+- plugin runtime debugging
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [067-voyage-4-upgrade/15-01-26_19-02__voyage-4-upgrade]"
-importance_tier: "normal"
-contextType: "general"
+title: Voyage 4 upgrade implementation checkpoint [067-voyage-4-upgrade/15-01-26_19-02__voyage-4-upgrade]
+description: This memory records a voyage-4-upgrade checkpoint on 2026-01-15. The overview only states that the session focused on implementing and testing features, with context save initiated and no blockers recorded. Specific Voyage 4 upgrade changes or technical decisions were not preserved in the body.
+trigger_phrases:
+- voyage 4 upgrade
+- implementation testing session
+- context save checkpoint
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

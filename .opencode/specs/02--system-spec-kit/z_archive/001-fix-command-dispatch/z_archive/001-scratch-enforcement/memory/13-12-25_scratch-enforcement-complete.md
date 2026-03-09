@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning [001-scratch-enforcement/13-12-25_scratch-enforcement-complete]"
+title: "Scratch enforcement completion for 001-scratch-enforcement 2025-12-13 [001-scratch-enforcement/13-12-25_scratch-enforcement-complete]"
+description: "This memory captures the completed scratch folder enforcement implementation for the archived 001-scratch-enforcement work. It records a four-layer documentation enforcement approach that directs temporary files into spec scratch folders for OpenCode-compatible workflows. The session was preserved as a migrated legacy record from 2025-12-13."
+trigger_phrases:
+  - "scratch folder enforcement"
+  - "spec scratch workflow"
+  - "OpenCode temporary files"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

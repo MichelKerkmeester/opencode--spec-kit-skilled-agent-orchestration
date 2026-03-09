@@ -1,12 +1,16 @@
 ---
-title: "create readme install merger session [017-create-readme-install-merger/03-03-26_13-29__create-readme-install-merger]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory integration analysis for 017-create-readme-install-merger 2026-03-03 [017-create-readme-install-merger/03-03-26_13-29__create-readme-install-merger]"
+description: "This session stores an analysis of the 036-skill-graphs implementation and Memory MCP integration inside the 017-create-readme-install-merger memory file. It focuses on SGQS graph-query behavior rather than readme/install merger work, so the body appears cross-contaminated."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph query system"
+  - "memory mcp integration"
+  - "semantic memory pipeline"
+  - "in-memory graph database"
 importance_tier: "critical"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

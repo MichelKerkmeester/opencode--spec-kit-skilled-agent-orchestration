@@ -1,7 +1,16 @@
 ---
-title: "Key Topics: response | [002-speckit-leann-integration/22-12-25_09-00__speckit-leann-integration]"
+title: "OpenCode triad analysis snapshot for 002-speckit-leann-integration 2025-12-22 [002-speckit-leann-integration/22-12-25_09-00__speckit-leann-integration]"
+description: "This legacy session preserves a partial response placeholder about an OpenCode Triad analysis and a skill system enhancement plan. The body is truncated and only records scattered deliverables and tool references, so the memory appears both thin and cross-contaminated."
+trigger_phrases:
+  - "opencode triad analysis"
+  - "skill system enhancement plan"
+  - "partial response placeholder"
+  - "truncated legacy memory"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

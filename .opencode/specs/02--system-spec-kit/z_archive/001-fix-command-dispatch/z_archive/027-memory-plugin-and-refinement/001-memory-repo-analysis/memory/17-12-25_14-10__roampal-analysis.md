@@ -1,7 +1,17 @@
 ---
-title: "Related Documentation [001-memory-repo-analysis/17-12-25_14-10__roampal-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Mixed-format parser test for roampal analysis 2025-12-17 [001-memory-repo-analysis/17-12-25_14-10__roampal-analysis]
+description: This session runs a fresh compatibility test for both object and string
+  keyDecisions formats. It records mixed-format examples intended to verify the parser
+  behavior and preserve backward compatibility.
+trigger_phrases:
+- mixed format parser test
+- key decisions parser
+- backward compatibility test
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

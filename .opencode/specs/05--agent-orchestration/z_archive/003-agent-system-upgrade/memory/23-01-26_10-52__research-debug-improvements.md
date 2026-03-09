@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [003-agent-system-upgrade/23-01-26_10-52__research-debug-improvements]"
+title: "Research and debug agent improvements for 003-agent-system-upgrade 2026-01-23 [003-agent-system-upgrade/23-01-26_10-52__research-debug-improvements]"
+description: "This session completed research-agent improvements and added a dedicated debug sub-agent for the archived agent system upgrade work. It standardized agent model preferences, updated templates and routing, and fixed Claude Code versus OpenCode subagent type compatibility across multiple files."
+trigger_phrases:
+  - "research agent improvements"
+  - "debug sub-agent creation"
+  - "Claude Code subagent compatibility"
+  - "agent model standardization"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning [008-rename-memory-check/16-12-25_15-19__skill-alignment-fixes]"
+title: "Skill alignment fixes for 008-rename-memory-check 2025-12-16 [008-rename-memory-check/16-12-25_15-19__skill-alignment-fixes]"
+description: "This memory documents the alignment fixes completed during the archived 008-rename-memory-check work. The session corrected workflows-memory SKILL.md discrepancies and shortened create-documentation guidance by roughly half while preserving the required behavior. It was kept as a migrated legacy record from 2025-12-16."
+trigger_phrases:
+  - "skill alignment fixes"
+  - "documentation shortening"
+  - "rename memory check"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

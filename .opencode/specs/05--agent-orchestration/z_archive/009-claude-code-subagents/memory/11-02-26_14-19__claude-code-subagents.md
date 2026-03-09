@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always [009-claude-code-subagents/11-02-26_14-19__claude-code-subagents]"
+title: "Claude Code subagents context capture for 009-claude-code-subagents 2026-02-11 [009-claude-code-subagents/11-02-26_14-19__claude-code-subagents]"
+description: "This session captured context around a single-file edit flow and memory generation for the Claude Code subagents spec folder. The body also mixes in TCB system notes and continuation text, so the archived session should be reviewed for topic alignment."
+trigger_phrases:
+  - "claude code subagents"
+  - "generate context script"
+  - "TCB system notes"
+  - "single file edit flow"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

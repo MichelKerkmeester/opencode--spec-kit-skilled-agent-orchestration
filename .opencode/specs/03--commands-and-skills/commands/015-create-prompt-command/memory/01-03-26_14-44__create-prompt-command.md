@@ -1,12 +1,16 @@
 ---
-title: "create prompt command session 01-03-26 [015-create-prompt-command/01-03-26_14-44__create-prompt-command]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Create prompt command implementation for 015-create-prompt-command 2026-03-01 [015-create-prompt-command/01-03-26_14-44__create-prompt-command]"
+description: "This session completed the /create:prompt command implementation around the sk-prompt-improver skill. It also embedded full Gemini CLI TOML command content across 21 wrappers and verified byte-level parity with the OpenCode markdown sources."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "create prompt command"
+  - "prompt improver wrapper"
+  - "gemini toml embedding"
+  - "clear scoring workflow"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

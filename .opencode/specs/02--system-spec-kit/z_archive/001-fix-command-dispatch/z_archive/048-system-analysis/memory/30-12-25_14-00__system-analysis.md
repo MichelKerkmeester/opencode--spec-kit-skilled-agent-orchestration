@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [048-system-analysis/30-12-25_14-00__system-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: System-wide remediation for system-analysis 2025-12-30 [048-system-analysis/30-12-25_14-00__system-analysis]
+importance_tier: normal
+contextType: general
+description: This session ran a system-wide analysis and remediation pass across SpecKit
+  and Memory after verifying which reported issues were real. It captured the work-stream
+  structure, the Level 3 documentation set, and the broad mix of correctness, performance,
+  security, and documentation fixes that were implemented.
+trigger_phrases:
+- system wide remediation
+- speckit memory analysis
+- parallel issue verification
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

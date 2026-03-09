@@ -1,7 +1,21 @@
 ---
-title: "To promote a memory to [136-mcp-working-memory-hybrid-rag/20-02-26_08-04__mcp-working-memory-hybrid-rag]"
-importance_tier: "normal"
-contextType: "general"
+title: Public release documentation pass for [020-mcp-working-memory-hybrid-rag/20-02-26_08-04__mcp-working-memory-hybrid-rag]
+importance_tier: normal
+contextType: general
+description: This session captures research work for mcp working memory hybrid rag
+  on 2026-02-20. This session finalized the public release documentation pass for
+  the hybrid memory rollout and aligned release-facing READMEs with the latest memory
+  capabilities. Work included auditing system-spec-ki... It references work on .opencode/skill/system-spec-kit/README.md,
+  .opencode/skill/system-spec-kit/mcp_server/README.md, .opencode/README.md and preserves
+  the current in_progress checkpoint.
+trigger_phrases:
+- mcp working memory
+- hybrid rag rollout
+- memory retrieval planning
+- release documentation pass
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

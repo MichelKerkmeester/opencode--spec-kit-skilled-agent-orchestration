@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: launching | parallel | planning | context | [019-speckit-refinement/23-12-25_15-13__speckit-refinement]"
+title: "Parallel agent planning checkpoint for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_15-13__speckit-refinement]"
+description: "This session tracked speckit refinement work around launching parallel agents, planning context collection, and saving results. The archived memory preserves a completed checkpoint for coordinating refinement tasks across multiple agents."
+trigger_phrases:
+  - "parallel agent planning"
+  - "context agent coordination"
+  - "speckit refinement save"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

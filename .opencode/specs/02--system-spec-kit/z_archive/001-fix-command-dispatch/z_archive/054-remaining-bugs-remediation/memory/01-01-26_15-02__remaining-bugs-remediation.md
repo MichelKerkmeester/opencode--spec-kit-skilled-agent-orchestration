@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [054-remaining-bugs-remediation/01-01-26_15-02__remaining-bugs-remediation]"
-importance_tier: "normal"
-contextType: "general"
+title: Memory index cleanup for remaining bugs remediation [054-remaining-bugs-remediation/01-01-26_15-02__remaining-bugs-remediation]
+description: This memory records a substantive cleanup session for remaining-bugs-remediation on 2026-01-01. The session audited the memory index against the filesystem, removed orphaned and duplicate entries, and documented decision-making around cleanup order. It also preserved a blocker about a stale Voyage API key during indexing.
+trigger_phrases:
+- memory index cleanup
+- orphaned entry deletion
+- duplicate memory removal
+- voyage api key issue
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

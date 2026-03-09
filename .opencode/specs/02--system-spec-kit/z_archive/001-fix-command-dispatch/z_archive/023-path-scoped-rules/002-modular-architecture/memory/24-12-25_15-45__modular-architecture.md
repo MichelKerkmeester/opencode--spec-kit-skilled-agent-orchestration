@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [002-modular-architecture/24-12-25_15-45__modular-architecture]"
-importance_tier: "normal"
-contextType: "general"
+title: Verification follow-up for modular architecture 2025-12-24 [002-modular-architecture/24-12-25_15-45__modular-architecture]
+description: This session verifies documentation updates and install-guide changes
+  for the modular architecture branch. It captures the follow-up analysis, file verification,
+  and summary prepared after the earlier implementation work.
+trigger_phrases:
+- modular architecture verification
+- install guide audit
+- documentation update follow up
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

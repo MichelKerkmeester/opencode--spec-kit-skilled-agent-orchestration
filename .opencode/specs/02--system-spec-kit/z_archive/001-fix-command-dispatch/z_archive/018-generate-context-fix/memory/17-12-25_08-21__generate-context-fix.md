@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: handlememorysave | programmatically | [018-generate-context-fix/17-12-25_08-21__generate-context-fix]"
+title: "Memory save and anchor validation fix for 018-generate-context-fix 2025-12-17 [018-generate-context-fix/17-12-25_08-21__generate-context-fix]"
+description: "This session focused on generate-context fixes for handleMemorySave, anchor validation, single-file indexing, and compatibility across conversations. The memory preserves the completed consolidation of verification and documentation updates around programmatic memory saves."
+trigger_phrases:
+  - "memory save anchor validation"
+  - "single file indexing fix"
+  - "generate context compatibility"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

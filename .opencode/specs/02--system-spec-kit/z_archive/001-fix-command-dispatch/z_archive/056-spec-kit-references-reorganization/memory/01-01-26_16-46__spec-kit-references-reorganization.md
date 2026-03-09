@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to [056-spec-kit-references-reorganization/01-01-26_16-46__spec-kit-references-reorganization]"
-importance_tier: "normal"
-contextType: "general"
+title: Spec kit references reorganization shell script fixes [056-spec-kit-references-reorganization/01-01-26_16-46__spec-kit-references-reorganization]
+description: This memory records a spec-kit-references-reorganization session on 2026-01-01. The session focused on reading five shell scripts first and then fixing them to comply with the repository code style guide. It ended without blockers and pointed to continued implementation work.
+trigger_phrases:
+- spec kit references
+- shell script style fixes
+- code style compliance
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

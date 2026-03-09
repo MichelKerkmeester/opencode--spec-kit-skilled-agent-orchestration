@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [033-ux-deep-analysis/25-12-25_11-07__ux-deep-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Saving UX analysis context [033-ux-deep-analysis/25-12-25_11-07__ux-deep-analysis]
+description: This migrated memory preserves a short session that saved UX analysis context into the archived ux-deep-analysis spec. It records only the save request, a bash execution trace, and the generic recovery hints produced by the migration template.
+trigger_phrases:
+- ux analysis save
+- context save request
+- bash execution trace
+- resume ux analysis
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

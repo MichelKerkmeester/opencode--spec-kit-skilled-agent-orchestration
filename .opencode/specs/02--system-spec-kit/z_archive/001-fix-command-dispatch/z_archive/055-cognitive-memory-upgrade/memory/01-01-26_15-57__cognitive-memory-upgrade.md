@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [055-cognitive-memory-upgrade/01-01-26_15-57__cognitive-memory-upgrade]"
-importance_tier: "normal"
-contextType: "general"
+title: Cognitive memory upgrade token analysis session [055-cognitive-memory-upgrade/01-01-26_15-57__cognitive-memory-upgrade]
+description: This memory captures a read-only research session for the cognitive-memory-upgrade spec on 2026-01-01. The overview states that the work analyzed existing reference and asset files to measure accurate token, line, and character counts. It remained a research task with no file modifications recorded.
+trigger_phrases:
+- cognitive memory upgrade
+- reference token analysis
+- read only research
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

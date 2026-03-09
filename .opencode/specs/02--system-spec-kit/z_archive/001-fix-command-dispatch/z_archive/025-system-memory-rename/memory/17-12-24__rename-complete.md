@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning delta [025-system-memory-rename/17-12-24__rename-complete]"
-importance_tier: "normal"
-contextType: "general"
+title: System-memory rename completion for system-memory rename 2024-12-17 [025-system-memory-rename/17-12-24__rename-complete]
+description: This session records the completion of the system-memory rename from
+  the earlier workflows-memory naming. It preserves the migrated summary, rename context,
+  and recovery information for the rename spec.
+trigger_phrases:
+- system memory rename
+- workflows memory rename
+- memory skill rename
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

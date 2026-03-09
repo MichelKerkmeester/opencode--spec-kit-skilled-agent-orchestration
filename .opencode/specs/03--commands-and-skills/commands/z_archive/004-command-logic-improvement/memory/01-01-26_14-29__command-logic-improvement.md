@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [004-command-logic-improvement/01-01-26_14-29__command-logic-improvement]"
+title: "In-progress command logic improvement update for 004-command-logic-improvement 2026-01-01 [004-command-logic-improvement/01-01-26_14-29__command-logic-improvement]"
+description: "This legacy session only records that work was focused on implementing and testing features for command logic improvement. The migrated memory lacks concrete decisions, files, or outcomes beyond a generic in-progress status, so it should be treated as thin content."
+trigger_phrases:
+  - "command logic improvement"
+  - "implementing and testing features"
+  - "generic in progress session"
+  - "thin legacy memory"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

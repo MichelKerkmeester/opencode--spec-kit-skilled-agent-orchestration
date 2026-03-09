@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [002-memory-plugin/mcp-server-fixes]"
-importance_tier: "normal"
-contextType: "general"
+title: Fixing MCP server search and indexing [002-memory-plugin/mcp-server-fixes]
+description: This migrated memory records the MCP server repair work in 002-memory-plugin. It details hybrid search integration, database initialization ordering, embedding regeneration on title change, and batched index scanning, along with verification of each fix.
+trigger_phrases:
+- mcp server fixes
+- hybrid search integration
+- embedding regeneration
+- batched index scan
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

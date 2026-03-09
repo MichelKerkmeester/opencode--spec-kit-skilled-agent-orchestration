@@ -1,7 +1,18 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-mvp-monolithic/24-12-25_12-41__path-scoped-rules]"
-importance_tier: "normal"
-contextType: "general"
+title: Gate 3 remediation review for path-scoped rules 2025-12-24 [001-mvp-monolithic/24-12-25_12-41__path-scoped-rules]
+description: This session captures the initial remediation work around path-scoped
+  rules and the surrounding Gate 3 enforcement issues. It records the analysis, documentation
+  updates, and follow-up planning tied to constitutional memory reminders and related
+  spec files.
+trigger_phrases:
+- path scoped rules remediation
+- gate 3 enforcement review
+- constitutional memory reminder
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

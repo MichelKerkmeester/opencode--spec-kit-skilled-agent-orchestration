@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier [082-speckit-reimagined/01-02-26_14-15__speckit-reimagined-complete]"
-importance_tier: "critical"
-contextType: "implementation"
+title: Completion summary for speckit reimagined 2026-02-01 [082-speckit-reimagined/01-02-26_14-15__speckit-reimagined-complete]
+description: This memory captures a complete session for speckit reimagined on 2026-02-01.
+  Full implementation of SpecKit Reimagined completed with 107/107 tasks across 5
+  workstreams using 28 parallel Opus agents.
+trigger_phrases:
+- speckit reimagined
+- speckit reimagined complete
+- parallel opus agents
+- spec completion summary
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

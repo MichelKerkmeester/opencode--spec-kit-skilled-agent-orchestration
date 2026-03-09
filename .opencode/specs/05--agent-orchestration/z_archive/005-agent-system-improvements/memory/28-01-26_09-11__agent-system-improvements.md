@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [005-agent-system-improvements/28-01-26_09-11__agent-system-improvements]"
+title: "Unified setup phase YAML cleanup for 005-agent-system-improvements 2026-01-28 [005-agent-system-improvements/28-01-26_09-11__agent-system-improvements]"
+description: "This session updated six create-command YAML assets to remove stale version references and align them with the unified setup phase terminology. It recorded the phase-reference migration and the verification approach used to confirm the old labels were gone."
+trigger_phrases:
+  - "unified setup phase update"
+  - "create command yaml cleanup"
+  - "remove hardcoded version references"
+  - "workflow terminology migration"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

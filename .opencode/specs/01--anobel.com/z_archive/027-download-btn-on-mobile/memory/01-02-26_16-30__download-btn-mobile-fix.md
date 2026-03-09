@@ -1,7 +1,19 @@
 ---
-title: "Epistemic state captured at session start for [029-download-btn-on-mobile/01-02-26_16-30__download-btn-mobile-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Mobile download button fix for download-btn-on-mobile 2026-02-01 [029-download-btn-on-mobile/01-02-26_16-30__download-btn-mobile-fix]
+description: Fixed the mobile download button issue on anobel.com by disabling the
+  hidden Webflow anchor overlay that intercepted touch events before the JavaScript
+  handler ran. The migrated session records the supporting CSS spinner, iOS-specific
+  delay handling, and CDN rollout details for the fix.
+trigger_phrases:
+- mobile download button fix
+- Webflow anchor overlay
+- btn_download iOS handling
+- pointer events download issue
+importance_tier: high
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

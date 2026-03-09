@@ -1,6 +1,14 @@
 ---
-title: "To promote a memory to constitutional tier (always [004-style-enforcement/03-02-26_17-30__validate-document-rename]"
+title: "validate_document rename for style-enforcement 2026-02-03 [004-style-enforcement/03-02-26_17-30__validate-document-rename]"
+description: "Completed the rename from validate_readme.py to validate_document.py because the validator covers multiple document types. The session updated internal references, spec documentation, and AGENTS files, then verified tests and remaining references across the codebase."
+trigger_phrases:
+  - "validate document rename"
+  - "readme validator rename"
+  - "style enforcement docs"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

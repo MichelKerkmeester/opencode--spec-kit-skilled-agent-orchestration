@@ -1,7 +1,20 @@
 ---
-title: "To promote a memory to [136-mcp-working-memory-hybrid-rag/18-02-26_17-38__mcp-working-memory-hybrid-rag]"
-importance_tier: "normal"
-contextType: "general"
+title: Handover capture for [020-mcp-working-memory-hybrid-rag/18-02-26_17-38__mcp-working-memory-hybrid-rag]
+importance_tier: normal
+contextType: general
+description: This session captures research work for mcp working memory hybrid rag
+  on 2026-02-18. Created handover.md for spec 136 with continuation instructions,
+  current planning state, decisions, blockers, and next actions. It references work
+  on .opencode/.../136-mcp-working-memory-hybrid-rag/handover.md and preserves the
+  current in_progress checkpoint.
+trigger_phrases:
+- mcp working memory
+- hybrid rag rollout
+- memory retrieval planning
+- release documentation pass
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

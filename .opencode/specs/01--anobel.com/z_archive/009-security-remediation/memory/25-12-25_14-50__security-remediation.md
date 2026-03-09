@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always [009-security-remediation/25-12-25_14-50__security-remediation]"
+title: "Narsil command reference review for [009-security-remediation/25-12-25_14-50__security-remediation]"
+description: "This archived memory captures a review of Narsil command locations and related reference updates. The body content appears unrelated to the security-remediation spec path, so the record requires manual review before it is used as security context."
+trigger_phrases:
+  - "narsil command location review"
+  - "security remediation memory mismatch"
+  - "command reference update audit"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
+contextType: "discovery"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

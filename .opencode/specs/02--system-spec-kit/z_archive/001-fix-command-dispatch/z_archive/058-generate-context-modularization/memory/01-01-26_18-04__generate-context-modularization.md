@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to [058-generate-context-modularization/01-01-26_18-04__generate-context-modularization]"
-importance_tier: "normal"
-contextType: "general"
+title: Misfiled login button implementation session [058-generate-context-modularization/01-01-26_18-04__generate-context-modularization]
+description: This memory is stored under generate-context modularization, but the recorded work describes a login button component with responsive header styling in src/components/LoginButton.js. The session snapshot stayed in research phase, recorded no blockers, and did not preserve generate-context-specific decisions. The content appears misfiled relative to the spec folder.
+trigger_phrases:
+- login button component
+- responsive header styling
+- cross spec memory contamination
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

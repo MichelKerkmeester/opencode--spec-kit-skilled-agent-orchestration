@@ -1,6 +1,14 @@
 ---
-title: "Related Documentation [014-anchor-enforcement/16-12-25_20-48__anchor-enforcement]"
+title: "Memory architecture consolidation for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-48__anchor-enforcement]"
+description: "This memory captures the architectural consolidation that moved memory scripts, templates, database files, and config into the workflows-memory skill folder. The archived session describes how the relocation created a single source of truth and fixed missing-anchor failures caused by broken skill-local script paths. It remains preserved as a migrated v2.2 record from 2025-12-16."
+trigger_phrases:
+  - "memory architecture consolidation"
+  - "single source of truth"
+  - "missing anchor root cause"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

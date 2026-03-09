@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [023-gemini-cli-compatibility/20-02-26_11-43__gemini-cli-compatibility]"
-importance_tier: "normal"
-contextType: "general"
+title: Level 3 spec expansion for gemini cli compatibility 2026-02-20 [023-gemini-cli-compatibility/20-02-26_11-43__gemini-cli-compatibility]
+description: This memory captures a documentation-heavy implementation session for the gemini-cli-compatibility workstream. It records the expansion of Level 3 spec documents and related research deliverables aimed at improving the system-speckit memory MCP server migration plan.
+trigger_phrases:
+- level 3 spec documents
+- gemini cli compatibility
+- memory mcp migration
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

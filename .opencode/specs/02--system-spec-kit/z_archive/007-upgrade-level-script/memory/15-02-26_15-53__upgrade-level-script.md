@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [124-upgrade-level-script/15-02-26_15-53__upgrade-level-script]"
-importance_tier: "critical"
-contextType: "general"
+title: Implementation completion for upgrade-level-script 2026-02-15 [124-upgrade-level-script/15-02-26_15-53__upgrade-level-script]
+description: This archived session documented completed implementation work for upgrade-level-script
+  and related prose-tightening fixes. The summary records a finished upgrade-level.sh
+  implementation, review findings, and five decisions captured while the session ended
+  in a blocked handoff state.
+trigger_phrases:
+- upgrade level script implementation
+- upgrade-level.sh review
+- spec 124 completion
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

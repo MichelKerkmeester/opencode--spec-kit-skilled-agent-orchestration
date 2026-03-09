@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for [005-speckit-consolidation/17-12-25_speckit-consolidation-complete]"
+title: "SpecKit skill consolidation for 005-speckit-consolidation 2025-12-17 [005-speckit-consolidation/17-12-25_speckit-consolidation-complete]"
+description: "This memory captures the consolidation of the standalone SpecKit assets into the self-contained skill folder for the archived 005-speckit-consolidation work. The session migrated two dozen files, updated a large set of path references, and verified the scripts from their new location. It remains stored as a migrated legacy record from 2025-12-17."
+trigger_phrases:
+  - "SpecKit skill consolidation"
+  - "self contained skill migration"
+  - "path reference updates"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

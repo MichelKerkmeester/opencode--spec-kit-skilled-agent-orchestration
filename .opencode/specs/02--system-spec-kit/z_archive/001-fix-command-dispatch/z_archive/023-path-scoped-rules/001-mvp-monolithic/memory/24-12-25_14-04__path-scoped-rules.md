@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-mvp-monolithic/24-12-25_14-04__path-scoped-rules]"
-importance_tier: "normal"
-contextType: "general"
+title: Documentation verification planning for path-scoped rules 2025-12-24 [001-mvp-monolithic/24-12-25_14-04__path-scoped-rules]
+description: This session plans a verification pass over system-memory documentation
+  related to path-scoped rules. It captures the preparation, file reads, and sequential
+  analysis used to validate the docs before further edits.
+trigger_phrases:
+- path scoped rules verification
+- system memory documentation audit
+- parallel verification planning
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

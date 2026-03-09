@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [005-agent-system-improvements/27-01-26_11-24__agent-system-improvements]"
+title: "Level 3+ spec planning for 005-agent-system-improvements 2026-01-27 [005-agent-system-improvements/27-01-26_11-24__agent-system-improvements]"
+description: "This session documented a Level 3+ spec folder for agent system improvements. It captured requirements, planning phases, checklist priorities, and ADRs for nine documentation improvements informed by ten-agent research."
+trigger_phrases:
+  - "agent system improvements spec"
+  - "level 3 documentation planning"
+  - "parallel agent research"
+  - "output verification guidance"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

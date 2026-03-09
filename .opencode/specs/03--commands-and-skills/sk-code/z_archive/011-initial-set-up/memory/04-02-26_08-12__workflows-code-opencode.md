@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier (always [011-initial-set-up/04-02-26_08-12__workflows-code-opencode]"
-importance_tier: "normal"
-contextType: "general"
+title: Multi-language architecture plan for workflows-code-opencode setup on 2026-02-04
+  [011-initial-set-up/04-02-26_08-12__workflows-code-opencode]
+description: This session records the research and spec updates that expanded workflows-code-opencode
+  from a JavaScript-only scope to a multi-language architecture. It summarizes parallel
+  analysis across JavaScript, Python, Shell, and JSON/JSONC, plus the planned implementation
+  phases for the new 19-file structure.
+trigger_phrases:
+- multi language architecture plan
+- workflows code opencode expansion
+- parallel language analysis
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

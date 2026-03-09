@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-mvp-monolithic/24-12-25_13-25__path-scoped-rules]"
-importance_tier: "normal"
-contextType: "general"
+title: Context review for path-scoped rules enforcement 2025-12-24 [001-mvp-monolithic/24-12-25_13-25__path-scoped-rules]
+description: This session reviews the handover, test suite, checklist, and spec inputs
+  needed for the path-scoped rules work. It documents the context gathering and deep-analysis
+  setup before broader implementation continues.
+trigger_phrases:
+- path scoped rules context
+- gate 3 enforcement handover
+- path scoped rules analysis
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

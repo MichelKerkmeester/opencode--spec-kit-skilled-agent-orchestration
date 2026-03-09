@@ -1,6 +1,14 @@
 ---
-title: "To promote a memory to constitutional tier (always [003-h2-emoji-enforcement/01-01-26_14-53__h2-emoji-enforcement]"
+title: "H2 emoji enforcement rollout for h2-emoji-enforcement 2026-01-01 [003-h2-emoji-enforcement/01-01-26_14-53__h2-emoji-enforcement]"
+description: "Implemented a copy-first, validate-all workflow to stop template-based documents from losing required H2 emojis. The session added blocking validation in extract_structure.py, updated write guidance, and verified compliant files return clean results."
+trigger_phrases:
+  - "h2 emoji enforcement"
+  - "copy first validate all"
+  - "missing emoji blocking"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

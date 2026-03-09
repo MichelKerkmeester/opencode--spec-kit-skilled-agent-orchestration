@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [082-speckit-reimagined/01-02-26_10-53__speckit-reimagined]"
+title: "Reimagined implementation snapshot 2026-02-01 [082-speckit-reimagined/01-02-26_10-53__speckit-reimagined]"
+description: "Captured a minimal in-progress snapshot for the SpecKit reimagined work during implementation. It mainly contains generic resume scaffolding and status placeholders, so it should be treated as a thin checkpoint rather than a substantive session narrative."
+trigger_phrases:
+  - "reimagined implementation snapshot"
+  - "thin context checkpoint"
+  - "generic resume scaffolding"
+  - "speckit reimagined handoff"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

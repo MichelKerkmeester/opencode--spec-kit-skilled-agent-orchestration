@@ -1,6 +1,14 @@
 ---
-title: "Related Documentation [012-handover-triggers/17-12-25_16-19__handover-triggers]"
+title: "Handover trigger rollout for 012-handover-triggers 2025-12-17 [012-handover-triggers/17-12-25_16-19__handover-triggers]"
+description: "This memory captures the handover-trigger rollout in SpecKit and related skill documentation. The archived session added handover trigger keywords, reduced SKILL.md bloat, and standardized the section structure across multiple skills. It preserves the 2025-12-17 implementation details in migrated v2.2 form."
+trigger_phrases:
+  - "handover trigger rollout"
+  - "skill structure standardization"
+  - "SKILL.md reduction"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

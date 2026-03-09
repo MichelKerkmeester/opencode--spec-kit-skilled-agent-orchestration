@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [030-gate3-enforcement/handover]"
-importance_tier: "normal"
-contextType: "general"
+title: Handing over the memory system overhaul [030-gate3-enforcement/handover]
+description: This migrated memory preserves the handover for the memory system overhaul work tied to gate3-enforcement. It summarizes the completed cleanup across the MCP server, scripts, config, commands, and documentation, and it lists the restart and test steps still required before use.
+trigger_phrases:
+- gate 3 enforcement handover
+- memory system overhaul
+- semantic-memory cleanup
+- restart and test steps
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

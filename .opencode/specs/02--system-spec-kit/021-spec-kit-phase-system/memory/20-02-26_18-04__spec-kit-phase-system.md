@@ -1,7 +1,22 @@
 ---
-title: "To promote a memory to constitutional tier (always [138-spec-kit-phase-system/20-02-26_18-04__spec-kit-phase-system]"
-importance_tier: "normal"
-contextType: "general"
+title: Phase system implementation summary for [021-spec-kit-phase-system/20-02-26_18-04__spec-kit-phase-system]
+importance_tier: normal
+contextType: general
+description: "This session captures research work for spec kit phase system on 2026-02-20.\
+  \ Implemented the complete SpecKit Phase System (Spec 139) \u2014 a Level 3+ behavioral\
+  \ overlay that formalizes phase decomposition as a first-class SpecKit capability.\
+  \ Executed 28 of 34 tasks across 4 phase... It references .opencode/.../spec/recommend-level.sh,\
+  \ .opencode/skill/system-spec-kit/scripts/spec/create.sh, .opencode/skill/system-spec-kit/scripts/spec/validate.sh\
+  \ and records the current blocker: sh set -e safety issue and JSON-safe level quoting."
+trigger_phrases:
+- spec kit phase system
+- phase decomposition workflow
+- skill graph analysis
+- phase system rollout
+- sh set -e safety issue and JSON-safe level quoting
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

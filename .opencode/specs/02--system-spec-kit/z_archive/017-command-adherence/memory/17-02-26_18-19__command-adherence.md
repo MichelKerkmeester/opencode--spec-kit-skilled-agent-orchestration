@@ -1,7 +1,24 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [134-command-adherence/17-02-26_18-19__command-adherence]"
-importance_tier: "normal"
-contextType: "general"
+title: Gate bypass fix for [017-command-adherence/17-02-26_18-19__command-adherence]
+importance_tier: normal
+contextType: general
+description: 'This session captures research work for command adherence on 2026-02-17.
+  Diagnosed and fixed a plan-to-implementation gate bypass defect where the AI agent
+  skipped all 3 mandatory gates (Gate 1-3) when transitioning from /spec_kit:plan
+  to implementation via free-text reque... It references AGENTS.md, .opencode/command/spec_kit/plan.md,
+  .opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml and records the current
+  blocker: Decision: Added enforcement block to both plan YAML termination sections
+  rather than modifying next_.'
+trigger_phrases:
+- command adherence workflow
+- mandatory gate enforcement
+- plan to implementation transition
+- gate bypass defect
+- 'Decision: Added enforcement block to both plan YAML termination sections rather
+  than modifying next_'
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

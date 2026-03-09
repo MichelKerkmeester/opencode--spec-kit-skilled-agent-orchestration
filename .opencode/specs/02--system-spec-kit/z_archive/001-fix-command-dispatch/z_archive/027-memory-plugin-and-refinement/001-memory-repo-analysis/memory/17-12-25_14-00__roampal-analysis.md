@@ -1,7 +1,17 @@
 ---
-title: "Related Documentation [001-memory-repo-analysis/17-12-25_14-00__roampal-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Memory context plugin implementation for roampal analysis 2025-12-17 [001-memory-repo-analysis/17-12-25_14-00__roampal-analysis]
+description: This session implements the memory context plugin for OpenCode and documents
+  the core architecture choices. It covers the three plugin layers, Bun SQLite usage,
+  caching, graceful degradation, and the main spec files updated during the work.
+trigger_phrases:
+- memory context plugin
+- opencode plugin architecture
+- constitutional context injection
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

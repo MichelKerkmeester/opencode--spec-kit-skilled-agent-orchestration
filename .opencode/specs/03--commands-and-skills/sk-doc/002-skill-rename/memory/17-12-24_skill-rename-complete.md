@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [002-skill-rename/17-12-24_skill-rename-complete]"
+title: "Skill rename completion for skill-rename 2024-12-17 [002-skill-rename/17-12-24_skill-rename-complete]"
+description: "This session renamed the create-documentation skill to sk-doc across skill files, command files, install guides, and cross-skill references. Verification covered functional tests, reference cleanup, and preservation of historical names inside archived specs."
+trigger_phrases:
+  - "skill rename rollout"
+  - "sk doc rename"
+  - "documentation skill rename"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

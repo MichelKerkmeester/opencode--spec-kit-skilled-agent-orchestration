@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [021-codex-orchestrate/19-02-26_17-51__codex-orchestrate]"
-importance_tier: "normal"
-contextType: "general"
+title: Claude path normalization release for codex orchestrate 2026-02-19 [021-codex-orchestrate/19-02-26_17-51__codex-orchestrate]
+description: This memory summarizes a full release workflow around normalizing Claude runtime paths from .opencode/agent/claude to /.claude/agents. It covers changelog generation, spec validation, and release-note preparation after the documentation audit and path updates.
+trigger_phrases:
+- claude path normalization
+- release note generation
+- agent path update
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

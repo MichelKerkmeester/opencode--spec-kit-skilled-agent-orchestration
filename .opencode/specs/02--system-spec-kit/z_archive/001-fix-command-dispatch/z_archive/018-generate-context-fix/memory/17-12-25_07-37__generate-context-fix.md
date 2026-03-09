@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: documentation | conversation | [018-generate-context-fix/17-12-25_07-37__generate-context-fix]"
+title: "Conversation construction token cleanup for 018-generate-context-fix 2025-12-17 [018-generate-context-fix/17-12-25_07-37__generate-context-fix]"
+description: "This session captured generate-context work on conversation construction, template-token cleanup, and workflow guidance. The memory records the completed pass that clarified documentation expectations for simulated conversations."
+trigger_phrases:
+  - "conversation construction fix"
+  - "template token cleanup"
+  - "generate context workflow"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

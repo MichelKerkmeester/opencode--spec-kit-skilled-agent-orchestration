@@ -1,7 +1,17 @@
 ---
-title: "Related Documentation [001-memory-repo-analysis/17-12-25_14-08__roampal-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Object-format decision test for roampal analysis 2025-12-17 [001-memory-repo-analysis/17-12-25_14-08__roampal-analysis]
+description: This session tests keyDecisions object format support in the roampal
+  analysis work. It records the decision to prefer object-format decisions while preserving
+  backward compatibility considerations.
+trigger_phrases:
+- key decisions object format
+- roampal analysis test
+- decision format compatibility
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

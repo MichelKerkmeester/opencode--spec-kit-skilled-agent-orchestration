@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: response | [019-speckit-refinement/23-12-25_13-56__speckit-refinement]"
+title: "Response checkpoint for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_13-56__speckit-refinement]"
+description: "This memory captures a minimal completed checkpoint for speckit refinement with only a response-oriented topic signal. It mainly serves as an archived resume marker rather than a detailed technical record."
+trigger_phrases:
+  - "speckit refinement response"
+  - "minimal refinement checkpoint"
+  - "archived response marker"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

@@ -1,7 +1,15 @@
 ---
-title: "Epistemic state captured at session start for learning delta [002-tab-main-component/2024-12-13__implementation]"
+title: "Tab main component implementation for [002-tab-main-component/2024-12-13__implementation]"
+description: "This migrated memory preserves the implementation session for the tab main component in the archived table-of-content work. It retains the legacy component focus, trigger phrases, and continuation scaffold for the tab interaction implementation."
+trigger_phrases:
+  - "tab main component"
+  - "attribute based tab linking"
+  - "data tab content switching"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

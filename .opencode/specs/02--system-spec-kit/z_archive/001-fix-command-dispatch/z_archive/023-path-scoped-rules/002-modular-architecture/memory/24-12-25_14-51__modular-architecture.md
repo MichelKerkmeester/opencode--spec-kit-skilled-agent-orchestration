@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [002-modular-architecture/24-12-25_14-51__modular-architecture]"
-importance_tier: "normal"
-contextType: "general"
+title: Comprehensive bug analysis for modular architecture 2025-12-24 [002-modular-architecture/24-12-25_14-51__modular-architecture]
+description: This session performs a broad bug and architecture analysis for the modular
+  path-scoped rules work. It creates the supporting Level 3 spec materials, identifies
+  critical issues, and captures recommendations for validation and placeholder cleanup.
+trigger_phrases:
+- modular architecture analysis
+- path scoped rules bugs
+- level 3 spec creation
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

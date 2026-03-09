@@ -1,12 +1,15 @@
 ---
 title: "Doc-package remediation completed [034-form-bot-problem/07-03-26_10-37__doc-package-remediation-completed]"
-description: "Session context memory template for Spec Kit indexing."
+description: "This session records the remediation of the form-bot planning documents after review. It captures the tightened evidence labeling, checklist alignment, and follow-up requirement to continue implementation only after provider evidence work."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "form bot doc package remediation"
+  - "botpoison planning evidence labeling"
+  - "server side planning decision"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

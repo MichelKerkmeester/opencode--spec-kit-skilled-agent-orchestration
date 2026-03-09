@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [044-speckit-test-suite/26-12-25_09-04__speckit-test-suite]"
-importance_tier: "normal"
-contextType: "general"
+title: Constitutional surfacing test for speckit-test-suite 2025-12-26 [044-speckit-test-suite/26-12-25_09-04__speckit-test-suite]
+importance_tier: normal
+contextType: general
+description: This session exercised the speckit test suite by checking whether constitutional
+  memories surfaced first during search. It logged memory stats, repeated memory_search
+  calls, and the creation of a tier-promotion test file to verify end-to-end retrieval
+  behavior.
+trigger_phrases:
+- constitutional memory surfacing
+- speckit retrieval test
+- tier promotion verification
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

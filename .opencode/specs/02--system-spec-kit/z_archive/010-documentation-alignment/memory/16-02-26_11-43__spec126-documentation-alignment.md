@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional [127-documentation-alignment/16-02-26_11-43__spec126-documentation-alignment]"
-importance_tier: "normal"
-contextType: "general"
+title: Documentation alignment implementation for spec126-documentation-alignment
+  2026-02-16 [127-documentation-alignment/16-02-26_11-43__spec126-documentation-alignment]
+description: This archived session documented a broad documentation alignment update
+  for spec 126 within system-spec-kit. The summary records ten work items across code,
+  tests, docs, and commands, plus a follow-up task for an upgrade auto-populate fix.
+trigger_phrases:
+- documentation alignment update
+- spec 126 alignment
+- upgrade auto populate fix
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 

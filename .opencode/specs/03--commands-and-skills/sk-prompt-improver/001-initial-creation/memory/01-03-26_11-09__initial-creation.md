@@ -1,11 +1,14 @@
 ---
-title: "initial creation session 01-03-26 [001-initial-creation/01-03-26_11-09__initial-creation]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory analysis for prompt-improver initial-creation 2026-03-01 [001-initial-creation/01-03-26_11-09__initial-creation]"
+description: "This memory captures an SGQS and semantic memory integration analysis saved under the initial-creation prompt-improver spec. It summarizes in-memory graph architecture, MCP handler changes, and related tests even though the body appears to belong to another spec."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph memory analysis"
+  - "sgqs memory integration"
+  - "prompt improver memory audit"
 importance_tier: "critical"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

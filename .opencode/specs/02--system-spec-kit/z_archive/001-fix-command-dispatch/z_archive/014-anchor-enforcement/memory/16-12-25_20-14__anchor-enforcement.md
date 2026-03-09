@@ -1,6 +1,14 @@
 ---
-title: "IMPROVED CONTEXT TEMPLATE v2.1 [014-anchor-enforcement/16-12-25_20-14__anchor-enforcement]"
+title: "Generate-context fix for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-14__anchor-enforcement]"
+description: "This memory records the generate-context.js fixes captured during the archived 014-anchor-enforcement work. The session corrected JSONC inline-comment parsing, normalized manual JSON input into MCP-compatible structure, and merged manual trigger phrases with auto-extracted phrases. It is stored as a migrated v2.2 record from 2025-12-16."
+trigger_phrases:
+  - "generate context fix"
+  - "JSONC parser repair"
+  - "manual trigger phrases"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

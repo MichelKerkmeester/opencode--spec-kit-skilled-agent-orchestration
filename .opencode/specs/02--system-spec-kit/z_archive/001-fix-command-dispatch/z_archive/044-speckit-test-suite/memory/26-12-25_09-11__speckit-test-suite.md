@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [044-speckit-test-suite/26-12-25_09-11__speckit-test-suite]"
-importance_tier: "normal"
-contextType: "general"
+title: Checkpoint initialization research for speckit-test-suite 2025-12-26 [044-speckit-test-suite/26-12-25_09-11__speckit-test-suite]
+importance_tier: normal
+contextType: general
+description: This session investigated checkpoint initialization by tracing the checkpoint
+  module and the main server startup path. It preserved the key files examined and
+  the exploratory reads used to understand how the checkpoint flow was wired together.
+trigger_phrases:
+- checkpoint initialization research
+- context server startup
+- speckit checkpoint module
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

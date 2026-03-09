@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional [137-readme-and-summary-with-hvr/19-02-26_21-46__readme-and-summary-with-hvr]"
-importance_tier: "normal"
-contextType: "general"
+title: CHANGELOG review checkpoint for [019-readme-and-summary-with-hvr/19-02-26_21-46__readme-and-summary-with-hvr]
+importance_tier: normal
+contextType: general
+description: This session captures research work for readme and summary with hvr on
+  2026-02-19. The recorded activity was limited to reading CHANGELOG.md and setting
+  up the next investigation step. It preserves the in_progress checkpoint with no
+  blockers noted.
+trigger_phrases:
+- hvr documentation update
+- README summary alignment
+- hvr rules relocation
+- documentation path cleanup
+quality_score: 0.4
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

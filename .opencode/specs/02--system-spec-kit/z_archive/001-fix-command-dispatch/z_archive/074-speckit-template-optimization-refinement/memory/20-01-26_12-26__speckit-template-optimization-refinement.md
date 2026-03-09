@@ -1,6 +1,15 @@
 ---
-title: "To promote a [074-speckit-template-optimization-refinement/20-01-26_12-26__speckit-template-optimization-refinement]"
+title: "SpecKit template optimization follow-up fixes 2026-01-20 [074-speckit-template-optimization-refinement/20-01-26_12-26__speckit-template-optimization-refinement]"
+description: "Captured the follow-up session that audited the SpecKit implementation and applied targeted fixes after the template optimization rollout. It preserves the remediation work for runtime path handling, implementation gaps, and the verification pass that stabilized the refined template system."
+trigger_phrases:
+  - "template optimization follow up"
+  - "runtime path handling fix"
+  - "speckit implementation audit"
+  - "template rollout remediation"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

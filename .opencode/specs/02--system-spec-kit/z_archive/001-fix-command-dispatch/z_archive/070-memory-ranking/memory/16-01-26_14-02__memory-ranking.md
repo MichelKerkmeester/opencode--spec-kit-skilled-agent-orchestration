@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [070-memory-ranking/16-01-26_14-02__memory-ranking]"
-importance_tier: "important"
+title: "Memory ranking phase-two verification 2026-01-16 [070-memory-ranking/16-01-26_14-02__memory-ranking]"
+description: "Captured the verification session for the server-side memory ranking implementation and its phase-two rollout checks. It preserves the outcomes from parallel validation work, ranking behavior review, and the remaining implementation guidance tied to ranking improvements."
+trigger_phrases:
+  - "memory ranking phase two verification"
+  - "server side ranking validation"
+  - "parallel ranking review"
+  - "folder ranking rollout checks"
+importance_tier: "high"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

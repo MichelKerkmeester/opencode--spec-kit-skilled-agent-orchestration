@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning [001-doc-specialist-refactor/14-12-24_script_enhancements]"
+title: "Script enhancement validation for doc-specialist-refactor 2024-12-14 [001-doc-specialist-refactor/14-12-24_script_enhancements]"
+description: "This session hardened extract_structure.py with better code block handling and added template-specific validation behavior. It also fixed remaining documentation issues and achieved a 100 percent validation pass across all skill files."
+trigger_phrases:
+  - "code block detection fix"
+  - "template document type"
+  - "validation pass rate"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

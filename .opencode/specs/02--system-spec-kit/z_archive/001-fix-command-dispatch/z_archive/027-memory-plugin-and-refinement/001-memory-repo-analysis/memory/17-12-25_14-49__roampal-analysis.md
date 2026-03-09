@@ -1,7 +1,17 @@
 ---
-title: "Key Topics: memory-context plugin | SQL error fix | plugin [001-memory-repo-analysis/17-12-25_14-49__roampal-analysis]"
-importance_tier: "important"
-contextType: "implementation"
+title: Plugin bug fixes for roampal analysis 2025-12-17 [001-memory-repo-analysis/17-12-25_14-49__roampal-analysis]
+description: This session finishes plugin finalization and bug fixing for the roampal
+  analysis work. It documents the registration fix, the SQL query correction, the
+  verification results, and the remaining follow-up to restart OpenCode.
+trigger_phrases:
+- memory context plugin fix
+- sql query correction
+- opencode restart verification
+importance_tier: high
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [044-speckit-test-suite/26-12-25_09-02__speckit-test-suite]"
-importance_tier: "normal"
-contextType: "general"
+title: Context save checkpoint for speckit-test-suite 2025-12-26 [044-speckit-test-suite/26-12-25_09-02__speckit-test-suite]
+importance_tier: normal
+contextType: general
+description: This session captures a bare context-save checkpoint for the speckit
+  test suite and notes that the save flow had just been initiated. The migrated record
+  contains almost no execution detail beyond that state transition, so adjacent sessions
+  are needed for useful verification context.
+trigger_phrases:
+- context save checkpoint
+- speckit test suite save
+- minimal save session
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+- needs_review
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [082-speckit-reimagined/01-02-26_10-59__speckit-reimagined]"
-importance_tier: "important"
+title: "Reimagined documentation accuracy audit 2026-02-01 [082-speckit-reimagined/01-02-26_10-59__speckit-reimagined]"
+description: "Captured the documentation accuracy audit for the 082-speckit-reimagined spec folder. It records the fixes to incorrect current-state claims, the feature-summary corrections, and the verification work done to keep the reimagined documentation aligned with reality."
+trigger_phrases:
+  - "reimagined documentation audit"
+  - "feature summary corrections"
+  - "current state claim fixes"
+  - "spec accuracy verification"
+importance_tier: "high"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

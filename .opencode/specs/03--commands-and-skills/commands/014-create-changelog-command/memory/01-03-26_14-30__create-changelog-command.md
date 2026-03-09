@@ -1,12 +1,16 @@
 ---
-title: "create changelog command session 01-03-26 [014-create-changelog-command/01-03-26_14-30__create-changelog-command]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Create changelog command refinements for 014-create-changelog-command 2026-03-01 [014-create-changelog-command/01-03-26_14-30__create-changelog-command]"
+description: "This continuation session refined the create changelog command implementation. It fixed Unicode styling in changelog output, replaced a hardcoded component list with runtime folder discovery, and added a Gemini CLI changelog wrapper."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "create changelog command"
+  - "dynamic folder discovery"
+  - "unicode changelog styling"
+  - "gemini changelog wrapper"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional [019-incorrect-sub-agent-nesting/17-02-26_09-22__incorrect-sub-agent-nesting]"
-importance_tier: "normal"
-contextType: "general"
+title: Repeated CHANGELOG review kickoff for incorrect sub-agent nesting 2026-02-17 [019-incorrect-sub-agent-nesting/17-02-26_09-22__incorrect-sub-agent-nesting]
+description: This memory captures a second thin research checkpoint for the incorrect-sub-agent-nesting spec. The recorded work is limited to starting a CHANGELOG review and logging basic tool usage, without preserving deeper decisions or implementation details.
+trigger_phrases:
+- incorrect sub-agent nesting
+- repeated changelog review
+- agent nesting checkpoint
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

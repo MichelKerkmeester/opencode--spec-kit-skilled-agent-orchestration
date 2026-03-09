@@ -1,7 +1,16 @@
 ---
-title: "Related Documentation [028-memory-alignment-fix/22-12-25_14-51__memory-alignment-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Preventing misfiled memory saves [028-memory-alignment-fix/22-12-25_14-51__memory-alignment-fix]
+description: This migrated memory records the memory alignment fix that prevented saves to the wrong spec folder. It summarizes the three-layer defense, the new validateFolderAlignment() safeguards, and the relocation and re-indexing of the misfiled memory.
+trigger_phrases:
+- memory alignment fix
+- spec folder validation
+- validate folder alignment
+- misfiled memory save
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

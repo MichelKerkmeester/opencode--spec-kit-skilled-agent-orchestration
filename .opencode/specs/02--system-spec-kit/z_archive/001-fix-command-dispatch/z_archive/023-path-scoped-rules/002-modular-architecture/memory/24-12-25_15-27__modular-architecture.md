@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [002-modular-architecture/24-12-25_15-27__modular-architecture]"
-importance_tier: "normal"
-contextType: "general"
+title: Shell follow-up for modular architecture 2025-12-24 [002-modular-architecture/24-12-25_15-27__modular-architecture]
+description: This session is a short follow-up record in the modular architecture
+  branch. It preserves a minimal shell execution trace while the broader path-scoped
+  rules work was still in progress.
+trigger_phrases:
+- modular architecture follow up
+- path scoped rules shell trace
+- minimal migrated session
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

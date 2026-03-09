@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [126-full-spec-doc-indexing/16-02-26_08-38__full-spec-doc-indexing]"
-importance_tier: "normal"
-contextType: "general"
+title: Test coverage continuation for full-spec-doc-indexing 2026-02-16 [126-full-spec-doc-indexing/16-02-26_08-38__full-spec-doc-indexing]
+description: This archived session continued test coverage work for full-spec-doc-indexing
+  from a previous session. The summary records stale assertion fixes, additional createSpecDocumentChain
+  coverage, and four decisions captured before the session ended in a blocked handoff
+  state.
+trigger_phrases:
+- full spec doc indexing
+- test coverage continuation
+- create spec document chain
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

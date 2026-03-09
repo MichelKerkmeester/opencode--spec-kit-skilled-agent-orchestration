@@ -1,25 +1,29 @@
+---
+title: Memory System Merger - Before and After Architecture [035-memory-speckit-merger/2024-12-25_memory-system-merger]
+description: This migrated memory records the architecture merge that folded system-memory into system-spec-kit. It compares the before-and-after layout, lists the moved MCP server and database assets, and explains the key naming and placement decisions for the unified skill.
+trigger_phrases:
+- memory system merger
+- spec kit integration
+- system memory skill
+- semantic memory migration
+- context preservation
+- unified skill architecture
+- constitutional files location
+- context server rename
+- context index database
+- memory mcp tools
+- 035 memory speckit merger
+- skill consolidation
+- mcp server migration
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
+---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->
 
----
-title: "Memory System Merger - Before and After Architecture [035-memory-speckit-merger/2024-12-25_memory-system-merger]"
-trigger_phrases:
-  - "memory system merger"
-  - "spec-kit integration"
-  - "system-memory skill"
-  - "semantic memory migration"
-  - "context preservation"
-  - "unified skill architecture"
-  - "constitutional files location"
-  - "context-server.js"
-  - "context-index.sqlite"
-  - "memory mcp tools"
-  - "035-memory-speckit-merger"
-  - "skill consolidation"
-  - "mcp server migration"
-importance_tier: "critical"
-contextType: "implementation"
----
 # SESSION SUMMARY
 
 | **Meta Data** | **Value** |

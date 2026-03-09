@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning [025-system-memory-rename/17-12-25__verification-complete]"
-importance_tier: "normal"
-contextType: "general"
+title: Verification completion for system-memory rename 2025-12-17 [025-system-memory-rename/17-12-25__verification-complete]
+description: This session records the final verification pass for the system-memory
+  rename work. It preserves the migrated summary of the fixes that were confirmed
+  and the completed verification state.
+trigger_phrases:
+- system memory verification
+- yaml trigger phrases fix
+- rename verification complete
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

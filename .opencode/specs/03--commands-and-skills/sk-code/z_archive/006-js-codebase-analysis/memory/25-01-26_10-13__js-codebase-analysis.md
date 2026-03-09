@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [006-js-codebase-analysis/25-01-26_10-13__js-codebase-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Level 3+ spec upgrade for js-codebase-analysis on 2026-01-25 [006-js-codebase-analysis/25-01-26_10-13__js-codebase-analysis]
+description: This memory captures the documentation upgrade that moved the JavaScript
+  codebase analysis spec from Level 3 to Level 3+. It explains that the multi-agent
+  orchestration complexity required expanded execution, checklist, and decision-record
+  coverage before implementation continued.
+trigger_phrases:
+- level 3 plus spec upgrade
+- javascript codebase analysis documentation
+- multi agent orchestration docs
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

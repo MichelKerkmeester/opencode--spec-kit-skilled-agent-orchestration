@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional [043-post-merge-refinement-final/26-12-25_08-12__post-merge-refinement-final]"
-importance_tier: "normal"
-contextType: "general"
+title: Final remediation sweep for post-merge-refinement-final 2025-12-26 [043-post-merge-refinement-final/26-12-25_08-12__post-merge-refinement-final]
+importance_tier: normal
+contextType: general
+description: This session completed a large remediation sweep across the merged Spec
+  Kit and Memory system after deduplicating and verifying open issues. It documents
+  fixes for caching, migrations, checkpoint restoration, API naming, gate numbering,
+  and terminology, along with the decisions that guided the final cleanup.
+trigger_phrases:
+- post merge remediation sweep
+- spec kit memory fixes
+- final refinement cleanup
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

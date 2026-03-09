@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: comparison | different | dispatch | parallel | [019-speckit-refinement/23-12-25_12-03__speckit-refinement]"
+title: "Parallel dispatch comparison research for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_12-03__speckit-refinement]"
+description: "This session captured speckit refinement research comparing different dispatch and parallel-agent approaches. The archived memory preserves the completed investigation into how agent research could inform spec-kit refinement."
+trigger_phrases:
+  - "parallel dispatch comparison"
+  - "speckit refinement research"
+  - "agent dispatch evaluation"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

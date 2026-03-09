@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [121-script-audit-comprehensive/15-02-26_11-25__system-spec-kit]"
-importance_tier: "normal"
-contextType: "general"
+title: Repeated CHANGELOG review for script-audit-comprehensive 2026-02-15 [121-script-audit-comprehensive/15-02-26_11-25__system-spec-kit]
+description: This archived research session repeated an initial review of the current
+  CHANGELOG format while stored under script-audit-comprehensive. The session remained
+  in research mode, used read/glob/bash to inspect repository files, and recorded
+  no decisions or follow-up items.
+trigger_phrases:
+- repeated changelog review
+- script audit comprehensive
+- system spec kit research
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier [004-code-quality-enforcement/02-01-26_08-05__code-quality-enforcement]"
-importance_tier: "normal"
-contextType: "general"
+title: Research kickoff for code quality enforcement on 2026-01-02 [004-code-quality-enforcement/02-01-26_08-05__code-quality-enforcement]
+description: This memory records an early research-stage checkpoint for the code-quality-enforcement
+  spec. The saved context is thin, but it indicates the session was still in progress
+  and intended to continue implementation after the initial context capture.
+trigger_phrases:
+- code quality enforcement research
+- context save initiated
+- quality enforcement kickoff
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

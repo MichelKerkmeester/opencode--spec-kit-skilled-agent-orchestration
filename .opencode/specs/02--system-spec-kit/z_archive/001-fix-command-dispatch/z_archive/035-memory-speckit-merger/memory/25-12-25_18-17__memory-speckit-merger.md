@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [035-memory-speckit-merger/25-12-25_18-17__memory-speckit-merger]"
-importance_tier: "normal"
-contextType: "general"
+title: Security refactor for memory-speckit-merger 2025-12-25 [035-memory-speckit-merger/25-12-25_18-17__memory-speckit-merger]
+importance_tier: normal
+contextType: general
+description: This session fixed syntax breakage in generate-context.js and refactored
+  the script to reduce cyclomatic complexity. The work extracted helper functions
+  for session collection, template assembly, metadata generation, and placeholder
+  validation, then verified the result with syntax and MCP startup checks.
+trigger_phrases:
+- generate context refactor
+- security remediation scripts
+- memory speckit merger complexity
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

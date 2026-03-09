@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [002-modular-architecture/24-12-25_15-36__modular-architecture]"
-importance_tier: "normal"
-contextType: "general"
+title: Install guide fixes for modular architecture 2025-12-24 [002-modular-architecture/24-12-25_15-36__modular-architecture]
+description: This session updates install guide templates, standards, and command
+  documentation in the modular architecture branch. It records the file-by-file fixes
+  that aligned generated install guides with the documented rules.
+trigger_phrases:
+- install guide fixes
+- modular architecture docs
+- install guide standards update
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

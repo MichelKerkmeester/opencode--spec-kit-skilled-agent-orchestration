@@ -1,7 +1,20 @@
 ---
-title: "To promote a memory to constitutional tier (always [138-spec-kit-phase-system/20-02-26_16-42__spec-kit-phase-system]"
-importance_tier: "critical"
-contextType: "general"
+title: Skill graph analysis notes for [021-spec-kit-phase-system/20-02-26_16-42__spec-kit-phase-system]
+importance_tier: critical
+contextType: general
+description: 'This session captures research work for spec kit phase system on 2026-02-20.
+  The recorded notes focus on analysis of the separate 036-skill-graphs implementation
+  and its SGQS memory integration rather than the folder topic. It references .opencode/.../handlers/sgqs-query.ts,
+  .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+  and records the current blocker: opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.'
+trigger_phrases:
+- spec kit phase system
+- phase decomposition workflow
+- skill graph analysis
+- phase system rollout
+quality_score: 0.4
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

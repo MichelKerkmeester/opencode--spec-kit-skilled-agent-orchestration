@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional [031-anobel-performance-analysis/02-02-26_07-14__anobel-performance-analysis]"
+title: "Performance optimization documentation for [029-anobel-performance-analysis/02-02-26_07-14__anobel-performance-analysis]"
+description: "This session documents the Level 3+ planning package for anobel.com performance optimization, including more than fifty issues, six implementation phases, and multiple ADRs. It preserves the overview, verification checklist framing, and research context needed to continue the performance-analysis specification."
+trigger_phrases:
+  - "anobel performance optimization documentation"
+  - "performance analysis adr decisions"
+  - "webflow performance verification checklist"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

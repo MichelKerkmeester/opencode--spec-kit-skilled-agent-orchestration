@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [004-command-logic-improvement/01-01-26_15-02__command-logic-improvement]"
+title: "Command logic improvement rollout for 004-command-logic-improvement 2026-01-01 [004-command-logic-improvement/01-01-26_15-02__command-logic-improvement]"
+description: "This legacy session completed a large command logic improvement rollout across 29 files. It added plain-language gates, auto and confirm modes, confidence checkpoints, navigation tables, command chaining guidance, and optional workflow integrations."
+trigger_phrases:
+  - "command logic improvement rollout"
+  - "plain language gates"
+  - "auto confirm mode flags"
+  - "confidence checkpoint workflow"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

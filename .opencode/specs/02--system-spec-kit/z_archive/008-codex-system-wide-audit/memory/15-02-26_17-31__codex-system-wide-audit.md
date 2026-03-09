@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier [125-codex-system-wide-audit/15-02-26_17-31__codex-system-wide-audit]"
-importance_tier: "normal"
-contextType: "general"
+title: System-wide audit synthesis for codex-system-wide-audit 2026-02-15 [125-codex-system-wide-audit/15-02-26_17-31__codex-system-wide-audit]
+description: This archived session summarized a system-wide audit across specs 121,
+  123, and 124 in system-spec-kit. The summary captures deep context exploration,
+  deferred rollback work, and seven recorded decisions while the session ended in
+  a blocked handoff state.
+trigger_phrases:
+- codex system wide audit
+- multi spec audit synthesis
+- spec 121 123 124
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

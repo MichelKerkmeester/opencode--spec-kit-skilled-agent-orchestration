@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [033-ux-deep-analysis/25-12-25_15-28__ux-deep-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Verifying UX deep analysis remediation [033-ux-deep-analysis/25-12-25_15-28__ux-deep-analysis]
+description: This migrated memory records the final verification and remediation pass for ux-deep-analysis. It documents the discovery of un-applied prior fixes, the targeted 5-agent repair pass, and the final public-readiness verification sweep.
+trigger_phrases:
+- UX deep analysis
+- resume command remediation
+- destructive operation safeguards
+- verification cleanup
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

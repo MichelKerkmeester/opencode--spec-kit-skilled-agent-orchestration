@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [019-blog-sort-fix/18-01-26_14-45__blog-sort-fix]"
-importance_tier: "normal"
-contextType: "implementation"
+title: Reactive sorting implementation for blog-sort-fix 2026-01-18 [019-blog-sort-fix/18-01-26_14-45__blog-sort-fix]
+description: Applied the follow-up implementation for the blog sort bridge by adding
+  the INIT_DELAY_MS constant and validating the Finsweet Reactive API sorting flow
+  without page reloads. The session verified minification, preserved production logging,
+  and prepared the fix for CDN deployment as version v1.1.2.
+trigger_phrases:
+- Finsweet Reactive API sorting
+- INIT_DELAY_MS compliance
+- blog sort bridge implementation
+- input_select_fs_bridge deployment
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

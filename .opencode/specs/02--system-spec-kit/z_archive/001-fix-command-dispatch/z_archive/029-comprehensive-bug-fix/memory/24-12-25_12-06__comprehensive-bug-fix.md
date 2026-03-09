@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for [029-comprehensive-bug-fix/24-12-25_12-06__comprehensive-bug-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Capturing comprehensive bug-fix triage [029-comprehensive-bug-fix/24-12-25_12-06__comprehensive-bug-fix]
+description: This migrated memory captures an early comprehensive bug-fix session for the archived spec-kit batch. The preserved body is dominated by execution prompts and tool traces around parallel-agent analysis and memory saving, so it mainly serves as lightweight provenance for the referenced troubleshooting and usage-document updates.
+trigger_phrases:
+- comprehensive bug fix
+- parallel agent analysis
+- memory save context
+- troubleshooting docs update
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

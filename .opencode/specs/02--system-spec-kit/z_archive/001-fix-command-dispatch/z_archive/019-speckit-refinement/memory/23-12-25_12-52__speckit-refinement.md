@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: refinements | spec | plan | let | [019-speckit-refinement/23-12-25_12-52__speckit-refinement]"
+title: "Spec refinement planning session for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_12-52__speckit-refinement]"
+description: "This session recorded a short planning pass for speckit refinement work, centered on refinement, spec structure, and plan updates. The memory preserves the completion state of that refinement planning checkpoint."
+trigger_phrases:
+  - "speckit refinement planning"
+  - "spec refinement plan"
+  - "archived refinement checkpoint"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [080-speckit-bug-remediation/28-01-26_22-04__speckit-bug-remediation]"
+title: "SpecKit bug remediation completion 2026-01-28 [080-speckit-bug-remediation/28-01-26_22-04__speckit-bug-remediation]"
+description: "Captured the continuation session that resolved the remaining Spec Kit MCP server failures and expanded supporting documentation. It summarizes the specific bugs fixed, the reduction in failing tests, and the documentation improvements completed during the remediation pass."
+trigger_phrases:
+  - "speckit bug remediation"
+  - "mcp server test failures"
+  - "remaining bug fixes"
+  - "documentation remediation pass"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

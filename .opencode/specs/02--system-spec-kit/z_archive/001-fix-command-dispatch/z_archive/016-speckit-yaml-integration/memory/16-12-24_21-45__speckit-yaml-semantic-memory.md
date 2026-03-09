@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start [016-speckit-yaml-integration/16-12-24_21-45__speckit-yaml-semantic-memory]"
+title: "YAML semantic memory integration context for 016-speckit-yaml-integration 2024-12-16 [016-speckit-yaml-integration/16-12-24_21-45__speckit-yaml-semantic-memory]"
+description: "This migrated memory captures archived work around integrating YAML semantics into spec-kit memory handling. The session record mainly preserves completion metadata and recovery hints for the YAML semantic memory effort."
+trigger_phrases:
+  - "speckit yaml integration"
+  - "yaml semantic memory"
+  - "spec kit yaml memory"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->
 
 ---

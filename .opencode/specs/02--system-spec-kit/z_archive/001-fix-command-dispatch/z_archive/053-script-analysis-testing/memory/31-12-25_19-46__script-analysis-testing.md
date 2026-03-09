@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [053-script-analysis-testing/31-12-25_19-46__script-analysis-testing]"
-importance_tier: "normal"
-contextType: "general"
+title: Script analysis workflow test session [053-script-analysis-testing/31-12-25_19-46__script-analysis-testing]
+description: This memory records an end-to-end script-analysis-testing workflow session on 2025-12-31. The overview notes that the work started by creating the spec folder and then testing each workflow step in sequence. It completed without major decisions and preserved no blockers.
+trigger_phrases:
+- script analysis workflow
+- end to end workflow test
+- spec folder creation
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

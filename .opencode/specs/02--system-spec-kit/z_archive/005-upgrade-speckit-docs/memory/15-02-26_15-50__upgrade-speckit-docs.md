@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [122-upgrade-speckit-docs/15-02-26_15-50__upgrade-speckit-docs]"
-importance_tier: "normal"
-contextType: "general"
+title: Initial CHANGELOG review for upgrade-speckit-docs 2026-02-15 [122-upgrade-speckit-docs/15-02-26_15-50__upgrade-speckit-docs]
+description: This archived research session for upgrade-speckit-docs started with
+  a review of the current CHANGELOG format. The session used read/glob/bash to inspect
+  repository files, stayed in research mode, and recorded no decisions before ending.
+trigger_phrases:
+- upgrade speckit docs
+- CHANGELOG documentation review
+- system spec kit docs
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

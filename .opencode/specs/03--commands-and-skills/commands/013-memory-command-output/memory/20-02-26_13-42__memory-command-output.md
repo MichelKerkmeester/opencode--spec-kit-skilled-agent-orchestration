@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always [013-memory-command-output/20-02-26_13-42__memory-command-output]"
+title: "Memory dashboard design planning for 013-memory-command-output 2026-02-20 [013-memory-command-output/20-02-26_13-42__memory-command-output]"
+description: "This session planned a Memory Dashboard Visual Design System for the 013-memory-command-output spec. It documented how to unify the visual language, status lines, and shared output patterns across the five memory commands."
+trigger_phrases:
+  - "memory dashboard design system"
+  - "unified memory command output"
+  - "shared status line format"
+  - "memory command visual language"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "discovery"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

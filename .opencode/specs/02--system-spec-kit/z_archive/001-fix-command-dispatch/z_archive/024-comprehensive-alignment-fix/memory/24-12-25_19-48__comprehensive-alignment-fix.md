@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional [024-comprehensive-alignment-fix/24-12-25_19-48__comprehensive-alignment-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Configuration review for comprehensive alignment fix 2025-12-24 [024-comprehensive-alignment-fix/24-12-25_19-48__comprehensive-alignment-fix]
+description: This session reviews configuration and scoring files for the comprehensive
+  alignment fix work. It documents the investigation into search weights, importance
+  tiers, and related system-memory settings before implementation continued.
+trigger_phrases:
+- comprehensive alignment fix
+- search weights config
+- system memory scoring
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

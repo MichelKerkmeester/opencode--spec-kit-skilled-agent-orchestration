@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [080-speckit-bug-remediation/28-01-26_18-36__speckit-bug-remediation]"
+title: "Bug remediation session snapshot 2026-01-28 [080-speckit-bug-remediation/28-01-26_18-36__speckit-bug-remediation]"
+description: "Captured a minimal in-progress snapshot for SpecKit bug remediation during implementation with no blockers recorded. It primarily preserves resume metadata and generic continuation guidance, making it a thin checkpoint rather than a detailed bug-fix narrative."
+trigger_phrases:
+  - "bug remediation snapshot"
+  - "implementation phase handoff"
+  - "thin remediation checkpoint"
+  - "speckit resume guidance"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

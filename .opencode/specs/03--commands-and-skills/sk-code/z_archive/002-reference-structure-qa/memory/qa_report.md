@@ -1,7 +1,18 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [002-reference-structure-qa/qa_report]"
-importance_tier: "normal"
-contextType: "general"
+title: QA pass for workflows-code reference structure on 2024-12-23 [002-reference-structure-qa/qa_report]
+description: This legacy QA report verifies the workflows-code reference files after
+  a structural refactor added a standard Overview section. It summarizes link validation,
+  text consistency checks, and the final passed status after all identified issues
+  were resolved.
+trigger_phrases:
+- workflows-code reference qa
+- reference structure validation
+- overview section refactor
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

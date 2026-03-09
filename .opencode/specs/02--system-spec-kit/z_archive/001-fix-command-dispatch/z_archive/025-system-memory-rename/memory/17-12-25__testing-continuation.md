@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning delta [025-system-memory-rename/17-12-25__testing-continuation]"
-importance_tier: "normal"
-contextType: "general"
+title: Testing continuation for system-memory rename 2025-12-17 [025-system-memory-rename/17-12-25__testing-continuation]
+description: This session continues testing after the system-memory rename. It captures
+  the verification focus around trigger phrases, checkpoint restore behavior, and
+  the next steps needed to finish testing.
+trigger_phrases:
+- system memory testing
+- checkpoint restore bug
+- trigger phrases verification
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

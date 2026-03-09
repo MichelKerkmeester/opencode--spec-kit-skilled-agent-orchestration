@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [001-doc-specialist-refactor/14-12-24_honesty_pass]"
+title: "Honesty pass for doc-specialist-refactor 2024-12-14 [001-doc-specialist-refactor/14-12-24_honesty_pass]"
+description: "This session removed misleading numeric scoring claims and fake pipeline terminology from the create-documentation skill. It also renamed checklist.score to checklist.pass_rate and verified the updated validation commands and negative tests."
+trigger_phrases:
+  - "numeric scoring removal"
+  - "pass rate rename"
+  - "script assisted ai docs"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

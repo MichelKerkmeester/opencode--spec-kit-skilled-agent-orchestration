@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier [037-post-merge-refinement-2/25-12-25_19-06__post-merge-refinement-2]"
-importance_tier: "normal"
-contextType: "general"
+title: Spec-folder follow-up for post-merge-refinement-2 2025-12-25 [037-post-merge-refinement-2/25-12-25_19-06__post-merge-refinement-2]
+description: This session captured the follow-up needed to complete the post-merge
+  refinement report after several parallel scans returned incomplete results. It records
+  repeated requests for a spec-folder decision and notes that the analysis document
+  was blocked until the write location was confirmed.
+trigger_phrases:
+- spec folder confirmation
+- post merge refinement follow up
+- analysis document blocked
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: discovery
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

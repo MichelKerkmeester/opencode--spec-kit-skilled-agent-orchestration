@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [014-font-performance/03-01-26_10-26__font-performance]"
+title: "Font performance implementation session [013-font-performance/03-01-26_10-26__font-performance]"
+description: "This archived memory marks an in-progress font performance session but preserves only minimal implementation and testing detail. It mainly retains session metadata and resume scaffolding, so the actual optimization context needs manual reconstruction before reuse."
+trigger_phrases:
+  - "font performance implementation session"
+  - "font optimization resume scaffold"
+  - "thin font performance memory"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,6 +1,14 @@
 ---
-title: "Related Documentation [014-anchor-enforcement/16-12-25_20-27__anchor-enforcement]"
+title: "Memory system hardening for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-27__anchor-enforcement]"
+description: "This memory captures a broad hardening pass on the memory system during the archived 014-anchor-enforcement work. The session used parallel agents to fix template placeholders, improve decision extraction, refine phase detection, and support short manual-input sessions. It remains preserved as a migrated v2.2 record from 2025-12-16."
+trigger_phrases:
+  - "memory system hardening"
+  - "decision extraction fixes"
+  - "phase detection updates"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

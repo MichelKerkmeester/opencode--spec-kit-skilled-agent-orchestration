@@ -1,7 +1,15 @@
 ---
-title: "Related Documentation [007-notification-system/21-12-25_11-16__notification-system]"
+title: "Notification system implementation summary [007-notification-system/21-12-25_11-16__notification-system]"
+description: "This archived session summarizes the CMS-driven notification system built for the anobel.com Webflow site. It captures the queueing behavior, office-hours logic, dismiss modes, and testing scope used for the alert implementation."
+trigger_phrases:
+  - "cms driven notification system"
+  - "webflow alert queue behavior"
+  - "office hours dismiss modes"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

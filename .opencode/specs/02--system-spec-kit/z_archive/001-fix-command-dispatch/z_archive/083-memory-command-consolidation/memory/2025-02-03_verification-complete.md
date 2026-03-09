@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for [083-memory-command-consolidation/2025-02-03_verification-complete]"
-importance_tier: "normal"
-contextType: "general"
+title: Verification completion for memory command consolidation unknown [083-memory-command-consolidation/2025-02-03_verification-complete]
+description: This memory captures a session record for memory command consolidation
+  on unknown. It preserves continuation context, project state snapshots, and recovery
+  hints for a session marked completed.
+trigger_phrases:
+- memory command consolidation
+- memory command verification
+- verification completion
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

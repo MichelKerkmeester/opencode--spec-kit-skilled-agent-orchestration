@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta [030-gate3-enforcement/24-12-25_13-22__gate3-enforcement]"
-importance_tier: "normal"
-contextType: "general"
+title: Recording the Gate 3 follow-up [030-gate3-enforcement/24-12-25_13-22__gate3-enforcement]
+description: This migrated memory captures a follow-up gate3-enforcement session after the earlier Gate 3 violation review. It records the corrected ask-first prompt, the constitutional reminder work, and the continued updates to the gate3-enforcement spec and supporting docs.
+trigger_phrases:
+- gate 3 follow up
+- ask first prompt
+- constitutional reminder
+- gate3 enforcement docs
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

@@ -1,11 +1,14 @@
 ---
-title: "sk git superset session 28-02-26 [002-superset-worktrees/28-02-26_17-38__sk-git-superset]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory analysis for superset-worktrees 2026-02-28 [002-superset-worktrees/28-02-26_17-38__sk-git-superset]"
+description: "This memory captures an SGQS and semantic memory integration analysis saved under the sk-git superset-worktrees spec. It summarizes in-memory graph architecture, MCP handler changes, and related tests even though the body appears to belong to another spec."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph memory analysis"
+  - "sgqs memory integration"
+  - "superset worktrees memory audit"
 importance_tier: "critical"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

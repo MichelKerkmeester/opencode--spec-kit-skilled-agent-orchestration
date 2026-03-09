@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [012-context-model-comparison/14-02-26_13-23__context-model-comparison]"
+title: "Haiku vs Sonnet context comparison setup for 012-context-model-comparison 2026-02-14 [012-context-model-comparison/14-02-26_13-23__context-model-comparison]"
+description: "This session implemented the Haiku-versus-Sonnet comparison harness for the context agent. It created four model-specific agent variants plus the spec, checklist, test protocol, scoring rubric, and results templates needed for evaluation."
+trigger_phrases:
+  - "haiku vs sonnet comparison"
+  - "context agent variants"
+  - "agent scoring rubric"
+  - "verbatim body verification"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

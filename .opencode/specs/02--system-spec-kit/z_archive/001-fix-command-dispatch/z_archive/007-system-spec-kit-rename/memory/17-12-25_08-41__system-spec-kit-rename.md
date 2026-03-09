@@ -1,6 +1,14 @@
 ---
-title: "Related Documentation [007-system-spec-kit-rename/17-12-25_08-41__system-spec-kit-rename]"
+title: "System-spec-kit rename execution for 007-system-spec-kit-rename 2025-12-17 [007-system-spec-kit-rename/17-12-25_08-41__system-spec-kit-rename]"
+description: "This memory captures the main execution session for renaming workflows-spec-kit to system-spec-kit across the codebase. The archived record describes the five-phase rollout, large-scale reference updates, and verification sweep that completed the rename. It preserves the 2025-12-17 implementation details in migrated v2.2 form."
+trigger_phrases:
+  - "system spec kit rename"
+  - "skill rename rollout"
+  - "reference update sweep"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

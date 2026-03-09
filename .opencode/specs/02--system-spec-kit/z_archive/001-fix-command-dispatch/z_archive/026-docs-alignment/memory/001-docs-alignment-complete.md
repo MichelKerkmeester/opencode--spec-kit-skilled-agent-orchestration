@@ -1,7 +1,17 @@
 ---
-title: "Epistemic state captured at session start for learning delta [026-docs-alignment/001-docs-alignment-complete]"
-importance_tier: "normal"
-contextType: "general"
+title: Documentation alignment completion for docs alignment [026-docs-alignment/001-docs-alignment-complete]
+description: This session records the completion of the memory documentation alignment
+  work. It summarizes the version-neutral documentation updates, README adjustments,
+  and install guide fixes that brought the docs into alignment.
+trigger_phrases:
+- memory docs alignment
+- version neutral documentation
+- install guide fixes
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

@@ -1,12 +1,16 @@
 ---
-title: "create skill merger session 03-03-26 [016-create-skill-merger/03-03-26_08-53__create-skill-merger]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory review for 016-create-skill-merger 2026-03-03 [016-create-skill-merger/03-03-26_08-53__create-skill-merger]"
+description: "This session stores an SGQS and Memory MCP integration analysis inside the 016-create-skill-merger memory file. The content discusses skill graph database behavior rather than skill merger work, so the body appears cross-contaminated."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph query system"
+  - "memory mcp integration"
+  - "semantic memory pipeline"
+  - "in-memory graph database"
 importance_tier: "critical"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

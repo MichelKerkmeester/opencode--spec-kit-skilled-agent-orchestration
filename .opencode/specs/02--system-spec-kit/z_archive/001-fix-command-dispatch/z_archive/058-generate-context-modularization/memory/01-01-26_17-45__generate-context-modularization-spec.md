@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at [058-generate-context-modularization/01-01-26_17-45__generate-context-modularization-spec]"
-importance_tier: "important"
-contextType: "decision"
+title: Generate-context modularization Level 3 planning session [058-generate-context-modularization/01-01-26_17-45__generate-context-modularization-spec]
+description: This memory captures the Level 3 planning and decision session for generate-context modularization on 2026-01-01. It documents analysis of a 4,837-line monolith, an eight-phase refactoring plan, and the proposed module grouping for utilities, extractors, renderers, spec-folder logic, and core orchestration. The body also preserves explicit ADR-style decisions that shaped the modular architecture.
+trigger_phrases:
+- generate context modularization
+- monolithic script refactor
+- level 3 planning
+- eight phase refactor
+importance_tier: high
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: decision
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->

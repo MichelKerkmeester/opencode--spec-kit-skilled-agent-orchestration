@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional [069-speckit-template-complexity/16-01-26_13-00__speckit-template-complexity]"
+title: "SpecKit template complexity coverage expansion 2026-01-16 [069-speckit-template-complexity/16-01-26_13-00__speckit-template-complexity]"
+description: "Captured the session that expanded SpecKit template complexity coverage from an already substantial baseline to full test coverage. It highlights boundary-threshold validation, template scaling behavior, and the broader verification work completed for the dynamic complexity-based template system."
+trigger_phrases:
+  - "template complexity full coverage"
+  - "boundary threshold validation"
+  - "dynamic template scaling tests"
+  - "speckit complexity regression checks"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

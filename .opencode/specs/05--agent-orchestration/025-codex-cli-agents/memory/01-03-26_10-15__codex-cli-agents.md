@@ -1,12 +1,15 @@
 ---
-title: "codex cli agents session 01-03-26 [025-codex-cli-agents/01-03-26_10-15__codex-cli-agents]"
-description: "Session context memory template for Spec Kit indexing."
+title: Skill graph integration analysis for codex cli agents 2026-03-01 [025-codex-cli-agents/01-03-26_10-15__codex-cli-agents]
+description: This memory summarizes a research session that reviewed the 036-skill-graphs implementation and its memory integration design. It highlights the SGQS in-memory graph architecture, the key handler and schema files examined, and the migration-complete status captured in the implementation summary.
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "critical"
-contextType: "general"
+- skill graph analysis
+- sgqs memory integration
+- codex cli agents
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

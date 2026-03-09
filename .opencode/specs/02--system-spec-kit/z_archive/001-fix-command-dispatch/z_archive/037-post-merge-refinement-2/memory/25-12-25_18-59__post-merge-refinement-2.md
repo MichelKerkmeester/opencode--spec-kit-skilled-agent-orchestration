@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier [037-post-merge-refinement-2/25-12-25_18-59__post-merge-refinement-2]"
-importance_tier: "normal"
-contextType: "general"
+title: Initial scan for post-merge-refinement-2 2025-12-25 [037-post-merge-refinement-2/25-12-25_18-59__post-merge-refinement-2]
+importance_tier: normal
+contextType: general
+description: This migrated session only records a brief initial pass over the post-merge
+  refinement work, with bash and skill activity captured but no durable implementation
+  detail. The memory shows that the request was processed, but it does not preserve
+  enough concrete findings to reconstruct the underlying analysis.
+trigger_phrases:
+- post merge refinement scan
+- initial bash skill pass
+- refinement session kickoff
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+- needs_review
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

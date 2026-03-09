@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional [069-speckit-template-complexity/16-01-26_11-31__speckit-template-complexity]"
-importance_tier: "important"
+title: "SpecKit template complexity test-suite completion 2026-01-16 [069-speckit-template-complexity/16-01-26_11-31__speckit-template-complexity]"
+description: "Captured the session that completed a broad SpecKit template complexity test suite across complexity detection, marker parsing, template preprocessing, and CLI scripts. It records the bugs fixed during verification, including the levelToNumber fallback issue and the JSON extraction regex problem that blocked passing tests."
+trigger_phrases:
+  - "speckit template complexity tests"
+  - "leveltonumber fallback fix"
+  - "cli json extraction regex"
+  - "marker parser test coverage"
+importance_tier: "high"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

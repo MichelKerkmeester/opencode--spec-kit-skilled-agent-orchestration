@@ -1,6 +1,14 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [007-explore-sub-agent/10-02-26_21-32__explore-sub-agent]"
+title: "Verbatim content refusal record for 007-explore-sub-agent 2026-02-10 [007-explore-sub-agent/10-02-26_21-32__explore-sub-agent]"
+description: "This memory records a blocked request for the full PUBLIC_RELEASE.md contents verbatim. The saved content captures the refusal context rather than actual explore sub-agent implementation work."
+trigger_phrases:
+  - "PUBLIC_RELEASE verbatim request"
+  - "copyright refusal record"
+  - "explore sub-agent archive"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning [019-speckit-refinement/23-12-25_15-36__speckit-refinement]"
+title: "Generate-context integration testing for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_15-36__speckit-refinement]"
+description: "This session captured speckit refinement research around integrating generate-context flows, running scripts, and analyzing test results. The memory preserves the checkpoint where execution and result review informed continued implementation."
+trigger_phrases:
+  - "generate context integration"
+  - "script execution analysis"
+  - "speckit refinement testing"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

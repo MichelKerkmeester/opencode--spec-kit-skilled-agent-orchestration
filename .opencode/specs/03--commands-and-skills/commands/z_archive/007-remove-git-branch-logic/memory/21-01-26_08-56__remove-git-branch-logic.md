@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier [007-remove-git-branch-logic/21-01-26_08-56__remove-git-branch-logic]"
+title: "Remove git branch logic session for 007-remove-git-branch-logic 2026-01-21 [007-remove-git-branch-logic/21-01-26_08-56__remove-git-branch-logic]"
+description: "This session records implementation and testing work related to removing git branch logic. The preserved content is only a generic in-progress snapshot with no substantive decisions or file-level outcomes, so it should be treated as thin content."
+trigger_phrases:
+  - "remove git branch logic"
+  - "implementation and testing session"
+  - "generic in progress snapshot"
+  - "thin session memory"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

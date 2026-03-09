@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [006-auto-indexing/16-12-25_13-30__command-alignment]"
+title: "Memory command alignment for 006-auto-indexing 2025-12-16 [006-auto-indexing/16-12-25_13-30__command-alignment]"
+description: "This memory records the command-alignment work completed within the archived 006-auto-indexing effort. It preserves the legacy session that aligned memory-related commands with the documented auto-indexing workflow and surrounding tooling. The file remains as a migrated v2.2 record from 2025-12-16."
+trigger_phrases:
+  - "memory command alignment"
+  - "auto indexing commands"
+  - "tooling alignment"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

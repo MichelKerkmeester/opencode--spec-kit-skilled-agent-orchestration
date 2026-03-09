@@ -1,12 +1,20 @@
 ---
-title: "sqlite to turso session 05-03-26 [024-sqlite-to-turso/05-03-26_09-18__sqlite-to-turso]"
-description: "Session context memory template for Spec Kit indexing."
+title: Skill graph analysis notes for [024-sqlite-to-turso/05-03-26_09-18__sqlite-to-turso]
+description: 'This session captures research work for sqlite to turso on 2026-03-05.
+  The recorded notes focus on analysis of the separate 036-skill-graphs implementation
+  and its SGQS memory integration rather than the folder topic. It references .opencode/.../handlers/sgqs-query.ts,
+  .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts, .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+  and records the current blocker: opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.'
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "critical"
-contextType: "general"
+- sqlite to turso
+- skill graph analysis
+- sgqs query handler
+- prediction error gate
+importance_tier: critical
+contextType: general
+quality_score: 0.4
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

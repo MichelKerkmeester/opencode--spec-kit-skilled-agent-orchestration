@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always [032-system-health-audit/25-12-25_10-02__system-health-audit]"
-importance_tier: "normal"
-contextType: "general"
+title: Saving system health audit context [032-system-health-audit/25-12-25_10-02__system-health-audit]
+description: This migrated memory preserves a short session that saved system health audit context into the archived spec path. It records only the save request, a bash execution trace, and the generated recovery hints for resuming the audit later.
+trigger_phrases:
+- system health audit
+- context save request
+- bash execution trace
+- resume audit context
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,6 +1,14 @@
 ---
-title: "IMPROVED CONTEXT TEMPLATE v2.1 [014-anchor-enforcement/16-12-25_20-12__anchor-enforcement]"
+title: "Anchor ID validation warning for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_20-12__anchor-enforcement]"
+description: "This memory captures the addition of anchor ID validation warnings in the semantic-memory MCP server. The archived session introduced validateAnchorIdPattern() with a warning-only policy for anchors that do not follow the recommended naming pattern. It remains preserved as a migrated v2.2 record from 2025-12-16."
+trigger_phrases:
+  - "anchor ID validation"
+  - "semantic memory anchors"
+  - "warning only enforcement"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

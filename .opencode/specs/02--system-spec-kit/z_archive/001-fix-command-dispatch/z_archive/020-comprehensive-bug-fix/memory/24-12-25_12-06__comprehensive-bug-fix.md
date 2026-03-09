@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start for [020-comprehensive-bug-fix/24-12-25_12-06__comprehensive-bug-fix]"
+title: "Comprehensive memory gate bug-fix session for 020-comprehensive-bug-fix 2025-12-24 [020-comprehensive-bug-fix/24-12-25_12-06__comprehensive-bug-fix]"
+description: "This session captured implementation work on a comprehensive bug fix centered on generate-context requirements, memory creation, and gate behavior. The archived record preserves a completed checkpoint, although the body references an external project path that should be reviewed separately."
+trigger_phrases:
+  - "comprehensive bug fix"
+  - "memory gate behavior"
+  - "generate context requirements"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

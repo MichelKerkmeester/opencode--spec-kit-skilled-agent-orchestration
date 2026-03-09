@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [037-post-merge-refinement-2/session_summary]"
-importance_tier: "normal"
-contextType: "general"
+title: Spec-folder follow-up summary for post-merge-refinement-2 2025-12-25 [037-post-merge-refinement-2/session_summary]
+importance_tier: normal
+contextType: general
+description: This summary preserves a migrated follow-up session where the report
+  could not be finalized until a target spec folder was chosen. It captures the missing
+  repo-wide remnants scan, the blocked analysis document write, and the repeated prompts
+  asking where the findings should be stored.
+trigger_phrases:
+- post merge refinement summary
+- blocked analysis write
+- spec folder selection request
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+- needs_review
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

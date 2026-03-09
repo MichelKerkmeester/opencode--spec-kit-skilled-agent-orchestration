@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional [015-review-agent-model-agnostic/15-02-26_15-35__review-agent-model-agnostic]"
+title: "Review agent model-agnostic update for 015-review-agent-model-agnostic 2026-02-15 [015-review-agent-model-agnostic/15-02-26_15-35__review-agent-model-agnostic]"
+description: "This session removed the hardcoded model from .opencode/agent/review.md so the review agent could inherit the dispatching model. It also recorded the scope analysis that ruled out changes to spec_kit command assets and documented the Level 1 spec folder created for the change."
+trigger_phrases:
+  - "review agent model agnostic"
+  - "remove model from review agent"
+  - "subagent model inheritance"
+  - "review md frontmatter change"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

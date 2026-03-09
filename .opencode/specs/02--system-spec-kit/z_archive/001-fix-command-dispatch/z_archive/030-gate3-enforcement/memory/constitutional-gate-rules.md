@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta [030-gate3-enforcement/constitutional-gate-rules]"
-importance_tier: "normal"
-contextType: "general"
+title: Preserving constitutional gate enforcement rules [030-gate3-enforcement/constitutional-gate-rules]
+description: This migrated memory preserves the constitutional rules document for Gate 3 and Gate 5 enforcement. It keeps the deprecated historical copy, the canonical rule text, and the rationale for requiring spec-folder questions before edits and scripted memory saves.
+trigger_phrases:
+- constitutional gate rules
+- gate 3 enforcement
+- gate 5 enforcement
+- scripted memory saves
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

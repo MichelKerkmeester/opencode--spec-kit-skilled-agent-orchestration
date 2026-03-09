@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: authoritative | requirements | [021-memory-choice-enforcement/17-12-25_08-08__memory-choice-enforcement]"
+title: "Memory choice enforcement rollout for 021-memory-choice-enforcement 2025-12-17 [021-memory-choice-enforcement/17-12-25_08-08__memory-choice-enforcement]"
+description: "This session recorded work on enforcing authoritative memory choices, requirement consistency, and preference persistence in spec-kit. The memory preserves the completed checkpoint for documenting and implementing the enforcement behavior."
+trigger_phrases:
+  - "memory choice enforcement"
+  - "authoritative memory requirements"
+  - "preference persistence enforcement"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

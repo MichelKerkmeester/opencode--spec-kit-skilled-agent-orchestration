@@ -1,18 +1,21 @@
+---
+title: "Scratch verification and date consistency review for [001-finsweet-performance/13-12-25_11-10__finsweet-performance]"
+description: "This archived memory captures a verification session that checked AGENTS references, template wiring, command paths, and a date inconsistency. The content appears mismatched with the finsweet-performance spec path, so it should be treated as a review artifact that requires manual validation before reuse."
+trigger_phrases:
+  - "scratch enforcement verification"
+  - "date inconsistency review"
+  - "opencode version sync check"
+importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
+contextType: "discovery"
+date: "2025-12-13"
+spec_folder: "006-code-refinement/001-finsweet-performance"
+---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated by migrate-memory-v22.mjs -->
 
----
-title: "Finsweet Performance Verification Session [001-finsweet-performance/13-12-25_11-10__finsweet-performance]"
-trigger_phrases:
-  - "finsweet performance verification"
-  - "scratch enforcement verification"
-  - "date typo fixes"
-  - "speckit implementation check"
-importance_tier: "normal"
-contextType: "implementation"
-date: 2025-12-13
-spec_folder: 006-code-refinement/001-finsweet-performance
----
 # IMPROVED CONTEXT TEMPLATE v2.0
 
 > **Purpose**: Enhanced memory template with rich metadata for semantic search, importance-based decay, and intelligent context retrieval.

@@ -1,6 +1,15 @@
 ---
-title: "To promote a [075-post-speckit-template-upgrade-testing/20-01-26_12-26__speckit-template-optimization-refinement]"
+title: "Post-upgrade testing remediation notes 2026-01-20 [075-post-speckit-template-upgrade-testing/20-01-26_12-26__speckit-template-optimization-refinement]"
+description: "Captured post-upgrade remediation work following the SpecKit template upgrade and audit. The narrative preserves the follow-up fixes and verification context, while the body metadata still references the earlier 074 refinement spec and therefore signals cross-spec contamination."
+trigger_phrases:
+  - "post upgrade testing remediation"
+  - "template upgrade audit fixes"
+  - "cross spec memory metadata"
+  - "speckit template testing"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [134-command-adherence/18-02-26_08-33__command-adherence]"
-importance_tier: "normal"
-contextType: "general"
+title: CHANGELOG review checkpoint for [017-command-adherence/18-02-26_08-33__command-adherence]
+importance_tier: normal
+contextType: general
+description: This session captures research work for command adherence on 2026-02-18.
+  The recorded activity was limited to reading CHANGELOG.md and setting up the next
+  investigation step. It preserves the in_progress checkpoint with no blockers noted.
+trigger_phrases:
+- command adherence workflow
+- mandatory gate enforcement
+- plan to implementation transition
+- gate bypass defect
+quality_score: 0.4
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

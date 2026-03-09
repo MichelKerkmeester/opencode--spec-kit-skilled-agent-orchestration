@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning [001-doc-specialist-refactor/14-12-24_header_standardization]"
+title: "Header standardization completion for doc-specialist-refactor 2024-12-14 [001-doc-specialist-refactor/14-12-24_header_standardization]"
+description: "Completed standardization of mandatory phase headers across the remaining command files in .opencode/command/. The session aligned multi-phase, chained, and single-phase templates around blocking enforcement language and round-trip guidance."
+trigger_phrases:
+  - "header standardization"
+  - "blocking enforcement headers"
+  - "command template update"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

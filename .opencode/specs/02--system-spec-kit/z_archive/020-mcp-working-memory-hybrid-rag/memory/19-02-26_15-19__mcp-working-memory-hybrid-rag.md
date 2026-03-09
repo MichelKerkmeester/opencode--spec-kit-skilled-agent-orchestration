@@ -1,7 +1,21 @@
 ---
-title: "To promote a memory to [136-mcp-working-memory-hybrid-rag/19-02-26_15-19__mcp-working-memory-hybrid-rag]"
-importance_tier: "normal"
-contextType: "general"
+title: Execution-ready rollout update for [020-mcp-working-memory-hybrid-rag/19-02-26_15-19__mcp-working-memory-hybrid-rag]
+importance_tier: normal
+contextType: general
+description: This session captures research work for mcp working memory hybrid rag
+  on 2026-02-19. Updated spec folder 136 to make the post-research rollout technically
+  execution-ready. The root docs and wave packages now explicitly map the eight upgrade
+  capabilities (adaptive fusion, typed trace e... It references work on .opencode/.../136-mcp-working-memory-hybrid-rag/spec.md,
+  .opencode/.../136-mcp-working-memory-hybrid-rag/plan.md, .opencode/.../136-mcp-working-memory-hybrid-rag/tasks.md
+  and preserves the current in_progress checkpoint.
+trigger_phrases:
+- mcp working memory
+- hybrid rag rollout
+- memory retrieval planning
+- release documentation pass
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

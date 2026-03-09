@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always [064-bug-analysis-and-fix/15-01-26_11-52__bug-analysis-and-fix]"
-importance_tier: "critical"
-contextType: "implementation"
+title: Spec kit bug analysis and fix completion [064-bug-analysis-and-fix/15-01-26_11-52__bug-analysis-and-fix]
+description: This memory captures a comprehensive four-phase bug-fix session for Spec Kit on 2026-01-15. The overview summarizes critical MCP server, script, shared utility, template, command, and documentation fixes, along with syntax verification across 34 JavaScript files. It also records architectural decisions such as removing dead code, standardizing thresholds, and fixing warmup race conditions.
+trigger_phrases:
+- spec kit bug fix
+- mcp server remediation
+- context server race fix
+- syntax verification
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: implementation
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

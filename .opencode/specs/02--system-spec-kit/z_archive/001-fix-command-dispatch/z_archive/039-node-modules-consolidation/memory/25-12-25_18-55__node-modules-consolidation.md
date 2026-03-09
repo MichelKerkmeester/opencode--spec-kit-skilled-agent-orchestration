@@ -1,7 +1,19 @@
 ---
-title: "To promote a memory to constitutional tier [039-node-modules-consolidation/25-12-25_18-55__node-modules-consolidation]"
-importance_tier: "normal"
-contextType: "general"
+title: Node_modules consolidation planning for node-modules-consolidation 2025-12-25
+  [039-node-modules-consolidation/25-12-25_18-55__node-modules-consolidation]
+importance_tier: normal
+contextType: general
+description: This session validated the node_modules consolidation spec folder and
+  staged the supporting documentation for the work. It records a broad review that
+  planned parallel analysis, manual lib directory comparison, and final verification
+  for the consolidation effort.
+trigger_phrases:
+- node modules consolidation
+- spec folder validation
+- lib directory review
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

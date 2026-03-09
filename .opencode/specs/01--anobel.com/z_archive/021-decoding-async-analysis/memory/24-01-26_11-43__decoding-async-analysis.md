@@ -1,7 +1,20 @@
 ---
-title: "To promote a memory to constitutional tier [023-decoding-async-analysis/24-01-26_11-43__decoding-async-analysis]"
-importance_tier: "normal"
-contextType: "general"
+title: Decoding async analysis session record for decoding-async-analysis 2026-01-24
+  [023-decoding-async-analysis/24-01-26_11-43__decoding-async-analysis]
+description: This memory captures a generic migrated session stub for decoding async
+  analysis with completion metadata and resume instructions. The body does not preserve
+  concrete implementation details beyond a placeholder note that the session focused
+  on implementing and testing features.
+trigger_phrases:
+- decoding async analysis session
+- generic implementation testing stub
+- resume decoding async analysis
+- migrated session record
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

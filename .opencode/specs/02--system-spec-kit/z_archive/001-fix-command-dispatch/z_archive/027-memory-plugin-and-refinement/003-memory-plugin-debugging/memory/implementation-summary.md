@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta [003-memory-plugin-debugging/implementation-summary]"
-importance_tier: "normal"
-contextType: "general"
+title: Migrating the memory plugin to bun sqlite [003-memory-plugin-debugging/implementation-summary]
+description: This migrated memory records the bun:sqlite migration that fixed the plugin dashboard loading zero memories. It explains the Bun runtime incompatibility with better-sqlite3, the single-line import change, and the verification steps used to confirm database health.
+trigger_phrases:
+- bun sqlite migration
+- better sqlite incompatibility
+- plugin dashboard fix
+- bun runtime compatibility
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

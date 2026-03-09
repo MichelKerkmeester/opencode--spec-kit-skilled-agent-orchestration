@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [021-codex-orchestrate/18-02-26_18-59__codex-orchestrate]"
-importance_tier: "normal"
-contextType: "general"
+title: CHANGELOG review kickoff for codex orchestrate 2026-02-18 [021-codex-orchestrate/18-02-26_18-59__codex-orchestrate]
+description: This memory captures a thin kickoff checkpoint for the codex-orchestrate spec. The saved context shows the session stopping after opening the CHANGELOG format and recording a few tool calls, without retaining the deeper orchestration work.
+trigger_phrases:
+- codex orchestrate
+- changelog review kickoff
+- orchestration research checkpoint
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

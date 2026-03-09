@@ -1,6 +1,14 @@
 ---
-title: "Epistemic state captured at session start for learning delta [006-auto-indexing/16-12-25_11-39__docs-alignment-v12]"
+title: "Semantic memory v12 docs alignment for 006-auto-indexing 2025-12-16 [006-auto-indexing/16-12-25_11-39__docs-alignment-v12]"
+description: "This memory records documentation alignment work for Semantic Memory v12.0.0 in the archived 006-auto-indexing thread. The session preserves the legacy notes for bringing the written documentation into line with the v12 implementation state and terminology. It remains available as a migrated v2.2 record dated 2025-12-16."
+trigger_phrases:
+  - "semantic memory v12"
+  - "documentation alignment"
+  - "auto indexing docs"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

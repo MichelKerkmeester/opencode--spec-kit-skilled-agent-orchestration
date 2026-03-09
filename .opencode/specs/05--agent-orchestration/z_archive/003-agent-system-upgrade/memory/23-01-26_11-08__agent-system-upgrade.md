@@ -1,6 +1,14 @@
 ---
-title: "To promote a memory to constitutional tier (always [003-agent-system-upgrade/23-01-26_11-08__agent-system-upgrade]"
+title: "Implementation snapshot for 003-agent-system-upgrade 2026-01-23 [003-agent-system-upgrade/23-01-26_11-08__agent-system-upgrade]"
+description: "This migrated memory preserves a minimal snapshot of implementation and testing work in the 003 agent system upgrade archive. It notes general feature work without specific files, decisions, or concrete outcomes."
+trigger_phrases:
+  - "agent system upgrade implementation"
+  - "feature testing session"
+  - "migrated implementation snapshot"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

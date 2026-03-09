@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [052-codebase-fixes/31-12-25_19-44__codebase-fixes]"
-importance_tier: "normal"
-contextType: "general"
+title: Generate-context trigger test for codebase-fixes 2025-12-31 [052-codebase-fixes/31-12-25_19-44__codebase-fixes]
+importance_tier: normal
+contextType: general
+description: This session tested generate-context.js to confirm that memory files
+  were created with the expected ANCHOR structure and trigger-phrase handling. It
+  used JSON input mode and a temporary context-data file to verify the script behavior
+  before broader rollout.
+trigger_phrases:
+- generate context trigger test
+- anchor format verification
+- json input mode test
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

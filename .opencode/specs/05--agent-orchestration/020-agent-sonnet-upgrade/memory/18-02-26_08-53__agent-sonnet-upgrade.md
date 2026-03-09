@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always [020-agent-sonnet-upgrade/18-02-26_08-53__agent-sonnet-upgrade]"
-importance_tier: "normal"
-contextType: "general"
+title: CHANGELOG review kickoff for agent sonnet upgrade 2026-02-18 [020-agent-sonnet-upgrade/18-02-26_08-53__agent-sonnet-upgrade]
+description: This memory records an initial research checkpoint for the agent-sonnet-upgrade spec. It only preserves the start of a CHANGELOG review and a small amount of tool activity, making it a thin session snapshot rather than a complete change log.
+trigger_phrases:
+- agent sonnet upgrade
+- changelog review kickoff
+- sonnet upgrade research
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

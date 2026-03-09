@@ -1,7 +1,16 @@
 ---
-title: "To promote a memory to constitutional tier (always [031-comprehensive-bug-fix/24-12-25_19-52__comprehensive-bug-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Saving comprehensive bug-fix context [031-comprehensive-bug-fix/24-12-25_19-52__comprehensive-bug-fix]
+description: This migrated memory preserves a short session that saved comprehensive bug-fix context to the archived spec. It records only a bash-based save action and minimal conversation history, so it mainly documents that the context checkpoint was created.
+trigger_phrases:
+- bug fix context save
+- bash checkpoint save
+- legacy context checkpoint
+- comprehensive bug fix
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

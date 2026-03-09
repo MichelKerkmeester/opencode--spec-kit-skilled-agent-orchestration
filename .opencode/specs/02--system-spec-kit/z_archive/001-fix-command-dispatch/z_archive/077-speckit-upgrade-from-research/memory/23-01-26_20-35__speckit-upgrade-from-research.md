@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to [077-speckit-upgrade-from-research/23-01-26_20-35__speckit-upgrade-from-research]"
+title: "AGENTS simplification and upgrade sync 2026-01-23 [077-speckit-upgrade-from-research/23-01-26_20-35__speckit-upgrade-from-research]"
+description: "Captured the session that completed AGENTS.md simplification alongside the broader SpecKit upgrade work. It preserves the synchronization steps across Public and Barter repositories and the implementation details needed to continue the upgrade safely."
+trigger_phrases:
+  - "agents simplification sync"
+  - "public barter repository sync"
+  - "speckit upgrade continuation"
+  - "upgrade implementation notes"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

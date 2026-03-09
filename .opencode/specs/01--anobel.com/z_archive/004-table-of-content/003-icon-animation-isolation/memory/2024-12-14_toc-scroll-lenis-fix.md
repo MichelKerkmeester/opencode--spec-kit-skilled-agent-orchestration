@@ -1,7 +1,15 @@
 ---
-title: "Epistemic state captured at session start for learning [003-icon-animation-isolation/2024-12-14_toc-scroll-lenis-fix]"
+title: "Lenis conflict fix for TOC scroll position [003-icon-animation-isolation/2024-12-14_toc-scroll-lenis-fix]"
+description: "This migrated memory preserves the fix for the table-of-content scroll position problem caused by Lenis interaction. It keeps the legacy conflict-resolution notes and recovery context for the archived scroll-margin adjustment work."
+trigger_phrases:
+  - "lenis scroll conflict"
+  - "toc scroll position fix"
+  - "scroll margin top offset"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

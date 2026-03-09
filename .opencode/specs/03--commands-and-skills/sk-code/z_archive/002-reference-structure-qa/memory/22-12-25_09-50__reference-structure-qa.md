@@ -1,7 +1,18 @@
 ---
-title: "Key Topics: response | [002-reference-structure-qa/22-12-25_09-50__reference-structure-qa]"
-importance_tier: "normal"
-contextType: "general"
+title: Reference structure QA and numbering updates on 2025-12-22 [002-reference-structure-qa/22-12-25_09-50__reference-structure-qa]
+description: This session documents the QA pass on workflows-code reference structure
+  and the follow-up documentation corrections. It captures the integer gate numbering
+  update, checklist creation, and compatibility validation that were applied across
+  the related skill documents.
+trigger_phrases:
+- reference structure qa
+- integer gate numbering
+- skill documentation checklist
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

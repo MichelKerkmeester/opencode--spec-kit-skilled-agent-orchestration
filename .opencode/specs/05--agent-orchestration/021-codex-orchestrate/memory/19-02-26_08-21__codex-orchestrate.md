@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [021-codex-orchestrate/19-02-26_08-21__codex-orchestrate]"
-importance_tier: "normal"
-contextType: "general"
+title: ChatGPT policy diff and token budget update for codex orchestrate 2026-02-19 [021-codex-orchestrate/19-02-26_08-21__codex-orchestrate]
+description: This memory records a codex-orchestrate research update after a prior save. It captures the decision to raise the ChatGPT context-agent token budget and create a full per-agent ChatGPT-versus-Copilot comparison document in the spec folder.
+trigger_phrases:
+- chatgpt token budget
+- agent policy diff
+- chatgpt versus copilot comparison
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

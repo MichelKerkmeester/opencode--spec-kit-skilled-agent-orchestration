@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning [014-anchor-enforcement/16-12-25_anchor-id-validation-warning]"
+title: "Anchor ID validation warning context for 014-anchor-enforcement 2025-12-16 [014-anchor-enforcement/16-12-25_anchor-id-validation-warning]"
+description: "This migrated memory captures the archived warning-focused checkpoint from the anchor enforcement work. It keeps the completion metadata and recovery hints for the anchor ID validation warning session."
+trigger_phrases:
+  - "anchor id validation warning"
+  - "anchor enforcement validation"
+  - "spec kit anchor warning"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->
 
 ---

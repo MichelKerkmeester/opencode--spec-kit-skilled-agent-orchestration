@@ -1,9 +1,16 @@
 ---
-title: "Key Topics: normalizeinputdata | sessionsummary | [018-generate-context-fix/17-12-25_07-43__generate-context-fix]"
+title: "Session summary metadata fix for 018-generate-context-fix 2025-12-17 [018-generate-context-fix/17-12-25_07-43__generate-context-fix]"
+description: "This session addressed generate-context issues in session summaries, trigger phrases, key decisions, and verification output. The archived record preserves the completed review of how generated memory files should construct richer metadata."
+trigger_phrases:
+  - "session summary metadata fix"
+  - "trigger phrases generation"
+  - "generate context verification"
 importance_tier: "normal"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

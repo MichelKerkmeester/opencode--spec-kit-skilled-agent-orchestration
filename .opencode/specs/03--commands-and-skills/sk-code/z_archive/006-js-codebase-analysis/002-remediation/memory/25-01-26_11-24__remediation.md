@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [002-remediation/25-01-26_11-24__remediation]"
-importance_tier: "normal"
-contextType: "general"
+title: JavaScript remediation and breakpoint fixes on 2026-01-25 [002-remediation/25-01-26_11-24__remediation]
+description: This session summarizes a large remediation pass across the JavaScript
+  codebase using parallel agents. It records cleanup-function rollouts, snake_case
+  normalization, the INIT_FLAG fix, tablet breakpoint corrections, and final reindexing
+  after review verification.
+trigger_phrases:
+- javascript remediation session
+- init flag fix
+- tablet breakpoint correction
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

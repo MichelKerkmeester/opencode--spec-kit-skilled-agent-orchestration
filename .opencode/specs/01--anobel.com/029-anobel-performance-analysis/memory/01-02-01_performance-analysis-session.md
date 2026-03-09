@@ -1,7 +1,15 @@
 ---
-title: "Epistemic state captured at session start for [031-anobel-performance-analysis/01-02-01_performance-analysis-session]"
+title: "Legacy performance analysis session for [029-anobel-performance-analysis/01-02-01_performance-analysis-session]"
+description: "This migrated memory captures the baseline state for the anobel performance analysis spec and preserves the original performance-analysis session notes. It records the preflight summary, resume guidance, and archived overview so later sessions can recover the context of the early analysis work."
+trigger_phrases:
+  - "anobel performance analysis baseline"
+  - "legacy performance analysis session"
+  - "performance analysis resume context"
 importance_tier: "normal"
-contextType: "general"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

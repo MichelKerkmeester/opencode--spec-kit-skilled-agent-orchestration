@@ -1,12 +1,16 @@
 ---
-title: "create prompt command session 01-03-26 [015-create-prompt-command/01-03-26_12-48__create-prompt-command]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Skill graph memory integration analysis for 015-create-prompt-command 2026-03-01 [015-create-prompt-command/01-03-26_12-48__create-prompt-command]"
+description: "This session stores an analysis of the 036-skill-graphs implementation and its Memory MCP integration inside the 015-create-prompt-command memory file. It focuses on SGQS graph-query behavior instead of prompt command work, so the body appears cross-contaminated."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "skill graph query system"
+  - "memory mcp integration"
+  - "semantic memory pipeline"
+  - "in-memory graph database"
 importance_tier: "critical"
-contextType: "general"
+quality_score: 0.60
+quality_flags:
+  - "needs_review"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

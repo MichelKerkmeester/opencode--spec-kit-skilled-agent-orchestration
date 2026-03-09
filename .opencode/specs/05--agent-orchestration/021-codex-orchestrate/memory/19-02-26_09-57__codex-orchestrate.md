@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [021-codex-orchestrate/19-02-26_09-57__codex-orchestrate]"
-importance_tier: "normal"
-contextType: "general"
+title: Fallback memory-save transfer for codex orchestrate 2026-02-19 [021-codex-orchestrate/19-02-26_09-57__codex-orchestrate]
+description: This memory records the fallback Option C path for /memory:save after policy restrictions blocked direct generation in the target repository. It explains the JSON-mode generation in an allowed workspace and the follow-up copy into the destination memory folder.
+trigger_phrases:
+- fallback memory save
+- allowed workspace copy
+- target path policy
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,7 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning delta [030-gate3-enforcement/24-12-25_12-44__gate3-enforcement]"
-importance_tier: "normal"
-contextType: "general"
+title: Reviewing the initial Gate 3 violation [030-gate3-enforcement/24-12-25_12-44__gate3-enforcement]
+description: This migrated memory captures the gate3-enforcement session that reviewed a Gate 3 violation after a broad bug-fix pass. It preserves the explanation of what should have happened, the constitutional-memory draft work, and the related spec, plan, tasks, and AGENTS updates.
+trigger_phrases:
+- gate 3 violation
+- constitutional memory draft
+- ask first workflow
+- gate3 enforcement review
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

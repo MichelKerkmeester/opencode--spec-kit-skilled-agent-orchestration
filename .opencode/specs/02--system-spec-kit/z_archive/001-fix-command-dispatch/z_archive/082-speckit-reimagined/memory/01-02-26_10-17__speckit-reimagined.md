@@ -1,6 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [082-speckit-reimagined/01-02-26_10-17__speckit-reimagined]"
-importance_tier: "important"
+title: "SpecKit reimagined review fixes 2026-02-01 [082-speckit-reimagined/01-02-26_10-17__speckit-reimagined]"
+description: "Captured the session that applied comprehensive spec fixes after a parallel review of the reimagined SpecKit initiative. It preserves the review findings, the targeted documentation corrections, and the implementation context needed to continue the reimagined rollout."
+trigger_phrases:
+  - "speckit reimagined review"
+  - "parallel spec fixes"
+  - "documentation correction pass"
+  - "reimagined rollout context"
+importance_tier: "high"
+quality_score: 0.60
+quality_flags:
+  - "legacy_migration"
 contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->

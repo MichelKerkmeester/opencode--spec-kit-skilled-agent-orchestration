@@ -1,7 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always [011-initial-set-up/03-02-26_11-25__workflows-code-opencode]"
-importance_tier: "normal"
-contextType: "general"
+title: Initial research checkpoint for workflows-code-opencode setup on 2026-02-03
+  [011-initial-set-up/03-02-26_11-25__workflows-code-opencode]
+description: This memory captures an early, simulated checkpoint for the workflows-code-opencode
+  initial setup work. The preserved content is thin, but it shows the session was
+  still in research and expected further implementation in a continuation attempt.
+trigger_phrases:
+- workflows code opencode setup
+- simulated checkpoint memory
+- initial setup research
+importance_tier: normal
+quality_score: 0.4
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- WARNING: This is simulated/placeholder content - NOT from a real session -->
 

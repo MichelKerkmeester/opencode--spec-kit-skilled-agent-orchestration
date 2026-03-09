@@ -1,9 +1,16 @@
 ---
-title: "Epistemic state captured at session start for learning [019-speckit-refinement/23-12-25_15-48__speckit-refinement]"
+title: "Research response checkpoint for 019-speckit-refinement 2025-12-23 [019-speckit-refinement/23-12-25_15-48__speckit-refinement]"
+description: "This memory records a thin research checkpoint for speckit refinement with only a response topic retained in the body. It functions mainly as an archived continuation marker for the broader refinement effort."
+trigger_phrases:
+  - "research response checkpoint"
+  - "speckit refinement research"
+  - "archived continuation marker"
 importance_tier: "normal"
+quality_score: 0.40
+quality_flags:
+  - "legacy_migration"
 contextType: "general"
----
-<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
+---<!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
 # SESSION SUMMARY

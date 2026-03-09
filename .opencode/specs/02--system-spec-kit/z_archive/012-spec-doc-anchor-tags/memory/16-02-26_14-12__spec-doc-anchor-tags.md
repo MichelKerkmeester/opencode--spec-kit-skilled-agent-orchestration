@@ -1,7 +1,17 @@
 ---
-title: "To promote a memory to constitutional tier (always [129-spec-doc-anchor-tags/16-02-26_14-12__spec-doc-anchor-tags]"
-importance_tier: "normal"
-contextType: "general"
+title: Anchor retrofit continuation for spec-doc-anchor-tags 2026-02-16 [129-spec-doc-anchor-tags/16-02-26_14-12__spec-doc-anchor-tags]
+description: This archived session continued the anchor-tag retrofit for spec documents
+  across multiple z_archive directories. The summary records deleted abandoned folders,
+  parallel agent work, and five decisions captured while the session remained in progress.
+trigger_phrases:
+- spec doc anchor tags
+- anchor retrofit continuation
+- z archive anchor update
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- legacy_migration
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

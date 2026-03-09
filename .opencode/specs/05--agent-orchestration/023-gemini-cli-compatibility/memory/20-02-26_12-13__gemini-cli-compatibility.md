@@ -1,7 +1,15 @@
 ---
-title: "To promote a memory to constitutional tier [023-gemini-cli-compatibility/20-02-26_12-13__gemini-cli-compatibility]"
-importance_tier: "normal"
-contextType: "general"
+title: Hybrid RAG handover capture for gemini cli compatibility 2026-02-20 [023-gemini-cli-compatibility/20-02-26_12-13__gemini-cli-compatibility]
+description: This memory records creation of a handover for continued work on the hybrid-rag-fusion track from within the gemini-cli-compatibility stream. It preserves the continuation prompt, target spec path, and next-step guidance for resuming Phase 0 in a new session.
+trigger_phrases:
+- hybrid rag handover
+- continuation prompt
+- phase zero resume
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

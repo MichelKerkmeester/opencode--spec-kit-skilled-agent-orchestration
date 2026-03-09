@@ -1,7 +1,18 @@
 ---
-title: "Epistemic state captured at session start for learning delta calculation. [044-speckit-test-suite/e2e-test-memory]"
-importance_tier: "normal"
-contextType: "general"
+title: E2E verification memory for speckit-test-suite unknown [044-speckit-test-suite/e2e-test-memory]
+importance_tier: normal
+contextType: general
+description: This migrated legacy memory preserves an end-to-end verification note
+  for Agent 9 within the speckit test suite. It describes the purpose of the test
+  file, the lifecycle checks it was meant to exercise, and the anchor used to mark
+  it as a search target during verification.
+trigger_phrases:
+- agent 9 e2e verification
+- memory lifecycle test
+- speckit end to end memory
+quality_score: 0.6
+quality_flags:
+- legacy_migration
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Migrated from legacy format by migrate-memory-v22.mjs -->

@@ -1,7 +1,20 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [019-blog-sort-fix/18-01-26_11-56__blog-sort-fix]"
-importance_tier: "normal"
-contextType: "general"
+title: Blog sort root-cause analysis for blog-sort-fix 2026-01-18 [019-blog-sort-fix/18-01-26_11-56__blog-sort-fix]
+description: Investigated why the anobel blog sort dropdown failed and confirmed that
+  Finsweet fs-list reads sort parameters from the URL instead of change events on
+  the bridged select element. The session documented the root cause, recommended URL
+  navigation as the fix, and created the supporting spec, plan, tasks, and checklist
+  files.
+trigger_phrases:
+- blog sort dropdown fix
+- Finsweet URL sorting
+- input select fs bridge
+- CustomSelect hidden select
+importance_tier: normal
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: research
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:

@@ -1,12 +1,15 @@
 ---
-title: "GPT-5.4 Agent Model Upgrade [027-copilot-gpt-5-4-agents/06-03-26_08-11__gpt-5-4-agent-model-upgrade]"
-description: "Session context memory template for Spec Kit indexing."
+title: Skill graph integration analysis for copilot GPT 5.4 agents 2026-03-06 [027-copilot-gpt-5-4-agents/06-03-26_08-11__gpt-5-4-agent-model-upgrade]
+description: This memory summarizes a research session that reviewed the 036-skill-graphs implementation while working in the copilot-gpt-5-4-agents stream. It captures the SGQS architecture notes, the server files inspected, and the migration-complete findings carried over from the implementation summary.
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "critical"
-contextType: "general"
+- skill graph analysis
+- copilot gpt 5.4 agents
+- sgqs architecture notes
+importance_tier: critical
+quality_score: 0.6
+quality_flags:
+- needs_review
+contextType: general
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 <!-- Constitutional Tier Promotion:
