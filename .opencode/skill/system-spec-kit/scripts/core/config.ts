@@ -29,6 +29,7 @@ export interface WorkflowConfig {
   toolPreviewLines: number;
   toolOutputMaxLength: number;
   timestampMatchToleranceMs: number;
+  qualityAbortThreshold: number;
   learningWeights: {
     knowledge: number;
     context: number;
@@ -58,6 +59,7 @@ export interface SpecKitConfig {
   MAX_CONTENT_PREVIEW: number;
   TOOL_OUTPUT_MAX_LENGTH: number;
   TIMESTAMP_MATCH_TOLERANCE_MS: number;
+  QUALITY_ABORT_THRESHOLD: number;
   LEARNING_WEIGHTS: WorkflowConfig['learningWeights'];
 }
 
@@ -92,6 +94,7 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
     'toolPreviewLines',
     'toolOutputMaxLength',
     'timestampMatchToleranceMs',
+    'qualityAbortThreshold',
   ];
 
   for (const field of positiveFields) {
@@ -188,6 +191,7 @@ function loadConfig(): WorkflowConfig {
     toolPreviewLines: 10,
     toolOutputMaxLength: 500,
     timestampMatchToleranceMs: 5000,
+    qualityAbortThreshold: 15,
     learningWeights: {
       knowledge: 0.4,
       context: 0.35,
@@ -237,6 +241,10 @@ function loadConfig(): WorkflowConfig {
       const jsonContent: string = jsonLines.join('\n').trim();
       const userConfig = JSON.parse(jsonContent) as Partial<WorkflowConfig>;
       const merged = { ...defaultConfig, ...userConfig };
+      merged.learningWeights = {
+        ...defaultConfig.learningWeights,
+        ...(userConfig.learningWeights || {}),
+      };
       return validateConfig(merged, defaultConfig);
     }
   } catch (error: unknown) {
@@ -278,6 +286,7 @@ const CONFIG: SpecKitConfig = {
   MAX_CONTENT_PREVIEW: userConfig.maxContentPreview,
   TOOL_OUTPUT_MAX_LENGTH: userConfig.toolOutputMaxLength,
   TIMESTAMP_MATCH_TOLERANCE_MS: userConfig.timestampMatchToleranceMs,
+  QUALITY_ABORT_THRESHOLD: userConfig.qualityAbortThreshold,
   LEARNING_WEIGHTS: userConfig.learningWeights,
 };
 

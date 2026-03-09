@@ -1,6 +1,6 @@
 # Implementation Summary: Perfect Session Capturing
 ## Overview
-Tasks and the remediation manifest record 20 implemented fixes across nine files in the session-capturing pipeline. Checklist evidence records a clean `npx tsc --build`, and source verification confirms additional follow-up hardening in `workflow.ts`, `input-normalizer.ts`, and `slug-utils.ts`. The verified changes strengthen session ID generation, atomic writes, contamination filtering, extraction correctness, configurability, and memory-quality protection.
+Tasks and the remediation manifest record 20 implemented fixes across eleven files in the session-capturing pipeline. Checklist evidence records a clean `npx tsc --build`, and source verification confirms additional follow-up hardening in `workflow.ts`, `input-normalizer.ts`, and `slug-utils.ts`. The verified changes strengthen session ID generation, atomic writes, contamination filtering, extraction correctness, configurability, and memory-quality protection.
 
 ## Changes by Priority
 ### P0 Critical (Security / Data Loss)
@@ -85,9 +85,9 @@ Tasks and the remediation manifest record 20 implemented fixes across nine files
   **Before:** Tool observations could keep generic labels such as `Tool: grep` or other low-information titles.  
   **After:** Observation titles use file paths, search patterns, or command descriptions, and captured exchanges and tool calls are filtered by spec-folder relevance keywords.
 - **File:** `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`  
-  **Description:** Added a hard abort threshold of 25 for low-quality memory output.  
+  **Description:** Added a hard abort threshold of 15 (configurable via `config.ts` `qualityAbortThreshold`) for low-quality memory output.  
   **Before:** Low-quality output could continue without a verified minimum score gate.  
-  **After:** Non-simulated runs abort when the legacy quality score is below 25, and failed quality validation is logged and skipped for production indexing.
+  **After:** Non-simulated runs abort when the legacy quality score is below 15, and failed quality validation is logged and skipped for production indexing.
 - **File:** `.opencode/skill/system-spec-kit/scripts/core/workflow.ts`  
   **Description:** Added a stateless alignment block when file-path overlap with the active spec is below 5 percent.  
   **Before:** Weak session-to-spec alignment could continue and risk cross-spec contamination.  
@@ -102,7 +102,7 @@ Tasks and the remediation manifest record 20 implemented fixes across nine files
 | `.opencode/skill/system-spec-kit/scripts/extractors/decision-extractor.ts` | Replaced fixed confidence defaults with evidence-based scoring. |
 | `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Added alignment blocking, code-fence-aware HTML cleanup, a low-quality abort threshold, explicit memory ID handling, indexing skip/logging on validation failure, and description-tracking cleanup. |
 | `.opencode/skill/system-spec-kit/scripts/extractors/file-extractor.ts` | Preserved richer duplicate descriptions and expanded normalized file actions. |
-| `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` | Prevented false postflight deltas when score inputs are missing; learning index weights remain hardcoded here. |
+| `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` | Prevented false postflight deltas when score inputs are missing; learning index weights sourced from `CONFIG.LEARNING_WEIGHTS` (`config.ts`); weight-to-delta mapping corrected. |
 | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Exposed tool output, timestamp tolerance, and workflow limit settings through config. |
 | `.opencode/skill/system-spec-kit/scripts/extractors/opencode-capture.ts` | Switched truncation and timestamp matching to config-backed values. |
 | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Added descriptive tool observation titles and spec-folder relevance filtering for captured content. |
@@ -112,7 +112,6 @@ Tasks and the remediation manifest record 20 implemented fixes across nine files
 - [ ] Quality scores on well-formed sessions >= 85% — NOT TESTED: requires runtime verification
 - [ ] No truncation artifacts in generated memory files — NOT TESTED: requires runtime verification
 - [ ] Task extraction regex has <= 5% false positive rate — NOT TESTED: requires runtime verification
-- [ ] Learning index weights configurable via config.ts — REMAINING: weights still in collect-session-data.ts
 - [ ] Phase detection improved beyond simple regex — REMAINING: ratio-based detection adequate for now
 - [ ] All MEDIUM findings from audit resolved — REMAINING: ~67 medium findings not yet addressed
 - [ ] Generated memory files pass manual quality inspection (5 samples) — NOT TESTED: requires runtime verification

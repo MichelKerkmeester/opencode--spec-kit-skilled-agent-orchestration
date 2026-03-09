@@ -32,6 +32,13 @@ const CONTAMINATED_NAME_PATTERNS = [
   /^Tool:\s+\w+$/i,
   /^Executed\s+\w+$/i,
   /^User initiated conversation$/i,
+  /^Read\s+(?:file)?/i,
+  /^Edit\s+(?:file)?/i,
+  /^Write\s+(?:file)?/i,
+  /^Grep\s*(?:search|:)/i,
+  /^Glob\s*(?:search|:)/i,
+  /^Bash\s+command/i,
+  /^[\/\.][^\s]+$/,
 ];
 
 function toUnicodeSafeSlug(text: string): string {

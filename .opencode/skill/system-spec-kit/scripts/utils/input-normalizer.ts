@@ -161,6 +161,11 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
     : decisionText.substring(0, 80).trim();
 
   const finalChosenApproach: string = chosenApproach || title;
+  const hasMultipleAlternativesMentioned: boolean = alternatives.length > 1
+    || /alternatives?\s+considered:\s*[^.]+,\s*[^.]+/i.test(decisionText);
+  const confidence: number = finalChosenApproach
+    ? (hasMultipleAlternativesMentioned ? 70 : 65)
+    : 50;
 
   const facts: string[] = [
     `Option 1: ${finalChosenApproach}`,
@@ -180,7 +185,7 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
     _manualDecision: {
       fullText: decisionText,
       chosenApproach: finalChosenApproach,
-      confidence: 75
+      confidence
     }
   };
 }

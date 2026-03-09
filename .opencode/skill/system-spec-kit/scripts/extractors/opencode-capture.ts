@@ -412,7 +412,7 @@ function truncateOutput(output: string | undefined, maxLength?: number): string 
   const limit = maxLength ?? CONFIG.TOOL_OUTPUT_MAX_LENGTH;
   if (output.length <= limit) return output;
 
-  const half = Math.floor(limit / 2) - 10;
+  const half = Math.max(1, Math.floor(limit / 2) - 10);
   return output.substring(0, half) + '\n... [truncated] ...\n' + output.substring(output.length - half);
 }
 

@@ -77,10 +77,10 @@ export async function writeFilesAtomically(
     let backupPath: string | undefined;
     try {
       await fs.access(filePath);
-      existedBefore = true;
       const backupSuffix = crypto.randomBytes(4).toString('hex');
       backupPath = `${filePath}.bak.${backupSuffix}`;
       await fs.copyFile(filePath, backupPath);
+      existedBefore = true;
       console.warn(`   Warning: overwriting existing file ${filename}`);
     } catch { /* Expected: file doesn't exist */ }
     const tempSuffix = crypto.randomBytes(4).toString('hex');

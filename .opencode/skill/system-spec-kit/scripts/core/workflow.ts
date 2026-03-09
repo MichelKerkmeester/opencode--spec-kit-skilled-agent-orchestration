@@ -1065,7 +1065,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log(`   Breakdown: triggers=${qualityResult.breakdown.triggerPhrases}/20, topics=${qualityResult.breakdown.keyTopics}/15, fileDesc=${qualityResult.breakdown.fileDescriptions}/20, length=${qualityResult.breakdown.contentLength}/15, html=${qualityResult.breakdown.noLeakedTags}/15, dedup=${qualityResult.breakdown.observationDedup}/15`);
 
   // Step 8.7: Quality gate — abort save if quality is too low
-  const QUALITY_ABORT_THRESHOLD = 15;
+  const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
   if (qualityResult.score < QUALITY_ABORT_THRESHOLD && !isSimulation) {
     const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
       `This typically means the captured session data does not contain meaningful content for this spec folder. ` +

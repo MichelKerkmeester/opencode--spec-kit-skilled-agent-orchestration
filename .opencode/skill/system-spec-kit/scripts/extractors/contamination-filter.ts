@@ -6,15 +6,15 @@
 const DEFAULT_DENYLIST: RegExp[] = [
   // Orchestration chatter
   /\bI'll execute this step by step\b/gi,
-  /\bLet me analyze\b/gi,
+  /\bLet me analyze (?:this|the|your)\b/gi,
   /\bI'll now\b/gi,
   /\bStep\s+\d+:/gi,
   /\bLet me check\b/gi,
-  /\bI need to\b/gi,
+  /\bI need to (?:check|verify|confirm|ensure|validate|examine|look at|read)\b/gi,
   /\bI'll start by\b/gi,
   /\bLet me start\b/gi,
   /\bLet me read\b/gi,
-  /\bLet me look\b/gi,
+  /\bLet me look (?:at|into) (?:this|the|that)\b/gi,
   /\bI'll begin\b/gi,
   /\bI'll proceed\b/gi,
   /\bI'll handle\b/gi,
@@ -39,7 +39,7 @@ const DEFAULT_DENYLIST: RegExp[] = [
   // Tool scaffolding
   /\bI'll use the \w+ tool\b/gi,
   /\bUsing the \w+ tool\b/gi,
-  /\bLet me use\b/gi,
+  /\bLet me use the \w+ tool\b/gi,
 ];
 
 interface FilterResult {
