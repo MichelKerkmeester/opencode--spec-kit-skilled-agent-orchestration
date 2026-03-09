@@ -43,10 +43,10 @@ const CONTAMINATED_NAME_PATTERNS = [
 
 function toUnicodeSafeSlug(text: string): string {
   return text
-    .normalize('NFKD')
+    .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[^\p{Letter}\p{Number}]+/gu, '-')
+    .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .replace(/-{2,}/g, '-');
 }
@@ -76,7 +76,7 @@ export function normalizeMemoryNameCandidate(raw: string): string {
 /** Converts arbitrary text into a filesystem-safe slug. */
 export function slugify(text: string): string {
   if (!text || typeof text !== 'string') return '';
-  return toUnicodeSafeSlug(text);
+  return toUnicodeSafeSlug(text.slice(0, 200));
 }
 
 /** Returns whether a candidate memory name contains contaminated prompt text. */

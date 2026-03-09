@@ -139,6 +139,7 @@ function extractFilesFromData(
     _provenance?: 'git' | 'spec-folder';
     _synthetic?: boolean;
   }>();
+  const sourcePathToKey = new Map<string, string>();
 
   if (!collectedData) collectedData = {} as CollectedDataForFiles;
   if (!observations) observations = [];
@@ -153,7 +154,27 @@ function extractFilesFromData(
     const normalized = toRelativePath(rawPath, CONFIG.PROJECT_ROOT);
     if (!normalized) return;
 
-    const existing = filesMap.get(normalized);
+    const normalizedProjectRoot = CONFIG.PROJECT_ROOT.replace(/\\/g, '/');
+    const normalizedRawPath = rawPath.replace(/\\/g, '/');
+    const canonicalSourcePath = (normalizedRawPath.startsWith(normalizedProjectRoot)
+      ? normalizedRawPath.slice(normalizedProjectRoot.length)
+      : normalizedRawPath)
+      .replace(/^\/+/, '')
+      .replace(/^\.\//, '');
+    let mapKey = sourcePathToKey.get(canonicalSourcePath) ?? normalized;
+
+    if (!sourcePathToKey.has(canonicalSourcePath) && filesMap.has(normalized)) {
+      let suffix = 2;
+      while (filesMap.has(`${normalized}-${suffix}`)) {
+        suffix++;
+      }
+      mapKey = `${normalized}-${suffix}`;
+      console.warn(`Warning: Disambiguating colliding normalized path '${normalized}' as '${mapKey}'`);
+    }
+
+    sourcePathToKey.set(canonicalSourcePath, mapKey);
+
+    const existing = filesMap.get(mapKey);
     const cleaned = cleanDescription(description);
     const nextProvenance = provenance ?? existing?._provenance;
     const nextSynthetic = synthetic ?? existing?._synthetic;
@@ -166,7 +187,7 @@ function extractFilesFromData(
 
       if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing.description) || cleaned.length > existing.description.length)) {
         // Better description available — use it, and merge action/provenance
-        filesMap.set(normalized, {
+        filesMap.set(mapKey, {
           description: cleaned,
           action: mergedAction,
           ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
@@ -177,7 +198,7 @@ function extractFilesFromData(
           || (mergedProvenance && mergedProvenance !== existing._provenance)
           || (mergedSynthetic !== existing._synthetic);
         if (needsUpdate) {
-          filesMap.set(normalized, {
+          filesMap.set(mapKey, {
             ...existing,
             action: mergedAction,
             ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
@@ -185,7 +206,7 @@ function extractFilesFromData(
         }
       }
     } else {
-      filesMap.set(normalized, {
+      filesMap.set(mapKey, {
         description: cleaned || 'Modified during session',
         action,
         ...(nextProvenance ? { _provenance: nextProvenance, _synthetic: nextSynthetic } : {}),

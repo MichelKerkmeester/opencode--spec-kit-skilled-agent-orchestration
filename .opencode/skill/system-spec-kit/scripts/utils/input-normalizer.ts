@@ -167,8 +167,8 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
   const hasMultipleAlternativesMentioned: boolean = alternatives.length > 1
     || /alternatives?\s+considered:\s*[^.]+,\s*[^.]+/i.test(decisionText);
   const confidence: number = chosenApproach
-    ? (hasMultipleAlternativesMentioned ? 70 : 65)
-    : 50;
+    ? (hasMultipleAlternativesMentioned ? 0.70 : 0.65)
+    : 0.50;
 
   const facts: string[] = [
     `Option 1: ${finalChosenApproach}`,
@@ -227,9 +227,17 @@ function buildTechnicalContextObservation(techContext: Record<string, unknown>):
 // 4. INPUT NORMALIZATION
 // ---------------------------------------------------------------
 
+function cloneInputData<T>(data: T): T {
+  if (typeof structuredClone === 'function') {
+    return structuredClone(data);
+  }
+
+  return JSON.parse(JSON.stringify(data)) as T;
+}
+
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   if (data.userPrompts || data.observations || data.recentContext) {
-    return data;
+    return cloneInputData(data);
   }
 
   const normalized: NormalizedData = {
@@ -281,11 +289,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   }];
 
   if (data.triggerPhrases) {
-    normalized._manualTriggerPhrases = data.triggerPhrases;
+    normalized._manualTriggerPhrases = [...data.triggerPhrases];
   }
 
   if (data.keyDecisions && Array.isArray(data.keyDecisions)) {
-    normalized._manualDecisions = data.keyDecisions;
+    normalized._manualDecisions = data.keyDecisions.map((decision) => cloneInputData(decision));
   }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');
@@ -447,9 +455,22 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     ? (toolCalls || []).filter(isToolRelevant)
     : (toolCalls || []);
 
+  const toSafeISOString = (timestamp?: number | string): string => {
+    if (timestamp === undefined) {
+      return new Date().toISOString();
+    }
+
+    if (typeof timestamp === 'number' && (!Number.isFinite(timestamp) || timestamp < 0)) {
+      return new Date().toISOString();
+    }
+
+    const date = new Date(timestamp);
+    return Number.isFinite(date.getTime()) ? date.toISOString() : new Date().toISOString();
+  };
+
   const allUserPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({
     prompt: ex.userInput || '',
-    timestamp: ex.timestamp ? new Date(ex.timestamp).toISOString() : new Date().toISOString()
+    timestamp: toSafeISOString(ex.timestamp)
   }));
 
   // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
@@ -507,7 +528,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
           type: 'feature',
           title: ex.assistantResponse.substring(0, 80),
           narrative: ex.assistantResponse,
-          timestamp: ex.timestamp ? new Date(ex.timestamp).toISOString() : new Date().toISOString(),
+          timestamp: toSafeISOString(ex.timestamp),
           facts: [],
           files: []
         });
@@ -521,7 +542,7 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
       type: tool.tool === 'edit' || tool.tool === 'write' ? 'implementation' : 'observation',
       title: toolTitle,
       narrative: tool.title || `Executed ${tool.tool}`,
-      timestamp: tool.timestamp ? new Date(tool.timestamp).toISOString() : new Date().toISOString(),
+      timestamp: toSafeISOString(tool.timestamp),
       facts: [`Tool: ${tool.tool}`, `Status: ${tool.status}`],
       files: []
     };

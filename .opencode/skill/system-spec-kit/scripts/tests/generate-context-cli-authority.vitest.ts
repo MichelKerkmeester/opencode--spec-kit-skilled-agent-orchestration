@@ -49,6 +49,7 @@ describe('generate-context CLI authority', () => {
 
   it('passes direct CLI spec-folder mode through main() as an authoritative workflow target', async () => {
     const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const resolvedSpecFolder = path.resolve(process.cwd(), explicitSpecFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitSpecFolder];
 
     const { main } = await import('../memory/generate-context');
@@ -57,7 +58,7 @@ describe('generate-context CLI authority', () => {
     expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
     expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
       dataFile: undefined,
-      specFolderArg: explicitSpecFolder,
+      specFolderArg: resolvedSpecFolder,
       loadDataFn: harness.loadCollectedData,
       collectSessionDataFn: harness.collectSessionData,
     }));

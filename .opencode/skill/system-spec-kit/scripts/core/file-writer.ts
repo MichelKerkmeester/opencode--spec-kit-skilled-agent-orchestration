@@ -12,6 +12,37 @@ import { validateNoLeakedPlaceholders, validateAnchors } from '../utils/validati
 const MIN_SUBSTANCE_CHARS = 200;
 const FRONTMATTER_BLOCK_RE = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
 
+function verifyResolvedWriteTarget(
+  resolvedContextDir: string,
+  filePath: string,
+  filename: string
+): void {
+  const realContextDir = fsSync.realpathSync(resolvedContextDir);
+  const realFilePath = fsSync.realpathSync(filePath);
+  if (realFilePath !== realContextDir && !realFilePath.startsWith(realContextDir + path.sep)) {
+    throw new Error(`Filename "${filename}" resolves outside target directory`);
+  }
+}
+
+async function backupExistingFileAtomically(filePath: string, backupPath: string): Promise<boolean> {
+  let existingFile: fs.FileHandle | undefined;
+  try {
+    existingFile = await fs.open(filePath, fsSync.constants.O_RDONLY);
+  } catch (openErr: unknown) {
+    const err = openErr as NodeJS.ErrnoException;
+    if (err.code === 'ENOENT') return false;
+    throw openErr;
+  }
+
+  try {
+    const existingContent = await existingFile.readFile();
+    await fs.writeFile(backupPath, existingContent, { flag: 'wx' });
+    return true;
+  } finally {
+    await existingFile.close();
+  }
+}
+
 function validateContentSubstance(content: string, filename: string): void {
   const stripped = content
     .replace(FRONTMATTER_BLOCK_RE, '')            // frontmatter
@@ -62,13 +93,6 @@ export async function writeFilesAtomically(
   files: Record<string, string>
 ): Promise<string[]> {
   const resolvedContextDir = path.resolve(contextDir);
-  let realContextDir = resolvedContextDir;
-  try {
-    realContextDir = fsSync.realpathSync(resolvedContextDir);
-  } catch {
-    // If contextDir does not exist yet, fall back to lexical containment checks.
-  }
-
   const written: Array<{ filename: string; existedBefore: boolean; backupPath?: string }> = [];
   for (const [filename, content] of Object.entries(files)) {
     validateNoLeakedPlaceholders(content, filename);
@@ -86,47 +110,60 @@ export async function writeFilesAtomically(
       throw new Error(`Invalid filename "${filename}": must be a relative path without traversal`);
     }
     const filePath = path.join(contextDir, filename);
-    // Resolve through real paths when possible to prevent symlink escapes from contextDir.
     const resolvedFilePath = path.resolve(filePath);
-    let containmentPath = resolvedFilePath;
-    try {
-      const realParentDir = fsSync.realpathSync(path.dirname(resolvedFilePath));
-      containmentPath = path.join(realParentDir, path.basename(resolvedFilePath));
-    } catch {
-      // Parent may not exist yet; keep lexical path as defense-in-depth fallback.
-    }
-    if (!containmentPath.startsWith(realContextDir + path.sep)) {
+    if (!resolvedFilePath.startsWith(resolvedContextDir + path.sep)) {
       throw new Error(`Filename "${filename}" resolves outside target directory`);
     }
-    // Backup existing file before overwrite
     let existedBefore = false;
     let backupPath: string | undefined;
-    let fileExists = false;
-    try {
-      await fs.access(filePath);
-      fileExists = true;
-    } catch { /* Expected: file doesn't exist */ }
     const tempSuffix = crypto.randomBytes(4).toString('hex');
     const tempPath = `${filePath}.tmp.${tempSuffix}`;
+    let renamedIntoPlace = false;
     try {
-      if (fileExists) {
-        const backupSuffix = crypto.randomBytes(4).toString('hex');
-        backupPath = `${filePath}.bak.${backupSuffix}`;
-        await fs.copyFile(filePath, backupPath);
-        existedBefore = true;
+      const backupSuffix = crypto.randomBytes(4).toString('hex');
+      backupPath = `${filePath}.bak.${backupSuffix}`;
+      existedBefore = await backupExistingFileAtomically(filePath, backupPath);
+      if (existedBefore) {
         console.warn(`   Warning: overwriting existing file ${filename}`);
       }
-      await fs.writeFile(tempPath, content, 'utf-8');
+      const tempFd = await fs.open(
+        tempPath,
+        fsSync.constants.O_CREAT | fsSync.constants.O_EXCL | fsSync.constants.O_WRONLY,
+        0o600
+      );
+      try {
+        await tempFd.writeFile(content, 'utf-8');
+        // AI-WHY: fsync before rename ensures content reaches disk (F9 fix)
+        await tempFd.sync();
+      } finally {
+        await tempFd.close();
+      }
       const stat = await fs.stat(tempPath);
       if (stat.size !== Buffer.byteLength(content, 'utf-8')) throw new Error('Size mismatch');
-      // AI-WHY: fsync before rename ensures content reaches disk (F9 fix)
-      const tempFd = await fs.open(tempPath, 'r');
-      try { await tempFd.sync(); } finally { await tempFd.close(); }
       await fs.rename(tempPath, filePath);
+      renamedIntoPlace = true;
+      verifyResolvedWriteTarget(resolvedContextDir, filePath, filename);
       written.push({ filename, existedBefore, backupPath });
       console.log(`   ${filename} (${content.split('\n').length} lines)`);
     } catch (e: unknown) {
       try { await fs.unlink(tempPath); } catch { /* temp file cleanup — failure is non-critical */ }
+      if (renamedIntoPlace) {
+        try {
+          if (existedBefore && backupPath) {
+            await fs.copyFile(backupPath, filePath);
+          } else {
+            await fs.unlink(filePath);
+          }
+        } catch {
+          // Prior-file rollback below will still surface failures restoring earlier writes.
+        }
+      } else if (existedBefore && backupPath) {
+        try {
+          await fs.copyFile(backupPath, filePath);
+        } catch {
+          // Prior-file rollback below will still surface failures restoring earlier writes.
+        }
+      }
       // Rollback already-written files from this batch
       const rollbackErrors: string[] = [];
       for (const prev of written) {

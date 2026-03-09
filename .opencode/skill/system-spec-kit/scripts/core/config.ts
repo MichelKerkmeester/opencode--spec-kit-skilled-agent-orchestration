@@ -282,7 +282,7 @@ const CONFIG: SpecKitConfig = {
   TOOL_PREVIEW_LINES: userConfig.toolPreviewLines,
 
   TEMPLATE_DIR: path.join(SCRIPTS_DIR, '..', 'templates'),
-  PROJECT_ROOT: path.resolve(SCRIPTS_DIR, '..', '..', '..', '..'),
+  PROJECT_ROOT: path.resolve(SCRIPTS_DIR, '..', '..', '..'),
 
   // Runtime values - set by parseArguments()
   DATA_FILE: null,

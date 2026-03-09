@@ -216,8 +216,17 @@ function parseArguments(): void {
   // "specs/003-parent/121-child", ".opencode/specs/003-parent/121-child")
   let resolvedNestedPath: string | null = null;
   if (!primaryArg.endsWith('.json')) {
-    if (path.isAbsolute(primaryArg) && fsSync.existsSync(primaryArg)) {
-      resolvedNestedPath = primaryArg;
+    if (path.isAbsolute(primaryArg)) {
+      const absoluteSegments = primaryArg.replace(/\/+$/, '').split(/[\\/]/).filter(Boolean);
+      const lastSegment = absoluteSegments.at(-1);
+      const parentSegment = absoluteSegments.at(-2);
+
+      if (
+        (lastSegment && SPEC_FOLDER_PATTERN.test(lastSegment)) ||
+        (parentSegment && lastSegment && SPEC_FOLDER_PATTERN.test(parentSegment) && SPEC_FOLDER_PATTERN.test(lastSegment))
+      ) {
+        resolvedNestedPath = primaryArg;
+      }
     }
 
     let cleaned = primaryArg;
@@ -391,8 +400,17 @@ function resolveExplicitCliSpecFolderPath(specFolderArg: string): string | null 
     return null;
   }
 
-  if (path.isAbsolute(specFolderArg) && fsSync.existsSync(specFolderArg)) {
-    return specFolderArg;
+  if (path.isAbsolute(specFolderArg)) {
+    const absoluteSegments = specFolderArg.replace(/\/+$/, '').split(/[\\/]/).filter(Boolean);
+    const lastSegment = absoluteSegments.at(-1);
+    const parentSegment = absoluteSegments.at(-2);
+
+    if (
+      (lastSegment && SPEC_FOLDER_PATTERN.test(lastSegment)) ||
+      (parentSegment && lastSegment && SPEC_FOLDER_PATTERN.test(parentSegment) && SPEC_FOLDER_PATTERN.test(lastSegment))
+    ) {
+      return specFolderArg;
+    }
   }
 
   const explicitProjectScopedPath = (

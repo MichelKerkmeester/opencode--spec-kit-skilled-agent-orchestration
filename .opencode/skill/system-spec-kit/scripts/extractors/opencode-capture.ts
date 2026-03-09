@@ -437,11 +437,19 @@ async function getToolExecutions(sessionId: string): Promise<ToolExecution[]> {
 function truncateOutput(output: string | undefined, maxLength?: number): string {
   if (!output || typeof output !== 'string') return '';
   const limit = maxLength ?? CONFIG.TOOL_OUTPUT_MAX_LENGTH;
-  if (output.length <= limit) return output;
+  const codePoints = Array.from(output);
+  if (codePoints.length <= limit) return output;
   const marker = '\n... [truncated] ...\n';
-  if (limit <= marker.length) return output.substring(0, Math.max(0, limit));
-  const half = Math.floor((limit - marker.length) / 2);
-  return output.substring(0, half) + marker + output.substring(output.length - half);
+  const markerCodePoints = Array.from(marker);
+  if (limit <= markerCodePoints.length) {
+    return codePoints.slice(0, Math.max(0, limit)).join('');
+  }
+  const available = limit - markerCodePoints.length;
+  const prefixLength = Math.floor(available / 2);
+  const suffixLength = available - prefixLength;
+  return codePoints.slice(0, prefixLength).join('')
+    + marker
+    + codePoints.slice(codePoints.length - suffixLength).join('');
 }
 
 function calculateDuration(time: Record<string, number> | undefined): number | null {
@@ -527,13 +535,17 @@ function buildExchanges(
       consumedPromptIndices.add(promptIndex);
     }
 
-    const response = responses.find((r) => {
+    const matchingResponses = responses.filter((r) => {
       const responseMsg = messages.find((m) => m.id === r.messageId);
       return responseMsg?.parent_id === userMsg.id;
     });
+    const response = matchingResponses[0];
 
     const userInput: string | null = prompt?.input || (userMsg.summary as Record<string, string>)?.title || null;
-    const assistantResponse: string | null = response?.content?.substring(0, CONFIG.TOOL_OUTPUT_MAX_LENGTH) || null;
+    const assistantResponseContent = matchingResponses.map((r) => r.content).join('\n');
+    const assistantResponse: string | null = assistantResponseContent
+      ? Array.from(assistantResponseContent).slice(0, CONFIG.TOOL_OUTPUT_MAX_LENGTH).join('')
+      : null;
 
     if (!userInput && !assistantResponse) {
       continue;

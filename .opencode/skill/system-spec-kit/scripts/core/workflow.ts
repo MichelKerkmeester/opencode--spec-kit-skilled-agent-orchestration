@@ -731,10 +731,70 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       );
     }
 
-    const narrativeObservations = Array.isArray(
-      (collectedData as CollectedDataFull & { _narrativeObservations?: unknown })._narrativeObservations
+    const rawUserPrompts = collectedData?.userPrompts || [];
+    let hadContamination = false;
+    const cleanContaminationText = (input: string): string => {
+      const filtered = filterContamination(input);
+      if (filtered.hadContamination) {
+        hadContamination = true;
+      }
+      return filtered.cleanedText;
+    };
+    const cleanObservations = (
+      observations: CollectedDataFull['observations'] | undefined
+    ): CollectedDataFull['observations'] | undefined => {
+      if (!observations) {
+        return observations;
+      }
+      return observations.map((observation) => {
+        if (!observation || !observation._provenance) {
+          return observation;
+        }
+        return {
+          ...observation,
+          title: observation.title ? cleanContaminationText(observation.title) : observation.title,
+          narrative: observation.narrative ? cleanContaminationText(observation.narrative) : observation.narrative,
+          facts: observation.facts?.map((fact) => (
+            typeof fact === 'string'
+              ? cleanContaminationText(fact)
+              : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
+          )),
+        };
+      });
+    };
+    const collectedDataWithNarrative = collectedData as CollectedDataFull & {
+      _narrativeObservations?: CollectedDataFull['observations'];
+    };
+
+    const filteredUserPrompts = rawUserPrompts.map((message) => {
+      const cleanedPrompt = cleanContaminationText(message.prompt || '');
+      return {
+        ...message,
+        prompt: cleanedPrompt,
+      };
+    });
+
+    const filteredSummary = (
+      typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0
     )
-      ? (collectedData as CollectedDataFull & { _narrativeObservations: CollectedDataFull['observations'] })._narrativeObservations || []
+      ? cleanContaminationText(collectedData.SUMMARY)
+      : collectedData.SUMMARY;
+    const filteredObservations = cleanObservations(collectedData.observations);
+    const filteredNarrativeObservations = cleanObservations(
+      collectedDataWithNarrative._narrativeObservations,
+    );
+    collectedData = {
+      ...collectedData,
+      userPrompts: filteredUserPrompts,
+      SUMMARY: filteredSummary,
+      observations: filteredObservations,
+    };
+    collectedDataWithNarrative._narrativeObservations = filteredNarrativeObservations;
+
+    const narrativeObservations = Array.isArray(
+      filteredNarrativeObservations
+    )
+      ? filteredNarrativeObservations || []
       : (collectedData.observations || []);
     const narrativeCollectedData: CollectedDataFull = {
       ...collectedData,
@@ -806,17 +866,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 7.5: Generate semantic implementation summary
   log('Step 7.5: Generating semantic summary...');
 
-  const rawUserPrompts = collectedData?.userPrompts || [];
-  let hadContamination = false;
-  const cleanContaminationText = (input: string): string => {
-    const filtered = filterContamination(input);
-    if (filtered.hadContamination) {
-      hadContamination = true;
-    }
-    return filtered.cleanedText;
-  };
-  const allMessages = rawUserPrompts.map((m) => {
-    const cleanedPrompt = cleanContaminationText(m.prompt || '');
+  const allMessages = (collectedData?.userPrompts || []).map((m) => {
+    const cleanedPrompt = m.prompt || '';
     return {
       prompt: cleanedPrompt,
       content: cleanedPrompt,
@@ -824,30 +875,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     };
   });
 
-  if (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0) {
-    collectedData.SUMMARY = cleanContaminationText(collectedData.SUMMARY);
-  }
-  if (collectedData.observations) {
-    collectedData.observations = collectedData.observations.map((observation) => {
-      if (!observation || !observation._provenance) {
-        return observation;
-      }
-      return {
-        ...observation,
-        title: observation.title ? cleanContaminationText(observation.title) : observation.title,
-        narrative: observation.narrative ? cleanContaminationText(observation.narrative) : observation.narrative,
-        facts: observation.facts?.map((fact) => (
-          typeof fact === 'string'
-            ? cleanContaminationText(fact)
-            : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
-        )),
-      };
-    });
-  }
-
   // Run content through filter pipeline for quality scoring
   const filterPipeline = createFilterPipeline();
-  filterPipeline.filter(allMessages);
+  const filteredMessages = filterPipeline.filter(allMessages);
+  const normalizedMessages = filteredMessages.map((message) => {
+    const prompt = typeof message.prompt === 'string'
+      ? message.prompt
+      : (typeof message.content === 'string' ? message.content : '');
+    return {
+      prompt,
+      content: typeof message.content === 'string' ? message.content : prompt,
+      timestamp: typeof message.timestamp === 'string' ? message.timestamp : undefined,
+    };
+  });
   const filterStats: FilterStats = filterPipeline.getStats();
 
   log(`   Content quality: ${filterStats.qualityScore}/100 (${filterStats.noiseFiltered} noise, ${filterStats.duplicatesRemoved} duplicates filtered from ${filterStats.totalProcessed} items)`);
@@ -856,12 +896,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
 
   const implSummary = generateImplementationSummary(
-    allMessages,
+    normalizedMessages,
     (collectedData?.observations || []) as Parameters<typeof generateImplementationSummary>[1]
   );
 
   const semanticFileChanges: Map<string, SemanticFileInfo> = extractFileChanges(
-    allMessages,
+    normalizedMessages,
     (collectedData?.observations || []) as Parameters<typeof extractFileChanges>[1]
   );
   const enhancedFiles: FileChange[] = enhanceFilesWithSemanticDescriptions(

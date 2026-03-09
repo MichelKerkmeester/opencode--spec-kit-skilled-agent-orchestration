@@ -452,7 +452,9 @@ function extractPendingTasks(
 
     if (obs.facts) {
       for (const fact of obs.facts) {
-        const factText = typeof fact === 'string' ? fact : (fact as { text?: string }).text || '';
+        const factText = typeof fact === 'string'
+          ? fact
+          : (fact && typeof fact === 'object' ? (fact as { text?: string }).text || '' : '');
         for (const pattern of taskPatterns) {
           let match: RegExpExecArray | null;
           pattern.lastIndex = 0;
@@ -675,9 +677,11 @@ async function collectSessionData(
     });
   }
 
-  const sessionInfo = collectedData.recentContext?.[0] || {};
-  const observations: Observation[] = collectedData.observations || [];
-  const userPrompts: UserPrompt[] = collectedData.userPrompts || [];
+  const data: CollectedDataFull = { ...collectedData };
+  const sessionInfo = data.recentContext?.[0] || {};
+  let observations: Observation[] = data.observations || [];
+  observations = observations.slice(0, CONFIG.MAX_OBSERVATIONS);
+  const userPrompts: UserPrompt[] = data.userPrompts || [];
   const messageCount: number = userPrompts.length || 0;
 
   if (shouldAutoSave(messageCount)) {
@@ -685,7 +689,7 @@ async function collectSessionData(
   }
 
   const duration: string = calculateSessionDuration(userPrompts, now);
-  const FILES: FileChange[] = extractFilesFromData(collectedData, observations);
+  const FILES: FileChange[] = extractFilesFromData(data, observations);
 
   const OUTCOMES: OutcomeEntry[] = observations
     .slice(0, 10)
@@ -720,7 +724,7 @@ async function collectSessionData(
 
   const OBSERVATIONS_DETAILED: ObservationDetailed[] = buildObservationsWithAnchors(
     observations,
-    collectedData.SPEC_FOLDER || folderName
+    data.SPEC_FOLDER || folderName
   );
 
   const sessionId: string = generateSessionId();
@@ -730,13 +734,13 @@ async function collectSessionData(
   let SPEC_FILES: SpecFileEntry[] = [];
   const activeSpecsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
   // Backfill SPEC_FOLDER from CLI-known folder name (spec 013 Phase 0)
-  if (!collectedData.SPEC_FOLDER && folderName) {
-    collectedData.SPEC_FOLDER = folderName;
+  if (!data.SPEC_FOLDER && folderName) {
+    data.SPEC_FOLDER = folderName;
   }
   // Path traversal guard: reject SPEC_FOLDER values that escape the specs directory
   let specFolderPath: string | null = null;
-  if (collectedData.SPEC_FOLDER) {
-    const candidate = path.resolve(activeSpecsDir, collectedData.SPEC_FOLDER);
+  if (data.SPEC_FOLDER) {
+    const candidate = path.resolve(activeSpecsDir, data.SPEC_FOLDER);
     const boundary = path.resolve(activeSpecsDir);
     if (candidate === boundary || candidate.startsWith(boundary + path.sep)) {
       specFolderPath = candidate;
@@ -765,18 +769,18 @@ async function collectSessionData(
       FILES: FILES as FileEntry[],
       SPEC_FILES,
       specFolderPath,
-      recentContext: collectedData.recentContext
+      recentContext: data.recentContext
     });
 
   const expiresAtEpoch: number = calculateExpiryEpoch(importanceTier, createdAtEpoch);
 
-  const preflightPostflightData = extractPreflightPostflightData(collectedData);
+  const preflightPostflightData = extractPreflightPostflightData(data);
 
   const continueSessionData = buildContinueSessionData({
     observations,
     userPrompts,
     toolCounts,
-    recentContext: collectedData.recentContext,
+    recentContext: data.recentContext,
     FILES,
     SPEC_FILES,
     summary: SUMMARY,

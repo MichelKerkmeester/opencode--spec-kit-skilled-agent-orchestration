@@ -34,6 +34,13 @@ export interface CollectedDataForDecisions {
 }
 
 const DECISION_CUE_REGEX = /(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)/i;
+const HIGH_CONFIDENCE_THRESHOLD = 0.8;
+const MEDIUM_CONFIDENCE_THRESHOLD = 0.5;
+
+function normalizeConfidence(value: number): number {
+  const normalized = value > 1 ? value / 100 : value;
+  return Math.min(1, Math.max(0, normalized));
+}
 
 function extractSentenceAroundCue(text: string): string | null {
   if (!text || typeof text !== 'string') {
@@ -205,7 +212,7 @@ async function extractDecisions(
         const rationale: string = rationaleFromInput || fallbackRationale;
         const hasEvidence = rationaleFromInput.length > 0;
         const hasAlternatives = rawAlternatives.length >= 2;
-        const confidence = hasAlternatives ? 70 : (hasEvidence ? 65 : 50);
+        const confidence = normalizeConfidence(hasAlternatives ? 70 : (hasEvidence ? 65 : 50));
         const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
           || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
 
@@ -243,9 +250,9 @@ async function extractDecisions(
     return {
       DECISIONS: processedDecisions.map((d) => validateDataStructure(d) as DecisionRecord),
       DECISION_COUNT: processedDecisions.length,
-      HIGH_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= 80).length,
-      MEDIUM_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= 50 && d.CONFIDENCE < 80).length,
-      LOW_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE < 50).length,
+      HIGH_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD).length,
+      MEDIUM_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD && d.CONFIDENCE < HIGH_CONFIDENCE_THRESHOLD).length,
+      LOW_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE < MEDIUM_CONFIDENCE_THRESHOLD).length,
       FOLLOWUP_COUNT: 0
     };
   }
@@ -324,8 +331,8 @@ async function extractDecisions(
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
     const parsedConfidence = confidenceMatch ? parseInt(confidenceMatch[1], 10) : NaN;
     const CONFIDENCE: number = Number.isFinite(parsedConfidence)
-      ? Math.max(0, Math.min(100, parsedConfidence))
-      : baseConfidence;
+      ? normalizeConfidence(parsedConfidence)
+      : normalizeConfidence(baseConfidence);
 
     const PROS = facts
       .filter((f) => {
@@ -416,9 +423,9 @@ async function extractDecisions(
     return decision;
   });
 
-  const highConfidence: number = decisions.filter((d) => d.CONFIDENCE >= 80).length;
-  const mediumConfidence: number = decisions.filter((d) => d.CONFIDENCE >= 50 && d.CONFIDENCE < 80).length;
-  const lowConfidence: number = decisions.filter((d) => d.CONFIDENCE < 50).length;
+  const highConfidence: number = decisions.filter((d) => d.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD).length;
+  const mediumConfidence: number = decisions.filter((d) => d.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD && d.CONFIDENCE < HIGH_CONFIDENCE_THRESHOLD).length;
+  const lowConfidence: number = decisions.filter((d) => d.CONFIDENCE < MEDIUM_CONFIDENCE_THRESHOLD).length;
   const followupCount: number = decisions.reduce((count, d) => count + d.FOLLOWUP.length, 0);
 
   // Add anchor IDs for searchable decision retrieval
@@ -437,8 +444,8 @@ async function extractDecisions(
     anchorId = validateAnchorUniqueness(anchorId, usedAnchorIds);
     usedAnchorIds.push(anchorId);
 
-    const importance: string = decision.CONFIDENCE >= 80 ? 'high'
-      : decision.CONFIDENCE >= 50 ? 'medium'
+    const importance: string = decision.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD ? 'high'
+      : decision.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD ? 'medium'
       : 'low';
 
     return {

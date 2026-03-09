@@ -3,21 +3,28 @@
 // ---------------------------------------------------------------
 // Path normalization, description cleaning, and file categorization utilities
 
+import { posix as pathPosix } from 'node:path';
+
 // 1. PATH UTILITIES
 
 function toRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';
-  let cleaned: string = filePath;
+  let cleaned: string = pathPosix.normalize(filePath.replace(/\\/g, '/'));
+  const normalizedProjectRoot = projectRoot
+    ? pathPosix.normalize(projectRoot.replace(/\\/g, '/'))
+    : undefined;
 
-  if (projectRoot && cleaned.startsWith(projectRoot)) {
-    cleaned = cleaned.slice(projectRoot.length);
+  if (normalizedProjectRoot && cleaned.startsWith(normalizedProjectRoot)) {
+    cleaned = cleaned.slice(normalizedProjectRoot.length);
     if (cleaned.startsWith('/')) cleaned = cleaned.slice(1);
   }
 
   cleaned = cleaned.replace(/^\.\//, '');
+  if (cleaned === '.') cleaned = '';
+  if (cleaned.includes('../') || cleaned.startsWith('..')) return '';
 
   if (cleaned.length > 60) {
-    const parts: string[] = cleaned.replace(/\\/g, '/').split('/');
+    const parts: string[] = cleaned.split('/');
     if (parts.length > 3) {
       return `${parts[0]}/.../${parts.slice(-2).join('/')}`;
     }
