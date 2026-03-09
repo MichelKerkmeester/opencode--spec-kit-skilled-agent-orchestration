@@ -2,6 +2,7 @@
 // MODULE: Input Normalizer
 // ---------------------------------------------------------------
 // Validates, normalizes, and transforms raw input data into structured session format
+import { structuredLog } from './logger';
 
 // 1. TYPES
 
@@ -66,7 +67,7 @@ export interface DecisionItemObject {
   chosen?: string;
   rationale?: string;
   reason?: string;
-  alternatives?: string[];
+  alternatives?: Array<string | Record<string, unknown>>;
 }
 
 /** Normalized data in MCP-compatible format */
@@ -143,7 +144,9 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
     decisionText = decisionItem.decision || decisionItem.title || 'Unknown decision';
     chosenApproach = decisionItem.chosenOption || decisionItem.chosen || decisionItem.decision || null;
     rationale = decisionItem.rationale || decisionItem.reason || decisionText;
-    alternatives = decisionItem.alternatives || [];
+    alternatives = (decisionItem.alternatives || []).map(alt =>
+      typeof alt === 'string' ? alt : (alt as Record<string, unknown>).label as string || (alt as Record<string, unknown>).title as string || (alt as Record<string, unknown>).name as string || JSON.stringify(alt)
+    );
 
     if (decisionItem.rationale) {
       decisionText = `${decisionText} - ${decisionItem.rationale}`;
@@ -451,15 +454,24 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
 
   // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
   // content (e.g., SGQS/skill-graphs) from leaking into unrelated memory files.
-  // Falls back to full prompt list to preserve downstream semantics (duration
-  // calc, first-prompt summary, flowchart seeding all expect chronological list).
+  // Falls back to all prompts when no keyword match is found, because generic
+  // prompts ("continue from previous work") are common and losing them erases
+  // the entire conversation timeline (extractConversations iterates userPrompts).
   const userPrompts: UserPrompt[] = (() => {
     if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
     const filtered = allUserPrompts.filter(p => {
       const lower = p.prompt.toLowerCase();
       return relevanceKeywords.some(kw => lower.includes(kw.toLowerCase()));
     });
-    return filtered.length > 0 ? filtered : allUserPrompts;
+    if (filtered.length === 0) {
+      structuredLog('warn', 'Spec relevance filter produced no user prompt matches — using all prompts', {
+        specFolderHint,
+        relevanceKeywordsCount: relevanceKeywords.length,
+        totalUserPrompts: allUserPrompts.length
+      });
+      return allUserPrompts;
+    }
+    return filtered;
   })();
 
   const observations: Observation[] = [];
@@ -535,7 +547,16 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
         return relevanceKeywords.some(kw => combined.includes(kw.toLowerCase()));
       })
     : exchanges;
-  const contextExchanges = relevantExchanges.length > 0 ? relevantExchanges : exchanges;
+  const contextExchanges = (() => {
+    if (specFolderHint && relevanceKeywords.length > 0 && relevantExchanges.length === 0) {
+      structuredLog('warn', 'Spec relevance filter produced no context exchange matches', {
+        specFolderHint,
+        relevanceKeywordsCount: relevanceKeywords.length,
+        totalExchanges: exchanges.length
+      });
+    }
+    return relevantExchanges;
+  })();
   const recentContext: RecentContext[] = contextExchanges.length > 0 ? [{
     request: contextExchanges[0].userInput || sessionTitle || 'OpenCode session',
     learning: contextExchanges[contextExchanges.length - 1]?.assistantResponse || ''

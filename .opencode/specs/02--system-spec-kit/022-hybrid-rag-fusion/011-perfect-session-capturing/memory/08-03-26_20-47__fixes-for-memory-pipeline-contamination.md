@@ -1,10 +1,12 @@
 ---
-title: "Fixes for memory pipeline [012-perfect-session-capturing/08-03-26_20-47__fixes-for-memory-pipeline-contamination]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Fixes for memory pipeline [011-perfect-session-capturing/08-03-26_20-47__fixes-for-memory-pipeline-contamination]"
+description: "Fixed memory pipeline contamination by addressing slug contamination, input normalization, workflow quality gating, and the remaining P0/P1 remediation set."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "memory pipeline contamination"
+  - "slug contamination"
+  - "input normalizer"
+  - "quality gate abort"
+  - "alignment check"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 0.80
@@ -22,7 +24,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-08 |
 | Session ID | session-1772999250628-sNW179QCt |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -85,13 +87,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing
 Last: 10-agent Copilot delegation fixed remaining P0/P1 findings
 Next: Continue implementation
 ```
@@ -292,9 +294,9 @@ Get to 100% completion on spec 012
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -306,16 +308,16 @@ Get to 100% completion on spec 012
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing --force
 ```
 
 ### Recovery Priority
@@ -351,7 +353,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1772999250628-sNW179QCt"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing"
 channel: "main"
 
 # Classification
@@ -483,7 +485,7 @@ related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing"
 child_sessions:
 
   []

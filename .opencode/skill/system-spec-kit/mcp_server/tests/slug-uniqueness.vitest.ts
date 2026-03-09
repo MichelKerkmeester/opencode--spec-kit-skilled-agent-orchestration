@@ -9,33 +9,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { randomBytes } from 'node:crypto';
-
-// Inline implementation for testing since the function is in the scripts project
-// and cannot be directly imported. This mirrors the exact logic in slug-utils.ts.
-function ensureUniqueMemoryFilename(contextDir: string, filename: string): string {
-  let entries: string[];
-  try {
-    entries = fs.readdirSync(contextDir).filter(f => f.endsWith('.md'));
-  } catch {
-    return filename;
-  }
-
-  const existing = new Set(entries);
-  if (!existing.has(filename)) return filename;
-
-  const ext = path.extname(filename);
-  const base = filename.slice(0, -ext.length);
-
-  for (let i = 1; i <= 100; i++) {
-    const candidate = `${base}-${i}${ext}`;
-    if (!existing.has(candidate)) return candidate;
-  }
-
-  // Fail-safe: append truly random hex suffix
-  const hash = randomBytes(6).toString('hex');
-  return `${base}-${hash}${ext}`;
-}
+import { ensureUniqueMemoryFilename } from '../../scripts/dist/utils/slug-utils';
 
 let tmpDir: string;
 

@@ -1,33 +1,18 @@
 ---
-title: "To promote a memory to constitutional tier (always surfaced) [001-hybrid-rag-fusion-epic/20-02-26_09-32__multi-agent-rag-architecture-research]"
+title: "Multi-agent RAG architecture research session"
+description: "Synthesized tri-hybrid search, RRF, MMR, and graph-augmented retrieval into a SQLite-based upgrade blueprint for the system-spec-kit memory MCP server."
+trigger_phrases:
+  - "tri-hybrid search"
+  - "reciprocal rank fusion"
+  - "maximal marginal relevance"
+  - "graph-augmented retrieval"
+  - "transparent reasoning module"
+quality_score: 1.00
+quality_flags: []
 importance_tier: "normal"
 contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
-
 ---
 
 # SESSION SUMMARY
@@ -61,16 +46,16 @@ contextType: "research"
 | Knowledge Score | N/A | Auto-generated session |
 | Uncertainty Score | N/A | Auto-generated session |
 | Context Score | N/A | Auto-generated session |
-| Timestamp |  | Session start |
+| Timestamp | N/A | Session start |
 
 **Initial Gaps Identified:**
 
 - No significant gaps identified at session start
 
 **Dual-Threshold Status at Start:**
-- Confidence: %
-- Uncertainty: 
-- Readiness: 
+- Confidence: N/A
+- Uncertainty: N/A
+- Readiness: N/A
 <!-- /ANCHOR:preflight -->
 
 ---

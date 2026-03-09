@@ -186,12 +186,37 @@ function parseChecklistDoc(content: string | null): ChecklistStats {
 
 function parseDecisionDoc(content: string | null): SpecFolderExtraction['decisions'] {
   if (!content) return [];
+  const extractLabeledBlock = (section: string, label: 'Context' | 'Decision'): string => {
+    const headingMatch = section.match(new RegExp(`###\\s+${label}([\\s\\S]*?)(?:\\n###\\s+|\\n##\\s+|$)`, 'i'))?.[1] || '';
+    if (headingMatch.trim()) return headingMatch;
+    if (label === 'Context') {
+      // Match both **Context:** and **Context**: (colon inside or outside bold)
+      return section.match(/\*\*Context(?::\*\*|\*\*:)\s*([\s\S]*?)(?:\*\*Decision(?::\*\*|\*\*:)|\n##\s+|$)/i)?.[1] || '';
+    }
+    // Match both **Decision:** and **Decision**: (colon inside or outside bold)
+    return section.match(/\*\*Decision(?::\*\*|\*\*:)\s*([\s\S]*?)(?:\*\*(?:Rationale|Alternatives(?:\s+Considered|\s+Rejected)?|Consequences|Notes?|Tradeoffs?|Chosen|We chose)[^*]*(?:\*\*:?|:\*\*)|\n##\s+|$)/i)?.[1] || '';
+  };
+
+  const extractChosen = (decisionBlock: string): string => {
+    // Match both **We chose:** / **Chosen:** and **We chose**: / **Chosen**: (colon inside or outside bold)
+    const explicitChosen = decisionBlock.match(/\*\*(?:We chose|Chosen)(?::\*\*|\*\*:)\s*([^\n]+)/i)?.[1] || '';
+    if (explicitChosen.trim()) return cleanText(explicitChosen);
+
+    const firstSentence = decisionBlock
+      .replace(/^\*\*Decision(?::\*\*|\*\*:)\s*/i, '')
+      .trim()
+      .match(/(.+?[.!?])(?:\s|$)/)?.[1]
+      || decisionBlock.replace(/^\*\*Decision(?::\*\*|\*\*:)\s*/i, '').trim().split('\n')[0] || '';
+
+    return cleanText(firstSentence);
+  };
+
   const sections = content.split(/^##\s+/m).slice(1);
   return sections.map((section) => {
     const title = cleanText(section.split('\n')[0] || 'Decision');
-    const rationale = cleanText(section.match(/###\s+Context([\s\S]*?)(?:\n###\s+|\n##\s+|$)/i)?.[1] || '');
-    const decisionBlock = cleanText(section.match(/###\s+Decision([\s\S]*?)(?:\n###\s+|\n##\s+|$)/i)?.[1] || '');
-    const chosen = cleanText(decisionBlock.match(/\*\*We chose\*\*:\s*(.+)/i)?.[1] || decisionBlock);
+    const rationale = cleanText(extractLabeledBlock(section, 'Context'));
+    const decisionBlock = extractLabeledBlock(section, 'Decision');
+    const chosen = extractChosen(decisionBlock);
     return title && chosen ? { title, rationale, chosen, _provenance: 'spec-folder' as const } : null;
   }).filter((entry): entry is SpecFolderExtraction['decisions'][number] => Boolean(entry));
 }

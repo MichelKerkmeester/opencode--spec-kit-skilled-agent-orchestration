@@ -20,7 +20,7 @@ export type { DecisionOption, DecisionRecord, DecisionData };
 
 /** Decision-focused subset of collected session data. */
 export interface CollectedDataForDecisions {
-  _manualDecisions?: Array<string | Record<string, string>>;
+  _manualDecisions?: Array<string | Record<string, unknown>>;
   SPEC_FOLDER?: string;
   userPrompts?: Array<{ prompt?: string }>;
   observations?: Array<{
@@ -126,28 +126,88 @@ async function extractDecisions(
     const usedAnchorIds: string[] = [];
 
     const processedDecisions: DecisionRecord[] = manualDecisions.map(
-      (manualDec: string | Record<string, string>, index: number): DecisionRecord => {
+      (manualDec: string | Record<string, unknown>, index: number): DecisionRecord => {
+        const manualObj = typeof manualDec === 'object' && manualDec !== null && !Array.isArray(manualDec)
+          ? manualDec as Record<string, unknown>
+          : null;
+
+        const toText = (value: unknown): string => typeof value === 'string' ? value.trim() : '';
         let decisionText: string;
         if (typeof manualDec === 'string') {
           decisionText = manualDec;
-        } else if (typeof manualDec === 'object' && manualDec !== null) {
-          decisionText = manualDec.decision || manualDec.title || JSON.stringify(manualDec);
+        } else if (manualObj) {
+          decisionText = toText(manualObj.decision) || toText(manualObj.title) || JSON.stringify(manualObj);
         } else {
           decisionText = `Decision ${index + 1}`;
         }
 
         const titleMatch = decisionText.match(/^(?:Decision\s*\d+:\s*)?(.+?)(?:\s*[-\u2013\u2014]\s*(.+))?$/i);
         const title: string = titleMatch?.[1]?.trim() || `Decision ${index + 1}`;
-        const rationale: string = titleMatch?.[2]?.trim() || decisionText;
+        const fallbackRationale: string = titleMatch?.[2]?.trim() || decisionText;
 
-        const OPTIONS: DecisionOption[] = [{
-          OPTION_NUMBER: 1,
-          LABEL: 'Chosen Approach',
-          DESCRIPTION: title,
-          HAS_PROS_CONS: false,
-          PROS: [],
-          CONS: []
-        }];
+        const rawAlternatives = manualObj && Array.isArray(manualObj.alternatives)
+          ? manualObj.alternatives
+          : (manualObj && Array.isArray(manualObj.options) ? manualObj.options : []);
+
+        const OPTIONS: DecisionOption[] = rawAlternatives.length > 0
+          ? rawAlternatives.map((alternative, optionIndex) => {
+            if (typeof alternative === 'string') {
+              return {
+                OPTION_NUMBER: optionIndex + 1,
+                LABEL: `Option ${optionIndex + 1}`,
+                DESCRIPTION: alternative.trim() || `Alternative ${optionIndex + 1}`,
+                HAS_PROS_CONS: false,
+                PROS: [],
+                CONS: []
+              };
+            }
+
+            if (typeof alternative === 'object' && alternative !== null) {
+              const optionObj = alternative as Record<string, unknown>;
+              const optionLabel = toText(optionObj.label) || toText(optionObj.title) || toText(optionObj.name) || `Option ${optionIndex + 1}`;
+              const optionDescription = toText(optionObj.description) || toText(optionObj.details) || toText(optionObj.summary) || optionLabel;
+              const optionPros = Array.isArray(optionObj.pros)
+                ? optionObj.pros.map((pro) => ({ PRO: String(pro).trim() })).filter((pro) => pro.PRO.length > 0)
+                : [];
+              const optionCons = Array.isArray(optionObj.cons)
+                ? optionObj.cons.map((con) => ({ CON: String(con).trim() })).filter((con) => con.CON.length > 0)
+                : [];
+
+              return {
+                OPTION_NUMBER: optionIndex + 1,
+                LABEL: optionLabel,
+                DESCRIPTION: optionDescription,
+                HAS_PROS_CONS: optionPros.length > 0 || optionCons.length > 0,
+                PROS: optionPros,
+                CONS: optionCons
+              };
+            }
+
+            return {
+              OPTION_NUMBER: optionIndex + 1,
+              LABEL: `Option ${optionIndex + 1}`,
+              DESCRIPTION: `Alternative ${optionIndex + 1}`,
+              HAS_PROS_CONS: false,
+              PROS: [],
+              CONS: []
+            };
+          })
+          : [{
+            OPTION_NUMBER: 1,
+            LABEL: 'Chosen Approach',
+            DESCRIPTION: title,
+            HAS_PROS_CONS: false,
+            PROS: [],
+            CONS: []
+          }];
+
+        const rationaleFromInput = toText(manualObj?.rationale) || toText(manualObj?.reasoning);
+        const rationale: string = rationaleFromInput || fallbackRationale;
+        const hasEvidence = rationaleFromInput.length > 0;
+        const hasAlternatives = rawAlternatives.length >= 2;
+        const confidence = hasAlternatives ? 70 : (hasEvidence ? 65 : 50);
+        const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
+          || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
 
         let anchorId: string = generateAnchorId(title, 'decision', specNumber);
         anchorId = validateAnchorUniqueness(anchorId, usedAnchorIds);
@@ -159,15 +219,15 @@ async function extractDecisions(
           CONTEXT: rationale,
           TIMESTAMP: formatTimestamp(),
           OPTIONS,
-          CHOSEN: 'Chosen Approach',
+          CHOSEN: chosenLabel,
           RATIONALE: rationale,
           HAS_PROS: false,
           PROS: [],
           HAS_CONS: false,
           CONS: [],
-          CONFIDENCE: OPTIONS.length > 1 ? 70 : (rationale !== title ? 65 : 50),
-          HAS_EVIDENCE: false,
-          EVIDENCE: [],
+          CONFIDENCE: confidence,
+          HAS_EVIDENCE: hasEvidence,
+          EVIDENCE: hasEvidence ? [{ EVIDENCE_ITEM: rationaleFromInput }] : [],
           HAS_CAVEATS: false,
           CAVEATS: [],
           HAS_FOLLOWUP: false,

@@ -480,6 +480,13 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       if (folderEntry) {
         byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, folderEntry);
+        // AI-WHY: Auto-repair stale description.json so next lookup is fast (F7 fix)
+        try {
+          const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
+          if (repaired) savePerFolderDescription(repaired, discoveredFolder.folderPath);
+        } catch {
+          /* Best-effort — non-fatal */
+        }
       }
     }
   }
@@ -518,8 +525,10 @@ function _processSpecFolder(
     return null;
   }
 
-  const description = extractDescription(content);
-  if (!description) return null;
+  const rawDescription = extractDescription(content);
+  // AI-WHY: Fall back to folder name when spec.md has no extractable title (F8 fix)
+  const description =
+    rawDescription || slugifyFolderName(path.basename(folderPath)).replace(/-/g, ' ') || path.basename(folderPath);
 
   const keywords = extractKeywords(description);
   const normalizedRelativeFolder = path.relative(basePath, folderPath).replace(/\\/g, '/');

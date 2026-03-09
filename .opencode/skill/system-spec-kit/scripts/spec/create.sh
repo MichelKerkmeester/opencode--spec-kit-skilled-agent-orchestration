@@ -807,6 +807,8 @@ if [[ "$PHASE_MODE" = true ]]; then
     fi
 
     # ── Generate description.json for parent ──
+    # NOTE: Description generation is manually tested. Automated coverage tracked as known gap (F10).
+    # Key invariants: parent and child both use $(dirname FEATURE_DIR) as base. Failure is non-fatal.
     _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
     if [[ -f "$_DESC_SCRIPT" ]]; then
       if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
@@ -841,7 +843,8 @@ if [[ "$PHASE_MODE" = true ]]; then
         # Generate description.json for child phase
         if [[ -f "$_DESC_SCRIPT" ]]; then
           _phase_name="${_child_folder#*-}"  # strip numeric prefix
-          if node "$_DESC_SCRIPT" "$_child_path" "$FEATURE_DIR" \
+          # AI-WHY: Use specs root as base so parentChain includes full ancestry (F6 fix)
+          if node "$_DESC_SCRIPT" "$_child_path" "$(dirname "$FEATURE_DIR")" \
             --description "Phase ${_i}: ${_phase_name}"; then
             _child_created_files+=("description.json")
           else

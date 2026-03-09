@@ -1,4 +1,10 @@
 # Implementation Summary: Perfect Session Capturing
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + merged-partitions | v2.2 -->
+
+## Part I: Audit & Remediation
+
 ## Overview
 Tasks and the remediation manifest record 20 implemented fixes across eleven files in the session-capturing pipeline. Checklist evidence records a clean `npx tsc --build`, and source verification confirms additional follow-up hardening in `workflow.ts`, `input-normalizer.ts`, and `slug-utils.ts`. The verified changes strengthen session ID generation, atomic writes, contamination filtering, extraction correctness, configurability, and memory-quality protection.
 
@@ -108,6 +114,15 @@ Tasks and the remediation manifest record 20 implemented fixes across eleven fil
 | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Added descriptive tool observation titles and spec-folder relevance filtering for captured content. |
 | `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts` | Added contamination patterns that reject generic tool-derived memory-name candidates. |
 
+## Part II: Stateless Quality Improvements (Planned)
+Part II implementation has not yet begun. The planned stateless-quality roadmap from spec 013 is:
+
+1. Phase 0: OpenCode-path hardening (field-name mapping, prompt relevance filtering, SPEC_FOLDER backfill)
+2. Phase 1: Enrichment hook plus spec-folder mining with provenance markers
+3. Phase 2: Git context mining plus ACTION-preserving file extraction
+4. Phase 3: Claude Code capture integration (deferred)
+5. Phase 4: Quality scoring calibration (deferred)
+
 ## Remaining Work
 - [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy scoring passes (100/100); v2 scoring at 0.80, below 0.85 target; needs v2 calibration
 - [x] No truncation artifacts in generated memory files — VERIFIED: 0 PLACEHOLDER/TRUNCATED/undefined artifacts in 503-line output
@@ -115,3 +130,15 @@ Tasks and the remediation manifest record 20 implemented fixes across eleven fil
 - [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed in runtime test
 - [ ] All MEDIUM findings from audit resolved — REMAINING: ~67 medium findings not yet addressed
 - [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines); 4 samples remaining
+
+### Part II Remaining Work (Planned)
+- [ ] Phase 0: OpenCode-path hardening tasks completed and validated
+- [ ] Phase 1: Spec-folder extractor and enrichment hook implemented with `_provenance: 'spec-folder'`
+- [ ] Phase 2: Git context extractor implemented with `_provenance: 'git'` and ACTION preservation
+- [ ] Phase 3: Claude Code capture integration completed (deferred)
+- [ ] Phase 4: Quality scorer calibration completed (deferred)
+- [ ] `qualityValidation.valid === true` for stateless saves with no V7/V8/V9 failures
+- [ ] Legacy quality score >= 60/100 on repos with git history (secondary signal)
+- [ ] No regression in stateful (JSON) mode quality and behavior
+- [ ] Semantic indexing succeeds for stateless saves with memory ID assignment
+- [ ] New enrichment modules and stateless regression paths covered by tests

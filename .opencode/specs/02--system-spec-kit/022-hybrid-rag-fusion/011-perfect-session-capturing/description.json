@@ -1,13 +1,17 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing",
   "level": 3,
-  "description": "Perfect Session Capturing — Comprehensive audit and remediation of the generate-context pipeline",
+  "description": "Generate-Context Pipeline Quality \u2014 Audit remediation and stateless mode improvements",
   "keywords": [
     "session",
     "capture",
     "memory",
     "generate-context",
-    "quality"
+    "quality",
+    "stateless",
+    "enrichment",
+    "git-mining",
+    "spec-folder-mining"
   ],
   "memorySequence": 3,
   "memoryNameHistory": [

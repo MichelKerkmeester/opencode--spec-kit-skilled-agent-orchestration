@@ -12,6 +12,7 @@ import * as fs from 'node:fs';
 import {
   generatePerFolderDescription,
   savePerFolderDescription,
+  loadPerFolderDescription,
   extractKeywords,
   slugifyFolderName,
 } from '@spec-kit/mcp-server/lib/search/folder-discovery';
@@ -55,6 +56,7 @@ function main(): void {
 
   if (explicitDescription) {
     // Build from explicit description
+    const existing = loadPerFolderDescription(folderPath);
     const folderName = path.basename(folderPath);
     const numMatch = folderName.match(/^(\d+)/);
     const specId = numMatch ? numMatch[1] : '';
@@ -74,8 +76,8 @@ function main(): void {
       specId,
       folderSlug,
       parentChain,
-      memorySequence: 0,
-      memoryNameHistory: [],
+      memorySequence: existing?.memorySequence ?? 0,
+      memoryNameHistory: existing?.memoryNameHistory ?? [],
     };
   } else {
     // Generate from spec.md

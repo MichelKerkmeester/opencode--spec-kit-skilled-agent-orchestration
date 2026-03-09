@@ -1,5 +1,5 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-feature-catalog",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-feature-catalog",
   "level": 3,
   "description": "Feature Catalog Comprehensive Audit & Remediation",
   "keywords": [
@@ -10,7 +10,7 @@
     "verification"
   ],
   "lastUpdated": "2026-03-08T18:45:00.000Z",
-  "specId": "011",
+  "specId": "012",
   "folderSlug": "feature-catalog",
   "parentChain": [
     "02--system-spec-kit",

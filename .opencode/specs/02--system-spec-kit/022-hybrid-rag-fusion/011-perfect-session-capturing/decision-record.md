@@ -1,3 +1,11 @@
+# Decision Record: Generate-Context Pipeline Quality
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + merged-partitions | v2.2 -->
+
+<!-- ANCHOR:part-i -->
+## Part I: Audit & Remediation
+
 # Decision Record: Perfect Session Capturing
 
 ## DR-001: 25-Agent Audit Strategy
@@ -60,3 +68,27 @@
 - 5% threshold: too permissive, allowed cross-spec contamination (original value, replaced by RC-4)
 - No blocking: allows cross-spec contamination
 - Full path matching: too brittle, breaks on restructuring
+
+<!-- /ANCHOR:part-i -->
+<!-- ANCHOR:part-ii -->
+## Part II: Stateless Quality Improvements
+
+## DR-007: Merge 012 + 013 Into Unified Spec
+
+**Context:** Both specs target the same `generate-context.js` pipeline with 4+ overlapping source files.
+
+**Decision:** Merge 013 into 012's folder, keeping 012's path for memory index stability.
+
+**Rationale:** Eliminates duplicate tracking, creates unified roadmap, preserves MCP memory references.
+
+**Alternatives Rejected:**
+1. Keep separate — duplicate tracking
+2. New folder number — breaks memory references
+3. Phase sub-folders — not standard convention
+
+<!-- /ANCHOR:part-ii -->
+
+## Consequences
+
+- Unified spec tracking is anchored to `012-perfect-session-capturing`, preserving existing memory-index references.
+- Audit/remediation history (Part I) and planned stateless improvements (Part II) now evolve in one canonical folder.

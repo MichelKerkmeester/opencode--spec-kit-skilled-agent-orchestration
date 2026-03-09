@@ -1,10 +1,12 @@
 ---
-title: "Fixed all 13 review [012-perfect-session-capturing/09-03-26_11-28__fixed-all-13-review-findings-from-gpt-5-4-triple]"
-description: "Session context memory template for Spec Kit indexing."
+title: "Fixed all 13 review [011-perfect-session-capturing/09-03-26_11-28__fixed-all-13-review-findings-from-gpt-5-4-triple]"
+description: "Fixed all 13 GPT-5.4 triple-review findings for perfect session capturing across code and doc files using two batches of parallel Copilot CLI agents."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "GPT-5.4 triple-review"
+  - "perfect session capturing"
+  - "contamination filter"
+  - "file writer"
+  - "parallel Copilot agents"
 importance_tier: "critical"
 contextType: "general"
 quality_score: 0.80
@@ -22,7 +24,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-09 |
 | Session ID | session-1773052116929-cbd552fc83ac |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -86,13 +88,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing
 Last: Fixed all 13 review findings from GPT-5.4 triple-review across 8 code files and 3 doc files using...
 Next: Continue implementation
 ```
@@ -186,7 +188,7 @@ Fixed all 13 review findings from GPT-5.4 triple-review across 8 code files and 
 | `.opencode/.../extractors/(merged-small-files)` | Tree-thinning merged 3 small files (contamination-filter.ts, decision-extractor.ts, opencode-capture.ts). Merged from .opencode/.../extractors/contamination-filter.ts : File modified (description pending) | Merged from .opencode/.../extractors/decision-extractor.ts : File modified (description pending) | Merged from .opencode/.../extractors/opencode-capture.ts : File modified (description pending) |
 | `.opencode/.../utils/(merged-small-files)` | Tree-thinning merged 1 small files (input-normalizer.ts). Merged from .opencode/.../utils/input-normalizer.ts : File modified (description pending) |
 | `.opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)` | Tree-thinning merged 1 small files (slug-utils.ts). Merged from .opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts : File modified (description pending) |
-| `.opencode/.../012-perfect-session-capturing/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, decision-record.md). Merged from .opencode/.../012-perfect-session-capturing/checklist.md : File modified (description pending) | Merged from .opencode/.../012-perfect-session-capturing/decision-record.md : File modified (description pending) |
+| `.opencode/.../011-perfect-session-capturing/(merged-small-files)` | Tree-thinning merged 2 small files (checklist.md, decision-record.md). Merged from .opencode/.../011-perfect-session-capturing/checklist.md : File modified (description pending) | Merged from .opencode/.../011-perfect-session-capturing/decision-record.md : File modified (description pending) |
 
 <!-- /ANCHOR:summary -->
 
@@ -281,9 +283,9 @@ Fixed all 13 review findings from GPT-5.4 triple-review across 8 code files and 
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -295,16 +297,16 @@ Fixed all 13 review findings from GPT-5.4 triple-review across 8 code files and 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing --force
 ```
 
 ### Recovery Priority
@@ -340,7 +342,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773052116929-cbd552fc83ac"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing"
 channel: "main"
 
 # Classification
@@ -445,10 +447,10 @@ trigger_phrases:
   - ".opencode/.../extractors/ merged-small-files .opencode/.../utils/ merged-small-files"
   - "merged-small-files .opencode/.../utils/ merged-small-files .opencode/skill/system-spec-kit/scripts/utils/"
   - ".opencode/.../utils/ merged-small-files .opencode/skill/system-spec-kit/scripts/utils/ merged-small-files"
-  - "merged-small-files .opencode/skill/system-spec-kit/scripts/utils/ merged-small-files .opencode/.../012-perfect-session-capturing/"
-  - ".opencode/skill/system-spec-kit/scripts/utils/ merged-small-files .opencode/.../012-perfect-session-capturing/ merged-small-files"
-  - "merged-small-files .opencode/.../012-perfect-session-capturing/ merged-small-files system"
-  - ".opencode/.../012-perfect-session-capturing/ merged-small-files system spec"
+  - "merged-small-files .opencode/skill/system-spec-kit/scripts/utils/ merged-small-files .opencode/.../011-perfect-session-capturing/"
+  - ".opencode/skill/system-spec-kit/scripts/utils/ merged-small-files .opencode/.../011-perfect-session-capturing/ merged-small-files"
+  - "merged-small-files .opencode/.../011-perfect-session-capturing/ merged-small-files system"
+  - ".opencode/.../011-perfect-session-capturing/ merged-small-files system spec"
   - "system"
   - "spec"
   - "kit/022"
@@ -464,14 +466,14 @@ key_files:
   - ".opencode/.../extractors/(merged-small-files)"
   - ".opencode/.../utils/(merged-small-files)"
   - ".opencode/skill/system-spec-kit/scripts/utils/(merged-small-files)"
-  - ".opencode/.../012-perfect-session-capturing/(merged-small-files)"
+  - ".opencode/.../011-perfect-session-capturing/(merged-small-files)"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/012-perfect-session-capturing"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing"
 child_sessions:
 
   []

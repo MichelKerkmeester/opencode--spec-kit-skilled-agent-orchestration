@@ -530,6 +530,12 @@ async function enrichStatelessData(
       }
     }
 
+    const narrativeObservations = (enriched.observations || []).filter(
+      (observation) => observation?._synthetic !== true
+    );
+    // Synthetic observations provide file coverage but do not influence session narrative
+    enriched._narrativeObservations = narrativeObservations;
+
   } catch (err) {
     // Enrichment failure is non-fatal — proceed with whatever data we have
     console.warn(`   Warning: Stateless enrichment failed: ${err instanceof Error ? err.message : String(err)}`);
@@ -725,10 +731,20 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       );
     }
 
+    const narrativeObservations = Array.isArray(
+      (collectedData as CollectedDataFull & { _narrativeObservations?: unknown })._narrativeObservations
+    )
+      ? (collectedData as CollectedDataFull & { _narrativeObservations: CollectedDataFull['observations'] })._narrativeObservations || []
+      : (collectedData.observations || []);
+    const narrativeCollectedData: CollectedDataFull = {
+      ...collectedData,
+      observations: narrativeObservations,
+    };
+
     const [sessionData, conversations, decisions, diagrams, workflowData] = await Promise.all([
     (async () => {
       log('   Collecting session data...');
-      const result = await sessionDataFn(collectedData, specFolderName);
+      const result = await sessionDataFn(narrativeCollectedData, specFolderName);
       log('   Session data collected');
       return result;
     })(),
@@ -752,7 +768,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     })(),
     (async () => {
       log('   Generating workflow flowchart...');
-      const phases = extractPhasesFromData(collectedData as Parameters<typeof extractPhasesFromData>[0]);
+      const phases = extractPhasesFromData(narrativeCollectedData as Parameters<typeof extractPhasesFromData>[0]);
       const patternType: string = flowchartGen.detectWorkflowPattern(phases);
       const phaseDetails = flowchartGen.buildPhaseDetails(phases);
       const features = flowchartGen.extractFlowchartFeatures(phases, patternType);
@@ -1103,6 +1119,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   if (!qualityValidation.valid) {
     warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);
   }
+  if (collectedData._source !== 'file' && !qualityValidation.valid) {
+    const statelessValidationAbortMsg = `QUALITY_GATE_ABORT: Stateless save blocked due to failed validation rules: ${qualityValidation.failedRules.join(', ')}`;
+    warn(statelessValidationAbortMsg);
+    throw new Error(statelessValidationAbortMsg);
+  }
 
   const qualityResult = scoreMemoryQuality(
     files[ctxFilename],
@@ -1166,9 +1187,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const specFolderAbsolute = path.resolve(specFolder);
       const existing = loadPFD(specFolderAbsolute);
       if (existing) {
-        // AI-WHY: Number() coercion handles description.json files where memorySequence
-        // was persisted as a string (e.g. "5") or is undefined — coerces safely to 0 via || 0.
-        existing.memorySequence = (Number(existing.memorySequence) || 0) + 1;
+        // AI-WHY: Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
+        const rawSeq = Number(existing.memorySequence) || 0;
+        // AI-WHY: Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
+        existing.memorySequence = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
         existing.memoryNameHistory = [
           ...(existing.memoryNameHistory || []).slice(-19),
           ctxFilename,

@@ -636,6 +636,75 @@ describe('PI-B3: Per-folder description preference', () => {
   });
 });
 
+describe('F12: mixed-mode aggregation with corrupt/missing/stale combinations', () => {
+  let tmpDir: string;
+
+  beforeEach(() => {
+    tmpDir = createTempWorkspace();
+  });
+
+  afterEach(() => {
+    cleanup(tmpDir);
+  });
+
+  it('includes all folders and falls back to spec.md for stale/corrupt/missing description.json', () => {
+    const specsDir = path.join(tmpDir, 'specs');
+    const freshDir = createSpecFolder(tmpDir, '001-fresh-valid', '# Fresh Spec Title');
+    const staleDir = createSpecFolder(tmpDir, '002-stale-json', '# Stale Spec Title');
+    const corruptDir = createSpecFolder(tmpDir, '003-corrupt-json', '# Corrupt Spec Title');
+    createSpecFolder(tmpDir, '004-no-json', '# Missing Json Spec Title');
+
+    const freshDescription: PerFolderDescription = {
+      specFolder: '001-fresh-valid',
+      description: 'Fresh per-folder description',
+      keywords: ['fresh'],
+      lastUpdated: new Date().toISOString(),
+      specId: '001',
+      folderSlug: 'fresh-valid',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(freshDescription, freshDir);
+
+    const staleDescription: PerFolderDescription = {
+      specFolder: '002-stale-json',
+      description: 'Stale per-folder description',
+      keywords: ['stale'],
+      lastUpdated: new Date('2020-01-01').toISOString(),
+      specId: '002',
+      folderSlug: 'stale-json',
+      parentChain: [],
+      memorySequence: 0,
+      memoryNameHistory: [],
+    };
+    savePerFolderDescription(staleDescription, staleDir);
+    const staleDescPath = path.join(staleDir, 'description.json');
+    const pastTime = new Date('2020-01-01');
+    fs.utimesSync(staleDescPath, pastTime, pastTime);
+
+    fs.writeFileSync(path.join(corruptDir, 'description.json'), '{invalid-json', 'utf-8');
+
+    const cache = generateFolderDescriptions([specsDir]);
+    expect(cache.folders).toHaveLength(4);
+
+    const fresh = cache.folders.find(f => f.specFolder === '001-fresh-valid');
+    const stale = cache.folders.find(f => f.specFolder === '002-stale-json');
+    const corrupt = cache.folders.find(f => f.specFolder === '003-corrupt-json');
+    const missing = cache.folders.find(f => f.specFolder === '004-no-json');
+
+    expect(fresh).toBeDefined();
+    expect(stale).toBeDefined();
+    expect(corrupt).toBeDefined();
+    expect(missing).toBeDefined();
+
+    expect(fresh!.description).toBe('Fresh per-folder description');
+    expect(stale!.description).toBe('Stale Spec Title');
+    expect(corrupt!.description).toBe('Corrupt Spec Title');
+    expect(missing!.description).toBe('Missing Json Spec Title');
+  });
+});
+
 /* --- C2 path containment integration test --- */
 
 describe('C2: generatePerFolderDescription path containment', () => {

@@ -2,39 +2,18 @@
 title: "spec kit code quality session 23-02-26 [003-speckit-quality-and-standards/23-02-26_14-34__spec-kit-code-quality-session]"
 description: "Phase 008 quality closure gate for 139-hybrid-rag-fusion: baseline stabilization, modularization, security hardening, fixture normalization, README validation. All 28 tasks complete, all verification gates green."
 trigger_phrases:
-  - "phase 008 code quality"
-  - "spec kit code quality"
-  - "baseline stabilization"
-  - "memory-index modularization"
-  - "fixture normalization"
-  - "quality closure gate"
+  - "phase 008"
+  - "anchor validation"
+  - "memory-save-extended"
+  - "lint gate"
+  - "touched files manifest"
 importance_tier: "critical"
 contextType: "implementation"
+quality_score: 1.00
+quality_flags: []
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
 
 ---
 
@@ -81,8 +60,8 @@ contextType: "implementation"
 
 **Dual-Threshold Status at Start:**
 - Confidence: 75%
-- Uncertainty: 30%
-- Readiness: READY
+- Uncertainty: N/A30%
+- Readiness: N/AREADY
 <!-- /ANCHOR:preflight -->
 
 ---

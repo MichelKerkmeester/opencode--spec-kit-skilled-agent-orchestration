@@ -1,12 +1,14 @@
 ---
 title: "Phase 10 direct save naming [001-hybrid-rag-fusion-epic/06-03-26_13-57__phase-10-direct-save-naming-closure]"
-description: "Session context memory template for Spec Kit indexing."
+description: "The remaining bug was in collectSessionData quick-summary derivation, not in Phase 9 candidate ordering."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "normal"
-contextType: "general"
+  - "system spec kit/022 hybrid rag fusion"
+  - "remaining bug"
+  - "bug was"
+  - "collect session data"
+  - "quick summary"
+quality_score: 0.55
+quality_flags: []
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
@@ -41,19 +43,19 @@ contextType: "general"
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
-| Timestamp |  | Session start |
+| Knowledge Score | N/A | Auto-generated session |
+| Uncertainty Score | N/A | Auto-generated session |
+| Context Score | N/A | Auto-generated session |
+| Timestamp | N/A | Session start |
 
 **Initial Gaps Identified:**
 
 - No significant gaps identified at session start
 
 **Dual-Threshold Status at Start:**
-- Confidence: %
-- Uncertainty: 
-- Readiness: 
+- Confidence: N/A
+- Uncertainty: N/A
+- Readiness: N/A
 <!-- /ANCHOR:preflight -->
 
 ---

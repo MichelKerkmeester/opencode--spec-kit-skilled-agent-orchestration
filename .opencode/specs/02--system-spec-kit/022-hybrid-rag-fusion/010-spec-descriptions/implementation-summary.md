@@ -59,7 +59,7 @@ The spec folder description system refactor is implemented across creation-time 
 ## Known Gaps
 
 1. ~~**Aggregate cache staleness gap**~~ — **RESOLVED**: `collectDiscoveredSpecState()` now incorporates `description.json` mtime (folder-discovery.ts:219-234). Test T046-25 verifies.
-2. **No workflow integration test** — the save-path behavior in `workflow.ts` is implemented and code-reviewed, but there is no dedicated integration test that exercises the full memory-save flow end to end.
+2. **Partial workflow coverage** — workflow-memory-tracking.vitest.ts tests the load-increment-save-verify cycle matching workflow.ts:1160-1177 logic. Full end-to-end workflow test remains deferred due to heavy module dependencies.
 3. **CHK-027 (P2) deferred** — Concurrent write stress test. OS-level atomic temp+rename pattern provides safety; formal stress test deferred.
 
 ---

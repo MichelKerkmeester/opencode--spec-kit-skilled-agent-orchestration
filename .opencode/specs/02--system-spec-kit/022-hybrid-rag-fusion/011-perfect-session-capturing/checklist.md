@@ -1,19 +1,49 @@
----
-title: "Verification Checklist: Improve Stateless Mode Quality"
-description: "P0/P1/P2 verification items for stateless mode quality improvements. Primary gate: qualityValidation.valid. Secondary: legacy score 60+/100."
-trigger_phrases:
-  - "stateless checklist"
-  - "quality verification"
-  - "stateless verification"
-importance_tier: "normal"
-contextType: "general"
----
-# Verification Checklist: Improve Stateless Mode Quality
+# Checklist: Generate-Context Pipeline Quality
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist + merged-partitions | v2.2 -->
 
----
+<!-- ANCHOR:part-i -->
+## Part I: Audit & Remediation
+
+# Checklist: Perfect Session Capturing
+
+## P0 — Critical (must pass)
+- [x] `npx tsc --build` completes with zero errors — VERIFIED: clean build after all 20 fixes
+- [x] Session ID generation uses `crypto.randomBytes()` (not `Math.random()`) — VERIFIED: session-extractor.ts:131
+- [x] No data loss in tool output handling (truncation is configurable) — VERIFIED: config.ts `toolOutputMaxLength`, opencode-capture.ts uses `CONFIG.TOOL_OUTPUT_MAX_LENGTH`
+- [x] No path traversal possible in file paths — VERIFIED: data-loader.ts sanitization intact
+- [x] All CRITICAL findings from audit resolved — VERIFIED: 3/3 P0 fixes implemented
+
+## P1 — Important (should pass)
+- [x] No content leakage (irrelevant content in memory files) — VERIFIED: spec-folder relevance filter in input-normalizer.ts (prior fix)
+- [x] No placeholder leakage in rendered templates — VERIFIED: file-writer.ts `validateNoLeakedPlaceholders()` intact
+- [x] Contamination filter covers >= 25 patterns — VERIFIED: 30+ patterns in contamination-filter.ts
+- [x] All HIGH findings from audit resolved — VERIFIED: 8/8 P1 fixes implemented
+- [x] Decision confidence not hardcoded — VERIFIED: evidence-based computation (50/65/70 base) in decision-extractor.ts
+- [x] No-tool sessions classified correctly — VERIFIED: `total === 0` returns RESEARCH in session-extractor.ts
+- [x] File action semantics preserved — VERIFIED: 5-value mapping (Created/Modified/Deleted/Read/Renamed) in file-extractor.ts
+- [x] Batch write failure rolls back prior files — VERIFIED: file-writer.ts rollback loop
+- [x] Postflight deltas require both-side data — VERIFIED: collect-session-data.ts type guards
+- [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy 100/100 passes, v2 score 0.80 below 0.85 target; needs v2 calibration
+- [x] No truncation artifacts in generated memory files — VERIFIED: 0 PLACEHOLDER/TRUNCATED/undefined artifacts in 503-line output
+- [ ] Task extraction regex has <= 5% false positive rate — UNVERIFIED: 1 correct sample insufficient for statistical rate claim
+
+## P2 — Desirable (nice to have)
+- [x] All hardcoded magic numbers documented or configurable — VERIFIED: 7 values moved to config.ts
+- [x] Consistent error handling pattern across all extractors — VERIFIED: redundant patterns cleaned
+- [x] MAX_FILES_IN_MEMORY configurable — VERIFIED: config.ts `maxFilesInMemory`
+- [x] HTML stripping is code-block-safe — VERIFIED: workflow.ts splits on code fences before stripping
+- [x] memoryId zero handled correctly — VERIFIED: workflow.ts `!== null` check
+- [x] File description dedup prefers richer content — VERIFIED: file-extractor.ts longer-is-better
+- [x] Learning index weights configurable via config.ts — VERIFIED: config.ts exposes learningWeights with [0,1] validation and deep merge; collect-session-data.ts uses CONFIG.LEARNING_WEIGHTS
+- [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed in runtime test
+- [ ] All MEDIUM findings from audit resolved — PARTIAL: ~67 medium findings remain (see implementation-summary.md)
+- [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines); 4 samples remaining
+
+<!-- /ANCHOR:part-i -->
+<!-- ANCHOR:part-ii -->
+## Part II: Stateless Quality Improvements
 
 ## P0 - Blockers (MUST pass before completion)
 
@@ -87,10 +117,13 @@ contextType: "general"
 - [ ] **CHK-022**: Synthetic timestamps do not distort downstream ordering
   - Verify: lastAction/nextAction not affected by enriched observations
 
+<!-- /ANCHOR:part-ii -->
+<!-- ANCHOR:summary -->
 ## Summary
 
-| Priority | Total | Passed | Status |
-|----------|-------|--------|--------|
-| P0 | 7 | 0 | Pending |
-| P1 | 10 | 0 | Pending |
-| P2 | 5 | 0 | Pending |
+| Priority | Part I Total | Part I Passed | Part I Pending | Part II Total | Part II Passed | Part II Pending | Combined Total | Combined Passed | Combined Pending |
+|----------|--------------|---------------|----------------|---------------|----------------|-----------------|----------------|-----------------|------------------|
+| P0 | 5 | 5 | 0 | 7 | 0 | 7 | 12 | 5 | 7 |
+| P1 | 12 | 10 | 2 | 10 | 0 | 10 | 22 | 10 | 12 |
+| P2 | 10 | 7 | 3 | 5 | 0 | 5 | 15 | 7 | 8 |
+<!-- /ANCHOR:summary -->

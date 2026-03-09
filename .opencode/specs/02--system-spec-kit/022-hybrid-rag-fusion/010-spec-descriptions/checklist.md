@@ -62,7 +62,7 @@ contextType: "general"
 
 - [x] CHK-020 [P0] All existing `folder-discovery.vitest.ts` tests pass (no regressions) — 78/78 tests pass, 0 failures
 - [x] CHK-021 [P0] New per-folder description generation tests pass — 122/122 tests pass across 3 suites (folder-discovery + slug-uniqueness + integration)
-- [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 7/7, including the 10-identical-input uniqueness test
+- [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 7/7, including the 10-identical-input uniqueness test (HELPER-LEVEL — tests the uniqueness function in isolation; does not exercise the full workflow.ts memory-save path. See implementation-summary.md Known Gaps)
 - [x] CHK-023 [P1] Per-folder at depth 5+: nested folder gets description.json — verified depth-6 folder (test-fixtures/valid-anchors) has correct description.json
 - [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime; test T046-25 verifies aggregate cache staleness; test T046-25b verifies per-folder stale detection → regeneration → freshness cycle]
 - [x] CHK-025 [P1] Mixed mode: folders with/without description.json → aggregation works — fresh per-folder descriptions are preferred during aggregation (`mcp_server/lib/search/folder-discovery.ts:438-451`); targeted run passed integration test `T046-24`

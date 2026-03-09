@@ -94,7 +94,6 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
     'toolPreviewLines',
     'toolOutputMaxLength',
     'timestampMatchToleranceMs',
-    'qualityAbortThreshold',
   ];
 
   for (const field of positiveFields) {
@@ -106,6 +105,15 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
       );
       (validated as Record<string, unknown>)[field] = defaults[field];
     }
+  }
+
+  // Quality score percentage: 1-100 (default 15)
+  if (typeof validated.qualityAbortThreshold !== 'number' || !Number.isFinite(validated.qualityAbortThreshold)
+    || validated.qualityAbortThreshold < 1 || validated.qualityAbortThreshold > 100) {
+    structuredLog('warn', 'qualityAbortThreshold invalid or out of range 1-100, using default', {
+      value: validated.qualityAbortThreshold
+    });
+    validated.qualityAbortThreshold = defaults.qualityAbortThreshold;
   }
 
   // Non-negative integer fields (must be >= 0)

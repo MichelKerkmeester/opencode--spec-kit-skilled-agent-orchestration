@@ -4,6 +4,7 @@
 // Atomic file writing with validation and rollback on failure
 
 import * as fs from 'fs/promises';
+import * as fsSync from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
 import { validateNoLeakedPlaceholders, validateAnchors } from '../utils/validation-utils';
@@ -60,6 +61,14 @@ export async function writeFilesAtomically(
   contextDir: string,
   files: Record<string, string>
 ): Promise<string[]> {
+  const resolvedContextDir = path.resolve(contextDir);
+  let realContextDir = resolvedContextDir;
+  try {
+    realContextDir = fsSync.realpathSync(resolvedContextDir);
+  } catch {
+    // If contextDir does not exist yet, fall back to lexical containment checks.
+  }
+
   const written: Array<{ filename: string; existedBefore: boolean; backupPath?: string }> = [];
   for (const [filename, content] of Object.entries(files)) {
     validateNoLeakedPlaceholders(content, filename);
@@ -77,7 +86,16 @@ export async function writeFilesAtomically(
       throw new Error(`Invalid filename "${filename}": must be a relative path without traversal`);
     }
     const filePath = path.join(contextDir, filename);
-    if (!path.resolve(filePath).startsWith(path.resolve(contextDir) + path.sep)) {
+    // Resolve through real paths when possible to prevent symlink escapes from contextDir.
+    const resolvedFilePath = path.resolve(filePath);
+    let containmentPath = resolvedFilePath;
+    try {
+      const realParentDir = fsSync.realpathSync(path.dirname(resolvedFilePath));
+      containmentPath = path.join(realParentDir, path.basename(resolvedFilePath));
+    } catch {
+      // Parent may not exist yet; keep lexical path as defense-in-depth fallback.
+    }
+    if (!containmentPath.startsWith(realContextDir + path.sep)) {
       throw new Error(`Filename "${filename}" resolves outside target directory`);
     }
     // Backup existing file before overwrite
@@ -101,6 +119,9 @@ export async function writeFilesAtomically(
       await fs.writeFile(tempPath, content, 'utf-8');
       const stat = await fs.stat(tempPath);
       if (stat.size !== Buffer.byteLength(content, 'utf-8')) throw new Error('Size mismatch');
+      // AI-WHY: fsync before rename ensures content reaches disk (F9 fix)
+      const tempFd = await fs.open(tempPath, 'r');
+      try { await tempFd.sync(); } finally { await tempFd.close(); }
       await fs.rename(tempPath, filePath);
       written.push({ filename, existedBefore, backupPath });
       console.log(`   ${filename} (${content.split('\n').length} lines)`);

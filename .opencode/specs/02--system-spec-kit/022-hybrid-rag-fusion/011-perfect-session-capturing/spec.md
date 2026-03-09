@@ -1,3 +1,91 @@
+# Feature Specification: Generate-Context Pipeline Quality
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + merged-partitions | v2.2 -->
+
+## Part I: Audit & Remediation
+
+### Unified Scope Table (Part I + Part II)
+
+| Scope Source | Path / Directory | Files / Change Type | LOC / Description |
+|---|---|---|---|
+| Part I (012) | `scripts/extractors/` | opencode-capture.ts, collect-session-data.ts, session-extractor.ts, file-extractor.ts, decision-extractor.ts, conversation-extractor.ts, diagram-extractor.ts, quality-scorer.ts (v2), contamination-filter.ts | ~3,467 |
+| Part I (012) | `scripts/core/` | workflow.ts, config.ts, quality-scorer.ts (v1), file-writer.ts, tree-thinning.ts | ~1,714 |
+| Part I (012) | `scripts/loaders/` | data-loader.ts | 195 |
+| Part I (012) | `scripts/renderers/` | template-renderer.ts | 201 |
+| Part I (012) | `scripts/utils/` | input-normalizer.ts | 499 |
+| Part I (012) | `scripts/memory/` | generate-context.ts | 502 |
+| Part I (012) | `templates/` | context_template.md | ~27KB |
+| Part II (013) | `scripts/utils/input-normalizer.ts` | Modify | Fix snake_case/camelCase mismatch, add prompt relevance filtering |
+| Part II (013) | `scripts/extractors/collect-session-data.ts` | Modify | Backfill SPEC_FOLDER, add richer context mining |
+| Part II (013) | `scripts/extractors/opencode-capture.ts` | Modify | Improve OpenCode session capture depth |
+| Part II (013) | `scripts/extractors/file-extractor.ts` | Modify | Better file change detection, preserve ACTION field |
+| Part II (013) | `scripts/loaders/data-loader.ts` | Modify | Enhance stateless data loading |
+| Part II (013) | `scripts/core/workflow.ts` | Modify | Insert enrichment after alignment guards |
+| Part II (013) | `scripts/extractors/spec-folder-extractor.ts` | Create | Parse spec folder docs for structured context |
+| Part II (013) | `scripts/extractors/git-context-extractor.ts` | Create | Mine git status, diff, commits |
+
+### Part I Success Criteria Status (012)
+
+- [x] Zero TypeScript compilation errors (`npx tsc --build`) — COMPLETE
+- [x] All CRITICAL and HIGH findings from 25-agent audit resolved — COMPLETE
+- [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy 100/100 passes, v2 score 0.80 below 0.85 target; needs v2 calibration
+- [x] No content leakage (irrelevant session content in memory files) — COMPLETE
+- [x] No truncation artifacts in generated memory files — COMPLETE
+- [x] No placeholder leakage in template rendering — COMPLETE
+- [x] Session IDs use cryptographic randomness (not `Math.random()`) — COMPLETE
+- [x] Contamination filter catches >=25 AI chatter patterns (up from 7) — COMPLETE
+- [x] All hardcoded magic numbers moved to config or documented — COMPLETE
+
+### Preserved Source Content (Part I Source: 012/spec.md)
+
+# Spec: Perfect Session Capturing
+
+## Problem Statement
+
+The Spec Kit Memory session capturing system (`generate-context.js`) converts AI conversation state into indexed memory files for context recovery. The pipeline spans 18 TypeScript files (~6,400 LOC) across `scripts/extractors/`, `scripts/loaders/`, `scripts/core/`, `scripts/renderers/`, `scripts/utils/`, and `scripts/memory/`. Systematic exploration reveals **20+ quality issues** across the pipeline: fragile regex-based detection, hardcoded values, loose timestamp matching, truncated outputs, limited contamination filtering, and inconsistent error handling.
+
+## Scope
+
+**In scope:** All TypeScript files that participate in the session capture → memory file generation pipeline:
+
+| Directory | Files | LOC |
+|-----------|-------|-----|
+| `scripts/extractors/` | opencode-capture.ts, collect-session-data.ts, session-extractor.ts, file-extractor.ts, decision-extractor.ts, conversation-extractor.ts, diagram-extractor.ts, quality-scorer.ts (v2), contamination-filter.ts | ~3,467 |
+| `scripts/core/` | workflow.ts, config.ts, quality-scorer.ts (v1), file-writer.ts, tree-thinning.ts | ~1,714 |
+| `scripts/loaders/` | data-loader.ts | 195 |
+| `scripts/renderers/` | template-renderer.ts | 201 |
+| `scripts/utils/` | input-normalizer.ts | 499 |
+| `scripts/memory/` | generate-context.ts | 502 |
+| `templates/` | context_template.md | ~27KB |
+
+**Out of scope:** MCP server code, embedding system, search pipeline, spec folder validation scripts, test files.
+
+## Success Criteria
+
+1. Zero TypeScript compilation errors (`npx tsc --build`)
+2. All CRITICAL and HIGH findings from 25-agent audit resolved
+3. Quality scores on well-formed sessions ≥ 85%
+4. No content leakage (irrelevant session content in memory files)
+5. No truncation artifacts in generated memory files
+6. No placeholder leakage in template rendering
+7. Session IDs use cryptographic randomness (not `Math.random()`)
+8. Contamination filter catches ≥25 AI chatter patterns (up from 7)
+9. All hardcoded magic numbers moved to config or documented
+
+## Non-Functional Requirements
+
+- **Reliability:** 100% quality score on well-formed sessions with complete data
+- **Security:** No path traversal, no weak randomness, atomic file writes
+- **Performance:** No regression in pipeline execution time
+- **Maintainability:** All magic numbers configurable, consistent error handling patterns
+
+---
+
+## Part II: Stateless Quality Improvements
+
+### Preserved Source Content (Part II Source: 013/spec.md)
+
 ---
 title: "Feature Specification: Improve Stateless Mode Quality"
 description: "Stateless memory saves via generate-context.js produce ~30/100 quality because they lack structured session data. This spec targets 60+/100 by mining richer context from available sources."

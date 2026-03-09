@@ -1,12 +1,17 @@
 ---
 title: "Comprehensive review and [003-speckit-quality-and-standards/08-03-26_10-13__comprehensive-review-and-remediation]"
-description: "Session context memory template for Spec Kit indexing."
+description: "Comprehensive review and remediation of the 004-constitutional-learn-refactor spec folder."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "constitutional learn refactor review"
+  - "004 constitutional learn"
+  - "learn.md review"
+  - "codex parallel agents review"
+  - "feature flag default OFF vs ON"
 importance_tier: "normal"
 contextType: "general"
+quality_score: 0.65
+quality_flags: []
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

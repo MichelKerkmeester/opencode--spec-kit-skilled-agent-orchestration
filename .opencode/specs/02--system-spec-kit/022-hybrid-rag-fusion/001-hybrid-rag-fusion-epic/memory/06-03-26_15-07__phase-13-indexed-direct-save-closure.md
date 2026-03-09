@@ -1,12 +1,14 @@
 ---
 title: "Phase 13 indexed direct save [001-hybrid-rag-fusion-epic/06-03-26_15-07__phase-13-indexed-direct-save-closure]"
-description: "Session context memory template for Spec Kit indexing."
+description: "The final indexing blocker was separate from naming: preflight blocks needed gating and tool counting needed case-insensitive normalization."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
-importance_tier: "normal"
-contextType: "general"
+  - "system spec kit/022 hybrid rag fusion"
+  - "case insensitive"
+  - "tree thinning"
+  - "merged-small-files tree-thinning merged small"
+  - "tree-thinning merged small files"
+quality_score: 1.00
+quality_flags: []
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

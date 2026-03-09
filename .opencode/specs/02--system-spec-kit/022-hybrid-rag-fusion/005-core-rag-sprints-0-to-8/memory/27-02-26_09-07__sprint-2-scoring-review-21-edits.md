@@ -1,37 +1,19 @@
 ---
 title: "sprint 2 scoring calibration session [005-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-2-scoring-review-21-edits]"
-description: "Session context memory template for Spec Kit indexing."
+description: "Implemented 21 documentation-only edits across 4 spec files (spec.md, tasks.md, plan.md, checklist.md) in the Sprint 2 Scoring Calibration spec folder."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "sprint 2 review fixes"
+  - "scoring calibration review"
+  - "REC-S2 recommendations"
+  - "TM-01 calibration values"
+  - "N4 cap clipping"
 importance_tier: "normal"
 contextType: "general"
+quality_score: 1.00
+quality_flags: []
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
-<!-- Constitutional Tier Promotion:
-  To promote a memory to constitutional tier (always surfaced):
-  
-  1. Via MCP tool after indexing:
-     memory_update({ id: <memory_id>, importanceTier: 'constitutional' })
-  
-  2. Criteria for constitutional:
-     - Applies to ALL future conversations (not project-specific)
-     - Core constraints/rules that should NEVER be forgotten
-     - ~2000 token budget total for constitutional tier
-     
-  3. Add trigger phrases for proactive surfacing:
-     memory_update({ 
-       id: <memory_id>, 
-       importanceTier: 'constitutional',
-       triggerPhrases: ['fix', 'implement', 'create', 'modify', ...]
-     })
-     
-  4. Examples of constitutional content:
-     - "Always ask Gate 3 spec folder question before file modifications"
-     - "Never modify production data directly"
-     - "Memory files MUST use generate-context.js script"
--->
 
 ---
 
@@ -65,19 +47,19 @@ contextType: "general"
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | /100 |  |
-| Uncertainty Score | /100 |  |
-| Context Score | /100 |  |
-| Timestamp |  | Session start |
+| Knowledge Score | N/A | Auto-generated session |
+| Uncertainty Score | N/A | Auto-generated session |
+| Context Score | N/A | Auto-generated session |
+| Timestamp | N/A | Session start |
 
 **Initial Gaps Identified:**
 
 - No significant gaps identified at session start
 
 **Dual-Threshold Status at Start:**
-- Confidence: %
-- Uncertainty: 
-- Readiness: 
+- Confidence: N/A
+- Uncertainty: N/A
+- Readiness: N/A
 <!-- /ANCHOR:preflight -->
 
 ---

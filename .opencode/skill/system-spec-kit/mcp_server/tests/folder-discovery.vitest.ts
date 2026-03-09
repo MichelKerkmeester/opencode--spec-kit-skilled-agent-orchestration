@@ -20,6 +20,7 @@ import {
   loadPerFolderDescription,
   savePerFolderDescription,
   isPerFolderDescriptionStale,
+  slugifyFolderName,
 } from '../lib/search/folder-discovery';
 import type { FolderDescription, DescriptionCache, PerFolderDescription } from '../lib/search/folder-discovery';
 
@@ -924,8 +925,88 @@ describe('T009 loadPerFolderDescription element type validation (C1)', () => {
   });
 });
 
+describe('F13: loadPerFolderDescription required field validation', () => {
+  let tmpDir7: string;
+
+  beforeEach(() => {
+    tmpDir7 = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-f13-'));
+  });
+
+  afterEach(() => {
+    try {
+      fs.rmSync(tmpDir7, { recursive: true, force: true });
+    } catch { /* best effort */ }
+  });
+
+  const validBase: Record<string, unknown> = {
+    specFolder: '010-spec-descriptions',
+    description: 'Valid description',
+    keywords: ['valid', 'description'],
+    lastUpdated: new Date().toISOString(),
+    specId: '010',
+    folderSlug: 'spec-descriptions',
+    parentChain: [],
+    memorySequence: 0,
+    memoryNameHistory: [],
+  };
+
+  const requiredStringFields = ['specFolder', 'description', 'lastUpdated'] as const;
+  for (const field of requiredStringFields) {
+    it('returns null when ' + field + ' is missing', () => {
+      const invalid = { ...validBase };
+      delete invalid[field];
+      fs.writeFileSync(path.join(tmpDir7, 'description.json'), JSON.stringify(invalid));
+      expect(loadPerFolderDescription(tmpDir7)).toBeNull();
+    });
+
+    it('returns null when ' + field + ' is wrong type', () => {
+      const invalid = { ...validBase, [field]: 123 };
+      fs.writeFileSync(path.join(tmpDir7, 'description.json'), JSON.stringify(invalid));
+      expect(loadPerFolderDescription(tmpDir7)).toBeNull();
+    });
+  }
+
+  it('returns null when keywords is not array', () => {
+    fs.writeFileSync(path.join(tmpDir7, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: 'string',
+    }));
+    expect(loadPerFolderDescription(tmpDir7)).toBeNull();
+  });
+
+  it('returns null when keywords contains non-strings', () => {
+    fs.writeFileSync(path.join(tmpDir7, 'description.json'), JSON.stringify({
+      ...validBase,
+      keywords: [1, 2],
+    }));
+    expect(loadPerFolderDescription(tmpDir7)).toBeNull();
+  });
+});
+
+describe('F14: slugifyFolderName', () => {
+  it('strips numeric prefix and slugifies', () => {
+    expect(slugifyFolderName('010-spec-descriptions')).toBe('spec-descriptions');
+  });
+
+  it('handles no numeric prefix', () => {
+    expect(slugifyFolderName('my-folder')).toBe('my-folder');
+  });
+
+  it('handles empty string', () => {
+    expect(slugifyFolderName('')).toBe('');
+  });
+
+  it('strips prefix-only', () => {
+    expect(slugifyFolderName('010')).toBe('');
+  });
+
+  it('preserves numbers after prefix', () => {
+    expect(slugifyFolderName('010-v2-update')).toBe('v2-update');
+  });
+});
+
 /* -----------------------------------------------------------
-   10. C7 CRLF frontmatter test
+    10. C7 CRLF frontmatter test
 ----------------------------------------------------------------*/
 
 describe('T009 extractDescription CRLF frontmatter (C7)', () => {

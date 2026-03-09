@@ -60,6 +60,8 @@ export interface CollectedDataForFiles {
     path?: string;
     DESCRIPTION?: string;
     description?: string;
+    ACTION?: string;
+    action?: string;
     _provenance?: 'git' | 'spec-folder';
     _synthetic?: boolean;
   }>;
@@ -119,6 +121,18 @@ function extractFilesFromData(
   collectedData: CollectedDataForFiles | null,
   observations: ObservationInput[] | null
 ): FileChange[] {
+  const ACTION_NORMALIZE: Record<string, string> = {
+    add: 'Created',
+    modify: 'Modified',
+    delete: 'Deleted',
+    rename: 'Renamed',
+    created: 'Created',
+    modified: 'Modified',
+    deleted: 'Deleted',
+    renamed: 'Renamed',
+    read: 'Read',
+  };
+
   const filesMap = new Map<string, {
     description: string;
     action?: string;
@@ -184,8 +198,9 @@ function extractFilesFromData(
     for (const fileInfo of collectedData.FILES) {
       const filePath = fileInfo.FILE_PATH || fileInfo.path;
       const description = fileInfo.DESCRIPTION || fileInfo.description || 'Modified during session';
-      const action = (fileInfo as any).ACTION || (fileInfo as any).action;
-      if (filePath) addFile(filePath, description, action, fileInfo._provenance, fileInfo._synthetic);
+      const action = fileInfo.ACTION ?? fileInfo.action;
+      const normalizedAction = action ? (ACTION_NORMALIZE[action.toLowerCase()] ?? action) : undefined;
+      if (filePath) addFile(filePath, description, normalizedAction, fileInfo._provenance, fileInfo._synthetic);
     }
   }
 

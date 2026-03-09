@@ -1,12 +1,16 @@
 ---
 title: "Applied 13 review-driven [007-ux-hooks-automation/06-03-26_20-30__review-13-fixes-applied]"
-description: "Session context memory template for Spec Kit indexing."
+description: "Applied 13 review-driven fixes from a 6-agent parallel review of 011-ux-hooks-automation, including follow-up security hardening and documentation updates."
 trigger_phrases:
-  - "memory dashboard"
-  - "session summary"
-  - "context template"
+  - "review-driven fixes"
+  - "ux hooks automation"
+  - "parallel agents"
+  - "MutationHookResult"
+  - "windows path regex"
 importance_tier: "normal"
 contextType: "general"
+quality_score: 0.90
+quality_flags: []
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
