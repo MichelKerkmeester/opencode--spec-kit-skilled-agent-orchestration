@@ -35,7 +35,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "osascript -e 'set the clipboard to \"According to [runtime_agent_path]/orchestrate.md logic (resolve [runtime_agent_path] per AGENTS.md §7), delegate up to ... agents 'simultaneously' (not total)\"' -e 'tell application \"System Events\" to keystroke \"v\" using command down'"
+                                        "shell_command": "osascript -e 'set the clipboard to \"According to [runtime_agent_path]/orchestrate.md logic (resolve [runtime_agent_path] per AGENTS.md §7), delegate up to ...\"' -e 'tell application \"System Events\" to keystroke \"v\" using command down'"
                                     }
                                 ],
                                 "type": "basic"

@@ -141,16 +141,22 @@ Copilot CLI supports 5 recommended models across 3 providers.
 
 GPT-5.x models support reasoning effort levels that control depth vs speed:
 
-| Level | Description |
-|-------|-------------|
-| Low | Faster responses, less detailed reasoning |
-| Medium | Balanced speed and reasoning depth (default) |
-| High | More thorough reasoning, slower responses |
-| Extra High | Maximum reasoning depth, slowest responses |
+| Level | Config Value | Description |
+|-------|-------------|-------------|
+| Low | `"low"` | Faster responses, less detailed reasoning |
+| Medium | `"medium"` | Balanced speed and reasoning depth |
+| High | `"high"` | More thorough reasoning, slower responses |
+| Extra High | `"xhigh"` | Maximum reasoning depth, slowest responses |
 
-**Interactive mode:** Select via `/model` → choose GPT-5.x → select effort level.
+**Per-model defaults:** GPT-5.4/5.3-codex/5.1-codex-max default to `high`. GPT-5.1-codex/5.1 default to `medium`. Only GPT-5.4, 5.3-codex, and 5.1-codex-max support `xhigh`.
 
-**Non-interactive mode (`-p`):** No `--reasoning-effort` flag exists yet ([github/copilot-cli#1048](https://github.com/github/copilot-cli/issues/1048)). Workaround: set reasoning level in interactive mode first — copilot persists the last-used effort level per model. Subsequent `-p` calls with the same model inherit that level.
+**Setting reasoning effort (non-interactive):** Set `"reasoning_effort"` in `~/.copilot/config.json`:
+```json
+{ "reasoning_effort": "xhigh" }
+```
+Copilot reads this config key and passes it as `reasoning_effort` in the API request. No CLI flag exists — the config file is the only non-interactive mechanism.
+
+**Interactive mode:** Select via `/model` → choose GPT-5.x → select effort level. Persists to config automatically.
 
 ### Model Switching
 

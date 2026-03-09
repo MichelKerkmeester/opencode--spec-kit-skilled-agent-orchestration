@@ -1,22 +1,20 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-perfect-session-capturing",
-  "level": 3,
-  "description": "Generate-Context Pipeline Quality \u2014 Audit remediation and stateless mode improvements",
+  "description": "Feature Specification: Generate-Context Pipeline Quality",
   "keywords": [
-    "session",
-    "capture",
-    "memory",
+    "feature",
+    "specification",
     "generate-context",
-    "quality",
-    "stateless",
-    "enrichment",
-    "git-mining",
-    "spec-folder-mining"
+    "pipeline",
+    "quality"
   ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "08-03-26_20-03__tool-grep.md",
-    "08-03-26_20-47__fixes-for-memory-pipeline-contamination.md",
-    "09-03-26_11-28__fixed-all-13-review-findings-from-gpt-5-4-triple.md"
-  ]
+  "lastUpdated": "2026-03-09T18:45:52.033Z",
+  "specId": "011",
+  "folderSlug": "perfect-session-capturing",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

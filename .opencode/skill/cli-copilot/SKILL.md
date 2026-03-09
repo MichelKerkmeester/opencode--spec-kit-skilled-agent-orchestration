@@ -2,7 +2,7 @@
 name: cli-copilot
 description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.1.0
+version: 1.2.0
 ---
 
 <!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
@@ -200,21 +200,54 @@ Copilot CLI supports 5 recommended models across 3 providers:
 
 GPT-5.x models support reasoning effort levels that control depth vs speed:
 
-| Level | Description |
-|-------|-------------|
-| Low | Faster responses, less detailed reasoning |
-| Medium | Balanced speed and reasoning depth (default) |
-| High | More thorough reasoning, slower responses |
-| Extra High | Maximum reasoning depth, slowest responses |
+| Level | Config Value | Description |
+|-------|-------------|-------------|
+| Low | `"low"` | Faster responses, less detailed reasoning |
+| Medium | `"medium"` | Balanced speed and reasoning depth |
+| High | `"high"` | More thorough reasoning, slower responses |
+| Extra High | `"xhigh"` | Maximum reasoning depth, slowest responses |
 
-**Interactive mode:** Select via `/model` → choose GPT-5.x → select effort level.
+**Per-model support and defaults:**
 
-**Non-interactive mode (`-p`):** No `--reasoning-effort` flag exists yet ([github/copilot-cli#1048](https://github.com/github/copilot-cli/issues/1048)). Workaround: set reasoning level in interactive mode first — copilot persists the last-used effort level per model. Subsequent `-p` calls with the same model inherit that level.
+| Model | Supported Levels | Default |
+|-------|-----------------|---------|
+| `gpt-5.4` | low, medium, high, **xhigh** | high |
+| `gpt-5.3-codex` | low, medium, high, xhigh | high |
+| `gpt-5.1-codex-max` | low, medium, high, xhigh | high |
+| `gpt-5.1-codex` | low, medium, high | medium |
+| `gpt-5.1` | low, medium, high | medium |
+| Claude models | low, medium, high | high |
+| Gemini models | low, medium, high | medium |
 
-**Non-interactive invocation:**
+**Setting reasoning effort:**
+
+1. **Config file** (persistent, applies to all `-p` calls):
+   ```bash
+   # Set xhigh reasoning for all subsequent GPT-5.x calls
+   # Edit ~/.copilot/config.json and add:
+   #   "reasoning_effort": "xhigh"
+   ```
+
+2. **Interactive mode** (persists to config): Select via `/model` → choose GPT-5.x → select effort level. The selection is saved to `~/.copilot/config.json` automatically.
+
+3. **No CLI flag**: There is no `--reasoning-effort` flag. The config file is the only non-interactive mechanism.
+
+**Non-interactive invocation with xhigh reasoning:**
 ```bash
+# Step 1: Set reasoning effort in config (one-time)
+python3 -c "
+import json
+cfg_path = '$HOME/.copilot/config.json'
+with open(cfg_path) as f: cfg = json.load(f)
+cfg['reasoning_effort'] = 'xhigh'
+with open(cfg_path, 'w') as f: json.dump(cfg, f, indent=2)
+"
+
+# Step 2: Invoke with model (reasoning_effort is read from config)
 copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
 ```
+
+**How it works internally:** Copilot reads `reasoning_effort` from `~/.copilot/config.json`, validates it against the model's supported levels, and passes it as `reasoning_effort` in the OpenAI API request body. If the config value is invalid or unsupported for the selected model, the model's default level is used.
 
 ### Copilot CLI Agent Delegation
 
