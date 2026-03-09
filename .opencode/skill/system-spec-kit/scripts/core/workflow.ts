@@ -434,60 +434,70 @@ async function enrichStatelessData(
   collectedData: CollectedDataFull,
   specFolder: string,
   projectRoot: string
-): Promise<void> {
+): Promise<CollectedDataFull> {
   // Only enrich stateless mode — file-backed JSON is authoritative
-  if (collectedData._source === 'file') return;
+  if (collectedData._source === 'file') return collectedData;
+
+  const enriched: CollectedDataFull = { ...collectedData };
 
   try {
     // Run spec-folder and git extraction in parallel
     const [specContext, gitContext] = await Promise.all([
-      extractSpecFolderContext(specFolder).catch(() => null),
-      extractGitContext(projectRoot).catch(() => null),
+      extractSpecFolderContext(specFolder).catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`[workflow] enrichment degraded: ${msg}`);
+        return null;
+      }),
+      extractGitContext(projectRoot).catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : String(err);
+        console.warn(`[workflow] enrichment degraded: ${msg}`);
+        return null;
+      }),
     ]);
 
     // Merge spec-folder observations (provenance-tagged, won't conflict with live data)
     if (specContext) {
-      const existingObs = collectedData.observations || [];
-      collectedData.observations = [
+      const existingObs = enriched.observations || [];
+      enriched.observations = [
         ...existingObs,
         ...specContext.observations,
       ];
 
       // Merge FILES (deduplicate by path, prefer existing descriptions)
-      const existingFiles = collectedData.FILES || [];
+      const existingFiles = enriched.FILES || [];
       const existingPaths = new Set(
         existingFiles.map((f) => (f.FILE_PATH || f.path || '').toLowerCase())
       );
       const newFiles = specContext.FILES.filter(
         (f) => !existingPaths.has(f.FILE_PATH.toLowerCase())
       );
-      collectedData.FILES = [...existingFiles, ...newFiles];
+      enriched.FILES = [...existingFiles, ...newFiles];
 
       // Merge trigger phrases
       if (specContext.triggerPhrases.length > 0) {
-        collectedData._manualTriggerPhrases = [
-          ...(collectedData._manualTriggerPhrases || []),
+        enriched._manualTriggerPhrases = [
+          ...(enriched._manualTriggerPhrases || []),
           ...specContext.triggerPhrases,
         ];
       }
 
       // Merge decisions
       if (specContext.decisions.length > 0) {
-        collectedData._manualDecisions = [
-          ...(collectedData._manualDecisions || []),
+        enriched._manualDecisions = [
+          ...(enriched._manualDecisions || []),
           ...specContext.decisions,
         ];
       }
 
       // Use spec summary if collectedData summary is missing or generic
-      if (specContext.summary && (!collectedData.SUMMARY || collectedData.SUMMARY === 'Development session')) {
-        collectedData.SUMMARY = specContext.summary;
+      if (specContext.summary && (!enriched.SUMMARY || enriched.SUMMARY === 'Development session')) {
+        enriched.SUMMARY = specContext.summary;
       }
 
       // Merge recentContext
       if (specContext.recentContext.length > 0) {
-        collectedData.recentContext = [
-          ...(collectedData.recentContext || []),
+        enriched.recentContext = [
+          ...(enriched.recentContext || []),
           ...specContext.recentContext,
         ];
       }
@@ -495,26 +505,26 @@ async function enrichStatelessData(
 
     // Merge git context
     if (gitContext) {
-      const existingObs = collectedData.observations || [];
-      collectedData.observations = [
+      const existingObs = enriched.observations || [];
+      enriched.observations = [
         ...existingObs,
         ...gitContext.observations,
       ];
 
       // Merge FILES (deduplicate by path)
-      const existingFiles = collectedData.FILES || [];
+      const existingFiles = enriched.FILES || [];
       const existingPaths = new Set(
         existingFiles.map((f) => (f.FILE_PATH || f.path || '').toLowerCase())
       );
       const newFiles = gitContext.FILES.filter(
         (f) => !existingPaths.has(f.FILE_PATH.toLowerCase())
       );
-      collectedData.FILES = [...existingFiles, ...newFiles];
+      enriched.FILES = [...existingFiles, ...newFiles];
 
       // Append git summary to existing summary
       if (gitContext.summary) {
-        const existing = collectedData.SUMMARY || '';
-        collectedData.SUMMARY = existing
+        const existing = enriched.SUMMARY || '';
+        enriched.SUMMARY = existing
           ? `${existing}. Git: ${gitContext.summary}`
           : gitContext.summary;
       }
@@ -524,6 +534,8 @@ async function enrichStatelessData(
     // Enrichment failure is non-fatal — proceed with whatever data we have
     console.warn(`   Warning: Stateless enrichment failed: ${err instanceof Error ? err.message : String(err)}`);
   }
+
+  return enriched;
 }
 
 /* -----------------------------------------------------------------
@@ -580,7 +592,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // Verify the captured content relates to the target spec folder to prevent
     // cross-spec contamination (e.g., session working on spec A saved to spec B).
     const isStatelessMode = !activeDataFile && !preloadedData;
-    if (isStatelessMode && activeSpecFolderArg && collectedData.observations) {
+    if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const specFolderLeaf = path.basename(activeSpecFolderArg).replace(/^\d+-/, '').toLowerCase();
       const specKeywords = specFolderLeaf.split('-').filter((w: string) => w.length >= 3);
       if (specKeywords.length === 0 && specFolderLeaf.length >= 2) {
@@ -657,7 +669,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // Step 3.5: Enrich stateless data with spec folder and git context
     if (isStatelessMode) {
       log('Step 3.5: Enriching stateless data...');
-      await enrichStatelessData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
+      collectedData = await enrichStatelessData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
       log('   Enrichment complete\n');
     }
 
@@ -726,8 +738,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
   // synthetic file paths as contradictory with zero tool usage
-  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && (collectedData.FILES || []).length > 0) {
-    (sessionData as any).TOOL_COUNT = (collectedData.FILES as any[]).length;
+  const enrichedFileCount = collectedData.FILES?.length ?? 0;
+  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && enrichedFileCount > 0) {
+    sessionData.TOOL_COUNT = enrichedFileCount;
   }
 
   // Step 7.5: Generate semantic implementation summary
@@ -735,17 +748,42 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   const rawUserPrompts = collectedData?.userPrompts || [];
   let hadContamination = false;
-  const allMessages = rawUserPrompts.map((m) => {
-    const filtered = filterContamination(m.prompt || '');
+  const cleanContaminationText = (input: string): string => {
+    const filtered = filterContamination(input);
     if (filtered.hadContamination) {
       hadContamination = true;
     }
+    return filtered.cleanedText;
+  };
+  const allMessages = rawUserPrompts.map((m) => {
+    const cleanedPrompt = cleanContaminationText(m.prompt || '');
     return {
-      prompt: filtered.cleanedText,
-      content: filtered.cleanedText,
+      prompt: cleanedPrompt,
+      content: cleanedPrompt,
       timestamp: m.timestamp
     };
   });
+
+  if (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0) {
+    collectedData.SUMMARY = cleanContaminationText(collectedData.SUMMARY);
+  }
+  if (collectedData.observations) {
+    collectedData.observations = collectedData.observations.map((observation) => {
+      if (!observation || !observation._provenance) {
+        return observation;
+      }
+      return {
+        ...observation,
+        title: observation.title ? cleanContaminationText(observation.title) : observation.title,
+        narrative: observation.narrative ? cleanContaminationText(observation.narrative) : observation.narrative,
+        facts: observation.facts?.map((fact) => (
+          typeof fact === 'string'
+            ? cleanContaminationText(fact)
+            : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
+        )),
+      };
+    });
+  }
 
   // Run content through filter pipeline for quality scoring
   const filterPipeline = createFilterPipeline();

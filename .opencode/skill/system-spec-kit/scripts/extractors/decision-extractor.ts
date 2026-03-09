@@ -204,8 +204,11 @@ async function extractDecisions(
 
   const decisions: DecisionRecord[] = allDecisionObservations.map((obs, index) => {
     const narrative: string = obs.narrative || '';
-    // Coerce facts: runtime data may contain objects with { text?: string } instead of plain strings
-    const facts: string[] = (obs.facts || []).map(f => typeof f === 'string' ? f : (f as { text?: string }).text || '');
+    // Coerce facts: runtime data may contain nulls or objects with { text?: string } instead of plain strings
+    const facts: string[] = (obs.facts || [])
+      .filter((f): f is NonNullable<typeof f> => f != null)
+      .map(f => typeof f === 'string' ? f : (f as { text?: string }).text || '')
+      .filter(f => f.length > 0);
 
     const optionMatches = facts.filter((f) => f.includes('Option') || f.includes('Alternative'));
     const OPTIONS: DecisionOption[] = optionMatches.map((opt, i) => {
@@ -259,7 +262,9 @@ async function extractDecisions(
     const confidenceMatch = narrative.match(/confidence:?\s*(\d+)%?/i);
     // Default confidence based on evidence strength: options + rationale = higher confidence
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
-    const CONFIDENCE: number = confidenceMatch ? parseInt(confidenceMatch[1], 10) : baseConfidence;
+    let confidence: number = confidenceMatch ? parseInt(confidenceMatch[1], 10) : baseConfidence;
+    confidence = Math.max(0, Math.min(100, confidence));
+    const CONFIDENCE: number = confidence;
 
     const PROS = facts
       .filter((f) => {

@@ -1,0 +1,14 @@
+## Audit QA9-C15: File System Security — Copilot Cross-Cutting
+### P0 Blockers: 2 — [file:line findings]
+- `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts:71-92` The traversal guard is purely lexical (`path.resolve(...).startsWith(...)`) and never resolves or rejects symlinked `contextDir` / ancestor paths. If `contextDir` itself is a symlink, or an attacker swaps a parent directory to a symlink before the write, the code can write outside the intended target tree while still passing the current check.
+- `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts:78-92,99-104` File existence/backup/write/rollback happen in separate steps (`access` -> `copyFile` -> `writeFile` -> `rename` / `unlink`) with no file-descriptor pinning or `O_NOFOLLOW`-style protection. That creates a TOCTOU window where an attacker can replace the target or one of its parents between check and use, redirecting overwrite or rollback operations.
+
+### P1 Required: 3 — [file:line findings]
+- `.opencode/skill/system-spec-kit/scripts/extractors/spec-folder-extractor.ts:37-43,207-221` `extractSpecFolderContext()` trusts `specFolderPath` completely and feeds it straight into `readFileSync(path.join(specFolderPath, fileName))`. There is no confinement to `CONFIG.PROJECT_ROOT`, `specs/`, or `.opencode/specs/`, so a crafted path can make the extractor read documents from arbitrary directories outside the project if those filenames exist there.
+- `.opencode/skill/system-spec-kit/scripts/core/config.ts:266-299` Specs-directory discovery accepts any existing `specs` / `.opencode/specs` path and only calls `realpathSync()` for deduplication, not for containment enforcement. A symlinked specs directory pointing outside `PROJECT_ROOT` is therefore treated as a valid root, enabling downstream directory escape from the expected project boundary.
+- `.opencode/skill/system-spec-kit/scripts/extractors/spec-folder-extractor.ts:110-114,133-136,280-283` `normalizeFilePath()` converts absolute paths to `path.relative(CONFIG.PROJECT_ROOT, cleaned)` without rejecting paths outside the project. For external absolute paths this produces `../../...` escapes, which are then returned in extracted `FILES` / `recentContext` data and can poison downstream consumers that assume project-relative file paths.
+
+### P2 Suggestions: 1 — [file:line findings]
+- `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts:79-85` Backup creation uses `fs.copyFile(filePath, backupPath)` after `fs.access(filePath)`. If `filePath` is an existing symlink, `copyFile` dereferences it and copies the external target's contents into the backup file. Even though the final `rename()` replaces the symlink itself, the backup step can still expose data from outside the target tree; reject symlinks with `lstat()` before backup/write.
+
+### Score: 24

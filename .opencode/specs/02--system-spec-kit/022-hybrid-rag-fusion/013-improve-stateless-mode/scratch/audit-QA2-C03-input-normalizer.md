@@ -1,0 +1,14 @@
+## Audit QA2-C03: input-normalizer.ts — Copilot Cross-Validation
+### P0 Blockers: 2 — OpenCode metadata mapping is still incomplete, and prompt contamination filtering is only partially applied
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:400-401,500-503,527-528` `transformOpencodeCapture()` still reads/writes `sessionTitle`, `sessionId`, and `capturedAt`, but the OpenCode producer emits `session_title`, `session_id`, and `captured_at` (`.opencode/skill/system-spec-kit/scripts/extractors/opencode-capture.ts:441-447`). Result: session title/id/capture timestamp are dropped on the stateless path, so recent-context fallback and provenance stay incomplete even when capture data is present.
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:430-433,449-462` the relevance filter only protects `observations`; `userPrompts` is populated from every exchange before any spec-folder relevance check runs. Mixed-spec sessions can still leak foreign prompts into normalized output, which leaves the contamination-prevention requirement only half fixed.
+
+### P1 Required: 2 — manual-format field normalization and top-level shape validation still have correctness gaps
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:233-235,298-300` `validateInputData()` explicitly accepts `SPEC_FOLDER`, but `normalizeInputData()` only copies `data.specFolder`. A manual payload that uses the accepted uppercase field normalizes into output with no `SPEC_FOLDER`, so a valid input shape silently loses its target spec-folder metadata.
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:223-225,298-300,336-340` the pass-through gate treats any truthy `userPrompts`/`recentContext` as already normalized, but validation never checks those fields are arrays. Inputs like `{ "userPrompts": "oops" }` or `{ "recentContext": {} }` bypass normalization and ship invalid scalar/object shapes downstream.
+
+### P2 Suggestions: 2 — type narrowing should be tightened around untrusted JSON branches
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:329` validation relies on `(file as FileEntry)` / `(file as Record<string, unknown>)` instead of property-based narrowing (`'FILE_PATH' in file`, `'path' in file`). The current cast works only because of the preceding object check, but it weakens compile-time guarantees in exactly the schema-validation code that should be most defensive.
+- `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:142-153,171-173` `transformKeyDecision()` trusts `decisionItem.alternatives` to already be a string array. For untrusted JSON, a scalar or object value will reach `.join()` / `.forEach()` and throw, so this branch should narrow with `Array.isArray()` before treating `alternatives` as iterable.
+
+### Score: 46

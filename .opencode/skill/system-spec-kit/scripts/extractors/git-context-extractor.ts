@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Mines git history for file changes and observations for stateless enrichment
 
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import path from 'path';
 
 const GIT_TIMEOUT_MS = 5_000;
@@ -48,8 +48,8 @@ function emptyResult(): GitContextExtraction {
   return { observations: [], FILES: [], summary: '', commitCount: 0, uncommittedCount: 0 };
 }
 
-function runGitCommand(projectRoot: string, command: string): string {
-  return execSync(command, {
+function runGitCommand(projectRoot: string, args: string[]): string {
+  return execFileSync('git', args, {
     cwd: projectRoot,
     encoding: 'utf-8',
     timeout: GIT_TIMEOUT_MS,
@@ -83,14 +83,28 @@ function parseNameStatusLine(projectRoot: string, line: string): ParsedEntry | n
   const filePath = normalizeFilePath(projectRoot, line.slice(3).split(' -> ').pop() || '');
   return filePath ? { filePath, action: mapStatusCode(statusCode) } : null;
 }
+function expandBraceWrappedRenamePaths(projectRoot: string, rawPath: string): string[] {
+  const trimmedPath = rawPath.trim();
+  const renameMatch = trimmedPath.match(/^(.*)\{([^{}]+)\s=>\s([^{}]+)\}(.*)$/);
+  if (!renameMatch) {
+    const filePath = normalizeFilePath(projectRoot, trimmedPath);
+    return filePath ? [filePath] : [];
+  }
+  const [, prefix, sourceSegment, destinationSegment, suffix] = renameMatch;
+  return [sourceSegment, destinationSegment]
+    .map((segment) => normalizeFilePath(projectRoot, `${prefix}${segment.trim()}${suffix}`))
+    .filter(Boolean);
+}
 function parseStatScores(projectRoot: string, diffStatOutput: string): Map<string, number> {
   const scores = new Map<string, number>();
   for (const line of diffStatOutput.split('\n')) {
     const match = line.match(/^\s*(.+?)\s+\|\s+(\d+)\s+[+\-]+$/);
     if (!match) continue;
-    const filePath = normalizeFilePath(projectRoot, match[1]);
     const score = Number.parseInt(match[2], 10);
-    if (filePath && Number.isFinite(score)) scores.set(filePath, (scores.get(filePath) || 0) + score);
+    if (!Number.isFinite(score)) continue;
+    expandBraceWrappedRenamePaths(projectRoot, match[1]).forEach((filePath) => {
+      scores.set(filePath, (scores.get(filePath) || 0) + score);
+    });
   }
   return scores;
 }
@@ -104,33 +118,50 @@ function detectCommitType(subject: string): string {
   const prefix = subject.match(/^([a-z]+)(?:\([^)]+\))?!?:/i)?.[1]?.toLowerCase();
   return prefix ? COMMIT_TYPE_MAP[prefix] || 'observation' : 'observation';
 }
+function matchesSpecFolder(projectRoot: string, filePath: string, specFolderHint?: string): boolean {
+  if (!specFolderHint) return true;
+  const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
+  if (!normalizedHint) return true;
+  const specDirectory = normalizedHint.split('/').pop() || normalizedHint;
+  return [normalizedHint, specDirectory].some((candidate) => (
+    filePath === candidate
+    || filePath.startsWith(`${candidate}/`)
+    || filePath.includes(`/${candidate}/`)
+    || filePath.includes(candidate)
+  ));
+}
 function getDiffOutput(projectRoot: string, revCount: number, format: '--name-status' | '--stat'): string {
   const diffWindow = Math.min(revCount, MAX_DIFF_COMMITS);
-  if (diffWindow > 1) return runGitCommand(projectRoot, `git diff ${format} HEAD~${diffWindow}`);
+  if (diffWindow > 1) return runGitCommand(projectRoot, ['diff', format, `HEAD~${diffWindow}`]);
   if (revCount === 1) {
     return format === '--name-status'
-      ? runGitCommand(projectRoot, 'git show --pretty=format: --name-status HEAD')
-      : runGitCommand(projectRoot, 'git show --stat --format= HEAD');
+      ? runGitCommand(projectRoot, ['show', '--pretty=format:', '--name-status', 'HEAD'])
+      : runGitCommand(projectRoot, ['show', '--stat', '--format=', 'HEAD']);
   }
   return '';
 }
-export async function extractGitContext(projectRoot: string): Promise<GitContextExtraction> {
+export async function extractGitContext(projectRoot: string, specFolderHint?: string): Promise<GitContextExtraction> {
   try {
-    if (runGitCommand(projectRoot, 'git rev-parse --is-inside-work-tree') !== 'true') return emptyResult();
-    const statusEntries = runGitCommand(projectRoot, 'git status --porcelain')
+    if (runGitCommand(projectRoot, ['rev-parse', '--is-inside-work-tree']) !== 'true') return emptyResult();
+    const statusEntries = runGitCommand(projectRoot, ['status', '--porcelain'])
       .split('\n')
       .map((line) => parseNameStatusLine(projectRoot, line))
-      .filter((entry): entry is ParsedEntry => Boolean(entry));
-    const revCount = Number.parseInt(runGitCommand(projectRoot, 'git rev-list --count HEAD'), 10);
+      .filter((entry): entry is ParsedEntry => Boolean(entry))
+      .filter((entry) => matchesSpecFolder(projectRoot, entry.filePath, specFolderHint));
+    const revCount = Number.parseInt(runGitCommand(projectRoot, ['rev-list', '--count', 'HEAD']), 10);
     if (!Number.isFinite(revCount)) return emptyResult();
 
     const diffEntries = getDiffOutput(projectRoot, revCount, '--name-status')
       .split('\n')
       .map((line) => parseNameStatusLine(projectRoot, line))
-      .filter((entry): entry is ParsedEntry => Boolean(entry));
-    const changeScores = parseStatScores(projectRoot, getDiffOutput(projectRoot, revCount, '--stat'));
+      .filter((entry): entry is ParsedEntry => Boolean(entry))
+      .filter((entry) => matchesSpecFolder(projectRoot, entry.filePath, specFolderHint));
+    const changeScores = new Map(
+      Array.from(parseStatScores(projectRoot, getDiffOutput(projectRoot, revCount, '--stat')).entries())
+        .filter(([filePath]) => matchesSpecFolder(projectRoot, filePath, specFolderHint))
+    );
     const commits = parseCommits(
-      runGitCommand(projectRoot, `git log --format="%H%n%cI%n%s%n%b%n---" --since="24 hours ago" -${MAX_COMMITS}`)
+      runGitCommand(projectRoot, ['log', '--format=%H%n%cI%n%s%n%b%n---', '--since=24 hours ago', `-${MAX_COMMITS}`])
     );
 
     const FILES: GitContextExtraction['FILES'] = [];
@@ -181,7 +212,9 @@ export async function extractGitContext(projectRoot: string): Promise<GitContext
       commitCount: commits.length,
       uncommittedCount: statusEntries.length,
     };
-  } catch {
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.warn(`[git-context-extractor] degraded: ${msg}`);
     return emptyResult();
   }
 }

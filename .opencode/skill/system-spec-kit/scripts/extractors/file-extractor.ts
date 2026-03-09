@@ -79,6 +79,11 @@ const ACTION_MAP: Record<string, string> = {
   deleted: 'Deleted',
   read: 'Read',
   renamed: 'Renamed',
+  add: 'Created',
+  added: 'Created',
+  modify: 'Modified',
+  delete: 'Deleted',
+  rename: 'Renamed',
 };
 
 function normalizeFileAction(action: string): string {
@@ -140,19 +145,30 @@ function extractFilesFromData(
     const nextSynthetic = synthetic ?? existing?._synthetic;
 
     if (existing) {
-      // Prefer a valid, more descriptive (longer) description over a generic one
+      // Merge: always prefer a more specific action when the existing one is generic
+      const mergedAction = action || existing.action;
+      const mergedProvenance = nextProvenance || existing._provenance;
+      const mergedSynthetic = nextSynthetic ?? existing._synthetic;
+
       if (isDescriptionValid(cleaned) && (!isDescriptionValid(existing.description) || cleaned.length > existing.description.length)) {
+        // Better description available — use it, and merge action/provenance
         filesMap.set(normalized, {
           description: cleaned,
-          action: action || existing.action,
-          ...(nextProvenance ? { _provenance: nextProvenance, _synthetic: nextSynthetic } : {}),
+          action: mergedAction,
+          ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
         });
-      } else if (nextProvenance && (!existing._provenance || existing._synthetic !== nextSynthetic)) {
-        filesMap.set(normalized, {
-          ...existing,
-          _provenance: nextProvenance,
-          _synthetic: nextSynthetic,
-        });
+      } else {
+        // Keep existing description, but still merge action and provenance if newer
+        const needsUpdate = (action && action !== existing.action)
+          || (mergedProvenance && mergedProvenance !== existing._provenance)
+          || (mergedSynthetic !== existing._synthetic);
+        if (needsUpdate) {
+          filesMap.set(normalized, {
+            ...existing,
+            action: mergedAction,
+            ...(mergedProvenance ? { _provenance: mergedProvenance, _synthetic: mergedSynthetic } : {}),
+          });
+        }
       }
     } else {
       filesMap.set(normalized, {
@@ -236,7 +252,7 @@ function enhanceFilesWithSemanticDescriptions(
     if (semanticFileChanges.has(filePath)) {
       const info = semanticFileChanges.get(filePath)!;
       return {
-        FILE_PATH: file.FILE_PATH,
+        ...file,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
         ACTION: normalizeFileAction(info.action)
       };
@@ -261,7 +277,7 @@ function enhanceFilesWithSemanticDescriptions(
     if (matchCount === 1 && basenameMatch) {
       const info = basenameMatch.info;
       return {
-        FILE_PATH: file.FILE_PATH,
+        ...file,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
         ACTION: normalizeFileAction(info.action)
       };

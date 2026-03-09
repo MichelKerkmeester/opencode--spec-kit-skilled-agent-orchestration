@@ -1,0 +1,8 @@
+## Audit QA6-C10: decision-extractor.ts — Copilot Cross-Validation
+### P0 Blockers: 0 — none
+### P1 Required: 2 — [decision-extractor.ts:96-101,194-208; decision-extractor.ts:152-154,365-372; anchor-generator.ts:76-95 findings]
+- [decision-extractor.ts:96-101,194-208] Malformed arrays are not handled gracefully when they contain `null` entries. `buildLexicalDecisionObservations()` dereferences `observation.narrative` and `prompt.prompt` without null guards, and the MCP path filters with `obs.type` before checking that `obs` is an object. Missing fields inside valid objects are mostly tolerated, but a single `null` element in `observations` or `userPrompts` throws at runtime instead of degrading safely.
+- [decision-extractor.ts:152-154,365-372; anchor-generator.ts:76-95] Anchor IDs are unique within one extraction pass, but they are not deterministic across runs. `decision-extractor.ts` correctly tracks `usedAnchorIds` and resolves collisions, yet `generateAnchorId()` salts every hash with `Date.now()`, so the same decision title produces a different anchor on each run. That breaks stable anchor-based retrieval and makes the passed `specNumber` effectively unused for determinism.
+### P2 Suggestions: 1 — [decision-extractor.ts:259-263,374-376 findings]
+- [decision-extractor.ts:259-263,374-376] Confidence boundary handling is only partially explicit. `0` and `100` parse and classify correctly, but negative values and `NaN`-like strings do not get validated or clamped—they silently fall back to `baseConfidence`, while oversized values such as `101` would be accepted as-is and promoted to `high` importance. Add bounded numeric normalization (`0..100`) so malformed confidence text cannot silently reshape decision scoring.
+### Score: 80

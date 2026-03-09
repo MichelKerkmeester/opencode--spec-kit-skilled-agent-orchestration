@@ -230,8 +230,8 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     recentContext: [],
   };
 
-  if (data.specFolder) {
-    normalized.SPEC_FOLDER = data.specFolder;
+  if (data.specFolder || data.SPEC_FOLDER) {
+    normalized.SPEC_FOLDER = data.specFolder || data.SPEC_FOLDER;
   }
 
   if (data.filesModified && Array.isArray(data.filesModified)) {
@@ -427,10 +427,19 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     ? (toolCalls || []).filter(isToolRelevant)
     : (toolCalls || []);
 
-  const userPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({
+  const allUserPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({
     prompt: ex.userInput || '',
     timestamp: ex.timestamp ? new Date(ex.timestamp).toISOString() : new Date().toISOString()
   }));
+
+  // When spec folder hint is provided, filter prompts to only those mentioning
+  // relevant keywords — prevents cross-spec noise from polluting session context
+  const userPrompts: UserPrompt[] = (specFolderHint && relevanceKeywords.length > 0)
+    ? allUserPrompts.filter(p => {
+        const lower = p.prompt.toLowerCase();
+        return relevanceKeywords.some(kw => lower.includes(kw.toLowerCase()));
+      })
+    : allUserPrompts;
 
   const observations: Observation[] = [];
 

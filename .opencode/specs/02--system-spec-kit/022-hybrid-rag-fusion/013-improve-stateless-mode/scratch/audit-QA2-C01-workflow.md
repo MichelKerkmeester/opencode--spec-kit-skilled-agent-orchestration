@@ -1,0 +1,16 @@
+## Audit QA2-C01: workflow.ts — Copilot Cross-Validation
+
+Timing check: `enrichStatelessData()` is inserted after the stateless alignment guard and after spec-folder resolution (`scripts/core/workflow.ts:578-660`), which matches the spec/plan intent. The remaining issues are not about the insertion point itself, but about what the post-guard enrichment step is allowed to merge and how its failures are surfaced.
+
+### P0 Blockers: 1 — [file:line findings]
+- `scripts/core/workflow.ts:496-520`; `scripts/extractors/git-context-extractor.ts:117-180` — Git enrichment reintroduces unscoped repository activity after the alignment guard has already passed. Step 1.5 only validates the pre-enrichment captured payload (`workflow.ts:583-609`), but Step 3.5 then appends repo-wide `git status`, `git diff`, and last-24h commit subjects from `CONFIG.PROJECT_ROOT` with no spec-folder filtering. In a dirty worktree or multi-task repo, unrelated files/commit summaries can leak into `observations`, `FILES`, and `SUMMARY` for the target spec, which undermines spec 012 contamination guarantees and spec 013's explicit "synthetic files do not mask cross-spec contamination" check. **Fix:** scope git-derived entries to the resolved spec folder or to already-aligned paths before merge, or rerun/post-validate alignment on the merged synthetic payload and drop off-target entries.
+
+### P1 Required: 2 — [file:line findings]
+- `scripts/core/workflow.ts:583-609` — The stateless alignment guard is incorrectly gated on `collectedData.observations`, even though the guard itself also inspects `collectedData.FILES` (`workflow.ts:590-592`). Sparse stateless payloads with file evidence but no observations bypass the contamination check entirely and still proceed to enrichment/fan-out. **Fix:** enter the guard when either observations or files are present, or compute `allFilePaths` first and guard on that evidence directly.
+- `scripts/core/workflow.ts:443-445,523-525` — Both enrichment branches use `.catch(() => null)`, so per-extractor async failures are silently swallowed and the outer `try/catch` almost never reports them. That means stateless saves can log `Enrichment complete` even when spec-folder or git mining crashed, which weakens degradation observability and makes regressions harder to detect. **Fix:** use `Promise.allSettled()` and emit a targeted warning for each rejected extractor while still merging fulfilled results.
+
+### P2 Suggestions: 2 — [file:line findings]
+- `scripts/core/workflow.ts:523-525` — `enrichStatelessData()` writes directly to `console.warn`, bypassing the workflow's `silent` logger plumbing (`workflow.ts:555-557`). Silent/test runs can therefore still emit enrichment warnings. **Fix:** pass the workflow `warn` function into `enrichStatelessData()` or return structured degradation info for the caller to log.
+- `scripts/core/workflow.ts:1044-1058` — The post-write `description.json` tracking update is wrapped in a bare `catch` with no diagnostic output. It is intentionally non-fatal, but completely hiding failures here makes sequence/history drift harder to audit later. **Fix:** log a guarded best-effort warning that includes the spec folder and normalized error message.
+
+### Score: 72

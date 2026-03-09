@@ -136,6 +136,35 @@ function validateConfig(merged: WorkflowConfig, defaults: WorkflowConfig): Workf
     validated.timezoneOffsetHours = defaults.timezoneOffsetHours;
   }
 
+  // Learning weights: object must exist and each weight must be between 0 and 1
+  if (
+    typeof validated.learningWeights !== 'object' ||
+    validated.learningWeights === null
+  ) {
+    structuredLog('warn',
+      `Config validation: "learningWeights" has invalid value (${JSON.stringify(validated.learningWeights)}). ` +
+      'Must be an object. Falling back to default learning weights.'
+    );
+    validated.learningWeights = { ...defaults.learningWeights };
+  }
+
+  const learningWeightFields: (keyof WorkflowConfig['learningWeights'])[] = [
+    'knowledge',
+    'context',
+    'uncertainty',
+  ];
+
+  for (const field of learningWeightFields) {
+    const value = validated.learningWeights[field];
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) {
+      structuredLog('warn',
+        `Config validation: "learningWeights.${field}" has invalid value (${JSON.stringify(value)}). ` +
+        `Must be a number between 0 and 1. Falling back to default: ${defaults.learningWeights[field]}`
+      );
+      validated.learningWeights[field] = defaults.learningWeights[field];
+    }
+  }
+
   return validated;
 }
 

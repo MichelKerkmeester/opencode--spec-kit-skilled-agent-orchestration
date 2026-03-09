@@ -91,7 +91,7 @@ function generateAnchorId(
     .trim();
 
   const slug: string = generateSemanticSlug(cleanTitle);
-  const hash: string = generateShortHash(`${sectionTitle}|${additionalContext}|${Date.now()}`);
+  const hash: string = generateShortHash(`${sectionTitle}|${additionalContext}|${specNumber ?? ''}`);
   return `${normalizedCategory}-${slug}-${hash}`;
 }
 

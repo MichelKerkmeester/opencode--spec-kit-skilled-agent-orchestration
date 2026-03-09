@@ -1,0 +1,13 @@
+## Audit QA4-C05: spec-folder-extractor.ts — Copilot Cross-Validation
+### P0 Blockers: 0 — none
+- No exploitable filename-based directory escape was found in `readDoc()`: this module only calls it with fixed literals (`description.json`, `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`), and the workflow resolves spec folders under approved specs roots before enrichment (`spec-folder-extractor.ts:37-43`, `core/workflow.ts:615-660`, `spec-folder/folder-detector.ts:476-489`).
+- I also did not find catastrophic-backtracking risk in the frontmatter/table regexes: they rely on lazy `*?` sections or negated character classes rather than nested ambiguous quantifiers (`spec-folder-extractor.ts:45-68`, `132`, `139`, `191-193`).
+
+### P1 Required: 2 — [spec-folder-extractor.ts:132] malformed "Files to Change" rows can be stitched into false FILE entries; [spec-folder-extractor.ts:139] malformed REQUIREMENTS rows can be stitched into false observations
+- [spec-folder-extractor.ts:132-136] The `filesTable.matchAll(/\|\s*`?([^`|\n]+?)`?\s*\|\s*[^|\n]*\|\s*([^|\n]+?)\s*\|/g)` parser is not row-bounded. On malformed markdown, it can match across adjacent lines and synthesize incorrect `FILE_PATH`/`DESCRIPTION` pairs instead of rejecting the row. Example probe: a broken row `| src/a.ts` followed by `| ignored | text |` produced a parsed match of `src/a.ts` + `text`, and the parser would accept it because the header filter only checks `rawPath` for `file path|---`. This is not graceful degradation; it silently pollutes memory context with invented file metadata.
+- [spec-folder-extractor.ts:139-149] The requirements parser has the same row-stitching bug: `/\|\s*(REQ-[^|\s]+)\s*\|\s*([^|\n]+?)\s*\|\s*([^|\n]+?)\s*\|/g` will combine a truncated `REQ-1` row with cells from the next line and emit a bogus requirement observation. Probe: `| REQ-1` followed by `| broken | still broken |` was parsed as `REQ-1 / broken / still broken`. Because these observations feed enrichment directly, a malformed spec can silently inject false requirements into stateless memory.
+
+### P2 Suggestions: 1 — [spec-folder-extractor.ts:37] add containment check in `readDoc()` for future-proof path hardening
+- [spec-folder-extractor.ts:37-43] Today, `readDoc()` is safe against crafted filenames because callers pass literals only. Still, the helper itself has no `path.resolve()` + prefix/relative containment guard, so a future refactor that forwards dynamic names would become traversal-prone immediately. Adding an internal containment check (for example, resolve the candidate path and reject it unless it stays under `specFolderPath`) would lock in the current safety property instead of relying on call-site discipline.
+
+### Score: 88

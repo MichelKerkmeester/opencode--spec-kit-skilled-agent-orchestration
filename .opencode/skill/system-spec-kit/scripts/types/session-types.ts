@@ -212,5 +212,28 @@ export interface SessionData {
   BLOCKERS: string;
   FILE_PROGRESS: Array<{ FILE_NAME: string; FILE_STATUS: string }>;
   HAS_FILE_PROGRESS: boolean;
+  PREFLIGHT_KNOW_SCORE?: number | null;
+  PREFLIGHT_CONTEXT_SCORE?: number | null;
+  PREFLIGHT_UNCERTAINTY_SCORE?: number | null;
+  HAS_POSTFLIGHT_DELTA?: boolean;
+  POSTFLIGHT_KNOW_SCORE?: number | null;
+  POSTFLIGHT_CONTEXT_SCORE?: number | null;
+  POSTFLIGHT_UNCERTAINTY_SCORE?: number | null;
+  DELTA_KNOW_SCORE?: string | null;
+  DELTA_CONTEXT_SCORE?: string | null;
+  DELTA_UNCERTAINTY_SCORE?: string | null;
+  DELTA_KNOW_TREND?: string;
+  DELTA_CONTEXT_TREND?: string;
+  DELTA_UNCERTAINTY_TREND?: string;
+  LEARNING_INDEX?: number | null;
+  CONTINUATION_COUNT?: number;
+  NEXT_CONTINUATION_COUNT?: number;
+  LAST_ACTIVITY_TIMESTAMP?: string;
+  SESSION_DURATION?: string;
+  SESSION_STATUS?: string;
+  COMPLETION_PERCENT?: number;
+  PENDING_TASKS?: Array<{ TASK_ID: string; TASK_DESCRIPTION: string; TASK_PRIORITY: string }>;
+  RESUME_CONTEXT?: Array<{ CONTEXT_ITEM: string }>;
+  CONTEXT_SUMMARY?: string;
   [key: string]: unknown;
 }

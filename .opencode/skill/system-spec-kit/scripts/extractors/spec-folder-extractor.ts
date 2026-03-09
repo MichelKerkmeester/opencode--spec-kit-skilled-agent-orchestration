@@ -59,6 +59,7 @@ function parseFrontmatter(content: string | null): { data: Frontmatter; body: st
     }
     const item = line.match(/^\s*-\s+(.*)$/);
     if (item && currentKey) {
+      if (typeof data[currentKey] === 'string') continue;
       const existing = Array.isArray(data[currentKey]) ? data[currentKey] as string[] : [];
       existing.push(item[1].trim().replace(/^['"]|['"]$/g, ''));
       data[currentKey] = existing;
@@ -272,10 +273,17 @@ export async function extractSpecFolderContext(specFolderPath: string): Promise<
       _provenance: 'spec-folder' as const,
       _synthetic: true as const,
     }] : []),
-  ].slice(0, MAX_SPEC_OBSERVATIONS);
+  ];
+  const structuralTypes = ['progress', 'checklist', 'phase', 'status'];
+  observations.sort((a, b) => {
+    const aStructural = structuralTypes.some((t) => a.type?.toLowerCase().includes(t)) ? 0 : 1;
+    const bStructural = structuralTypes.some((t) => b.type?.toLowerCase().includes(t)) ? 0 : 1;
+    return aStructural - bStructural;
+  });
+  const cappedObservations = observations.slice(0, MAX_SPEC_OBSERVATIONS);
 
   return {
-    observations,
+    observations: cappedObservations,
     FILES: dedupe(spec.files.map((file) => JSON.stringify(file))).map((file) => JSON.parse(file) as SpecFolderExtraction['FILES'][number]),
     recentContext: summary ? [{
       learning: plan.summary || summary,

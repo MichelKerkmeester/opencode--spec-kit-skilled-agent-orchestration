@@ -78,10 +78,13 @@ export interface Exchange {
 /** Full conversation capture payload assembled from OpenCode artifacts. */
 export interface ConversationCapture {
   session_id: string;
+  sessionId: string;
   session_title: string;
+  sessionTitle: string;
   projectId: string;
   directory: string;
   captured_at: string;
+  capturedAt: string;
   exchanges: Exchange[];
   toolCalls: ToolExecution[];
   metadata: {
@@ -135,8 +138,9 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
     return [];
   }
 
+  let fileHandle: Awaited<ReturnType<typeof fs.open>> | null = null;
   try {
-    const fileHandle = await fs.open(filePath, 'r');
+    fileHandle = await fs.open(filePath, 'r');
     const stream = fileHandle.createReadStream({ encoding: 'utf-8' });
 
     const rl = readline.createInterface({
@@ -154,20 +158,21 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
           if (buffer.length > limit * 2) {
             buffer.splice(0, buffer.length - limit);
           }
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            // Skip malformed lines
-          }
+        } catch {
+          // Skip malformed lines
         }
       }
     }
 
-    await fileHandle.close();
     return buffer.slice(-limit);
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     console.warn(`   Warning: Error reading JSONL: ${errMsg}`);
     return [];
+  } finally {
+    if (fileHandle) {
+      await fileHandle.close().catch(() => {/* best-effort close */});
+    }
   }
 }
 
@@ -206,13 +211,19 @@ function getProjectId(directory: string): string | null {
       const sessions = fsSync.readdirSync(projectPath)
         .filter((name) => name.startsWith('ses_') && name.endsWith('.json'));
 
-      if (sessions.length > 0) {
-        const sessionFile = path.join(projectPath, sessions[0]);
-        const content = fsSync.readFileSync(sessionFile, 'utf-8');
-        const session = JSON.parse(content) as Record<string, unknown>;
+      // Check ALL session files, not just the first — project may have
+      // multiple sessions and the matching directory could be in any of them
+      for (const sessionName of sessions) {
+        try {
+          const sessionFile = path.join(projectPath, sessionName);
+          const content = fsSync.readFileSync(sessionFile, 'utf-8');
+          const session = JSON.parse(content) as Record<string, unknown>;
 
-        if (session.directory === directory) {
-          return projectId;
+          if (session.directory === directory) {
+            return projectId;
+          }
+        } catch {
+          // Skip unreadable session files
         }
       }
     }
@@ -437,13 +448,17 @@ async function captureConversation(
   const responses = await getSessionResponses(session.id);
   const toolCalls = await getToolExecutions(session.id);
   const exchanges = buildExchanges(prompts, messages, responses, maxMessages);
+  const capturedAt = new Date().toISOString();
 
   return {
     session_id: session.id,
+    sessionId: session.id,
     session_title: session.title,
+    sessionTitle: session.title,
     projectId: projectId,
     directory: directory,
-    captured_at: new Date().toISOString(),
+    captured_at: capturedAt,
+    capturedAt,
     exchanges: exchanges,
     toolCalls: toolCalls.slice(-maxMessages * 3),
     metadata: {
@@ -465,15 +480,23 @@ function buildExchanges(
 ): Exchange[] {
   const exchanges: Exchange[] = [];
   const userMessages = messages.filter((m) => m.role === 'user');
+  const consumedPromptIndices = new Set<number>();
 
   for (let i = 0; i < Math.min(userMessages.length, limit); i++) {
     const userMsg = userMessages[userMessages.length - 1 - i];
 
-    const prompt = prompts.find((p) => {
+    const promptIndex = prompts.findIndex((p, index) => {
+      if (consumedPromptIndices.has(index)) return false;
       if (!p.timestamp && !userMsg.created) return false;
-      const promptTime = new Date(p.timestamp || '').getTime();
+      const promptDate = new Date(p.timestamp || '');
+      if (isNaN(promptDate.getTime())) return false;
+      const promptTime = promptDate.getTime();
       return Math.abs(promptTime - userMsg.created) < CONFIG.TIMESTAMP_MATCH_TOLERANCE_MS;
     });
+    const prompt = promptIndex >= 0 ? prompts[promptIndex] : undefined;
+    if (promptIndex >= 0) {
+      consumedPromptIndices.add(promptIndex);
+    }
 
     const response = responses.find((r) => {
       const responseMsg = messages.find((m) => m.id === r.messageId);

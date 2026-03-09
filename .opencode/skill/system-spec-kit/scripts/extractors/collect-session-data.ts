@@ -200,8 +200,8 @@ function calculateLearningIndex(
   const dc = deltaContext ?? 0;
   const index =
     (dk * CONFIG.LEARNING_WEIGHTS.knowledge) +
-    (du * CONFIG.LEARNING_WEIGHTS.context) +
-    (dc * CONFIG.LEARNING_WEIGHTS.uncertainty);
+    (du * CONFIG.LEARNING_WEIGHTS.uncertainty) +
+    (dc * CONFIG.LEARNING_WEIGHTS.context);
   return Math.round(Math.max(0, Math.min(100, index)));
 }
 
@@ -577,7 +577,7 @@ function buildContinueSessionData(params: ContinueSessionParams): ContinueSessio
   const pendingTasks = extractPendingTasks(observations, recentContext, nextAction);
   const contextSummary = generateContextSummary(summary, observations, projectPhase, decisionCount);
   const resumeContext = generateResumeContext(FILES, SPEC_FILES, observations);
-  const continuationCount = recentContext?.[0]?.continuationCount || 1;
+  const continuationCount = recentContext?.[0]?.continuationCount ?? 1;
 
   const lastPrompt = userPrompts[userPrompts.length - 1];
   const lastActivity = lastPrompt?.timestamp
@@ -789,7 +789,7 @@ async function collectSessionData(
   });
 
   return {
-    TITLE: folderName.replace(/^\d{3}-/, '').replace(/-/g, ' '),
+    TITLE: path.basename(folderName).replace(/^\d{3}-/, '').replace(/-/g, ' '),
     DATE: dateOnly,
     TIME: timeOnly,
     SPEC_FOLDER: folderName,

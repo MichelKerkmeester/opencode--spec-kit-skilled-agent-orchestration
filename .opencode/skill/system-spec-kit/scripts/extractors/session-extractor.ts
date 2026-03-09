@@ -132,10 +132,10 @@ function generateSessionId(): string {
 function getChannel(): string {
   try {
     const branch = execSync('git rev-parse --abbrev-ref HEAD', {
-      encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe']
+      encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'], timeout: 5000
     }).trim();
     return branch === 'HEAD'
-      ? `detached:${execSync('git rev-parse --short HEAD', { encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'] }).trim()}`
+      ? `detached:${execSync('git rev-parse --short HEAD', { encoding: 'utf8', cwd: CONFIG.PROJECT_ROOT, stdio: ['pipe', 'pipe', 'pipe'], timeout: 5000 }).trim()}`
       : branch;
   } catch {
     return 'default';
@@ -248,7 +248,7 @@ function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgress
 ------------------------------------------------------------------*/
 
 function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]): ToolCounts {
-  const toolNames = ['Read', 'Edit', 'Write', 'Bash', 'Grep', 'Glob', 'Task', 'WebFetch', 'WebSearch', 'Skill'];
+  const toolNames = ['Read', 'Edit', 'Write', 'Bash', 'Grep', 'Glob', 'Task', 'WebFetch', 'WebSearch', 'Skill', 'View', 'Agent', 'NotebookEdit', 'ToolSearch'];
   const counts: ToolCounts = Object.fromEntries(toolNames.map((t) => [t, 0])) as ToolCounts;
 
   for (const obs of observations) {
@@ -268,13 +268,9 @@ function countToolsByType(observations: Observation[], userPrompts: UserPrompt[]
       }
     }
   }
-  for (const prompt of userPrompts) {
-    const promptText = prompt.prompt || '';
-    for (const tool of toolNames) {
-      const matches = promptText.match(new RegExp(`\\b${tool}\\s*\\(`, 'gi'));
-      if (matches) counts[tool] += matches.length;
-    }
-  }
+  // Note: userPrompts are intentionally NOT counted — regex matching on raw
+  // user text produces false positives (e.g. "Read the docs" matching Read tool).
+  // Tool usage evidence comes only from structured observation facts.
   return counts;
 }
 
@@ -287,7 +283,7 @@ function calculateSessionDuration(userPrompts: UserPrompt[], now: Date): string 
   };
   const firstTimestamp = safeParseDate(userPrompts[0]?.timestamp, now);
   const lastTimestamp = safeParseDate(userPrompts[userPrompts.length - 1]?.timestamp, now);
-  const minutes = Math.floor((lastTimestamp.getTime() - firstTimestamp.getTime()) / 60000);
+  const minutes = Math.max(0, Math.floor((lastTimestamp.getTime() - firstTimestamp.getTime()) / 60000));
   const hours = Math.floor(minutes / 60);
   return hours > 0 ? `${hours}h ${minutes % 60}m` : `${minutes}m`;
 }
