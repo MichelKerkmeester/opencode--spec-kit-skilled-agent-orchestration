@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [006-extra-features/04-03-26_08-41__sprint-019-impl-3-phases-81-files]"
+title: "Sprint 9 Extra Features Implementation [006-extra-features/04-03-26_08-41__sprint-019-impl-3-phases-81-files]"
 description: "Implemented all 3 phases of Sprint 9 Extra Features for the Spec Kit Memory MCP server by delegating to Codex CLI (gpt-5.3-codex, xhigh reasoning, --full-auto)."
 trigger_phrases:
   - "sprint 9 implementation"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "zod schema validation mcp"
   - "response envelope includeTrace"
   - "async ingestion job queue"
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []

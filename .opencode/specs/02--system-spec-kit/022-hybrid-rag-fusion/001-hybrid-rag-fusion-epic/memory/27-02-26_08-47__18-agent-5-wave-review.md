@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]"
+title: "18-agent review across five waves [001-hybrid-rag-fusion-epic/27-02-26_08-47__18-agent-5-wave-review]"
 description: "Comprehensive multi-agent ultra-think review of spec 140 \"Hybrid RAG Fusion Refinement\" -- a 43+ recommendation program across 8 metric-gated sprints (458-700h) for upgrading a memory MCP server's retrieval pipeline. Dispatched 18 agents (9 ultra-think analyzers + 9 sonnet document writers) across all 8 sprints plus root documentation. Each sprint analyzed through 3 lenses (Analytical, Critical, Holistic). Produced 9 detailed review documents (184KB total). Key finding: planning quality is exceptional but 5 actionable blockers must be resolved pre-implementation."
 trigger_phrases:
   - "ultra-think review"

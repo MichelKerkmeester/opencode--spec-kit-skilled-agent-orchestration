@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/03-03-26_18-36__cross-ai-final-review-phase-018]"
+title: "Cross-AI final review audit [001-hybrid-rag-fusion-epic/03-03-26_18-36__cross-ai-final-review-phase-018]"
 description: "Session 8: Cross-AI final review of Phase 018 (Refinement Phase 7) using 8 parallel agents — 5 Codex gpt-5.3-codex (xhigh reasoning) and 3 Gemini gemini-3.1-pro-preview. All 8 agents independently aud."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,9 @@ trigger_phrases:
   - "gemini 3"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "critical"
+contextType: "research"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

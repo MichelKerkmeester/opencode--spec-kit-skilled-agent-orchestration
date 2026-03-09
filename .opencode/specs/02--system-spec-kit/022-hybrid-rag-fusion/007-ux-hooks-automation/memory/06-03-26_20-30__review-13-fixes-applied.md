@@ -7,7 +7,7 @@ trigger_phrases:
   - "parallel agents"
   - "MutationHookResult"
   - "windows path regex"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.90
 quality_flags: []

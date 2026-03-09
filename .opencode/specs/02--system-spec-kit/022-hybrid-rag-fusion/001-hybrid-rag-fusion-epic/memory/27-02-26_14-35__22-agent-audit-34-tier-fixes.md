@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/27-02-26_14-35__22-agent-audit-34-tier-fixes]"
+title: "22-agent audit with 34 tier fixes [001-hybrid-rag-fusion-epic/27-02-26_14-35__22-agent-audit-34-tier-fixes]"
 description: "Executed 34 remaining Tier A/B/C fixes from the comprehensive 22-agent Hybrid RAG Fusion spec audit. 5 parallel opus agents applied all fixes: Agent 1 made 16 edits to root spec.md (B8 signal ceiling ."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,8 @@ trigger_phrases:
   - "child only"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "critical"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

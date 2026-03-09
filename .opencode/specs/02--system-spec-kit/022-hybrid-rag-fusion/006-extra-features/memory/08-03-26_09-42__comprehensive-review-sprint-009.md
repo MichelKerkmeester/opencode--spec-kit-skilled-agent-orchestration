@@ -7,7 +7,7 @@ trigger_phrases:
   - "codex review agents"
   - "job queue failCount"
   - "similarity fallback operator"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.90
 quality_flags: []

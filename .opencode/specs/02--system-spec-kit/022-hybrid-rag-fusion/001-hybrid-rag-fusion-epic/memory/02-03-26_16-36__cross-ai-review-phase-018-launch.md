@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/02-03-26_16-36__cross-ai-review-phase-018-launch]"
+title: "Cross-AI review audit launch [001-hybrid-rag-fusion-epic/02-03-26_16-36__cross-ai-review-phase-018-launch]"
 description: "Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the entire Hybrid RAG Fusion Refinement program. Orchestrated 20+ review tasks across 3 AI models: Gemini (gemini-3.1-pro-review."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,9 @@ trigger_phrases:
   - "gemini 3"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "critical"
+contextType: "research"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

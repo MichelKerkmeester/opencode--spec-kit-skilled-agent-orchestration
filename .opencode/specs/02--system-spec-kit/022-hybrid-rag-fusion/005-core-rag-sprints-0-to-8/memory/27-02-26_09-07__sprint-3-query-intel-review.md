@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [005-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-3-query-intel-review]"
+title: "Sprint 3 Query Intelligence Review [005-core-rag-sprints-0-to-8/27-02-26_09-07__sprint-3-query-intel-review]"
 description: "Implemented all 5 recommendations from the ultra-think review of Sprint 3 (Query Intelligence) spec folder."
 trigger_phrases:
   - "ultra-think review sprint 3"

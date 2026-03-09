@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session 06-03-26 [009-architecture-audit/06-03-26_13-00__phase-9-memory-naming-closure]"
+title: "Phase 9 Memory Naming Closure [009-architecture-audit/06-03-26_13-00__phase-9-memory-naming-closure]"
 description: "Closed the Phase 9 memory naming regression by prioritizing stronger session summaries before folderBase and validating the fix with the correct scripts-package Vitest command."
 trigger_phrases:
   - "memory naming closure"

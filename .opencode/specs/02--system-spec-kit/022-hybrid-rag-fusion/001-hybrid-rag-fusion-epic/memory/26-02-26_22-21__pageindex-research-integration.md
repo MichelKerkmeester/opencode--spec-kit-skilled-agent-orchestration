@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/26-02-26_22-21__pageindex-research-integration]"
+title: "PageIndex research integration recommendations [001-hybrid-rag-fusion-epic/26-02-26_22-21__pageindex-research-integration]"
 description: "rootCause: PageIndex research produced 8 actionable recommendations that needed to be formally integrated into the existing 8-sprint spec 140 documentation tree; solution: Dispatched 5 parallel sonnet."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,8 @@ trigger_phrases:
   - "pi a5"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "important"
+contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

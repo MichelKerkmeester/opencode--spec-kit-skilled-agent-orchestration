@@ -9,6 +9,9 @@ trigger_phrases:
   - "tree-thinning merged small files"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "critical"
+contextType: "implementation"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

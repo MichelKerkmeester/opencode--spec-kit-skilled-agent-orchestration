@@ -7,7 +7,7 @@ trigger_phrases:
   - "contingency decision PROCEED"
   - "MRR@5 0.2083"
   - "ground truth ID mapping"
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []

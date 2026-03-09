@@ -9,7 +9,7 @@ trigger_phrases:
   - "phased rollout"
 quality_score: 1.00
 quality_flags: []
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "research"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
@@ -476,7 +476,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-ep
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "research"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

@@ -7,7 +7,7 @@ trigger_phrases:
   - "bare catch typed error handling"
   - "ScanFileEntry interface extraction"
   - "buildAliasBuckets deduplication"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.65
 quality_flags: []

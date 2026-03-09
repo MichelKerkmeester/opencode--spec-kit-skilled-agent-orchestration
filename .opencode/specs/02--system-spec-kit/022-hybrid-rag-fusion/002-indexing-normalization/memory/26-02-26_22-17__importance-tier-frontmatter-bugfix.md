@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]"
+title: "Importance Tier Frontmatter Fix [002-indexing-normalization/26-02-26_22-17__importance-tier-frontmatter-bugfix]"
 description: "Fixed a bug where memory export generated two conflicting importance tier frontmatter fields: a hardcoded importance_tier with value normal (snake_case) and a dynamically resolved importanceTier (camelCase)."
 trigger_phrases:
   - "importance tier"

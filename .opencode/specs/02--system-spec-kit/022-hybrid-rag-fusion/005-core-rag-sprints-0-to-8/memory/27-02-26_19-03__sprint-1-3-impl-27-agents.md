@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [005-core-rag-sprints-0-to-8/27-02-26_19-03__sprint-1-3-impl-27-agents]"
+title: "Sprint 1-3 Pipeline Implementation [005-core-rag-sprints-0-to-8/27-02-26_19-03__sprint-1-3-impl-27-agents]"
 description: "Completed the full 8-wave, 27-agent Hybrid RAG Fusion pipeline implementation across Sprints 1-3."
 trigger_phrases:
   - "sprint 3 query intelligence"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "RSF fusion"
   - "channel min-representation"
   - "confidence truncation"
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []

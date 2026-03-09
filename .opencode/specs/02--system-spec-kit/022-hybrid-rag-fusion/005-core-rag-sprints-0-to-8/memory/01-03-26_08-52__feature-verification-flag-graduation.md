@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [005-core-rag-sprints-0-to-8/01-03-26_08-52__feature-verification-flag-graduation]"
+title: "Feature Verification Flag Graduation [005-core-rag-sprints-0-to-8/01-03-26_08-52__feature-verification-flag-graduation]"
 description: "Executed full feature verification and remediation plan for Hybrid RAG Fusion Refinement."
 trigger_phrases:
   - "hybrid RAG fusion verification"

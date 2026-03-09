@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [006-extra-features/04-03-26_11-31__sprint-019-doc-updates-6-fixes]"
+title: "Sprint 9 Documentation Fixes [006-extra-features/04-03-26_11-31__sprint-019-doc-updates-6-fixes]"
 description: "Continuation session following context overflow."
 trigger_phrases:
   - "feature catalog update"

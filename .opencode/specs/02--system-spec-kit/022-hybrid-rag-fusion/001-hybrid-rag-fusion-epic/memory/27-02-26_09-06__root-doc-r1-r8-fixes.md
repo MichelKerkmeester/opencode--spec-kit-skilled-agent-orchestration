@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]"
+title: "Root docs R1-R8 fixes [001-hybrid-rag-fusion-epic/27-02-26_09-06__root-doc-r1-r8-fixes]"
 description: "Implemented all 8 recommendations (R1-R8) from the ultra-think review of Spec 140 root documentation. Applied 14 edits across 4 files (spec.md, plan.md, tasks.md, checklist.md). Changes include: resol."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,8 @@ trigger_phrases:
   - "channel drop"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "normal"
+contextType: "implementation"
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

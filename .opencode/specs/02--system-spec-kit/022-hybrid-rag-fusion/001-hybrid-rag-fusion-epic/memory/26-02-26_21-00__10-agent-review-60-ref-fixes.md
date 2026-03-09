@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/26-02-26_21-00__10-agent-review-60-ref-fixes]"
+title: "10-agent review with 60 reference fixes [001-hybrid-rag-fusion-epic/26-02-26_21-00__10-agent-review-60-ref-fixes]"
 description: "Applied 60 REF items from a 10-agent ultra-think review (document 146-agent-review-consolidated-findings.md) to the root speckit documentation and phase sub-folders. Used 5 parallel agents (2 Opus + 3."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,9 @@ trigger_phrases:
   - "mr8 mr10"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "critical"
+contextType: "implementation"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

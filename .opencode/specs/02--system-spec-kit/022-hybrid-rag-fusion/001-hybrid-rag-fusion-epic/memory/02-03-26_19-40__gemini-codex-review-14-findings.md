@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [001-hybrid-rag-fusion-epic/02-03-26_19-40__gemini-codex-review-14-findings]"
+title: "Gemini and Codex review findings [001-hybrid-rag-fusion-epic/02-03-26_19-40__gemini-codex-review-14-findings]"
 description: "Delegated comprehensive review of 010-cross-ai-audit to two independent AI reviewers: Gemini 3.1 Pro (graded A) and Codex gpt-5.3-codex (graded C+). Gemini was generous on process quality and effo."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
@@ -9,6 +9,9 @@ trigger_phrases:
   - "undefined id"
 quality_score: 1.00
 quality_flags: []
+importance_tier: "important"
+contextType: "research"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 

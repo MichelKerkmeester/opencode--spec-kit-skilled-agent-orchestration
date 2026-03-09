@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [006-extra-features/03-03-26_20-58__6-agent-research-sprint-019-spec]"
+title: "Cross-AI Research Synthesis [006-extra-features/03-03-26_20-58__6-agent-research-sprint-019-spec]"
 description: "Executed a 6-agent cross-AI research delegation (3 Codex gpt-5.3-codex + 3 Gemini 3.1-pro-preview) analyzing cognee, qmd, and ArtemXTech to extract improvement insights for system-spec-kit Memory MCP."
 trigger_phrases:
   - "sprint 9 extra features"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "6-agent synthesis"
   - "codex gemini research"
   - "productization operational tooling"
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []

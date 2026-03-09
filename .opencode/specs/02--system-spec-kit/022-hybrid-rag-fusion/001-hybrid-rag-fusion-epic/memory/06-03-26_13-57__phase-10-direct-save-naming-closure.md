@@ -9,6 +9,9 @@ trigger_phrases:
   - "quick summary"
 quality_score: 0.55
 quality_flags: []
+importance_tier: "critical"
+contextType: "implementation"
+
 ---
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---

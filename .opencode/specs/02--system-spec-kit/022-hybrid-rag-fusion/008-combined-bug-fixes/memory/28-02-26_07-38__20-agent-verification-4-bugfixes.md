@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [008-combined-bug-fixes/28-02-26_07-38__20-agent-verification-4-bugfixes]"
+title: "20-Agent Verification Bug Fixes [008-combined-bug-fixes/28-02-26_07-38__20-agent-verification-4-bugfixes]"
 description: "Ran 20-agent verification across Hybrid RAG Fusion sprints, fixed four confirmed source bugs, and synced the root checklist with evidence-backed completion."
 trigger_phrases:
   - "20-agent verification"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "memory-search validation"
   - "co-activation hard link"
   - "root checklist"
-importance_tier: "normal"
+importance_tier: "critical"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []

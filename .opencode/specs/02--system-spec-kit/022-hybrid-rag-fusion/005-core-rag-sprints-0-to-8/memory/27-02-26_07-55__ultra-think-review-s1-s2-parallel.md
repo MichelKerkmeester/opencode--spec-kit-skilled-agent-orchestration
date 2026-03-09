@@ -1,5 +1,5 @@
 ---
-title: "hybrid rag fusion session [005-core-rag-sprints-0-to-8/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
+title: "Ultra-Think Sprint Review [005-core-rag-sprints-0-to-8/27-02-26_07-55__ultra-think-review-s1-s2-parallel]"
 description: "Conducted comprehensive 3-agent ultra-think review of the Hybrid RAG Fusion Refinement spec (140), scoring architecture 8/10 and execution readiness 6/10."
 trigger_phrases:
   - "hybrid RAG fusion refinement"
