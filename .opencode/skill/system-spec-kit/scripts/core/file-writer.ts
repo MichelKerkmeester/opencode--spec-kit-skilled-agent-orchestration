@@ -88,16 +88,16 @@ export async function writeFilesAtomically(
       await fs.access(filePath);
       fileExists = true;
     } catch { /* Expected: file doesn't exist */ }
-    if (fileExists) {
-      const backupSuffix = crypto.randomBytes(4).toString('hex');
-      backupPath = `${filePath}.bak.${backupSuffix}`;
-      await fs.copyFile(filePath, backupPath);
-      existedBefore = true;
-      console.warn(`   Warning: overwriting existing file ${filename}`);
-    }
     const tempSuffix = crypto.randomBytes(4).toString('hex');
     const tempPath = `${filePath}.tmp.${tempSuffix}`;
     try {
+      if (fileExists) {
+        const backupSuffix = crypto.randomBytes(4).toString('hex');
+        backupPath = `${filePath}.bak.${backupSuffix}`;
+        await fs.copyFile(filePath, backupPath);
+        existedBefore = true;
+        console.warn(`   Warning: overwriting existing file ${filename}`);
+      }
       await fs.writeFile(tempPath, content, 'utf-8');
       const stat = await fs.stat(tempPath);
       if (stat.size !== Buffer.byteLength(content, 'utf-8')) throw new Error('Size mismatch');

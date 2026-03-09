@@ -10,7 +10,7 @@ const DEFAULT_DENYLIST: RegExp[] = [
   /\bI'll now\b/gi,
   /\bStep\s+\d+:/gi,
   /\bLet me check\b/gi,
-  /\bI need to (?:check|verify|confirm|ensure|validate|examine|look at|read|inspect|search|scan|run|investigate)\b/gi,
+  /\bI need to (?:check|verify|confirm|ensure|validate|examine|look at|read|inspect|investigate)\b/gi,
   /\bI'll start by\b/gi,
   /\bLet me start\b/gi,
   /\bLet me read\b/gi,

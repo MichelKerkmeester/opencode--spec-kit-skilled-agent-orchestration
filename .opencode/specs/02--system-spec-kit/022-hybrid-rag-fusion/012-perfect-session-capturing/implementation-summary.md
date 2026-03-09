@@ -109,9 +109,9 @@ Tasks and the remediation manifest record 20 implemented fixes across eleven fil
 | `.opencode/skill/system-spec-kit/scripts/utils/slug-utils.ts` | Added contamination patterns that reject generic tool-derived memory-name candidates. |
 
 ## Remaining Work
-- [ ] Quality scores on well-formed sessions >= 85% — NOT TESTED: requires runtime verification
+- [ ] Quality scores on well-formed sessions >= 85% — PARTIAL: legacy scoring passes (100/100); v2 scoring at 0.80, below 0.85 target; needs v2 calibration
 - [x] No truncation artifacts in generated memory files — VERIFIED: 0 PLACEHOLDER/TRUNCATED/undefined artifacts in 503-line output
 - [ ] Task extraction regex has <= 5% false positive rate — NOT TESTED: requires runtime verification
-- [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed
+- [x] Phase detection improved beyond simple regex — VERIFIED: ratio-based detection adequate; no false classifications observed in runtime test
 - [ ] All MEDIUM findings from audit resolved — REMAINING: ~67 medium findings not yet addressed
-- [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score); 4 samples remaining
+- [ ] Generated memory files pass manual quality inspection (5 samples) — PARTIAL: 1/5 samples verified (08-03-26_20-47__fixes-for-memory-pipeline-contamination.md — 100/100 score, correct slug, 0 artifacts, 503 lines); 4 samples remaining

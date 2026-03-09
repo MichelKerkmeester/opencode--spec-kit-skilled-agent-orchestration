@@ -259,7 +259,7 @@ async function extractDecisions(
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
     const RATIONALE: string = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
 
-    const confidenceMatch = narrative.match(/confidence:?\s*(\d+)%?/i);
+    const confidenceMatch = narrative.match(/confidence:?\s*(\d+)(?:%|\b)/i);
     // Default confidence based on evidence strength: options + rationale = higher confidence
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
     const parsedConfidence = confidenceMatch ? parseInt(confidenceMatch[1], 10) : NaN;
