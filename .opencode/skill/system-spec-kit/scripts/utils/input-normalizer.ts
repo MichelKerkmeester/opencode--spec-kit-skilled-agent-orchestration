@@ -402,7 +402,19 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
 // ---------------------------------------------------------------
 
 function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
-  const { exchanges, toolCalls, metadata, sessionTitle } = capture;
+  // RC-10: Normalize snake_case fields from ConversationCapture to camelCase OpencodeCapture.
+  // ConversationCapture emits both forms; OpencodeCapture interface only declares camelCase.
+  const raw = capture as unknown as Record<string, unknown>;
+  const normalizedCapture: OpencodeCapture = {
+    exchanges: capture.exchanges,
+    toolCalls: capture.toolCalls,
+    metadata: capture.metadata,
+    sessionTitle: capture.sessionTitle ?? (raw.session_title as string | undefined),
+    sessionId: capture.sessionId ?? (raw.session_id as string | undefined),
+    capturedAt: capture.capturedAt ?? (raw.captured_at as string | undefined),
+  };
+
+  const { exchanges, toolCalls, metadata, sessionTitle } = normalizedCapture;
 
   // --- Spec-folder relevance filter ---
   // When a spec folder hint is provided, filter tool calls to only those
@@ -437,14 +449,18 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     timestamp: ex.timestamp ? new Date(ex.timestamp).toISOString() : new Date().toISOString()
   }));
 
-  // When spec folder hint is provided, filter prompts to only those mentioning
-  // relevant keywords — prevents cross-spec noise from polluting session context
-  const userPrompts: UserPrompt[] = (specFolderHint && relevanceKeywords.length > 0)
-    ? allUserPrompts.filter(p => {
-        const lower = p.prompt.toLowerCase();
-        return relevanceKeywords.some(kw => lower.includes(kw.toLowerCase()));
-      })
-    : allUserPrompts;
+  // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
+  // content (e.g., SGQS/skill-graphs) from leaking into unrelated memory files.
+  // Falls back to full prompt list to preserve downstream semantics (duration
+  // calc, first-prompt summary, flowchart seeding all expect chronological list).
+  const userPrompts: UserPrompt[] = (() => {
+    if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
+    const filtered = allUserPrompts.filter(p => {
+      const lower = p.prompt.toLowerCase();
+      return relevanceKeywords.some(kw => lower.includes(kw.toLowerCase()));
+    });
+    return filtered.length > 0 ? filtered : allUserPrompts;
+  })();
 
   const observations: Observation[] = [];
 
@@ -511,9 +527,18 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     observations.push(toolObs);
   }
 
-  const recentContext: RecentContext[] = exchanges.length > 0 ? [{
-    request: exchanges[0].userInput || sessionTitle || 'OpenCode session',
-    learning: exchanges[exchanges.length - 1]?.assistantResponse || ''
+  // RC-2: Build recentContext from relevance-filtered exchanges to prevent
+  // foreign-spec content from propagating into SUMMARY via learning field.
+  const relevantExchanges = (specFolderHint && relevanceKeywords.length > 0)
+    ? exchanges.filter(ex => {
+        const combined = `${ex.userInput || ''} ${ex.assistantResponse || ''}`.toLowerCase();
+        return relevanceKeywords.some(kw => combined.includes(kw.toLowerCase()));
+      })
+    : exchanges;
+  const contextExchanges = relevantExchanges.length > 0 ? relevantExchanges : exchanges;
+  const recentContext: RecentContext[] = contextExchanges.length > 0 ? [{
+    request: contextExchanges[0].userInput || sessionTitle || 'OpenCode session',
+    learning: contextExchanges[contextExchanges.length - 1]?.assistantResponse || ''
   }] : [];
 
   const FILES: FileEntry[] = [];
@@ -538,8 +563,8 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     recentContext,
     FILES,
     _source: 'opencode-capture',
-    _sessionId: capture.sessionId,
-    _capturedAt: capture.capturedAt
+    _sessionId: normalizedCapture.sessionId,
+    _capturedAt: normalizedCapture.capturedAt
   };
 }
 

@@ -448,7 +448,7 @@ async function enrichStatelessData(
         console.warn(`[workflow] enrichment degraded: ${msg}`);
         return null;
       }),
-      extractGitContext(projectRoot).catch((err: unknown) => {
+      extractGitContext(projectRoot, specFolder).catch((err: unknown) => {
         const msg = err instanceof Error ? err.message : String(err);
         console.warn(`[workflow] enrichment degraded: ${msg}`);
         return null;
@@ -593,10 +593,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // cross-spec contamination (e.g., session working on spec A saved to spec B).
     const isStatelessMode = !activeDataFile && !preloadedData;
     if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
-      const specFolderLeaf = path.basename(activeSpecFolderArg).replace(/^\d+-/, '').toLowerCase();
-      const specKeywords = specFolderLeaf.split('-').filter((w: string) => w.length >= 3);
-      if (specKeywords.length === 0 && specFolderLeaf.length >= 2) {
-        specKeywords.push(specFolderLeaf);
+      const specFolderLeaf = path.basename(activeSpecFolderArg).replace(/^\d+--?/, '').toLowerCase();
+      // RC-4 fix: Filter out overly broad short keywords (e.g., "ops", "app", "api")
+      // that cause false-positive alignment matches. Keep the full leaf as a compound keyword.
+      const BROAD_STOPWORDS = new Set(['ops', 'app', 'api', 'cli', 'lib', 'src', 'dev', 'hub', 'log', 'run']);
+      const specKeywords = specFolderLeaf.split('-').filter((w: string) => w.length >= 3 && !BROAD_STOPWORDS.has(w));
+      // Always include the full compound leaf for substring matching (e.g., "ai-ops")
+      if (specFolderLeaf.length >= 2) {
+        specKeywords.unshift(specFolderLeaf);
       }
 
       const allFilePaths = (collectedData.observations || [])
@@ -610,7 +614,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           return specKeywords.some((kw: string) => lower.includes(kw));
         });
         const overlapRatio = relevantPaths.length / totalPaths;
-        if (overlapRatio < 0.05) {
+        // RC-4: Raised from 0.05 to 0.15 — 5% threshold let mostly-foreign content through
+        if (overlapRatio < 0.15) {
           const alignMsg = `ALIGNMENT_BLOCK: Only ${(overlapRatio * 100).toFixed(0)}% of captured file paths relate to spec folder "${activeSpecFolderArg}". ` +
             `The active session appears to be working on a different task (spec keywords: [${specKeywords.join(', ')}], ` +
             `total paths: ${totalPaths}, matching: ${relevantPaths.length}). ` +
@@ -670,7 +675,42 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (isStatelessMode) {
       log('Step 3.5: Enriching stateless data...');
       collectedData = await enrichStatelessData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
-      log('   Enrichment complete\n');
+      log('   Enrichment complete');
+
+      // RC-4: Post-enrichment alignment re-check — enrichment can introduce
+      // new foreign content (e.g., git context from other spec folders).
+      // Re-verify alignment at a lower threshold (10%) to catch this.
+      // Uses resolved specFolder (not raw activeSpecFolderArg) for accurate keyword matching.
+      if (specFolder && (collectedData.observations || collectedData.FILES)) {
+        const specFolderLeafPost = path.basename(specFolder).replace(/^\d+--?/, '').toLowerCase();
+        // RC-4 fix: Consistent keyword extraction with pre-enrichment block
+        const BROAD_STOPWORDS_POST = new Set(['ops', 'app', 'api', 'cli', 'lib', 'src', 'dev', 'hub', 'log', 'run']);
+        const specKeywordsPost = specFolderLeafPost.split('-').filter((w: string) => w.length >= 3 && !BROAD_STOPWORDS_POST.has(w));
+        if (specFolderLeafPost.length >= 2) {
+          specKeywordsPost.unshift(specFolderLeafPost);
+        }
+
+        const allFilePathsPost = (collectedData.observations || [])
+          .flatMap((obs: { files?: string[] }) => obs.files || [])
+          .concat((collectedData.FILES || []).map((f: { FILE_PATH?: string; path?: string }) => f.FILE_PATH || f.path || ''));
+
+        const totalPathsPost = allFilePathsPost.length;
+        if (totalPathsPost > 0 && specKeywordsPost.length > 0) {
+          const relevantPathsPost = allFilePathsPost.filter((fp: string) => {
+            const lower = fp.toLowerCase();
+            return specKeywordsPost.some((kw: string) => lower.includes(kw));
+          });
+          const overlapRatioPost = relevantPathsPost.length / totalPathsPost;
+          if (overlapRatioPost < 0.10) {
+            const postAlignMsg = `POST_ENRICHMENT_ALIGNMENT_BLOCK: After enrichment, only ${(overlapRatioPost * 100).toFixed(0)}% of file paths relate to spec folder "${specFolder}". ` +
+              `Enrichment may have introduced cross-spec contamination (spec keywords: [${specKeywordsPost.join(', ')}], ` +
+              `total paths: ${totalPathsPost}, matching: ${relevantPathsPost.length}). Aborting.`;
+            warn(`   ${postAlignMsg}`);
+            throw new Error(postAlignMsg);
+          }
+        }
+      }
+      log();
     }
 
     // Steps 4-7: Parallel data extraction
@@ -737,7 +777,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('\n   All extraction complete (parallel execution)\n');
 
   // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
-  // synthetic file paths as contradictory with zero tool usage
+  // synthetic file paths as contradictory with zero tool usage.
+  // RC-9 fix: Guard against NaN/undefined TOOL_COUNT before any comparison.
+  if (!Number.isFinite(sessionData.TOOL_COUNT)) {
+    sessionData.TOOL_COUNT = 0;
+  }
   const enrichedFileCount = collectedData.FILES?.length ?? 0;
   if (isStatelessMode && sessionData.TOOL_COUNT === 0 && enrichedFileCount > 0) {
     sessionData.TOOL_COUNT = enrichedFileCount;
@@ -926,6 +970,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ...sessionData,
       ...conversations,
       ...workflowData,
+      // RC-9: Re-assert TOOL_COUNT after spreading conversations ONLY in
+      // stateless mode, because conversations object contains TOOL_COUNT: 0
+      // which overwrites the patched value from stateless enrichment.
+      // Non-stateless flows should keep conversations.TOOL_COUNT as-is.
+      ...(isStatelessMode ? { TOOL_COUNT: sessionData.TOOL_COUNT } : {}),
       FILES: effectiveFiles,
       HAS_FILES: effectiveFiles.length > 0,
       MESSAGE_COUNT: conversations.MESSAGES.length,
@@ -976,7 +1025,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       diagramCount: diagrams.DIAGRAMS.length,
       skillVersion: CONFIG.SKILL_VERSION,
       autoTriggered: shouldAutoSave(sessionData.MESSAGE_COUNT),
-      filtering: filterPipeline.getStats(),
+      filtering: {
+        ...filterPipeline.getStats(),
+        // RC-7: Clarify the two scoring systems to prevent confusion.
+        // metadata.json qualityScore is 0-100 (legacy scorer), while
+        // frontmatter quality_score is 0.0-1.0 (v2 scorer). Different metrics.
+        _note: 'qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)',
+      },
       semanticSummary: {
         task: implSummary.task.substring(0, 100),
         filesCreated: implSummary.filesCreated.length,
@@ -1074,26 +1129,54 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     throw new Error(abortMsg);
   }
 
+  // RC-5: V8/V9 contamination hard-block — prevent writing files when
+  // critical contamination rules fail. Previously these produced warnings
+  // but files were still written and sometimes indexed.
+  if (!isSimulation && qualityValidation.ruleResults) {
+    const contaminationRuleIds = ['V8', 'V9'];
+    // RC-5 fix: Case-insensitive ruleId comparison + null-safe filter
+    const failedContaminationRules = qualityValidation.ruleResults
+      .filter((r: { ruleId: string; passed: boolean }) =>
+        r && typeof r.ruleId === 'string' &&
+        contaminationRuleIds.includes(r.ruleId.toUpperCase()) && !r.passed
+      );
+    if (failedContaminationRules.length > 0) {
+      const failedIds = failedContaminationRules.map((r: { ruleId: string }) => r.ruleId).join(', ');
+      const contaminationAbortMsg = `CONTAMINATION_GATE_ABORT: Critical contamination rules failed: [${failedIds}]. ` +
+        `Content contains cross-spec contamination that would corrupt the memory index. Aborting write.`;
+      warn(contaminationAbortMsg);
+      throw new Error(contaminationAbortMsg);
+    }
+  }
+
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
 
-  // Update per-folder description.json memory tracking
-  try {
-    const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD } = await import(
-      '@spec-kit/mcp-server/lib/search/folder-discovery'
-    );
-    const specFolderAbsolute = path.resolve(specFolder);
-    const existing = loadPFD(specFolderAbsolute);
-    if (existing) {
-      existing.memorySequence = (existing.memorySequence || 0) + 1;
-      existing.memoryNameHistory = [
-        ...(existing.memoryNameHistory || []).slice(-19),
-        ctxFilename,
-      ];
-      savePFD(existing, specFolderAbsolute);
-    }
-  } catch { /* Non-fatal — description tracking is best-effort */ }
+  // RC-6 fix: Check if the primary context file was actually written (it may
+  // have been skipped as a duplicate). Guard downstream operations accordingly.
+  const ctxFileWritten = writtenFiles.includes(ctxFilename);
+
+  // Update per-folder description.json memory tracking (only if file was written)
+  if (ctxFileWritten) {
+    try {
+      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD } = await import(
+        '@spec-kit/mcp-server/lib/search/folder-discovery'
+      );
+      const specFolderAbsolute = path.resolve(specFolder);
+      const existing = loadPFD(specFolderAbsolute);
+      if (existing) {
+        existing.memorySequence = (Number(existing.memorySequence) || 0) + 1;
+        existing.memoryNameHistory = [
+          ...(existing.memoryNameHistory || []).slice(-19),
+          ctxFilename,
+        ];
+        savePFD(existing, specFolderAbsolute);
+      }
+    } catch { /* Non-fatal — description tracking is best-effort */ }
+  } else {
+    log('   Context file was a duplicate — skipping description tracking');
+  }
   log();
 
   // Step 9.5: State embedded in memory file
@@ -1118,22 +1201,27 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log('Step 11: Indexing semantic memory...');
 
   let memoryId: number | null = null;
-  try {
-    if (qualityValidation.valid) {
-      memoryId = await indexMemory(contextDir, ctxFilename, files[ctxFilename], specFolderName, collectedData, preExtractedTriggers);
-      if (memoryId !== null) {
-        log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
-        await updateMetadataWithEmbedding(contextDir, memoryId);
-        log('   Updated metadata.json with embedding info');
+  // RC-6 fix: Only index if the context file was actually written (not a duplicate skip)
+  if (!ctxFileWritten) {
+    log('   Skipping indexing — context file was a duplicate');
+  } else {
+    try {
+      if (qualityValidation.valid) {
+        memoryId = await indexMemory(contextDir, ctxFilename, files[ctxFilename], specFolderName, collectedData, preExtractedTriggers);
+        if (memoryId !== null) {
+          log(`   Indexed as memory #${memoryId} (${EMBEDDING_DIM} dimensions)`);
+          await updateMetadataWithEmbedding(contextDir, memoryId);
+          log('   Updated metadata.json with embedding info');
+        }
+      } else {
+        log('   QUALITY_GATE_FAIL: skipping production indexing for this file');
       }
-    } else {
-      log('   QUALITY_GATE_FAIL: skipping production indexing for this file');
+    } catch (e: unknown) {
+      const errMsg = e instanceof Error ? e.message : String(e);
+      warn(`   Warning: Embedding failed: ${errMsg}`);
+      warn('   Context saved successfully without semantic indexing');
+      warn('   Run "npm run rebuild" to retry indexing later');
     }
-  } catch (e: unknown) {
-    const errMsg = e instanceof Error ? e.message : String(e);
-    warn(`   Warning: Embedding failed: ${errMsg}`);
-    warn('   Context saved successfully without semantic indexing');
-    warn('   Run "npm run rebuild" to retry indexing later');
   }
 
   // Step 12: Opportunistic retry processing

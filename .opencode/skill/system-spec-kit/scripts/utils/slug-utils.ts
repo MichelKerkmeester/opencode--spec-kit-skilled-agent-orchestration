@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Content-aware slug generation for memory filenames
 
-import { createHash } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -165,8 +165,8 @@ export function ensureUniqueMemoryFilename(contextDir: string, filename: string)
     if (!existing.has(candidate)) return candidate;
   }
 
-  // Fail-safe: append random hash
-  const hash = createHash('sha1').update(`${filename}:${Date.now()}`).digest('hex').slice(0, 6);
+  // Fail-safe: append truly random hex suffix
+  const hash = randomBytes(6).toString('hex');
   return `${base}-${hash}${ext}`;
 }
 

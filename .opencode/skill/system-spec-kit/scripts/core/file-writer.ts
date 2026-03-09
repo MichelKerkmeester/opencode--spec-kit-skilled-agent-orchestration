@@ -27,29 +27,32 @@ function validateContentSubstance(content: string, filename: string): void {
   }
 }
 
+// RC-6: Return duplicate filename instead of throwing, so callers can skip
+// idempotently. Previously, throw-on-duplicate was treated as a batch error
+// that triggered rollback, causing 5 separate runs to create 5 files.
 async function checkForDuplicateContent(
   contextDir: string, content: string, filename: string
-): Promise<void> {
+): Promise<string | null> {
   const hash = crypto.createHash('sha256').update(content).digest('hex');
   let entries: string[];
   try {
     const dirEntries = await fs.readdir(contextDir);
     entries = dirEntries.filter(f => f.endsWith('.md') && f !== filename);
   } catch {
-    return; // directory doesn't exist yet — no duplicates possible
+    return null; // directory doesn't exist yet — no duplicates possible
   }
   for (const existing of entries) {
     try {
       const existingContent = await fs.readFile(path.join(contextDir, existing), 'utf-8');
       const existingHash = crypto.createHash('sha256').update(existingContent).digest('hex');
       if (hash === existingHash) {
-        throw new Error(`Duplicate content: ${filename} matches existing ${existing}`);
+        return existing; // duplicate found — return the matching filename
       }
-    } catch (e: unknown) {
-      if (e instanceof Error && e.message.startsWith('Duplicate content:')) throw e;
+    } catch {
       // skip unreadable files
     }
   }
+  return null;
 }
 
 /** Write files atomically with batch rollback on failure. */
@@ -61,7 +64,12 @@ export async function writeFilesAtomically(
   for (const [filename, content] of Object.entries(files)) {
     validateNoLeakedPlaceholders(content, filename);
     validateContentSubstance(content, filename);
-    await checkForDuplicateContent(contextDir, content, filename);
+    // RC-6: Skip duplicate files idempotently instead of crashing the batch
+    const duplicateOf = await checkForDuplicateContent(contextDir, content, filename);
+    if (duplicateOf) {
+      console.warn(`   Skipping ${filename}: duplicate of existing ${duplicateOf}`);
+      continue;
+    }
     const warnings = validateAnchors(content);
     if (warnings.length) console.warn(`   Warning: ${filename}: ${warnings.join(', ')}`);
     // Reject filenames that could escape contextDir

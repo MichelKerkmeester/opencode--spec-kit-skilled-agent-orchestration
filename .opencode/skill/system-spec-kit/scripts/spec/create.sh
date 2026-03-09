@@ -810,7 +810,7 @@ if [[ "$PHASE_MODE" = true ]]; then
     _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
     if [[ -f "$_DESC_SCRIPT" ]]; then
       if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
-        --description "$FEATURE_DESCRIPTION" 2>/dev/null; then
+        --description "$FEATURE_DESCRIPTION"; then
         CREATED_FILES+=("description.json")
       else
         echo "  Warning: description.json generation skipped" >&2
@@ -842,7 +842,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         if [[ -f "$_DESC_SCRIPT" ]]; then
           _phase_name="${_child_folder#*-}"  # strip numeric prefix
           if node "$_DESC_SCRIPT" "$_child_path" "$FEATURE_DIR" \
-            --description "Phase ${_i}: ${_phase_name}" 2>/dev/null; then
+            --description "Phase ${_i}: ${_phase_name}"; then
             _child_created_files+=("description.json")
           else
             echo "  Warning: description.json generation skipped for phase ${_i}" >&2
@@ -1038,7 +1038,7 @@ done
 _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
 if [[ -f "$_DESC_SCRIPT" ]]; then
   if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
-    --description "$FEATURE_DESCRIPTION" 2>/dev/null; then
+    --description "$FEATURE_DESCRIPTION"; then
     CREATED_FILES+=("description.json")
   else
     echo "  Warning: description.json generation skipped" >&2

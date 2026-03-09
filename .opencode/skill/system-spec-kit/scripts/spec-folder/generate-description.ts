@@ -8,6 +8,7 @@
 // Otherwise reads spec.md via generatePerFolderDescription().
 
 import * as path from 'node:path';
+import * as fs from 'node:fs';
 import {
   generatePerFolderDescription,
   savePerFolderDescription,
@@ -25,6 +26,14 @@ function main(): void {
 
   const folderPath = path.resolve(args[0]);
   const basePath = path.resolve(args[1]);
+
+  // AI-WHY: Path containment check — prevent directory traversal attacks
+  const realFolder = fs.realpathSync(folderPath);
+  const realBase = fs.realpathSync(basePath);
+  if (!realFolder.startsWith(realBase)) {
+    console.error(`Error: folder path escapes base path (${realFolder} not under ${realBase})`);
+    process.exit(1);
+  }
 
   // Parse --description flag
   let explicitDescription: string | null = null;

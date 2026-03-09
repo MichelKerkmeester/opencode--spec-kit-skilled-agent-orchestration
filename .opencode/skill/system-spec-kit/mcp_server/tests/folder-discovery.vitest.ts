@@ -83,6 +83,21 @@ describe('T009 extractDescription', () => {
     const result = extractDescription(content);
     expect(result).toBe('This solves caching');
   });
+
+  it('strips YAML frontmatter before parsing', () => {
+    const content = `---\ntitle: My Spec\nstatus: active\n---\n# Real Title Here\n\nBody content.`;
+    expect(extractDescription(content)).toBe('Real Title Here');
+  });
+
+  it('returns empty string for frontmatter-only content', () => {
+    expect(extractDescription('---\ntitle: X\n---')).toBe('');
+  });
+
+  it('truncates long title to exactly 150 characters', () => {
+    const longTitle = '# ' + 'B'.repeat(200);
+    const result = extractDescription(longTitle);
+    expect(result.length).toBe(150);
+  });
 });
 
 /* -----------------------------------------------------------
@@ -742,6 +757,22 @@ describe('T009 loadPerFolderDescription / savePerFolderDescription', () => {
 
   it('returns null for corrupt JSON', () => {
     fs.writeFileSync(path.join(tmpDir3, 'description.json'), '{invalid json');
+    const result = loadPerFolderDescription(tmpDir3);
+    expect(result).toBeNull();
+  });
+
+  it('returns null for schema violation (memorySequence as string)', () => {
+    fs.writeFileSync(path.join(tmpDir3, 'description.json'), JSON.stringify({
+      specFolder: 'test',
+      description: 'Valid description',
+      keywords: ['test'],
+      lastUpdated: new Date().toISOString(),
+      specId: '010',
+      folderSlug: 'test',
+      parentChain: [],
+      memorySequence: '5',
+      memoryNameHistory: [],
+    }));
     const result = loadPerFolderDescription(tmpDir3);
     expect(result).toBeNull();
   });

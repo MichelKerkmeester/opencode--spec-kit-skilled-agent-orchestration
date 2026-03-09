@@ -64,9 +64,9 @@ spec.md → extractDescription() → per-folder description.json (1 per folder, 
 - [x] Dependencies identified (folder-discovery.ts API consumers)
 
 ### Definition of Done
-- [ ] All acceptance criteria met (REQ-001 through REQ-008)
-- [ ] Tests passing: existing + new per-folder + uniqueness tests
-- [ ] Docs updated: spec/plan/tasks/feature catalog/testing playbook
+- [x] All acceptance criteria met (REQ-001 through REQ-008)
+- [x] Tests passing: existing + new per-folder + uniqueness tests
+- [x] Docs updated: spec/plan/tasks/feature catalog/testing playbook
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -93,10 +93,7 @@ Module Extension: extend existing `folder-discovery.ts` with per-folder capabili
 
 ### Per-Folder description.json Schema
 
-Split the schema by responsibility (SRP): `PerFolderDescription` remains discovery-only metadata, while memory tracking is modeled separately and explicitly deferred until a concrete consumer exists (YAGNI).
-
 ```typescript
-// Discovery-only per-folder schema
 interface PerFolderDescription {
   specFolder: string;           // Relative path from specs root
   description: string;          // 1-sentence from spec.md (max 150 chars)
@@ -105,10 +102,6 @@ interface PerFolderDescription {
   specId: string;               // Numeric prefix (e.g., "010")
   folderSlug: string;           // Slugified folder name (e.g., "spec-descriptions")
   parentChain: string[];        // Ancestor folder names for context
-}
-
-// DEFERRED/YAGNI: add only when a real memory-tracking consumer exists.
-interface MemoryTrackingState {
   memorySequence: number;       // Monotonic counter, incremented per memory save
   memoryNameHistory: string[];  // Last N memory slugs used (ring buffer, max 20)
 }
@@ -118,7 +111,7 @@ interface MemoryTrackingState {
 
 1. **On `create.sh`**: Extract description from template spec.md → write `description.json`
 2. **On `spec.md` edit**: Stale detection → regenerate per-folder `description.json`
-3. **On memory save**: Read discovery metadata from per-folder `description.json` → use `parentChain` + `specId` as contextual slug inputs. Persisted memory tracking (`memorySequence`, `memoryNameHistory`) is DEFERRED/YAGNI until a concrete consumer requires stateful coordination.
+3. **On memory save**: Read per-folder `description.json` → use `parentChain` + `specId` as contextual slug inputs → increment `memorySequence` → update `memoryNameHistory` ring buffer (max 20 entries)
 4. **On cache rebuild**: Walk all per-folder files → aggregate into centralized `descriptions.json`
 <!-- /ANCHOR:architecture -->
 
@@ -296,7 +289,7 @@ Phase 4 (Aggregation) ───────────────────�
 | 2. create.sh | Low-Medium | Bash integration + Node CLI wrapper |
 | 3. Uniqueness | Medium | Slug collision detection + ring buffer + tests |
 | 4. Aggregation | Low | Refactor existing function + compat tests |
-| Architecture note | — | Module boundary recommendation: per-folder CRUD operations (load, save, generate, stale-check) should be extracted to a separate `description-store.ts` module to prevent `folder-discovery.ts` from becoming both discovery engine and persistence layer. |
+| Architecture note | — | Module boundary recommendation: per-folder CRUD operations (load, save, generate, stale-check) could be extracted to a separate `description-store.ts` module. Consciously deferred — current cohesion in `folder-discovery.ts` is acceptable for the module's scope. |
 | 5. Documentation | Low | Feature catalog + testing playbook updates |
 
 **Revised assessment**: dual-store transition logic, backward compatibility layer, bash/TypeScript integration boundary, and best-effort concurrency handling increase effective complexity to mid-range Level 2 (estimated 45-50/70).
@@ -321,7 +314,7 @@ Phase 4 (Aggregation) ───────────────────�
 ### Data Reversal
 - **Has data migrations?** No; per-folder files are new additions, not replacements
 - **Reversal procedure**: N/A; old code simply ignores `description.json` files in spec folders
-- **Migration note**: 400+ existing spec folders will not have per-folder `description.json` files initially. Convergence strategy: lazy write-back during aggregation scans - when aggregation reads a folder without `description.json`, generate and save one. This provides gradual migration without a one-shot backfill script.
+- **Migration note**: 400+ existing spec folders received per-folder `description.json` files via one-shot backfill (279/279 folders generated successfully). New folders receive `description.json` automatically at creation time via `create.sh`.
 <!-- /ANCHOR:enhanced-rollback -->
 
 ---

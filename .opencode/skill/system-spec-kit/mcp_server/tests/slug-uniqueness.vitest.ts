@@ -9,7 +9,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { createHash } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 
 // Inline implementation for testing since the function is in the scripts project
 // and cannot be directly imported. This mirrors the exact logic in slug-utils.ts.
@@ -32,7 +32,8 @@ function ensureUniqueMemoryFilename(contextDir: string, filename: string): strin
     if (!existing.has(candidate)) return candidate;
   }
 
-  const hash = createHash('sha1').update(`${filename}:${Date.now()}`).digest('hex').slice(0, 6);
+  // Fail-safe: append truly random hex suffix
+  const hash = randomBytes(6).toString('hex');
   return `${base}-${hash}${ext}`;
 }
 

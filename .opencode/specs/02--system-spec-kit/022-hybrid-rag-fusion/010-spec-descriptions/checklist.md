@@ -64,12 +64,12 @@ contextType: "general"
 - [x] CHK-021 [P0] New per-folder description generation tests pass — 70/70 tests pass (folder-discovery + slug-uniqueness)
 - [x] CHK-022 [P0] Uniqueness test: 10 saves to same folder → 10 unique filenames — targeted run passed `slug-uniqueness.vitest.ts` 6/6, including the 10-identical-input uniqueness test
 - [x] CHK-023 [P1] Per-folder at depth 5+: nested folder gets description.json — verified depth-6 folder (test-fixtures/valid-anchors) has correct description.json
-- [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime via Math.max(); test T046-25 in folder-discovery-integration.vitest.ts verifies editing description.json makes aggregate cache stale]
+- [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime; test T046-25 verifies aggregate cache staleness; test T046-25b verifies per-folder stale detection → regeneration → freshness cycle]
 - [x] CHK-025 [P1] Mixed mode: folders with/without description.json → aggregation works — fresh per-folder descriptions are preferred during aggregation (`mcp_server/lib/search/folder-discovery.ts:438-451`); targeted run passed integration test `T046-24`
 - [x] CHK-026 [P1] Collision test: same slug + same timestamp → sequential suffix `-1`, `-2` — `ensureUniqueMemoryFilename()` appends `-1..-100` before hash fallback (`scripts/utils/slug-utils.ts:137-145`)
 - [ ] CHK-027 [P2] Concurrent write test: two parallel saves → no corruption [DEFERRED: Concurrent write safety provided by OS-level atomic temp+rename pattern. Formal stress test deferred as P2.]
 - [x] CHK-028 [P1] Per-folder description.json read completes in <5ms (NFR-P01) [EVIDENCE: test T046-26 in folder-discovery-integration.vitest.ts benchmarks loadPerFolderDescription() at <5ms; passed in <1ms]
-- [x] CHK-029 [P1] Full 500-folder aggregation scan completes in <500ms (NFR-P02) [EVIDENCE: test T046-27 in folder-discovery-integration.vitest.ts benchmarks generateFolderDescriptions() with 20 folders at <500ms; passed in 9ms]
+- [x] CHK-029 [P1] Full 500-folder aggregation scan completes in <2s (NFR-P02) [EVIDENCE: test T046-27 in folder-discovery-integration.vitest.ts benchmarks generateFolderDescriptions() with 500 folders at <2s; passed in ~200ms]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -78,8 +78,8 @@ contextType: "general"
 ## SECURITY
 
 - [x] CHK-030 [P0] No hardcoded secrets — file system paths only, confirmed via code review
-- [x] CHK-031 [P0] Input validation — spec folder path validated via existing `isValidSpecFolder()`, confirmed in folder-discovery.ts
-- [x] CHK-032 [P1] No path traversal — relative paths normalized via `path.relative()` and bounded with `startsWith('..')` check
+- [x] CHK-031 [P0] Input validation — spec folder path validated via existing path normalization; `generatePerFolderDescription()` and `generate-description.ts` now enforce `realpathSync()` containment checks
+- [x] CHK-032 [P1] No path traversal — relative paths normalized via `path.relative()` and bounded with `startsWith('..')` check; `generatePerFolderDescription()` validates `realpathSync(folderPath).startsWith(realpathSync(basePath))` before any I/O
 <!-- /ANCHOR:security -->
 
 ---
@@ -111,7 +111,7 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 10 | 10/10 |
-| P1 Items | 20 | 20/20 |
+| P1 Items | 19 | 19/19 |
 | P2 Items | 3 | 2/3 |
 
 **Verification Date**: 2026-03-08

@@ -118,7 +118,21 @@ function detectCommitType(subject: string): string {
   const prefix = subject.match(/^([a-z]+)(?:\([^)]+\))?!?:/i)?.[1]?.toLowerCase();
   return prefix ? COMMIT_TYPE_MAP[prefix] || 'observation' : 'observation';
 }
+// RC-3: Paths excluded from git context to avoid self-referential pollution.
+// Uses path-segment-boundary matching to avoid over-matching (e.g., 'in-memory-cache.ts'
+// should NOT match, but 'specs/foo/memory/file.md' should).
+const EXCLUDED_PATH_PATTERNS = [
+  /(?:^|\/)memory\//,              // directory named "memory/" (no \b — avoids matching "my-memory/")
+  /(?:^|\/)metadata\.json$/,      // exact filename "metadata.json"
+  /(?:^|\/)\.gitkeep$/,           // exact filename ".gitkeep"
+];
+
+function isExcludedPath(filePath: string): boolean {
+  return EXCLUDED_PATH_PATTERNS.some(pattern => pattern.test(filePath));
+}
+
 function matchesSpecFolder(projectRoot: string, filePath: string, specFolderHint?: string): boolean {
+  if (isExcludedPath(filePath)) return false;
   if (!specFolderHint) return true;
   const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
   if (!normalizedHint) return true;
@@ -160,9 +174,16 @@ export async function extractGitContext(projectRoot: string, specFolderHint?: st
       Array.from(parseStatScores(projectRoot, getDiffOutput(projectRoot, revCount, '--stat')).entries())
         .filter(([filePath]) => matchesSpecFolder(projectRoot, filePath, specFolderHint))
     );
-    const commits = parseCommits(
-      runGitCommand(projectRoot, ['log', '--format=%H%n%cI%n%s%n%b%n---', '--since=24 hours ago', `-${MAX_COMMITS}`])
-    );
+    // RC-3 fix: When specFolderHint is provided, scope git log to paths matching the
+    // spec folder. This prevents unrelated commits from leaking into observations.
+    const logArgs = ['log', '--format=%H%n%cI%n%s%n%b%n---', '--since=24 hours ago', `-${MAX_COMMITS}`];
+    if (specFolderHint) {
+      const normalizedHint = normalizeFilePath(projectRoot, specFolderHint).replace(/\/+$/, '');
+      if (normalizedHint) {
+        logArgs.push('--', normalizedHint);
+      }
+    }
+    const commits = parseCommits(runGitCommand(projectRoot, logArgs));
 
     const FILES: GitContextExtraction['FILES'] = [];
     const seenFiles = new Set<string>();

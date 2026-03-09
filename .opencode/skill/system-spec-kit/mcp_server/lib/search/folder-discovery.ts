@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 import * as fs from 'node:fs';
 import * as path from 'node:path';
+import * as crypto from 'node:crypto';
 
 /* --- 1. TYPES --- */
 
@@ -262,7 +263,13 @@ export function extractDescription(specContent: string): string {
     return '';
   }
 
-  const content = specContent.trim();
+  let content = specContent.trim();
+  if (content.length === 0) {
+    return '';
+  }
+
+  // AI-WHY: Strip YAML frontmatter (---...---) so frontmatter-only spec.md returns ''
+  content = content.replace(/^---\n[\s\S]*?\n---\n?/, '').trim();
   if (content.length === 0) {
     return '';
   }
@@ -555,6 +562,13 @@ export function generatePerFolderDescription(
   folderPath: string,
   basePath: string,
 ): PerFolderDescription | null {
+  // AI-WHY: Path containment check — prevent directory traversal attacks
+  const realFolder = resolveRealPathSafe(path.resolve(folderPath));
+  const realBase = resolveRealPathSafe(path.resolve(basePath));
+  if (!realFolder || !realBase || !realFolder.startsWith(realBase)) {
+    return null;
+  }
+
   const specMdPath = path.join(folderPath, 'spec.md');
   let content: string;
   try {
@@ -610,7 +624,17 @@ export function loadPerFolderDescription(folderPath: string): PerFolderDescripti
   try {
     const raw = fs.readFileSync(descPath, 'utf-8');
     const parsed = JSON.parse(raw);
-    if (!parsed || typeof parsed.description !== 'string' || !Array.isArray(parsed.keywords)) {
+    // AI-WHY: Validate ALL PerFolderDescription fields — type mismatch triggers spec.md fallback
+    if (
+      !parsed ||
+      typeof parsed.description !== 'string' ||
+      !Array.isArray(parsed.keywords) ||
+      (parsed.specId !== undefined && typeof parsed.specId !== 'string') ||
+      (parsed.folderSlug !== undefined && typeof parsed.folderSlug !== 'string') ||
+      (parsed.parentChain !== undefined && !Array.isArray(parsed.parentChain)) ||
+      (parsed.memorySequence !== undefined && typeof parsed.memorySequence !== 'number') ||
+      (parsed.memoryNameHistory !== undefined && !Array.isArray(parsed.memoryNameHistory))
+    ) {
       return null; // Structurally invalid — triggers spec.md fallback
     }
     return parsed as PerFolderDescription;
@@ -635,9 +659,22 @@ export function savePerFolderDescription(desc: PerFolderDescription, folderPath:
     fs.mkdirSync(folderPath, { recursive: true });
   }
   const descPath = path.join(folderPath, 'description.json');
-  const tempPath = descPath + '.tmp';
-  fs.writeFileSync(tempPath, JSON.stringify(desc, null, 2), 'utf-8');
-  fs.renameSync(tempPath, descPath);
+  // AI-WHY: Atomic write with random suffix, fsync, and cleanup to prevent partial writes
+  const tempSuffix = crypto.randomBytes(4).toString('hex');
+  const tempPath = `${descPath}.tmp.${tempSuffix}`;
+  try {
+    const fd = fs.openSync(tempPath, 'w');
+    try {
+      fs.writeSync(fd, JSON.stringify(desc, null, 2), undefined, 'utf-8');
+      fs.fsyncSync(fd);
+    } finally {
+      fs.closeSync(fd);
+    }
+    fs.renameSync(tempPath, descPath);
+  } finally {
+    // Cleanup temp file on failure
+    try { fs.unlinkSync(tempPath); } catch (_e: unknown) { /* already renamed or missing */ }
+  }
 }
 
 /**
@@ -696,7 +733,21 @@ export function saveDescriptionCache(cache: DescriptionCache, cachePath: string)
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-  fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2), 'utf-8');
+  // AI-WHY: Atomic write with random suffix, fsync, and cleanup (same pattern as savePerFolderDescription)
+  const tempSuffix = crypto.randomBytes(4).toString('hex');
+  const tempPath = `${cachePath}.tmp.${tempSuffix}`;
+  try {
+    const fd = fs.openSync(tempPath, 'w');
+    try {
+      fs.writeSync(fd, JSON.stringify(cache, null, 2), undefined, 'utf-8');
+      fs.fsyncSync(fd);
+    } finally {
+      fs.closeSync(fd);
+    }
+    fs.renameSync(tempPath, cachePath);
+  } finally {
+    try { fs.unlinkSync(tempPath); } catch (_e: unknown) { /* already renamed or missing */ }
+  }
 }
 
 /* --- 8. INTEGRATION HELPERS (PI-B3) --- */

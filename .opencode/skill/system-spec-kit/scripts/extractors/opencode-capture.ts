@@ -180,15 +180,42 @@ async function readJsonlTail<T = unknown>(filePath: string, limit: number): Prom
    4. PROMPT HISTORY
 ------------------------------------------------------------------*/
 
-async function getRecentPrompts(limit: number = 20): Promise<PromptEntry[]> {
+// RC-1/RC-8: Added optional sessionStart/sessionEnd params to scope prompt
+// history to the active session's time range. Prevents global prompt history
+// from pulling unrelated sessions, fixing 16-day date mismatches.
+async function getRecentPrompts(
+  limit: number = 20,
+  sessionStart?: number,
+  sessionEnd?: number
+): Promise<PromptEntry[]> {
   const entries = await readJsonlTail<Record<string, unknown>>(PROMPT_HISTORY, limit);
 
-  return entries.map((entry) => ({
+  const mapped = entries.map((entry) => ({
     input: (entry.input as string) || '',
     timestamp: (entry.timestamp as string) || null,
     parts: (entry.parts as unknown[]) || [],
     mode: (entry.mode as string) || 'normal',
   }));
+
+  // When session bounds are provided, filter to only prompts within that window.
+  // RC-8 fix: Do NOT fall back to unfiltered prompts — that reintroduces 16-day
+  // mismatch by pulling global prompt history from unrelated sessions.
+  if (sessionStart !== undefined && sessionEnd !== undefined) {
+    // Guard against invalid bounds (e.g., session.created=0 or clock skew)
+    if (sessionStart > 0 && sessionEnd > 0 && sessionStart <= sessionEnd) {
+      const filtered = mapped.filter((p) => {
+        if (!p.timestamp) return false;
+        const ts = new Date(p.timestamp).getTime();
+        if (isNaN(ts)) return false;
+        return ts >= sessionStart && ts <= sessionEnd;
+      });
+      return filtered;
+    }
+    // Invalid bounds — return empty rather than unfiltered global prompts
+    return [];
+  }
+
+  return mapped;
 }
 
 /* -----------------------------------------------------------------
@@ -443,7 +470,8 @@ async function captureConversation(
     throw new Error('No active session found');
   }
 
-  const prompts = await getRecentPrompts(maxMessages);
+  // RC-1/RC-8: Scope prompts to the active session's time range
+  const prompts = await getRecentPrompts(maxMessages, session.created, session.updated);
   const messages = await getSessionMessages(session.id);
   const responses = await getSessionResponses(session.id);
   const toolCalls = await getToolExecutions(session.id);

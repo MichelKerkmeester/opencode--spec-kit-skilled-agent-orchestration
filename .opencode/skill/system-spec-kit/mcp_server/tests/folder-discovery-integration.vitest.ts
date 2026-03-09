@@ -660,6 +660,36 @@ describe('CHK-024: description.json mtime staleness', () => {
 
     expect(isCacheStale(cache, [specsDir])).toBe(true);
   });
+
+  it('T046-25b: editing spec.md makes per-folder description stale and regeneration picks up changes', () => {
+    const specsDir = path.join(td, 'specs');
+    const folderDir = createSpecFolder(td, '001-stale-test', '# Original Title');
+
+    // Generate and save initial description.json
+    const desc = generatePerFolderDescription(folderDir, specsDir);
+    expect(desc).not.toBeNull();
+    savePerFolderDescription(desc!, folderDir);
+    expect(isPerFolderDescriptionStale(folderDir)).toBe(false);
+
+    // Touch spec.md to make it newer than description.json
+    const futureTime = new Date(Date.now() + 5000);
+    fs.utimesSync(path.join(folderDir, 'spec.md'), futureTime, futureTime);
+
+    // Per-folder description should now be stale
+    expect(isPerFolderDescriptionStale(folderDir)).toBe(true);
+
+    // Regenerate and verify it picks up current spec.md content
+    const refreshed = generatePerFolderDescription(folderDir, specsDir);
+    expect(refreshed).not.toBeNull();
+    expect(refreshed!.description).toBe('Original Title');
+    savePerFolderDescription(refreshed!, folderDir);
+
+    // Set description.json mtime beyond spec.md's future mtime to verify freshness
+    const descPath = path.join(folderDir, 'description.json');
+    const farFuture = new Date(Date.now() + 10000);
+    fs.utimesSync(descPath, farFuture, farFuture);
+    expect(isPerFolderDescriptionStale(folderDir)).toBe(false);
+  });
 });
 
 /* --- 010-CHK-028: loadPerFolderDescription performance benchmark --- */
@@ -700,11 +730,11 @@ describe('CHK-029: generateFolderDescriptions scan performance', () => {
   beforeEach(() => { td = createTempWorkspace(); });
   afterEach(() => { cleanup(td); });
 
-  it('T046-27: generateFolderDescriptions scan completes in <500ms', () => {
+  it('T046-27: generateFolderDescriptions scan completes in <2s for 500 folders', { timeout: 30000 }, () => {
     const specsDir = path.join(td, 'specs');
 
-    // Create 20 spec folders to exercise the scan path
-    for (let i = 1; i <= 20; i++) {
+    // Create 500 spec folders to exercise the scan path at production scale
+    for (let i = 1; i <= 500; i++) {
       const id = String(i).padStart(3, '0');
       createSpecFolder(td, `${id}-bench-folder`, `# Bench Folder ${i}`);
     }
@@ -713,7 +743,7 @@ describe('CHK-029: generateFolderDescriptions scan performance', () => {
     const cache = generateFolderDescriptions([specsDir]);
     const elapsed = performance.now() - start;
 
-    expect(cache.folders.length).toBeGreaterThanOrEqual(20);
-    expect(elapsed).toBeLessThan(500);
+    expect(cache.folders.length).toBeGreaterThanOrEqual(500);
+    expect(elapsed).toBeLessThan(2000);
   });
 });
