@@ -5,6 +5,7 @@
 
 // Node stdlib
 import * as path from 'path';
+import * as fsSync from 'fs';
 
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../core';
@@ -232,24 +233,28 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
 
   const DEFAULT_VALUE = null;
 
+  // F-35: Guard against NaN/Infinity — replace with null
+  const safeNum = (v: number | undefined | null): number | null =>
+    v !== undefined && v !== null && Number.isFinite(v) ? v : null;
+
   const preflightData = {
-    PREFLIGHT_KNOW_SCORE: preflight?.knowledgeScore ?? DEFAULT_VALUE,
-    PREFLIGHT_UNCERTAINTY_SCORE: preflight?.uncertaintyScore ?? DEFAULT_VALUE,
-    PREFLIGHT_CONTEXT_SCORE: preflight?.contextScore ?? DEFAULT_VALUE,
+    PREFLIGHT_KNOW_SCORE: safeNum(preflight?.knowledgeScore),
+    PREFLIGHT_UNCERTAINTY_SCORE: safeNum(preflight?.uncertaintyScore),
+    PREFLIGHT_CONTEXT_SCORE: safeNum(preflight?.contextScore),
     PREFLIGHT_KNOW_ASSESSMENT: getScoreAssessment(preflight?.knowledgeScore, 'knowledge'),
     PREFLIGHT_UNCERTAINTY_ASSESSMENT: getScoreAssessment(preflight?.uncertaintyScore, 'uncertainty'),
     PREFLIGHT_CONTEXT_ASSESSMENT: getScoreAssessment(preflight?.contextScore, 'context'),
     PREFLIGHT_TIMESTAMP: preflight?.timestamp ?? DEFAULT_VALUE,
     PREFLIGHT_GAPS: preflight?.gaps?.map((g) => ({ GAP_DESCRIPTION: g })) ?? [],
-    PREFLIGHT_CONFIDENCE: preflight?.confidence ?? DEFAULT_VALUE,
-    PREFLIGHT_UNCERTAINTY_RAW: preflight?.uncertaintyRaw ?? preflight?.uncertaintyScore ?? DEFAULT_VALUE,
+    PREFLIGHT_CONFIDENCE: safeNum(preflight?.confidence),
+    PREFLIGHT_UNCERTAINTY_RAW: safeNum(preflight?.uncertaintyRaw ?? preflight?.uncertaintyScore),
     PREFLIGHT_READINESS: preflight?.readiness ?? DEFAULT_VALUE
   };
 
   const postflightData = {
-    POSTFLIGHT_KNOW_SCORE: postflight?.knowledgeScore ?? DEFAULT_VALUE,
-    POSTFLIGHT_UNCERTAINTY_SCORE: postflight?.uncertaintyScore ?? DEFAULT_VALUE,
-    POSTFLIGHT_CONTEXT_SCORE: postflight?.contextScore ?? DEFAULT_VALUE
+    POSTFLIGHT_KNOW_SCORE: safeNum(postflight?.knowledgeScore),
+    POSTFLIGHT_UNCERTAINTY_SCORE: safeNum(postflight?.uncertaintyScore),
+    POSTFLIGHT_CONTEXT_SCORE: safeNum(postflight?.contextScore)
   };
 
   let deltaData: {
@@ -373,10 +378,19 @@ function determineSessionStatus(
   messageCount: number
 ): string {
   const completionKeywords = /\b(?:done|complete[d]?|finish(?:ed)?|success(?:ful(?:ly)?)?)\b/i;
+  const resolutionKeywords = /\b(?:resolved|fixed|unblocked|works?\s+now|workaround)\b/i;
   const lastObs = observations[observations.length - 1];
 
   if (blockers && blockers !== 'None') {
-    return 'BLOCKED';
+    // F-25: Reconciliation pass — check if later observations show resolution after blocker
+    const blockerResolved = observations.some((obs) => {
+      const text = `${obs.title || ''} ${obs.narrative || ''}`;
+      return resolutionKeywords.test(text);
+    });
+    if (!blockerResolved) {
+      return 'BLOCKED';
+    }
+    // Blocker was resolved — fall through to check completion
   }
 
   if (lastObs) {
@@ -620,50 +634,44 @@ function shouldAutoSave(messageCount: number): boolean {
    4. SESSION DATA COLLECTION
 ------------------------------------------------------------------*/
 
+// F-24: Single helper for spec-folder resolution — replaces 3 redundant resolution points
+function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDirs: string[]): string {
+  for (const candidateRoot of candidateSpecsDirs) {
+    const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
+    const relative = path.relative(normalizedRoot, normalizedDetected).replace(/\\/g, '/');
+    if (
+      relative &&
+      relative !== '.' &&
+      relative !== '..' &&
+      !relative.startsWith('../') &&
+      !path.isAbsolute(relative)
+    ) {
+      return relative;
+    }
+  }
+  return path.basename(normalizedDetected);
+}
+
 async function collectSessionData(
   collectedData: CollectedDataFull | null,
   specFolderName: string | null = null
 ): Promise<SessionData> {
   const now = new Date();
 
+  // F-24: Consolidated spec-folder resolution helper
   let folderName: string = specFolderName || '';
   if (!folderName) {
     const detectedFolder = await detectSpecFolder();
-    const specsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
     const normalizedDetected = path.resolve(detectedFolder).replace(/\\/g, '/');
 
     const candidateSpecsDirs = Array.from(new Set([
-      specsDir,
+      findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs'),
       ...getSpecsDirectories(),
       path.join(CONFIG.PROJECT_ROOT, 'specs'),
       path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
     ]));
 
-    let resolvedFolderName = '';
-    for (const candidateRoot of candidateSpecsDirs) {
-      const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
-      const relative = path.relative(normalizedRoot, normalizedDetected).replace(/\\/g, '/');
-      if (
-        relative &&
-        relative !== '.' &&
-        relative !== '..' &&
-        !relative.startsWith('../') &&
-        !path.isAbsolute(relative)
-      ) {
-        resolvedFolderName = relative;
-        break;
-      }
-    }
-
-    if (!resolvedFolderName) {
-      const marker = '/specs/';
-      const markerIndex = normalizedDetected.lastIndexOf(marker);
-      resolvedFolderName = markerIndex >= 0
-        ? normalizedDetected.slice(markerIndex + marker.length)
-        : path.basename(normalizedDetected);
-    }
-
-    folderName = resolvedFolderName;
+    folderName = resolveSpecFolderRelative(normalizedDetected, candidateSpecsDirs);
   }
   const dateOnly: string = formatTimestamp(now, 'date-dutch');
   const timeOnly: string = formatTimestamp(now, 'time-short');
@@ -737,13 +745,22 @@ async function collectSessionData(
   if (!data.SPEC_FOLDER && folderName) {
     data.SPEC_FOLDER = folderName;
   }
-  // Path traversal guard: reject SPEC_FOLDER values that escape the specs directory
+  // F-03: Path traversal guard with canonical path resolution
   let specFolderPath: string | null = null;
   if (data.SPEC_FOLDER) {
     const candidate = path.resolve(activeSpecsDir, data.SPEC_FOLDER);
     const boundary = path.resolve(activeSpecsDir);
-    if (candidate === boundary || candidate.startsWith(boundary + path.sep)) {
-      specFolderPath = candidate;
+    try {
+      const realCandidate = fsSync.realpathSync(candidate);
+      const realBoundary = fsSync.realpathSync(boundary);
+      if (realCandidate === realBoundary || realCandidate.startsWith(realBoundary + path.sep)) {
+        specFolderPath = candidate;
+      }
+    } catch {
+      // Directory doesn't exist yet — fall back to resolved path check
+      if (candidate === boundary || candidate.startsWith(boundary + path.sep)) {
+        specFolderPath = candidate;
+      }
     }
   }
 

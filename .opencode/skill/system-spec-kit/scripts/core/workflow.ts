@@ -382,7 +382,8 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
 }
 
 function injectQualityMetadata(content: string, qualityScore: number, qualityFlags: string[]): string {
-  const frontmatterMatch = content.match(/---\r?\n([\s\S]*?)\r?\n---/);
+  // F-21: Require `---` at string start for strict frontmatter detection
+  const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!frontmatterMatch || frontmatterMatch.index === undefined) {
     return content;
   }
@@ -582,7 +583,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData = preloadedData;
       log('   Using pre-loaded data');
     } else if (loadDataFn) {
-      collectedData = await loadDataFn();
+      // F-22: Guard loadDataFn result with explicit null check
+      collectedData = (await loadDataFn()) || null;
       log('   Loaded via custom function');
     } else {
       collectedData = await loadCollectedDataFromLoader({ dataFile: activeDataFile, specFolderArg: activeSpecFolderArg });
@@ -677,6 +679,47 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const contextDir: string = await setupContextDirectory(specFolder);
     log(`   Created: ${contextDir}\n`);
 
+    // F-23: Define contamination cleaning functions before enrichment
+    let hadContamination = false;
+    const cleanContaminationText = (input: string): string => {
+      const filtered = filterContamination(input);
+      if (filtered.hadContamination) {
+        hadContamination = true;
+      }
+      return filtered.cleanedText;
+    };
+    const cleanObservations = (
+      observations: CollectedDataFull['observations'] | undefined
+    ): CollectedDataFull['observations'] | undefined => {
+      if (!observations) {
+        return observations;
+      }
+      // F-23: Clean ALL observations, not just provenanced ones
+      return observations.map((observation) => {
+        if (!observation) {
+          return observation;
+        }
+        return {
+          ...observation,
+          title: observation.title ? cleanContaminationText(observation.title) : observation.title,
+          narrative: observation.narrative ? cleanContaminationText(observation.narrative) : observation.narrative,
+          facts: observation.facts?.map((fact) => (
+            typeof fact === 'string'
+              ? cleanContaminationText(fact)
+              : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
+          )),
+        };
+      });
+    };
+
+    // F-23: Pre-enrichment contamination cleaning pass
+    {
+      const preCleanedObservations = cleanObservations(collectedData.observations);
+      const preCleanedSummary = (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0)
+        ? cleanContaminationText(collectedData.SUMMARY) : collectedData.SUMMARY;
+      collectedData = { ...collectedData, observations: preCleanedObservations, SUMMARY: preCleanedSummary };
+    }
+
     // Step 3.5: Enrich stateless data with spec folder and git context
     if (isStatelessMode) {
       log('Step 3.5: Enriching stateless data...');
@@ -732,36 +775,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }
 
     const rawUserPrompts = collectedData?.userPrompts || [];
-    let hadContamination = false;
-    const cleanContaminationText = (input: string): string => {
-      const filtered = filterContamination(input);
-      if (filtered.hadContamination) {
-        hadContamination = true;
-      }
-      return filtered.cleanedText;
-    };
-    const cleanObservations = (
-      observations: CollectedDataFull['observations'] | undefined
-    ): CollectedDataFull['observations'] | undefined => {
-      if (!observations) {
-        return observations;
-      }
-      return observations.map((observation) => {
-        if (!observation || !observation._provenance) {
-          return observation;
-        }
-        return {
-          ...observation,
-          title: observation.title ? cleanContaminationText(observation.title) : observation.title,
-          narrative: observation.narrative ? cleanContaminationText(observation.narrative) : observation.narrative,
-          facts: observation.facts?.map((fact) => (
-            typeof fact === 'string'
-              ? cleanContaminationText(fact)
-              : { ...fact, text: fact.text ? cleanContaminationText(fact.text) : fact.text }
-          )),
-        };
-      });
-    };
     const collectedDataWithNarrative = collectedData as CollectedDataFull & {
       _narrativeObservations?: CollectedDataFull['observations'];
     };
@@ -966,7 +979,18 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     ],
     allowSpecTitleFallback
   );
-  const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase);
+  // F-26: Load description.json to include memoryNameHistory in slug candidates
+  let memoryNameHistoryForSlug: readonly string[] = [];
+  try {
+    const { loadPerFolderDescription: loadPFDForSlug } = await import(
+      '@spec-kit/mcp-server/lib/search/folder-discovery'
+    );
+    const pfDesc = loadPFDForSlug(path.resolve(specFolder));
+    if (pfDesc?.memoryNameHistory) {
+      memoryNameHistoryForSlug = pfDesc.memoryNameHistory;
+    }
+  } catch { /* Non-fatal — slug generation proceeds without history */ }
+  const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   const ctxFilename: string = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
 
@@ -1159,7 +1183,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   if (!qualityValidation.valid) {
     warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);
   }
-  if (collectedData._source !== 'file' && !qualityValidation.valid) {
+  // F-22: Defensive _source access with optional chaining
+  if (collectedData?._source !== 'file' && !qualityValidation.valid) {
     const statelessValidationAbortMsg = `QUALITY_GATE_ABORT: Stateless save blocked due to failed validation rules: ${qualityValidation.failedRules.join(', ')}`;
     warn(statelessValidationAbortMsg);
     throw new Error(statelessValidationAbortMsg);
@@ -1221,23 +1246,59 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Update per-folder description.json memory tracking (only if file was written)
   if (ctxFileWritten) {
     try {
-      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD } = await import(
+      const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = await import(
         '@spec-kit/mcp-server/lib/search/folder-discovery'
       );
       const specFolderAbsolute = path.resolve(specFolder);
-      const existing = loadPFD(specFolderAbsolute);
+      let existing = loadPFD(specFolderAbsolute);
+
+      // F-36: Regenerate missing/corrupt description.json from spec.md + path structure
+      if (!existing) {
+        const specsBaseDirs = Array.from(new Set([
+          ...getSpecsDirectories(),
+          path.join(CONFIG.PROJECT_ROOT, 'specs'),
+          path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
+        ]));
+        for (const base of specsBaseDirs) {
+          const regenerated = genPFD(specFolderAbsolute, path.resolve(base));
+          if (regenerated) {
+            savePFD(regenerated, specFolderAbsolute);
+            existing = regenerated;
+            log('   Regenerated missing description.json');
+            break;
+          }
+        }
+      }
+
       if (existing) {
         // AI-WHY: Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
         const rawSeq = Number(existing.memorySequence) || 0;
         // AI-WHY: Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
-        existing.memorySequence = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
+        const expectedSeq = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
+        existing.memorySequence = expectedSeq;
         existing.memoryNameHistory = [
           ...(existing.memoryNameHistory || []).slice(-19),
           ctxFilename,
         ];
         savePFD(existing, specFolderAbsolute);
+
+        // F-34: Verify memorySequence to detect lost-update race, retry once
+        const verified = loadPFD(specFolderAbsolute);
+        if (verified && verified.memorySequence !== expectedSeq) {
+          console.warn('[workflow] memorySequence lost-update detected, retrying');
+          const freshSeq = Number(verified.memorySequence) || 0;
+          verified.memorySequence = (Number.isSafeInteger(freshSeq) && freshSeq >= 0) ? freshSeq + 1 : 1;
+          verified.memoryNameHistory = [
+            ...(verified.memoryNameHistory || []).slice(-19),
+            ctxFilename,
+          ];
+          savePFD(verified, specFolderAbsolute);
+        }
       }
-    } catch { /* Non-fatal — description tracking is best-effort */ }
+    } catch (descErr: unknown) {
+      // F-34: Log error instead of silently swallowing
+      console.warn(`[workflow] description.json tracking error: ${descErr instanceof Error ? descErr.message : String(descErr)}`);
+    }
   } else {
     log('   Context file was a duplicate — skipping description tracking');
   }

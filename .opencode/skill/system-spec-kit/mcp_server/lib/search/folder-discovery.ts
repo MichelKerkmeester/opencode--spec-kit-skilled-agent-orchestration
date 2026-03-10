@@ -480,13 +480,6 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
 
       if (folderEntry) {
         byCanonicalFolderPath.set(discoveredFolder.canonicalFolderPath, folderEntry);
-        // AI-WHY: Auto-repair stale description.json so next lookup is fast (F7 fix)
-        try {
-          const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
-          if (repaired) savePerFolderDescription(repaired, discoveredFolder.folderPath);
-        } catch {
-          /* Best-effort — non-fatal */
-        }
       }
     }
   }
@@ -500,6 +493,32 @@ export function generateFolderDescriptions(specsBasePaths: string[]): Descriptio
     generated: now,
     folders,
   };
+}
+
+/**
+ * F-39: Batch repair stale description.json files.
+ * Separated from generateFolderDescriptions to keep the main generation loop fast.
+ * Call this as a maintenance operation, not on every cache rebuild.
+ *
+ * @param specsBasePaths - Array of absolute directory paths to scan.
+ */
+export function repairStaleDescriptions(specsBasePaths: string[]): void {
+  const normalizedBasePaths = normalizeBasePaths(specsBasePaths);
+
+  for (const basePath of normalizedBasePaths) {
+    const discoveredFolders = discoverSpecFolders(basePath);
+
+    for (const discoveredFolder of discoveredFolders) {
+      if (!isPerFolderDescriptionStale(discoveredFolder.folderPath)) continue;
+
+      try {
+        const repaired = generatePerFolderDescription(discoveredFolder.folderPath, discoveredFolder.basePath);
+        if (repaired) savePerFolderDescription(repaired, discoveredFolder.folderPath);
+      } catch {
+        /* Best-effort — non-fatal */
+      }
+    }
+  }
 }
 
 /**
@@ -655,6 +674,21 @@ export function loadPerFolderDescription(folderPath: string): PerFolderDescripti
     ) {
       return null; // Structurally invalid — triggers spec.md fallback
     }
+    // F-36: Upgrade-on-read — fill missing optional fields from folder path
+    if (!parsed.specId || !parsed.folderSlug) {
+      const folderName = path.basename(folderPath);
+      if (!parsed.specId) {
+        const numMatch = folderName.match(/^(\d+)/);
+        parsed.specId = numMatch ? numMatch[1] : '';
+      }
+      if (!parsed.folderSlug) {
+        parsed.folderSlug = slugifyFolderName(folderName);
+      }
+    }
+    if (!parsed.parentChain) parsed.parentChain = [];
+    if (parsed.memorySequence === undefined) parsed.memorySequence = 0;
+    if (!parsed.memoryNameHistory) parsed.memoryNameHistory = [];
+
     return parsed as PerFolderDescription;
   } catch (_error: unknown) {
     return null;
