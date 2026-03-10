@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Content-aware slug generation for memory filenames
 
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -39,6 +39,8 @@ const CONTAMINATED_NAME_PATTERNS = [
   /^Glob\s*(?:search|:)/i,
   /^Bash\s+command/i,
   /^[\/\.][^\s]+$/,
+  // F-37: Read/Edit/Write with short path format (e.g., "Read src/foo.ts")
+  /^(?:Read|Edit|Write)\s+[^\s]+\/[^\s]+$/i,
 ];
 
 function toUnicodeSafeSlug(text: string): string {
@@ -144,30 +146,45 @@ export function truncateSlugAtWordBoundary(slug: string, max: number = 50): stri
  * @returns The original filename if unique, or a collision-free variant.
  */
 export function ensureUniqueMemoryFilename(contextDir: string, filename: string): string {
-  let entries: string[];
+  // F-07: Use atomic O_CREAT|O_EXCL instead of readdirSync + set check
+  const filePath = path.join(contextDir, filename);
   try {
-    entries = fs.readdirSync(contextDir).filter(f => f.endsWith('.md'));
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return filename; // Dir doesn't exist yet — no collision possible
-    }
-    return filename; // Dir doesn't exist yet — no collision possible
+    const fd = fs.openSync(filePath, fs.constants.O_CREAT | fs.constants.O_EXCL | fs.constants.O_WRONLY, 0o600);
+    fs.closeSync(fd);
+    // Created successfully — filename is unique. Remove placeholder (caller will write real content).
+    fs.unlinkSync(filePath);
+    return filename;
+  } catch (err: unknown) {
+    const code = (err as NodeJS.ErrnoException).code;
+    // F-29: Only retry on EEXIST; ENOENT (dir missing) means no collision
+    if (code === 'ENOENT') return filename;
+    if (code !== 'EEXIST') throw err;
   }
 
-  const existing = new Set(entries);
-  if (!existing.has(filename)) return filename;
-
+  // Collision detected — try suffixed variants with atomic check
   const ext = path.extname(filename);
   const base = filename.slice(0, -ext.length);
 
   for (let i = 1; i <= 100; i++) {
     const candidate = `${base}-${i}${ext}`;
-    if (!existing.has(candidate)) return candidate;
+    const candidatePath = path.join(contextDir, candidate);
+    try {
+      const fd = fs.openSync(candidatePath, fs.constants.O_CREAT | fs.constants.O_EXCL | fs.constants.O_WRONLY, 0o600);
+      fs.closeSync(fd);
+      fs.unlinkSync(candidatePath);
+      return candidate;
+    } catch (retryErr: unknown) {
+      const retryCode = (retryErr as NodeJS.ErrnoException).code;
+      if (retryCode !== 'EEXIST') throw retryErr;
+    }
   }
 
-  // Fail-safe: append truly random hex suffix
-  const hash = randomBytes(6).toString('hex');
-  return `${base}-${hash}${ext}`;
+  // F-27: Deterministic SHA1 hash fallback instead of random bytes
+  const hashDigest = createHash('sha1')
+    .update(`${base}::${Date.now()}::${contextDir}`)
+    .digest('hex')
+    .slice(0, 12);
+  return `${base}-${hashDigest}${ext}`;
 }
 
 /** Generates the final content slug used for memory filenames. */

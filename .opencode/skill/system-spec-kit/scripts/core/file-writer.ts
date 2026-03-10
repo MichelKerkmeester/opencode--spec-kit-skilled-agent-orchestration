@@ -70,8 +70,10 @@ async function checkForDuplicateContent(
   try {
     const dirEntries = await fs.readdir(contextDir);
     entries = dirEntries.filter(f => f.endsWith('.md') && f !== filename);
-  } catch {
-    return null; // directory doesn't exist yet — no duplicates possible
+  } catch (dirErr: unknown) {
+    // F-29: Only swallow ENOENT (dir doesn't exist), rethrow everything else
+    if ((dirErr as NodeJS.ErrnoException).code === 'ENOENT') return null;
+    throw dirErr;
   }
   for (const existing of entries) {
     try {
@@ -80,8 +82,9 @@ async function checkForDuplicateContent(
       if (hash === existingHash) {
         return existing; // duplicate found — return the matching filename
       }
-    } catch {
-      // skip unreadable files
+    } catch (readErr: unknown) {
+      // F-29: Only skip ENOENT (file removed between readdir and read), rethrow others
+      if ((readErr as NodeJS.ErrnoException).code !== 'ENOENT') throw readErr;
     }
   }
   return null;
@@ -92,7 +95,8 @@ export async function writeFilesAtomically(
   contextDir: string,
   files: Record<string, string>
 ): Promise<string[]> {
-  const resolvedContextDir = path.resolve(contextDir);
+  // F-01: Resolve to canonical path before any I/O to prevent symlink-based traversal
+  const resolvedContextDir = fsSync.realpathSync(path.resolve(contextDir));
   const written: Array<{ filename: string; existedBefore: boolean; backupPath?: string }> = [];
   for (const [filename, content] of Object.entries(files)) {
     validateNoLeakedPlaceholders(content, filename);
@@ -140,32 +144,43 @@ export async function writeFilesAtomically(
       }
       const stat = await fs.stat(tempPath);
       if (stat.size !== Buffer.byteLength(content, 'utf-8')) throw new Error('Size mismatch');
+      // F-01: Verify containment BEFORE rename, not after
+      verifyResolvedWriteTarget(resolvedContextDir, filePath, filename);
       await fs.rename(tempPath, filePath);
       renamedIntoPlace = true;
-      verifyResolvedWriteTarget(resolvedContextDir, filePath, filename);
+      // F-28: fsync parent directory after rename to ensure metadata reaches disk
+      const parentDir = path.dirname(filePath);
+      const parentFd = await fs.open(parentDir, fsSync.constants.O_RDONLY);
+      try { await parentFd.sync(); } finally { await parentFd.close(); }
       written.push({ filename, existedBefore, backupPath });
       console.log(`   ${filename} (${content.split('\n').length} lines)`);
     } catch (e: unknown) {
       try { await fs.unlink(tempPath); } catch { /* temp file cleanup — failure is non-critical */ }
+      // F-05: Accumulate current-file restore errors instead of swallowing
+      const currentFileErrors: string[] = [];
       if (renamedIntoPlace) {
         try {
           if (existedBefore && backupPath) {
-            await fs.copyFile(backupPath, filePath);
+            // F-06: rename-based restore instead of copyFile (atomic, detects concurrent modification)
+            await fs.rename(backupPath, filePath);
           } else {
             await fs.unlink(filePath);
           }
-        } catch {
-          // Prior-file rollback below will still surface failures restoring earlier writes.
+        } catch (restoreErr: unknown) {
+          const msg = restoreErr instanceof Error ? restoreErr.message : String(restoreErr);
+          currentFileErrors.push(`${filename}: ${msg}`);
         }
       } else if (existedBefore && backupPath) {
         try {
-          await fs.copyFile(backupPath, filePath);
-        } catch {
-          // Prior-file rollback below will still surface failures restoring earlier writes.
+          // F-06: rename-based restore
+          await fs.rename(backupPath, filePath);
+        } catch (restoreErr: unknown) {
+          const msg = restoreErr instanceof Error ? restoreErr.message : String(restoreErr);
+          currentFileErrors.push(`${filename}: ${msg}`);
         }
       }
       // Rollback already-written files from this batch
-      const rollbackErrors: string[] = [];
+      const rollbackErrors: string[] = [...currentFileErrors];
       for (const prev of written) {
         try {
           if (prev.existedBefore && prev.backupPath) {

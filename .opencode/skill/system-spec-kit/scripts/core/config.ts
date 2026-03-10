@@ -67,8 +67,23 @@ export interface SpecKitConfig {
    2. PATH CONSTANTS
 ------------------------------------------------------------------*/
 
-const CORE_DIR: string = __dirname;
-const SCRIPTS_DIR: string = path.resolve(CORE_DIR, '..', '..');
+// F-08: Stable root detection — walk up from __dirname looking for package.json
+// instead of relying on fragile relative __dirname offset
+function findScriptsRoot(startDir: string): string {
+  let dir = startDir;
+  for (let i = 0; i < 10; i++) {
+    const candidate = path.resolve(dir, '..');
+    if (fsSync.existsSync(path.join(candidate, 'package.json'))) {
+      return candidate;
+    }
+    if (candidate === dir) break; // filesystem root
+    dir = candidate;
+  }
+  // Fallback to original __dirname-relative resolution
+  return path.resolve(startDir, '..', '..');
+}
+
+const SCRIPTS_DIR: string = findScriptsRoot(__dirname);
 
 /* -----------------------------------------------------------------
    3. CONFIG VALIDATION
@@ -213,41 +228,15 @@ function loadConfig(): WorkflowConfig {
     if (fsSync.existsSync(configPath)) {
       const configContent: string = fsSync.readFileSync(configPath, 'utf-8');
 
-      // Strip JSONC comments using the shared string-aware utility
-      const stripped: string = stripJsoncComments(configContent);
+      // F-09: Strip JSONC comments and parse directly — no brace-depth extraction needed
+      const stripped: string = stripJsoncComments(configContent).trim();
 
-      // Extract the top-level JSON object using brace-depth tracking
-      const lines = stripped.split('\n');
-      const jsonLines: string[] = [];
-      let inJsonBlock = false;
-      let braceDepth = 0;
-
-      for (const line of lines) {
-        for (const char of line) {
-          if (char === '{') {
-            if (!inJsonBlock) inJsonBlock = true;
-            braceDepth++;
-          } else if (char === '}') {
-            braceDepth--;
-          }
-        }
-
-        if (inJsonBlock) {
-          jsonLines.push(line);
-        }
-
-        if (inJsonBlock && braceDepth === 0) {
-          break;
-        }
-      }
-
-      if (!jsonLines.length || !jsonLines.join('').trim()) {
+      if (!stripped) {
         structuredLog('warn', 'Config file is empty or contains only comments. Using defaults.');
         return defaultConfig;
       }
 
-      const jsonContent: string = jsonLines.join('\n').trim();
-      const userConfig = JSON.parse(jsonContent) as Partial<WorkflowConfig>;
+      const userConfig = JSON.parse(stripped) as Partial<WorkflowConfig>;
       const merged = { ...defaultConfig, ...userConfig };
       merged.learningWeights = {
         ...defaultConfig.learningWeights,
@@ -269,7 +258,8 @@ function loadConfig(): WorkflowConfig {
 
 const userConfig: WorkflowConfig = loadConfig();
 
-const CONFIG: SpecKitConfig = {
+// F-30: Immutable static config — frozen after initialization
+const STATIC_CONFIG = Object.freeze({
   SKILL_VERSION: '1.7.2',
   MESSAGE_COUNT_TRIGGER: 20,
   MAX_RESULT_PREVIEW: userConfig.maxResultPreview,
@@ -280,14 +270,8 @@ const CONFIG: SpecKitConfig = {
   MESSAGE_TIME_WINDOW: userConfig.messageTimeWindow,
   TIMEZONE_OFFSET_HOURS: userConfig.timezoneOffsetHours,
   TOOL_PREVIEW_LINES: userConfig.toolPreviewLines,
-
   TEMPLATE_DIR: path.join(SCRIPTS_DIR, '..', 'templates'),
   PROJECT_ROOT: path.resolve(SCRIPTS_DIR, '..', '..', '..'),
-
-  // Runtime values - set by parseArguments()
-  DATA_FILE: null,
-  SPEC_FOLDER_ARG: null,
-
   MAX_FILES_IN_MEMORY: userConfig.maxFilesInMemory,
   MAX_OBSERVATIONS: userConfig.maxObservations,
   MIN_PROMPT_LENGTH: userConfig.minPromptLength,
@@ -295,7 +279,14 @@ const CONFIG: SpecKitConfig = {
   TOOL_OUTPUT_MAX_LENGTH: userConfig.toolOutputMaxLength,
   TIMESTAMP_MATCH_TOLERANCE_MS: userConfig.timestampMatchToleranceMs,
   QUALITY_ABORT_THRESHOLD: userConfig.qualityAbortThreshold,
-  LEARNING_WEIGHTS: userConfig.learningWeights,
+  LEARNING_WEIGHTS: Object.freeze({ ...userConfig.learningWeights }),
+});
+
+// Mutable runtime config — set by parseArguments()
+const CONFIG: SpecKitConfig = {
+  ...STATIC_CONFIG,
+  DATA_FILE: null,
+  SPEC_FOLDER_ARG: null,
 };
 
 /* -----------------------------------------------------------------

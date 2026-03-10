@@ -10,13 +10,21 @@ import { posix as pathPosix } from 'node:path';
 function toRelativePath(filePath: string, projectRoot?: string): string {
   if (!filePath) return '';
   let cleaned: string = pathPosix.normalize(filePath.replace(/\\/g, '/'));
-  const normalizedProjectRoot = projectRoot
-    ? pathPosix.normalize(projectRoot.replace(/\\/g, '/'))
-    : undefined;
 
-  if (normalizedProjectRoot && cleaned.startsWith(normalizedProjectRoot)) {
-    cleaned = cleaned.slice(normalizedProjectRoot.length);
-    if (cleaned.startsWith('/')) cleaned = cleaned.slice(1);
+  if (projectRoot) {
+    // F-02: Segment-boundary containment check prevents partial-prefix matches
+    // (e.g., root="/foo/bar" must not match "/foo/barbaz/file")
+    const normalizedRoot = pathPosix.normalize(projectRoot.replace(/\\/g, '/'))
+      .replace(/\/+$/, '');
+
+    if (cleaned === normalizedRoot) {
+      cleaned = '';
+    } else if (cleaned.startsWith(normalizedRoot + '/')) {
+      cleaned = cleaned.slice(normalizedRoot.length + 1);
+    } else if (pathPosix.isAbsolute(cleaned)) {
+      // Absolute path outside project root — reject
+      return '';
+    }
   }
 
   cleaned = cleaned.replace(/^\.\//, '');

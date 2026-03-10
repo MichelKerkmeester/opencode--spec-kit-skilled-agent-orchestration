@@ -8,7 +8,8 @@ const DEFAULT_DENYLIST: RegExp[] = [
   /\bI'll execute this step by step\b/gi,
   /\bLet me analyze (?:this|the|your)\b/gi,
   /\bI'll now\b/gi,
-  /^(?:\s*)Step\s+\d+:\s/gim,
+  // F-11: Tighten "Step N:" to require orchestration context (not docs/headings)
+  /^(?:\s*)Step\s+\d+:\s+(?:I'll|Let me|I need to|I will|Now)\b/gim,
   /\bLet me check\b/gi,
   /\bI'll start by\b/gi,
   /\bLet me start\b/gi,
@@ -37,6 +38,8 @@ const DEFAULT_DENYLIST: RegExp[] = [
   /\bI'll use the \w+ tool\b/gi,
   /\bUsing the \w+ tool\b/gi,
   /\bLet me use the \w+ tool\b/gi,
+  // F-10: Tool titles with path arguments (Read/Edit/Write/Grep/Glob/Bash)
+  /\b(?:Read|Edit|Write|Grep|Glob|Bash)\s+(?:tool\s+)?(?:on\s+)?[\/\.][^\s]+/gi,
 ];
 
 interface FilterResult {
@@ -60,7 +63,12 @@ function filterContamination(
     return { cleanedText: '', removedPhrases: [], hadContamination: false };
   }
 
-  let cleaned = input;
+  // F-10: Pre-normalize — NFKC Unicode, collapse whitespace, strip zero-width chars
+  let cleaned = input
+    .normalize('NFKC')
+    .replace(/[\u200B-\u200F\u2028-\u202F\uFEFF]/g, '')
+    .replace(/[ \t]+/g, ' ');
+
   const removedPhrases: string[] = [];
 
   for (const pattern of denylist) {
@@ -70,6 +78,13 @@ function filterContamination(
       cleaned = cleaned.replace(pattern, ' ');
     }
   }
+
+  // F-31: Post-cleanup — orphaned punctuation, double-spaces, leading conjunctions
+  cleaned = cleaned
+    .replace(/^\s*[,;:]\s*/gm, '')           // orphaned leading punctuation
+    .replace(/\s+([,;:!?.])/g, '$1')          // space before punctuation
+    .replace(/^(?:And|But|Or|So|Then)\s+/gim, '') // orphaned leading conjunctions
+    .replace(/ {2,}/g, ' ');                   // collapse double-spaces
 
   return {
     cleanedText: normalizeWhitespace(cleaned),
