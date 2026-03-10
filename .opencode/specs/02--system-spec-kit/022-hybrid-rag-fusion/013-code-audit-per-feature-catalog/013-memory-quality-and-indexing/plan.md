@@ -1,47 +1,188 @@
-# Phase 013-memory-quality-and-indexing — Memory Quality and Indexing — Audit Plan
+---
+title: "Implementation Plan: memory-quality-and-indexing [template:level_2/plan.md]"
+description: "Feature-centric audit execution plan for 16 Memory Quality and Indexing features, using a structured review workflow that maps findings to prioritized remediation tasks."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "memory quality"
+  - "memory indexing"
+  - "feature audit"
+  - "verification workflow"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: memory-quality-and-indexing
 
-## Methodology
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Step 1: Feature Inventory
-- Read all 16 feature .md files in `feature_catalog/13--memory-quality-and-indexing/`
-- Extract source file lists (Implementation + Tests)
-- Map features to manual test playbook scenarios (NEW-073..085+)
+---
 
-### Step 2: Code Review Per Feature
-For each feature's source files:
-- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
-- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
-- **Behavior:** Does code match the "Current Reality" description in the catalog?
-- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Step 3: Test Coverage Assessment
-- Verify tests exist for all listed test files
-- Verify tests cover the described behavior
-- Identify gaps between described functionality and test assertions
+### Technical Context
 
-### Step 4: Manual Test Playbook Cross-Reference
-- Find matching scenarios: NEW-073..085+
-- Note features with NO manual test scenario (gap)
-- Note if scenario adequately covers described feature
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown documentation + TypeScript codebase under audit |
+| **Framework** | SpecKit Level 2 documentation templates |
+| **Storage** | File-based spec folder artifacts |
+| **Testing** | Manual audit verification + targeted module tests when remediation lands |
 
-### Step 5: Findings Report
-Per feature, produce structured findings:
-- Status: PASS | WARN | FAIL
-- Code Issues
-- Standards Violations
-- Behavior Mismatch
-- Test Gaps
-- Playbook Coverage
-- Recommended Fixes
+### Overview
+This plan executes and maintains a feature-centric audit of the Memory Quality and Indexing catalog (16 features total). The approach is to inventory feature definitions, validate code and tests per feature, and track outcomes as PASS/WARN/FAIL with actionable remediation tasks and playbook coverage notes.
+<!-- /ANCHOR:summary -->
 
-## sk-code--opencode Checklist (per file)
+---
 
-- [ ] Naming: camelCase functions, PascalCase types/interfaces
-- [ ] Imports: explicit, no barrel re-exports of side-effect modules
-- [ ] Types: strict TypeScript, no `any` without justification
-- [ ] Error handling: typed errors, no swallowed catches
-- [ ] Null safety: optional chaining, nullish coalescing
-- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [ ] Functions: single responsibility, < 50 lines preferred
-- [ ] Comments: only where logic is non-obvious
-- [ ] Exports: explicit named exports
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation-Driven Audit Workflow
+
+### Key Components
+- **Feature Catalog Inputs**: 16 markdown feature definitions in `feature_catalog/13--memory-quality-and-indexing/`.
+- **Audit Findings Store**: `checklist.md` records status, issues, gaps, and recommendations.
+- **Remediation Backlog**: `tasks.md` tracks prioritized implementation/documentation fixes.
+
+### Data Flow
+Feature definitions and referenced source files are reviewed first, then findings are recorded per feature, aggregated into status totals, and converted into prioritized execution tasks with verification follow-up.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Project structure created
+- [x] Dependencies installed
+- [x] Development environment ready
+
+### Phase 2: Core Implementation
+- [x] Feature inventory and source/test mapping complete
+- [x] Per-feature correctness/standards/behavior review complete
+- [x] Playbook cross-reference and findings capture complete
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | Remediation changes in validation/indexing modules | Vitest (targeted suites) |
+| Integration | End-to-end behavior of audited features after fixes | Existing MCP/server test harness |
+| Manual | Feature-status verification and artifact consistency checks | Markdown review |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `feature_catalog/13--memory-quality-and-indexing/` | Internal | Green | Cannot confirm expected behavior baselines |
+| `mcp_server` and `scripts` source trees | Internal | Green | Cannot validate findings against implementation |
+| Manual test playbook scenarios `NEW-073..085+` | Internal | Yellow | Coverage mapping may be incomplete |
+| Level 2 template files | Internal | Green | Cannot maintain required structure consistency |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Rewritten docs lose critical findings or fail template/anchor requirements.
+- **Procedure**: Revert the four modified markdown files to the previous known-good revision and reapply mapping with corrected structure.
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 30-60 minutes |
+| Core Implementation | Medium | 2-4 hours |
+| Verification | Medium | 1-2 hours |
+| **Total** | | **3.5-7 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. Restore prior versions of `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`.
+2. Re-validate required template anchors/comments and frontmatter fields.
+3. Re-check summary totals (16 features; 9 PASS, 7 WARN, 0 FAIL) and task counts.
+4. Notify stakeholders of rollback and corrected re-application plan.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->

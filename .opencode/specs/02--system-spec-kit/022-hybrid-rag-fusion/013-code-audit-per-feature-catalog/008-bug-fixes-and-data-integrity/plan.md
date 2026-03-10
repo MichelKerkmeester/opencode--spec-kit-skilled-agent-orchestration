@@ -1,47 +1,187 @@
-# Phase 008-bug-fixes-and-data-integrity — Bug Fixes and Data Integrity — Audit Plan
+---
+title: "Implementation Plan: bug-fixes-and-data-integrity [template:level_2/plan.md]"
+description: "Audit and remediation plan for 11 bug-fix/data-integrity features in hybrid RAG fusion, focusing on catalog-code-test alignment and regression hardening."
+trigger_phrases:
+  - "implementation plan"
+  - "bug fixes"
+  - "data integrity"
+  - "hybrid rag fusion"
+  - "regression coverage"
+  - "safe swap"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: bug-fixes-and-data-integrity
 
-## Methodology
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Step 1: Feature Inventory
-- Read all 11 feature .md files in `feature_catalog/08--bug-fixes-and-data-integrity/`
-- Extract source file lists (Implementation + Tests)
-- Map features to manual test playbook scenarios (EX-034, NEW-040..049)
+---
 
-### Step 2: Code Review Per Feature
-For each feature's source files:
-- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
-- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
-- **Behavior:** Does code match the "Current Reality" description in the catalog?
-- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Step 3: Test Coverage Assessment
-- Verify tests exist for all listed test files
-- Verify tests cover the described behavior
-- Identify gaps between described functionality and test assertions
+### Technical Context
 
-### Step 4: Manual Test Playbook Cross-Reference
-- Find matching scenarios: EX-034, NEW-040..049
-- Note features with NO manual test scenario (gap)
-- Note if scenario adequately covers described feature
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript (Node.js) |
+| **Framework** | Spec Kit Memory MCP server + feature-catalog markdown workflow |
+| **Storage** | SQLite + markdown artifacts |
+| **Testing** | Vitest + manual playbook scenarios |
 
-### Step 5: Findings Report
-Per feature, produce structured findings:
-- Status: PASS | WARN | FAIL
-- Code Issues
-- Standards Violations
-- Behavior Mismatch
-- Test Gaps
-- Playbook Coverage
-- Recommended Fixes
+### Overview
+This plan executes a feature-by-feature audit remediation across the 08 bug-fixes-and-data-integrity catalog. It aligns catalog implementation/test tables with real source paths, resolves correctness gaps in targeted runtime modules, and adds missing regressions for high-risk edge cases. Work is sequenced from catalog alignment to code fixes and then verification hardening.
+<!-- /ANCHOR:summary -->
 
-## sk-code--opencode Checklist (per file)
+---
 
-- [ ] Naming: camelCase functions, PascalCase types/interfaces
-- [ ] Imports: explicit, no barrel re-exports of side-effect modules
-- [ ] Types: strict TypeScript, no `any` without justification
-- [ ] Error handling: typed errors, no swallowed catches
-- [ ] Null safety: optional chaining, nullish coalescing
-- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [ ] Functions: single responsibility, < 50 lines preferred
-- [ ] Comments: only where logic is non-obvious
-- [ ] Exports: explicit named exports
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Monolith
+
+### Key Components
+- **Feature Catalog (`feature_catalog/08--bug-fixes-and-data-integrity/`)**: Source of per-feature "Current Reality", implementation, and test mappings.
+- **MCP Server Runtime (`mcp_server/lib` + `mcp_server/handlers`)**: Concrete behavior under audit for dedup, safety guards, scoring, and orchestration.
+
+### Data Flow
+Catalog feature definitions are inventoried first, then cross-checked against runtime modules and test suites. Findings are converted into prioritized remediation tasks, followed by targeted code/catalog updates and regression verification against playbook scenarios.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Inventory all 11 feature files and validate implementation/test tables
+- [ ] Cross-reference playbook scenarios EX-034 and NEW-040..049
+- [ ] Confirm remediation backlog priorities (5x P0, 8x P1, 1x P2)
+
+### Phase 2: Core Implementation
+- [ ] Correct catalog pathing and behavior claims (F-02, F-03, F-05, F-06, F-07, F-11)
+- [ ] Apply targeted code hardening (explicit exports, spread-max removal, safe-swap semantics)
+- [ ] Add integration-path coverage for content-hash dedup behavior
+
+### Phase 3: Verification
+- [ ] Execute large-array, dedup, rollback, timestamp, and concurrency regressions
+- [ ] Re-validate catalog entries against updated code/test evidence
+- [ ] Synchronize spec.md, plan.md, tasks.md, and checklist.md
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | `folder-scoring`, `co-activation`, `working-memory`, `session-manager` logic | Vitest |
+| Integration | save/index dedup path, chunking-orchestrator swap behavior | Vitest |
+| Manual | EX-034 and NEW-040..049 scenario validation | Playbook + review |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Feature catalog docs (`08--bug-fixes-and-data-integrity`) | Internal | Green | Cannot align findings/tasks without authoritative catalog text |
+| MCP server runtime modules and tests | Internal | Green | Verification cannot prove behavior alignment |
+| Manual playbook scenarios (EX-034, NEW-040..049) | Internal | Yellow | Coverage mapping remains partial/inconclusive |
+| Product decision on force-path safe-swap semantics | Internal | Yellow | F-10 cannot be closed as PASS |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Regression failures, behavior drift, or incorrect catalog mappings introduced by remediation edits.
+- **Procedure**: Revert affected commits, rerun targeted Vitest suites, and restore prior catalog text for impacted features.
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Catalog Setup) ──────┐
+                              ├──► Phase 2 (Fixes) ──► Phase 3 (Verify)
+Phase 1.5 (Playbook Map) ─────┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Fixes, Playbook Map |
+| Playbook Map | Setup | Fixes |
+| Fixes | Setup, Playbook Map | Verify |
+| Verify | Fixes | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Medium | 2-3 hours |
+| Core Implementation | High | 6-10 hours |
+| Verification | Medium | 3-5 hours |
+| **Total** | | **11-18 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. Disable or gate the affected behavior path (if runtime-impacting).
+2. Revert remediation commits for impacted modules/catalog entries.
+3. Re-run targeted regression suites and smoke-check critical search/save/session flows.
+4. Notify stakeholders and document rollback rationale in spec artifacts.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->

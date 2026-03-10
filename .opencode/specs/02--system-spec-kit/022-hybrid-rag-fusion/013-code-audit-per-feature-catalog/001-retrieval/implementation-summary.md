@@ -1,16 +1,11 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
 description: "Phase 001-retrieval code audit — 12 tasks fixed across 9 retrieval features in the Spec Kit Memory MCP server."
-trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
+trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
 importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Summary
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
@@ -22,7 +17,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 013-code-audit-per-feature-catalog/001-retrieval |
+| **Spec Folder** | 001-retrieval |
 | **Completed** | 2026-03-10 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -44,7 +39,7 @@ The quality-aware 3-tier fallback in `hybrid-search.ts` applied a 0.9 similarity
 
 ### BM25 Re-Index Gate Handler (T-04)
 
-The feature catalog entry for the BM25 trigger-phrase re-index gate was missing its handler row. The row is added to `feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`, and two gate handler tests in `bm25-index.vitest.ts` confirm the gate fires correctly.
+The feature catalog entry for the BM25 trigger-phrase re-index gate was missing its handler row. The row is added to `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`, and two gate handler tests in `bm25-index.vitest.ts` confirm the gate fires correctly.
 
 ### Explicit Named Exports (T-06)
 
@@ -56,7 +51,7 @@ Two empty catch blocks in `vector-index-queries.ts` and `vector-index-schema.ts`
 
 ### Stale Catalog References (T-04 cleanup)
 
-Five feature catalog files (`01-*.md` through `05-*.md` under `feature_catalog/01--retrieval/`) referenced `retry.vitest.ts`, a test file that no longer exists. All five references are removed.
+Five feature catalog files (`01-*.md` through `05-*.md` under `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`) referenced `retry.vitest.ts`, a test file that no longer exists. All five references are removed.
 
 ### Provenance Tests (T-09)
 
@@ -79,8 +74,8 @@ Three new tests in `working-memory.vitest.ts` cover provenance tracking in tool 
 | `mcp_server/tests/bm25-index.vitest.ts` | Modified | Add 2 BM25 re-index gate handler tests |
 | `mcp_server/tests/memory-context.vitest.ts` | Modified | Update T207 assertion (side effect of T-01 behavior change) |
 | `mcp_server/tests/working-memory.vitest.ts` | Modified | Add 3 provenance tests |
-| `feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md` | Modified | Add missing handler row |
-| `feature_catalog/01--retrieval/01-*.md` through `05-*.md` (5 files) | Modified | Remove stale retry.vitest.ts references |
+| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md` | Modified | Add missing handler row |
+| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-*.md` through `05-*.md` (5 files) | Modified | Remove stale retry.vitest.ts references |
 <!-- /ANCHOR:what-built -->
 
 ---

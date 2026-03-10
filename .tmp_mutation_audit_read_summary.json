@@ -1,0 +1,2185 @@
+{
+  "file_count_listed": 349,
+  "file_count_read": 348,
+  "missing_files": [
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retry.vitest.ts"
+  ],
+  "total_lines": 129905,
+  "total_chars": 4536329,
+  "files": {
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/configs/cognitive.ts": {
+      "lines": 114,
+      "sha1": "2a8d0bb3c2b7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/core/config.ts": {
+      "lines": 97,
+      "sha1": "8cb97f617340"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/core/db-state.ts": {
+      "lines": 277,
+      "sha1": "972ee9a8e86e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/core/index.ts": {
+      "lines": 67,
+      "sha1": "479369849c59"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/formatters/index.ts": {
+      "lines": 31,
+      "sha1": "6c931120b618"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts": {
+      "lines": 533,
+      "sha1": "2eb5ac5f0ed5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/formatters/token-metrics.ts": {
+      "lines": 85,
+      "sha1": "aac5f7666f32"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts": {
+      "lines": 734,
+      "sha1": "8c05dbc9361e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts": {
+      "lines": 178,
+      "sha1": "d809a3e7d9d9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/checkpoints.ts": {
+      "lines": 466,
+      "sha1": "f2cda0aac2a0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts": {
+      "lines": 509,
+      "sha1": "69a4e61ab346"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts": {
+      "lines": 171,
+      "sha1": "ca5390e99b1d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/handler-utils.ts": {
+      "lines": 68,
+      "sha1": "62b9354f6385"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts": {
+      "lines": 157,
+      "sha1": "d262de7bac7b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts": {
+      "lines": 262,
+      "sha1": "4c2433ca28ee"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts": {
+      "lines": 769,
+      "sha1": "df4f60f6a502"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts": {
+      "lines": 253,
+      "sha1": "0632aa71b2a8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts": {
+      "lines": 451,
+      "sha1": "f5f85bc5d557"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts": {
+      "lines": 134,
+      "sha1": "3b7c6b760251"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-stats.ts": {
+      "lines": 265,
+      "sha1": "895384e5f5af"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-types.ts": {
+      "lines": 108,
+      "sha1": "4b8f62dab21c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts": {
+      "lines": 253,
+      "sha1": "9df1a7d13e62"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-utils.ts": {
+      "lines": 69,
+      "sha1": "763beeb9c76c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud.ts": {
+      "lines": 43,
+      "sha1": "3c1f0835d7ff"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-alias.ts": {
+      "lines": 306,
+      "sha1": "f39362891785"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index-discovery.ts": {
+      "lines": 193,
+      "sha1": "d387d50579ab"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts": {
+      "lines": 591,
+      "sha1": "aa26ecc3e7b7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts": {
+      "lines": 246,
+      "sha1": "bbb327bc68dc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts": {
+      "lines": 593,
+      "sha1": "9c432c050c16"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts": {
+      "lines": 1073,
+      "sha1": "0e5a46edc6c8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts": {
+      "lines": 478,
+      "sha1": "b8706e9b12f5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/mutation-hooks.ts": {
+      "lines": 70,
+      "sha1": "1f867b18cb74"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/pe-gating.ts": {
+      "lines": 352,
+      "sha1": "dfcc97fd90a4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts": {
+      "lines": 554,
+      "sha1": "96c31456da89"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts": {
+      "lines": 132,
+      "sha1": "085f1202c212"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/db-helpers.ts": {
+      "lines": 88,
+      "sha1": "5ff5eb2a60da"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/dedup.ts": {
+      "lines": 77,
+      "sha1": "6d4de223144c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts": {
+      "lines": 71,
+      "sha1": "38abefa7d390"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/index.ts": {
+      "lines": 13,
+      "sha1": "cc16f7ac4bb0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/pe-orchestration.ts": {
+      "lines": 163,
+      "sha1": "7349656d4f39"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts": {
+      "lines": 124,
+      "sha1": "e5426ff0a23f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts": {
+      "lines": 198,
+      "sha1": "f778c053cfb6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts": {
+      "lines": 323,
+      "sha1": "358a49059cdf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts": {
+      "lines": 121,
+      "sha1": "7b4be8dc5755"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts": {
+      "lines": 678,
+      "sha1": "7926881839ae"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/types.ts": {
+      "lines": 24,
+      "sha1": "66b0f3a0aa21"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts": {
+      "lines": 280,
+      "sha1": "cb006b2537a3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/mutation-feedback.ts": {
+      "lines": 56,
+      "sha1": "95b00084a0b7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts": {
+      "lines": 238,
+      "sha1": "3e4f336cf33c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/embedding-cache.ts": {
+      "lines": 223,
+      "sha1": "f4b86fc80714"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/tool-cache.ts": {
+      "lines": 422,
+      "sha1": "7ce9ba27c739"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/chunking/anchor-chunker.ts": {
+      "lines": 293,
+      "sha1": "e1e903fbb0ce"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/chunking/chunk-thinning.ts": {
+      "lines": 155,
+      "sha1": "00dfeba54ecf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/attention-decay.ts": {
+      "lines": 362,
+      "sha1": "58166e3c5233"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/co-activation.ts": {
+      "lines": 397,
+      "sha1": "c8e85cbe7188"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/fsrs-scheduler.ts": {
+      "lines": 395,
+      "sha1": "57b1887308e3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/prediction-error-gate.ts": {
+      "lines": 538,
+      "sha1": "1e0dc55d59cf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/pressure-monitor.ts": {
+      "lines": 101,
+      "sha1": "fc18faf018a1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts": {
+      "lines": 57,
+      "sha1": "fbf6f76e6253"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/tier-classifier.ts": {
+      "lines": 517,
+      "sha1": "351194497a88"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts": {
+      "lines": 674,
+      "sha1": "837d29ccff71"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/config/memory-types.ts": {
+      "lines": 433,
+      "sha1": "15134c399540"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/config/type-inference.ts": {
+      "lines": 340,
+      "sha1": "fce8c08c0d51"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors.ts": {
+      "lines": 7,
+      "sha1": "1de97882a3e9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts": {
+      "lines": 323,
+      "sha1": "f7b78eda2097"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/index.ts": {
+      "lines": 5,
+      "sha1": "ec45ba271a33"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.ts": {
+      "lines": 863,
+      "sha1": "5aa2c1dc87a9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/ablation-framework.ts": {
+      "lines": 755,
+      "sha1": "fd774a3d457d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-db.ts": {
+      "lines": 189,
+      "sha1": "6489138a2b98"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-logger.ts": {
+      "lines": 243,
+      "sha1": "d88c596d0f23"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-metrics.ts": {
+      "lines": 601,
+      "sha1": "fe4aa62ff8f0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/ground-truth-data.ts": {
+      "lines": 78,
+      "sha1": "494ede3870f4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/ground-truth-feedback.ts": {
+      "lines": 553,
+      "sha1": "db4871314aab"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/reporting-dashboard.ts": {
+      "lines": 659,
+      "sha1": "134ad318847c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts": {
+      "lines": 277,
+      "sha1": "cdeb98a79505"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts": {
+      "lines": 576,
+      "sha1": "d1e9128916c6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts": {
+      "lines": 418,
+      "sha1": "eb2983d788cb"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/interfaces/vector-store.ts": {
+      "lines": 49,
+      "sha1": "8083acfbc9f9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/learning/corrections.ts": {
+      "lines": 907,
+      "sha1": "2cc427a4e3db"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts": {
+      "lines": 526,
+      "sha1": "e5d8c7eb9dd7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/content-normalizer.ts": {
+      "lines": 265,
+      "sha1": "1689ad570d0f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts": {
+      "lines": 952,
+      "sha1": "7c6c98e2dd0d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/trigger-matcher.ts": {
+      "lines": 546,
+      "sha1": "d5731ad1bd4b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/providers/embeddings.ts": {
+      "lines": 9,
+      "sha1": "7a5e613c0451"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts": {
+      "lines": 573,
+      "sha1": "70236a04dce7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/response/envelope.ts": {
+      "lines": 284,
+      "sha1": "03941ba37131"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts": {
+      "lines": 820,
+      "sha1": "d9a470eb821b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/confidence-tracker.ts": {
+      "lines": 311,
+      "sha1": "f1c864a3444a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/folder-scoring.ts": {
+      "lines": 7,
+      "sha1": "d96025654086"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/importance-tiers.ts": {
+      "lines": 231,
+      "sha1": "3448fd5f0bc7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/interference-scoring.ts": {
+      "lines": 271,
+      "sha1": "15e60ee47248"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/mpab-aggregation.ts": {
+      "lines": 181,
+      "sha1": "0a7681557d45"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/negative-feedback.ts": {
+      "lines": 177,
+      "sha1": "30aff965995d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/anchor-metadata.ts": {
+      "lines": 186,
+      "sha1": "4a3a66ae62b9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts": {
+      "lines": 364,
+      "sha1": "b2bd4b604b94"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/auto-promotion.ts": {
+      "lines": 337,
+      "sha1": "432e9cd27f6b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/bm25-index.ts": {
+      "lines": 367,
+      "sha1": "97a033b9ef09"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts": {
+      "lines": 302,
+      "sha1": "b95f47e9018e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts": {
+      "lines": 140,
+      "sha1": "a1f93f2fc07b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-representation.ts": {
+      "lines": 200,
+      "sha1": "ebe7f16b11b9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/confidence-truncation.ts": {
+      "lines": 230,
+      "sha1": "02ff12d739b8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts": {
+      "lines": 542,
+      "sha1": "3eabf78bca9b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/dynamic-token-budget.ts": {
+      "lines": 114,
+      "sha1": "29fb6ba0418c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/embedding-expansion.ts": {
+      "lines": 297,
+      "sha1": "a6f1d84dd432"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/encoding-intent.ts": {
+      "lines": 103,
+      "sha1": "a9a2d7973017"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/entity-linker.ts": {
+      "lines": 539,
+      "sha1": "ec18c2ec7556"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/evidence-gap-detector.ts": {
+      "lines": 199,
+      "sha1": "d5eade11c3e3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/feedback-denylist.ts": {
+      "lines": 106,
+      "sha1": "68521016cf76"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts": {
+      "lines": 928,
+      "sha1": "6b3a094a8b5f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-relevance.ts": {
+      "lines": 236,
+      "sha1": "25f6b5b9bda4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts": {
+      "lines": 476,
+      "sha1": "eb8b159a7141"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts": {
+      "lines": 1706,
+      "sha1": "ff8200d428f9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts": {
+      "lines": 623,
+      "sha1": "3ed0307256c5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts": {
+      "lines": 656,
+      "sha1": "77441a311f0f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/local-reranker.ts": {
+      "lines": 332,
+      "sha1": "f6a251cb9142"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/memory-summaries.ts": {
+      "lines": 241,
+      "sha1": "e3e9d33b85b4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/index.ts": {
+      "lines": 34,
+      "sha1": "ab3893486524"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/orchestrator.ts": {
+      "lines": 74,
+      "sha1": "33c8f8db14c7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts": {
+      "lines": 621,
+      "sha1": "59d4d6aae3c6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts": {
+      "lines": 750,
+      "sha1": "64d6339daf98"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts": {
+      "lines": 629,
+      "sha1": "25e48e23b65f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts": {
+      "lines": 358,
+      "sha1": "4a59190a91a2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts": {
+      "lines": 415,
+      "sha1": "a16d269b74e2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts": {
+      "lines": 221,
+      "sha1": "7a2eaefbc142"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-expander.ts": {
+      "lines": 94,
+      "sha1": "581f67aff04c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts": {
+      "lines": 163,
+      "sha1": "c6fc593ac4da"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/retrieval-directives.ts": {
+      "lines": 345,
+      "sha1": "504542ef65c0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts": {
+      "lines": 208,
+      "sha1": "1ceff82d6a52"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-types.ts": {
+      "lines": 11,
+      "sha1": "6cb1ac1b8b4b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/session-boost.ts": {
+      "lines": 212,
+      "sha1": "748ea2c0b368"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/spec-folder-hierarchy.ts": {
+      "lines": 283,
+      "sha1": "56fcbe63811d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/sqlite-fts.ts": {
+      "lines": 156,
+      "sha1": "5fe9ab060af1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/tfidf-summarizer.ts": {
+      "lines": 252,
+      "sha1": "ffbb41ffacba"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/validation-metadata.ts": {
+      "lines": 282,
+      "sha1": "1ae138d311d5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-aliases.ts": {
+      "lines": 426,
+      "sha1": "3262e7ac5709"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts": {
+      "lines": 551,
+      "sha1": "4392272ea24c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts": {
+      "lines": 1412,
+      "sha1": "a61aca286fb7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts": {
+      "lines": 1313,
+      "sha1": "6b1052b9f14d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts": {
+      "lines": 822,
+      "sha1": "1a350ac9c06d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-types.ts": {
+      "lines": 178,
+      "sha1": "e38e18d2173b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index.ts": {
+      "lines": 50,
+      "sha1": "d47a6e8cdc83"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts": {
+      "lines": 1140,
+      "sha1": "7558416431ba"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts": {
+      "lines": 289,
+      "sha1": "ff0adeb40f2b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts": {
+      "lines": 829,
+      "sha1": "66b8d0b76a5a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts": {
+      "lines": 981,
+      "sha1": "a2d608e948d4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/consolidation.ts": {
+      "lines": 534,
+      "sha1": "3de6ffef3150"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts": {
+      "lines": 424,
+      "sha1": "cb7bec44a527"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/learned-triggers-schema.ts": {
+      "lines": 211,
+      "sha1": "51d48fce5b62"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/mutation-ledger.ts": {
+      "lines": 472,
+      "sha1": "16355d6d26d8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts": {
+      "lines": 587,
+      "sha1": "09be667db7cb"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/transaction-manager.ts": {
+      "lines": 389,
+      "sha1": "344712f2e3e5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/consumption-logger.ts": {
+      "lines": 412,
+      "sha1": "174687e0d3eb"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts": {
+      "lines": 324,
+      "sha1": "7947a473afd2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/scoring-observability.ts": {
+      "lines": 222,
+      "sha1": "9a8e6344c1df"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/trace-schema.ts": {
+      "lines": 197,
+      "sha1": "6cb91612043e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/utils/canonical-path.ts": {
+      "lines": 25,
+      "sha1": "ed7f7cd3d726"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/utils/format-helpers.ts": {
+      "lines": 37,
+      "sha1": "4eb737bdb860"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/utils/logger.ts": {
+      "lines": 101,
+      "sha1": "62b5de9e8abe"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/utils/path-security.ts": {
+      "lines": 7,
+      "sha1": "df485d849488"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts": {
+      "lines": 728,
+      "sha1": "34b835cb63c3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts": {
+      "lines": 730,
+      "sha1": "c1cc31c4a58d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts": {
+      "lines": 468,
+      "sha1": "2ac5ff038d10"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts": {
+      "lines": 1132,
+      "sha1": "7a216d4a6e1b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts": {
+      "lines": 324,
+      "sha1": "1ef748accebc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker.vitest.ts": {
+      "lines": 166,
+      "sha1": "e9416d8486f6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-fusion.vitest.ts": {
+      "lines": 372,
+      "sha1": "574425cfbc02"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts": {
+      "lines": 571,
+      "sha1": "d3d0386c3158"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/artifact-routing.vitest.ts": {
+      "lines": 303,
+      "sha1": "3102f3c0e7e4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/attention-decay.vitest.ts": {
+      "lines": 463,
+      "sha1": "1b6cddb54498"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/batch-processor.vitest.ts": {
+      "lines": 368,
+      "sha1": "857a8a1218d3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/bm25-index.vitest.ts": {
+      "lines": 596,
+      "sha1": "d33290f2351e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts": {
+      "lines": 118,
+      "sha1": "07f8a976f2ec"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges-unit.vitest.ts": {
+      "lines": 819,
+      "sha1": "5c835d139660"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts": {
+      "lines": 319,
+      "sha1": "45e3fce75b41"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/channel-enforcement.vitest.ts": {
+      "lines": 525,
+      "sha1": "beca7c981d74"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/channel-representation.vitest.ts": {
+      "lines": 343,
+      "sha1": "0b554b36fd73"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/channel.vitest.ts": {
+      "lines": 41,
+      "sha1": "8c2b5777fe81"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/checkpoint-working-memory.vitest.ts": {
+      "lines": 235,
+      "sha1": "51aacafc4a1a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-extended.vitest.ts": {
+      "lines": 923,
+      "sha1": "3262b6faa61e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/checkpoints-storage.vitest.ts": {
+      "lines": 413,
+      "sha1": "4fba40d0845a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/chunk-thinning.vitest.ts": {
+      "lines": 394,
+      "sha1": "e516055bd7a2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts": {
+      "lines": 268,
+      "sha1": "4975db0f2d85"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/cognitive-gaps.vitest.ts": {
+      "lines": 502,
+      "sha1": "5957b1652016"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/community-detection.vitest.ts": {
+      "lines": 746,
+      "sha1": "4de98e396343"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/composite-scoring.vitest.ts": {
+      "lines": 1013,
+      "sha1": "d02d9017d72f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/confidence-tracker.vitest.ts": {
+      "lines": 402,
+      "sha1": "a91d40eee20c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/confidence-truncation.vitest.ts": {
+      "lines": 464,
+      "sha1": "581a2e0176bc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/config-cognitive.vitest.ts": {
+      "lines": 64,
+      "sha1": "1eab06f70cbd"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/consumption-logger.vitest.ts": {
+      "lines": 574,
+      "sha1": "f454a9aff6bf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-hash-dedup.vitest.ts": {
+      "lines": 270,
+      "sha1": "a59b92a21a66"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-normalizer.vitest.ts": {
+      "lines": 625,
+      "sha1": "ab61889933d6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/corrections.vitest.ts": {
+      "lines": 624,
+      "sha1": "b20d8c7d2ff2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder-extended.vitest.ts": {
+      "lines": 515,
+      "sha1": "4c9ffd891486"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/cross-encoder.vitest.ts": {
+      "lines": 248,
+      "sha1": "8a1b7093273e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/db-state-graph-reinit.vitest.ts": {
+      "lines": 43,
+      "sha1": "6e9d9bb83c9a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/decay.vitest.ts": {
+      "lines": 249,
+      "sha1": "834487d23e34"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dynamic-token-budget.vitest.ts": {
+      "lines": 215,
+      "sha1": "1e0b3afe47ad"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/embedding-cache.vitest.ts": {
+      "lines": 280,
+      "sha1": "ad5eba252e8f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/embedding-expansion.vitest.ts": {
+      "lines": 409,
+      "sha1": "83b0c4cbb2cb"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/embeddings.vitest.ts": {
+      "lines": 195,
+      "sha1": "703695242ca7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/encoding-intent.vitest.ts": {
+      "lines": 464,
+      "sha1": "6a1936d17449"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/entity-extractor.vitest.ts": {
+      "lines": 631,
+      "sha1": "66cc7242fdfc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/entity-linker.vitest.ts": {
+      "lines": 722,
+      "sha1": "6057740c104f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/envelope.vitest.ts": {
+      "lines": 473,
+      "sha1": "56fc241ce48c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/errors-comprehensive.vitest.ts": {
+      "lines": 583,
+      "sha1": "71b172c81073"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/eval-db.vitest.ts": {
+      "lines": 336,
+      "sha1": "db54fdb2a577"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/eval-logger.vitest.ts": {
+      "lines": 448,
+      "sha1": "a9c09a51c4d7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/eval-metrics.vitest.ts": {
+      "lines": 574,
+      "sha1": "137e5515aa76"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/evidence-gap-detector.vitest.ts": {
+      "lines": 150,
+      "sha1": "82d72fa14cc3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/feature-eval-graph-signals.vitest.ts": {
+      "lines": 629,
+      "sha1": "322a8c632e42"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/feedback-denylist.vitest.ts": {
+      "lines": 92,
+      "sha1": "96e466f1878c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-discovery-integration.vitest.ts": {
+      "lines": 838,
+      "sha1": "ee1e78c3682b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-discovery.vitest.ts": {
+      "lines": 1058,
+      "sha1": "3187159bb6e7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-relevance.vitest.ts": {
+      "lines": 499,
+      "sha1": "102ca153f1cf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-scoring.vitest.ts": {
+      "lines": 226,
+      "sha1": "8918a31dfcf1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/fsrs-scheduler.vitest.ts": {
+      "lines": 675,
+      "sha1": "4fa030355daa"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/full-spec-doc-indexing.vitest.ts": {
+      "lines": 979,
+      "sha1": "afa984994e33"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-search-fn.vitest.ts": {
+      "lines": 224,
+      "sha1": "b3304a38c545"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts": {
+      "lines": 612,
+      "sha1": "6f70d604c227"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth-feedback.vitest.ts": {
+      "lines": 445,
+      "sha1": "d549f5fc750b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ground-truth.vitest.ts": {
+      "lines": 702,
+      "sha1": "80d59ebc77b4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-causal-graph.vitest.ts": {
+      "lines": 230,
+      "sha1": "49e7c0029048"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-checkpoints.vitest.ts": {
+      "lines": 448,
+      "sha1": "922808552c17"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-context.vitest.ts": {
+      "lines": 564,
+      "sha1": "b7ad2afc1cdc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-crud.vitest.ts": {
+      "lines": 271,
+      "sha1": "35236ec7139f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index-cooldown.vitest.ts": {
+      "lines": 222,
+      "sha1": "1855a82f0537"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-index.vitest.ts": {
+      "lines": 431,
+      "sha1": "8d666fb6d22c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-ingest.vitest.ts": {
+      "lines": 173,
+      "sha1": "c3f8a253acb1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts": {
+      "lines": 96,
+      "sha1": "d042e27a055a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search.vitest.ts": {
+      "lines": 200,
+      "sha1": "53d19f945704"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-triggers.vitest.ts": {
+      "lines": 251,
+      "sha1": "4b480456edb7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-session-learning.vitest.ts": {
+      "lines": 230,
+      "sha1": "7db29c36a87f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search-context-headers.vitest.ts": {
+      "lines": 60,
+      "sha1": "e89a7434b9c9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search-flags.vitest.ts": {
+      "lines": 79,
+      "sha1": "4f866a743882"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/hybrid-search.vitest.ts": {
+      "lines": 864,
+      "sha1": "40c0c315d3f8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/importance-tiers.vitest.ts": {
+      "lines": 210,
+      "sha1": "2f1b197a0fbb"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts": {
+      "lines": 742,
+      "sha1": "62629d73d617"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index.vitest.ts": {
+      "lines": 180,
+      "sha1": "0dbefd101cd3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/index-refresh.vitest.ts": {
+      "lines": 156,
+      "sha1": "df1ce3c50e1a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts": {
+      "lines": 161,
+      "sha1": "1e1126a72ece"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-save-pipeline.vitest.ts": {
+      "lines": 122,
+      "sha1": "8fb899002cbd"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-session-dedup.vitest.ts": {
+      "lines": 136,
+      "sha1": "c81d6192677b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/intent-classifier.vitest.ts": {
+      "lines": 676,
+      "sha1": "06a903816301"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/interference.vitest.ts": {
+      "lines": 501,
+      "sha1": "40a654527afc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/job-queue.vitest.ts": {
+      "lines": 226,
+      "sha1": "09d54dd9da7c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts": {
+      "lines": 403,
+      "sha1": "b73981a12664"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/learned-feedback.vitest.ts": {
+      "lines": 1005,
+      "sha1": "d0af3add0c51"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/local-reranker.vitest.ts": {
+      "lines": 60,
+      "sha1": "5c772ab6c3ea"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mcp-response-envelope.vitest.ts": {
+      "lines": 265,
+      "sha1": "4fa57ef3806d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context-eval-channels.vitest.ts": {
+      "lines": 124,
+      "sha1": "e4ddfecb07b1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts": {
+      "lines": 897,
+      "sha1": "a8a5607246f5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts": {
+      "lines": 1460,
+      "sha1": "23a614385254"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser-extended.vitest.ts": {
+      "lines": 564,
+      "sha1": "285605e3e9d1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts": {
+      "lines": 433,
+      "sha1": "be8b5ae87280"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-extended.vitest.ts": {
+      "lines": 798,
+      "sha1": "36ec1da5c457"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-integration.vitest.ts": {
+      "lines": 247,
+      "sha1": "c9d3ad0e239c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts": {
+      "lines": 112,
+      "sha1": "7f847603d6aa"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-eval-channels.vitest.ts": {
+      "lines": 150,
+      "sha1": "576af5a25fe8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-integration.vitest.ts": {
+      "lines": 277,
+      "sha1": "1ea0f318530d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts": {
+      "lines": 180,
+      "sha1": "07414ec7115d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-summaries.vitest.ts": {
+      "lines": 643,
+      "sha1": "f930a4a77925"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-types.vitest.ts": {
+      "lines": 192,
+      "sha1": "098beb16ae14"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mmr-reranker.vitest.ts": {
+      "lines": 166,
+      "sha1": "6f2e74b4e4e2"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mpab-aggregation.vitest.ts": {
+      "lines": 363,
+      "sha1": "408c930eabcd"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/mutation-ledger.vitest.ts": {
+      "lines": 328,
+      "sha1": "85074a02c43f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/n3lite-consolidation.vitest.ts": {
+      "lines": 558,
+      "sha1": "f14528bf8b0a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate.vitest.ts": {
+      "lines": 520,
+      "sha1": "c1e7beeaa9a8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts": {
+      "lines": 647,
+      "sha1": "3ae7e43fdafc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/pressure-monitor.vitest.ts": {
+      "lines": 57,
+      "sha1": "a061147f0244"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts": {
+      "lines": 542,
+      "sha1": "772491fa5e3a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/query-classifier.vitest.ts": {
+      "lines": 734,
+      "sha1": "b529aec53fb7"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/query-expander.vitest.ts": {
+      "lines": 101,
+      "sha1": "86fa99c4601a"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/query-router-channel-interaction.vitest.ts": {
+      "lines": 433,
+      "sha1": "3ed7d5176c49"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/query-router.vitest.ts": {
+      "lines": 386,
+      "sha1": "1ab8f5717409"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reconsolidation.vitest.ts": {
+      "lines": 798,
+      "sha1": "4b310cfe6a24"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/recovery-hints.vitest.ts": {
+      "lines": 825,
+      "sha1": "147b4eeec086"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts": {
+      "lines": 453,
+      "sha1": "03bab6dff3c5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reporting-dashboard.vitest.ts": {
+      "lines": 882,
+      "sha1": "8d80725b3015"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reranker.vitest.ts": {
+      "lines": 30,
+      "sha1": "dbc669cb0c1b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-directives.vitest.ts": {
+      "lines": 468,
+      "sha1": "f22a1e70b71b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts": {
+      "lines": 451,
+      "sha1": "60f20ba7af11"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-trace.vitest.ts": {
+      "lines": 330,
+      "sha1": "d1334a7e1662"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retry-manager.vitest.ts": {
+      "lines": 638,
+      "sha1": "ae4c0e356905"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts": {
+      "lines": 91,
+      "sha1": "97637491967e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rrf-fusion.vitest.ts": {
+      "lines": 214,
+      "sha1": "6ef882fc2e80"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/save-quality-gate.vitest.ts": {
+      "lines": 873,
+      "sha1": "98ab87d86cac"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/score-normalization.vitest.ts": {
+      "lines": 413,
+      "sha1": "3f1ae410dcf6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/scoring-observability.vitest.ts": {
+      "lines": 733,
+      "sha1": "6e5fbaa3812f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/scoring.vitest.ts": {
+      "lines": 316,
+      "sha1": "7c8610f7e357"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-flags.vitest.ts": {
+      "lines": 106,
+      "sha1": "dd0dde7150e5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts": {
+      "lines": 433,
+      "sha1": "98f3091537ba"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-boost.vitest.ts": {
+      "lines": 98,
+      "sha1": "ab4e29bfdef4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts": {
+      "lines": 723,
+      "sha1": "6864221b633c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager.vitest.ts": {
+      "lines": 398,
+      "sha1": "efa2ee423b44"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/spec-folder-hierarchy.vitest.ts": {
+      "lines": 533,
+      "sha1": "b2448ba27b11"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/sqlite-fts.vitest.ts": {
+      "lines": 147,
+      "sha1": "c9b73eb7ecb0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/stage2-fusion.vitest.ts": {
+      "lines": 61,
+      "sha1": "a5c88fa3e6d6"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/tier-classifier.vitest.ts": {
+      "lines": 497,
+      "sha1": "7ded2048b3b5"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/token-budget.vitest.ts": {
+      "lines": 271,
+      "sha1": "24222757cd01"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/tool-cache.vitest.ts": {
+      "lines": 688,
+      "sha1": "85195dcd98fc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts": {
+      "lines": 222,
+      "sha1": "407a961640e1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-extended.vitest.ts": {
+      "lines": 175,
+      "sha1": "2f803ed42e1b"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager.vitest.ts": {
+      "lines": 438,
+      "sha1": "3eb67ef1e56c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-config-extended.vitest.ts": {
+      "lines": 912,
+      "sha1": "0469d677d71d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-matcher.vitest.ts": {
+      "lines": 204,
+      "sha1": "1429d736fa67"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-setAttentionScore.vitest.ts": {
+      "lines": 122,
+      "sha1": "451b4b6b8b5e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-composite-scoring-types.vitest.ts": {
+      "lines": 185,
+      "sha1": "52c4ba442466"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-folder-scoring-types.vitest.ts": {
+      "lines": 171,
+      "sha1": "3e7ae6353687"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-normalization-roundtrip.vitest.ts": {
+      "lines": 208,
+      "sha1": "5b73c8a00a47"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-normalization.vitest.ts": {
+      "lines": 234,
+      "sha1": "65489a531101"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-path-security.vitest.ts": {
+      "lines": 115,
+      "sha1": "859e468c97bf"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts": {
+      "lines": 301,
+      "sha1": "e824661d6602"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-tier-classifier-types.vitest.ts": {
+      "lines": 241,
+      "sha1": "6ebcff6597be"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-transaction-metrics-types.vitest.ts": {
+      "lines": 158,
+      "sha1": "680d79128dd8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/validation-metadata.vitest.ts": {
+      "lines": 445,
+      "sha1": "4df7c01d0611"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/vector-index-impl.vitest.ts": {
+      "lines": 1407,
+      "sha1": "697a58d21733"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/working-memory-event-decay.vitest.ts": {
+      "lines": 222,
+      "sha1": "d6d9dcf40761"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/working-memory.vitest.ts": {
+      "lines": 229,
+      "sha1": "3a1492e8b975"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts": {
+      "lines": 487,
+      "sha1": "a11601501f66"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts": {
+      "lines": 59,
+      "sha1": "6c5bd6594aa1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/types.ts": {
+      "lines": 298,
+      "sha1": "a7fa2e4a3b52"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/batch-processor.ts": {
+      "lines": 176,
+      "sha1": "9cdda4d36d96"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/db-helpers.ts": {
+      "lines": 50,
+      "sha1": "dc1941dac7b8"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/index.ts": {
+      "lines": 61,
+      "sha1": "e1304effcfc3"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/json-helpers.ts": {
+      "lines": 59,
+      "sha1": "250a797842c4"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/tool-input-schema.ts": {
+      "lines": 238,
+      "sha1": "9fca41ad8643"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/validators.ts": {
+      "lines": 154,
+      "sha1": "a30e643b9cd9"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts": {
+      "lines": 210,
+      "sha1": "72f80fac926f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts": {
+      "lines": 425,
+      "sha1": "7b5f6c516062"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/mmr-reranker.ts": {
+      "lines": 152,
+      "sha1": "792e81054c82"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts": {
+      "lines": 496,
+      "sha1": "f24f23cf5abe"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/chunking.ts": {
+      "lines": 109,
+      "sha1": "91e2963b9f3f"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/config.ts": {
+      "lines": 47,
+      "sha1": "b892d47608d0"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/contracts/retrieval-trace.ts": {
+      "lines": 196,
+      "sha1": "f79a12507485"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings.ts": {
+      "lines": 638,
+      "sha1": "8e2b326a175d"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/factory.ts": {
+      "lines": 461,
+      "sha1": "521ff128c626"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/profile.ts": {
+      "lines": 86,
+      "sha1": "086a4f4f292e"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/providers/hf-local.ts": {
+      "lines": 306,
+      "sha1": "4b510722c6d1"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/providers/openai.ts": {
+      "lines": 320,
+      "sha1": "7b3deec1ff0c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.ts": {
+      "lines": 339,
+      "sha1": "be4f11540a31"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/normalization.ts": {
+      "lines": 246,
+      "sha1": "62fc347efe36"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.test.ts": {
+      "lines": 154,
+      "sha1": "eccfa826418c"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.ts": {
+      "lines": 45,
+      "sha1": "43d427afa1cc"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/scoring/folder-scoring.ts": {
+      "lines": 352,
+      "sha1": "5f631989e1df"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/types.ts": {
+      "lines": 507,
+      "sha1": "135bd9097e54"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/utils/path-security.ts": {
+      "lines": 107,
+      "sha1": "f4607bf95aea"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/utils/retry.ts": {
+      "lines": 399,
+      "sha1": "3340dba88b33"
+    },
+    "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/utils/token-estimate.ts": {
+      "lines": 14,
+      "sha1": "8140fc7c0822"
+    }
+  },
+  "pattern_counts": {
+    "as_any": 24,
+    "any_type": 223,
+    "empty_catch": 8,
+    "ts_ignore": 1,
+    "todo": 21,
+    "fixme": 1
+  },
+  "matches": {
+    "as_any": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 17,
+        "match": "as any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 25,
+        "match": "as any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 33,
+        "match": "as any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 40,
+        "match": "as any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 51,
+        "match": "as any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 52,
+        "match": "as any"
+      }
+    ],
+    "any_type": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts",
+        "line": 416,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts",
+        "line": 122,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts",
+        "line": 125,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts",
+        "line": 95,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts",
+        "line": 365,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/tier-classifier.ts",
+        "line": 16,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/tier-classifier.ts",
+        "line": 353,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/tier-classifier.ts",
+        "line": 445,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/errors/recovery-hints.ts",
+        "line": 208,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-logger.ts",
+        "line": 73,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-metrics.ts",
+        "line": 297,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-metrics.ts",
+        "line": 492,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/content-normalizer.ts",
+        "line": 87,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts",
+        "line": 642,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts",
+        "line": 107,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts",
+        "line": 17,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/interference-scoring.ts",
+        "line": 237,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/negative-feedback.ts",
+        "line": 19,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/anchor-metadata.ts",
+        "line": 22,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/anchor-metadata.ts",
+        "line": 163,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts",
+        "line": 67,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-representation.ts",
+        "line": 47,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-representation.ts",
+        "line": 121,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/embedding-expansion.ts",
+        "line": 157,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/evidence-gap-detector.ts",
+        "line": 16,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/evidence-gap-detector.ts",
+        "line": 97,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/evidence-gap-detector.ts",
+        "line": 135,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/feedback-denylist.ts",
+        "line": 34,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts",
+        "line": 56,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts",
+        "line": 437,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/folder-discovery.ts",
+        "line": 834,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts",
+        "line": 386,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/local-reranker.ts",
+        "line": 5,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts",
+        "line": 647,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+        "line": 250,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+        "line": 285,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts",
+        "line": 362,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts",
+        "line": 28,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts",
+        "line": 61,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts",
+        "line": 235,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts",
+        "line": 49,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts",
+        "line": 339,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/types.ts",
+        "line": 368,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts",
+        "line": 74,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts",
+        "line": 135,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts",
+        "line": 145,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts",
+        "line": 7,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/validation-metadata.ts",
+        "line": 46,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/validation-metadata.ts",
+        "line": 117,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+        "line": 720,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+        "line": 1150,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts",
+        "line": 196,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts",
+        "line": 596,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts",
+        "line": 692,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts",
+        "line": 906,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/reconsolidation.ts",
+        "line": 519,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/scoring-observability.ts",
+        "line": 69,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/scoring-observability.ts",
+        "line": 115,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/scoring-observability.ts",
+        "line": 160,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts",
+        "line": 334,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/validation/save-quality-gate.ts",
+        "line": 550,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts",
+        "line": 523,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts",
+        "line": 46,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/attention-decay.vitest.ts",
+        "line": 420,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts",
+        "line": 110,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/cognitive-gaps.vitest.ts",
+        "line": 475,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-hash-dedup.vitest.ts",
+        "line": 211,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/embedding-cache.vitest.ts",
+        "line": 81,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/embedding-expansion.vitest.ts",
+        "line": 52,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/entity-extractor.vitest.ts",
+        "line": 201,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/eval-metrics.vitest.ts",
+        "line": 515,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-discovery-integration.vitest.ts",
+        "line": 497,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-discovery.vitest.ts",
+        "line": 53,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/folder-discovery.vitest.ts",
+        "line": 54,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-context.vitest.ts",
+        "line": 13,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-triggers.vitest.ts",
+        "line": 247,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts",
+        "line": 132,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts",
+        "line": 227,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts",
+        "line": 387,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/index-refresh.vitest.ts",
+        "line": 13,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/index-refresh.vitest.ts",
+        "line": 14,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/index-refresh.vitest.ts",
+        "line": 94,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/learned-feedback.vitest.ts",
+        "line": 269,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/learned-feedback.vitest.ts",
+        "line": 410,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/learned-feedback.vitest.ts",
+        "line": 519,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts",
+        "line": 468,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts",
+        "line": 535,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts",
+        "line": 822,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 17,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 25,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts",
+        "line": 33,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-parser.vitest.ts",
+        "line": 342,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts",
+        "line": 27,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 40,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 51,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-search-quality-filter.vitest.ts",
+        "line": 52,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts",
+        "line": 426,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts",
+        "line": 427,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts",
+        "line": 472,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts",
+        "line": 231,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/query-router.vitest.ts",
+        "line": 315,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/recovery-hints.vitest.ts",
+        "line": 229,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/recovery-hints.vitest.ts",
+        "line": 489,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/recovery-hints.vitest.ts",
+        "line": 496,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-directives.vitest.ts",
+        "line": 355,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-directives.vitest.ts",
+        "line": 377,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts",
+        "line": 68,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts",
+        "line": 39,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/unit-rrf-fusion.vitest.ts",
+        "line": 151,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/validation-metadata.vitest.ts",
+        "line": 292,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/batch-processor.ts",
+        "line": 113,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/utils/batch-processor.ts",
+        "line": 124,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings.ts",
+        "line": 321,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/embeddings/factory.ts",
+        "line": 301,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/scoring/folder-scoring.ts",
+        "line": 17,
+        "match": "any"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/shared/scoring/folder-scoring.ts",
+        "line": 199,
+        "match": "any"
+      }
+    ],
+    "empty_catch": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts",
+        "line": 552,
+        "match": "catch (_e: unknown) {\n      }"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts",
+        "line": 790,
+        "match": "catch (_e: unknown) {\n    }"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-extended.vitest.ts",
+        "line": 745,
+        "match": "catch (_cleanupError: unknown) {}"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts",
+        "line": 65,
+        "match": "catch (_: unknown) {}"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts",
+        "line": 66,
+        "match": "catch (_: unknown) {}"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager-extended.vitest.ts",
+        "line": 93,
+        "match": "catch (_: unknown) {}"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/vector-index-impl.vitest.ts",
+        "line": 59,
+        "match": "catch (_: unknown) {}"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/vector-index-impl.vitest.ts",
+        "line": 64,
+        "match": "catch (_: unknown) {}"
+      }
+    ],
+    "ts_ignore": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/attention-decay.vitest.ts",
+        "line": 64,
+        "match": "@ts-ignore"
+      }
+    ],
+    "todo": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/config/memory-types.ts",
+        "line": 151,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/config/memory-types.ts",
+        "line": 209,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/parsing/content-normalizer.ts",
+        "line": 63,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts",
+        "line": 403,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/scoring/composite-scoring.ts",
+        "line": 425,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/artifact-routing.ts",
+        "line": 166,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/feedback-denylist.ts",
+        "line": 68,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/local-reranker.ts",
+        "line": 8,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/channel.vitest.ts",
+        "line": 6,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-normalizer.vitest.ts",
+        "line": 388,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-normalizer.vitest.ts",
+        "line": 389,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-normalizer.vitest.ts",
+        "line": 452,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts",
+        "line": 303,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts",
+        "line": 524,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-types.vitest.ts",
+        "line": 105,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/memory-types.vitest.ts",
+        "line": 159,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager.vitest.ts",
+        "line": 108,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/session-manager.vitest.ts",
+        "line": 171,
+        "match": "TODO"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-config-extended.vitest.ts",
+        "line": 822,
+        "match": "todo"
+      },
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/trigger-config-extended.vitest.ts",
+        "line": 824,
+        "match": "todo"
+      }
+    ],
+    "fixme": [
+      {
+        "file": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/feedback-denylist.ts",
+        "line": 68,
+        "match": "fixme"
+      }
+    ]
+  }
+}

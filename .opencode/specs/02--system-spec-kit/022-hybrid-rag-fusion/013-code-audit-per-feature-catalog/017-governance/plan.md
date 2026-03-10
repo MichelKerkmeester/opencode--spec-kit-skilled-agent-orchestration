@@ -1,47 +1,189 @@
-# Phase 017-governance — Governance — Audit Plan
+---
+title: "Implementation Plan: governance [template:level_2/plan.md]"
+description: "Governance feature audit plan covering catalog inventory, code review, test coverage checks, and playbook cross-reference."
+trigger_phrases:
+  - "governance"
+  - "implementation"
+  - "plan"
+  - "feature"
+  - "flag"
+  - "sunset"
+  - "audit"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: governance
 
-## Methodology
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Step 1: Feature Inventory
-- Read all 2 feature .md files in `feature_catalog/17--governance/`
-- Extract source file lists (Implementation + Tests)
-- Map features to manual test playbook scenarios (NEW-095+)
+---
 
-### Step 2: Code Review Per Feature
-For each feature's source files:
-- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
-- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
-- **Behavior:** Does code match the "Current Reality" description in the catalog?
-- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Step 3: Test Coverage Assessment
-- Verify tests exist for all listed test files
-- Verify tests cover the described behavior
-- Identify gaps between described functionality and test assertions
+### Technical Context
 
-### Step 4: Manual Test Playbook Cross-Reference
-- Find matching scenarios: NEW-095+
-- Note features with NO manual test scenario (gap)
-- Note if scenario adequately covers described feature
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript + Markdown audit artifacts |
+| **Framework** | Spec Kit Memory MCP feature-catalog workflow |
+| **Storage** | Repository source files and spec documents |
+| **Testing** | Existing Vitest coverage + manual playbook mapping (NEW-095+) |
 
-### Step 5: Findings Report
-Per feature, produce structured findings:
-- Status: PASS | WARN | FAIL
-- Code Issues
-- Standards Violations
-- Behavior Mismatch
-- Test Gaps
-- Playbook Coverage
-- Recommended Fixes
+### Overview
+This plan executes a feature-centric governance audit for two cataloged capabilities: feature flag governance and feature flag sunset audit. The approach inventories feature definitions, validates implementation and tests, then records structured findings with explicit playbook coverage mapping.
+<!-- /ANCHOR:summary -->
 
-## sk-code--opencode Checklist (per file)
+---
 
-- [ ] Naming: camelCase functions, PascalCase types/interfaces
-- [ ] Imports: explicit, no barrel re-exports of side-effect modules
-- [ ] Types: strict TypeScript, no `any` without justification
-- [ ] Error handling: typed errors, no swallowed catches
-- [ ] Null safety: optional chaining, nullish coalescing
-- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [ ] Functions: single responsibility, < 50 lines preferred
-- [ ] Comments: only where logic is non-obvious
-- [ ] Exports: explicit named exports
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Catalog-driven audit workflow
+
+### Key Components
+- **Feature Catalog (`feature_catalog/17--governance/`)**: Defines audited governance features and expected behavior.
+- **Implementation Source (`mcp_server/lib/search/search-flags.ts`)**: Provides current runtime behavior for governance flags.
+- **Verification Artifacts (`spec.md`, `tasks.md`, `checklist.md`)**: Capture outcomes, traceability, and completion evidence.
+
+### Data Flow
+Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-095+ playbook mapping.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Feature inventory captured from governance catalog
+- [x] Source file and test file references extracted
+- [x] Manual playbook target (NEW-095+) identified
+
+### Phase 2: Core Implementation
+- [x] Correctness and standards review completed per feature
+- [x] Behavior parity checked against "Current Reality" entries
+- [x] Test coverage assessed and gaps recorded
+
+### Phase 3: Verification
+- [x] Findings report produced for each feature
+- [x] PASS/WARN/FAIL status assigned
+- [x] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | Existing governance-related helper behavior | Vitest (existing suite) |
+| Integration | Feature-to-code and feature-to-test mapping validation | Manual source review |
+| Manual | Playbook cross-reference and findings verification | NEW-095+ scenario set |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `feature_catalog/17--governance/` | Internal | Green | Cannot define feature audit scope |
+| `mcp_server/lib/search/search-flags.ts` | Internal | Green | Cannot validate feature behavior |
+| Governance test references | Internal | Green | Cannot confirm coverage claims |
+| Playbook scenario `NEW-095+` | Internal | Green | Cannot complete manual coverage mapping |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Rewritten docs lose audit content fidelity or template conformance regresses.
+- **Procedure**: Restore prior markdown revisions from git history and re-apply mapping with verified section alignment.
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 15-30 minutes |
+| Core Implementation | Low | 30-60 minutes |
+| Verification | Low | 15-30 minutes |
+| **Total** | | **1-2 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [x] Backup created (if data changes)
+- [x] Feature flag configured
+- [x] Monitoring alerts set
+
+### Rollback Procedure
+1. Revert rewritten spec documents to previous commit state.
+2. Reconfirm preserved governance findings in checklist.md.
+3. Re-run document structure verification against Level 2 anchors.
+4. Notify reviewers that rollback was performed.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->
