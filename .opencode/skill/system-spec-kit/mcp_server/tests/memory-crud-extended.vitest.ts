@@ -1319,7 +1319,7 @@ describe('handleMemoryHealth - Happy Path', () => {
     const refreshSpy = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => undefined as never);
 
     try {
-      const result = await handler.handleMemoryHealth({ autoRepair: true });
+      const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
       const parsed = parseResponse(result);
 
       expect(execMock).toHaveBeenCalledTimes(1);

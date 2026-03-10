@@ -1127,19 +1127,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }, null, 2)
   };
 
-  if (filterStats.qualityScore < 20) {
-    const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
-    files[ctxFilename] = warningHeader + files[ctxFilename];
-    log(`   Warning: Low quality session (${filterStats.qualityScore}/100) - warning header added`);
-  }
-
   const isSimulation: boolean = !collectedData || !!collectedData._isSimulation || simFactory.requiresSimulation(collectedData);
-  if (isSimulation) {
-    const simWarning = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
-    files[ctxFilename] = simWarning + files[ctxFilename];
-    log('   Warning: Simulation mode: placeholder content warning added');
-  }
-
   log(`   Template populated (quality: ${filterStats.qualityScore}/100)\n`);
 
   // Step 8.5: Content cleaning — strip leaked HTML tags from rendered content
@@ -1179,6 +1167,18 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     decisionCount: decisions.DECISIONS.length,
   });
   files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.qualityScore, qualityV2.qualityFlags);
+
+  if (filterStats.qualityScore < 20) {
+    const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
+    files[ctxFilename] = warningHeader + files[ctxFilename];
+    log(`   Warning: Low quality session (${filterStats.qualityScore}/100) - warning header added`);
+  }
+
+  if (isSimulation) {
+    const simWarning = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
+    files[ctxFilename] = simWarning + files[ctxFilename];
+    log('   Warning: Simulation mode: placeholder content warning added');
+  }
 
   if (!qualityValidation.valid) {
     warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);

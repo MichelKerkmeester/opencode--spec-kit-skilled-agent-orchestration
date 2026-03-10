@@ -3,19 +3,25 @@
 // ---------------------------------------------------------------
 
 import fs from 'fs/promises';
-import { DB_UPDATED_FILE } from './config';
+import { resolveDatabasePaths } from './config';
 import type { DatabaseExtended } from '@spec-kit/shared/types';
+import type { GraphSearchFn } from '../lib/search/search-types';
 
 /* ---------------------------------------------------------------
    1. TYPES
    --------------------------------------------------------------- */
 
 /** Minimal vector index interface for database operations */
+type VectorSearchFn = (
+  embedding: Float32Array | number[],
+  options: Record<string, unknown>
+) => Array<Record<string, unknown>>;
+
 export interface VectorIndexLike {
   initializeDb(): void;
   getDb(): DatabaseLike | null;
   closeDb?(): void;
-  vectorSearch?: unknown;
+  vectorSearch?: VectorSearchFn;
 }
 
 /** Canonical DB type shared across MCP runtime modules */
@@ -33,7 +39,7 @@ export interface AccessTrackerLike {
 
 /** Hybrid search module interface */
 export interface HybridSearchLike {
-  init(database: DatabaseLike, vectorSearch: unknown, graphSearch?: unknown): void;
+  init(database: DatabaseLike, vectorSearch: VectorSearchFn | undefined, graphSearch?: GraphSearchFn | null): void;
 }
 
 /** Session manager module interface */
@@ -54,7 +60,7 @@ export interface DbStateDeps {
   hybridSearch?: HybridSearchLike;
   sessionManager?: SessionManagerLike;
   incrementalIndex?: IncrementalIndexLike;
-  graphSearchFn?: unknown;
+  graphSearchFn?: GraphSearchFn | null;
 }
 
 /* ---------------------------------------------------------------
@@ -78,7 +84,11 @@ let accessTracker: AccessTrackerLike | null = null;
 let hybridSearch: HybridSearchLike | null = null;
 let sessionManagerRef: SessionManagerLike | null = null;
 let incrementalIndexRef: IncrementalIndexLike | null = null;
-let graphSearchFnRef: unknown = undefined;
+let graphSearchFnRef: GraphSearchFn | null | undefined = undefined;
+
+function getDbUpdatedFilePath(): string {
+  return resolveDatabasePaths().dbUpdatedFile;
+}
 
 /** Initialize db-state with module dependencies for database lifecycle management. */
 export function init(deps: DbStateDeps): void {
@@ -102,7 +112,7 @@ export function init(deps: DbStateDeps): void {
 /** Check if the database was updated externally and reinitialize if needed. */
 export async function checkDatabaseUpdated(): Promise<boolean> {
   try {
-    const updateTimeRaw = await fs.readFile(DB_UPDATED_FILE, 'utf8');
+    const updateTimeRaw = await fs.readFile(getDbUpdatedFilePath(), 'utf8');
     const updateTime = Number.parseInt(updateTimeRaw, 10);
     if (!Number.isFinite(updateTime)) {
       return false;
@@ -157,7 +167,12 @@ export async function reinitializeDatabase(): Promise<void> {
     if (database) {
       if (checkpoints) checkpoints.init(database);
       if (accessTracker) accessTracker.init(database);
-      if (hybridSearch) hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef);
+      if (hybridSearch) {
+        if (!graphSearchFnRef && process.env.SPECKIT_GRAPH_UNIFIED !== 'false') {
+          console.warn('[db-state] hybridSearch reinit missing graphSearchFn; graph retrieval channel is disabled');
+        }
+        hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef ?? null);
+      }
       // P4-12, P4-19 FIX: Refresh stale DB handles in session-manager and incremental-index
       if (sessionManagerRef) sessionManagerRef.init(database as DatabaseLike);
       if (incrementalIndexRef) incrementalIndexRef.init(database as DatabaseLike);

@@ -121,15 +121,18 @@ function runShadowRetrieval(queries: string[], candidateFiles: string[]): Retrie
     const scored = candidateFiles
       .map((filePath) => {
         const content = fs.readFileSync(filePath, 'utf-8');
+        const score = scoreContent(query, content);
         return {
           filePath,
-          score: scoreContent(query, content),
+          score,
+          relevant: score > 0,
         };
       })
       .sort((left, right) => right.score - left.score || left.filePath.localeCompare(right.filePath));
 
     const top5 = scored.slice(0, 5).map((entry) => path.relative(WORKSPACE_ROOT, entry.filePath));
-    const reciprocalRank = scored.length > 0 && scored[0].score > 0 ? 1 : 0;
+    const rank = scored.findIndex((entry) => entry.relevant) + 1;
+    const reciprocalRank = rank > 0 ? 1 / rank : 0;
     entries.push({ query, top5, reciprocalRank });
   }
 
@@ -206,9 +209,9 @@ function buildResultsMarkdown(params: {
   archivedRows: number;
   archiveUpdateSkipped: boolean;
 }): string {
-  const mrrRatio = params.baseline.averageReciprocalRank === 0
-    ? 1
-    : params.after.averageReciprocalRank / params.baseline.averageReciprocalRank;
+  const mrrRatio = params.baseline.averageReciprocalRank > 0
+    ? params.after.averageReciprocalRank / params.baseline.averageReciprocalRank
+    : undefined;
 
   return [
     '# Quality Legacy Remediation Results (TQ040-TQ047)',
@@ -222,8 +225,8 @@ function buildResultsMarkdown(params: {
     '## Shadow Retrieval Comparison',
     `- Baseline average reciprocal rank: ${params.baseline.averageReciprocalRank.toFixed(4)}`,
     `- Post-remediation average reciprocal rank: ${params.after.averageReciprocalRank.toFixed(4)}`,
-    `- MRR ratio (after/before): ${mrrRatio.toFixed(4)}`,
-    `- Gate check (>=0.98): ${mrrRatio >= 0.98 ? 'PASS' : 'FAIL'}`,
+    `- MRR ratio (after/before): ${mrrRatio === undefined ? 'N/A (baseline is 0)' : mrrRatio.toFixed(4)}`,
+    `- Gate check (>=0.98): ${mrrRatio !== undefined && mrrRatio >= 0.98 ? 'PASS' : 'FAIL'}`,
     '',
     '## Archive Tier Handling',
     params.archiveUpdateSkipped

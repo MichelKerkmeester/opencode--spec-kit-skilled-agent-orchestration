@@ -39,8 +39,13 @@ interface RankedSearchResult extends Record<string, unknown> {
   id: number;
   score?: number;
   rrfScore?: number;
+  intentAdjustedScore?: number;
+  attentionScore?: number;
   similarity?: number;
   sessionBoost?: number;
+  baseScore?: number;
+  causalBoost?: number;
+  injectedByCausalBoost?: boolean;
 }
 
 interface CausalBoostMetadata {
@@ -73,6 +78,24 @@ function resolveBaseScore(result: RankedSearchResult): number {
   if (typeof result.rrfScore === 'number' && Number.isFinite(result.rrfScore)) return result.rrfScore;
   if (typeof result.similarity === 'number' && Number.isFinite(result.similarity)) return result.similarity / 100;
   return 0;
+}
+
+function buildPipelineRow(
+  row: RankedSearchResult,
+  baseScore: number,
+  causalBoost: number
+): RankedSearchResult {
+  const score = baseScore * (1 + causalBoost);
+  return {
+    ...row,
+    score,
+    rrfScore: score,
+    intentAdjustedScore: score,
+    attentionScore: score,
+    causalBoost,
+    baseScore,
+    injectedByCausalBoost: true,
+  };
 }
 
 /**
@@ -262,13 +285,7 @@ function applyCausalBoost(results: RankedSearchResult[]): { results: RankedSearc
   const injectedRows = fetchNeighborRows(injectIds).map((row) => {
     const causalBoost = neighborBoosts.get(row.id) ?? 0;
     const baseScore = lowestScore * 0.5;
-    return {
-      ...row,
-      score: baseScore * (1 + causalBoost),
-      causalBoost,
-      baseScore,
-      injectedByCausalBoost: true,
-    };
+    return buildPipelineRow(row, baseScore, causalBoost);
   });
 
   metadata.injectedCount = injectedRows.length;

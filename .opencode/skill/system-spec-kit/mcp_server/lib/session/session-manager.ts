@@ -338,7 +338,11 @@ function shouldSendMemory(sessionId: string, memory: MemoryInput | number): bool
   }
 }
 
-function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Map<number, boolean> {
+function shouldSendMemoriesBatch(
+  sessionId: string,
+  memories: MemoryInput[],
+  markAsSent: boolean = false
+): Map<number, boolean> {
   const result = new Map<number, boolean>();
 
   if (!SESSION_CONFIG.enabled || !sessionId || !Array.isArray(memories)) {
@@ -362,22 +366,61 @@ function shouldSendMemoriesBatch(sessionId: string, memories: MemoryInput[]): Ma
   }
 
   try {
+    const now = new Date().toISOString();
     const existingStmt = db.prepare(`
       SELECT memory_hash FROM session_sent_memories WHERE session_id = ?
     `);
-    const existingRows = existingStmt.all(sessionId) as { memory_hash: string }[];
-    const existingHashes = new Set(existingRows.map((r) => r.memory_hash));
+    const insertStmt = db.prepare(`
+      INSERT OR IGNORE INTO session_sent_memories (session_id, memory_hash, memory_id, sent_at)
+      VALUES (?, ?, ?, ?)
+    `);
 
-    for (const memory of memories) {
-      const hash = generateMemoryHash(memory);
-      const shouldSend = !existingHashes.has(hash);
-      if (shouldSend) {
-        existingHashes.add(hash);
+    const evaluateBatch = () => {
+      const existingRows = existingStmt.all(sessionId) as { memory_hash: string }[];
+      const existingHashes = new Set(existingRows.map((r) => r.memory_hash));
+
+      for (const memory of memories) {
+        const hash = generateMemoryHash(memory);
+        let shouldSend = !existingHashes.has(hash);
+        if (shouldSend && markAsSent) {
+          const insertResult = insertStmt.run(sessionId, hash, memory.id || null, now);
+          shouldSend = insertResult.changes > 0;
+        }
+        if (shouldSend) {
+          existingHashes.add(hash);
+        }
+        // AI-GUARD: Preserve first-occurrence decision for the same memory ID — prevents double-counting.
+        if (memory.id != null && !result.has(memory.id)) {
+          result.set(memory.id, shouldSend);
+        }
       }
-      // AI-GUARD: Preserve first-occurrence decision for the same memory ID — prevents double-counting.
-      if (memory.id != null && !result.has(memory.id)) {
-        result.set(memory.id, shouldSend);
+
+      if (markAsSent) {
+        // AI-WHY: check + mark + cap enforcement stay in one transaction to avoid duplicate injection races.
+        enforceEntryLimit(sessionId);
       }
+    };
+
+    if (markAsSent) {
+      const inTransaction = (db as unknown as { inTransaction?: boolean }).inTransaction === true;
+      if (inTransaction) {
+        evaluateBatch();
+      } else {
+        db.exec('BEGIN IMMEDIATE');
+        try {
+          evaluateBatch();
+          db.exec('COMMIT');
+        } catch (transactionError: unknown) {
+          try {
+            db.exec('ROLLBACK');
+          } catch {
+            // Ignore rollback errors after failed transaction.
+          }
+          throw transactionError;
+        }
+      }
+    } else {
+      evaluateBatch();
     }
 
     return result;
@@ -666,7 +709,8 @@ function filterSearchResults(sessionId: string, results: MemoryInput[]): FilterR
     };
   }
 
-  const shouldSendMap = shouldSendMemoriesBatch(sessionId, results);
+  // AI-WHY: Reserve unsent hashes while filtering so concurrent searches cannot both inject.
+  const shouldSendMap = shouldSendMemoriesBatch(sessionId, results, true);
   const seenBatchHashes = new Set<string>();
   const filtered = results.filter((r) => {
     if (r.id != null && shouldSendMap.get(r.id) === false) {

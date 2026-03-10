@@ -552,6 +552,9 @@ async function reassembleParentRow(
       return markFallback(bestChunk);
     }
 
+    const reassembledContent =
+      (parentRow.content_text as string | undefined) ?? bestChunk.content;
+
     // Merge parent metadata onto the best-chunk base row
     const reassembled: PipelineRow = {
       ...bestChunk,
@@ -563,8 +566,7 @@ async function reassembleParentRow(
       quality_score: (parentRow.quality_score as number | undefined) ?? bestChunk.quality_score,
       created_at: (parentRow.created_at as string | undefined) ?? bestChunk.created_at,
       context_type: (parentRow.context_type as string | undefined) ?? bestChunk.context_type,
-      // Use parent content if available; otherwise keep best-chunk content
-      content: (parentRow.content_text as string | undefined) ?? bestChunk.content,
+      precomputedContent: reassembledContent,
       contentSource: 'reassembled_chunks',
       // Clear chunk-specific fields on the reassembled parent
       parent_id: null,
@@ -596,17 +598,25 @@ async function reassembleParentRow(
  * @returns A new PipelineRow annotated as a fallback parent representation.
  */
 function markFallback(chunk: PipelineRow): PipelineRow {
+  const parentId =
+    chunk.parent_id ??
+    chunk.parentId ??
+    (chunk as { parentMemoryId?: number | null }).parentMemoryId ??
+    chunk.id;
+
   return {
     ...chunk,
+    id: parentId,
     contentSource: 'file_read_fallback',
     // Promote chunk to parent-level identity by clearing chunk markers
     parent_id: null,
     parentId: null,
-    chunk_index: null,
-    chunkIndex: null,
+    chunk_index: undefined,
+    chunkIndex: undefined,
     chunk_label: null,
     chunkLabel: null,
     isChunk: false,
+    is_chunk: false,
   };
 }
 

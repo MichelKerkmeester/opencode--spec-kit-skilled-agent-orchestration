@@ -52,7 +52,7 @@ export function checkContentHashDedup(
       WHERE spec_folder = ?
         AND content_hash = ?
         AND parent_id IS NULL
-        AND embedding_status != 'pending'
+        AND embedding_status IN ('complete', 'pending', 'success')
       ORDER BY id DESC
       LIMIT 1
     `).get(parsed.specFolder, parsed.contentHash) as { id: number; file_path: string; title: string | null } | undefined;

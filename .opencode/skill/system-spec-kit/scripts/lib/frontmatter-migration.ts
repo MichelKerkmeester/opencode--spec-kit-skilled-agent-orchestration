@@ -382,22 +382,31 @@ export function detectFrontmatter(content: string): FrontmatterDetection {
     return { found: false, malformed: false, start: -1, end: -1, sections: [], rawBlock: '' };
   }
 
+  const noFrontmatterResult: FrontmatterDetection = {
+    found: false,
+    malformed: false,
+    start: -1,
+    end: -1,
+    sections: [],
+    rawBlock: '',
+  };
+
   const closingRegex = /^---\s*$/gm;
   closingRegex.lastIndex = firstLineEnd + 1;
   const closingMatch = closingRegex.exec(content);
   if (!closingMatch) {
-    return {
-      found: false,
-      malformed: true,
-      reason: 'Frontmatter opening delimiter found without closing delimiter',
-      start: -1,
-      end: -1,
-      sections: [],
-      rawBlock: '',
-    };
+    return noFrontmatterResult;
   }
 
   const blockStart = firstLineEnd + 1;
+  const openingBlockLineCount = content
+    .slice(blockStart, closingMatch.index)
+    .replace(/\r/g, '')
+    .split('\n').length;
+  if (openingBlockLineCount > 50) {
+    return noFrontmatterResult;
+  }
+
   const blockEnd = closingMatch.index;
   const rawBlock = content.slice(blockStart, blockEnd);
 

@@ -442,8 +442,21 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const requestedSessionId = typeof session_id === 'string' && session_id.trim().length > 0
     ? session_id.trim()
     : null;
-  const effectiveSessionId = requestedSessionId ?? randomUUID();
   const resumedSession = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
+  // AI-SEC: No caller identity metadata is available in this handler, so session ownership
+  // cannot be verified yet. Guard by requiring caller-supplied sessionId to already exist.
+  if (requestedSessionId && !resumedSession) {
+    return createMCPErrorResponse({
+      tool: 'memory_context',
+      error: 'Unauthorized: session is not accessible in current context',
+      code: 'E_UNAUTHORIZED',
+      details: { requestId, layer: 'L1:Orchestration' },
+      recovery: {
+        hint: 'Omit sessionId to start a new ephemeral session'
+      }
+    });
+  }
+  const effectiveSessionId = requestedSessionId ?? randomUUID();
   const eventCounterStart = resumedSession && requestedSessionId
     ? workingMemory.getSessionEventCounter(requestedSessionId)
     : 0;

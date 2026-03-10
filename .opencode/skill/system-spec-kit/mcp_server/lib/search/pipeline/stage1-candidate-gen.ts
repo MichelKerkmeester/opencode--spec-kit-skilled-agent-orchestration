@@ -90,6 +90,39 @@ function filterByMinQualityScore(
   });
 }
 
+function applyArchiveFilter(
+  results: PipelineRow[],
+  includeArchived: boolean
+): PipelineRow[] {
+  if (includeArchived) return results;
+  return results.filter((row) => {
+    const archived = row.is_archived ?? row.isArchived;
+    if (archived == null) return true;
+    if (typeof archived === 'number') return archived === 0;
+    if (typeof archived === 'boolean') return archived === false;
+    return true;
+  });
+}
+
+function applyFolderFilter(
+  results: PipelineRow[],
+  specFolder?: string
+): PipelineRow[] {
+  if (!specFolder) return results;
+  return results.filter((row) => {
+    const rowSpecFolder = row.spec_folder ?? row.specFolder;
+    return rowSpecFolder === specFolder;
+  });
+}
+
+function applyTierFilter(
+  results: PipelineRow[],
+  tier?: string
+): PipelineRow[] {
+  if (!tier) return results;
+  return results.filter((row) => row.importance_tier === tier);
+}
+
 /**
  * Resolve the effective context type from a pipeline row.
  *
@@ -534,7 +567,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               if (!existingIds.has(sr.memoryId)) {
                 // Fetch full memory row for the summary match
                 const memRow = db.prepare(
-                  'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at FROM memory_index WHERE id = ?'
+                  'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived FROM memory_index WHERE id = ?'
                 ).get(sr.memoryId) as PipelineRow | undefined;
 
                 if (memRow) {
@@ -548,8 +581,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               }
             }
 
+            const archiveFilteredSummaryHits = applyArchiveFilter(newSummaryHits, includeArchived);
+            const folderFilteredSummaryHits = applyFolderFilter(archiveFilteredSummaryHits, specFolder);
+            const tierFilteredSummaryHits = applyTierFilter(folderFilteredSummaryHits, tier);
+
             // Apply the same quality threshold that other candidates go through
-            const filteredSummaryHits = filterByMinQualityScore(newSummaryHits, qualityThreshold);
+            const filteredSummaryHits = filterByMinQualityScore(tierFilteredSummaryHits, qualityThreshold);
 
             if (filteredSummaryHits.length > 0) {
               candidates = [...candidates, ...filteredSummaryHits];

@@ -95,8 +95,19 @@ function loadAllowlist(): Allowlist {
 
 function parseIsoDate(dateText: string): Date | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateText)) return null;
+  const year = Number(dateText.slice(0, 4));
+  const month = Number(dateText.slice(5, 7));
+  const day = Number(dateText.slice(8, 10));
   const parsed = new Date(`${dateText}T00:00:00Z`);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+  if (Number.isNaN(parsed.getTime())) return null;
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() !== month - 1 ||
+    parsed.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return parsed;
 }
 
 function toUtcStartOfDay(date: Date): number {

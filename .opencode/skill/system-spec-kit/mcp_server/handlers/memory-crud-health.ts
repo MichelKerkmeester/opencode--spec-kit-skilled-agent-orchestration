@@ -211,6 +211,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     limit: rawLimit = DEFAULT_DIVERGENT_ALIAS_LIMIT,
     specFolder,
     autoRepair = false,
+    confirmed = false,
   } = args ?? {};
 
   if (reportMode !== 'full' && reportMode !== DIVERGENT_ALIAS_REPORT_MODE) {
@@ -221,6 +222,9 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   }
   if (typeof autoRepair !== 'boolean') {
     throw new Error('autoRepair must be a boolean');
+  }
+  if (typeof confirmed !== 'boolean') {
+    throw new Error('confirmed must be a boolean');
   }
   if (rawLimit !== undefined && (!Number.isFinite(rawLimit) || rawLimit <= 0)) {
     throw new Error('limit must be a positive number');
@@ -336,6 +340,29 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   const providerName = profile?.provider ?? providerMetadata.provider;
   const providerModel = profile?.model ?? providerMetadata.model ?? embeddings.getModelName();
   const providerDimension = profile?.dim ?? providerMetadata.dim ?? embeddings.getEmbeddingDimension();
+  const repairActions = [
+    'fts_rebuild',
+    'trigger_cache_refresh',
+    'orphan_edges_cleanup',
+  ];
+
+  if (autoRepair && !confirmed) {
+    return createMCPSuccessResponse({
+      tool: 'memory_health',
+      summary: 'Confirmation required before auto-repair actions are executed',
+      data: {
+        status,
+        reportMode,
+        autoRepairRequested: true,
+        needsConfirmation: true,
+        actions: repairActions,
+      },
+      hints: [
+        'Re-run memory_health with autoRepair:true and confirmed:true to execute repair actions.',
+      ],
+      startTime,
+    });
+  }
 
   if (!isEmbeddingModelReady()) {
     hints.push('Embedding model not ready - some operations may fail');

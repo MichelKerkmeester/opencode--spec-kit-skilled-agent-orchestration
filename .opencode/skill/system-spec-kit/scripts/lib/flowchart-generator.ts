@@ -350,7 +350,11 @@ function classifyDiagramPattern(asciiArt: string): DiagramClassification {
   let pattern: DiagramPatternName = DIAGRAM_PATTERNS.UNKNOWN;
 
   const hasDecisionDiamond: boolean = asciiArt.includes('\u2571') && asciiArt.includes('\u2572');
-  const hasParallelBlock: boolean = art.includes('parallel') || asciiArt.includes('\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500');
+  const hasBranchConnector: boolean = asciiArt.includes('\u252C') || asciiArt.includes('\u253C');
+  const hasMultipleBranchArrows: boolean = asciiArt
+    .split('\n')
+    .some((line) => ((line.match(/\u25BC/g) || []).length > 1));
+  const hasParallelBlock: boolean = art.includes('parallel') || (hasBranchConnector && hasMultipleBranchArrows);
   const hasApprovalGate: boolean = asciiArt.includes('\u2554\u2550') || art.includes('approval') || art.includes('gate');
   // AI-FIX: F-24 — └ and ┘ are standard box-drawing characters used in any boxed
   // diagram. Requiring both misclassifies most diagrams as loops. Instead, only

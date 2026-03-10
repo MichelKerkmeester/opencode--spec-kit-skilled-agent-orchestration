@@ -481,7 +481,13 @@ export function runConsolidationCycleIfEnabled(
 ): ConsolidationResult | null {
   if (!isConsolidationEnabled()) return null;
 
+  let beganImmediate = false;
   try {
+    if (!database.inTransaction) {
+      database.exec('BEGIN IMMEDIATE');
+      beganImmediate = true;
+    }
+
     (database.prepare(`
       CREATE TABLE IF NOT EXISTS consolidation_state (
         id INTEGER PRIMARY KEY CHECK(id = 1),
@@ -504,6 +510,10 @@ export function runConsolidationCycleIfEnabled(
       };
 
       if (due.is_due !== 1) {
+        if (beganImmediate) {
+          database.exec('COMMIT');
+          beganImmediate = false;
+        }
         return null;
       }
     }
@@ -516,8 +526,20 @@ export function runConsolidationCycleIfEnabled(
       ON CONFLICT(id) DO UPDATE SET last_run_at = datetime('now')
     `) as Database.Statement).run();
 
+    if (beganImmediate) {
+      database.exec('COMMIT');
+      beganImmediate = false;
+    }
+
     return result;
   } catch (err: unknown) {
+    if (beganImmediate) {
+      try {
+        database.exec('ROLLBACK');
+      } catch {
+        // Ignore rollback errors after failed BEGIN/COMMIT paths.
+      }
+    }
     // AI-GUARD: Fail-closed: broken bookkeeping must not cause unbounded cycle runs
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[consolidation] cadence bookkeeping error:', message);

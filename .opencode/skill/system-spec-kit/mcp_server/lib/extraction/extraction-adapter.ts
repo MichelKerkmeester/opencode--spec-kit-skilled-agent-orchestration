@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 import type Database from 'better-sqlite3';
+import path from 'path';
 import * as workingMemory from '../cache/cognitive/working-memory';
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 import { applyRedactionGate } from './redaction-gate';
@@ -196,8 +197,9 @@ function resolveMemoryIdFromText(sourceText: string): number | null {
 
   const pathMatch = sourceText.match(/[A-Za-z0-9_./-]*spec\.md/);
   if (pathMatch && pathMatch[0].length > 0) {
-    const row = (db.prepare('SELECT id FROM memory_index WHERE file_path LIKE ? LIMIT 1') as Database.Statement)
-      .get(`%${pathMatch[0]}`) as { id: number } | undefined;
+    const resolvedPath = path.resolve(pathMatch[0]);
+    const row = (db.prepare('SELECT id FROM memory_index WHERE canonical_file_path = ? LIMIT 1') as Database.Statement)
+      .get(resolvedPath) as { id: number } | undefined;
     if (row?.id) {
       return row.id;
     }

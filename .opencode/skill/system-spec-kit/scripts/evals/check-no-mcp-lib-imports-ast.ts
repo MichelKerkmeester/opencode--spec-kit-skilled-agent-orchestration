@@ -85,7 +85,16 @@ function loadAllowlist(): Allowlist {
   }
 
   try {
-    return JSON.parse(fs.readFileSync(allowlistPath, 'utf-8'));
+    const parsed: unknown = JSON.parse(fs.readFileSync(allowlistPath, 'utf-8'));
+    const allowlist = parsed as Partial<Allowlist> | null;
+    if (!Array.isArray(allowlist?.exceptions)) {
+      throw new Error('Invalid allowlist schema: missing or invalid exceptions array');
+    }
+
+    return {
+      description: typeof allowlist.description === 'string' ? allowlist.description : '',
+      exceptions: allowlist.exceptions as AllowlistException[],
+    };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`Error: Failed to parse ${allowlistPath}: ${message}`);

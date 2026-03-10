@@ -10,6 +10,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import ts from 'typescript';
 
 // ---------------------------------------------------------------------------
 // 2. TYPE DEFINITIONS
@@ -69,21 +70,44 @@ function findTsFiles(dir: string): string[] {
   return files;
 }
 
-function extractModuleSpecifier(line: string): string | null {
-  const fromMatch = line.match(/\b(?:import|export)\b[^;]*?\bfrom\s+['"`]([^'"`]+)['"`]/);
-  if (fromMatch) return fromMatch[1];
-
-  const sideEffectImportMatch = line.match(/\bimport\s+['"`]([^'"`]+)['"`]/);
-  if (sideEffectImportMatch) return sideEffectImportMatch[1];
-
-  const callMatch = line.match(/(?:require|import)\s*\(\s*['"`]([^'"`]+)['"`]/);
-  if (callMatch) return callMatch[1];
-
-  return null;
-}
-
 function isProhibitedForShared(importPath: string): boolean {
   return SHARED_PROHIBITED_PATTERNS.some((re) => re.test(importPath));
+}
+
+function extractModuleSpecifiers(content: string, filePath: string): Array<{ importPath: string; line: number }> {
+  const sourceFile = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const hits: Array<{ importPath: string; line: number }> = [];
+
+  function pushHit(moduleSpecifier: ts.Expression): void {
+    if (!ts.isStringLiteral(moduleSpecifier) && !ts.isNoSubstitutionTemplateLiteral(moduleSpecifier)) return;
+    const { line } = sourceFile.getLineAndCharacterOfPosition(moduleSpecifier.getStart(sourceFile));
+    hits.push({ importPath: moduleSpecifier.text, line: line + 1 });
+  }
+
+  function visit(node: ts.Node): void {
+    if (ts.isImportDeclaration(node) && node.moduleSpecifier) {
+      pushHit(node.moduleSpecifier);
+    }
+
+    if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
+      pushHit(node.moduleSpecifier);
+    }
+
+    if (ts.isCallExpression(node) && node.arguments.length > 0) {
+      const firstArg = node.arguments[0];
+      const isRequireCall = ts.isIdentifier(node.expression) && node.expression.text === 'require';
+      const isDynamicImport = node.expression.kind === ts.SyntaxKind.ImportKeyword;
+      if ((isRequireCall || isDynamicImport) && (ts.isStringLiteral(firstArg) || ts.isNoSubstitutionTemplateLiteral(firstArg))) {
+        const { line } = sourceFile.getLineAndCharacterOfPosition(firstArg.getStart(sourceFile));
+        hits.push({ importPath: firstArg.text, line: line + 1 });
+      }
+    }
+
+    ts.forEachChild(node, visit);
+  }
+
+  visit(sourceFile);
+  return hits;
 }
 
 function countSubstantiveLines(content: string): number {
@@ -126,31 +150,11 @@ function checkSharedNeutrality(): GapAViolation[] {
 
   for (const file of tsFiles) {
     const content = fs.readFileSync(file, 'utf-8');
-    const lines = content.split('\n');
+    const moduleSpecifiers = extractModuleSpecifiers(content, file);
 
-    let inBlockComment = false;
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-
-      if (inBlockComment) {
-        if (line.indexOf('*/') !== -1) inBlockComment = false;
-        continue;
-      }
-
-      const openIdx = line.indexOf('/*');
-      if (openIdx !== -1) {
-        const closeIdx = line.indexOf('*/', openIdx + 2);
-        if (closeIdx === -1) {
-          inBlockComment = true;
-          continue;
-        }
-      }
-
-      if (line.trimStart().startsWith('//')) continue;
-
-      const specifier = extractModuleSpecifier(line);
-      if (specifier && isProhibitedForShared(specifier)) {
-        violations.push({ file, line: i + 1, importPath: specifier });
+    for (const specifier of moduleSpecifiers) {
+      if (isProhibitedForShared(specifier.importPath)) {
+        violations.push({ file, line: specifier.line, importPath: specifier.importPath });
       }
     }
   }

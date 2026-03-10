@@ -468,8 +468,18 @@ async function resolveSessionSpecFolderPaths(
   }
 
   const addCandidate = async (candidatePath: string): Promise<void> => {
-    if (await pathIsDirectory(candidatePath)) {
-      resolvedPaths.add(path.resolve(candidatePath));
+    const resolved = path.resolve(candidatePath);
+    const withinSpecsRoot = specsDirs.some((specsDir) => {
+      const resolvedSpecsDir = path.resolve(specsDir);
+      return resolved === resolvedSpecsDir || resolved.startsWith(`${resolvedSpecsDir}${path.sep}`);
+    });
+
+    if (!withinSpecsRoot) {
+      throw new Error('Path escapes specs root');
+    }
+
+    if (await pathIsDirectory(resolved)) {
+      resolvedPaths.add(resolved);
     }
   };
 
@@ -1060,10 +1070,33 @@ async function detectSpecFolder(
   }
 
   // Priority 3: Current working directory
-  if (cwd.includes('/specs/') || cwd.includes('\\specs\\')) {
-    const match = cwd.match(/(.*[\/\\](?:\.opencode[\/\\])?specs[\/\\][^\/\\]+)/);
-    if (match) {
-      return path.normalize(match[1]);
+  for (const detectedSpecsDir of specsDirsForDetection) {
+    const resolvedSpecsDir = path.resolve(detectedSpecsDir);
+    const resolvedCwd = path.resolve(cwd);
+    const relativeFromSpecsDir = path.relative(resolvedSpecsDir, resolvedCwd);
+    if (
+      relativeFromSpecsDir === '' ||
+      relativeFromSpecsDir.startsWith('..') ||
+      path.isAbsolute(relativeFromSpecsDir)
+    ) {
+      continue;
+    }
+
+    const segments = relativeFromSpecsDir.split(path.sep).filter(Boolean);
+    const specSegments: string[] = [];
+    for (const segment of segments) {
+      if (SPEC_FOLDER_PATTERN.test(segment)) {
+        specSegments.push(segment);
+        if (specSegments.length === 2) {
+          break;
+        }
+      } else if (specSegments.length > 0) {
+        break;
+      }
+    }
+
+    if (specSegments.length > 0) {
+      return path.join(resolvedSpecsDir, ...specSegments);
     }
   }
 
@@ -1179,17 +1212,12 @@ async function detectSpecFolder(
     }
 
   } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : String(error);
-    if (errMsg.includes('retry attempts') ||
-        errMsg.includes('Spec folder not found') ||
-        errMsg.includes('No spec folders found') ||
-        errMsg.includes('No specs/ directory found') ||
-        errMsg.includes('must be under specs/ or .opencode/specs/') ||
-        errMsg.includes('Custom spec folder')) {
-      throw error;
+    const nodeErr = error as NodeJS.ErrnoException;
+    if (nodeErr?.code === 'ENOENT') {
+      printNoSpecFolderError('save-context');
+      throw new Error('specs/ directory not found');
     }
-    printNoSpecFolderError('save-context');
-    throw new Error('specs/ directory not found');
+    throw error;
   }
 }
 

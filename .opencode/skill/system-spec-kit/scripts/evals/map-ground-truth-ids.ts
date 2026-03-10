@@ -13,7 +13,6 @@
 // Output:
 //   - Prints mapping summary to stdout
 //   - Writes full mapping to /tmp/ground-truth-id-mapping.json
-//   - With --apply: updates ground-truth-data.ts in place
 
 import Database from 'better-sqlite3';
 import * as path from 'path';
@@ -28,13 +27,6 @@ const OUTPUT_PATH = '/tmp/ground-truth-id-mapping.json';
 const args = process.argv.slice(2);
 const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const DRY_RUN = args.includes('--dry-run');
-const APPLY = args.includes('--apply');
-
-// AI-FIX: F-25 — --apply flag was parsed but never implemented, contradicting the CLI contract.
-// Warn users that this feature is not yet available rather than silently ignoring.
-if (APPLY) {
-  console.warn('WARNING: --apply is not yet implemented. Mapping output will be written to', OUTPUT_PATH, 'but ground-truth-data.ts will NOT be updated.');
-}
 
 // -- Types -------------------------------------------------------
 
@@ -537,7 +529,7 @@ function mapQueryToMemories(
 function main() {
   console.log('=== Ground Truth ID Mapping Script ===');
   console.log(`Database: ${DB_PATH}`);
-  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : APPLY ? 'APPLY' : 'PREVIEW'}\n`);
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'PREVIEW'}\n`);
 
   // Verify DB exists
   if (!fs.existsSync(DB_PATH)) {

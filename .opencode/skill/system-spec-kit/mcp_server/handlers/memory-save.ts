@@ -5,6 +5,7 @@
 
 // Node built-ins
 import { randomUUID } from 'node:crypto';
+import * as fs from 'node:fs';
 import path from 'path';
 
 // Shared packages
@@ -139,6 +140,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     if (qualityLoopResult.fixedContent) {
       parsed.content = qualityLoopResult.fixedContent;
       parsed.contentHash = memoryParser.computeContentHash(parsed.content);
+      await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
     }
   }
 

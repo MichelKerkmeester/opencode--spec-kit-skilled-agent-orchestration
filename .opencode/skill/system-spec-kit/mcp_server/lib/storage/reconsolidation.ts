@@ -333,12 +333,17 @@ export function executeConflict(
       // AI-GUARD: Atomic transaction: deprecate + edge must succeed or fail together.
       // Without this, a failed insertEdge leaves an orphaned deprecation.
       db.transaction(() => {
-        db.prepare(`
+        const updateResult = db.prepare(`
           UPDATE memory_index
           SET importance_tier = 'deprecated',
               updated_at = datetime('now')
           WHERE id = ?
-        `).run(existingMemory.id);
+        `).run(existingMemory.id) as { changes: number };
+
+        if (updateResult.changes === 0) {
+          console.warn('[reconsolidation] Deprecate target not found, skipping edge insert');
+          return;
+        }
 
         const sourceId = String(newMemory.id);
         const targetId = String(existingMemory.id);

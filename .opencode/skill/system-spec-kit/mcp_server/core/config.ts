@@ -4,8 +4,7 @@
 
 import path from 'path';
 import os from 'os';
-import { COGNITIVE_CONFIG as LOADED_COGNITIVE_CONFIG } from '../configs/cognitive';
-import { DB_UPDATED_FILE as SHARED_DB_UPDATED_FILE } from '@spec-kit/shared/config';
+import type { CognitiveConfig } from '../configs/cognitive';
 
 /* ---------------------------------------------------------------
    1. TYPES
@@ -30,11 +29,28 @@ export const SERVER_DIR: string = path.join(__dirname, '..');
 export const NODE_MODULES: string = path.join(SERVER_DIR, 'node_modules');
 export const LIB_DIR: string = path.join(__dirname, '..', 'lib');
 export const SHARED_DIR: string = path.join(SERVER_DIR, '..', 'shared');
-export const DATABASE_DIR: string = process.env.SPEC_KIT_DB_DIR
-  ? path.resolve(process.cwd(), process.env.SPEC_KIT_DB_DIR)
-  : path.join(SERVER_DIR, 'database');
-export const DATABASE_PATH: string = path.join(DATABASE_DIR, 'context-index.sqlite');
-export const DB_UPDATED_FILE: string = SHARED_DB_UPDATED_FILE;
+
+export interface DatabasePaths {
+  databaseDir: string;
+  databasePath: string;
+  dbUpdatedFile: string;
+}
+
+export function resolveDatabasePaths(): DatabasePaths {
+  const databaseDir = process.env.SPEC_KIT_DB_DIR
+    ? path.resolve(process.cwd(), process.env.SPEC_KIT_DB_DIR)
+    : path.join(SERVER_DIR, 'database');
+  return {
+    databaseDir,
+    databasePath: path.join(databaseDir, 'context-index.sqlite'),
+    dbUpdatedFile: path.join(databaseDir, '.db-updated')
+  };
+}
+
+const resolvedDatabasePaths = resolveDatabasePaths();
+export const DATABASE_DIR: string = resolvedDatabasePaths.databaseDir;
+export const DATABASE_PATH: string = resolvedDatabasePaths.databasePath;
+export const DB_UPDATED_FILE: string = resolvedDatabasePaths.dbUpdatedFile;
 
 /* ---------------------------------------------------------------
    3. BATCH PROCESSING CONFIGURATION
@@ -91,8 +107,38 @@ export const CONSTITUTIONAL_CACHE_TTL: number = 60000;
    8. COGNITIVE CONFIGURATION
    --------------------------------------------------------------- */
 
-/** Loaded cognitive configuration values. */
-export const COGNITIVE_CONFIG = LOADED_COGNITIVE_CONFIG;
+function parseCognitiveConfig(): CognitiveConfig {
+  const { loadCognitiveConfigFromEnv } = require('../configs/cognitive') as typeof import('../configs/cognitive');
+  return loadCognitiveConfigFromEnv(process.env);
+}
+
+let _cognitiveConfig: CognitiveConfig | null = null;
+
+export function getCognitiveConfig(): CognitiveConfig {
+  if (!_cognitiveConfig) {
+    _cognitiveConfig = parseCognitiveConfig();
+  }
+  return _cognitiveConfig;
+}
+
+const COGNITIVE_CONFIG_LAZY: CognitiveConfig = {} as CognitiveConfig;
+Object.defineProperties(COGNITIVE_CONFIG_LAZY, {
+  coActivationPattern: {
+    enumerable: true,
+    get: () => getCognitiveConfig().coActivationPattern,
+  },
+  coActivationPatternSource: {
+    enumerable: true,
+    get: () => getCognitiveConfig().coActivationPatternSource,
+  },
+  coActivationPatternFlags: {
+    enumerable: true,
+    get: () => getCognitiveConfig().coActivationPatternFlags,
+  },
+});
+
+/** Loaded cognitive configuration values (lazily parsed on first access). */
+export const COGNITIVE_CONFIG: CognitiveConfig = COGNITIVE_CONFIG_LAZY;
 
 /* ---------------------------------------------------------------
    9. (ESM exports above — no CommonJS module.exports needed)

@@ -47,6 +47,7 @@ interface HealthArgs {
   limit?: number;
   specFolder?: string;
   autoRepair?: boolean;
+  confirmed?: boolean;
 }
 
 /** Partial embedding provider metadata — see shared/types.ts ProviderMetadata for the full shape. */

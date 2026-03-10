@@ -7,6 +7,7 @@
 
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
+import { runInTransaction } from './transaction-manager';
 
 /* -------------------------------------------------------------
    1. TYPES
@@ -105,7 +106,12 @@ const LEDGER_INDEX_SQL = `
   CREATE INDEX IF NOT EXISTS idx_ledger_type ON mutation_ledger(mutation_type);
   CREATE INDEX IF NOT EXISTS idx_ledger_actor ON mutation_ledger(actor);
   CREATE INDEX IF NOT EXISTS idx_ledger_timestamp ON mutation_ledger(timestamp);
-  CREATE INDEX IF NOT EXISTS idx_ledger_session ON mutation_ledger(session_id)
+  CREATE INDEX IF NOT EXISTS idx_ledger_session ON mutation_ledger(session_id);
+  CREATE INDEX IF NOT EXISTS idx_ledger_memory_type_created_at ON mutation_ledger(
+    CAST(json_extract(linked_memory_ids, '$[0]') AS INTEGER),
+    mutation_type,
+    timestamp
+  )
 `;
 
 const LEDGER_TRIGGER_SQL = `
@@ -364,25 +370,63 @@ function recordDivergenceReconcileHook(
   }
 
   const maxRetries = normalizeMaxRetries(input.maxRetries);
-  const attemptsSoFar = getDivergenceReconcileAttemptCount(db, normalizedPath);
-  const policy = buildDivergenceReconcilePolicy(normalizedPath, attemptsSoFar, maxRetries);
   const actor = input.actor ?? DIVERGENCE_RECONCILE_ACTOR;
   const variants = normalizeVariants(input.variants);
 
-  if (policy.shouldRetry) {
-    const retryEntry = appendEntry(db, {
+  return runInTransaction(db, () => {
+    const attemptsSoFar = getDivergenceReconcileAttemptCount(db, normalizedPath);
+    const policy = buildDivergenceReconcilePolicy(normalizedPath, attemptsSoFar, maxRetries);
+
+    if (policy.shouldRetry) {
+      const retryEntry = appendEntry(db, {
+        mutation_type: 'reindex',
+        reason: DIVERGENCE_RECONCILE_REASON,
+        prior_hash: null,
+        new_hash: computeHash(`${normalizedPath}|attempt:${policy.nextAttempt}|max:${policy.maxRetries}`),
+        linked_memory_ids: [],
+        decision_meta: {
+          normalizedPath,
+          attempt: policy.nextAttempt,
+          maxRetries: policy.maxRetries,
+          boundedRetry: true,
+          status: 'retry_scheduled',
+          variants,
+        },
+        actor,
+        session_id: input.session_id ?? null,
+      });
+
+      return {
+        policy,
+        retryEntryId: retryEntry.id,
+        escalationEntryId: null,
+        escalation: null,
+      };
+    }
+
+    const escalation = buildDivergenceEscalationPayload(policy, variants);
+    if (hasDivergenceEscalationEntry(db, normalizedPath)) {
+      return {
+        policy,
+        retryEntryId: null,
+        escalationEntryId: null,
+        escalation,
+      };
+    }
+
+    const escalationEntry = appendEntry(db, {
       mutation_type: 'reindex',
-      reason: DIVERGENCE_RECONCILE_REASON,
+      reason: DIVERGENCE_RECONCILE_ESCALATION_REASON,
       prior_hash: null,
-      new_hash: computeHash(`${normalizedPath}|attempt:${policy.nextAttempt}|max:${policy.maxRetries}`),
+      new_hash: computeHash(`${normalizedPath}|escalated|attempts:${policy.attemptsSoFar}|max:${policy.maxRetries}`),
       linked_memory_ids: [],
       decision_meta: {
         normalizedPath,
-        attempt: policy.nextAttempt,
+        attempts: policy.attemptsSoFar,
         maxRetries: policy.maxRetries,
         boundedRetry: true,
-        status: 'retry_scheduled',
-        variants,
+        status: 'escalated',
+        escalation,
       },
       actor,
       session_id: input.session_id ?? null,
@@ -390,46 +434,11 @@ function recordDivergenceReconcileHook(
 
     return {
       policy,
-      retryEntryId: retryEntry.id,
-      escalationEntryId: null,
-      escalation: null,
-    };
-  }
-
-  const escalation = buildDivergenceEscalationPayload(policy, variants);
-  if (hasDivergenceEscalationEntry(db, normalizedPath)) {
-    return {
-      policy,
       retryEntryId: null,
-      escalationEntryId: null,
+      escalationEntryId: escalationEntry.id,
       escalation,
     };
-  }
-
-  const escalationEntry = appendEntry(db, {
-    mutation_type: 'reindex',
-    reason: DIVERGENCE_RECONCILE_ESCALATION_REASON,
-    prior_hash: null,
-    new_hash: computeHash(`${normalizedPath}|escalated|attempts:${policy.attemptsSoFar}|max:${policy.maxRetries}`),
-    linked_memory_ids: [],
-    decision_meta: {
-      normalizedPath,
-      attempts: policy.attemptsSoFar,
-      maxRetries: policy.maxRetries,
-      boundedRetry: true,
-      status: 'escalated',
-      escalation,
-    },
-    actor,
-    session_id: input.session_id ?? null,
   });
-
-  return {
-    policy,
-    retryEntryId: null,
-    escalationEntryId: escalationEntry.id,
-    escalation,
-  };
 }
 
 /* -------------------------------------------------------------

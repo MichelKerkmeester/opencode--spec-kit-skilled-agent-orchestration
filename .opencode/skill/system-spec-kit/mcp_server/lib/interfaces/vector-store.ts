@@ -12,7 +12,7 @@
  * Abstract base class for vector store implementations.
  * All methods throw by default — subclasses must override them.
  */
-class IVectorStore {
+class IVectorStoreBase {
   async search(_embedding: unknown, _topK: number, _options?: unknown): Promise<unknown[]> {
     throw new Error('Method search() must be implemented by subclass');
   }
@@ -46,4 +46,5 @@ class IVectorStore {
   }
 }
 
-export { IVectorStore };
+export { IVectorStoreBase as IVectorStore };
+export type { IVectorStore as VectorStoreInterface } from '@spec-kit/shared/types';

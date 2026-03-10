@@ -58,6 +58,7 @@ const TOOL_CACHE_CONFIG: ToolCacheConfig = {
 --------------------------------------------------------------- */
 
 const cache = new Map<string, CacheEntry>();
+const inFlight = new Map<string, Promise<unknown>>();
 
 const stats = {
   hits: 0,
@@ -331,10 +332,24 @@ async function withCache<T>(
     return cached;
   }
 
-  const result = await fn();
-  set(key, result, { toolName: tool_name, ttlMs });
+  const existing = inFlight.get(key);
+  if (existing) {
+    return await existing as T;
+  }
 
-  return result;
+  const pending = (async () => {
+    const result = await fn();
+    set(key, result, { toolName: tool_name, ttlMs });
+    return result;
+  })();
+
+  inFlight.set(key, pending);
+  try {
+    return await pending;
+  } finally {
+    inFlight.delete(key);
+  }
+
 }
 
 /* ---------------------------------------------------------------
@@ -419,4 +434,3 @@ export {
   shutdown,
   TOOL_CACHE_CONFIG as CONFIG,
 };
-

@@ -162,8 +162,12 @@ function detectContextType(toolCounts: ToolCounts, decisionCount: number): strin
 }
 
 function detectImportanceTier(filesModified: string[], contextType: string): string {
-  const criticalPaths = ['/architecture/', '/core/', '/schema/', '/security/', '/config/'];
-  if (filesModified.some((f) => criticalPaths.some((p) => f.includes(p)))) return 'critical';
+  const criticalSegments = ['architecture', 'core', 'schema', 'security', 'config'];
+  if (filesModified.some((filePath) => {
+    const resolvedPath = path.resolve(CONFIG.PROJECT_ROOT, filePath);
+    const segments = resolvedPath.split(path.sep).filter(Boolean);
+    return criticalSegments.some((segment) => segments.includes(segment));
+  })) return 'critical';
   if (contextType === 'decision') return 'important';
   return 'normal';
 }

@@ -265,7 +265,7 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
   try {
     const edgeColumns = (database.prepare('PRAGMA table_info(causal_edges)').all() as Array<{ name: string }>)
       .map((column) => column.name)
-      .filter((name) => typeof name === 'string' && name.length > 0);
+      .filter((name) => typeof name === 'string' && name.length > 0 && name !== 'id');
 
     if (edgeColumns.length === 0) {
       return { inserted: 0, failed: edges.length };
