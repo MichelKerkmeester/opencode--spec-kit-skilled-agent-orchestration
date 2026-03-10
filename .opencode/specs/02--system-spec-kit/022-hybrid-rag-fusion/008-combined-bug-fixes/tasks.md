@@ -1,7 +1,8 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
 title: "Tasks: Combined Bug Fixes (016)"
-description: "Merged task list from specs 003, 008, 013, 015"
+description: "Merged task list from specs 003, 008, 013, 015, 017"
+updated: "2026-03-10"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -9,7 +10,7 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-This file merges tasks from four source spec folders into a single canonical reference.
+This file merges tasks from five source spec folders into a single canonical reference.
 
 ---
 
@@ -22,12 +23,15 @@ This file merges tasks from four source spec folders into a single canonical ref
 | 008 | Subfolder Resolution Fix | 31 | 31 | 0 |
 | 013 | Memory Search Bug Fixes | 40 | 40 | 0 |
 | 015 | Bug Fixes and Alignment | 84 | 69 | 15 |
-| 016 | Code Audit (2026-03-08) | 17 | 0 | 0 |
-| **Total** | | **184** | **152** | **15** |
+| 016 | Code Audit (2026-03-08) | 17 | 0 | 17 |
+| 017 | 30-Commit Bug Audit (W5, 2026-03-10) | 50 | 24 | 26 |
+| **Total** | | **234** | **176** | **58** |
 
-Current verification truth snapshot (2026-03-07):
+Current verification truth snapshot (2026-03-10):
 - `npm run check` is green.
 - `npm run check:full` is green.
+- `npx tsc --noEmit` is clean across `mcp_server`, `scripts`, and `shared`.
+- Test suite baseline is `368/372` passing (4 pre-existing failures).
 - Final verification evidence is recorded in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md` and `scratch/verification-logs/2026-03-07-mcp-check-full.md`.
 
 ---
@@ -456,3 +460,75 @@ Current verification truth snapshot (2026-03-07):
 ### Tier 4: README gaps
 
 - [ ] T085 [P] Add missing entries to `hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README)
+
+---
+---
+
+## Source: 017 -- 30-Commit Bug Audit (W5, 2026-03-10)
+
+> Source lineage: `017` stream merged into canonical `tasks.md`.
+
+---
+
+### Phase W5-A: Quick Wins
+
+- [x] T086 Fix crash for finding `P0-1` (`scripts/evals/map-ground-truth-ids.ts:92`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T087 Fix crash for finding `P0-2` (`scripts/utils/input-normalizer.ts:480`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T088 Fix crash for finding `P0-3` (`scripts/lib/ascii-boxes.ts:95`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T089 Resolve finding `F01` (`scripts/extractors/spec-folder-extractor.ts:321`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T090 Resolve finding `F02` (`mcp_server/lib/scoring/composite-scoring.ts:388`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T091 Resolve finding `F03` (`mcp_server/handlers/memory-ingest.ts:104`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T092 Resolve finding `F04` (`mcp_server/lib/scoring/composite-scoring.ts:250`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T093 Resolve finding `F05` (`mcp_server/lib/scoring/composite-scoring.ts:329`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T094 Resolve finding `F06` (`shared/algorithms/rrf-fusion.ts:187`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T095 Resolve finding `F07` (`shared/embeddings/providers/openai.ts:313`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T096 Resolve finding `F08` (`shared/embeddings/providers/voyage.ts:332`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T097 Resolve finding `F09` (`mcp_server/handlers/memory-crud-delete.ts:98`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T098 Resolve finding `F10` (`mcp_server/handlers/memory-crud-update.ts:192`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T099 Resolve finding `F11` (`mcp_server/lib/storage/reconsolidation.ts:356`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T100 Resolve finding `F12` (`scripts/extractors/diagram-extractor.ts:183`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+
+---
+
+### Phase W5-B: Medium Effort
+
+- [x] T101 Resolve finding `F13` (`scripts/lib/decision-tree-generator.ts:125`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T102 Resolve finding `F14` (`scripts/extractors/conversation-extractor.ts:156`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T103 Resolve finding `F15` (`scripts/utils/message-utils.ts:203`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T104 Resolve finding `F16` (`scripts/extractors/collect-session-data.ts:224`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T105 Resolve finding `F17` (`mcp_server/core/db-state.ts:194`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T106 Resolve finding `F18` (`mcp_server/lib/search/vector-index-store.ts:690`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T107 Resolve finding `F19` (`shared/embeddings/providers/hf-local.ts:215`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T108 Resolve finding `F20` (`mcp_server/lib/search/embedding-expansion.ts:226`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] T109 Resolve finding `F21` (`mcp_server/lib/search/vector-index-mutations.ts:107`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [ ] T110 Implement quick-win race fixes for `R04`, `R07`, `R08` (`mcp_server/lib/storage/index-refresh.ts:171`; `mcp_server/core/db-state.ts:113`; `mcp_server/core/db-state.ts:117`)
+- [ ] T111 Implement quick-win config fixes for `A03`, `A04`, `A07` (`mcp_server/core/config.ts:43`; `mcp_server/utils/batch-processor.ts:41`; `mcp_server/lib/cognitive/archival-manager.ts:532`)
+- [ ] T112 Implement quick-win cognitive fixes for `C01`, `C03` (`mcp_server/lib/cognitive/co-activation.ts:119`; `mcp_server/lib/cognitive/working-memory.ts:554`)
+- [ ] T113 Implement quick-win eval guards for `E05`, `E06` (`scripts/evals/run-phase1-5-shadow-eval.ts:96`; `scripts/evals/run-phase3-telemetry-dashboard.ts:122`)
+- [ ] T114 Implement quick-win handler/storage fixes for `H04`, `M03`, `S02` (`mcp_server/handlers/memory-index.ts:368`; `mcp_server/lib/storage/access-tracker.ts:119`; `mcp_server/lib/storage/causal-edges.ts:290`)
+- [ ] T115 Implement medium race/status handling for `R02`, `R11` (`mcp_server/lib/storage/access-tracker.ts:75`; `mcp_server/handlers/memory-save.ts:435`)
+- [ ] T116 Implement medium rollback contract fixes for `R09`, `R10` (`mcp_server/handlers/chunking-orchestrator.ts:347`; `mcp_server/handlers/chunking-orchestrator.ts:166`)
+- [ ] T117 Implement medium score-field synchronization for `D01`, `D02`, `D06` (`mcp_server/lib/search/pipeline/stage2-fusion.ts:557`; `mcp_server/lib/search/pipeline/stage2-fusion.ts:661`; `mcp_server/lib/search/hybrid-search.ts:739`)
+- [ ] T118 Implement medium retrieval/cache normalization for `D09`, `D10` (`mcp_server/lib/search/retrieval-directives.ts:326`; `mcp_server/lib/search/vector-index-aliases.ts:229`)
+- [ ] T119 Implement medium handler validation for `H03`, `H06`, `H07` (`mcp_server/handlers/memory-crud-stats.ts:123`; `mcp_server/handlers/memory-save.ts:166`; `mcp_server/handlers/quality-loop.ts:122`)
+- [ ] T120 Implement medium cognitive/save flow fixes for `C02`, `C04`, `M01`, `M02` (`mcp_server/lib/cognitive/working-memory.ts:504`; `mcp_server/hooks/memory-surface.ts:99`; `mcp_server/handlers/save/pe-orchestration.ts:101`; `mcp_server/handlers/save/response-builder.ts:188`)
+
+---
+
+### Phase W5-C: Larger Refactors
+
+- [ ] T121 Implement transactional session dedup for `R01` (`mcp_server/lib/session/session-manager.ts:341`)
+- [ ] T122 Implement race-safe storage/cache coordination for `R03`, `R05`, `R06` (`mcp_server/lib/storage/consolidation.ts:492`; `mcp_server/lib/storage/mutation-ledger.ts:367`; `mcp_server/lib/cache/tool-cache.ts:326`)
+- [ ] T123 Implement stage-contract refactor for `D03`, `D04` (`mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:528`; `mcp_server/lib/search/pipeline/stage3-rerank.ts:598`)
+- [ ] T124 Implement rerank/injection contract fixes for `D05`, `D07`, `D08` (`mcp_server/lib/search/pipeline/stage3-rerank.ts:556`; `mcp_server/lib/search/causal-boost.ts:189`; `mcp_server/lib/extraction/extraction-adapter.ts:197`)
+- [ ] T125 Implement config decoupling refactor for `A01`, `A02` (`mcp_server/core/config.ts:7`; `mcp_server/core/config.ts:33`)
+- [ ] T126 Implement architecture contract typing for `A05`, `A06` (`mcp_server/core/db-state.ts:50`; `mcp_server/lib/interfaces/vector-store.ts:15`)
+- [ ] T127 Implement handler ownership/privilege gates for `H01`, `H02` (`mcp_server/handlers/memory-context.ts:442`; `mcp_server/handlers/memory-crud-health.ts:360`)
+- [ ] T128 Implement save pipeline contract fixes for `H05`, `H08`, `H09` (`mcp_server/handlers/memory-save.ts:135`; `mcp_server/handlers/save/dedup.ts:50`; `mcp_server/handlers/save/embedding-pipeline.ts:37`)
+- [ ] T129 Implement storage integrity fixes for `S01`, `S03` (`mcp_server/lib/storage/causal-edges.ts:274`; `mcp_server/lib/storage/reconsolidation.ts:336`)
+- [ ] T130 Implement eval validation correctness for `E01`, `E03` (`scripts/evals/check-allowlist-expiry.ts:96`; `scripts/evals/check-no-mcp-lib-imports-ast.ts:88`)
+- [ ] T131 Implement eval parser/feature refactors for `E02`, `E04` (`scripts/evals/check-architecture-boundaries.ts:72`; `scripts/evals/map-ground-truth-ids.ts:16`)
+- [ ] T132 Implement eval metric correctness for `E07`, `E08` (`scripts/evals/run-quality-legacy-remediation.ts:132`; `scripts/evals/run-quality-legacy-remediation.ts:209`)
+- [ ] T133 Implement extractor/workflow path-contract fixes for `X01`, `X02` (`scripts/extractors/session-extractor.ts:165`; `scripts/core/workflow.ts:386`)
+- [ ] T134 Implement script parsing fixes for `X03`, `X04` (`scripts/lib/flowchart-generator.ts:353`; `scripts/lib/frontmatter-migration.ts:381`)
+- [ ] T135 Implement folder-detector hardening for `X05`, `X06`, `X07` (`scripts/spec-folder/folder-detector.ts:470`; `scripts/spec-folder/folder-detector.ts:1064`; `scripts/spec-folder/folder-detector.ts:1181`)

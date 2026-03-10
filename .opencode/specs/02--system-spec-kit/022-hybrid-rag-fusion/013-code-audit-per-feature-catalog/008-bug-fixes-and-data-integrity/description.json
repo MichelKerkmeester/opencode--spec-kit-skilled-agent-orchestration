@@ -1,0 +1,15 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+  "description": "008 — bug-fixes-and-data-integrity",
+  "keywords": ["bug", "fixes", "and", "data", "integrity"],
+  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "specId": "008",
+  "folderSlug": "bug-fixes-and-data-integrity",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "013-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

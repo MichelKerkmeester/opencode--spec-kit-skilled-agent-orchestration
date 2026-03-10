@@ -4,8 +4,8 @@ title: "Combined Bug Fixes Checklist"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
-description: "Merged checklist covering all verification items from four source spec folders"
+updated: "2026-03-10"
+description: "Merged checklist covering all verification items from five source spec folders"
 importance_tier: "normal"
 contextType: "implementation"
 ---
@@ -13,7 +13,7 @@ contextType: "implementation"
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-This is a **merged checklist** combining all verification items from four source spec folders under `022-hybrid-rag-fusion`.
+This is a **merged checklist** combining all verification items from five source spec folders under `022-hybrid-rag-fusion`.
 
 ---
 
@@ -26,11 +26,14 @@ This is a **merged checklist** combining all verification items from four source
 | **013** | Memory Search Bug Fixes | 10 | 13 | 2 | 25 | 22/25 |
 | **015** | Bug Fixes and Alignment | 9 | 54 | 15 | 78 | 69/78 |
 | **016** | Code Audit (2026-03-08) | 1 | 16 | 1 | 18 | 0/18 |
-| **Combined** | | **39** | **94** | **20** | **153** | **122/153** |
+| **017** | 30-Commit Bug Audit (W5, 2026-03-10) | 3 | 85 | 0 | 88 | 26/88 |
+| **Combined** | | **42** | **179** | **20** | **241** | **148/241** |
 
-Current gate truth (2026-03-07):
+Current gate truth (2026-03-10):
 - `npm run check`: PASS
 - `npm run check:full`: PASS
+- `npx tsc --noEmit`: clean across `mcp_server`, `scripts`, and `shared`
+- Tests: `368/372` pass (4 pre-existing failures: `T-019d`, `T-024e`, `T-024f`, `T-032`)
 - Targeted post-fix verification: PASS (see `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`)
 
 ---
@@ -469,3 +472,153 @@ Current gate truth (2026-03-07):
 
 **Audit Date**: 2026-03-08
 **Prior Findings Re-Verified**: F1-F11 (4 FIXED, 3 PARTIALLY_FIXED, 3 STILL_PRESENT)
+
+---
+---
+
+## Source: 017 -- 30-Commit Bug Audit (W5, 2026-03-10)
+
+> Source lineage: `017` stream merged into canonical `checklist.md`.
+> Verification Date: 2026-03-10
+
+---
+
+### P0 Items (Fixed)
+
+- [x] CHK-320 [P0]: Fix finding `P0-1` (`scripts/evals/map-ground-truth-ids.ts:92`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-321 [P0]: Fix finding `P0-2` (`scripts/utils/input-normalizer.ts:480`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-322 [P0]: Fix finding `P0-3` (`scripts/lib/ascii-boxes.ts:95`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+
+---
+
+### P1 Items (Fixed)
+
+Discrepancy note: `/tmp/w5-audit-findings.md` states "24 fixed" P1 bugs but enumerates only `F01`-`F21`. This checklist uses `CHK-323` through `CHK-345` by tracking `F01`-`F19` once and splitting `F20`/`F21` into granular contract checks, without inventing new finding IDs.
+
+- [x] CHK-323 [P1]: Resolve finding `F01` (`scripts/extractors/spec-folder-extractor.ts:321`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-324 [P1]: Resolve finding `F02` (`mcp_server/lib/scoring/composite-scoring.ts:388`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-325 [P1]: Resolve finding `F03` (`mcp_server/handlers/memory-ingest.ts:104`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-326 [P1]: Resolve finding `F04` (`mcp_server/lib/scoring/composite-scoring.ts:250`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-327 [P1]: Resolve finding `F05` (`mcp_server/lib/scoring/composite-scoring.ts:329`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-328 [P1]: Resolve finding `F06` (`shared/algorithms/rrf-fusion.ts:187`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-329 [P1]: Resolve finding `F07` (`shared/embeddings/providers/openai.ts:313`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-330 [P1]: Resolve finding `F08` (`shared/embeddings/providers/voyage.ts:332`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-331 [P1]: Resolve finding `F09` (`mcp_server/handlers/memory-crud-delete.ts:98`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-332 [P1]: Resolve finding `F10` (`mcp_server/handlers/memory-crud-update.ts:192`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-333 [P1]: Resolve finding `F11` (`mcp_server/lib/storage/reconsolidation.ts:356`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-334 [P1]: Resolve finding `F12` (`scripts/extractors/diagram-extractor.ts:183`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-335 [P1]: Resolve finding `F13` (`scripts/lib/decision-tree-generator.ts:125`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-336 [P1]: Resolve finding `F14` (`scripts/extractors/conversation-extractor.ts:156`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-337 [P1]: Resolve finding `F15` (`scripts/utils/message-utils.ts:203`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-338 [P1]: Resolve finding `F16` (`scripts/extractors/collect-session-data.ts:224`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-339 [P1]: Resolve finding `F17` (`mcp_server/core/db-state.ts:194`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-340 [P1]: Resolve finding `F18` (`mcp_server/lib/search/vector-index-store.ts:690`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-341 [P1]: Resolve finding `F19` (`shared/embeddings/providers/hf-local.ts:215`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-342 [P1]: Resolve finding `F20` content field contract (`mcp_server/lib/search/embedding-expansion.ts:226`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-343 [P1]: Resolve finding `F20` trigger phrase array contract (`mcp_server/lib/search/embedding-expansion.ts:226`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-344 [P1]: Resolve finding `F21` metadata forward for `documentType` (`mcp_server/lib/search/vector-index-mutations.ts:107`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+- [x] CHK-345 [P1]: Resolve finding `F21` metadata forward for `specLevel` (`mcp_server/lib/search/vector-index-mutations.ts:107`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
+
+---
+
+### P1 Items (Pending)
+
+#### Race Conditions
+
+- [ ] CHK-346 [P1]: Finding `R01` pending (`mcp_server/lib/session/session-manager.ts:341`)
+- [ ] CHK-347 [P1]: Finding `R02` pending (`mcp_server/lib/storage/access-tracker.ts:75`)
+- [ ] CHK-348 [P1]: Finding `R03` pending (`mcp_server/lib/storage/consolidation.ts:492`)
+- [ ] CHK-349 [P1]: Finding `R04` pending (`mcp_server/lib/storage/index-refresh.ts:171`)
+- [ ] CHK-350 [P1]: Finding `R05` pending (`mcp_server/lib/storage/mutation-ledger.ts:367`)
+- [ ] CHK-351 [P1]: Finding `R06` pending (`mcp_server/lib/cache/tool-cache.ts:326`)
+- [ ] CHK-352 [P1]: Finding `R07` pending (`mcp_server/core/db-state.ts:113`)
+- [ ] CHK-353 [P1]: Finding `R08` pending (`mcp_server/core/db-state.ts:117`)
+- [ ] CHK-354 [P1]: Finding `R09` pending (`mcp_server/handlers/chunking-orchestrator.ts:347`)
+- [ ] CHK-355 [P1]: Finding `R10` pending (`mcp_server/handlers/chunking-orchestrator.ts:166`)
+- [ ] CHK-356 [P1]: Finding `R11` pending (`mcp_server/handlers/memory-save.ts:435`)
+
+#### Data Flow
+
+- [ ] CHK-357 [P1]: Finding `D01` pending (`mcp_server/lib/search/pipeline/stage2-fusion.ts:557`)
+- [ ] CHK-358 [P1]: Finding `D02` pending (`mcp_server/lib/search/pipeline/stage2-fusion.ts:661`)
+- [ ] CHK-359 [P1]: Finding `D03` pending (`mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:528`)
+- [ ] CHK-360 [P1]: Finding `D04` pending (`mcp_server/lib/search/pipeline/stage3-rerank.ts:598`)
+- [ ] CHK-361 [P1]: Finding `D05` pending (`mcp_server/lib/search/pipeline/stage3-rerank.ts:556`)
+- [ ] CHK-362 [P1]: Finding `D06` pending (`mcp_server/lib/search/hybrid-search.ts:739`)
+- [ ] CHK-363 [P1]: Finding `D07` pending (`mcp_server/lib/search/causal-boost.ts:189`)
+- [ ] CHK-364 [P1]: Finding `D08` pending (`mcp_server/lib/extraction/extraction-adapter.ts:197`)
+- [ ] CHK-365 [P1]: Finding `D09` pending (`mcp_server/lib/search/retrieval-directives.ts:326`)
+- [ ] CHK-366 [P1]: Finding `D10` pending (`mcp_server/lib/search/vector-index-aliases.ts:229`)
+
+#### Architecture
+
+- [ ] CHK-367 [P1]: Finding `A01` pending (`mcp_server/core/config.ts:7`)
+- [ ] CHK-368 [P1]: Finding `A02` pending (`mcp_server/core/config.ts:33`)
+- [ ] CHK-369 [P1]: Finding `A03` pending (`mcp_server/core/config.ts:43`)
+- [ ] CHK-370 [P1]: Finding `A04` pending (`mcp_server/utils/batch-processor.ts:41`)
+- [ ] CHK-371 [P1]: Finding `A05` pending (`mcp_server/core/db-state.ts:50`)
+- [ ] CHK-372 [P1]: Finding `A06` pending (`mcp_server/lib/interfaces/vector-store.ts:15`)
+- [ ] CHK-373 [P1]: Finding `A07` pending (`mcp_server/lib/cognitive/archival-manager.ts:532`)
+
+#### Handler Logic
+
+- [ ] CHK-374 [P1]: Finding `H01` pending (`mcp_server/handlers/memory-context.ts:442`)
+- [ ] CHK-375 [P1]: Finding `H02` pending (`mcp_server/handlers/memory-crud-health.ts:360`)
+- [ ] CHK-376 [P1]: Finding `H03` pending (`mcp_server/handlers/memory-crud-stats.ts:123`)
+- [ ] CHK-377 [P1]: Finding `H04` pending (`mcp_server/handlers/memory-index.ts:368`)
+- [ ] CHK-378 [P1]: Finding `H05` pending (`mcp_server/handlers/memory-save.ts:135`)
+- [ ] CHK-379 [P1]: Finding `H06` pending (`mcp_server/handlers/memory-save.ts:166`)
+- [ ] CHK-380 [P1]: Finding `H07` pending (`mcp_server/handlers/quality-loop.ts:122`)
+- [ ] CHK-381 [P1]: Finding `H08` pending (`mcp_server/handlers/save/dedup.ts:50`)
+- [ ] CHK-382 [P1]: Finding `H09` pending (`mcp_server/handlers/save/embedding-pipeline.ts:37`)
+
+#### Cognitive
+
+- [ ] CHK-383 [P1]: Finding `C01` pending (`mcp_server/lib/cognitive/co-activation.ts:119`)
+- [ ] CHK-384 [P1]: Finding `C02` pending (`mcp_server/lib/cognitive/working-memory.ts:504`)
+- [ ] CHK-385 [P1]: Finding `C03` pending (`mcp_server/lib/cognitive/working-memory.ts:554`)
+- [ ] CHK-386 [P1]: Finding `C04` pending (`mcp_server/hooks/memory-surface.ts:99`)
+
+#### Save/Mutation
+
+- [ ] CHK-387 [P1]: Finding `M01` pending (`mcp_server/handlers/save/pe-orchestration.ts:101`)
+- [ ] CHK-388 [P1]: Finding `M02` pending (`mcp_server/handlers/save/response-builder.ts:188`)
+- [ ] CHK-389 [P1]: Finding `M03` pending (`mcp_server/lib/storage/access-tracker.ts:119`)
+
+#### Storage
+
+- [ ] CHK-390 [P1]: Finding `S01` pending (`mcp_server/lib/storage/causal-edges.ts:274`)
+- [ ] CHK-391 [P1]: Finding `S02` pending (`mcp_server/lib/storage/causal-edges.ts:290`)
+- [ ] CHK-392 [P1]: Finding `S03` pending (`mcp_server/lib/storage/reconsolidation.ts:336`)
+
+#### Eval Scripts
+
+- [ ] CHK-393 [P1]: Finding `E01` pending (`scripts/evals/check-allowlist-expiry.ts:96`)
+- [ ] CHK-394 [P1]: Finding `E02` pending (`scripts/evals/check-architecture-boundaries.ts:72`)
+- [ ] CHK-395 [P1]: Finding `E03` pending (`scripts/evals/check-no-mcp-lib-imports-ast.ts:88`)
+- [ ] CHK-396 [P1]: Finding `E04` pending (`scripts/evals/map-ground-truth-ids.ts:16`)
+- [ ] CHK-397 [P1]: Finding `E05` pending (`scripts/evals/run-phase1-5-shadow-eval.ts:96`)
+- [ ] CHK-398 [P1]: Finding `E06` pending (`scripts/evals/run-phase3-telemetry-dashboard.ts:122`)
+- [ ] CHK-399 [P1]: Finding `E07` pending (`scripts/evals/run-quality-legacy-remediation.ts:132`)
+- [ ] CHK-400 [P1]: Finding `E08` pending (`scripts/evals/run-quality-legacy-remediation.ts:209`)
+
+#### Extractor/Script
+
+- [ ] CHK-401 [P1]: Finding `X01` pending (`scripts/extractors/session-extractor.ts:165`)
+- [ ] CHK-402 [P1]: Finding `X02` pending (`scripts/core/workflow.ts:386`)
+- [ ] CHK-403 [P1]: Finding `X03` pending (`scripts/lib/flowchart-generator.ts:353`)
+- [ ] CHK-404 [P1]: Finding `X04` pending (`scripts/lib/frontmatter-migration.ts:381`)
+- [ ] CHK-405 [P1]: Finding `X05` pending (`scripts/spec-folder/folder-detector.ts:470`)
+- [ ] CHK-406 [P1]: Finding `X06` pending (`scripts/spec-folder/folder-detector.ts:1064`)
+- [ ] CHK-407 [P1]: Finding `X07` pending (`scripts/spec-folder/folder-detector.ts:1181`)
+
+---
+
+### Verification Summary (017)
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 3 | 3/3 |
+| P1 Items | 85 | 23/85 |
+
+**Verification Date**: 2026-03-10

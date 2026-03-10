@@ -4,8 +4,8 @@ title: "Combined Bug Fixes"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
-description: "Merged spec combining 4 bug-fix and alignment workstreams from 022-hybrid-rag-fusion: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), and bug fixes and alignment (015)"
+updated: "2026-03-10"
+description: "Merged spec combining 5 bug-fix and alignment workstreams from 022-hybrid-rag-fusion: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), bug fixes and alignment (015), and 30-commit bug audit W5 (017)"
 importance_tier: "high"
 contextType: "implementation"
 ---
@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ## Overview
 
-This document merges the specifications from 4 related bug-fix and alignment workstreams under `022-hybrid-rag-fusion` into a single canonical reference.
+This document merges the specifications from 5 related bug-fix and alignment workstreams under `022-hybrid-rag-fusion` into a single canonical reference.
 
 ### Merged Sources
 
@@ -27,12 +27,15 @@ This document merges the specifications from 4 related bug-fix and alignment wor
 | 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | 2 | Normal |
 | 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | 2 | Normal |
 | 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | 3 | P0-P1 |
+| 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | 3 | P0-P1 |
 
-### Current Verification Snapshot (2026-03-07)
+### Current Verification Snapshot (2026-03-10)
 
 - `npm run check`: PASS (lint + `npx tsc --noEmit`)
 - `npm run check:full`: PASS (full package verification green; see `scratch/verification-logs/2026-03-07-mcp-check-full.md`)
 - Targeted post-fix verification: PASS (`memory-crud-extended`, `checkpoints-storage`, `adaptive-fusion`, `task-enrichment`, workspace typecheck/build)
+- `npx tsc --noEmit`: PASS across `mcp_server`, `scripts`, and `shared`
+- Test suite status: 368/372 passing (4 pre-existing failures: `T-019d`, `T-024e`, `T-024f`, `T-032`)
 - Evidence artifacts:
   - `scratch/cross-ai-review-report.md`
   - `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`
@@ -795,3 +798,47 @@ Active deferrals intentionally exclude historical CR-P2-4 (`memory-save.ts` deco
 - [ ] P2 documentation quality issues addressed (em dashes, HVR, READMEs)
 - [ ] verify_alignment_drift.py passes on all modified files
 - [ ] No new regressions in existing test suite
+
+---
+---
+
+## Source: 017 -- 30-Commit Bug Audit (W5, 2026-03-10)
+
+---
+
+### 1. Audit Scope
+
+W5 audited the last 30 `fix(spec-kit)` and `feat(spec-kit)` commits across `mcp_server/`, `scripts/`, and `shared/` using 15 agents (10 Copilot across Waves 1-2, 5 Codex in Wave 3). The findings set reports 3 fixed P0 crashes, 21 enumerated fixed P1 findings (`F01`-`F21`), and 62 remaining P1 findings grouped by race conditions, data flow, architecture/config, handlers, cognitive surfaces, save/mutation, storage, eval scripts, and extractor/script logic.
+
+---
+
+### 2. Requirements
+
+- REQ-009: Search pipeline correctness must be preserved across Stage 1, Stage 2, Stage 3, and hybrid fallback paths so sorting, identity, and filter gates use the latest authoritative score and normalized row shapes.
+- REQ-010: Scoring accuracy must preserve valid zero-values, prevent NaN/Infinity propagation, and keep provider-cost/dimension calculations aligned with current pricing and runtime dimensions.
+- REQ-011: Data flow integrity must preserve canonical field contracts (`content_text`, `trigger_phrases[]`, metadata pass-through) across ingestion, expansion, mutation, and retrieval paths.
+- REQ-012: Handler error contracts must return explicit MCP error envelopes for operational failures and non-success result statuses, never success envelopes for failure states.
+- REQ-013: Race condition safety must remove non-atomic check-then-act behavior across session, cache, ledger, refresh, and consolidation paths using transactional or in-flight coordination patterns.
+- REQ-014: Eval script correctness must enforce dataset/date/schema validity and correct metric formulas so evaluation gates cannot pass on fabricated or mathematically invalid outputs.
+- REQ-015: Extractor field contracts must normalize tool/path/frontmatter inputs and phase classification fields consistently so extractor outputs remain schema-valid and complete.
+- REQ-016: Config validation must enforce safe parse-time defaults and feature-flag gating for batch/archive/cognitive settings without import-time coupling side effects.
+
+---
+
+### 3. Acceptance Criteria
+
+**Given** pipeline score mutation occurs in fusion/rerank stages, **When** ranking executes, **Then** sort order is derived from synchronized effective score fields, not stale pre-mutation fields.
+
+**Given** scoring inputs include valid zero values or malformed values, **When** composite/fusion scoring runs, **Then** valid zeros are preserved and non-finite values are clamped or rejected without NaN propagation.
+
+**Given** extraction/expansion rows move between storage and search layers, **When** contracts are normalized, **Then** canonical fields (`content_text`, `trigger_phrases[]`, metadata) are retained and consumed consistently end-to-end.
+
+**Given** database/storage dependencies are unavailable or a save/mutation returns `status: 'error'`, **When** handlers respond, **Then** they return structured MCP error responses instead of success payloads.
+
+**Given** concurrent calls hit session/cache/ledger/index-refresh/consolidation paths, **When** writes occur, **Then** duplicate injection, lost updates, and stale-timestamp suppression are prevented by atomic operations.
+
+**Given** eval scripts receive empty datasets, invalid dates, or malformed allowlist JSON, **When** scripts execute, **Then** they fail safely with explicit validation outcomes and correct metric computation.
+
+**Given** extractor/script parsing handles relative paths, prefixed frontmatter, or alternate tool field names, **When** extraction runs, **Then** critical-path detection, metadata injection, and phase classification remain correct.
+
+**Given** runtime config uses environment-derived numeric/boolean flags, **When** configuration is parsed, **Then** invalid values fall back safely and disabled features (for example archival jobs) do not auto-start.

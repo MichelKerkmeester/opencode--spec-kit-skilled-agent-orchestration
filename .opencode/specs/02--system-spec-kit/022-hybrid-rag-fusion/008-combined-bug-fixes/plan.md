@@ -1,11 +1,12 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/plan.md -->
 ---
-title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015"
-description: "Merged implementation plan consolidating four bug-fix spec folders: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), and bug fixes and alignment (015)."
+title: "Combined Plan: Bug Fixes 003 + 008 + 013 + 015 + 017"
+description: "Merged implementation plan consolidating five bug-fix spec folders: auto-detected session bug (003), subfolder resolution fix (008), memory search bug fixes (013), bug fixes and alignment (015), and 30-commit bug audit W5 (017)."
+updated: "2026-03-10"
 importance_tier: "high"
 contextType: "implementation"
 ---
-# Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015)
+# Combined Implementation Plan: Bug Fixes (003 + 008 + 013 + 015 + 017)
 
 <!-- SPECKIT_LEVEL: 3 -->
 
@@ -14,7 +15,7 @@ contextType: "implementation"
 <!-- ANCHOR:overview -->
 ## Overview
 
-This document merges the implementation plans from four related bug-fix spec folders under `022-hybrid-rag-fusion`:
+This document merges the implementation plans from five related bug-fix spec folders under `022-hybrid-rag-fusion`:
 
 | # | Source Folder | Title | Status |
 |---|--------------|-------|--------|
@@ -22,8 +23,9 @@ This document merges the implementation plans from four related bug-fix spec fol
 | 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | Complete |
 | 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | Complete |
 | 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress |
+| 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | In Progress |
 
-Current gate truth (2026-03-07): `npm run check` passes, `npm run check:full` passes. Targeted post-fix verification remains green per `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`.
+Current gate truth (2026-03-10): baseline checks from 2026-03-07 remain green (`npm run check`, `npm run check:full`, and targeted post-fix verification in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`), and W5 verification reports `npx tsc --noEmit` clean across `mcp_server`, `scripts`, and `shared` with `368/372` tests passing (4 pre-existing failures).
 
 Each section below preserves the full original plan content with source attribution.
 <!-- /ANCHOR:overview -->
@@ -646,3 +648,54 @@ After all phases:
 - [ ] Documentation accuracy errors corrected
 - [ ] P2 documentation quality addressed
 - [ ] Checklist fully verified
+
+---
+---
+
+## Source: 017 -- 30-Commit Bug Audit (W5, 2026-03-10)
+
+> **Source lineage:** `017` stream merged into canonical `plan.md`.
+
+---
+
+### 1. Summary
+
+W5 used a 15-agent audit strategy over the last 30 fix/feature commits:
+- 10 Copilot agents (gpt-5.3-codex xhigh) in Waves 1-2 for per-module deep review.
+- 5 Codex agents (gpt-5.4 xhigh) in Wave 3 for cross-cutting validation (security, architecture, data flow, state management, integration).
+
+Scope covered `mcp_server/`, `scripts/`, and `shared/`, producing fixed and pending findings with explicit ID-to-file traceability.
+
+---
+
+### 2. Implementation Phases
+
+#### Phase W5-A: Quick Wins (~15 items)
+- Single-line or low-risk logic fixes from the audit shortlist.
+- Includes config parsing guards, status counting, and narrow correctness checks.
+- Objective: stabilize obvious correctness regressions quickly and safely.
+
+#### Phase W5-B: Medium Effort (~20 items)
+- Multi-line behavior fixes spanning handler flow, score-field synchronization, and storage cleanup contracts.
+- Objective: resolve cross-function bugs without broad architecture shifts.
+
+#### Phase W5-C: Larger Refactors (~15 items)
+- Architectural and contract-level remediations (pipeline normalization, ownership/authorization boundaries, extraction/path parsing hardening).
+- Objective: remove systemic drift and race-prone patterns.
+
+---
+
+### 3. Phase Dependencies
+
+- W5-A executes first and is the stabilization gate for later phases.
+- W5-B starts after W5-A baseline is confirmed.
+- W5-C may run in parallel with W5-B after W5-A stabilization, with shared contract checkpoints to avoid drift.
+
+---
+
+### 4. Verification Strategy
+
+1. Run `npx tsc --noEmit` for all three code surfaces (`mcp_server`, `scripts`, `shared`).
+2. Run the test suite and preserve the W5 baseline truth: `368/372` passing, with 4 pre-existing failures.
+3. Validate each fix at file level by matching finding IDs to path:line evidence in tasks/checklist artifacts.
+4. Keep each phase gated by explicit pass/fail evidence before promoting items to completed status.

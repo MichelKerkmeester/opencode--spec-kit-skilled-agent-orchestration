@@ -1,0 +1,15 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery",
+  "description": "003 — discovery",
+  "keywords": ["discovery"],
+  "lastUpdated": "2026-03-10T11:14:56.000Z",
+  "specId": "003",
+  "folderSlug": "discovery",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "013-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
