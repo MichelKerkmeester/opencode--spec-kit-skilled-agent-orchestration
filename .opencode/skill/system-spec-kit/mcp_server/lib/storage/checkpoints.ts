@@ -13,6 +13,7 @@ import type Database from 'better-sqlite3';
 // Internal utils
 import { toErrorMessage } from '../../utils/db-helpers';
 import { bulkInsertEdges, deleteEdgesForMemory, type RelationType } from './causal-edges';
+import { recordHistory } from './history';
 
 /* -------------------------------------------------------------
    1. CONSTANTS
@@ -696,6 +697,10 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
       // Clear existing data if requested
       if (clearExisting) {
         if (checkpointSpecFolder) {
+          // AI-WHY: Record DELETE history only for currently-existing memories (not snapshot-only IDs)
+          for (const memId of currentScopedMemoryIds) {
+            try { recordHistory(memId, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
+          }
           if (hasVectorSnapshot) {
             try { deleteRowsByIds(database, 'vec_memories', 'rowid', scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
           }
@@ -703,6 +708,11 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           try { deleteCausalEdgesForMemoryIds(database, scopedMemoryIdsToReplace); } catch (_error: unknown) { /* table may not exist */ }
           database.prepare('DELETE FROM memory_index WHERE spec_folder = ?').run(checkpointSpecFolder);
         } else {
+          // AI-WHY: Record DELETE history for all memories before full checkpoint restore
+          const allIds = database.prepare('SELECT id FROM memory_index').all() as Array<{ id: number }>;
+          for (const row of allIds) {
+            try { recordHistory(row.id, 'DELETE', null, null, 'mcp:checkpoint_restore'); } catch (_histErr: unknown) { /* best-effort */ }
+          }
           database.prepare('DELETE FROM memory_index').run();
           // AI-WHY: Only clear vec table when checkpoint contains vectors to restore.
           // This keeps backward compatibility for older checkpoints that lacked vector snapshots.

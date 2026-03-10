@@ -249,13 +249,8 @@ describe('DB Error Safe Defaults (T103)', () => {
       } catch { /* ignore */ }
     });
 
-    it('T103-01b: recordValidation returns safe default on closed DB', () => {
-      const result = mod.recordValidation(closedDb!, 1, true);
-      expect(result).toBeTruthy();
-      expect(result.confidence).toBe(0.5);
-      expect(result.validationCount).toBe(0);
-      expect(result.promotionEligible).toBe(false);
-      expect(result.wasPromoted).toBe(false);
+    it('T103-01b: recordValidation throws on closed DB (T-07: explicit failure signaling)', () => {
+      expect(() => mod.recordValidation(closedDb!, 1, true)).toThrow();
     });
 
     it('T103-01c: getConfidenceScore returns CONFIDENCE_BASE on closed DB', () => {
@@ -295,11 +290,8 @@ describe('DB Error Safe Defaults (T103)', () => {
       brokenDb = createBrokenDb();
     });
 
-    it('T103-02a: recordValidation survives SQLITE_BUSY', () => {
-      const result = mod.recordValidation(brokenDb, 100, true);
-      expect(result).toBeTruthy();
-      expect(result.confidence).toBe(0.5);
-      expect(result.validationCount).toBe(0);
+    it('T103-02a: recordValidation throws on SQLITE_BUSY (T-07: explicit failure signaling)', () => {
+      expect(() => mod.recordValidation(brokenDb, 100, true)).toThrow();
     });
 
     it('T103-02b: getConfidenceScore survives SQLITE_BUSY', () => {
@@ -353,7 +345,13 @@ describe('DB Error Safe Defaults (T103)', () => {
           captured.push(args.map(String).join(' '));
         });
 
-        fn.call(brokenDb);
+        // T-07: recordValidation now throws on DB errors (explicit failure signaling).
+        // Other functions still return safe defaults.
+        try {
+          fn.call(brokenDb);
+        } catch {
+          // expected for recordValidation
+        }
         errorSpy.mockRestore();
 
         const hasContext = captured.some(msg => msg.includes(fn.tag));

@@ -12,6 +12,7 @@ import { initEmbeddingCache } from '../cache/embedding-cache';
 import {
   get_error_message,
 } from './vector-index-types';
+import { init as initHistory } from '../storage/history';
 
 const logger = createLogger('VectorIndex');
 
@@ -788,6 +789,7 @@ export function migrate_confidence_columns(database: Database.Database): void {
       database.exec(`CREATE INDEX IF NOT EXISTS idx_importance_tier ON memory_index(importance_tier)`);
       console.warn('[vector-index] Migration: Created idx_importance_tier index');
     } catch (_e: unknown) {
+      console.warn('[vector-index-schema] Index creation failed (non-critical)', { error: _e instanceof Error ? _e.message : String(_e) });
     }
   }
 
@@ -1078,10 +1080,31 @@ export function ensureCompanionTables(database: Database.Database): void {
       event TEXT NOT NULL CHECK(event IN ('ADD', 'UPDATE', 'DELETE')),
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
       is_deleted INTEGER DEFAULT 0,
-      actor TEXT DEFAULT 'system',
-      FOREIGN KEY (memory_id) REFERENCES memory_index(id)
+      actor TEXT DEFAULT 'system'
     )
   `);
+
+  // Migration: rebuild table when legacy constraints are detected.
+  const tableInfo = database.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_history'"
+  ).get() as { sql: string } | undefined;
+  if (tableInfo?.sql && (tableInfo.sql.includes('CHECK(actor IN') || tableInfo.sql.includes('FOREIGN KEY'))) {
+    database.exec(`
+      ALTER TABLE memory_history RENAME TO memory_history_old;
+      CREATE TABLE memory_history (
+        id TEXT PRIMARY KEY,
+        memory_id INTEGER NOT NULL,
+        prev_value TEXT,
+        new_value TEXT,
+        event TEXT NOT NULL CHECK(event IN ('ADD', 'UPDATE', 'DELETE')),
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        is_deleted INTEGER DEFAULT 0,
+        actor TEXT DEFAULT 'system'
+      );
+      INSERT INTO memory_history SELECT * FROM memory_history_old;
+      DROP TABLE memory_history_old;
+    `);
+  }
 
   database.exec(`
     CREATE TABLE IF NOT EXISTS checkpoints (
@@ -1147,6 +1170,7 @@ export function create_schema(database: Database.Database, options: { sqlite_vec
     ensure_canonical_file_path_support(database);
     create_common_indexes(database);
     ensureCompanionTables(database);
+    initHistory(database);
     // AI-WHY: Sprint 2 (REQ-S2-001) — embedding cache table must exist before any
     // save/index operation so lookupEmbedding() can skip redundant provider calls.
     initEmbeddingCache(database);
@@ -1262,6 +1286,7 @@ export function create_schema(database: Database.Database, options: { sqlite_vec
 
   // Create companion tables
   ensureCompanionTables(database);
+  initHistory(database);
 
   // AI-WHY: Sprint 2 (REQ-S2-001) — create embedding_cache table
   initEmbeddingCache(database);

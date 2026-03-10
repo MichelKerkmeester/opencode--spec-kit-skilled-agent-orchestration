@@ -1,11 +1,11 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/decision-record.md -->
 ---
-title: "Decision Record: Combined Bug Fixes (016)"
+title: "Decision Record: Combined Bug Fixes"
 description: "Merged architectural decisions from 013 and 015 source spec folders"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Decision Record: Combined Bug Fixes (016)
+# Decision Record: Combined Bug Fixes
 
 <!-- SPECKIT_LEVEL: 3 -->
 
@@ -457,12 +457,13 @@ Unique historical content from 009 (ADR bodies + remediation execution details) 
 
 ### Decision
 
-**Retire the formerly separate remediation-epic lineage now folded into `008-combined-bug-fixes` and `009-architecture-audit` as live spec folders after archival fold-in sufficiency checks pass.**
+**Retire separate 009/010 live ownership and keep their content as historical lineage merged into `008-combined-bug-fixes` after archival fold-in sufficiency checks pass.**
 
 Operational rules:
-1. 015 remains the only live canonical folder for this remediation track.
-2. 009/010 content persists only through historical digests in canonical 008 and normalized downstream references.
-3. Resume/navigation pointers must target 015 or subsequent active folders (for example, 011/012), not deleted legacy folders.
+1. `008-combined-bug-fixes` remains the only live canonical folder for this remediation track.
+2. Source 015 remains a merged historical stream with deferred work still tracked in canonical 008 (`tasks.md`, `checklist.md`, `implementation-summary.md`).
+3. Source 016 remains a separate pending audit scope and is not implied complete by this archival decision.
+4. 009/010 content persists only through historical digests in canonical 008 and normalized downstream references; resume/navigation pointers must target 008 or subsequent active folders, not deleted legacy folders.
 
 ### Consequences
 

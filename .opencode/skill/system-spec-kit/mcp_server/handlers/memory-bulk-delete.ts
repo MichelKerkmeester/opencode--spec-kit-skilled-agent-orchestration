@@ -14,6 +14,7 @@ import * as causalEdges from '../lib/storage/causal-edges';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
+import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
@@ -170,6 +171,12 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   const bulkDeleteTx = database.transaction(() => {
     for (const memory of memoriesToDelete) {
       if (vectorIndex.deleteMemory(memory.id)) {
+        // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+        try {
+          recordHistory(memory.id, 'DELETE', memory.file_path ?? null, null, 'mcp:memory_bulk_delete');
+        } catch (_histErr: unknown) {
+          // history recording is best-effort inside bulk delete
+        }
         deletedCount++;
         deletedIds.push(memory.id);
 

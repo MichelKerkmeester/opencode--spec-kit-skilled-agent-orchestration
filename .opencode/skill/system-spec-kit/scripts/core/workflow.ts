@@ -92,6 +92,10 @@ export interface WorkflowResult {
   };
 }
 
+const CODE_FENCE_SEGMENT_RE = /(```[\s\S]*?```)/g;
+const WORKFLOW_BLOCK_HTML_TAG_RE = /<\/?(?:article|aside|blockquote|body|br|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|th|thead|tr|ul)\b[^>]*\/?>/gi;
+const WORKFLOW_INLINE_HTML_TAG_RE = /<\/?(?:code|em|i|kbd|small|span|strong|sub|sup|u)\b[^>]*\/?>/gi;
+
 function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
   if (existing.length >= 1) {
     return existing;
@@ -138,6 +142,22 @@ function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[]
   }
 
   return ['session', 'context'];
+}
+
+function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
+  const segments = rawContent.split(CODE_FENCE_SEGMENT_RE);
+
+  return segments.map((segment) => {
+    if (segment.startsWith('```')) {
+      return segment;
+    }
+
+    return segment
+      .replace(WORKFLOW_BLOCK_HTML_TAG_RE, '\n')
+      .replace(WORKFLOW_INLINE_HTML_TAG_RE, '')
+      .replace(/[ \t]+\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n');
+  }).join('');
 }
 
 const PREFERRED_PARENT_FILES = new Set([
@@ -1134,15 +1154,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Preserves HTML inside fenced code blocks (```...```) which is legitimate code.
   log('Step 8.5: Content cleaning...');
   const rawContent = files[ctxFilename];
-  // Split on code fences, only strip HTML tags from non-code sections
-  const codeFenceRe = /(```[\s\S]*?```)/g;
-  const segments = rawContent.split(codeFenceRe);
-  let cleanedContent = segments.map((segment) => {
-    // Odd indices are code blocks (captured groups) — preserve them
-    if (segment.startsWith('```')) return segment;
-    // Strip leaked formatting tags from non-code content
-    return segment.replace(/<\/?(?:div|span|p|br|hr)\b[^>]*\/?>/gi, '');
-  }).join('');
+  const cleanedContent = stripWorkflowHtmlOutsideCodeFences(rawContent);
   // Only update if cleaning made changes
   if (cleanedContent !== rawContent) {
     files[ctxFilename] = cleanedContent;

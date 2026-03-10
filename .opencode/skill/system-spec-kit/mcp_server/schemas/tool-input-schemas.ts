@@ -184,7 +184,7 @@ const memoryBulkDeleteSchema = getSchema({
   tier: importanceTierEnum,
   specFolder: optionalPathString(),
   confirm: z.boolean(),
-  olderThanDays: safeNumericPreprocess.pipe(z.number().int().min(0)).optional(),
+  olderThanDays: safeNumericPreprocess.pipe(z.number().int().min(1)).optional(),
   skipCheckpoint: z.boolean().optional(),
 });
 

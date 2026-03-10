@@ -17,7 +17,6 @@ import {
   validateFolderAlignment,
 } from './alignment-validator';
 import { setupContextDirectory } from './directory-setup';
-import { getPhaseFolderRejectionSync } from '../core';
 
 /* -----------------------------------------------------------------
    EXPORTS - Primary (camelCase)
@@ -33,7 +32,6 @@ export {
   calculateAlignmentScore,
   computeTelemetrySchemaDocsFieldDiffs,
   formatTelemetrySchemaDocsDriftDiffs,
-  getPhaseFolderRejectionSync,
   validateTelemetrySchemaDocsDrift,
   validateContentAlignment,
   validateFolderAlignment,

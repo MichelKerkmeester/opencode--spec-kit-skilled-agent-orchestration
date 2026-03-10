@@ -15,6 +15,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "10-03-26_16-06__review-spec-folder-context.md",
+    "10-03-26_16-17__review-spec-folder-context.md"
+  ]
 }

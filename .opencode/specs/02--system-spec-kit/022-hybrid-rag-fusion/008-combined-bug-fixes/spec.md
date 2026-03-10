@@ -9,7 +9,7 @@ description: "Merged spec combining 5 bug-fix and alignment workstreams from 022
 importance_tier: "high"
 contextType: "implementation"
 ---
-# Combined Specification: Bug Fixes (016)
+# Combined Specification: Bug Fixes
 
 <!-- SPECKIT_LEVEL: 3 -->
 

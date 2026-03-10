@@ -64,7 +64,7 @@ Python tests:
 - `test_dual_threshold.py`
 
 Vitest regression suites:
-- `generate-context-cli-authority.vitest.ts` - preserves explicit CLI spec-folder targets through `main()` into `runWorkflow`
+- `generate-context-cli-authority.vitest.ts` - preserves explicit CLI root-spec and phase-folder targets through `main()` into `runWorkflow`
 - `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, and content-aware slug coverage
 - `memory-render-fixture.vitest.ts` - rendered-memory regression coverage for naming fallback and quality validation
 - import-policy Vitest suites under `tests/` - boundary enforcement coverage for package-form, relative, dynamic, and AST-backed checks

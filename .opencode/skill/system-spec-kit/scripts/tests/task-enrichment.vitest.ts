@@ -12,6 +12,7 @@ import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskF
 import { validateMemoryQualityContent } from '../memory/validate-memory-quality';
 import type { SessionData } from '../types/session-types';
 import { collectSessionData } from '../extractors/collect-session-data';
+import { populateTemplate } from '../renderers';
 
 const workflowHarness = vi.hoisted(() => ({
   specFolderPath: '',
@@ -764,6 +765,67 @@ describe('workflow seam guardrail', () => {
 
       expect(result.contextFilename).toContain('__direct-save-naming-fix-for-hybrid-rag-fusion.md');
       expect(result.contextFilename).not.toContain('__hybrid-rag-fusion.md');
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it('strips broader leaked HTML outside fenced code blocks while preserving fenced HTML', async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
+    const specFolderPath = path.join(tempRoot, '022-hybrid-rag-fusion');
+    const contextDir = path.join(tempRoot, 'memory');
+    fs.mkdirSync(specFolderPath, { recursive: true });
+    fs.mkdirSync(contextDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(specFolderPath, 'spec.md'),
+      ['---', 'title: "Spec: Workflow HTML Sanitization"', '---', '# Spec'].join('\n'),
+      'utf-8'
+    );
+
+    workflowHarness.specFolderPath = specFolderPath;
+    workflowHarness.contextDir = contextDir;
+
+    vi.mocked(populateTemplate).mockResolvedValueOnce([
+      '# Workflow HTML Sanitization',
+      '',
+      '<section><strong>Leaked</strong><ul><li>alpha</li><li>beta</li></ul></section>',
+      '',
+      '```html',
+      '<div class="preserve-me">keep fenced html</div>',
+      '```',
+      '',
+      '<p>tail</p><code>inline</code>',
+    ].join('\n'));
+
+    const { runWorkflow } = await import('../core/workflow');
+
+    try {
+      await runWorkflow({
+        collectedData: {
+          _source: 'opencode-capture',
+          SPEC_FOLDER: '022-hybrid-rag-fusion',
+          userPrompts: [{ prompt: 'Sanitize workflow HTML leaks.', timestamp: '2026-03-06T09:00:00Z' }],
+        },
+        specFolderArg: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
+        silent: true,
+      });
+
+      const written = workflowHarness.writtenFiles.at(-1);
+      expect(written).toBeDefined();
+
+      const [writtenContent] = Object.values(written!.files);
+      expect(writtenContent).toContain('Leaked');
+      expect(writtenContent).toContain('alpha');
+      expect(writtenContent).toContain('beta');
+      expect(writtenContent).toContain('tail');
+      expect(writtenContent).toContain('inline');
+      expect(writtenContent).not.toContain('<section>');
+      expect(writtenContent).not.toContain('<strong>');
+      expect(writtenContent).not.toContain('<ul>');
+      expect(writtenContent).not.toContain('<li>');
+      expect(writtenContent).not.toContain('<p>');
+      expect(writtenContent).not.toContain('<code>inline</code>');
+      expect(writtenContent).toContain('```html\n<div class="preserve-me">keep fenced html</div>\n```');
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

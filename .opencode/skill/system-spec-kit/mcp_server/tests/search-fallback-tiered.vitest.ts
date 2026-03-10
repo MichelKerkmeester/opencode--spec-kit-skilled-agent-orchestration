@@ -329,12 +329,29 @@ describe('PI-A2: Regression guards', () => {
     const structural = [
       { id: 100, score: 1.0, source: 'structural' } as HybridSearchResult,
       { id: 101, score: 0.95, source: 'structural' } as HybridSearchResult,
+      { id: 102, score: 0.90, source: 'structural' } as HybridSearchResult,
+      { id: 103, score: 0.85, source: 'structural' } as HybridSearchResult,
+      { id: 104, score: 0.80, source: 'structural' } as HybridSearchResult,
+      { id: 105, score: 0.75, source: 'structural' } as HybridSearchResult,
+      { id: 106, score: 0.70, source: 'structural' } as HybridSearchResult,
+      { id: 107, score: 0.65, source: 'structural' } as HybridSearchResult,
     ];
 
     const calibrated = __testables.calibrateTier3Scores(existing, structural);
 
-    expect(calibrated[0].score).toBeLessThan(existing[0].score);
-    expect(calibrated[1].score).toBeLessThan(calibrated[0].score);
+    // topCap = 0.13 * 0.5 = 0.065, decayPerRank = 0.13 * 0.08 = 0.0104
+    // Pin exact 50% cap on first result
+    expect(calibrated[0].score).toBeCloseTo(0.065, 5);
+    // Pin decay curve on second result
+    expect(calibrated[1].score).toBeCloseTo(0.065 - 0.0104, 5);
+    // Monotonic decrease
+    expect(calibrated[2].score).toBeLessThan(calibrated[1].score);
+    // Zero-floor: index 7 → 0.065 - 7*0.0104 = -0.0078 → clamped to 0
+    expect(calibrated[7].score).toBe(0);
+    // All scores non-negative
+    for (const row of calibrated) {
+      expect(row.score).toBeGreaterThanOrEqual(0);
+    }
   });
 
   it('T045-17d: applyResultLimit enforces cap after merges', () => {

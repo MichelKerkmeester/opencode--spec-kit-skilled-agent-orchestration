@@ -14,6 +14,7 @@ import * as causalEdges from '../lib/storage/causal-edges';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
+import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
@@ -70,6 +71,14 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
 
         if (deletedCount > 0) {
+          // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+          // Placed after deleteMemory to avoid false audit rows for non-existent IDs.
+          try {
+            recordHistory(numericId, 'DELETE', singleSnapshot?.file_path ?? null, null, 'mcp:memory_delete');
+          } catch (_histErr: unknown) {
+            // history recording is best-effort
+          }
+
           causalEdges.init(database);
           causalEdges.deleteEdgesForMemory(String(numericId));
 
@@ -163,6 +172,13 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       const bulkDeleteTx = database.transaction(() => {
         for (const memory of memories) {
           if (vectorIndex.deleteMemory(memory.id)) {
+            // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+            try {
+              const snapshot = hashById.get(memory.id);
+              recordHistory(memory.id, 'DELETE', snapshot?.file_path ?? null, null, 'mcp:memory_delete');
+            } catch (_histErr: unknown) {
+              // history recording is best-effort inside bulk delete
+            }
             deletedCount++;
             deletedIds.push(memory.id);
             causalEdges.deleteEdgesForMemory(String(memory.id));
@@ -192,12 +208,10 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       });
       bulkDeleteTx();
     } else {
-      for (const memory of memories) {
-        if (vectorIndex.deleteMemory(memory.id)) {
-          deletedCount++;
-          deletedIds.push(memory.id);
-        }
-      }
+      // T-06: Throw error when DB unavailable for bulk-folder delete path.
+      // Without a DB handle, causal edge cleanup, mutation ledger writes, and
+      // history recording cannot be performed — partial deletes are unsafe.
+      throw new Error('Bulk-folder delete aborted: database unavailable. Causal edge cleanup and history recording require a database handle.');
     }
   }
 

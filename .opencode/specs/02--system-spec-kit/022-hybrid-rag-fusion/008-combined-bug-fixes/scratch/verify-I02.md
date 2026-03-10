@@ -28,7 +28,9 @@ CONFIG.DATA_FILE = null;                // explicitly null — no JSON
 
 **Data shape exiting:** `CONFIG.DATA_FILE = null`, `CONFIG.SPEC_FOLDER_ARG = <path>`
 
-**Error handling:** `validateArguments()` calls `isValidSpecFolder()` — on failure, logs helpful "did you mean" suggestions and calls `process.exit(1)`. Also `rejectExplicitPhaseFolderTarget()` throws if target is a phase folder.
+**Error handling (historical snapshot):** `validateArguments()` calls `isValidSpecFolder()` — on failure, logs helpful "did you mean" suggestions and calls `process.exit(1)`. At the time of this trace, `rejectExplicitPhaseFolderTarget()` threw if target was a phase folder.
+
+**Superseded behavior note (2026-03-10):** Explicit phase-folder targets are now authoritative for context saves; direct saves to `.../008-combined-bug-fixes` write into that phase folder's `memory/`.
 
 **Flow continuity:** Unbroken. Calls `workflow.runWorkflow()` with `dataFile: CONFIG.DATA_FILE ?? undefined` (undefined), `specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined`.
 

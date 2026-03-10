@@ -188,7 +188,9 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     expect(ids).toContain('graph_only');
 
     const sharedDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'shared'), 'shared');
-    expect(sharedDoc.convergenceBonus).toBeGreaterThan(0);
+    expect(sharedDoc.sources).toHaveLength(2);
+    expect(sharedDoc.rrfScore).toBeGreaterThan(expectDefined(fused.find((r: MultiFusedResult) => r.id === 'vec_only'), 'vec_only').rrfScore);
+    expect(sharedDoc.convergenceBonus).toBe(0);
   });
 });
 

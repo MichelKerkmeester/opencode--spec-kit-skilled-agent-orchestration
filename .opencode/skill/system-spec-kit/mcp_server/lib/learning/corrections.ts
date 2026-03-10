@@ -586,19 +586,42 @@ export function undo_correction(correction_id: number): UndoResult {
     `).run(correction_id);
 
     // Try to remove the causal edge if it exists
+    // T-02: Scope deletion by relation type to avoid removing unrelated edges
+    // between the same pair of memories (e.g., 'supersedes' vs 'derived_from').
     try {
       if (correction.correction_memory_id) {
+        // Map correction_type back to the causal edge relation
+        let undoRelation: string;
+        switch (correction.correction_type) {
+          case CORRECTION_TYPES.SUPERSEDED:
+          case CORRECTION_TYPES.DEPRECATED:
+            undoRelation = 'supersedes';
+            break;
+          case CORRECTION_TYPES.REFINED:
+          case CORRECTION_TYPES.MERGED:
+            undoRelation = 'derived_from';
+            break;
+          default:
+            undoRelation = 'supersedes';
+        }
+
         // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
-        db!.prepare(`
+        const deleteResult = db!.prepare(`
           DELETE FROM causal_edges
-          WHERE source_id = ? AND target_id = ?
+          WHERE source_id = ? AND target_id = ? AND relation = ?
         `).run(
           String(correction.correction_memory_id),
-          String(correction.original_memory_id)
+          String(correction.original_memory_id),
+          undoRelation
         );
+
+        if ((deleteResult as { changes: number }).changes === 0) {
+          console.warn(`[corrections] undo: no causal edge found for (${correction.correction_memory_id} → ${correction.original_memory_id}, relation=${undoRelation})`);
+        }
       }
-    } catch (_e: unknown) {
-      // Non-critical, causal edge may not exist
+    } catch (edgeErr: unknown) {
+      // T-02: Surface edge-deletion errors instead of empty catch
+      console.warn(`[corrections] undo: causal edge deletion failed: ${get_error_message(edgeErr)}`);
     }
 
     return {

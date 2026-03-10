@@ -8,6 +8,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { formatAgeString as format_age_string } from '../utils/format-helpers';
 import { createLogger } from '../utils/logger';
+import { recordHistory } from '../storage/history';
 import * as embeddingsProvider from '../providers/embeddings';
 import {
   to_embedding_buffer,
@@ -550,6 +551,7 @@ export function extract_date(content: unknown, file_path?: string): string | nul
           return parsed.toISOString().split('T')[0];
         }
       } catch (_e: unknown) {
+        console.warn('[vector-index-queries] Date parsing failed', { error: _e instanceof Error ? _e.message : String(_e) });
       }
     }
   }
@@ -1359,6 +1361,10 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
     const delete_chunk_stmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
     for (const chunk of orphaned_chunks) {
       try {
+        // AI-WHY: Record DELETE history before auto-cleaning orphaned chunks
+        try {
+          recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
+        } catch (_histErr: unknown) { /* best-effort */ }
         delete_chunk_stmt.run(chunk.id);
         cleaned_chunks++;
       } catch (e: unknown) {

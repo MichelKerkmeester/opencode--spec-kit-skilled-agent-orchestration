@@ -128,6 +128,19 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       }
       // If not truncated, it fit within budget — also acceptable
     });
+
+    it('T205-B4: Non-envelope payload over budget reports truncated', () => {
+      if (!memoryContext?.enforceTokenBudget) return;
+
+      const nonEnvelopeResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
+        content: [{ type: 'text', text: 'x'.repeat(5000) }],
+      };
+      const { enforcement } = memoryContext.enforceTokenBudget(nonEnvelopeResult, 500);
+      expect(enforcement.enforced).toBe(true);
+      expect(enforcement.truncated).toBe(true);
+    });
   });
 
   // =========================================================

@@ -8,6 +8,7 @@ import * as path from 'path';
 import * as fsSync from 'fs';
 
 // Internal modules
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import {
   CONFIG,
   findActiveSpecsDir,
@@ -16,7 +17,6 @@ import {
   SPEC_FOLDER_BASIC_PATTERN,
   CATEGORY_FOLDER_PATTERN,
   findChildFolderSync,
-  getPhaseFolderRejectionSync,
 } from '../core';
 import { runWorkflow } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
@@ -124,14 +124,7 @@ process.on('SIGINT', () => {
 // ---------------------------------------------------------------
 
 function isUnderApprovedSpecsRoot(normalizedInput: string): boolean {
-  if (normalizedInput.startsWith('specs/') || normalizedInput.startsWith('.opencode/specs/')) {
-    return true;
-  }
-  const resolved = path.resolve(CONFIG.PROJECT_ROOT, normalizedInput);
-  return getSpecsDirectories().some((specsDir) => {
-    const resolvedRoot = path.resolve(specsDir);
-    return resolved.startsWith(resolvedRoot + path.sep) || resolved === resolvedRoot;
-  });
+  return validateFilePath(path.resolve(CONFIG.PROJECT_ROOT, normalizedInput), getSpecsDirectories()) !== null;
 }
 
 function isValidSpecFolder(folderPath: string): SpecFolderValidation {
@@ -152,7 +145,11 @@ function isValidSpecFolder(folderPath: string): SpecFolderValidation {
         // Fallback: check if the path resolves to an existing directory under any specs root
         for (const specsDir of getSpecsDirectories()) {
           const candidate = path.join(specsDir, normalizedInput);
-          if (fsSync.existsSync(candidate)) {
+          if (
+            !path.isAbsolute(normalizedInput) &&
+            fsSync.existsSync(candidate) &&
+            validateFilePath(candidate, getSpecsDirectories()) !== null
+          ) {
             return { valid: true };
           }
         }
@@ -395,74 +392,6 @@ function validateArguments(): void {
   process.exit(1);
 }
 
-function resolveExplicitCliSpecFolderPath(specFolderArg: string): string | null {
-  if (!specFolderArg || specFolderArg.endsWith('.json')) {
-    return null;
-  }
-
-  if (path.isAbsolute(specFolderArg)) {
-    const absoluteSegments = specFolderArg.replace(/\/+$/, '').split(/[\\/]/).filter(Boolean);
-    const lastSegment = absoluteSegments.at(-1);
-    const parentSegment = absoluteSegments.at(-2);
-
-    if (
-      (lastSegment && SPEC_FOLDER_PATTERN.test(lastSegment)) ||
-      (parentSegment && lastSegment && SPEC_FOLDER_PATTERN.test(parentSegment) && SPEC_FOLDER_PATTERN.test(lastSegment))
-    ) {
-      return specFolderArg;
-    }
-  }
-
-  const explicitProjectScopedPath = (
-    specFolderArg.startsWith('specs/') ||
-    specFolderArg.startsWith('.opencode/specs/')
-  )
-    ? path.join(CONFIG.PROJECT_ROOT, specFolderArg)
-    : null;
-
-  if (explicitProjectScopedPath && fsSync.existsSync(explicitProjectScopedPath)) {
-    return explicitProjectScopedPath;
-  }
-
-  let cleaned = specFolderArg;
-  if (cleaned.startsWith('.opencode/specs/')) {
-    cleaned = cleaned.slice('.opencode/specs/'.length);
-  } else if (cleaned.startsWith('specs/')) {
-    cleaned = cleaned.slice('specs/'.length);
-  }
-  cleaned = cleaned.replace(/\/+$/, '');
-
-  const segments = cleaned.split('/').filter(Boolean);
-  if (segments.length >= 2) {
-    for (const specsDir of getSpecsDirectories()) {
-      const candidate = path.join(specsDir, ...segments);
-      if (fsSync.existsSync(candidate)) {
-        return candidate;
-      }
-    }
-  }
-
-  return null;
-}
-
-function rejectExplicitPhaseFolderTarget(): void {
-  if (!CONFIG.SPEC_FOLDER_ARG) {
-    return;
-  }
-
-  const resolvedPath = resolveExplicitCliSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
-  if (!resolvedPath) {
-    return;
-  }
-
-  const rejection = getPhaseFolderRejectionSync(resolvedPath);
-  if (!rejection) {
-    return;
-  }
-
-  throw new Error(rejection.message);
-}
-
 // ---------------------------------------------------------------
 // 5. MAIN ENTRY POINT
 // ---------------------------------------------------------------
@@ -473,7 +402,6 @@ async function main(): Promise<void> {
   try {
     parseArguments();
     validateArguments();
-    rejectExplicitPhaseFolderTarget();
 
     await runWorkflow({
       dataFile: CONFIG.DATA_FILE ?? undefined,
@@ -483,7 +411,7 @@ async function main(): Promise<void> {
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
-    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Direct memory saves cannot target a phase folder/.test(errMsg);
+    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected/.test(errMsg);
 
     if (isExpected) {
       console.error(`\nError: ${errMsg}`);

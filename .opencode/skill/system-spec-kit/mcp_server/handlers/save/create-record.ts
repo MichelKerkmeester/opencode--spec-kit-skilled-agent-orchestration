@@ -13,6 +13,7 @@ import * as incrementalIndex from '../../lib/storage/incremental-index';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 import { toErrorMessage } from '../../utils';
 
+import { recordHistory } from '../../lib/storage/history';
 import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
 import { detectSpecLevelFromParsed } from '../handler-utils';
 import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
@@ -123,6 +124,13 @@ export function createMemoryRecord(
           ? `[memory-save] BM25 indexing failed: ${message}`
           : `[memory-save] BM25 indexing failed (deferred path): ${message}`);
       }
+    }
+
+    // T-03: Record ADD history for the newly created memory
+    try {
+      recordHistory(memory_id, 'ADD', null, parsed.title ?? filePath, 'mcp:memory_save');
+    } catch (_histErr: unknown) {
+      // history recording is best-effort during save
     }
 
     return memory_id;

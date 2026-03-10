@@ -10,6 +10,8 @@
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/handlers/memory-crud-update.ts` | Handler | Memory update CRUD handler |
+| `mcp_server/handlers/memory-crud-delete.ts` | Handler | Memory delete CRUD handler |
 | `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
 | `mcp_server/core/config.ts` | Core | Server configuration |
 | `mcp_server/handlers/memory-crud-types.ts` | Handler | CRUD type definitions |
@@ -70,7 +72,6 @@
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/tool-cache.vitest.ts` | Tool cache tests |

@@ -23,6 +23,7 @@ import * as triggerMatcher from './lib/parsing/trigger-matcher';
 import { downgradeSchemaV16ToV15 } from './lib/storage/schema-downgrade';
 import { DATABASE_PATH, init as initDbState } from './core';
 import { detectNodeVersionMismatch } from './startup-checks';
+import { recordHistory } from './lib/storage/history';
 
 /* ---------------------------------------------------------------
    1. ARGUMENT PARSING
@@ -307,6 +308,12 @@ function runBulkDelete(): void {
 
   const bulkDeleteTx = db.transaction(() => {
     for (const memory of toDelete) {
+      // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+      try {
+        recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete');
+      } catch (_histErr: unknown) {
+        // history recording is best-effort
+      }
       if (vectorIndex.deleteMemory(memory.id)) {
         deletedCount++;
         deletedIds.push(memory.id);

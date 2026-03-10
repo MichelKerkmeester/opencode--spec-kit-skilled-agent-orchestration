@@ -224,14 +224,14 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   }
 
   // AI-WHY: Fallback: if no inner results array found or couldn't parse,
-  // truncate the raw serialized text and report
+  // return the character-level truncated result and mark as truncated
   return {
     result: truncatedResult,
     enforcement: {
       budgetTokens,
       actualTokens,
       enforced: true,
-      truncated: false,
+      truncated: true,
     }
   };
 }
@@ -641,7 +641,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const _contextResponse = createMCPResponse({
     tool: 'memory_context',
     summary: enforcement.truncated
-      ? `Context retrieved via ${effectiveMode} mode (${budgetedResult.strategy} strategy) [truncated: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results to fit ${effectiveBudget} token budget]`
+      ? `Context retrieved via ${effectiveMode} mode (${budgetedResult.strategy} strategy) [truncated${enforcement.originalResultCount !== undefined ? `: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results` : ''} to fit ${effectiveBudget} token budget]`
       : `Context retrieved via ${effectiveMode} mode (${budgetedResult.strategy} strategy)`,
     data: budgetedResult,
     hints: [

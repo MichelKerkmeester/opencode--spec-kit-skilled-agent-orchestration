@@ -1,6 +1,42 @@
 {
-  "version": 13,
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes",
-  "memoryCount": 2,
-  "lastUpdated": "2026-03-09T00:00:00.000Z"
+  "timestamp": "10-03-26 16-17",
+  "messageCount": 0,
+  "decisionCount": 11,
+  "diagramCount": 0,
+  "skillVersion": "1.7.2",
+  "autoTriggered": false,
+  "filtering": {
+    "totalProcessed": 0,
+    "noiseFiltered": 0,
+    "duplicatesRemoved": 0,
+    "qualityScore": 0,
+    "filtered": {
+      "noise": 0,
+      "empty": 0,
+      "duplicate": 0,
+      "lowQuality": 0
+    },
+    "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
+  },
+  "semanticSummary": {
+    "task": "Development session",
+    "filesCreated": 0,
+    "filesModified": 11,
+    "decisions": 0,
+    "messageStats": {
+      "intent": 0,
+      "plan": 0,
+      "implementation": 0,
+      "result": 0,
+      "decision": 0,
+      "total": 0
+    }
+  },
+  "embedding": {
+    "status": "indexed",
+    "model": "nomic-ai/nomic-embed-text-v1.5",
+    "dimensions": 768,
+    "memoryId": 4323,
+    "generatedAt": "2026-03-10T15:17:18.411Z"
+  }
 }

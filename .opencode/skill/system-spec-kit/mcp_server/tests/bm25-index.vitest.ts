@@ -2,7 +2,7 @@
 // TEST: BM25 INDEX
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import type BetterSqlite3 from 'better-sqlite3';
 import {
   BM25Index,
@@ -451,7 +451,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(typeof hybridSearch!.hybridSearchEnhanced).toBe('function');
     });
 
-    it('T038.4: isBm25Available() true when index populated', () => {
+    it.skipIf(!hybridSearch)('T038.4: isBm25Available() true when index populated', () => {
       resetIndex();
       const bm25idx = getIndex();
       bm25idx.addDocument('int1', 'memory retrieval search testing document indexing vector semantic hybrid integration');
@@ -464,7 +464,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       }
     });
 
-    it('T038.5: bm25Search returns results via hybrid-search', () => {
+    it.skipIf(!hybridSearch)('T038.5: bm25Search returns results via hybrid-search', () => {
       resetIndex();
       const bm25idx = getIndex();
       bm25idx.addDocument('int1', 'memory retrieval search testing document indexing vector semantic hybrid integration');
@@ -495,7 +495,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(Array.isArray(results)).toBe(true);
     });
 
-    it('T039.3: combinedLexicalSearch returns BM25 results', () => {
+    it.skipIf(!hybridSearch)('T039.3: combinedLexicalSearch returns BM25 results', () => {
       resetIndex();
       const bm25comb = getIndex();
       bm25comb.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
@@ -504,7 +504,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(results.length).toBeGreaterThan(0);
     });
 
-    it('T039.4: Results include score', () => {
+    it.skipIf(!hybridSearch)('T039.4: Results include score', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
@@ -513,7 +513,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(typeof results[0].score).toBe('number');
     });
 
-    it('T039.5: Results include source or bm25 score', () => {
+    it.skipIf(!hybridSearch)('T039.5: Results include source or bm25 score', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
@@ -524,7 +524,7 @@ describe('BM25 Index Tests (T031-T039)', () => {
       expect(hasSource || hasBm25Score).toBe(true);
     });
 
-    it('T039.6: Results include combined or bm25 score', () => {
+    it.skipIf(!hybridSearch)('T039.6: Results include combined or bm25 score', () => {
       resetIndex();
       const bm25 = getIndex();
       bm25.addDocument('comb1', 'memory retrieval search testing document indexing vector semantic hybrid combined');
@@ -592,5 +592,95 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     // 'auth' appears 3 times, 'login' 2 times
     expect(tf.get('auth') || 0).toBe(3);
     expect(tf.get('login') || 0).toBe(2);
+  });
+
+  // MAINTENANCE: This harness mocks 10 modules. If any export signature
+  // changes upstream, update the corresponding vi.doMock below.
+  async function setupMemoryUpdateHarness() {
+    vi.resetModules();
+
+    const addDocument = vi.fn();
+    const mockDb = {
+      prepare: vi.fn(() => ({
+        get: vi.fn(() => ({
+          title: 'Updated title',
+          content_text: 'Updated body',
+          trigger_phrases: 'updated trigger phrase',
+          file_path: 'specs/001/spec.md',
+        })),
+      })),
+    };
+    const runInTransaction = vi.fn((_database: unknown, callback: () => void) => {
+      callback();
+    });
+
+    vi.doMock('../core', () => ({
+      checkDatabaseUpdated: vi.fn(async () => {}),
+    }));
+    vi.doMock('../lib/search/vector-index', () => ({
+      getMemory: vi.fn(() => ({
+        id: 42,
+        title: 'Original title',
+        content_text: 'Original body',
+        content_hash: 'previous-hash',
+      })),
+      getDb: vi.fn(() => mockDb),
+      updateMemory: vi.fn(),
+      updateEmbeddingStatus: vi.fn(),
+    }));
+    vi.doMock('../lib/providers/embeddings', () => ({
+      generateDocumentEmbedding: vi.fn(async () => new Float32Array([0.1, 0.2, 0.3])),
+    }));
+    vi.doMock('../lib/search/bm25-index', () => ({
+      isBm25Enabled: vi.fn(() => true),
+      getIndex: vi.fn(() => ({
+        addDocument,
+      })),
+    }));
+    vi.doMock('../lib/storage/mutation-ledger', () => ({
+      computeHash: vi.fn(() => 'new-hash'),
+    }));
+    vi.doMock('../lib/storage/transaction-manager', () => ({
+      runInTransaction,
+    }));
+    vi.doMock('../lib/response/envelope', () => ({
+      createMCPSuccessResponse: vi.fn((payload: unknown) => payload),
+      createMCPErrorResponse: vi.fn((payload: unknown) => payload),
+    }));
+    vi.doMock('../utils', () => ({
+      toErrorMessage: vi.fn((error: unknown) => String(error)),
+    }));
+    vi.doMock('../handlers/memory-crud-utils', () => ({
+      getMemoryHashSnapshot: vi.fn(() => ({ content_hash: 'previous-hash' })),
+      appendMutationLedgerSafe: vi.fn(),
+    }));
+    vi.doMock('../handlers/mutation-hooks', () => ({
+      runPostMutationHooks: vi.fn(() => ({
+        latencyMs: 0,
+        triggerCacheCleared: false,
+        constitutionalCacheCleared: false,
+        toolCacheInvalidated: 0,
+        graphSignalsCacheCleared: false,
+        coactivationCacheCleared: false,
+      })),
+    }));
+    vi.doMock('../hooks/mutation-feedback', () => ({
+      buildMutationHookFeedback: vi.fn(() => ({ hints: [], data: {} })),
+    }));
+
+    const { handleMemoryUpdate } = await import('../handlers/memory-crud-update');
+    return { handleMemoryUpdate, addDocument };
+  }
+
+  it('BM25 re-index fires when triggerPhrases change', async () => {
+    const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
+    await handleMemoryUpdate({ id: 42, triggerPhrases: ['updated trigger phrase'] });
+    expect(addDocument).toHaveBeenCalledWith(expect.anything(), expect.stringContaining('Updated'));
+  });
+
+  it('BM25 re-index does NOT fire when non-trigger fields change', async () => {
+    const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
+    await handleMemoryUpdate({ id: 42, importanceWeight: 0.8 });
+    expect(addDocument).not.toHaveBeenCalled();
   });
 });

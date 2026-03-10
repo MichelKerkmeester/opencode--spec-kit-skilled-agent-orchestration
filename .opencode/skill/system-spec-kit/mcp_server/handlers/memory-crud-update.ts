@@ -19,6 +19,7 @@ import { runInTransaction } from '../lib/storage/transaction-manager';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
+import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
@@ -142,8 +143,11 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
 
       // AI-WHY: T2-6 — BM25 index stores title + trigger phrases; must re-index when either changes
       // so keyword search reflects the updated content.
+      // T-05: BM25 re-index failure now rolls back the transaction when the index is operational.
+      // Infrastructure failures (BM25 not available, DB missing prepare) are non-fatal warnings.
       if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled()) {
         try {
+          const bm25Idx = bm25Index.getIndex();
           const row = database.prepare(
             'SELECT title, content_text, trigger_phrases, file_path FROM memory_index WHERE id = ?'
           ).get(id) as { title: string | null; content_text: string | null; trigger_phrases: string | null; file_path: string | null } | undefined;
@@ -155,12 +159,33 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
             if (row.file_path) textParts.push(row.file_path);
             const text = textParts.join(' ');
             if (text.trim()) {
-              bm25Index.getIndex().addDocument(String(id), text);
+              bm25Idx.addDocument(String(id), text);
             }
           }
         } catch (e: unknown) {
-          console.warn(`[memory-crud-update] BM25 re-index failed [requestId=${requestId}]: ${e instanceof Error ? e.message : String(e)}`);
+          const bm25ErrMsg = e instanceof Error ? e.message : String(e);
+          // T-05: Distinguish infrastructure failures from data failures.
+          // Infrastructure: "not a function", "not initialized" → warn and continue.
+          // Data: addDocument failed on an operational index → re-throw to roll back.
+          if (bm25ErrMsg.includes('not a function') || bm25ErrMsg.includes('not initialized')) {
+            console.warn(`[memory-crud-update] BM25 infrastructure unavailable, skipping re-index [requestId=${requestId}]: ${bm25ErrMsg}`);
+          } else {
+            console.error(`[memory-crud-update] BM25 re-index failed, rolling back update [requestId=${requestId}]: ${bm25ErrMsg}`);
+            throw new Error(`BM25 re-index failed: ${bm25ErrMsg}`);
+          }
         }
+      }
+
+      // T-05: Record UPDATE history after successful mutation
+      try {
+        recordHistory(
+          id, 'UPDATE',
+          existing.title ?? null,
+          updateParams.title ?? existing.title ?? null,
+          'mcp:memory_update'
+        );
+      } catch (_histErr: unknown) {
+        // history recording is best-effort
       }
 
       appendMutationLedgerSafe(database, {

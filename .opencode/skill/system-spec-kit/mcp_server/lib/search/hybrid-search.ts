@@ -1306,6 +1306,11 @@ function applyResultLimit(results: HybridSearchResult[], limit?: number): Hybrid
   return results.slice(0, limit);
 }
 
+/** Tier-3 structural results are capped at this fraction of the top existing score. */
+const TIER3_CAP_RATIO = 0.5;
+/** Per-rank score decay for Tier-3 results, as a fraction of the top existing score. */
+const TIER3_DECAY_PER_RANK = 0.08;
+
 /**
  * Keep Tier 3 structural fallback scores below established Tier 1/2 confidence.
  * Prevents structural placeholders from outranking stronger semantic/lexical hits.
@@ -1325,8 +1330,8 @@ function calibrateTier3Scores(
     return tier3;
   }
 
-  const topCap = topExisting * 0.9;
-  const decayPerRank = topExisting * 0.08;
+  const topCap = topExisting * TIER3_CAP_RATIO;
+  const decayPerRank = topExisting * TIER3_DECAY_PER_RANK;
 
   return tier3.map((row, index) => {
     const calibrated = Math.max(0, topCap - (index * decayPerRank));

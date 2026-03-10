@@ -292,7 +292,7 @@ This spec now captures all completed workstreams in one canonical Level 2 packet
 | Direct `handleMemoryIndexScan` for `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` | PASS (`failed: 0`) |
 | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit` | PASS |
 | Spec validator (`validate.sh`) | PASS |
-| Context memory save | PASS via owning-root save workflow; direct nested packet save rejected deterministically, then closure context saved at `022-hybrid-rag-fusion` and packet docs refreshed via `memory_index_scan` |
+| Context memory save | PASS via explicit phase-folder target `02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`; closure context saved directly to `008-combined-bug-fixes/memory/` and packet docs refreshed via `memory_index_scan` (supersedes earlier rejection-based owning-root workaround) |
 | Raw verification artifacts | Saved under `scratch/verification-logs/` for command-level audit evidence |
 
 ---

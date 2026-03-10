@@ -950,6 +950,40 @@ async function testIsValidSpecFolderMultiSegment() {
   }
 }
 
+async function testIsValidSpecFolderRejectsSymlinkEscape() {
+  log('\n🔬 isValidSpecFolder: Rejects symlink escape outside approved roots');
+
+  const { getSpecsDirectories } = require(path.join(DIST_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-SF09b: Reject symlink escape', 'No specs directories available');
+    return;
+  }
+
+  const outsideRoot = fs.mkdtempSync(path.join(require('os').tmpdir(), 'generate-context-outside-'));
+  const outsideSpec = path.join(outsideRoot, '996-outside-child');
+  const symlinkPath = path.join(specsDirs[0], `998-gc-symlink-${Date.now().toString(36)}`);
+
+  try {
+    fs.mkdirSync(outsideSpec, { recursive: true });
+    fs.symlinkSync(outsideRoot, symlinkPath, 'dir');
+
+    const { isValidSpecFolder } = require(path.join(DIST_DIR, 'memory', 'generate-context'));
+    const result = isValidSpecFolder(path.join(symlinkPath, path.basename(outsideSpec)));
+
+    if (!result.valid) {
+      pass('T-SF09b: Reject symlink escape', result.reason || 'invalid as expected');
+    } else {
+      fail('T-SF09b: Reject symlink escape', 'Symlinked path unexpectedly validated');
+    }
+  } catch (err) {
+    fail('T-SF09b: Reject symlink escape', err.message);
+  } finally {
+    try { fs.rmSync(symlinkPath, { recursive: true, force: true }); } catch (_) {}
+    try { fs.rmSync(outsideRoot, { recursive: true, force: true }); } catch (_) {}
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────
    12. TEST: FindChildOptions (onAmbiguity callback)
 ────────────────────────────────────────────────────────────────*/
@@ -1061,6 +1095,7 @@ async function main() {
   // Category I: isValidSpecFolder multi-segment
   log('\n── Category I: isValidSpecFolder Multi-Segment ──');
   await testIsValidSpecFolderMultiSegment();
+  await testIsValidSpecFolderRejectsSymlinkEscape();
 
   // Category J: FindChildOptions (onAmbiguity callback)
   log('\n── Category J: FindChildOptions ──');

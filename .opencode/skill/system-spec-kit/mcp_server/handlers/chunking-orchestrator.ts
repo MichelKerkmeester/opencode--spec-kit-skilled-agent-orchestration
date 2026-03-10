@@ -19,6 +19,7 @@ import { needsChunking, chunkLargeFile } from '../lib/chunking/anchor-chunker';
 import { thinChunks } from '../lib/chunking/chunk-thinning';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 import { requireDb, toErrorMessage } from '../utils';
+import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating';
 import { detectSpecLevelFromParsed } from './handler-utils';
@@ -169,8 +170,15 @@ async function indexChunkedMemoryFile(
         `).all(existing.id) as Array<{ id: number }>;
 
         for (const existingChunk of existingChunkRows) {
+          // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+          try {
+            recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+          } catch (_histErr: unknown) { /* best-effort */ }
           vectorIndex.deleteMemory(existingChunk.id);
         }
+        try {
+          recordHistory(existing.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+        } catch (_histErr: unknown) { /* best-effort */ }
         vectorIndex.deleteMemory(existing.id);
       }
 
@@ -356,13 +364,24 @@ async function indexChunkedMemoryFile(
           `).all(parentId) as Array<{ id: number }>;
 
           for (const chunkRow of chunkRows) {
+            // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+            try {
+              recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback');
+            } catch (_histErr: unknown) { /* best-effort */ }
             if (vectorIndex.deleteMemory(chunkRow.id)) {
               deletedIds.push(chunkRow.id);
             }
           }
+          try {
+            recordHistory(parentId, 'DELETE', null, null, 'mcp:chunking_rollback');
+          } catch (_histErr: unknown) { /* best-effort */ }
           vectorIndex.deleteMemory(parentId);
         } else if (childIds.length > 0) {
           for (const childId of childIds) {
+            // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+            try {
+              recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback');
+            } catch (_histErr: unknown) { /* best-effort */ }
             if (vectorIndex.deleteMemory(childId)) {
               deletedIds.push(childId);
             }
@@ -423,6 +442,13 @@ async function indexChunkedMemoryFile(
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
+      // AI-WHY: Record DELETE history for old children before removing them (safe-swap path)
+      const oldChildRows = database.prepare(`SELECT id FROM memory_index WHERE parent_id = ?`).all(parentId) as Array<{ id: number }>;
+      for (const oldChild of oldChildRows) {
+        try {
+          recordHistory(oldChild.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+        } catch (_histErr: unknown) { /* best-effort */ }
+      }
       database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
 
       const placeholders = newChildIds.map(() => '?').join(', ');
@@ -473,6 +499,12 @@ async function indexChunkedMemoryFile(
 
       if (childIds.length > 0) {
         try {
+          // AI-WHY: Record DELETE history for staged chunks before cleanup
+          for (const cid of childIds) {
+            try {
+              recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback');
+            } catch (_histErr: unknown) { /* best-effort */ }
+          }
           const placeholders = childIds.map(() => '?').join(', ');
           database.prepare(`DELETE FROM memory_index WHERE id IN (${placeholders})`).run(...childIds);
         } catch (cleanupErr: unknown) {

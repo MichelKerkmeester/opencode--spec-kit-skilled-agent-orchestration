@@ -5,6 +5,8 @@
 
 import { describe, it, expect } from 'vitest';
 import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as checkpoints from '../lib/storage/checkpoints';
+import BetterSqlite3 from 'better-sqlite3';
 
 const workingMemoryModule = workingMemory as unknown as Record<string, unknown>;
 type WorkingMemoryDb = Parameters<typeof workingMemory.init>[0];
@@ -225,5 +227,204 @@ describe('Working Memory Module', () => {
     it('0.9999999 = focused', () => {
       expect(workingMemory.calculateTier(0.9999999)).toBe('focused');
     });
+  });
+});
+
+describe('Tool-result extraction provenance', () => {
+  type TestDatabase = InstanceType<typeof BetterSqlite3>;
+  type ExtractedRow = {
+    session_id: string;
+    memory_id: number;
+    source_tool: string | null;
+    source_call_id: string | null;
+    extraction_rule_id: string | null;
+    redaction_applied: number;
+    focus_count: number;
+  };
+
+  function createTestDb(): TestDatabase {
+    const database = new BetterSqlite3(':memory:');
+    database.exec(`
+      CREATE TABLE IF NOT EXISTS memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT NOT NULL,
+        file_path TEXT NOT NULL,
+        title TEXT NOT NULL,
+        importance_weight REAL DEFAULT 0.5,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        importance_tier TEXT DEFAULT 'normal'
+      );
+
+      CREATE TABLE IF NOT EXISTS checkpoints (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE NOT NULL,
+        created_at TEXT NOT NULL,
+        spec_folder TEXT,
+        git_branch TEXT,
+        memory_snapshot BLOB,
+        file_snapshot BLOB,
+        metadata TEXT
+      );
+    `);
+    return database;
+  }
+
+  function seedMemory(database: TestDatabase, memoryId: number): void {
+    const now = new Date().toISOString();
+    database.prepare(`
+      INSERT INTO memory_index (
+        id, spec_folder, file_path, title, importance_weight, created_at, updated_at, importance_tier
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      memoryId,
+      'specs/test-working-memory',
+      `/tmp/memory-${memoryId}.md`,
+      `Memory ${memoryId}`,
+      0.5,
+      now,
+      now,
+      'normal'
+    );
+  }
+
+  function getExtractedRow(database: TestDatabase, sessionId: string, memoryId: number): ExtractedRow | undefined {
+    return database.prepare(`
+      SELECT
+        session_id,
+        memory_id,
+        source_tool,
+        source_call_id,
+        extraction_rule_id,
+        redaction_applied,
+        focus_count
+      FROM working_memory
+      WHERE session_id = ? AND memory_id = ?
+    `).get(sessionId, memoryId) as ExtractedRow | undefined;
+  }
+
+  it('upsertExtractedEntry stores provenance fields', () => {
+    const database = createTestDb();
+    try {
+      workingMemory.init(database);
+
+      const sessionId = 'wm-provenance-session';
+      const memoryId = 1001;
+      seedMemory(database, memoryId);
+
+      const ok = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.62,
+        sourceTool: 'context_search',
+        sourceCallId: 'call-001',
+        extractionRuleId: 'rule-provenance',
+        redactionApplied: true,
+      });
+
+      expect(ok).toBe(true);
+
+      const row = getExtractedRow(database, sessionId, memoryId);
+      expect(row).toBeDefined();
+      expect(row?.source_tool).toBe('context_search');
+      expect(row?.source_call_id).toBe('call-001');
+      expect(row?.extraction_rule_id).toBe('rule-provenance');
+      expect(row?.redaction_applied).toBe(1);
+    } finally {
+      database.close();
+    }
+  });
+
+  it('upsertExtractedEntry conflict-update overwrites on same key', () => {
+    const database = createTestDb();
+    try {
+      workingMemory.init(database);
+
+      const sessionId = 'wm-provenance-update';
+      const memoryId = 1002;
+      seedMemory(database, memoryId);
+
+      const first = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.25,
+        sourceTool: 'first_tool',
+        sourceCallId: 'call-first',
+        extractionRuleId: 'rule-first',
+        redactionApplied: false,
+      });
+      expect(first).toBe(true);
+
+      const second = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.9,
+        sourceTool: 'second_tool',
+        sourceCallId: 'call-second',
+        extractionRuleId: 'rule-second',
+        redactionApplied: true,
+      });
+      expect(second).toBe(true);
+
+      const countRow = database.prepare(`
+        SELECT COUNT(*) as cnt
+        FROM working_memory
+        WHERE session_id = ? AND memory_id = ?
+      `).get(sessionId, memoryId) as { cnt: number };
+      expect(countRow.cnt).toBe(1);
+
+      const row = getExtractedRow(database, sessionId, memoryId);
+      expect(row).toBeDefined();
+      expect(row?.source_tool).toBe('second_tool');
+      expect(row?.source_call_id).toBe('call-second');
+      expect(row?.extraction_rule_id).toBe('rule-second');
+      expect(row?.redaction_applied).toBe(1);
+      expect(row?.focus_count).toBe(2);
+    } finally {
+      database.close();
+    }
+  });
+
+  it('extracted entries survive checkpoint save/restore with provenance', () => {
+    const database = createTestDb();
+    try {
+      workingMemory.init(database);
+      checkpoints.init(database);
+
+      const sessionId = 'wm-provenance-checkpoint';
+      const memoryId = 1003;
+      seedMemory(database, memoryId);
+
+      const inserted = workingMemory.upsertExtractedEntry({
+        sessionId,
+        memoryId,
+        attentionScore: 0.7,
+        sourceTool: 'checkpoint_tool',
+        sourceCallId: 'call-checkpoint',
+        extractionRuleId: 'rule-checkpoint',
+        redactionApplied: true,
+      });
+      expect(inserted).toBe(true);
+
+      const checkpointName = `wm-provenance-${Date.now()}`;
+      const checkpoint = checkpoints.createCheckpoint({ name: checkpointName });
+      expect(checkpoint).not.toBeNull();
+
+      const removed = workingMemory.clearSession(sessionId);
+      expect(removed).toBe(1);
+
+      const restore = checkpoints.restoreCheckpoint(checkpointName, true);
+      expect(restore.errors.length).toBe(0);
+      expect(restore.workingMemoryRestored).toBe(1);
+
+      const restoredRow = getExtractedRow(database, sessionId, memoryId);
+      expect(restoredRow).toBeDefined();
+      expect(restoredRow?.source_tool).toBe('checkpoint_tool');
+      expect(restoredRow?.source_call_id).toBe('call-checkpoint');
+      expect(restoredRow?.extraction_rule_id).toBe('rule-checkpoint');
+      expect(restoredRow?.redaction_applied).toBe(1);
+    } finally {
+      database.close();
+    }
   });
 });

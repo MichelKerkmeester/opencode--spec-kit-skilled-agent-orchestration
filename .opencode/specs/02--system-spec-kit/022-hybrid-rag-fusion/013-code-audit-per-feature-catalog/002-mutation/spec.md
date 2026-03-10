@@ -34,7 +34,7 @@ Feature-centric code audit of the **Mutation** category from the Spec Kit Memory
 
 ## Acceptance Criteria
 
-- [ ] All 10 features audited with structured findings
-- [ ] Each feature has Status (PASS/WARN/FAIL), code issues, standards violations
-- [ ] Test gaps documented
-- [ ] Playbook scenarios mapped or gaps noted
+- [x] All 10 features audited with structured findings
+- [x] Each feature has Status (PASS/WARN/FAIL), code issues, standards violations
+- [x] Test gaps documented
+- [x] Playbook scenarios mapped or gaps noted

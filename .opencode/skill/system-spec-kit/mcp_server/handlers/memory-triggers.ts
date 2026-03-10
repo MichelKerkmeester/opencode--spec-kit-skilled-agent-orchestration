@@ -155,6 +155,11 @@ async function getTieredContent(
     // AI-WHY: WARM tier returns truncated summary
     return content.substring(0, 150) + (content.length > 150 ? '...' : '');
   } catch (_error: unknown) {
+    console.warn('[memory-triggers] getTieredContent failed', {
+      filePath: memoryInfo.filePath, // server-side only; safe to log
+      tier,
+      error: _error instanceof Error ? _error.message : String(_error),
+    });
     return '';
   }
 }

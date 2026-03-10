@@ -60,10 +60,33 @@ export function init(database: Database.Database): void {
       event TEXT NOT NULL CHECK(event IN ('ADD', 'UPDATE', 'DELETE')),
       timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
       is_deleted INTEGER DEFAULT 0,
-      actor TEXT DEFAULT 'system' CHECK(actor IN ('user', 'system', 'hook', 'decay')),
-      FOREIGN KEY (memory_id) REFERENCES memory_index(id)
+      actor TEXT DEFAULT 'system'
     )
   `);
+
+  // Migration: rebuild table when legacy constraints are detected.
+  // Removes: CHECK(actor IN ...) that blocked mcp:* actors,
+  //          FOREIGN KEY that prevented DELETE history from surviving parent deletion.
+  const tableInfo = database.prepare(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_history'"
+  ).get() as { sql: string } | undefined;
+  if (tableInfo?.sql && (tableInfo.sql.includes('CHECK(actor IN') || tableInfo.sql.includes('FOREIGN KEY'))) {
+    database.exec(`
+      ALTER TABLE memory_history RENAME TO memory_history_old;
+      CREATE TABLE memory_history (
+        id TEXT PRIMARY KEY,
+        memory_id INTEGER NOT NULL,
+        prev_value TEXT,
+        new_value TEXT,
+        event TEXT NOT NULL CHECK(event IN ('ADD', 'UPDATE', 'DELETE')),
+        timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+        is_deleted INTEGER DEFAULT 0,
+        actor TEXT DEFAULT 'system'
+      );
+      INSERT INTO memory_history SELECT * FROM memory_history_old;
+      DROP TABLE memory_history_old;
+    `);
+  }
 }
 
 function getDatabase(): Database.Database {

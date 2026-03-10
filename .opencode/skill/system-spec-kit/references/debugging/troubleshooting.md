@@ -352,7 +352,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 That explicit target is authoritative. Session-learning hints and auto-detect logging do not reroute the save.
 
-Phase-folder targets are rejected instead of being rerouted. If the command reports `Direct memory saves cannot target a phase folder`, re-run it with the owning root spec folder path printed in the error.
+Phase-folder targets are valid explicit save destinations. If a save lands in the wrong folder, re-run it with the exact phase-folder CLI target you intended to use.
 
 **"Constitutional memories not appearing"**
 

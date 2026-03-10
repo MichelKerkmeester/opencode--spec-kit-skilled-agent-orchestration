@@ -94,6 +94,19 @@ function canonicalRrfId(id: number | string): string {
   return raw;
 }
 
+/** Resolve k with explicit-zero support and shared validation semantics. */
+function resolveRrfK(rawK: number | undefined): number {
+  if (rawK === undefined) {
+    return DEFAULT_K;
+  }
+
+  if (rawK < 0) {
+    throw new Error('RRF k parameter must be non-negative');
+  }
+
+  return Number.isFinite(rawK) ? rawK : DEFAULT_K;
+}
+
 /* --- 3. CORE FUNCTIONS --- */
 
 /**
@@ -176,9 +189,7 @@ function fuseResultsMulti(
   lists: RankedList[],
   options: FuseMultiOptions = {}
 ): FusionResult[] {
-  // Use ?? (not ||) so callers can explicitly pass 0 without falling back to defaults
-  const rawK = options.k;
-  const k = typeof rawK === 'number' && Number.isFinite(rawK) && rawK > 0 ? rawK : DEFAULT_K;
+  const k = resolveRrfK(options.k);
   const rawConvergenceBonus = options.convergenceBonus;
   const convergenceBonus = typeof rawConvergenceBonus === 'number' && Number.isFinite(rawConvergenceBonus) && rawConvergenceBonus >= 0
     ? rawConvergenceBonus
@@ -335,8 +346,7 @@ function fuseResultsCrossVariant(
 ): FusionResult[] {
   // Use ?? so callers can explicitly pass 0 convergence bonus without falling back to default
   const convergenceBonusPerVariant = options.convergenceBonus ?? CONVERGENCE_BONUS;
-  const k = options.k ?? DEFAULT_K;
-  if (k < 0) throw new Error('RRF k parameter must be non-negative');
+  const k = resolveRrfK(options.k);
 
   if (variantLists.length === 0) return [];
 

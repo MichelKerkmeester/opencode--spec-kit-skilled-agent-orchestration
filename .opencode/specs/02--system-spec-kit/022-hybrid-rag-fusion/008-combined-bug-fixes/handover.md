@@ -1,6 +1,6 @@
 ---
 title: "Handover: 008-combined-bug-fixes"
-description: "Canonical continuation handover for the active combined bug-fix packet (verified 2026-03-10)."
+description: "Canonical continuation handover for the active combined bug-fix packet after review-followup truth reconciliation (verified 2026-03-10)."
 trigger_phrases:
   - "combined bug fixes"
   - "008-combined-bug-fixes"
@@ -19,11 +19,13 @@ last_verified: "2026-03-10"
 ## 1. Handover Summary
 - **Date:** 2026-03-10
 - **Canonical active folder:** `specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`
-- **Current phase:** W5 complete, spec folder documentation aligned, continuation-ready
-- **Last action:** Updated all spec folder docs (tasks, checklist, plan, implementation-summary) to reflect W5 close-out
+- **Current phase:** W5 complete (historical delivery), review-followup truth reconciliation complete, continuation-ready
+- **Last action:** Reconciled packet docs to canonical truth and re-ran spec validation (`validate.sh` PASS, 0 errors / 0 warnings)
 
 ## 2. Context Transfer
 ### W5 Bug Audit (2026-03-10) — 62 P1 fixes
+Historical context preserved for continuity (already completed):
+
 All 62 remaining P1 findings from the 30-commit bug audit were implemented using 15 Codex CLI agents across 3 waves:
 
 | Wave | Commit | Fixes | Files |
@@ -33,11 +35,20 @@ All 62 remaining P1 findings from the 30-commit bug audit were implemented using
 
 Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (A01-A07), handler logic (H01-H09), cognitive (C01-C04), save/mutation (M01-M03), storage (S01-S03), eval scripts (E01-E08), extractors/scripts (X01-X07).
 
-### Prior fixes (in tree)
+### Historical merged context (in tree)
 - Checkpoint scoping, causal-edge restore, memory_health alias handling, workflow pathing, adaptive-fusion rollout, community-detection lint
-- Sources 003, 008, 013, 015 fully complete (see implementation-summary.md)
+- Sources 003, 008, and 013 are complete in this packet.
+- Source 015 remains partially complete with 15 deferred tasks still open (see tasks.md and implementation-summary.md).
+- Follow-up fixes addressed detector containment/category discovery and RRF/workflow issues; this historical work did not complete source 016 and did not clear 015 deferred work.
+
+### Review-followup reconciliation (current authoritative state, 2026-03-10)
+- Canonical packet identity is `008-combined-bug-fixes`.
+- Packet docs were reconciled to this canonical truth model.
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes` now passes (`PASSED`, errors: 0, warnings: 0).
+- Source 017 (W5) remains complete; source 015 still has 15 deferred tasks; source 016 remains pending as separate scope.
 
 ### Verification status (authoritative as of 2026-03-10)
+- Spec validator for canonical packet: PASS (`validate.sh`, 0 errors / 0 warnings)
 - `npx tsc --noEmit`: clean across `mcp_server`, `scripts`, and `shared`
 - Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes)
 - 0 new regressions introduced
@@ -54,6 +65,8 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 - If additional changes are made, rerun `npm run check:full` and refresh verification logs
 
 ## 4. Validation Checklist
+- [x] Review-followup doc truth reconciliation applied to canonical packet docs
+- [x] Canonical packet spec validator rerun and passing (`validate.sh`: 0 errors, 0 warnings)
 - [x] W5 tasks T110-T135 marked complete with commit evidence
 - [x] W5 checklist CHK-346 to CHK-407 marked verified with evidence
 - [x] Plan.md source 017 marked Complete
@@ -90,4 +103,5 @@ Categories fixed: race conditions (R01-R11), data flow (D01-D10), architecture (
 ## 6. Session Notes
 - W5 resolved 90 pre-existing test failures as a side effect of the 62 P1 bug fixes
 - Two regressions were caught and fixed during verification: UNIQUE index too strict on mutation_ledger, autoRepair test missing confirmed:true
+- Historical W5 completion context is preserved, but active open-work truth remains: source 015 has 15 deferred tasks and source 016 remains pending/separate.
 - This handover supersedes the 2026-03-07 version

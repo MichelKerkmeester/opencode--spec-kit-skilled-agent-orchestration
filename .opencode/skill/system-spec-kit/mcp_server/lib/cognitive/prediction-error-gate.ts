@@ -212,6 +212,17 @@ function evaluateMemory(
   } = {}
 ): EvaluationResult {
   if (!candidates || candidates.length === 0) {
+    // T-09: Log no-candidate CREATE decisions for full audit trail
+    if (db) {
+      const record = formatConflictRecord(
+        ACTION.CREATE, newContentHash, 0, 0,
+        'No existing candidates found',
+        { detected: false, type: null, description: null, confidence: 0 },
+        truncateContent(newContent), '',
+        options.specFolder || null
+      );
+      logConflict(record);
+    }
     return {
       action: ACTION.CREATE,
       similarity: 0,
@@ -224,6 +235,17 @@ function evaluateMemory(
   // Filter relevant candidates
   const relevant = filterRelevantCandidates(candidates);
   if (relevant.length === 0) {
+    // T-09: Log filtered-out CREATE decisions for full audit trail
+    if (db) {
+      const record = formatConflictRecord(
+        ACTION.CREATE, newContentHash, 0, 0,
+        'No relevant candidates after filtering',
+        { detected: false, type: null, description: null, confidence: 0 },
+        truncateContent(newContent), '',
+        options.specFolder || null
+      );
+      logConflict(record);
+    }
     return {
       action: ACTION.CREATE,
       similarity: 0,
@@ -264,8 +286,9 @@ function evaluateMemory(
     reason = `Low/no match (similarity: ${(similarity * 100).toFixed(1)}%)`;
   }
 
-  // Log conflict if significant match
-  if (similarity >= THRESHOLD.LOW_MATCH && db) {
+  // T-09: Log ALL PE decisions (including low/no-match CREATE) to memory_conflicts
+  // for full decision audit trail. Previously only logged when similarity >= LOW_MATCH.
+  if (db) {
     const record = formatConflictRecord(
       action,
       newContentHash,

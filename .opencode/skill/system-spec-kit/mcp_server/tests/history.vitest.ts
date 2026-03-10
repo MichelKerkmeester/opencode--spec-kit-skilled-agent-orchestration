@@ -34,7 +34,7 @@ describe('History Tests (T508)', () => {
       )
     `);
 
-    // Create memory_history table
+    // Create memory_history table with legacy constraints to test migration
     db.exec(`
       CREATE TABLE IF NOT EXISTS memory_history (
         id TEXT PRIMARY KEY,
@@ -156,22 +156,67 @@ describe('History Tests (T508)', () => {
   });
 
   // -----------------------------------------------------------
-  // UUID Generation (T508-06)
+  // Legacy Schema Migration (T508-06)
+  // -----------------------------------------------------------
+  describe('Legacy Schema Migration', () => {
+    it('T508-06a: init() migrates legacy CHECK(actor IN ...) and FOREIGN KEY constraints', () => {
+      // The beforeAll created the table with CHECK(actor IN ('user','system','hook','decay'))
+      // and FOREIGN KEY, then called mod.init(db) which should have migrated it.
+      const tableInfo = db.prepare(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='memory_history'"
+      ).get() as { sql: string };
+      expect(tableInfo.sql).not.toContain('CHECK(actor IN');
+      expect(tableInfo.sql).not.toContain('FOREIGN KEY');
+    });
+
+    it('T508-06b: mcp:* actors are accepted after migration', () => {
+      const id = mod.recordHistory(1, 'ADD', null, 'reconsolidation test', 'mcp:memory_save');
+      expect(typeof id).toBe('string');
+      expect(id.length).toBe(36);
+
+      const history = mod.getHistory(1);
+      const entry = history.find((h: any) => h.id === id);
+      expect(entry).toBeDefined();
+      expect(entry!.actor).toBe('mcp:memory_save');
+    });
+
+    it('T508-06c: mcp:memory_bulk_delete actor is accepted', () => {
+      const id = mod.recordHistory(3, 'DELETE', 'old-path.md', null, 'mcp:memory_bulk_delete');
+      expect(typeof id).toBe('string');
+
+      const history = mod.getHistory(3);
+      const entry = history.find((h: any) => h.id === id);
+      expect(entry).toBeDefined();
+      expect(entry!.actor).toBe('mcp:memory_bulk_delete');
+    });
+
+    it('T508-06d: migration preserves existing history rows', () => {
+      // Rows created in earlier tests (with 'system' and 'user' actors) should still exist
+      const history = mod.getHistory(1);
+      const systemEntries = history.filter((h: any) => h.actor === 'system');
+      const userEntries = history.filter((h: any) => h.actor === 'user');
+      expect(systemEntries.length).toBeGreaterThan(0);
+      expect(userEntries.length).toBeGreaterThan(0);
+    });
+  });
+
+  // -----------------------------------------------------------
+  // UUID Generation (T508-07)
   // -----------------------------------------------------------
   describe('UUID Generation', () => {
-    it('T508-06a: generateUuid returns 36-char string', () => {
+    it('T508-07a: generateUuid returns 36-char string', () => {
       const uuid = mod.generateUuid();
       expect(typeof uuid).toBe('string');
       expect(uuid.length).toBe(36);
     });
 
-    it('T508-06b: UUIDs are unique', () => {
+    it('T508-07b: UUIDs are unique', () => {
       const uuid1 = mod.generateUuid();
       const uuid2 = mod.generateUuid();
       expect(uuid1).not.toBe(uuid2);
     });
 
-    it('T508-06c: UUID has v4 marker at position 14', () => {
+    it('T508-07c: UUID has v4 marker at position 14', () => {
       const uuid = mod.generateUuid();
       expect(uuid[14]).toBe('4');
     });

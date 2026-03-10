@@ -1,16 +1,17 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/tasks.md -->
 ---
-title: "Tasks: Combined Bug Fixes (016)"
+title: "Tasks: Combined Bug Fixes"
 description: "Merged task list from specs 003, 008, 013, 015, 017"
 updated: "2026-03-10"
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Tasks: Combined Bug Fixes (016)
+# Tasks: Combined Bug Fixes
 
 <!-- SPECKIT_LEVEL: 3 -->
 
 This file merges tasks from five source spec folders into a single canonical reference.
+Historical "(016)" naming in earlier snapshots is legacy labeling only; source 016 remains a separate pending audit stream (0/17 complete).
 
 ---
 
@@ -212,7 +213,7 @@ Current verification truth snapshot (2026-03-10):
 - [x] T017 Run `npm run typecheck && npm run build` in `.opencode/skill/system-spec-kit` and record the passing result
 - [x] T018 Run alignment drift check for the full `.opencode/skill/system-spec-kit` root
 - [x] T018a Capture raw verification outputs under `scratch/verification-logs/` for reviewer-auditable command evidence
-- [x] T018b Run the required memory-save workflow at the owning root spec and refresh packet indexing for immediate discoverability
+- [x] T018b Run the required memory-save workflow with the explicit phase-folder target (`02--system-spec-kit/022-hybrid-rag-fusion/008-combined-bug-fixes`) and refresh packet indexing for immediate discoverability
 - [x] T019 Merge duplicate root/addendum docs into canonical files only
 - [x] T020 Remove addendum-named docs and retain standard packet names only
 
@@ -248,7 +249,7 @@ Current verification truth snapshot (2026-03-10):
 - [x] Cross-references use standard filenames only.
 - [x] Full workspace build pass is documented accurately.
 - [x] The final folder-discovery integration green state is documented without stale failure notes.
-- [x] Closure memory is saved using the supported owning-root workflow, and packet docs are refreshed in memory indexing.
+- [x] Closure memory is saved using the explicit phase-folder target into `008-combined-bug-fixes/memory/`, and packet docs are refreshed in memory indexing.
 - [x] Auto-mode MCP runtime compatibility, parent-environment key sourcing, accurate lazy `memory_health` provider reporting, and fatal dimension-mismatch startup behavior are documented.
 - [x] Direct built-runtime provider/dimension verification and packet indexing success are documented.
 - [x] Residual out-of-scope auth-failure diagnostic limitation is documented honestly.
@@ -460,7 +461,7 @@ Current verification truth snapshot (2026-03-10):
 
 ### Tier 4: README gaps
 
-- [ ] T085 [P] Add missing entries to `hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README)
+- [ ] T085 [P] Add missing entries to `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`: `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (README)
 
 ---
 ---

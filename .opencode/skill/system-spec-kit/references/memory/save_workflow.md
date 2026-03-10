@@ -18,7 +18,7 @@ Execute memory operations through whichever method fits your workflow - slash co
 
 When direct CLI mode includes an explicit spec-folder argument, that target is authoritative. Session-learning matches, JSON `SPEC_FOLDER` fields, and auto-detect may inform diagnostics, but they must not reroute the save to another folder.
 
-Direct phase-folder targets are the exception: if the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` rejects the save before writing any memory files and tells the caller to save to the owning root spec folder instead.
+Direct phase-folder targets are supported. If the explicit CLI target resolves to a policy-defined phase folder, `generate-context.js` preserves that target and writes memory files into the phase folder's `memory/` directory.
 
 ### Execution Paths
 
@@ -211,7 +211,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
 
-# Direct phase target (rejected; save to the owning root spec instead)
+# Direct phase target mode (authoritative; saves to the phase folder's own memory/ directory)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit"
 ```
@@ -227,7 +227,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 
 If both the JSON payload and the CLI provide a spec folder, the explicit CLI argument wins.
 
-If that explicit CLI argument resolves to a phase folder, the command fails deterministically with an actionable error and does not silently reroute to the parent.
+If that explicit CLI argument resolves to a phase folder, the command keeps that explicit target and saves into the phase folder's own `memory/` directory.
 
 ### Validation Checkpoints
 
@@ -237,7 +237,7 @@ If that explicit CLI argument resolves to a phase folder, the command fails dete
 | Script exists      | `test -f .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Check skill installation |
 | JSON valid         | `jq . < input.json`                                    | Fix JSON syntax          |
 | Spec folder exists | `test -d specs/###/`                                   | Create spec folder       |
-| Target is not a phase folder | Use root spec path, not a child phase path | Re-run with owning root spec folder |
+| Target exists under specs roots | Use the exact root-spec or phase-folder path you want to save into | Re-run with an explicit CLI target |
 
 ---
 
@@ -558,7 +558,7 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 | `Missing anchor closing`| Incomplete anchor   | Add `<!-- /ANCHOR:... -->`         |
 | `metadata.json parse error` | Invalid JSON    | Validate JSON syntax               |
 | "Saved to wrong folder" | Non-authoritative invocation path | Re-run with explicit CLI target; direct CLI mode does not reroute |
-| "Direct memory saves cannot target a phase folder" | Explicit CLI target resolved to a phase child | Re-run with the owning root spec folder path shown in the error |
+| "Saved to wrong folder" | Explicit CLI target was omitted or too broad | Re-run with the exact root-spec or phase-folder CLI target you intend to save into |
 
 ### Debug Commands
 

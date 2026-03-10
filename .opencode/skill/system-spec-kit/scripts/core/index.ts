@@ -30,10 +30,8 @@ export {
   SEARCH_MAX_DEPTH,
   findChildFolderSync,
   findChildFolderAsync,
-  getPhaseFolderRejectionSync,
 } from './subfolder-utils';
 
 export type {
-  PhaseFolderRejection,
   FindChildOptions,
 } from './subfolder-utils';

@@ -105,7 +105,7 @@ describe('T001-T010: Context Modes Configuration [deferred - requires DB test fi
   });
 
   it('T007: All modes have name and description', () => {
-    for (const [modeName, mode] of Object.entries(CONTEXT_MODES) as [string, ContextMode][]) {
+    for (const [_modeName, mode] of Object.entries(CONTEXT_MODES) as [string, ContextMode][]) {
       expect(mode.name).toBeDefined();
       expect(mode.name.length).toBeGreaterThan(0);
       expect(mode.description).toBeDefined();
@@ -834,13 +834,11 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
     expect(enforcement.actualTokens).toBeGreaterThan(0);
   });
 
-  it('T207: Result without content array is not truncated', () => {
-    // A result without the MCPResponse content structure
+  it('T207: Result without content array reports truncated when over budget', () => {
     const plainResult: ContextResult = { strategy: 'quick', mode: 'quick', matches: ['a', 'b'] };
     const { enforcement } = enforceTokenBudget(plainResult, 5);
-    // Even if over budget, can't truncate without inner content structure
     expect(enforcement.enforced).toBe(true);
-    expect(enforcement.truncated).toBe(false);
+    expect(enforcement.truncated).toBe(true);
   });
 
   it('T208: Enforcement updates inner count field', () => {

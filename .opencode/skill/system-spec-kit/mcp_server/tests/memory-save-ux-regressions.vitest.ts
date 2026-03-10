@@ -41,6 +41,10 @@ function cleanupFixtureRows(): void {
 
   const likePattern = '%999-memory-save-ux-fixtures%';
   db.prepare('DELETE FROM memory_conflicts WHERE spec_folder LIKE ?').run(likePattern);
+  // Delete history rows before memory_index to satisfy FK constraint
+  db.prepare(`DELETE FROM memory_history WHERE memory_id IN (
+    SELECT id FROM memory_index WHERE file_path LIKE ? OR spec_folder LIKE ?
+  )`).run(likePattern, likePattern);
   db.prepare('DELETE FROM memory_index WHERE file_path LIKE ? OR spec_folder LIKE ?').run(likePattern, likePattern);
 }
 

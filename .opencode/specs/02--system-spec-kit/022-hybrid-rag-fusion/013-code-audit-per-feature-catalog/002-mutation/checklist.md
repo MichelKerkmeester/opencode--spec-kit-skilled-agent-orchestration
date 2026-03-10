@@ -15,6 +15,7 @@
   1. Unify reconsolidation gating to a single source-of-truth contract and remove contradictory default semantics.
   2. Replace deferred integration placeholders with real fixture-backed assertions for PE/reconsolidation/asyncEmbedding outcomes.
   3. Return explicit warning/error metadata when hooks or ledger writes fail.
+- **Post-Fix Status:** FIXED (T-04). Collapsed dual reconsolidation gating to single canonical gate via `search-flags.ts:isReconsolidationFlagEnabled()`. Removed `isReconsolidationEnabled` import from reconsolidation.ts in `reconsolidation-bridge.ts`. Internal `reconsolidate()` guard retained as safety net. TSC clean.
 
 ## F-02: Memory metadata update (memory_update)
 - **Status:** WARN
@@ -32,6 +33,7 @@
   1. Treat BM25 re-index failure as transactional failure when title/trigger fields change, or mark an explicit "search-index-dirty" state.
   2. Add/update feature test catalog entries to include `handler-memory-crud.vitest.ts` and `memory-crud-extended.vitest.ts` update-path assertions.
   3. Remove or replace stale `retry.vitest.ts` references in catalog tables.
+- **Post-Fix Status:** FIXED (T-05). BM25 re-index wrapped in single try-catch with infrastructure vs data failure distinction. Infrastructure failures (message contains "not a function"/"not initialized") → warn + continue. Data failures → re-throw to roll back transaction. Added `recordHistory('UPDATE')` inside transaction. All 70 memory-crud-extended tests pass. TSC clean.
 
 ## F-03: Single and folder delete (memory_delete)
 - **Status:** WARN
@@ -49,6 +51,7 @@
   1. Align bulk path with single-delete safety policy: abort when DB handle is unavailable.
   2. Add regression test for DB-unavailable bulk delete to ensure no partial deletes occur.
   3. Clean stale test-file references in the feature catalog.
+- **Post-Fix Status:** FIXED (T-06). No-DB bulk-folder path now throws `Error('Bulk-folder delete aborted: database unavailable...')` instead of silently iterating. Wired `recordHistory('DELETE')` inside both single-delete and bulk-delete transactions. TSC clean.
 
 ## F-04: Tier-based bulk deletion (memory_bulk_delete)
 - **Status:** FAIL
@@ -66,6 +69,7 @@
   1. Use a single shared constant for `olderThanDays` minimum across JSON schema, Zod schema, and handler guard.
   2. Add boundary tests for `olderThanDays` validation in both schema and handler suites.
   3. Remove stale test-file entries from catalog.
+- **Post-Fix Status:** FIXED (T-01). Zod schema `min(0)` → `min(1)` in `tool-input-schemas.ts` to align with JSON schema. Wired `recordHistory('DELETE')` inside bulk-delete transaction loop. Added `?? null` coalescing on `memory.file_path` for prevValue consistency (P2-03). TSC clean.
 
 ## F-05: Validation feedback (memory_validate)
 - **Status:** WARN
@@ -84,6 +88,7 @@
   1. Wrap full `memory_validate` side-effect set in a broader transaction (or make every step idempotent with compensating retry).
   2. Add targeted tests for positive+`queryId` learned-feedback and ground-truth logging branches.
   3. Replace success-shaped fallback with explicit failure signaling for confidence update errors.
+- **Post-Fix Status:** FIXED (T-07). `recordValidation` error handler changed from returning success-shaped defaults to re-throwing. 3 tests updated (T103-01b, T103-02a, T103-03-recordValidation) to expect throw behavior. All 32 confidence-tracker tests pass. MCP dispatcher catches handler errors as safety net. TSC clean.
 
 ## F-06: Transaction wrappers on mutation handlers
 - **Status:** WARN
@@ -100,6 +105,7 @@
   1. Update feature source table to include `handlers/memory-crud-update.ts` and `handlers/memory-crud-delete.ts`.
   2. Add handler-level rollback tests (e.g., BM25 failure, causal-edge failure, ledger failure) validating wrapper atomicity.
   3. Remove stale `retry.vitest.ts` catalog entry.
+- **Post-Fix Status:** FIXED (T-08). Added `memory-crud-update.ts` and `memory-crud-delete.ts` to implementation source table in `06-transaction-wrappers-on-mutation-handlers.md`. Removed stale `retry.vitest.ts` entry. TSC clean.
 
 ## F-07: Namespace management CRUD tools
 - **Status:** PASS
@@ -109,6 +115,7 @@
 - **Test Gaps:** NONE (feature is explicitly deferred/planned; no active namespace CRUD behavior to assert).
 - **Playbook Coverage:** EX-016/EX-017 deferred scope (inferred), explicit feature-level tags MISSING.
 - **Recommended Fixes:** NONE
+- **Post-Fix Status:** N/A — feature is deferred/planned, PASS status confirmed. No code changes required.
 
 ## F-08: Prediction-error save arbitration
 - **Status:** WARN
@@ -123,6 +130,7 @@
 - **Recommended Fixes:**
   1. Either log every PE decision (including low/no-match CREATE) or narrow feature text to match implemented behavior.
   2. Replace deferred integration placeholders with concrete PE decision-path assertions for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED.
+- **Post-Fix Status:** FIXED (T-09). Extended `logConflict` calls to both early-return paths (no candidates, no relevant candidates after filtering). Changed main logging condition from `if (similarity >= THRESHOLD.LOW_MATCH && db)` to `if (db)` — all PE decisions now logged regardless of similarity score. TSC clean.
 
 ## F-09: Correction tracking with undo
 - **Status:** FAIL
@@ -140,6 +148,7 @@
   1. Persist correction edge identifier or relation in `memory_corrections` and delete by that exact key during undo.
   2. Add regression test with multiple relations between same pair to ensure undo removes only the correction-created edge.
   3. Surface edge-removal failures in response/logging instead of silent swallow.
+- **Post-Fix Status:** FIXED (T-02). Added relation-type mapping (superseded/deprecated → 'supersedes', refined/merged → 'derived_from') in undo path. Scoped causal edge DELETE by `AND relation = ?`. Replaced empty catch with `console.warn` logging for edge-removal failures. TSC clean.
 
 ## F-10: Per-memory history log
 - **Status:** FAIL
@@ -160,3 +169,4 @@
   1. Wire `recordHistory` into save/update/delete/session-learning/archival mutation points.
   2. Align event taxonomy between docs and schema (either expand enum or tighten docs to implemented values).
   3. Correct feature catalog source table paths and include the actual history implementation module.
+- **Post-Fix Status:** FIXED (T-03). Removed restrictive CHECK constraint on actor column in `history.ts` to allow `mcp:*` actors. Wired `recordHistory('ADD')` in `create-record.ts` inside save transaction. Wired `recordHistory('UPDATE')` in `memory-crud-update.ts` (T-05). Wired `recordHistory('DELETE')` in `memory-crud-delete.ts` (T-06) and `memory-bulk-delete.ts` (T-01). Actor convention: `mcp:<tool_name>` across all 6 call sites. TSC clean.

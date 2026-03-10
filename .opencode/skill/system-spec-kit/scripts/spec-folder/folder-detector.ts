@@ -12,6 +12,7 @@ import Database from 'better-sqlite3';
 
 // Internal modules
 import { DB_PATH } from '@spec-kit/shared/paths';
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { promptUser, promptUserChoice } from '../utils/prompt-utils';
 import { CONFIG, findActiveSpecsDir, getAllExistingSpecsDirs, SPEC_FOLDER_PATTERN, findChildFolderAsync } from '../core';
 import {
@@ -146,8 +147,7 @@ function getSessionTimestamp(row: SessionLearningRow): number {
 }
 
 function isPathWithin(parentPath: string, childPath: string): boolean {
-  const relative = path.relative(path.resolve(parentPath), path.resolve(childPath));
-  return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
+  return validateFilePath(childPath, [parentPath]) !== null;
 }
 
 function isNotFoundFsError(error: unknown): boolean {
@@ -160,7 +160,7 @@ function isUnderApprovedSpecsRoots(specPath: string): boolean {
     path.join(CONFIG.PROJECT_ROOT, 'specs'),
     path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
   ];
-  return approvedRoots.some((root) => isPathWithin(root, specPath));
+  return validateFilePath(specPath, approvedRoots) !== null;
 }
 
 function normalizeSpecReferenceForLookup(specFolderRef: string): string {
@@ -433,17 +433,30 @@ async function collectSpecParentCache(specsDirs: string[]): Promise<Map<string, 
   for (const specsDir of specsDirs) {
     try {
       const entries = await fs.readdir(specsDir);
-      const parentFolders: string[] = [];
+      const parentFolders = new Set<string>();
 
       for (const entry of entries) {
-        if (!SPEC_FOLDER_PATTERN.test(entry)) continue;
         const entryPath = path.join(specsDir, entry);
-        if (await pathIsDirectory(entryPath)) {
-          parentFolders.push(entry);
+        if (!(await pathIsDirectory(entryPath))) continue;
+
+        if (SPEC_FOLDER_PATTERN.test(entry)) {
+          parentFolders.add(entry);
+          continue;
+        }
+
+        if (!/^\d{2}--[a-z][a-z0-9-]*$/.test(entry)) continue;
+
+        const categoryEntries = await fs.readdir(entryPath);
+        for (const categoryChild of categoryEntries) {
+          if (!SPEC_FOLDER_PATTERN.test(categoryChild)) continue;
+          const categoryChildPath = path.join(entryPath, categoryChild);
+          if (await pathIsDirectory(categoryChildPath)) {
+            parentFolders.add(normalizeSlashes(path.join(entry, categoryChild)));
+          }
         }
       }
 
-      parentCache.set(specsDir, parentFolders);
+      parentCache.set(specsDir, Array.from(parentFolders));
     } catch (_error: unknown) {
       if (_error instanceof Error) {
         parentCache.set(specsDir, []);
@@ -469,10 +482,7 @@ async function resolveSessionSpecFolderPaths(
 
   const addCandidate = async (candidatePath: string): Promise<void> => {
     const resolved = path.resolve(candidatePath);
-    const withinSpecsRoot = specsDirs.some((specsDir) => {
-      const resolvedSpecsDir = path.resolve(specsDir);
-      return resolved === resolvedSpecsDir || resolved.startsWith(`${resolvedSpecsDir}${path.sep}`);
-    });
+    const withinSpecsRoot = specsDirs.some((specsDir) => isPathWithin(specsDir, resolved));
 
     if (!withinSpecsRoot) {
       throw new Error('Path escapes specs root');
@@ -485,12 +495,7 @@ async function resolveSessionSpecFolderPaths(
 
   if (path.isAbsolute(trimmed)) {
     const resolvedSpecFolder = path.resolve(trimmed);
-    const approvedRoot = specsDirs
-      .map((specsDir) => path.resolve(specsDir))
-      .find(
-        (specsDir) =>
-          resolvedSpecFolder === specsDir || resolvedSpecFolder.startsWith(`${specsDir}${path.sep}`)
-      );
+    const approvedRoot = specsDirs.find((specsDir) => isPathWithin(specsDir, resolvedSpecFolder));
 
     if (!approvedRoot) {
       console.warn(`Skipping session_learning spec_folder outside specs roots: ${resolvedSpecFolder}`);
@@ -675,7 +680,6 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
     }
 
     for (const topFolder of topEntries) {
-      if (!/^\d{3}-/.test(topFolder)) continue;
       const topPath = path.join(specsDir, topFolder);
 
       let topStat;
@@ -688,6 +692,62 @@ async function collectAutoDetectCandidates(specsDirs: string[]): Promise<AutoDet
         continue;
       }
       if (!topStat.isDirectory()) continue;
+
+      if (/^\d{2}--[a-z][a-z0-9-]*$/.test(topFolder)) {
+        let categoryEntries: string[] = [];
+        try {
+          categoryEntries = await fs.readdir(topPath);
+        } catch (_error: unknown) {
+          if (_error instanceof Error) {
+            void _error.message;
+          }
+          continue;
+        }
+
+        for (const parentFolder of categoryEntries) {
+          if (!SPEC_FOLDER_PATTERN.test(parentFolder)) continue;
+          const parentPath = path.join(topPath, parentFolder);
+
+          try {
+            const parentStat = await fs.stat(parentPath);
+            if (!parentStat.isDirectory()) continue;
+            upsertCandidate(parentPath, parentStat.mtimeMs);
+
+            let childEntries: string[] = [];
+            try {
+              childEntries = await fs.readdir(parentPath);
+            } catch (_error: unknown) {
+              if (_error instanceof Error) {
+                void _error.message;
+              }
+              continue;
+            }
+
+            for (const childFolder of childEntries) {
+              if (!SPEC_FOLDER_PATTERN.test(childFolder)) continue;
+              const childPath = path.join(parentPath, childFolder);
+              try {
+                const childStat = await fs.stat(childPath);
+                if (childStat.isDirectory()) {
+                  upsertCandidate(childPath, childStat.mtimeMs);
+                }
+              } catch (_error: unknown) {
+                if (_error instanceof Error) {
+                  void _error.message;
+                }
+              }
+            }
+          } catch (_error: unknown) {
+            if (_error instanceof Error) {
+              void _error.message;
+            }
+          }
+        }
+
+        continue;
+      }
+
+      if (!SPEC_FOLDER_PATTERN.test(topFolder)) continue;
 
       upsertCandidate(topPath, topStat.mtimeMs);
 
@@ -774,6 +834,13 @@ function buildAutoCandidatesForTesting(inputs: AutoCandidateTestInput[]): AutoDe
 const TEST_HELPERS = {
   normalizeSpecReferenceForLookup,
   assessFolderQuality,
+  isPathWithin,
+  isUnderApprovedSpecsRoots,
+  resolveSessionSpecFolderPaths: async (rawSpecFolder: string, specsDirs: string[]) => {
+    const parentCache = await collectSpecParentCache(specsDirs);
+    return resolveSessionSpecFolderPaths(rawSpecFolder, specsDirs, parentCache);
+  },
+  collectAutoDetectCandidates,
   rankSessionCandidates: (inputs: SessionCandidateTestInput[]) => rankSessionCandidates(buildSessionCandidatesForTesting(inputs)),
   rankAutoDetectCandidates: (inputs: AutoCandidateTestInput[]) => rankAutoDetectCandidates(buildAutoCandidatesForTesting(inputs)),
   assessSessionConfidence: (inputs: SessionCandidateTestInput[]) => assessSessionConfidence(rankSessionCandidates(buildSessionCandidatesForTesting(inputs))),

@@ -153,14 +153,11 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
       };
     })();
   } catch (error: unknown) {
+    // T-07: Replace success-shaped fallback with explicit failure signaling.
+    // Previously returned default values that looked like success, hiding DB errors
+    // from callers and allowing downstream side-effects to proceed on stale data.
     console.error(`[confidence-tracker] recordValidation failed for memory ${memoryId}:`, error);
-    return {
-      confidence: CONFIDENCE_BASE,
-      validationCount: 0,
-      positiveValidationCount: 0,
-      promotionEligible: false,
-      wasPromoted: false,
-    };
+    throw error;
   }
 }
 

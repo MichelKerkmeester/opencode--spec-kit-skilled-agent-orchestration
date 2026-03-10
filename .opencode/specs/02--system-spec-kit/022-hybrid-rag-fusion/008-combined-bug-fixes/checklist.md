@@ -9,11 +9,12 @@ description: "Merged checklist covering all verification items from five source 
 importance_tier: "normal"
 contextType: "implementation"
 ---
-# Combined Verification Checklist: 016 Bug Fixes
+# Combined Verification Checklist: Bug Fixes
 
 <!-- SPECKIT_LEVEL: 3 -->
 
 This is a **merged checklist** combining all verification items from five source spec folders under `022-hybrid-rag-fusion`.
+Historical "016" checklist naming in older snapshots is legacy labeling only; source 016 remains pending (0/18 verified).
 
 ---
 
@@ -461,7 +462,7 @@ Current gate truth (2026-03-10):
 
 ### P2 Items (016)
 
-- [ ] CHK-317 [P2]: `hooks/README.md` lists all 4 hook files including `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (T085)
+- [ ] CHK-317 [P2]: `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` lists all 4 hook files including `memory-surface.ts`, `mutation-feedback.ts`, `response-hints.ts` (T085)
 
 ### Verification Summary (016)
 

@@ -49,7 +49,7 @@ describe('generate-context CLI authority', () => {
 
   it('passes direct CLI spec-folder mode through main() as an authoritative workflow target', async () => {
     const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
-    const resolvedSpecFolder = path.resolve(process.cwd(), explicitSpecFolder);
+    const resolvedSpecFolder = path.resolve(process.cwd(), '..', '..', '..', explicitSpecFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitSpecFolder];
 
     const { main } = await import('../memory/generate-context');
@@ -81,26 +81,20 @@ describe('generate-context CLI authority', () => {
     }));
   });
 
-  it('rejects an explicit phase-folder CLI target before workflow save', async () => {
+  it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target', async () => {
     const explicitPhaseFolder = '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-architecture-audit';
+    const resolvedPhaseFolder = path.resolve(explicitPhaseFolder);
     process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitPhaseFolder];
 
-    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(((code?: number) => {
-      throw new Error(`PROCESS_EXIT:${code ?? 0}`);
-    }) as typeof process.exit);
-    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { main } = await import('../memory/generate-context');
+    await main();
 
-    try {
-      const { main } = await import('../memory/generate-context');
-      await expect(main()).rejects.toThrow('PROCESS_EXIT:1');
-      expect(harness.runWorkflow).not.toHaveBeenCalled();
-      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Error: Direct memory saves cannot target a phase folder'));
-      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Save to the owning root spec folder instead:'));
-      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('022-hybrid-rag-fusion'));
-      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('Phase-folder targets are rejected deterministically and are not rerouted'));
-    } finally {
-      exitSpy.mockRestore();
-      errorSpy.mockRestore();
-    }
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+      dataFile: undefined,
+      specFolderArg: resolvedPhaseFolder,
+      loadDataFn: harness.loadCollectedData,
+      collectSessionDataFn: harness.collectSessionData,
+    }));
   });
 });

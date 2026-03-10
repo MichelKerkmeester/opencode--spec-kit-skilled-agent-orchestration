@@ -17,6 +17,7 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path';
    2. LIB MODULE IMPORTS
 --------------------------------------------------------------- */
 
+import { recordHistory } from '../lib/storage/history';
 import * as memoryParser from '../lib/parsing/memory-parser';
 import * as embeddings from '../lib/providers/embeddings';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
@@ -223,6 +224,12 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     for (const staleRecordId of staleRecordIds) {
       try {
+        // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+        try {
+          recordHistory(staleRecordId, 'DELETE', null, null, 'mcp:memory_index_scan');
+        } catch (_histErr: unknown) {
+          // history recording is best-effort
+        }
         if (vectorIndex.deleteMemory(staleRecordId)) {
           deleted++;
         } else {

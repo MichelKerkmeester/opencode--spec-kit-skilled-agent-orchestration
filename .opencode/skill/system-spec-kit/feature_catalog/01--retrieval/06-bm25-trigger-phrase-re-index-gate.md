@@ -13,6 +13,7 @@ The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-o
 | `mcp_server/lib/parsing/content-normalizer.ts` | Lib | Content normalization |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 index management |
 | `mcp_server/lib/search/sqlite-fts.ts` | Lib | SQLite FTS5 interface |
+| `mcp_server/handlers/memory-crud-update.ts` | Handler | Update handler with BM25 re-index gate |
 
 ### Tests
 

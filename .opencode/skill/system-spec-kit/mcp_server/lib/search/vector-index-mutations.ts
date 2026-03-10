@@ -23,6 +23,7 @@ import {
   clear_search_cache,
 } from './vector-index-aliases';
 import * as bm25Index from './bm25-index';
+import { recordHistory } from '../storage/history';
 
 const logger = createLogger('VectorIndex');
 
@@ -354,7 +355,8 @@ export function delete_memory(id: number): boolean {
   const sqlite_vec = get_sqlite_vec_available();
 
   const delete_memory_tx = database.transaction(() => {
-    database.prepare('DELETE FROM memory_history WHERE memory_id = ?').run(id);
+    // AI-WHY: memory_history rows are intentionally preserved after deletion
+    // so DELETE audit events recorded by handlers persist as audit trail.
 
     if (sqlite_vec) {
       try {
@@ -419,6 +421,10 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
   `).get(spec_folder, canonicalPath, file_path, anchor_id, anchor_id) as { id: number } | undefined;
 
   if (row) {
+    // Self-record DELETE history so callers of delete_memory_by_path() don't need to.
+    try {
+      recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path');
+    } catch (_histErr: unknown) { /* best-effort */ }
     return delete_memory(row.id);
   }
   return false;
@@ -444,7 +450,12 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
   const delete_transaction = database.transaction(() => {
     for (const id of memory_ids) {
       try {
-        database.prepare('DELETE FROM memory_history WHERE memory_id = ?').run(id);
+        // AI-WHY: memory_history rows are intentionally preserved after deletion
+        // so DELETE audit events recorded by handlers persist as audit trail.
+        // Self-record DELETE history so callers of delete_memories() don't need to.
+        try {
+          recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories');
+        } catch (_histErr: unknown) { /* best-effort */ }
 
         if (sqlite_vec) {
           try {

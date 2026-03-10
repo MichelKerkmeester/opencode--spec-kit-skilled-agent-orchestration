@@ -43,7 +43,7 @@ The `scripts/spec-folder/` directory contains TypeScript modules that handle int
 | **Multi-Directory Support** | Handle both `specs/` and `.opencode/specs/` locations                               |
 | **Topic Extraction**        | Extract keywords from conversation context and observations                         |
 | **CLI Authority**           | Respect explicit CLI spec-folder targets without rerouting to session-learning picks |
-| **Phase Guardrail**         | Reject direct memory saves that explicitly target policy-defined phase folders         |
+| **Phase Save Support**      | Preserve explicit phase-folder memory-save targets and write into the selected phase folder |
 | **Description Generation** | Generate per-folder `description.json` with identity + memory tracking metadata |
 
 ### Requirements
@@ -72,7 +72,7 @@ const specFolder = await detectSpecFolder(collectedData);
 
 // Explicit CLI targets stay authoritative when CONFIG.SPEC_FOLDER_ARG is set
 // Session-learning and alignment may log alternatives, but they do not reroute the save
-// Exception: phase-folder targets are rejected with an owning-root error
+// Phase-folder targets are also preserved as explicit save destinations
 
 // Validate alignment between conversation and folder
 const alignment = await validateContentAlignment(
@@ -225,7 +225,7 @@ node scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit
 | Permission denied on memory/   | `chmod 755 specs/<###-feature-name>`                   |
 | Archive pattern false positive | Rename folder without z_, archive, old patterns |
 | Wrong folder selected          | Pass the exact CLI target; explicit args are authoritative |
-| Phase-folder target rejected   | Re-run with the owning root spec folder from the error |
+| Need phase-folder memory save  | Pass the exact phase-folder CLI target; memory writes stay in that phase folder |
 
 ### Diagnostic Commands
 

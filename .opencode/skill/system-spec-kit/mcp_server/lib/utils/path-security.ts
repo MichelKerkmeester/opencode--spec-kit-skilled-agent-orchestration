@@ -4,4 +4,7 @@
 // UTILS: PATH SECURITY BARREL
 // ---------------------------------------------------------------
 
-export * from '@spec-kit/shared/utils/path-security';
+export {
+  validateFilePath,
+  escapeRegex,
+} from '@spec-kit/shared/utils/path-security';

@@ -30,6 +30,7 @@ const PRIORITY_4_MARKER = 'Priority 4';
 const TIMESTAMP_QUERY_COLUMNS_MARKER = 'SELECT spec_folder, created_at, updated_at';
 const TIMESTAMP_QUERY_LIMIT_LITERAL_MARKER = 'LIMIT 25';
 const TIMESTAMP_QUERY_LIMIT_CONST_MARKER = 'LIMIT ${SESSION_ROW_LIMIT}';
+const TIMESTAMP_QUERY_LIMIT_PARAM_MARKER = 'LIMIT ?';
 const TIMESTAMP_QUERY_ORDER_MARKER = 'ORDER BY created_at DESC';
 const TWENTY_FIVE_HOURS = 25;
 const FORTY_EIGHT_HOURS = 48;
@@ -928,7 +929,7 @@ async function testConfigProjectRootAlignment() {
     // Test 2: DB path from PROJECT_ROOT matches expected location
     const constructedDbPath = path.join(
       CONFIG.PROJECT_ROOT,
-      '.opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite'
+      'skill/system-spec-kit/mcp_server/database/context-index.sqlite'
     );
     if (constructedDbPath === REAL_DB_PATH || path.resolve(constructedDbPath) === path.resolve(REAL_DB_PATH)) {
       pass('T-FD08b: Constructed DB path matches expected', path.basename(constructedDbPath));
@@ -940,7 +941,7 @@ async function testConfigProjectRootAlignment() {
     // Test 3: better-sqlite3 path from PROJECT_ROOT resolves
     const constructedSqlitePath = path.join(
       CONFIG.PROJECT_ROOT,
-      '.opencode/skill/system-spec-kit/mcp_server/node_modules/better-sqlite3'
+      'skill/system-spec-kit/mcp_server/node_modules/better-sqlite3'
     );
     try {
       require.resolve(constructedSqlitePath);
@@ -1004,7 +1005,7 @@ async function testAliasNormalizationDeterminism() {
     const variants = [
       'specs/02--system-spec-kit/022-hybrid-rag-fusion',
       '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion',
-      'specs\\02--system-spec-kit\\139-hybrid-rag-fusion',
+      'specs\\02--system-spec-kit\\022-hybrid-rag-fusion',
       '02--system-spec-kit/022-hybrid-rag-fusion'
     ];
 
@@ -1132,7 +1133,8 @@ async function testSessionQueryUsesTimestampedMultiRowLookup() {
 
     const hasColumns = sourceCode.includes(TIMESTAMP_QUERY_COLUMNS_MARKER);
     const hasLimit = sourceCode.includes(TIMESTAMP_QUERY_LIMIT_LITERAL_MARKER) ||
-      sourceCode.includes(TIMESTAMP_QUERY_LIMIT_CONST_MARKER);
+      sourceCode.includes(TIMESTAMP_QUERY_LIMIT_CONST_MARKER) ||
+      sourceCode.includes(TIMESTAMP_QUERY_LIMIT_PARAM_MARKER);
     const hasOrder = sourceCode.includes(TIMESTAMP_QUERY_ORDER_MARKER);
 
     if (hasColumns && hasLimit && hasOrder) {
@@ -1144,6 +1146,112 @@ async function testSessionQueryUsesTimestampedMultiRowLookup() {
     }
   } catch (err) {
     fail('T-FD09e: Timestamped multi-row session query', err.message);
+  }
+}
+
+async function testCategoryRootedBareChildResolvesFromSessionPaths() {
+  log('\n🔬 REGRESSION: Bare child resolves from category-rooted parent cache');
+
+  const { getSpecsDirectories } = require(path.join(SCRIPTS_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-FD09f: Category-rooted bare child resolution', 'No specs directories available');
+    return;
+  }
+
+  const token = `${Date.now().toString(36)}-cr`;
+  const categoryName = `02--detector-category-${token}`;
+  const parentName = `997-detector-parent-${token}`;
+  const childName = `996-detector-child-${token}`;
+  const createdPath = path.join(specsDirs[0], categoryName, parentName, childName);
+
+  try {
+    fs.mkdirSync(createdPath, { recursive: true });
+    const { TEST_HELPERS } = require(path.join(SCRIPTS_DIR, 'spec-folder', 'folder-detector'));
+
+    const resolved = await TEST_HELPERS.resolveSessionSpecFolderPaths(childName, [specsDirs[0]]);
+    if (resolved.includes(createdPath)) {
+      pass('T-FD09f: Category-rooted bare child resolution', createdPath);
+    } else {
+      fail('T-FD09f: Category-rooted bare child resolution', `Resolved: ${JSON.stringify(resolved)}`);
+    }
+  } catch (err) {
+    fail('T-FD09f: Category-rooted bare child resolution', err.message);
+  } finally {
+    try { fs.rmSync(path.join(specsDirs[0], categoryName), { recursive: true, force: true }); } catch (_) {}
+  }
+}
+
+async function testCategoryRootedAutoDetectDiscovery() {
+  log('\n🔬 REGRESSION: Auto-detect discovers category-rooted spec folders');
+
+  const { getSpecsDirectories } = require(path.join(SCRIPTS_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-FD09g: Category-rooted auto-detect discovery', 'No specs directories available');
+    return;
+  }
+
+  const token = `${Date.now().toString(36)}-ad`;
+  const categoryName = `02--auto-category-${token}`;
+  const parentName = `997-auto-parent-${token}`;
+  const childName = `996-auto-child-${token}`;
+  const categoryPath = path.join(specsDirs[0], categoryName);
+  const parentPath = path.join(categoryPath, parentName);
+  const childPath = path.join(parentPath, childName);
+
+  try {
+    fs.mkdirSync(childPath, { recursive: true });
+    const { TEST_HELPERS } = require(path.join(SCRIPTS_DIR, 'spec-folder', 'folder-detector'));
+    const candidates = await TEST_HELPERS.collectAutoDetectCandidates([specsDirs[0]]);
+    const relativePaths = candidates.map((candidate) => candidate.relativePath);
+
+    if (
+      relativePaths.includes(`${categoryName}/${parentName}`) &&
+      relativePaths.includes(`${categoryName}/${parentName}/${childName}`)
+    ) {
+      pass('T-FD09g: Category-rooted auto-detect discovery', relativePaths.filter((item) => item.includes(token)).join(', '));
+    } else {
+      fail('T-FD09g: Category-rooted auto-detect discovery', `Missing expected paths in ${JSON.stringify(relativePaths)}`);
+    }
+  } catch (err) {
+    fail('T-FD09g: Category-rooted auto-detect discovery', err.message);
+  } finally {
+    try { fs.rmSync(categoryPath, { recursive: true, force: true }); } catch (_) {}
+  }
+}
+
+async function testApprovedRootContainmentRejectsSymlinkEscape() {
+  log('\n🔬 REGRESSION: Approved-root containment rejects symlink escapes');
+
+  const { getSpecsDirectories } = require(path.join(SCRIPTS_DIR, 'core', 'config'));
+  const specsDirs = getSpecsDirectories().filter(dir => fs.existsSync(dir));
+  if (specsDirs.length === 0) {
+    skip('T-FD09h: Canonical containment rejects symlink escape', 'No specs directories available');
+    return;
+  }
+
+  const token = `${Date.now().toString(36)}-sl`;
+  const outsideRoot = fs.mkdtempSync(path.join(os.tmpdir(), `folder-detector-outside-${token}-`));
+  const escapedTarget = path.join(outsideRoot, `996-symlink-child-${token}`);
+  const symlinkPath = path.join(specsDirs[0], `998-symlink-escape-${token}`);
+
+  try {
+    fs.mkdirSync(escapedTarget, { recursive: true });
+    fs.symlinkSync(outsideRoot, symlinkPath, 'dir');
+    const { TEST_HELPERS } = require(path.join(SCRIPTS_DIR, 'spec-folder', 'folder-detector'));
+    const result = TEST_HELPERS.isUnderApprovedSpecsRoots(path.join(symlinkPath, path.basename(escapedTarget)));
+
+    if (result === false) {
+      pass('T-FD09h: Canonical containment rejects symlink escape', 'Symlinked path rejected outside approved roots');
+    } else {
+      fail('T-FD09h: Canonical containment rejects symlink escape', 'Symlinked path was incorrectly accepted');
+    }
+  } catch (err) {
+    fail('T-FD09h: Canonical containment rejects symlink escape', err.message);
+  } finally {
+    try { fs.rmSync(symlinkPath, { recursive: true, force: true }); } catch (_) {}
+    try { fs.rmSync(outsideRoot, { recursive: true, force: true }); } catch (_) {}
   }
 }
 
@@ -1208,6 +1316,9 @@ async function main() {
   await testRankingResistsMtimeSkew();
   await testLowConfidenceConfirmationAndFallbackContract();
   await testSessionQueryUsesTimestampedMultiRowLookup();
+  await testCategoryRootedBareChildResolvesFromSessionPaths();
+  await testCategoryRootedAutoDetectDiscovery();
+  await testApprovedRootContainmentRejectsSymlinkEscape();
 
   // Results summary
   log('\n═══════════════════════════════════════════════════════════════');

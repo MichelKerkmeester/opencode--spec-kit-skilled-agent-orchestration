@@ -83,7 +83,7 @@ describe('RRF Fusion (T001-T006)', () => {
     expect(shared.rrfScore).toBeGreaterThan(vectorOnly.rrfScore);
     expect(shared.rrfScore).toBeGreaterThan(bm25Only.rrfScore);
     expect(shared.sources).toHaveLength(2);
-    expect(shared.convergenceBonus).toBeGreaterThan(0);
+    expect(shared.convergenceBonus).toBe(0);
   });
 
   it('T004: Empty input returns empty output', () => {
@@ -179,18 +179,18 @@ describe('C138: Cross-Variant RRF (Multi-Query)', () => {
 
     const shared = requireResult(fused.find(r => r.id === 'shared'));
     expect(shared.sources).toHaveLength(3);
-    // 3-source convergence should give bonus
-    expect(shared.convergenceBonus).toBeGreaterThan(0);
+    expect(shared.rrfScore).toBeGreaterThan(requireResult(fused.find(r => r.id === 'v-only')).rrfScore);
+    expect(shared.convergenceBonus).toBe(0);
   });
 
-  it('C138-T2: convergence bonus is exactly 0.10 per additional source', () => {
+  it('C138-T2: explicit convergence bonus is exactly 0.10 per additional source', () => {
     const resultsA = [{ id: 'x', title: 'X' }];
     const resultsB = [{ id: 'x', title: 'X' }];
 
     const fused = fuseResultsMulti([
       { source: SOURCE_TYPES.VECTOR, results: resultsA },
       { source: SOURCE_TYPES.BM25, results: resultsB },
-    ]);
+    ], { convergenceBonus: 0.10 });
 
     const x = requireResult(fused.find(r => r.id === 'x'));
     expect(x.convergenceBonus).toBeCloseTo(0.10, 2);
@@ -297,5 +297,41 @@ describe('C138-P3: fuseResultsCrossVariant', () => {
     for (let i = 0; i < fused.length - 1; i++) {
       expect(fused[i].rrfScore).toBeGreaterThanOrEqual(fused[i + 1].rrfScore);
     }
+  });
+
+  it('C138-CV7: fuseResultsMulti honors explicit k=0', () => {
+    const fused = fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'a', title: 'A' }, { id: 'b', title: 'B' }] },
+    ], { k: 0 });
+
+    const first = requireResult(fused.find(r => r.id === 'a'));
+    const second = requireResult(fused.find(r => r.id === 'b'));
+
+    expect(first.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(1, 6);
+    expect(second.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(0.5, 6);
+  });
+
+  it('C138-CV8: fuseResultsMulti rejects negative k', () => {
+    expect(() => fuseResultsMulti([
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'a', title: 'A' }] },
+    ], { k: -1 })).toThrow('RRF k parameter must be non-negative');
+  });
+
+  it('C138-CV9: fuseResultsCrossVariant honors explicit k=0', () => {
+    const variant = [
+      { source: SOURCE_TYPES.VECTOR, results: [{ id: 'shared', title: 'Shared' }] },
+    ];
+
+    const fused = fuseResultsCrossVariant([variant, variant], { k: 0 });
+    const shared = requireResult(fused.find(r => r.id === 'shared'));
+
+    expect(shared.sourceScores[SOURCE_TYPES.VECTOR]).toBeCloseTo(2, 6);
+    expect(shared.convergenceBonus).toBeCloseTo(0.10, 6);
+  });
+
+  it('C138-CV10: fuseResultsCrossVariant rejects negative k', () => {
+    expect(() => fuseResultsCrossVariant([
+      [{ source: SOURCE_TYPES.VECTOR, results: [{ id: 'shared', title: 'Shared' }] }],
+    ], { k: -1 })).toThrow('RRF k parameter must be non-negative');
   });
 });

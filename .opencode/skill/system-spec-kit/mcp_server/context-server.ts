@@ -40,6 +40,9 @@ import { runPostMutationHooks } from './handlers/mutation-hooks';
 // Utils
 import { validateInputLengths } from './utils';
 
+// History (audit trail for file-watcher deletes)
+import { recordHistory } from './lib/storage/history';
+
 // Hooks
 import {
   MEMORY_AWARE_TOOLS,
@@ -644,6 +647,12 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   let deletedCount = 0;
   for (const row of rows) {
     if (typeof row.id === 'number') {
+      // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
+      try {
+        recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher');
+      } catch (_histErr: unknown) {
+        // history recording is best-effort in file-watcher path
+      }
       if (vectorIndex.deleteMemory(row.id)) {
         deletedCount += 1;
       }

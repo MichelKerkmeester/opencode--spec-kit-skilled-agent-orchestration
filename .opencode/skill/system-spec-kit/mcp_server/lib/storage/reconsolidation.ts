@@ -18,6 +18,7 @@
 
 import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
+import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
 
 /* ---------------------------------------------------------------
@@ -516,6 +517,10 @@ export async function reconsolidate(
             // orphan embedding/artifact rows when memory_index is deleted.
             try {
               db.transaction(() => {
+                // AI-WHY: Record DELETE history before removing orphan so audit trail persists
+                try {
+                  recordHistory(conflictMemory.id!, 'DELETE', null, null, 'mcp:reconsolidation_cleanup');
+                } catch (_histErr: unknown) { /* best-effort */ }
                 db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
                 // Clean up vector embedding if vec_memories table exists
                 try {

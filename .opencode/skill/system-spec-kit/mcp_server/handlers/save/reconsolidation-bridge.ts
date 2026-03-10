@@ -10,7 +10,7 @@ import * as embeddings from '../../lib/providers/embeddings';
 import * as bm25Index from '../../lib/search/bm25-index';
 import * as fsrsScheduler from '../../lib/cache/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../../lib/storage/incremental-index';
-import { reconsolidate, isReconsolidationEnabled } from '../../lib/storage/reconsolidation';
+import { reconsolidate } from '../../lib/storage/reconsolidation';
 import type { ReconsolidationResult } from '../../lib/storage/reconsolidation';
 import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
 import {
@@ -20,6 +20,7 @@ import {
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 import { toErrorMessage } from '../../utils';
 
+import { recordHistory } from '../../lib/storage/history';
 import { appendMutationLedgerSafe } from '../memory-crud-utils';
 import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
 import { detectSpecLevelFromParsed } from '../handler-utils';
@@ -41,7 +42,10 @@ export async function runReconsolidationIfEnabled(
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings: string[] = [];
 
-  if (!force && isReconsolidationFlagEnabled() && isReconsolidationEnabled() && embedding) {
+  // T-04: Collapsed dual reconsolidation gating to single contract.
+  // search-flags.isReconsolidationEnabled() is the canonical gate (default-on via SPECKIT_RECONSOLIDATION).
+  // reconsolidation.ts:isReconsolidationEnabled() was redundantly checked here — removed.
+  if (!force && isReconsolidationFlagEnabled() && embedding) {
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
       if (!hasCheckpoint) {
@@ -132,6 +136,13 @@ export async function runReconsolidationIfEnabled(
                   const message = toErrorMessage(bm25Err);
                   console.warn(`[memory-save] BM25 indexing failed (recon conflict store): ${message}`);
                 }
+              }
+
+              // Record history for reconsolidation conflict pre-store
+              try {
+                recordHistory(memoryId, 'ADD', null, memory.filePath ?? null, 'mcp:memory_save');
+              } catch (_histErr: unknown) {
+                // history recording is best-effort
               }
 
               return memoryId;
