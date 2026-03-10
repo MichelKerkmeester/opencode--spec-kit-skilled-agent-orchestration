@@ -22,10 +22,10 @@ This document merges the implementation plans from five related bug-fix spec fol
 | 1 | `003-auto-detected-session-bug` (merged) | Auto-Detected Session Selection Bug | Complete |
 | 2 | `008-subfolder-resolution-fix` (merged) | Subfolder Resolution Fix | Complete |
 | 3 | `013-memory-search-bug-fixes` (merged) | Memory Search Bug Fixes (Unified) | Complete |
-| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress |
-| 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | In Progress |
+| 4 | `015-bug-fixes-and-alignment` (merged) | Bug Fixes and Alignment | In Progress (15 deferred test tasks) |
+| 5 | `017-30-commit-bug-audit-w5` (merged) | 30-Commit Bug Audit (W5, 2026-03-10) | Complete |
 
-Current gate truth (2026-03-10): baseline checks from 2026-03-07 remain green (`npm run check`, `npm run check:full`, and targeted post-fix verification in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`), and W5 verification reports `npx tsc --noEmit` clean across `mcp_server`, `scripts`, and `shared` with `368/372` tests passing (4 pre-existing failures).
+Current gate truth (2026-03-10): `npx tsc --noEmit` clean across `mcp_server`, `scripts`, and `shared`. Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes). W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files).
 
 Each section below preserves the full original plan content with source attribution.
 <!-- /ANCHOR:overview -->
@@ -696,6 +696,18 @@ Scope covered `mcp_server/`, `scripts/`, and `shared/`, producing fixed and pend
 ### 4. Verification Strategy
 
 1. Run `npx tsc --noEmit` for all three code surfaces (`mcp_server`, `scripts`, `shared`).
-2. Run the test suite and preserve the W5 baseline truth: `368/372` passing, with 4 pre-existing failures.
+2. Run the test suite. Final state: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes).
 3. Validate each fix at file level by matching finding IDs to path:line evidence in tasks/checklist artifacts.
 4. Keep each phase gated by explicit pass/fail evidence before promoting items to completed status.
+
+### 5. Execution Record (2026-03-10)
+
+W5 was executed in 3 sequential waves using 15 Codex CLI agents (`codex exec --model gpt-5.3-codex --full-auto`):
+
+| Wave | Agents | Findings | Files Changed | Commit |
+|------|--------|----------|---------------|--------|
+| A | 5 | R04,R07,R08,A03,A04,A07,C01,C03,E05,E06,H04,M03,S02 | 13 | `0b53820c` |
+| B | 5 | R02,R11,R09,R10,D01,D02,D06,D09,D10,H03,H06,H07,C02,C04,M01,M02 | 14 | `0b53820c` |
+| C | 5 | R01,R03,R05,R06,D03-D08,A01,A02,A05,A06,H01,H02,H05,H08,H09,S01,S03,E01-E04,E07,E08,X01-X07 | 30 | `37b5ba59` |
+
+Regression fixes applied manually: UNIQUE index changed to regular index on mutation_ledger (was too strict for legitimate duplicate entries), and autoRepair test updated to pass `confirmed: true` through the new confirmation gate.

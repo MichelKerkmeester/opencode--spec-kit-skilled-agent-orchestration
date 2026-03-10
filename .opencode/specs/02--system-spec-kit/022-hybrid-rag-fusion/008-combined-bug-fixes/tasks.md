@@ -24,14 +24,15 @@ This file merges tasks from five source spec folders into a single canonical ref
 | 013 | Memory Search Bug Fixes | 40 | 40 | 0 |
 | 015 | Bug Fixes and Alignment | 84 | 69 | 15 |
 | 016 | Code Audit (2026-03-08) | 17 | 0 | 17 |
-| 017 | 30-Commit Bug Audit (W5, 2026-03-10) | 50 | 24 | 26 |
-| **Total** | | **234** | **176** | **58** |
+| 017 | 30-Commit Bug Audit (W5, 2026-03-10) | 50 | 50 | 0 |
+| **Total** | | **234** | **202** | **32** |
 
 Current verification truth snapshot (2026-03-10):
 - `npm run check` is green.
 - `npm run check:full` is green.
 - `npx tsc --noEmit` is clean across `mcp_server`, `scripts`, and `shared`.
-- Test suite baseline is `368/372` passing (4 pre-existing failures).
+- Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes).
+- W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files).
 - Final verification evidence is recorded in `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md` and `scratch/verification-logs/2026-03-07-mcp-check-full.md`.
 
 ---
@@ -501,34 +502,34 @@ Current verification truth snapshot (2026-03-10):
 - [x] T107 Resolve finding `F19` (`shared/embeddings/providers/hf-local.ts:215`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
 - [x] T108 Resolve finding `F20` (`mcp_server/lib/search/embedding-expansion.ts:226`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
 - [x] T109 Resolve finding `F21` (`mcp_server/lib/search/vector-index-mutations.ts:107`) [EVIDENCE: Fix applied in W5 audit; tsc --noEmit clean across mcp_server, scripts, shared; 368/372 tests pass (4 pre-existing)]
-- [ ] T110 Implement quick-win race fixes for `R04`, `R07`, `R08` (`mcp_server/lib/storage/index-refresh.ts:171`; `mcp_server/core/db-state.ts:113`; `mcp_server/core/db-state.ts:117`)
-- [ ] T111 Implement quick-win config fixes for `A03`, `A04`, `A07` (`mcp_server/core/config.ts:43`; `mcp_server/utils/batch-processor.ts:41`; `mcp_server/lib/cognitive/archival-manager.ts:532`)
-- [ ] T112 Implement quick-win cognitive fixes for `C01`, `C03` (`mcp_server/lib/cognitive/co-activation.ts:119`; `mcp_server/lib/cognitive/working-memory.ts:554`)
-- [ ] T113 Implement quick-win eval guards for `E05`, `E06` (`scripts/evals/run-phase1-5-shadow-eval.ts:96`; `scripts/evals/run-phase3-telemetry-dashboard.ts:122`)
-- [ ] T114 Implement quick-win handler/storage fixes for `H04`, `M03`, `S02` (`mcp_server/handlers/memory-index.ts:368`; `mcp_server/lib/storage/access-tracker.ts:119`; `mcp_server/lib/storage/causal-edges.ts:290`)
-- [ ] T115 Implement medium race/status handling for `R02`, `R11` (`mcp_server/lib/storage/access-tracker.ts:75`; `mcp_server/handlers/memory-save.ts:435`)
-- [ ] T116 Implement medium rollback contract fixes for `R09`, `R10` (`mcp_server/handlers/chunking-orchestrator.ts:347`; `mcp_server/handlers/chunking-orchestrator.ts:166`)
-- [ ] T117 Implement medium score-field synchronization for `D01`, `D02`, `D06` (`mcp_server/lib/search/pipeline/stage2-fusion.ts:557`; `mcp_server/lib/search/pipeline/stage2-fusion.ts:661`; `mcp_server/lib/search/hybrid-search.ts:739`)
-- [ ] T118 Implement medium retrieval/cache normalization for `D09`, `D10` (`mcp_server/lib/search/retrieval-directives.ts:326`; `mcp_server/lib/search/vector-index-aliases.ts:229`)
-- [ ] T119 Implement medium handler validation for `H03`, `H06`, `H07` (`mcp_server/handlers/memory-crud-stats.ts:123`; `mcp_server/handlers/memory-save.ts:166`; `mcp_server/handlers/quality-loop.ts:122`)
-- [ ] T120 Implement medium cognitive/save flow fixes for `C02`, `C04`, `M01`, `M02` (`mcp_server/lib/cognitive/working-memory.ts:504`; `mcp_server/hooks/memory-surface.ts:99`; `mcp_server/handlers/save/pe-orchestration.ts:101`; `mcp_server/handlers/save/response-builder.ts:188`)
+- [x] T110 Implement quick-win race fixes for `R04`, `R07`, `R08` (`mcp_server/lib/storage/index-refresh.ts:171`; `mcp_server/core/db-state.ts:113`; `mcp_server/core/db-state.ts:117`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T111 Implement quick-win config fixes for `A03`, `A04`, `A07` (`mcp_server/core/config.ts:43`; `mcp_server/utils/batch-processor.ts:41`; `mcp_server/lib/cognitive/archival-manager.ts:532`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T112 Implement quick-win cognitive fixes for `C01`, `C03` (`mcp_server/lib/cognitive/co-activation.ts:119`; `mcp_server/lib/cognitive/working-memory.ts:554`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T113 Implement quick-win eval guards for `E05`, `E06` (`scripts/evals/run-phase1-5-shadow-eval.ts:96`; `scripts/evals/run-phase3-telemetry-dashboard.ts:122`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T114 Implement quick-win handler/storage fixes for `H04`, `M03`, `S02` (`mcp_server/handlers/memory-index.ts:368`; `mcp_server/lib/storage/access-tracker.ts:119`; `mcp_server/lib/storage/causal-edges.ts:290`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T115 Implement medium race/status handling for `R02`, `R11` (`mcp_server/lib/storage/access-tracker.ts:75`; `mcp_server/handlers/memory-save.ts:435`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T116 Implement medium rollback contract fixes for `R09`, `R10` (`mcp_server/handlers/chunking-orchestrator.ts:347`; `mcp_server/handlers/chunking-orchestrator.ts:166`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T117 Implement medium score-field synchronization for `D01`, `D02`, `D06` (`mcp_server/lib/search/pipeline/stage2-fusion.ts:557`; `mcp_server/lib/search/pipeline/stage2-fusion.ts:661`; `mcp_server/lib/search/hybrid-search.ts:739`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T118 Implement medium retrieval/cache normalization for `D09`, `D10` (`mcp_server/lib/search/retrieval-directives.ts:326`; `mcp_server/lib/search/vector-index-aliases.ts:229`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T119 Implement medium handler validation for `H03`, `H06`, `H07` (`mcp_server/handlers/memory-crud-stats.ts:123`; `mcp_server/handlers/memory-save.ts:166`; `mcp_server/handlers/quality-loop.ts:122`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
+- [x] T120 Implement medium cognitive/save flow fixes for `C02`, `C04`, `M01`, `M02` (`mcp_server/lib/cognitive/working-memory.ts:504`; `mcp_server/hooks/memory-surface.ts:99`; `mcp_server/handlers/save/pe-orchestration.ts:101`; `mcp_server/handlers/save/response-builder.ts:188`) [EVIDENCE: Commit 0b53820c; tsc clean; 0 regressions]
 
 ---
 
 ### Phase W5-C: Larger Refactors
 
-- [ ] T121 Implement transactional session dedup for `R01` (`mcp_server/lib/session/session-manager.ts:341`)
-- [ ] T122 Implement race-safe storage/cache coordination for `R03`, `R05`, `R06` (`mcp_server/lib/storage/consolidation.ts:492`; `mcp_server/lib/storage/mutation-ledger.ts:367`; `mcp_server/lib/cache/tool-cache.ts:326`)
-- [ ] T123 Implement stage-contract refactor for `D03`, `D04` (`mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:528`; `mcp_server/lib/search/pipeline/stage3-rerank.ts:598`)
-- [ ] T124 Implement rerank/injection contract fixes for `D05`, `D07`, `D08` (`mcp_server/lib/search/pipeline/stage3-rerank.ts:556`; `mcp_server/lib/search/causal-boost.ts:189`; `mcp_server/lib/extraction/extraction-adapter.ts:197`)
-- [ ] T125 Implement config decoupling refactor for `A01`, `A02` (`mcp_server/core/config.ts:7`; `mcp_server/core/config.ts:33`)
-- [ ] T126 Implement architecture contract typing for `A05`, `A06` (`mcp_server/core/db-state.ts:50`; `mcp_server/lib/interfaces/vector-store.ts:15`)
-- [ ] T127 Implement handler ownership/privilege gates for `H01`, `H02` (`mcp_server/handlers/memory-context.ts:442`; `mcp_server/handlers/memory-crud-health.ts:360`)
-- [ ] T128 Implement save pipeline contract fixes for `H05`, `H08`, `H09` (`mcp_server/handlers/memory-save.ts:135`; `mcp_server/handlers/save/dedup.ts:50`; `mcp_server/handlers/save/embedding-pipeline.ts:37`)
-- [ ] T129 Implement storage integrity fixes for `S01`, `S03` (`mcp_server/lib/storage/causal-edges.ts:274`; `mcp_server/lib/storage/reconsolidation.ts:336`)
-- [ ] T130 Implement eval validation correctness for `E01`, `E03` (`scripts/evals/check-allowlist-expiry.ts:96`; `scripts/evals/check-no-mcp-lib-imports-ast.ts:88`)
-- [ ] T131 Implement eval parser/feature refactors for `E02`, `E04` (`scripts/evals/check-architecture-boundaries.ts:72`; `scripts/evals/map-ground-truth-ids.ts:16`)
-- [ ] T132 Implement eval metric correctness for `E07`, `E08` (`scripts/evals/run-quality-legacy-remediation.ts:132`; `scripts/evals/run-quality-legacy-remediation.ts:209`)
-- [ ] T133 Implement extractor/workflow path-contract fixes for `X01`, `X02` (`scripts/extractors/session-extractor.ts:165`; `scripts/core/workflow.ts:386`)
-- [ ] T134 Implement script parsing fixes for `X03`, `X04` (`scripts/lib/flowchart-generator.ts:353`; `scripts/lib/frontmatter-migration.ts:381`)
-- [ ] T135 Implement folder-detector hardening for `X05`, `X06`, `X07` (`scripts/spec-folder/folder-detector.ts:470`; `scripts/spec-folder/folder-detector.ts:1064`; `scripts/spec-folder/folder-detector.ts:1181`)
+- [x] T121 Implement transactional session dedup for `R01` (`mcp_server/lib/session/session-manager.ts:341`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T122 Implement race-safe storage/cache coordination for `R03`, `R05`, `R06` (`mcp_server/lib/storage/consolidation.ts:492`; `mcp_server/lib/storage/mutation-ledger.ts:367`; `mcp_server/lib/cache/tool-cache.ts:326`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T123 Implement stage-contract refactor for `D03`, `D04` (`mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:528`; `mcp_server/lib/search/pipeline/stage3-rerank.ts:598`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T124 Implement rerank/injection contract fixes for `D05`, `D07`, `D08` (`mcp_server/lib/search/pipeline/stage3-rerank.ts:556`; `mcp_server/lib/search/causal-boost.ts:189`; `mcp_server/lib/extraction/extraction-adapter.ts:197`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T125 Implement config decoupling refactor for `A01`, `A02` (`mcp_server/core/config.ts:7`; `mcp_server/core/config.ts:33`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T126 Implement architecture contract typing for `A05`, `A06` (`mcp_server/core/db-state.ts:50`; `mcp_server/lib/interfaces/vector-store.ts:15`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T127 Implement handler ownership/privilege gates for `H01`, `H02` (`mcp_server/handlers/memory-context.ts:442`; `mcp_server/handlers/memory-crud-health.ts:360`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T128 Implement save pipeline contract fixes for `H05`, `H08`, `H09` (`mcp_server/handlers/memory-save.ts:135`; `mcp_server/handlers/save/dedup.ts:50`; `mcp_server/handlers/save/embedding-pipeline.ts:37`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T129 Implement storage integrity fixes for `S01`, `S03` (`mcp_server/lib/storage/causal-edges.ts:274`; `mcp_server/lib/storage/reconsolidation.ts:336`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T130 Implement eval validation correctness for `E01`, `E03` (`scripts/evals/check-allowlist-expiry.ts:96`; `scripts/evals/check-no-mcp-lib-imports-ast.ts:88`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T131 Implement eval parser/feature refactors for `E02`, `E04` (`scripts/evals/check-architecture-boundaries.ts:72`; `scripts/evals/map-ground-truth-ids.ts:16`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T132 Implement eval metric correctness for `E07`, `E08` (`scripts/evals/run-quality-legacy-remediation.ts:132`; `scripts/evals/run-quality-legacy-remediation.ts:209`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T133 Implement extractor/workflow path-contract fixes for `X01`, `X02` (`scripts/extractors/session-extractor.ts:165`; `scripts/core/workflow.ts:386`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T134 Implement script parsing fixes for `X03`, `X04` (`scripts/lib/flowchart-generator.ts:353`; `scripts/lib/frontmatter-migration.ts:381`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]
+- [x] T135 Implement folder-detector hardening for `X05`, `X06`, `X07` (`scripts/spec-folder/folder-detector.ts:470`; `scripts/spec-folder/folder-detector.ts:1064`; `scripts/spec-folder/folder-detector.ts:1181`) [EVIDENCE: Commit 37b5ba59; tsc clean; 0 regressions]

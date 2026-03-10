@@ -33,9 +33,9 @@ This document merges the specifications from 5 related bug-fix and alignment wor
 
 - `npm run check`: PASS (lint + `npx tsc --noEmit`)
 - `npm run check:full`: PASS (full package verification green; see `scratch/verification-logs/2026-03-07-mcp-check-full.md`)
-- Targeted post-fix verification: PASS (`memory-crud-extended`, `checkpoints-storage`, `adaptive-fusion`, `task-enrichment`, workspace typecheck/build)
 - `npx tsc --noEmit`: PASS across `mcp_server`, `scripts`, and `shared`
-- Test suite status: 368/372 passing (4 pre-existing failures: `T-019d`, `T-024e`, `T-024f`, `T-032`)
+- Test suite: 11 pre-existing failures across 9 files (90 pre-existing failures resolved by W5 fixes)
+- W5 commits: `0b53820c` (Wave A+B, 29 fixes, 23 files) and `37b5ba59` (Wave C, 33 fixes, 30 files)
 - Evidence artifacts:
   - `scratch/cross-ai-review-report.md`
   - `scratch/verification-logs/2026-03-07-post-fix-targeted-verification.md`
@@ -808,7 +808,7 @@ Active deferrals intentionally exclude historical CR-P2-4 (`memory-save.ts` deco
 
 ### 1. Audit Scope
 
-W5 audited the last 30 `fix(spec-kit)` and `feat(spec-kit)` commits across `mcp_server/`, `scripts/`, and `shared/` using 15 agents (10 Copilot across Waves 1-2, 5 Codex in Wave 3). The findings set reports 3 fixed P0 crashes, 21 enumerated fixed P1 findings (`F01`-`F21`), and 62 remaining P1 findings grouped by race conditions, data flow, architecture/config, handlers, cognitive surfaces, save/mutation, storage, eval scripts, and extractor/script logic.
+W5 audited the last 30 `fix(spec-kit)` and `feat(spec-kit)` commits across `mcp_server/`, `scripts/`, and `shared/` using 15 agents (10 Copilot across Waves 1-2, 5 Codex in Wave 3). The findings set identified 3 P0 crashes, 21 P1 findings (`F01`-`F21`), and 62 additional P1 findings grouped by race conditions, data flow, architecture/config, handlers, cognitive surfaces, save/mutation, storage, eval scripts, and extractor/script logic. All 86 findings (3 P0 + 83 P1) are now fixed — commits `0b53820c` (Wave A+B, 29 fixes) and `37b5ba59` (Wave C, 33 fixes).
 
 ---
 

@@ -21,6 +21,7 @@ This document merges implementation summaries from 4 spec folders under `022-hyb
 | 2 | `008-combined-bug-fixes` | 2026-03-01 / 2026-03-06 | 3 bugs fixed for bare-name and relative-path resolution in 3-level-deep spec hierarchies (31 tests) |
 | 3 | `008-combined-bug-fixes` | 2026-03-06 | Stateless parity, folder-discovery follow-up, Voyage 4 memory-index fix (3 workstreams, 492+ tests) |
 | 4 | `008-combined-bug-fixes` | 2026-03-07 | 49 P0/P1/P2 fixes across 5 phases, 30+ source files, 14 parallel agents |
+| 5 | `008-combined-bug-fixes` | 2026-03-10 | 62 P1 fixes across 3 waves (W5), 45 source files, 15 Codex CLI agents |
 
 ---
 ---
@@ -545,3 +546,102 @@ The table below is retained as a historical progress snapshot from prior executi
 
 - **Test tasks (10):** T002, T006, T015, T020, T023, T028, T033, T036, T075, T076 -- writing tests for all fixes. Recommend as follow-up sprint.
 - **P2 code (4):** T054 (EMBEDDING_DIM), T059 (shared error utils), T060 (dimension fallback), T061 (mutation ledger transaction) -- lower priority improvements.
+
+---
+---
+
+## Source: 017 -- 30-Commit Bug Audit (W5, 2026-03-10)
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 008-combined-bug-fixes |
+| **Completed** | 2026-03-10 |
+| **Level** | 3 |
+| **Method** | 15 Codex CLI agents (gpt-5.3-codex --full-auto), 3 sequential waves |
+
+---
+
+### What Was Built
+
+62 P1 bug fixes across 3 waves, addressing all remaining findings from the 30-commit audit (15 CLI agents). Fixes span race conditions, data flow integrity, architecture contracts, handler logic, cognitive subsystem, save/mutation pipeline, storage integrity, eval scripts, and extractor/script hardening.
+
+#### Wave A+B: Quick Wins + Medium Effort (29 fixes)
+
+**Commit:** `0b53820c` (23 files, +265/-97)
+
+**Race conditions (R02, R04, R07-R11):** Atomic SQL retry_count increment, lastDbCheck timing fix, narrow error catch, BM25 rollback cleanup, storageLayer-routed chunk delete, error status check after save, flush accumulator preservation.
+
+**Config validation (A03, A04, A07):** Number.isFinite + positive checks for BATCH_SIZE and batch-processor, early return when archival disabled.
+
+**Cognitive (C01-C04):** Cache key includes limit parameter, event_counter increment in batchUpdateScores, try/catch on getLatestSessionEventCounter, filter includes pending/partial embedding statuses.
+
+**Data flow (D01, D02, D06, D09, D10):** Score alias synchronization after boost writes, resolveEffectiveScore pattern, parentMemoryId normalization before MPAB, filePath validation via isPathWithin, specFolder-based cache invalidation.
+
+**Handlers (H03, H04, H06, H07):** str.includes() replaces RegExp(userInput), non-success status counting, dedup before chunking branch, Map-based anchor validation.
+
+**Save/Mutation (M01-M03):** SUPERSEDE failure returns error, error status check before hooks, numeric epoch for last_accessed.
+
+**Storage (S02):** stmt.changes === 0 tracked in failure counter.
+
+**Eval (E05, E06):** Empty dataset guards before division.
+
+#### Wave C: Larger Refactors (33 fixes)
+
+**Commit:** `37b5ba59` (30 files, +543/-201)
+
+**Race conditions (R01, R03, R05, R06):** Atomic session dedup via BEGIN IMMEDIATE, cadence gate transaction, divergence retry in runInTransaction, in-flight promise coalescing for cache.
+
+**Data flow (D03-D05, D07, D08):** Post-hydration filter re-application for summary hits, MPAB fallback promotes parent identity, reassembly writes to precomputedContent, buildPipelineRow normalizes score aliases, canonical_file_path replaces LIKE query.
+
+**Architecture (A01, A02, A05, A06):** Lazy cognitive config via getCognitiveConfig() getter, shared resolveDatabasePaths(), typed GraphSearchFn, re-export VectorStoreInterface from shared.
+
+**Handlers (H01, H02, H05, H08, H09):** Session ownership guard, confirmation gate for autoRepair, contentDiverged tracking, pending status in dedup SELECT, unified computeCacheKey.
+
+**Storage (S01, S03):** Removed id from bulkInsertEdges INSERT, orphan edge guard.
+
+**Eval (E01-E04, E07, E08):** UTC date component validation, AST-based import detection, allowlist schema validation, removed unimplemented --apply flag, 1/rank MRR, baseline MRR=0 yields undefined ratio.
+
+**Extractors/Scripts (X01-X07):** path.resolve() normalization, workflow ordering fix, branching structure detection, thematic break handling, path containment check, segment parsing via path.relative, narrow ENOENT catch.
+
+---
+
+### Regression Fixes
+
+Two regressions were detected and fixed during Wave C verification:
+
+1. **UNIQUE index on mutation_ledger (3 test failures):** The R05 fix added `CREATE UNIQUE INDEX` on `(linked_memory_ids[0], mutation_type, timestamp)` which was too strict -- tests legitimately insert multiple entries with the same combination. Changed to regular `CREATE INDEX` since `runInTransaction()` already provides atomicity.
+
+2. **autoRepair confirmation gate (1 test failure):** The H02 fix added a confirmation gate (`if (autoRepair && !confirmed) return needsConfirmation`). The EXT-H12 test called with `autoRepair: true` without `confirmed: true`. Fixed by adding `confirmed: true` to the test call.
+
+---
+
+### Files Changed
+
+| Wave | Files | LOC |
+|------|-------|-----|
+| A+B | 23 files | +265/-97 |
+| C | 30 files | +543/-201 |
+| **Total** | ~45 unique files | +808/-298 |
+
+---
+
+### Verification
+
+| Check | Result |
+|-------|--------|
+| `npx tsc --noEmit` (mcp_server) | PASS |
+| `npx tsc --noEmit` (scripts) | PASS |
+| `npx tsc --noEmit` (shared) | PASS |
+| Test suite | 11 pre-existing failures across 9 files (90 pre-existing failures resolved) |
+| New regressions | 0 (after 2 regression fixes) |
+| `git diff --stat` scope check | All changes within expected file scope |
+
+---
+
+### Known Limitations
+
+1. **016 audit findings (17 items):** Source 016 findings remain pending -- they are from a separate code audit and were not in scope for W5.
+2. **015 deferred test tasks (10 items):** Test coverage tasks from source 015 remain deferred.
+3. **Test failure count discrepancy:** Commit message says "9 pre-existing test failures" while the actual test run showed 11 failures across 9 files (some files have multiple failing tests).
