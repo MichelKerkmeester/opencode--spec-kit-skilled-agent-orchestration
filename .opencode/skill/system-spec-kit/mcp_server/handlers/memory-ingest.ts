@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 import { randomBytes } from 'node:crypto';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import { ALLOWED_BASE_PATHS, DATABASE_PATH, checkDatabaseUpdated } from '../core';
@@ -110,15 +111,24 @@ async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCP
       continue;
     }
 
+    // Resolve symlinks to prevent symlink-based path traversal bypass
+    let realPath: string;
+    try {
+      realPath = fs.realpathSync(resolvedPath);
+    } catch {
+      // Path doesn't exist yet (pre-validation) — use resolved path
+      realPath = resolvedPath;
+    }
+
     const isWithinAllowedBase = allowedBasePaths.some((basePath) => (
-      resolvedPath === basePath || resolvedPath.startsWith(`${basePath}${path.sep}`)
+      realPath === basePath || realPath.startsWith(`${basePath}${path.sep}`)
     ));
     if (!isWithinAllowedBase) {
       invalidPaths.push({ input: inputPath, reason: 'is outside allowed memory roots' });
       continue;
     }
 
-    normalizedPaths.push(resolvedPath);
+    normalizedPaths.push(realPath);
   }
 
   if (invalidPaths.length > 0) {

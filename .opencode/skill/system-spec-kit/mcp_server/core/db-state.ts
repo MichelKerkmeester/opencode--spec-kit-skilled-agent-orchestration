@@ -191,7 +191,8 @@ export async function getLastScanTime(): Promise<number> {
 
     ensureConfigTable(db);
     const row = db.prepare('SELECT value FROM config WHERE key = ?').get('last_index_scan') as { value: string } | undefined;
-    return row ? parseInt(row.value, 10) : 0;
+    const parsed = row ? parseInt(row.value, 10) : 0;
+    return Number.isFinite(parsed) ? parsed : 0;
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : String(e);
     console.error('[db-state] Error getting last scan time:', message);

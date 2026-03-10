@@ -22,19 +22,19 @@ Git worktrees create isolated working directories sharing the same repository da
 <!-- ANCHOR:workspace-choice-enforcement -->
 ## 2. WORKSPACE CHOICE ENFORCEMENT
 
-**This workflow only applies when user has explicitly chosen "Create a git worktree" (Option B).**
+**This workflow only applies when user has explicitly chosen "Create a git worktree" (Option A).**
 
 The AI must enforce workspace choice manually by asking the user before proceeding.
 
 The AI:
 - **MUST ASK** user for workspace choice before executing any commands
-- **MUST WAIT** for explicit user selection (A/B/C)
-- **NEVER** autonomously decides between branch and worktree
-- Only proceeds with worktree creation after user selects Option B
+- **MUST WAIT** for explicit user selection (A/B)
+- **NEVER** autonomously decides between git worktree and current branch
+- **NEVER** creates a new branch directly with `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`
+- Only proceeds with worktree creation after user selects Option A
 
 If the user has not been prompted or selected a different option:
-- Option A (Branch) → Do NOT use this workflow, create a standard branch instead
-- Option C (Current branch) → Do NOT use this workflow, work on the existing branch
+- Option B (Current branch) → Do NOT use this workflow, work on the existing branch
 
 ---
 
@@ -486,8 +486,9 @@ Agent: "I'm using detached HEAD worktree for experimentation."
 
 [If keeping the changes]
 User: "This worked great, let's keep it"
-Agent: "Creating branch from detached HEAD..."
-> cd .worktrees/experiment && git checkout -b feature/new-approach
+Agent: "Creating a new worktree and branch from this detached HEAD state..."
+> git worktree add ../new-approach -b feature/new-approach HEAD
+> cd ../new-approach
 > git add . && git commit -m "Experimental approach"
 ```
 

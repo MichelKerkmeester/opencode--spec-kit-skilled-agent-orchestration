@@ -93,8 +93,9 @@ function formatDecisionHeader(title: string, context: string, confidence: number
   const width: number = 48;
   const innerWidth: number = width - 4;
   const date: Date = new Date(timestamp);
-  const timeStr: string = date.toISOString().split('T')[1].substring(0, 8);
-  const dateStr: string = date.toISOString().split('T')[0];
+  const isoStr: string = Number.isFinite(date.getTime()) ? date.toISOString() : '1970-01-01T00:00:00.000Z';
+  const timeStr: string = isoStr.split('T')[1].substring(0, 8);
+  const dateStr: string = isoStr.split('T')[0];
 
   const maxContextWidth: number = innerWidth - 9;
   const contextSnippet: string = context ? context.substring(0, maxContextWidth - 3) + (context.length > maxContextWidth - 3 ? '...' : '') : '';

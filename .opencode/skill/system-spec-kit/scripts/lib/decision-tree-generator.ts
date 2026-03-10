@@ -120,11 +120,13 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
   tree += `            \u2572${' '.repeat(questionText.length + 4)}\u2571\n`;
   tree += `             \u2572${'\u2500'.repeat(questionText.length + 2)}\u2571\n`;
 
-  const chosenOption: OptionRecord | undefined = OPTIONS.find((opt: OptionRecord) =>
-    opt.LABEL === CHOSEN ||
-    CHOSEN.includes(opt.LABEL || '') ||
-    (opt.LABEL || '').includes(CHOSEN)
-  );
+  const chosenOption: OptionRecord | undefined = CHOSEN.trim().length > 0
+    ? OPTIONS.find((opt: OptionRecord) =>
+        opt.LABEL === CHOSEN ||
+        CHOSEN.includes(opt.LABEL || '') ||
+        (opt.LABEL || '').includes(CHOSEN)
+      )
+    : undefined;
 
   const displayedOptions: OptionRecord[] = OPTIONS.slice(0, 4);
   const spacing: number = displayedOptions.length === 2 ? 15 : 10;

@@ -477,9 +477,10 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     : (toolCalls || []);
 
   // F-33: Capture-scoped monotonic counter for deterministic fallback timestamps
-  const captureBaseTime = normalizedCapture.capturedAt
+  const rawBaseTime = normalizedCapture.capturedAt
     ? new Date(normalizedCapture.capturedAt).getTime()
     : Date.now();
+  const captureBaseTime = Number.isFinite(rawBaseTime) ? rawBaseTime : Date.now();
   let monotonicCounter = 0;
 
   const toSafeISOString = (timestamp?: number | string): string => {

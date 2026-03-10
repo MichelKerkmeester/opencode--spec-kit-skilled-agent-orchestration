@@ -16,11 +16,11 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-`sk-git` is a unified orchestrator that manages the complete git development lifecycle through three phases: workspace setup (branch or worktree), commit hygiene (conventional commits) and work completion (integration plus cleanup). It provides smart routing to load only the resources relevant to the current phase.
+`sk-git` is a unified orchestrator that manages the complete git development lifecycle through three phases: workspace setup (git worktree or current branch), commit hygiene (conventional commits) and work completion (integration plus cleanup). It provides smart routing to load only the resources relevant to the current phase.
 
 Use this skill when starting new git-based work, following a complete git workflow (setup, work, complete), or when unsure which git sub-skill to invoke. It is not needed for simple one-off commands like `git status` or `git log`. Use Bash directly for those.
 
-The skill enforces workspace choice (branch vs. worktree vs. current branch) by requiring explicit user confirmation before proceeding, preventing the AI from autonomously deciding a workspace strategy.
+The skill enforces workspace choice (git worktree vs. current branch) by requiring explicit user confirmation before proceeding, preventing the AI from autonomously deciding a workspace strategy. New branches must never be created directly; when needed, create only through `git worktree add -b ...`.
 
 <!-- /ANCHOR:overview -->
 
@@ -79,13 +79,14 @@ skill_advisor.py "commit my changes" --threshold 0.8
 
 - **3-phase lifecycle:** Workspace Setup, Work & Commit, Complete & Integrate
 - **Smart routing:** Loads only the resources needed for the current phase
-- **Workspace choice enforcement:** Always asks user before choosing branch, worktree, or current branch
+- **Workspace choice enforcement:** Always asks user before choosing git worktree or current branch
 - **Conventional Commits:** Enforces `type(scope): description` format on all commits
 - **Deterministic commit logic:** Adds first-match type/scope inference for AI-generated commit subjects
 - **Artifact filtering:** Excludes build files, coverage reports and other non-public artifacts from commits
 - **Quality gates:** Pre-commit, pre-merge, pre-PR and post-merge checkpoints
 - **GitHub MCP integration:** Programmatic access to PRs, issues and CI/CD via Code Mode
 - **Parallel work support:** Multiple worktrees for simultaneous feature development
+- **Worktree-only branch creation:** Never creates a new branch directly; uses `git worktree add -b ...` when a new branch is needed
 - **Session persistence:** Remembers workspace preference for the duration of a session
 
 <!-- /ANCHOR:features -->

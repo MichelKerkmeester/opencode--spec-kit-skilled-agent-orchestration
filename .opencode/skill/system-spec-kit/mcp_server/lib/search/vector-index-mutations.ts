@@ -111,6 +111,8 @@ export function index_memory(params: IndexMemoryParams): number {
       importanceWeight,
       embedding,
       encodingIntent,
+      documentType,
+      specLevel,
       contentText,
       qualityScore,
       qualityFlags,

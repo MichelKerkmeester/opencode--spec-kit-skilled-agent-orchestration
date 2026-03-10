@@ -153,7 +153,10 @@ async function extractConversations(
 
       MESSAGES.push(assistantMessage);
 
-      const phase: string = classifyConversationPhase(TOOL_CALLS, userMessage.CONTENT);
+      const phase: string = classifyConversationPhase(
+        TOOL_CALLS.map(tc => ({ tool: tc.TOOL_NAME })),
+        userMessage.CONTENT
+      );
       if (!phaseTimestamps.has(phase)) {
         phaseTimestamps.set(phase, []);
       }

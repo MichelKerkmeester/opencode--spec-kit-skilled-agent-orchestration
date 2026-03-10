@@ -318,7 +318,7 @@ export async function extractSpecFolderContext(specFolderPath: string): Promise<
     summary,
     triggerPhrases: dedupe([
       ...spec.triggerPhrases,
-      ...((Array.isArray(description.triggerPhrases) ? description.triggerPhrases : []) as string[]).map(cleanText),
+      ...((Array.isArray(description.triggerPhrases) ? description.triggerPhrases : []) as unknown[]).filter((t): t is string => typeof t === 'string').map(cleanText),
     ]).slice(0, 12),
     decisions,
     sessionPhase: determineSessionPhase(tasks, checklist, plan.phaseTitle, String(description.status || '')),

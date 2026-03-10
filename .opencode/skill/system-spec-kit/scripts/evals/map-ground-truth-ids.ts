@@ -89,7 +89,7 @@ interface CountRow {
 // parse the TS file to extract the query data.
 
 function loadGroundTruthQueries(): GroundTruthQuery[] {
-  const gtPath = path.resolve(__dirname, '../lib/eval/ground-truth-data.ts');
+  const gtPath = path.resolve(__dirname, '../../mcp_server/lib/eval/ground-truth-data.ts');
   const src = fs.readFileSync(gtPath, 'utf-8');
 
   // Extract all query objects from the source using regex-based parsing

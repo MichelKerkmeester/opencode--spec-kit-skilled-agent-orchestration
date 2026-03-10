@@ -200,7 +200,7 @@ function extractKeyArtifacts(messages: Message[]): KeyArtifacts {
     if (!msg.toolCalls) continue;
 
     for (const tool of msg.toolCalls) {
-      const toolName: string = tool.tool?.toLowerCase() || '';
+      const toolName: string = (tool.tool || tool.TOOL_NAME || '').toLowerCase();
 
       if (toolName === 'write') {
         artifacts.filesCreated.push({

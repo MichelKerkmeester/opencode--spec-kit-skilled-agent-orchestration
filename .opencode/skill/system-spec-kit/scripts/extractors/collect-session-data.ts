@@ -223,12 +223,12 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
   );
   const hasPostflightDelta = Boolean(
     preflight && postflight &&
-    typeof preflight.knowledgeScore === 'number' &&
-    typeof postflight.knowledgeScore === 'number' &&
-    typeof preflight.uncertaintyScore === 'number' &&
-    typeof postflight.uncertaintyScore === 'number' &&
-    typeof preflight.contextScore === 'number' &&
-    typeof postflight.contextScore === 'number'
+    Number.isFinite(preflight.knowledgeScore) &&
+    Number.isFinite(postflight.knowledgeScore) &&
+    Number.isFinite(preflight.uncertaintyScore) &&
+    Number.isFinite(postflight.uncertaintyScore) &&
+    Number.isFinite(preflight.contextScore) &&
+    Number.isFinite(postflight.contextScore)
   );
 
   const DEFAULT_VALUE = null;

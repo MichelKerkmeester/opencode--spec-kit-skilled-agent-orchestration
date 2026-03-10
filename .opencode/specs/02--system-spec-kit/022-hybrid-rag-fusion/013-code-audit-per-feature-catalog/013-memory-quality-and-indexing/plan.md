@@ -1,0 +1,47 @@
+# Phase 013-memory-quality-and-indexing — Memory Quality and Indexing — Audit Plan
+
+## Methodology
+
+### Step 1: Feature Inventory
+- Read all 16 feature .md files in `feature_catalog/13--memory-quality-and-indexing/`
+- Extract source file lists (Implementation + Tests)
+- Map features to manual test playbook scenarios (NEW-073..085+)
+
+### Step 2: Code Review Per Feature
+For each feature's source files:
+- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
+- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
+- **Behavior:** Does code match the "Current Reality" description in the catalog?
+- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+
+### Step 3: Test Coverage Assessment
+- Verify tests exist for all listed test files
+- Verify tests cover the described behavior
+- Identify gaps between described functionality and test assertions
+
+### Step 4: Manual Test Playbook Cross-Reference
+- Find matching scenarios: NEW-073..085+
+- Note features with NO manual test scenario (gap)
+- Note if scenario adequately covers described feature
+
+### Step 5: Findings Report
+Per feature, produce structured findings:
+- Status: PASS | WARN | FAIL
+- Code Issues
+- Standards Violations
+- Behavior Mismatch
+- Test Gaps
+- Playbook Coverage
+- Recommended Fixes
+
+## sk-code--opencode Checklist (per file)
+
+- [ ] Naming: camelCase functions, PascalCase types/interfaces
+- [ ] Imports: explicit, no barrel re-exports of side-effect modules
+- [ ] Types: strict TypeScript, no `any` without justification
+- [ ] Error handling: typed errors, no swallowed catches
+- [ ] Null safety: optional chaining, nullish coalescing
+- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
+- [ ] Functions: single responsibility, < 50 lines preferred
+- [ ] Comments: only where logic is non-obvious
+- [ ] Exports: explicit named exports

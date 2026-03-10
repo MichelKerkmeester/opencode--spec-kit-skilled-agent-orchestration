@@ -310,7 +310,7 @@ export class OpenAIProvider implements IEmbeddingProvider {
       requestCount: this.requestCount,
       totalTokens: this.totalTokens,
       // ~$0.02 per 1M tokens for text-embedding-3-small
-      estimatedCost: this.totalTokens * 0.00002,
+      estimatedCost: (this.totalTokens / 1_000_000) * 0.02,
     };
   }
 

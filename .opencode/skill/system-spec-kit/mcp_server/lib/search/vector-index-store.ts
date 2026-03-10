@@ -687,7 +687,8 @@ export class SQLiteVectorStore extends IVectorStore {
       useDecay: options.useDecay !== false,
       tier: options.tier,
       contextType: options.contextType,
-      includeConstitutional: options.includeConstitutional !== false
+      includeConstitutional: options.includeConstitutional !== false,
+      includeArchived: options.includeArchived === true
     };
 
     // AI-WHY: Lazy import to avoid circular dependency at module load time

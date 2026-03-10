@@ -247,7 +247,7 @@ function parseLastAccessed(value: number | string | undefined | null): number | 
 export function calculateRetrievabilityScore(row: ScoringInput): number {
   let stability = (row.stability as number | undefined) || 1.0;
   if (!isFinite(stability)) stability = 1.0;
-  const lastReview = (row.lastReview as string | undefined) || row.updated_at || row.created_at;
+  const lastReview = (row.lastReview as string | undefined) || (row.last_review as string | undefined) || row.updated_at || row.created_at;
   const contextType = typeof row.context_type === 'string'
     ? row.context_type.toLowerCase()
     : typeof row.contextType === 'string'
@@ -326,7 +326,7 @@ export function calculateUsageScore(accessCount: number): number {
 export function calculateImportanceScore(tier: string, baseWeight: number | undefined): number {
   const tierLower = (tier || 'normal').toLowerCase();
   const multiplier = IMPORTANCE_MULTIPLIERS[tierLower] || IMPORTANCE_MULTIPLIERS.normal;
-  const base = baseWeight || 0.5;
+  const base = baseWeight ?? 0.5;
 
   return Math.min(1, (base * multiplier) / 2.0);
 }
@@ -385,7 +385,9 @@ export function calculatePatternScore(row: ScoringInput, options: ScoringOptions
   }
 
   if (row.anchors && options.anchors) {
-    const rowAnchors: string[] = Array.isArray(row.anchors) ? row.anchors as string[] : [row.anchors as string];
+    const rowAnchors: string[] = Array.isArray(row.anchors)
+      ? (row.anchors as unknown[]).filter((a): a is string => typeof a === 'string')
+      : typeof row.anchors === 'string' ? [row.anchors] : [];
     const queryAnchors: string[] = Array.isArray(options.anchors) ? options.anchors : [options.anchors];
     const anchorMatches = queryAnchors.filter(qa =>
       rowAnchors.some(ra => ra && qa && ra.toLowerCase().includes(qa.toLowerCase()))

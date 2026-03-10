@@ -180,7 +180,7 @@ async function extractDiagrams(
       ?.filter((f) => f.includes('Option') || f.includes('Alternative'))
       .map((f) => f.split(':')[0]?.trim() || f.substring(0, 20)) || [];
 
-    const chosen: string | undefined = dec.narrative?.match(/chose|selected:?\s+([^\.\n]+)/i)?.[1]?.trim() || options[0];
+    const chosen: string | undefined = dec.narrative?.match(/(?:chose|selected):?\s+([^\.\n]+)/i)?.[1]?.trim() || options[0];
 
     return {
       INDEX: index + 1,

@@ -7,6 +7,8 @@ description: Complete workflow documentation for completing development work wit
 
 Complete workflow documentation for completing development work with structured integration options.
 
+This workflow assumes any branch already came from `git worktree add -b ...`, not from direct branch creation commands.
+
 ---
 
 <!-- ANCHOR:overview -->

@@ -329,7 +329,7 @@ export class VoyageProvider implements IEmbeddingProvider {
       // voyage-4 pricing: $0.06 per 1M tokens (same as 3.5)
       // voyage-4-lite: $0.03 per 1M tokens
       // voyage-4-large: $0.12 per 1M tokens
-      estimatedCost: this.totalTokens * 0.00006,
+      estimatedCost: (this.totalTokens / 1_000_000) * 0.06,
     };
   }
 

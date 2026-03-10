@@ -216,6 +216,10 @@ export class HfLocalProvider implements IEmbeddingProvider {
         ? output.data
         : new Float32Array(output.data);
 
+      if (embedding.length !== this.dim) {
+        throw new Error(`Embedding dimension mismatch: expected ${this.dim}, got ${embedding.length}`);
+      }
+
       const inferenceTime = Date.now() - start;
 
       if (inferenceTime > 800) {

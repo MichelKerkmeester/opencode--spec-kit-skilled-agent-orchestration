@@ -19,9 +19,11 @@ This checklist ensures git worktrees are created safely with proper .gitignore c
 ### Usage
 
 1. Complete the pre-creation checklist (gather info, select directory, verify safety)
-2. Follow the creation steps for your branch strategy
+2. Follow the creation steps for your worktree strategy
 3. Run post-creation verification
 4. Report status to user using the template
+
+Any new branch must be created by `git worktree add -b ...`, never by `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`.
 
 ---
 
@@ -409,7 +411,7 @@ Worktree creation is successful when:
 
 - ✅ Directory selected following priority system
 - ✅ Safety verification passed (`.gitignore` check)
-- ✅ Worktree created with appropriate branch strategy
+- ✅ Worktree created with appropriate worktree strategy
 - ✅ Dependencies installed successfully
 - ✅ Tests pass (baseline verified)
 - ✅ User informed of location and status

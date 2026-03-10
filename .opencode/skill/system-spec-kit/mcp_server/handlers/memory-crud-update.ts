@@ -16,7 +16,7 @@ import { VALID_TIERS, isValidTier } from '../lib/scoring/importance-tiers';
 import { MemoryError, ErrorCodes } from '../lib/errors';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import { runInTransaction } from '../lib/storage/transaction-manager';
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
@@ -189,15 +189,16 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
     // AI-GUARD: P1-021 — No database handle means we cannot guarantee transactional
     // consistency. Abort early rather than risk partial state.
     console.warn('[memory-crud-update] No database handle, aborting update to prevent partial state');
-    return createMCPSuccessResponse({
+    return createMCPErrorResponse({
       tool: 'memory_update',
-      summary: `Memory ${id} update aborted: database unavailable`,
-      data: {
-        updated: null,
-        fields,
-        error: 'Database unavailable — update aborted to prevent partial state',
+      error: `Memory ${id} update aborted: database unavailable`,
+      code: 'E_DB_UNAVAILABLE',
+      details: { updated: null, fields },
+      recovery: {
+        hint: 'Restart the MCP server or run memory_index_scan() to reinitialize the database',
+        actions: ['Restart the MCP server', 'Call memory_index_scan()'],
+        severity: 'error',
       },
-      hints: ['Restart the MCP server or run memory_index_scan() to reinitialize the database'],
     });
   }
 

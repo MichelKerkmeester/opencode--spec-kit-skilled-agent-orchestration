@@ -186,7 +186,7 @@ function fuseResultsMulti(
   const rawGraphWeightBoost = options.graphWeightBoost;
   const graphWeightBoost = typeof rawGraphWeightBoost === 'number' && Number.isFinite(rawGraphWeightBoost) && rawGraphWeightBoost >= 0
     ? rawGraphWeightBoost
-    : 0;
+    : GRAPH_WEIGHT_BOOST;
 
   const scoreMap = new Map<string, FusionResult>();
 

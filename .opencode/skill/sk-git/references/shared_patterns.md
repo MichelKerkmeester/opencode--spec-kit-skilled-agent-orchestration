@@ -172,17 +172,13 @@ git commit --amend --no-edit       # Keep message, add changes
 
 ### Branch Operations
 
+**Policy note**: Never create new branches directly with `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`. When a new branch is needed, create it through `git worktree add -b ...`.
+
 **List branches**:
 ```bash
 git branch                         # Local branches
 git branch -a                      # All branches (local + remote)
 git branch -r                      # Remote branches only
-```
-
-**Create branch**:
-```bash
-git branch <branch-name>           # Create but don't switch
-git checkout -b <branch-name>      # Create and switch
 ```
 
 **Switch branches**:
@@ -411,8 +407,9 @@ git worktree add --detach .worktrees/experiment main
 cd .worktrees/experiment
 # ... try different approach ...
 
-# 3a. If keeping: Create branch
-git checkout -b feature/new-approach
+# 3a. If keeping: Create a new worktree and branch
+git worktree add ../new-approach -b feature/new-approach HEAD
+cd ../new-approach
 git add .
 git commit -m "feat: experimental approach"
 
@@ -501,14 +498,16 @@ git status
 # 2. If you have uncommitted changes you want to keep:
 git stash
 
-# 3. Create a branch to save work (if commits were made)
-git branch recovery-branch
+# 3. Create a recovery worktree and branch to save work
+git worktree add ../recovery -b recovery-branch HEAD
 
-# 4. Return to main branch
-git checkout main
-
-# 5. Restore stashed changes (if any)
+# 4. Restore stashed changes in the recovery worktree (if any)
+cd ../recovery
 git stash pop
+
+# 5. Return to main branch
+cd -
+git checkout main
 
 # 6. Merge recovery branch if needed
 git merge recovery-branch

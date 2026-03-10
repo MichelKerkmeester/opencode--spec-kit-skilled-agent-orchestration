@@ -3,10 +3,10 @@ name: sk-git
 description: "Git workflow orchestrator guiding developers through workspace setup, clean commits, and work completion across git-worktrees, git-commit, and git-finish skills"
 allowed-tools: [Read, Bash, mcp__code_mode__call_tool_chain]
 argument-hint: "[worktree|commit|finish]"
-version: 1.0.10.0
+version: 1.1.0.0
 ---
 
-<!-- Keywords: git-workflow, git-worktree, conventional-commits, branch-management, pull-request, commit-hygiene, workspace-isolation, version-control, github, issues, pr-review -->
+<!-- Keywords: git-workflow, git-worktree, conventional-commits, pull-request, commit-hygiene, workspace-isolation, version-control, github, issues, pr-review -->
 
 # Git Workflows - Git Development Orchestrator
 
@@ -58,7 +58,7 @@ RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
 DEFAULT_RESOURCE = "references/quick_reference.md"
 
 INTENT_SIGNALS = {
-    "WORKSPACE_SETUP": {"weight": 4, "keywords": ["worktree", "workspace", "branch strategy", "parallel work"]},
+    "WORKSPACE_SETUP": {"weight": 4, "keywords": ["worktree", "workspace", "parallel work"]},
     "COMMIT": {"weight": 4, "keywords": ["commit", "staged", "message", "conventional commit"]},
     "FINISH": {"weight": 4, "keywords": ["finish", "merge", "pr", "pull request", "integrate"]},
     "SHARED_PATTERNS": {"weight": 3, "keywords": ["convention", "pattern", "reference", "branch naming"]},
@@ -201,19 +201,18 @@ def route_git_resources(task):
 
 ### Workspace Choice Enforcement
 
-**MANDATORY**: The AI must NEVER autonomously decide between creating a branch or worktree.
+**MANDATORY**: The AI must NEVER autonomously decide between creating a git worktree or using the current branch.
 
-When git workspace triggers are detected (new feature, create branch, worktree, etc.), the AI MUST ask the user to explicitly choose:
+The AI must NEVER create a new branch directly with `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`.
+
+When git workspace triggers are detected (new feature, worktree, isolated workspace, etc.), the AI MUST ask the user to explicitly choose:
 
 | Option                        | Description                              | Best For                        |
 | ----------------------------- | ---------------------------------------- | ------------------------------- |
-| **A) Create a new branch**    | Standard branch on current repo          | Quick fixes, small changes      |
-| **B) Create a git worktree**  | Isolated workspace in separate directory | Parallel work, complex features |
-| **C) Work on current branch** | No new branch created                    | Trivial changes, exploration    |
+| **A) Create a git worktree**  | Isolated workspace in separate directory | Parallel work, complex features |
+| **B) Work on current branch** | No new worktree created                  | Trivial changes, exploration    |
 
-**AI Behavior**: ASK before proceeding, WAIT for explicit selection (A/B/C), NEVER assume, RESPECT choice throughout. Once chosen, reuse preference for the session unless the user requests a change.
-
-**Override Phrases**: `"use branch"` / `"create branch"` → Branch | `"use worktree"` / `"in a worktree"` → Worktree | `"current branch"` / `"on this branch"` → Current
+**AI Behavior**: ASK before proceeding, WAIT for explicit selection (A/B), NEVER assume, RESPECT choice throughout. Once chosen, reuse preference for the session unless the user requests a change. If a new branch is needed, create it only through `git worktree add -b ...`.
 
 ### Git Development Lifecycle Map
 
@@ -286,7 +285,7 @@ git-finish (feature A) → git-finish (feature B)
 1. **Use deterministic conventional commit format** - All commits must follow `type(scope): description` using the commit-message logic defined below
 2. **Create worktree for parallel work** - Never work on multiple features in the same worktree
 3. **Verify branch is up-to-date** - Pull latest changes before creating PR
-4. **Use descriptive branch names** - Format: `type/short-description` (e.g., `feat/add-auth`, `fix/login-bug`)
+4. **Use descriptive worktree-created branch names** - Format: `type/short-description` (e.g., `feat/add-auth`, `fix/login-bug`)
 5. **Reference spec folder in commits** - Include spec folder path in commit body when applicable
 6. **Clean up after merge** - Delete local and remote feature branches after successful merge
 7. **Squash commits for clean history** - Use squash merge for feature branches with many WIP commits
@@ -331,12 +330,13 @@ Use this logic whenever the AI writes or rewrites commit messages.
 ### ❌ NEVER
 
 1. **Force push to main/master** - Protected branches must never receive force pushes
-2. **Commit directly to protected branches** - Always use feature branches and PRs
-3. **Leave worktrees uncleaned** - Remove worktree directories after merge
-4. **Commit secrets or credentials** - Use environment variables or secret management
-5. **Create PRs without description** - Always include context, changes, and testing notes
-6. **Merge without CI passing** - Wait for all checks to complete
-7. **Rebase public/shared branches** - Only rebase local, unpushed commits
+2. **Never create branches directly** - Use `git worktree add -b ...`; never use `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`
+3. **Commit directly to protected branches** - Always use feature branches and PRs
+4. **Leave worktrees uncleaned** - Remove worktree directories after merge
+5. **Commit secrets or credentials** - Use environment variables or secret management
+6. **Create PRs without description** - Always include context, changes, and testing notes
+7. **Merge without CI passing** - Wait for all checks to complete
+8. **Rebase public/shared branches** - Only rebase local, unpushed commits
 
 ### ⚠️ ESCALATE IF
 
@@ -378,10 +378,10 @@ Use this logic whenever the AI writes or rewrites commit messages.
 ## 6. SUCCESS CRITERIA
 
 ### Workspace Setup Complete
-- Worktree created in correct directory (`.worktrees/` or user-specified)
-- Branch naming follows convention (`type/short-description`)
-- Working directory is clean and isolated
-- User confirmed workspace choice (branch/worktree/current)
+- Workspace prepared in the selected mode (`git worktree` or current branch)
+- If a worktree was selected, it was created in the correct directory (`.worktrees/` or user-specified)
+- Any worktree-created branch naming follows convention (`type/short-description`)
+- User confirmed workspace choice (worktree/current branch)
 
 ### Commit Complete
 - All changes reviewed and categorized

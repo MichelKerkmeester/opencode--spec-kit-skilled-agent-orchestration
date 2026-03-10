@@ -351,15 +351,17 @@ export function executeConflict(
         );
       })();
     } else {
-      // AI-GUARD: Atomic transaction: content + embedding update together.
+      // AI-GUARD: Atomic transaction: content + embedding + hash update together.
+      const updatedHash = createHash('sha256').update(newMemory.content, 'utf-8').digest('hex');
       db.transaction(() => {
         db.prepare(`
           UPDATE memory_index
           SET content_text = ?,
               title = ?,
+              content_hash = ?,
               updated_at = datetime('now')
           WHERE id = ?
-        `).run(newMemory.content, newMemory.title, existingMemory.id);
+        `).run(newMemory.content, newMemory.title, updatedHash, existingMemory.id);
 
         if (newMemory.embedding) {
           const buffer = embeddingToBuffer(newMemory.embedding);

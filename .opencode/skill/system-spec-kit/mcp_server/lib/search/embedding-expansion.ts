@@ -223,15 +223,20 @@ export async function expandQueryWithEmbeddings(
     // -- Step b: Collect content strings ---------------------------------------
     const contents: string[] = [];
     for (const mem of similarMemories) {
-      if (typeof mem.content === 'string' && mem.content.length > 0) {
-        contents.push(mem.content);
+      // D3-fix: DB rows use content_text, not content
+      const contentField = (mem.content_text ?? mem.content) as string | undefined;
+      if (typeof contentField === 'string' && contentField.length > 0) {
+        contents.push(contentField);
       }
-      // Also mine from title and trigger_phrases for additional signal
       if (typeof mem.title === 'string' && mem.title.length > 0) {
         contents.push(mem.title);
       }
-      if (typeof mem.trigger_phrases === 'string' && mem.trigger_phrases.length > 0) {
-        contents.push(mem.trigger_phrases);
+      // D3-fix: trigger_phrases may be string[] (parsed) or string (raw JSON)
+      const triggers = mem.trigger_phrases;
+      if (Array.isArray(triggers) && triggers.length > 0) {
+        contents.push(triggers.join(' '));
+      } else if (typeof triggers === 'string' && triggers.length > 0) {
+        contents.push(triggers);
       }
     }
 

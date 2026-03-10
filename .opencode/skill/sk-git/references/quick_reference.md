@@ -252,8 +252,9 @@ git worktree add --detach .worktrees/exp main
 cd .worktrees/exp
 # ... try approach ...
 
-# 3a. Keep: Create branch
-git checkout -b feature/name
+# 3a. Keep: Create a new worktree and branch
+git worktree add ../feature -b feature/name HEAD
+cd ../feature
 git add . && git commit -m "feat: experimental approach"
 
 # 3b. Discard: Remove worktree
@@ -299,7 +300,7 @@ git commit -m "msg"                    # Commit
 git reset HEAD <file>                  # Unstage
 ```
 
-### Branch
+### Branch Inspection & Cleanup
 ```bash
 git branch                             # List local
 git branch -a                          # List all

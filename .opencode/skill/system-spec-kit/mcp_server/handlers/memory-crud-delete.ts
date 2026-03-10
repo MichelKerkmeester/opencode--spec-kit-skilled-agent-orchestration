@@ -11,7 +11,7 @@ import * as vectorIndex from '../lib/search/vector-index';
 import * as checkpoints from '../lib/storage/checkpoints';
 import * as mutationLedger from '../lib/storage/mutation-ledger';
 import * as causalEdges from '../lib/storage/causal-edges';
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
@@ -95,14 +95,16 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
       // ledger writes cannot be performed. Abort early per ADR-005 rather than
       // proceeding with a delete that skips causal edge cleanup.
       console.warn('[memory-crud-delete] No database handle, aborting delete to prevent orphaned causal edges');
-      return createMCPSuccessResponse({
+      return createMCPErrorResponse({
         tool: 'memory_delete',
-        summary: 'Delete aborted: database unavailable',
-        data: {
-          deleted: 0,
-          error: 'Database unavailable — delete aborted to prevent orphaned causal edges',
+        error: 'Delete aborted: database unavailable',
+        code: 'E_DB_UNAVAILABLE',
+        details: { deleted: 0 },
+        recovery: {
+          hint: 'Restart the MCP server or run memory_index_scan() to reinitialize the database',
+          actions: ['Restart the MCP server', 'Call memory_index_scan()'],
+          severity: 'error',
         },
-        hints: ['Restart the MCP server or run memory_index_scan() to reinitialize the database'],
       });
     }
   } else {
