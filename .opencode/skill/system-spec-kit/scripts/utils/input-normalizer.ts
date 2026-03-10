@@ -236,8 +236,23 @@ function cloneInputData<T>(data: T): T {
 }
 
 function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
+  // F-15: Field-by-field completion instead of early return — backfill missing arrays
   if (data.userPrompts || data.observations || data.recentContext) {
-    return cloneInputData(data);
+    const cloned = cloneInputData(data) as NormalizedData;
+    if (!Array.isArray(cloned.observations)) cloned.observations = [];
+    if (!Array.isArray(cloned.userPrompts)) cloned.userPrompts = [];
+    if (!Array.isArray(cloned.recentContext)) cloned.recentContext = [];
+    // F-16: Ensure FILES uses FileEntry format
+    if (cloned.FILES && Array.isArray(cloned.FILES)) {
+      cloned.FILES = cloned.FILES.map((f) => {
+        const entry = f as unknown as Record<string, unknown>;
+        return {
+          FILE_PATH: (entry.FILE_PATH || entry.path || '') as string,
+          DESCRIPTION: (entry.DESCRIPTION || entry.description || 'Modified during session') as string,
+        };
+      });
+    }
+    return cloned;
   }
 
   const normalized: NormalizedData = {
@@ -250,10 +265,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     normalized.SPEC_FOLDER = data.specFolder || data.SPEC_FOLDER;
   }
 
+  // F-16: Convert filesModified to FileEntry format with ACTION field
   if (data.filesModified && Array.isArray(data.filesModified)) {
-    normalized.FILES = data.filesModified.map((filePath: string): FileEntry => ({
+    normalized.FILES = data.filesModified.map((filePath: string) => ({
       FILE_PATH: filePath,
-      DESCRIPTION: 'File modified (description pending)'
+      DESCRIPTION: 'File modified (description pending)',
     }));
   }
 
@@ -413,12 +429,17 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
 // ---------------------------------------------------------------
 
 function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: string | null): TransformedCapture {
+  // F-14: Runtime guards — validate capture shape before processing
+  if (!capture || typeof capture !== 'object') {
+    return { userPrompts: [], observations: [], recentContext: [], FILES: [], _source: 'opencode-capture' };
+  }
+
   // RC-10: Normalize snake_case fields from ConversationCapture to camelCase OpencodeCapture.
   // ConversationCapture emits both forms; OpencodeCapture interface only declares camelCase.
   const raw = capture as unknown as Record<string, unknown>;
   const normalizedCapture: OpencodeCapture = {
-    exchanges: capture.exchanges,
-    toolCalls: capture.toolCalls,
+    exchanges: Array.isArray(capture.exchanges) ? capture.exchanges : [],
+    toolCalls: Array.isArray(capture.toolCalls) ? capture.toolCalls : [],
     metadata: capture.metadata,
     sessionTitle: capture.sessionTitle ?? (raw.session_title as string | undefined),
     sessionId: capture.sessionId ?? (raw.session_id as string | undefined),
@@ -455,17 +476,24 @@ function transformOpencodeCapture(capture: OpencodeCapture, specFolderHint?: str
     ? (toolCalls || []).filter(isToolRelevant)
     : (toolCalls || []);
 
+  // F-33: Capture-scoped monotonic counter for deterministic fallback timestamps
+  const captureBaseTime = normalizedCapture.capturedAt
+    ? new Date(normalizedCapture.capturedAt).getTime()
+    : Date.now();
+  let monotonicCounter = 0;
+
   const toSafeISOString = (timestamp?: number | string): string => {
-    if (timestamp === undefined) {
-      return new Date().toISOString();
+    if (timestamp !== undefined) {
+      if (typeof timestamp === 'number' && Number.isFinite(timestamp) && timestamp > 0) {
+        const date = new Date(timestamp);
+        if (Number.isFinite(date.getTime())) return date.toISOString();
+      } else if (typeof timestamp === 'string') {
+        const date = new Date(timestamp);
+        if (Number.isFinite(date.getTime())) return date.toISOString();
+      }
     }
-
-    if (typeof timestamp === 'number' && (!Number.isFinite(timestamp) || timestamp < 0)) {
-      return new Date().toISOString();
-    }
-
-    const date = new Date(timestamp);
-    return Number.isFinite(date.getTime()) ? date.toISOString() : new Date().toISOString();
+    // Deterministic fallback: base time + counter offset (1ms increments)
+    return new Date(captureBaseTime + monotonicCounter++).toISOString();
   };
 
   const allUserPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({

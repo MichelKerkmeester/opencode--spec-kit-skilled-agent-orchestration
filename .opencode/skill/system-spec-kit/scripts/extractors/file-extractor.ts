@@ -161,15 +161,16 @@ function extractFilesFromData(
       : normalizedRawPath)
       .replace(/^\/+/, '')
       .replace(/^\.\//, '');
-    let mapKey = sourcePathToKey.get(canonicalSourcePath) ?? normalized;
+    // F-20: Use full canonical source path as map key to prevent truncation-based collisions
+    let mapKey = sourcePathToKey.get(canonicalSourcePath) ?? canonicalSourcePath;
 
-    if (!sourcePathToKey.has(canonicalSourcePath) && filesMap.has(normalized)) {
+    if (!sourcePathToKey.has(canonicalSourcePath) && filesMap.has(canonicalSourcePath)) {
       let suffix = 2;
-      while (filesMap.has(`${normalized}-${suffix}`)) {
+      while (filesMap.has(`${canonicalSourcePath}-${suffix}`)) {
         suffix++;
       }
-      mapKey = `${normalized}-${suffix}`;
-      console.warn(`Warning: Disambiguating colliding normalized path '${normalized}' as '${mapKey}'`);
+      mapKey = `${canonicalSourcePath}-${suffix}`;
+      console.warn(`Warning: Disambiguating colliding path '${canonicalSourcePath}' as '${mapKey}'`);
     }
 
     sourcePathToKey.set(canonicalSourcePath, mapKey);
@@ -226,9 +227,10 @@ function extractFilesFromData(
   }
 
   // Source 2: files_modified array (legacy format)
+  // F-16: Always pass 'Modified' action for filesModified entries
   if (collectedData.filesModified && Array.isArray(collectedData.filesModified)) {
     for (const fileInfo of collectedData.filesModified) {
-      addFile(fileInfo.path, fileInfo.changes_summary || 'Modified during session');
+      addFile(fileInfo.path, fileInfo.changes_summary || 'Modified during session', 'Modified');
     }
   }
 
@@ -287,10 +289,12 @@ function enhanceFilesWithSemanticDescriptions(
     // Priority 1: Exact full path match
     if (semanticFileChanges.has(filePath)) {
       const info = semanticFileChanges.get(filePath)!;
+      // F-19: Only overwrite ACTION when existing is missing or generic 'Modified'
+      const preserveAction = file.ACTION && file.ACTION !== 'Modified';
       return {
         ...file,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
-        ACTION: normalizeFileAction(info.action)
+        ACTION: preserveAction ? file.ACTION : normalizeFileAction(info.action)
       };
     }
 
@@ -312,10 +316,12 @@ function enhanceFilesWithSemanticDescriptions(
 
     if (matchCount === 1 && basenameMatch) {
       const info = basenameMatch.info;
+      // F-19: Preserve specific actions (Created/Deleted/Renamed/Read)
+      const preserveAction = file.ACTION && file.ACTION !== 'Modified';
       return {
         ...file,
         DESCRIPTION: info.description !== 'Modified during session' ? info.description : file.DESCRIPTION,
-        ACTION: normalizeFileAction(info.action)
+        ACTION: preserveAction ? file.ACTION : normalizeFileAction(info.action)
       };
     }
 

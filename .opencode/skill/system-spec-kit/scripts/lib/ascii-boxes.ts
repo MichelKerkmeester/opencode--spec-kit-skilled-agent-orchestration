@@ -99,10 +99,13 @@ function formatDecisionHeader(title: string, context: string, confidence: number
   const maxContextWidth: number = innerWidth - 9;
   const contextSnippet: string = context ? context.substring(0, maxContextWidth - 3) + (context.length > maxContextWidth - 3 ? '...' : '') : '';
 
+  // F-13: When confidence is normalized (0-1), convert to percentage for display
+  const displayConfidence: number = confidence <= 1 ? Math.round(confidence * 100) : Math.round(confidence);
+
   return `\u256D${'\u2500'.repeat(width)}\u256E
 \u2502  DECISION: ${padText(title, innerWidth - 10)}  \u2502
 \u2502  Context: ${padText(contextSnippet, innerWidth - 9)}  \u2502
-\u2502  Confidence: ${confidence}% | ${dateStr} @ ${timeStr}${' '.repeat(Math.max(0, innerWidth - 37 - confidence.toString().length))}  \u2502
+\u2502  Confidence: ${displayConfidence}% | ${dateStr} @ ${timeStr}${' '.repeat(Math.max(0, innerWidth - 37 - displayConfidence.toString().length))}  \u2502
 \u2570${'\u2500'.repeat(width)}\u256F`;
 }
 

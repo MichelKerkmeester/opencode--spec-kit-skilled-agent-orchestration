@@ -128,7 +128,12 @@ async function readJsonSafe<T = unknown>(filePath: string): Promise<T | null> {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) as T;
-  } catch {
+  } catch (err: unknown) {
+    // F-18: Only silently return null for ENOENT; warn on other errors
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code !== 'ENOENT') {
+      console.warn(`   Warning: Failed to read ${filePath}: ${err instanceof Error ? err.message : String(err)}`);
+    }
     return null;
   }
 }
@@ -502,8 +507,9 @@ async function captureConversation(
       total_messages: messages.length,
       total_responses: responses.length,
       total_tool_calls: toolCalls.length,
-      session_created: session.created,
-      session_updated: session.updated,
+      // F-33: Validate session timestamps are finite before propagating
+      session_created: Number.isFinite(session.created) ? session.created : 0,
+      session_updated: Number.isFinite(session.updated) ? session.updated : 0,
       file_summary: session.summary,
     },
   };
@@ -522,14 +528,26 @@ function buildExchanges(
   for (let i = 0; i < Math.min(userMessages.length, limit); i++) {
     const userMsg = userMessages[userMessages.length - 1 - i];
 
-    const promptIndex = prompts.findIndex((p, index) => {
-      if (consumedPromptIndices.has(index)) return false;
-      if (!p.timestamp && !userMsg.created) return false;
-      const promptDate = new Date(p.timestamp || '');
-      if (isNaN(promptDate.getTime())) return false;
-      const promptTime = promptDate.getTime();
-      return Math.abs(promptTime - userMsg.created) < CONFIG.TIMESTAMP_MATCH_TOLERANCE_MS;
-    });
+    // F-17: Match by session-relative ordering first (position-based),
+    // then fall back to timestamp tolerance matching
+    const positionIndex = prompts.length - 1 - i;
+    let promptIndex: number;
+
+    if (positionIndex >= 0 && !consumedPromptIndices.has(positionIndex)) {
+      // Position-based match: align from end of both arrays
+      promptIndex = positionIndex;
+    } else {
+      // Timestamp tolerance fallback
+      promptIndex = prompts.findIndex((p, index) => {
+        if (consumedPromptIndices.has(index)) return false;
+        if (!p.timestamp && !userMsg.created) return false;
+        const promptDate = new Date(p.timestamp || '');
+        if (isNaN(promptDate.getTime())) return false;
+        const promptTime = promptDate.getTime();
+        return Math.abs(promptTime - userMsg.created) < CONFIG.TIMESTAMP_MATCH_TOLERANCE_MS;
+      });
+    }
+
     const prompt = promptIndex >= 0 ? prompts[promptIndex] : undefined;
     if (promptIndex >= 0) {
       consumedPromptIndices.add(promptIndex);

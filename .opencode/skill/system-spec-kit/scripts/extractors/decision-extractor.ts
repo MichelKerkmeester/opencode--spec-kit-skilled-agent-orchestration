@@ -33,7 +33,8 @@ export interface CollectedDataForDecisions {
   }>;
 }
 
-const DECISION_CUE_REGEX = /(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)/i;
+// F-32: Word boundaries prevent partial matches (e.g., "undecided" matching "decided")
+const DECISION_CUE_REGEX = /\b(decided|chose|will use|approach is|going with|rejected|we'll|selected|prefer|adopt)\b/i;
 const HIGH_CONFIDENCE_THRESHOLD = 0.8;
 const MEDIUM_CONFIDENCE_THRESHOLD = 0.5;
 
@@ -120,19 +121,20 @@ async function extractDecisions(
 ): Promise<DecisionData> {
   const manualDecisions = collectedData?._manualDecisions || [];
 
+  // F-12: Return empty decisions for null input instead of synthetic simulation data
   if (!collectedData) {
-    console.log('   Warning: Using simulation data for decisions');
-    return simFactory.createDecisionData();
+    return { DECISIONS: [], DECISION_COUNT: 0, HIGH_CONFIDENCE_COUNT: 0, MEDIUM_CONFIDENCE_COUNT: 0, LOW_CONFIDENCE_COUNT: 0, FOLLOWUP_COUNT: 0 };
   }
 
-  // Process manual decisions from normalized input (from keyDecisions array)
+  // F-12: Process manual decisions, then merge with observation-extracted decisions
+  let processedManualDecisions: DecisionRecord[] = [];
   if (manualDecisions.length > 0) {
     console.log(`   Processing ${manualDecisions.length} manual decision(s)`);
 
     const specNumber: string = extractSpecNumber(collectedData.SPEC_FOLDER || '000-unknown');
     const usedAnchorIds: string[] = [];
 
-    const processedDecisions: DecisionRecord[] = manualDecisions.map(
+    processedManualDecisions = manualDecisions.map(
       (manualDec: string | Record<string, unknown>, index: number): DecisionRecord => {
         const manualObj = typeof manualDec === 'object' && manualDec !== null && !Array.isArray(manualDec)
           ? manualDec as Record<string, unknown>
@@ -247,14 +249,7 @@ async function extractDecisions(
       }
     );
 
-    return {
-      DECISIONS: processedDecisions.map((d) => validateDataStructure(d) as DecisionRecord),
-      DECISION_COUNT: processedDecisions.length,
-      HIGH_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD).length,
-      MEDIUM_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD && d.CONFIDENCE < HIGH_CONFIDENCE_THRESHOLD).length,
-      LOW_CONFIDENCE_COUNT: processedDecisions.filter((d) => d.CONFIDENCE < MEDIUM_CONFIDENCE_THRESHOLD).length,
-      FOLLOWUP_COUNT: 0
-    };
+    // F-12: Don't return early — fall through to merge with observation-extracted decisions
   }
 
   // Process MCP data - extract decision observations
@@ -326,10 +321,11 @@ async function extractDecisions(
     const rationaleMatch = narrative.match(/(?:because|rationale|reason):?\s+([^\.\n]+)/i);
     const RATIONALE: string = rationaleMatch?.[1]?.trim() || narrative.substring(0, 200);
 
-    const confidenceMatch = narrative.match(/confidence:?\s*(\d+)(?:%|\b)/i);
+    // F-13: Capture decimal confidence values and use parseFloat (not parseInt)
+    const confidenceMatch = narrative.match(/confidence:?\s*(\d+(?:\.\d+)?)(?:%|\b)/i);
     // Default confidence based on evidence strength: options + rationale = higher confidence
     const baseConfidence = OPTIONS.length > 1 ? 70 : RATIONALE !== narrative.substring(0, 200) ? 65 : 50;
-    const parsedConfidence = confidenceMatch ? parseInt(confidenceMatch[1], 10) : NaN;
+    const parsedConfidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : NaN;
     const CONFIDENCE: number = Number.isFinite(parsedConfidence)
       ? normalizeConfidence(parsedConfidence)
       : normalizeConfidence(baseConfidence);
@@ -378,19 +374,22 @@ async function extractDecisions(
         return { CAVEAT_ITEM: text };
       });
 
+    // F-32: Merge file evidence with fact evidence instead of preferring files only
     const observationFiles = 'files' in obs && Array.isArray(obs.files) ? obs.files : null;
-    const EVIDENCE = observationFiles
+    const fileEvidence = observationFiles
       ? observationFiles.map((f: string) => ({ EVIDENCE_ITEM: f }))
-      : facts
-          .filter((f) => {
-            const lower = f.toLowerCase();
-            return !!lower.match(/\bevidence:\s/) || !!lower.match(/\bsee:\s/) || !!lower.match(/\breference:\s/);
-          })
-          .map((e) => {
-            const parts = e.split(':');
-            const text = parts.length > 1 ? parts.slice(1).join(':').trim() : e;
-            return { EVIDENCE_ITEM: text };
-          });
+      : [];
+    const factEvidence = facts
+      .filter((f) => {
+        const lower = f.toLowerCase();
+        return !!lower.match(/\bevidence:\s/) || !!lower.match(/\bsee:\s/) || !!lower.match(/\breference:\s/);
+      })
+      .map((e) => {
+        const parts = e.split(':');
+        const text = parts.length > 1 ? parts.slice(1).join(':').trim() : e;
+        return { EVIDENCE_ITEM: text };
+      });
+    const EVIDENCE = [...fileEvidence, ...factEvidence];
 
     const decision: DecisionRecord = {
       INDEX: index + 1,
@@ -423,16 +422,19 @@ async function extractDecisions(
     return decision;
   });
 
-  const highConfidence: number = decisions.filter((d) => d.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD).length;
-  const mediumConfidence: number = decisions.filter((d) => d.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD && d.CONFIDENCE < HIGH_CONFIDENCE_THRESHOLD).length;
-  const lowConfidence: number = decisions.filter((d) => d.CONFIDENCE < MEDIUM_CONFIDENCE_THRESHOLD).length;
-  const followupCount: number = decisions.reduce((count, d) => count + d.FOLLOWUP.length, 0);
+  // F-12: Merge manual decisions with observation-extracted decisions
+  const allDecisions = [...processedManualDecisions, ...decisions];
+
+  const highConfidence: number = allDecisions.filter((d) => d.CONFIDENCE >= HIGH_CONFIDENCE_THRESHOLD).length;
+  const mediumConfidence: number = allDecisions.filter((d) => d.CONFIDENCE >= MEDIUM_CONFIDENCE_THRESHOLD && d.CONFIDENCE < HIGH_CONFIDENCE_THRESHOLD).length;
+  const lowConfidence: number = allDecisions.filter((d) => d.CONFIDENCE < MEDIUM_CONFIDENCE_THRESHOLD).length;
+  const followupCount: number = allDecisions.reduce((count, d) => count + d.FOLLOWUP.length, 0);
 
   // Add anchor IDs for searchable decision retrieval
   const usedAnchorIds: string[] = [];
   const specNumber: string = extractSpecNumber(collectedData.SPEC_FOLDER || '000-unknown');
 
-  const decisionsWithAnchors: DecisionRecord[] = decisions.map((decision) => {
+  const decisionsWithAnchors: DecisionRecord[] = allDecisions.map((decision) => {
     const category = 'decision';
 
     let anchorId: string = generateAnchorId(
@@ -457,7 +459,7 @@ async function extractDecisions(
 
   return {
     DECISIONS: decisionsWithAnchors.map((d) => validateDataStructure(d) as DecisionRecord),
-    DECISION_COUNT: decisions.length,
+    DECISION_COUNT: allDecisions.length,
     HIGH_CONFIDENCE_COUNT: highConfidence,
     MEDIUM_CONFIDENCE_COUNT: mediumConfidence,
     LOW_CONFIDENCE_COUNT: lowConfidence,
