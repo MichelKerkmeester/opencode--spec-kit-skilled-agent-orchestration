@@ -100,7 +100,7 @@ async function getConstitutionalMemories(): Promise<ConstitutionalMemory[]> {
       SELECT id, spec_folder, file_path, title, trigger_phrases, importance_tier
       FROM memory_index
       WHERE importance_tier = 'constitutional'
-      AND embedding_status = 'success'
+      AND embedding_status IN ('success', 'pending', 'partial')
       ORDER BY created_at DESC
       LIMIT 10
     `).all();

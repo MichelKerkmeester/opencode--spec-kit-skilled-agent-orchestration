@@ -160,14 +160,6 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
   // AI-GUARD: Per-spec-folder lock to prevent TOCTOU race conditions on concurrent saves
   return withSpecFolderLock(parsed.specFolder, async () => {
-
-  // AI-WHY: CHUNKING BRANCH: Large files get split into parent + child records
-  // Must be inside withSpecFolderLock to serialize chunked saves too
-  if (needsChunking(parsed.content)) {
-    console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
-    return indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
-  }
-
   const database = requireDb();
   const canonicalFilePath = getCanonicalPathKey(filePath);
 
@@ -178,6 +170,14 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   // DEDUP: Check content hash across spec folder (T054)
   const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings);
   if (dupResult) return dupResult;
+
+  // AI-WHY: CHUNKING BRANCH: Large files get split into parent + child records
+  // Must be inside withSpecFolderLock to serialize chunked saves too.
+  // Dedup checks above must run first so duplicate content exits before chunking.
+  if (needsChunking(parsed.content)) {
+    console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
+    return indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
+  }
 
   // EMBEDDING GENERATION (with persistent SQLite cache — REQ-S2-001)
   const embeddingResult = await generateOrCacheEmbedding(database, parsed, filePath, asyncEmbedding);
@@ -428,6 +428,9 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
 
   try {
     indexResult = await indexMemoryFile(file_path, { force, asyncEmbedding: true });
+    if (indexResult.status === 'error') {
+      throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
+    }
   } catch (err: unknown) {
     indexError = err instanceof Error ? err : new Error(String(err));
   }

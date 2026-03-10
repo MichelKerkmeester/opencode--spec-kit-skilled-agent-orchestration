@@ -168,24 +168,18 @@ export function markIndexed(id: number, modelName: string): boolean {
 export function markFailed(id: number, reason: string): boolean {
   assertDb();
 
-  const row = db!.prepare(`
-    SELECT retry_count FROM memory_index WHERE id = ?
-  `).get(id) as { retry_count: number } | undefined;
-
-  if (!row) return false;
-
-  const newRetryCount = row.retry_count + 1;
-  const newStatus = newRetryCount >= RETRY_THRESHOLD ? 'failed' : 'retry';
-
   const result = db!.prepare(`
     UPDATE memory_index
-    SET embedding_status = ?,
-        retry_count = ?,
+    SET embedding_status = CASE
+          WHEN retry_count + 1 >= ? THEN 'failed'
+          ELSE 'retry'
+        END,
+        retry_count = retry_count + 1,
         failure_reason = ?,
         last_retry_at = datetime('now'),
         updated_at = datetime('now')
     WHERE id = ?
-  `).run(newStatus, newRetryCount, reason, id);
+  `).run(RETRY_THRESHOLD, reason, id);
 
   return result.changes > 0;
 }

@@ -38,10 +38,12 @@ export type ItemProcessor<T, R> = (item: T) => Promise<R>;
    --------------------------------------------------------------- */
 
 /** Default batch size for concurrent processing */
-export const BATCH_SIZE: number = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
+const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
+export const BATCH_SIZE: number = Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 5;
 
 /** Default delay between batches in milliseconds */
-export const BATCH_DELAY_MS: number = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
+const parsedBatchDelayMs = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
+export const BATCH_DELAY_MS: number = Number.isFinite(parsedBatchDelayMs) && parsedBatchDelayMs > 0 ? parsedBatchDelayMs : 100;
 
 /** Default retry configuration */
 export const DEFAULT_RETRY_OPTIONS: Readonly<RetryDefaults> = {

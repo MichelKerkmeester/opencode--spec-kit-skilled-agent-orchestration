@@ -135,7 +135,7 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
     const scored = Math.min(1, Math.max(0, baseScore * multiplier));
 
     if (scored === baseScore) return row;
-    return { ...row, score: scored };
+    return withSyncedScoreAliases(row, scored);
   });
 
   return adjusted.sort((a, b) => resolveBaseScore(b) - resolveBaseScore(a));
@@ -150,6 +150,25 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
  * This alias ensures all call sites use the shared implementation.
  */
 const resolveBaseScore = resolveEffectiveScore;
+
+function withSyncedScoreAliases(row: PipelineRow, score: number): PipelineRow {
+  return {
+    ...row,
+    score,
+    rrfScore: score,
+    intentAdjustedScore: score,
+    attentionScore: score,
+  };
+}
+
+function syncScoreAliasesInPlace(rows: PipelineRow[]): void {
+  for (const row of rows) {
+    if (typeof row.score !== 'number' || !Number.isFinite(row.score)) continue;
+    row.rrfScore = row.score;
+    row.intentAdjustedScore = row.score;
+    row.attentionScore = row.score;
+  }
+}
 
 /**
  * Write an FSRS strengthening update for a single memory access.
@@ -305,8 +324,7 @@ function applyArtifactRouting(
     const baseScore = resolveBaseScore(row);
     const boostedScore = baseScore * boostFactor;
     return {
-      ...row,
-      score: boostedScore,
+      ...withSyncedScoreAliases(row, boostedScore),
       artifactBoostApplied: boostFactor,
     };
   });
@@ -400,10 +418,7 @@ function applyFeedbackSignals(
 
     if (currentScore === resolveBaseScore(row)) return row;
 
-    return {
-      ...row,
-      score: currentScore,
-    };
+    return withSyncedScoreAliases(row, currentScore);
   });
 }
 
@@ -545,10 +560,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
             const boost = spreadMap.get(row.id);
             if (boost !== undefined) {
               const baseScore = resolveBaseScore(row);
-              return {
-                ...row,
-                score: baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor,
-              };
+              return withSyncedScoreAliases(row, baseScore + boost * CO_ACTIVATION_CONFIG.boostFactor);
             }
             return row;
           });
@@ -619,7 +631,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       const weighted = applyIntentWeightsToResults(results, config.intentWeights);
       results = weighted.map((result) =>
         typeof result.intentAdjustedScore === 'number'
-          ? { ...result, score: result.intentAdjustedScore }
+          ? withSyncedScoreAliases(result, result.intentAdjustedScore)
           : result
       );
       metadata.intentWeightsApplied = true;
@@ -658,6 +670,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // -- 7. Artifact-based result limiting --
   // The routing strategy may specify a maxResults count stricter than the
   // overall pipeline limit. Apply it here so Stage 3 reranks a pre-trimmed set.
+  syncScoreAliasesInPlace(results);
   results.sort((a, b) => resolveEffectiveScore(b) - resolveEffectiveScore(a));
   if (
     config.artifactRouting &&
@@ -692,14 +705,8 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     console.warn(`[stage2-fusion] validation metadata enrichment failed: ${message}`);
   }
 
-  // Keep intent-adjusted and canonical scores aligned after all score mutations.
-  // AI-FIX: F-06 — Math.max preserved stale higher values, nullifying demotions.
-  // Sync intentAdjustedScore to the current score so demotions are respected.
-  for (const result of results) {
-    if (typeof result.intentAdjustedScore === 'number' && typeof result.score === 'number') {
-      result.intentAdjustedScore = result.score;
-    }
-  }
+  // Keep all score aliases aligned after late-stage score mutations.
+  syncScoreAliasesInPlace(results);
 
   // -- Trace --
   if (config.trace) {

@@ -288,7 +288,11 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
         }
 
         const result = insertEdgeStmt.run(...edgeColumns.map((column) => edge[column] ?? null)) as { changes: number };
-        if (result.changes > 0) inserted++;
+        if (result.changes > 0) {
+          inserted++;
+        } else {
+          failed++;
+        }
       }
     });
 

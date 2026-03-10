@@ -728,6 +728,17 @@ async function hybridSearchEnhanced(
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
 
+      fusedHybridResults = fusedHybridResults.map((row) => {
+        const rowRecord = row as Record<string, unknown>;
+        if (rowRecord.parentMemoryId !== undefined) return row;
+        const normalizedParentMemoryId = rowRecord.parent_id ?? rowRecord.parentId;
+        if (normalizedParentMemoryId === undefined) return row;
+        return {
+          ...row,
+          parentMemoryId: normalizedParentMemoryId,
+        };
+      });
+
       // AI-WHY: -- Sprint 4 Stage: R1 MPAB chunk-to-memory aggregation (after fusion, before state filter) --
       // When enabled, collapses chunk-level results back to their parent memory
       // documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents

@@ -163,13 +163,18 @@ export class LRUCache<TValue> {
    QUERY CACHE
 ----------------------------------------------------------------*/
 
-let query_cache: LRUCache<{ results: EnrichedSearchResult[] }> | null = null;
+type QueryCacheEntry = {
+  results: EnrichedSearchResult[];
+  specFolder: string | null;
+};
+
+let query_cache: LRUCache<QueryCacheEntry> | null = null;
 
 /**
  * Returns the shared query cache instance.
  * @returns The initialized query cache.
  */
-export function get_query_cache(): LRUCache<{ results: EnrichedSearchResult[] }> {
+export function get_query_cache(): LRUCache<QueryCacheEntry> {
   if (!query_cache) {
     query_cache = new LRUCache(500, 15 * 60 * 1000);
   }
@@ -200,6 +205,9 @@ export function get_cache_key(query: string, limit: number, options: Record<stri
 export async function cached_search(query: string, limit = 20, options: Record<string, unknown> = {}): Promise<EnrichedSearchResult[]> {
   const cache = get_query_cache();
   const key = get_cache_key(query, limit, options);
+  const specFolder = typeof options.specFolder === 'string'
+    ? options.specFolder
+    : (typeof options.spec_folder === 'string' ? options.spec_folder : null);
 
   const cached = cache.get(key);
   if (cached) {
@@ -208,7 +216,7 @@ export async function cached_search(query: string, limit = 20, options: Record<s
 
   const results = await vector_search_enriched(query, limit, options);
 
-  cache.set(key, { results });
+  cache.set(key, { results, specFolder });
 
   return results;
 }
@@ -226,7 +234,8 @@ export function clear_search_cache(spec_folder: string | null = null): number {
   if (spec_folder) {
     const keys_to_delete: string[] = [];
     for (const key of query_cache.keys()) {
-      if (key.includes(spec_folder)) {
+      const cachedEntry = query_cache.get(key);
+      if (cachedEntry && cachedEntry.specFolder === spec_folder) {
         keys_to_delete.push(key);
       }
     }

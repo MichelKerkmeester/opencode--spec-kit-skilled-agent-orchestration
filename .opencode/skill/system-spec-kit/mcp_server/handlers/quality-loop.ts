@@ -118,9 +118,39 @@ function scoreAnchorFormat(content: string): { score: number; issues: string[] }
     return { score: 0.5, issues: [] };
   }
 
-  // Check for unclosed anchors
-  const unclosed = openAnchors.filter(name => !closeAnchors.includes(name));
-  const unopened = closeAnchors.filter(name => !openAnchors.includes(name));
+  const countAnchors = (anchors: string[]): Map<string, number> => {
+    const counts = new Map<string, number>();
+    for (const name of anchors) {
+      counts.set(name, (counts.get(name) ?? 0) + 1);
+    }
+    return counts;
+  };
+
+  const openCounts = countAnchors(openAnchors);
+  const closeCounts = countAnchors(closeAnchors);
+
+  const unclosed: string[] = [];
+  const unopened: string[] = [];
+
+  for (const [name, openCount] of openCounts.entries()) {
+    const closeCount = closeCounts.get(name) ?? 0;
+    if (openCount > closeCount) {
+      const missing = openCount - closeCount;
+      for (let i = 0; i < missing; i++) {
+        unclosed.push(name);
+      }
+    }
+  }
+
+  for (const [name, closeCount] of closeCounts.entries()) {
+    const openCount = openCounts.get(name) ?? 0;
+    if (closeCount > openCount) {
+      const extra = closeCount - openCount;
+      for (let i = 0; i < extra; i++) {
+        unopened.push(name);
+      }
+    }
+  }
 
   if (unclosed.length > 0) {
     issues.push(`Unclosed ANCHOR tag(s): ${unclosed.join(', ')}`);

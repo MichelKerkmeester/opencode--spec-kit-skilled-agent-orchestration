@@ -110,12 +110,17 @@ export async function checkDatabaseUpdated(): Promise<boolean> {
 
     if (updateTime > lastDbCheck) {
       console.error('[db-state] Database updated externally, reinitializing connection...');
-      lastDbCheck = updateTime;
       await reinitializeDatabase();
+      lastDbCheck = updateTime;
       return true;
     }
-  } catch {
-    // Ignore missing marker or read errors.
+  } catch (e: unknown) {
+    const code = e && typeof e === 'object' && 'code' in e ? (e as { code?: unknown }).code : undefined;
+    if (code === 'ENOENT' || code === 'EACCES') {
+      // Ignore missing marker or read errors.
+      return false;
+    }
+    throw e;
   }
   return false;
 }

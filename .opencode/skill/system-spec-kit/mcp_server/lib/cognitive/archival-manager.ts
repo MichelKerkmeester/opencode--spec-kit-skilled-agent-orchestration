@@ -530,6 +530,10 @@ function runArchivalScan(): { scanned: number; archived: number } {
 }
 
 function startBackgroundJob(intervalMs: number = ARCHIVAL_CONFIG.backgroundJobIntervalMs): void {
+  if (!ARCHIVAL_CONFIG.enabled) {
+    return;
+  }
+
   if (backgroundJob) {
     clearInterval(backgroundJob);
   }

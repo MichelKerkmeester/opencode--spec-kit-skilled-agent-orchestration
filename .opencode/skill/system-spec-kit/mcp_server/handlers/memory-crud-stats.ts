@@ -117,20 +117,15 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       }
 
       if (excludePatterns.length > 0) {
-        const regexes = excludePatterns
-          .map((pattern: string) => {
-            try {
-              return new RegExp(pattern, 'i');
-            } catch (err: unknown) {
-              const message = toErrorMessage(err);
-              console.warn(`[memory-stats] Invalid exclude pattern: ${pattern} - ${message}`);
-              return null;
-            }
-          })
-          .filter(Boolean) as RegExp[];
+        const loweredPatterns = excludePatterns
+          .filter((pattern: string) => typeof pattern === 'string' && pattern.length > 0)
+          .map((pattern: string) => pattern.toLowerCase());
 
-        if (regexes.length > 0) {
-          filteredFolders = filteredFolders.filter((folder) => !regexes.some((regex) => regex.test(folder.spec_folder)));
+        if (loweredPatterns.length > 0) {
+          filteredFolders = filteredFolders.filter((folder) => {
+            const folderName = folder.spec_folder.toLowerCase();
+            return !loweredPatterns.some((pattern) => folderName.includes(pattern));
+          });
         }
       }
 

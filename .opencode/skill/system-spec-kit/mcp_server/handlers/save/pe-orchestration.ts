@@ -100,7 +100,20 @@ export function evaluateAndApplyPeDecision(
         console.error(`[PE-Gate] SUPERSEDE: Contradiction detected with memory ${existingId}`);
         const superseded = markMemorySuperseded(existingId);
         if (!superseded) {
-          console.warn(`[PE-Gate] Failed to mark memory ${existingId} as superseded, proceeding with CREATE anyway`);
+          const error = `Failed to mark memory ${existingId} as superseded`;
+          console.warn(`[PE-Gate] ${error}`);
+          return {
+            decision: peDecision,
+            earlyReturn: {
+              status: 'error',
+              id: existingId,
+              specFolder: parsed.specFolder,
+              title: parsed.title ?? '',
+              superseded: false,
+              error,
+            },
+            supersededId: null,
+          };
         }
         supersededId = existingId;
         break;

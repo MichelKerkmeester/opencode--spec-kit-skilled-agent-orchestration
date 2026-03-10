@@ -503,7 +503,8 @@ function batchUpdateScores(sessionId: string): number {
 
     const updateStmt = db.prepare(`
       UPDATE working_memory
-      SET attention_score = ?
+      SET attention_score = ?,
+          event_counter = event_counter + 1
       WHERE id = ?
     `) as Database.Statement;
 
@@ -554,19 +555,25 @@ function getCurrentEventCounter(sessionId: string): number {
 function getLatestSessionEventCounter(sessionId: string): number | null {
   if (!db) return null;
 
-  const row = (db.prepare(`
-    SELECT event_counter
-    FROM working_memory
-    WHERE session_id = ?
-    ORDER BY last_focused DESC, id DESC
-    LIMIT 1
-  `) as Database.Statement).get(sessionId) as { event_counter?: number | null };
+  try {
+    const row = (db.prepare(`
+      SELECT event_counter
+      FROM working_memory
+      WHERE session_id = ?
+      ORDER BY last_focused DESC, id DESC
+      LIMIT 1
+    `) as Database.Statement).get(sessionId) as { event_counter?: number | null };
 
-  if (!row || typeof row.event_counter !== 'number' || Number.isNaN(row.event_counter)) {
+    if (!row || typeof row.event_counter !== 'number' || Number.isNaN(row.event_counter)) {
+      return null;
+    }
+
+    return row.event_counter;
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[working-memory] getLatestSessionEventCounter error: ${msg}`);
     return null;
   }
-
-  return row.event_counter;
 }
 
 function calculateEventDistance(currentCounter: number, entryCounter: number): number {

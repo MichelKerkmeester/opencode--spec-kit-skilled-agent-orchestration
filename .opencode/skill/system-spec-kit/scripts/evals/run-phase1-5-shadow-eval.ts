@@ -93,6 +93,10 @@ function computeCorrelation(rows: EvalRow[]): number {
     return spearmanRho(baseline, boostedRanks);
   });
 
+  if (perQuery.length === 0) {
+    throw new Error('Empty dataset: no per-query results to evaluate');
+  }
+
   const avg = perQuery.reduce((sum, value) => sum + value, 0) / perQuery.length;
   return Number(avg.toFixed(4));
 }

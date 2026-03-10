@@ -164,8 +164,14 @@ async function indexChunkedMemoryFile(
     } else {
       // Delete old parent+children if force re-indexing
       if (existing && force) {
-        database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(existing.id);
-        database.prepare(`DELETE FROM memory_index WHERE id = ?`).run(existing.id);
+        const existingChunkRows = database.prepare(`
+          SELECT id FROM memory_index WHERE parent_id = ?
+        `).all(existing.id) as Array<{ id: number }>;
+
+        for (const existingChunk of existingChunkRows) {
+          vectorIndex.deleteMemory(existingChunk.id);
+        }
+        vectorIndex.deleteMemory(existing.id);
       }
 
       // Create parent record (no embedding)
@@ -339,20 +345,48 @@ async function indexChunkedMemoryFile(
       : `Chunked indexing aborted: all ${retainedChunks.length} chunks failed (existing parent retained)`;
     console.error(`[memory-save] ${rollbackMessage} for ${filePath}`);
 
+    let deletedChunkIds: number[] = [];
     try {
       const rollbackTx = database.transaction(() => {
+        const deletedIds: number[] = [];
+
         if (parentRolledBack) {
-          database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
-          database.prepare(`DELETE FROM memory_index WHERE id = ?`).run(parentId);
+          const chunkRows = database.prepare(`
+            SELECT id FROM memory_index WHERE parent_id = ?
+          `).all(parentId) as Array<{ id: number }>;
+
+          for (const chunkRow of chunkRows) {
+            if (vectorIndex.deleteMemory(chunkRow.id)) {
+              deletedIds.push(chunkRow.id);
+            }
+          }
+          vectorIndex.deleteMemory(parentId);
         } else if (childIds.length > 0) {
-          const placeholders = childIds.map(() => '?').join(', ');
-          database.prepare(`DELETE FROM memory_index WHERE id IN (${placeholders})`).run(...childIds);
+          for (const childId of childIds) {
+            if (vectorIndex.deleteMemory(childId)) {
+              deletedIds.push(childId);
+            }
+          }
         }
+
+        return deletedIds;
       });
-      rollbackTx();
+      deletedChunkIds = rollbackTx();
     } catch (rollbackErr: unknown) {
       const message = toErrorMessage(rollbackErr);
       console.error(`[memory-save] Rollback failed for parent ${parentId}: ${message}`);
+    }
+
+    if (deletedChunkIds.length > 0 && bm25Index.isBm25Enabled()) {
+      try {
+        const bm25 = bm25Index.getIndex();
+        for (const deletedChunkId of deletedChunkIds) {
+          bm25.removeDocument(String(deletedChunkId));
+        }
+      } catch (bm25Err: unknown) {
+        const message = toErrorMessage(bm25Err);
+        console.warn(`[memory-save] BM25 rollback failed for chunk(s) of parent ${parentId}: ${message}`);
+      }
     }
 
     if (parentRolledBack && bm25Index.isBm25Enabled()) {

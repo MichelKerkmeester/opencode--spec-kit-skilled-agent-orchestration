@@ -14,6 +14,8 @@
 //   - enrichWithRetrievalDirectives is a map over results; it never filters or reorders.
 
 import * as fs from 'fs';
+import { ALLOWED_BASE_PATHS } from '../../core/config';
+import { validateFilePath } from '../utils/path-security';
 
 /* ---------------------------------------------------------------
    1. TYPES
@@ -323,8 +325,9 @@ export function enrichWithRetrievalDirectives(
     let content = '';
     if (result.filePath) {
       try {
-        if (fs.existsSync(result.filePath)) {
-          content = fs.readFileSync(result.filePath, 'utf-8');
+        const validatedPath = validateFilePath(result.filePath, ALLOWED_BASE_PATHS);
+        if (validatedPath && fs.existsSync(validatedPath)) {
+          content = fs.readFileSync(validatedPath, 'utf-8');
         }
       } catch (_error: unknown) {
         // AI-GUARD: File read failure is non-fatal; fall back to title-only directive

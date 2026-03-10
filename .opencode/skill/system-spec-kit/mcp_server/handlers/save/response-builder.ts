@@ -8,7 +8,7 @@ import type * as memoryParser from '../../lib/parsing/memory-parser';
 import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';
 import * as retryManager from '../../lib/providers/retry-manager';
 import { runConsolidationCycleIfEnabled } from '../../lib/storage/consolidation';
-import { createMCPSuccessResponse } from '../../lib/response/envelope';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../../lib/response/envelope';
 import { requireDb, toErrorMessage } from '../../utils';
 
 import { appendMutationLedgerSafe } from '../memory-crud-utils';
@@ -182,6 +182,25 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
         title: result.title,
       },
       hints: ['Use force: true to re-index anyway'],
+    });
+  }
+
+  if (result.status === 'error') {
+    const errorMessage = typeof result.error === 'string' && result.error.length > 0
+      ? result.error
+      : (typeof result.message === 'string' && result.message.length > 0 ? result.message : 'Memory save failed');
+
+    return createMCPErrorResponse({
+      tool: 'memory_save',
+      error: errorMessage,
+      code: 'E081',
+      details: {
+        status: result.status,
+        id: result.id,
+        specFolder: result.specFolder,
+        title: result.title,
+        ...(typeof result.superseded === 'boolean' ? { superseded: result.superseded } : {}),
+      },
     });
   }
 

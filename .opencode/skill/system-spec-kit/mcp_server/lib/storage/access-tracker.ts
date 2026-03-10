@@ -75,7 +75,11 @@ function trackAccess(memoryId: number): boolean {
   if (newValue >= ACCUMULATOR_THRESHOLD) {
     // Flush to database
     const success = flushAccessCounts(memoryId);
-    accumulators.delete(memoryId);
+    if (success) {
+      accumulators.delete(memoryId);
+    } else {
+      accumulators.set(memoryId, newValue);
+    }
     return success;
   }
 
@@ -116,7 +120,7 @@ function flushAccessCounts(memoryId: number): boolean {
   }
 
   try {
-    const now = new Date().toISOString();
+    const now = Date.now();
     const result = (db.prepare(`
       UPDATE memory_index
       SET access_count = access_count + 1,

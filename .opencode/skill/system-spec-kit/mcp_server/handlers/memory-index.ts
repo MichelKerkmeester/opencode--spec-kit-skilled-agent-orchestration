@@ -366,6 +366,17 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
           errorDetail: result.errorDetail
         });
       } else if (isIndexResult(result)) {
+        const isSuccessfulStatus =
+          result.status === 'success' ||
+          result.status === 'indexed' ||
+          result.status === 'updated' ||
+          result.status === 'unchanged' ||
+          result.status === 'reinforced' ||
+          result.status === 'duplicate';
+        if (!isSuccessfulStatus) {
+          results.failed++;
+        }
+
         if (result.status === 'indexed') {
           results.indexed++;
           successfullyIndexedFiles.push(filePath);

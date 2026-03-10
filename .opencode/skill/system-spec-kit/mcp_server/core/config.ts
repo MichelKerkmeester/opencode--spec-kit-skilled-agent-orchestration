@@ -40,8 +40,10 @@ export const DB_UPDATED_FILE: string = SHARED_DB_UPDATED_FILE;
    3. BATCH PROCESSING CONFIGURATION
    --------------------------------------------------------------- */
 
-export const BATCH_SIZE: number = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
-export const BATCH_DELAY_MS: number = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
+const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
+export const BATCH_SIZE: number = Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 5;
+const parsedBatchDelayMs = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
+export const BATCH_DELAY_MS: number = Number.isFinite(parsedBatchDelayMs) && parsedBatchDelayMs > 0 ? parsedBatchDelayMs : 100;
 
 /* ---------------------------------------------------------------
    4. RATE LIMITING CONFIGURATION

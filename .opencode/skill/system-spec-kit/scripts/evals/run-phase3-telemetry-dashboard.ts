@@ -241,6 +241,11 @@ function main(): void {
   const evalRows = readJson<EvalRow[]>(evalDatasetPath);
   const phase2Metrics = readJson<Phase2Metrics>(phase2MetricsPath);
 
+  if (evalRows.length === 0) {
+    console.warn('No eval data found');
+    return;
+  }
+
   const snapshot = buildSnapshot(specFolder, evalRows, phase2Metrics);
   writeDashboard(specFolder, snapshot);
 

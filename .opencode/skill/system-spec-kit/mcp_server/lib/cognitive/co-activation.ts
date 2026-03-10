@@ -51,7 +51,7 @@ interface SpreadResult {
 let db: Database.Database | null = null;
 
 /** Simple TTL + size-capped cache for getRelatedMemories() results. */
-const RELATED_CACHE = new Map<number, { results: RelatedMemory[]; expiresAt: number }>();
+const RELATED_CACHE = new Map<string, { results: RelatedMemory[]; expiresAt: number }>();
 const RELATED_CACHE_TTL_MS = 30_000; // 30 seconds
 const RELATED_CACHE_MAX_SIZE = 100;
 
@@ -115,8 +115,10 @@ function getRelatedMemories(
     return [];
   }
 
+  const cacheKey = `${memoryId}:${limit}`;
+
   // Cache hit: return early if a fresh entry exists
-  const cached = RELATED_CACHE.get(memoryId);
+  const cached = RELATED_CACHE.get(cacheKey);
   if (cached && Date.now() < cached.expiresAt) {
     return cached.results;
   }
@@ -171,7 +173,7 @@ function getRelatedMemories(
 
     // Cache miss: store results before returning
     pruneRelatedCache();
-    RELATED_CACHE.set(memoryId, { results, expiresAt: Date.now() + RELATED_CACHE_TTL_MS });
+    RELATED_CACHE.set(cacheKey, { results, expiresAt: Date.now() + RELATED_CACHE_TTL_MS });
     return results;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
