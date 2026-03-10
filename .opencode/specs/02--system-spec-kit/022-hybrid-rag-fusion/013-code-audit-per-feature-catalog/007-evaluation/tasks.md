@@ -1,58 +1,91 @@
-# Tasks — Phase 007: Evaluation
+---
+title: "Tasks: evaluation [template:level_2/tasks.md]"
+description: "Task Format: T### [P?] Description (file path) | Date: 2026-03-10 | Status: Draft"
+trigger_phrases:
+  - "tasks"
+  - "evaluation"
+  - "phase"
+  - "template"
+  - "tasks core"
+importance_tier: "normal"
+contextType: "general"
+---
+# Tasks: evaluation
 
-## Summary
-
-| Priority | Count | Description                                            |
-| -------- | ----- | ------------------------------------------------------ |
-| **P0**   | 2     | FAIL findings — behavior mismatch, missing data source |
-| **P1**   | 0     | —                                                      |
-| **P2**   | 3     | WARN findings — test/doc gaps only                     |
-| **Total**| 5     |                                                        |
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-## P0 — FAIL (Immediate Fix Required)
+<!-- ANCHOR:notation -->
+## Task Notation
 
-### T-01: Resolve eval_final_results data source mismatch
-- **Priority:** P0
-- **Feature:** F-02 Reporting dashboard (eval_reporting_dashboard)
-- **Status:** TODO
-- **Source:** `lib/eval/reporting-dashboard.ts:181-213,218-241`, `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:7`
-- **Issue:** Feature catalog claims dashboard aggregation uses `eval_metric_snapshots`, `eval_channel_results`, and `eval_final_results`, but implementation queries only `eval_metric_snapshots` and `eval_channel_results`. `eval_final_results` has no query function or SQL statement anywhere in the codebase.
-- **Fix:** Either implement `eval_final_results` querying in `reporting-dashboard.ts` or update the feature catalog to remove the `eval_final_results` claim and clarify the dashboard uses only snapshots and channel results.
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### T-02: Add reporting dashboard handler-level tests
-- **Priority:** P0
-- **Feature:** F-02 Reporting dashboard (eval_reporting_dashboard)
-- **Status:** TODO
-- **Source:** `handlers/eval-reporting.ts:136-157`
-- **Issue:** No focused handler-level tests validate `handleEvalReportingDashboard` request filtering/format selection and response envelope behavior. `sprintFilter`, `channelFilter`, `metricFilter`, `limit` pass-through, and `format` defaulting to `'text'` are untested at the handler level.
-- **Fix:** Add handler-level tests for format/filter/limit behavior and the text vs JSON output path.
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## P2 — WARN (Documentation / Test Gaps)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-### T-03: Add ablation handler-level test coverage
-- **Priority:** P2
-- **Feature:** F-01 Ablation studies (eval_run_ablation)
-- **Status:** TODO
-- **Source:** `handlers/eval-reporting.ts:53-61,116-118`, `tests/mcp-tool-dispatch.vitest.ts:29-30`
-- **Issue:** No focused handler-level tests validate `handleEvalRunAblation` argument normalization and disabled-flag error path; no tests for `storeResults=false` or `includeFormattedReport=false` paths.
-- **Fix:** Add handler-level tests for disabled-flag `MemoryError` throw, invalid channels fallback to `ALL_CHANNELS`, `recallK` normalization (negative, zero, fractional), `storeResults=false` bypass, and `includeFormattedReport=false` omission.
+- [ ] T001 Build Evaluation feature inventory (`feature_catalog/07--evaluation/`)
+- [ ] T002 Confirm audit criteria and playbook mapping (`EX-032`, `EX-033`)
+- [ ] T003 [P] Validate referenced source/test file availability (`mcp_server/**`, `feature_catalog/**`)
+<!-- /ANCHOR:phase-1 -->
 
-### T-04: Remove stale retry.vitest.ts reference (F-01)
-- **Priority:** P2
-- **Feature:** F-01 Ablation studies (eval_run_ablation)
-- **Status:** TODO
-- **Source:** `feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md:150`
-- **Issue:** Feature references nonexistent `mcp_server/tests/retry.vitest.ts`.
-- **Fix:** Remove stale reference from feature test inventory.
+---
 
-### T-05: Remove stale retry.vitest.ts reference (F-02)
-- **Priority:** P2
-- **Feature:** F-02 Reporting dashboard (eval_reporting_dashboard)
-- **Status:** TODO
-- **Source:** `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:152`
-- **Issue:** Feature references nonexistent `mcp_server/tests/retry.vitest.ts`.
-- **Fix:** Remove stale reference from feature test inventory.
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 Resolve P0 finding: `eval_final_results` source mismatch (`mcp_server/lib/eval/reporting-dashboard.ts`, `feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`)
+- [ ] T005 Resolve P0 finding: add handler-level dashboard tests (`mcp_server/handlers/eval-reporting.ts`, `mcp_server/tests/*`)
+- [ ] T006 [P] Resolve P2 finding: add ablation handler-level normalization/flag tests (`mcp_server/handlers/eval-reporting.ts`, `mcp_server/tests/*`)
+- [ ] T007 [P] Resolve P2 finding: remove stale F-01 `retry.vitest.ts` reference (`feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md`)
+- [ ] T008 [P] Resolve P2 finding: remove stale F-02 `retry.vitest.ts` reference (`feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T009 Re-run targeted evaluation tests and verify expected behavior (`mcp_server/tests/*`)
+- [ ] T010 Verify feature-catalog behavior parity after remediation (`feature_catalog/07--evaluation/*.md`)
+- [ ] T011 Update and synchronize spec artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`)
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->

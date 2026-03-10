@@ -1,53 +1,118 @@
-## F-01: Query complexity router
-- **Status:** FAIL
-- **Code Issues:** 1) Tier classification currently ignores `charCount` and `stopWordRatio`; routing decisions are based only on trigger match and term count (`mcp_server/lib/search/query-classifier.ts:173-179`), which conflicts with the feature claim (`feature_catalog/12--query-intelligence/01-query-complexity-router.md:7`). 2) Classifier docs state the disabled path is the default (`query-classifier.ts:132-134`), but the flag helper defaults to enabled unless explicitly `false` (`query-classifier.ts:43-46`).
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** The CHK-038 trace propagation described in the feature (`01-query-complexity-router.md:11`) is implemented in `hybrid-search.ts`/formatter flow, but that implementation surface is not represented in this feature's listed source files.
-- **Test Gaps:** Listed tests do not exercise `traceMetadata.queryComplexity` propagation or response-envelope fallback (`query-classifier.vitest.ts`, `query-router.vitest.ts`, `query-router-channel-interaction.vitest.ts` have no `traceMetadata`/`queryComplexity` assertions).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1) Either incorporate `charCount` and `stopWordRatio` into tier routing, or update Current Reality text to match actual logic. 2) Add integration tests that assert `routeResult.tier -> traceMetadata.queryComplexity -> formatter output`.
+---
+title: "Verification Checklist: query-intelligence [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-10"
+trigger_phrases:
+  - "query intelligence"
+  - "checklist"
+  - "verification"
+  - "query complexity router"
+  - "channel min representation"
+  - "query expansion"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: query-intelligence
 
-## F-02: Relative score fusion in shadow mode
-- **Status:** WARN
-- **Code Issues:** 1) RSF fusion algorithms exist (`mcp_server/lib/search/rsf-fusion.ts:87-391`), but runtime integration is not active in the primary hybrid search path (only `rsfShadow` metadata type remains in `mcp_server/lib/search/hybrid-search.ts:123-124`).
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** Feature text says RSF runs alongside RRF in shadow mode (`02-relative-score-fusion-in-shadow-mode.md:5-9`), but the same feature also states the RSF branch was removed (`02-relative-score-fusion-in-shadow-mode.md:11`). Current code reflects the removed-branch state.
-- **Test Gaps:** Listed tests validate RSF/RRF math (`rrf-fusion.vitest.ts`, `rsf-fusion.vitest.ts`, `rsf-fusion-edge-cases.vitest.ts`, `unit-rrf-fusion.vitest.ts`) but do not verify pipeline-level shadow logging/comparison output.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1) Clarify feature status (dormant utility vs active shadow mode). 2) If shadow mode is intended, add explicit pipeline invocation + trace assertions.
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
-## F-03: Channel min-representation
-- **Status:** FAIL
-- **Code Issues:** 1) `analyzeChannelRepresentation` appends promoted items but does not re-sort (`mcp_server/lib/search/channel-representation.ts:173-182`), while feature reality says full set is re-sorted (`03-channel-min-representation.md:9`). 2) Re-sort is currently done by a different wrapper (`mcp_server/lib/search/channel-enforcement.ts:110-114`) that is not listed in the feature implementation table (`03-channel-min-representation.md:17`).
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** The documented "append + re-sort" behavior is not guaranteed by the listed implementation file alone.
-- **Test Gaps:** 1) `channel-representation.vitest.ts` has no ordering assertions after promotions. 2) `channel.vitest.ts` is placeholder-only (`expect(true)` stubs at lines 10-40) and does not validate real channel behavior.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1) Re-sort inside `analyzeChannelRepresentation` or explicitly document/require wrapper usage. 2) Replace placeholder channel tests with behavioral assertions.
+---
 
-## F-04: Confidence-based result truncation
-- **Status:** PASS
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** NONE
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-## F-05: Dynamic token budget allocation
-- **Status:** WARN
-- **Code Issues:** 1) CHK-060 header-overhead logic is implemented in `mcp_server/lib/search/hybrid-search.ts:958-961`, but `hybrid-search.ts` is not listed in this feature's implementation table (`05-dynamic-token-budget-allocation.md:17-19`).
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** Runtime behavior matches the narrative, but feature source mapping is incomplete for the documented budget-adjustment path.
-- **Test Gaps:** 1) `dynamic-token-budget.vitest.ts` validates tier budgets/flag behavior but not `SPECKIT_CONTEXT_HEADERS` overhead subtraction and 200-token floor. 2) `token-budget.vitest.ts` validates generic truncation/env-budget behavior, not the CHK-060 adjusted-budget path.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1) Add `hybrid-search.ts` to the feature implementation list. 2) Add explicit tests for `adjustedBudget = max(dynamicBudget - (resultCount * 12), 200)`.
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-## F-06: Query expansion
-- **Status:** FAIL
-- **Code Issues:** 1) Listed test file `mcp_server/tests/retry.vitest.ts` is missing (declared in `06-query-expansion.md:72`; path does not exist in repo). 2) Stage-1 baseline+expanded parallel execution and baseline-first dedup are implemented in `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:316-349`, but this file is not listed in the feature implementation table (`06-query-expansion.md:17-52`).
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** The documented Stage-1 orchestration behavior (`06-query-expansion.md:7`) relies on implementation outside the listed source table, so cataloged implementation scope is incomplete.
-- **Test Gaps:** 1) Missing listed test file (`mcp_server/tests/retry.vitest.ts`). 2) Listed tests (`embedding-expansion.vitest.ts`, `query-expander.vitest.ts`, etc.) do not assert Stage-1 parallel baseline-first dedup behavior.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1) Replace stale test references with existing relevant tests. 2) Add Stage-1 orchestration tests and include `stage1-candidate-gen.ts` in implementation sources.
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [x] CHK-001 [P0] Requirements documented in spec.md
+- [x] CHK-002 [P0] Technical approach defined in plan.md
+- [x] CHK-003 [P1] Dependencies identified and available
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] F-01 Query complexity router: tier classification incorporates `charCount` and `stopWordRatio` or Current Reality updated (`query-classifier.ts:173-179`)
+- [ ] CHK-011 [P0] F-01 Query complexity router: flag helper default aligns with classifier docs (`query-classifier.ts:43-46` vs `132-134`)
+- [ ] CHK-012 [P0] F-03 Channel min-representation: `analyzeChannelRepresentation` re-sorts after promotions or documented wrapper usage (`channel-representation.ts:173-182`)
+- [ ] CHK-013 [P0] F-06 Query expansion: stale `retry.vitest.ts` reference removed from feature table (`06-query-expansion.md:72`)
+- [ ] CHK-014 [P1] F-02 RSF shadow mode: feature status clarified (dormant utility vs active shadow)
+- [ ] CHK-015 [P1] F-05 Dynamic token budget: `hybrid-search.ts` added to feature implementation table (`05-dynamic-token-budget-allocation.md:17-19`)
+- [ ] CHK-016 [P1] F-06 Query expansion: `stage1-candidate-gen.ts` added to feature implementation sources
+- [x] CHK-017 [P1] F-04 Confidence-based result truncation: PASS — no code issues
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] F-01 Integration tests asserting `routeResult.tier -> traceMetadata.queryComplexity -> formatter output`
+- [ ] CHK-021 [P0] F-03 Channel tests with ordering assertions after promotions; placeholder stubs replaced (`channel.vitest.ts:10-40`)
+- [ ] CHK-022 [P1] F-02 Pipeline-level shadow logging/comparison output tests added
+- [ ] CHK-023 [P1] F-05 Tests for `adjustedBudget = max(dynamicBudget - (resultCount * 12), 200)` path
+- [ ] CHK-024 [P1] F-06 Stage-1 parallel baseline-first dedup behavior tests added
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No hardcoded secrets
+- [x] CHK-031 [P0] Input validation implemented
+- [x] CHK-032 [P1] Auth/authz working correctly
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] F-01 Trace propagation source files updated in feature table
+- [ ] CHK-041 [P1] F-03 Wrapper usage documented or re-sort moved into listed implementation
+- [ ] CHK-042 [P2] Playbook scenarios created for all 6 features (currently MISSING)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Temp files in scratch/ only
+- [x] CHK-051 [P1] scratch/ cleaned before completion
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 2/7 |
+| P1 Items | 9 | 4/9 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-10
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

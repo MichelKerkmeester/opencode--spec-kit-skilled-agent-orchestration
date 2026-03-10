@@ -1,17 +1,111 @@
-## F-01: Workspace scanning and indexing (memory_index_scan)
-- **Status:** FAIL
-- **Code Issues:** 1. `skipped_hash` is always hardcoded to `0` (`mcp_server/handlers/memory-index.ts:320`), so hash-based skip accounting is never surfaced even though the result schema exposes it as a distinct field alongside `skipped_mtime` (line 283-284). The `skipped_mtime` field is correctly populated from `categorized.toSkip.length` at line 319, but `skipped_hash` remains zero regardless of categorization outcome. 2. `incremental.hash_checks` is set to `categorized.toUpdate.length` (line 322), but this represents files that need re-indexing due to mtime change, not actual content-hash comparisons. The field name implies hash-based checking that does not occur.
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** Current Reality says incremental mode separates unchanged files by mtime/hash and reports both buckets (`feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md:9`, `17`), but the `categorizeFileDecision` function in `incremental-index.ts` uses only mtime comparison with a fast-path tolerance of `MTIME_FAST_PATH_MS` and embedding status checks (`mcp_server/lib/storage/incremental-index.ts:156-173`). There is no content-hash branch: the decision tree is `new` (no stored metadata, line 158), `reindex` (no stored mtime, line 161), `skip` (mtime unchanged + embedding success, line 164-169), or `modified` (mtime changed, line 173). The handler then hardcodes `skipped_hash = 0` (line 320).
-- **Test Gaps:** 1. Listed test file `mcp_server/tests/retry.vitest.ts` does not exist (`feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md:190`). 2. No test asserts any non-zero `skipped_hash` path, which is currently impossible with the implemented logic. 3. No test validates the `incremental.hash_checks` field semantics.
-- **Playbook Coverage:** EX-021
-- **Recommended Fixes:** 1. Either implement hash-based unchanged detection in `categorizeFileDecision` (adding a content-hash comparison between mtime-change and re-index), or update Current Reality documentation to mtime-only semantics and remove the `skipped_hash` field. 2. If keeping `skipped_hash`, populate it from actual hash-skip categorization. 3. Rename `incremental.hash_checks` to `incremental.modified_count` to match actual semantics, or implement true hash checking. 4. Add regression tests for skip-accounting fields.
+---
+title: "Verification Checklist: maintenance [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-10"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "maintenance"
+  - "template"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: maintenance
 
-## F-02: Startup runtime compatibility guards
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE. `detectNodeVersionMismatch` uses `process.versions.modules` (ABI version) with a `.node-version-marker` file for cross-compile detection confirmed in `startup-checks.ts`. `checkSqliteVersion` validates SQLite >= 3.35.0 via string comparison confirmed. Both functions emit `console.warn` (non-blocking) as documented.
-- **Test Gaps:** 1. Startup-guard coverage is mostly source-pattern assertions (e.g., regex check for `detectNodeVersionMismatch()` call), not behavior-level execution of marker/SQLite guard outcomes (`mcp_server/tests/context-server.vitest.ts:1427-1429`). 2. Modularization tests validate dist file structure/import presence, not runtime startup-check behavior (`mcp_server/tests/modularization.vitest.ts:62-103`, `110-131`). 3. No focused unit suite validates `startup-checks.ts` warning branches directly (`mcp_server/startup-checks.ts:23-85`), including: marker file creation when missing, marker file mismatch detection, SQLite version below threshold warning, and SQLite version extraction failure.
-- **Playbook Coverage:** EX-022
-- **Recommended Fixes:** 1. Add direct unit tests for `detectNodeVersionMismatch()` covering: marker creation on first run, marker match on same ABI, marker mismatch warning on different ABI. 2. Add direct unit tests for `checkSqliteVersion()` covering: version >= 3.35.0 (pass), version < 3.35.0 (warning), version extraction failure (graceful error).
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [ ] CHK-001 [P0] F-01 and F-02 findings documented with status and evidence in `spec.md`
+- [ ] CHK-002 [P0] Technical remediation approach for F-01 mismatch defined in `plan.md`
+- [ ] CHK-003 [P1] Dependencies for maintenance remediation identified and available
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] Incremental scan accounting fields (`skipped_hash`, `hash_checks`) reflect implemented semantics
+- [ ] CHK-011 [P0] No incorrect metric naming remains in maintenance-facing outputs
+- [ ] CHK-012 [P1] Startup guard functions preserve non-blocking warning behavior
+- [ ] CHK-013 [P1] Updated code/tests follow existing TypeScript MCP server patterns
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] F-01 acceptance criteria and behavior mismatch checks validated
+- [ ] CHK-021 [P0] Startup marker creation/match/mismatch scenarios validated by tests
+- [ ] CHK-022 [P1] SQLite version pass/warn/extraction-failure scenarios tested
+- [ ] CHK-023 [P1] EX-021 and EX-022 playbook coverage mapped or gap-noted
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No hardcoded secrets introduced in modified maintenance files
+- [ ] CHK-031 [P0] Input/state validation remains explicit in startup and indexing paths
+- [ ] CHK-032 [P1] Warning/error output does not expose sensitive runtime details
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` stay synchronized with F-01/F-02 findings
+- [ ] CHK-041 [P1] Feature catalog Current Reality text matches implemented behavior
+- [ ] CHK-042 [P2] Maintenance test inventory references updated (including stale retry test cleanup)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Maintenance artifacts remain in `004-maintenance/`
+- [ ] CHK-051 [P1] Temporary files are kept in `scratch/` only
+- [ ] CHK-052 [P2] Findings are saved to `memory/` when required
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 0/8 |
+| P1 Items | 10 | 0/10 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-10
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

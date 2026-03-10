@@ -1,50 +1,91 @@
-# Tasks — 019 Decisions and Deferrals
+---
+title: "Tasks: decisions-and-deferrals [template:level_2/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "decisions"
+  - "deferrals"
+  - "graph signals"
+  - "entity regex"
+  - "test gaps"
+importance_tier: "normal"
+contextType: "general"
+---
+# Tasks: decisions-and-deferrals
 
-## Summary
-
-| Priority | Count |
-|----------|-------|
-| P0       | 0     |
-| P1       | 3     |
-| P2       | 1     |
-| **Total** | **4** |
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-## P1 — WARN with Behavior Mismatch or Significant Code Issues
+<!-- ANCHOR:notation -->
+## Task Notation
 
-### T-01: Update graph centrality feature source inventory to include graph-signals and migration
-- **Priority:** P1
-- **Feature:** F-02 Implemented: graph centrality and community detection
-- **Status:** TODO
-- **Source:** `feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md:7,15-17`; `mcp_server/lib/graph/graph-signals.ts:48-55,102-149`; `mcp_server/lib/search/vector-index-schema.ts:587-623`
-- **Issue:** Current Reality references N2a (graph momentum), N2b (causal depth), and migration v19 table additions, but the Source Files table only lists `community-detection.ts` and `pagerank.ts`. Logic for N2a/N2b lives in `graph-signals.ts` and migration v19 table creation lives in `vector-index-schema.ts`, creating a completeness gap.
-- **Fix:** Update the feature Source Files table to include `mcp_server/lib/graph/graph-signals.ts` and the migration touchpoints in `vector-index-schema.ts`.
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-### T-02: Add test references for graph momentum and causal depth
-- **Priority:** P1
-- **Feature:** F-02 Implemented: graph centrality and community detection
-- **Status:** TODO
-- **Source:** `feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md:22-23`; `mcp_server/lib/graph/graph-signals.ts:48-55,102-149`
-- **Issue:** Listed tests cover community detection and pagerank but do not cover the N2a/N2b graph-signals module or migration-v19 behavior referenced in Current Reality. No test validates `computeGraphMomentum` or `computeCausalDepth`.
-- **Fix:** Add or attach test references for momentum/depth behavior and migration v19 expectations in this feature entry.
-
-### T-03: Tighten Rule-3 regex to prevent cross-sentence entity capture
-- **Priority:** P1
-- **Feature:** F-03 Implemented: auto entity extraction
-- **Status:** TODO
-- **Source:** `mcp_server/lib/extraction/entity-extractor.ts:69`; `mcp_server/tests/entity-extractor.vitest.ts:106-118`
-- **Issue:** Rule-3 key-phrase extraction regex allows `.` in continuation tokens via `[\w.-]+`, causing cross-sentence boundary captures (e.g., "using GraphQL. Implements Singleton" captured as one phrase). Existing tests codify this incorrect behavior instead of preventing it.
-- **Fix:** Tighten Rule-3 regex to use `[\w-]+` instead of `[\w.-]+` in the continuation token pattern. Add negative tests asserting that sentence-boundary periods terminate key-phrase capture.
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## P2 — WARN with Documentation/Test Gaps Only
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-### T-04: Add test coverage for computeGraphMomentum and computeCausalDepth
-- **Priority:** P2
-- **Feature:** F-02 Implemented: graph centrality and community detection
-- **Status:** TODO
-- **Source:** `mcp_server/lib/graph/graph-signals.ts:48-55,102-149`
-- **Issue:** No test validates `computeGraphMomentum` or `computeCausalDepth` from `graph-signals.ts`, despite these being referenced in the feature's Current Reality text.
-- **Fix:** Add dedicated tests for momentum/depth computation behavior and migration v19 table expectations.
+- [ ] T001 Validate all 5 feature entries and source inventories (`feature_catalog/19--decisions-and-deferrals/`)
+- [ ] T002 Capture baseline status for F-01 through F-05 in verification checklist (`checklist.md`)
+- [ ] T003 [P] Confirm audit criteria coverage (correctness, standards, behavior, tests) (`spec.md`)
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
+- [ ] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`feature_catalog/19--decisions-and-deferrals/02-implemented-graph-centrality-and-community-detection.md`)
+- [ ] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`)
+- [ ] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`)
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T008 Re-run targeted graph/entity extraction tests after updates (`mcp_server/tests/*.vitest.ts`)
+- [ ] T009 Re-audit F-02 and F-03 status after remediation (`checklist.md`)
+- [ ] T010 Update final PASS/WARN/FAIL outcomes and close deferred items (`tasks.md`)
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->

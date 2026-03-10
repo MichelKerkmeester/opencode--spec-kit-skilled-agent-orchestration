@@ -1,47 +1,185 @@
-# Phase 007-evaluation — Evaluation — Audit Plan
+---
+title: "Implementation Plan: evaluation [template:level_2/plan.md]"
+description: "Implement Evaluation-category audit remediation by reconciling behavior claims, closing handler test gaps, and preserving existing MCP/SQLite workflows."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "evaluation"
+  - "template"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: evaluation
 
-## Methodology
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Step 1: Feature Inventory
-- Read all 2 feature .md files in `feature_catalog/07--evaluation/`
-- Extract source file lists (Implementation + Tests)
-- Map features to manual test playbook scenarios (EX-032, EX-033)
+---
 
-### Step 2: Code Review Per Feature
-For each feature's source files:
-- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
-- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
-- **Behavior:** Does code match the "Current Reality" description in the catalog?
-- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Step 3: Test Coverage Assessment
-- Verify tests exist for all listed test files
-- Verify tests cover the described behavior
-- Identify gaps between described functionality and test assertions
+### Technical Context
 
-### Step 4: Manual Test Playbook Cross-Reference
-- Find matching scenarios: EX-032, EX-033
-- Note features with NO manual test scenario (gap)
-- Note if scenario adequately covers described feature
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript |
+| **Framework** | MCP tool handlers/services |
+| **Storage** | SQLite |
+| **Testing** | Vitest |
 
-### Step 5: Findings Report
-Per feature, produce structured findings:
-- Status: PASS | WARN | FAIL
-- Code Issues
-- Standards Violations
-- Behavior Mismatch
-- Test Gaps
-- Playbook Coverage
-- Recommended Fixes
+### Overview
+This plan executes the Evaluation-phase audit findings by focusing on one P0 behavior mismatch and targeted handler-level test/documentation gaps. The approach preserves existing architecture, updates behavior claims or implementation where needed, and verifies outcomes with focused Vitest coverage.
+<!-- /ANCHOR:summary -->
 
-## sk-code--opencode Checklist (per file)
+---
 
-- [ ] Naming: camelCase functions, PascalCase types/interfaces
-- [ ] Imports: explicit, no barrel re-exports of side-effect modules
-- [ ] Types: strict TypeScript, no `any` without justification
-- [ ] Error handling: typed errors, no swallowed catches
-- [ ] Null safety: optional chaining, nullish coalescing
-- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [ ] Functions: single responsibility, < 50 lines preferred
-- [ ] Comments: only where logic is non-obvious
-- [ ] Exports: explicit named exports
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [ ] Problem statement clear and scope documented
+- [ ] Success criteria measurable
+- [ ] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Modular MCP handler + service-layer audit/remediation workflow
+
+### Key Components
+- **Evaluation feature catalog docs**: Define expected Current Reality and test inventory claims.
+- **Eval reporting handlers/services**: Implement runtime behavior for ablation and dashboard paths.
+
+### Data Flow
+Feature catalog expectations are mapped to handler/service implementations, compared against SQLite-backed query behavior, then validated via targeted Vitest coverage and documented as prioritized findings.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Read both Evaluation feature docs and extract implementation/test references
+- [ ] Map manual playbook coverage (`EX-032`, `EX-033`)
+- [ ] Confirm audit criteria and expected outputs
+
+### Phase 2: Core Implementation
+- [ ] Reconcile F-02 `eval_final_results` behavior mismatch (code or catalog)
+- [ ] Add handler-level tests for dashboard and ablation flows
+- [ ] Remove stale test-file references and finalize remediation tasks
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | Handler argument normalization, defaults, and error branches | Vitest |
+| Integration | MCP dispatch to eval handlers with SQLite-backed behavior checks | Vitest + SQLite fixtures |
+| Manual | Playbook scenario parity (`EX-032`, `EX-033`) and findings traceability | Feature catalog + audit artifacts |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `feature_catalog/07--evaluation/*.md` accuracy | Internal | Yellow | Findings cannot be finalized against incorrect baseline claims |
+| Eval reporting modules (`handlers/eval-reporting.ts`, `lib/eval/reporting-dashboard.ts`) | Internal | Green | Remediation implementation/testing blocked if interfaces change unexpectedly |
+| Vitest evaluation test harness | Internal | Green | Verification cannot be completed confidently |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Regression in eval handler behavior, failing targeted tests, or unresolved behavior parity after attempted remediation.
+- **Procedure**: Revert remediation commits, restore prior catalog assertions if needed, and rerun baseline Vitest coverage before reattempt.
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ─────────┐
+                         ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Mapping) ─────┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Mapping, Core |
+| Mapping | Setup | Core |
+| Core | Setup, Mapping | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 1-2 hours |
+| Core Implementation | Medium | 3-6 hours |
+| Verification | Low | 1-2 hours |
+| **Total** | | **5-10 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. Disable/remap the affected evaluation behavior change.
+2. Revert code or documentation deltas to last known-good revision.
+3. Run targeted Vitest coverage for ablation/dashboard flows.
+4. Record rollback rationale and follow-up remediation plan.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->

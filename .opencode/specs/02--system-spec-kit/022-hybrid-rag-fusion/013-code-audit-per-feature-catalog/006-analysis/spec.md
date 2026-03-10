@@ -1,37 +1,182 @@
-# Phase 006-analysis — Analysis Code Audit
+---
+title: "Feature Specification: analysis [template:level_2/spec.md]"
+description: "Feature-centric code audit baseline for the Analysis catalog, capturing correctness, standards, behavior, and test coverage findings across seven features."
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "analysis"
+  - "template"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
+---
+# Feature Specification: analysis
 
-## Overview
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-Feature-centric code audit of the **Analysis** category from the Spec Kit Memory MCP feature catalog.
+---
 
-## Scope
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-- **Feature catalog:** `feature_catalog/06--analysis/`
-- **Features:** 7
-- **Complexity:** MEDIUM
-- **Agent:** C8
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P0 |
+| **Status** | Draft |
+| **Created** | 2026-03-10 |
+| **Branch** | `006-analysis` |
+<!-- /ANCHOR:metadata -->
 
-## Features
+---
 
-1. causal edge creation memorycausallink
-2. causal graph statistics memorycausalstats
-3. causal edge deletion memorycausalunlink
-4. causal chain tracing memorydriftwhy
-5. epistemic baseline capture taskpreflight
-6. post task learning measurement taskpostflight
-7. learning history memorygetlearninghistory
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-## Audit Criteria
+### Problem Statement
+The Analysis feature catalog has seven features but lacked a Level 2 normalized spec structure, making it harder to track correctness, standards alignment, behavior parity, and test coverage uniformly. Existing audit notes were detailed but not organized in a template-compatible way for repeatable verification. This created friction for execution planning and quality gating.
 
-1. Code correctness — logic bugs, off-by-one, null/undefined, error paths
-2. Standards alignment — sk-code--opencode TypeScript checklist
-3. Behavior match — code matches feature catalog "Current Reality"
-4. Test coverage — tests exist and cover described behavior
-5. Playbook mapping — EX-028..EX-031, NEW-*
+### Purpose
+Provide a Level 2, template-compliant analysis specification that preserves all key audit findings and makes remediation work traceable.
+<!-- /ANCHOR:problem -->
 
-## Acceptance Criteria
+---
 
-- [ ] All 7 features audited with structured findings
-- [ ] Each feature has Status (PASS/WARN/FAIL), code issues, standards violations
-- [ ] Test gaps documented
-- [ ] Playbook scenarios mapped or gaps noted
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Normalize the Analysis phase documents to Level 2 template structure.
+- Preserve findings for all seven Analysis features (F-01 through F-07).
+- Map acceptance, tasks, plan phases, and verification checks into consistent anchors and checkbox formats.
+
+### Out of Scope
+- Implementing source-code fixes in `mcp_server` - tracked separately as follow-up tasks.
+- Auditing feature catalogs outside `feature_catalog/06--analysis/` - not part of this phase.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/spec.md` | Modify | Reframe overview/scope/features/acceptance into Level 2 spec structure. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/tasks.md` | Modify | Convert P0/P1/P2 backlog into Phase 2 T### task list. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/plan.md` | Modify | Map methodology/checklist into Level 2 implementation and testing sections. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/checklist.md` | Modify | Convert feature findings into Level 2 verification categories. |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Audit documentation covers all seven Analysis features. | F-01 through F-07 appear with status, findings, and actionable follow-ups. |
+| REQ-002 | FAIL-level defects are explicitly captured as immediate tasks. | Orphan-inflated coverage and false-positive `maxDepthReached` defects are documented with fix direction. |
+| REQ-003 | Template compliance is exact for Level 2 structure. | Required frontmatter, Speckit comments, anchors, and checkbox syntax are present. |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Standards alignment gaps are tracked across impacted features. | Wildcard export and pattern-violation findings are mapped into tasks/checklist entries. |
+| REQ-005 | Test coverage gaps are traceable to concrete regression tasks. | P0/P1/P2 test gaps are represented in tasks with T### numbering and file context. |
+| REQ-006 | Manual playbook mapping status is recorded. | EX-028..EX-031 and NEW-* mapping state is explicitly noted with gap visibility. |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: All 7 features are represented with structured PASS/WARN/FAIL findings.
+- **SC-002**: Each feature documents code issues, standards violations, behavior match/mismatch, and test gaps.
+- **SC-003**: P0/P1/P2 remediation tasks are converted into template-conformant Phase 2 tasks with T### numbering.
+- **SC-004**: Verification checklist sections reflect pre-implementation, quality, testing, security, and documentation outcomes.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Analysis feature catalog markdown files | Missing or stale source references can weaken audit evidence. | Keep citations aligned with current file paths and line contexts during updates. |
+| Risk | Deferred test suites remain unresolved | Backlog may grow while production behavior drifts. | Prioritize P0 regressions first, then complete P1 DB-backed suite replacements. |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Documentation restructuring should remain readable and quickly scannable for execution planning.
+- **NFR-P02**: Task and checklist navigation should support fast triage across 19 mapped items.
+
+### Security
+- **NFR-S01**: No secrets, credentials, or unsafe command patterns are introduced in spec artifacts.
+- **NFR-S02**: Security-relevant findings (validation/auth/error handling) remain visible in checklist and tasks.
+
+### Reliability
+- **NFR-R01**: Template anchors remain stable for automated parsing and memory tooling.
+- **NFR-R02**: Priority mapping (P0/P1/P2) remains internally consistent across all four documents.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty findings set: maintain required template scaffolding with explicit "NONE" entries.
+- Large task backlog: preserve strict T### ordering to avoid ambiguity.
+- Missing file references: keep task descriptions actionable without unresolved placeholders.
+
+### Error Scenarios
+- Stale source path references: flag in documentation checklist and avoid silent omission.
+- Inconsistent priority mapping: treat as blocker until aligned across spec/tasks/checklist.
+- Partial rewrites: reject if any required anchor or frontmatter key is missing.
+
+### State Transitions
+- Draft to In Progress: checklist counters update as verification evidence is added.
+- In Progress to Complete: all P0 resolved and P1 completed or explicitly deferred with approval.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | Four documents, seven audited features, cross-file consistency requirements. |
+| Risk | 17/25 | Incorrect mapping can hide FAIL findings or priority blockers. |
+| Research | 12/20 | Existing audit content is complete but needs structured normalization. |
+| **Total** | **47/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+## 10. OPEN QUESTIONS
+
+- Should per-feature manual test scenarios be expanded beyond phase-level EX-028..EX-031, NEW-* references in a follow-up phase?
+- Should wildcard export remediation be tracked as a shared cross-phase task instead of repeated per feature?
+<!-- /ANCHOR:questions -->
+
+---
+
+<!--
+CORE TEMPLATE (~80 lines)
+- Essential what/why/how only
+- No boilerplate sections
+- Add L2/L3 addendums for complexity
+-->

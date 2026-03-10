@@ -1,17 +1,111 @@
-## F-01: Ablation studies (eval_run_ablation)
-- **Status:** WARN
-- **Code Issues:** NONE. The `isAblationEnabled()` gate correctly requires explicit `SPECKIT_ABLATION=true` (case-insensitive, line 46 of `ablation-framework.ts`), distinct from the default `isFeatureEnabled` behavior that treats undefined as enabled. Channel normalization via `normalizeChannels` at lines 45-51 of `eval-reporting.ts` correctly falls back to `ALL_CHANNELS` when input is empty or contains no valid entries. `recallK` normalization at lines 76-78 uses `Math.max(1, Math.floor(...))` with default 20.
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE. The handler constructs `searchFn` using `hybridSearchEnhanced` with `toHybridSearchFlags` channel masking (lines 80-100 of `eval-reporting.ts`), correctly wiring the ablation framework to the actual search pipeline. `storeResults` defaults to true (line 116), and `includeFormattedReport` defaults to true (line 118), matching documented behavior.
-- **Test Gaps:** 1. Listed test file `mcp_server/tests/retry.vitest.ts` does not exist (`feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md:150`). 2. No focused handler-level tests validate `handleEvalRunAblation` argument normalization and disabled-flag error path (`mcp_server/handlers/eval-reporting.ts:53-61`); current coverage is primarily library-level ablation tests and dispatch wiring (`mcp_server/tests/mcp-tool-dispatch.vitest.ts:29-30`). 3. No test validates the `storeResults=false` path (line 116-117) or `includeFormattedReport=false` path (line 118).
-- **Playbook Coverage:** EX-032
-- **Recommended Fixes:** 1. Add handler-level tests for: disabled-flag `MemoryError` throw, invalid channels fallback to `ALL_CHANNELS`, `recallK` normalization (negative, zero, fractional inputs), `storeResults=false` bypass, and `includeFormattedReport=false` omission. 2. Remove stale `retry.vitest.ts` reference from the feature table or add the missing file.
+---
+title: "Verification Checklist: evaluation [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-10"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "evaluation"
+  - "template"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: evaluation
 
-## F-02: Reporting dashboard (eval_reporting_dashboard)
-- **Status:** FAIL
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** Current Reality says dashboard aggregation uses `eval_metric_snapshots`, `eval_channel_results`, and `eval_final_results` (`feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:7`), but implementation queries only `eval_metric_snapshots` (via `queryMetricSnapshots` at `mcp_server/lib/eval/reporting-dashboard.ts:181-213`) and `eval_channel_results` (via `queryChannelResults` at `mcp_server/lib/eval/reporting-dashboard.ts:218-241`). `eval_final_results` is referenced only in the module-level comment block (lines 8-9) as a design note but has no query function or SQL statement targeting it anywhere in the implementation.
-- **Test Gaps:** 1. Listed test file `mcp_server/tests/retry.vitest.ts` does not exist (`feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:152`). 2. No focused handler-level tests validate `handleEvalReportingDashboard` request filtering/format selection and response envelope behavior (`mcp_server/handlers/eval-reporting.ts:136-157`). Specifically: `sprintFilter`, `channelFilter`, `metricFilter`, `limit` pass-through, and `format` defaulting to `'text'` (line 146) are untested at the handler level.
-- **Playbook Coverage:** EX-033
-- **Recommended Fixes:** 1. Either implement `eval_final_results` querying in `reporting-dashboard.ts` or update the feature catalog Current Reality to remove the `eval_final_results` claim and clarify the dashboard uses only snapshots and channel results. 2. Add handler-level tests for format/filter/limit behavior and the text vs JSON output path. 3. Remove stale `retry.vitest.ts` reference from the feature table or add the missing file.
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [ ] CHK-001 [P0] F-01 and F-02 requirements documented in `spec.md`
+- [ ] CHK-002 [P0] Technical remediation approach defined in `plan.md`
+- [ ] CHK-003 [P1] Dependencies identified (`MCP handlers`, `SQLite eval tables`, `Vitest harness`)
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] F-02 `eval_final_results` behavior mismatch resolved or catalog-corrected
+- [ ] CHK-011 [P0] No evaluation handler warnings/errors in targeted test runs
+- [ ] CHK-012 [P1] Error handling paths validated (ablation disabled, dashboard failures)
+- [ ] CHK-013 [P1] TypeScript implementation follows existing project patterns
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] `handleEvalReportingDashboard` filter/format behavior verified with handler-level tests
+- [ ] CHK-021 [P0] `handleEvalRunAblation` normalization/flag behavior verified with handler-level tests
+- [ ] CHK-022 [P1] Edge cases tested (`storeResults=false`, `includeFormattedReport=false`, `recallK` boundaries)
+- [ ] CHK-023 [P1] Stale `retry.vitest.ts` references removed or replaced with valid coverage
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No hardcoded secrets introduced
+- [ ] CHK-031 [P0] Input normalization for channel/filter/limit parameters validated
+- [ ] CHK-032 [P1] Auth/authz behavior remains correct after remediation
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Feature catalog Current Reality for F-02 matches implementation
+- [ ] CHK-041 [P1] `spec.md`, `plan.md`, and `tasks.md` are synchronized
+- [ ] CHK-042 [P2] Evidence references (files/lines, `EX-032`, `EX-033`) captured
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Temp files in scratch/ only
+- [ ] CHK-051 [P1] scratch/ cleaned before completion
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 0/8 |
+| P1 Items | 10 | 0/10 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-10
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

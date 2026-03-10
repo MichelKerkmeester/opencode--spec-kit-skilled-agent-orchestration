@@ -1,116 +1,128 @@
-## F-01: Shared post-mutation hook wiring
-- **Status:** WARN
-- **Code Issues:** 1. `mcp_server/handlers/mutation-hooks.ts:22-58` swallows all cache-clear/invalidation exceptions and returns boolean fallbacks, which hides concrete failure causes during production debugging.
-- **Standards Violations:** 1. Silent catch blocks violate the “no swallowed catches” guideline (`mcp_server/handlers/mutation-hooks.ts:25-27,32-34,40-42,48-50,56-58`).
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Feature catalog references `mcp_server/tests/retry.vitest.ts` (`01-shared-post-mutation-hook-wiring.md:73`), but the file is missing in repo (`glob **/retry.vitest.ts` returns no matches). 2. Listed tests do not directly assert all wired paths (`save`, `update`, `delete`, `bulk-delete`, `atomic-save`) invoke post-mutation hooks.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add warning-level logging per hook failure path in `runPostMutationHooks`. 2. Add one integration test that validates hook execution across all mutation handlers. 3. Remove stale `retry.vitest.ts` entry or add the missing test file.
+---
+title: "Verification Checklist: ux-hooks [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-10"
+trigger_phrases:
+  - "ux hooks verification"
+  - "audit checklist"
+  - "mutation hooks"
+  - "feature catalog"
+  - "status matrix"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: ux-hooks
 
-## F-02: Memory health autoRepair metadata
-- **Status:** FAIL
-- **Code Issues:** 1. `repair.repaired` can be set `true` by orphan-edge cleanup (`mcp_server/handlers/memory-crud-health.ts:403-405`) even after unresolved FTS mismatch was recorded (`:375-377`), overstating overall repair success.
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** `Current Reality` says callers can inspect what changed reliably, but mixed outcomes can still report `repair.repaired = true` even when key drift remains unresolved (`mcp_server/handlers/memory-crud-health.ts:375-377,403-405`).
-- **Test Gaps:** 1. Catalog lists `mcp_server/tests/retry.vitest.ts` (`02-memory-health-autorepair-metadata.md:178`), but file is missing. 2. Catalog test table does not include the strongest auto-repair assertion (`mcp_server/tests/memory-crud-extended.vitest.ts:1283-1335`), so mapped coverage is incomplete.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Track per-repair-step status and compute aggregate `repaired` only when no unresolved warnings/errors remain. 2. Add a regression test for mixed repair outcomes (partial fix + persistent mismatch). 3. Align feature catalog test list with actual auto-repair regression tests.
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
-## F-03: Checkpoint delete confirmName safety
-- **Status:** WARN
-- **Code Issues:** 1. Success payload exposes `success` and `safetyConfirmationUsed` only (`mcp_server/handlers/checkpoints.ts:298-301`), but no explicit deletion metadata (for example deleted checkpoint name/id/timestamp).
-- **Standards Violations:** 1. Handler-local delete args allow optional `confirmName` (`mcp_server/handlers/checkpoints.ts:47-50`) despite runtime and schema requiring it.
-- **Behavior Mismatch:** Feature text says successful deletion reports confirmation outcome **plus deletion metadata**; metadata is not present in response data (`mcp_server/handlers/checkpoints.ts:298-301`).
-- **Test Gaps:** 1. Tests validate confirmation and safety flag but not deletion metadata (`mcp_server/tests/handler-checkpoints.vitest.ts:313-324`). 2. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`03-checkpoint-delete-confirmname-safety.md:108`).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Include deletion metadata in success response (`name`, optional checkpoint id, deletion timestamp). 2. Make `CheckpointDeleteArgs.confirmName` required in handler type. 3. Extend tests to assert deletion metadata contract.
+---
 
-## F-04: Schema and type contract synchronization
-- **Status:** FAIL
-- **Code Issues:** 1. Contract desync remains: checkpoint delete handler args type keeps `confirmName` optional (`mcp_server/handlers/checkpoints.ts:47-50`) while schema/tool-type boundaries require it (`mcp_server/schemas/tool-input-schemas.ts:230-233,368`; `mcp_server/tool-schemas.ts:290-304`; `mcp_server/tools/types.ts:193-196`).
-- **Standards Violations:** 1. Type contract is not uniformly strict across layers (handler vs schema/tool types).
-- **Behavior Mismatch:** Feature claims synchronized required `confirmName` across all layers, but handler type still permits omitted confirmation at compile time.
-- **Test Gaps:** `mcp_server/tests/tool-input-schema.vitest.ts:181-191` verifies schema requirement only; there is no type-level/handler-contract guard preventing future handler-type drift.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Change handler `CheckpointDeleteArgs.confirmName` to required. 2. Add a type-contract regression test (or source assertion) covering handler + tool-type parity.
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-## F-05: Dedicated UX hook modules
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** 1. Hook barrel uses wildcard re-exports (`mcp_server/hooks/index.ts:5-7`) instead of explicit named exports.
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. No focused test verifies hooks barrel exports exactly match documented hook surface in README. 2. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`05-dedicated-ux-hook-modules.md:76`).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Convert `hooks/index.ts` to explicit named exports. 2. Add barrel/export-surface regression test. 3. Remove stale retry test reference from catalog.
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-## F-06: Mutation hook result contract expansion
-- **Status:** WARN
-- **Code Issues:** 1. Hook-runner failure details are suppressed (boolean fallback only), reducing diagnosability when expanded contract fields indicate failures (`mcp_server/handlers/mutation-hooks.ts:22-58`).
-- **Standards Violations:** 1. Silent catches in hook runner (`mcp_server/handlers/mutation-hooks.ts:25-27,32-34,40-42,48-50,56-58`).
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Listed tests do not directly verify expanded `postMutationHooks` contract shape across all mutation handlers (save/update/delete/bulk-delete/atomic-save). 2. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`06-mutation-hook-result-contract-expansion.md:73`).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add handler-level assertions for all expanded fields (`latencyMs`, each cache boolean, `toolCacheInvalidated`). 2. Log non-fatal hook exceptions with operation/context. 3. Fix stale test reference.
+---
 
-## F-07: Mutation response UX payload exposure
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Feature’s listed tests (`07-mutation-response-ux-payload-exposure.md:25-34`) are mostly envelope/type tests and do not directly assert `postMutationHooks` exposure from mutation handlers. 2. The strongest regression (`mcp_server/tests/memory-save-ux-regressions.vitest.ts:69-111`) is not in this feature’s test table.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add explicit response-contract tests for `memory_save`, `memory_update`, `memory_delete`, and `memory_bulk_delete` success responses. 2. Update feature catalog test table to include UX payload regression tests.
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-## F-08: Context-server success-path hint append
-- **Status:** WARN
-- **Code Issues:** 1. `appendAutoSurfaceHints` catches and suppresses all parse/serialization failures (`mcp_server/hooks/response-hints.ts:106-108`), so hint-append regressions can be silent.
-- **Standards Violations:** 1. Silent catch in hook module (`mcp_server/hooks/response-hints.ts:106-108`).
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`08-context-server-success-hint-append.md:346`). 2. While success path is covered (`mcp_server/tests/context-server.vitest.ts:781-867`), there is no observable assertion for parse-failure telemetry/logging path.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Emit non-fatal warning logs/metrics in the catch path. 2. Add a regression test that verifies malformed envelope handling is observable (without breaking response).
+- [x] CHK-001 [P0] Requirements documented in spec.md
+- [x] CHK-002 [P0] Technical approach defined in plan.md
+- [x] CHK-003 [P1] Dependencies identified and available
+<!-- /ANCHOR:pre-impl -->
 
-## F-09: Duplicate-save no-op feedback hardening
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`09-duplicate-save-no-op-feedback-hardening.md:173`). 2. Coverage is strong for `memory_save` duplicate no-op (`mcp_server/tests/memory-save-ux-regressions.vitest.ts:69-92`), but there is no equivalent duplicate no-op assertion for atomic path.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add atomic duplicate no-op regression assertion (no `postMutationHooks`, no false cache-clear hints). 2. Remove stale retry test reference.
+---
 
-## F-10: Atomic-save parity and partial-indexing hints
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Atomic save success hook parity is tested (`mcp_server/tests/memory-save-ux-regressions.vitest.ts:94-111`), but there is no direct assertion for the partial-indexing hint branch (`mcp_server/handlers/memory-save.ts:478-480`). 2. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`10-atomic-save-parity-and-partial-indexing-hints.md:153`).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add targeted test for `embeddingStatus === 'partial'` in atomic path and verify partial-indexing guidance. 2. Remove stale retry test entry from catalog.
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-## F-11: Final token metadata recomputation
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** 1. Feature file lists no tests, despite behavior being non-trivial (`11-final-token-metadata-recomputation.md` has no `### Tests` section). 2. Actual coverage exists in `mcp_server/tests/hooks-ux-feedback.vitest.ts:48-82` and `mcp_server/tests/context-server.vitest.ts:829-867`, but catalog linkage is missing.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add explicit tests section to the feature catalog entry. 2. Link the existing token-count recomputation tests in the Source Files table.
+- [ ] CHK-010 [P0] P0 code defects remediated (`F-02`, `F-04`)
+- [ ] CHK-011 [P0] No silent catch behavior remains in UX hook paths (`F-01`, `F-06`, `F-08`)
+- [ ] CHK-012 [P1] Error handling observability added for hook runner and hint append
+- [ ] CHK-013 [P1] Hook barrel exports use explicit named exports (`F-05`, `F-12`)
+<!-- /ANCHOR:code-quality -->
 
-## F-12: Hooks README and export alignment
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** 1. Barrel uses wildcard exports (`mcp_server/hooks/index.ts:5-7`) rather than explicit named exports.
-- **Behavior Mismatch:** NONE (README modules and barrel targets are aligned: `mcp_server/hooks/README.md:29-31`, `mcp_server/hooks/index.ts:5-7`).
-- **Test Gaps:** 1. No test enforces README-to-barrel synchronization. 2. Catalog references missing `mcp_server/tests/retry.vitest.ts` (`12-hooks-readme-and-export-alignment.md:76`).
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Replace wildcard exports with explicit exports. 2. Add a lightweight doc/export alignment test. 3. Remove stale retry test reference.
+---
 
-## F-13: End-to-end success-envelope verification
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** Feature text says end-to-end verification is in `tests/context-server.vitest.ts` (`13-end-to-end-success-envelope-verification.md:5`), but the feature’s own test table omits that file (`13-end-to-end-success-envelope-verification.md:23-32`), so catalog metadata is out of sync.
-- **Test Gaps:** Listed tests in this feature do not directly assert the success-path hint append flow; the real assertion is in `mcp_server/tests/context-server.vitest.ts:781-867` and is currently not catalog-linked.
-- **Playbook Coverage:** MISSING
-- **Recommended Fixes:** 1. Add `mcp_server/tests/context-server.vitest.ts` to this feature’s test table. 2. Add/annotate explicit scenario mapping for the end-to-end success-envelope assertion.
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] All acceptance criteria met
+- [ ] CHK-021 [P0] Stale/missing test references reconciled (for example `retry.vitest.ts`)
+- [ ] CHK-022 [P1] Edge-case regressions added (mixed repair, atomic duplicate no-op, partial indexing)
+- [ ] CHK-023 [P1] Expanded mutation contract validated across all mutation handlers
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No hardcoded secrets
+- [ ] CHK-031 [P0] Input validation implemented (required `confirmName` contract synchronized)
+- [ ] CHK-032 [P1] Auth/authz working correctly
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized
+- [x] CHK-041 [P1] Code comments adequate
+- [ ] CHK-042 [P2] README updated (if applicable)
+- [x] CHK-043 [P1] Prior per-feature findings preserved (audit snapshot below)
+
+Audit snapshot (preserved findings):
+- **F-01 (WARN)**: `mutation-hooks.ts` swallows exceptions; add warning logging and cross-handler hook wiring test.
+- **F-02 (FAIL)**: `memory-crud-health.ts` can report `repair.repaired=true` after unresolved mismatches; add mixed-outcome logic + regression.
+- **F-03 (WARN)**: Checkpoint delete success payload lacks deletion metadata; include metadata and tests.
+- **F-04 (FAIL)**: `confirmName` remains optional in handler type while schema/tool contracts require it; enforce parity.
+- **F-05 (WARN)**: `hooks/index.ts` uses wildcard exports; switch to explicit exports + regression check.
+- **F-06 (WARN)**: Expanded mutation hook result contract lacks diagnosable failure detail; add logging + field assertions.
+- **F-07 (WARN)**: Mutation UX payload exposure lacks direct handler-level contract tests.
+- **F-08 (WARN)**: `appendAutoSurfaceHints` suppresses parse/serialization failures; add observable warning path + test.
+- **F-09 (WARN)**: Atomic duplicate no-op behavior lacks dedicated regression assertion.
+- **F-10 (WARN)**: Atomic partial-indexing hint branch lacks targeted verification.
+- **F-11 (WARN)**: Feature doc omits tests section despite existing coverage in hooks/context-server tests.
+- **F-12 (WARN)**: Hooks README/export alignment has no enforcement test and wildcard exports remain.
+- **F-13 (WARN)**: End-to-end success-envelope feature table omits `context-server.vitest.ts` mapping.
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Temp files in scratch/ only
+- [x] CHK-051 [P1] scratch/ cleaned before completion
+- [ ] CHK-052 [P2] Findings saved to memory/
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 3/8 |
+| P1 Items | 11 | 6/11 |
+| P2 Items | 2 | 0/2 |
+
+**Verification Date**: 2026-03-10
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

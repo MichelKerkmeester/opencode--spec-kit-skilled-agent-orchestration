@@ -1,62 +1,112 @@
-## F-01: 1. Search Pipeline Features (SPECKIT_*)
-- **Status:** FAIL
-- **Code Issues:** NONE
-- **Standards Violations:** 1. Multiple Source File mappings are stale or incorrect for key flags, reducing traceability and auditability: `SPECKIT_ABLATION` (`feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:7`) is implemented in `ablation-framework.ts` via `isAblationEnabled()` (`mcp_server/lib/eval/ablation-framework.ts:45-47`), not `eval-metrics.ts`; `SPECKIT_CONTEXT_HEADERS` (`...speckit.md:23`) is read via `isContextHeadersEnabled()` in `search-flags.ts` (`mcp_server/lib/search/search-flags.ts:186-188`); `SPECKIT_FILE_WATCHER` (`...speckit.md:40`) is read via `isFileWatcherEnabled()` in `search-flags.ts` with an explicit `'true'` requirement (`mcp_server/lib/search/search-flags.ts:195-198`); `SPECKIT_LAZY_LOADING` (`...speckit.md:48`) has no active read site in `context-server.ts` (only `SPECKIT_EAGER_WARMUP` messaging appears) and lazy-loading policy is hardcoded/inert in shared embeddings; `SPECKIT_RRF` points to non-existent `lib/search/rrf-fusion.ts` (`...speckit.md:62`) while implementation lives in `shared/algorithms/rrf-fusion.ts`.
-- **Behavior Mismatch:** The table presents authoritative per-flag source ownership, but several rows point at non-authoritative (barrel re-exports) or missing sources, so the documented "where this flag is implemented" reality is inaccurate for at least 5 of the listed flags in this feature file.
-- **Test Gaps:** No automated validation in this phase checks that each flag row's Source File exists and actually references the listed env var. Given the number of stale mappings found, a CI script would prevent future drift.
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** 1. Reconcile Source File column entries against actual env-var read sites (grep for `process.env.SPECKIT_*` and `isFeatureEnabled('SPECKIT_*')` calls). 2. Correct `SPECKIT_ABLATION` source to `lib/eval/ablation-framework.ts`. 3. Correct `SPECKIT_RRF` source path to `shared/algorithms/rrf-fusion.ts`. 4. Remove or clarify `SPECKIT_LAZY_LOADING` entry (no active read site). 5. Add a CI validation script that checks Source File existence + env-var symbol presence for all flag-reference tables.
+---
+title: "Verification Checklist: feature-flag-reference [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-10"
+trigger_phrases:
+  - "feature-flag-reference"
+  - "verification checklist"
+  - "search pipeline"
+  - "memory and storage"
+  - "embedding and api"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: feature-flag-reference
 
-## F-02: 2. Session and Cache
-- **Status:** PASS
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** NONE
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
-## F-03: 3. MCP Configuration
-- **Status:** PASS
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** NONE
+---
 
-## F-04: 4. Memory and Storage
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** 1. Source mappings for `MEMORY_DB_DIR` and `MEMORY_DB_PATH` point to `lib/search/vector-index-impl.ts` (`feature_catalog/20--feature-flag-reference/04-4-memory-and-storage.md:9-10`), but that file is now a barrel re-export (`mcp_server/lib/search/vector-index-impl.ts:4-13`); active path-resolution logic is in `vector-index-store.ts` (`mcp_server/lib/search/vector-index-store.ts:214-224`). The barrel re-export makes the documented source authoritative in name only; developers following the trace will find no implementation at the listed location.
-- **Behavior Mismatch:** Documentation implies env ownership in `vector-index-impl.ts`, while effective runtime behavior for `MEMORY_DB_DIR` and `MEMORY_DB_PATH` resolution is implemented in `vector-index-store.ts`.
-- **Test Gaps:** No automated Source File validation detects this mapping drift. No test validates that `MEMORY_DB_DIR`/`MEMORY_DB_PATH` are read from the documented location.
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** 1. Update Source File entries for `MEMORY_DB_DIR` and `MEMORY_DB_PATH` to `lib/search/vector-index-store.ts`. 2. Add mapping validation in CI to catch future barrel-re-export drift.
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-## F-05: 5. Embedding and API
-- **Status:** WARN
-- **Code Issues:** NONE
-- **Standards Violations:** 1. `EMBEDDINGS_PROVIDER` is mapped to `lib/providers/embeddings.ts` (`feature_catalog/20--feature-flag-reference/05-5-embedding-and-api.md:9`), but that file is a pure re-export (`mcp_server/lib/providers/embeddings.ts:7-9`); provider selection logic is in shared factory logic (`shared/embeddings/factory.ts:73-103`). 2. `EMBEDDING_DIM` is mapped to `vector-index-impl.ts` (`.../05-5-embedding-and-api.md:8`), but effective dimension logic is in `vector-index-store.ts` (`mcp_server/lib/search/vector-index-store.ts:118-140`, `156-157`).
-- **Behavior Mismatch:** The `EMBEDDING_DIM` row says this is a general env override, but implementation does not apply an arbitrary override value; it uses provider-derived dimensions with a compatibility check specifically for `'768'` (`mcp_server/lib/search/vector-index-store.ts:156-157`). Setting `EMBEDDING_DIM` to other values (e.g., `'512'`, `'1024'`) would not override the provider dimension as the documentation implies.
-- **Test Gaps:** No automated table/source validation catches these source and semantics drifts. No test validates what happens when `EMBEDDING_DIM` is set to a non-768 value.
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** 1. Update `EMBEDDINGS_PROVIDER` Source File to `shared/embeddings/factory.ts`. 2. Update `EMBEDDING_DIM` Source File to `lib/search/vector-index-store.ts`. 3. Clarify `EMBEDDING_DIM` semantics in Current Reality text: it is a 768-compatibility check, not a general dimension override.
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
-## F-06: 6. Debug and Telemetry
-- **Status:** PASS
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** NONE
+---
 
-## F-07: 7. CI and Build (informational)
-- **Status:** PASS
-- **Code Issues:** NONE
-- **Standards Violations:** NONE
-- **Behavior Mismatch:** NONE
-- **Test Gaps:** NONE
-- **Playbook Coverage:** Cross-cutting
-- **Recommended Fixes:** NONE
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [x] CHK-001 [P0] Requirements documented in `spec.md` for seven-feature audit scope
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` (inventory -> review -> findings)
+- [x] CHK-003 [P1] Dependencies identified: feature catalog files, implementation paths, and Cross-cutting playbook mapping
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-010 [P0] F-01 (Search Pipeline Features) preserved as **FAIL** with stale/missing mapping evidence for `SPECKIT_ABLATION`, `SPECKIT_RRF`, and `SPECKIT_LAZY_LOADING`
+- [x] CHK-011 [P0] F-02, F-03, F-06, and F-07 preserved as **PASS** with no code issues, standards violations, behavior mismatches, or test gaps
+- [x] CHK-012 [P1] F-04 (Memory and Storage) preserved as **WARN** with `MEMORY_DB_DIR`/`MEMORY_DB_PATH` mapping drift from `vector-index-impl.ts` to `vector-index-store.ts`
+- [x] CHK-013 [P1] F-05 (Embedding and API) preserved as **WARN** with `EMBEDDINGS_PROVIDER` re-export drift and `EMBEDDING_DIM` semantics mismatch (768 compatibility check only)
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-020 [P0] All acceptance criteria represented (7 features audited; status, gaps, and fixes documented)
+- [x] CHK-021 [P0] Manual review captured for source-file traceability and behavior alignment
+- [x] CHK-022 [P1] Edge case documented: `SPECKIT_LAZY_LOADING` has no active read site in current implementation
+- [x] CHK-023 [P1] Error scenario documented: non-768 `EMBEDDING_DIM` does not perform a general provider dimension override
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-030 [P0] No hardcoded secrets introduced in audit docs
+- [x] CHK-031 [P0] Source-integrity validation gap captured as P0 remediation task
+- [x] CHK-032 [P1] Auth/authz not applicable to this catalog audit scope; no related regressions identified
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to the same seven-feature findings set
+- [x] CHK-041 [P1] Evidence context retained for stale mapping, behavior mismatch, and test-gap findings
+- [x] CHK-042 [P2] README update not applicable for this phase-local rewrite
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] Only targeted docs in `020-feature-flag-reference/` were modified
+- [x] CHK-051 [P1] No temporary files created in the spec folder
+- [ ] CHK-052 [P2] Findings saved to memory/ (deferred, not requested in this task)
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 8 | 8/8 |
+| P1 Items | 10 | 10/10 |
+| P2 Items | 2 | 1/2 |
+
+**Verification Date**: 2026-03-10
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

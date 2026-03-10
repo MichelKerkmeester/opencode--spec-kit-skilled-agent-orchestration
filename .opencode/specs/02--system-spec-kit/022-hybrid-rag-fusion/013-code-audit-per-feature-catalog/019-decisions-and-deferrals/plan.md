@@ -1,47 +1,189 @@
-# Phase 019-decisions-and-deferrals — Decisions and Deferrals — Audit Plan
+---
+title: "Implementation Plan: decisions-and-deferrals [template:level_2/plan.md]"
+description: "Implementation planning for the decisions-and-deferrals feature audit, including phased remediation and verification strategy."
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "decisions"
+  - "deferrals"
+  - "audit methodology"
+  - "verification"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: decisions-and-deferrals
 
-## Methodology
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Step 1: Feature Inventory
-- Read all 5 feature .md files in `feature_catalog/19--decisions-and-deferrals/`
-- Extract source file lists (Implementation + Tests)
-- Map features to manual test playbook scenarios (N/A)
+---
 
-### Step 2: Code Review Per Feature
-For each feature's source files:
-- **Correctness:** Logic bugs, off-by-one, null/undefined handling, error paths
-- **Standards:** sk-code--opencode TypeScript checklist (naming, types, error handling, imports)
-- **Behavior:** Does code match the "Current Reality" description in the catalog?
-- **Edge cases:** Boundary conditions, empty inputs, concurrent access
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Step 3: Test Coverage Assessment
-- Verify tests exist for all listed test files
-- Verify tests cover the described behavior
-- Identify gaps between described functionality and test assertions
+### Technical Context
 
-### Step 4: Manual Test Playbook Cross-Reference
-- Find matching scenarios: N/A
-- Note features with NO manual test scenario (gap)
-- Note if scenario adequately covers described feature
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript + Markdown documentation |
+| **Framework** | Spec Kit Memory MCP (`mcp_server`) |
+| **Storage** | SQLite/vector schema migration references |
+| **Testing** | Vitest + feature-catalog/source consistency review |
 
-### Step 5: Findings Report
-Per feature, produce structured findings:
-- Status: PASS | WARN | FAIL
-- Code Issues
-- Standards Violations
-- Behavior Mismatch
-- Test Gaps
-- Playbook Coverage
-- Recommended Fixes
+### Overview
+This plan operationalizes the decisions-and-deferrals audit by mapping findings into phased remediation work and explicit verification checkpoints. It preserves the existing feature-by-feature analysis and focuses implementation effort on the two WARN areas: graph-signals inventory/test coverage and cross-sentence entity extraction behavior.
+<!-- /ANCHOR:summary -->
 
-## sk-code--opencode Checklist (per file)
+---
 
-- [ ] Naming: camelCase functions, PascalCase types/interfaces
-- [ ] Imports: explicit, no barrel re-exports of side-effect modules
-- [ ] Types: strict TypeScript, no `any` without justification
-- [ ] Error handling: typed errors, no swallowed catches
-- [ ] Null safety: optional chaining, nullish coalescing
-- [ ] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [ ] Functions: single responsibility, < 50 lines preferred
-- [ ] Comments: only where logic is non-obvious
-- [ ] Exports: explicit named exports
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Structured audit workflow with finding-to-task traceability.
+
+### Key Components
+- **Feature Catalog Entries**: Source of declared current reality for all five features
+- **Implementation References**: `mcp_server/lib/**` modules and migration touchpoints
+- **Test References**: `mcp_server/tests/**` coverage validation
+- **Spec Documents**: `spec.md`, `tasks.md`, `plan.md`, `checklist.md` as audit control surface
+
+### Data Flow
+Audit inputs (feature catalog + source/test references) are reviewed per feature, findings are normalized into PASS/WARN status, and actionable remediations are tracked through tasks and checklist verification evidence.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Feature inventory reviewed across all five entries
+- [x] Existing findings consolidated into structured statuses
+- [x] Audit criteria baseline established
+
+### Phase 2: Core Implementation
+- [ ] Update graph centrality feature inventory and test references
+- [ ] Apply entity extractor Rule-3 regex correction
+- [ ] Add regression tests for sentence-boundary capture and graph signals gaps
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | `computeGraphMomentum`, `computeCausalDepth`, Rule-3 extraction logic | Vitest |
+| Integration | Feature-catalog/source-file consistency and migration-v19 references | Markdown + code review |
+| Manual | Feature-by-feature PASS/WARN verification and checklist evidence updates | Spec documents |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `feature_catalog/19--decisions-and-deferrals/` entries | Internal | Green | Audit cannot be reconciled to declared feature reality |
+| `mcp_server/lib/graph/graph-signals.ts` | Internal | Yellow | F-02 WARN cannot be closed |
+| `mcp_server/lib/extraction/entity-extractor.ts` | Internal | Yellow | F-03 WARN cannot be closed |
+| `mcp_server/tests/entity-extractor.vitest.ts` and graph tests | Internal | Yellow | Test-gap deferrals remain unresolved |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Rewritten documentation loses finding fidelity or introduces incorrect status mapping
+- **Procedure**: Restore previous versions of `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` from git history
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 30-60 minutes |
+| Core Implementation | Medium | 2-4 hours |
+| Verification | Medium | 1-2 hours |
+| **Total** | | **3.5-7 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. Revert documentation changes for this folder to the last known-good commit.
+2. Re-apply only validated findings and status mappings.
+3. Re-run checklist verification for P0/P1 items.
+4. Notify stakeholders if downstream audit consumers used incorrect statuses.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A (documentation-only rewrite)
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->
