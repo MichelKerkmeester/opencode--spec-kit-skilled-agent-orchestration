@@ -198,11 +198,14 @@ function getEntries(db: Database.Database, opts: GetEntriesOptions = {}): Mutati
   // Math.floor guarantees no decimal component, Math.max(1,…)/Math.max(0,…)
   // guarantees no negative value. No user-supplied string reaches the SQL directly.
   const limit = opts.limit ? `LIMIT ${Math.max(1, Math.floor(opts.limit))}` : '';
+  // AI-FIX: F-13 — OFFSET without LIMIT is invalid SQLite syntax.
+  // When offset is set but limit is not, emit LIMIT -1 (all rows) before OFFSET.
   const offset = opts.offset ? `OFFSET ${Math.max(0, Math.floor(opts.offset))}` : '';
+  const effectiveLimit = !limit && offset ? 'LIMIT -1' : limit;
 
   // AI-SAFETY: String interpolation constructs IN(?,?,?) placeholder list only —
   // all user values are parameterized. Accepted exception per audit H-08.
-  const sql = `SELECT * FROM mutation_ledger ${where} ORDER BY id ASC ${limit} ${offset}`;
+  const sql = `SELECT * FROM mutation_ledger ${where} ORDER BY id ASC ${effectiveLimit} ${offset}`;
   return db.prepare(sql).all(...params) as MutationLedgerEntry[];
 }
 

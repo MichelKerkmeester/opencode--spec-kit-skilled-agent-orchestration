@@ -490,8 +490,15 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           (r) => !existingIds.has(r.id)
         );
 
-        candidates = [...candidates, ...uniqueConstitutional];
-        constitutionalInjectedCount = uniqueConstitutional.length;
+        // AI-FIX: F-05 — Re-apply contextType filter after injection.
+        // Constitutional rows fetched via vector search bypass the earlier
+        // contextType filter. Without this guard, injected rows with a
+        // different contextType leak into the caller's result set.
+        const filteredConstitutional = contextType
+          ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
+          : uniqueConstitutional;
+        candidates = [...candidates, ...filteredConstitutional];
+        constitutionalInjectedCount = filteredConstitutional.length;
       }
     }
   } else if (!includeConstitutional) {

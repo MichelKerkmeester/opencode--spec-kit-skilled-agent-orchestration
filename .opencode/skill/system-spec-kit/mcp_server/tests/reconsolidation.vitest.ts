@@ -171,9 +171,9 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       }
     });
 
-    it('RF1: Enabled by default (graduated — default ON)', () => {
+    it('RF1: Disabled by default (opt-in — requires explicit SPECKIT_RECONSOLIDATION=true)', () => {
       delete process.env.SPECKIT_RECONSOLIDATION;
-      expect(isReconsolidationEnabled()).toBe(true);
+      expect(isReconsolidationEnabled()).toBe(false);
     });
 
     it('RF2: Enabled when env var is "true"', () => {
@@ -702,10 +702,12 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
   ---------------------------------------------------------------- */
 
   describe('Checkpoint Requirement', () => {
-    it('CHK1: SPECKIT_RECONSOLIDATION is graduated (default ON, explicit "false" to disable)', () => {
-      // The reconsolidation feature flag has graduated.
-      // It now defaults to ON when unset. Use explicit 'false' to disable.
+    it('CHK1: SPECKIT_RECONSOLIDATION defaults to OFF (opt-in, explicit "true" to enable)', () => {
+      // AI-FIX: F-14 — Reconsolidation is opt-in per contract. Defaults to OFF.
       delete process.env.SPECKIT_RECONSOLIDATION;
+      expect(isReconsolidationEnabled()).toBe(false);
+
+      process.env.SPECKIT_RECONSOLIDATION = 'true';
       expect(isReconsolidationEnabled()).toBe(true);
 
       process.env.SPECKIT_RECONSOLIDATION = 'false';

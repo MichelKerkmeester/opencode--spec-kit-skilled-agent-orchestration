@@ -18,7 +18,21 @@ function verifyResolvedWriteTarget(
   filename: string
 ): void {
   const realContextDir = fsSync.realpathSync(resolvedContextDir);
-  const realFilePath = fsSync.realpathSync(filePath);
+  // AI-FIX: F-18 — realpathSync(filePath) throws ENOENT for new files that
+  // don't exist yet. Resolve the parent directory instead (which must exist)
+  // and append the filename to construct the expected real path.
+  const parentDir = path.dirname(filePath);
+  const basename = path.basename(filePath);
+  let realFilePath: string;
+  try {
+    realFilePath = path.join(fsSync.realpathSync(parentDir), basename);
+  } catch (e: unknown) {
+    const err = e as NodeJS.ErrnoException;
+    if (err.code === 'ENOENT') {
+      throw new Error(`Parent directory does not exist for "${filename}"`);
+    }
+    throw e;
+  }
   if (realFilePath !== realContextDir && !realFilePath.startsWith(realContextDir + path.sep)) {
     throw new Error(`Filename "${filename}" resolves outside target directory`);
   }

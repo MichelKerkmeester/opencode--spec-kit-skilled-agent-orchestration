@@ -373,7 +373,18 @@ function calculateQualityScore(items: PromptItem[], config: FilterConfig): numbe
 // ---------------------------------------------------------------
 
 function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterPipeline {
-  const config: FilterConfig = { ...loadFilterConfig(), ...customConfig } as FilterConfig;
+  // AI-FIX: F-23 — Deep merge to preserve nested defaults (e.g., pipeline.stages).
+  // Shallow spread drops nested defaults when customConfig partially overrides pipeline.
+  const defaults = loadFilterConfig();
+  const config: FilterConfig = {
+    ...defaults,
+    ...customConfig,
+    pipeline: {
+      ...defaults.pipeline,
+      ...(customConfig.pipeline || {}),
+      stages: customConfig.pipeline?.stages ?? defaults.pipeline?.stages ?? [],
+    },
+  } as FilterConfig;
   // P3-20: Each pipeline gets its own stats (no shared mutable singleton)
   const filterStats = createFilterStats();
 

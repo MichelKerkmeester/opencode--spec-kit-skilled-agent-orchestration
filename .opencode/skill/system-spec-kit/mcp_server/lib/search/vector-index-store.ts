@@ -371,7 +371,10 @@ type PreparedStatements = {
   get_stats: Database.Statement<[], { total: number; complete: number; pending: number; failed: number }>;
   list_base: Database.Statement<[number, number], MemoryRow[]>;
 };
-let prepared_statements: PreparedStatements | null = null;
+// AI-FIX: F-09 — Scope prepared statements per Database instance via WeakMap.
+// The old global singleton would return stale statements from a prior DB connection
+// when called with a different database, executing queries against the wrong connection.
+const prepared_statements_cache = new WeakMap<Database.Database, PreparedStatements>();
 
 /**
  * Initializes cached prepared statements for common queries.
@@ -379,9 +382,10 @@ let prepared_statements: PreparedStatements | null = null;
  * @returns The prepared statements cache.
  */
 export function init_prepared_statements(database: Database.Database): PreparedStatements {
-  if (prepared_statements) return prepared_statements;
+  const cached = prepared_statements_cache.get(database);
+  if (cached) return cached;
 
-  prepared_statements = {
+  const prepared_statements: PreparedStatements = {
     count_all: database.prepare('SELECT COUNT(*) as count FROM memory_index'),
     count_by_folder: database.prepare('SELECT COUNT(*) as count FROM memory_index WHERE spec_folder = ?'),
     get_by_id: database.prepare('SELECT * FROM memory_index WHERE id = ?'),
@@ -398,15 +402,21 @@ export function init_prepared_statements(database: Database.Database): PreparedS
     list_base: database.prepare('SELECT * FROM memory_index ORDER BY created_at DESC LIMIT ? OFFSET ?')
   };
 
+  prepared_statements_cache.set(database, prepared_statements);
   return prepared_statements;
 }
 
 /**
- * Clears cached prepared statements.
+ * Clears cached prepared statements for a specific database or all databases.
+ * @param database - Optional: clear only for this database. If omitted, the
+ *   WeakMap self-cleans when the Database object is GC'd, so this is a no-op.
  * @returns Nothing.
  */
-export function clear_prepared_statements(): void {
-  prepared_statements = null;
+export function clear_prepared_statements(database?: Database.Database): void {
+  if (database) {
+    prepared_statements_cache.delete(database);
+  }
+  // WeakMap entries are automatically cleared when the Database key is GC'd.
 }
 
 /* -------------------------------------------------------------

@@ -298,6 +298,11 @@ async function generateBatchEmbeddings(
     return [];
   }
 
+  // AI-FIX: F-26 — Validate concurrency to prevent infinite loop (i += 0 never exits)
+  if (!Number.isFinite(concurrency) || concurrency < 1) {
+    concurrency = 5;
+  }
+
   const delayMs = options.delayMs ?? BATCH_DELAY_MS;
   const verbose = options.verbose ?? false;
   const totalBatches = Math.ceil(texts.length / concurrency);

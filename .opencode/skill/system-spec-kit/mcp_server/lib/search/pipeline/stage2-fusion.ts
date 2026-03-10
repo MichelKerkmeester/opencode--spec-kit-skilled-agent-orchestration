@@ -693,9 +693,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   }
 
   // Keep intent-adjusted and canonical scores aligned after all score mutations.
+  // AI-FIX: F-06 — Math.max preserved stale higher values, nullifying demotions.
+  // Sync intentAdjustedScore to the current score so demotions are respected.
   for (const result of results) {
     if (typeof result.intentAdjustedScore === 'number' && typeof result.score === 'number') {
-      result.intentAdjustedScore = Math.max(result.intentAdjustedScore, result.score);
+      result.intentAdjustedScore = result.score;
     }
   }
 

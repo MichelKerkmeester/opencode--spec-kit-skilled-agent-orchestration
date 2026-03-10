@@ -114,7 +114,19 @@ export function extractAnchorMetadata(content: string): AnchorMetadata[] {
     const lineNumber = i + 1; // 1-based
     const line = lines[i];
 
-    // Check for closing tag first so a same-line open+close is handled correctly
+    // AI-FIX: F-01 — Parse open tag BEFORE close tag so same-line anchors
+    // (<!-- ANCHOR:x -->...<!-- /ANCHOR:x -->) are captured. The old logic
+    // checked close first, found no matching open on the stack, skipped it,
+    // then `continue` prevented the open-tag check from running.
+
+    // Check for opening tag first (push to stack before close check)
+    const openMatch = ANCHOR_OPEN_RE.exec(line);
+    if (openMatch) {
+      openStack.push({ id: openMatch[1], startLine: lineNumber });
+    }
+
+    // Then check for closing tag (now same-line open+close works because
+    // the open tag was already pushed to the stack above)
     const closeMatch = ANCHOR_CLOSE_RE.exec(line);
     if (closeMatch) {
       const closeId = closeMatch[1];
@@ -133,13 +145,6 @@ export function extractAnchorMetadata(content: string): AnchorMetadata[] {
         });
       }
       // If no matching open was found, skip silently (malformed content)
-      continue;
-    }
-
-    // Check for opening tag
-    const openMatch = ANCHOR_OPEN_RE.exec(line);
-    if (openMatch) {
-      openStack.push({ id: openMatch[1], startLine: lineNumber });
     }
   }
 

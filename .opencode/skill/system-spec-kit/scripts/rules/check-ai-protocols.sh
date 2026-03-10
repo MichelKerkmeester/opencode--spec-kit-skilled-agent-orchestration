@@ -16,14 +16,37 @@ set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 
 # Extract level from spec.md
+# AI-FIX: F-20 — Support multiple level declaration formats:
+# bullet (- **Level**: N), table row (| **Level** | N |), frontmatter (level: N)
 _ai_get_declared_level() {
     local folder="$1"
     local spec_file="$folder/spec.md"
     if [[ -f "$spec_file" ]]; then
         local level_line
+        # Try bullet format first: - **Level**: N
         level_line=$(grep -E "^\- \*\*Level\*\*:" "$spec_file" 2>/dev/null || true)
+        # Try table format: | **Level** | N |
+        if [[ -z "$level_line" ]]; then
+            level_line=$(grep -Ei '^\| *\*\*Level\*\* *\|' "$spec_file" 2>/dev/null || true)
+        fi
+        # Try frontmatter YAML: level: N
+        if [[ -z "$level_line" ]]; then
+            level_line=$(grep -Ei '^level:' "$spec_file" 2>/dev/null || true)
+        fi
         if [[ -n "$level_line" ]]; then
-            echo "$level_line" | head -1 | sed 's/.*Level.*: *//' | tr -d '[:space:]' | sed 's/\[.*\]//' | head -c 2
+            local level_val=""
+            # Extract value based on detected format
+            if echo "$level_line" | grep -qE '^\- \*\*Level\*\*:'; then
+                # Bullet: - **Level**: 3
+                level_val=$(echo "$level_line" | head -1 | sed 's/.*\*\*Level\*\*: *//' | tr -d '[:space:]' | sed 's/\[.*\]//' | head -c 2)
+            elif echo "$level_line" | grep -qEi '^\|.*[Ll]evel'; then
+                # Table: | **Level** | 3 | — extract second column
+                level_val=$(echo "$level_line" | head -1 | awk -F'|' '{gsub(/[[:space:]*]/, "", $3); print $3}' | head -c 2)
+            elif echo "$level_line" | grep -qEi '^level:'; then
+                # Frontmatter YAML: level: 3
+                level_val=$(echo "$level_line" | head -1 | sed 's/^[Ll]evel: *//' | tr -d '[:space:]' | head -c 2)
+            fi
+            echo "$level_val"
         fi
     fi
 }

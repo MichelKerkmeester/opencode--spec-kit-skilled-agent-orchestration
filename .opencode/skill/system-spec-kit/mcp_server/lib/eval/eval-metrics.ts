@@ -191,9 +191,15 @@ export function computeRecall(
   if (relevantIds.size === 0) return 0;
 
   const topResults = topK(results, k);
+  // AI-FIX: F-28 — Deduplicate hits by memoryId to prevent Recall > 1.0
+  // when the same memory appears multiple times in results.
+  const seenIds = new Set<number>();
   let hits = 0;
   for (const r of topResults) {
-    if (relevantIds.has(r.memoryId)) hits++;
+    if (relevantIds.has(r.memoryId) && !seenIds.has(r.memoryId)) {
+      hits++;
+      seenIds.add(r.memoryId);
+    }
   }
 
   return hits / relevantIds.size;
@@ -267,11 +273,16 @@ export function computeMAP(
   if (relevantIds.size === 0) return 0;
 
   const topResults = topK(results, k);
+  // AI-FIX: F-29 — Deduplicate relevant IDs in MAP calculation to prevent
+  // MAP > 1.0 when duplicate memoryIds appear in results.
+  const seenIds = new Set<number>();
   let hits = 0;
   let sumPrecision = 0;
 
   for (let i = 0; i < topResults.length; i++) {
-    if (relevantIds.has(topResults[i].memoryId)) {
+    const memId = topResults[i].memoryId;
+    if (relevantIds.has(memId) && !seenIds.has(memId)) {
+      seenIds.add(memId);
       hits++;
       sumPrecision += hits / (i + 1); // Precision@(i+1)
     }

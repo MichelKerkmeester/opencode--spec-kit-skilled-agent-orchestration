@@ -108,7 +108,9 @@ function queryCausalEdges(
       }
     }
 
-    return Array.from(deduped.values()).slice(0, limit);
+    return Array.from(deduped.values())
+      .sort((a, b) => ((typeof b.score === 'number' ? b.score : 0) - (typeof a.score === 'number' ? a.score : 0)))
+      .slice(0, limit);
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[graph-search-fn] Causal edge query failed: ${msg}`);

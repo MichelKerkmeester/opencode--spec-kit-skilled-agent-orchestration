@@ -501,23 +501,20 @@ function deleteEdge(edgeId: number): boolean {
   }
 }
 
+// AI-FIX: F-27 — Let errors propagate so callers inside transactions see failures.
+// Previously errors were caught and swallowed, which hid edge-cleanup failures
+// from transactional callers (e.g., memory-bulk-delete, memory-crud-delete).
 function deleteEdgesForMemory(memoryId: string): number {
   if (!db) return 0;
 
-  try {
-    const result = (db.prepare(`
-      DELETE FROM causal_edges
-      WHERE source_id = ? OR target_id = ?
-    `) as Database.Statement).run(memoryId, memoryId);
-    if ((result as { changes: number }).changes > 0) {
-      invalidateDegreeCache();
-    }
-    return (result as { changes: number }).changes;
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[causal-edges] deleteEdgesForMemory error: ${msg}`);
-    return 0;
+  const result = (db.prepare(`
+    DELETE FROM causal_edges
+    WHERE source_id = ? OR target_id = ?
+  `) as Database.Statement).run(memoryId, memoryId);
+  if ((result as { changes: number }).changes > 0) {
+    invalidateDegreeCache();
   }
+  return (result as { changes: number }).changes;
 }
 
 /* -------------------------------------------------------------

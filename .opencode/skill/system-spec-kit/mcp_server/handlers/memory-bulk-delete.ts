@@ -174,12 +174,10 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
         deletedIds.push(memory.id);
 
         // Clean up causal edges
-        try {
-          causalEdges.deleteEdgesForMemory(String(memory.id));
-        } catch (edgeErr: unknown) {
-          const msg = toErrorMessage(edgeErr);
-          console.warn(`[memory-bulk-delete] Failed to clean up causal edges for memory ${memory.id}: ${msg}`);
-        }
+        // AI-FIX: F-27 — Propagate edge-cleanup errors to fail the transaction.
+        // Previously errors were caught and logged, leaving orphan causal edges
+        // when memory rows were successfully deleted but edge cleanup failed.
+        causalEdges.deleteEdgesForMemory(String(memory.id));
       }
     }
   });

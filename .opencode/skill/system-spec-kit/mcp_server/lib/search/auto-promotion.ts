@@ -224,42 +224,52 @@ export function executeAutoPromotion(db: Database, memoryId: number): AutoPromot
     }
 
     // AI-WHY: Safeguard: cap promotion throughput to avoid runaway tier inflation.
+    // AI-FIX: F-02 — Wrap throttle check + tier update + audit insert in a
+    // BEGIN IMMEDIATE transaction so concurrent calls cannot exceed the rate limit.
     ensurePromotionAuditTable(db);
-    const nowMs = Date.now();
-    const recentPromotions = countRecentPromotions(db, nowMs);
-    if (recentPromotions >= MAX_PROMOTIONS_PER_WINDOW) {
-      return {
-        promoted: false,
-        previousTier: check.previousTier,
-        newTier: check.previousTier,
-        validationCount: check.validationCount,
-        reason: `promotion_window_rate_limited: ${recentPromotions}/${MAX_PROMOTIONS_PER_WINDOW} in ${PROMOTION_WINDOW_HOURS}h`,
-      };
+
+    const executePromotion = db.transaction(() => {
+      const nowMs = Date.now();
+      const recentPromotions = countRecentPromotions(db, nowMs);
+      if (recentPromotions >= MAX_PROMOTIONS_PER_WINDOW) {
+        return {
+          promoted: false,
+          previousTier: check.previousTier,
+          newTier: check.previousTier,
+          validationCount: check.validationCount,
+          reason: `promotion_window_rate_limited: ${recentPromotions}/${MAX_PROMOTIONS_PER_WINDOW} in ${PROMOTION_WINDOW_HOURS}h`,
+        };
+      }
+
+      db.prepare(
+        'UPDATE memory_index SET importance_tier = ?, updated_at = ? WHERE id = ?'
+      ).run(check.newTier, new Date().toISOString(), memoryId);
+
+      db.prepare(`
+        INSERT INTO memory_promotion_audit
+          (memory_id, previous_tier, new_tier, validation_count, promoted_at)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(
+        memoryId,
+        check.previousTier,
+        check.newTier,
+        check.validationCount,
+        nowMs
+      );
+
+      return check;
+    });
+
+    const result = executePromotion();
+
+    if (result.promoted) {
+      console.warn(
+        `[auto-promotion] Memory ${memoryId} promoted: ${check.previousTier} -> ${check.newTier} ` +
+        `(${check.validationCount} validations)`
+      );
     }
 
-    // Execute the promotion
-    db.prepare(
-      'UPDATE memory_index SET importance_tier = ?, updated_at = ? WHERE id = ?'
-    ).run(check.newTier, new Date().toISOString(), memoryId);
-
-    db.prepare(`
-      INSERT INTO memory_promotion_audit
-        (memory_id, previous_tier, new_tier, validation_count, promoted_at)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(
-      memoryId,
-      check.previousTier,
-      check.newTier,
-      check.validationCount,
-      nowMs
-    );
-
-    console.warn(
-      `[auto-promotion] Memory ${memoryId} promoted: ${check.previousTier} -> ${check.newTier} ` +
-      `(${check.validationCount} validations)`
-    );
-
-    return check;
+    return result;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error(`[auto-promotion] executeAutoPromotion failed for memory ${memoryId}: ${msg}`);

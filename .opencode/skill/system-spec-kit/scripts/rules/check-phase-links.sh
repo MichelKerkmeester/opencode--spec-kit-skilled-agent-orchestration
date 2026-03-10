@@ -69,6 +69,16 @@ run_check() {
                ! grep -qi '^parent:' "$child_spec" 2>/dev/null; then
                 issues+=("$phase_name/spec.md missing parent back-reference (expected: '| **Parent Spec** | ../spec.md |' or 'parent:' field)")
             fi
+
+            # AI-FIX: F-21 — Validate that the referenced parent path actually exists
+            local parent_ref
+            parent_ref=$(grep -oE '\.\./spec\.md' "$child_spec" 2>/dev/null | head -1)
+            if [[ -n "$parent_ref" ]]; then
+                local resolved_parent="$phase_dir/$parent_ref"
+                if [[ ! -f "$resolved_parent" ]]; then
+                    issues+=("$phase_name/spec.md references parent '$parent_ref' but file does not exist")
+                fi
+            fi
         else
             issues+=("$phase_name/ missing spec.md")
         fi

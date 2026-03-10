@@ -352,7 +352,11 @@ function classifyDiagramPattern(asciiArt: string): DiagramClassification {
   const hasDecisionDiamond: boolean = asciiArt.includes('\u2571') && asciiArt.includes('\u2572');
   const hasParallelBlock: boolean = art.includes('parallel') || asciiArt.includes('\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500');
   const hasApprovalGate: boolean = asciiArt.includes('\u2554\u2550') || art.includes('approval') || art.includes('gate');
-  const hasLoopBack: boolean = art.includes('loop') || (asciiArt.includes('\u2514') && asciiArt.includes('\u2518'));
+  // AI-FIX: F-24 — └ and ┘ are standard box-drawing characters used in any boxed
+  // diagram. Requiring both misclassifies most diagrams as loops. Instead, only
+  // match explicit "loop" keyword or back-edge indicators (← ↑ arrows pointing back).
+  const hasLoopBack: boolean = art.includes('loop') || art.includes('retry') ||
+    (asciiArt.includes('\u2190') && (asciiArt.includes('\u2514') || asciiArt.includes('\u2518')));
   const hasNestedProcess: boolean = art.includes('sub-process') || art.includes('sub process');
   const hasPipeline: boolean = asciiArt.includes('\u2500\u2500\u2500\u2500\u25B6') || (art.includes('stage') && asciiArt.includes('\u2502'));
 

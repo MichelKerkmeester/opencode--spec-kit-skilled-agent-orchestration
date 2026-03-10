@@ -465,8 +465,18 @@ async function collapseAndReassembleChunkResults(
     chunkGroups.map((group) => reassembleParentRow(group, stats))
   );
 
-  // Merge non-chunks + reassembled parent rows, sort by effective score
-  const merged = [...nonChunks, ...reassembledRows];
+  // Merge non-chunks + reassembled parent rows, deduplicate by id (prefer highest score),
+  // then sort by effective score.
+  // AI-FIX: F-07 — Parent rows could appear in both nonChunks and reassembledRows
+  // when a parent exists as a standalone row AND has chunk children.
+  const mergedMap = new Map<unknown, PipelineRow>();
+  for (const row of [...nonChunks, ...reassembledRows]) {
+    const existing = mergedMap.get(row.id);
+    if (!existing || effectiveScore(row) > effectiveScore(existing)) {
+      mergedMap.set(row.id, row);
+    }
+  }
+  const merged = Array.from(mergedMap.values());
   merged.sort((a, b) => effectiveScore(b) - effectiveScore(a));
 
   return { results: merged, stats };

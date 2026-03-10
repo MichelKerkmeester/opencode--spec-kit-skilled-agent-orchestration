@@ -1299,14 +1299,20 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
     logger.info(`Cleaned ${cleaned_vectors} orphaned vectors`);
   }
 
-  const missing_vectors = (database.prepare(`
-    SELECT COUNT(*) as count FROM memory_index m
-    WHERE m.embedding_status = 'success'
-    AND NOT EXISTS (SELECT 1 FROM vec_memories v WHERE v.rowid = m.id)
-  `).get() as { count: number }).count;
+  // AI-FIX: F-08 — Guard vec_memories queries with sqlite_vec availability check.
+  // When sqlite-vec is not loaded, the vec_memories table does not exist.
+  const missing_vectors = sqlite_vec
+    ? (database.prepare(`
+        SELECT COUNT(*) as count FROM memory_index m
+        WHERE m.embedding_status = 'success'
+        AND NOT EXISTS (SELECT 1 FROM vec_memories v WHERE v.rowid = m.id)
+      `).get() as { count: number }).count
+    : 0;
 
   const total_memories = (database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as { count: number }).count;
-  const total_vectors = (database.prepare('SELECT COUNT(*) as count FROM vec_memories').get() as { count: number }).count;
+  const total_vectors = sqlite_vec
+    ? (database.prepare('SELECT COUNT(*) as count FROM vec_memories').get() as { count: number }).count
+    : 0;
 
   const check_orphaned_files = () => {
     const memories = database.prepare('SELECT id, file_path FROM memory_index').all() as Array<{ id: number; file_path?: string | null }>;

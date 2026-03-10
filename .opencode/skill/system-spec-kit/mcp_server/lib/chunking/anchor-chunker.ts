@@ -132,15 +132,49 @@ function chunkByAnchors(sections: AnchorSection[]): AnchorChunk[] {
   }
 
   for (const section of sections) {
-    // If a single section exceeds max, emit it as its own chunk
+    // AI-FIX: F-10 — Oversized anchor sections must be further split to respect
+    // MAX_CHUNK_CHARS. Previously they were emitted as single oversized chunks.
     if (section.charCount > MAX_CHUNK_CHARS) {
       flush();
-      chunks.push({
-        content: section.content.trim(),
-        anchorIds: [section.id],
-        label: section.id,
-        charCount: section.charCount,
-      });
+      // Split oversized content into MAX_CHUNK_CHARS-sized sub-chunks
+      const lines = section.content.split('\n');
+      let subContent = '';
+      let subIdx = 0;
+      for (const line of lines) {
+        if (subContent.length + line.length + 1 > MAX_CHUNK_CHARS && subContent.trim()) {
+          chunks.push({
+            content: subContent.trim(),
+            anchorIds: [section.id],
+            label: `${section.id}:${subIdx}`,
+            charCount: subContent.length,
+          });
+          subContent = '';
+          subIdx++;
+        }
+        // Handle single lines exceeding MAX_CHUNK_CHARS: split at char boundary
+        if (line.length > MAX_CHUNK_CHARS && !subContent) {
+          for (let c = 0; c < line.length; c += MAX_CHUNK_CHARS) {
+            const slice = line.slice(c, c + MAX_CHUNK_CHARS);
+            chunks.push({
+              content: slice,
+              anchorIds: [section.id],
+              label: `${section.id}:${subIdx}`,
+              charCount: slice.length,
+            });
+            subIdx++;
+          }
+          continue;
+        }
+        subContent += (subContent ? '\n' : '') + line;
+      }
+      if (subContent.trim()) {
+        chunks.push({
+          content: subContent.trim(),
+          anchorIds: [section.id],
+          label: subIdx > 0 ? `${section.id}:${subIdx}` : section.id,
+          charCount: subContent.length,
+        });
+      }
       continue;
     }
 

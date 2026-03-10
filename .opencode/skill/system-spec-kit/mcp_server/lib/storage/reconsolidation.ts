@@ -116,10 +116,14 @@ const SIMILAR_MEMORY_LIMIT = 3;
 /**
  * Check if reconsolidation is enabled via feature flag.
  *
- * @returns true if SPECKIT_RECONSOLIDATION is not explicitly disabled (default: ON)
+ * AI-FIX: F-14 — Contract specifies reconsolidation defaults to OFF (opt-in).
+ * Previously defaulted to ON because `undefined !== 'false'` is true.
+ * Now requires explicit `SPECKIT_RECONSOLIDATION=true` to enable.
+ *
+ * @returns true if SPECKIT_RECONSOLIDATION is explicitly set to 'true'
  */
 export function isReconsolidationEnabled(): boolean {
-  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase() !== 'false';
+  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase() === 'true';
 }
 
 /* ---------------------------------------------------------------
@@ -501,8 +505,24 @@ export async function reconsolidate(
           // If storeMemory succeeded but executeConflict failed, clean up the orphan
           // memory so we don't leave dangling rows with no supersedes edge.
           if (conflictMemory.id !== undefined && conflictMemory.id !== newMemory.id) {
+            // AI-FIX: F-15 — Clean up related tables in same transaction to prevent
+            // orphan embedding/artifact rows when memory_index is deleted.
             try {
-              db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
+              db.transaction(() => {
+                db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
+                // Clean up vector embedding if vec_memories table exists
+                try {
+                  db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(conflictMemory.id);
+                } catch (_vecErr: unknown) {
+                  // vec_memories may not exist if sqlite-vec is unavailable — ignore
+                }
+                // Clean up any artifact references
+                try {
+                  db.prepare('DELETE FROM memory_artifacts WHERE memory_id = ?').run(conflictMemory.id);
+                } catch (_artErr: unknown) {
+                  // memory_artifacts table may not exist — ignore
+                }
+              })();
             } catch (_error: unknown) {
               // Best-effort cleanup
             }

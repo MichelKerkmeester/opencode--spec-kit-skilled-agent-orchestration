@@ -30,6 +30,12 @@ const VERBOSE = args.includes('--verbose') || args.includes('-v');
 const DRY_RUN = args.includes('--dry-run');
 const APPLY = args.includes('--apply');
 
+// AI-FIX: F-25 — --apply flag was parsed but never implemented, contradicting the CLI contract.
+// Warn users that this feature is not yet available rather than silently ignoring.
+if (APPLY) {
+  console.warn('WARNING: --apply is not yet implemented. Mapping output will be written to', OUTPUT_PATH, 'but ground-truth-data.ts will NOT be updated.');
+}
+
 // -- Types -------------------------------------------------------
 
 interface GroundTruthQuery {

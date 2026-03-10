@@ -596,9 +596,14 @@ function buildContinueSessionData(params: ContinueSessionParams): ContinueSessio
   const continuationCount = recentContext?.[0]?.continuationCount ?? 1;
 
   const lastPrompt = userPrompts[userPrompts.length - 1];
-  const lastActivity = lastPrompt?.timestamp
-    ? new Date(lastPrompt.timestamp).toISOString()
-    : new Date().toISOString();
+  // AI-FIX: F-19 — Guard against invalid timestamps that cause RangeError on toISOString()
+  let lastActivity: string;
+  if (lastPrompt?.timestamp) {
+    const d = new Date(lastPrompt.timestamp);
+    lastActivity = isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+  } else {
+    lastActivity = new Date().toISOString();
+  }
 
   return {
     SESSION_STATUS: sessionStatus,

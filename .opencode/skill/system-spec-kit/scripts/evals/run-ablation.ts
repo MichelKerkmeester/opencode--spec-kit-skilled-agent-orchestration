@@ -84,14 +84,14 @@ async function main(): Promise<void> {
   log(`Production DB: ${PROD_DB_PATH}`);
 
   // 3. Initialize vector index and hybrid search (opens the production DB)
+  // AI-FIX: F-22 — Guard null dereference: check db before passing to initHybridSearch
   const db = vectorIndex.initializeDb(PROD_DB_PATH);
-  initHybridSearch(db, vectorIndex.vectorSearch);
-  verbose('Vector index and hybrid search initialized');
-
   if (!db) {
     console.error('ERROR: Could not initialize database');
     process.exit(1);
   }
+  initHybridSearch(db, vectorIndex.vectorSearch);
+  verbose('Vector index and hybrid search initialized');
   const memCount = (db.prepare(
     'SELECT COUNT(*) as c FROM memory_index'
   ).get() as { c: number }).c;

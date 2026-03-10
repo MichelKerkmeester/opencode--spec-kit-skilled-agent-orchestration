@@ -189,6 +189,15 @@ function runBulkDelete(): void {
   const dryRun = getFlag('dry-run');
   const skipCheckpoint = getFlag('skip-checkpoint');
 
+  // AI-FIX: F-17 — Validate --older-than is a positive integer.
+  // Use strict check: entire string must be digits only (parseInt accepts "10abc" as 10).
+  if (olderThanDays) {
+    if (!/^\d+$/.test(olderThanDays) || parseInt(olderThanDays, 10) <= 0) {
+      console.error(`ERROR: --older-than must be a positive integer (got "${olderThanDays}")`);
+      process.exit(1);
+    }
+  }
+
   // Safety: refuse constitutional/critical without folder scope
   if ((tier === 'constitutional' || tier === 'critical') && !specFolder) {
     console.error(`ERROR: Bulk delete of "${tier}" tier requires --folder scope for safety.`);
@@ -380,6 +389,13 @@ async function runReindex(): Promise<void> {
     includeConstitutional: true,
     includeSpecDocs: true,
   });
+
+  // AI-FIX: F-16 — Check result.isError before reporting success
+  if (result?.isError) {
+    const errText = result?.content?.[0]?.text || 'Unknown error';
+    console.error(`\n  ERROR: Reindex failed: ${errText}`);
+    process.exit(1);
+  }
 
   // Extract summary from MCP response
   try {

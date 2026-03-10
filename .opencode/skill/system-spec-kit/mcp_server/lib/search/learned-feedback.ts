@@ -317,9 +317,12 @@ export function recordSelection(
     }
 
     // AI-WHY: Apply learned triggers (Safeguard #1 -- separate column, NOT FTS5)
-    applyLearnedTriggers(memoryId, terms, db, queryId);
+    // AI-FIX: F-04 — applyLearnedTriggers swallowed errors and returned void,
+    // so recordSelection always returned applied: true even on failure.
+    // Now propagate success/failure from the callee.
+    const applied = applyLearnedTriggers(memoryId, terms, db, queryId);
 
-    return { terms, applied: true };
+    return { terms, applied };
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error(`[learned-feedback] recordSelection failed: ${msg}`);
@@ -344,7 +347,7 @@ export function applyLearnedTriggers(
   terms: string[],
   db: Database,
   source: string = 'unknown'
-): void {
+): boolean {
   try {
     const row = db.prepare(
       'SELECT learned_triggers FROM memory_index WHERE id = ?'
@@ -374,7 +377,7 @@ export function applyLearnedTriggers(
       });
     }
 
-    if (newEntries.length === 0) return;
+    if (newEntries.length === 0) return true;
 
     const updated = [...existing, ...newEntries];
     const serialized = serializeLearnedTriggers(updated);
@@ -384,9 +387,11 @@ export function applyLearnedTriggers(
     db.prepare(
       'UPDATE memory_index SET learned_triggers = ? WHERE id = ?'
     ).run(serialized, memoryId);
+    return true;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error(`[learned-feedback] applyLearnedTriggers failed for memory ${memoryId}: ${msg}`);
+    return false;
   }
 }
 

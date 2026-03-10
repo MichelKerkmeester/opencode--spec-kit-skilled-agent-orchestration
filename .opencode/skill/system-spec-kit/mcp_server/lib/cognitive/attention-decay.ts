@@ -122,7 +122,10 @@ function applyFsrsDecay(
 
   if (!lastReview) return baseScore;
 
-  const elapsedMs = Date.now() - new Date(lastReview).getTime();
+  const parsedTime = new Date(lastReview).getTime();
+  if (!Number.isFinite(parsedTime)) return baseScore;
+
+  const elapsedMs = Date.now() - parsedTime;
   const elapsedDays = Math.max(0, elapsedMs / (1000 * 60 * 60 * 24));
 
   const retrievability = calculateRetrievabilityDecay(stability, elapsedDays);
