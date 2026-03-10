@@ -45,11 +45,11 @@ contextType: "general"
 ## CODE QUALITY
 
 - [x] CHK-010 [P0] Per-folder description.json generates correctly via `generatePerFolderDescription()` — backfill: 281/281 spec folders generated successfully (025-git-context-extractor gap filled in hardening round 2)
-- [x] CHK-011 [P0] Memory filename uniqueness guaranteed — `ensureUniqueMemoryFilename()` guarantees collision-safe filenames via suffixing and hash fallback (`scripts/utils/slug-utils.ts:130-152`); targeted run passed `slug-uniqueness.vitest.ts` 7/7
+- [x] CHK-011 [P0] Memory filename uniqueness guaranteed — `ensureUniqueMemoryFilename()` guarantees collision-safe filenames via atomic `O_CREAT|O_EXCL` creation with suffix retry and SHA1 hash fallback (`scripts/utils/slug-utils.ts`); targeted run passed `slug-uniqueness.vitest.ts` 7/7
 - [x] CHK-012 [P0] `create.sh` auto-generates description.json on folder creation — verified in create.sh lines 810-813, 1038-1041
 - [x] CHK-013 [P1] Backward compatibility — `ensureDescriptionCache()` preserves the `DescriptionCache` consumer shape (`version`, `generated`, `folders`) across empty, cached, and regenerated paths (`mcp_server/lib/search/folder-discovery.ts:747-781`)
 - [x] CHK-014 [P1] Atomic write pattern used for per-folder description.json — savePerFolderDescription uses temp+rename in folder-discovery.ts
-- [x] CHK-015 [P1] `memorySequence` counter increments correctly on each save — `workflow.ts:841-856` increments `memorySequence` and appends to the bounded `memoryNameHistory` ring buffer
+- [x] CHK-015 [P1] `memorySequence` counter increments correctly on each save — `workflow.ts` increments `memorySequence` with lost-update detection and single retry, and appends to the bounded `memoryNameHistory` ring buffer (F-34 hardened)
 - [x] CHK-016 [P1] description.json contains specId field with correct numeric prefix — verified: e.g. "031" for 031-fix-download-btn, "010" for 010-spec-descriptions
 - [x] CHK-017 [P1] description.json contains folderSlug field with correct slugified name — verified: e.g. "fix-download-btn-transition-glitch", "spec-descriptions"
 - [x] CHK-018 [P1] description.json contains parentChain array with ancestor folder names — verified: e.g. ["02--system-spec-kit","022-hybrid-rag-fusion"] for depth-3 folders
@@ -66,7 +66,7 @@ contextType: "general"
 - [x] CHK-023 [P1] Per-folder at depth 5+: nested folder gets description.json — verified depth-6 folder (test-fixtures/valid-anchors) has correct description.json
 - [x] CHK-024 [P1] Stale detection test: edit spec.md → description.json regenerated [EVIDENCE: folder-discovery.ts:219-234 now incorporates description.json mtime; test T046-25 verifies aggregate cache staleness; test T046-25b verifies per-folder stale detection → regeneration → freshness cycle]
 - [x] CHK-025 [P1] Mixed mode: folders with/without description.json → aggregation works — fresh per-folder descriptions are preferred during aggregation (`mcp_server/lib/search/folder-discovery.ts:438-451`); targeted run passed integration test `T046-24`
-- [x] CHK-026 [P1] Collision test: same slug + same timestamp → sequential suffix `-1`, `-2` — `ensureUniqueMemoryFilename()` appends `-1..-100` before hash fallback (`scripts/utils/slug-utils.ts:137-145`)
+- [x] CHK-026 [P1] Collision test: same slug + same timestamp → sequential suffix `-1`, `-2` — `ensureUniqueMemoryFilename()` uses atomic `O_CREAT|O_EXCL` with `-1..-100` suffix retry before SHA1 hash fallback (`scripts/utils/slug-utils.ts`)
 - [ ] CHK-027 [P2] Concurrent write test: two parallel saves → no corruption [DEFERRED: Concurrent write safety provided by OS-level atomic temp+rename pattern. Formal stress test deferred as P2.]
 - [x] CHK-028 [P1] Per-folder description.json read completes in <5ms (NFR-P01) [EVIDENCE: test T046-26 in folder-discovery-integration.vitest.ts benchmarks loadPerFolderDescription() at <5ms; passed in <1ms]
 - [x] CHK-029 [P1] Full 500-folder aggregation scan completes in <2s (NFR-P02) [EVIDENCE: test T046-27 in folder-discovery-integration.vitest.ts benchmarks generateFolderDescriptions() with 500 folders at <2s; passed in ~200ms]

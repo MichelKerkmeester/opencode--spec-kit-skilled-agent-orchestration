@@ -162,9 +162,9 @@ Validates implementation-vs-documentation parity for feature catalog groups 01-1
 
 ### Memory Quality Gates
 
-- [x] CHK-430 [P1] Content-aware slug generation produces task-based filenames instead of generic folder-name slugs. [EVIDENCE: `slug-utils.ts` created with `generateContentSlug()`, integrated in `workflow.ts:581`]
-- [x] CHK-431 [P1] Empty/template-only content is rejected before file write (200-char minimum after stripping boilerplate). [EVIDENCE: `validateContentSubstance()` added to `file-writer.ts`, called in `writeFilesAtomically()`]
-- [x] CHK-432 [P1] Duplicate content detected via SHA-256 hash comparison before file write. [EVIDENCE: `checkForDuplicateContent()` added to `file-writer.ts`, checks existing *.md files in memory dir]
+- [x] CHK-430 [P1] Content-aware slug generation produces task-based filenames instead of generic folder-name slugs. [EVIDENCE: `slug-utils.ts` with `generateContentSlug()` now accepts `memoryNameHistory` alternatives (F-26), integrated in `workflow.ts`; uniqueness via atomic `O_CREAT|O_EXCL` (F-07)]
+- [x] CHK-431 [P1] Empty/template-only content is rejected before file write (200-char minimum after stripping boilerplate). [EVIDENCE: `validateContentSubstance()` in `file-writer.ts`, called in `writeFilesAtomically()`; rollback uses `rename`-based restore (F-06)]
+- [x] CHK-432 [P1] Duplicate content detected via SHA-256 hash comparison before file write. [EVIDENCE: `checkForDuplicateContent()` in `file-writer.ts`, catch narrowed to ENOENT only (F-29)]
 
 ### P2 Nice-to-Have
 
