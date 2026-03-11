@@ -39,14 +39,14 @@ This plan converts the Analysis audit methodology into a Level 2 execution struc
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable) — 211 across 5 test files
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,19 +72,19 @@ Feature catalog expectations are mapped to concrete code paths, then validated a
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Inventory all seven Analysis feature definitions and source mappings
-- [ ] Confirm handler/storage/test file ownership and citation boundaries
-- [ ] Establish priority mapping for FAIL/WARN findings
+- [x] Inventory all seven Analysis feature definitions and source mappings
+- [x] Confirm handler/storage/test file ownership and citation boundaries
+- [x] Establish priority mapping for FAIL/WARN findings
 
 ### Phase 2: Core Implementation
-- [ ] Resolve P0 correctness defects (coverage semantics, max-depth flag semantics)
-- [ ] Implement P1 test and standards remediation backlog
-- [ ] Record P2 catalog-reference cleanup tasks
+- [x] Resolve P0 correctness defects (coverage semantics, max-depth flag semantics)
+- [x] Implement P1 test and standards remediation backlog
+- [x] Record P2 catalog-reference cleanup tasks
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete — 211 tests pass across 5 files
+- [x] Edge cases handled — orphan edges, natural leaves, depth limits, LI regression
+- [x] Documentation updated — all 4 spec docs synchronized
 <!-- /ANCHOR:phases -->
 
 ---

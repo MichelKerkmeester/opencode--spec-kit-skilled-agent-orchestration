@@ -4,4 +4,34 @@
 // LIB: ERRORS BARREL
 // ---------------------------------------------------------------
 
-export * from './errors/index';
+export {
+  ErrorCodes,
+  MemoryError,
+  withTimeout,
+  userFriendlyError,
+  isTransientError,
+  isPermanentError,
+  buildErrorResponse,
+  createErrorWithHint,
+  ERROR_CODES,
+  RECOVERY_HINTS,
+  DEFAULT_HINT,
+  TOOL_SPECIFIC_HINTS,
+  getRecoveryHint,
+  hasSpecificHint,
+  getAvailableHints,
+  getErrorCodes,
+} from './errors/index';
+
+export type {
+  ErrorResponseData,
+  ErrorResponseMeta,
+  ErrorResponse,
+  LegacyErrorCodeKey,
+  Severity,
+  RecoveryHint,
+  RecoveryHintMap,
+  ToolSpecificHintMap,
+  ErrorCodeKey,
+  ErrorCodeValue,
+} from './errors/index';

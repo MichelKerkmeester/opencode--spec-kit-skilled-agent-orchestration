@@ -8,8 +8,10 @@ import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
 
 type LearningHistoryRow = {
+  taskId?: string;
   sessionId?: string;
   phase?: string;
+  createdAt?: string;
 };
 
 type LearningHistoryResponse = {
@@ -53,7 +55,7 @@ const TS = Date.now();
 
 let dbAvailable = false;
 
-describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fixtures]', () => {
+describe('T503: Learning Stats SQL Filter Tests', () => {
   beforeAll(() => {
     try {
       const db = vectorIndex.getDb();
@@ -71,7 +73,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
   // -----------------------------------------------------------
   describe('T503: Summary stats respect sessionId filter', () => {
     it('T503-01: sessionId stats filter — totalTasks=1', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       const sessA = `sess-A-${TS}`;
       const sessB = `sess-B-${TS}`;
@@ -124,7 +129,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
     });
 
     it('T503-01b: sessionId records filter consistent', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       const sessA = `sess-A-${TS}`;
 
@@ -148,7 +156,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
   // -----------------------------------------------------------
   describe('T503: Summary stats respect onlyComplete filter', () => {
     it('T503-02: onlyComplete records filter', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       // Create one complete and one preflight-only record
       await handler.handleTaskPreflight({
@@ -189,7 +200,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
     });
 
     it('T503-02b: onlyComplete stats — total matches completed', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -208,7 +222,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
   // -----------------------------------------------------------
   describe('T503: Combined sessionId + onlyComplete filters', () => {
     it('T503-03: combined filters — 1 complete record', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       const sessC = `sess-C-${TS}`;
 
@@ -254,7 +271,10 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
     });
 
     it('T503-03b: combined stats correct', async () => {
-      if (!dbAvailable) return;
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
 
       const sessC = `sess-C-${TS}`;
 
@@ -269,6 +289,112 @@ describe('T503: Learning Stats SQL Filter Tests [deferred - requires DB test fix
       const summary = expectSummary(data);
       expect(summary.totalTasks).toBe(1);
       expect(summary.completedTasks).toBe(1);
+    });
+  });
+
+  describe('T013: Learning History Ordering and Threshold Tests', () => {
+    it('T013-O1: Limit clamped to minimum 1', async () => {
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        limit: -5,
+        includeSummary: false,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      // limit=-5 should be clamped to 1, returning at most 1 record
+      expect(data.learningHistory.length).toBeLessThanOrEqual(1);
+    });
+
+    it('T013-O2: Limit clamped to maximum 100', async () => {
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        limit: 500,
+        includeSummary: false,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      // Should succeed (limit clamped to 100)
+      expect(data.learningHistory).toBeDefined();
+      expect(Array.isArray(data.learningHistory)).toBe(true);
+    });
+
+    it('T013-O3: Results ordered by updated_at DESC', async () => {
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        limit: 100,
+        includeSummary: false,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      const db = vectorIndex.getDb();
+      const expectedRows = db.prepare(`
+        SELECT task_id
+        FROM session_learning
+        WHERE spec_folder = ?
+        ORDER BY updated_at DESC
+        LIMIT ?
+      `).all(SPEC, 100) as Array<{ task_id?: string }>;
+
+      const actualOrder = data.learningHistory
+        .map(row => row.taskId)
+        .filter((taskId): taskId is string => typeof taskId === 'string');
+
+      const expectedOrder = expectedRows
+        .map(row => row.task_id)
+        .filter((taskId): taskId is string => typeof taskId === 'string');
+
+      expect(actualOrder).toEqual(expectedOrder);
+    });
+
+    it('T013-O4: Default limit returns records without error', async () => {
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        includeSummary: true,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      expect(data.learningHistory).toBeDefined();
+      // Default limit is 10 per handler code
+      expect(data.learningHistory.length).toBeLessThanOrEqual(10);
+    });
+
+    it('T013-O5: Summary includes interpretation for completed tasks', async () => {
+      if (!dbAvailable) {
+        console.warn('[SKIP] DB not available - test requires live database');
+        return;
+      }
+
+      const result = await handler.handleGetLearningHistory({
+        specFolder: SPEC,
+        onlyComplete: true,
+        includeSummary: true,
+      });
+
+      const data = expectLearningResponse(parseResponse(result));
+      if (data.summary && (data.summary as any).completedTasks > 0) {
+        expect((data.summary as any).interpretation).toBeDefined();
+        expect(typeof (data.summary as any).interpretation).toBe('string');
+      }
     });
   });
 });

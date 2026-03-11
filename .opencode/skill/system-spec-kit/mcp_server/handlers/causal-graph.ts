@@ -27,7 +27,7 @@ import type { MCPResponse } from './types';
 --------------------------------------------------------------- */
 
 /** Flat edge representation for API responses */
-interface FlatEdge {
+export interface FlatEdge {
   id: number;               // T202: causal_edges.id for unlink workflow
   from: string;
   to: string;
@@ -37,7 +37,7 @@ interface FlatEdge {
 }
 
 /** Flattened chain produced from CausalChainNode tree */
-interface FlattenedChain {
+export interface FlattenedChain {
   all: FlatEdge[];
   by_cause: FlatEdge[];
   by_enabled: FlatEdge[];
@@ -119,13 +119,11 @@ function flattenCausalTree(
         bucket.push(edge);
       }
 
-      // Check if we hit max depth (any child at maxDepth-1 with children means we capped)
-      if (child.depth >= maxDepth - 1 && child.children.length === 0) {
-        // Could have been capped — we can't distinguish "no more edges" from "depth limit"
-        // Mark as reached if any node is AT the depth limit
-        if (child.depth >= maxDepth - 1) {
-          result.max_depth_reached = true;
-        }
+      // AI-FIX: T006 — Only flag max_depth_reached when a node exists at the depth limit.
+      // Nodes at maxDepth-1 with no children are natural leaves (edges were queried).
+      // Nodes at maxDepth were added but never explored (traverse returned early).
+      if (child.depth >= maxDepth) {
+        result.max_depth_reached = true;
       }
 
       traverse(child);
@@ -575,7 +573,9 @@ async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPRespo
 
     // Count unique memory IDs that appear as source or target
     try {
-      const linkedRows = (db.prepare('SELECT DISTINCT source_id FROM causal_edges UNION SELECT DISTINCT target_id FROM causal_edges') as import('better-sqlite3').Statement).all() as Array<{ source_id: string }>;
+      const linkedRows = (db.prepare(
+        'SELECT DISTINCT source_id FROM causal_edges WHERE EXISTS (SELECT 1 FROM memory_index WHERE CAST(id AS TEXT) = source_id) UNION SELECT DISTINCT target_id FROM causal_edges WHERE EXISTS (SELECT 1 FROM memory_index WHERE CAST(id AS TEXT) = target_id)'
+      ) as import('better-sqlite3').Statement).all() as Array<{ source_id: string }>;
       for (const row of linkedRows) {
         uniqueLinked.add(row.source_id);
       }
@@ -718,6 +718,7 @@ export {
   handleMemoryCausalLink,
   handleMemoryCausalStats,
   handleMemoryCausalUnlink,
+  flattenCausalTree,
 };
 
 // AI-WHY: Backward-compatible aliases (snake_case)

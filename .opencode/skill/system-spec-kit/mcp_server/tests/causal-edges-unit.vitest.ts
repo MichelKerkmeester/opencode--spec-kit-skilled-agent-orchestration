@@ -5,6 +5,8 @@
 import { describe, it, expect, beforeEach, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
+import { flattenCausalTree } from '../handlers/causal-graph';
+import type { FlattenedChain } from '../handlers/causal-graph';
 import { clearDegreeCache, computeDegreeScores } from '../lib/search/graph-search-fn';
 
 type SqliteDatabase = InstanceType<typeof Database>;
@@ -465,6 +467,84 @@ describe('Causal Edges Unit Tests', () => {
       expect(chain.children).toHaveLength(1);
       expect(chain.children[0].id).toBe('Y');
     });
+
+    describe('T007: Natural leaf vs truncated chain', () => {
+      it('T007-NL1: Natural leaf at maxDepth-1 has no children', () => {
+        resetEdges();
+        // Chain: A -> B (B is a natural leaf at depth 1)
+        causalEdges.insertEdge('A', 'B', 'caused', 1.0);
+
+        const chain = causalEdges.getCausalChain('A', 3, 'forward');
+        expect(chain.children).toHaveLength(1);
+        expect(chain.children[0].id).toBe('B');
+        expect(chain.children[0].children).toHaveLength(0);
+        expect(chain.children[0].depth).toBe(1);
+      });
+
+      it('T007-NL2: Truncated chain has node at maxDepth', () => {
+        resetEdges();
+        // Chain: A -> B -> C -> D, maxDepth=2 should include A, B, C only.
+        causalEdges.insertEdge('A', 'B', 'caused', 1.0);
+        causalEdges.insertEdge('B', 'C', 'caused', 1.0);
+        causalEdges.insertEdge('C', 'D', 'caused', 1.0);
+
+        const chain = causalEdges.getCausalChain('A', 2, 'forward');
+        const nodes = collectNodes(chain);
+
+        expect(nodes).toHaveLength(3);
+        expect(nodes).toContain('A');
+        expect(nodes).toContain('B');
+        expect(nodes).toContain('C');
+        expect(nodes).not.toContain('D');
+      });
+    });
+
+    describe('T007-FT: flattenCausalTree max_depth_reached handler behavior', () => {
+      it('T007-FT1: Natural leaf at maxDepth-1 does NOT trigger max_depth_reached', () => {
+        resetEdges();
+        // Chain: A -> B (B is natural leaf at depth 1, maxDepth=3)
+        causalEdges.insertEdge('A', 'B', 'caused', 1.0);
+        const chain = causalEdges.getCausalChain('A', 3, 'forward');
+        const flat: FlattenedChain = flattenCausalTree(chain, 3, 'forward');
+        expect(flat.max_depth_reached).toBe(false);
+        expect(flat.total_edges).toBe(1);
+      });
+
+      it('T007-FT2: Node at maxDepth DOES trigger max_depth_reached', () => {
+        resetEdges();
+        // Chain: A -> B -> C -> D, maxDepth=2
+        // getCausalChain adds C at depth 2 (=maxDepth) but never explores C's edges
+        causalEdges.insertEdge('A', 'B', 'caused', 1.0);
+        causalEdges.insertEdge('B', 'C', 'caused', 1.0);
+        causalEdges.insertEdge('C', 'D', 'caused', 1.0);
+        const chain = causalEdges.getCausalChain('A', 2, 'forward');
+        const flat: FlattenedChain = flattenCausalTree(chain, 2, 'forward');
+        expect(flat.max_depth_reached).toBe(true);
+      });
+
+      it('T007-FT3: Exact maxDepth boundary — node at maxDepth-1 with children at maxDepth', () => {
+        resetEdges();
+        // Chain: A -> B -> C, maxDepth=2
+        // B is at depth 1 (explored), C is at depth 2 (=maxDepth, added but not explored)
+        causalEdges.insertEdge('A', 'B', 'caused', 1.0);
+        causalEdges.insertEdge('B', 'C', 'caused', 1.0);
+        const chain = causalEdges.getCausalChain('A', 2, 'forward');
+        const flat: FlattenedChain = flattenCausalTree(chain, 2, 'forward');
+        expect(flat.max_depth_reached).toBe(true);
+        expect(flat.all.some(e => e.depth === 2)).toBe(true);
+      });
+
+      it('T007-FT4: backward direction max_depth_reached', () => {
+        resetEdges();
+        // Chain: D -> C -> B -> A, query backward from A maxDepth=1
+        causalEdges.insertEdge('D', 'C', 'caused', 1.0);
+        causalEdges.insertEdge('C', 'B', 'caused', 1.0);
+        causalEdges.insertEdge('B', 'A', 'caused', 1.0);
+        const chain = causalEdges.getCausalChain('A', 1, 'backward');
+        const flat: FlattenedChain = flattenCausalTree(chain, 1, 'backward');
+        expect(flat.max_depth_reached).toBe(true);
+      });
+    });
   });
 
   /* ─────────────────────────────────────────────────────────────
@@ -747,6 +827,83 @@ describe('Causal Edges Unit Tests', () => {
       resetEdges();
       const orphans = causalEdges.findOrphanedEdges();
       expect(orphans).toHaveLength(0);
+    });
+  });
+
+  describe('T005: Orphan-edge coverage regression', () => {
+    it('T005-R1: Orphaned edges should be detected when source memory is missing', () => {
+      resetEdges();
+      // Memory IDs 1, 2, 3 exist in memory_index; 999 does not.
+      causalEdges.insertEdge('1', '2', 'caused', 0.9);
+      causalEdges.insertEdge('999', '3', 'enabled', 0.5);
+
+      const orphans = causalEdges.findOrphanedEdges();
+      expect(orphans.length).toBeGreaterThan(0);
+      expect(orphans.some((e) => e.source_id === '999')).toBe(true);
+
+      const stats = causalEdges.getGraphStats();
+      expect(stats.totalEdges).toBe(2);
+      // Handler-level coverage should exclude orphaned IDs (T004 fix).
+    });
+
+    it('T005-R2: Non-orphaned edges should not be flagged', () => {
+      resetEdges();
+      causalEdges.insertEdge('1', '2', 'caused', 0.9);
+      causalEdges.insertEdge('2', '3', 'enabled', 0.8);
+
+      const orphans = causalEdges.findOrphanedEdges();
+      expect(orphans).toHaveLength(0);
+    });
+  });
+
+  describe('T005-HL: Handler-level orphan coverage exclusion', () => {
+    const coverageSql = `
+      SELECT DISTINCT source_id
+      FROM causal_edges
+      WHERE EXISTS (SELECT 1 FROM memory_index WHERE CAST(id AS TEXT) = source_id)
+      UNION
+      SELECT DISTINCT target_id
+      FROM causal_edges
+      WHERE EXISTS (SELECT 1 FROM memory_index WHERE CAST(id AS TEXT) = target_id)
+    `;
+
+    const seedMemories = (ids: number[]) => {
+      testDb.exec('DELETE FROM memory_index');
+      const stmt = testDb.prepare(`
+        INSERT INTO memory_index (id, spec_folder, file_path, title, created_at)
+        VALUES (?, ?, ?, ?, datetime('now'))
+      `);
+      for (const id of ids) {
+        stmt.run(id, 'test-spec', `/mem/${id}.md`, `Memory ${id}`);
+      }
+    };
+
+    it('T005-HL1: Orphaned IDs excluded from coverage computation', () => {
+      resetEdges();
+      seedMemories([1, 2, 3]);
+      causalEdges.insertEdge('1', '2', 'caused', 0.9);
+      causalEdges.insertEdge('999', '3', 'enabled', 0.5);
+
+      const coveredIds = testDb.prepare(coverageSql).pluck().all() as string[];
+      const totalMemories = testDb.prepare('SELECT COUNT(*) FROM memory_index').pluck().get() as number;
+      const coveragePercent = (coveredIds.length / totalMemories) * 100;
+
+      expect(coveredIds.sort()).toEqual(['1', '2', '3']);
+      expect(coveredIds).not.toContain('999');
+      expect(coveragePercent).toBe(100);
+    });
+
+    it('T005-HL2: All orphaned edges -> coverage = 0%', () => {
+      resetEdges();
+      seedMemories([1, 2]);
+      causalEdges.insertEdge('999', '888', 'supports', 0.4);
+
+      const coveredIds = testDb.prepare(coverageSql).pluck().all() as string[];
+      const totalMemories = testDb.prepare('SELECT COUNT(*) FROM memory_index').pluck().get() as number;
+      const coveragePercent = totalMemories === 0 ? 0 : (coveredIds.length / totalMemories) * 100;
+
+      expect(coveredIds).toHaveLength(0);
+      expect(coveragePercent).toBe(0);
     });
   });
 

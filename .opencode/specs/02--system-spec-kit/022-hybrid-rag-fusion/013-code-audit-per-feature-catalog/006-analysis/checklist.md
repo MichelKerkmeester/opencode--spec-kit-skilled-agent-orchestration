@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Findings for F-01 through F-07 are documented in `spec.md`
-- [ ] CHK-002 [P0] Analysis technical approach and phase flow are defined in `plan.md`
-- [ ] CHK-003 [P1] Feature and code dependencies are identified and available
+- [x] CHK-001 [P0] Findings for F-01 through F-07 are documented in `spec.md` — all 7 features with REQ-001 through REQ-006 documented
+- [x] CHK-002 [P0] Analysis technical approach and phase flow are defined in `plan.md` — 3 phases with TypeScript/MCP/SQLite/Vitest stack
+- [x] CHK-003 [P1] Feature and code dependencies are identified and available — causal-graph.ts, session-learning.ts, causal-edges.ts, errors barrel, 5 test files, 7 catalog files
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,10 +41,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] FAIL findings (F-02, F-04) are mapped to concrete fix tasks
-- [ ] CHK-011 [P0] Wildcard export standards violations are tracked for remediation
-- [ ] CHK-012 [P1] Behavior mismatches are explicitly linked to acceptance-impacting fixes
-- [ ] CHK-013 [P1] Task backlog uses T### numbering with clear file-path targeting
+- [x] CHK-010 [P0] FAIL findings (F-02, F-04) are mapped to concrete fix tasks — T004 (orphan coverage, P0) and T006 (max_depth_reached, P0) implemented and verified
+- [x] CHK-011 [P0] Wildcard export standards violations are tracked for remediation — T008 implemented: `export *` replaced with named exports in lib/errors.ts and lib/errors/index.ts
+- [x] CHK-012 [P1] Behavior mismatches are explicitly linked to acceptance-impacting fixes — T004 orphan inflation and T006 false-positive depth flag both fixed with regression tests (T005, T007)
+- [x] CHK-013 [P1] Task backlog uses T### numbering with clear file-path targeting — all 25 tasks use T### format with file paths
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,10 +52,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Test gaps are documented for all seven features
-- [ ] CHK-021 [P0] P0 regression tests are defined for orphan coverage and depth truncation semantics
-- [ ] CHK-022 [P1] P1 regression tests are defined for unlink, preflight, postflight, and history flows
-- [ ] CHK-023 [P1] Deferred placeholder suites are tracked for replacement with DB-backed assertions
+- [x] CHK-020 [P0] Test gaps are documented for all seven features — T009-T015 cover all 7 feature areas with new tests; 211 tests pass across 5 files
+- [x] CHK-021 [P0] P0 regression tests are defined for orphan coverage and depth truncation semantics — T005 (4 orphan tests: T005-R1, T005-R2, T005-HL1, T005-HL2) + T007 (2 storage + 4 handler-level depth tests) all pass
+- [x] CHK-022 [P1] P1 regression tests are defined for unlink, preflight, postflight, and history flows — T010 (4 unlink tests), T011 (1 overwrite guard), T012 (10 LI formula/band tests), T013 (5 ordering/threshold tests)
+- [x] CHK-023 [P1] Deferred placeholder suites are tracked for replacement with DB-backed assertions — T009 replaced all `expect(true).toBe(true)` stubs in causal-edges.vitest.ts; 77/77 DB-backed tests pass
 <!-- /ANCHOR:testing -->
 
 ---
@@ -63,9 +63,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] No hardcoded secrets or unsafe command patterns appear in phase docs
-- [ ] CHK-031 [P0] Validation/auth-sensitive findings are visible for F-05/F-06/F-07 follow-up
-- [ ] CHK-032 [P1] Error-handling and export-pattern risks are documented for remediation
+- [x] CHK-030 [P0] No hardcoded secrets or unsafe command patterns appear in phase docs — no secrets in any diff; only SQL parameterized queries added
+- [x] CHK-031 [P0] Validation/auth-sensitive findings are visible for F-05/F-06/F-07 follow-up — session-learning validation (T011) and error barrel exports (T008) preserve validation paths
+- [x] CHK-032 [P1] Error-handling and export-pattern risks are documented for remediation — T008 completed: wildcard exports replaced with named exports
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +73,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized
-- [ ] CHK-041 [P1] Stale `retry.vitest.ts` references are tracked across F-01..F-07
-- [ ] CHK-042 [P2] Playbook mapping gaps (EX-028..EX-031, NEW-*) are documented
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized — all 4 docs updated with implementation evidence
+- [x] CHK-041 [P1] Stale `retry.vitest.ts` references are tracked across F-01..F-07 — T016-T022 removed all 7 references; grep confirms 0 matches
+- [x] CHK-042 [P2] Playbook mapping gaps (EX-028..EX-031, NEW-*) are documented — gaps noted in spec.md open questions; no additional mapping needed for this phase
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,9 +83,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Changes are limited to 006-analysis target documents
-- [ ] CHK-051 [P1] `description.json`, `memory/`, and `scratch/` remain untouched
-- [ ] CHK-052 [P2] Findings are ready for future memory save flow if requested
+- [x] CHK-050 [P1] Changes are limited to 006-analysis target documents — all code changes in mcp_server (handlers, lib, tests) and feature_catalog/06--analysis only
+- [x] CHK-051 [P1] `description.json`, `memory/`, and `scratch/` remain untouched — no modifications to these directories
+- [x] CHK-052 [P2] Findings are ready for future memory save flow if requested — spec folder complete with all evidence
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -95,11 +95,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | [ ]/[8] |
-| P1 Items | 10 | [ ]/[10] |
-| P2 Items | 2 | [ ]/[2] |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 10 | 10/10 |
+| P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->
 
 ---

@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `006-analysis` |
 <!-- /ANCHOR:metadata -->
@@ -52,17 +52,26 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 - Map acceptance, tasks, plan phases, and verification checks into consistent anchors and checkbox formats.
 
 ### Out of Scope
-- Implementing source-code fixes in `mcp_server` - tracked separately as follow-up tasks.
-- Auditing feature catalogs outside `feature_catalog/06--analysis/` - not part of this phase.
+- Extending P0/P1 fixes beyond the 7 Analysis features (F-01 through F-07) and their direct handler/storage code paths.
+- Auditing feature catalogs outside `feature_catalog/06--analysis/` — not part of this phase.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/spec.md` | Modify | Reframe overview/scope/features/acceptance into Level 2 spec structure. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/tasks.md` | Modify | Convert P0/P1/P2 backlog into Phase 2 T### task list. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/plan.md` | Modify | Map methodology/checklist into Level 2 implementation and testing sections. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/checklist.md` | Modify | Convert feature findings into Level 2 verification categories. |
+| `mcp_server/handlers/causal-graph.ts` | Modify | Fix orphan-inflated coverage SQL (T004) and false-positive max_depth_reached (T006). |
+| `mcp_server/lib/errors.ts` | Modify | Replace wildcard barrel exports with named exports (T008). |
+| `mcp_server/lib/errors/index.ts` | Modify | Replace wildcard barrel exports with named exports (T008). |
+| `mcp_server/tests/causal-edges-unit.vitest.ts` | Modify | Add orphan regression (T005) and depth semantics (T007) tests. |
+| `mcp_server/tests/causal-edges.vitest.ts` | Modify | Replace 77 placeholder stubs with DB-backed tests (T009), add unlink tests (T010). |
+| `mcp_server/tests/handler-session-learning.vitest.ts` | Modify | Add overwrite guard (T011) and LI formula/band tests (T012). |
+| `mcp_server/tests/learning-stats-filters.vitest.ts` | Modify | Add ordering, threshold, and limit clamping tests (T013). |
+| `mcp_server/tests/integration-causal-graph.vitest.ts` | Modify | Add causal-stats (T014) and drift-why (T015) integration tests. |
+| `feature_catalog/06--analysis/01-*.md` through `07-*.md` | Modify | Remove stale retry.vitest.ts references (T016-T022). |
+| `006-analysis/spec.md` | Modify | Update status to Complete. |
+| `006-analysis/tasks.md` | Modify | Mark all 25 tasks with evidence. |
+| `006-analysis/plan.md` | Modify | Mark phase checkboxes with evidence. |
+| `006-analysis/checklist.md` | Modify | Mark all verification items with evidence. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -95,7 +104,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 - **SC-001**: All 7 features are represented with structured PASS/WARN/FAIL findings.
 - **SC-002**: Each feature documents code issues, standards violations, behavior match/mismatch, and test gaps.
 - **SC-003**: P0/P1/P2 remediation tasks are converted into template-conformant Phase 2 tasks with T### numbering.
-- **SC-004**: Verification checklist sections reflect pre-implementation, quality, testing, security, and documentation outcomes.
+- **SC-004**: Verification checklist sections reflect pre-implementation, quality, testing, security, and documentation outcomes, including 211 passing tests across 5 Vitest files.
 <!-- /ANCHOR:success-criteria -->
 
 ---
