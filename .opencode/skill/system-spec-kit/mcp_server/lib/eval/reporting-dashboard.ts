@@ -6,7 +6,7 @@
 // trend analysis, and formatted report output.
 //
 // Uses: eval-db.ts singleton, eval_metric_snapshots table,
-//       eval_channel_results table, eval_final_results table.
+//       eval_channel_results table.
 //
 // Design:
 //   - Read-only queries against eval DB (no writes).

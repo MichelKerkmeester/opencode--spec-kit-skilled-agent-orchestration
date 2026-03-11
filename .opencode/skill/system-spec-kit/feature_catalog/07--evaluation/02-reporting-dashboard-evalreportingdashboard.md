@@ -4,7 +4,7 @@
 
 Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
 
-The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots`, `eval_channel_results` and `eval_final_results` tables. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON or `eval_run_id` grouping. A `isHigherBetter()` helper correctly interprets trend direction for different metric types (recall and precision are higher-better; latency is lower-better).
+The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON or `eval_run_id` grouping. A `isHigherBetter()` helper correctly interprets trend direction for different metric types (recall and precision are higher-better; latency is lower-better).
 
 This is a read-only module. It queries the eval database and produces reports. No writes, no side effects, no feature flag gate.
 
@@ -99,6 +99,7 @@ This is a read-only module. It queries the eval database and produces reports. N
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/ablation-framework.vitest.ts` | Ablation framework tests |
+| `mcp_server/tests/handler-eval-reporting.vitest.ts` | Handler-level eval reporting tests |
 | `mcp_server/tests/adaptive-fusion.vitest.ts` | Adaptive fusion tests |
 | `mcp_server/tests/batch-processor.vitest.ts` | Batch processor tests |
 | `mcp_server/tests/bm25-index.vitest.ts` | BM25 index operations |
@@ -149,7 +150,6 @@ This is a read-only module. It queries the eval database and produces reports. N
 | `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests |
 | `mcp_server/tests/reranker.vitest.ts` | Reranker dispatch tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |

@@ -39,14 +39,14 @@ This plan executes the Evaluation-phase audit findings by focusing on one P0 beh
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable) — 97/97
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -71,19 +71,19 @@ Feature catalog expectations are mapped to handler/service implementations, comp
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Read both Evaluation feature docs and extract implementation/test references
-- [ ] Map manual playbook coverage (`EX-032`, `EX-033`)
-- [ ] Confirm audit criteria and expected outputs
+- [x] Read both Evaluation feature docs and extract implementation/test references
+- [x] Map manual playbook coverage (`EX-032`, `EX-033`)
+- [x] Confirm audit criteria and expected outputs
 
 ### Phase 2: Core Implementation
-- [ ] Reconcile F-02 `eval_final_results` behavior mismatch (code or catalog)
-- [ ] Add handler-level tests for dashboard and ablation flows
-- [ ] Remove stale test-file references and finalize remediation tasks
+- [x] Reconcile F-02 `eval_final_results` behavior mismatch (code or catalog) — catalog claim corrected
+- [x] Add handler-level tests for dashboard and ablation flows — 16 tests in handler-eval-reporting.vitest.ts
+- [x] Remove stale test-file references and finalize remediation tasks — confirmed clean, no stale refs
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete — 97/97 tests pass
+- [x] Edge cases handled — channel normalization, recallK boundaries, disabled flag, DB unavailable
+- [x] Documentation updated — all spec docs synchronized
 <!-- /ANCHOR:phases -->
 
 ---

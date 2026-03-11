@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `007-evaluation` |
 <!-- /ANCHOR:metadata -->
@@ -167,8 +167,8 @@ Deliver a complete, structured audit for both Evaluation features so gaps are pr
 
 ## 10. OPEN QUESTIONS
 
-- Should F-02 be resolved by implementing `eval_final_results` querying or by correcting the catalog claim?
-- Should stale `retry.vitest.ts` references be removed immediately or replaced with new targeted tests in the same phase?
+- ~~Should F-02 be resolved by implementing `eval_final_results` querying or by correcting the catalog claim?~~ **RESOLVED**: Catalog claim corrected — dashboard only queries `eval_metric_snapshots` + `eval_channel_results`; `eval_final_results` reference was stale.
+- ~~Should stale `retry.vitest.ts` references be removed immediately or replaced with new targeted tests in the same phase?~~ **RESOLVED**: Grep confirmed 0 stale references in 07--evaluation catalog files; already clean.
 <!-- /ANCHOR:questions -->
 
 ---
