@@ -42,6 +42,14 @@ interface RecoveryResult {
   error?: string;
 }
 
+/**
+ * Optional database probe used during pending-file recovery.
+ * Return `true` when the original path already has a committed `memory_index` row.
+ * Return `false` to leave the `_pending` file in place for manual review.
+ * Throwing aborts recovery for that file and surfaces the error message in `RecoveryResult.error`.
+ */
+type IsCommittedCheck = (originalPath: string) => boolean;
+
 /* -------------------------------------------------------------
    3. MODULE STATE
 ----------------------------------------------------------------*/
@@ -314,7 +322,7 @@ function findPendingFiles(dirPath: string): string[] {
 /**
  * Recover a single pending file by renaming to its original path.
  */
-function recoverPendingFile(pendingPath: string): RecoveryResult {
+function recoverPendingFile(pendingPath: string, isCommittedInDb?: IsCommittedCheck): RecoveryResult {
   try {
     const originalPath = getOriginalPath(pendingPath);
 
@@ -327,6 +335,13 @@ function recoverPendingFile(pendingPath: string): RecoveryResult {
         fs.unlinkSync(pendingPath);
         return { path: pendingPath, recovered: false, error: 'Original is newer' };
       }
+    }
+
+    // Stale detection: if DB check is provided and row was never committed,
+    // log and leave for manual review instead of renaming.
+    if (isCommittedInDb && !isCommittedInDb(originalPath)) {
+      console.warn(`[transaction-manager] Stale pending file detected (no committed DB row): ${pendingPath}`);
+      return { path: pendingPath, recovered: false, error: 'Stale pending file: DB row not committed' };
     }
 
     // Rename pending to original
@@ -345,9 +360,9 @@ function recoverPendingFile(pendingPath: string): RecoveryResult {
 /**
  * Recover all pending files in a directory.
  */
-function recoverAllPendingFiles(dirPath: string): RecoveryResult[] {
+function recoverAllPendingFiles(dirPath: string, isCommittedInDb?: IsCommittedCheck): RecoveryResult[] {
   const pendingFiles = findPendingFiles(dirPath);
-  return pendingFiles.map(recoverPendingFile);
+  return pendingFiles.map((f) => recoverPendingFile(f, isCommittedInDb));
 }
 
 /* -------------------------------------------------------------
@@ -386,4 +401,5 @@ export type {
   TransactionMetrics,
   AtomicSaveResult,
   RecoveryResult,
+  IsCommittedCheck,
 };

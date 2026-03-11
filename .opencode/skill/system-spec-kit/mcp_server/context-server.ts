@@ -445,7 +445,15 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
       // Non-fatal: constitutional directory discovery failed
     }
 
-    const rawResults = scanLocations.flatMap(loc => transactionManager.recoverAllPendingFiles(loc));
+    // P1 FIX: Wire isCommittedInDb callback so stale pending files are detected at startup.
+    // AI-WHY: vectorIndex.getDb() is an initializing accessor — always returns a valid DB after initializeDb().
+    const database = vectorIndex.getDb();
+    const isCommittedInDb = (originalPath: string): boolean => {
+      const row = (database.prepare('SELECT 1 FROM memory_index WHERE file_path = ?') as import('better-sqlite3').Statement).get(originalPath);
+      return !!row;
+    };
+
+    const rawResults = scanLocations.flatMap(loc => transactionManager.recoverAllPendingFiles(loc, isCommittedInDb));
 
     // Aggregate per-file results into a summary
     const found = rawResults.length;
@@ -647,14 +655,14 @@ async function removeIndexedMemoriesForFile(filePath: string): Promise<void> {
   let deletedCount = 0;
   for (const row of rows) {
     if (typeof row.id === 'number') {
-      // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-      try {
-        recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher');
-      } catch (_histErr: unknown) {
-        // history recording is best-effort in file-watcher path
-      }
       if (vectorIndex.deleteMemory(row.id)) {
         deletedCount += 1;
+        // AI-WHY: Record DELETE history only after confirmed deletion.
+        try {
+          recordHistory(row.id, 'DELETE', filePath ?? null, null, 'mcp:file_watcher');
+        } catch (_histErr: unknown) {
+          // history recording is best-effort in file-watcher path
+        }
       }
     }
   }

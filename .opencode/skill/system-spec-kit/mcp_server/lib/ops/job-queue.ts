@@ -213,7 +213,7 @@ async function createIngestJob(args: {
 }): Promise<IngestJob> {
   const db = requireDb();
   const timestamp = nowIso();
-  const normalizedPaths = args.paths.map((entry) => String(entry)).filter((entry) => entry.length > 0);
+  const normalizedPaths = args.paths.map((entry) => String(entry).trim()).filter((entry) => entry.length > 0);
 
   if (normalizedPaths.length === 0) {
     throw new Error('paths must include at least one file path');

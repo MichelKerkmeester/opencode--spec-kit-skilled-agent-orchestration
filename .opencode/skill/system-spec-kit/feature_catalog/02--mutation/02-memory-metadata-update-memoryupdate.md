@@ -113,7 +113,7 @@ A pre-update hash snapshot is captured for the mutation ledger. Every update rec
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/tool-cache.vitest.ts` | Tool cache tests |

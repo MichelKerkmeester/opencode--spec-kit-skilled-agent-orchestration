@@ -196,7 +196,6 @@ tests/
 ├── schema-migration.vitest.ts             # Schema migrations
 ├── modularization.vitest.ts               # Module structure
 ├── preflight.vitest.ts                    # Preflight validation
-├── retry.vitest.ts                        # Retry logic
 ├── retry-manager.vitest.ts                # Retry manager
 ├── incremental-index.vitest.ts            # Incremental indexing
 ├── incremental-index-v2.vitest.ts         # Incremental indexing v2

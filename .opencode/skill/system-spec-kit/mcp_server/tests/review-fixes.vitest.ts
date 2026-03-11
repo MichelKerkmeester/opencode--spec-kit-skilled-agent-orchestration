@@ -17,6 +17,7 @@ import { describe, it, expect } from 'vitest';
 import {
   validateToolArgs,
   ToolSchemaValidationError,
+  MAX_INGEST_PATHS,
 } from '../schemas/tool-input-schemas';
 
 import { TOOL_DEFINITIONS } from '../tool-schemas';
@@ -76,16 +77,22 @@ describe('C1: ingest paths reject traversal sequences', () => {
 
 describe('H2: ingest paths array bounded at 50', () => {
   it('rejects more than 50 paths', () => {
-    const paths = Array.from({ length: 51 }, (_, i) => `/path/file${i}.md`);
+    const paths = Array.from(
+      { length: MAX_INGEST_PATHS + 1 },
+      (_, i) => `/path/file${i}.md`,
+    );
     expect(() =>
       validateToolArgs('memory_ingest_start', { paths }),
     ).toThrow();
   });
 
   it('accepts exactly 50 paths', () => {
-    const paths = Array.from({ length: 50 }, (_, i) => `/path/file${i}.md`);
+    const paths = Array.from(
+      { length: MAX_INGEST_PATHS },
+      (_, i) => `/path/file${i}.md`,
+    );
     const result = validateToolArgs('memory_ingest_start', { paths });
-    expect((result as { paths: string[] }).paths).toHaveLength(50);
+    expect((result as { paths: string[] }).paths).toHaveLength(MAX_INGEST_PATHS);
   });
 
   it('rejects empty paths array', () => {
@@ -125,7 +132,7 @@ describe('M5: ingest schema has minItems and minLength constraints', () => {
     const pathsProp = properties.paths;
 
     expect(pathsProp.minItems).toBe(1);
-    expect(pathsProp.maxItems).toBe(50);
+    expect(pathsProp.maxItems).toBe(MAX_INGEST_PATHS);
 
     const items = pathsProp.items as Record<string, unknown>;
     expect(items.minLength).toBe(1);

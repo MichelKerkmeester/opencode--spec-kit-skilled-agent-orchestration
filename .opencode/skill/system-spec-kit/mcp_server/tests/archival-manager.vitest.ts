@@ -2,7 +2,7 @@
 // TEST: ARCHIVAL MANAGER
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 import * as archivalManager from '../lib/cache/cognitive/archival-manager';
 import Database from 'better-sqlite3';
@@ -320,6 +320,70 @@ describe('Archival Manager (T059)', () => {
       archivalManager.archiveMemory(memory_id);
       const alreadyArchived = archivalManager.archiveMemory(memory_id);
       expect(alreadyArchived).toBe(false);
+    });
+
+    it('T059-011b: archiveMemory removes vec_memories row but preserves memory_index archive state', () => {
+      const oldDate = new Date();
+      oldDate.setDate(oldDate.getDate() - 100);
+
+      const result = insertTestMemory({
+        title: 'Vector Cleanup Target',
+        created_at: oldDate.toISOString(),
+        importance_tier: 'normal',
+      });
+      const memory_id = toMemoryId(result.lastInsertRowid);
+
+      requireDb().exec('CREATE TABLE IF NOT EXISTS vec_memories (embedding BLOB)');
+      requireDb()
+        .prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)')
+        .run(BigInt(memory_id), Buffer.from('test-vector'));
+
+      const beforeArchive = requireDb()
+        .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
+        .get(BigInt(memory_id));
+      expect(beforeArchive).toBeDefined();
+
+      const archiveResult = archivalManager.archiveMemory(memory_id);
+      expect(archiveResult).toBe(true);
+
+      const archivedRow = requireDb()
+        .prepare('SELECT is_archived FROM memory_index WHERE id = ?')
+        .get(memory_id) as { is_archived: number } | undefined;
+      expect(archivedRow).toBeDefined();
+      expect(archivedRow?.is_archived).toBe(1);
+
+      const vectorRow = requireDb()
+        .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
+        .get(BigInt(memory_id));
+      expect(vectorRow).toBeUndefined();
+    });
+
+    it('T059-011c: archiveMemory suppresses vec_memories no-such-table cleanup errors', () => {
+      const oldDate = new Date();
+      oldDate.setDate(oldDate.getDate() - 100);
+
+      const result = insertTestMemory({
+        title: 'No Vector Table Memory',
+        created_at: oldDate.toISOString(),
+        importance_tier: 'normal',
+      });
+      const memory_id = toMemoryId(result.lastInsertRowid);
+
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      try {
+        const archiveResult = archivalManager.archiveMemory(memory_id);
+        expect(archiveResult).toBe(true);
+
+        const hasVectorWarning = warnSpy.mock.calls.some(([message]) => {
+          const text = String(message ?? '');
+          return text.includes('Vector archive sync failed')
+            || text.includes('vec_memories')
+            || text.includes('no such table');
+        });
+        expect(hasVectorWarning).toBe(false);
+      } finally {
+        warnSpy.mockRestore();
+      }
     });
   });
 

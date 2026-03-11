@@ -2,9 +2,9 @@
 
 ## Current Reality
 
-The `memory_history` table records a per-memory audit trail of state changes. Each row captures the memory ID, the type of event (created, updated, merged, archived, restored), a timestamp, and optional metadata about the change. This provides a complete lifecycle history for any individual memory, enabling operations like "show me everything that happened to memory #42."
+The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor, and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
 
-The history log is populated by the save handler on creation, the update handler on modification, the session-learning handler on learning events, and the archival manager on tier transitions. The vector index schema module creates the `memory_history` table during database initialization. The cleanup-orphaned-vectors script uses the history table to find and remove orphaned entries when their parent memory no longer exists.
+The history log is written by mutation handlers (`memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`) and lower-level mutation helpers (`delete_memories`, `delete_memory_by_path`). `lib/storage/history.ts` owns schema-safe initialization/migration and read/write helpers, while `vector-index-schema.ts` ensures initialization runs at DB startup. The orphan cleanup script removes orphaned history rows when parent memories are missing.
 
 ## Source Files
 
@@ -12,18 +12,21 @@ The history log is populated by the save handler on creation, the update handler
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Schema creation for memory_history table |
-| `mcp_server/handlers/session-learning.ts` | Handler | Session learning history events |
-| `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge history tracking |
-| `mcp_server/lib/search/vector-index-mutations.ts` | Lib | Index mutations writing history |
-| `scripts/memory/cleanup-orphaned-vectors.ts` | Script | Orphaned history cleanup |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/history.ts` | Lib | History table init/migration and `recordHistory`/query helpers |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` | Lib | DB startup initialization for `memory_history` |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts` | Handler | Writes `ADD` events in save flow |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-update.ts` | Handler | Writes `UPDATE` events in update flow |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-delete.ts` | Handler | Writes `DELETE` events in delete flow |
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-bulk-delete.ts` | Handler | Writes `DELETE` events for bulk tier deletion |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts` | Lib | Writes `DELETE` events for mutation API delete helpers |
+| `.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts` | Script | Removes orphaned `memory_history` rows and orphaned vectors |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/handler-session-learning.vitest.ts` | Session learning tests |
-| `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/history.vitest.ts` | History schema migration, actor format coverage, and boundary validation |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts` | Mutation handler integration paths that write history events |
 
 ## Source Metadata
 

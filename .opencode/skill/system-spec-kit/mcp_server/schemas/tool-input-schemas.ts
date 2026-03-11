@@ -43,6 +43,9 @@ const pathString = (minLength = 0) => {
 };
 const optionalPathString = (minLength = 0) => pathString(minLength).optional();
 
+/** Shared max paths constant — used by both schema and handler. */
+export const MAX_INGEST_PATHS = 50;
+
 const intentEnum = z.enum([
   'add_feature',
   'fix_bug',
@@ -180,7 +183,7 @@ const memoryValidateSchema = getSchema({
   notes: z.string().optional(),
 });
 
-const memoryBulkDeleteSchema = getSchema({
+export const memoryBulkDeleteSchema = getSchema({
   tier: importanceTierEnum,
   specFolder: optionalPathString(),
   confirm: z.boolean(),
@@ -307,7 +310,7 @@ const memoryGetLearningHistorySchema = getSchema({
 });
 
 const memoryIngestStartSchema = getSchema({
-  paths: z.array(pathString(1)).min(1).max(50),
+  paths: z.array(pathString(1)).min(1).max(MAX_INGEST_PATHS),
   specFolder: optionalPathString(),
 });
 

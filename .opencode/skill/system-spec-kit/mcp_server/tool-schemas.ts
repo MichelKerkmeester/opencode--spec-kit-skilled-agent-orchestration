@@ -5,6 +5,8 @@
 // Extracted from context-server.ts for maintainability (T303).
 // ---------------------------------------------------------------
 
+import { MAX_INGEST_PATHS } from './schemas/tool-input-schemas';
+
 export {
   ToolSchemaValidationError,
   formatZodError,
@@ -408,8 +410,8 @@ const memoryIngestStart: ToolDefinition = {
         type: 'array',
         items: { type: 'string', minLength: 1 },
         minItems: 1,
-        maxItems: 50,
-        description: 'Absolute file paths to ingest (required, at least one, max 50).',
+        maxItems: MAX_INGEST_PATHS,
+        description: `Absolute file paths to ingest (required, at least one, max ${MAX_INGEST_PATHS}).`,
       },
       specFolder: {
         type: 'string',

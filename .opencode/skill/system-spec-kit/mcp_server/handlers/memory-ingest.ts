@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { ALLOWED_BASE_PATHS, DATABASE_PATH, checkDatabaseUpdated } from '../core';
+import { MAX_INGEST_PATHS } from '../schemas/tool-input-schemas';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
 import {
   createIngestJob,
@@ -32,7 +33,6 @@ interface MemoryIngestCancelArgs {
   jobId: string;
 }
 
-const MAX_INGEST_PATHS = 100;
 const MAX_PATH_LENGTH = 500;
 
 // Codex fix: nanoid-style 12-char alphanumeric ID (URL-safe, no UUID dependency).

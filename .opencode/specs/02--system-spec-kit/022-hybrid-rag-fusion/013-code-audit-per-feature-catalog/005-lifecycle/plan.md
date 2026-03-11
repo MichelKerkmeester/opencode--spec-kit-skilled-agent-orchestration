@@ -39,14 +39,14 @@ The lifecycle audit phase reviews seven lifecycle features and captures PASS/WAR
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,19 +72,19 @@ Lifecycle feature documents feed the audit review, findings are triaged into pri
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Inventory all lifecycle features and source/test references
-- [ ] Validate audit criteria and severity taxonomy
-- [ ] Establish playbook scenario baseline EX-023..EX-027
+- [x] Inventory all lifecycle features and source/test references
+- [x] Validate audit criteria and severity taxonomy
+- [x] Establish playbook scenario baseline EX-023..EX-027
 
 ### Phase 2: Core Implementation
-- [ ] Convert methodology outputs into prioritized T### lifecycle tasks
-- [ ] Capture fail/warn findings with explicit source citations
-- [ ] Align feature findings to template-structured requirements/checklist entries
+- [x] Convert methodology outputs into prioritized T### lifecycle tasks
+- [x] Capture fail/warn findings with explicit source citations
+- [x] Align feature findings to template-structured requirements/checklist entries
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete
+- [x] Edge cases handled
+- [x] Documentation updated
 <!-- /ANCHOR:phases -->
 
 ---

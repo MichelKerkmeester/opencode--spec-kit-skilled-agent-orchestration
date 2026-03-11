@@ -230,7 +230,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/tests/reranker.vitest.ts` | Reranker dispatch tests |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |

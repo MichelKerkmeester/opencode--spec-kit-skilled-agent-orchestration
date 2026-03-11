@@ -376,6 +376,23 @@ function syncBm25OnArchive(memoryId: number): void {
   }
 }
 
+// AI-WHY: Vector-only deletion — removes the vec_memories embedding row without
+// touching memory_index or ancillary tables. This preserves the archived row
+// (is_archived=1) so unarchive can still find and restore it.
+function syncVectorOnArchive(memoryId: number): void {
+  if (!db) return;
+
+  try {
+    db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
+  } catch (error: unknown) {
+    // Expected to fail when sqlite-vec is not loaded or vec_memories doesn't exist
+    const msg = error instanceof Error ? error.message : String(error);
+    if (!msg.includes('no such table')) {
+      console.warn(`[archival-manager] Vector archive sync failed: ${msg}`);
+    }
+  }
+}
+
 function syncBm25OnUnarchive(memoryId: number): void {
   const bm25 = getBm25Index();
   if (!db || !bm25 || !bm25.isBm25Enabled()) return;
@@ -407,6 +424,13 @@ function syncBm25OnUnarchive(memoryId: number): void {
   }
 }
 
+function syncVectorOnUnarchive(memoryId: number): void {
+  // AI-WHY: Re-embedding requires the original text content and an embedding provider call.
+  // On unarchive, we log a notice that vectors need regeneration. The next memory_index_scan
+  // or manual re-index will repopulate the vector entry.
+  console.warn(`[archival-manager] Memory ${memoryId} unarchived: vector re-embedding deferred to next index scan`);
+}
+
 function archiveMemory(memoryId: number): boolean {
   if (!db) return false;
 
@@ -423,6 +447,7 @@ function archiveMemory(memoryId: number): boolean {
     if (success) {
       archivalStats.totalArchived++;
       syncBm25OnArchive(memoryId);
+      syncVectorOnArchive(memoryId);
       saveArchivalStats();
     }
     return success;
@@ -460,6 +485,7 @@ function archiveBatch(memoryIds: number[]): { archived: number; failed: number }
         if (success) {
           archivalStats.totalArchived++;
           syncBm25OnArchive(id);
+          syncVectorOnArchive(id);
           archived++;
         } else {
           failed++;
@@ -498,6 +524,7 @@ function unarchiveMemory(memoryId: number): boolean {
     if (success) {
       archivalStats.totalUnarchived++;
       syncBm25OnUnarchive(memoryId);
+      syncVectorOnUnarchive(memoryId);
       saveArchivalStats();
     }
     return success;

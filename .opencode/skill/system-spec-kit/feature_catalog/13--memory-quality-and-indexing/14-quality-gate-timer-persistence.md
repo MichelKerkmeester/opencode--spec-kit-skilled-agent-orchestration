@@ -58,7 +58,7 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |

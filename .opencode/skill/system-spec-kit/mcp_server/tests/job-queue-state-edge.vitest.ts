@@ -1,0 +1,215 @@
+// ---------------------------------------------------------------
+// TEST: Ingest Job Queue State + Edge Cases (T005b)
+// ---------------------------------------------------------------
+
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
+
+import Database from 'better-sqlite3';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+type JobQueueModule = typeof import('../lib/ops/job-queue');
+
+const tempFiles: string[] = [];
+const databases: Array<Database.Database> = [];
+
+function createTempFile(content = 'job queue edge test'): string {
+  const filePath = path.join(
+    os.tmpdir(),
+    `spec-kit-job-queue-state-edge-${Date.now()}-${Math.random().toString(36).slice(2)}.md`
+  );
+  fs.writeFileSync(filePath, content, 'utf8');
+  tempFiles.push(filePath);
+  return filePath;
+}
+
+function createTestDb(): Database.Database {
+  const db = new Database(':memory:');
+  db.exec(`
+    CREATE TABLE ingest_jobs (
+      id TEXT PRIMARY KEY,
+      state TEXT,
+      spec_folder TEXT,
+      paths_json TEXT,
+      files_total INTEGER,
+      files_processed INTEGER,
+      errors_json TEXT,
+      created_at TEXT,
+      updated_at TEXT
+    )
+  `);
+  databases.push(db);
+  return db;
+}
+
+async function loadJobQueueModule(db: Database.Database): Promise<JobQueueModule> {
+  vi.resetModules();
+  vi.doMock('../utils', () => ({
+    requireDb: () => db,
+    toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
+  }));
+  return await import('../lib/ops/job-queue');
+}
+
+async function waitFor(
+  predicate: () => boolean,
+  options: { timeoutMs?: number; intervalMs?: number } = {}
+): Promise<void> {
+  const timeoutMs = options.timeoutMs ?? 3000;
+  const intervalMs = options.intervalMs ?? 20;
+  const deadline = Date.now() + timeoutMs;
+
+  while (Date.now() < deadline) {
+    if (predicate()) {
+      return;
+    }
+    await delay(intervalMs);
+  }
+
+  throw new Error(`Timed out waiting for condition after ${timeoutMs}ms`);
+}
+
+afterEach(() => {
+  while (tempFiles.length > 0) {
+    const filePath = tempFiles.pop();
+    if (filePath) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch {
+        // ignore cleanup failures
+      }
+    }
+  }
+
+  while (databases.length > 0) {
+    const db = databases.pop();
+    if (db) {
+      db.close();
+    }
+  }
+
+  vi.resetModules();
+  vi.restoreAllMocks();
+});
+
+describe('ingest job queue state + edge tests (T005b)', () => {
+  it('T005b-Q1: getIngestProgressPercent returns 0 when filesTotal is 0', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestProgressPercent({ filesProcessed: 5, filesTotal: 0 })).toBe(0);
+  });
+
+  it('T005b-Q2: getIngestProgressPercent returns 100 when all files are processed', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestProgressPercent({ filesProcessed: 8, filesTotal: 8 })).toBe(100);
+  });
+
+  it('T005b-Q3: getIngestProgressPercent returns 50 when half of files are processed', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestProgressPercent({ filesProcessed: 3, filesTotal: 6 })).toBe(50);
+  });
+
+  it('T005b-Q3b: getIngestProgressPercent clamps above 100 to 100', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestProgressPercent({ filesProcessed: 7, filesTotal: 3 })).toBe(100);
+  });
+
+  it('T005b-Q3c: getIngestProgressPercent clamps negative progress to 0', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestProgressPercent({ filesProcessed: -1, filesTotal: 3 })).toBe(0);
+  });
+
+  it('T005b-Q4: createIngestJob throws when paths array is empty', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    await expect(mod.createIngestJob({
+      id: 'job_empty_paths',
+      paths: [],
+      specFolder: 'specs/test',
+    })).rejects.toThrow('paths must include at least one file path');
+  });
+
+  it('T005b-Q5: createIngestJob throws when whitespace-only inputs normalize to empty paths', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    // Pass raw whitespace strings — createIngestJob should reject these
+    // (either by trimming internally or by failing on empty-after-filter)
+    await expect(mod.createIngestJob({
+      id: 'job_whitespace_paths',
+      paths: ['   ', '\t', '\n'],
+      specFolder: 'specs/test',
+    })).rejects.toThrow();
+  });
+
+  it('T005b-Q6: getIngestJob returns null when job is not found', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.getIngestJob('job_missing')).toBeNull();
+  });
+
+  it('T005b-Q7: cancelIngestJob on terminal state throws invalid transition', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+    const filePath = createTempFile('terminal-state-file');
+
+    const job = await mod.createIngestJob({
+      id: 'job_terminal_complete',
+      paths: [filePath],
+      specFolder: 'specs/test',
+    });
+
+    db.prepare(`
+      UPDATE ingest_jobs
+      SET state = 'complete', files_processed = 1, updated_at = ?
+      WHERE id = ?
+    `).run(new Date().toISOString(), job.id);
+
+    await expect(mod.cancelIngestJob(job.id)).rejects.toThrow('Invalid ingest job state transition');
+  });
+
+  it('T005b-Q8: resetIncompleteJobsToQueued returns empty array when no incomplete jobs exist', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+
+    expect(mod.resetIncompleteJobsToQueued()).toEqual([]);
+  });
+
+  it('T005b-Q9: enqueueIngestJob ignores duplicate enqueues for the same job ID', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+    const processFile = vi.fn(async () => undefined);
+
+    mod.initIngestJobQueue({ processFile });
+
+    const filePath = createTempFile('duplicate-enqueue');
+    const job = await mod.createIngestJob({
+      id: 'job_duplicate_enqueue',
+      paths: [filePath],
+      specFolder: 'specs/test',
+    });
+
+    mod.enqueueIngestJob(job.id);
+    mod.enqueueIngestJob(job.id);
+    mod.enqueueIngestJob(job.id);
+
+    await waitFor(() => mod.getIngestJob(job.id)?.state === 'complete');
+
+    const updated = mod.getIngestJob(job.id);
+    expect(updated?.filesProcessed).toBe(1);
+    expect(processFile).toHaveBeenCalledTimes(1);
+  });
+});

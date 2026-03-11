@@ -120,7 +120,7 @@
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
 | `mcp_server/tests/reranker.vitest.ts` | Reranker dispatch tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |

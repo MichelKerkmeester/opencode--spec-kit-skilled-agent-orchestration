@@ -60,7 +60,7 @@ Correction signals matter because they indicate the user is fixing a prior misun
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/trigger-config-extended.vitest.ts` | Trigger config extended |
