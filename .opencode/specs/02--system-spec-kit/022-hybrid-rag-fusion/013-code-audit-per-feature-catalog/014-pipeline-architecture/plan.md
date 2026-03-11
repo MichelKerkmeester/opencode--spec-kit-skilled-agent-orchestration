@@ -46,9 +46,9 @@ This plan repairs the pipeline-architecture audit folder so the Level 2 core doc
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -79,14 +79,14 @@ Feature-catalog source files feed the approved F01-F21 mapping, which feeds the 
 - [x] Define the self-contained evidence rubric and scratch cleanup approach
 
 ### Phase 2: Core Documentation Fixes
-- [ ] Add a 21-feature traceability matrix without changing T001-T020
-- [ ] Update `spec.md` and `checklist.md` to use truthful, evidence-backed language
-- [ ] Resolve the phase-dependency inconsistency so all planning sections describe the same three phases
+- [x] Add a 21-feature traceability matrix without changing T001-T020
+- [x] Update `spec.md` and `checklist.md` to use truthful, evidence-backed language
+- [x] Resolve the phase-dependency inconsistency so all planning sections describe the same three phases
 
 ### Phase 3: Verification
-- [ ] Remove redundant scratch traceability inventory if core docs fully replace it
-- [ ] Run `validate.sh` and fix any ERROR-level issues
-- [ ] Confirm no placeholders remain and checklist counts match the actual checkboxes
+- [x] Remove redundant scratch traceability inventory if core docs fully replace it
+- [x] Run `validate.sh` and fix any ERROR-level issues
+- [x] Confirm no placeholders remain and checklist counts match the actual checkboxes
 <!-- /ANCHOR:phases -->
 
 ---

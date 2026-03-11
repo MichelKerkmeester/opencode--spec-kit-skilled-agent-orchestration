@@ -133,6 +133,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     async function loadAtomicSaveHarness(options: {
       parseMemoryFileMock?: ReturnType<typeof vi.fn>;
       checkExistingRowMock?: ReturnType<typeof vi.fn>;
+      runQualityGateMock?: ReturnType<typeof vi.fn>;
+      isSaveQualityGateEnabledMock?: ReturnType<typeof vi.fn>;
+      embeddingPipelineModuleFactory?: () => Record<string, unknown>;
+      peOrchestrationModuleFactory?: () => Record<string, unknown>;
     } = {}) {
       vi.resetModules();
 
@@ -147,6 +151,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       }));
       const checkExistingRowMock = options.checkExistingRowMock
         ?? vi.fn(() => buildIndexResult());
+      const runQualityGateMock = options.runQualityGateMock
+        ?? vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
+      const isSaveQualityGateEnabledMock = options.isSaveQualityGateEnabledMock
+        ?? vi.fn(() => false);
 
       const transactionManagerActual = await vi.importActual<typeof import('../lib/storage/transaction-manager')>(
         '../lib/storage/transaction-manager'
@@ -194,6 +202,32 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         };
       });
 
+      if (options.embeddingPipelineModuleFactory) {
+        vi.doMock('../handlers/save/embedding-pipeline', options.embeddingPipelineModuleFactory);
+      }
+
+      if (options.peOrchestrationModuleFactory) {
+        vi.doMock('../handlers/save/pe-orchestration', options.peOrchestrationModuleFactory);
+      }
+
+      vi.doMock('../lib/validation/save-quality-gate', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/validation/save-quality-gate')>();
+        return {
+          ...actual,
+          runQualityGate: runQualityGateMock,
+          isQualityGateEnabled: vi.fn(() => true),
+        };
+      });
+
+      vi.doMock('../lib/search/search-flags', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/search/search-flags')>();
+        return {
+          ...actual,
+          isSaveQualityGateEnabled: isSaveQualityGateEnabledMock,
+          isQualityLoopEnabled: vi.fn(() => false),
+        };
+      });
+
       vi.doMock('../utils', async (importOriginal) => {
         const actual = await importOriginal<typeof import('../utils')>();
         return {
@@ -224,13 +258,17 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         fs.rmSync(dir, { recursive: true, force: true });
       }
 
-      vi.doUnmock('../lib/storage/transaction-manager');
-      vi.doUnmock('../lib/parsing/memory-parser');
-      vi.doUnmock('../handlers/quality-loop');
-      vi.doUnmock('../handlers/save/dedup');
-      vi.doUnmock('../utils');
-      vi.restoreAllMocks();
-      vi.resetModules();
+        vi.doUnmock('../lib/storage/transaction-manager');
+        vi.doUnmock('../lib/parsing/memory-parser');
+        vi.doUnmock('../handlers/quality-loop');
+        vi.doUnmock('../handlers/save/dedup');
+        vi.doUnmock('../handlers/save/embedding-pipeline');
+        vi.doUnmock('../handlers/save/pe-orchestration');
+        vi.doUnmock('../lib/validation/save-quality-gate');
+        vi.doUnmock('../lib/search/search-flags');
+        vi.doUnmock('../utils');
+        vi.restoreAllMocks();
+        vi.resetModules();
     });
 
     it('retries when indexMemoryFile throws once then succeeds', async () => {
@@ -337,6 +375,79 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
       expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
       expect(fs.existsSync(filePath)).toBe(false);
+    });
+
+    it('does not persist embedding cache writes before hard quality-gate rejection', async () => {
+      const persistPendingEmbeddingCacheWriteMock = vi.fn();
+      const runQualityGateMock = vi.fn(() => ({
+        pass: false,
+        warnOnly: false,
+        reasons: ['signal density too low'],
+        layers: { semantic: { pass: false } },
+      }));
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        runQualityGateMock,
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: {
+              cacheKey: 'cache-key',
+              modelId: 'test-model',
+              embeddingBuffer: Buffer.from([1, 2, 3]),
+              dimensions: 3,
+            },
+          })),
+          persistPendingEmbeddingCacheWrite: persistPendingEmbeddingCacheWriteMock,
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('quality-gate-rejected.md');
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('rejected');
+      expect(runQualityGateMock).toHaveBeenCalledTimes(1);
+      expect(persistPendingEmbeddingCacheWriteMock).not.toHaveBeenCalled();
+    });
+
+    it('persists deferred embedding cache write after quality gate passes', async () => {
+      const persistPendingEmbeddingCacheWriteMock = vi.fn();
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        runQualityGateMock: vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} })),
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: {
+              cacheKey: 'cache-key',
+              modelId: 'test-model',
+              embeddingBuffer: Buffer.from([1, 2, 3]),
+              dimensions: 3,
+            },
+          })),
+          persistPendingEmbeddingCacheWrite: persistPendingEmbeddingCacheWriteMock,
+        }),
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: vi.fn(() => ({
+            decision: { action: 'CREATE', similarity: 0 },
+            earlyReturn: buildIndexResult({ status: 'indexed', id: 401 }),
+          })),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('quality-gate-passed.md');
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('indexed');
+      expect(persistPendingEmbeddingCacheWriteMock).toHaveBeenCalledTimes(1);
     });
   });
 });

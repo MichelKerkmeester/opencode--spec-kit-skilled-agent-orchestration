@@ -15,6 +15,12 @@ export interface EmbeddingResult {
   embedding: Float32Array | null;
   status: 'success' | 'pending';
   failureReason: string | null;
+  pendingCacheWrite?: {
+    cacheKey: string;
+    modelId: string;
+    embeddingBuffer: Buffer;
+    dimensions: number;
+  };
 }
 
 function computeCacheKey(content: string, model: string): string {
@@ -60,10 +66,19 @@ export async function generateOrCacheEmbedding(
         embedding = await embeddings.generateDocumentEmbedding(normalizedContent);
         if (embedding) {
           embeddingStatus = 'success';
-          // Store in persistent cache for future re-index
           const embBuf = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
-          storeEmbedding(database, cacheKey, modelId, embBuf, embedding.length);
-          console.error(`[memory-save] Embedding cache MISS+STORE for ${path.basename(filePath)}`);
+          console.error(`[memory-save] Embedding cache MISS+GENERATE for ${path.basename(filePath)}`);
+          return {
+            embedding,
+            status: embeddingStatus,
+            failureReason: embeddingFailureReason,
+            pendingCacheWrite: {
+              cacheKey,
+              modelId,
+              embeddingBuffer: embBuf,
+              dimensions: embedding.length,
+            },
+          };
         } else {
           embeddingFailureReason = 'Embedding generation returned null';
           console.warn(`[memory-save] Embedding failed for ${path.basename(filePath)}: ${embeddingFailureReason}`);
@@ -81,4 +96,23 @@ export async function generateOrCacheEmbedding(
     status: embeddingStatus,
     failureReason: embeddingFailureReason,
   };
+}
+
+export function persistPendingEmbeddingCacheWrite(
+  database: Database.Database,
+  pendingCacheWrite: EmbeddingResult['pendingCacheWrite'],
+  filePath: string,
+): void {
+  if (!pendingCacheWrite) {
+    return;
+  }
+
+  storeEmbedding(
+    database,
+    pendingCacheWrite.cacheKey,
+    pendingCacheWrite.modelId,
+    pendingCacheWrite.embeddingBuffer,
+    pendingCacheWrite.dimensions,
+  );
+  console.error(`[memory-save] Embedding cache STORE after quality gate for ${path.basename(filePath)}`);
 }

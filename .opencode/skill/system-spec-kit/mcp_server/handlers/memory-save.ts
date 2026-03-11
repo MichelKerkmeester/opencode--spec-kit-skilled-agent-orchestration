@@ -60,7 +60,7 @@ import type {
 } from './save';
 import { applyPostInsertMetadata } from './save/db-helpers';
 import { checkExistingRow, checkContentHashDedup } from './save/dedup';
-import { generateOrCacheEmbedding } from './save/embedding-pipeline';
+import { generateOrCacheEmbedding, persistPendingEmbeddingCacheWrite } from './save/embedding-pipeline';
 import { evaluateAndApplyPeDecision } from './save/pe-orchestration';
 import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
 import { createMemoryRecord } from './save/create-record';
@@ -182,7 +182,12 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
   // EMBEDDING GENERATION (with persistent SQLite cache — REQ-S2-001)
   const embeddingResult = await generateOrCacheEmbedding(database, parsed, filePath, asyncEmbedding);
-  const { embedding, status: embeddingStatus, failureReason: embeddingFailureReason } = embeddingResult;
+  const {
+    embedding,
+    status: embeddingStatus,
+    failureReason: embeddingFailureReason,
+    pendingCacheWrite,
+  } = embeddingResult;
 
   // -- Sprint 4: TM-04 Quality Gate (before PE gating, after embedding) --
   if (isSaveQualityGateEnabled() && isQualityGateEnabled()) {
@@ -233,6 +238,8 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       // AI-GUARD: Quality gate errors must not block saves
     }
   }
+
+  persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, filePath);
 
   // PE GATING
   const peResult = evaluateAndApplyPeDecision(
