@@ -82,7 +82,6 @@ interface ScanResults {
   unchanged: number;
   failed: number;
   skipped_mtime: number;
-  skipped_hash: number;
   mtimeUpdates: number;
   staleDeleted: number;
   staleDeleteFailed: number;
@@ -95,7 +94,7 @@ interface ScanResults {
   incremental: {
     enabled: boolean;
     fast_path_skips: number;
-    hash_checks: number;
+    mtime_changed: number;
   };
   dedup: {
     inputTotal: number;
@@ -288,7 +287,6 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     unchanged: 0,
     failed: 0,
     skipped_mtime: 0,
-    skipped_hash: 0,
     mtimeUpdates: 0,
     staleDeleted: 0,
     staleDeleteFailed: 0,
@@ -301,7 +299,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     incremental: {
       enabled: incremental && !force,
       fast_path_skips: 0,
-      hash_checks: 0
+      mtime_changed: 0
     },
     dedup: {
       inputTotal: mergedFiles.length,
@@ -324,9 +322,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     results.unchanged = categorized.toSkip.length;
     results.skipped_mtime = categorized.toSkip.length;
-    results.skipped_hash = 0;
     results.incremental.fast_path_skips = categorized.toSkip.length;
-    results.incremental.hash_checks = categorized.toUpdate.length;
+    results.incremental.mtime_changed = categorized.toUpdate.length;
 
     for (const unchangedPath of categorized.toSkip) {
       if (constitutionalSet.has(getCachedKey(unchangedPath))) {
@@ -336,7 +333,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     const categorizeTime = Date.now() - startCategorize;
     console.error(`[memory-index-scan] Incremental mode: ${filesToIndex.length}/${files.length} files need indexing (categorized in ${categorizeTime}ms)`);
-    console.error(`[memory-index-scan] Fast-path skips: ${results.incremental.fast_path_skips}, Hash checks: ${results.incremental.hash_checks}`);
+    console.error(`[memory-index-scan] Fast-path skips: ${results.incremental.fast_path_skips}, Mtime changed: ${results.incremental.mtime_changed}`);
   }
 
   if (filesToDelete.length > 0) {

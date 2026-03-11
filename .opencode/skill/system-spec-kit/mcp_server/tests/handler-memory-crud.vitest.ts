@@ -256,16 +256,16 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
       expect(() => handler.setEmbeddingModelReady(false)).not.toThrow();
     });
 
-    it('T519-H3: Invalid reportMode throws', async () => {
-      await expect(
-        handler.handleMemoryHealth({ reportMode: 'not-valid' } as unknown as HealthArgs)
-      ).rejects.toThrow(/Invalid reportMode/);
+    it('T519-H3: Invalid reportMode returns error response', async () => {
+      const result = await handler.handleMemoryHealth({ reportMode: 'not-valid' } as unknown as HealthArgs);
+      const parsed = JSON.parse(result.content[0].text);
+      expect(parsed.data?.error).toMatch(/Invalid reportMode/);
     });
 
-    it('T519-H4: Invalid limit throws', async () => {
-      await expect(
-        handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 0 })
-      ).rejects.toThrow(/limit must be a positive number/);
+    it('T519-H4: Invalid limit returns error response', async () => {
+      const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 0 });
+      const parsed = JSON.parse(result.content[0].text);
+      expect(parsed.data?.error).toMatch(/limit must be a positive number/);
     });
   });
 });

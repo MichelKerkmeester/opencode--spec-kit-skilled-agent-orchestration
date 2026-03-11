@@ -215,19 +215,49 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   } = args ?? {};
 
   if (reportMode !== 'full' && reportMode !== DIVERGENT_ALIAS_REPORT_MODE) {
-    throw new Error(`Invalid reportMode: ${String(reportMode)}. Expected "full" or "${DIVERGENT_ALIAS_REPORT_MODE}"`);
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: `Invalid reportMode: ${String(reportMode)}. Expected "full" or "${DIVERGENT_ALIAS_REPORT_MODE}"`,
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   if (specFolder !== undefined && typeof specFolder !== 'string') {
-    throw new Error('specFolder must be a string');
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: 'specFolder must be a string',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   if (typeof autoRepair !== 'boolean') {
-    throw new Error('autoRepair must be a boolean');
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: 'autoRepair must be a boolean',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   if (typeof confirmed !== 'boolean') {
-    throw new Error('confirmed must be a boolean');
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: 'confirmed must be a boolean',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   if (rawLimit !== undefined && (!Number.isFinite(rawLimit) || rawLimit <= 0)) {
-    throw new Error('limit must be a positive number');
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: 'limit must be a positive number',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   const safeLimit = Math.max(1, Math.min(Math.floor(rawLimit || DEFAULT_DIVERGENT_ALIAS_LIMIT), MAX_DIVERGENT_ALIAS_LIMIT));
 

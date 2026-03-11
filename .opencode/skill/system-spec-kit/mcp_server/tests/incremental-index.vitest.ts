@@ -98,7 +98,7 @@ describe('Incremental Indexing (T064-T066) [deferred - requires DB test fixtures
       expect(true).toBe(true);
     });
 
-    it('should track hash_checks correctly', () => {
+    it('should track mtime_changed correctly', () => {
       expect(true).toBe(true);
     });
   });

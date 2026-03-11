@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `003-discovery` |
 <!-- /ANCHOR:metadata -->
@@ -166,8 +166,8 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 
 ## 10. OPEN QUESTIONS
 
-- Should stale `retry.vitest.ts` references be removed from all related feature catalog files in the same follow-up change?
-- Should `requestId` be included in successful `memory_health` responses as well as all error responses?
+- ~~Should stale `retry.vitest.ts` references be removed from all related feature catalog files in the same follow-up change?~~ **Resolved**: Yes, removed from all 3 Discovery catalog files.
+- Should `requestId` be included in successful `memory_health` responses as well as all error responses? **Deferred**: Not in scope for this phase. Currently included in all error responses only.
 <!-- /ANCHOR:questions -->
 
 ---

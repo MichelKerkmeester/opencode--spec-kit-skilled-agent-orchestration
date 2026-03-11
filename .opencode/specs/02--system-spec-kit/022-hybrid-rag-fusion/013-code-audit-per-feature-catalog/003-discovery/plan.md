@@ -39,14 +39,14 @@ This Discovery phase plan operationalizes the audit across three catalog feature
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement clear and scope documented
-- [ ] Success criteria measurable
-- [ ] Dependencies identified
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
+- [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -71,19 +71,19 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Inventory Discovery feature definitions and source/test references
-- [ ] Confirm playbook scenario mappings (EX-018 to EX-020)
-- [ ] Prepare execution context for remediation changes
+- [x] Inventory Discovery feature definitions and source/test references
+- [x] Confirm playbook scenario mappings (EX-018 to EX-020)
+- [x] Prepare execution context for remediation changes
 
 ### Phase 2: Core Implementation
-- [ ] Review handler correctness and behavior against documented reality
-- [ ] Translate P1/P2 findings into implementation tasks
-- [ ] Define targeted test additions for identified gaps
+- [x] Review handler correctness and behavior against documented reality
+- [x] Translate P1/P2 findings into implementation tasks
+- [x] Define targeted test additions for identified gaps
 
 ### Phase 3: Verification
-- [ ] Validate findings-to-task traceability across all three features
-- [ ] Confirm test strategy covers edge/error scenarios from findings
-- [ ] Synchronize spec, plan, tasks, and checklist artifacts
+- [x] Validate findings-to-task traceability across all three features
+- [x] Confirm test strategy covers edge/error scenarios from findings
+- [x] Synchronize spec, plan, tasks, and checklist artifacts
 <!-- /ANCHOR:phases -->
 
 ---

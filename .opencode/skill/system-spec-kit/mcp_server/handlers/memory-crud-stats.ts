@@ -146,7 +146,6 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       const scoringOptions = {
         includeArchived,
         excludePatterns,
-        limit: safeLimit,
       };
 
       let scoredFolders: Record<string, unknown>[];
@@ -179,9 +178,11 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
             score: 0,
             isArchived: folderScoring.isArchived(folder),
           }))
-          .sort((a, b) => b.count - a.count)
-          .slice(0, safeLimit);
+          .sort((a, b) => b.count - a.count);
       }
+
+      totalSpecFolders = scoredFolders.length;
+      scoredFolders = scoredFolders.slice(0, safeLimit);
 
       if (includeScores || folderRanking === 'composite') {
         topFolders = scoredFolders.map((folder: Record<string, unknown>) => ({
@@ -207,8 +208,6 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
           isArchived: folder.isArchived,
         }));
       }
-
-      totalSpecFolders = scoredFolders.length;
     }
   } catch (dbErr: unknown) {
     const message = toErrorMessage(dbErr);
@@ -221,7 +220,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
     });
   }
 
-  const summary = `Memory system: ${total} memories across ${topFolders.length} folders`;
+  const summary = `Memory system: ${total} memories across ${totalSpecFolders} folders`;
   const hints: string[] = [];
 
   if (!vectorIndex.isVectorSearchAvailable()) {

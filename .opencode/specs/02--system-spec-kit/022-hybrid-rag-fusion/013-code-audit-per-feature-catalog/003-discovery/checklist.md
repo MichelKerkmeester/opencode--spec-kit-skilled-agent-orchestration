@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [ ] CHK-001 [P0] Discovery findings for F-01, F-02, and F-03 are documented in `spec.md`
-- [ ] CHK-002 [P0] Remediation tasks are defined in `tasks.md` with T### numbering
-- [ ] CHK-003 [P1] Source files and playbook mappings (EX-018 to EX-020) are verified
+- [x] CHK-001 [P0] Discovery findings for F-01, F-02, and F-03 are documented in `spec.md`
+- [x] CHK-002 [P0] Remediation tasks are defined in `tasks.md` with T### numbering
+- [x] CHK-003 [P1] Source files and playbook mappings (EX-018 to EX-020) are verified
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,10 +41,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] `memory_stats` summary uses accurate folder total semantics (`totalSpecFolders`)
-- [ ] CHK-011 [P0] `memory_health` includes `requestId` consistently in error responses
-- [ ] CHK-012 [P1] Error hint sanitization preserves safe, useful diagnostics
-- [ ] CHK-013 [P1] Follow-up changes align with sk-code--opencode TypeScript patterns
+- [x] CHK-010 [P0] `memory_stats` summary uses accurate folder total semantics (`totalSpecFolders`) — fixed: removed `limit` from `computeFolderScores`, set `totalSpecFolders` before `.slice()`
+- [x] CHK-011 [P0] `memory_health` includes `requestId` consistently in error responses — fixed: all 5 validation paths return `createMCPErrorResponse` with `details: { requestId }`
+- [x] CHK-012 [P1] Error hint sanitization preserves safe, useful diagnostics — verified: `sanitizeErrorForHint` strips paths, keeps message
+- [x] CHK-013 [P1] Follow-up changes align with sk-code--opencode TypeScript patterns — verified by GPT-5.3-codex review
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,10 +52,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] Discovery success criteria are validated for all 3 features
-- [ ] CHK-021 [P0] `memory_list` edge-case tests cover pagination hint and sort fallback behavior
-- [ ] CHK-022 [P1] `memory_stats` tests cover scoring fallback and limit truncation behavior
-- [ ] CHK-023 [P1] `memory_health` tests cover `divergent_aliases`, `autoRepair`, and schema-missing paths
+- [x] CHK-020 [P0] Discovery success criteria are validated for all 3 features — SC-001 through SC-004 met
+- [x] CHK-021 [P0] `memory_list` edge-case tests cover pagination hint and sort fallback behavior — 6 tests in `handler-memory-list-edge.vitest.ts`
+- [x] CHK-022 [P1] `memory_stats` tests cover scoring fallback and limit truncation behavior — 7 tests in `handler-memory-stats-edge.vitest.ts`
+- [x] CHK-023 [P1] `memory_health` tests cover `divergent_aliases`, `autoRepair`, and schema-missing paths — 8 tests in `handler-memory-health-edge.vitest.ts`
 <!-- /ANCHOR:testing -->
 
 ---
@@ -63,9 +63,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-030 [P0] No hardcoded secrets introduced
-- [ ] CHK-031 [P0] Input validation remains enforced for Discovery handler parameters
-- [ ] CHK-032 [P1] Correlation/debug improvements do not expose unsafe absolute paths
+- [x] CHK-030 [P0] No hardcoded secrets introduced — verified: no secrets in diff
+- [x] CHK-031 [P0] Input validation remains enforced for Discovery handler parameters — verified: validation returns error responses instead of throwing, still enforced
+- [x] CHK-032 [P1] Correlation/debug improvements do not expose unsafe absolute paths — verified: `sanitizeErrorForHint` strips paths
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +73,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized
-- [ ] CHK-041 [P1] Stale `retry.vitest.ts` references are removed or replaced in Discovery docs
-- [ ] CHK-042 [P2] Feature-level status notes are updated after remediation and verification
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized — all updated post-implementation
+- [x] CHK-041 [P1] Stale `retry.vitest.ts` references are removed or replaced in Discovery docs — removed from all 3 catalog files, verified with grep
+- [x] CHK-042 [P2] Feature-level status notes are updated after remediation and verification
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,9 +83,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-050 [P1] Temporary work artifacts remain in `scratch/` only
-- [ ] CHK-051 [P1] Discovery updates are scoped to the `003-discovery/` phase folder
-- [ ] CHK-052 [P2] Findings are saved to `memory/` when workflow requires persistence
+- [x] CHK-050 [P1] Temporary work artifacts remain in `scratch/` only — no temp artifacts outside scratch
+- [x] CHK-051 [P1] Discovery updates are scoped to the `003-discovery/` phase folder — confirmed
+- [x] CHK-052 [P2] Findings are saved to `memory/` when workflow requires persistence
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -95,9 +95,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | [ ]/8 |
-| P1 Items | 10 | [ ]/10 |
-| P2 Items | 2 | [ ]/2 |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 10 | 10/10 |
+| P2 Items | 2 | 2/2 |
 
 **Verification Date**: 2026-03-10
 <!-- /ANCHOR:summary -->
