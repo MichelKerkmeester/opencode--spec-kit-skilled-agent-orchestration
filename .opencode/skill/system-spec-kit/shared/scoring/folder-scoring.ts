@@ -197,12 +197,14 @@ export function computeSingleFolderScore(folderPath: string, folderMemories: Fol
   }
 
   // Recency: best score from any memory in folder
-  const recencyScore = Math.max(...folderMemories.map(m =>
-    computeRecencyScore(
+  // AI-WHY: Math.max(...spread) causes RangeError on arrays >100K elements; reduce() is stack-safe.
+  const recencyScore = folderMemories.reduce((max, m) => {
+    const score = computeRecencyScore(
       (m.updatedAt || m.updated_at as string | undefined || m.createdAt || m.created_at as string | undefined || '') as string,
       (m.importanceTier || m.importance_tier as string | undefined || 'normal') as string
-    )
-  ));
+    );
+    return score > max ? score : max;
+  }, -Infinity);
 
   // Activity: capped at MAX_ACTIVITY_MEMORIES for max score
   const activityScore = Math.min(1, folderMemories.length / MAX_ACTIVITY_MEMORIES);
@@ -264,7 +266,9 @@ export function findLastActivity(memories: FolderMemoryInput[]): string {
     return new Date().toISOString();
   }
 
-  return new Date(Math.max(...timestamps)).toISOString();
+  // AI-WHY: Math.max(...spread) causes RangeError on arrays >100K elements; reduce() is stack-safe.
+  const maxTimestamp = timestamps.reduce((a, b) => a > b ? a : b, -Infinity);
+  return new Date(maxTimestamp).toISOString();
 }
 
 // ---------------------------------------------------------------

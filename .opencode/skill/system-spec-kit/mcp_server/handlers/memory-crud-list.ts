@@ -6,6 +6,8 @@
    IMPORTS
 --------------------------------------------------------------- */
 
+import { randomUUID } from 'node:crypto';
+
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope';
@@ -23,6 +25,7 @@ import type { ListArgs } from './memory-crud-types';
 /** Handle memory_list tool -- returns paginated memory entries. */
 async function handleMemoryList(args: ListArgs): Promise<MCPResponse> {
   const startTime = Date.now();
+  const requestId = randomUUID();
   await checkDatabaseUpdated();
 
   const {
@@ -34,14 +37,44 @@ async function handleMemoryList(args: ListArgs): Promise<MCPResponse> {
   } = args;
 
   if (specFolder !== undefined && typeof specFolder !== 'string') {
-    throw new Error('specFolder must be a string');
+    return createMCPErrorResponse({
+      tool: 'memory_list',
+      error: 'specFolder must be a string',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
   if (includeChunks !== undefined && typeof includeChunks !== 'boolean') {
-    throw new Error('includeChunks must be a boolean');
+    return createMCPErrorResponse({
+      tool: 'memory_list',
+      error: 'includeChunks must be a boolean',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (rawLimit !== undefined && (typeof rawLimit !== 'number' || !Number.isFinite(rawLimit))) {
+    return createMCPErrorResponse({
+      tool: 'memory_list',
+      error: 'limit must be a finite number',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (rawOffset !== undefined && (typeof rawOffset !== 'number' || !Number.isFinite(rawOffset))) {
+    return createMCPErrorResponse({
+      tool: 'memory_list',
+      error: 'offset must be a finite number',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
 
-  const safeLimit = Math.max(1, Math.min(rawLimit || 20, 100));
-  const safeOffset = Math.max(0, rawOffset || 0);
+  const safeLimit = Math.max(1, Math.min(Math.floor(rawLimit || 20), 100));
+  const safeOffset = Math.max(0, Math.floor(rawOffset || 0));
   const database = vectorIndex.getDb();
 
   if (!database) {
@@ -49,6 +82,7 @@ async function handleMemoryList(args: ListArgs): Promise<MCPResponse> {
       tool: 'memory_list',
       error: 'Database not initialized. Run memory_index_scan() to trigger schema creation, or restart the MCP server.',
       code: 'E020',
+      details: { requestId },
       startTime,
     });
   }
@@ -88,6 +122,7 @@ async function handleMemoryList(args: ListArgs): Promise<MCPResponse> {
       tool: 'memory_list',
       error: `Database query failed: ${message}`,
       code: 'E021',
+      details: { requestId },
       startTime,
     });
   }
@@ -119,11 +154,13 @@ async function handleMemoryList(args: ListArgs): Promise<MCPResponse> {
       total,
       offset: safeOffset,
       limit: safeLimit,
+      sortBy: sortColumn,
       includeChunks,
       count: memories.length,
       results: memories,
     },
     hints,
+    startTime,
   });
 }
 

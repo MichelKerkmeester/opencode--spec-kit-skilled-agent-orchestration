@@ -198,10 +198,23 @@ function resolveMemoryIdFromText(sourceText: string): number | null {
   const pathMatch = sourceText.match(/[A-Za-z0-9_./-]*spec\.md/);
   if (pathMatch && pathMatch[0].length > 0) {
     const resolvedPath = path.resolve(pathMatch[0]);
-    const row = (db.prepare('SELECT id FROM memory_index WHERE canonical_file_path = ? LIMIT 1') as Database.Statement)
+    try {
+      const canonicalRow = (db.prepare('SELECT id FROM memory_index WHERE canonical_file_path = ? LIMIT 1') as Database.Statement)
+        .get(resolvedPath) as { id: number } | undefined;
+      if (canonicalRow?.id) {
+        return canonicalRow.id;
+      }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!message.includes('canonical_file_path')) {
+        return null;
+      }
+    }
+
+    const filePathRow = (db.prepare('SELECT id FROM memory_index WHERE file_path = ? LIMIT 1') as Database.Statement)
       .get(resolvedPath) as { id: number } | undefined;
-    if (row?.id) {
-      return row.id;
+    if (filePathRow?.id) {
+      return filePathRow.id;
     }
   }
 

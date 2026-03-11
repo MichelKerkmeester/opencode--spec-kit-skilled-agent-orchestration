@@ -8,10 +8,12 @@ import * as os from 'os';
 import * as fs from 'fs';
 
 import * as mod from '../lib/storage/history';
+import { memoryBulkDeleteSchema } from '../schemas/tool-input-schemas';
 
 let Database: any = null;
 let db: any = null;
 let dbPath: string = '';
+const LEGACY_PRE_MIGRATION_ROW_ID = 'legacy-pre-migration-row';
 
 describe('History Tests (T508)', () => {
   beforeAll(() => {
@@ -54,6 +56,19 @@ describe('History Tests (T508)', () => {
     insert.run(1, 'Test Memory 1', 'specs/001-test');
     insert.run(2, 'Test Memory 2', 'specs/001-test');
     insert.run(3, 'Test Memory 3', 'specs/002-other');
+
+    // Insert a legacy-row fixture before init() runs migration.
+    db.prepare(`
+      INSERT INTO memory_history (id, memory_id, prev_value, new_value, event, actor)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      LEGACY_PRE_MIGRATION_ROW_ID,
+      1,
+      'legacy-prev',
+      'legacy-new',
+      'UPDATE',
+      'system'
+    );
 
     mod.init(db);
   });
@@ -191,12 +206,85 @@ describe('History Tests (T508)', () => {
     });
 
     it('T508-06d: migration preserves existing history rows', () => {
-      // Rows created in earlier tests (with 'system' and 'user' actors) should still exist
-      const history = mod.getHistory(1);
-      const systemEntries = history.filter((h: any) => h.actor === 'system');
-      const userEntries = history.filter((h: any) => h.actor === 'user');
-      expect(systemEntries.length).toBeGreaterThan(0);
-      expect(userEntries.length).toBeGreaterThan(0);
+      const legacyRow = db.prepare(`
+        SELECT id, memory_id, prev_value, new_value, event, actor
+        FROM memory_history
+        WHERE id = ?
+      `).get(LEGACY_PRE_MIGRATION_ROW_ID) as {
+        id: string;
+        memory_id: number;
+        prev_value: string;
+        new_value: string;
+        event: string;
+        actor: string;
+      } | undefined;
+
+      expect(legacyRow).toBeDefined();
+      expect(legacyRow!.memory_id).toBe(1);
+      expect(legacyRow!.event).toBe('UPDATE');
+      expect(legacyRow!.actor).toBe('system');
+      expect(legacyRow!.prev_value).toBe('legacy-prev');
+      expect(legacyRow!.new_value).toBe('legacy-new');
+    });
+
+    it.each([
+      'mcp:memory_save',
+      'mcp:memory_update',
+      'mcp:memory_delete',
+      'mcp:memory_bulk_delete',
+      'mcp:file_watcher',
+      'mcp:cli_bulk_delete',
+      'mcp:memory_index_scan',
+      'mcp:checkpoint_restore',
+      'mcp:integrity_check',
+      'mcp:chunking_reindex',
+      'mcp:chunking_rollback',
+      'mcp:reconsolidation_cleanup',
+      'mcp:delete_memories',
+      'mcp:delete_by_path',
+    ])('T508-06e: actor naming accepts %s', (actor) => {
+      const id = mod.recordHistory(2, 'UPDATE', null, `actor-test:${actor}`, actor);
+      const history = mod.getHistory(2);
+      const entry = history.find((h: any) => h.id === id);
+      expect(entry).toBeDefined();
+      expect(entry!.actor).toBe(actor);
+    });
+  });
+
+  // -----------------------------------------------------------
+  // memory_bulk_delete olderThanDays boundaries (T508-08)
+  // -----------------------------------------------------------
+  describe('memory_bulk_delete olderThanDays boundaries', () => {
+    const baseInput = { tier: 'normal', confirm: true } as const;
+
+    it('T508-08a: olderThanDays=0 fails validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ ...baseInput, olderThanDays: 0 });
+      expect(result.success).toBe(false);
+    });
+
+    it('T508-08b: olderThanDays=-1 fails validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ ...baseInput, olderThanDays: -1 });
+      expect(result.success).toBe(false);
+    });
+
+    it('T508-08c: olderThanDays=1 passes validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ ...baseInput, olderThanDays: 1 });
+      expect(result.success).toBe(true);
+    });
+
+    it('T508-08d: olderThanDays=1.5 fails validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ ...baseInput, olderThanDays: 1.5 });
+      expect(result.success).toBe(false);
+    });
+
+    it('T508-08e: olderThanDays=NaN fails validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ ...baseInput, olderThanDays: Number.NaN });
+      expect(result.success).toBe(false);
+    });
+
+    it('T508-08f: confirm=false fails schema validation', () => {
+      const result = memoryBulkDeleteSchema.safeParse({ tier: 'normal', confirm: false });
+      expect(result.success).toBe(false);
     });
   });
 

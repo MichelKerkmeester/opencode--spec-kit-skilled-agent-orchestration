@@ -223,14 +223,14 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
 
     for (const staleRecordId of staleRecordIds) {
       try {
-        // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-        try {
-          recordHistory(staleRecordId, 'DELETE', null, null, 'mcp:memory_index_scan');
-        } catch (_histErr: unknown) {
-          // history recording is best-effort
-        }
         if (vectorIndex.deleteMemory(staleRecordId)) {
           deleted++;
+          // AI-WHY: Record DELETE history only after confirmed deletion.
+          try {
+            recordHistory(staleRecordId, 'DELETE', null, null, 'mcp:memory_index_scan');
+          } catch (_histErr: unknown) {
+            // history recording is best-effort
+          }
         } else {
           failed++;
         }

@@ -119,6 +119,18 @@ describe('Regression 010: index large files guardrails', () => {
     await expect(
       bulkDelete.handleMemoryBulkDelete({ tier: 'critical', specFolder: 'specs/010-test', confirm: true, skipCheckpoint: true })
     ).rejects.toThrow(/skipCheckpoint/i);
+
+    await expect(
+      bulkDelete.handleMemoryBulkDelete({ tier: 'deprecated', confirm: true, olderThanDays: 0 })
+    ).rejects.toThrow(/olderThanDays/i);
+
+    await expect(
+      bulkDelete.handleMemoryBulkDelete({ tier: 'deprecated', confirm: true, olderThanDays: 1.5 })
+    ).rejects.toThrow(/olderThanDays/i);
+
+    await expect(
+      bulkDelete.handleMemoryBulkDelete({ tier: 'deprecated', confirm: true, olderThanDays: Number.NaN })
+    ).rejects.toThrow(/olderThanDays/i);
   });
 
   it('returns restoreCommand on successful bulk delete with checkpoint init', async () => {

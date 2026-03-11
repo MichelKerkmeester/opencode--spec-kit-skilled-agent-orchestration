@@ -193,6 +193,36 @@ describe('T002: Chunk Collapse Dedup (G3)', () => {
   it('T002-7: collapseAndReassembleChunkResults is exported via __testables', () => {
     expect(typeof collapseAndReassembleChunkResults).toBe('function');
   });
+
+  it('T012-1: duplicate chunk dedup is identical for includeContent=false and includeContent=true', () => {
+    const baseRows = [
+      makeRow(1, null),
+      makeRow(10, 100),
+      makeRow(11, 100),
+      makeRow(20, 200),
+      makeRow(21, 200),
+    ];
+
+    const runSearch = (includeContent: boolean) => {
+      const rows = baseRows.map((row) => ({
+        ...row,
+        content_text: includeContent ? `chunk content ${row.id}` : null,
+      }));
+      const output = collapseAndReassembleChunkResults(rows);
+      const ids = output.results.map((row) => String(row.id));
+      return { output, ids };
+    };
+
+    const withoutContent = runSearch(false);
+    const withContent = runSearch(true);
+
+    expect(withoutContent.ids.length).toBe(new Set(withoutContent.ids).size);
+    expect(withContent.ids.length).toBe(new Set(withContent.ids).size);
+
+    expect(withoutContent.ids).toEqual(withContent.ids);
+    expect(withoutContent.output.stats.collapsedChunkHits).toBe(withContent.output.stats.collapsedChunkHits);
+    expect(withoutContent.output.results).toHaveLength(withContent.output.results.length);
+  });
 });
 
 // AI-WHY: Sprint-0 intent weighting guard tests removed — shouldApplyPostSearchIntentWeighting

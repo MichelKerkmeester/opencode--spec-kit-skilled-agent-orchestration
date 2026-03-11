@@ -87,7 +87,7 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 | `mcp_server/handlers/save/create-record.ts` | Modify | Wire `recordHistory('ADD')` in save transaction path. |
 | `mcp_server/handlers/memory-crud-update.ts` | Modify | Make BM25 failure handling transactional and add update history recording. |
 | `mcp_server/handlers/memory-crud-delete.ts` | Modify | Enforce safe bulk-folder delete behavior and delete history recording. |
-| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Modify | Collapse reconsolidation gating to canonical flag flow. |
+| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Modify | Collapse reconsolidation gating to canonical opt-in flag flow. |
 | `mcp_server/lib/scoring/confidence-tracker.ts` | Modify | Replace success-shaped fallback with explicit throw behavior. |
 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md` | Modify | Correct source table coverage for wrapper feature documentation. |
 | `mcp_server/lib/cognitive/prediction-error-gate.ts` | Modify | Ensure all PE decisions are logged. |
@@ -122,7 +122,7 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Complete T-04: unify reconsolidation gating to a single source of truth. | Bridge uses canonical gate contract; conflicting dual-gate behavior removed and verified. |
+| REQ-004 | Complete T-04: unify reconsolidation gating to a single source of truth. | Bridge and internal defensive guard both require `SPECKIT_RECONSOLIDATION=true` (default OFF) with no semantic drift. |
 | REQ-005 | Complete T-05: treat BM25 re-index failures with transactional correctness rules. | Infrastructure failures warn; data failures roll back transaction; update history recorded. |
 | REQ-006 | Complete T-06: prevent partial bulk-folder deletes when DB handle is unavailable. | Bulk-folder no-DB path aborts with explicit error; no silent partial delete behavior remains. |
 | REQ-007 | Complete T-07: expand validation feedback failure signaling consistency. | `recordValidation` throws on DB failure; tests updated to assert explicit failure path. |
@@ -137,8 +137,8 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 
 - **SC-001**: All 10 mutation features audited with structured PASS/WARN/FAIL findings.
 - **SC-002**: TypeScript compile check is clean (`npx tsc --noEmit` passes with 0 errors).
-- **SC-003**: Verification suite confirms no regression from this phase (`239 passed`, `7 failed` pre-existing, `7203` tests passed).
-- **SC-004**: Cross-AI review reaches APPROVE outcome (`GPT-5.4 R11: 98/100 APPROVE`).
+- **SC-003**: Verification confirms the mutation fixes hold (`npx tsc --noEmit` clean, focused mutation suites green, full suite at `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests, with remaining failures outside mutation scope).
+- **SC-004**: The 2026-03-11 re-audit closes the remaining mutation-specific correctness, schema-contract, and coverage gaps, and the spec folder reflects the current state rather than the older R11 snapshot.
 
 ### Acceptance Criteria (Original)
 - [x] All 10 features audited with structured findings
@@ -155,7 +155,7 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Feature catalog accuracy (`feature_catalog/02--mutation/*`) | Incorrect source mapping could skew audit outcomes | Cross-check catalog entries against actual implementation paths during each task. |
-| Dependency | Test harness and fixtures for mutation flows | Missing/placeholder tests can hide behavior regressions | Add targeted regression tests and classify deferred placeholders explicitly. |
+| Dependency | Test harness and fixtures for mutation flows | Deferred or thin integration assertions can hide behavior regressions | Add targeted regression tests and keep feature-catalog test mappings synchronized with real suites. |
 | Risk | Silent catch/fallback patterns in mutation side effects | Audit trails can be lost without operator visibility | Convert success-shaped fallbacks to explicit warnings/errors where required. |
 | Risk | History logging coverage gaps on delete paths | Incomplete lifecycle trail for destructive operations | Add `recordHistory('DELETE')` across all confirmed delete call sites and raw SQL paths. |
 | Risk | Schema migration side effects on production SQLite | Migration errors could block runtime startup | Use guarded migration path and regression tests for legacy table conversion. |

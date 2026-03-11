@@ -42,9 +42,9 @@ export async function runReconsolidationIfEnabled(
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings: string[] = [];
 
-  // T-04: Collapsed dual reconsolidation gating to single contract.
-  // search-flags.isReconsolidationEnabled() is the canonical gate (default-on via SPECKIT_RECONSOLIDATION).
-  // reconsolidation.ts:isReconsolidationEnabled() was redundantly checked here — removed.
+  // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
+  // reconsolidation.ts keeps an internal guard as a defensive fallback for
+  // direct callers and future entry points.
   if (!force && isReconsolidationFlagEnabled() && embedding) {
     try {
       const hasCheckpoint = hasReconsolidationCheckpoint(database, parsed.specFolder);
@@ -94,56 +94,58 @@ export async function runReconsolidationIfEnabled(
                 ? classifyEncodingIntent(memory.content)
                 : undefined;
 
-              const memoryId = vectorIndex.indexMemory({
-                specFolder: memory.specFolder,
-                filePath: memory.filePath,
-                title: memory.title,
-                triggerPhrases: memory.triggerPhrases ?? [],
-                importanceWeight,
-                embedding: memory.embedding as Float32Array,
-                encodingIntent: memoryEncodingIntent,
-                documentType: parsed.documentType || 'memory',
-                specLevel: callbackSpecLevel,
-                contentText: memory.content,
-                qualityScore: parsed.qualityScore,
-                qualityFlags: parsed.qualityFlags,
-              });
-
+              // AI-WHY: P1-01 fix — wrap all DB writes (index, metadata, BM25, history) in a
+              // single transaction for atomicity. better-sqlite3 supports nested transactions
+              // via savepoints, so this is safe even if indexMemory uses its own transaction.
               const fileMetadata = incrementalIndex.getFileMetadata(memory.filePath);
               const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-              applyPostInsertMetadata(database, memoryId, {
-                content_hash: parsed.contentHash,
-                context_type: parsed.contextType,
-                importance_tier: parsed.importanceTier,
-                memory_type: parsed.memoryType,
-                type_inference_source: parsed.memoryTypeSource,
-                stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
-                difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
-                file_mtime_ms: fileMtimeMs,
-                encoding_intent: memoryEncodingIntent,
-                document_type: parsed.documentType || 'memory',
-                spec_level: callbackSpecLevel,
-                quality_score: parsed.qualityScore ?? 0,
-                quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
-              });
+              const memoryId = database.transaction(() => {
+                const id = vectorIndex.indexMemory({
+                  specFolder: memory.specFolder,
+                  filePath: memory.filePath,
+                  title: memory.title,
+                  triggerPhrases: memory.triggerPhrases ?? [],
+                  importanceWeight,
+                  embedding: memory.embedding as Float32Array,
+                  encodingIntent: memoryEncodingIntent,
+                  documentType: parsed.documentType || 'memory',
+                  specLevel: callbackSpecLevel,
+                  contentText: memory.content,
+                  qualityScore: parsed.qualityScore,
+                  qualityFlags: parsed.qualityFlags,
+                });
 
-              if (bm25Index.isBm25Enabled()) {
-                try {
-                  const bm25 = bm25Index.getIndex();
-                  bm25.addDocument(String(memoryId), memory.content);
-                } catch (bm25Err: unknown) {
-                  const message = toErrorMessage(bm25Err);
-                  console.warn(`[memory-save] BM25 indexing failed (recon conflict store): ${message}`);
+                applyPostInsertMetadata(database, id, {
+                  content_hash: parsed.contentHash,
+                  context_type: parsed.contextType,
+                  importance_tier: parsed.importanceTier,
+                  memory_type: parsed.memoryType,
+                  type_inference_source: parsed.memoryTypeSource,
+                  stability: fsrsScheduler.DEFAULT_INITIAL_STABILITY,
+                  difficulty: fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
+                  file_mtime_ms: fileMtimeMs,
+                  encoding_intent: memoryEncodingIntent,
+                  document_type: parsed.documentType || 'memory',
+                  spec_level: callbackSpecLevel,
+                  quality_score: parsed.qualityScore ?? 0,
+                  quality_flags: JSON.stringify(parsed.qualityFlags ?? []),
+                });
+
+                if (bm25Index.isBm25Enabled()) {
+                  try {
+                    const bm25 = bm25Index.getIndex();
+                    bm25.addDocument(String(id), memory.content);
+                  } catch (bm25Err: unknown) {
+                    const message = toErrorMessage(bm25Err);
+                    console.warn(`[memory-save] BM25 indexing failed (recon conflict store): ${message}`);
+                  }
                 }
-              }
 
-              // Record history for reconsolidation conflict pre-store
-              try {
-                recordHistory(memoryId, 'ADD', null, memory.filePath ?? null, 'mcp:memory_save');
-              } catch (_histErr: unknown) {
-                // history recording is best-effort
-              }
+                recordHistory(id, 'ADD', null, memory.title ?? memory.filePath ?? null, 'mcp:memory_save');
+
+                return id;
+              })();
 
               return memoryId;
             },

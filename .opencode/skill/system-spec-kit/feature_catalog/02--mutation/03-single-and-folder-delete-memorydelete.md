@@ -210,7 +210,6 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |
 | `mcp_server/tests/memory-parser.vitest.ts` | Memory parser tests |
 | `mcp_server/tests/memory-save-extended.vitest.ts` | Save extended scenarios |
-| `mcp_server/tests/memory-save-integration.vitest.ts` | Save integration tests |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Save UX regression tests |
 | `mcp_server/tests/memory-summaries.vitest.ts` | Summary generation tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
@@ -229,8 +228,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
 | `mcp_server/tests/reranker.vitest.ts` | Reranker dispatch tests |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager and shared retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |

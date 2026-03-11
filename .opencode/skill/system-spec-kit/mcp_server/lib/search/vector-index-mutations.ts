@@ -421,11 +421,14 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
   `).get(spec_folder, canonicalPath, file_path, anchor_id, anchor_id) as { id: number } | undefined;
 
   if (row) {
-    // Self-record DELETE history so callers of delete_memory_by_path() don't need to.
-    try {
-      recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path');
-    } catch (_histErr: unknown) { /* best-effort */ }
-    return delete_memory(row.id);
+    const deleted = delete_memory(row.id);
+    if (deleted) {
+      // Self-record DELETE history only after the delete succeeded.
+      try {
+        recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path');
+      } catch (_histErr: unknown) { /* best-effort */ }
+    }
+    return deleted;
   }
   return false;
 }
@@ -445,18 +448,13 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
   let deleted = 0;
   let failed = 0;
 
-  const failed_ids: number[] = [];
-
   const delete_transaction = database.transaction(() => {
+    let transactionDeleted = 0;
+    let transactionFailed = 0;
+    const failed_ids: number[] = [];
+
     for (const id of memory_ids) {
       try {
-        // AI-WHY: memory_history rows are intentionally preserved after deletion
-        // so DELETE audit events recorded by handlers persist as audit trail.
-        // Self-record DELETE history so callers of delete_memories() don't need to.
-        try {
-          recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories');
-        } catch (_histErr: unknown) { /* best-effort */ }
-
         if (sqlite_vec) {
           try {
             database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(id));
@@ -467,14 +465,19 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
 
         const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
         if (result.changes > 0) {
-          deleted++;
+          // AI-WHY: memory_history rows are intentionally preserved after deletion
+          // so DELETE audit events recorded here persist as audit trail.
+          try {
+            recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories');
+          } catch (_histErr: unknown) { /* best-effort */ }
+          transactionDeleted++;
         } else {
-          failed++;
+          transactionFailed++;
           failed_ids.push(id);
         }
       } catch (e: unknown) {
         console.warn(`[vector-index] Failed to delete memory ${id}: ${get_error_message(e)}`);
-        failed++;
+        transactionFailed++;
         failed_ids.push(id);
       }
     }
@@ -482,16 +485,25 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
     if (failed_ids.length > 0) {
       throw new Error(`Failed to delete memories: ${failed_ids.join(', ')}. Transaction rolled back.`);
     }
+
+    return {
+      deleted: transactionDeleted,
+      failed: transactionFailed,
+    };
   });
 
   try {
-    delete_transaction();
+    const outcome = delete_transaction();
+    deleted = outcome.deleted;
+    failed = outcome.failed;
     if (deleted > 0) {
       clear_constitutional_cache();
       clear_search_cache();
     }
   } catch (e: unknown) {
     console.warn(`[vector-index] delete_memories transaction error: ${get_error_message(e)}`);
+    deleted = 0;
+    failed = memory_ids.length;
   }
 
   return { deleted, failed };

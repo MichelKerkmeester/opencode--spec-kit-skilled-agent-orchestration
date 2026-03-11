@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: discovery [template:level_2/plan.md]"
-description: "This plan turns Discovery audit methodology into an execution sequence for remediation-ready outcomes. It maps audit steps to implementation phases and ties checklist findings to a focused testing strategy."
+description: "Finalize Discovery phase docs so they match current handler, schema, feature-catalog, and test reality with updated verification evidence."
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -11,7 +11,6 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: discovery
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
@@ -30,7 +29,7 @@ contextType: "general"
 | **Testing** | Vitest |
 
 ### Overview
-This Discovery phase plan operationalizes the audit across three catalog features and converts findings into implementation-ready tasks. The approach emphasizes correctness and behavior verification first, then closes coverage gaps through targeted test work and documentation synchronization.
+This plan finalizes Discovery audit documentation against current on-disk implementation reality. It updates all five phase documents to reflect latest handler behavior, public schema behavior, tightened feature-catalog wording, and focused verification evidence (`tsc` clean + targeted `89/89` tests).
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,14 +38,14 @@ This Discovery phase plan operationalizes the audit across three catalog feature
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Source-of-truth files identified (`handlers`, `schemas`, `feature_catalog`, `tests`)
+- [x] Stale claims explicitly listed for removal
+- [x] Scope locked to five Discovery phase docs
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
+- [x] All five target docs updated and synchronized
+- [x] Behavior statements match current code and schema reality
+- [x] Verification evidence updated to `npx tsc --noEmit` clean and targeted `89/89` tests
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -55,14 +54,16 @@ This Discovery phase plan operationalizes the audit across three catalog feature
 ## 3. ARCHITECTURE
 
 ### Pattern
-Handler-centric MCP service with documentation-driven audit control
+Evidence-driven documentation alignment for Discovery handlers and schemas.
 
 ### Key Components
-- **Discovery feature catalog**: Defines expected behavior and source/test mappings for F-01 to F-03.
-- **MCP handlers**: `memory-crud-list.ts`, `memory-crud-stats.ts`, and `memory-crud-health.ts` provide audited runtime behavior.
+- **Handlers**: `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts`
+- **Schema surface**: `mcp_server/schemas/tool-input-schemas.ts`, `mcp_server/tool-schemas.ts`
+- **Feature catalog**: `feature_catalog/03--discovery/*.md` (rewritten for focused accuracy)
+- **Focused verification suite**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge`, `handler-memory-crud`, `tool-input-schema`
 
 ### Data Flow
-Feature catalog expectations are compared to handler/test reality, producing findings that become prioritized tasks and checklist validation items.
+On-disk implementation behavior and test outcomes feed requirements/checklist evidence, which then propagate into synchronized spec, plan, tasks, and implementation summary artifacts.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -71,19 +72,20 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Inventory Discovery feature definitions and source/test references
-- [x] Confirm playbook scenario mappings (EX-018 to EX-020)
-- [x] Prepare execution context for remediation changes
+- [x] Re-read current Discovery phase docs and identify stale statements
+- [x] Re-verify current on-disk handler/schema/test behavior
+- [x] Confirm scope lock to the five requested files
 
 ### Phase 2: Core Implementation
-- [x] Review handler correctness and behavior against documented reality
-- [x] Translate P1/P2 findings into implementation tasks
-- [x] Define targeted test additions for identified gaps
+- [x] Update requirements to current `memory_list`/`memory_stats` validation-envelope behavior
+- [x] Update docs for `memory_list` resolved `sortBy` and `memory_stats` response `limit`
+- [x] Update docs for `memory_health` public-schema support for `confirmed`
+- [x] Remove stale wording (`documentation phase`, `48/48`, old `computeFolderScores`-limit narrative, outdated Discovery inconsistency limitation)
 
 ### Phase 3: Verification
-- [x] Validate findings-to-task traceability across all three features
-- [x] Confirm test strategy covers edge/error scenarios from findings
-- [x] Synchronize spec, plan, tasks, and checklist artifacts
+- [x] Record clean `npx tsc --noEmit` result
+- [x] Record targeted 5-file suite result: `89/89` passing
+- [x] Perform cross-file consistency pass across all five docs
 <!-- /ANCHOR:phases -->
 
 ---
@@ -93,9 +95,9 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Handler-level paths for `memory_list`, `memory_stats`, `memory_health` findings | Vitest |
-| Integration | MCP tool behavior across Discovery scenarios and SQLite-backed queries | Vitest + SQLite fixtures |
-| Manual | Feature catalog/playbook cross-check for EX-018, EX-019, EX-020 | CLI review |
+| Static type check | TypeScript compile check for MCP server | `npx tsc --noEmit` |
+| Focused automated verification | Discovery handlers + schema coverage across 5 files | `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts` |
+| Documentation consistency | Cross-file sync validation among five updated docs | Manual doc review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -105,10 +107,10 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Discovery feature catalog (`feature_catalog/03--discovery/*`) | Internal | Green | Requirements and mappings cannot be verified |
-| MCP handler implementations (`mcp_server/handlers/*`) | Internal | Green | Code findings cannot be validated |
-| Existing Vitest suite (`mcp_server/tests/*`) | Internal | Yellow | Coverage gaps remain unresolved |
-| SQLite schema/runtime (`memory.db`, query paths) | Internal | Green | Stats/health behavior checks lose fidelity |
+| Discovery handlers (`mcp_server/handlers/*`) | Internal | Green | Behavior claims cannot be verified |
+| Public/runtime schemas (`tool-schemas.ts`, `tool-input-schemas.ts`) | Internal | Green | `confirmed` flow documentation can become inaccurate |
+| Discovery feature catalog (`feature_catalog/03--discovery/*`) | Internal | Green | Cross-reference accuracy degrades |
+| Focused test files (`mcp_server/tests/*`) | Internal | Green | Verification evidence cannot be updated |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -116,12 +118,9 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Template conformance regression, incorrect mapping, or invalid artifact synchronization.
-- **Procedure**: Revert the four Discovery phase documents to last known-good commit and reapply mapping from validated findings.
+- **Trigger**: Any newly updated Discovery doc is found inconsistent with current source behavior.
+- **Procedure**: Restore only the affected `003-discovery` doc(s) from git history, then re-run source verification and re-apply corrected statements.
 <!-- /ANCHOR:rollback -->
-
----
-
 
 ---
 
@@ -129,17 +128,14 @@ Feature catalog expectations are compared to handler/test reality, producing fin
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Mapping) ──┘
+Phase 1 (Setup) ──► Phase 2 (Core Updates) ──► Phase 3 (Verification)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Mapping, Core |
-| Mapping | Setup | Core |
-| Core | Setup, Mapping | Verify |
-| Verify | Core | None |
+| Setup | None | Core Updates |
+| Core Updates | Setup | Verification |
+| Verification | Core Updates | None |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -149,10 +145,10 @@ Phase 1.5 (Mapping) ──┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 1-2 hours |
-| Core Implementation | Medium | 3-5 hours |
-| Verification | Medium | 2-3 hours |
-| **Total** | | **6-10 hours** |
+| Setup | Low | 0.5-1 hour |
+| Core Updates | Medium | 1-2 hours |
+| Verification | Medium | 0.5-1 hour |
+| **Total** | | **2-4 hours** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -161,15 +157,15 @@ Phase 1.5 (Mapping) ──┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
+- [x] Scope locked to five files
+- [x] Stale claims identified before edits
+- [x] Verification commands defined before completion claim
 
 ### Rollback Procedure
-1. Restore previous Discovery phase documents from git history.
-2. Re-run template conformity check on restored files.
-3. Re-apply mapped findings with corrected section alignment.
-4. Re-verify cross-file synchronization before completion.
+1. Restore the affected Discovery doc file(s).
+2. Re-verify handler/schema/test behavior from on-disk sources.
+3. Re-apply minimal wording corrections.
+4. Re-check cross-file consistency across all five docs.
 
 ### Data Reversal
 - **Has data migrations?** No

@@ -3,20 +3,34 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
 
-// DB-dependent imports (commented out - requires better-sqlite3 / dist modules)
 import * as memorySearchHandler from '../handlers/memory-search.js';
 import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as hybridSearch from '../lib/search/hybrid-search.js';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion.js';
-import Database from 'better-sqlite3';
+
+const SERVER_ROOT = process.cwd();
+const MEMORY_SEARCH_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'handlers', 'memory-search.ts'), 'utf-8');
+const VECTOR_INDEX_QUERIES_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'vector-index-queries.ts'), 'utf-8');
+const HYBRID_SEARCH_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'hybrid-search.ts'), 'utf-8');
+const VECTOR_INDEX_SCHEMA_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'vector-index-schema.ts'), 'utf-8');
+const STAGE1_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'pipeline', 'stage1-candidate-gen.ts'), 'utf-8');
+const STAGE2_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'search', 'pipeline', 'stage2-fusion.ts'), 'utf-8');
+const ACCESS_TRACKER_SOURCE = fs.readFileSync(path.join(SERVER_ROOT, 'lib', 'storage', 'access-tracker.ts'), 'utf-8');
+
+function parseResponseData(response: Awaited<ReturnType<typeof memorySearchHandler.handleMemorySearch>>): Record<string, unknown> {
+  const envelope = JSON.parse(response.content[0].text) as Record<string, unknown>;
+  return (envelope.data || {}) as Record<string, unknown>;
+}
 
 describe('Memory Search Integration (T601-T650) [deferred - requires DB test fixtures]', () => {
 
   describe('T601-T610 - Testing Effect Formula', () => {
     it('T601: GRADE_GOOD constant is 3', () => {
-      expect(true).toBe(true);
+      expect(fsrsScheduler.GRADE_GOOD).toBe(3);
     });
 
     it('T602: Difficulty bonus calculation correct', () => {
@@ -34,15 +48,20 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T603: GRADE_GOOD increases stability', () => {
-      expect(true).toBe(true);
+      const initial = fsrsScheduler.createInitialParams();
+      const reviewed = fsrsScheduler.processReview(initial, fsrsScheduler.GRADE_GOOD);
+      expect(reviewed.stability).toBeGreaterThan(initial.stability);
     });
 
     it('T604: Stability multiplier applied with difficulty bonus', () => {
-      expect(true).toBe(true);
+      const lowRetrievability = fsrsScheduler.updateStability(2.0, 5.0, fsrsScheduler.GRADE_GOOD, 0.2);
+      const highRetrievability = fsrsScheduler.updateStability(2.0, 5.0, fsrsScheduler.GRADE_GOOD, 0.9);
+      expect(lowRetrievability).toBeGreaterThan(highRetrievability);
     });
 
     it('T605: Formula handles edge cases', () => {
-      expect(true).toBe(true);
+      expect(fsrsScheduler.calculateRetrievability(-1, 5)).toBe(0);
+      expect(fsrsScheduler.calculateOptimalInterval(0, 0.9)).toBe(0);
     });
   });
 
@@ -93,7 +112,14 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
 
     it('T619: FSRS stability bounds (0.1 to 365) respected', () => {
-      expect(true).toBe(true);
+      const reviewed = fsrsScheduler.processReview({
+        stability: 0.01,
+        difficulty: 5,
+        lastReview: null,
+        reviewCount: 0,
+      }, fsrsScheduler.GRADE_AGAIN);
+      expect(reviewed.stability).toBeGreaterThanOrEqual(fsrsScheduler.MIN_STABILITY);
+      expect(fsrsScheduler.calculateRetrievability(365, 30)).toBeLessThanOrEqual(1);
     });
 
     it('T620: Negative R handled in bonus calculation', () => {
@@ -104,153 +130,165 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
 
   describe('T621-T630 - Multi-Concept Search', () => {
     it('T621: handleMemorySearch function exported', () => {
-      expect(true).toBe(true);
+      expect(typeof memorySearchHandler.handleMemorySearch).toBe('function');
     });
 
     it('T622: Concepts array validation exists', () => {
-      // concepts && Array.isArray(concepts) && concepts.length >= 2
-      expect(true).toBe(true);
+      expect(MEMORY_SEARCH_SOURCE).toContain('Array.isArray(concepts)');
     });
 
     it('T623: Maximum 5 concepts enforced', () => {
-      // concepts.length > 5 -> throw "Maximum 5 concepts allowed"
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('concepts.length > 5');
+      expect(VECTOR_INDEX_QUERIES_SOURCE).toContain('Multi-concept search requires 2-5 concepts');
     });
 
     it('T624: Each concept generates embedding', () => {
-      expect(true).toBe(true);
+      expect(STAGE1_SOURCE).toContain('generateQueryEmbedding(concept)');
     });
 
     it('T625: multiConceptSearch available', () => {
-      expect(true).toBe(true);
+      expect(typeof vectorIndex.multiConceptSearch).toBe('function');
     });
 
-    it('T626: Testing effect applied after multi-concept search', () => {
-      // apply_testing_effect(database, results) called after multiConceptSearch
-      expect(true).toBe(true);
+    it('T626: Multi-concept requests are labeled as multi_concept search type', () => {
+      expect(MEMORY_SEARCH_SOURCE).toContain("searchType: (hasValidConcepts && concepts!.length >= 2)");
+      expect(MEMORY_SEARCH_SOURCE).toContain("'multi-concept'");
     });
 
-    it('T627: Empty concepts array rejected', () => {
-      // concepts.length >= 2 required
-      expect(true).toBe(true);
+    it('T627: Empty concepts array rejected', async () => {
+      const response = await memorySearchHandler.handleMemorySearch({ concepts: [] });
+      const data = parseResponseData(response);
+      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
     });
 
-    it('T628: Single concept rejected', () => {
-      // concepts.length >= 2 required
-      expect(true).toBe(true);
+    it('T628: Single concept rejected', async () => {
+      const response = await memorySearchHandler.handleMemorySearch({ concepts: ['only-one'] });
+      const data = parseResponseData(response);
+      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
     });
 
-    it('T629: Non-array concepts rejected', () => {
-      // Array.isArray(concepts) required
-      expect(true).toBe(true);
+    it('T629: Non-array concepts rejected', async () => {
+      const response = await memorySearchHandler.handleMemorySearch({ concepts: 'bad-input' as unknown as string[] });
+      const data = parseResponseData(response);
+      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
     });
 
-    it('T630: Null concepts handled', () => {
-      // Falls through to query validation
-      expect(true).toBe(true);
+    it('T630: Null concepts handled', async () => {
+      const response = await memorySearchHandler.handleMemorySearch({ concepts: null as unknown as string[] });
+      const data = parseResponseData(response);
+      expect(typeof data.error).toBe('string');
     });
   });
 
   describe('T631-T640 - Hybrid Search', () => {
     it('T631: hybrid-search.js loads', () => {
-      expect(true).toBe(true);
+      expect(hybridSearch).toBeTruthy();
     });
 
     it('T632: hybridSearch function exported', () => {
-      expect(true).toBe(true);
+      expect(typeof hybridSearch.hybridSearch).toBe('function');
     });
 
     it('T633: searchWithFallback function exported', () => {
-      expect(true).toBe(true);
+      expect(typeof hybridSearch.searchWithFallback).toBe('function');
     });
 
     it('T634: FTS availability check function exists', () => {
-      expect(true).toBe(true);
+      expect(typeof hybridSearch.isFtsAvailable).toBe('function');
     });
 
-    it('T635: Testing effect applied post-hybrid-search', () => {
-      // apply_testing_effect() called after hybrid_results
-      expect(true).toBe(true);
+    it('T635: Hybrid search uses fusion-based ranking', () => {
+      expect(HYBRID_SEARCH_SOURCE).toContain('fuseResultsMulti');
     });
 
     it('T636: Hybrid combines vector + FTS', () => {
-      // hybrid_search calls vector_search_fn + fts_search, then fuse_results
-      expect(true).toBe(true);
+      expect(HYBRID_SEARCH_SOURCE).toContain('combinedLexicalSearch');
+      expect(HYBRID_SEARCH_SOURCE).toContain('hybridSearchEnhanced');
     });
 
     it('T637: RRF fusion available for hybrid ranking', () => {
-      expect(true).toBe(true);
+      expect(typeof rrfFusion.fuseResultsMulti).toBe('function');
     });
 
     it('T638: Deduplication handled in RRF fusion', () => {
-      // rrf-fusion.js deduplicates by ID
-      expect(true).toBe(true);
+      const fused = rrfFusion.fuseResultsMulti([
+        { source: 'vector', results: [{ id: 1 }, { id: 2 }] },
+        { source: 'keyword', results: [{ id: 1 }, { id: 3 }] },
+      ]);
+      const item = fused.find((result) => result.id === 1);
+      expect(item).toBeDefined();
+      expect(item!.sources).toContain('vector');
+      expect(item!.sources).toContain('keyword');
     });
 
-    it('T639: Vector-only fallback when FTS unavailable', () => {
-      // searchWithFallback returns vector results
-      expect(true).toBe(true);
+    it('T639: searchWithFallback falls back to FTS after empty hybrid results', () => {
+      expect(HYBRID_SEARCH_SOURCE).toContain('const ftsResults = ftsSearch(query, options);');
+      expect(HYBRID_SEARCH_SOURCE).toContain('if (ftsResults.length > 0) return ftsResults;');
     });
 
-    it('T640: FTS-only fallback when vector unavailable', () => {
-      // searchWithFallback returns FTS results
-      expect(true).toBe(true);
+    it('T640: searchWithFallback falls back to BM25 after empty FTS results', () => {
+      expect(HYBRID_SEARCH_SOURCE).toContain('const bm25Results = bm25Search(query, options);');
+      expect(HYBRID_SEARCH_SOURCE).toContain('if (bm25Results.length > 0) return bm25Results;');
     });
   });
 
   describe('T641-T650 - Review Count & Timestamp', () => {
     it('T641: review_count column exists in schema', () => {
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_SCHEMA_SOURCE).toContain('review_count INTEGER DEFAULT 0');
     });
 
     it('T642: last_review column exists', () => {
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_SCHEMA_SOURCE).toContain('last_review TEXT');
     });
 
     it('T643: access_count column exists', () => {
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_SCHEMA_SOURCE).toContain('access_count INTEGER DEFAULT 0');
     });
 
     it('T644: last_accessed column exists', () => {
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_SCHEMA_SOURCE).toContain('last_accessed INTEGER DEFAULT 0');
     });
 
     it('T645: Default review_count is 0', () => {
-      expect(true).toBe(true);
+      expect(VECTOR_INDEX_SCHEMA_SOURCE).toMatch(/review_count INTEGER DEFAULT 0/);
     });
 
     it('T646: review_count increments correctly', () => {
-      expect(true).toBe(true);
+      expect(STAGE2_SOURCE).toContain('review_count = review_count + 1');
     });
 
     it('T647: Multiple increments accumulate', () => {
-      expect(true).toBe(true);
+      expect(STAGE2_SOURCE).not.toContain('review_count = 1');
     });
 
     it('T648: last_review timestamp updates', () => {
-      expect(true).toBe(true);
+      expect(STAGE2_SOURCE).toContain('last_review = CURRENT_TIMESTAMP');
     });
 
     it('T649: Timestamp parseable as Date', () => {
-      expect(true).toBe(true);
+      const nextReviewDate = fsrsScheduler.getNextReviewDate(5);
+      expect(Number.isNaN(new Date(nextReviewDate).getTime())).toBe(false);
     });
 
     it('T650: last_accessed stores epoch timestamp', () => {
-      expect(true).toBe(true);
+      expect(ACCESS_TRACKER_SOURCE).toContain('const now = Date.now();');
+      expect(ACCESS_TRACKER_SOURCE).toContain('last_accessed = ?');
     });
   });
 
-  describe('strengthenOnAccess Logic', () => {
-    it('should increase stability and review_count', () => {
-      expect(true).toBe(true);
+  describe('Review and access update pipeline', () => {
+    it('updates stability, review_count, access_count, and last_accessed together', () => {
+      expect(STAGE2_SOURCE).toContain('SET stability = ?,');
+      expect(STAGE2_SOURCE).toContain('review_count = review_count + 1');
+      expect(STAGE2_SOURCE).toContain('access_count = access_count + 1');
+      expect(STAGE2_SOURCE).toContain('last_accessed = ?');
     });
 
-    it('should handle invalid memory_id gracefully', () => {
-      // Returns null for non-existent ID
-      expect(true).toBe(true);
+    it('access tracker gracefully returns false on invalid write attempts', () => {
+      expect(ACCESS_TRACKER_SOURCE).toContain('return false;');
     });
 
-    it('should default invalid retrievability to 0.9', () => {
+    it('normalizes invalid retrievability inputs back to 0.9', () => {
       const rInvalid = -0.5;
       const rNormalized = (typeof rInvalid !== 'number' || rInvalid < 0 || rInvalid > 1)
         ? 0.9
@@ -259,19 +297,18 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     });
   });
 
-  describe('apply_testing_effect Batch Processing', () => {
-    it('should update all results in batch', () => {
-      expect(true).toBe(true);
+  describe('Pipeline support', () => {
+    it('generates one embedding per concept in stage 1 candidate generation', () => {
+      expect(STAGE1_SOURCE).toContain('for (const concept of concepts)');
+      expect(STAGE1_SOURCE).toContain('generateQueryEmbedding(concept)');
     });
 
-    it('should handle empty results array', () => {
-      // Early return when results.length === 0
-      expect(true).toBe(true);
+    it('keeps multi-concept embedding generation independent per concept', () => {
+      expect(STAGE1_SOURCE).toContain('conceptEmbeddings.push(emb)');
     });
 
-    it('should strengthen each memory independently', () => {
-      // Different starting stability -> different results
-      expect(true).toBe(true);
+    it('persists direct access tracking with its own update path', () => {
+      expect(ACCESS_TRACKER_SOURCE).toContain('SET access_count = access_count + 1');
     });
   });
 });

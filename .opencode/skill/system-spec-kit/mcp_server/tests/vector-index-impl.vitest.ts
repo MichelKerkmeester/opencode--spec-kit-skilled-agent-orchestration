@@ -2,10 +2,11 @@
 // TEST: VECTOR INDEX IMPL
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
+import * as history from '../lib/storage/history';
 
 // ───────────────────────────────────────────────────────────────
 // TEST: VECTOR INDEX IMPLEMENTATION (vector-index-impl)
@@ -501,8 +502,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         if (!fs.existsSync(aliasDir)) {
           fs.symlinkSync(canonicalDir, aliasDir, 'dir');
         }
-      } catch {
-        expect(true).toBe(true);
+      } catch (error: unknown) {
+        const code = (error as NodeJS.ErrnoException).code;
+        expect(typeof code).toBe('string');
         return;
       }
 
@@ -826,6 +828,9 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
         null
       );
       expect(result).toBe(true);
+
+      const events = history.getHistory(pathDeleteId);
+      expect(events.some((entry) => entry.event === 'DELETE' && entry.actor === 'mcp:delete_by_path')).toBe(true);
     });
 
     it('deleteMemoryByPath returns false for non-existent', () => {
@@ -846,6 +851,45 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
     it('handles null input', () => {
       const result = mod.deleteMemories(null as unknown as number[]);
       expect(result).toEqual({ deleted: 0, failed: 0 });
+    });
+
+    it('records DELETE history only for confirmed batch deletions', () => {
+      const firstId = mod.indexMemoryDeferred({
+        specFolder: 'specs/test-batch-delete',
+        filePath: path.join(TMP_DIR, 'batch-delete-1.md'),
+        title: 'Batch Delete 1',
+      });
+      const secondId = mod.indexMemoryDeferred({
+        specFolder: 'specs/test-batch-delete',
+        filePath: path.join(TMP_DIR, 'batch-delete-2.md'),
+        title: 'Batch Delete 2',
+      });
+
+      const result = mod.deleteMemories([firstId, secondId]);
+      expect(result).toEqual({ deleted: 2, failed: 0 });
+
+      const firstHistory = history.getHistory(firstId);
+      const secondHistory = history.getHistory(secondId);
+      expect(firstHistory.some((entry) => entry.event === 'DELETE' && entry.actor === 'mcp:delete_memories')).toBe(true);
+      expect(secondHistory.some((entry) => entry.event === 'DELETE' && entry.actor === 'mcp:delete_memories')).toBe(true);
+    });
+
+    it('rolls back earlier deletions when any requested id fails', () => {
+      const firstId = mod.indexMemoryDeferred({
+        specFolder: 'specs/test-batch-rollback',
+        filePath: path.join(TMP_DIR, 'batch-rollback-1.md'),
+        title: 'Batch Rollback 1',
+      });
+      const secondId = mod.indexMemoryDeferred({
+        specFolder: 'specs/test-batch-rollback',
+        filePath: path.join(TMP_DIR, 'batch-rollback-2.md'),
+        title: 'Batch Rollback 2',
+      });
+
+      const result = mod.deleteMemories([firstId, secondId, 999999]);
+      expect(result).toEqual({ deleted: 0, failed: 3 });
+      expect(mod.getMemory(firstId)).toBeTruthy();
+      expect(mod.getMemory(secondId)).toBeTruthy();
     });
   });
 

@@ -6,6 +6,7 @@
    IMPORTS
 --------------------------------------------------------------- */
 
+import { randomUUID } from 'node:crypto';
 import * as fs from 'fs';
 
 import { checkDatabaseUpdated } from '../core';
@@ -26,6 +27,7 @@ import type { StatsArgs } from './memory-crud-types';
 /** Handle memory_stats tool -- returns memory system statistics and folder rankings. */
 async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   const startTime = Date.now();
+  const requestId = randomUUID();
   await checkDatabaseUpdated();
 
   const database = vectorIndex.getDb();
@@ -34,6 +36,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       tool: 'memory_stats',
       error: 'Database not initialized. Run memory_index_scan() to trigger schema creation, or restart the MCP server.',
       code: 'E020',
+      details: { requestId },
       startTime,
     });
   }
@@ -48,14 +51,62 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
 
   const validRankings = ['count', 'recency', 'importance', 'composite'];
   if (!validRankings.includes(folderRanking)) {
-    throw new Error(`Invalid folderRanking: ${folderRanking}. Valid options: ${validRankings.join(', ')}`);
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: `Invalid folderRanking: ${folderRanking}. Valid options: ${validRankings.join(', ')}`,
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
 
   if (excludePatterns && !Array.isArray(excludePatterns)) {
-    throw new Error('excludePatterns must be an array of regex pattern strings');
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'excludePatterns must be an array of regex pattern strings',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (Array.isArray(excludePatterns) && excludePatterns.some((pattern) => typeof pattern !== 'string')) {
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'excludePatterns must contain only string patterns',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (includeScores !== undefined && typeof includeScores !== 'boolean') {
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'includeScores must be a boolean',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (includeArchived !== undefined && typeof includeArchived !== 'boolean') {
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'includeArchived must be a boolean',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
+  }
+  if (rawLimit !== undefined && (typeof rawLimit !== 'number' || !Number.isFinite(rawLimit))) {
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'limit must be a finite number',
+      code: 'E_INVALID_INPUT',
+      details: { requestId },
+      startTime,
+    });
   }
 
-  const safeLimit = Math.max(1, Math.min(rawLimit || 10, 100));
+  const safeLimit = Math.max(1, Math.min(Math.floor(rawLimit || 10), 100));
 
   let total = 0;
   let statusCounts: ReturnType<typeof vectorIndex.getStatusCounts> = { success: 0, pending: 0, failed: 0, retry: 0 };
@@ -93,6 +144,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       tool: 'memory_stats',
       error: `Database query failed: ${message}`,
       code: 'E021',
+      details: { requestId },
       startTime,
     });
   }
@@ -216,6 +268,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       tool: 'memory_stats',
       error: `Folder ranking query failed: ${message}`,
       code: 'E021',
+      details: { requestId },
       startTime,
     });
   }
@@ -240,6 +293,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       newestMemory: dates.newest || null,
       topFolders,
       totalSpecFolders,
+      limit: safeLimit,
       totalTriggerPhrases: triggerCount,
       vectorSearchEnabled: vectorIndex.isVectorSearchAvailable(),
       graphChannelMetrics: getGraphMetrics(),
@@ -249,6 +303,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
       lastIndexedAt,
     },
     hints,
+    startTime,
   });
 }
 

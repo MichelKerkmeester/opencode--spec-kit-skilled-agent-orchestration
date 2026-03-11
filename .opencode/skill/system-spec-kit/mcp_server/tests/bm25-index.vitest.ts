@@ -678,6 +678,12 @@ describe('C138: Weighted BM25 FTS5 Enhancements', () => {
     expect(addDocument).toHaveBeenCalledWith(expect.anything(), expect.stringContaining('Updated'));
   });
 
+  it('BM25 re-index fires when title changes', async () => {
+    const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
+    await handleMemoryUpdate({ id: 42, title: 'Updated title' });
+    expect(addDocument).toHaveBeenCalledWith(expect.anything(), expect.stringContaining('Updated title'));
+  });
+
   it('BM25 re-index does NOT fire when non-trigger fields change', async () => {
     const { handleMemoryUpdate, addDocument } = await setupMemoryUpdateHarness();
     await handleMemoryUpdate({ id: 42, importanceWeight: 0.8 });

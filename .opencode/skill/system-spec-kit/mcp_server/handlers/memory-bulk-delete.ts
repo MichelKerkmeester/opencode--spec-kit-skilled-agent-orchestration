@@ -15,6 +15,7 @@ import { createMCPSuccessResponse } from '../lib/response/envelope';
 import { toErrorMessage } from '../utils';
 
 import { recordHistory } from '../lib/storage/history';
+import { MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS } from '../schemas/tool-input-schemas';
 import { appendMutationLedgerSafe } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
@@ -65,8 +66,11 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     throw new Error(`skipCheckpoint is not allowed for "${tier}" tier. Checkpoint is mandatory for high-safety tiers.`);
   }
 
-  if (olderThanDays !== undefined && (!Number.isInteger(olderThanDays) || olderThanDays < 1)) {
-    throw new Error('olderThanDays must be a positive integer when provided');
+  if (
+    olderThanDays !== undefined
+    && (!Number.isInteger(olderThanDays) || olderThanDays < MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS)
+  ) {
+    throw new Error(`olderThanDays must be an integer >= ${MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS} when provided`);
   }
 
   const database = vectorIndex.getDb();

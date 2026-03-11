@@ -3,6 +3,8 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import path from 'node:path';
 import type { MCPResponse } from '@spec-kit/shared/types';
 import {
   handleMemoryContext,
@@ -29,6 +31,11 @@ interface ContextResult extends Record<string, unknown> {
 }
 
 type MemoryContextArgs = Parameters<typeof handleMemoryContext>[0];
+
+const MEMORY_CONTEXT_SOURCE = fs.readFileSync(
+  path.join(process.cwd(), 'handlers', 'memory-context.ts'),
+  'utf-8'
+);
 
 /* -----------------------------------------------------------------
    TEST UTILITIES
@@ -300,7 +307,10 @@ describe('T031-T040: Quick Mode Configuration Tests [deferred - requires DB test
     expect(CONTEXT_MODES.quick.tokenBudget).toBe(minBudget);
   });
 
-  it.todo('T037: Quick mode is not the default — needs routing fixtures for a real default-mode assertion');
+  it('T037: Quick mode is not the default because handler defaults requested mode to auto', () => {
+    expect(MEMORY_CONTEXT_SOURCE).toMatch(/mode:\s*requested_mode\s*=\s*'auto'/);
+    expect(MEMORY_CONTEXT_SOURCE).not.toMatch(/mode:\s*requested_mode\s*=\s*'quick'/);
+  });
 
   it('T038: Quick strategy differs from search strategies', () => {
     const quickStrategy: string = CONTEXT_MODES.quick.strategy;
@@ -521,7 +531,10 @@ describe('T071-T080: Auto Mode Configuration Tests [deferred - requires DB test 
     expect(autoBudget).toBeUndefined();
   });
 
-  it.todo('T075: Auto mode is the default when no mode specified — needs handler invocation fixtures for a real default-mode assertion');
+  it('T075: Auto mode is the default when no mode specified', () => {
+    expect(MEMORY_CONTEXT_SOURCE).toMatch(/mode:\s*requested_mode\s*=\s*'auto'/);
+    expect(MEMORY_CONTEXT_SOURCE).toContain('requestedMode: requested_mode');
+  });
 
   it('T076: Auto strategy differs from all other strategies', () => {
     const autoStrategy: string = CONTEXT_MODES.auto.strategy;

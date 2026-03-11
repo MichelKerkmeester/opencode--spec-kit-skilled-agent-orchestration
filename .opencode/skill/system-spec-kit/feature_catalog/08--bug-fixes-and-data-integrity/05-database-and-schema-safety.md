@@ -10,7 +10,7 @@ Four database-layer bugs were fixed:
 
 **B3 — SQL operator precedence:** `causal-edges.ts` had `WHERE a AND b OR c` without parentheses, matching wrong rows on edge deletion. Fixed to `WHERE a AND (b OR c)`.
 
-**B4 — Missing changes guard:** `memory-save.ts` UPDATE statements reported success even when zero rows were updated. Added `.changes > 0` guards so callers can distinguish actual updates from no-ops.
+**B4 — Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
 
 ## Source Files
 
@@ -18,40 +18,20 @@ Four database-layer bugs were fixed:
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
-| `mcp_server/core/config.ts` | Core | Server configuration |
-| `mcp_server/core/db-state.ts` | Core | Database state management |
-| `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding Cache |
-| `mcp_server/lib/search/vector-index-schema.ts` | Lib | Vector index schema |
-| `mcp_server/lib/search/vector-index-types.ts` | Lib | Vector index type definitions |
-| `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction management |
-| `mcp_server/lib/utils/canonical-path.ts` | Lib | Canonical path resolution |
-| `mcp_server/lib/utils/logger.ts` | Lib | Logger utility |
-| `shared/config.ts` | Shared | Shared configuration |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/types.ts` | Shared | Type definitions |
+| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Handler | **B1**: reconsolidation bridge reads/passes `importance_weight` for similar-memory records. |
+| `mcp_server/lib/storage/reconsolidation.ts` | Lib | **B1**: merge path boosts `importance_weight` via `Math.min(1.0, currentWeight + 0.1)`. |
+| `mcp_server/lib/storage/checkpoints.ts` | Lib | **B2**: runs `CREATE TABLE` / `ALTER TABLE` working-memory DDL before restore transaction execution. |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | **B3**: SQL condition groups are explicitly parenthesized where AND/OR precedence matters. |
+| `mcp_server/handlers/pe-gating.ts` | Handler | **B4**: update/reinforcement paths check `result.changes` to reject zero-row updates. |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/cognitive-gaps.vitest.ts` | Cognitive gap analysis |
-| `mcp_server/tests/config-cognitive.vitest.ts` | Cognitive config tests |
-| `mcp_server/tests/consumption-logger.vitest.ts` | Consumption logger tests |
-| `mcp_server/tests/db-state-graph-reinit.vitest.ts` | DB state graph reinit |
-| `mcp_server/tests/embedding-cache.vitest.ts` | Embedding cache tests |
-| `mcp_server/tests/eval-logger.vitest.ts` | Eval logger tests |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/transaction-manager-extended.vitest.ts` | Transaction extended tests |
-| `mcp_server/tests/transaction-manager.vitest.ts` | Transaction manager tests |
-| `mcp_server/tests/trigger-config-extended.vitest.ts` | Trigger config extended |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `mcp_server/tests/reconsolidation.vitest.ts` | **B1**: MP1 verifies merged content and `importance_weight` boost (`0.5 -> 0.6`). |
+| `mcp_server/tests/checkpoint-working-memory.vitest.ts` | **B2**: T213 validates checkpoint restore behavior around working-memory schema/restore flow. |
+| `mcp_server/tests/causal-edges-unit.vitest.ts` | **B3**: DM1/DM2 verify deletion filters only intended source/target edge rows. |
+| `mcp_server/tests/memory-save-extended.vitest.ts` | **B4**: save update paths treat zero-row UPDATEs (`changes === 0`) as failure/no-op. |
 
 ## Source Metadata
 

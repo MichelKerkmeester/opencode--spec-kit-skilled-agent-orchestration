@@ -10,6 +10,7 @@ Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybri
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Canonical ID normalization and dedup in `combinedLexicalSearch()` and legacy `hybridSearch()` merge paths |
 | `mcp_server/handlers/memory-crud-types.ts` | Handler | CRUD type definitions |
 | `mcp_server/handlers/save/dedup.ts` | Handler | Deduplication logic |
 | `mcp_server/handlers/save/types.ts` | Handler | Type definitions |
@@ -27,6 +28,7 @@ Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybri
 
 | File | Focus |
 |------|-------|
+| `mcp_server/tests/hybrid-search.vitest.ts` | `T031-LEX-05` and `T031-BASIC-04` canonical-ID dedup regression coverage |
 | `mcp_server/tests/content-hash-dedup.vitest.ts` | Content hash dedup tests |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |

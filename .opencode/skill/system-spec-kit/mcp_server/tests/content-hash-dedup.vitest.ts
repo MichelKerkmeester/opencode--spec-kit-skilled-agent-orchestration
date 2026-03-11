@@ -11,6 +11,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
+import * as hybridSearch from '../lib/search/hybrid-search';
 
 /* -------------------------------------------------------------
    HELPERS
@@ -266,5 +267,132 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       expect(result).toBeDefined();
       expect(result!.title).toBeNull();
     });
+  });
+});
+
+function createHybridMockDb(): Database.Database {
+  return {
+    prepare(sql: string) {
+      return {
+        get() {
+          if (sql.includes('memory_fts')) {
+            return { count: 1 };
+          }
+          return null;
+        },
+        all() {
+          return [
+            {
+              id: 42,
+              title: 'Canonical duplicate from FTS',
+              content: 'fts duplicate entry',
+              fts_score: 9.0,
+              spec_folder: 'specs/dedup',
+            },
+            {
+              id: 202,
+              title: 'Unique FTS entry',
+              content: 'unique fts entry',
+              fts_score: 8.0,
+              spec_folder: 'specs/dedup',
+            },
+          ];
+        },
+      };
+    },
+  } as unknown as Database.Database;
+}
+
+const mockVectorSearch = (_embedding: Float32Array | number[]) => {
+  return [
+    {
+      id: 'mem:42',
+      title: 'Canonical duplicate from vector',
+      content: 'vector duplicate entry',
+      similarity: 0.95,
+      spec_folder: 'specs/dedup',
+    },
+    {
+      id: 101,
+      title: 'Unique vector entry',
+      content: 'unique vector entry',
+      similarity: 0.90,
+      spec_folder: 'specs/dedup',
+    },
+  ];
+};
+
+function canonicalIds(results: Awaited<ReturnType<typeof hybridSearch.hybridSearchEnhanced>>): string[] {
+  return results.map((result) => hybridSearch.__testables.canonicalResultId(result.id));
+}
+
+describe('T008: includeContent-independent dedup in hybrid search path', () => {
+  it('deduplicates canonical IDs when includeContent=false (default production path)', async () => {
+    hybridSearch.init(createHybridMockDb(), mockVectorSearch, null);
+    hybridSearch.resetGraphMetrics();
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'dedup regression query',
+      new Float32Array(384).fill(0.1),
+      {
+        limit: 20,
+        useBm25: false,
+        useGraph: false,
+        forceAllChannels: true,
+      }
+    );
+
+    const ids = canonicalIds(results);
+    const metrics = hybridSearch.getGraphMetrics();
+    expect(ids.length).toBe(new Set(ids).size);
+    expect(ids.length).toBeGreaterThan(0);
+    expect(metrics.multiSourceResults).toBeGreaterThan(0);
+  });
+
+  it('deduplicates canonical IDs when includeContent=true', async () => {
+    hybridSearch.init(createHybridMockDb(), mockVectorSearch, null);
+    hybridSearch.resetGraphMetrics();
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'dedup regression query',
+      new Float32Array(384).fill(0.1),
+      {
+        limit: 20,
+        includeContent: true,
+        useBm25: false,
+        useGraph: false,
+        forceAllChannels: true,
+      }
+    );
+
+    const ids = canonicalIds(results);
+    const metrics = hybridSearch.getGraphMetrics();
+    expect(ids.length).toBe(new Set(ids).size);
+    expect(ids.length).toBeGreaterThan(0);
+    expect(metrics.multiSourceResults).toBeGreaterThan(0);
+  });
+
+  it('returns identical deduped canonical IDs for includeContent=false vs true', async () => {
+    hybridSearch.init(createHybridMockDb(), mockVectorSearch, null);
+    const embedding = new Float32Array(384).fill(0.1);
+
+    const defaultPath = await hybridSearch.hybridSearchEnhanced('dedup regression query', embedding, {
+      limit: 20,
+      useBm25: false,
+      useGraph: false,
+      forceAllChannels: true,
+    });
+    const includeContentPath = await hybridSearch.hybridSearchEnhanced('dedup regression query', embedding, {
+      limit: 20,
+      includeContent: true,
+      useBm25: false,
+      useGraph: false,
+      forceAllChannels: true,
+    });
+
+    const defaultCanonical = canonicalIds(defaultPath).sort();
+    const includeCanonical = canonicalIds(includeContentPath).sort();
+
+    expect(defaultCanonical).toEqual(includeCanonical);
   });
 });

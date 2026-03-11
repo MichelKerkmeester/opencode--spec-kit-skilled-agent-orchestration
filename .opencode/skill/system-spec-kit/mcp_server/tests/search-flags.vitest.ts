@@ -10,6 +10,7 @@ import {
   isContextHeadersEnabled,
   isMMREnabled,
   isMultiQueryEnabled,
+  isReconsolidationEnabled,
   isTRMEnabled,
 } from '../lib/search/search-flags';
 
@@ -19,6 +20,7 @@ const FLAG_NAMES = [
   'SPECKIT_MULTI_QUERY',
   'SPECKIT_CROSS_ENCODER',
   'SPECKIT_CONTEXT_HEADERS',
+  'SPECKIT_RECONSOLIDATION',
   'VOYAGE_API_KEY',
 ] as const;
 
@@ -31,7 +33,7 @@ function clearFlags(): void {
   crossEncoder.resetProvider();
 }
 
-describe('Search Feature Flags (default-on)', () => {
+describe('Search Feature Flags', () => {
   beforeEach(() => {
     for (const flag of FLAG_NAMES) {
       ORIGINAL_ENV[flag] = process.env[flag];
@@ -50,12 +52,13 @@ describe('Search Feature Flags (default-on)', () => {
     crossEncoder.resetProvider();
   });
 
-  it('defaults all gates to enabled when env vars are unset', () => {
+  it('defaults graduated gates on while keeping reconsolidation opt-in', () => {
     expect(isMMREnabled()).toBe(true);
     expect(isTRMEnabled()).toBe(true);
     expect(isMultiQueryEnabled()).toBe(true);
     expect(isCrossEncoderEnabled()).toBe(true);
     expect(isContextHeadersEnabled()).toBe(true);
+    expect(isReconsolidationEnabled()).toBe(false);
   });
 
   it('disables each gate only when explicitly set to false', () => {
@@ -64,12 +67,14 @@ describe('Search Feature Flags (default-on)', () => {
     process.env.SPECKIT_MULTI_QUERY = 'false';
     process.env.SPECKIT_CROSS_ENCODER = 'false';
     process.env.SPECKIT_CONTEXT_HEADERS = 'false';
+    process.env.SPECKIT_RECONSOLIDATION = 'false';
 
     expect(isMMREnabled()).toBe(false);
     expect(isTRMEnabled()).toBe(false);
     expect(isMultiQueryEnabled()).toBe(false);
     expect(isCrossEncoderEnabled()).toBe(false);
     expect(isContextHeadersEnabled()).toBe(false);
+    expect(isReconsolidationEnabled()).toBe(false);
   });
 
   it('keeps gates enabled when explicitly set to true', () => {
@@ -78,12 +83,25 @@ describe('Search Feature Flags (default-on)', () => {
     process.env.SPECKIT_MULTI_QUERY = 'true';
     process.env.SPECKIT_CROSS_ENCODER = 'true';
     process.env.SPECKIT_CONTEXT_HEADERS = 'true';
+    process.env.SPECKIT_RECONSOLIDATION = 'true';
 
     expect(isMMREnabled()).toBe(true);
     expect(isTRMEnabled()).toBe(true);
     expect(isMultiQueryEnabled()).toBe(true);
     expect(isCrossEncoderEnabled()).toBe(true);
     expect(isContextHeadersEnabled()).toBe(true);
+    expect(isReconsolidationEnabled()).toBe(true);
+  });
+
+  it('reconsolidation only enables for an explicit true value', () => {
+    process.env.SPECKIT_RECONSOLIDATION = 'TRUE';
+    expect(isReconsolidationEnabled()).toBe(true);
+
+    process.env.SPECKIT_RECONSOLIDATION = '1';
+    expect(isReconsolidationEnabled()).toBe(false);
+
+    delete process.env.SPECKIT_RECONSOLIDATION;
+    expect(isReconsolidationEnabled()).toBe(false);
   });
 
   it('cross-encoder provider resolution is blocked when SPECKIT_CROSS_ENCODER=false', () => {

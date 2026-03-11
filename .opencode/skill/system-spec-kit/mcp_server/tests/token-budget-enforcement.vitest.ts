@@ -2,7 +2,7 @@
 // TEST: TOKEN BUDGET ENFORCEMENT
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -62,8 +62,6 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
   // =========================================================
   describe('T205-B: enforceTokenBudget Function', () => {
     it('T205-B1: Small result under budget is not truncated', () => {
-      if (!memoryContext?.enforceTokenBudget) return;
-
       const smallResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
         strategy: 'test',
         mode: 'quick',
@@ -76,8 +74,6 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
     });
 
     it('T205-B2: Large result over budget IS truncated', () => {
-      if (!memoryContext?.enforceTokenBudget) return;
-
       const results = Array.from({ length: 50 }, (_, i) => ({
         id: i,
         title: `Memory ${i}`,
@@ -99,11 +95,10 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       expect(enforcement.originalResultCount).toBe(50);
       expect(enforcement.returnedResultCount).toBeLessThan(50);
       expect(enforcement.returnedResultCount).toBeGreaterThanOrEqual(1);
+      expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
     });
 
     it('T205-B3: Truncation preserves highest-scored results', () => {
-      if (!memoryContext?.enforceTokenBudget) return;
-
       const results = Array.from({ length: 20 }, (_, i) => ({
         id: i,
         title: `Memory ${i}`,
@@ -120,18 +115,15 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       };
 
       const { result: truncatedResult, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
-      if (enforcement.truncated) {
-        const content = truncatedResult.content as Array<{ text: string }>;
-        const parsed = JSON.parse(content[0].text) as { data: { results: Array<{ id: number }> } };
-        const returnedIds = parsed.data.results.map((r) => r.id);
-        expect(returnedIds[0]).toBe(0);
-      }
-      // If not truncated, it fit within budget — also acceptable
+      expect(enforcement.truncated).toBe(true);
+      expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      const content = truncatedResult.content as Array<{ text: string }>;
+      const parsed = JSON.parse(content[0].text) as { data: { results: Array<{ id: number }> } };
+      const returnedIds = parsed.data.results.map((r) => r.id);
+      expect(returnedIds[0]).toBe(0);
     });
 
     it('T205-B4: Non-envelope payload over budget reports truncated', () => {
-      if (!memoryContext?.enforceTokenBudget) return;
-
       const nonEnvelopeResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
         strategy: 'test',
         mode: 'quick',
@@ -140,6 +132,37 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       const { enforcement } = memoryContext.enforceTokenBudget(nonEnvelopeResult, 500);
       expect(enforcement.enforced).toBe(true);
       expect(enforcement.truncated).toBe(true);
+      expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+    });
+
+    it('T205-B5: Single structured result is compacted to fit within budget', () => {
+      const results = [{
+        id: 1,
+        title: 'Oversized memory',
+        content: 'C'.repeat(8000),
+        score: 0.99,
+      }];
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ data: { results, count: 1 }, meta: {} })
+        }]
+      };
+
+      const { result, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
+      expect(enforcement.enforced).toBe(true);
+      expect(enforcement.truncated).toBe(true);
+      expect(enforcement.originalResultCount).toBe(1);
+      expect(enforcement.returnedResultCount).toBe(1);
+      expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+
+      const parsed = JSON.parse((result.content as Array<{ text: string }>)[0].text) as {
+        data: { results: Array<{ content: string }>; count: number };
+      };
+      expect(parsed.data.count).toBe(1);
+      expect(parsed.data.results[0].content.length).toBeLessThan(results[0].content.length);
     });
   });
 

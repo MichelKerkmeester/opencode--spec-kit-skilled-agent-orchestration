@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 001-retrieval code audit — 12 tasks fixed across 9 retrieval features in the Spec Kit Memory MCP server."
+description: "Post-fix summary for the 001-retrieval audit with verified correctness fixes, test-quality upgrades, and honest scoped/full verification results."
 trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
 importance_tier: "normal"
 contextType: "general"
@@ -18,7 +18,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 001-retrieval |
-| **Completed** | 2026-03-10 |
+| **Completed** | 2026-03-11 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -27,55 +27,53 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The retrieval layer of the Spec Kit Memory MCP server now has correct token-budget truncation flags, accurate tier-3 search caps, explicit module exports, and regression test coverage for all 9 audited features. Before this audit, a silent `false` flag in `enforceTokenBudget` meant truncated responses were never marked as such, tier-3 fallback searches could match at 90% similarity (defeating the fallback's purpose), and three modules re-exported everything via wildcards (masking dead exports and breaking tree-shaking). All of that is fixed.
+This phase closed the remaining retrieval audit gaps with verified code and test updates across the retrieval surface. The current state reflects five runtime correctness fixes plus broad retrieval test-quality hardening.
 
-### Token Budget Enforcement (T-01, T-02)
+### Verified Retrieval Code Fixes
 
-The `enforceTokenBudget` function in `memory-context.ts` was returning `truncated: false` even when content had been cut. You now get an honest signal — the `truncated` flag is `true` whenever the budget limit fires. A dedicated regression test (T205-B4) in `token-budget-enforcement.vitest.ts` locks this behavior so it cannot silently regress.
+1. `mcp_server/handlers/memory-context.ts`
+   Token-budget enforcement now continues for single-result/still-over-budget structured payloads by compacting long fields first, then applying fallback binary-search truncation.
 
-### Tier-3 Search Fallback Cap (T-03)
+2. `mcp_server/lib/search/vector-index-mutations.ts`
+   `delete_memories()` now reports committed counts only and returns `deleted: 0` when a transaction rolls back.
 
-The quality-aware 3-tier fallback in `hybrid-search.ts` applied a 0.9 similarity cap to tier-3 results. That cap was so high it was effectively no cap at all, which meant low-quality matches could slip through. The cap is now 0.5, and a new assertion in `search-fallback-tiered.vitest.ts` validates the exact boundary.
+3. `mcp_server/lib/search/vector-index-schema.ts`
+   Remaining silent catches in `create_common_indexes()` were replaced with structured warnings. Migration v14 backfill now validates allowed paths before reading and logs structured warnings for rejected/unreadable files.
 
-### BM25 Re-Index Gate Handler (T-04)
+4. `shared/algorithms/rrf-fusion.ts` and `shared/dist/algorithms/rrf-fusion.js`
+   `fuseResultsMulti()` now defaults convergence bonus to `CONVERGENCE_BONUS`, restoring intended multi-source ranking boost behavior.
 
-The feature catalog entry for the BM25 trigger-phrase re-index gate was missing its handler row. The row is added to `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`, and two gate handler tests in `bm25-index.vitest.ts` confirm the gate fires correctly.
+5. `mcp_server/lib/extraction/extraction-adapter.ts`
+   `resolveMemoryIdFromText()` now falls back to `file_path` lookup when `canonical_file_path` is missing in older schemas.
 
-### Explicit Named Exports (T-06)
+### Verified Retrieval Test-Quality Improvements
 
-Three modules — `embeddings.ts`, `folder-scoring.ts`, and `path-security.ts` — used wildcard barrel re-exports. These are replaced with 36, 14, and 2 explicit named exports respectively. The internal barrel re-exports inside `vector-index.ts` were left in place: that is an acceptable pattern for a module split and does not introduce the same risks.
-
-### Silent Catch Blocks (T-07)
-
-Two empty catch blocks in `vector-index-queries.ts` and `vector-index-schema.ts` were swallowing errors without any logging. Both now emit `console.warn` so failures surface during development and in test output.
-
-### Stale Catalog References (T-04 cleanup)
-
-Five feature catalog files (`01-*.md` through `05-*.md` under `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`) referenced `retry.vitest.ts`, a test file that no longer exists. All five references are removed.
-
-### Provenance Tests (T-09)
-
-Three new tests in `working-memory.vitest.ts` cover provenance tracking in tool result extraction — a behavior described in the feature catalog but previously untested.
+- `token-budget-enforcement.vitest.ts`: stronger budget assertions plus single-result structured compaction coverage.
+- `search-archival.vitest.ts`: placeholder assertions replaced with real source-contract/export assertions.
+- `memory-context.vitest.ts`: default-mode todos replaced with source-backed assertions.
+- `vector-index-impl.vitest.ts`: tautological symlink fallback check removed; added rollback regression for batch delete.
+- `bm25-index.vitest.ts`: added positive title-change BM25 re-index regression.
+- `memory-search-integration.vitest.ts`: placeholder-heavy assertions replaced with concrete runtime/source assertions.
+- `rrf-fusion.vitest.ts` and `unit-rrf-fusion.vitest.ts`: convergence-bonus expectations updated to corrected behavior.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `mcp_server/handlers/memory-context.ts` | Modified | Fix truncated flag false→true in enforceTokenBudget |
-| `mcp_server/handlers/memory-triggers.ts` | Modified | Add console.warn in getTieredContent catch block |
-| `mcp_server/lib/search/hybrid-search.ts` | Modified | Fix tier-3 similarity cap from 0.9 to 0.5 |
-| `mcp_server/lib/providers/embeddings.ts` | Modified | Replace wildcard with 36 explicit named exports |
-| `mcp_server/lib/scoring/folder-scoring.ts` | Modified | Replace wildcard with 14 explicit named exports |
-| `mcp_server/lib/utils/path-security.ts` | Modified | Replace wildcard with 2 explicit named exports |
-| `mcp_server/lib/search/vector-index-queries.ts` | Modified | Add console.warn in empty catch |
-| `mcp_server/lib/search/vector-index-schema.ts` | Modified | Add console.warn in empty catch |
-| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modified | Add T205-B4 regression test for truncated flag |
-| `mcp_server/tests/search-fallback-tiered.vitest.ts` | Modified | Add exact 50% cap assertion |
-| `mcp_server/tests/bm25-index.vitest.ts` | Modified | Add 2 BM25 re-index gate handler tests |
-| `mcp_server/tests/memory-context.vitest.ts` | Modified | Update T207 assertion (side effect of T-01 behavior change) |
-| `mcp_server/tests/working-memory.vitest.ts` | Modified | Add 3 provenance tests |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md` | Modified | Add missing handler row |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-*.md` through `05-*.md` (5 files) | Modified | Remove stale retry.vitest.ts references |
+| `mcp_server/handlers/memory-context.ts` | Modified | Enforce budget for structured payload edge cases with compaction + truncation fallback |
+| `mcp_server/lib/search/vector-index-mutations.ts` | Modified | Make delete result counts transaction-accurate on rollback |
+| `mcp_server/lib/search/vector-index-schema.ts` | Modified | Replace silent catches with structured warnings; validate migration backfill paths |
+| `shared/algorithms/rrf-fusion.ts` | Modified | Restore default convergence bonus for multi-source fusion |
+| `shared/dist/algorithms/rrf-fusion.js` | Modified | Mirror convergence-bonus behavior in dist runtime |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Modified | Add canonical-path fallback to file-path lookup |
+| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modified | Stronger budget assertions + single-result compaction test |
+| `mcp_server/tests/search-archival.vitest.ts` | Modified | Replace placeholders with contract/export assertions |
+| `mcp_server/tests/memory-context.vitest.ts` | Modified | Replace default-mode todos with source-backed assertions |
+| `mcp_server/tests/vector-index-impl.vitest.ts` | Modified | Tighten symlink fallback check; add delete rollback regression |
+| `mcp_server/tests/bm25-index.vitest.ts` | Modified | Add title-change re-index regression |
+| `mcp_server/tests/memory-search-integration.vitest.ts` | Modified | Rewrite placeholder-heavy checks to concrete assertions |
+| `mcp_server/tests/rrf-fusion.vitest.ts` | Modified | Update convergence-bonus expectations |
+| `mcp_server/tests/unit-rrf-fusion.vitest.ts` | Modified | Update convergence-bonus expectations |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -83,7 +81,7 @@ Three new tests in `working-memory.vitest.ts` cover provenance tracking in tool 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Nine Codex 5.3 xhigh agents ran in parallel via copilot CLI, each assigned to a single task. Two @review agents then audited the source changes and the test changes independently, also in parallel. Both review passes came back EXCELLENT (99/100 source, 96/100 test), with zero P0 or P1 findings between them. All 5 affected test suites passed (280 passed, 2 todo, 0 failed) before the review agents were dispatched, confirming no regressions were introduced. TypeScript compilation passed with `--noEmit` and ESLint reported no new issues (20 pre-existing warnings in unrelated files remain unchanged).
+A feature-by-feature audit pass identified remaining retrieval correctness and test-quality gaps. Fixes were then applied narrowly to audited retrieval files, followed by verification with clean TypeScript compile output, targeted retrieval suite execution, and a full-suite baseline snapshot to separate retrieval status from unrelated repository failures.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -93,11 +91,10 @@ Nine Codex 5.3 xhigh agents ran in parallel via copilot CLI, each assigned to a 
 
 | Decision | Why |
 |----------|-----|
-| Tier-3 cap set to 0.5, not a configurable constant | The value is a correctness fix for a known bug, not a tunable parameter. A named constant would imply it should vary; 0.5 is the right boundary. A P2 recommendation to extract it as a constant is tracked for a future pass. |
-| vector-index.ts internal barrel re-exports kept | This module is a deliberate split across multiple files and its internal barrel is a standard composition pattern. Removing it would break the module's public interface without benefit. |
-| T207 assertion updated as part of T-01 | The T-01 behavior change (truncated flag now true) made the existing T207 assertion wrong. Fixing the assertion in the same pass is simpler and safer than leaving a failing test for a follow-up. |
-| T-08 merged with T-06/T-07 | The T-08 tasks targeted the same files as T-06 and T-07. Separate agents would have produced conflicting diffs; merging them into a single pass eliminated the conflict risk. |
-| 9 parallel agents for 9 tasks | Each task was scoped to 1-3 files with no cross-task dependencies. Parallel dispatch cut wall-clock time from an estimated 45 minutes to under 10 minutes with no coordination overhead. |
+| Keep token-budget enforcement multi-step (`compact` then `truncate`) | Structured payloads can exceed budget even after naive result trimming; compaction preserves more useful context before hard truncation. |
+| Keep warn-not-throw behavior in retrieval schema/index catches | Retrieval index setup should remain resilient; structured warnings improve observability without changing runtime contract. |
+| Update both source and dist for RRF convergence behavior | Runtime tests and imports can hit dist artifacts; source-only fixes risk behavior drift. |
+| Record targeted and full-suite results separately | Retrieval completion should remain truthful and scoped, while still acknowledging repository-wide health. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -107,17 +104,11 @@ Nine Codex 5.3 xhigh agents ran in parallel via copilot CLI, each assigned to a 
 
 | Check | Result |
 |-------|--------|
-| Test suite: token-budget-enforcement.vitest.ts | PASS — all assertions including new T205-B4 |
-| Test suite: search-fallback-tiered.vitest.ts | PASS — exact 50% cap assertion passes |
-| Test suite: bm25-index.vitest.ts | PASS — 2 new gate handler tests pass |
-| Test suite: memory-context.vitest.ts | PASS — T207 updated assertion passes |
-| Test suite: working-memory.vitest.ts | PASS — 3 new provenance tests pass |
-| Total test count across 5 suites | 280 passed, 2 todo, 0 failed |
-| TypeScript (tsc --noEmit) | PASS |
-| ESLint | PASS — 0 new issues (20 pre-existing in unrelated files) |
-| @review source code | 99/100 EXCELLENT — 0 P0, 0 P1, 4 P2 |
-| @review test code | 96/100 EXCELLENT — 0 P0, 0 P1, 4 P2 |
-| Combined review score | 97.5/100 |
+| TypeScript compile (`npx tsc --noEmit --pretty false`) | PASS (clean) |
+| Retrieval-targeted verification scope | PASS (`10` suites, `365` passed, `0` failed) |
+| Retrieval-targeted suites included | `token-budget-enforcement.vitest.ts`, `search-archival.vitest.ts`, `memory-context.vitest.ts`, `memory-search-integration.vitest.ts`, `bm25-index.vitest.ts`, `intent-weighting.vitest.ts`, `rrf-degree-channel.vitest.ts`, `feature-eval-graph-signals.vitest.ts`, `extraction-adapter.vitest.ts`, `phase2-integration.vitest.ts` |
+| Full-suite baseline (`npx vitest run`) | `7339` passed, `5` failed, `28` todo, `1` pending |
+| Full-suite failed suites (outside retrieval scope) | `tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts` (3 failing tests), `tests/five-factor-scoring.vitest.ts` |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -125,11 +116,14 @@ Nine Codex 5.3 xhigh agents ran in parallel via copilot CLI, each assigned to a 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **8 P2 suggestions deferred** From the two review passes, 8 P2-level suggestions (non-blocking) were not addressed in this phase. Notable ones: extract the tier-3 cap (0.5) as a named constant (P2-03 source review), add `skipIf` guards to 5 BM25 tests that require an active index (P2-02 and P2-03 test review). These are candidates for a follow-up cleanup pass before or after 002-mutation.
+1. **Repository-wide test failures remain outside retrieval scope**  
+   This retrieval audit does not resolve failures in `checkpoints-storage`, `file-watcher`, or `five-factor-scoring` suites.
 
-2. **20 pre-existing ESLint warnings** These exist in files outside the audit scope and are not introduced by this phase. They are not tracked in this spec folder.
+2. **Source/dist dual maintenance remains a drift risk**  
+   Shared algorithm behavior requires source and dist parity. The RRF convergence fix was applied to both paths in this phase.
 
-3. **vector-index.ts barrel re-exports not cleaned up** The internal barrel pattern in `vector-index.ts` was intentionally left in place. If the module structure changes in a future phase, those re-exports should be reviewed at that time.
+3. **No new unresolved retrieval blocker documented**  
+   Remaining limitations are scope-boundary and maintenance concerns, not open retrieval correctness failures from this audit.
 <!-- /ANCHOR:limitations -->
 
 ---

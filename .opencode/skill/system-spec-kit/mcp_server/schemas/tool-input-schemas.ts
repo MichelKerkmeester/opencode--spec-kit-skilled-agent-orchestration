@@ -45,6 +45,7 @@ const optionalPathString = (minLength = 0) => pathString(minLength).optional();
 
 /** Shared max paths constant — used by both schema and handler. */
 export const MAX_INGEST_PATHS = 50;
+export const MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS = 1;
 
 const intentEnum = z.enum([
   'add_feature',
@@ -186,8 +187,10 @@ const memoryValidateSchema = getSchema({
 export const memoryBulkDeleteSchema = getSchema({
   tier: importanceTierEnum,
   specFolder: optionalPathString(),
-  confirm: z.boolean(),
-  olderThanDays: safeNumericPreprocess.pipe(z.number().int().min(1)).optional(),
+  confirm: z.literal(true),
+  olderThanDays: safeNumericPreprocess
+    .pipe(z.number().int().min(MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS))
+    .optional(),
   skipCheckpoint: z.boolean().optional(),
 });
 
@@ -212,6 +215,7 @@ const memoryHealthSchema = getSchema({
   limit: positiveIntMax(200).optional(),
   specFolder: optionalPathString(),
   autoRepair: z.boolean().optional(),
+  confirmed: z.boolean().optional(),
 });
 
 const checkpointCreateSchema = getSchema({
@@ -360,7 +364,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding'],
   memory_list: ['limit', 'offset', 'specFolder', 'sortBy', 'includeChunks'],
   memory_stats: ['folderRanking', 'excludePatterns', 'includeScores', 'includeArchived', 'limit'],
-  memory_health: ['reportMode', 'limit', 'specFolder', 'autoRepair'],
+  memory_health: ['reportMode', 'limit', 'specFolder', 'autoRepair', 'confirmed'],
   memory_delete: ['id', 'specFolder', 'confirm'],
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],

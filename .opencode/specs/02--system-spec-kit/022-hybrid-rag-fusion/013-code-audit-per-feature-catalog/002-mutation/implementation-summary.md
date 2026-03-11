@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 002-mutation code audit - 9 tasks fixed across mutation handlers and history coverage."
+description: "Phase 002-mutation code audit - original remediation plus March 11 re-audit closure across mutation handlers, history coverage, and verification evidence."
 trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
 importance_tier: "normal"
 contextType: "general"
@@ -18,7 +18,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 002-mutation |
-| **Completed** | 2026-03-10 |
+| **Completed** | 2026-03-11 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -59,34 +59,48 @@ History logging is now integrated end to end:
   - `lib/search/vector-index-queries.ts` integrity auto-clean orphan deletes (`mcp:integrity_check`)
   - Mutation APIs now self-record where required (`mcp:delete_memories`, `mcp:delete_by_path`)
 
-### Reconsolidation Single Gate + Confidence Tracker (WS-6/T-04, T-07)
+### Reconsolidation Canonical Gate + Defensive Guard + Confidence Tracker (WS-6/T-04, T-07)
 
-`reconsolidation-bridge.ts` now uses a single canonical reconsolidation gate from `search-flags.ts` while keeping the internal reconsolidation guard as a safety net. `confidence-tracker.ts` now throws on DB errors in `recordValidation` instead of returning success-shaped fallback values, so downstream steps cannot proceed on stale assumptions. `confidence-tracker.vitest.ts` was updated to assert throw behavior in three targeted cases.
+`reconsolidation-bridge.ts` now routes enablement through canonical `search-flags.ts:isReconsolidationFlagEnabled()`, and the internal `reconsolidate()` guard now matches the same explicit opt-in semantics (`SPECKIT_RECONSOLIDATION=true`, default OFF) as a defensive second gate. `confidence-tracker.ts` now throws on DB errors in `recordValidation` instead of returning success-shaped fallback values, so downstream steps cannot proceed on stale assumptions. `confidence-tracker.vitest.ts` was updated to assert throw behavior in three targeted cases.
 
 ### PE Decision Logging + Doc Fixes (WS-7/T-08, T-09)
 
-`prediction-error-gate.ts` now logs all PE decisions, including no-candidate and filtered-out paths, so behavior matches the documented "all decisions logged" contract. The transaction-wrapper catalog document was corrected to include actual handler sources and remove stale test references.
+`prediction-error-gate.ts` now logs all PE decisions, including no-candidate and filtered-out paths, so behavior matches the documented "all decisions logged" contract. The save-integration suite was rewritten from placeholder assertions to concrete PE/save arbitration checks, and mutation feature-catalog files were corrected for reconsolidation semantics, duplicate `retry-manager.vitest.ts` entries, stale test references, and transaction-wrapper/null-DB behavior notes.
+
+### Re-audit Closure for Remaining Mutation Gaps (WS-8/T-10)
+
+The March 11, 2026 re-audit found four remaining gaps after the earlier closeout: `delete_memory_by_path()` and `delete_memories()` still recorded DELETE history before confirmed deletion, reconsolidation guard semantics still needed canonical alignment, `memory_bulk_delete.confirm` was still only typed as boolean at the schema layer, and supporting tests/docs still pointed at older verification snapshots. Those gaps are now closed. Helper delete APIs record history only after confirmed deletion, reconsolidation now consistently uses explicit opt-in/default OFF semantics in both bridge and internal guard, `memory_bulk_delete` now requires `confirm: true` in both schema layers, and mutation-focused suites cover the repaired behavior directly.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
 | `mcp_server/schemas/tool-input-schemas.ts` | Modified | Align `olderThanDays` runtime schema minimum with handler/schema contract |
+| `mcp_server/tool-schemas.ts` | Modified | Enforce `memory_bulk_delete.confirm` as schema-level `const: true` |
 | `mcp_server/handlers/memory-bulk-delete.ts` | Modified | Record delete history in bulk flows and harden handler delete sequencing |
 | `mcp_server/lib/learning/corrections.ts` | Modified | Scope undo causal-edge deletion by relation and surface failures |
 | `mcp_server/lib/storage/history.ts` | Modified | Relax legacy constraints and preserve history rows for delete auditing |
+| `mcp_server/lib/storage/reconsolidation.ts` | Modified | Align internal defensive guard with canonical reconsolidation opt-in/default OFF semantics and confirmed-delete history ordering in orphan cleanup |
 | `mcp_server/handlers/save/create-record.ts` | Modified | Write `recordHistory('ADD')` inside save transaction |
 | `mcp_server/handlers/memory-crud-update.ts` | Modified | Add `recordHistory('UPDATE')` and enforce transactional BM25 data-failure rollback |
 | `mcp_server/handlers/memory-crud-delete.ts` | Modified | Prevent unsafe no-DB bulk path and add confirmed delete history writes |
-| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Modified | Use single reconsolidation gate and add missing save-path history call site |
+| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Modified | Use canonical reconsolidation gate in the bridge while retaining internal guard safety net |
 | `mcp_server/lib/scoring/confidence-tracker.ts` | Modified | Throw on `recordValidation` DB failures for explicit failure signaling |
 | `mcp_server/lib/cognitive/prediction-error-gate.ts` | Modified | Log all PE decisions, including early-return branches |
 | `mcp_server/handlers/chunking-orchestrator.ts` | Modified | Add history coverage for `deleteMemory()` and raw SQL chunk-delete paths |
 | `mcp_server/lib/storage/checkpoints.ts` | Modified | Add checkpoint-restore delete history coverage for scoped and full clears |
+| `mcp_server/lib/search/vector-index-mutations.ts` | Modified | Record helper DELETE history only after confirmed deletion |
 | `mcp_server/tests/confidence-tracker.vitest.ts` | Modified | Update 3 tests to assert throw behavior in validation error paths |
-| `mcp_server/tests/history.vitest.ts` | Modified | Add migration and actor-format regression coverage for history durability |
+| `mcp_server/tests/history.vitest.ts` | Modified | Add migration, actor-format, and bulk-delete boundary regression coverage |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Modified | Update cleanup ordering for schema without history foreign keys |
 | `mcp_server/tests/memory-crud-extended.vitest.ts` | Modified | Validate metadata update rollback semantics used by BM25 transactional fixes |
+| `mcp_server/tests/reconsolidation.vitest.ts` | Modified | Assert canonical/default OFF reconsolidation gate alignment and checkpoint-enable behavior |
+| `mcp_server/tests/reconsolidation-cleanup-ordering.vitest.ts` | Added | Assert no DELETE history is written when orphan cleanup delete does not actually delete a row |
+| `mcp_server/tests/search-flags.vitest.ts` | Modified | Add reconsolidation opt-in flag coverage (default OFF, explicit ON) |
+| `mcp_server/tests/tool-input-schema.vitest.ts` | Modified | Add `memory_bulk_delete` confirm/olderThanDays schema contract tests |
+| `mcp_server/tests/chunking-orchestrator-swap.vitest.ts` | Modified | Fix transaction mock typing and add delete-history assertions for safe-swap and rollback cleanup paths |
+| `mcp_server/tests/memory-save-integration.vitest.ts` | Modified | Replace placeholder assertions with concrete PE/save arbitration integration tests |
+| `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/*.md` | Modified | Correct reconsolidation semantics, remove stale/duplicate test references, and align transaction-wrapper/null-DB documentation with implementation |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -94,7 +108,7 @@ History logging is now integrated end to end:
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Delivery ran as an iterative cross-AI review loop, with GPT-5.4 review rounds R1 through R11 raising quality from 72/100 to 98/100 before final approval. Parallel Codex agents handled targeted fixes between rounds so issue classes could be closed quickly without stalling unrelated workstreams. Final verification ended with `npx tsc --noEmit` clean and test status at 239 passed with 7 pre-existing failures (none introduced by this audit).
+Delivery started as an iterative cross-AI review loop, with GPT-5.4 review rounds R1 through R11 raising quality from 72/100 to 98/100. The March 11, 2026 re-audit then closed the remaining mutation-specific gaps still present after that snapshot. Current verification is `npx tsc --noEmit` clean, focused mutation verification run green (`8 files`, `167 tests`), and the broader repository test suite at `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests, with remaining failures outside this mutation scope.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -107,7 +121,7 @@ Delivery ran as an iterative cross-AI review loop, with GPT-5.4 review rounds R1
 | Standardize `recordHistory` actor format as `mcp:<tool_name>` and keep a single call signature `(memoryId, event, prevValue, newValue, actor)` | This keeps history rows queryable across more than 20 runtime call sites and removes ambiguity across handler, module, and raw SQL paths. |
 | Distinguish BM25 infrastructure failures from data failures in update flows | Infrastructure gaps in test/mocks should not abort user writes, but data-path re-index failures must roll back to avoid stale searchable state. |
 | Make `recordValidation` throw instead of returning success-shaped fallback values | Explicit failure propagation prevents downstream side effects from running on invalid or stale confidence state. |
-| Collapse reconsolidation to one canonical enablement gate in `search-flags.ts` | One gate removes contradictory behavior while the internal reconsolidation guard remains as a defensive safety net. |
+| Route reconsolidation bridge checks through canonical `search-flags.ts` gate while retaining internal `reconsolidate()` guard with matching semantics | Canonical bridge gating removes contradictory bridge checks, and matching explicit opt-in/default OFF behavior in the internal guard preserves defensive safety without semantic drift. |
 | Use migration rebuild strategy (`sqlite_master` detection + rename/create/insert/drop) for legacy history constraints | Rebuild migration is deterministic in SQLite and cleanly removes legacy CHECK/FK constraints without partial schema drift. |
 | Initialize history tables during DB setup via `initHistory(database)` next to companion-table initialization | Runtime mutation handlers can call `recordHistory()` immediately without depending on manual initialization or ordering assumptions. |
 <!-- /ANCHOR:decisions -->
@@ -120,9 +134,10 @@ Delivery ran as an iterative cross-AI review loop, with GPT-5.4 review rounds R1
 | Check | Result |
 |-------|--------|
 | TypeScript (`npx tsc --noEmit`) | PASS - clean, 0 errors |
-| Test suite run | PASS with pre-existing failures only - 239 passed, 7 failed (all pre-existing), 7203 tests passed total |
-| Claude @review | APPROVE - 82/100, 0 P0, 2 P1 mitigated, 5 P2 |
-| GPT-5.4 cross-AI R11 | APPROVE - 98/100, 0 P0, 0 P1, 0 P2 |
+| Targeted history suite (`npx vitest run tests/history.vitest.ts --reporter=verbose`) | PASS - `35 passed` |
+| Focused mutation verification run | PASS - `8 files`, `167 tests` passed |
+| Full repository suite (`npx vitest run --reporter=verbose`) | PARTIAL - `254 passed files / 5 failed files`, `7331 passed / 8 failed / 1 skipped / 30 todo`; failing files are outside mutation scope (`tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts`, `tests/five-factor-scoring.vitest.ts`, `tests/rrf-fusion.vitest.ts`, `tests/unit-rrf-fusion.vitest.ts`) |
+| Historical cross-AI reference (pre re-audit) | Earlier rounds included `Claude @review 82/100` and `GPT-5.4 R11 98/100`; these are historical snapshots, not the current March 11 verification state |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -130,14 +145,16 @@ Delivery ran as an iterative cross-AI review loop, with GPT-5.4 review rounds R1
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **7 pre-existing test failures remain.** The final test run still reports 7 failures that pre-date this mutation audit and were not introduced by the phase changes.
-2. **Two P2 implementation suggestions were deferred.** History `prevValue` consistency edge cases and per-row history insert performance tuning remain follow-up work.
-3. **8 P2 suggestions from Claude @review were tracked but not fixed in this phase.** These are non-blocking quality improvements and were intentionally deferred to keep scope aligned to P0/P1 closure.
+1. **5 non-mutation full-suite failures remain.** The current repository-wide Vitest run still reports failures outside 002-mutation in: `tests/checkpoints-storage.vitest.ts`, `tests/file-watcher.vitest.ts` (3 failures), `tests/five-factor-scoring.vitest.ts`, `tests/rrf-fusion.vitest.ts`, and `tests/unit-rrf-fusion.vitest.ts`. These should be addressed separately so the broader baseline catches up with the mutation slice.
+2. **`getHistoryStats(specFolder)` still undercounts delete history for fully removed memories.** The current implementation joins `memory_history` against live `memory_index` rows, so spec-folder stats cannot attribute deleted rows once the parent memory is gone. This is a reporting limitation, not a data-loss issue.
+3. **Two lower-priority history improvements remain deferred.** `prevValue` normalization edge cases and per-row history insert performance tuning remain follow-up work.
 <!-- /ANCHOR:limitations -->
 
 ---
 
-## Review History
+## Historical Review History (Pre Re-Audit)
+
+These score entries are retained as historical context from earlier review rounds.
 
 | Reviewer | Score | Verdict | P0 | P1 | P2 |
 |----------|-------|---------|----|----|-----|
@@ -172,10 +189,12 @@ Delivery ran as an iterative cross-AI review loop, with GPT-5.4 review rounds R1
 15. R6-P1-3: `reconsolidation.ts:519` orphan conflict cleanup raw SQL without history -> **Fixed**: added `recordHistory('DELETE')` with `mcp:reconsolidation_cleanup` actor
 16. R7-P1-1: `checkpoints.ts:704,706` restoreCheckpoint clearExisting raw SQL without history -> **Fixed**: record delete for scoped/all memories before raw delete with `mcp:checkpoint_restore` actor
 17. R7-P1-2: `vector-index-queries.ts:1360` `verify_integrity` autoClean raw SQL without history -> **Fixed**: record delete per orphaned chunk before raw delete with `mcp:integrity_check` actor
-18. R8-P1-1: `delete_memories()` not self-recording delete history -> **Fixed**: added `recordHistory` per memory inside function with `mcp:delete_memories` actor
-19. R8-P1-2: `delete_memory_by_path()` not self-recording delete history -> **Fixed**: added `recordHistory` before delegating to `delete_memory()` with `mcp:delete_by_path` actor
+18. R8-P1-1: `delete_memories()` not self-recording delete history -> **Fixed**: added `recordHistory` per memory inside function with `mcp:delete_memories` actor, and the March 11 re-audit moved it after confirmed deletion
+19. R8-P1-2: `delete_memory_by_path()` not self-recording delete history -> **Fixed**: added `recordHistory` with `mcp:delete_by_path` actor, and the March 11 re-audit moved it after confirmed deletion
 20. R9-P1: `checkpoints.ts` false delete history for snapshot-only IDs -> **Fixed**: iterate `currentScopedMemoryIds` instead of `scopedMemoryIdsToReplace`
 21. R10-P1: `memory-crud-delete.ts` and `memory-bulk-delete.ts` recorded delete history before confirming `deleteMemory()` success -> **Fixed**: moved `recordHistory` after confirmed deletion in all 3 handler paths
+22. 2026-03-11 re-audit: reconsolidation guard semantics still needed canonical alignment -> **Fixed**: bridge and internal guard now use the same explicit opt-in/default OFF semantics
+23. 2026-03-11 re-audit: `memory_bulk_delete.confirm` accepted `false` at schema level and bulk-delete boundary coverage remained thin -> **Fixed**: schema now requires literal/const `true`, with new schema + handler boundary tests
 
 ---
 

@@ -83,7 +83,7 @@ describe('RRF Fusion (T001-T006)', () => {
     expect(shared.rrfScore).toBeGreaterThan(vectorOnly.rrfScore);
     expect(shared.rrfScore).toBeGreaterThan(bm25Only.rrfScore);
     expect(shared.sources).toHaveLength(2);
-    expect(shared.convergenceBonus).toBe(0);
+    expect(shared.convergenceBonus).toBeCloseTo(0.10, 2);
   });
 
   it('T004: Empty input returns empty output', () => {
@@ -180,7 +180,7 @@ describe('C138: Cross-Variant RRF (Multi-Query)', () => {
     const shared = requireResult(fused.find(r => r.id === 'shared'));
     expect(shared.sources).toHaveLength(3);
     expect(shared.rrfScore).toBeGreaterThan(requireResult(fused.find(r => r.id === 'v-only')).rrfScore);
-    expect(shared.convergenceBonus).toBe(0);
+    expect(shared.convergenceBonus).toBeCloseTo(0.20, 2);
   });
 
   it('C138-T2: explicit convergence bonus is exactly 0.10 per additional source', () => {

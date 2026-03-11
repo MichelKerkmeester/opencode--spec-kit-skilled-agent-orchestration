@@ -43,11 +43,11 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 [P] [P0] Correct F-05 implementation table and B4 `.changes` claim (`feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`)
-- [ ] T002 [P] [P0] Correct F-06 implementation/test pathing for E1/E2 (`feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`)
-- [ ] T003 [P] [P1] Add active dedup source/test references for F-02 (`feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`)
-- [ ] T004 [P] [P1] Add stage-2 co-activation source/test references for F-03 (`feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`)
-- [ ] T005 [P] [P1] Add canonical-ID dedup source/test references for F-07 (`feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`)
+- [x] T001 [P] [P0] Correct F-05 implementation table and B4 `.changes` claim — Agent 1: replaced generic config files with actual B1-B4 fix files (reconsolidation-bridge, checkpoints, causal-edges, pe-gating); B4 claim corrected to pe-gating.ts `.changes === 0` guard
+- [x] T002 [P] [P0] Correct F-06 implementation/test pathing for E1/E2 — Agent 1: replaced `lib/errors/*` with `temporal-contiguity.ts` (E1 j=i+1 fix) and `extraction-adapter.ts` (E2 null-on-unresolved)
+- [x] T003 [P] [P1] Add active dedup source/test references for F-02 — Agent 2: added `memory-search.ts` and `handler-memory-search.vitest.ts` to implementation/test tables
+- [x] T004 [P] [P1] Add stage-2 co-activation source/test references for F-03 — Agent 2: added `stage2-fusion.ts` and Stage-2 test references
+- [x] T005 [P] [P1] Add canonical-ID dedup source/test references for F-07 — Agent 2: added `hybrid-search.ts` (combinedLexicalSearch) and `hybrid-search.vitest.ts` to tables
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -55,11 +55,11 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T006 [P] [P0] Replace wildcard barrel exports with explicit exports (`mcp_server/lib/errors/index.ts`)
-- [ ] T007 [P] [P0] Replace remaining spread-based `Math.max` calls (`mcp_server/shared/scoring/folder-scoring.ts`)
-- [ ] T008 [P] [P1] Add production-path content-hash dedup integration coverage (`mcp_server/tests/content-hash-dedup.vitest.ts`)
-- [ ] T009 [P] [P1] Extend safe-swap semantics to force path or document destructive behavior (`mcp_server/handlers/chunking-orchestrator.ts`)
-- [ ] T010 [P] [P1] Align F-11 working-memory naming and timestamp comparison behavior (`feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-session-cleanup-timestamp-fix.md`)
+- [x] T006 [P] [P0] Replace wildcard barrel exports — ALREADY DONE: `lib/errors/index.ts` already uses explicit named exports, no `export *` found
+- [x] T007 [P] [P0] Replace remaining spread-based `Math.max` calls — Agent 3: replaced 2 `Math.max(...spread)` with `reduce()` in `shared/scoring/folder-scoring.ts:200-207,269-271` + rebuilt dist
+- [x] T008 [P] [P1] Add production-path content-hash dedup integration coverage — Agent 4: extended `content-hash-dedup.vitest.ts` (15 tests passing)
+- [x] T009 [P] [P1] Extend safe-swap semantics to force path — Agent 3: documented force-path as intentionally destructive with AI-WHY comment at `chunking-orchestrator.ts:166-168`
+- [x] T010 [P] [P1] Align F-11 working-memory naming — Agent 2: fixed table name from `working_memory_sessions` → `working_memory` in F-11 narrative
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -67,10 +67,10 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T011 [P] [P0] Add large-array (>100k) `RangeError` regressions for scoring paths (`mcp_server/tests/*folder-scoring*.vitest.ts`)
-- [ ] T012 [P] [P1] Add include-content-independent dedup regression assertions (`mcp_server/tests/handler-memory-search.vitest.ts`)
-- [ ] T013 [P] [P1] Add staged-swap success/failure/rollback regressions (`mcp_server/tests/*chunking-orchestrator*.vitest.ts`)
-- [ ] T014 [P] [P2] Add concurrent session-manager entry-limit stress test (`mcp_server/tests/session-manager-extended.vitest.ts`)
+- [x] T011 [P] [P0] Add large-array (>100k) `RangeError` regressions — Agent 4: `folder-scoring-overflow.vitest.ts` (2 tests: computeSingleFolderScore 150K, findLastActivity 150K) passing after dist rebuild
+- [x] T012 [P] [P1] Add include-content-independent dedup regression — Agent 4: extended `handler-memory-search.vitest.ts` (18 tests passing)
+- [x] T013 [P] [P1] Add staged-swap success/failure/rollback regressions — Agent 5: `chunking-orchestrator-swap.vitest.ts` (3 tests: success, rollback, partial-embedding) passing
+- [x] T014 [P] [P2] Add concurrent session-manager entry-limit stress test — Agent 5: `session-manager-stress.vitest.ts` (2 tests: concurrent capacity, cleanup timestamp) passing
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -78,9 +78,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]` — 14/14 complete
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed — TSC 0 errors, 42 new tests all passing
 <!-- /ANCHOR:completion -->
 
 ---

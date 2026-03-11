@@ -193,7 +193,7 @@ function fuseResultsMulti(
   const rawConvergenceBonus = options.convergenceBonus;
   const convergenceBonus = typeof rawConvergenceBonus === 'number' && Number.isFinite(rawConvergenceBonus) && rawConvergenceBonus >= 0
     ? rawConvergenceBonus
-    : 0;
+    : CONVERGENCE_BONUS;
   const rawGraphWeightBoost = options.graphWeightBoost;
   const graphWeightBoost = typeof rawGraphWeightBoost === 'number' && Number.isFinite(rawGraphWeightBoost) && rawGraphWeightBoost >= 0
     ? rawGraphWeightBoost

@@ -12,7 +12,7 @@
 //   'supersedes' edge)
 // - similarity < 0.75: COMPLEMENT (store new memory unchanged)
 //
-// Behind SPECKIT_RECONSOLIDATION flag (default OFF)
+// Behind SPECKIT_RECONSOLIDATION opt-in flag (default OFF)
 // REQUIRES: checkpoint created before first enable
 // ---------------------------------------------------------------
 
@@ -117,14 +117,13 @@ const SIMILAR_MEMORY_LIMIT = 3;
 /**
  * Check if reconsolidation is enabled via feature flag.
  *
- * AI-FIX: F-14 — Contract specifies reconsolidation defaults to OFF (opt-in).
- * Previously defaulted to ON because `undefined !== 'false'` is true.
- * Now requires explicit `SPECKIT_RECONSOLIDATION=true` to enable.
+ * Reconsolidation is opt-in and requires explicit
+ * `SPECKIT_RECONSOLIDATION=true`.
  *
- * @returns true if SPECKIT_RECONSOLIDATION is explicitly set to 'true'
+ * @returns true only when SPECKIT_RECONSOLIDATION is explicitly enabled
  */
 export function isReconsolidationEnabled(): boolean {
-  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase() === 'true';
+  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
 }
 
 /* ---------------------------------------------------------------
@@ -517,11 +516,12 @@ export async function reconsolidate(
             // orphan embedding/artifact rows when memory_index is deleted.
             try {
               db.transaction(() => {
-                // AI-WHY: Record DELETE history before removing orphan so audit trail persists
-                try {
-                  recordHistory(conflictMemory.id!, 'DELETE', null, null, 'mcp:reconsolidation_cleanup');
-                } catch (_histErr: unknown) { /* best-effort */ }
-                db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
+                const deleteResult = db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
+                if (deleteResult.changes > 0) {
+                  try {
+                    recordHistory(conflictMemory.id!, 'DELETE', null, null, 'mcp:reconsolidation_cleanup');
+                  } catch (_histErr: unknown) { /* best-effort */ }
+                }
                 // Clean up vector embedding if vec_memories table exists
                 try {
                   db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(conflictMemory.id);

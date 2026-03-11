@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: discovery [template:level_2/spec.md]"
-description: "Audit Discovery feature catalog entries against implementation reality and tests, then capture prioritized follow-up work. Standardize findings using the Level 2 structure so verification stays consistent and traceable."
+description: "Align Discovery phase documentation with current on-disk handler, schema, feature-catalog, and test reality after latest fixes."
 trigger_phrases:
   - "feature"
   - "specification"
@@ -11,7 +11,6 @@ importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: discovery
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
@@ -26,6 +25,7 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
+| **Updated** | 2026-03-11 |
 | **Branch** | `003-discovery` |
 <!-- /ANCHOR:metadata -->
 
@@ -35,10 +35,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Discovery audit content exists, but phase documentation is not consistently represented in the Level 2 template structure. This inconsistency reduces comparability across phases and makes findings harder to verify and operationalize.
+Parts of the Discovery phase docs became stale after the latest handler and schema fixes. Several statements no longer match on-disk behavior or current verification evidence.
 
 ### Purpose
-Provide a normalized Level 2 Discovery audit specification that clearly maps findings into actionable remediation and verification work.
+Make `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` fully match current Discovery implementation reality and focused verification outcomes.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -47,22 +47,26 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 ## 3. SCOPE
 
 ### In Scope
-- Discovery category audit coverage for `memory_list`, `memory_stats`, and `memory_health`
-- Findings structure for correctness, standards alignment, behavior matching, test gaps, and playbook coverage
-- Task-level mapping of P1/P2 follow-up work identified during the audit
+- Discovery behavior documentation for `memory_list`, `memory_stats`, and `memory_health`
+- Requirements and checklist coverage for MCP validation envelopes (`E_INVALID_INPUT` + `requestId`) on handler-level validation failures
+- Documentation of `memory_list` resolved `sortBy` response field
+- Documentation of `memory_stats` response `limit` field and validation for `includeScores`, `includeArchived`, and non-finite `limit`
+- Documentation of `memory_health` public schema support for `confirmed` in auto-repair confirmation flow
+- Final verification evidence: clean `tsc` run and targeted 5-file suite passing `89/89`
 
 ### Out of Scope
-- Implementing production handler fixes in `mcp_server/handlers/*` during this documentation phase - tracked in tasks
-- Expanding this audit to non-Discovery feature categories - handled by separate phase folders
+- Additional runtime code changes in `mcp_server/handlers/*`, `schemas/*`, or tests
+- Audit updates for non-Discovery categories
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/spec.md` | Modify | Rewrite to Level 2 specification template with mapped Discovery audit content |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/tasks.md` | Modify | Map Discovery findings into numbered implementation tasks |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/plan.md` | Modify | Convert methodology/checklist into Level 2 implementation plan format |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/checklist.md` | Modify | Reframe findings under Level 2 verification categories |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/spec.md` | Modify | Refresh requirements/success criteria to current Discovery reality |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/plan.md` | Modify | Refresh plan phases/testing evidence to finalized implementation state |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/tasks.md` | Modify | Refresh completed task list and verification tasks |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/checklist.md` | Modify | Refresh checklist evidence and remove stale claims |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/implementation-summary.md` | Modify | Refresh final summary to current behavior and verification evidence |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -74,15 +78,18 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document all Discovery features (`F-01` to `F-03`) with consistent finding fields | Each feature includes status, code issues, standards review, behavior match, test gaps, playbook mapping, and recommended fixes |
+| REQ-001 | Document `memory_list` handler-level validation behavior | Docs state invalid `specFolder`, `includeChunks`, and non-finite `limit`/`offset` return MCP error envelopes with `code: E_INVALID_INPUT` and `data.details.requestId` |
+| REQ-002 | Document `memory_list` response shape accurately | Docs state response includes resolved `sortBy` (`created_at` fallback) |
+| REQ-003 | Document `memory_stats` validation and response behavior accurately | Docs state validation coverage for `includeScores`, `includeArchived`, and non-finite `limit` returns `E_INVALID_INPUT` envelopes with `requestId`, and success payload includes resolved `limit` |
+| REQ-004 | Document `memory_health` confirmation schema reachability | Docs state public/runtime schemas accept `confirmed` for `autoRepair` confirmation flow |
+| REQ-005 | Capture final focused verification evidence | Docs record `npx tsc --noEmit` clean and targeted suite passing `89/89` across the 5 named files |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-002 | Capture `memory_stats` folder-total summary defect as implementation-ready tasking | `tasks.md` includes a numbered task referencing `mcp_server/handlers/memory-crud-stats.ts` and expected correction |
-| REQ-003 | Capture `memory_health` `requestId` inconsistency as implementation-ready tasking | `tasks.md` includes a numbered task referencing `mcp_server/handlers/memory-crud-health.ts` and required response consistency |
-| REQ-004 | Capture Discovery test coverage gaps and stale test references | `tasks.md` and `checklist.md` explicitly cover missing edge-case tests and stale `retry.vitest.ts` references |
+| REQ-006 | Remove stale Discovery claims | Remove outdated statements including "documentation phase", `48/48` count, old `computeFolderScores`-limit wording, and outdated Discovery-only `E_INVALID_INPUT` inconsistency limitation |
+| REQ-007 | Keep all five phase docs synchronized | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` share consistent behavior statements and verification evidence |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -90,10 +97,11 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 3 Discovery features are represented with structured audit findings.
-- **SC-002**: Each feature has explicit status and issue categorization (code, standards, behavior, tests).
-- **SC-003**: Test coverage gaps are documented for each feature with concrete follow-up direction.
-- **SC-004**: Playbook coverage is mapped to EX-018, EX-019, and EX-020 or noted as a gap.
+- **SC-001**: Discovery docs describe `memory_list` validation envelopes and resolved `sortBy` behavior accurately.
+- **SC-002**: Discovery docs describe `memory_stats` validation envelopes and `limit` response field accurately.
+- **SC-003**: Discovery docs describe `memory_health` schema support for `confirmed` accurately.
+- **SC-004**: Discovery docs reference the rewritten Discovery feature catalog as current reality.
+- **SC-005**: Verification evidence is updated to `tsc` clean plus targeted `89/89` tests across the five specified files.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -103,13 +111,10 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Discovery feature catalog documents | Incomplete or stale metadata can skew findings | Re-validate file references and scenario IDs during verification |
-| Risk | Stale test file references (`retry.vitest.ts`) persist across docs | Follow-up implementation may target non-existent tests | Track cleanup as explicit tasks and checklist checks |
+| Dependency | Current on-disk handler/schema/test files under `.opencode/skill/system-spec-kit/` | If these change again, docs can drift quickly | Anchor claims to currently verified file behavior and commands |
+| Risk | Concurrent codebase updates by other contributors | Statements can become stale after doc refresh | Scope locked to current reality snapshot + explicit verification evidence |
+| Risk | Focused verification is narrower than full-suite coverage | Potential regressions outside targeted scope remain unseen | Document focused scope explicitly and keep evidence command-level precise |
 <!-- /ANCHOR:risks -->
-
----
-
-<!-- ANCHOR:questions -->
 
 ---
 
@@ -117,16 +122,16 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Discovery audit artifacts should remain readable and reviewable in under 5 minutes per file.
-- **NFR-P02**: Findings-to-task traceability should allow issue lookup in under 30 seconds.
+- **NFR-P01**: Discovery docs remain readable in under 5 minutes per file.
+- **NFR-P02**: Behavior-to-evidence traceability lookup should take under 30 seconds per claim.
 
 ### Security
-- **NFR-S01**: Documentation must not introduce or expose secrets, credentials, or private paths.
-- **NFR-S02**: Security-relevant findings (error output/path handling) must be explicitly tracked.
+- **NFR-S01**: Documentation must not expose credentials or unsafe absolute paths.
+- **NFR-S02**: Error envelope and `requestId` documentation should preserve observability without introducing sensitive data exposure.
 
 ### Reliability
-- **NFR-R01**: All required Level 2 anchors and metadata blocks remain present and syntactically valid.
-- **NFR-R02**: Cross-file references (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) stay internally consistent.
+- **NFR-R01**: Level 2 anchors and template markers remain intact in all five updated files.
+- **NFR-R02**: Cross-file behavior statements are internally consistent.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -135,18 +140,15 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty input: Discovery sections still render required Level 2 anchors and placeholders.
-- Maximum length: Longer findings remain concise enough to fit checklist/task structures.
-- Invalid format: Non-template headings are replaced with canonical Level 2 sections.
+- Non-finite numeric inputs (`limit`, `offset`) must be documented as validation errors, not clamped success paths.
+- Unsupported `sortBy` values must be documented as fallback-to-`created_at`, with resolved value in response payload.
 
 ### Error Scenarios
-- External service failure: Not applicable for doc rewrite; preserve references without executing services.
-- Network timeout: Not applicable for local documentation update.
-- Concurrent access: Conflicts should be resolved by preserving template structure first, then mapped content.
+- Handler-level validation failures must be documented as MCP error envelopes with `requestId`, not thrown errors.
+- Schema-level acceptance for `confirmed` must be documented for both public schema and runtime args parsing.
 
 ### State Transitions
-- Partial completion: Any partially rewritten file is replaced with full template-compliant content.
-- Session expiry: Re-run rewrite and verification using the same target folder and template source.
+- If source code changes after this doc refresh, Discovery docs must be re-audited before reuse as evidence.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -156,18 +158,18 @@ Provide a normalized Level 2 Discovery audit specification that clearly maps fin
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 18/25 | Four files rewritten with strict template conformance |
-| Risk | 12/25 | Low runtime risk; moderate process risk from template drift |
-| Research | 8/20 | Existing findings are already available and mapped |
-| **Total** | **38/70** | **Level 2** |
+| Scope | 19/25 | Five spec artifacts refreshed and synchronized |
+| Risk | 13/25 | Moderate drift risk due active concurrent code changes |
+| Research | 9/20 | Required direct verification across handlers, schemas, tests, and catalog docs |
+| **Total** | **41/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- ~~Should stale `retry.vitest.ts` references be removed from all related feature catalog files in the same follow-up change?~~ **Resolved**: Yes, removed from all 3 Discovery catalog files.
-- Should `requestId` be included in successful `memory_health` responses as well as all error responses? **Deferred**: Not in scope for this phase. Currently included in all error responses only.
+- None. The previously stale Discovery statements targeted by this phase update are resolved in this revision.
 <!-- /ANCHOR:questions -->
 
 ---

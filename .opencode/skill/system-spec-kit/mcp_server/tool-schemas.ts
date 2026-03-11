@@ -5,7 +5,10 @@
 // Extracted from context-server.ts for maintainability (T303).
 // ---------------------------------------------------------------
 
-import { MAX_INGEST_PATHS } from './schemas/tool-input-schemas';
+import {
+  MAX_INGEST_PATHS,
+  MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS,
+} from './schemas/tool-input-schemas';
 
 export {
   ToolSchemaValidationError,
@@ -214,6 +217,11 @@ const memoryHealth: ToolDefinition = {
         type: 'boolean',
         default: false,
         description: 'When true in full mode, attempts best-effort repair actions for detected health issues (e.g., FTS rebuild).'
+      },
+      confirmed: {
+        type: 'boolean',
+        default: false,
+        description: 'Required with autoRepair:true to execute repair actions. When false or omitted, memory_health returns a confirmation-only response.'
       }
     },
     required: []
@@ -267,7 +275,7 @@ const memoryValidate: ToolDefinition = {
 const memoryBulkDelete: ToolDefinition = {
   name: 'memory_bulk_delete',
   description: '[L4:Mutation] Bulk delete memories by importance tier. Use to clean up deprecated or temporary memories at scale. Auto-creates checkpoint before deletion for safety. Refuses unscoped deletion of constitutional/critical tiers. Supports optional checkpoint bypass for lower-risk tiers when speed is prioritized. Token Budget: 500.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { tier: { type: 'string', enum: ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'], description: 'Importance tier to delete (required)' }, specFolder: { type: 'string', description: 'Optional: scope deletion to a specific spec folder' }, confirm: { type: 'boolean', description: 'Required safety gate: must be true to proceed' }, olderThanDays: { type: 'number', minimum: 1, description: 'Optional: only delete memories older than this many days' }, skipCheckpoint: { type: 'boolean', default: false, description: 'Optional speed optimization for non-critical tiers. When true, skips auto-checkpoint creation before delete. Rejected for constitutional/critical tiers.' } }, required: ['tier', 'confirm'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { tier: { type: 'string', enum: ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'], description: 'Importance tier to delete (required)' }, specFolder: { type: 'string', description: 'Optional: scope deletion to a specific spec folder' }, confirm: { type: 'boolean', const: true, description: 'Required safety gate: must be true to proceed' }, olderThanDays: { type: 'number', minimum: MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS, description: 'Optional: only delete memories older than this many days' }, skipCheckpoint: { type: 'boolean', default: false, description: 'Optional speed optimization for non-critical tiers. When true, skips auto-checkpoint creation before delete. Rejected for constitutional/critical tiers.' } }, required: ['tier', 'confirm'] },
 };
 
 // L5: Lifecycle - Checkpoints and versioning (Token Budget: 600)

@@ -14,26 +14,15 @@ Two guard/edge-case issues were fixed:
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/errors/core.ts` | Lib | Error type definitions |
-| `mcp_server/lib/errors/index.ts` | Lib | Module barrel export |
-| `mcp_server/lib/errors/recovery-hints.ts` | Lib | Error recovery hints |
+| `mcp_server/lib/cognitive/temporal-contiguity.ts` | Lib | **E1**: pairwise loop uses `for (let j = i + 1; ...)` to avoid double-counting `(A,B)` and `(B,A)`. |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | **E2**: unresolved memory references return `null` (no most-recent-memory fallback). |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/bm25-index.vitest.ts` | BM25 index operations |
-| `mcp_server/tests/full-spec-doc-indexing.vitest.ts` | Full spec doc indexing |
-| `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
-| `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
-| `mcp_server/tests/recovery-hints.vitest.ts` | Recovery hint tests |
-| `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/trigger-setAttentionScore.vitest.ts` | Trigger attention scoring |
-| `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
+| `mcp_server/tests/temporal-contiguity.vitest.ts` | **E1**: T502 coverage validates temporal-contiguity boost behavior on adjacent/time-windowed results. |
+| `mcp_server/tests/extraction-adapter.vitest.ts` | **E2**: T035a/T035b/T035c verifies unresolved memory IDs skip insert rather than linking the wrong memory. |
 
 ## Source Metadata
 

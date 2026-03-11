@@ -40,7 +40,11 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
   it('T007b-H3: Negative limit returns error response', async () => {
     const result = await handler.handleMemoryHealth({ limit: -5 } as HealthArgs);
     const parsed = parseResponse(result);
-    expect(getErrorMessage(parsed)).toMatch(/limit must be a positive number/);
+    const error = getErrorMessage(parsed);
+    const details = getDetails(parsed);
+    expect(error).toMatch(/limit must be a positive number/);
+    expect(details?.requestId).toBeDefined();
+    expect(typeof details?.requestId).toBe('string');
   });
 
   it('T007b-H4: Non-boolean autoRepair returns error with requestId', async () => {
@@ -55,7 +59,11 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
   it('T007b-H5: Non-boolean confirmed returns error', async () => {
     const result = await handler.handleMemoryHealth({ confirmed: 1 } as unknown as HealthArgs);
     const parsed = parseResponse(result);
-    expect(getErrorMessage(parsed)).toMatch(/confirmed must be a boolean/);
+    const error = getErrorMessage(parsed);
+    const details = getDetails(parsed);
+    expect(error).toMatch(/confirmed must be a boolean/);
+    expect(details?.requestId).toBeDefined();
+    expect(typeof details?.requestId).toBe('string');
   });
 
   it('T007b-H6: Non-string specFolder returns error with requestId', async () => {
@@ -67,24 +75,22 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
     expect(details?.requestId).toBeDefined();
   });
 
-  it('T007b-H7: divergent_aliases reportMode does not error on validation', async () => {
-    try {
-      const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases' });
-      const parsed = parseResponse(result);
-      // Should either succeed or hit DB error, not validation error
-      expect(getErrorMessage(parsed) ?? '').not.toMatch(/Invalid reportMode/);
-    } catch (error: unknown) {
-      expect(String(error)).toMatch(/database|DB|getDb/i);
-    }
+  it('T007b-H7: divergent_aliases reportMode returns compact success payload', async () => {
+    const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases' });
+    const parsed = parseResponse(result);
+    expect(result.isError).toBe(false);
+    expect(parsed.data.reportMode).toBe('divergent_aliases');
+    expect(parsed.data.limit).toBe(20);
+    expect(Array.isArray(parsed.data.groups)).toBe(true);
   });
 
-  it('T007b-H8: Empty args accepted (defaults)', async () => {
-    try {
-      const result = await handler.handleMemoryHealth({});
-      expect(result).toBeDefined();
-      expect(result.content).toBeDefined();
-    } catch (error: unknown) {
-      expect(String(error)).toMatch(/database|DB|getDb/i);
-    }
+  it('T007b-H8: Empty args return the default full health payload', async () => {
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+    expect(result.isError).toBe(false);
+    expect(parsed.data.reportMode).toBe('full');
+    expect(typeof parsed.data.status).toBe('string');
+    expect(typeof parsed.data.databaseConnected).toBe('boolean');
+    expect(parsed.data.aliasConflicts).toBeDefined();
   });
 });

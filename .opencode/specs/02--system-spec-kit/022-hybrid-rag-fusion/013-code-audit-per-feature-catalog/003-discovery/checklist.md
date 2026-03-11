@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: discovery [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-11"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Discovery findings for F-01, F-02, and F-03 are documented in `spec.md`
-- [x] CHK-002 [P0] Remediation tasks are defined in `tasks.md` with T### numbering
-- [x] CHK-003 [P1] Source files and playbook mappings (EX-018 to EX-020) are verified
+- [x] CHK-001 [P0] Scope is locked to the five requested Discovery docs [Evidence: update scope table in `spec.md`]
+- [x] CHK-002 [P0] Source-of-truth implementation files were re-verified before doc edits [Evidence: `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts`, schema and test files]
+- [x] CHK-003 [P1] Level 2 template anchors and metadata blocks remain intact [Evidence: all five docs retain `SPECKIT_LEVEL` and anchor sections]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,10 +41,11 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] `memory_stats` summary uses accurate folder total semantics (`totalSpecFolders`) — fixed: removed `limit` from `computeFolderScores`, set `totalSpecFolders` before `.slice()`
-- [x] CHK-011 [P0] `memory_health` includes `requestId` consistently in error responses — fixed: all 5 validation paths return `createMCPErrorResponse` with `details: { requestId }`
-- [x] CHK-012 [P1] Error hint sanitization preserves safe, useful diagnostics — verified: `sanitizeErrorForHint` strips paths, keeps message
-- [x] CHK-013 [P1] Follow-up changes align with sk-code--opencode TypeScript patterns — verified by GPT-5.3-codex review
+- [x] CHK-010 [P0] `memory_list` handler-level validation failures are documented as MCP envelopes with `E_INVALID_INPUT` and `data.details.requestId` [Evidence: `mcp_server/handlers/memory-crud-list.ts`]
+- [x] CHK-011 [P0] `memory_list` response includes resolved `sortBy` (fallback to `created_at`) [Evidence: `mcp_server/handlers/memory-crud-list.ts`, `parsed.data.sortBy` assertions in `handler-memory-list-edge.vitest.ts`]
+- [x] CHK-012 [P0] `memory_stats` validation for `includeScores`, `includeArchived`, and non-finite `limit` is documented as `E_INVALID_INPUT` envelope behavior with `requestId` [Evidence: `mcp_server/handlers/memory-crud-stats.ts`]
+- [x] CHK-013 [P0] `memory_stats` response payload includes resolved `limit` and accurate `totalSpecFolders` semantics [Evidence: `mcp_server/handlers/memory-crud-stats.ts`, `handler-memory-stats-edge.vitest.ts`]
+- [x] CHK-014 [P1] `memory_health` public/runtime schemas are documented as accepting `confirmed` for auto-repair confirmation flow [Evidence: `mcp_server/tool-schemas.ts`, `mcp_server/schemas/tool-input-schemas.ts`, `tool-input-schema.vitest.ts`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,10 +53,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Discovery success criteria are validated for all 3 features — SC-001 through SC-004 met
-- [x] CHK-021 [P0] `memory_list` edge-case tests cover pagination hint and sort fallback behavior — 8 tests in `handler-memory-list-edge.vitest.ts` (clamping, fallback, sort, defaults — all with parsed response assertions)
-- [x] CHK-022 [P1] `memory_stats` tests cover scoring fallback and limit truncation behavior — 12 tests in `handler-memory-stats-edge.vitest.ts` (limit clamping, folderRanking validation, excludePatterns, defaults — with structural assertions)
-- [x] CHK-023 [P1] `memory_health` tests cover `divergent_aliases`, `autoRepair`, and schema-missing paths — 8 tests in `handler-memory-health-edge.vitest.ts` (validation error responses with requestId, reportMode, autoRepair, confirmed, specFolder — all with error message + requestId assertions)
+- [x] CHK-020 [P0] TypeScript verification is documented as clean with no output [Test: `npx tsc --noEmit`]
+- [x] CHK-021 [P0] Focused 5-file targeted suite is documented as passing `89/89` tests [Test: `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts`]
+- [x] CHK-022 [P1] Targeted suite file coverage is explicitly listed in docs [Evidence: plan/tasks/implementation-summary verification sections]
+- [x] CHK-023 [P1] Validation-envelope assertions include `requestId` checks for Discovery handler edge cases [Evidence: `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`, `handler-memory-crud.vitest.ts`]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -63,9 +64,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets introduced — verified: no secrets in diff
-- [x] CHK-031 [P0] Input validation remains enforced for Discovery handler parameters — verified: validation returns error responses instead of throwing, still enforced
-- [x] CHK-032 [P1] Correlation/debug improvements do not expose unsafe absolute paths — verified: `sanitizeErrorForHint` strips paths
+- [x] CHK-030 [P0] No secrets or credentials were added to Discovery docs [Evidence: doc-only changes, no secret literals]
+- [x] CHK-031 [P1] `requestId` observability is documented without exposing unsafe absolute paths [Evidence: `memory_health` path sanitization behavior documented; no raw paths inserted]
+- [x] CHK-032 [P1] Documentation preserves sanitized error-context expectations for user-facing hints [Evidence: aligned with `sanitizeErrorForHint` behavior in `memory-crud-health.ts`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +74,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized — all updated post-implementation
-- [x] CHK-041 [P1] Stale `retry.vitest.ts` references are removed or replaced in Discovery docs — removed from all 3 catalog files, verified with grep
-- [x] CHK-042 [P2] Feature-level status notes are updated after remediation and verification
+- [x] CHK-040 [P0] Stale statements were removed from Discovery phase docs [Evidence: removed "documentation phase", old `48/48`, old `computeFolderScores`-limit narrative, outdated Discovery inconsistency limitation]
+- [x] CHK-041 [P0] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` are synchronized to current behavior/evidence [Evidence: cross-file consistency pass completed]
+- [x] CHK-042 [P1] Discovery feature catalog rewrite is reflected as authoritative current reality [Evidence: references to `feature_catalog/03--discovery/*.md` updated]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,9 +84,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temporary work artifacts remain in `scratch/` only — no temp artifacts outside scratch
-- [x] CHK-051 [P1] Discovery updates are scoped to the `003-discovery/` phase folder — confirmed
-- [x] CHK-052 [P2] Findings are saved to `memory/` when workflow requires persistence
+- [x] CHK-050 [P1] Only the five requested files were edited in `003-discovery/` [Evidence: scoped file edits]
+- [x] CHK-051 [P1] No unrelated files were reverted or modified as part of this update [Evidence: user scope preserved]
+- [x] CHK-052 [P2] Memory save artifact generation was not required for this doc-sync update [Evidence: no `/memory:save` request in this run]
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -95,11 +96,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 9 | 9/9 |
+| P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->
 
 ---

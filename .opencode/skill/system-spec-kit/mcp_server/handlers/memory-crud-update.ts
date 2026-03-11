@@ -164,10 +164,18 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
           }
         } catch (e: unknown) {
           const bm25ErrMsg = e instanceof Error ? e.message : String(e);
-          // T-05: Distinguish infrastructure failures from data failures.
-          // Infrastructure: "not a function", "not initialized" → warn and continue.
-          // Data: addDocument failed on an operational index → re-throw to roll back.
-          if (bm25ErrMsg.includes('not a function') || bm25ErrMsg.includes('not initialized')) {
+          // T-05 + P1-02 fix: Distinguish infrastructure failures from data failures.
+          // AI-WHY: Infrastructure failures mean the BM25 subsystem is unavailable or torn down —
+          // these are non-fatal warnings. Data failures mean the index IS operational but rejected
+          // the input — those must re-throw to roll back the transaction.
+          const isBm25InfraFailure = (msg: string): boolean =>
+            msg.includes('not a function') ||
+            msg.includes('not initialized') ||
+            msg.includes('Cannot read properties') ||
+            msg.includes('is not defined') ||
+            msg.includes('database is closed') ||
+            msg.includes('no such table');
+          if (isBm25InfraFailure(bm25ErrMsg)) {
             console.warn(`[memory-crud-update] BM25 infrastructure unavailable, skipping re-index [requestId=${requestId}]: ${bm25ErrMsg}`);
           } else {
             console.error(`[memory-crud-update] BM25 re-index failed, rolling back update [requestId=${requestId}]: ${bm25ErrMsg}`);

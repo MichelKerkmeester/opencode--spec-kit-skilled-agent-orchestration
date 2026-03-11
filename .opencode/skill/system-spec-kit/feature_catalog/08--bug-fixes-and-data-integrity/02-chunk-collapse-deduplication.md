@@ -13,6 +13,7 @@ Duplicate chunk rows appeared in default search mode because the deduplication l
 | `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
 | `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
 | `mcp_server/lib/scoring/mpab-aggregation.ts` | Lib | MPAB chunk aggregation |
+| `mcp_server/handlers/memory-search.ts` | Handler | Chunk-collapse dedup helper used for search-response preparation without an `includeContent` gate |
 
 ### Tests
 
@@ -20,6 +21,7 @@ Duplicate chunk rows appeared in default search mode because the deduplication l
 |------|-------|
 | `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |
 | `mcp_server/tests/mpab-aggregation.vitest.ts` | MPAB aggregation tests |
+| `mcp_server/tests/handler-memory-search.vitest.ts` | `T002` chunk-collapse dedup regression tests (documented to run regardless of `includeContent`) |
 
 ## Source Metadata
 

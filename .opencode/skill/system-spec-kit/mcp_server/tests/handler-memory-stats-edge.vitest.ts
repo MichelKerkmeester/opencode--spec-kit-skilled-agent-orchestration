@@ -1,90 +1,171 @@
 import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/memory-crud';
+import { checkDatabaseUpdated } from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
 
 /** Parse the JSON payload from an MCP response. */
 function parseResponse(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text);
 }
 
+function getErrorMessage(parsed: Record<string, unknown>) {
+  const data = parsed.data as { error?: unknown } | undefined;
+  return typeof data?.error === 'string' ? data.error : undefined;
+}
+
+function getDetails(parsed: Record<string, unknown>) {
+  const data = parsed.data as { details?: Record<string, unknown> } | undefined;
+  return data?.details;
+}
+
+async function insertStatsRows(specFolders: string[], repeat = 1) {
+  await checkDatabaseUpdated();
+  const database = vectorIndex.getDb();
+  if (!database) {
+    throw new Error('Database not initialized');
+  }
+
+  const now = new Date().toISOString();
+  const insert = database.prepare(`
+    INSERT INTO memory_index (spec_folder, file_path, title, created_at, updated_at, embedding_status)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+
+  for (const [index, specFolder] of specFolders.entries()) {
+    const safeFolder = specFolder.replace(/[^a-zA-Z0-9/_-]/g, '-');
+    for (let occurrence = 0; occurrence < repeat; occurrence += 1) {
+      insert.run(
+        specFolder,
+        `/tmp/${safeFolder}-${index}-${occurrence}.md`,
+        `Stats Edge ${index}-${occurrence}`,
+        now,
+        now,
+        'success',
+      );
+    }
+  }
+}
+
 describe('handleMemoryStats Edge Cases (T007a)', () => {
-  it('T007a-S1: Zero limit falls back to 10 via || operator', async () => {
+  it('T007a-S1: Zero limit falls back to 10', async () => {
     const result = await handler.handleMemoryStats({ limit: 0 });
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
-    expect(typeof parsed.data.totalMemories).toBe('number');
+    expect(parsed.data.limit).toBe(10);
+    expect(parsed.data.topFolders.length).toBeLessThanOrEqual(10);
   });
 
-  it('T007a-S2: Limit > 100 clamped to 100', async () => {
+  it('T007a-S2: Limit > 100 clamps to 100', async () => {
     const result = await handler.handleMemoryStats({ limit: 999 });
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
-    expect(typeof parsed.data.totalMemories).toBe('number');
-    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
+    expect(parsed.data.limit).toBe(100);
+    expect(parsed.data.topFolders.length).toBeLessThanOrEqual(100);
   });
 
   it('T007a-S3: Limit of 1 is accepted', async () => {
     const result = await handler.handleMemoryStats({ limit: 1 });
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
-    expect(typeof parsed.data.totalMemories).toBe('number');
+    expect(parsed.data.limit).toBe(1);
+    expect(parsed.data.topFolders.length).toBeLessThanOrEqual(1);
   });
 
-  it('T007a-S4: includeArchived=true does not throw', async () => {
-    const result = await handler.handleMemoryStats({ includeArchived: true });
+  it('T007a-S4: includeArchived=true can surface archived folders in count mode', async () => {
+    const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    await insertStatsRows([
+      `specs/z_archive/${runId}-archived`,
+      `specs/${runId}-active`,
+    ], 25);
+
+    const result = await handler.handleMemoryStats({ folderRanking: 'count', includeArchived: true, limit: 100 });
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
-    expect(typeof parsed.data.totalMemories).toBe('number');
+    expect(parsed.data.topFolders.some((folder: { folder: string }) => folder.folder.includes(`${runId}-archived`))).toBe(true);
   });
 
-  it('T007a-S5: Empty excludePatterns array accepted', async () => {
-    const result = await handler.handleMemoryStats({ excludePatterns: [] });
+  it('T007a-S5: excludePatterns filters matching folder names', async () => {
+    const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    await insertStatsRows([
+      `specs/${runId}-keep`,
+      `specs/${runId}-scratch`,
+    ], 25);
+
+    const result = await handler.handleMemoryStats({
+      folderRanking: 'count',
+      excludePatterns: ['scratch'],
+      limit: 100,
+    });
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
-    expect(typeof parsed.data.totalMemories).toBe('number');
+    expect(parsed.data.topFolders.some((folder: { folder: string }) => folder.folder.includes(`${runId}-scratch`))).toBe(false);
+    expect(parsed.data.topFolders.some((folder: { folder: string }) => folder.folder.includes(`${runId}-keep`))).toBe(true);
   });
 
-  it('T007a-S6: Non-array excludePatterns throws', async () => {
-    await expect(
-      handler.handleMemoryStats({ excludePatterns: 'not-an-array' } as any)
-    ).rejects.toThrow(/excludePatterns.*array|array/);
+  it('T007a-S6: Non-array excludePatterns returns MCP error response with requestId', async () => {
+    const result = await handler.handleMemoryStats({ excludePatterns: 'not-an-array' } as any);
+    const parsed = parseResponse(result);
+    const details = getDetails(parsed);
+    expect(result.isError).toBe(true);
+    expect(getErrorMessage(parsed)).toMatch(/excludePatterns must be an array/);
+    expect(parsed.data.code).toBe('E_INVALID_INPUT');
+    expect(typeof details?.requestId).toBe('string');
   });
 
   it('T007a-S7: folderRanking count accepted', async () => {
     const result = await handler.handleMemoryStats({ folderRanking: 'count' });
     const parsed = parseResponse(result);
     expect(parsed.data.folderRanking).toBe('count');
+    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
   });
 
   it('T007a-S8: folderRanking recency accepted', async () => {
     const result = await handler.handleMemoryStats({ folderRanking: 'recency' });
     const parsed = parseResponse(result);
     expect(parsed.data.folderRanking).toBe('recency');
+    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
   });
 
   it('T007a-S9: folderRanking importance accepted', async () => {
     const result = await handler.handleMemoryStats({ folderRanking: 'importance' });
     const parsed = parseResponse(result);
     expect(parsed.data.folderRanking).toBe('importance');
+    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
   });
 
-  it('T007a-S10: folderRanking composite accepted', async () => {
-    const result = await handler.handleMemoryStats({ folderRanking: 'composite' });
+  it('T007a-S10: folderRanking composite accepted and exposes score data', async () => {
+    const result = await handler.handleMemoryStats({ folderRanking: 'composite', includeScores: true });
     const parsed = parseResponse(result);
     expect(parsed.data.folderRanking).toBe('composite');
+    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
+    if (parsed.data.topFolders.length > 0) {
+      expect(parsed.data.topFolders[0]).toHaveProperty('score');
+    }
   });
 
-  it('T007a-S11: Invalid folderRanking throws', async () => {
-    await expect(
-      handler.handleMemoryStats({ folderRanking: 'invalid_ranking' } as any)
-    ).rejects.toThrow(/folderRanking|Invalid/);
+  it('T007a-S11: Invalid folderRanking returns MCP error response with requestId', async () => {
+    const result = await handler.handleMemoryStats({ folderRanking: 'invalid_ranking' } as any);
+    const parsed = parseResponse(result);
+    const details = getDetails(parsed);
+    expect(result.isError).toBe(true);
+    expect(getErrorMessage(parsed)).toMatch(/Invalid folderRanking/);
+    expect(parsed.data.code).toBe('E_INVALID_INPUT');
+    expect(typeof details?.requestId).toBe('string');
   });
 
   it('T007a-S12: Default args return valid payload with totalSpecFolders', async () => {
     const result = await handler.handleMemoryStats(null as any);
     const parsed = parseResponse(result);
-    expect(parsed.data).toBeDefined();
+    expect(parsed.data.limit).toBe(10);
     expect(typeof parsed.data.totalMemories).toBe('number');
     expect(typeof parsed.data.totalSpecFolders).toBe('number');
     expect(Array.isArray(parsed.data.topFolders)).toBe(true);
+  });
+
+  it('T007a-S13: totalSpecFolders remains greater than topFolders length when limit truncates', async () => {
+    const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    await insertStatsRows(Array.from({ length: 5 }, (_, index) => `spec-${runId}-${index}`));
+
+    const result = await handler.handleMemoryStats({ folderRanking: 'count', limit: 2 });
+    const parsed = parseResponse(result);
+    expect(parsed.data.limit).toBe(2);
+    expect(Array.isArray(parsed.data.topFolders)).toBe(true);
+    expect(parsed.data.topFolders.length).toBe(2);
+    expect(parsed.data.totalSpecFolders).toBeGreaterThan(parsed.data.topFolders.length);
   });
 });

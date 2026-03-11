@@ -10,7 +10,7 @@ The interesting part is what happens before the record is created. A Prediction 
 
 A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` is enabled (default ON). Layer 1 validates structure (title exists, content at least 50 characters, valid spec folder path). Layer 2 scores content quality across five dimensions (title, triggers, length, anchors, metadata) against a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity, rejecting near-duplicates above 0.92. A warn-only mode runs for the first 14 days after activation, logging would-reject decisions without blocking saves.
 
-Reconsolidation-on-save runs after embedding generation when `SPECKIT_RECONSOLIDATION` is enabled (default ON). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
+Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. The thinning never returns an empty array.
 
@@ -177,7 +177,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/tests/memory-parser-extended.vitest.ts` | Parser extended tests |
 | `mcp_server/tests/memory-parser.vitest.ts` | Memory parser tests |
 | `mcp_server/tests/memory-save-extended.vitest.ts` | Save extended scenarios |
-| `mcp_server/tests/memory-save-integration.vitest.ts` | Save integration tests |
+| `mcp_server/tests/memory-save-integration.vitest.ts` | Save-path PE arbitration integration tests |
 | `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Save UX regression tests |
 | `mcp_server/tests/memory-summaries.vitest.ts` | Summary generation tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
@@ -190,8 +190,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/tests/recovery-hints.vitest.ts` | Recovery hint tests |
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager and shared retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |

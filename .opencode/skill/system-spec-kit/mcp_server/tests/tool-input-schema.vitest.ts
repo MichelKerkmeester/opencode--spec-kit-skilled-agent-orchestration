@@ -124,6 +124,32 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
   });
 });
 
+describe('memory_bulk_delete schema', () => {
+  it('accepts confirm=true with a valid tier', () => {
+    expect(() => {
+      validateToolInputSchema('memory_bulk_delete', { tier: 'deprecated', confirm: true }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+  });
+
+  it('rejects confirm=false at schema level', () => {
+    expect(() => {
+      validateToolInputSchema('memory_bulk_delete', { tier: 'deprecated', confirm: false }, TOOL_DEFINITIONS);
+    }).toThrow(/expected constant true/);
+  });
+
+  it('rejects non-integer olderThanDays values', () => {
+    expect(() => {
+      validateToolArgs('memory_bulk_delete', { tier: 'deprecated', confirm: true, olderThanDays: 1.5 });
+    }).toThrow();
+  });
+
+  it('rejects NaN olderThanDays values', () => {
+    expect(() => {
+      validateToolArgs('memory_bulk_delete', { tier: 'deprecated', confirm: true, olderThanDays: Number.NaN });
+    }).toThrow();
+  });
+});
+
 /* ---------------------------------------------------------------
    4. memory_search LIMIT CONTRACT (schema + runtime alignment)
 --------------------------------------------------------------- */
@@ -175,6 +201,19 @@ describe('memory_search limit contract', () => {
     expect(() => {
       validateToolArgs('memory_search', { query: 'valid query', unexpected: true } as Record<string, unknown>);
     }).toThrow(/Unknown parameter/);
+  });
+});
+
+describe('memory_health schema', () => {
+  it('public schema accepts autoRepair confirmation payloads', () => {
+    expect(() => {
+      validateToolInputSchema('memory_health', { autoRepair: true, confirmed: true }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+  });
+
+  it('runtime schema preserves confirmed for handler execution', () => {
+    const parsed = validateToolArgs('memory_health', { autoRepair: true, confirmed: true });
+    expect(parsed).toEqual({ autoRepair: true, confirmed: true });
   });
 });
 

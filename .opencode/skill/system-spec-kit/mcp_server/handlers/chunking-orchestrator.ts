@@ -163,23 +163,27 @@ async function indexChunkedMemoryFile(
       // replacement chunks are fully indexed and finalized in a transaction.
       return { parentId: pid, isUpdate: true };
     } else {
-      // Delete old parent+children if force re-indexing
+      // AI-WHY: Force path intentionally uses destructive delete-before-reindex.
+      // The safe-swap pattern is NOT applied here because force is an explicit
+      // hard-reset mode that replaces parent identity and children immediately.
       if (existing && force) {
         const existingChunkRows = database.prepare(`
           SELECT id FROM memory_index WHERE parent_id = ?
         `).all(existing.id) as Array<{ id: number }>;
 
         for (const existingChunk of existingChunkRows) {
-          // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-          try {
-            recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
-          } catch (_histErr: unknown) { /* best-effort */ }
-          vectorIndex.deleteMemory(existingChunk.id);
+          if (vectorIndex.deleteMemory(existingChunk.id)) {
+            // AI-WHY: Record DELETE history only after confirmed deletion.
+            try {
+              recordHistory(existingChunk.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+            } catch (_histErr: unknown) { /* best-effort */ }
+          }
         }
-        try {
-          recordHistory(existing.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
-        } catch (_histErr: unknown) { /* best-effort */ }
-        vectorIndex.deleteMemory(existing.id);
+        if (vectorIndex.deleteMemory(existing.id)) {
+          try {
+            recordHistory(existing.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+          } catch (_histErr: unknown) { /* best-effort */ }
+        }
       }
 
       // Create parent record (no embedding)
@@ -364,26 +368,27 @@ async function indexChunkedMemoryFile(
           `).all(parentId) as Array<{ id: number }>;
 
           for (const chunkRow of chunkRows) {
-            // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-            try {
-              recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback');
-            } catch (_histErr: unknown) { /* best-effort */ }
             if (vectorIndex.deleteMemory(chunkRow.id)) {
               deletedIds.push(chunkRow.id);
+              // AI-WHY: Record DELETE history only after confirmed deletion.
+              try {
+                recordHistory(chunkRow.id, 'DELETE', null, null, 'mcp:chunking_rollback');
+              } catch (_histErr: unknown) { /* best-effort */ }
             }
           }
-          try {
-            recordHistory(parentId, 'DELETE', null, null, 'mcp:chunking_rollback');
-          } catch (_histErr: unknown) { /* best-effort */ }
-          vectorIndex.deleteMemory(parentId);
+          if (vectorIndex.deleteMemory(parentId)) {
+            try {
+              recordHistory(parentId, 'DELETE', null, null, 'mcp:chunking_rollback');
+            } catch (_histErr: unknown) { /* best-effort */ }
+          }
         } else if (childIds.length > 0) {
           for (const childId of childIds) {
-            // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-            try {
-              recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback');
-            } catch (_histErr: unknown) { /* best-effort */ }
             if (vectorIndex.deleteMemory(childId)) {
               deletedIds.push(childId);
+              // AI-WHY: Record DELETE history only after confirmed deletion.
+              try {
+                recordHistory(childId, 'DELETE', null, null, 'mcp:chunking_rollback');
+              } catch (_histErr: unknown) { /* best-effort */ }
             }
           }
         }
@@ -442,14 +447,17 @@ async function indexChunkedMemoryFile(
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
 
-      // AI-WHY: Record DELETE history for old children before removing them (safe-swap path)
+      // AI-WHY: Record DELETE history only after each old child is confirmed removed (safe-swap path).
       const oldChildRows = database.prepare(`SELECT id FROM memory_index WHERE parent_id = ?`).all(parentId) as Array<{ id: number }>;
+      const deleteOldChildStmt = database.prepare(`DELETE FROM memory_index WHERE id = ?`);
       for (const oldChild of oldChildRows) {
-        try {
-          recordHistory(oldChild.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
-        } catch (_histErr: unknown) { /* best-effort */ }
+        const deleteResult = deleteOldChildStmt.run(oldChild.id);
+        if (deleteResult.changes > 0) {
+          try {
+            recordHistory(oldChild.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+          } catch (_histErr: unknown) { /* best-effort */ }
+        }
       }
-      database.prepare(`DELETE FROM memory_index WHERE parent_id = ?`).run(parentId);
 
       const placeholders = newChildIds.map(() => '?').join(', ');
       database.prepare(`
@@ -499,14 +507,16 @@ async function indexChunkedMemoryFile(
 
       if (childIds.length > 0) {
         try {
-          // AI-WHY: Record DELETE history for staged chunks before cleanup
+          // AI-WHY: Record DELETE history only after each staged chunk is confirmed removed.
+          const deleteStagedChunkStmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
           for (const cid of childIds) {
-            try {
-              recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback');
-            } catch (_histErr: unknown) { /* best-effort */ }
+            const deleteResult = deleteStagedChunkStmt.run(cid);
+            if (deleteResult.changes > 0) {
+              try {
+                recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback');
+              } catch (_histErr: unknown) { /* best-effort */ }
+            }
           }
-          const placeholders = childIds.map(() => '?').join(', ');
-          database.prepare(`DELETE FROM memory_index WHERE id IN (${placeholders})`).run(...childIds);
         } catch (cleanupErr: unknown) {
           const cleanupMessage = toErrorMessage(cleanupErr);
           console.error(`[memory-save] Failed to clean staged chunks for parent ${parentId}: ${cleanupMessage}`);

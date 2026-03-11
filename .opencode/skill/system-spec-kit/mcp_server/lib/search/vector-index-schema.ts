@@ -6,6 +6,9 @@
 
 import Database from 'better-sqlite3';
 import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { createLogger } from '../utils/logger';
 import { initEmbeddingCache } from '../cache/embedding-cache';
@@ -13,8 +16,24 @@ import {
   get_error_message,
 } from './vector-index-types';
 import { init as initHistory } from '../storage/history';
+import { getSpecsBasePaths } from './folder-discovery';
 
 const logger = createLogger('VectorIndex');
+
+function getMigrationAllowedBasePaths(): string[] {
+  const workspaceRoot = process.cwd();
+  const envPaths = process.env.MEMORY_ALLOWED_PATHS
+    ? process.env.MEMORY_ALLOWED_PATHS.split(path.delimiter)
+    : [];
+
+  return Array.from(new Set([
+    ...getSpecsBasePaths(workspaceRoot),
+    path.join(workspaceRoot, '.opencode'),
+    path.join(os.homedir(), '.claude'),
+    workspaceRoot,
+    ...envPaths,
+  ].filter(Boolean).map((basePath) => path.resolve(basePath))));
+}
 
 // Schema version for migration tracking
 // v5: Added memory_type column for type-specific half-lives (REQ-002)
@@ -427,19 +446,35 @@ export function run_migrations(database: Database.Database, from_version: number
         ).all() as Array<{ id: number; file_path: string }>;
 
         let backfilled = 0;
+        const allowedBasePaths = getMigrationAllowedBasePaths();
         const updateStmt = database.prepare(
           'UPDATE memory_index SET content_text = ? WHERE id = ?'
         );
 
         for (const row of rows) {
           try {
-            if (row.file_path && fs.existsSync(row.file_path)) {
-              const content = fs.readFileSync(row.file_path, 'utf-8');
+            const validatedPath = validateFilePath(row.file_path, allowedBasePaths);
+            if (!validatedPath) {
+              console.warn('[VectorIndex] Migration v14 skipped content_text backfill for disallowed path', {
+                operation: 'migration_v14_backfill',
+                memoryId: row.id,
+                filePath: row.file_path,
+              });
+              continue;
+            }
+
+            if (fs.existsSync(validatedPath)) {
+              const content = fs.readFileSync(validatedPath, 'utf-8');
               updateStmt.run(content, row.id);
               backfilled++;
             }
-          } catch (_: unknown) {
-            // Skip files that can't be read
+          } catch (rowError: unknown) {
+            console.warn('[VectorIndex] Migration v14 skipped unreadable file during content_text backfill', {
+              operation: 'migration_v14_backfill',
+              memoryId: row.id,
+              filePath: row.file_path,
+              error: get_error_message(rowError),
+            });
           }
         }
 
@@ -1024,36 +1059,56 @@ export function create_common_indexes(database: Database.Database): void {
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_file_path ON memory_index(file_path)`);
     logger.info('Created idx_file_path index');
-  } catch (_err: unknown) {
-    // Index may already exist
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create index', {
+      operation: 'create_common_indexes',
+      index: 'idx_file_path',
+      error: get_error_message(err),
+    });
   }
 
   try {
     database.exec('CREATE INDEX IF NOT EXISTS idx_canonical_file_path ON memory_index(canonical_file_path)');
     database.exec('CREATE INDEX IF NOT EXISTS idx_spec_canonical_path ON memory_index(spec_folder, canonical_file_path)');
-  } catch (_err: unknown) {
-    // Index may already exist or canonical column may be unavailable in legacy DB.
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create canonical path indexes', {
+      operation: 'create_common_indexes',
+      indexes: ['idx_canonical_file_path', 'idx_spec_canonical_path'],
+      error: get_error_message(err),
+    });
   }
 
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_content_hash ON memory_index(content_hash)`);
     logger.info('Created idx_content_hash index');
-  } catch (_err: unknown) {
-    // Index may already exist
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create index', {
+      operation: 'create_common_indexes',
+      index: 'idx_content_hash',
+      error: get_error_message(err),
+    });
   }
 
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_last_accessed ON memory_index(last_accessed DESC)`);
     logger.info('Created idx_last_accessed index');
-  } catch (_err: unknown) {
-    // Index may already exist
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create index', {
+      operation: 'create_common_indexes',
+      index: 'idx_last_accessed',
+      error: get_error_message(err),
+    });
   }
 
   try {
     database.exec(`CREATE INDEX IF NOT EXISTS idx_importance_tier ON memory_index(importance_tier)`);
     logger.info('Created idx_importance_tier index');
-  } catch (_err: unknown) {
-    // Index may already exist
+  } catch (err: unknown) {
+    console.warn('[vector-index] Failed to create index', {
+      operation: 'create_common_indexes',
+      index: 'idx_importance_tier',
+      error: get_error_message(err),
+    });
   }
 
   // H5 FIX: Add idx_history_timestamp index for memory_history table

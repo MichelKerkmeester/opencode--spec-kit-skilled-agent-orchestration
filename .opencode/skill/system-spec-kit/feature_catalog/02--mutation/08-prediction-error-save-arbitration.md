@@ -22,7 +22,7 @@
 | `mcp_server/tests/prediction-error-gate.vitest.ts` | PE gate tests |
 | `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler validation |
 | `mcp_server/tests/memory-save-extended.vitest.ts` | Save extended scenarios |
-| `mcp_server/tests/memory-save-integration.vitest.ts` | Save integration tests |
+| `mcp_server/tests/memory-save-integration.vitest.ts` | Save-path PE arbitration integration tests |
 
 ## Source Metadata
 

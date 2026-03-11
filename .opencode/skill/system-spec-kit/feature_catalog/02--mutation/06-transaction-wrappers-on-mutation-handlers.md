@@ -2,7 +2,7 @@
 
 ## Current Reality
 
-`memory-crud-update.ts` gained a `database.transaction(() => {...})()` wrapper around its mutation steps (vectorIndex.updateMemory, BM25 re-index, mutation ledger). `memory-crud-delete.ts` gained the same for its single-delete path (memory delete, vector delete, causal edge delete, mutation ledger). Cache invalidation operations remain outside the transaction as in-memory-only operations. Both include null-database fallbacks.
+`memory-crud-update.ts` wraps its mutation steps in a transaction (`runInTransaction`) so the DB update, embedding status write, BM25 re-index and mutation ledger append either commit together or roll back together. `memory-crud-delete.ts` wraps both the single-delete and bulk-folder delete paths in database transactions so confirmed deletes, history rows, causal-edge cleanup and mutation-ledger entries stay aligned. Cache invalidation and post-mutation hooks remain outside the transaction as in-memory/post-commit work. Unlike update, delete no longer falls back when the DB handle is missing: it aborts early to avoid orphaned causal edges or missing audit/history writes. The reconsolidation bridge `storeMemory` callback also wraps index, metadata, BM25, and history writes in a transaction for atomicity. Lifecycle `recordHistory()` writes now run inside mutation transactions across ADD/UPDATE/DELETE paths, and update BM25 handling distinguishes infrastructure failures (warn and continue) from data failures (roll back).
 
 ## Source Files
 
@@ -68,8 +68,11 @@
 | `mcp_server/tests/eval-logger.vitest.ts` | Eval logger tests |
 | `mcp_server/tests/feature-eval-graph-signals.vitest.ts` | Graph signal evaluation |
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
+| `mcp_server/tests/handler-memory-crud.vitest.ts` | CRUD handler validation |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
+| `mcp_server/tests/memory-crud-extended.vitest.ts` | CRUD extended scenarios |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
+| `mcp_server/tests/history.vitest.ts` | Mutation history validation |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |

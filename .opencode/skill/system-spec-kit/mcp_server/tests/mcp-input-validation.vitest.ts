@@ -7,7 +7,7 @@ import { describe, it, expect } from 'vitest';
 import * as handlers from '../handlers/index';
 
 // ---------------------------------------------------------------
-// Invalid input definitions for each of the 22 tools
+// Invalid input definitions for each of the 23 tools
 // ---------------------------------------------------------------
 interface HandlerResponse {
   content?: Array<{ type?: string; text?: string }>;
@@ -93,6 +93,12 @@ const TOOL_INVALID_INPUTS: ToolInvalidInput[] = [
     handler: 'handleMemoryValidate',
     invalidArgs: {},
     description: 'missing required id and wasUseful',
+  },
+  {
+    tool: 'memory_bulk_delete',
+    handler: 'handleMemoryBulkDelete',
+    invalidArgs: { tier: 'temporary', confirm: false, olderThanDays: 0 },
+    description: 'false confirm and invalid olderThanDays contract',
   },
   // L5
   {
@@ -180,7 +186,7 @@ const CRITICAL_HANDLERS = [
 ];
 
 describe('MCP Protocol Input Validation (T534) [deferred - requires DB test fixtures]', () => {
-  describe('Input Validation (22 tools)', () => {
+  describe('Input Validation (23 tools)', () => {
     TOOL_INVALID_INPUTS.forEach((entry, i) => {
       const testNum = i + 1;
 

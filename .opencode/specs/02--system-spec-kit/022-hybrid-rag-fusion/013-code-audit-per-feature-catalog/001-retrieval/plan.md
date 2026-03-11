@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 001-Retrieval Code Audit"
-description: "This phase executes a feature-centric audit across nine retrieval features, then closes correctness, standards, and coverage gaps with targeted fixes. The approach combines per-feature code review, test verification, playbook cross-reference, and evidence-backed closure."
+description: "Feature-centric audit and fix plan for nine retrieval features, with scoped regression verification and honest full-suite baseline reporting."
 trigger_phrases: ["implementation", "plan", "retrieval", "audit", "plan core"]
 importance_tier: "normal"
 contextType: "general"
@@ -24,7 +24,7 @@ contextType: "general"
 | **Testing** | Vitest |
 
 ### Overview
-The retrieval layer was audited feature-by-feature against the Spec Kit Memory feature catalog to confirm documented behavior matches implementation and tests. Where mismatches were found, this plan drove focused fixes and regression coverage instead of broad refactors. The phase completed with clean type checks, passing tests, and high-confidence review scores.
+The retrieval layer was audited feature-by-feature against the Spec Kit Memory feature catalog to confirm documented behavior matches implementation and tests. Where mismatches were found, this plan drove focused correctness and test-quality fixes instead of broad refactors. The phase now closes with a clean TypeScript gate and green retrieval-targeted verification, while documenting unrelated repository-wide failures explicitly as out-of-scope.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,8 +39,9 @@ The retrieval layer was audited feature-by-feature against the Spec Kit Memory f
 
 ### Definition of Done
 - [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
+- [x] Retrieval-targeted verification passing (`10` suites, `365` passed, `0` failed)
 - [x] Docs updated (spec/plan/tasks)
+- [x] Full-suite baseline recorded with out-of-scope failures called out explicitly
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -54,11 +55,12 @@ Feature-centric audit pipeline.
 ### Key Components
 - **Feature Catalog (`.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`)**: Source of expected Current Reality behavior per feature.
 - **Retrieval Implementation Surface (`mcp_server/handlers`, `mcp_server/lib`)**: Audited code paths where mismatches and standards issues were validated and fixed.
-- **Retrieval Test Surface (`mcp_server/tests`)**: Regression and contract verification for corrected behavior.
-- **Task Evidence Layer (`tasks.md`, `checklist.md`)**: Per-task proof of completion and verification mapping.
+- **Shared Runtime Algorithm Surface (`shared/algorithms`, `shared/dist/algorithms`)**: Convergence-scoring behavior used by retrieval fusion logic.
+- **Retrieval Test Surface (`mcp_server/tests`)**: Regression and contract verification for corrected behavior and assertion quality.
+- **Task Evidence Layer (`tasks.md`, `checklist.md`, `implementation-summary.md`)**: Per-task proof of completion with scoped vs full-suite verification separation.
 
 ### Data Flow
-Feature metadata and declared sources are inventoried first, then each feature's implementation and tests are reviewed against documented behavior and standards. Findings are prioritized (P0/P1/P2), fixed in-place with targeted tests, and re-verified through type checks, lint, and suite results.
+Feature metadata and declared sources are inventoried first, then each feature's implementation and tests are reviewed against documented behavior and standards. Findings are prioritized (P0/P1/P2), fixed in-place with targeted regressions, and re-verified through type checks plus retrieval-targeted test suites. Full repository suite status is retained as context but not used as the retrieval completion gate because current failures are outside retrieval scope.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -89,7 +91,7 @@ Feature metadata and declared sources are inventoried first, then each feature's
 - [x] **Step 5: Findings Report and Closure**
 - [x] Produce structured findings (PASS/WARN/FAIL, issues, mismatches, gaps, fixes)
 - [x] Implement prioritized fixes (T-01 through T-09)
-- [x] Re-run verification gates (tests, type checks, lint, review)
+- [x] Re-run verification gates (`tsc --noEmit --pretty false`, retrieval-targeted Vitest set, full-suite baseline)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -101,7 +103,7 @@ Feature metadata and declared sources are inventoried first, then each feature's
 |-----------|-------|-------|
 | Unit | Retrieval helpers and scoring/calibration logic | Vitest |
 | Integration | Handler-level retrieval behavior and fallback pipelines | Vitest |
-| Manual | Feature-to-playbook scenario cross-reference and evidence review | Spec documents |
+| Baseline | Repository-wide health snapshot (out-of-scope failures documented, not masked) | Vitest |
 
 ### `sk-code--opencode` Checklist (Per File, Preserved)
 - [x] Naming: camelCase functions, PascalCase types/interfaces
@@ -126,6 +128,7 @@ Feature metadata and declared sources are inventoried first, then each feature's
 | Retrieval implementation modules | Internal | Green | Findings cannot be verified or fixed |
 | Retrieval Vitest suites | Internal | Green | Regression confidence cannot be established |
 | TypeScript compile gate (`tsc --noEmit`) | Internal | Green | Standards/correctness closure cannot be claimed |
+| Full-suite baseline (`vitest run`) | Internal | Yellow (out-of-scope failures present) | Must be reported accurately to avoid false green claim |
 <!-- /ANCHOR:dependencies -->
 
 ---

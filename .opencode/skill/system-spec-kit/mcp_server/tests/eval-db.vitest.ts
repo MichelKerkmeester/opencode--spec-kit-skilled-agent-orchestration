@@ -5,7 +5,7 @@
 // all 5 required tables, correct columns, and that it is a
 // separate file from the main context-index.sqlite.
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
@@ -331,6 +331,27 @@ describe('T004: Eval DB Schema (R13-S1)', () => {
       expect(dbPath).not.toBeNull();
       expect(dbPath).toContain(testDataDir);
       expect(dbPath).toContain('speckit-eval.db');
+    });
+
+    it('T004-28: closeEvalDb warns and resets state when db.close throws', () => {
+      const db = getEvalDb();
+      const closeSpy = vi.spyOn(db, 'close').mockImplementation(() => {
+        throw new Error('simulated close failure');
+      });
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      try {
+        expect(() => closeEvalDb()).not.toThrow();
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        expect(warnSpy).toHaveBeenCalledWith('[eval-db] closeEvalDb warning:', 'simulated close failure');
+        expect(getEvalDbPath()).toBeNull();
+        expect(() => getEvalDb()).toThrow(/not initialized/);
+      } finally {
+        closeSpy.mockRestore();
+        warnSpy.mockRestore();
+        db.close();
+        initEvalDb(testDataDir);
+      }
     });
   });
 });

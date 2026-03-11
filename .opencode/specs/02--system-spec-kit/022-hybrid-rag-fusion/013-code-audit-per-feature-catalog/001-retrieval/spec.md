@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 001-Retrieval Code Audit"
-description: "Audit and align the retrieval feature catalog with actual TypeScript implementation and tests across nine retrieval features. The goal is to eliminate correctness gaps, standards violations, and catalog drift before the next phase."
+description: "Audit and align retrieval implementation, tests, and documentation across nine retrieval features. Close correctness and verification gaps, then record honest post-fix evidence."
 trigger_phrases: ["retrieval", "code audit", "feature catalog", "specification", "level 2"]
 importance_tier: "normal"
 contextType: "general"
@@ -29,10 +29,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Feature catalog behavior for retrieval can drift from implementation and tests over time. Before this phase, multiple retrieval features had correctness bugs, stale test references, and standards issues that reduced auditability and confidence in the documented "Current Reality".
+Retrieval behavior and documentation had drifted. The audit surfaced correctness issues in token budget enforcement, transactional delete reporting, schema/index error handling, convergence scoring defaults, and backward-compatibility handling for older schemas. Several retrieval tests also had weak or placeholder assertions.
 
 ### Purpose
-Verify all 9 retrieval features against real code and tests, then close gaps so catalog, implementation, and verification evidence are aligned.
+Verify all 9 retrieval features against real code and tests, fix the validated gaps, and keep documentation aligned with verified post-fix evidence.
 
 ### Audit Criteria (Preserved)
 1. Code correctness: logic bugs, off-by-one, null/undefined, error paths
@@ -51,7 +51,7 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 - Retrieval feature catalog audit (`01--retrieval`) across 9 features
 - Correctness and standards fixes discovered during audit
 - Regression and coverage tests needed to close identified gaps
-- Catalog corrections where source/test references were stale or incomplete
+- Spec-folder documentation accuracy for final post-fix state
 
 ### Out of Scope
 - New retrieval feature development not required by findings
@@ -73,25 +73,20 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/handlers/memory-context.ts` | Modify | Fix fallback token-budget truncation signaling |
-| `mcp_server/handlers/memory-triggers.ts` | Modify | Surface trigger-content load failures with warnings |
-| `mcp_server/lib/search/hybrid-search.ts` | Modify | Align tier-3 score cap with documented 50% contract |
-| `mcp_server/lib/providers/embeddings.ts` | Modify | Replace wildcard re-export with explicit named exports |
-| `mcp_server/lib/scoring/folder-scoring.ts` | Modify | Replace wildcard re-export with explicit named exports |
-| `mcp_server/lib/utils/path-security.ts` | Modify | Replace wildcard re-export with explicit named exports |
-| `mcp_server/lib/search/vector-index-queries.ts` | Modify | Replace empty catch with structured warning |
-| `mcp_server/lib/search/vector-index-schema.ts` | Modify | Replace empty catch with structured warning |
-| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modify | Add malformed-payload budget fallback regression test |
-| `mcp_server/tests/search-fallback-tiered.vitest.ts` | Modify | Add exact 50% tier-3 cap assertion |
-| `mcp_server/tests/bm25-index.vitest.ts` | Modify | Add update-handler re-index gate positive/negative tests |
-| `mcp_server/tests/memory-context.vitest.ts` | Modify | Update assertion impacted by truncation flag fix |
-| `mcp_server/tests/working-memory.vitest.ts` | Modify | Add provenance upsert/conflict/checkpoint tests |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md` | Modify | Remove stale `retry.vitest.ts` reference |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md` | Modify | Remove stale `retry.vitest.ts` reference |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md` | Modify | Remove stale `retry.vitest.ts` reference |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/04-hybrid-search-pipeline.md` | Modify | Remove stale `retry.vitest.ts` reference |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md` | Modify | Remove stale `retry.vitest.ts` reference |
-| `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md` | Modify | Add missing `memory-crud-update.ts` handler row |
+| `mcp_server/handlers/memory-context.ts` | Modify | Enforce budget even for single-result / still-over-budget structured payloads via compaction + binary-search truncation fallback |
+| `mcp_server/lib/search/vector-index-mutations.ts` | Modify | Ensure `delete_memories()` reports committed counts only and returns `deleted: 0` on rollback |
+| `mcp_server/lib/search/vector-index-schema.ts` | Modify | Replace remaining silent catches with structured warnings; validate migration v14 file paths before read |
+| `shared/algorithms/rrf-fusion.ts` | Modify | Set `fuseResultsMulti()` default convergence bonus to `CONVERGENCE_BONUS` |
+| `shared/dist/algorithms/rrf-fusion.js` | Modify | Keep runtime build aligned with source convergence-bonus behavior |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Modify | Add fallback to `file_path` lookup when `canonical_file_path` is unavailable |
+| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modify | Strengthen token-budget assertions and add single-result structured compaction test |
+| `mcp_server/tests/search-archival.vitest.ts` | Modify | Replace placeholder assertions with real source-contract/export assertions |
+| `mcp_server/tests/memory-context.vitest.ts` | Modify | Replace default-mode todos with source-backed assertions |
+| `mcp_server/tests/vector-index-impl.vitest.ts` | Modify | Replace tautological symlink fallback check and add batch-delete rollback regression test |
+| `mcp_server/tests/bm25-index.vitest.ts` | Modify | Add positive title-change BM25 re-index regression test |
+| `mcp_server/tests/memory-search-integration.vitest.ts` | Modify | Replace placeholder-heavy checks with concrete runtime/source assertions |
+| `mcp_server/tests/rrf-fusion.vitest.ts` | Modify | Update convergence-bonus expectations for corrected default behavior |
+| `mcp_server/tests/unit-rrf-fusion.vitest.ts` | Modify | Update convergence-bonus expectations for corrected default behavior |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -103,19 +98,19 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Fix fallback token-budget truncation behavior (T-01) | [x] `enforceTokenBudget()` fallback path marks truncated responses correctly; [x] evidence recorded for `memory-context.ts` |
-| REQ-002 | Add malformed-payload budget fallback regression coverage (T-02) | [x] Regression test added in `token-budget-enforcement.vitest.ts`; [x] suite passes |
-| REQ-003 | Align tier-3 fallback cap with documented behavior (T-03) | [x] `0.9` cap corrected to `0.5` in `hybrid-search.ts`; [x] exact-cap assertion added and passing |
-| REQ-004 | Complete BM25 re-index gate source/test coverage (T-04) | [x] Missing handler source row added to feature catalog; [x] positive/negative gate tests added and passing |
+| REQ-001 | Ensure token-budget enforcement cannot silently pass over-budget structured payloads | [x] `enforceTokenBudget()` compacts structured fields and falls back to binary-search truncation when still over budget |
+| REQ-002 | Ensure mutation rollback reporting is transaction-correct | [x] `delete_memories()` now reports committed counts only and returns `deleted: 0` when transaction rolls back |
+| REQ-003 | Eliminate silent catch behavior in retrieval schema/index flow | [x] Remaining silent catches replaced with structured warnings in `vector-index-schema.ts` |
+| REQ-004 | Preserve intended multi-source ranking behavior in RRF fusion | [x] `fuseResultsMulti()` default convergence bonus restored to `CONVERGENCE_BONUS` in both source and dist runtime |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Surface trigger-content load failures (T-05) | [x] Silent blanking replaced with structured warning output; [x] return contract unchanged |
-| REQ-006 | Replace retrieval-critical wildcard exports (T-06) | [x] Wildcard exports replaced with explicit named exports in target barrels; [x] `tsc --noEmit` clean |
-| REQ-007 | Remove empty catches in retrieval search modules (T-07) | [x] Empty catches replaced with structured warnings in both target files; [x] lint/verification passed |
-| REQ-008 | Harden 4-stage pipeline surfaces through shared fixes (T-08) | [x] Same-file fixes from T-06/T-07 applied to F-05 surfaces; [x] evidence linked in tasks |
+| REQ-005 | Keep extraction compatible with older schemas lacking canonical path column | [x] `resolveMemoryIdFromText()` falls back from `canonical_file_path` lookup to `file_path` lookup |
+| REQ-006 | Remove weak retrieval-test assertions and placeholders in audited suites | [x] Placeholder/todo assertions replaced with concrete source/runtime assertions in target retrieval suites |
+| REQ-007 | Add/adjust retrieval regressions for corrected behavior | [x] Token budget, vector-index rollback, BM25 title-change, and RRF convergence regressions are covered and passing |
+| REQ-008 | Keep documentation and evidence synchronized with current verification reality | [x] Success metrics now reflect scoped and full-suite outcomes without unsupported score claims |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -125,8 +120,9 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 
 - [x] **SC-001**: All 9 retrieval features audited with structured findings and closure tasks
 - [x] **SC-002**: TypeScript compile is clean (`tsc --noEmit` passes)
-- [x] **SC-003**: Verification tests pass (280 passed, 2 todo, 0 failed)
-- [x] **SC-004**: Independent reviews score above 95/100 (99/100 + 96/100)
+- [x] **SC-003**: Retrieval-targeted verification is green (`10` suites, `365` passed, `0` failed)
+- [x] **SC-004**: Full-suite status is documented honestly (`7339` passed, `5` failed, `28` todo, `1` pending), with failures outside retrieval scope
+- [x] **SC-005**: Unsupported score claims and stale pass-count claims are removed from this spec folder
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -136,11 +132,11 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Retrieval feature catalog (`feature_catalog/01--retrieval`) | Incorrect source/test metadata can misdirect audits | Validate each feature's source and test list against live code |
-| Dependency | Retrieval test suites (Vitest) | Regressions could hide in untested fallback paths | Add regression assertions for each fixed mismatch |
-| Dependency | `sk-code--opencode` standards baseline | Inconsistent exports/error handling reduces maintainability | Apply named export and catch-block hygiene consistently |
-| Risk | Shared retrieval modules touched by multiple features | Changes could regress adjacent retrieval behavior | Limit edits to audited surfaces and run targeted suites + type checks |
-| Risk | Catalog-code drift reappears in later phases | Future audits lose trust in feature metadata | Keep feature-centric task tracking and evidence in this spec folder |
+| Dependency | Retrieval implementation modules (`handlers`, `lib/search`, `lib/extraction`, shared RRF) | Shared modules affect multiple features simultaneously | Keep fixes narrow and regression-test changed behavior |
+| Dependency | Retrieval verification suites (targeted Vitest set) | Weak assertions can hide real regressions | Replace placeholders/todos with concrete assertions |
+| Dependency | TypeScript compile gate | Type drift or missing exports can break MCP surfaces | Require clean `tsc --noEmit --pretty false` |
+| Risk | Full repository suite has unrelated failures | Could be misread as retrieval instability | Explicitly separate scoped retrieval verification from repository-wide failures |
+| Risk | Dist/source divergence in shared algorithms | Runtime behavior can drift from source behavior | Mirror RRF convergence fix in both `shared/algorithms` and `shared/dist` |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -152,7 +148,7 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 - N/A for this audit-focused documentation alignment phase.
 
 ### Security
-- N/A for this audit-focused documentation alignment phase.
+- Retrieval path handling and input validation must remain explicit; no hardcoded secrets or credential material is introduced by this phase.
 
 ### Reliability
 - N/A for this audit-focused documentation alignment phase.
@@ -180,9 +176,9 @@ Verify all 9 retrieval features against real code and tests, then close gaps so 
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 15/25 | 9 audited features, 19 touched files across handlers, libs, tests, and catalog docs |
-| Risk | 10/25 | Medium shared-module risk, mitigated by focused tests and type/lint gates |
-| Research | 15/20 | Feature-by-feature verification against implementation and tests |
+| Scope | 16/25 | 9 audited features with correctness fixes across handlers, search libs, extraction, shared algorithm code, and retrieval tests |
+| Risk | 11/25 | Shared retrieval/search modules carry medium regression risk; mitigated through scoped regressions and compile gate |
+| Research | 15/20 | Feature-by-feature verification plus targeted and full-suite baseline reporting |
 | **Total** | **40/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 

@@ -30,9 +30,9 @@ contextType: "general"
 
 | Priority | Count | Description |
 |----------|-------|-------------|
-| P0 | 4 | FAIL status findings (correctness bugs, behavior mismatches) |
-| P1 | 4 | WARN with behavior mismatch or significant code issues |
-| P2 | 1 | WARN with documentation/test gaps only |
+| P0 | 4 | Correctness fixes in retrieval runtime behavior |
+| P1 | 4 | Required test-quality and compatibility hardening |
+| P2 | 1 | Documentation/evidence synchronization |
 | **Total** | **9** | |
 
 ---
@@ -40,41 +40,41 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## P0 - Critical / Correctness
 
-- [x] T-01 Fix fallback token-budget truncation in enforceTokenBudget
+- [x] T-01 Harden token-budget enforcement for structured over-budget payloads
   - **Priority:** P0
   - **Feature:** F-01 Unified context retrieval (memory_context)
   - **Status:** DONE
-  - **Source:** `mcp_server/handlers/memory-context.ts:226-235`
-  - **Issue:** `enforceTokenBudget()` does not truncate over-budget payloads when inner envelope parsing fails; it returns the original result with `truncated: false`, allowing budget overruns to pass through silently.
-  - **Fix:** Changed `truncated: false` to `truncated: true` in fallback return. Updated T207 test assertion to match.
-  - **Evidence:** [EVIDENCE: memory-context.ts:234 verified] 280/280 tests pass
+  - **Source:** `mcp_server/handlers/memory-context.ts`
+  - **Issue:** Structured payloads could remain over budget in single-result and parse-sensitive paths.
+  - **Fix:** `enforceTokenBudget()` now continues enforcement for structured payloads using field compaction, then binary-search truncation fallback when still over budget.
+  - **Evidence:** `token-budget-enforcement.vitest.ts` strengthened assertions and added single-result compaction coverage.
 
-- [x] T-02 Add regression test for malformed-payload budget enforcement
+- [x] T-02 Fix transactional delete reporting on rollback
   - **Priority:** P0
-  - **Feature:** F-01 Unified context retrieval (memory_context)
+  - **Feature:** F-02/F-04 shared retrieval mutation path
   - **Status:** DONE
-  - **Source:** `mcp_server/tests/token-budget-enforcement.vitest.ts:64-101`
-  - **Issue:** No test covers the parse-failure budget fallback path; existing tests only cover normal under/over-budget flows. The listed test file `retry.vitest.ts` does not exist.
-  - **Fix:** Added T205-B4 regression test for malformed non-envelope payload. Stale `retry.vitest.ts` refs removed from 5 catalog files.
-  - **Evidence:** [EVIDENCE: token-budget-enforcement.vitest.ts:T205-B4 verified] 14/14 tests pass
+  - **Source:** `mcp_server/lib/search/vector-index-mutations.ts`
+  - **Issue:** `delete_memories()` could report successful deletions even when the transaction rolled back.
+  - **Fix:** Counts now reflect committed state only; rollback path returns `deleted: 0` and `failed` for requested IDs.
+  - **Evidence:** `vector-index-impl.vitest.ts` includes new batch-delete rollback regression.
 
-- [x] T-03 Fix Tier-3 fallback score cap mismatch (90% vs documented 50%)
+- [x] T-03 Remove remaining silent catches and harden migration backfill path safety
   - **Priority:** P0
-  - **Feature:** F-08 Quality-aware 3-tier search fallback
+  - **Feature:** F-04/F-05 shared retrieval schema/index path
   - **Status:** DONE
-  - **Source:** `mcp_server/lib/search/hybrid-search.ts:1299-1321`
-  - **Issue:** Tier-3 score calibration caps structural results at 90% of top existing score (`topCap = topExisting * 0.9`), but documentation states a 50% cap. Test only checks "below top score," not the exact cap ratio.
-  - **Fix:** Changed `topExisting * 0.9` to `topExisting * 0.5`. Tightened test T045-17c with exact 50% cap assertion.
-  - **Evidence:** [EVIDENCE: hybrid-search.ts:1328 verified] 23/23 search-fallback tests pass
+  - **Source:** `mcp_server/lib/search/vector-index-schema.ts`
+  - **Issue:** Remaining catch blocks in `create_common_indexes()` and migration backfill file reads could fail silently or read unsafe paths.
+  - **Fix:** Silent catches replaced with structured warnings. Migration v14 backfill now validates base paths before reads and logs structured warnings on rejected/unreadable files.
+  - **Evidence:** Retrieval-targeted suite remains green and schema operations preserve warn-not-throw behavior.
 
-- [x] T-04 Add BM25 re-index gate to feature source table and test handler trigger
+- [x] T-04 Restore intended multi-source boost behavior in RRF fusion
   - **Priority:** P0
-  - **Feature:** F-06 BM25 trigger phrase re-index gate
+  - **Feature:** F-04/F-05/F-08 shared fusion behavior
   - **Status:** DONE
-  - **Source:** `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md:13-15`
-  - **Issue:** Feature Source Files table omits `memory-crud-update.ts` where the re-index gate is actually implemented. No test covers the update-handler gate condition (only BM25 internals/normalization/FTS are tested).
-  - **Fix:** Added handler row to catalog. Added 2 BM25 gate tests (positive: triggerPhrases fires re-index; negative: non-trigger field skips).
-  - **Evidence:** [EVIDENCE: bm25-index.vitest.ts verified] 80/80 BM25 tests pass
+  - **Source:** `shared/algorithms/rrf-fusion.ts`, `shared/dist/algorithms/rrf-fusion.js`
+  - **Issue:** `fuseResultsMulti()` default convergence bonus path did not apply the intended multi-source boost.
+  - **Fix:** Default convergence bonus set to `CONVERGENCE_BONUS` in both source and dist runtime build.
+  - **Evidence:** `rrf-fusion.vitest.ts` and `unit-rrf-fusion.vitest.ts` expectation updates pass.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -82,41 +82,41 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## P1 - Behavior Mismatch / Significant Code Issues
 
-- [x] T-05 Surface trigger-content load failures instead of silent blanking
+- [x] T-05 Add backward-compatible extraction fallback for older schemas
   - **Priority:** P1
-  - **Feature:** F-03 Trigger phrase matching (memory_match_triggers)
+  - **Feature:** F-09 tool-result extraction path
   - **Status:** DONE
-  - **Source:** `mcp_server/handlers/memory-triggers.ts:149-159`
-  - **Issue:** Tiered content retrieval suppresses all file-read/path-validation errors and returns empty content silently, which can hide HOT/WARM retrieval failures from callers.
-  - **Fix:** Added `console.warn` with structured metadata (`filePath`, `tier`, `error`). Return contract unchanged. Stale `retry.vitest.ts` ref removed.
-  - **Evidence:** [EVIDENCE: memory-triggers.ts:157-161 verified] tsc+build pass
+  - **Source:** `mcp_server/lib/extraction/extraction-adapter.ts`
+  - **Issue:** Older databases without `canonical_file_path` could fail memory-id resolution.
+  - **Fix:** `resolveMemoryIdFromText()` now falls back to `file_path` lookup when canonical-path column is unavailable.
+  - **Evidence:** `extraction-adapter.vitest.ts` included in green retrieval-targeted verification.
 
-- [x] T-06 Replace wildcard re-exports on retrieval-critical surfaces
+- [x] T-06 Strengthen token-budget test contracts
   - **Priority:** P1
-  - **Feature:** F-02 Semantic and lexical search (memory_search)
+  - **Feature:** F-01 Unified context retrieval (memory_context)
   - **Status:** DONE
-  - **Source:** `mcp_server/lib/providers/embeddings.ts:9`, `mcp_server/lib/scoring/folder-scoring.ts:7`, `mcp_server/lib/utils/path-security.ts:7`, `mcp_server/lib/search/vector-index.ts:6-10`
-  - **Issue:** Wildcard barrel re-exports are used instead of explicit named exports across multiple retrieval implementation surfaces, reducing auditability and increasing risk of unintended API surface changes.
-  - **Fix:** Replaced `export *` with explicit named exports in 3 barrel files. `vector-index.ts` internal barrel kept (acceptable pattern).
-  - **Evidence:** [EVIDENCE: embeddings.ts, folder-scoring.ts, path-security.ts verified] tsc --noEmit pass
+  - **Source:** `mcp_server/tests/token-budget-enforcement.vitest.ts`
+  - **Issue:** Prior assertions did not enforce budget strongly enough for all response shapes.
+  - **Fix:** Assertions now check effective token bounds and include explicit single-result structured compaction coverage.
+  - **Evidence:** Suite is part of `365 passed / 0 failed` retrieval-targeted run.
 
-- [x] T-07 Remove empty catch blocks that swallow errors in search modules
+- [x] T-07 Replace placeholder/todo assertions with concrete retrieval checks
   - **Priority:** P1
-  - **Feature:** F-04 Hybrid search pipeline
+  - **Feature:** Cross-feature test quality (F-01..F-09 audit support)
   - **Status:** DONE
-  - **Source:** `mcp_server/lib/search/vector-index-queries.ts:552-553`, `mcp_server/lib/search/vector-index-schema.ts:790-791`
-  - **Issue:** Empty catch blocks swallow errors silently in vector-index query and schema modules, shared across F-02, F-03, F-04, and F-05 retrieval surfaces.
-  - **Fix:** Added `console.warn` with structured diagnostics in both empty catch blocks. Stale refs removed.
-  - **Evidence:** [EVIDENCE: vector-index-queries.ts:553, vector-index-schema.ts:791 verified] lint pass
+  - **Source:** `search-archival.vitest.ts`, `memory-context.vitest.ts`, `memory-search-integration.vitest.ts`, `vector-index-impl.vitest.ts`, `bm25-index.vitest.ts`
+  - **Issue:** Placeholder assertions, todos, and weak conditions reduced regression signal.
+  - **Fix:** Replaced placeholders/todos with source-backed assertions, tightened fallback checks, added rollback and title-change regressions.
+  - **Evidence:** All listed files are in passing targeted verification set.
 
-- [x] T-08 Harden 4-stage pipeline export and error handling
+- [x] T-08 Update RRF test expectations to match corrected convergence defaults
   - **Priority:** P1
-  - **Feature:** F-05 4-stage pipeline architecture
-  - **Status:** DONE (merged with T-06/T-07 - same files)
-  - **Source:** `mcp_server/lib/providers/embeddings.ts:9`, `mcp_server/lib/search/vector-index-queries.ts:552-553`
-  - **Issue:** Same wildcard re-export and empty catch issues affect the 4-stage pipeline architecture surfaces. Stale `retry.vitest.ts` reference in feature catalog.
-  - **Fix:** Covered by T-06 (named exports) and T-07 (catch blocks) - same underlying files.
-  - **Evidence:** See T-06 and T-07 evidence
+  - **Feature:** F-04/F-05/F-08 fusion ranking verification
+  - **Status:** DONE
+  - **Source:** `mcp_server/tests/rrf-fusion.vitest.ts`, `mcp_server/tests/unit-rrf-fusion.vitest.ts`
+  - **Issue:** Expectations reflected pre-fix default convergence behavior.
+  - **Fix:** Updated expected multi-source bonus behavior to align with restored default (`CONVERGENCE_BONUS`).
+  - **Evidence:** Both suites pass in retrieval-targeted verification.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -124,14 +124,14 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## P2 - Documentation / Test Gaps
 
-- [x] T-09 Cover working-memory tool-result extraction provenance fields
+- [x] T-09 Synchronize spec-folder documentation with verified post-fix reality
   - **Priority:** P2
-  - **Feature:** F-09 Tool-result extraction to working memory
+  - **Feature:** Audit evidence quality across all 9 retrieval features
   - **Status:** DONE
-  - **Source:** `mcp_server/lib/cognitive/working-memory.ts:347-403`
-  - **Issue:** No test covers extracted tool-result upserts, conflict-update semantics, or provenance fields (`source_tool`, `source_call_id`, `extraction_rule_id`, `redaction_applied`) in working memory rows.
-  - **Fix:** Added 3 provenance tests: upsert persistence, conflict-update semantics, checkpoint save/restore.
-  - **Evidence:** [EVIDENCE: working-memory.vitest.ts verified] 50/50 working memory tests pass
+  - **Source:** `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`
+  - **Issue:** Documentation still contained stale pass counts, unsupported review-score claims, and fixed findings shown as open.
+  - **Fix:** Updated all five spec documents to match current verified numbers and closed-finding state.
+  - **Evidence:** Retrieval-targeted (`365/0`) and full-suite baseline (`7339 passed, 5 failed, 28 todo, 1 pending`) are now represented consistently.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -141,7 +141,8 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [x] `npx tsc --noEmit --pretty false` passes in `mcp_server`
+- [x] Retrieval-targeted verification passed (`10` suites, `365` passed, `0` failed)
 <!-- /ANCHOR:completion -->
 
 ---

@@ -1234,7 +1234,13 @@ export function get_memory_preview(memory_id: number, max_lines = 50): { id: num
         }
       }
     }
-  } catch (_e: unknown) {
+  } catch (e: unknown) {
+    console.warn('[vector-index] get_memory_preview file read warning', {
+      operation: 'get_memory_preview',
+      memoryId: memory_id,
+      filePath: memory.file_path ?? null,
+      error: get_error_message(e),
+    });
     content = '(Unable to read file content)';
   }
 
@@ -1361,12 +1367,14 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
     const delete_chunk_stmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
     for (const chunk of orphaned_chunks) {
       try {
-        // AI-WHY: Record DELETE history before auto-cleaning orphaned chunks
-        try {
-          recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
-        } catch (_histErr: unknown) { /* best-effort */ }
-        delete_chunk_stmt.run(chunk.id);
-        cleaned_chunks++;
+        const deleteResult = delete_chunk_stmt.run(chunk.id);
+        if (deleteResult.changes > 0) {
+          cleaned_chunks++;
+          // AI-WHY: Record DELETE history only after confirmed deletion.
+          try {
+            recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
+          } catch (_histErr: unknown) { /* best-effort */ }
+        }
       } catch (e: unknown) {
         console.warn(`[vector-index] Failed to clean orphaned chunk ${chunk.id}: ${get_error_message(e)}`);
       }

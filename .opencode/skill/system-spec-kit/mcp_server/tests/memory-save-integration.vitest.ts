@@ -4,244 +4,165 @@
 
 import { describe, it, expect } from 'vitest';
 
-// DB-dependent imports (commented out - requires better-sqlite3 / dist modules)
-import * as memorySaveHandler from '../handlers/memory-save.js';
-import * as predictionErrorGate from '../lib/cache/cognitive/prediction-error-gate.js';
-import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler.js';
-import * as vectorIndex from '../lib/search/vector-index.js';
+import * as memorySaveHandler from '../handlers/memory-save';
+import * as predictionErrorGate from '../lib/cache/cognitive/prediction-error-gate';
 
-describe('Memory Save Integration (T501-T550) [deferred - requires DB test fixtures]', () => {
+function makeCandidate(
+  overrides: Partial<{
+    id: number;
+    similarity: number;
+    content: string;
+    file_path: string;
+  }> = {}
+): {
+  id: number;
+  similarity: number;
+  content: string;
+  file_path: string;
+} {
+  return {
+    id: 101,
+    similarity: 0.9,
+    content: 'Deploy feature flags gradually and verify behavior after each rollout step.',
+    file_path: '/specs/101-memory.md',
+    ...overrides,
+  };
+}
 
-  describe('T501-T510 - PE Gate Invocation', () => {
-    it('T501: PE gate called before memory creation', () => {
-      expect(true).toBe(true);
+describe('Memory Save Integration (T501-T550)', () => {
+  describe('PE arbitration outcomes', () => {
+    it('T501: returns CREATE when no candidates exist', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-create',
+        'Document the new rollout plan for this spec folder.',
+        [],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.CREATE);
+      expect(result.existingMemoryId).toBeNull();
+      expect(result.similarity).toBe(0);
+      expect(result.reason).toContain('No existing candidates');
     });
 
-    it('T502: PE gate receives correct content', () => {
-      expect(true).toBe(true);
+    it('T502: near-duplicate candidates route to REINFORCE', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-reinforce',
+        'Deploy feature flags gradually and verify behavior after each rollout step.',
+        [makeCandidate({ similarity: 0.97 })],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.REINFORCE);
+      expect(result.existingMemoryId).toBe(101);
+      expect(result.similarity).toBe(0.97);
     });
 
-    it('T503: PE gate result determines action', () => {
-      expect(true).toBe(true);
+    it('T503: compatible high-similarity candidates route to UPDATE', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-update',
+        'Deploy feature flags gradually and verify behavior after every rollout checkpoint.',
+        [makeCandidate({ similarity: 0.9 })],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.UPDATE);
+      expect(result.existingMemoryId).toBe(101);
+      expect(result.contradiction?.detected ?? false).toBe(false);
     });
 
-    it('T504: PE gate handles empty candidates', () => {
-      expect(true).toBe(true);
+    it('T504: contradiction markers in new content route to SUPERSEDE', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-supersede',
+        'We no longer deploy feature flags gradually; use an immediate cutover instead.',
+        [makeCandidate({ similarity: 0.9 })],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.SUPERSEDE);
+      expect(result.existingMemoryId).toBe(101);
+      expect(result.contradiction?.detected).toBe(true);
+      expect(result.contradiction?.type).toBe('deprecation');
     });
 
-    it('T505: PE gate handles null content gracefully', () => {
-      expect(true).toBe(true);
+    it('T505: medium-similarity matches route to CREATE_LINKED', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-linked',
+        'Summarize rollout monitoring dashboards for post-deployment review.',
+        [makeCandidate({ similarity: 0.8 })],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.CREATE_LINKED);
+      expect(result.existingMemoryId).toBe(101);
+      expect(result.similarity).toBe(0.8);
     });
 
-    it('T506: PE gate returns required action field', () => {
-      const validActions = ['CREATE', 'UPDATE', 'REINFORCE', 'SUPERSEDE', 'CREATE_LINKED'];
-      expect(validActions).toHaveLength(5);
+    it('T506: candidates below LOW_MATCH are filtered out to CREATE', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-filtered',
+        'Write an unrelated architecture note about database vacuuming.',
+        [makeCandidate({ similarity: 0.49 })],
+        { specFolder: 'specs/001-example' }
+      );
+
+      expect(result.action).toBe(predictionErrorGate.ACTION.CREATE);
+      expect(result.existingMemoryId).toBeNull();
+      expect(result.reason).toContain('No relevant candidates');
     });
 
-    it('T507: PE gate returns similarity score', () => {
-      expect(true).toBe(true);
-    });
+    it('T507: highest relevant candidate wins when multiple are present', () => {
+      const result = predictionErrorGate.evaluateMemory(
+        'hash-best-match',
+        'Deploy feature flags gradually and verify behavior after every rollout checkpoint.',
+        [
+          makeCandidate({ id: 11, similarity: 0.8 }),
+          makeCandidate({ id: 22, similarity: 0.91 }),
+          makeCandidate({ id: 33, similarity: 0.72 }),
+        ],
+        { specFolder: 'specs/001-example' }
+      );
 
-    it('T508: PE gate returns reason for decision', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T509: PE gate returns candidate reference', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T510: PE gate errors handled gracefully', () => {
-      expect(true).toBe(true);
-    });
-  });
-
-  describe('T511-T520 - Duplicate Prevention', () => {
-    it('T511: Near-duplicate (sim=0.97) NOT created as new', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T512: Near-duplicate triggers REINFORCE action', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T513: Exact duplicate (sim=1.0) returns REINFORCE', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T514: Threshold boundary (0.95) correctly handled', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T515: Just below threshold (0.94) does NOT reinforce', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T516: Multiple candidates uses highest similarity', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T517: REINFORCE includes candidate reference', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T518: REINFORCE includes similarity in reason', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T519: REINFORCE action count trackable', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T520: Duplicate detection works across spec folders', () => {
-      expect(true).toBe(true);
-    });
-  });
-
-  describe('T521-T530 - Contradiction Handling', () => {
-    it('T521: Contradictory update (sim=0.92) detected', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T522: Contradiction triggers SUPERSEDE action', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T523: Contradiction type identified', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T524: Non-contradictory update uses UPDATE', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T525: "always" vs "never" detected as contradiction', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T526: "must" vs "must not" detected', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T527: "enable" vs "disable" detected', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T528: Case-insensitive contradiction detection', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T529: SUPERSEDE includes contradiction details', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T530: checkContradictions option works', () => {
-      expect(true).toBe(true);
+      expect(result.action).toBe(predictionErrorGate.ACTION.UPDATE);
+      expect(result.existingMemoryId).toBe(22);
+      expect(result.similarity).toBe(0.91);
     });
   });
 
-  describe('T531-T540 - New Memory Creation', () => {
-    it('T531: Novel content (sim=0.50) creates new memory', () => {
-      expect(true).toBe(true);
+  describe('Save-handler wiring', () => {
+    it('T508: save handler re-exports PE helpers and snake_case aliases', () => {
+      expect(memorySaveHandler.find_similar_memories).toBe(memorySaveHandler.findSimilarMemories);
+      expect(memorySaveHandler.reinforce_existing_memory).toBe(memorySaveHandler.reinforceExistingMemory);
+      expect(memorySaveHandler.mark_memory_superseded).toBe(memorySaveHandler.markMemorySuperseded);
+      expect(memorySaveHandler.update_existing_memory).toBe(memorySaveHandler.updateExistingMemory);
+      expect(memorySaveHandler.log_pe_decision).toBe(memorySaveHandler.logPeDecision);
     });
 
-    it('T532: Empty candidates creates new memory', () => {
-      expect(true).toBe(true);
+    it('T509: exported thresholds remain ordered to preserve PE routing', () => {
+      expect(predictionErrorGate.THRESHOLD.DUPLICATE).toBeGreaterThan(predictionErrorGate.THRESHOLD.HIGH_MATCH);
+      expect(predictionErrorGate.THRESHOLD.HIGH_MATCH).toBeGreaterThan(predictionErrorGate.THRESHOLD.MEDIUM_MATCH);
+      expect(predictionErrorGate.THRESHOLD.MEDIUM_MATCH).toBeGreaterThan(predictionErrorGate.THRESHOLD.LOW_MATCH);
     });
 
-    it('T533: CREATE action returned for low similarity', () => {
-      expect(true).toBe(true);
-    });
+    it('T510: conflict records preserve metadata and previews', () => {
+      const record = predictionErrorGate.formatConflictRecord(
+        predictionErrorGate.ACTION.SUPERSEDE,
+        'hash-record',
+        88,
+        0.91,
+        'Contradiction detected',
+        { detected: true, type: 'deprecation', description: 'Previous guidance replaced', confidence: 0.75 },
+        predictionErrorGate.truncateContent('x'.repeat(250)),
+        predictionErrorGate.truncateContent('y'.repeat(40)),
+        'specs/001-example'
+      );
 
-    it('T534: CREATE_LINKED for medium similarity (0.70-0.89)', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T535: CREATE_LINKED includes related_ids', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T536: Very low similarity (0.20) creates new', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T537: Zero similarity creates new', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T538: Negative similarity handled gracefully', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T539: CREATE includes reason with similarity', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T540: CREATE candidate still referenced (for logging)', () => {
-      expect(true).toBe(true);
-    });
-  });
-
-  describe('T541-T550 - Conflict Table', () => {
-    it('T541: logConflict function exists', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T542: shouldLogConflict returns correct boolean', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T543: formatConflictRecord creates proper structure', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T544: getConflictStats returns statistics', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T545: getRecentConflicts returns array', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T546: Conflict record has action field', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T547: Conflict record has similarity field', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T548: Conflict record has timestamp', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T549: Conflict record has spec_folder field', () => {
-      expect(true).toBe(true);
-    });
-
-    it('T550: Conflict preview truncated properly', () => {
-      expect(true).toBe(true);
-    });
-  });
-
-  describe('Handler Helper Functions', () => {
-    it('findSimilarMemories function exists', () => {
-      expect(true).toBe(true);
-    });
-
-    it('reinforceExistingMemory function exists', () => {
-      expect(true).toBe(true);
-    });
-
-    it('markMemorySuperseded function exists', () => {
-      expect(true).toBe(true);
-    });
-
-    it('updateExistingMemory function exists', () => {
-      expect(true).toBe(true);
-    });
-
-    it('logPeDecision function exists', () => {
-      expect(true).toBe(true);
+      expect(record.action).toBe(predictionErrorGate.ACTION.SUPERSEDE);
+      expect(record.existing_memory_id).toBe(88);
+      expect(record.contradiction_detected).toBe(1);
+      expect(record.contradiction_type).toBe('deprecation');
+      expect(record.new_content_preview).toHaveLength(203);
+      expect(record.spec_folder).toBe('specs/001-example');
     });
   });
 });

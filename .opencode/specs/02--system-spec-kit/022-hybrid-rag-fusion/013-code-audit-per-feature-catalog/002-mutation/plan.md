@@ -24,7 +24,7 @@ contextType: "general"
 | **Testing** | Vitest |
 
 ### Overview
-Phase 002 executed a feature-centric audit of all 10 mutation features and closed 9 remediation tasks (3 P0, 6 P1). The approach combined structured per-feature review, targeted code fixes, regression verification, and cross-AI review rounds to reach final APPROVE status.
+Phase 002 executed a feature-centric audit of all 10 mutation features and closed 9 original remediation tasks (3 P0, 6 P1). The March 11, 2026 re-audit then closed the remaining mutation-specific gaps that were still present after the earlier review rounds, and refreshed the evidence to match current verification state.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,7 +39,7 @@ Phase 002 executed a feature-centric audit of all 10 mutation features and close
 
 ### Definition of Done
 - [x] All acceptance criteria met
-- [x] Tests passing (phase verification complete: `239 passed`, `7` pre-existing failures)
+- [x] Tests passing for mutation scope (`npx tsc --noEmit` clean, focused mutation suites green, full suite currently `254 passed files / 5 unrelated failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests)
 - [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
@@ -91,7 +91,7 @@ Catalog definitions are inventoried first, then each feature is traced to implem
 - [x] Produce structured findings per feature: PASS/WARN/FAIL, issues, violations, gaps, recommendations
 - [x] Complete all remediation tasks T-01 through T-09
 - [x] Verify closure with TypeScript compile and test results
-- [x] Record post-fix status and cross-AI review outcome (`R11: 98/100 APPROVE`)
+- [x] Record post-fix status and current re-audit verification state (superseding the older `R11: 98/100 APPROVE` snapshot)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -126,7 +126,7 @@ Catalog definitions are inventoried first, then each feature is traced to implem
 |------------|------|--------|-------------------|
 | Mutation feature catalog (`feature_catalog/02--mutation`) | Internal | Green | Audit cannot reliably map behavior claims to source files. |
 | MCP server TypeScript modules and handlers | Internal | Green | Core mutation paths cannot be evaluated or remediated. |
-| Vitest test suite and fixtures | Internal | Yellow | Missing/placeholder tests reduce confidence in behavior verification. |
+| Vitest test suite and fixtures | Internal | Yellow | Some broader repository suites still fail outside mutation scope; mutation-focused suites are now concrete and green. |
 | Cross-AI review loop | External process | Green | Lower confidence in closure quality if not completed. |
 <!-- /ANCHOR:dependencies -->
 

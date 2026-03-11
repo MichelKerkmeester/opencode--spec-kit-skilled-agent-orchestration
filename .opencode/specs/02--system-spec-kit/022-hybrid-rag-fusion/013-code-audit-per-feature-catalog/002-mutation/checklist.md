@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 002-Mutation Code Audit"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-11"
 trigger_phrases: ["verification", "checklist", "002-mutation", "mutation code audit", "post-fix verification"]
 importance_tier: "normal"
 contextType: "general"
@@ -37,7 +37,7 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks (TSC clean)
-- [x] CHK-011 [P0] No console errors or warnings
+- [x] CHK-011 [P0] No new unexpected console errors or warnings introduced by the mutation fixes
 - [x] CHK-012 [P1] Error handling implemented (T-02 catch -> warn, T-07 throw behavior)
 - [x] CHK-013 [P1] Code follows project patterns
 <!-- /ANCHOR:code-quality -->
@@ -48,7 +48,7 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
-- [x] CHK-021 [P0] Manual testing complete (`239 passed`, `7` pre-existing failures)
+- [x] CHK-021 [P0] Verification complete (`npx tsc --noEmit` clean, focused mutation verification run: `8 files`, `167 tests` passed; full suite: `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests with failures outside mutation scope)
 - [x] CHK-022 [P1] Edge cases tested
 - [x] CHK-023 [P1] Error scenarios validated
 <!-- /ANCHOR:testing -->
@@ -59,7 +59,7 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets
-- [x] CHK-031 [P0] Input validation implemented (`T-01 olderThanDays`)
+- [x] CHK-031 [P0] Input validation implemented (`T-01/T-10: olderThanDays >= 1` and `memory_bulk_delete.confirm === true`)
 - [ ] CHK-032 [P1] Auth/authz working correctly - N/A for this internal mutation audit scope
 <!-- /ANCHOR:security -->
 
@@ -94,30 +94,32 @@ contextType: "general"
 | P1 Items | 8 | 8/8 |
 | P2 Items | 2 | 1/2 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-11
 <!-- /ANCHOR:summary -->
 
 ---
 
 ## Appendix: Per-Feature Audit Findings
+Historical note: the issue and gap bullets below capture the pre-fix audit findings that motivated the work. The current state is reflected in each `Post-Fix Status` line.
+
 ## F-01: Memory indexing (memory_save)
 - **Status:** WARN
 - **Code Issues:**
-  1. Reconsolidation enablement is split across two conflicting gates: rollout flags treat it as graduated/default-on, but storage reconsolidation requires explicit `SPECKIT_RECONSOLIDATION=true`; bridge logic requires both, so effective behavior is opt-in, not default-on (`mcp_server/lib/search/search-flags.ts:77-83`, `mcp_server/lib/storage/reconsolidation.ts:119-127`, `mcp_server/handlers/save/reconsolidation-bridge.ts:16-19,44`).
+  1. Initial finding (now fixed): reconsolidation gate semantics drifted between bridge-level canonical gating and the internal guard (`mcp_server/lib/search/search-flags.ts`, `mcp_server/lib/storage/reconsolidation.ts`, `mcp_server/handlers/save/reconsolidation-bridge.ts`).
 - **Standards Violations:**
   1. Post-mutation hook failures are swallowed and converted to success-shaped booleans (`mcp_server/handlers/mutation-hooks.ts:22-58`).
   2. Mutation-ledger append failures are swallowed in a "safe" helper, which can hide audit-trail write loss (`mcp_server/handlers/memory-crud-utils.ts:38-59`).
 - **Behavior Mismatch:**
-  1. Feature doc says reconsolidation is "default ON", but implementation/tests define it as explicit opt-in (`feature_catalog/02--mutation/01-memory-indexing-memorysave.md:13`, `mcp_server/lib/storage/reconsolidation.ts:119-127`, `mcp_server/tests/reconsolidation.vitest.ts:174-176,705-708`).
+  1. Initial mismatch (now fixed): reconsolidation semantics drifted between bridge and internal guard. Re-audit aligned both to canonical opt-in behavior (`SPECKIT_RECONSOLIDATION=true`, default OFF) and updated reconsolidation/search-flag tests.
 - **Test Gaps:**
-  1. Listed integration suite is largely deferred placeholders (`expect(true).toBe(true)`), so end-to-end save-path behavior (PE actions, reconsolidation bridge, async embedding) is weakly asserted (`mcp_server/tests/memory-save-integration.vitest.ts:13,17-244`).
+  1. Historical gap (now fixed): `memory-save-integration.vitest.ts` previously used deferred placeholders. It now contains concrete PE/save arbitration assertions (`T501-T510`) for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED routing and save-helper wiring.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/01-memory-indexing-memorysave.md:194`).
 - **Playbook Coverage:** EX-010 (inferred from phase sequencing), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Unify reconsolidation gating to a single source-of-truth contract and remove contradictory default semantics.
-  2. Replace deferred integration placeholders with real fixture-backed assertions for PE/reconsolidation/asyncEmbedding outcomes.
+  2. Completed: replaced deferred integration placeholders with concrete PE/save arbitration assertions.
   3. Return explicit warning/error metadata when hooks or ledger writes fail.
-- **Post-Fix Status:** FIXED (T-04). Collapsed dual reconsolidation gating to single canonical gate via `search-flags.ts:isReconsolidationFlagEnabled()`. Removed `isReconsolidationEnabled` import from reconsolidation.ts in `reconsolidation-bridge.ts`. Internal `reconsolidate()` guard retained as safety net. TSC clean.
+- **Post-Fix Status:** FIXED (T-04, T-10). Bridge enablement uses canonical `search-flags.ts:isReconsolidationFlagEnabled()`, and `lib/storage/reconsolidation.ts:isReconsolidationEnabled()` now matches the same explicit opt-in semantics (default OFF). Added cleanup-ordering regression coverage (`tests/reconsolidation-cleanup-ordering.vitest.ts`) and updated reconsolidation/search-flag assertions. TSC clean.
 
 ## F-02: Memory metadata update (memory_update)
 - **Status:** WARN
@@ -158,20 +160,20 @@ contextType: "general"
 ## F-04: Tier-based bulk deletion (memory_bulk_delete)
 - **Status:** FAIL
 - **Code Issues:**
-  1. Contract drift on `olderThanDays`: JSON schema enforces `minimum: 1`, Zod runtime schema allows `0`, and handler rejects `<1`. This creates inconsistent validation layers and contradicts schema-level guarantees (`mcp_server/tool-schemas.ts:268`, `mcp_server/schemas/tool-input-schemas.ts:187`, `mcp_server/handlers/memory-bulk-delete.ts:67-69`).
+  1. Initial finding (now fixed): contract drift existed across schema layers and handler validation for bulk-delete safety arguments (`olderThanDays`, `confirm`).
 - **Standards Violations:**
   1. Validation rule duplicated across three layers without shared constant, resulting in drift (`mcp_server/tool-schemas.ts:268`, `mcp_server/schemas/tool-input-schemas.ts:187`, `mcp_server/handlers/memory-bulk-delete.ts:67-69`).
 - **Behavior Mismatch:**
-  1. Feature states schema-level enforcement at `>=1`; runtime Zod schema currently accepts `0` (`feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md:11`, `mcp_server/schemas/tool-input-schemas.ts:187`).
+  1. Initial mismatch (now fixed): feature text expected strict schema enforcement while runtime schema accepted weaker inputs.
 - **Test Gaps:**
-  1. No tests assert `olderThanDays` validation boundaries (`0`, negative, NaN, non-integer) at schema or handler layers (no `olderThanDays` coverage found in `mcp_server/tests/*`).
+  1. Initial gap (now fixed): boundary tests were missing for `olderThanDays` and schema-level `confirm` enforcement.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md:122`).
 - **Playbook Coverage:** EX-013 (inferred), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Use a single shared constant for `olderThanDays` minimum across JSON schema, Zod schema, and handler guard.
   2. Add boundary tests for `olderThanDays` validation in both schema and handler suites.
   3. Remove stale test-file entries from catalog.
-- **Post-Fix Status:** FIXED (T-01). Zod schema `min(0)` → `min(1)` in `tool-input-schemas.ts` to align with JSON schema. Wired `recordHistory('DELETE')` inside bulk-delete transaction loop. Added `?? null` coalescing on `memory.file_path` for prevValue consistency (P2-03). TSC clean.
+- **Post-Fix Status:** FIXED (T-01, T-10). Zod schema now requires `confirm: true` and `olderThanDays >= 1`, JSON schema now enforces `confirm: const true` with `minimum: 1`, and boundary coverage now exists in schema-level and handler-level suites (`history.vitest.ts`, `tool-input-schema.vitest.ts`, `regression-010-index-large-files.vitest.ts`). Wired `recordHistory('DELETE')` inside bulk-delete transaction loop. TSC clean.
 
 ## F-05: Validation feedback (memory_validate)
 - **Status:** WARN
@@ -227,11 +229,11 @@ contextType: "general"
 - **Behavior Mismatch:**
   1. "All decisions logged" claim is broader than current logging condition (`mcp_server/lib/cognitive/prediction-error-gate.ts:267-281`).
 - **Test Gaps:**
-  1. One of the listed integration suites is deferred placeholders, reducing confidence in end-to-end save-path arbitration assertions (`mcp_server/tests/memory-save-integration.vitest.ts:13,17-244`).
+  1. Historical gap (now fixed): the listed save integration suite was placeholder-heavy; it now includes concrete PE/save arbitration assertions (`tests/memory-save-integration.vitest.ts`, 10 tests).
 - **Playbook Coverage:** NEW-110.
 - **Recommended Fixes:**
   1. Either log every PE decision (including low/no-match CREATE) or narrow feature text to match implemented behavior.
-  2. Replace deferred integration placeholders with concrete PE decision-path assertions for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED.
+  2. Completed: replaced placeholder integration assertions with concrete PE decision-path tests for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED.
 - **Post-Fix Status:** FIXED (T-09). Extended `logConflict` calls to both early-return paths (no candidates, no relevant candidates after filtering). Changed main logging condition from `if (similarity >= THRESHOLD.LOW_MATCH && db)` to `if (db)` — all PE decisions now logged regardless of similarity score. TSC clean.
 
 ## F-09: Correction tracking with undo
@@ -271,4 +273,4 @@ contextType: "general"
   1. Wire `recordHistory` into save/update/delete/session-learning/archival mutation points.
   2. Align event taxonomy between docs and schema (either expand enum or tighten docs to implemented values).
   3. Correct feature catalog source table paths and include the actual history implementation module.
-- **Post-Fix Status:** FIXED (T-03). Removed restrictive CHECK constraint on actor column in `history.ts` to allow `mcp:*` actors. Wired `recordHistory('ADD')` in `create-record.ts` inside save transaction. Wired `recordHistory('UPDATE')` in `memory-crud-update.ts` (T-05). Wired `recordHistory('DELETE')` in `memory-crud-delete.ts` (T-06) and `memory-bulk-delete.ts` (T-01). Actor convention: `mcp:<tool_name>` across all 6 call sites. TSC clean.
+- **Post-Fix Status:** FIXED (T-03, T-10). Removed restrictive CHECK constraint on actor column in `history.ts` to allow `mcp:*` actors. Wired `recordHistory('ADD')` in `create-record.ts` inside save transaction. Wired `recordHistory('UPDATE')` in `memory-crud-update.ts` (T-05). Wired `recordHistory('DELETE')` in `memory-crud-delete.ts` (T-06) and `memory-bulk-delete.ts` (T-01). `delete_memory_by_path()` and `delete_memories()` now record DELETE history only after confirmed deletion, and `history.vitest.ts` plus `vector-index-impl.vitest.ts` now assert the expanded actor/lifecycle coverage. TSC clean.

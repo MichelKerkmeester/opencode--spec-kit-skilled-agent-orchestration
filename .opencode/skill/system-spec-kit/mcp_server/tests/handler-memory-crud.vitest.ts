@@ -15,6 +15,15 @@ type ErrorLike = {
 
 type WritableStatsArgs = Exclude<Parameters<typeof handler.handleMemoryStats>[0], null>;
 
+function parseResponse(result: { content: Array<{ text: string }> }) {
+  return JSON.parse(result.content[0].text);
+}
+
+function getDetails(parsed: Record<string, unknown>) {
+  const data = parsed.data as { details?: Record<string, unknown> } | undefined;
+  return data?.details;
+}
+
 function toErrorLike(error: unknown): ErrorLike {
   if (error instanceof Error) {
     return error as ErrorLike;
@@ -149,10 +158,13 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
   });
 
   describe('handleMemoryList Input Validation', () => {
-    it('T519-L1: Non-string specFolder throws', async () => {
-      await expect(handler.handleMemoryList({ specFolder: 42 } as unknown as Parameters<typeof handler.handleMemoryList>[0])).rejects.toThrow(
-        /specFolder.*string|string.*specFolder/
-      );
+    it('T519-L1: Non-string specFolder returns MCP error response', async () => {
+      const result = await handler.handleMemoryList({ specFolder: 42 } as unknown as Parameters<typeof handler.handleMemoryList>[0]);
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(true);
+      expect(parsed.data?.error).toMatch(/specFolder must be a string/);
+      expect(parsed.data?.code).toBe('E_INVALID_INPUT');
+      expect(typeof getDetails(parsed)?.requestId).toBe('string');
     });
 
     it('T519-L2: handleMemoryList is async', () => {
@@ -163,89 +175,52 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
     });
 
     it('T519-L3: Empty args accepted (defaults applied)', async () => {
-      try {
-        await handler.handleMemoryList({});
-        // No validation error — pass
-      } catch (error: unknown) {
-        const typedError = toErrorLike(error);
-        // DB errors are acceptable (means validation passed)
-        expect(
-          typedError.message?.includes('database') === true ||
-            typedError.message?.includes('DB') === true ||
-            typedError.message?.includes('getDb') === true
-        ).toBe(true);
-      }
+      const result = await handler.handleMemoryList({});
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(false);
+      expect(parsed.data?.limit).toBe(20);
+      expect(parsed.data?.offset).toBe(0);
     });
   });
 
   describe('handleMemoryStats Input Validation', () => {
-    it('T519-S1: Invalid folderRanking throws', async () => {
-      try {
-        await handler.handleMemoryStats({
-          folderRanking: 'invalid_ranking' as unknown as StatsArgs['folderRanking'],
-        });
-        expect.unreachable('Should have thrown');
-      } catch (error: unknown) {
-        const typedError = toErrorLike(error);
-        // Either validation error or DB error is acceptable
-        expect(
-          typedError.message?.includes('folderRanking') === true ||
-            typedError.message?.includes('Invalid') === true ||
-            typedError.message?.includes('database') === true ||
-            typedError.message?.includes('getDb') === true
-        ).toBe(true);
-      }
+    it('T519-S1: Invalid folderRanking returns MCP error response', async () => {
+      const result = await handler.handleMemoryStats({
+        folderRanking: 'invalid_ranking' as unknown as StatsArgs['folderRanking'],
+      });
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(true);
+      expect(parsed.data?.error).toMatch(/Invalid folderRanking/);
+      expect(parsed.data?.code).toBe('E_INVALID_INPUT');
+      expect(typeof getDetails(parsed)?.requestId).toBe('string');
     });
 
-    it('T519-S2: Non-array excludePatterns throws', async () => {
-      try {
-        await handler.handleMemoryStats({
-          excludePatterns: 'not-an-array' as unknown as WritableStatsArgs['excludePatterns'],
-        });
-        expect.unreachable('Should have thrown');
-      } catch (error: unknown) {
-        const typedError = toErrorLike(error);
-        expect(
-          typedError.message?.includes('excludePatterns') === true ||
-            typedError.message?.includes('array') === true ||
-            typedError.message?.includes('database') === true ||
-            typedError.message?.includes('getDb') === true
-        ).toBe(true);
-      }
+    it('T519-S2: Non-array excludePatterns returns MCP error response', async () => {
+      const result = await handler.handleMemoryStats({
+        excludePatterns: 'not-an-array' as unknown as WritableStatsArgs['excludePatterns'],
+      });
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(true);
+      expect(parsed.data?.error).toMatch(/excludePatterns must be an array/);
+      expect(parsed.data?.code).toBe('E_INVALID_INPUT');
+      expect(typeof getDetails(parsed)?.requestId).toBe('string');
     });
 
     it('T519-S3: Null args accepted (uses defaults)', async () => {
-      try {
-        await handler.handleMemoryStats(null as unknown as Parameters<typeof handler.handleMemoryStats>[0]);
-        // Defaults used — pass
-      } catch (error: unknown) {
-        const typedError = toErrorLike(error);
-        // DB errors are acceptable (means validation passed)
-        expect(
-          typedError.message?.includes('database') === true || typedError.message?.includes('getDb') === true
-        ).toBe(true);
-      }
+      const result = await handler.handleMemoryStats(null as unknown as Parameters<typeof handler.handleMemoryStats>[0]);
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(false);
+      expect(parsed.data?.folderRanking).toBe('count');
+      expect(parsed.data?.limit).toBe(10);
     });
   });
 
   describe('handleMemoryHealth', () => {
     it('T519-H1: Health handler returns status', async () => {
-      try {
-        const result = await handler.handleMemoryHealth({});
-        expect(result).toBeDefined();
-        expect(result.content).toBeDefined();
-        expect(result.content.length).toBeGreaterThan(0);
-        const parsed = JSON.parse(result.content[0].text);
-        expect(
-          (parsed.data && typeof parsed.data.status === 'string') || parsed.summary
-        ).toBeTruthy();
-      } catch (error: unknown) {
-        const typedError = toErrorLike(error);
-        // DB errors are acceptable
-        expect(
-          typedError.message?.includes('database') === true || typedError.message?.includes('getDb') === true
-        ).toBe(true);
-      }
+      const result = await handler.handleMemoryHealth({});
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(false);
+      expect(typeof parsed.data?.status).toBe('string');
     });
 
     it('T519-H2: setEmbeddingModelReady(true) succeeds', () => {
@@ -258,14 +233,20 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
 
     it('T519-H3: Invalid reportMode returns error response', async () => {
       const result = await handler.handleMemoryHealth({ reportMode: 'not-valid' } as unknown as HealthArgs);
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(true);
       expect(parsed.data?.error).toMatch(/Invalid reportMode/);
+      expect(parsed.data?.code).toBe('E_INVALID_INPUT');
+      expect(typeof getDetails(parsed)?.requestId).toBe('string');
     });
 
     it('T519-H4: Invalid limit returns error response', async () => {
       const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 0 });
-      const parsed = JSON.parse(result.content[0].text);
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(true);
       expect(parsed.data?.error).toMatch(/limit must be a positive number/);
+      expect(parsed.data?.code).toBe('E_INVALID_INPUT');
+      expect(typeof getDetails(parsed)?.requestId).toBe('string');
     });
   });
 });

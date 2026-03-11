@@ -5,6 +5,7 @@
 import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges';
+import { getHistory, init as initHistory } from '../lib/storage/history';
 import {
   isReconsolidationEnabled,
   findSimilarMemories,
@@ -141,6 +142,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     // Initialize causal edges module
     causalEdges.init(testDb);
+    initHistory(testDb);
   });
 
   afterAll(() => {
@@ -171,7 +173,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       }
     });
 
-    it('RF1: Disabled by default (opt-in — requires explicit SPECKIT_RECONSOLIDATION=true)', () => {
+    it('RF1: Disabled by default when env var is unset', () => {
       delete process.env.SPECKIT_RECONSOLIDATION;
       expect(isReconsolidationEnabled()).toBe(false);
     });
@@ -702,8 +704,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
   ---------------------------------------------------------------- */
 
   describe('Checkpoint Requirement', () => {
-    it('CHK1: SPECKIT_RECONSOLIDATION defaults to OFF (opt-in, explicit "true" to enable)', () => {
-      // AI-FIX: F-14 — Reconsolidation is opt-in per contract. Defaults to OFF.
+    it('CHK1: SPECKIT_RECONSOLIDATION defaults to OFF and can be explicitly enabled', () => {
       delete process.env.SPECKIT_RECONSOLIDATION;
       expect(isReconsolidationEnabled()).toBe(false);
 
@@ -716,13 +717,13 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
 
     it('CHK2: Documentation note — checkpoint MUST be created before enabling', () => {
       // This is a documentation-level test. The actual checkpoint creation
-      // is handled by the caller before setting SPECKIT_RECONSOLIDATION=true.
+      // is handled by the caller before allowing reconsolidation to proceed.
       // We verify the flag mechanism exists to enforce this workflow.
       expect(typeof isReconsolidationEnabled).toBe('function');
       // The feature being behind a flag means:
       // 1. User creates checkpoint via checkpoint_create()
-      // 2. User sets SPECKIT_RECONSOLIDATION=true
-      // 3. Reconsolidation is now active
+      // 2. User explicitly opts in with SPECKIT_RECONSOLIDATION=true
+      // 3. The bridge/runtime guard can still reject unsafe flows
     });
   });
 
@@ -763,6 +764,45 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       );
       // findSimilarMemories catches errors and returns [], leading to complement
       expect(result!.action).toBe('complement');
+    });
+
+    it('EC2b: orphan cleanup records DELETE history when the cleanup delete succeeds', async () => {
+      testDb.prepare(`
+        INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+        VALUES (520, 'test-spec', '/test/520.md', 'Existing Memory', 'Existing content', 0.5, datetime('now'), datetime('now'))
+      `).run();
+
+      const orphanId = 621;
+      const storeMemory: StoreMemoryFn = () => {
+        testDb.prepare(`
+          INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
+          VALUES (?, 'test-spec', '/test/orphan.md', 'Orphan Memory', 'Orphan content', 0.5, datetime('now'), datetime('now'))
+        `).run(orphanId);
+        return orphanId;
+      };
+
+      const insertEdgeSpy = vi.spyOn(causalEdges, 'insertEdge')
+        .mockImplementation(() => { throw new Error('forced edge failure'); });
+
+      await expect(reconsolidate(
+        makeNewMemory({ content: 'Conflicting content for cleanup path' }),
+        testDb,
+        {
+          findSimilar: mockFindSimilar([makeSimilarMemory({ id: 520, similarity: 0.8 })]),
+          storeMemory,
+        }
+      )).rejects.toThrow('forced edge failure');
+
+      const orphanRow = testDb.prepare('SELECT id FROM memory_index WHERE id = ?').get(orphanId);
+      expect(orphanRow).toBeUndefined();
+      expect(getHistory(orphanId)).toEqual(expect.arrayContaining([
+        expect.objectContaining({
+          event: 'DELETE',
+          actor: 'mcp:reconsolidation_cleanup',
+        }),
+      ]));
+
+      insertEdgeSpy.mockRestore();
     });
 
     it('EC3: Merge with null existing content handles gracefully', async () => {

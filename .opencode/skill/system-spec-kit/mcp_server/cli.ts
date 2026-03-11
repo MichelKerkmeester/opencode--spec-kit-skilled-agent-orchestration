@@ -308,15 +308,15 @@ function runBulkDelete(): void {
 
   const bulkDeleteTx = db.transaction(() => {
     for (const memory of toDelete) {
-      // AI-WHY: Record DELETE history before deleteMemory so the audit trail persists
-      try {
-        recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete');
-      } catch (_histErr: unknown) {
-        // history recording is best-effort
-      }
       if (vectorIndex.deleteMemory(memory.id)) {
         deletedCount++;
         deletedIds.push(memory.id);
+        // AI-WHY: Record DELETE history only after confirmed deletion.
+        try {
+          recordHistory(memory.id, 'DELETE', null, null, 'mcp:cli_bulk_delete');
+        } catch (_histErr: unknown) {
+          // history recording is best-effort
+        }
         try { causalEdges.deleteEdgesForMemory(String(memory.id)); } catch { /* ignore */ }
       }
     }

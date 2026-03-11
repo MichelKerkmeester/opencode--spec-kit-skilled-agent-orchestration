@@ -45,9 +45,9 @@ This plan executes a feature-by-feature audit remediation across the 08 bug-fixe
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met — 14/14 tasks complete, 42 new tests passing
+- [x] Tests passing (if applicable) — TSC 0 errors, Vitest 42/42 green
+- [x] Docs updated (spec/plan/tasks) — All spec folder artifacts synchronized
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,19 +72,19 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Inventory all 11 feature files and validate implementation/test tables
-- [ ] Cross-reference playbook scenarios EX-034 and NEW-040..049
-- [ ] Confirm remediation backlog priorities (5x P0, 8x P1, 1x P2)
+- [x] Inventory all 11 feature files and validate implementation/test tables — Agents 1 & 2 completed T001-T005
+- [x] Cross-reference playbook scenarios EX-034 and NEW-040..049 — Mapped across F-02, F-03, F-05, F-06, F-07
+- [x] Confirm remediation backlog priorities (5x P0, 8x P1, 1x P2) — All 14 tasks prioritized and assigned
 
 ### Phase 2: Core Implementation
-- [ ] Correct catalog pathing and behavior claims (F-02, F-03, F-05, F-06, F-07, F-11)
-- [ ] Apply targeted code hardening (explicit exports, spread-max removal, safe-swap semantics)
-- [ ] Add integration-path coverage for content-hash dedup behavior
+- [x] Correct catalog pathing and behavior claims (F-02, F-03, F-05, F-06, F-07, F-11) — Agents 1 & 2, T001-T005, T010
+- [x] Apply targeted code hardening (explicit exports, spread-max removal, safe-swap semantics) — Agent 3, T006-T007, T009
+- [x] Add integration-path coverage for content-hash dedup behavior — Agent 4, T008 (15 tests)
 
 ### Phase 3: Verification
-- [ ] Execute large-array, dedup, rollback, timestamp, and concurrency regressions
-- [ ] Re-validate catalog entries against updated code/test evidence
-- [ ] Synchronize spec.md, plan.md, tasks.md, and checklist.md
+- [x] Execute large-array, dedup, rollback, timestamp, and concurrency regressions — Agents 4 & 5, T011-T014 (42 tests total)
+- [x] Re-validate catalog entries against updated code/test evidence — All catalog tables cross-checked
+- [x] Synchronize spec.md, plan.md, tasks.md, and checklist.md — All artifacts updated
 <!-- /ANCHOR:phases -->
 
 ---

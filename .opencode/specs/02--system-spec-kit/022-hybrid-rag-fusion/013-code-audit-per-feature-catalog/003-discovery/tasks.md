@@ -34,9 +34,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Confirm Discovery feature inventory and source references (`feature_catalog/03--discovery/*.md`)
-- [x] T002 Validate current handler/test file existence for mapped features (`mcp_server/handlers/*`, `mcp_server/tests/*`)
-- [x] T003 [P] Prepare implementation branch context for Discovery follow-up (`.opencode/specs/.../003-discovery/*.md`)
+- [x] T001 Re-verify Discovery source-of-truth files for handlers, schemas, tests, and feature catalog (`.opencode/skill/system-spec-kit/mcp_server/*`, `.opencode/skill/system-spec-kit/feature_catalog/03--discovery/*`)
+- [x] T002 Re-read all five `003-discovery` docs and identify stale statements to remove (`.opencode/specs/.../003-discovery/*.md`)
+- [x] T003 Lock update scope to requested doc set only (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,10 +44,10 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 [P1] Fix inaccurate folder total summary count in `memory_stats` (`mcp_server/handlers/memory-crud-stats.ts`)
-- [x] T005 [P1] Include `requestId` in all `memory_health` error responses (`mcp_server/handlers/memory-crud-health.ts`)
-- [x] T006 [P2] Add `memory_list` edge-case handler tests and resolve stale test reference (`mcp_server/handlers/memory-crud-list.ts`, `mcp_server/tests/*`)
-- [x] T007 [P1] Add tests for stats scoring fallback, limit truncation, and health diagnostic edge paths (`mcp_server/tests/*.vitest.ts`)
+- [x] T004 [P1] Update docs for `memory_list` handler validation envelopes (`E_INVALID_INPUT` + `requestId`) and resolved `sortBy` response behavior (`mcp_server/handlers/memory-crud-list.ts`)
+- [x] T005 [P1] Update docs for `memory_stats` validation of `includeScores`, `includeArchived`, and non-finite `limit`, plus `limit` in success payload (`mcp_server/handlers/memory-crud-stats.ts`)
+- [x] T006 [P1] Update docs for `memory_health` schema support for `confirmed` in auto-repair confirmation flow (`mcp_server/schemas/tool-input-schemas.ts`, `mcp_server/tool-schemas.ts`, `mcp_server/tests/tool-input-schema.vitest.ts`)
+- [x] T007 [P1] Remove stale Discovery wording (`documentation phase`, old `48/48`, old `computeFolderScores`-limit narrative, outdated Discovery-only inconsistency limitation) across all five docs (`.opencode/specs/.../003-discovery/*.md`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,9 +55,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Validate EX-018/EX-019/EX-020 playbook mapping against implemented behavior (`feature_catalog/03--discovery/*.md`)
-- [x] T009 Verify Discovery edge-case and error-path test coverage is complete (`mcp_server/tests/*.vitest.ts`)
-- [x] T010 Update Discovery spec artifacts to reflect final status and evidence (`.opencode/specs/.../003-discovery/*.md`)
+- [x] T008 Record clean TypeScript verification evidence (`npx tsc --noEmit`, no output)
+- [x] T009 Record targeted verification evidence: 5 test files, `89/89` passing (`handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge`, `handler-memory-crud`, `tool-input-schema`)
+- [x] T010 Run final cross-file sync check across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,7 +67,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [x] Verification evidence updated to current on-disk reality
 <!-- /ANCHOR:completion -->
 
 ---
@@ -77,6 +77,8 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
 <!-- /ANCHOR:cross-refs -->
 
 ---

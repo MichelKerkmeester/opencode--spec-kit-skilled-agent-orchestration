@@ -76,10 +76,10 @@ export function isSaveQualityGateEnabled(): boolean {
 
 /**
  * TM-06: Reconsolidation-on-save for memory deduplication.
- * Default: TRUE (graduated). Set SPECKIT_RECONSOLIDATION=false to disable.
+ * Default: FALSE (opt-in). Set SPECKIT_RECONSOLIDATION=true to enable.
  */
 export function isReconsolidationEnabled(): boolean {
-  return isFeatureEnabled('SPECKIT_RECONSOLIDATION');
+  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
 }
 
 /**

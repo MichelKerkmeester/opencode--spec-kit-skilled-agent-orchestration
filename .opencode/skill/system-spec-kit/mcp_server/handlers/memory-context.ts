@@ -172,6 +172,117 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   // Strategy results contain an embedded MCPResponse with content[0].text as JSON
   // That JSON has a .data.results array we can truncate
   const truncatedResult = { ...result };
+  let parseFailed = false;
+  let originalResultCount: number | undefined;
+  let returnedResultCount: number | undefined;
+
+  const fallbackToCharacterBudget = (baseResult: ContextResult): ContextResult => {
+    const fallbackResult = { ...baseResult } as ContextResult;
+    const fallbackContent = (fallbackResult as Record<string, unknown>).content;
+
+    if (Array.isArray(fallbackContent) && fallbackContent.length > 0) {
+      const firstEntry = fallbackContent[0] as Record<string, unknown> | undefined;
+      const originalText = typeof firstEntry?.text === 'string' ? firstEntry.text : null;
+
+      if (originalText !== null) {
+        const contentClone = fallbackContent.map((entry) => ({ ...(entry as Record<string, unknown>) }));
+        let bestText = '';
+        let low = 0;
+        let high = originalText.length;
+
+        while (low <= high) {
+          const mid = Math.floor((low + high) / 2);
+          const candidateText = originalText.slice(0, mid);
+          contentClone[0] = { ...contentClone[0], text: candidateText };
+          (fallbackResult as Record<string, unknown>).content = contentClone;
+
+          const candidateTokens = estimateTokens(JSON.stringify(fallbackResult));
+          if (candidateTokens <= budgetTokens) {
+            bestText = candidateText;
+            low = mid + 1;
+          } else {
+            high = mid - 1;
+          }
+        }
+
+        contentClone[0] = { ...contentClone[0], text: bestText };
+        (fallbackResult as Record<string, unknown>).content = contentClone;
+      }
+    }
+
+    return fallbackResult;
+  };
+
+  const compactStructuredResult = (
+    innerEnvelope: Record<string, unknown>,
+    currentResults: Array<Record<string, unknown>>,
+    contentEntries: Array<{ type: string; text: string }>,
+  ): { result: ContextResult; actualTokens: number } | null => {
+    const truncateKeys = ['content', 'snippet', 'summary', 'text'] as const;
+    const lastIndex = currentResults.length - 1;
+
+    if (lastIndex < 0) {
+      return null;
+    }
+
+    const lastResult = currentResults[lastIndex];
+    if (!lastResult || typeof lastResult !== 'object') {
+      return null;
+    }
+
+    for (const key of truncateKeys) {
+      const originalValue = lastResult[key];
+      if (typeof originalValue !== 'string' || originalValue.length === 0) {
+        continue;
+      }
+
+      let bestResult: ContextResult | null = null;
+      let bestTokens = Number.POSITIVE_INFINITY;
+      let low = 0;
+      let high = originalValue.length;
+
+      while (low <= high) {
+        const mid = Math.floor((low + high) / 2);
+        const candidateResults = [...currentResults];
+        candidateResults[lastIndex] = {
+          ...lastResult,
+          [key]: originalValue.slice(0, mid),
+        };
+
+        innerEnvelope.data = {
+          ...((innerEnvelope.data as Record<string, unknown>) ?? {}),
+          results: candidateResults,
+          count: candidateResults.length,
+        };
+
+        const candidateContent = contentEntries.map((entry, index) => (
+          index === 0 ? { type: entry.type, text: JSON.stringify(innerEnvelope) } : { ...entry }
+        ));
+        const candidateResult = {
+          ...truncatedResult,
+          content: candidateContent,
+        } as ContextResult;
+        const candidateTokens = estimateTokens(JSON.stringify(candidateResult));
+
+        if (candidateTokens <= budgetTokens) {
+          bestResult = candidateResult;
+          bestTokens = candidateTokens;
+          low = mid + 1;
+        } else {
+          high = mid - 1;
+        }
+      }
+
+      if (bestResult) {
+        return {
+          result: bestResult,
+          actualTokens: bestTokens,
+        };
+      }
+    }
+
+    return null;
+  };
 
   // Try to find and truncate the inner results array
   const contentArr = (truncatedResult as Record<string, unknown>).content as Array<{ type: string; text: string }> | undefined;
@@ -180,8 +291,8 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
       const innerEnvelope = JSON.parse(contentArr[0].text);
       const innerResults = innerEnvelope?.data?.results;
 
-      if (Array.isArray(innerResults) && innerResults.length > 1) {
-        const originalCount = innerResults.length;
+      if (Array.isArray(innerResults) && innerResults.length > 0) {
+        originalResultCount = innerResults.length;
 
         // Results should already be sorted by score (highest first)
         // Remove items from the end until we fit within budget
@@ -198,40 +309,68 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
         // Update the inner envelope
         innerEnvelope.data.results = currentResults;
         innerEnvelope.data.count = currentResults.length;
+        returnedResultCount = currentResults.length;
 
         // Re-serialize
-        contentArr[0] = { type: 'text', text: JSON.stringify(innerEnvelope, null, 2) };
+        contentArr[0] = { type: 'text', text: JSON.stringify(innerEnvelope) };
         (truncatedResult as Record<string, unknown>).content = contentArr;
 
         // Recalculate actual tokens after truncation
         const newSerializedTokens = estimateTokens(JSON.stringify(truncatedResult));
 
-        return {
-          result: truncatedResult,
-          enforcement: {
-            budgetTokens,
-            actualTokens: newSerializedTokens,
-            enforced: true,
-            truncated: true,
-            originalResultCount: originalCount,
-            returnedResultCount: currentResults.length,
-          }
-        };
+        if (newSerializedTokens <= budgetTokens) {
+          return {
+            result: truncatedResult,
+            enforcement: {
+              budgetTokens,
+              actualTokens: newSerializedTokens,
+              enforced: true,
+              truncated: true,
+              originalResultCount,
+              returnedResultCount,
+            }
+          };
+        }
+
+        const compacted = compactStructuredResult(innerEnvelope, currentResults, contentArr);
+        if (compacted) {
+          return {
+            result: compacted.result,
+            enforcement: {
+              budgetTokens,
+              actualTokens: compacted.actualTokens,
+              enforced: true,
+              truncated: true,
+              originalResultCount,
+              returnedResultCount,
+            }
+          };
+        }
       }
     } catch {
+      parseFailed = true;
       // JSON parse failed — fall through to character-level truncation
     }
   }
 
-  // AI-WHY: Fallback: if no inner results array found or couldn't parse,
-  // return the character-level truncated result and mark as truncated
+  // AI-WHY: Fallback when parsing fails or a structured response still exceeds budget
+  // after result-array truncation. Character-level binary search guarantees the
+  // returned payload is as large as possible while respecting the budget.
+  const fallbackResult = parseFailed
+    ? fallbackToCharacterBudget(result)
+    : fallbackToCharacterBudget(truncatedResult);
+
+  const fallbackTokens = estimateTokens(JSON.stringify(fallbackResult));
+
   return {
-    result: truncatedResult,
+    result: fallbackResult,
     enforcement: {
       budgetTokens,
-      actualTokens,
+      actualTokens: fallbackTokens,
       enforced: true,
       truncated: true,
+      originalResultCount,
+      returnedResultCount,
     }
   };
 }

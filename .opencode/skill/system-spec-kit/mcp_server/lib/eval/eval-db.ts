@@ -167,8 +167,8 @@ function closeEvalDb(): void {
   if (evalDb) {
     try {
       evalDb.close();
-    } catch {
-      // Ignore close errors
+    } catch (err) {
+      console.warn('[eval-db] closeEvalDb warning:', err instanceof Error ? err.message : String(err));
     }
     evalDb = null;
     evalDbPath = null;

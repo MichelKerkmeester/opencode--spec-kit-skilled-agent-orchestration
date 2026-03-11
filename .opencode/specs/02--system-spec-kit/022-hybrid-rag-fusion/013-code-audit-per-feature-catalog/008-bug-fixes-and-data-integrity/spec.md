@@ -25,7 +25,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `008-bug-fixes-and-data-integrity` |
 <!-- /ANCHOR:metadata -->
@@ -168,10 +168,10 @@ Produce a validated, feature-by-feature audit specification that aligns catalog 
 
 ---
 
-## 10. OPEN QUESTIONS
+## 10. RESOLVED QUESTIONS
 
-- Should force-path chunk re-indexing be guaranteed non-destructive, or explicitly documented as destructive by design?
-- Which module should be cited as authoritative for `.changes > 0` UPDATE safety semantics in the database safety feature?
+- **Force-path chunk re-indexing**: Documented as intentionally destructive by design with AI-WHY comment at `chunking-orchestrator.ts:166-168` (T009).
+- **`.changes` UPDATE safety semantics**: `pe-gating.ts` is authoritative — uses `.changes === 0` guard for prediction-error gating (T001, B4 correction).
 <!-- /ANCHOR:questions -->
 
 ---
