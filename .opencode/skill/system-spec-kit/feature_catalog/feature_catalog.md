@@ -336,7 +336,7 @@ The interesting part is what happens before the record is created. A Prediction 
 
 A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` is enabled (default ON). Layer 1 validates structure (title exists, content at least 50 characters, valid spec folder path). Layer 2 scores content quality across five dimensions (title, triggers, length, anchors, metadata) against a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity, rejecting near-duplicates above 0.92. A warn-only mode runs for the first 14 days after activation, logging would-reject decisions without blocking saves.
 
-Reconsolidation-on-save runs after embedding generation when `SPECKIT_RECONSOLIDATION` is enabled (default ON). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
+Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. If thinning retains zero chunks, the chunked-save path returns a warning and skips creating partial parent/child records.
 
@@ -1412,11 +1412,11 @@ See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-q
 
 ### Verify-fix-verify memory quality loop
 
-Every memory save operation now computes a quality score based on trigger phrase coverage, anchor format, token budget and content coherence. When the score falls below 0.6, the system auto-fixes by re-extracting triggers, normalizing anchors and trimming content to budget. Then it scores again.
+The quality loop is opt-in. When `SPECKIT_QUALITY_LOOP=true`, the save pipeline computes a quality score based on trigger phrase coverage, anchor format, token budget and content coherence, then runs an initial evaluation plus up to 2 immediate auto-fix retries by default. Auto-fixes can re-extract triggers, normalize unclosed anchors and trim content to the shared token budget.
 
-If the second attempt still fails, a third try runs with stricter trimming. After two failed retries, the memory is rejected outright.
+`attempts` reports the actual number of evaluations used rather than the configured retry ceiling, so early-break cases stop at the real attempt count. If the loop still fails, the save returns `status: 'rejected'`; in atomic save flows that rejected status triggers file rollback rather than another indexing retry.
 
-Rejection rates are logged per spec folder so you can spot folders that consistently produce low-quality saves. This loop catches problems at write time rather than letting bad data pollute search results.
+When the loop is disabled, the runtime still computes the score but allows the save to continue. This keeps quality telemetry available without forcing retry/reject behavior.
 
 
 #### Source Files
@@ -1436,11 +1436,11 @@ See [`13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md`](13--me
 
 ### Pre-flight token budget validation
 
-Before assembling the final response, the system estimates total token count across all candidate results and truncates to the highest-scoring candidates when the total exceeds the configured budget. The truncation strategy is greedy: highest scores first, never round-robin.
+Before embedding generation, `memory_save` runs a pre-flight token-budget check in `preflight.ts`. The runtime estimates tokens from content length using `Math.ceil(length / MCP_CHARS_PER_TOKEN)`, with `MCP_CHARS_PER_TOKEN` defaulting to `4`, then adds a default 150-token embedding overhead.
 
-For `includeContent=true` queries where a single result overshoots the budget, a summary (first 400 characters) replaces raw content rather than returning nothing.
+If the estimate exceeds `MCP_MAX_MEMORY_TOKENS` (default `8000`), pre-flight returns a hard `PF020` error. If usage reaches `MCP_TOKEN_WARNING_THRESHOLD` (default `0.8`), it emits a `PF021` warning instead. The suggested character reduction is computed from the same runtime ratio.
 
-Overflow events are logged with query ID, candidate count, total tokens, budget limit and the number of results after truncation. This prevents the response from blowing through the caller's context window.
+This is a save-time ingestion guard, not the search-result truncation path.
 
 
 #### Source Files
@@ -1475,7 +1475,7 @@ After embedding generation, the save pipeline checks the top-3 most similar memo
 
 **Sprint 8 update:** The original merge logic referenced a non-existent `frequency_counter` column, which would have caused runtime crashes on reconsolidation. This was replaced with `importance_weight` merge logic that properly uses an existing column.
 
-A checkpoint must exist for the spec folder before reconsolidation can run. When no checkpoint is found, the system logs a warning and skips reconsolidation rather than risking destructive merges without a safety net. Runs behind the `SPECKIT_RECONSOLIDATION` flag (default ON).
+A checkpoint must exist for the spec folder before reconsolidation can run. When no checkpoint is found, the system logs a warning and skips reconsolidation rather than risking destructive merges without a safety net. Runs behind the `SPECKIT_RECONSOLIDATION` flag (default OFF, opt-in via `SPECKIT_RECONSOLIDATION=true`).
 
 
 #### Source Files
@@ -2377,8 +2377,8 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_NOVELTY_BOOST` | inert | boolean | `lib/scoring/composite-scoring.ts` | **Inert.** N4 cold-start novelty boost was evaluated and removed. The env var is read in tests only; the production function always returns 0. |
 | `SPECKIT_PIPELINE_V2` | `true` | boolean | `lib/search/search-flags.ts` | **Deprecated (always true).** `isPipelineV2Enabled()` is hardcoded to `return true` at `search-flags.ts:101`. The V2 pipeline is the only pipeline. The legacy `postSearchPipeline` was removed in Phase 017. This flag is retained for backward compatibility but has no effect. |
 | `SPECKIT_PRESSURE_POLICY` | `true` | boolean | `handlers/memory-context.ts` | Enables context-pressure-based mode downgrading in `memory_context`. Above 0.60 token usage ratio, switches to focused mode. Above 0.80, switches to quick mode. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
-| `SPECKIT_QUALITY_LOOP` | `false` | boolean | `handlers/memory-save.ts` | **Default OFF.** Enables the quality loop which re-evaluates low-quality memories after save. Must be explicitly set to `'true'`. Used for iterative quality improvement workflows. |
-| `SPECKIT_RECONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. After embedding generation, checks top-3 similar memories in the same folder. Above 0.88 similarity triggers merge; 0.75–0.88 triggers supersede + causal edge. Requires a checkpoint to exist for the spec folder. |
+| `SPECKIT_QUALITY_LOOP` | `false` | boolean | `lib/search/search-flags.ts` | **Default OFF.** Enables the verify-fix-verify loop for `memory_save`. When enabled, low-quality saves get an initial evaluation plus up to 2 immediate auto-fix retries by default; rejected saves return `status: 'rejected'`, and atomic save rolls the file back instead of retrying indexing again. |
+| `SPECKIT_RECONSOLIDATION` | `false` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. Opt-in only: set `SPECKIT_RECONSOLIDATION=true` to enable merge/supersede behavior after embedding generation. Requires a checkpoint to exist for the spec folder. |
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
 | `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 004).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
@@ -2428,7 +2428,7 @@ Source file references are included in the flag table above.
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `MCP_ANCHOR_STRICT` | `false` | boolean | `lib/validation/preflight.ts` | When `'true'`, enforces strict anchor format validation during pre-flight checks. Invalid anchor IDs cause the save to be rejected. Default is lenient mode which logs warnings but does not block. |
-| `MCP_CHARS_PER_TOKEN` | `3.5` | number | `lib/validation/preflight.ts` | Characters-per-token ratio used for token budget estimation during pre-flight validation. Affects whether a memory file is flagged as too large before embedding generation begins. |
+| `MCP_CHARS_PER_TOKEN` | `4` | number | `lib/validation/preflight.ts` | Characters-per-token ratio used for save-time token budget estimation during pre-flight validation. The same ratio is also shared by the quality loop when trimming to its default token budget. |
 | `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new memory is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
 | `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts` | Maximum allowed content length in characters for a memory file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
 | `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight validation warns when a memory exceeds this limit. |

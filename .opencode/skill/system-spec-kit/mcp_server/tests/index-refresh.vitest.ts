@@ -119,6 +119,19 @@ describe('Index Refresh (T509)', () => {
       expect(row).toBeDefined();
       expect(row.embedding_status).toBe('success');
     });
+
+    it('T509-04c: retry-recovered entries are marked indexed and removed from refresh queue', () => {
+      const updated = mod.markIndexed(3, 'retry-recovered-model');
+      expect(updated).toBe(true);
+
+      const row = db.prepare('SELECT embedding_status, embedding_model FROM memory_index WHERE id = 3').get();
+      expect(row).toBeDefined();
+      expect(row.embedding_status).toBe('success');
+      expect(row.embedding_model).toBe('retry-recovered-model');
+
+      const unindexedIds = mod.getUnindexedDocuments().map((doc: { id: number }) => doc.id);
+      expect(unindexedIds).not.toContain(3);
+    });
   });
 
   describe('Mark Failed with Retry Logic (T509-05)', () => {

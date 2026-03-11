@@ -688,7 +688,10 @@ function getWeightHistory(edgeId: number, limit: number = 50): WeightHistoryEntr
   if (!db) return [];
   try {
     return (db.prepare(`
-      SELECT * FROM weight_history WHERE edge_id = ? ORDER BY changed_at DESC LIMIT ?
+      SELECT * FROM weight_history
+      WHERE edge_id = ?
+      ORDER BY changed_at DESC, id DESC
+      LIMIT ?
     `) as Database.Statement).all(edgeId, limit) as WeightHistoryEntry[];
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
@@ -709,20 +712,31 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
       ) as Database.Statement).get(edgeId) as { strength: number } | undefined;
       if (!current) return null;
 
-      // Find the earliest history entry at or after the target timestamp
-      // If no exact match, fall back to the first entry for this edge
+      // AI-WHY: Prefer the latest exact-timestamp row to make same-second
+      // history entries deterministic when callers pass a value from getWeightHistory().
       let entry = (database.prepare(`
         SELECT old_strength FROM weight_history
-        WHERE edge_id = ? AND changed_at >= ?
-        ORDER BY changed_at ASC LIMIT 1
+        WHERE edge_id = ? AND changed_at = ?
+        ORDER BY id DESC LIMIT 1
       `) as Database.Statement).get(edgeId, toTimestamp) as { old_strength: number } | undefined;
+
+      // Find the earliest history entry strictly after the target timestamp.
+      // This preserves legacy "rollback to before next change" semantics for
+      // timestamps that do not exactly match a stored history row.
+      if (!entry) {
+        entry = (database.prepare(`
+        SELECT old_strength FROM weight_history
+        WHERE edge_id = ? AND changed_at > ?
+        ORDER BY changed_at ASC, id ASC LIMIT 1
+      `) as Database.Statement).get(edgeId, toTimestamp) as { old_strength: number } | undefined;
+      }
 
       if (!entry) {
         // Fall back: get the oldest entry's old_strength (pre-change baseline)
         entry = (database.prepare(`
           SELECT old_strength FROM weight_history
           WHERE edge_id = ?
-          ORDER BY changed_at ASC LIMIT 1
+          ORDER BY changed_at ASC, id ASC LIMIT 1
         `) as Database.Statement).get(edgeId) as { old_strength: number } | undefined;
       }
       if (!entry) return null;
@@ -771,13 +785,9 @@ function countEdgesForNode(nodeId: string): number {
 
 function touchEdgeAccess(edgeId: number): void {
   if (!db) return;
-  try {
-    (db.prepare(
-      "UPDATE causal_edges SET last_accessed = datetime('now') WHERE id = ?"
-    ) as Database.Statement).run(edgeId);
-  } catch (_error: unknown) {
-    // best-effort
-  }
+  (db.prepare(
+    "UPDATE causal_edges SET last_accessed = datetime('now') WHERE id = ?"
+  ) as Database.Statement).run(edgeId);
 }
 
 function getStaleEdges(thresholdDays: number = STALENESS_THRESHOLD_DAYS): CausalEdge[] {

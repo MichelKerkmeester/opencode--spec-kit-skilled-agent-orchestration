@@ -117,8 +117,13 @@ function trackMultipleAccesses(memoryIds: number[]): { tracked: number; flushed:
     const newValue = current + INCREMENT_VALUE;
 
     if (newValue >= ACCUMULATOR_THRESHOLD) {
-      if (flushAccessCounts(id)) flushed++;
-      accumulators.delete(id);
+      const success = flushAccessCounts(id);
+      if (success) {
+        flushed++;
+        accumulators.delete(id);
+      } else {
+        accumulators.set(id, newValue);
+      }
     } else {
       accumulators.set(id, newValue);
     }

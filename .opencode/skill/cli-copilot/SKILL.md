@@ -2,7 +2,7 @@
 name: cli-copilot
 description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.2.0
+version: 1.3.0
 ---
 
 <!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
@@ -298,6 +298,22 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 2. **ESCALATE IF a model conflict occurs** (requested model not available in current plan).
 3. **ESCALATE IF Autopilot hits a safety block** or tool execution failure that it cannot resolve.
 4. **ESCALATE IF cloud delegation times out** or returns a service error.
+
+### Memory Handback Protocol
+
+When the calling AI needs to preserve session context from a Copilot CLI delegation:
+
+1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §12) to the delegated prompt
+2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
+3. **Parse to JSON**: Map extracted fields to `{ sessionSummary, filesModified, keyDecisions, specFolder, triggerPhrases, nextSteps }` (the save flow accepts either `nextSteps` or `next_steps`)
+4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before writing the JSON file
+5. **Write JSON**: Save the scrubbed payload to `/tmp/save-context-data.json`
+6. **Invoke generate-context.js**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+
+**Graceful degradation**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the JSON from agent output and saves via the same JSON mode path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
+
+**Explicit JSON mode failures**: If the explicit data file cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture in that case; surface the error and stop.
 
 ---
 

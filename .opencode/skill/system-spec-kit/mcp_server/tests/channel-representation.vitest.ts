@@ -244,8 +244,8 @@ describe('T024 Channel Representation Check', () => {
     expect(result.channelCounts['graph']).toBe(1);
   });
 
-  // ---- T10: Quality floor exact threshold — 0.2 passes, 0.19 fails ----
-  it('T10: quality floor is exact — score 0.2 qualifies, 0.19 does not', () => {
+  // ---- T10: Quality floor exact threshold — 0.005 passes, 0.004 fails ----
+  it('T10: quality floor is exact — score 0.005 qualifies, 0.004 does not', () => {
     const topK: TopKItem[] = [
       makeTopKItem('a1', 0.9, 'vector'),
     ];
@@ -253,7 +253,7 @@ describe('T024 Channel Representation Check', () => {
     // Test with a result at exactly QUALITY_FLOOR
     const atFloor = new Map<string, ChannelResult[]>([
       ['vector', [makeChannelResult('a1', 0.9)]],
-      ['graph',  [makeChannelResult('g1', QUALITY_FLOOR)]],   // exactly 0.2
+      ['graph',  [makeChannelResult('g1', QUALITY_FLOOR)]],   // exactly QUALITY_FLOOR (0.005)
     ]);
     const resultAtFloor = analyzeChannelRepresentation(topK, atFloor);
     expect(resultAtFloor.promoted).toHaveLength(1);

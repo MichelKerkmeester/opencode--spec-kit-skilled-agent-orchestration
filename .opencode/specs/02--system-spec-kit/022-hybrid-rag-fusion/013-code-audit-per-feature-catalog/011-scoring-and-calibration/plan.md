@@ -1,6 +1,8 @@
 ---
+# <!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
 title: "Implementation Plan: scoring-and-calibration [template:level_2/plan.md]"
-description: "This plan operationalizes the scoring-and-calibration audit backlog using a phased remediation workflow. It preserves existing findings while adding explicit quality gates, dependencies, and verification controls."
+description: "This plan records how the scoring-and-calibration audit moved from findings to completed remediation, including the approved follow-up fixes used to close the phase cleanly."
+template_source: "plan-core + level2-verify | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -15,7 +17,7 @@ contextType: "general"
 # Implementation Plan: scoring-and-calibration
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
 
 ---
 
@@ -26,13 +28,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown specs + TypeScript code references |
-| **Framework** | SpecKit Level 2 templates + feature-catalog audit workflow |
-| **Storage** | Repository documentation artifacts (no schema change in this phase) |
-| **Testing** | Existing Vitest suites + manual audit trace verification |
+| **Language/Stack** | Markdown spec docs + TypeScript implementation and Vitest tests |
+| **Framework** | SpecKit Level 2 templates + feature-catalog remediation workflow |
+| **Storage** | Repository docs and existing SQLite-backed MCP storage |
+| **Testing** | Targeted/package-local Vitest, prior TSC and eslint verification, plus spec validation |
 
 ### Overview
-The scoring-and-calibration audit already identified concrete FAIL/WARN/PASS outcomes across 17 features. This plan defines a phased path to execute and verify remediation while keeping documentation synchronized and verification-first.
+This plan now reflects a completed remediation workflow rather than a future proposal. The phase closed the original scoring-and-calibration implementation tasks, then applied a narrow follow-up patch for access-tracker threshold flush behavior, targeted regression coverage, and RRF wording alignment before final documentation synchronization.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -46,8 +48,8 @@ The scoring-and-calibration audit already identified concrete FAIL/WARN/PASS out
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
 - [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
@@ -57,14 +59,15 @@ The scoring-and-calibration audit already identified concrete FAIL/WARN/PASS out
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-driven audit remediation workflow
+Feature-oriented remediation workflow over existing MCP server modules, tests, and feature-catalog artifacts.
 
 ### Key Components
-- **Feature Catalog Entries**: Source of current-reality claims and file/test inventories.
-- **Verification Checklist**: Consolidated state of audit confidence and unresolved findings.
+- **Feature Catalog**: Holds current-reality claims and source/test mappings for the scoring-and-calibration features.
+- **MCP Runtime**: Contains the scoring, fusion, reranking, and access-tracking implementation surfaces corrected during the phase.
+- **Spec Folder**: Carries the closure state, verification evidence, and final narrative for the completed work.
 
 ### Data Flow
-Feature catalog findings are normalized into checklist evidence, converted into prioritized remediation tasks, and then validated against test and playbook coverage expectations.
+Audit findings were normalized into tasks, executed in runtime and catalog files, verified through targeted tests, then synchronized into the Level 2 phase docs once the approved follow-up patch landed.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -78,14 +81,14 @@ Feature catalog findings are normalized into checklist evidence, converted into 
 - [x] Document templates aligned
 
 ### Phase 2: Core Implementation
-- [ ] Address P0 remediation items
-- [ ] Address P1 remediation items
-- [ ] Address P2 verification/test-gap items
+- [x] Address P0 remediation items
+- [x] Address P1 remediation items
+- [x] Address P2 verification/test-gap items
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete
+- [x] Edge cases handled
+- [x] Documentation updated
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,9 +98,9 @@ Feature catalog findings are normalized into checklist evidence, converted into 
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Targeted scoring/fusion regressions per issue | Vitest |
-| Integration | Search pipeline and handler-path behavior | Vitest |
-| Manual | Feature-catalog vs implementation trace review | Browser |
+| Unit | Scoring, reranking, and access-tracker regressions | Vitest |
+| Integration | Handler-path, storage, and fusion behavior touched by completed tasks | Vitest |
+| Manual | Feature-catalog to implementation trace review plus spec-folder validation | Audit review + `validate.sh` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -107,8 +110,8 @@ Feature catalog findings are normalized into checklist evidence, converted into 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/11--scoring-and-calibration/*.md` | Internal | Green | Cannot validate behavior claims against documented reality |
-| Existing test suites under `mcp_server/tests/` | Internal | Yellow | Verification gaps remain unresolved |
+| `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/*.md` | Internal | Green | Behavior claims cannot be reconciled against the delivered catalog narrative |
+| Targeted suites under `.opencode/skill/system-spec-kit/mcp_server/tests/` | Internal | Green | Follow-up fixes would lose regression coverage |
 | Level 2 templates under `.opencode/skill/system-spec-kit/templates/level_2/` | Internal | Green | Structure and anchors may drift from standard |
 <!-- /ANCHOR:dependencies -->
 
@@ -117,8 +120,8 @@ Feature catalog findings are normalized into checklist evidence, converted into 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Remediation introduces regressions or invalidates established scoring behavior.
-- **Procedure**: Revert the affected change set, restore previous passing baseline, and re-open unresolved task IDs in `tasks.md`.
+- **Trigger**: Any shipped scoring/calibration remediation or follow-up fix introduces regression or invalidates catalog claims.
+- **Procedure**: Revert the affected change set, restore the last known passing targeted-suite baseline, and reopen the impacted task IDs in `tasks.md`.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -152,8 +155,8 @@ Phase 1.5 (Tracing) ──┘
 |-------|------------|------------------|
 | Setup | Low | 1-2 hours |
 | Core Implementation | High | 1-2 days |
-| Verification | Medium | 0.5-1 day |
-| **Total** | | **1.5-3 days** |
+| Verification | Medium | 2-4 hours |
+| **Total** | | **2-3 days** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -167,10 +170,10 @@ Phase 1.5 (Tracing) ──┘
 - [ ] Monitoring alerts set
 
 ### Rollback Procedure
-1. Disable affected feature path or revert to last known good behavior.
-2. Revert code with focused rollback commit.
-3. Re-run targeted regression tests for affected scoring modules.
-4. Update checklist/task status with rollback evidence.
+1. Disable or revert the impacted scoring/calibration path.
+2. Revert the affected remediation commit set.
+3. Re-run targeted regression suites for the touched modules.
+4. Reconcile feature-catalog narratives and reopen impacted tasks.
 
 ### Data Reversal
 - **Has data migrations?** No

@@ -4,11 +4,25 @@
 // Aligned with production co-activation.ts named exports
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as coActivation from '../lib/cache/cognitive/co-activation';
 
 type CoActivationDb = Parameters<typeof coActivation.init>[0];
 const coActivationExports = coActivation as unknown as Record<string, unknown>;
+const CO_ACTIVATION_MODULE_PATHS = [
+  '../lib/cache/cognitive/co-activation',
+  '../lib/cognitive/co-activation',
+] as const;
+const originalCoactivationStrength = process.env.SPECKIT_COACTIVATION_STRENGTH;
+
+afterEach(() => {
+  if (originalCoactivationStrength === undefined) {
+    delete process.env.SPECKIT_COACTIVATION_STRENGTH;
+  } else {
+    process.env.SPECKIT_COACTIVATION_STRENGTH = originalCoactivationStrength;
+  }
+  vi.resetModules();
+});
 
 describe('Co-Activation Module', () => {
   /* -------------------------------------------------------------
@@ -60,6 +74,32 @@ describe('Co-Activation Module', () => {
 
     it('maxHops is 2', () => {
       expect(coActivation.CO_ACTIVATION_CONFIG.maxHops).toBe(2);
+    });
+
+    it('clamps SPECKIT_COACTIVATION_STRENGTH values consistently across live modules', async () => {
+      process.env.SPECKIT_COACTIVATION_STRENGTH = '1.7';
+
+      for (const modulePath of CO_ACTIVATION_MODULE_PATHS) {
+        const mod = await import(modulePath);
+        expect(mod.CO_ACTIVATION_CONFIG.boostFactor).toBe(1);
+        vi.resetModules();
+      }
+
+      process.env.SPECKIT_COACTIVATION_STRENGTH = '-0.2';
+
+      for (const modulePath of CO_ACTIVATION_MODULE_PATHS) {
+        const mod = await import(modulePath);
+        expect(mod.CO_ACTIVATION_CONFIG.boostFactor).toBe(0);
+        vi.resetModules();
+      }
+
+      process.env.SPECKIT_COACTIVATION_STRENGTH = 'not-a-number';
+
+      for (const modulePath of CO_ACTIVATION_MODULE_PATHS) {
+        const mod = await import(modulePath);
+        expect(mod.CO_ACTIVATION_CONFIG.boostFactor).toBe(0.25);
+        vi.resetModules();
+      }
     });
   });
 

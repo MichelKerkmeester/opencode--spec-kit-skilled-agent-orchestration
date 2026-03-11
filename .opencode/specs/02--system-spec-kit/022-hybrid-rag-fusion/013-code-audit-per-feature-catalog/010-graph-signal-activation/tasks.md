@@ -1,6 +1,7 @@
 ---
 title: "Tasks: graph-signal-activation [template:level_2/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+description: "Reconciled Task #2 remediation status: 5 verified items, 6 backlog items still open"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "graph signal activation tasks"
   - "typed weighted degree"
@@ -38,75 +39,70 @@ contextType: "general"
 
 | Priority | Count | Description |
 |----------|-------|-------------|
-| P0 | 4 | FAIL-status correctness bugs and behavior mismatches |
-| P1 | 5 | WARN-status behavior mismatches and significant code issues |
-| P2 | 2 | WARN-status documentation/test gaps only |
-| **Total** | **11** | Remediation backlog from feature audit |
+| P0 | 4 | 2 remediated in Task #2, 2 still open |
+| P1 | 5 | 3 remediated or verified in Task #2, 2 still open |
+| P2 | 2 | Not updated in Task #2 |
+| **Total** | **11** | **5** items reconciled to verified implementation evidence |
 <!-- /ANCHOR:notation -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## Phase 1: Remediated In Task #2
 
-- [x] T001 Wire `touchEdgeAccess` into read/traversal paths (`mcp_server/lib/storage/causal-edges.ts`)
+- [x] T001 Make `touchEdgeAccess()` failure behavior observable (`mcp_server/lib/storage/causal-edges.ts`)
   - **Priority:** P0 | **Feature:** F-04 Weight history audit tracking
-  - **Issue:** `last_accessed` updater exists but is not wired into read/traversal paths; silent catch hides failures.
-  - **Fix:** Call `touchEdgeAccess` from read/traversal operations and surface write failures via telemetry.
-- [x] T002 Replace placeholder causal-edge tests with real DB assertions (`mcp_server/tests/causal-edges.vitest.ts`)
+  - **Evidence:** Task #2 updated `causal-edges.ts` and `causal-edges.vitest.ts` so write failures are surfaced and regression-covered.
+- [x] T002 Make `weight_history` ordering and rollback deterministic (`mcp_server/lib/storage/causal-edges.ts`, `mcp_server/tests/causal-edges.vitest.ts`)
   - **Priority:** P0 | **Feature:** F-04 Weight history audit tracking
-  - **Issue:** Placeholder `expect(true)` patterns leave rollback/audit/access tracking unverified.
-  - **Fix:** Add concrete assertions including same-millisecond rollback fallback-to-oldest behavior.
-- [x] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
-  - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
-  - **Issue:** Missing 7-day snapshot currently yields positive momentum (`current - 0`) rather than zero.
-  - **Fix:** Treat missing historical snapshot as zero momentum and update affected tests.
-- [x] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
-  - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
-  - **Issue:** Mutation paths clear degree cache but not graph-signals cache, allowing stale momentum.
-  - **Fix:** Add `clearGraphSignalsCache()` on mutation paths and validate with regression tests.
+  - **Evidence:** Task #2 implemented deterministic ordering and rollback behavior, then verified it with targeted DB assertions.
+- [x] T005 Add fail-closed constitutional lookup throw-path coverage (`mcp_server/tests/degree-computation.vitest.ts`)
+  - **Priority:** P1 | **Feature:** F-01 Typed-weighted degree channel
+  - **Evidence:** Task #2 added explicit coverage for lookup-failure handling so constitutional exclusion remains fail-closed.
+- [x] T006 Add explicit co-activation env clamp coverage (`mcp_server/tests/co-activation.vitest.ts`)
+  - **Priority:** P1 | **Feature:** F-02 Co-activation boost strength increase
+  - **Evidence:** Task #2 verified clamp behavior for values `>1`, `<0`, and non-numeric inputs.
+- [x] T008 Add causal-boost seed-cap and relation-precedence coverage (`mcp_server/tests/causal-boost.vitest.ts`)
+  - **Priority:** P1 | **Feature:** F-10 Causal neighbor boost and injection
+  - **Evidence:** Task #2 added behavioral coverage for seed-cap handling and relation precedence, and the strengthened `causal-boost.vitest.ts` regression now passes (`6/6` tests in that file).
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## Phase 2: Backlog Still Open After Task #2
 
-- [x] T005 Fail closed for constitutional exclusion on lookup failure (`mcp_server/lib/search/graph-search-fn.ts`)
-  - **Priority:** P1 | **Feature:** F-01 Typed-weighted degree channel
-  - **Issue:** Constitutional exclusion can be bypassed if `memory_index` lookup throws.
-  - **Fix:** Assign score 0 for constitutional IDs on lookup failure and emit structured warning.
-- [x] T006 Clamp co-activation strength override to documented safe band (`mcp_server/lib/cognitive/co-activation.ts`)
-  - **Priority:** P1 | **Feature:** F-02 Co-activation boost strength increase
-  - **Issue:** `SPECKIT_COACTIVATION_STRENGTH` accepts unbounded finite values.
-  - **Fix:** Clamp override range or update documentation; add contribution-isolation test.
-- [x] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
+- [ ] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
+  - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
+  - **Status:** Not updated by Task #2.
+- [ ] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
+  - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
+  - **Status:** Runtime invalidation wiring exists in `causal-edges.ts`, but the spec-intended explicit verification is not yet closed by the visible tests/docs, so this task remains open.
+- [ ] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
   - **Priority:** P1 | **Feature:** F-03 Edge density measurement
-  - **Issue:** Type/interface comments describe edges-per-node while runtime uses total-memories denominator.
-  - **Fix:** Update docs/comments and add integration test for density guard behavior.
-- [x] T008 Align causal-boost relation multipliers with documented taxonomy (`mcp_server/lib/search/causal-boost.ts`)
-  - **Priority:** P1 | **Feature:** F-10 Causal neighbor boost and injection
-  - **Issue:** Relation hierarchy text diverges from implemented relation labels/weights.
-  - **Fix:** Align implementation or docs and add tests for seed-cap + precedence behavior.
-- [x] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
+  - **Status:** Not updated by Task #2.
+- [ ] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
   - **Priority:** P1 | **Feature:** F-11 Temporal contiguity layer
-  - **Issue:** `MAX_WINDOW` exists but callers can pass values over 24h.
-  - **Fix:** Clamp incoming windows to `[1, MAX_WINDOW]` and align naming/docs for exported API.
+  - **Status:** Not updated by Task #2.
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
+## Phase 3: Documentation And Test Backlog
 
-- [x] T010 Update graph/cognitive fixes feature source and test traceability (`feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
+- [ ] T010 Update graph/cognitive fixes feature source and test traceability (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
   - **Priority:** P2 | **Feature:** F-08 Graph and cognitive memory fixes
-  - **Issue:** Claimed fix coverage does not fully match listed implementation files; wildcard export pattern remains.
-  - **Fix:** Correct source/test mapping, add focused regression suite, replace wildcard export with explicit exports.
-- [x] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
+  - **Status:** Not updated by Task #2.
+- [ ] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
   - **Priority:** P2 | **Feature:** F-09 ANCHOR tags as graph nodes
-  - **Issue:** No explicit negative test ensures ANCHOR parsing is metadata-only and never mutates `causal_edges`.
-  - **Fix:** Add integration test asserting no graph node/edge mutation occurs during ANCHOR parsing.
+  - **Status:** Not updated by Task #2.
+
+### Verification Evidence
+
+- [x] Targeted Vitest suite passed: `5` files / `172` tests.
+- [x] Alignment drift verifier passed: `0` findings.
+- [ ] `npx tsc --noEmit` remains blocked by unrelated pre-existing `TS2345` in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -114,9 +110,12 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
+- [ ] All tasks marked `[x]`
+- [ ] Full 11-item audit backlog complete
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [x] Task #2 remediation claims match the verified implementation evidence
+- [x] Targeted verification passed for the remediated items
+- [ ] Workspace-wide TypeScript verification clean
 <!-- /ANCHOR:completion -->
 
 ---

@@ -21,8 +21,8 @@ The architecture is two-layered: `channel-representation.ts` performs the core a
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/channel-representation.vitest.ts` | Core analysis: promotion logic, quality floor, multi-source counting (15 tests) |
-| `mcp_server/tests/channel-enforcement.vitest.ts` | Wrapper: score ordering after promotion, precision verification, edge cases (19 tests) |
+| `mcp_server/tests/channel-representation.vitest.ts` | Core analysis: promotion logic, quality floor, multi-source counting (18 tests) |
+| `mcp_server/tests/channel-enforcement.vitest.ts` | Wrapper: score ordering after promotion, precision verification, edge cases (20 tests) |
 
 ## Source Metadata
 

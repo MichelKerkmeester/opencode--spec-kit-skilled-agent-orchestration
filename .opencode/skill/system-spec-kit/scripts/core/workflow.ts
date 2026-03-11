@@ -1219,7 +1219,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 8.7: Quality gate — abort save if quality is too low
   const QUALITY_ABORT_THRESHOLD = CONFIG.QUALITY_ABORT_THRESHOLD;
-  if (qualityResult.score < QUALITY_ABORT_THRESHOLD && !isSimulation) {
+  if (qualityResult.score < QUALITY_ABORT_THRESHOLD) {
     const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score}/100 is below minimum threshold (${QUALITY_ABORT_THRESHOLD}). ` +
       `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
       `To force save, pass data via JSON file instead of stateless mode.`;
@@ -1230,7 +1230,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // RC-5: V8/V9 contamination hard-block — prevent writing files when
   // critical contamination rules fail. Previously these produced warnings
   // but files were still written and sometimes indexed.
-  if (!isSimulation && qualityValidation.ruleResults) {
+  if (qualityValidation.ruleResults) {
     const contaminationRuleIds = ['V8', 'V9'];
     // RC-5 fix: Case-insensitive ruleId comparison + null-safe filter
     const failedContaminationRules = qualityValidation.ruleResults

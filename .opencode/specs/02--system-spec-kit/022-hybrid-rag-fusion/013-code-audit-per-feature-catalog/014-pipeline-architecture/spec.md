@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: pipeline-architecture [template:level_2/spec.md]"
-description: "Audit and remediation specification for the pipeline-architecture feature catalog, preserving 21-feature findings and converting this folder to Level 2 structure."
+description: "Audit and remediation specification for the pipeline-architecture feature catalog, converting the folder to self-contained Level 2 docs with a truthful 21-feature evidence model."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "pipeline-architecture"
   - "pipeline architecture"
@@ -38,10 +39,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The pipeline-architecture feature catalog documents 21 critical features, but the audit found behavior mismatches, stale references, missing tests, and inventory errors. The current folder documents were not in Level 2 template format, reducing traceability between findings, tasks, and verification artifacts.
+The pipeline-architecture feature catalog covers 21 features, but the prior Level 2 rewrite still depended on scratch material for full traceability and used unsupported PASS/WARN/FAIL shorthand that overstated what the core docs proved. The folder therefore remained difficult to audit as a self-contained, truthful remediation artifact.
 
 ### Purpose
-Standardize this folder to the Level 2 Spec Kit structure while preserving the full audit narrative and producing a clear remediation path for all identified pipeline-architecture issues.
+Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feature traceability burden into the core docs, and describe remediation coverage using evidence-backed backlog linkage rather than unsupported implementation verdicts.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -51,13 +52,14 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 
 ### In Scope
 - Rewrite `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` to Level 2 template structure with all required anchors/comments.
-- Preserve the code-audit outcome for all 21 pipeline-architecture features, including PASS/WARN/FAIL signals and remediation intent.
+- Add a self-contained 21-feature traceability matrix to the core docs using the rubric `Directly task-backed`, `Shared-task-backed`, or `No direct backlog task`.
 - Maintain a prioritized remediation backlog (P0/P1/P2) linked to concrete files and behaviors.
+- Remove redundant scratch traceability inventory if the core docs fully carry that burden.
 
 ### Out of Scope
 - Implementing code fixes in `mcp_server/` modules - tracked as follow-up tasks, not part of this rewrite.
-- Editing `description.json` or any `memory/` or `scratch/` content - excluded by request constraints.
-- Creating `implementation-summary.md` - explicitly excluded for this task.
+- Editing `description.json`, any `memory/` content, or files outside this spec folder.
+- Creating the implementation summary artifact - explicitly excluded for this task.
 
 ### Files to Change
 
@@ -67,6 +69,7 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/014-pipeline-architecture/tasks.md | Modify | Convert to Level 2 tasks template and preserve prioritized remediation tasks. |
 | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/014-pipeline-architecture/plan.md | Modify | Convert to Level 2 plan template and preserve audit methodology. |
 | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/014-pipeline-architecture/checklist.md | Modify | Convert to Level 2 checklist template and preserve verification status summary. |
+| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/014-pipeline-architecture/scratch/phase14_features.json | Delete | Remove redundant scratch-only traceability inventory after migration to core docs. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -79,7 +82,7 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | All four folder documents match Level 2 template structure, including YAML frontmatter, SPECKIT comments, and ANCHOR pairs. | Each file contains required headings/comments/anchors from Level 2 templates with no missing open/close anchors. |
-| REQ-002 | Preserve existing pipeline-architecture audit content for all 21 features in mapped sections. | Findings remain represented via scoped requirements, remediation tasks (T001-T020), and verification summary counts. |
+| REQ-002 | Core docs carry a self-contained traceability model for all 21 audited features. | `tasks.md` contains 21 feature rows (F01-F21) with source feature files, rubric classification, and linked backlog tasks or explicit gap notes. |
 | REQ-003 | Keep status/date conventions consistent for this rewrite cycle. | All metadata uses Level `2`, Status `Draft`, and date `2026-03-10`. |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -87,8 +90,9 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-004 | Preserve remediation prioritization from the prior task inventory. | P0/P1/P2 remediation actions are retained in `tasks.md` with clear file targets. |
-| REQ-005 | Preserve audit methodology and quality criteria context. | `plan.md` documents inventory review, correctness/standards/behavior/test checks, and playbook cross-reference intent. |
+| REQ-005 | Replace unsupported PASS/WARN/FAIL claims with truthful, evidence-backed language. | `spec.md`, `tasks.md`, and `checklist.md` describe coverage through the approved rubric and do not claim implementation verification without cited evidence. |
 | REQ-006 | Use trigger phrases aligned to folder name and pipeline features. | Frontmatter `trigger_phrases` include pipeline-architecture and representative feature keywords. |
+| REQ-007 | Make backlog gaps explicit where no direct remediation task exists. | Features F04, F05, and F16 are identified as `No direct backlog task`, and F11 is identified as `Shared-task-backed`. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -97,8 +101,16 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` all follow Level 2 template sections and anchors.
-- **SC-002**: The 21-feature audit outcome is still traceable through this folder without losing key remediation intent.
-- **SC-003**: A reviewer can identify P0/P1/P2 remediation actions and verification state in under 5 minutes.
+- **SC-002**: A reviewer can trace every pipeline-architecture feature from F01-F21 to a direct task, shared-task coverage, or an explicit backlog gap without opening scratch artifacts.
+- **SC-003**: Core docs describe documentation evidence truthfully and do not rely on unsupported PASS/WARN/FAIL shorthand.
+- **SC-004**: A reviewer can identify P0/P1/P2 remediation actions, the three uncovered features, and the one shared-task-backed feature in under 5 minutes.
+
+### Acceptance Scenarios
+
+- **Given** the core docs only, **when** a reviewer checks feature coverage, **then** all 21 features resolve to direct coverage, shared coverage, or an explicit backlog gap in `tasks.md`.
+- **Given** a reviewer compares requirements and verification text, **when** they inspect `spec.md`, `tasks.md`, and `checklist.md`, **then** they do not find unsupported PASS/WARN/FAIL implementation claims.
+- **Given** the plan phases and dependency graph, **when** a reviewer reads `plan.md`, **then** the folder describes one consistent three-phase workflow with no orphaned Config phase.
+- **Given** scratch cleanup is expected, **when** a reviewer inspects the folder, **then** the traceability burden is satisfied by core docs and `scratch/phase14_features.json` is no longer needed.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -109,14 +121,18 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Feature catalog source docs (`feature_catalog/14--pipeline-architecture/`) | Inaccurate mapping if source references drift | Preserve current audit mapping and keep file-linked tasks explicit. |
-| Dependency | Existing audit findings in current `tasks.md` and `checklist.md` | Loss of detail during template migration | Keep remediation items as explicit T001-T020 task lines and summary counts. |
+| Dependency | Verified feature-to-task mapping for F01-F21 | Incorrect backlog coverage if remapped ad hoc | Use the approved mapping directly and mark uncovered features explicitly. |
 | Risk | Instruction-file access constraint (`/tmp` unavailable in this runtime) | Potential mismatch with external template copy | Use repository Level 2 templates as authoritative structure and keep anchors/comments exact. |
-| Risk | Over-condensing checklist details | Reduced forensic traceability | Preserve prioritization and feature-level outcome summary in checklist evidence and task mapping. |
+| Risk | Over-condensing checklist details | Reduced forensic traceability | Keep counts, rubric summary, and validation evidence in the core docs. |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- None for this documentation repair. Remaining uncertainty is expressed as explicit backlog gaps in `tasks.md`, not as open-ended implementation claims.
+<!-- /ANCHOR:questions -->
 
 ---
 
@@ -168,14 +184,6 @@ Standardize this folder to the Level 2 Spec Kit structure while preserving the f
 | Research | 12/20 | Required template/source cross-reading and priority mapping from existing artifacts. |
 | **Total** | **47/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- Should the detailed per-feature narrative remain primarily in `checklist.md`, or be split into a dedicated findings artifact in a future phase?
-- For deferred or behavior-mismatch features (for example warm server mode), should the feature catalog be split into active vs deferred tracks?
-<!-- /ANCHOR:questions -->
 
 ---
 

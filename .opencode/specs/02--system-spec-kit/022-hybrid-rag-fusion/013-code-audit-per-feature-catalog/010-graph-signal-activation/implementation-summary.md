@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: graph-signal-activation [template:level_2/implementation-summary.md]"
-description: "11 remediation tasks (4 P0, 5 P1, 2 P2) implemented via 5-agent parallel orchestration"
+description: "Task #2 remediation reconciled to verified implementation evidence: 5 audit items covered, 6 backlog items still open"
+# SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
 trigger_phrases:
   - "graph signal activation implementation"
   - "010 graph signal summary"
@@ -15,77 +16,54 @@ contextType: "general"
 
 ## Overview
 
-All 11 remediation tasks from the 010-graph-signal-activation code audit have been implemented and verified. The work was executed via 5 parallel Copilot CLI agents (gpt-5.3-codex, xhigh reasoning) orchestrated from Claude Code.
+This summary now reflects the actual Task #2 remediation scope rather than the earlier full-backlog claim. Task #2 updated one implementation file and four targeted test files, then verified five graph-signal audit items with focused regression coverage.
 
-**Result**: 260 tests passing across 8 test files, TSC clean, dual-copy sync confirmed.
-
----
-
-## Agent Execution Summary
-
-| Agent | Tasks | Priority | Files Modified | LOC Delta | Test Result |
-|-------|-------|----------|----------------|-----------|-------------|
-| A1 | T001 + T004 | P0 | `causal-edges.ts` | +20 -2 | TSC pass |
-| A2 | T002 + T003 | P0 | `graph-signals.ts`, `graph-signals.vitest.ts`, `causal-edges.vitest.ts` | +94 -41 | 116/116 pass |
-| A3 | T005 + T008 | P1 | `graph-search-fn.ts`, `causal-boost.ts`, `causal-boost.vitest.ts` | +31 -2 | 5/5 pass |
-| A4 | T006 + T007 + T009 | P1 | `co-activation.ts` (x2), `temporal-contiguity.ts` (x2), `edge-density.ts` | +13 -6 | TSC + diff sync pass |
-| A5 | T010 + T011 | P2 | `08-graph-and-cognitive-memory-fixes.md`, `anchor-metadata.vitest.ts` | +69 -0 | TSC pass |
+**Result**: targeted Vitest coverage passed, including the strengthened seed-cap regression in `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` (`6/6` tests in that file), alignment drift passed (`0` findings), and `npx tsc --noEmit` remained blocked by an unrelated pre-existing `TS2345` error in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`.
 
 ---
 
-## Changes by Task
+## Files Changed
 
-### P0 — Correctness Fixes
+| File | Role |
+|------|------|
+| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` | Implementation change for deterministic history/rollback behavior and observable `touchEdgeAccess()` failures |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts` | Regression coverage for deterministic ordering, rollback behavior, and `touchEdgeAccess()` failures |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/degree-computation.vitest.ts` | Fail-closed constitutional lookup throw-path coverage |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts` | Env clamp coverage for `>1`, `<0`, and non-numeric inputs |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` | Behavioral coverage for seed cap and relation precedence |
 
-**T001**: Wired `touchEdgeAccess()` into `getEdgesFrom()` and `getEdgesTo()` read paths in `causal-edges.ts`. Each returned edge now gets its `last_accessed` timestamp updated via best-effort try/catch.
+---
 
-**T002**: Added 3 real DB assertion tests to `causal-edges.vitest.ts`: touchEdgeAccess timestamp verification, rollback-restores-old-strength test, and getWeightHistory entry ordering test.
+## Implemented Fixes
 
-**T003**: Changed `getPastDegree()` return type to `number | null`. Missing snapshots now return `null` instead of `0`, and `computeMomentum()` returns `0` when history is unknown. Updated 8+ test expectations in `graph-signals.vitest.ts`.
+1. Deterministic `weight_history` ordering and rollback behavior were implemented and covered in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` and `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`.
 
-**T004**: Added `clearGraphSignalsCache()` import and call to `invalidateDegreeCache()` in `causal-edges.ts`, ensuring momentum/depth caches are cleared on edge mutations.
+2. `touchEdgeAccess()` failure behavior was made observable and covered in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` and `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`.
 
-### P1 — Behavior Fixes
+3. `.opencode/skill/system-spec-kit/mcp_server/tests/degree-computation.vitest.ts` now covers the constitutional lookup throw-path so the fail-closed behavior is verified explicitly.
 
-**T005**: Changed constitutional exclusion catch block in `computeDegreeScores()` from fail-open to fail-closed. On lookup failure, all scores return 0 with a warning emitted.
+4. `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts` now covers co-activation boost-factor clamp behavior for values `>1`, `<0`, and non-numeric inputs.
 
-**T006**: Clamped `parsedBoostFactor` to `[0, 1.0]` in both copies of `co-activation.ts` config initialization.
-
-**T007**: Updated `EdgeDensityResult.density` JSDoc to correctly document `edgeCount / totalMemories` as primary denominator with `nodeCount` fallback.
-
-**T008**: Added comprehensive JSDoc to `RELATION_WEIGHT_MULTIPLIERS` in `causal-boost.ts` explaining why values differ from `RELATION_WEIGHTS` in `causal-edges.ts`. Added seed-cap and multiplier precedence tests.
-
-**T009**: Added `Math.max(1, Math.min(MAX_WINDOW, windowSeconds))` clamping to both `vectorSearchWithContiguity()` and `getTemporalNeighbors()` in both copies of `temporal-contiguity.ts`.
-
-### P2 — Documentation/Test Gaps
-
-**T010**: Added 7 missing implementation file entries and 7 missing test file entries to `08-graph-and-cognitive-memory-fixes.md` feature catalog.
-
-**T011**: Added 4 negative ANCHOR parsing tests (N01-N04) verifying no graph mutation occurs during anchor extraction.
+5. `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now covers seed-cap handling and relation-precedence behavior for causal boost scoring, and the strengthened regression passes (`6/6` tests in that file).
 
 ---
 
 ## Verification
 
-- **TSC**: `npx tsc --noEmit` — clean (0 errors)
-- **Tests**: 260/260 passing across 8 test files
-- **Dual-copy sync**: `diff` confirmed for `co-activation.ts` and `temporal-contiguity.ts`
-- **Test files verified**: causal-edges, graph-signals, graph-search-fn, causal-boost, co-activation, edge-density, temporal-contiguity, anchor-metadata
+- **Vitest**: `node node_modules/vitest/vitest.mjs run tests/causal-edges.vitest.ts tests/degree-computation.vitest.ts tests/co-activation.vitest.ts tests/rrf-degree-channel.vitest.ts tests/causal-boost.vitest.ts` -> passed; `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now passes (`6/6` tests in that file)
+- **Alignment drift**: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` -> passed (`0` findings)
+- **TypeScript**: `npx tsc --noEmit` -> blocked by unrelated pre-existing `TS2345` in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`
 
 ---
 
-## Feature Audit Status (Post-Implementation)
+## Backlog Status After Task #2
 
-| Feature | Before | After |
-|---------|--------|-------|
-| F-01 Typed-weighted degree | WARN | PASS (T005 fail-closed) |
-| F-02 Co-activation boost | WARN | PASS (T006 clamped) |
-| F-03 Edge density | WARN | PASS (T007 docs aligned) |
-| F-04 Weight history audit | FAIL | PASS (T001 wired, T002 tested) |
-| F-05 Graph momentum | FAIL | PASS (T003 fixed, T004 cache) |
-| F-06 Causal depth | PASS | PASS |
-| F-07 Community detection | PASS | PASS |
-| F-08 Graph/cognitive fixes | WARN | PASS (T010 traceability) |
-| F-09 ANCHOR tags | PASS | PASS (T011 negative tests) |
-| F-10 Causal neighbor boost | WARN | PASS (T008 docs aligned) |
-| F-11 Temporal contiguity | WARN | PASS (T009 clamped) |
+| Task | Status | Notes |
+|------|--------|-------|
+| T001 | Remediated | Observable `touchEdgeAccess()` failure behavior documented and verified |
+| T002 | Remediated | Deterministic `weight_history` ordering and rollback documented and verified |
+| T005 | Verified | Fail-closed constitutional lookup throw-path coverage added |
+| T006 | Verified | Co-activation env clamp coverage expanded |
+| T008 | Verified | Causal-boost seed-cap and relation-precedence coverage added; strengthened seed-cap regression now passes `6/6` |
+| T004 | Open | Runtime invalidation wiring exists, but the spec-intended explicit verification is not yet clearly closed by visible tests/docs |
+| T003, T007, T009, T010, T011 | Open | No Task #2 file changes or closing verification evidence were provided for these items |

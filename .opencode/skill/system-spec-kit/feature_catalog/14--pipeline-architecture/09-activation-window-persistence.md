@@ -10,16 +10,15 @@ The `ensureActivationTimestampInitialized` path was added to `save-quality-gate.
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
-| `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
+| `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Persisted activation window initialization and warn-only gating |
+| `mcp_server/handlers/memory-save.ts` | Handler | Invokes quality gate path during save flow |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
-| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
-| `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
+| `mcp_server/tests/save-quality-gate.vitest.ts` | WO7 persisted activation-window regression and warn-only checks |
+| `mcp_server/tests/mpab-quality-gate-integration.vitest.ts` | Integration behavior when quality-gate modes interact with save flow |
 
 ## Source Metadata
 

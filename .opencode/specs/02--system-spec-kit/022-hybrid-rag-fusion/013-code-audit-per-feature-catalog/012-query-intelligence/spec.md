@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: query-intelligence [template:level_2/spec.md]"
 description: "Feature-centric code audit scope for the Query Intelligence category in hybrid-rag-fusion. Captures correctness, standards, behavior, testing, and playbook coverage requirements across six features with prioritized findings."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "query intelligence"
   - "query-intelligence"
@@ -27,7 +28,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Completed |
 | **Created** | 2026-03-10 |
 | **Branch** | `012-query-intelligence` |
 <!-- /ANCHOR:metadata -->
@@ -38,10 +39,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Query Intelligence feature catalog (`feature_catalog/12--query-intelligence/`) covers six capabilities, but the phase artifacts were not aligned to Level 2 template structure. Without normalized sections and anchors, verification traceability for correctness bugs, behavior mismatches, and test/playbook gaps is inconsistent.
+The Query Intelligence phase already shipped code, test, and catalog fixes, but spec artifacts still contained docs-only framing and stale verification claims. This drift made completion status and evidence inconsistent across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 
 ### Purpose
-Create a Level 2-compliant specification that defines what must be audited and reported for all six Query Intelligence features.
+Synchronize Level 2 spec artifacts to the verified implementation state so scope, completion, and verification evidence are accurate and internally consistent.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,22 +51,25 @@ Create a Level 2-compliant specification that defines what must be audited and r
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 6 features in `feature_catalog/12--query-intelligence/`.
-- Evaluate correctness, standards alignment, behavior match, test coverage, and playbook mapping.
-- Produce structured PASS/WARN/FAIL findings and a prioritized remediation backlog.
+- Synchronize Level 2 artifacts to reflect verified implementation outcomes for Query Intelligence.
+- Record code/test/catalog fixes already applied in prior review-fix tasks.
+- Reconcile checklist body and summary totals so counts and completion status match.
+- Keep deferred out-of-scope work explicitly marked.
 
 ### Out of Scope
-- Implementing production fixes in `mcp_server/` modules - this phase documents findings and required follow-up actions.
-- Auditing categories outside `feature_catalog/12--query-intelligence/` - limited to Query Intelligence only.
+- New production fixes beyond the verified patch set listed for this phase.
+- Repo-wide lint/type debt cleanup causing `npm run check` failures outside task scope.
+- Auditing categories outside `feature_catalog/12--query-intelligence/`.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/spec.md` | Modify | Rewrite to Level 2 spec template with mapped Query Intelligence audit scope. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/plan.md` | Modify | Align audit methodology to Level 2 plan template. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/tasks.md` | Modify | Convert remediation backlog into Level 2 task structure. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/checklist.md` | Modify | Convert feature findings into Level 2 verification checklist format. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/plan.md` | Modify | Update DoD and verification gates to match completed review-fix outcomes. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/tasks.md` | Modify | Align task evidence and verification metrics to verified repository state. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/checklist.md` | Modify | Reconcile checklist item statuses and summary totals with checklist body. |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/implementation-summary.md` | Modify | Record final implementation and verification outcomes with truthful metrics. |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -77,16 +81,16 @@ Create a Level 2-compliant specification that defines what must be audited and r
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit all six Query Intelligence features (F-01..F-06) with one consistent structure. | Every feature includes status (PASS/WARN/FAIL), code issues, standards violations, behavior mismatch status, test gaps, and playbook coverage notes. |
-| REQ-002 | Capture confirmed correctness defects and behavior mismatches with source traceability. | Findings include F-01 routing/flag contradictions, F-03 channel re-sort dependency, and F-06 source/test-table gaps with concrete file references. |
-| REQ-003 | Document test gaps and playbook coverage gaps across all six features. | Missing assertions and missing/stale test references are explicitly recorded per feature, with NEW-060+ mapping status noted. |
+| REQ-001 | Document the verified implementation fixes applied during this phase with concrete file-level traceability. | Spec artifacts reference the completed fixes in `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/stage1-expansion.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts`, and `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md`, while also mirroring `.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts` as part of the verified targeted pass set. |
+| REQ-002 | Preserve truthful verification outcomes across all in-scope Level 2 artifacts. | Artifacts consistently report: targeted tests passed (6 files, 165 tests), targeted ESLint passed on changed files, alignment verifier passed (0 findings), and `npm run check` failed for unrelated pre-existing repo-wide issues. |
+| REQ-003 | Reconcile checklist item counts and completion totals. | Verification summary totals exactly match the checklist body and clearly identify deferred out-of-scope items. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Produce a prioritized remediation backlog from the audit. | Task inventory includes P0/P1/P2 grouping with counts (6/1/1) and file-level references. |
-| REQ-005 | Keep spec, plan, tasks, and checklist synchronized in Level 2 format. | All four artifacts contain required anchors, SPECKIT comments, and aligned status/context. |
+| REQ-004 | Keep Level 2 structure intact while updating status content. | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` retain anchors/SPECKIT comments/template sections while reflecting current state. |
+| REQ-005 | Keep deferred work explicit and out-of-scope. | Deferred playbook work and unrelated repo-wide check failures remain clearly marked with rationale. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -94,21 +98,46 @@ Create a Level 2-compliant specification that defines what must be audited and r
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 6 Query Intelligence features are audited with structured, traceable findings.
-- **SC-002**: Each feature has explicit status, issue taxonomy, and actionable remediation guidance.
+- **SC-001**: All five in-scope artifacts report the same implementation and verification state without contradiction.
+- **SC-002**: Checklist summary counts match checklist body counts exactly.
+- **SC-003**: Out-of-scope deferred items remain explicit and justified.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
+## 6. ACCEPTANCE SCENARIOS
+
+### Scenario 1 - Runtime fix traceability
+**Given** the Query Intelligence phase shipped a real runtime propagation fix in `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`
+**When** the synchronized Level 2 artifacts describe phase scope and outcomes
+**Then** they state that production code changed during this phase and do not describe the work as docs-only
+
+### Scenario 2 - Verification status consistency
+**Given** targeted verification passed for 6 files and 165 tests while `npm run check` still fails outside task scope
+**When** a reviewer compares `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
+**Then** each artifact reports the same pass/warning split without overstating repo-wide health
+
+### Scenario 3 - Checklist accounting accuracy
+**Given** the checklist body contains completed, deferred, and optional items across P0, P1, and P2 priorities
+**When** the verification summary totals are recalculated from the checklist body
+**Then** the totals match exactly and deferred items remain explicitly identified
+
+### Scenario 4 - Test-file traceability completeness
+**Given** `.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts` appears in the verified targeted pass set
+**When** task and specification artifacts summarize the verification surface
+**Then** that file is mirrored as verification coverage without falsely claiming it was modified in this phase
+
+---
+
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/12--query-intelligence/` documentation accuracy | Stale or contradictory catalog text can misclassify behavior mismatches. | Validate each finding against both catalog narratives and current implementation/test sources. |
-| Dependency | `mcp_server` test suites and listed source tables | Placeholder or incomplete test coverage reduces verification confidence. | Document gaps explicitly and create targeted follow-up tasks for missing assertions. |
-| Risk | Catalog-to-implementation mapping drift | Missing file references can hide actual runtime behavior (e.g., wrapper dependencies). | Record all critical implementation surfaces in findings and tasks. |
-| Risk | Template migration drift | Important findings could be lost during format conversion. | Preserve all major findings and priorities while enforcing required anchors/comments. |
+| Dependency | Verified review-fix outputs in code/tests/catalog | If docs diverge from merged implementation, completion claims become unreliable. | Use repository-verified changed-file list as source-of-truth for artifact synchronization. |
+| Dependency | Validation scripts and targeted verification commands | Missing or stale command evidence can create false completion status. | Record exact verification outcomes, including known out-of-scope failures. |
+| Risk | Checklist accounting drift | Summary totals can diverge from body status when items change. | Recount P0/P1/P2 directly from checklist body before finalizing summary table. |
+| Risk | Overstating scope | Treating this as docs-only or full repo remediation misrepresents delivered work. | Keep scope explicit: implemented targeted fixes plus artifact synchronization only. |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -118,7 +147,7 @@ Create a Level 2-compliant specification that defines what must be audited and r
 ---
 
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 8. L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Audit artifacts remain concise and scannable while preserving per-feature issue detail.
@@ -136,7 +165,7 @@ Create a Level 2-compliant specification that defines what must be audited and r
 ---
 
 <!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 9. L2: EDGE CASES
 
 ### Data Boundaries
 - Empty input: Features with no effective assertions are marked WARN/FAIL with explicit test-gap rationale.
@@ -145,22 +174,22 @@ Create a Level 2-compliant specification that defines what must be audited and r
 
 ### Error Scenarios
 - External service failure: If test infrastructure is unavailable, verification is deferred with documented reason.
-- Network timeout: Not applicable to this documentation-only phase; no runtime network dependency is introduced.
+- Network timeout: Not applicable to this synchronization task; no new runtime network behavior added.
 - Concurrent access: Edits are limited to `012-query-intelligence/` artifacts to avoid cross-phase collisions.
 
 ### State Transitions
 - Partial completion: Keep unresolved checks and remediation tasks marked `[ ]`.
-- Session expiry: Resume from anchored sections to keep deterministic updates across all four files.
+- Session expiry: Resume from anchored sections to keep deterministic updates across all five in-scope files.
 <!-- /ANCHOR:edge-cases -->
 
 ---
 
 <!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 10. L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 17/25 | 6 features, 4 synchronized artifacts, multi-criteria audit output |
+| Scope | 17/25 | 6 features, 5 synchronized artifacts, multi-criteria audit output |
 | Risk | 16/25 | Multiple FAIL findings and contradictory feature-to-code mappings |
 | Research | 11/20 | Requires cross-referencing catalog, implementation, tests, and playbook |
 | **Total** | **44/70** | **Level 2** |
@@ -168,10 +197,10 @@ Create a Level 2-compliant specification that defines what must be audited and r
 
 ---
 
-## 10. OPEN QUESTIONS
+## 11. OPEN QUESTIONS
 
-- Should F-02 (RSF shadow mode) be formalized as dormant utility behavior or restored as active shadow comparison?
-- Should CHK-060 token-budget overhead and F-01 trace propagation tests be mandatory closure gates for this phase?
+- No open technical questions for this synchronization task.
+- Known warning remains: `npm run check` fails due to unrelated pre-existing repo-wide lint/type issues outside this phase scope.
 <!-- /ANCHOR:questions -->
 
 ---

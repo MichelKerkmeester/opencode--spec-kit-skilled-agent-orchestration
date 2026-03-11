@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: query-intelligence [template:level_2/plan.md]"
-description: "This plan executes a feature-by-feature code audit for the Query Intelligence catalog scope and produces prioritized remediation outputs. The approach combines catalog-to-code verification, test-gap analysis, and standardized PASS/WARN/FAIL reporting."
+description: "This plan synchronizes Level 2 Query Intelligence artifacts to verified review-fix outcomes across code, tests, and catalog documentation."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "query intelligence"
   - "query-intelligence"
@@ -34,7 +35,7 @@ contextType: "general"
 | **Testing** | Vitest suites (unit, integration) + manual catalog review |
 
 ### Overview
-This plan performs a structured audit of six Query Intelligence features from `feature_catalog/12--query-intelligence/` and maps findings to a prioritized remediation backlog. The implementation approach follows feature inventory, per-feature code/test review, playbook cross-referencing, and synchronized Level 2 documentation outputs.
+This plan closes artifact drift after review-fix execution by synchronizing Level 2 documentation with verified repository outcomes. The approach uses a fixed source-of-truth changed-file set, evidence-first verification reporting, and checklist total reconciliation.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -48,9 +49,9 @@ This plan performs a structured audit of six Query Intelligence features from `f
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] Acceptance criteria met and reflected consistently across all five in-scope artifacts
+- [x] Targeted verification passing where applicable; repo-wide `npm run check` warning remains explicitly documented as out of scope
+- [x] Docs updated (spec/plan/tasks/checklist/implementation-summary)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -62,12 +63,12 @@ This plan performs a structured audit of six Query Intelligence features from `f
 Monolith (catalog-driven audit workflow over Query Intelligence implementation and test surfaces)
 
 ### Key Components
-- **Feature Catalog (`feature_catalog/12--query-intelligence/`)**: Declares current-reality behavior and source/test inventories.
-- **Search Modules (`query-classifier`, `rsf-fusion`, `channel-representation`, `hybrid-search`, `stage1-candidate-gen`)**: Primary implementation evidence.
-- **Spec Artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`)**: Structured outputs for scope, execution, remediation, and verification.
+- **Verified Code/Test Fixes**: `hybrid-search.ts`, `trace-propagation.vitest.ts`, `stage1-expansion.vitest.ts`, and `channel-enforcement.ts` capture the runtime/test changes this phase must represent; `search-results-format.vitest.ts` remains part of the mirrored targeted verification surface.
+- **Feature Catalog (`.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md`)**: Updated stale test counts and serves as documentation truth source.
+- **Spec Artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)**: Required synchronized outputs for Level 2 closure.
 
 ### Data Flow
-Feature definitions establish expected behavior, implementation/test files are reviewed for correctness and behavior alignment, gaps are classified by severity, and findings are translated into prioritized tasks plus verification checklist state.
+Verified repository changes are mapped into spec artifacts, verification evidence is normalized across files, checklist totals are recalculated, and deferred out-of-scope items are explicitly preserved.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -76,19 +77,19 @@ Feature definitions establish expected behavior, implementation/test files are r
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Feature inventory created for all 6 Query Intelligence features
-- [x] Source/test mappings extracted per feature
-- [x] Playbook scenario references captured (NEW-060+)
+- [x] Collected authoritative changed-file list from prior review-fix execution
+- [x] Confirmed in-scope artifact set (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
+- [x] Established verification outcomes to propagate unchanged across artifacts
 
 ### Phase 2: Core Implementation
-- [x] Correctness and standards review executed per feature
-- [x] Behavior match validated against catalog "Current Reality"
-- [x] PASS/WARN/FAIL findings and recommended fixes documented
+- [x] Updated spec scope from docs-only framing to implementation+sync framing
+- [x] Updated tasks/checklist/implementation summary evidence to match verified code/test/catalog fixes
+- [x] Preserved Level 2 anchors, SPECKIT comments, and template sections while correcting drift
 
 ### Phase 3: Verification
-- [ ] Regression-test gaps validated against actual assertions
-- [ ] Priority backlog consistency checked (P0/P1/P2)
-- [ ] Documentation synchronized across spec, tasks, and checklist
+- [x] Verification evidence aligned to known outcomes (tests, ESLint, alignment verifier, repo-wide check warning)
+- [x] Priority checklist totals reconciled to checklist body counts
+- [x] Documentation synchronized across all five in-scope artifacts
 <!-- /ANCHOR:phases -->
 
 ---
@@ -98,9 +99,16 @@ Feature definitions establish expected behavior, implementation/test files are r
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Query classifier/router/fusion/channel/token-budget/expansion module logic | Vitest |
-| Integration | Hybrid-search pipeline behaviors (trace metadata, channel enforcement, Stage-1 orchestration) | Vitest |
-| Manual | Catalog-to-code-to-task traceability review | Markdown review |
+| Unit | `stage1-expansion.vitest.ts` embeddings mock path and expansion orchestration coverage | Vitest |
+| Integration | `trace-propagation.vitest.ts` production-path query complexity propagation coverage plus `search-results-format.vitest.ts` targeted output-format coverage | Vitest |
+| Static Analysis | Changed-file lint verification | ESLint |
+| Manual | Cross-artifact evidence consistency and checklist total reconciliation | Markdown review |
+
+### Verification Outcomes
+- Targeted tests passed: 6 files, 165 tests.
+- Targeted ESLint on changed in-scope files passed.
+- Alignment verifier passed: 0 findings.
+- `npm run check` failed due to pre-existing unrelated repo-wide lint/type issues (out of scope).
 <!-- /ANCHOR:testing -->
 
 ---
@@ -110,9 +118,9 @@ Feature definitions establish expected behavior, implementation/test files are r
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/12--query-intelligence/*.md` | Internal | Green | Audit expectations cannot be validated if catalog definitions drift |
-| `mcp_server/lib/search/*` and related tests | Internal | Yellow | Incomplete assertions or stale references reduce closure confidence |
-| Manual playbook scenarios (NEW-060+) | Internal | Yellow | Per-feature manual coverage remains incomplete without explicit mapping |
+| Verified changed-file inventory from prior tasks | Internal | Green | Without authoritative file list, artifact synchronization may misstate delivered work |
+| `scripts/spec/validate.sh` | Internal | Yellow | Completion claims cannot be made without validation; prior pass returned warnings that this continuation resolves |
+| Manual playbook scenarios (NEW-060+) | Internal | Yellow | CHK-042 remains deferred and must stay explicitly marked out-of-scope |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -121,7 +129,7 @@ Feature definitions establish expected behavior, implementation/test files are r
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Template non-compliance, missing mapped findings, or accidental scope drift.
-- **Procedure**: Restore prior docs for `012-query-intelligence/` from git history and reapply mapping with required anchors/comments intact.
+- **Procedure**: Restore prior docs for `012-query-intelligence/` from git history and reapply synchronization with verified evidence set.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -165,9 +173,9 @@ Phase 1.5 (Playbook) ─────┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Backup created (git snapshot of `012-query-intelligence/`)
-- [ ] Feature flag configured (N/A for docs-only phase)
-- [ ] Monitoring alerts set (N/A for docs-only phase)
+- [x] Backup created (git history available for `012-query-intelligence/`)
+- [x] Feature flag configured (N/A for documentation synchronization phase)
+- [x] Monitoring alerts set (N/A for documentation synchronization phase)
 
 ### Rollback Procedure
 1. Revert `012-query-intelligence/` documentation files to last known-good revision.

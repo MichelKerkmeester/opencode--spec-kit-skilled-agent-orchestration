@@ -7,6 +7,7 @@
 import type Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
+import { resolveDatabasePaths } from '../../core/config';
 
 /* -------------------------------------------------------------
    1. CONSTANTS
@@ -322,15 +323,28 @@ function findPendingFiles(dirPath: string): string[] {
 /**
  * Recover a single pending file by renaming to its original path.
  */
-function recoverPendingFile(pendingPath: string, isCommittedInDb?: IsCommittedCheck): RecoveryResult {
+function recoverPendingFile(
+  pendingPath: string,
+  isCommittedInDb?: IsCommittedCheck,
+  databasePathOverride?: string
+): RecoveryResult {
   try {
     const originalPath = getOriginalPath(pendingPath);
+    const originalExists = fs.existsSync(originalPath);
+    let committedInDb: boolean | null = null;
+    if (isCommittedInDb) {
+      const databasePath = databasePathOverride ?? resolveDatabasePaths().databasePath;
+      if (!fs.existsSync(databasePath)) {
+        console.warn(`[transaction-manager] Skipping pending recovery because DB file is missing: ${databasePath}`);
+        return { path: pendingPath, recovered: false, error: 'Database file missing during recovery' };
+      }
+      committedInDb = isCommittedInDb(originalPath);
+    }
 
     // If original exists and is newer, delete pending
-    if (fs.existsSync(originalPath)) {
+    if (originalExists) {
       const pendingStats = fs.statSync(pendingPath);
       const originalStats = fs.statSync(originalPath);
-
       if (originalStats.mtimeMs > pendingStats.mtimeMs) {
         fs.unlinkSync(pendingPath);
         return { path: pendingPath, recovered: false, error: 'Original is newer' };
@@ -339,7 +353,7 @@ function recoverPendingFile(pendingPath: string, isCommittedInDb?: IsCommittedCh
 
     // Stale detection: if DB check is provided and row was never committed,
     // log and leave for manual review instead of renaming.
-    if (isCommittedInDb && !isCommittedInDb(originalPath)) {
+    if (committedInDb === false) {
       console.warn(`[transaction-manager] Stale pending file detected (no committed DB row): ${pendingPath}`);
       return { path: pendingPath, recovered: false, error: 'Stale pending file: DB row not committed' };
     }
@@ -360,9 +374,13 @@ function recoverPendingFile(pendingPath: string, isCommittedInDb?: IsCommittedCh
 /**
  * Recover all pending files in a directory.
  */
-function recoverAllPendingFiles(dirPath: string, isCommittedInDb?: IsCommittedCheck): RecoveryResult[] {
+function recoverAllPendingFiles(
+  dirPath: string,
+  isCommittedInDb?: IsCommittedCheck,
+  databasePathOverride?: string
+): RecoveryResult[] {
   const pendingFiles = findPendingFiles(dirPath);
-  return pendingFiles.map((f) => recoverPendingFile(f, isCommittedInDb));
+  return pendingFiles.map((f) => recoverPendingFile(f, isCommittedInDb, databasePathOverride));
 }
 
 /* -------------------------------------------------------------

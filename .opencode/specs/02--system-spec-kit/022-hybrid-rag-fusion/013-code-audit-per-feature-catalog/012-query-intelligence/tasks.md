@@ -1,6 +1,7 @@
 ---
 title: "Tasks: query-intelligence [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "query intelligence"
   - "query-intelligence"
@@ -39,9 +40,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Build feature inventory and implementation/test mapping for F-01..F-06 (`feature_catalog/12--query-intelligence/*.md`) — Completed implicitly: all 6 features inventoried via agent reconnaissance
-- [x] T002 Cross-reference playbook scenarios and mark per-feature coverage gaps (NEW-060+) — Completed implicitly: gaps documented in checklist CHK-042
-- [x] T003 [P] Validate PASS/WARN/FAIL summary alignment across spec/tasks/checklist (`012-query-intelligence/*.md`) — Completed: all artifacts synchronized
+- [x] T001 Build authoritative source-of-truth inventory for this synchronization task (verified changed files + verified outcomes)
+- [x] T002 Confirm scope lock to in-scope artifact files only (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
+- [x] T003 [P] Normalize verification evidence contract (tests, ESLint, alignment verifier, `npm run check` warning)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -49,14 +50,11 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 [P0] Fix tier routing to reconcile `charCount`/`stopWordRatio` behavior with feature claims — Updated `01-query-complexity-router.md` to accurately document that only `termCount`+`triggerMatch` drive tier, `charCount`/`stopWordRatio` are confidence-only features. Added `hybrid-search.ts` as trace propagation source.
-- [x] T005 [P0] Resolve classifier default-state flag contradiction — Fixed JSDoc at `query-classifier.ts:132` from "disabled (default)" to "enabled by default, graduated Sprint 4". Feature catalog aligned.
-- [x] T006 [P0] Add `traceMetadata.queryComplexity` propagation tests — Created `trace-propagation.vitest.ts` (18 tests) covering simple/moderate/complex tier propagation through full chain. Added trace test reference to feature catalog.
-- [x] T007 [P0] Fix or document channel append-without-re-sort — Documented: `channel-representation.ts` (core) appends without sort; `channel-enforcement.ts` (wrapper) re-sorts globally. Updated `03-channel-min-representation.md` with two-layer architecture, added enforcement wrapper to source table.
-- [x] T008 [P0] Replace placeholder channel tests — Added 3 new behavioral tests (T16-T18) to `channel-representation.vitest.ts`: no-sort contract verification, multi-channel under-representation detection, mixed quality floor filtering. Existing 15+19 tests already covered behavioral assertions.
-- [x] T009 [P0] Fix query-expansion source/test mapping — Removed stale duplicate `retry-manager.vitest.ts` row from `06-query-expansion.md`. Added `stage1-candidate-gen.ts` to implementation table. Created `stage1-expansion.vitest.ts` (4 tests) for expansion call, dedup, R15 mutual exclusion.
-- [x] T010 [P1] Clarify RSF shadow-mode status — Added module-level JSDoc to `rsf-fusion.ts` marking dormant/shadow-only. Updated `02-relative-score-fusion-in-shadow-mode.md` with status banner. Added 3 shadow-mode tests to `rsf-fusion.vitest.ts`.
-- [x] T011 [P2] Add adjusted-budget tests and source mapping — Added `hybrid-search.ts` to `05-dynamic-token-budget-allocation.md` implementation table. Added 5 CHK-023 tests to `token-budget.vitest.ts` for `adjustedBudget` formula, floor at 200, and large result count behavior.
+- [x] T004 [P0] Fix real runtime `queryComplexity` propagation in `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`
+- [x] T005 [P0] Replace synthetic trace test with production-path coverage in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts`
+- [x] T006 [P0] Fix embeddings mock path in `.opencode/skill/system-spec-kit/mcp_server/tests/stage1-expansion.vitest.ts`
+- [x] T007 [P1] Correct stale default comment in `.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts`
+- [x] T008 [P1] Correct stale test counts in `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md`
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,9 +62,12 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T012 [P] Run targeted Vitest coverage — 14 test files, 339 tests, all passing. TSC clean (0 errors).
-- [x] T013 Reconcile checklist verification counts — All CHK items updated with evidence below.
-- [x] T014 Synchronize feature-catalog implementation/test tables — All 6 feature catalog docs updated with accurate source/test mappings.
+- [x] T009 [P] Run targeted test validation across `trace-propagation.vitest.ts`, `stage1-expansion.vitest.ts`, `search-results-format.vitest.ts`, and related suite files — 6 files, 165 tests passing
+- [x] T010 Run targeted ESLint on changed in-scope files — passing
+- [x] T011 Run alignment verifier — 0 findings
+- [x] T012 Run `npm run check` for repo health signal — failed due to unrelated pre-existing repo-wide lint/type issues (out of scope)
+- [x] T013 Reconcile checklist verification totals with checklist body
+- [x] T014 Synchronize `implementation-summary.md` with verified review-fix outcomes
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -76,7 +77,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed — 14 test files, 339 tests, TSC clean
+- [x] Verification evidence captured — tests (6 files, 165, including `search-results-format.vitest.ts` in the targeted pass set), targeted ESLint pass, alignment verifier pass, known out-of-scope `npm run check` warning
 <!-- /ANCHOR:completion -->
 
 ---

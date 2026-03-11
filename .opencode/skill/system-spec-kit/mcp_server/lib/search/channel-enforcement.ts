@@ -5,7 +5,7 @@
 // Provides a single enforceChannelRepresentation() entry point for
 // use inside the hybrid-search pipeline after RRF/RSF fusion.
 //
-// Feature flag: SPECKIT_CHANNEL_MIN_REP (default: disabled)
+// Feature flag: SPECKIT_CHANNEL_MIN_REP (default: enabled / graduated)
 // Delegates core logic to channel-representation.ts.
 // ---------------------------------------------------------------
 

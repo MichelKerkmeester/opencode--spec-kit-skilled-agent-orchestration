@@ -267,7 +267,53 @@ describe('Access Tracker Extended', () => {
   });
 
   /* ─────────────────────────────────────────────────────────────
-     6. flushAccessCounts — ERROR HANDLING
+     6. trackMultipleAccesses — THRESHOLD FLUSH REGRESSIONS
+  ──────────────────────────────────────────────────────────────── */
+
+  describe('trackMultipleAccesses — threshold flush regressions', () => {
+    it('preserves accumulator state when threshold flush fails', () => {
+      mod.dispose();
+
+      for (const memoryId of [1, 2]) {
+        for (let i = 0; i < 4; i++) {
+          mod.trackAccess(memoryId);
+        }
+      }
+
+      const result = mod.trackMultipleAccesses([1, 2]);
+
+      expect(result).toEqual({ tracked: 2, flushed: 0 });
+      expect(mod.getAccumulatorState(1).accumulated).toBeCloseTo(mod.ACCUMULATOR_THRESHOLD, 8);
+      expect(mod.getAccumulatorState(2).accumulated).toBeCloseTo(mod.ACCUMULATOR_THRESHOLD, 8);
+    });
+
+    it('deletes accumulator entries only after successful threshold flush', () => {
+      testDb = createDb(5);
+      mod.init(testDb);
+
+      for (const memoryId of [1, 2]) {
+        for (let i = 0; i < 4; i++) {
+          mod.trackAccess(memoryId);
+        }
+      }
+
+      const result = mod.trackMultipleAccesses([1, 2]);
+      const rows = requireTestDb().prepare(
+        'SELECT id, access_count FROM memory_index WHERE id IN (1, 2) ORDER BY id'
+      ).all() as Array<{ id: number; access_count: number }>;
+
+      expect(result).toEqual({ tracked: 2, flushed: 2 });
+      expect(mod.getAccumulatorState(1).accumulated).toBe(0);
+      expect(mod.getAccumulatorState(2).accumulated).toBe(0);
+      expect(rows).toEqual([
+        { id: 1, access_count: 1 },
+        { id: 2, access_count: 1 },
+      ]);
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────────────
+     7. flushAccessCounts — ERROR HANDLING
   ──────────────────────────────────────────────────────────────── */
 
   describe('flushAccessCounts — error handling', () => {
@@ -298,8 +344,8 @@ describe('Access Tracker Extended', () => {
   });
 
   /* ─────────────────────────────────────────────────────────────
-     7. EXPORTED CONSTANTS VALIDATION
-  ──────────────────────────────────────────────────────────────── */
+     8. EXPORTED CONSTANTS VALIDATION
+   ──────────────────────────────────────────────────────────────── */
 
   describe('Exported constants validation', () => {
     it('ACCUMULATOR_THRESHOLD is 0.5', () => {
@@ -325,8 +371,8 @@ describe('Access Tracker Extended', () => {
   });
 
   /* ─────────────────────────────────────────────────────────────
-     8. COMPOSITE SCORING + ARCHIVAL INTEGRATION
-  ──────────────────────────────────────────────────────────────── */
+     9. COMPOSITE SCORING + ARCHIVAL INTEGRATION
+   ──────────────────────────────────────────────────────────────── */
 
   describe('Composite scoring + archival integration', () => {
     const DAY_MS = 1000 * 60 * 60 * 24;

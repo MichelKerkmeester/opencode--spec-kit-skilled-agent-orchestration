@@ -10,30 +10,20 @@
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
-| `mcp_server/core/config.ts` | Core | Server configuration |
-| `mcp_server/core/db-state.ts` | Core | Database state management |
 | `shared/config.ts` | Shared | Shared configuration |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/paths.ts` | Shared | Shared path utilities |
-| `shared/types.ts` | Shared | Type definitions |
+| `shared/paths.ts` | Shared | DB_PATH resolver using shared getDbDir() |
+| `shared/index.ts` | Shared | Re-exports DB_PATH/getDbDir for shared consumers |
+| `scripts/tsconfig.json` | Script | Workspace alias resolver for @spec-kit/shared and @spec-kit/mcp-server imports |
+| `scripts/memory/cleanup-orphaned-vectors.ts` | Script | DB cleanup script now consuming shared DB_PATH |
+| `scripts/spec-folder/folder-detector.ts` | Script | Spec-folder scanner consuming shared DB_PATH |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/cognitive-gaps.vitest.ts` | Cognitive gap analysis |
-| `mcp_server/tests/config-cognitive.vitest.ts` | Cognitive config tests |
-| `mcp_server/tests/db-state-graph-reinit.vitest.ts` | DB state graph reinit |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/trigger-config-extended.vitest.ts` | Trigger config extended |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `scripts/tests/test-folder-detector-functional.js` | Functional DB-path construction checks for script resolver usage |
+| `scripts/tests/test-cleanup-orphaned-vectors.js` | Script-level DB_PATH consumer coverage for cleanup flow |
+| `scripts/tests/import-policy-rules.vitest.ts` | Import-standardization policy checks for @spec-kit alias usage |
 
 ## Source Metadata
 

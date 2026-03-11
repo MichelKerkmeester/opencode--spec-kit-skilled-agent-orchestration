@@ -378,7 +378,7 @@ vector-index-impl.ts     (3333 LOC)
 | `SPECKIT_MEMORY_SUMMARIES`| `true`  | Enable memory summary generation and search channel (R8) |
 | `SPECKIT_ENTITY_LINKING`  | `true`  | Enable cross-document entity linking (S5, requires R10) |
 | `SPECKIT_SAVE_QUALITY_GATE`| `true` | Enable 3-layer pre-storage quality gate (TM-04) |
-| `SPECKIT_RECONSOLIDATION` | `true`  | Enable similarity-based merge/conflict routing on save (TM-06) |
+| `SPECKIT_RECONSOLIDATION` | `false` | Enable similarity-based merge/conflict routing on save (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
 | `SPECKIT_NEGATIVE_FEEDBACK`| `true` | Enable negative feedback demotion multiplier (A4) |
 | `SPECKIT_LEARN_FROM_SELECTION`| `false` | Enable learned relevance feedback from selections (R11) |
 | `SPECKIT_EMBEDDING_EXPANSION`| `true` | Enable R12 embedding-based query expansion |
@@ -632,8 +632,8 @@ Measures graph density and reports metrics used for R10 entity extraction escala
 
 Processing steps applied during `memory_save` before a memory is persisted.
 
-**PI-A5: Verify-Fix-Verify Loop** (`memory-save.ts`):
-3-retry quality loop that validates, auto-fixes (triggers, anchors, token budget), and re-validates before committing. Rejected memories receive detailed feedback on what failed.
+**PI-A5: Verify-Fix-Verify Loop** (`memory-save.ts` / `quality-loop.ts`):
+Opt-in quality loop gated by `SPECKIT_QUALITY_LOOP`. When enabled, the save path performs 1 initial evaluation plus up to 2 immediate auto-fix retries by default. The reported `attempts` count reflects actual evaluations used, so early-break cases can stop before the configured ceiling. Rejected memories return structured rejection feedback instead of continuing to storage.
 
 **TM-04: Quality Gate** (`save-quality-gate.ts`):
 3-layer pre-storage validation gated via `SPECKIT_SAVE_QUALITY_GATE` (default ON, graduated Sprint 4):
@@ -647,7 +647,7 @@ Processing steps applied during `memory_save` before a memory is persisted.
 Signal density threshold: **0.4** — below this, content quality is too low. 14-day warn-only period (MR12 mitigation): logs scores but does not block saves during ramp-up.
 
 **TM-06: Reconsolidation** (`reconsolidation.ts`):
-Similarity-based merge/conflict/complement routing gated via `SPECKIT_RECONSOLIDATION` (default ON):
+Similarity-based merge/conflict/complement routing gated via `SPECKIT_RECONSOLIDATION` (default OFF, opt in with `SPECKIT_RECONSOLIDATION=true`):
 
 | Similarity | Action | Behavior |
 |-----------|--------|----------|

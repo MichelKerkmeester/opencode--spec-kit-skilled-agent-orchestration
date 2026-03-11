@@ -991,22 +991,30 @@ async function hybridSearchEnhanced(
         });
       }
 
-      // AI-WHY: Preserve Stage 4 trace metadata as explicit result fields so downstream
+      // AI-WHY: Preserve routing and Stage 4 trace metadata as explicit result fields so downstream
       // formatters can opt-in to provenance-rich envelopes without relying on
       // non-enumerable array shadow properties.
-      if ((s4shadowMeta !== undefined || s4attributionMeta !== undefined || degradationMeta !== undefined) && reranked.length > 0) {
-        reranked = reranked.map((row): HybridSearchResult => ({
-          ...row,
-          traceMetadata: {
-            stage4: s4shadowMeta ?? null,
-            attribution: s4attributionMeta ?? null,
-            degradation: degradationMeta ?? null,
-            budgetTruncated: budgeted.truncated,
-            budgetLimit: budgetResult.budget,
-            // AI-TRACE: CHK-038: Wire queryComplexity from router classification into trace
-            queryComplexity: routeResult.tier,
-          },
-        }));
+      if (reranked.length > 0) {
+        reranked = reranked.map((row): HybridSearchResult => {
+          const existingTraceMetadata =
+            typeof row.traceMetadata === 'object' && row.traceMetadata !== null && !Array.isArray(row.traceMetadata)
+              ? row.traceMetadata
+              : {};
+
+          return {
+            ...row,
+            traceMetadata: {
+              ...existingTraceMetadata,
+              ...(s4shadowMeta !== undefined ? { stage4: s4shadowMeta } : {}),
+              ...(s4attributionMeta !== undefined ? { attribution: s4attributionMeta } : {}),
+              ...(degradationMeta !== undefined ? { degradation: degradationMeta } : {}),
+              budgetTruncated: budgeted.truncated,
+              budgetLimit: budgetResult.budget,
+              // AI-TRACE: CHK-038: Wire queryComplexity from router classification into trace
+              queryComplexity: routeResult.tier,
+            },
+          };
+        });
       }
 
       if (isContextHeadersEnabled() && reranked.length > 0) {

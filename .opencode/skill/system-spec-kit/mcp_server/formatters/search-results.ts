@@ -39,10 +39,12 @@ export interface AnchorTokenMetrics {
 
 /** Raw search result from database/vector search */
 export interface RawSearchResult {
-  id: number;
-  spec_folder: string;
-  file_path: string;
-  title: string | null;
+  id: number | string;
+  spec_folder?: string;
+  file_path?: string;
+  specFolder?: string;
+  filePath?: string;
+  title?: string | null;
   /** Raw vector cosine similarity (0-100 scale from sqlite-vec). */
   similarity?: number;
   /** Average similarity across multi-concept queries (0-100 scale). */
@@ -341,10 +343,10 @@ export async function formatSearchResults(
 
   const formatted: MemoryResultEnvelope[] = await Promise.all(results.map(async (rawResult: RawSearchResult) => {
     const formattedResult: MemoryResultEnvelope = {
-      id: rawResult.id,
-      specFolder: rawResult.spec_folder,
-      filePath: rawResult.file_path,
-      title: rawResult.title,
+      id: typeof rawResult.id === 'number' ? rawResult.id : Number.parseInt(rawResult.id, 10),
+      specFolder: rawResult.spec_folder ?? String(rawResult.specFolder ?? ''),
+      filePath: rawResult.file_path ?? String(rawResult.filePath ?? ''),
+      title: rawResult.title ?? null,
       similarity: rawResult.similarity ?? rawResult.averageSimilarity,
       isConstitutional: rawResult.isConstitutional || false,
       importanceTier: rawResult.importance_tier,

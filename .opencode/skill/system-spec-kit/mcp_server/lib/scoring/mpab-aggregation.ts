@@ -3,7 +3,8 @@
 // ---------------------------------------------------------------
 // Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation.
 // Pipeline position: after RRF fusion, before state filtering.
-// Feature flag: SPECKIT_DOCSCORE_AGGREGATION (default OFF)
+// Feature flag: SPECKIT_DOCSCORE_AGGREGATION (graduated default ON)
+// Runtime pipeline gating uses isDocscoreAggregationEnabled() in search-flags.ts.
 
 /* --- 1. TYPES --- */
 
@@ -61,9 +62,11 @@ export const MPAB_BONUS_COEFFICIENT = 0.3;
 
 /**
  * Check if MPAB chunk-to-memory aggregation is enabled.
- * Default: TRUE (graduated Sprint 4). Set SPECKIT_DOCSCORE_AGGREGATION=false to disable.
+ * Local helper behavior: disabled only when SPECKIT_DOCSCORE_AGGREGATION is
+ * explicitly set to "false". Runtime pipeline gating uses search-flags
+ * isDocscoreAggregationEnabled() (which also treats "0" as disabled).
  *
- * @returns True if MPAB aggregation is enabled (default: ON)
+ * @returns True if MPAB aggregation is enabled for this local helper
  */
 export function isMpabEnabled(): boolean {
   return process.env.SPECKIT_DOCSCORE_AGGREGATION?.toLowerCase() !== 'false';

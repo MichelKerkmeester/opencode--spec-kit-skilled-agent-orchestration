@@ -125,10 +125,57 @@ describe('T008 — Seed cap and multiplier precedence', () => {
   });
 
   it('seed cap limits number of seed nodes used for graph walk', () => {
-    // MAX_SEED_RESULTS = 5 and SEED_FRACTION = 0.25
-    // With 100 results, seeds = ceil(100 * 0.25) = 25, capped at 5
-    // Verify the constants are exported and have expected values
-    expect(causalBoost.MAX_HOPS).toBe(2);
-    expect(causalBoost.MAX_BOOST_PER_HOP).toBe(0.05);
+    const localDb = createDb();
+    process.env.SPECKIT_CAUSAL_BOOST = 'true';
+    localDb.prepare(`
+      INSERT INTO memory_index (id, spec_folder, file_path, title, importance_tier, trigger_phrases)
+      VALUES
+      (1, 'spec', '/tmp/1.md', '1', 'important', '[]'),
+      (2, 'spec', '/tmp/2.md', '2', 'important', '[]'),
+      (3, 'spec', '/tmp/3.md', '3', 'important', '[]'),
+      (4, 'spec', '/tmp/4.md', '4', 'important', '[]'),
+      (5, 'spec', '/tmp/5.md', '5', 'important', '[]'),
+      (6, 'spec', '/tmp/6.md', '6', 'important', '[]'),
+      (7, 'spec', '/tmp/7.md', '7', 'important', '[]'),
+      (30, 'spec', '/tmp/30.md', '30', 'important', '[]'),
+      (31, 'spec', '/tmp/31.md', '31', 'important', '[]')
+    `).run();
+    localDb.prepare(`
+      INSERT INTO causal_edges (source_id, target_id, relation, strength)
+      VALUES
+      ('5', '31', 'caused', 1.0),
+      ('6', '30', 'caused', 1.0)
+    `).run();
+    causalBoost.init(localDb);
+
+    const baseResults = Array.from({ length: 24 }, (_, index) => ({
+      id: index + 1,
+      score: 1 - index * 0.01,
+    }));
+
+    const { results } = causalBoost.applyCausalBoost(baseResults as RankedSearchResult[]);
+    const injectedIds = results.filter((item) => item.injectedByCausalBoost).map((item) => item.id);
+
+    expect(injectedIds).toContain(31);
+    expect(injectedIds).not.toContain(30);
+
+    const injectedResult = results.find((item) => item.id === 31);
+    expect(injectedResult?.causalBoost).toBeCloseTo(0.05, 6);
+  });
+
+  it('relation multipliers change boost precedence behavior', () => {
+    const localDb = createDb();
+    process.env.SPECKIT_CAUSAL_BOOST = 'true';
+    localDb.prepare(`
+      INSERT INTO causal_edges (source_id, target_id, relation, strength)
+      VALUES ('1', '2', 'supersedes', 1.0), ('1', '3', 'contradicts', 1.0)
+    `).run();
+    causalBoost.init(localDb);
+
+    const boosts = causalBoost.getNeighborBoosts([1]);
+
+    expect(boosts.get(2)).toBeCloseTo(0.05 * 1.5, 6);
+    expect(boosts.get(3)).toBeCloseTo(0.05 * 0.8, 6);
+    expect((boosts.get(2) ?? 0)).toBeGreaterThan(boosts.get(3) ?? 0);
   });
 });

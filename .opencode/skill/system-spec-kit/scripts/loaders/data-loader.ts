@@ -116,25 +116,25 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
       return { ...data, _source: 'file' } as LoadedData;
     } catch (error: unknown) {
       if (error instanceof Error && 'code' in error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
-        structuredLog('warn', 'Data file not found', {
+        structuredLog('error', 'Data file not found', {
           filePath: dataFile,
           error: error.message
         });
-        console.log(`   \u26A0\uFE0F  Data file not found: ${dataFile}`);
+        throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found: ${dataFile}`);
       } else if (error instanceof SyntaxError) {
-        structuredLog('warn', 'Invalid JSON in data file', {
+        structuredLog('error', 'Invalid JSON in data file', {
           filePath: dataFile,
           error: error.message,
           position: error.message.match(/position (\d+)/)?.[1] || 'unknown'
         });
-        console.log(`   \u26A0\uFE0F  Invalid JSON in data file ${dataFile}: ${error.message}`);
+        throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file ${dataFile}: ${error.message}`);
       } else {
         const errMsg = error instanceof Error ? error.message : String(error);
-        structuredLog('warn', 'Failed to load data file', {
+        structuredLog('error', 'Failed to load data file', {
           filePath: dataFile,
           error: errMsg
         });
-        console.log(`   \u26A0\uFE0F  Failed to load data file ${dataFile}: ${errMsg}`);
+        throw new Error(`EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file ${dataFile}: ${errMsg}`);
       }
     }
   }
@@ -177,13 +177,12 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     }
   }
 
-  // Priority 3: Simulation fallback
-  console.log('   \u26A0\uFE0F  Using fallback simulation mode');
-  console.warn('[generate-context] WARNING: Using simulation mode - placeholder data generated');
-  console.log('   \u26A0\uFE0F  OUTPUT WILL CONTAIN PLACEHOLDER DATA - NOT REAL SESSION CONTENT');
-  console.log('   \u2139\uFE0F  To save real context, AI must construct JSON and pass as argument:');
-  console.log('      node generate-context.js /tmp/save-context-data.json');
-  return { _isSimulation: true, _source: 'simulation' };
+  // Priority 3: No data available — refuse to proceed
+  throw new Error(
+    'NO_DATA_AVAILABLE: No session data found. Neither JSON data file nor OpenCode session capture provided usable content. ' +
+    'External CLI agents must provide data via JSON mode: ' +
+    'write session data to /tmp/save-context-data.json, then run: node generate-context.js /tmp/save-context-data.json [spec-folder]'
+  );
 }
 
 // ---------------------------------------------------------------

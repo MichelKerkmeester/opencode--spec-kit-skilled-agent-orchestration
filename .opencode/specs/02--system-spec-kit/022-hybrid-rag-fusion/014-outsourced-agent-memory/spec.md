@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Outsourced Agent Memory Capture"
-description: "External CLI agents dispatched via cli-* skills run in sandboxed processes with no protocol for saving session context back to Spec Kit Memory, leaving garbage placeholder files and losing valuable work context."
+description: "Reconcile the outsourced-agent memory workflow so repository-side runtime behavior, CLI handback documentation, and spec evidence all agree on explicit JSON-mode failure handling, next-step persistence, and honest verification status."
 trigger_phrases: ["outsourced agent memory", "cli agent context", "memory handback", "external agent save"]
 importance_tier: "normal"
 contextType: "general"
@@ -18,7 +18,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-11 |
 | **Branch** | `main` |
 <!-- /ANCHOR:metadata -->
@@ -29,10 +29,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-When the calling AI dispatches work via `cli-codex`, `cli-copilot`, `cli-gemini`, or `cli-claude-code`, the external agent runs in a sandboxed process. It has no protocol for saving session context back to Spec Kit Memory. The calling AI receives only stdout output — no structured memory data. This results in garbage placeholder memory files (zero content, simulated data, stale state) accumulating in spec folders, and valuable work context from delegated sessions being permanently lost.
+The outsourced-agent memory flow had drift between the implemented runtime, the CLI handback docs, and this spec folder. Repository code now hard-fails explicit JSON-mode input errors, preserves manual next-step data, and documents a redact-and-scrub handback flow, but the spec docs still contained stale claims about dropped `Next Steps`, a completed 1032-line round-trip artifact, and the old `.opencode/skill/sk-cli/` path layout.
 
 ### Purpose
-Establish a standardized memory return protocol so that externally dispatched CLI agents can produce structured context data that the calling AI captures and saves to Spec Kit Memory via `generate-context.js` JSON mode.
+Keep the spec folder aligned with the implemented repository state so the documented protocol, runtime guarantees, security guidance, and verification evidence all match what can actually be verified.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -41,32 +41,32 @@ Establish a standardized memory return protocol so that externally dispatched CL
 ## 3. SCOPE
 
 ### In Scope
-- Memory return protocol specification (standard output format for external agents)
-- CLI skill updates — "Memory Handback" section in each cli-codex, cli-copilot, cli-gemini, cli-claude-code SKILL
-- Prompt template additions — memory-save epilogue in each CLI skill's prompt templates reference
-- Calling AI instructions for capturing and saving returned context
-- Round-trip validation (dispatch → agent work → structured output → memory save → searchable)
+- Runtime behavior now enforced in `data-loader.ts`, `input-normalizer.ts`, and `session-extractor.ts`
+- Regression coverage in `runtime-memory-inputs.vitest.ts`
+- CLI handback documentation in all 4 `cli-*` skills and all 4 prompt template files
+- Spec-folder evidence reconciliation for this Level 2 documentation set
 
 ### Out of Scope
-- Changes to external CLI tools themselves (Codex, Copilot, Gemini, Claude Code binaries) — we control only the prompt/instructions
-- Real-time streaming of memory during agent execution — only post-completion capture
-- Automatic memory save without calling AI intervention — the calling AI must explicitly invoke `generate-context.js`
+- Changes to external CLI binaries such as Codex, Copilot, Gemini, or Claude Code
+- Manual editing of `memory/` artifacts
+- Claiming a fresh live outsourced CLI dispatch passed unless it is rerun and verified
 
 ### Files to Change
 
-**Files to change:**
-
-- cli-codex SKILL — Modify: Add Memory Handback protocol section
-- cli-copilot SKILL — Modify: Add Memory Handback protocol section
-- cli-gemini SKILL — Modify: Add Memory Handback protocol section
-- cli-claude-code SKILL — Modify: Add Memory Handback protocol section
-- cli-codex prompt templates — Modify: Add memory epilogue template
-- cli-copilot prompt templates — Modify: Add memory epilogue template
-- cli-gemini prompt templates — Modify: Add memory epilogue template
-- cli-claude-code prompt templates — Modify: Add memory epilogue template
-- generate-context script — Modify (if needed): Enhance JSON mode for external agent data
-
-All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/system-spec-kit/scripts/memory/` (generate-context).
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` | Modify | Hard-fail explicit `dataFile` load and parse failures with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` and stop fallback |
+| `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | Accept `nextSteps` and `next_steps`, persist the first step as `Next: ...`, and store remaining items as `Follow-up: ...` |
+| `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Modify | Read the first persisted `Next: ...` fact into `NEXT_ACTION` |
+| `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` | Modify | Cover explicit JSON-mode failures and next-step normalization |
+| `.opencode/skill/cli-codex/SKILL.md` | Modify | Document redact-and-scrub handback flow and explicit JSON-mode hard-fail behavior |
+| `.opencode/skill/cli-codex/assets/prompt_templates.md` | Modify | Add matching memory epilogue guidance and corrected numbering |
+| `.opencode/skill/cli-copilot/SKILL.md` | Modify | Document redact-and-scrub handback flow and explicit JSON-mode hard-fail behavior |
+| `.opencode/skill/cli-copilot/assets/prompt_templates.md` | Modify | Add matching memory epilogue guidance |
+| `.opencode/skill/cli-gemini/SKILL.md` | Modify | Document redact-and-scrub handback flow and explicit JSON-mode hard-fail behavior |
+| `.opencode/skill/cli-gemini/assets/prompt_templates.md` | Modify | Add matching memory epilogue guidance |
+| `.opencode/skill/cli-claude-code/SKILL.md` | Modify | Document redact-and-scrub handback flow and explicit JSON-mode hard-fail behavior |
+| `.opencode/skill/cli-claude-code/assets/prompt_templates.md` | Modify | Add matching memory epilogue guidance |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -78,16 +78,16 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Define memory return protocol — a structured output format that external agents include at end of their response | Protocol documented; includes session summary, files modified, decisions made, next steps |
-| REQ-002 | Update all 4 cli-* SKILL files with Memory Handback section | Each SKILL has a section instructing the calling AI how to extract and save memory |
-| REQ-003 | Update all 4 cli-* prompt template files with memory epilogue | Each template includes a suffix that instructs the external agent to output structured context |
+| REQ-001 | Explicit JSON-mode input failures must hard-fail | Missing file, invalid JSON, or validation failure from an explicit `dataFile` throw `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` and do not fall back to OpenCode capture |
+| REQ-002 | Manual next-step fields must survive normalization | `nextSteps` and `next_steps` are both accepted; the first entry persists as `Next: ...` and drives `NEXT_ACTION`; remaining entries persist as `Follow-up: ...` |
+| REQ-003 | All 8 relevant CLI docs must describe the corrected handback flow | Each `cli-*` SKILL and prompt template includes redact-and-scrub guidance, accepted next-step field names, and explicit JSON-mode hard-fail behavior |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Calling AI instructions in CLAUDE.md or agent definitions | Clear protocol for how the calling AI captures agent output and feeds to `generate-context.js` |
-| REQ-005 | Round-trip validation test | Demonstrate: dispatch → agent produces structured output → calling AI saves via `generate-context.js` → memory is searchable via `memory_search` |
+| REQ-004 | Verification evidence must stay repo-verifiable and current | The spec folder cites reproducible current-repo checks and marks unrerun checks as deferred or unverified instead of asserting historical numeric passes |
+| REQ-005 | Spec docs must not overstate live round-trip completion | No spec artifact claims an unverifiable 1032-line memory file or marks live outsourced CLI dispatch complete without current proof |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -95,9 +95,10 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: External agent sessions produce structured memory output that `generate-context.js` can consume
-- **SC-002**: No more garbage placeholder memory files from outsourced agent sessions
-- **SC-003**: Saved memories from external agents are searchable and surface relevant context in future sessions
+- **SC-001**: Explicit `dataFile` failures stop with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` instead of falling back to OpenCode capture.
+- **SC-002**: `nextSteps` and `next_steps` persist into `Next: ...`, `Follow-up: ...`, and `NEXT_ACTION`.
+- **SC-003**: All 8 relevant `cli-*` docs tell the caller to redact and scrub payloads before writing `/tmp/save-context-data.json`.
+- **SC-004**: This spec folder no longer claims the unverifiable 1032-line artifact or a completed live outsourced CLI dispatch.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -107,10 +108,11 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `generate-context.js` JSON mode | Core bridge for memory save | Already exists and works; may need minor enhancement |
-| Dependency | External CLI tools (codex, copilot, gemini, claude-code) | Cannot modify their internal behavior | Protocol works via prompt engineering — we control only instructions |
-| Risk | External agents may not follow memory epilogue format | Med | Design format to be simple; include fallback parsing for partial compliance |
-| Risk | Large agent outputs may exceed memory size limits | Low | Context template v2.2 already handles truncation |
+| Dependency | `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` | Governs explicit JSON-mode failure behavior | Keep docs tied to the current thrown `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` contract |
+| Dependency | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` and `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Governs `nextSteps` / `next_steps` persistence and `NEXT_ACTION` extraction | Verify docs against the current normalization and extraction logic |
+| Dependency | 4 `cli-*` skills and 4 prompt templates | Handback protocol guidance must stay consistent across all entry points | Reconcile wording across all 8 docs and use the real `.opencode/skill/cli-*` layout |
+| Risk | Live outsourced CLI dispatch is not rerun during this reconciliation | Claiming it passed would overstate completion | Keep live dispatch marked deferred until it is rerun and saved as fresh evidence |
+| Risk | Current repository state may drift outside this task's scope | Old verification claims can become stale | Record historical task evidence separately from current rerun results when needed |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -123,16 +125,16 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Memory save from captured agent output completes in <5s
-- **NFR-P02**: No measurable impact on agent dispatch latency
+- **NFR-P01**: Explicit JSON-mode validation should fail fast before any fallback work begins.
+- **NFR-P02**: Next-step normalization should not add measurable overhead beyond the existing save path.
 
 ### Security
-- **NFR-S01**: No secrets or credentials captured in memory output
-- **NFR-S02**: Memory files follow existing permission model (600 permissions)
+- **NFR-S01**: Calling agents must redact and scrub secrets, tokens, credentials, and unnecessary sensitive values before writing `/tmp/save-context-data.json`.
+- **NFR-S02**: Spec docs must describe the scrub step consistently anywhere the memory handback payload is documented.
 
 ### Reliability
-- **NFR-R01**: Graceful degradation if agent doesn't produce structured output — calling AI can still manually save
-- **NFR-R02**: Partial structured output still produces usable memory (not all-or-nothing)
+- **NFR-R01**: Explicit `dataFile` failures are deterministic and stop the save flow with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`.
+- **NFR-R02**: Both `nextSteps` and `next_steps` inputs produce the same persisted next-action behavior.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -141,18 +143,25 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty agent output: Skip memory save, log warning
-- Agent output without memory section: Calling AI manually extracts key points
-- Extremely large output (>50KB): Truncate to summary + key decisions
+- Missing explicit data file: fail immediately with `EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found: ...`.
+- Invalid explicit JSON payload: fail immediately with `EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file ...`.
+- Mixed next-step field naming: normalize either `nextSteps` or `next_steps` into the same persisted facts.
 
 ### Error Scenarios
-- `generate-context.js` fails on agent data: Fall back to manual memory save
-- Agent crashes mid-execution: No structured output available; calling AI notes failure in memory
-- Multiple agents dispatched in parallel: Each produces independent memory; calling AI saves sequentially
+- Explicit data file fails validation: surface `EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file ...`; do not fall back to OpenCode capture.
+- Handback payload contains sensitive values: caller must scrub before writing JSON.
+- Live outsourced CLI dispatch not rerun: document deferral instead of treating old artifacts as current proof.
 
 ### State Transitions
-- Agent partially completes work: Memory captures partial state with clear "incomplete" marker
-- Agent modifies files that conflict with calling AI's work: Memory captures the conflict for resolution
+- First next step present: persist it as `Next: ...` and expose it through `NEXT_ACTION`.
+- Additional next steps present: persist them as `Follow-up: ...` facts.
+- No next steps present: preserve summary and continue without a derived next-action fact.
+
+### Acceptance Scenarios
+- **Given** an explicit `dataFile` path that does not exist, **when** the loader reads it, **then** the save flow stops with `EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found: ...` and does not fall back.
+- **Given** an explicit `dataFile` containing invalid JSON, **when** the loader parses it, **then** the save flow stops with `EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file ...`.
+- **Given** an explicit `dataFile` with an invalid shape, **when** validation runs, **then** the save flow stops with `EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file ...`.
+- **Given** manual save input using either `nextSteps` or `next_steps`, **when** normalization runs, **then** the first item becomes `NEXT_ACTION` and later items persist as follow-up facts.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -162,17 +171,15 @@ All files under `.opencode/skill/sk-cli/` (CLI skills) and `.opencode/skill/syst
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 12/25 | 8+ files across 4 CLI skills, prompt templates, possibly generate-context.js |
-| Risk | 8/25 | Low risk — prompt-level changes only, no runtime code changes |
-| Research | 10/20 | Need to verify generate-context.js JSON mode capabilities, test with each CLI |
-| **Total** | **30/70** | **Level 2 appropriate** |
+| Scope | 14/25 | Runtime TypeScript, regression tests, 8 CLI docs, and 5 spec artifacts must stay aligned |
+| Risk | 11/25 | Memory-save behavior and verification claims can mislead future sessions if they drift |
+| Research | 9/20 | Existing repo state and prior task evidence had to be reconciled without inventing proof |
+| **Total** | **34/70** | **Level 2 appropriate** |
 <!-- /ANCHOR:complexity -->
 
 ---
 
 ## 10. OPEN QUESTIONS
 
-- Should the memory epilogue be opt-in (calling AI requests it) or always-on (every dispatch includes it)?
-- Should `generate-context.js` JSON mode accept raw agent output or require the calling AI to pre-structure it?
-- What's the minimum viable structured output format — JSON block, YAML frontmatter, or markdown section?
+- No open implementation blockers. Follow-up only: rerun a fresh live outsourced CLI dispatch if new end-to-end acceptance evidence is required.
 <!-- /ANCHOR:questions -->

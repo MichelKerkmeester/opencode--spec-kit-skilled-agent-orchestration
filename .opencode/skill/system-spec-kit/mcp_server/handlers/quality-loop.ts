@@ -461,6 +461,8 @@ function runQualityLoop(
   let currentMetadata = { ...metadata };
   let score = computeMemoryQualityScore(currentContent, currentMetadata);
   const allFixes: string[] = [];
+  let attemptsUsed = 1;
+  let autoFixAttemptsUsed = 0;
 
   if (score.total >= threshold) {
     logQualityMetrics(score, 1, true, false);
@@ -475,6 +477,7 @@ function runQualityLoop(
 
   // Auto-fix loop
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    autoFixAttemptsUsed = attempt;
     const fixResult = attemptAutoFix(currentContent, currentMetadata, score.issues);
     currentContent = fixResult.content;
     currentMetadata = fixResult.metadata;
@@ -482,13 +485,14 @@ function runQualityLoop(
 
     // Re-evaluate after fix
     score = computeMemoryQualityScore(currentContent, currentMetadata);
+    attemptsUsed = attempt + 1;
 
     if (score.total >= threshold) {
-      logQualityMetrics(score, attempt + 1, true, false);
+      logQualityMetrics(score, attemptsUsed, true, false);
       return {
         passed: true,
         score,
-        attempts: attempt + 1,
+        attempts: attemptsUsed,
         fixes: allFixes,
         rejected: false,
         // AI-WHY: Return mutated content so caller can persist it and recompute content_hash
@@ -503,14 +507,14 @@ function runQualityLoop(
   }
 
   // Rejected after all retries
-  const rejectionReason = `Quality score ${score.total.toFixed(3)} below threshold ${threshold} after ${maxRetries} auto-fix attempts. Issues: ${score.issues.join('; ')}`;
+  const rejectionReason = `Quality score ${score.total.toFixed(3)} below threshold ${threshold} after ${autoFixAttemptsUsed} auto-fix attempt(s). Issues: ${score.issues.join('; ')}`;
 
-  logQualityMetrics(score, maxRetries + 1, false, true);
+  logQualityMetrics(score, attemptsUsed, false, true);
 
   return {
     passed: false,
     score,
-    attempts: maxRetries + 1,
+    attempts: attemptsUsed,
     fixes: allFixes,
     rejected: true,
     rejectionReason,

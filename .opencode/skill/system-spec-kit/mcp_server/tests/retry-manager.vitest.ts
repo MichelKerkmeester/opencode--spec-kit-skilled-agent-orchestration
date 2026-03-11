@@ -9,6 +9,7 @@ import * as fs from 'fs';
 import type Database from 'better-sqlite3';
 import * as mod from '../lib/providers/retry-manager';
 import * as vectorIndex from '../lib/search/vector-index';
+import * as embeddings from '../lib/providers/embeddings';
 
 type RetryFunctionExportName =
   | 'getRetryQueue'
@@ -494,6 +495,66 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
           expect(typeof result).toBe('object');
           expect(typeof result.success).toBe('boolean');
         }
+      });
+
+      it('T45b: save-succeeded pending rows schedule retry when embedding generation fails', async () => {
+        const activeDb = getDbOrThrow();
+        activeDb.exec(`
+          CREATE TABLE IF NOT EXISTS vec_memories (
+            rowid INTEGER PRIMARY KEY,
+            embedding BLOB NOT NULL
+          );
+          CREATE TABLE IF NOT EXISTS embedding_cache (
+            content_hash TEXT NOT NULL,
+            model_id TEXT NOT NULL,
+            embedding BLOB NOT NULL,
+            dimensions INTEGER NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (datetime('now')),
+            last_used_at TEXT NOT NULL DEFAULT (datetime('now')),
+            PRIMARY KEY (content_hash, model_id)
+          );
+        `);
+
+        insertTestMemory(6002, '/tmp/pending-embed-failure.md', 'pending', 0);
+        const embeddingSpy = vi.spyOn(embeddings, 'generateDocumentEmbedding').mockResolvedValue(null);
+
+        const result = await mod.retryEmbedding(6002, `retry-content-${Date.now()}`);
+        expect(result.success).toBe(false);
+        expect(embeddingSpy).toHaveBeenCalledTimes(1);
+
+        const row = activeDb.prepare(
+          'SELECT embedding_status, retry_count, failure_reason FROM memory_index WHERE id = ?'
+        ).get(6002) as {
+          embedding_status: string;
+          retry_count: number;
+          failure_reason: string | null;
+        } | undefined;
+
+        expect(row).toBeDefined();
+        expect(row?.embedding_status).toBe('retry');
+        expect(row?.retry_count).toBe(1);
+        expect(row?.failure_reason).toContain('Embedding generation returned null');
+      });
+
+      it('T45c: max-retry exhaustion records a terminal failed state', async () => {
+        insertTestMemory(6003, '/tmp/max-retry-terminal.md', 'retry', mod.MAX_RETRIES);
+
+        const result = await mod.retryEmbedding(6003, 'unreachable-content');
+        expect(result.success).toBe(false);
+        expect(result.permanent).toBe(true);
+        expect(result.error).toContain('Maximum retries exceeded');
+
+        const activeDb = getDbOrThrow();
+        const row = activeDb.prepare(
+          'SELECT embedding_status, failure_reason FROM memory_index WHERE id = ?'
+        ).get(6003) as {
+          embedding_status: string;
+          failure_reason: string | null;
+        } | undefined;
+
+        expect(row).toBeDefined();
+        expect(row?.embedding_status).toBe('failed');
+        expect(row?.failure_reason).toBe('Maximum retry attempts exceeded');
       });
     });
 

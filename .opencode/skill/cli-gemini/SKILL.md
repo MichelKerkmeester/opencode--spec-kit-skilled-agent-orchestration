@@ -2,7 +2,7 @@
 name: cli-gemini
 description: "Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.1.0
+version: 1.2.0
 ---
 
 <!-- Keywords: gemini, gemini-cli, google, cross-ai, web-search, codebase-investigator, code-generation, code-review, second-opinion, agent-delegation -->
@@ -399,6 +399,22 @@ gemini "[prompt]" -m gemini-3.1-pro-preview -o text
 
 4. **ESCALATE IF task requires `--yolo` on sensitive files**
    - Describe risks and get explicit user approval
+
+### Memory Handback Protocol
+
+When the calling AI needs to preserve session context from a Gemini CLI delegation:
+
+1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §13) to the delegated prompt
+2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
+3. **Parse to JSON**: Map extracted fields to `{ sessionSummary, filesModified, keyDecisions, specFolder, triggerPhrases, nextSteps }` (the save flow accepts either `nextSteps` or `next_steps`)
+4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before writing the JSON file
+5. **Write JSON**: Save the scrubbed payload to `/tmp/save-context-data.json`
+6. **Invoke generate-context.js**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+
+**Graceful degradation**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the JSON from agent output and saves via the same JSON mode path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
+
+**Explicit JSON mode failures**: If the explicit data file cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture in that case; surface the error and stop.
 
 ---
 

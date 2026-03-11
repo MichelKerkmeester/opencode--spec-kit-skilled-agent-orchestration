@@ -46,7 +46,7 @@ vi.mock('../lib/search/vector-index', () => ({
 }));
 
 // Mock embeddings provider
-vi.mock('../providers/embeddings', () => ({
+vi.mock('../lib/providers/embeddings', () => ({
   generateQueryEmbedding: vi.fn(async () => new Float32Array([0.1, 0.2, 0.3])),
 }));
 
@@ -66,13 +66,11 @@ vi.mock('../lib/search/search-flags', () => ({
 }));
 
 // Mock embedding-expansion
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockExpandQueryWithEmbeddings: any = vi.fn(async () => ({
   original: 'test query',
   expanded: ['related', 'terms'],
   combinedQuery: 'test query related terms',
 }));
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockIsExpansionActive: any = vi.fn(() => true);
 vi.mock('../lib/search/embedding-expansion', () => ({
   expandQueryWithEmbeddings: (q: string, e: unknown) => mockExpandQueryWithEmbeddings(q, e),

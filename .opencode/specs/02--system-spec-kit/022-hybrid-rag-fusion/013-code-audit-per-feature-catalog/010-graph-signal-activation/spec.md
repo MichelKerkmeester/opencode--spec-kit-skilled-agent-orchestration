@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: graph-signal-activation [template:level_2/spec.md]"
 description: "Feature-centric code audit for Graph Signal Activation to verify correctness, standards alignment, behavioral fidelity, and test coverage across 11 cataloged features."
+# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "graph signal activation"
   - "graph-signal-activation"
@@ -44,7 +45,7 @@ contextType: "general"
 The Graph Signal Activation catalog contains 11 high-complexity features that require a structured code audit. Current implementation and tests show correctness risks, standards deviations, behavior mismatches against catalog "Current Reality" statements, and inconsistent playbook coverage mapping. Without a normalized spec artifact, remediation is hard to prioritize and verify.
 
 ### Purpose
-Deliver an evidence-backed, feature-by-feature audit baseline that drives prioritized remediation for Graph Signal Activation.
+Deliver an evidence-backed, feature-by-feature audit baseline that drives prioritized remediation for Graph Signal Activation. This spec originated as an audit-only artifact and now also serves as a partial remediation reconciliation record for the subset of fixes and verifications completed after the audit.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -59,9 +60,9 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 - Synchronize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` to Level 2 structure.
 
 ### Out of Scope
-- Implementing runtime code fixes in `mcp_server/` during this audit documentation phase.
+- Implementing new runtime code fixes beyond the already-documented partial remediation reconciliation captured by this spec set.
 - Altering feature catalog definitions beyond documenting discrepancies.
-- Creating `implementation-summary.md` for this rewrite.
+- Replacing or removing the existing `implementation-summary.md`; this pass only reconciles it to verified implementation evidence.
 
 ### Files to Change
 

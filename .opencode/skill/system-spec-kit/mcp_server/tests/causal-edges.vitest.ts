@@ -2,7 +2,7 @@
 // TEST: CAUSAL EDGES
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeAll, beforeEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import * as causalEdges from '../lib/storage/causal-edges.js';
 
@@ -863,8 +863,6 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
     it('T002: getWeightHistory returns entries for modified edge', () => {
       const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.5);
       causalEdges.updateEdge(edgeId, { strength: 0.7 }, 'audit-test', 'first bump');
-      // Ensure deterministic ordering for ORDER BY changed_at DESC in fast test runs.
-      testDb.prepare("UPDATE weight_history SET changed_at = datetime('now', '-1 minute') WHERE edge_id = ?").run(edgeId);
       causalEdges.updateEdge(edgeId, { strength: 0.9 }, 'audit-test', 'second bump');
 
       const history = causalEdges.getWeightHistory(edgeId);
@@ -874,6 +872,46 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(history[0].new_strength).toBe(0.9);
       expect(history[1].old_strength).toBe(0.5);
       expect(history[1].new_strength).toBe(0.7);
+    });
+
+    it('T001: rethrows touchEdgeAccess failures through read path warning', () => {
+      insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9);
+      const originalPrepare = testDb.prepare.bind(testDb);
+      const prepareSpy = vi.spyOn(testDb, 'prepare').mockImplementation((sql: string) => {
+        if (sql.includes("UPDATE causal_edges SET last_accessed = datetime('now') WHERE id = ?")) {
+          throw new Error('touch failed');
+        }
+        return originalPrepare(sql);
+      });
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      const edges = causalEdges.getEdgesFrom('1');
+
+      expect(edges).toHaveLength(1);
+      expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('touchEdgeAccess failed for edge'));
+      prepareSpy.mockRestore();
+      warnSpy.mockRestore();
+    });
+
+    it('T002: rollback uses deterministic same-second history ordering', () => {
+      const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.3);
+      causalEdges.updateEdge(edgeId, { strength: 0.5 }, 'test', 'first bump');
+      causalEdges.updateEdge(edgeId, { strength: 0.8 }, 'test', 'second bump');
+
+      testDb.prepare("UPDATE weight_history SET changed_at = '2026-03-11 10:00:00' WHERE edge_id = ?").run(edgeId);
+
+      const history = causalEdges.getWeightHistory(edgeId);
+      expect(history).toHaveLength(2);
+      expect(history[0].old_strength).toBe(0.5);
+      expect(history[0].new_strength).toBe(0.8);
+      expect(history[1].old_strength).toBe(0.3);
+      expect(history[1].new_strength).toBe(0.5);
+
+      const rollbackResult = causalEdges.rollbackWeights(edgeId, history[0].changed_at);
+      expect(rollbackResult).toBe(true);
+
+      const edge = causalEdges.getEdgesFrom('1')[0];
+      expect(edge.strength).toBe(0.5);
     });
   });
 });

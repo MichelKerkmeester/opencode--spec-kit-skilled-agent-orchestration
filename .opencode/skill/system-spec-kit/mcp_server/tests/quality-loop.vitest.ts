@@ -431,6 +431,15 @@ describe('runQualityLoop', () => {
     expect(result.score.total).toBeLessThan(0.6);
   });
 
+  it('reports actual attempts when early break stops further retries', () => {
+    process.env.SPECKIT_QUALITY_LOOP = 'true';
+    const result = runQualityLoop('x', { triggerPhrases: [] }, { maxRetries: 5 });
+    expect(result.passed).toBe(false);
+    expect(result.rejected).toBe(true);
+    expect(result.attempts).toBe(2);
+    expect(result.rejectionReason).toContain('after 1 auto-fix attempt(s)');
+  });
+
   it('succeeds after auto-fix improves quality above threshold', () => {
     process.env.SPECKIT_QUALITY_LOOP = 'true';
     // Content that is close to threshold but below 0.6 without triggers.

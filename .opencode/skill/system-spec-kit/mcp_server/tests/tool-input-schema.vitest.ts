@@ -2,10 +2,22 @@
 // TEST: Tool Input Schema Validation
 // ---------------------------------------------------------------
 
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { z } from 'zod';
 
-import { TOOL_DEFINITIONS, validateToolArgs } from '../tool-schemas';
+import { TOOL_DEFINITIONS, getSchema, validateToolArgs } from '../tool-schemas';
 import { validateToolInputSchema } from '../utils/tool-input-schema';
+
+const ORIGINAL_STRICT_SCHEMAS_ENV = process.env.SPECKIT_STRICT_SCHEMAS;
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  if (ORIGINAL_STRICT_SCHEMAS_ENV === undefined) {
+    delete process.env.SPECKIT_STRICT_SCHEMAS;
+  } else {
+    process.env.SPECKIT_STRICT_SCHEMAS = ORIGINAL_STRICT_SCHEMAS_ENV;
+  }
+});
 
 /* ---------------------------------------------------------------
    1. SCHEMA STRUCTURAL INTEGRITY
@@ -57,6 +69,30 @@ describe('Tool Input Schema Validation', () => {
     }).not.toThrow();
   });
 
+  it('strict mode rejects unknown properties when SPECKIT_STRICT_SCHEMAS is enabled', () => {
+    process.env.SPECKIT_STRICT_SCHEMAS = 'true';
+    const schema = getSchema({
+      query: z.string().min(2),
+    });
+
+    const parsed = schema.safeParse({ query: 'valid query', unexpected: true });
+    expect(parsed.success).toBe(false);
+
+    if (!parsed.success) {
+      expect(parsed.error.issues.some((issue) => issue.code === 'unrecognized_keys')).toBe(true);
+    }
+  });
+
+  it('passthrough mode allows unknown properties when SPECKIT_STRICT_SCHEMAS is disabled', () => {
+    process.env.SPECKIT_STRICT_SCHEMAS = 'false';
+    const schema = getSchema({
+      query: z.string().min(2),
+    });
+
+    const parsed = schema.parse({ query: 'valid query', unexpected: true });
+    expect(parsed).toEqual({ query: 'valid query', unexpected: true });
+  });
+
   it('enforces enum validation for provided fields', () => {
     expect(() => {
       validateToolInputSchema('memory_context', { input: 'resume', mode: 'invalid-mode' }, TOOL_DEFINITIONS);
@@ -67,6 +103,17 @@ describe('Tool Input Schema Validation', () => {
     expect(() => {
       validateToolInputSchema('unknown_tool', { any: 'value' }, TOOL_DEFINITIONS);
     }).not.toThrow();
+  });
+
+  it('logs schema validation failures to stderr for auditability', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    expect(() => {
+      validateToolArgs('memory_search', { query: 'valid query', unexpected: true } as Record<string, unknown>);
+    }).toThrow();
+
+    expect(errorSpy).toHaveBeenCalled();
+    expect(errorSpy.mock.calls.some((call) => String(call[0]).includes('[schema-validation] memory_search:'))).toBe(true);
   });
 });
 

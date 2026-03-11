@@ -360,6 +360,21 @@ describe('formatSearchResults', () => {
     expect(trace?.channelsUsed).toEqual(expect.arrayContaining(['vector', 'fts', 'trigger']));
     expect(trace?.channelsUsed).not.toContain('graph');
   });
+
+  it('C17: trace.queryComplexity falls back to row traceMetadata when stages omit it', async () => {
+    const mockResults = [{
+      id: 53,
+      spec_folder: 'specs/011-test',
+      file_path: '/tmp/query-complexity.md',
+      title: 'Trace Complexity',
+      traceMetadata: {
+        queryComplexity: 'moderate',
+      },
+    }];
+    const res = await formatSearchResults(mockResults, 'semantic', false, null, null, null, {}, true);
+    const envelope = parseEnvelope(res);
+    expect(envelope.data.results[0]?.trace?.queryComplexity).toBe('moderate');
+  });
 });
 
 /* ==================================================================

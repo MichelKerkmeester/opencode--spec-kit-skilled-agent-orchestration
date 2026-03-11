@@ -2,11 +2,11 @@
 
 ## Current Reality
 
-Before assembling the final response, the system estimates total token count across all candidate results and truncates to the highest-scoring candidates when the total exceeds the configured budget. When contextual tree headers are enabled (`SPECKIT_CONTEXT_HEADERS`), the usable budget is first reduced by header overhead (~12 tokens per result, floor 200 tokens) to account for injected `[parent > child — desc]` headers (CHK-060). The truncation strategy is greedy: highest scores first, never round-robin.
+Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a retrieval-time truncation feature. Before embedding generation, the runtime estimates token count from content length using `Math.ceil(text.length / charsPerToken)`, where `charsPerToken` defaults to `4` and can be overridden with `MCP_CHARS_PER_TOKEN`.
 
-For `includeContent=true` queries where a single result overshoots the budget, a summary (first 400 characters) replaces raw content rather than returning nothing.
+`checkTokenBudget()` adds a default 150-token embedding overhead, compares the estimate against `MCP_MAX_MEMORY_TOKENS` (default `8000`), and emits one of two outcomes: `PF020` hard failure when the estimate exceeds the max, or `PF021` warning when usage reaches `MCP_TOKEN_WARNING_THRESHOLD` (default `0.8`). The reduction hint in the error message uses the same `charsPerToken` ratio so the suggested character trim matches runtime math.
 
-Overflow events are logged with query ID, candidate count, total tokens, budget limit and the number of results after truncation. This prevents the response from blowing through the caller's context window.
+This validation runs in `memory_save` pre-flight before any embedding generation or database writes. It protects ingestion cost and save-time limits; it does not control search-result truncation.
 
 ## Source Files
 
@@ -14,14 +14,13 @@ Overflow events are logged with query ID, candidate count, total tokens, budget 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
-| `mcp_server/lib/validation/preflight.ts` | Lib | Pre-flight validation |
+| `mcp_server/lib/validation/preflight.ts` | Lib | Token estimation, thresholds, and pre-flight pass/warn/fail behavior |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/preflight.vitest.ts` | Pre-flight validation tests |
+| `mcp_server/tests/preflight.vitest.ts` | Token-budget validation and pre-flight error/warning behavior |
 
 ## Source Metadata
 

@@ -19,7 +19,8 @@
 // 10. Provenance/audit log -- track what was learned and why
 //
 // Query weight: 0.7x (learned triggers weighted lower than organic triggers)
-// Feature flag: SPECKIT_LEARN_FROM_SELECTION (default ON — graduated)
+// Feature flag: SPECKIT_LEARN_FROM_SELECTION (graduated default ON;
+// disabled only when explicitly set to "false")
 // ---------------------------------------------------------------
 
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
@@ -66,7 +67,7 @@ export interface LearnedTriggerMatch {
    2. CONSTANTS
    --------------------------------------------------------------- */
 
-/** Feature flag environment variable name (default OFF -- Safeguard #8) */
+/** Feature flag environment variable name (graduated default ON) */
 export const FEATURE_FLAG = 'SPECKIT_LEARN_FROM_SELECTION';
 
 /** Learned trigger query weight multiplier (0.7x of organic triggers) */
@@ -158,7 +159,8 @@ function ensureLearnedTriggersIndex(db: Database): void {
 
 /**
  * Check if the learned relevance feedback feature is enabled.
- * Default: TRUE (graduated). Set SPECKIT_LEARN_FROM_SELECTION=false to disable.
+ * Local gate behavior: disabled only when SPECKIT_LEARN_FROM_SELECTION is
+ * explicitly set to "false".
  *
  * @returns true if SPECKIT_LEARN_FROM_SELECTION is not explicitly disabled
  */

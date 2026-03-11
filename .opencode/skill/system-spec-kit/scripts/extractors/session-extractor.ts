@@ -209,13 +209,28 @@ function extractNextAction(
   observations: Observation[],
   recentContext?: RecentContextEntry[]
 ): string {
+  const nextLabelPattern = /\bnext:\s*(.+)/i;
+  const fallbackLabelPattern = /\b(?:todo|follow-?up):\s*(.+)/i;
+
   for (let i = observations.length - 1; i >= 0; i--) {
     const obs = observations[i];
     if (obs.facts) {
       for (let j = obs.facts.length - 1; j >= 0; j--) {
         const fact = obs.facts[j];
         if (typeof fact === 'string') {
-          const nextMatch = fact.match(/\b(?:next|todo|follow-?up):\s*(.+)/i);
+          const nextMatch = fact.match(nextLabelPattern);
+          if (nextMatch) return nextMatch[1].trim();
+        }
+      }
+    }
+  }
+  for (let i = observations.length - 1; i >= 0; i--) {
+    const obs = observations[i];
+    if (obs.facts) {
+      for (let j = obs.facts.length - 1; j >= 0; j--) {
+        const fact = obs.facts[j];
+        if (typeof fact === 'string') {
+          const nextMatch = fact.match(fallbackLabelPattern);
           if (nextMatch) return nextMatch[1].trim();
         }
       }

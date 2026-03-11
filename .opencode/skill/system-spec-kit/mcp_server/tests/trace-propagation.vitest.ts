@@ -1,227 +1,138 @@
 // ---------------------------------------------------------------
-// MODULE: Test — Trace Propagation Chain (T006 Integration Tests)
+// MODULE: Test - Trace Propagation Chain (CHK-038)
 // ---------------------------------------------------------------
-// Validates the full chain: routeResult.tier -> traceMetadata.queryComplexity
-// Ensures classifier tier values propagate correctly through the router
-// into the trace metadata structure used by hybrid-search.ts (CHK-038).
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import {
-  classifyQueryComplexity,
-  type QueryComplexityTier,
-} from '../lib/search/query-classifier';
-import { routeQuery } from '../lib/search/query-router';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import * as hybridSearch from '../lib/search/hybrid-search';
+import * as bm25Index from '../lib/search/bm25-index';
+import { formatSearchResults } from '../formatters/search-results';
 
-/* ---------------------------------------------------------------
-   HELPERS
-   --------------------------------------------------------------- */
+type InitDb = Parameters<typeof hybridSearch.init>[0];
+type VectorSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[1]>;
 
 const FEATURE_FLAG = 'SPECKIT_COMPLEXITY_ROUTER';
-let savedEnv: string | undefined;
+const savedFlag = process.env[FEATURE_FLAG];
 
-function enableFlag(): void {
-  savedEnv = process.env[FEATURE_FLAG];
-  process.env[FEATURE_FLAG] = 'true';
+interface MockDoc {
+  id: number;
+  content: string;
+  spec_folder: string;
 }
 
-function restoreFlag(): void {
-  if (savedEnv === undefined) {
-    delete process.env[FEATURE_FLAG];
-  } else {
-    process.env[FEATURE_FLAG] = savedEnv;
-  }
-}
+const MOCK_DOCS: MockDoc[] = [
+  {
+    id: 1,
+    content: 'Authentication module implementation details for secure user login and session management.',
+    spec_folder: 'specs/auth',
+  },
+  {
+    id: 2,
+    content: 'Database refactor notes covering connection retry logic and transactional recovery behavior.',
+    spec_folder: 'specs/db',
+  },
+  {
+    id: 3,
+    content: 'Security guidance for OAuth refresh handling and token lifecycle coordination across systems.',
+    spec_folder: 'specs/security',
+  },
+];
 
-/**
- * Simulate the traceMetadata assembly that hybrid-search.ts performs at
- * lines 997-1009 (CHK-038). This mirrors the production code:
- *   traceMetadata: { ..., queryComplexity: routeResult.tier }
- */
-function buildTraceMetadata(routeResult: { tier: QueryComplexityTier }) {
+function createMockDb(): InitDb {
   return {
-    stage4: null,
-    attribution: null,
-    degradation: null,
-    budgetTruncated: false,
-    budgetLimit: 100,
-    queryComplexity: routeResult.tier,
-  };
+    prepare(sql: string) {
+      return {
+        get() {
+          if (sql.includes('memory_fts')) {
+            return { count: 1 };
+          }
+          return null;
+        },
+        all() {
+          return MOCK_DOCS.map((doc, index) => ({
+            ...doc,
+            fts_score: 10 - index,
+          }));
+        },
+      };
+    },
+  } as InitDb;
 }
 
-/* ---------------------------------------------------------------
-   T006: TRACE PROPAGATION CHAIN
-   classifier -> router -> traceMetadata.queryComplexity
-   --------------------------------------------------------------- */
+const mockVectorSearch: VectorSearchFn = (_embedding, options = {}) => {
+  const limit = typeof options.limit === 'number' ? options.limit : 10;
+  return MOCK_DOCS.slice(0, limit).map((doc, index) => ({
+    ...doc,
+    similarity: 0.95 - index * 0.1,
+  }));
+};
 
-describe('T006: Trace Propagation Chain (classifier -> router -> traceMetadata)', () => {
+async function runQuery(query: string) {
+  const results = await hybridSearch.hybridSearchEnhanced(query, new Float32Array(384).fill(0.2), {
+    limit: 5,
+  });
+  expect(results.length).toBeGreaterThan(0);
+  return results;
+}
+
+function parseFirstResultTraceText(payload: Awaited<ReturnType<typeof formatSearchResults>>) {
+  const text = payload.content[0];
+  expect(text?.type).toBe('text');
+  if (!text || text.type !== 'text') {
+    throw new Error('Expected text payload');
+  }
+
+  const envelope = JSON.parse(text.text) as {
+    data: {
+      results: Array<{
+        trace?: {
+          queryComplexity?: string | null;
+        };
+      }>;
+    };
+  };
+
+  return envelope.data.results[0]?.trace ?? null;
+}
+
+describe('CHK-038: Trace propagation uses the production path', () => {
   beforeEach(() => {
-    enableFlag();
+    process.env[FEATURE_FLAG] = 'true';
+    hybridSearch.init(createMockDb(), mockVectorSearch, null);
+    bm25Index.resetIndex();
+    const bm25 = bm25Index.getIndex();
+    for (const doc of MOCK_DOCS) {
+      bm25.addDocument(String(doc.id), doc.content);
+    }
   });
 
   afterEach(() => {
-    restoreFlag();
-  });
-
-  /* ---------------------------------------------------------------
-     T006-01: Simple tier propagation
-     --------------------------------------------------------------- */
-  describe('T006-01: Simple tier propagation', () => {
-    it('classifier returns "simple" for short query', () => {
-      const classification = classifyQueryComplexity('fix bug');
-      expect(classification.tier).toBe('simple');
-    });
-
-    it('router returns tier "simple" for short query', () => {
-      const routeResult = routeQuery('fix bug');
-      expect(routeResult.tier).toBe('simple');
-    });
-
-    it('traceMetadata.queryComplexity equals "simple" when tier is simple', () => {
-      const routeResult = routeQuery('fix bug');
-      const trace = buildTraceMetadata(routeResult);
-      expect(trace.queryComplexity).toBe('simple');
-    });
-
-    it('full chain: classifier -> router -> trace all agree on "simple"', () => {
-      const query = 'search memory';
-      const classification = classifyQueryComplexity(query);
-      const routeResult = routeQuery(query);
-      const trace = buildTraceMetadata(routeResult);
-
-      expect(classification.tier).toBe('simple');
-      expect(routeResult.tier).toBe('simple');
-      expect(trace.queryComplexity).toBe('simple');
-      expect(classification.tier).toBe(routeResult.tier);
-      expect(routeResult.tier).toBe(trace.queryComplexity);
-    });
-  });
-
-  /* ---------------------------------------------------------------
-     T006-02: Complex tier propagation
-     --------------------------------------------------------------- */
-  describe('T006-02: Complex tier propagation', () => {
-    const complexQuery =
-      'explain how the authentication module integrates with the external OAuth provider and handles token refresh';
-
-    it('classifier returns "complex" for long query', () => {
-      const classification = classifyQueryComplexity(complexQuery);
-      expect(classification.tier).toBe('complex');
-    });
-
-    it('router returns tier "complex" for long query', () => {
-      const routeResult = routeQuery(complexQuery);
-      expect(routeResult.tier).toBe('complex');
-    });
-
-    it('traceMetadata.queryComplexity equals "complex" when tier is complex', () => {
-      const routeResult = routeQuery(complexQuery);
-      const trace = buildTraceMetadata(routeResult);
-      expect(trace.queryComplexity).toBe('complex');
-    });
-
-    it('full chain: classifier -> router -> trace all agree on "complex"', () => {
-      const classification = classifyQueryComplexity(complexQuery);
-      const routeResult = routeQuery(complexQuery);
-      const trace = buildTraceMetadata(routeResult);
-
-      expect(classification.tier).toBe('complex');
-      expect(routeResult.tier).toBe('complex');
-      expect(trace.queryComplexity).toBe('complex');
-      expect(classification.tier).toBe(routeResult.tier);
-      expect(routeResult.tier).toBe(trace.queryComplexity);
-    });
-  });
-
-  /* ---------------------------------------------------------------
-     T006-03: Moderate tier propagation (analytical proxy)
-     --------------------------------------------------------------- */
-  describe('T006-03: Moderate tier propagation', () => {
-    const moderateQuery = 'refactor the database connection module';
-
-    it('classifier returns "moderate" for mid-length query', () => {
-      const classification = classifyQueryComplexity(moderateQuery);
-      expect(classification.tier).toBe('moderate');
-    });
-
-    it('router returns tier "moderate" for mid-length query', () => {
-      const routeResult = routeQuery(moderateQuery);
-      expect(routeResult.tier).toBe('moderate');
-    });
-
-    it('traceMetadata.queryComplexity equals "moderate" when tier is moderate', () => {
-      const routeResult = routeQuery(moderateQuery);
-      const trace = buildTraceMetadata(routeResult);
-      expect(trace.queryComplexity).toBe('moderate');
-    });
-
-    it('full chain: classifier -> router -> trace all agree on "moderate"', () => {
-      const classification = classifyQueryComplexity(moderateQuery);
-      const routeResult = routeQuery(moderateQuery);
-      const trace = buildTraceMetadata(routeResult);
-
-      expect(classification.tier).toBe('moderate');
-      expect(routeResult.tier).toBe('moderate');
-      expect(trace.queryComplexity).toBe('moderate');
-      expect(classification.tier).toBe(routeResult.tier);
-      expect(routeResult.tier).toBe(trace.queryComplexity);
-    });
-  });
-
-  /* ---------------------------------------------------------------
-     T006-04: All tiers — cross-tier consistency
-     --------------------------------------------------------------- */
-  describe('T006-04: Cross-tier consistency', () => {
-    const queries: Array<{ query: string; expectedTier: QueryComplexityTier }> = [
-      { query: 'fix bug', expectedTier: 'simple' },
-      { query: 'refactor the database connection module', expectedTier: 'moderate' },
-      {
-        query: 'explain how the authentication module integrates with the external OAuth provider and handles token refresh',
-        expectedTier: 'complex',
-      },
-    ];
-
-    for (const { query, expectedTier } of queries) {
-      it(`"${query.slice(0, 30)}..." propagates "${expectedTier}" through full chain`, () => {
-        const routeResult = routeQuery(query);
-        const trace = buildTraceMetadata(routeResult);
-
-        expect(routeResult.tier).toBe(expectedTier);
-        expect(trace.queryComplexity).toBe(expectedTier);
-        expect(routeResult.classification.tier).toBe(expectedTier);
-      });
+    bm25Index.resetIndex();
+    if (savedFlag === undefined) {
+      delete process.env[FEATURE_FLAG];
+    } else {
+      process.env[FEATURE_FLAG] = savedFlag;
     }
+  });
 
-    it('tier type covers exactly simple, moderate, complex', () => {
-      const tiers: QueryComplexityTier[] = ['simple', 'moderate', 'complex'];
-      expect(tiers).toHaveLength(3);
-    });
-
-    it('traceMetadata structure matches hybrid-search.ts shape', () => {
-      const routeResult = routeQuery('fix bug');
-      const trace = buildTraceMetadata(routeResult);
-
-      expect(trace).toHaveProperty('stage4');
-      expect(trace).toHaveProperty('attribution');
-      expect(trace).toHaveProperty('degradation');
-      expect(trace).toHaveProperty('budgetTruncated');
-      expect(trace).toHaveProperty('budgetLimit');
-      expect(trace).toHaveProperty('queryComplexity');
-      expect(typeof trace.queryComplexity).toBe('string');
+  it.each([
+    ['fix bug', 'simple'],
+    ['refactor the database connection module', 'moderate'],
+    [
+      'explain how the authentication module integrates with the external OAuth provider and handles token refresh',
+      'complex',
+    ],
+  ] as const)('writes queryComplexity=%s tier into runtime trace metadata', async (query, expectedTier) => {
+    const results = await runQuery(query);
+    expect(results[0]?.traceMetadata).toMatchObject({
+      queryComplexity: expectedTier,
     });
   });
 
-  /* ---------------------------------------------------------------
-     T006-05: Fallback when flag disabled
-     --------------------------------------------------------------- */
-  describe('T006-05: Fallback propagation (flag disabled)', () => {
-    it('propagates "complex" fallback through trace when flag is disabled', () => {
-      process.env[FEATURE_FLAG] = 'false';
-      const routeResult = routeQuery('fix bug');
-      const trace = buildTraceMetadata(routeResult);
+  it('surfaces runtime queryComplexity through formatSearchResults trace fallback', async () => {
+    const results = await runQuery('refactor the database connection module');
+    const formatted = await formatSearchResults(results, 'semantic', false, null, null, null, {}, true);
+    const trace = parseFirstResultTraceText(formatted);
 
-      expect(routeResult.tier).toBe('complex');
-      expect(trace.queryComplexity).toBe('complex');
-      expect(routeResult.classification.confidence).toBe('fallback');
-    });
+    expect(trace?.queryComplexity).toBe('moderate');
   });
 });

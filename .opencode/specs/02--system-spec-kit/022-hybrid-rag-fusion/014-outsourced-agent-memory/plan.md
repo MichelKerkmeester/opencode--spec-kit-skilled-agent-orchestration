@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Outsourced Agent Memory Capture"
-description: "Design and implement a memory return protocol for externally dispatched CLI agents, updating cli-* skills with handback instructions and prompt epilogues."
+description: "Align runtime memory-input handling, CLI handback docs, and spec evidence so explicit JSON-mode failures, next-step persistence, and verification status are all documented consistently."
 trigger_phrases: ["outsourced agent memory", "memory handback plan", "cli agent protocol"]
 importance_tier: "normal"
 contextType: "general"
@@ -18,13 +18,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (generate-context.js), Markdown (SKILL, prompt templates) |
-| **Framework** | Spec Kit Memory system, CLI skill ecosystem |
-| **Storage** | SQLite (Spec Kit Memory DB) |
-| **Testing** | Manual round-trip validation |
+| **Language/Stack** | TypeScript and Markdown |
+| **Framework** | Spec Kit runtime save flow plus `cli-*` skill documentation |
+| **Storage** | Markdown spec artifacts and Spec Kit Memory outputs |
+| **Testing** | Targeted Vitest, TypeScript typecheck, alignment-drift verification, `validate.sh` |
 
 ### Overview
-Implement a standardized protocol that enables externally dispatched CLI agents (Codex, Copilot, Gemini, Claude Code) to produce structured session context in their output, which the calling AI then captures and saves to Spec Kit Memory via `generate-context.js` JSON mode. The approach is prompt-engineering-only — no external tool modifications required.
+This work landed in three layers: runtime safeguards for explicit JSON-mode input handling, CLI handback documentation updates across all 8 relevant `cli-*` docs, and spec-folder reconciliation so the written evidence matches the implemented repository state. The plan keeps historical task evidence separate from current rerun status so the spec folder does not overstate a live outsourced CLI round-trip that has not been freshly revalidated.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,11 +38,11 @@ Implement a standardized protocol that enables externally dispatched CLI agents 
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] Memory return protocol defined and documented
-- [ ] All 4 cli-* SKILL files updated with Memory Handback section
-- [ ] All 4 prompt templates files updated with memory epilogue
-- [ ] Round-trip validation successful (dispatch → structured output → memory save → searchable)
-- [ ] Spec docs updated (spec/plan/tasks/checklist)
+- [x] Runtime loader hard-fails explicit `dataFile` errors without fallback
+- [x] Next-step normalization and `NEXT_ACTION` persistence are documented correctly
+- [x] All 8 relevant `cli-*` docs reflect redact-and-scrub and explicit failure behavior
+- [x] Spec docs no longer claim the unverifiable 1032-line artifact or a completed live round-trip
+- [x] Spec-folder validation run recorded
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -51,26 +51,25 @@ Implement a standardized protocol that enables externally dispatched CLI agents 
 ## 3. ARCHITECTURE
 
 ### Pattern
-Prompt-engineering protocol layered on existing infrastructure.
+Repository-side runtime hardening plus documentation alignment.
 
 ### Key Components
-- **Memory Return Protocol**: Standardized output format (markdown section with structured fields) that external agents append to their response
-- **Prompt Epilogue**: Template suffix added to CLI skill prompts instructing external agents to produce the structured output
-- **Calling AI Handler**: Instructions in SKILL for how the calling AI extracts the structured section and passes it to `generate-context.js`
-- **generate-context.js JSON Mode**: Existing bridge that accepts structured data and writes it to Spec Kit Memory
+- **`data-loader.ts`**: Loads explicit JSON-mode input and now throws `EXPLICIT_DATA_FILE_LOAD_FAILED: ...` for missing, invalid, or invalid-shape input instead of falling back.
+- **`input-normalizer.ts`**: Accepts `nextSteps` or `next_steps`, then persists the first item as `Next: ...` and the rest as `Follow-up: ...`.
+- **`session-extractor.ts`**: Reads the persisted `Next: ...` fact into `NEXT_ACTION`.
+- **`runtime-memory-inputs.vitest.ts`**: Guards the explicit-failure path and next-step persistence behavior.
+- **4 `cli-*` skills + 4 prompt templates**: Tell the caller to extract handback data, redact and scrub it, and stop on explicit JSON-mode failures.
 
 ### Data Flow
-```
-Calling AI dispatches task via cli-* skill
-    → Prompt includes memory epilogue suffix
-    → External agent executes task
-    → External agent appends structured memory section to output
-    → Calling AI receives stdout with memory section
-    → Calling AI extracts memory section
-    → Calling AI writes JSON to /tmp/save-context-data.json
-    → Calling AI runs: node generate-context.js [spec-folder-path]
-    → Memory saved to Spec Kit Memory DB
-    → Future sessions can search and surface this context
+```text
+Caller prepares /tmp/save-context-data.json
+  -> Caller redacts and scrubs sensitive values
+  -> generate-context runtime loads explicit dataFile
+  -> invalid file / JSON / shape throws EXPLICIT_DATA_FILE_LOAD_FAILED: ...
+  -> valid input normalizes nextSteps or next_steps
+  -> first persisted fact becomes Next: ...
+  -> session extractor maps Next: ... to NEXT_ACTION
+  -> saved memory and spec docs describe the same behavior
 ```
 <!-- /ANCHOR:architecture -->
 
@@ -79,30 +78,24 @@ Calling AI dispatches task via cli-* skill
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Protocol Design
-- [ ] Research generate-context.js JSON mode input format
-- [ ] Research existing context template v2.2 structure
-- [ ] Define memory return protocol (structured output format)
-- [ ] Define minimum viable fields (summary, files_modified, decisions, next_steps)
+### Phase 1: Runtime Safeguards
+- [x] Hard-fail explicit `dataFile` load, parse, and validation failures in `data-loader.ts`
+- [x] Normalize `nextSteps` and `next_steps` in `input-normalizer.ts`
+- [x] Feed the first persisted next step into `NEXT_ACTION` in `session-extractor.ts`
+- [x] Add regression coverage in `runtime-memory-inputs.vitest.ts`
 
-### Phase 2: Prompt Template Updates
-- [ ] Design memory epilogue template (universal across all cli-* skills)
-- [ ] Add epilogue to cli-codex prompt templates
-- [ ] Add epilogue to cli-copilot prompt templates
-- [ ] Add epilogue to cli-gemini prompt templates
-- [ ] Add epilogue to cli-claude-code prompt templates
+### Phase 2: CLI Handback Documentation
+- [x] Update all 4 `cli-*` SKILL files with redact-and-scrub guidance
+- [x] Update all 4 `cli-*` prompt templates with accepted next-step fields and explicit hard-fail behavior
+- [x] Correct `cli-codex` prompt template numbering
+- [x] Use the real `.opencode/skill/cli-*` path layout in spec references
 
-### Phase 3: SKILL Updates
-- [ ] Design Memory Handback section (universal content, skill-specific examples)
-- [ ] Add section to cli-codex SKILL
-- [ ] Add section to cli-copilot SKILL
-- [ ] Add section to cli-gemini SKILL
-- [ ] Add section to cli-claude-code SKILL
-
-### Phase 4: Verification
-- [ ] Round-trip test with one CLI skill (e.g., cli-codex)
-- [ ] Verify saved memory is searchable via `memory_search`
-- [ ] Update spec folder docs
+### Phase 3: Verification and Reconciliation
+- [x] Remove historical numeric Vitest pass-total claims from current acceptance evidence
+- [x] Verify alignment drift currently reports `0 findings`
+- [x] Record the current unrelated typecheck rerun issue honestly instead of masking it
+- [x] Remove unverifiable 1032-line artifact claims and keep live outsourced CLI dispatch deferred
+- [x] Run `validate.sh` on this spec folder
 <!-- /ANCHOR:phases -->
 
 ---
@@ -112,9 +105,11 @@ Calling AI dispatches task via cli-* skill
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual | Round-trip: dispatch → structured output → save → search | CLI skills, generate-context.js, memory_search |
-| Manual | Graceful degradation: agent without epilogue | CLI dispatch without memory epilogue |
-| Manual | Partial output: agent produces incomplete structured section | generate-context.js error handling |
+| Targeted regression | Explicit `dataFile` failure handling and next-step persistence | `runtime-memory-inputs.vitest.ts` |
+| Static verification | TypeScript correctness for the task scope | `npm run typecheck` |
+| Alignment verification | Drift between implementation and aligned standards | `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts` |
+| Spec validation | Completeness and checklist consistency inside this folder | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` |
+| Manual follow-up | Fresh live outsourced CLI dispatch | Deferred until rerun |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -124,10 +119,10 @@ Calling AI dispatches task via cli-* skill
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `generate-context.js` JSON mode | Internal | Green | Core bridge; already exists |
-| Context template v2.2 | Internal | Green | Template format; already stable |
-| CLI skill prompt templates | Internal | Green | Files exist; need additions |
-| CLI skill SKILL definitions | Internal | Green | Files exist; need new section |
+| `data-loader.ts` | Internal | Green | Explicit JSON-mode failures would drift from documented behavior |
+| `input-normalizer.ts` + `session-extractor.ts` | Internal | Green | `nextSteps` / `next_steps` docs would not match persisted memory state |
+| 4 `cli-*` skills + 4 prompt templates | Internal | Green | Callers would miss scrub guidance or hard-fail semantics |
+| Prior Tasks #1-2 verification notes | Internal | Green | Historical evidence would be lost or misrepresented |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -135,8 +130,8 @@ Calling AI dispatches task via cli-* skill
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Protocol causes issues with external agent behavior or breaks existing CLI skill workflows
-- **Procedure**: Revert SKILL and prompt templates changes; epilogue is additive so removal is clean
+- **Trigger**: Reconciliation introduces contradictions, validation failures, or inaccurate proof claims.
+- **Procedure**: Revert only the affected spec-folder markdown files and restore wording from the last validated state; do not touch `memory/` manually.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -144,17 +139,15 @@ Calling AI dispatches task via cli-* skill
 <!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
-```
-Phase 1 (Protocol Design) ──► Phase 2 (Prompt Templates) ──► Phase 4 (Verify)
-                          └──► Phase 3 (SKILL Updates) ──┘
+```text
+Phase 1 (Runtime Safeguards) -> Phase 2 (CLI Docs) -> Phase 3 (Verify and Reconcile)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Protocol Design | None | Prompt Templates, SKILL Updates |
-| Prompt Templates | Protocol Design | Verification |
-| SKILL Updates | Protocol Design | Verification |
-| Verification | Prompt Templates, SKILL Updates | None |
+| Runtime Safeguards | None | CLI Docs, Verify and Reconcile |
+| CLI Docs | Runtime Safeguards | Verify and Reconcile |
+| Verify and Reconcile | Runtime Safeguards, CLI Docs | None |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -164,10 +157,10 @@ Phase 1 (Protocol Design) ──► Phase 2 (Prompt Templates) ──► Phase 4
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Protocol Design | Med | Research + design |
-| Prompt Templates | Low | 4 files, same epilogue |
-| SKILL Updates | Low | 4 files, same section |
-| Verification | Med | Manual round-trip test |
+| Runtime Safeguards | Med | Completed in Tasks #1-2 |
+| CLI Handback Documentation | Med | Completed in Tasks #1-2 |
+| Verification and Reconciliation | Med | 1 focused documentation pass plus validation |
+| **Total** | | **Level 2 scope maintained** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -176,16 +169,17 @@ Phase 1 (Protocol Design) ──► Phase 2 (Prompt Templates) ──► Phase 4
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Existing CLI skill workflows tested without memory epilogue (baseline)
-- [ ] generate-context.js JSON mode verified with sample data
+- [x] Source runtime files reviewed before updating docs
+- [x] Existing Level 2 templates reviewed before editing spec artifacts
+- [x] Verification commands identified before claiming completion
 
 ### Rollback Procedure
-1. Remove Memory Handback sections from all 4 SKILL files
-2. Remove epilogue templates from all 4 prompt templates files
-3. Verify CLI skills still dispatch correctly without epilogue
-4. No data migration needed — memory entries are additive
+1. Restore the previous version of the 5 spec artifacts in this folder.
+2. Re-run `validate.sh` to confirm the restored set is internally consistent.
+3. Keep any historical verification notes that are still accurate.
+4. Leave `memory/` contents unchanged.
 
 ### Data Reversal
 - **Has data migrations?** No
-- **Reversal procedure**: N/A — memory entries from protocol are standard entries, can be individually deleted if needed
+- **Reversal procedure**: N/A
 <!-- /ANCHOR:enhanced-rollback -->

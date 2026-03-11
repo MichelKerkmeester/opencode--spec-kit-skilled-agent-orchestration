@@ -49,6 +49,8 @@ export interface RawInputData {
   filesModified?: string[];
   sessionSummary?: string;
   keyDecisions?: Array<string | DecisionItemObject>;
+  nextSteps?: string[];
+  next_steps?: string[];
   technicalContext?: Record<string, unknown>;
   triggerPhrases?: string[];
   importanceTier?: string;
@@ -223,6 +225,20 @@ function buildTechnicalContextObservation(techContext: Record<string, unknown>):
   };
 }
 
+function buildNextStepsObservation(nextSteps: string[]): Observation {
+  const [firstStep, ...remainingSteps] = nextSteps;
+
+  return {
+    type: 'followup',
+    title: 'Next Steps',
+    narrative: nextSteps.join(' '),
+    facts: [
+      `Next: ${firstStep}`,
+      ...remainingSteps.map((step) => `Follow-up: ${step}`),
+    ],
+  };
+}
+
 // ---------------------------------------------------------------
 // 4. INPUT NORMALIZATION
 // ---------------------------------------------------------------
@@ -273,6 +289,12 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     }));
   }
 
+  const nextSteps = Array.isArray(data.nextSteps)
+    ? data.nextSteps
+    : Array.isArray(data.next_steps)
+      ? data.next_steps
+      : [];
+
   const observations: Observation[] = [];
 
   if (data.sessionSummary) {
@@ -290,6 +312,10 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   if (data.technicalContext && typeof data.technicalContext === 'object') {
     observations.push(buildTechnicalContextObservation(data.technicalContext));
+  }
+
+  if (nextSteps.length > 0) {
+    observations.push(buildNextStepsObservation(nextSteps));
   }
 
   normalized.observations = observations;
@@ -343,6 +369,14 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
 
   if (data.filesModified !== undefined && !Array.isArray(data.filesModified)) {
     errors.push('filesModified must be an array');
+  }
+
+  if (data.nextSteps !== undefined && !Array.isArray(data.nextSteps)) {
+    errors.push('nextSteps must be an array');
+  }
+
+  if (data.next_steps !== undefined && !Array.isArray(data.next_steps)) {
+    errors.push('next_steps must be an array');
   }
 
   const validTiers: string[] = ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'];

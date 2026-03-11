@@ -45,9 +45,9 @@ This plan executes and maintains a feature-centric audit of the Memory Quality a
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met — 15/15 tasks complete
+- [x] Tests passing (if applicable) — 229 tests, TSC clean
+- [x] Docs updated (spec/plan/tasks) — all artifacts synchronized
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -83,9 +83,9 @@ Feature definitions and referenced source files are reviewed first, then finding
 - [x] Playbook cross-reference and findings capture complete
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [x] Manual testing complete — 229 tests pass, TSC clean
+- [x] Edge cases handled — retry bounds, token budget, flag routing, symlink imports
+- [x] Documentation updated — all spec folder artifacts synchronized
 <!-- /ANCHOR:phases -->
 
 ---

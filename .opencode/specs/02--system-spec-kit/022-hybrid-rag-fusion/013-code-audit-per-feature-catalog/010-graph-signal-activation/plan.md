@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: graph-signal-activation [template:level_2/plan.md]"
 description: "Execute a feature-by-feature audit of Graph Signal Activation by mapping catalog claims to implementation, tests, and playbook scenarios, then producing prioritized remediation tasks."
+# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "graph signal activation plan"
   - "feature inventory"
@@ -33,7 +34,7 @@ contextType: "general"
 | **Testing** | Vitest + manual playbook cross-reference |
 
 ### Overview
-This plan executes a feature-by-feature code audit for the Graph Signal Activation category (11 features). The approach maps catalog "Current Reality" statements to source behavior, test coverage, and manual playbook scenarios (NEW-035..039, NEW-050+). Output is a prioritized remediation backlog with PASS/WARN/FAIL evidence and explicit file references.
+This plan executes a feature-by-feature code audit for the Graph Signal Activation category (11 features). The approach maps catalog "Current Reality" statements to source behavior, test coverage, and manual playbook scenarios (NEW-035..039, NEW-050+). Output is a prioritized remediation backlog with PASS/WARN/FAIL evidence and explicit file references. The plan began as audit-only documentation and now also records partial remediation reconciliation where later implementation evidence is available.
 <!-- /ANCHOR:summary -->
 
 ---

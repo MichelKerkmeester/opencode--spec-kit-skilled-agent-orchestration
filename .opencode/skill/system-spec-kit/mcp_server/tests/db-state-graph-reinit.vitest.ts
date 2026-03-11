@@ -2,8 +2,11 @@
 // TEST: DB State Graph Reinit
 // ---------------------------------------------------------------
 
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 import { describe, expect, it, vi } from 'vitest';
-import { init, reinitializeDatabase } from '../core/db-state';
+import { checkDatabaseUpdated, init, reinitializeDatabase } from '../core/db-state';
 import type { DatabaseLike } from '../core/db-state';
 
 describe('db-state graph search wiring', () => {
@@ -39,5 +42,54 @@ describe('db-state graph search wiring', () => {
     expect(vectorIndex.closeDb).toHaveBeenCalled();
     expect(vectorIndex.initializeDb).toHaveBeenCalled();
     expect(hybridSearch.init).toHaveBeenCalledWith(fakeDb, vectorIndex.vectorSearch, fakeGraphFn);
+  });
+
+  it('preserves lastDbCheck when rebinding does not complete', async () => {
+    const tempDbDir = fs.mkdtempSync(path.join(os.tmpdir(), 'db-state-rebind-'));
+    const markerTimestamp = Number.MAX_SAFE_INTEGER - 2048;
+    fs.writeFileSync(path.join(tempDbDir, '.db-updated'), String(markerTimestamp), 'utf8');
+    const originalDbDir = process.env.SPEC_KIT_DB_DIR;
+
+    try {
+      process.env.SPEC_KIT_DB_DIR = tempDbDir;
+      const fakeDb = {} as unknown as DatabaseLike;
+      let dbAvailable = false;
+
+      const vectorIndex = {
+        initializeDb: vi.fn(),
+        getDb: vi.fn(() => (dbAvailable ? fakeDb : null)),
+        closeDb: vi.fn(),
+        vectorSearch: vi.fn(),
+      };
+      const checkpoints = { init: vi.fn() };
+      const accessTracker = { init: vi.fn() };
+      const hybridSearch = { init: vi.fn() };
+      const sessionManager = { init: vi.fn(() => ({ success: true })) };
+      const incrementalIndex = { init: vi.fn() };
+
+      init({
+        vectorIndex,
+        checkpoints,
+        accessTracker,
+        hybridSearch,
+        sessionManager,
+        incrementalIndex,
+      });
+
+      const firstAttempt = await checkDatabaseUpdated();
+      expect(firstAttempt).toBe(false);
+
+      dbAvailable = true;
+      const secondAttempt = await checkDatabaseUpdated();
+      expect(secondAttempt).toBe(true);
+      expect(vectorIndex.initializeDb).toHaveBeenCalledTimes(2);
+    } finally {
+      if (originalDbDir === undefined) {
+        delete process.env.SPEC_KIT_DB_DIR;
+      } else {
+        process.env.SPEC_KIT_DB_DIR = originalDbDir;
+      }
+      fs.rmSync(tempDbDir, { recursive: true, force: true });
+    }
   });
 });

@@ -797,12 +797,12 @@ When `RERANKER_LOCAL=true`, Stage 3 reranking uses `node-llama-cpp` with a local
 
 #### Save-Time and Feedback Flags
 
-Flags governing save-time processing and feedback-driven scoring. All default-on after Sprint 7.
+Flags governing save-time processing and feedback-driven scoring. Some remain graduated default-on, while reconsolidation stays opt-in.
 
 | Flag                           | Default | Description |
 | ------------------------------ | ------- | ----------- |
 | `SPECKIT_SAVE_QUALITY_GATE`    | `true`  | Pre-storage quality gate rejects content below 0.4 signal density (TM-04) |
-| `SPECKIT_RECONSOLIDATION`      | `true`  | Auto-merges similar memories on save at >=0.88 similarity (TM-06) |
+| `SPECKIT_RECONSOLIDATION`      | `false` | Auto-merges similar memories on save at >=0.88 similarity (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
 | `SPECKIT_NEGATIVE_FEEDBACK`    | `true`  | `wasUseful=false` applies score demotion with 30-day recovery (A4) |
 | `SPECKIT_EMBEDDING_EXPANSION`  | `true`  | Expands queries with semantic neighbors before search (R12) |
 | `SPECKIT_AUTO_ENTITIES`        | `true`  | Extracts entities at save time for cross-document linking (R10) |

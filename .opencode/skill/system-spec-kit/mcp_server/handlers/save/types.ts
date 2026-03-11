@@ -55,6 +55,12 @@ export interface IndexResult extends Record<string, unknown> {
   error?: string;
   qualityScore?: number;
   qualityFlags?: string[];
+  rejectionReason?: string;
+  qualityGate?: {
+    pass: boolean;
+    reasons: string[];
+    layers: unknown;
+  };
 }
 
 export interface CausalLinksResult {

@@ -116,6 +116,59 @@ describe('transaction-manager recovery committed vs uncommitted (T007)', () => {
     expect(getMetrics().totalErrors).toBe(1);
   });
 
+  it('T011-R1: skips rename when original target is missing and DB probe says uncommitted', () => {
+    const dir = createTempDir('t011-r1');
+    const { originalPath, pendingPath } = createPendingFile(dir, 'specs/011/memory/uncommitted.md', '# pending uncommitted');
+    const dbPath = path.join(dir, 'db', 'context-index.sqlite');
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    fs.writeFileSync(dbPath, '', 'utf-8');
+
+    const result = recoverPendingFile(pendingPath, () => false, dbPath);
+
+    expect(result.path).toBe(pendingPath);
+    expect(result.recovered).toBe(false);
+    expect(result.error).toContain('Stale');
+    expect(fs.existsSync(pendingPath)).toBe(true);
+    expect(fs.existsSync(originalPath)).toBe(false);
+  });
+
+  it('T011-R2: renames pending file when DB probe says committed and original path exists', () => {
+    const dir = createTempDir('t011-r2');
+    const originalPath = path.join(dir, 'specs/011/memory/committed.md');
+    fs.mkdirSync(path.dirname(originalPath), { recursive: true });
+    fs.writeFileSync(originalPath, '# original committed', 'utf-8');
+    const pendingPath = getPendingPath(originalPath);
+    fs.writeFileSync(pendingPath, '# pending committed', 'utf-8');
+    const dbPath = path.join(dir, 'db', 'context-index.sqlite');
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    fs.writeFileSync(dbPath, '', 'utf-8');
+
+    const result = recoverPendingFile(pendingPath, () => true, dbPath);
+
+    expect(result.path).toBe(pendingPath);
+    expect(result.recovered).toBe(true);
+    expect(fs.existsSync(pendingPath)).toBe(false);
+    expect(fs.existsSync(originalPath)).toBe(true);
+    expect(fs.readFileSync(originalPath, 'utf-8')).toBe('# pending committed');
+  });
+
+  it('T011-R3: without DB probe, recovery defaults to rename behavior', () => {
+    const dir = createTempDir('t011-r3');
+    const originalPath = path.join(dir, 'specs/011/memory/no-probe.md');
+    fs.mkdirSync(path.dirname(originalPath), { recursive: true });
+    fs.writeFileSync(originalPath, '# original no probe', 'utf-8');
+    const pendingPath = getPendingPath(originalPath);
+    fs.writeFileSync(pendingPath, '# pending no probe', 'utf-8');
+
+    const result = recoverPendingFile(pendingPath);
+
+    expect(result.path).toBe(pendingPath);
+    expect(result.recovered).toBe(true);
+    expect(fs.existsSync(pendingPath)).toBe(false);
+    expect(fs.existsSync(originalPath)).toBe(true);
+    expect(fs.readFileSync(originalPath, 'utf-8')).toBe('# pending no probe');
+  });
+
   it('T007-R5: recoverAllPendingFiles passes isCommittedInDb callback to each pending file', () => {
     const dir = createTempDir('r5');
     const p1 = createPendingFile(dir, 'specs/a/memory/one.md', 'one');
@@ -199,5 +252,18 @@ describe('transaction-manager recovery committed vs uncommitted (T007)', () => {
     expect(fs.existsSync(pendingPath)).toBe(false);
     expect(fs.existsSync(originalPath)).toBe(true);
     expect(fs.readFileSync(originalPath, 'utf-8')).toBe('# original r8');
+  });
+
+  it('T007-R9: skips recovery when DB file is missing even if callback reports committed', () => {
+    const dir = createTempDir('r9');
+    const { originalPath, pendingPath } = createPendingFile(dir, 'specs/001/memory/r9.md', '# pending r9');
+    const missingDbPath = path.join(dir, 'missing-db', 'context-index.sqlite');
+
+    const result = recoverPendingFile(pendingPath, () => true, missingDbPath);
+
+    expect(result.recovered).toBe(false);
+    expect(result.error).toContain('Database file missing');
+    expect(fs.existsSync(pendingPath)).toBe(true);
+    expect(fs.existsSync(originalPath)).toBe(false);
   });
 });

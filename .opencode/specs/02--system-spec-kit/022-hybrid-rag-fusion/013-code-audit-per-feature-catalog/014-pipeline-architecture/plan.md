@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: pipeline-architecture [template:level_2/plan.md]"
-description: "Rewrites this audit folder to Level 2 templates and preserves prioritized remediation planning for 21 pipeline-architecture features. Plan date: 2026-03-10."
+description: "Repairs this Level 2 audit folder by making the core docs self-contained, truthful, and internally consistent for all 21 pipeline-architecture features. Plan date: 2026-03-10."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -31,7 +32,7 @@ contextType: "general"
 | **Testing** | Vitest suites + manual feature-catalog audit review |
 
 ### Overview
-This plan restructures the pipeline-architecture audit folder into Level 2 templates while preserving remediation intent for all 21 audited features. The technical approach keeps existing findings traceable through prioritized tasks, verification checkpoints, and explicit risk/dependency tracking.
+This plan repairs the pipeline-architecture audit folder so the Level 2 core docs carry their own evidence. The approach adds a compact 21-feature traceability matrix, replaces unsupported PASS/WARN/FAIL shorthand with a backlog-coverage rubric, removes redundant scratch traceability data, and verifies the folder with the standard validation script.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -59,12 +60,12 @@ This plan restructures the pipeline-architecture audit folder into Level 2 templ
 Audit-driven remediation planning
 
 ### Key Components
-- **Spec (`spec.md`)**: Defines scope, requirements, and non-functional constraints for the audit remediation track.
-- **Task Backlog (`tasks.md`)**: Tracks prioritized P0/P1/P2 remediation actions as executable items.
-- **Verification Checklist (`checklist.md`)**: Captures QA gates and completion evidence against the remediation program.
+- **Spec (`spec.md`)**: Defines the evidence model, scope boundaries, and success criteria for the documentation repair.
+- **Task Backlog (`tasks.md`)**: Retains T001-T020 and adds the self-contained 21-feature traceability matrix plus rubric summary.
+- **Verification Checklist (`checklist.md`)**: Captures validation, synchronization, scratch cleanup, and count-correction evidence.
 
 ### Data Flow
-Feature-catalog findings feed into prioritized tasks, which then drive implementation and verification. Verification outcomes loop back into checklist status and determine readiness to move from Draft to complete remediation.
+Feature-catalog source files feed the approved F01-F21 mapping, which feeds the traceability matrix in `tasks.md`. That matrix anchors the scope and acceptance criteria in `spec.md`, while `checklist.md` records validation evidence and confirms that scratch-only traceability is no longer required.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -72,20 +73,20 @@ Feature-catalog findings feed into prioritized tasks, which then drive implement
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Project structure created
-- [x] Dependencies installed
-- [x] Development environment ready
+### Phase 1: Audit Alignment
+- [x] Read current Level 2 docs and identify unsupported claims
+- [x] Confirm the approved F01-F21 feature-to-task mapping
+- [x] Define the self-contained evidence rubric and scratch cleanup approach
 
-### Phase 2: Core Implementation
-- [ ] Correct feature-catalog source/test mismatches
-- [ ] Fix core runtime correctness issues (hot rebinding, atomic save semantics, pending-file recovery)
-- [ ] Resolve stale comments/references and remove nonexistent test entries
+### Phase 2: Core Documentation Fixes
+- [ ] Add a 21-feature traceability matrix without changing T001-T020
+- [ ] Update `spec.md` and `checklist.md` to use truthful, evidence-backed language
+- [ ] Resolve the phase-dependency inconsistency so all planning sections describe the same three phases
 
 ### Phase 3: Verification
-- [ ] Manual testing complete
-- [ ] Edge cases handled
-- [ ] Documentation updated
+- [ ] Remove redundant scratch traceability inventory if core docs fully replace it
+- [ ] Run `validate.sh` and fix any ERROR-level issues
+- [ ] Confirm no placeholders remain and checklist counts match the actual checkboxes
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,9 +96,9 @@ Feature-catalog findings feed into prioritized tasks, which then drive implement
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Targeted module fixes (rebinding, transaction manager, schema mode toggles) | Vitest |
-| Integration | `memory_save`/index/retry behavior and startup recovery flows | Vitest |
-| Manual | Feature-catalog alignment, checklist evidence, playbook scenario mapping | Reviewer walkthrough |
+| Structural | Anchor pairs, required sections, placeholder detection | `validate.sh` |
+| Consistency | Feature-to-task mapping, checklist counts, phase alignment | Manual reviewer walkthrough |
+| Scope | Allowed-file boundary and scratch cleanup truthfulness | Manual diff review |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -108,8 +109,7 @@ Feature-catalog findings feed into prioritized tasks, which then drive implement
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `feature_catalog/14--pipeline-architecture/` files | Internal | Green | Source-of-truth mapping cannot be validated |
-| `mcp_server/` runtime modules and tests | Internal | Green | P0 correctness fixes and regressions cannot be completed |
-| Manual playbook scenarios (EX-005, NEW-070+) | Internal | Yellow | Coverage mapping cannot be fully confirmed |
+| Approved F01-F21 mapping context | Internal | Green | Traceability matrix cannot be completed accurately |
 | Repository Level 2 templates | Internal | Green | Template conformance cannot be validated |
 <!-- /ANCHOR:dependencies -->
 
@@ -131,17 +131,14 @@ Feature-catalog findings feed into prioritized tasks, which then drive implement
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Audit Alignment) ──► Phase 2 (Core Documentation Fixes) ──► Phase 3 (Verification)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
+| Audit Alignment | None | Core Documentation Fixes |
+| Core Documentation Fixes | Audit Alignment | Verification |
+| Verification | Core Documentation Fixes | None |
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -151,10 +148,10 @@ Phase 1.5 (Config) ───┘
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 1-2 hours |
-| Core Implementation | High | 1-2 engineering days |
-| Verification | Medium | 0.5-1 engineering day |
-| **Total** | | **2-3.5 engineering days** |
+| Audit Alignment | Low | <1 hour |
+| Core Documentation Fixes | Medium | 1-2 hours |
+| Verification | Low | <1 hour |
+| **Total** | | **2-4 hours** |
 <!-- /ANCHOR:effort -->
 
 ---
@@ -164,8 +161,8 @@ Phase 1.5 (Config) ───┘
 
 ### Pre-deployment Checklist
 - [x] Backup created (git history available)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
+- [x] Allowed-file scope confirmed
+- [x] Validation command identified
 
 ### Rollback Procedure
 1. Revert the rewritten docs (`spec.md`, `tasks.md`, `plan.md`, `checklist.md`) to the previous commit state.

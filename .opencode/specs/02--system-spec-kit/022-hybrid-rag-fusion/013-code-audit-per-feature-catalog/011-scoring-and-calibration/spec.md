@@ -1,6 +1,8 @@
 ---
+# <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 title: "Feature Specification: scoring-and-calibration [template:level_2/spec.md]"
-description: "The scoring-and-calibration catalog has 17 features with mixed PASS/WARN/FAIL findings, but the phase documents are not aligned to Level 2 structure. This rewrite preserves findings while enforcing a verification-ready SpecKit format."
+description: "The scoring-and-calibration audit closed 17 cataloged features plus approved follow-up fixes for access-tracker flush behavior, targeted regressions, and RRF convergence wording. This spec records the true completed scope and aligned verification state."
+template_source: "spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "scoring"
   - "calibration"
@@ -15,7 +17,7 @@ contextType: "general"
 # Feature Specification: scoring-and-calibration
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
@@ -26,7 +28,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `011-scoring-and-calibration` |
 <!-- /ANCHOR:metadata -->
@@ -37,10 +39,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The scoring-and-calibration feature catalog audit contains 17 features and substantial findings, but the phase documents are not formatted to the Level 2 SpecKit template. This makes verification less consistent and weakens traceability between scope, requirements, remediation tasks, and verification checkpoints.
+The scoring-and-calibration audit delivered code, test, and catalog fixes across 17 features, but the phase docs drifted after implementation. `spec.md` still described runtime work as out of scope, completion state was inconsistent across the Level 2 artifacts, and the approved follow-up fixes were not reflected in the closing narrative.
 
 ### Purpose
-Standardize this phase to Level 2 templates so the existing scoring-and-calibration findings are preserved and execution-ready.
+Capture the completed phase truthfully so reviewers can trace delivered work, follow-up fixes, and verification status without conflicting statements.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,23 +51,27 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 ## 3. SCOPE
 
 ### In Scope
-- Rewrite `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` to Level 2 template structure.
-- Preserve feature inventory context and remediation backlog (P0/P1/P2).
-- Preserve verification context, including major FAIL/WARN findings and test/playbook gaps.
+- Preserve the full 17-feature scoring-and-calibration remediation scope in Level 2 completion docs.
+- Record delivered code, test, and catalog work, including the approved follow-up fixes in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts`, and `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`.
+- Synchronize completion state, verification evidence, and summary language across all five Level 2 phase artifacts.
 
 ### Out of Scope
-- Changing implementation code in `mcp_server/` or `shared/` - tracked as remediation tasks only.
-- Modifying `description.json`, `memory/`, or `scratch/` - explicitly excluded.
-- Creating `implementation-summary.md` - not requested for this rewrite step.
+- Additional remediation beyond the already delivered scoring-and-calibration fixes and approved follow-up patch.
+- Fresh workspace-wide verification beyond the targeted/package-local results already recorded for the implementation pass.
+- Modifying `description.json`, `memory/`, or `scratch/`.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/spec.md` | Modify | Reframe audit context into Level 2 spec structure |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks.md` | Modify | Convert backlog into template-based phased task list |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/plan.md` | Modify | Convert methodology into Level 2 implementation plan |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/checklist.md` | Modify | Convert per-feature findings into verification checklist format |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/spec.md` | Modify | Record the completed scope and aligned status |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/plan.md` | Modify | Reflect completed phases, done criteria, and truthful verification scope |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks.md` | Modify | Preserve completed backlog and add follow-up tasks T022-T024 |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/checklist.md` | Modify | Inline verification evidence and follow-up-fix coverage |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/implementation-summary.md` | Modify | Summarize completed delivery and follow-up closure |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts` | Modify | Preserve accumulator state when threshold-triggered flush fails |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts` | Modify | Add threshold flush regression coverage |
+| `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` | Modify | Correct the RRF convergence wording to match shipped behavior |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -77,16 +83,23 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All 4 phase documents use Level 2 template structure | Each file includes Level 2 frontmatter, SPECKIT comments, and all required ANCHOR pairs |
-| REQ-002 | Existing audit findings remain represented after rewrite | FAIL/WARN/PASS outcomes and remediation themes remain traceable across spec/tasks/checklist |
-| REQ-003 | Required metadata values are set consistently | Level = 2, Status = Draft, and date fields use 2026-03-10 where applicable |
+| REQ-001 | All five Level 2 phase documents reflect the completed implementation scope | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` all report a completed state with no contradictory out-of-scope claims |
+| REQ-002 | Blocker findings remain traceable to delivered remediation | The phase docs preserve the five FAIL resolutions plus follow-up corrections for access-tracker flush behavior and RRF convergence wording |
+| REQ-003 | Follow-up fix coverage is explicit and completed | Tasks T022-T024 are recorded as done with evidence tied to the delivered code, test, and catalog changes |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Trigger phrases reflect scoring-and-calibration domain | Frontmatter includes scoring/calibration-specific keywords (e.g., rrf, reranker, coherence) |
-| REQ-005 | Task and checklist state uses markdown checkboxes | All checklist/task states use `- [ ]` or `- [x]` notation |
+| REQ-004 | Verification claims stay truthful to actual rerun scope | The docs distinguish the earlier targeted implementation verification from this follow-up documentation-alignment pass |
+| REQ-005 | Spec validation succeeds after alignment | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` returns exit code 0 or 1 for this folder |
+
+### Acceptance Scenarios
+
+- **Given** the phase is reviewed after follow-up fixes, **when** a reader checks scope, **then** the spec lists both the original remediation work and the approved follow-up patch.
+- **Given** a reviewer compares `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`, **when** they inspect status and completion state, **then** every artifact shows the phase as complete.
+- **Given** a reviewer needs proof for the follow-up patch, **when** they inspect `tasks.md` and `checklist.md`, **then** they can trace T022-T024 to the access-tracker code, regression tests, and catalog correction.
+- **Given** validation tooling scans the completed phase docs, **when** it resolves markdown references and template metadata, **then** the folder validates without error-level doc-integrity failures.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -94,9 +107,9 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` conform to Level 2 template layout with intact anchors.
-- **SC-002**: The 17-feature scoring-and-calibration audit context remains preserved and actionable.
-- **SC-003**: The remediation backlog remains prioritized and traceable (P0/P1/P2) in the rewritten tasks/checklist.
+- **SC-001**: The completed scoring-and-calibration scope, including follow-up fixes, is represented consistently across all five Level 2 docs.
+- **SC-002**: The 17-feature audit remains traceable to delivered code, test, and catalog work, including the five resolved FAIL findings and follow-up tasks T022-T024.
+- **SC-003**: Validation passes without error-level documentation issues for this spec folder.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -106,10 +119,10 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Level 2 template definitions in `.opencode/skill/system-spec-kit/templates/level_2/` | Wrong structure if templates drift | Mirror current in-repo template sections and anchors exactly |
-| Dependency | Existing audit artifacts (`feature_catalog/*`, phase findings) | Loss of context if not mapped | Preserve findings by mapping remediation themes into requirements, tasks, and checklist evidence |
-| Risk | Over-compression of detailed feature findings | Reduced usability for follow-up remediation | Keep key FAIL/WARN findings explicitly represented in checklist evidence and task descriptions |
-| Risk | Template mismatch due inaccessible external instruction source | Potential formatting drift | Use canonical in-repo Level 2 templates as source of truth for structure |
+| Dependency | Level 2 templates in `.opencode/skill/system-spec-kit/templates/level_2/` | Template drift could invalidate validation | Mirror current headings, anchors, and template-source metadata |
+| Dependency | Delivered artifacts in `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/` and `.opencode/skill/system-spec-kit/mcp_server/` | Missing trace links would make the completed docs non-auditable | Keep references repo-resolvable and tie follow-up tasks to concrete files |
+| Risk | Overstating verification scope | Completion claims would become inaccurate | Separate earlier targeted implementation verification from the final doc-alignment validation pass |
+| Risk | Leaving stale draft-era language in place | Reviewers could treat a completed phase as still open | Align metadata, scope, tasks, checklist, and implementation summary to the same completed state |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -122,16 +135,16 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Each rewritten document should be scannable in under 5 minutes by a reviewer.
-- **NFR-P02**: Cross-reference lookups between spec/plan/tasks/checklist should require at most 2 navigation hops.
+- **NFR-P01**: The completed documentation set should stay scannable enough for a reviewer to verify closure in one pass.
+- **NFR-P02**: Follow-up fixes should remain documented without implying broader reruns than actually occurred.
 
 ### Security
 - **NFR-S01**: Documentation must not introduce secrets, tokens, or sensitive environment values.
-- **NFR-S02**: File scope must remain constrained to the 4 requested phase documents.
+- **NFR-S02**: File references must resolve within the repository and stay limited to the delivered scoring-and-calibration surfaces.
 
 ### Reliability
 - **NFR-R01**: Template anchors and headings remain stable for automated tooling and validation.
-- **NFR-R02**: Priority mapping (P0/P1/P2) remains consistent across documents.
+- **NFR-R02**: Priority mapping (P0/P1/P2) remains consistent across documents and completed follow-up tasks.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -140,18 +153,18 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Empty finding category: preserve section with explicit "NONE" rather than dropping context.
-- Maximum finding density: summarize by remediation theme while retaining critical issue identity.
-- Invalid format input: normalize prior bullet prose into table/list structures without losing meaning.
+- Empty follow-up scope: do not invent new remediation beyond T022-T024.
+- High-detail remediation history: summarize prior work without dropping the five FAIL resolutions.
+- Markdown reference paths: use repo-resolvable `.md` paths so validation can resolve them.
 
 ### Error Scenarios
-- Missing external instruction file access: fallback to canonical in-repo Level 2 templates.
-- Cross-document mismatch: resolve by preserving the stricter priority/severity interpretation.
-- Concurrent edits to same phase docs: prefer deterministic template structure and explicit status markers.
+- Draft-era language survives in one artifact: treat the phase as incomplete until all five docs agree.
+- Follow-up fixes are described as fresh broad verification: correct the language to reflect targeted scope only.
+- Catalog wording diverges from shipped behavior: align the doc statement before closing the phase.
 
 ### State Transitions
-- Draft to review: checklist verification counts must reflect actual checked items.
-- Pending to complete remediation: tasks can flip from `[ ]` to `[x]` without structural changes.
+- Draft to complete: status and scope language must change together across all Level 2 artifacts.
+- Pending to complete remediation: tasks can flip from `[ ]` to `[x]` only when code, test, or catalog evidence exists.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -161,18 +174,18 @@ Standardize this phase to Level 2 templates so the existing scoring-and-calibrat
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 20/25 | Four document rewrites plus 17-feature context preservation |
-| Risk | 18/25 | Potential loss of audit detail if remapped poorly |
-| Research | 14/20 | Template conformance and priority mapping verification |
-| **Total** | **52/70** | **Level 2** |
+| Scope | 21/25 | Five phase docs aligned against a completed 17-feature remediation set |
+| Risk | 19/25 | Incorrect closure language would misstate implementation and verification truth |
+| Research | 14/20 | Requires cross-checking spec docs against delivered code, tests, and catalog fixes |
+| **Total** | **54/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---
 
-## 10. OPEN QUESTIONS
+## 10. OPEN QUESTIONS (RESOLVED)
 
-- Should per-feature playbook mapping (`NEW-050..065+`) be embedded directly in this phase checklist or maintained in feature files only?
-- For unresolved WARN items, should future phases split catalog hygiene fixes from runtime code fixes?
+- **Resolved (scope alignment):** Runtime and feature-catalog changes are part of the completed phase scope; they are no longer described as out of scope.
+- **Resolved (follow-up patch closure):** The approved access-tracker regression fix, targeted test additions, and RRF wording correction are recorded as completed work in the same phase.
 <!-- /ANCHOR:questions -->
 
 ---

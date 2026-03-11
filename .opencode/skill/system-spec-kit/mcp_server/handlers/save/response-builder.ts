@@ -204,6 +204,26 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     });
   }
 
+  if (result.status === 'rejected') {
+    return createMCPSuccessResponse({
+      tool: 'memory_save',
+      summary: result.message ?? result.rejectionReason ?? 'Memory save rejected',
+      data: {
+        status: 'rejected',
+        id: result.id,
+        specFolder: result.specFolder,
+        title: result.title,
+        qualityScore: result.qualityScore,
+        qualityFlags: result.qualityFlags,
+        rejectionReason: result.rejectionReason ?? result.message,
+        ...(result.qualityGate ? { qualityGate: result.qualityGate } : {}),
+        ...(result.warnings ? { warnings: result.warnings } : {}),
+        message: result.message ?? result.rejectionReason ?? 'Memory save rejected',
+      },
+      hints: ['Rejected saves do not mutate the memory index', 'Review quality issues and retry the save'],
+    });
+  }
+
   const shouldEmitPostMutationFeedback = result.status !== 'duplicate';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {

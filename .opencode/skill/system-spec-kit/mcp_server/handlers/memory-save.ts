@@ -133,15 +133,13 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = qualityLoopResult.score.issues;
 
-  if (qualityLoopResult.fixes.length > 0) {
+  if (qualityLoopResult.fixes.length > 0 && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
     console.error(`[memory-save] Quality loop applied ${qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(filePath)}`);
     // AI-WHY: Persist mutated content from quality loop; recompute content_hash
     // so downstream dedup and change-detection use the post-fix content.
-    if (qualityLoopResult.fixedContent) {
-      parsed.content = qualityLoopResult.fixedContent;
-      parsed.contentHash = memoryParser.computeContentHash(parsed.content);
-      await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
-    }
+    parsed.content = qualityLoopResult.fixedContent;
+    parsed.contentHash = memoryParser.computeContentHash(parsed.content);
+    await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
   }
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
@@ -156,6 +154,7 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       qualityScore: parsed.qualityScore,
       qualityFlags: parsed.qualityFlags,
       warnings: validation.warnings,
+      rejectionReason: qualityLoopResult.rejectionReason,
       message: qualityLoopResult.rejectionReason,
     };
   }
@@ -213,6 +212,9 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
           id: 0,
           specFolder: parsed.specFolder,
           title: parsed.title ?? '',
+          qualityScore: parsed.qualityScore,
+          qualityFlags: parsed.qualityFlags,
+          rejectionReason: `Quality gate rejected: ${qualityGateResult.reasons.join('; ')}`,
           message: `Quality gate rejected: ${qualityGateResult.reasons.join('; ')}`,
           qualityGate: {
             pass: false,
@@ -391,24 +393,37 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
 /* --- 10. ATOMIC MEMORY SAVE --- */
 
 /**
- * Save memory content to disk with best-effort indexing.
+ * Save memory content to disk with retry + rollback guarded indexing.
  *
- * **NOT truly atomic.** The file write uses atomic rename (write-to-temp +
- * rename), but DB indexing runs asynchronously afterward because
+ * The file write uses atomic rename (write-to-temp + rename), while DB
+ * indexing runs asynchronously afterward because
  * `indexMemoryFile` requires async embedding generation while
  * `executeAtomicSave` expects a synchronous `dbOperation` callback.
  *
- * On embedding failure, the memory is saved to disk and indexed in the DB
- * **without vector embeddings** — a partial-success state. The caller
- * receives a `status: 'partial'` result with a hint to retry
- * `memory_save({ filePath, force: true })` to rebuild the index entry.
- *
- * P4-01/P4-17 NOTE: True atomicity between file write and DB indexing is not
- * achievable under this architecture.
+ * Atomicity guard: if indexing fails after the write, retry once; if retry
+ * also fails, rollback the written file to avoid write/index mismatch.
  */
 async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOptions = {}): Promise<AtomicSaveResult> {
   const { file_path, content } = params;
   const { force = false } = options;
+  const hadExistingFile = fs.existsSync(file_path);
+  let previousFileContent: string | null = null;
+
+  if (hadExistingFile) {
+    try {
+      previousFileContent = fs.readFileSync(file_path, 'utf-8');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      return {
+        success: false,
+        filePath: file_path,
+        status: 'error',
+        summary: 'Atomic save preflight failed',
+        message: 'Unable to capture existing file before atomic save',
+        error: `Failed to snapshot existing file before save: ${message}`,
+      };
+    }
+  }
 
   // AI-WHY: Write file and run DB operation atomically
   const result = transactionManager.executeAtomicSave(
@@ -425,28 +440,95 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   }
 
   // AI-GUARD: Index the saved file (async, after atomic write succeeded)
+  // Retry once to handle transient failures before rolling back the file write.
   let indexResult: IndexResult | null = null;
   let indexError: Error | null = null;
-
-  try {
-    indexResult = await indexMemoryFile(file_path, { force, asyncEmbedding: true });
-    if (indexResult.status === 'error') {
-      throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
+  const maxIndexAttempts = 2;
+  for (let attempt = 1; attempt <= maxIndexAttempts; attempt++) {
+    try {
+      indexResult = await indexMemoryFile(file_path, { force, asyncEmbedding: true });
+      if (indexResult.status === 'error') {
+        throw new Error(indexResult.message ?? indexResult.error ?? 'indexMemoryFile returned status=error');
+      }
+      if (indexResult.status === 'rejected') {
+        indexError = null;
+        break;
+      }
+      indexError = null;
+      break;
+    } catch (err: unknown) {
+      indexError = err instanceof Error ? err : new Error(String(err));
+      if (attempt < maxIndexAttempts) {
+        console.warn(`[memory-save] index attempt ${attempt} failed for ${file_path}, retrying once: ${indexError.message}`);
+      }
     }
-  } catch (err: unknown) {
-    indexError = err instanceof Error ? err : new Error(String(err));
+  }
+
+  if (indexResult?.status === 'rejected') {
+    const rollbackSucceeded = previousFileContent !== null
+      ? transactionManager.atomicWriteFile(file_path, previousFileContent)
+      : transactionManager.deleteFileIfExists(file_path);
+    const summary = rollbackSucceeded
+      ? 'Atomic save rejected and rolled back'
+      : 'Atomic save rejected but rollback failed';
+    const rollbackHint = rollbackSucceeded
+      ? (
+          previousFileContent !== null
+            ? 'Original file content was restored because the save was rejected'
+            : 'Written file was removed because the save was rejected'
+        )
+      : (
+          previousFileContent !== null
+            ? 'Rollback could not restore the original file after rejection; manual cleanup may be required'
+            : 'Rollback could not remove the rejected file; manual cleanup may be required'
+        );
+
+    return {
+      success: false,
+      filePath: file_path,
+      status: 'rejected',
+      id: indexResult.id,
+      specFolder: indexResult.specFolder,
+      title: indexResult.title,
+      summary,
+      message: indexResult.message ?? indexResult.rejectionReason ?? 'Memory save rejected',
+      embeddingStatus: indexResult.embeddingStatus,
+      hints: [rollbackHint],
+      ...(rollbackSucceeded ? {} : { error: 'Rollback failed after rejected save' }),
+    };
   }
 
   if (indexError || !indexResult) {
-    // File was written but indexing failed — still report partial success
+    const rollbackSucceeded = previousFileContent !== null
+      ? transactionManager.atomicWriteFile(file_path, previousFileContent)
+      : transactionManager.deleteFileIfExists(file_path);
+    const summary = rollbackSucceeded
+      ? 'Atomic save rolled back after indexing failure'
+      : 'Atomic save indexing failed and rollback failed';
+    const message = rollbackSucceeded
+      ? 'Indexing failed and file write was rolled back'
+      : 'Indexing failed and written file could not be rolled back';
+    const rollbackHint = rollbackSucceeded
+      ? (
+          previousFileContent !== null
+            ? 'Original file content was restored to keep storage and index consistent'
+            : 'Written file was removed to keep storage and index consistent'
+        )
+      : (
+          previousFileContent !== null
+            ? 'Rollback could not restore the original file; manual cleanup may be required'
+            : 'Rollback could not remove written file; manual cleanup may be required'
+        );
+    const rollbackError = rollbackSucceeded ? '' : ' (rollback failed)';
+
     return {
-      success: true,
+      success: false,
       filePath: file_path,
-      status: 'partial',
-      summary: 'File saved but indexing failed',
-      message: 'File saved but indexing failed',
-      hints: ['Retry memory_save({ filePath, force: true }) to rebuild the memory index entry'],
-      error: `File saved but indexing failed: ${indexError?.message ?? 'unknown'}`,
+      status: 'error',
+      summary,
+      message,
+      hints: [rollbackHint, 'Retry memory_save({ filePath, force: true }) once dependencies are healthy'],
+      error: `Indexing failed after retry${rollbackError}: ${indexError?.message ?? 'unknown'}`,
     };
   }
 

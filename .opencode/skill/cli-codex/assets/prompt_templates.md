@@ -518,9 +518,78 @@ All placeholders used across templates in this file:
 
 <!-- /ANCHOR:related_resources -->
 
+<!-- ANCHOR:memory_epilogue -->
+
+## 13. MEMORY EPILOGUE
+
+### Purpose
+
+Append this epilogue to any delegated prompt when the calling AI needs structured session memory back from Codex CLI. The agent will include the delimited section in its output, enabling the calling AI to extract, parse, and save it via `generate-context.js`.
+
+### Epilogue Template
+
+Append the following text to the end of any Codex CLI prompt:
+
+```text
+When you finish, include a session memory section in your output using EXACTLY this format:
+
+<!-- MEMORY_HANDBACK_START -->
+## Session Memory
+
+### Summary
+[1-3 sentences: what was accomplished]
+
+### Files Modified
+- path/to/file.ts
+
+### Decisions
+- Decision and rationale
+
+### Next Steps
+- Remaining work
+
+### Spec Folder
+[spec-folder-name, e.g. 014-outsourced-agent-memory]
+<!-- MEMORY_HANDBACK_END -->
+```
+
+### Extraction by Calling AI
+
+After receiving agent output, the calling AI extracts the handback section:
+
+```javascript
+const match = output.match(/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/);
+```
+
+Then constructs JSON and saves via:
+
+```bash
+# Redact or scrub secrets before writing the JSON payload
+# Write extracted data to JSON
+cat > /tmp/save-context-data.json << 'JSONEOF'
+{
+  "sessionSummary": "<extracted summary>",
+  "filesModified": ["<extracted paths>"],
+  "keyDecisions": ["<extracted decisions>"],
+  "nextSteps": ["<extracted remaining work>"],
+  "specFolder": "<extracted or provided by calling AI>",
+  "triggerPhrases": ["<auto-derived from task>"]
+}
+JSONEOF
+
+# Save via generate-context.js JSON mode
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]
+```
+
+Accepted next-step field names: `nextSteps` or `next_steps`. Persistence behavior: the first item becomes `Next: ...` and sets `NEXT_ACTION`; additional items become `Follow-up: ...`.
+
+If `/tmp/save-context-data.json` is passed explicitly and cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture for that error.
+
+<!-- /ANCHOR:memory_epilogue -->
+
 <!-- ANCHOR:model_selection -->
 
-## 13. MODEL SELECTION
+## 14. MODEL SELECTION
 
 ### When to Use GPT-5.4
 

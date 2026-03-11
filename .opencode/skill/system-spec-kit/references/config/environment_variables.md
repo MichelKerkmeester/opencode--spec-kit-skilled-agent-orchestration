@@ -89,7 +89,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 |----------|---------|---------|
 | `MCP_MAX_TOKENS` | `25000` | Maximum response token budget |
 | `MCP_TOKEN_SAFETY_BUFFER` | `0.8` | Safety buffer multiplier (80%) |
-| `MCP_CHARS_PER_TOKEN` | `3.5` | Token estimation ratio |
+| `MCP_CHARS_PER_TOKEN` | `4` | Token estimation ratio shared by pre-flight validation and the quality loop |
 | `MCP_MIN_ITEMS` | `1` | Minimum items to return |
 
 ---
@@ -232,7 +232,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
 | `SPECKIT_SAVE_QUALITY_GATE` | ON | S4 | Pre-storage quality gate for memory saves (TM-04) |
-| `SPECKIT_RECONSOLIDATION` | ON | S4 | Reconsolidation-on-save for memory deduplication (TM-06) |
+| `SPECKIT_RECONSOLIDATION` | OFF | S4 | Reconsolidation-on-save for memory deduplication (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
 | `SPECKIT_ENCODING_INTENT` | ON | S5 | Encoding-intent capture at index time (document, code, structured_data) |
 | `SPECKIT_AUTO_ENTITIES` | ON | S6 | Rule-based noun-phrase entity extraction at save time (R10) |
 | `SPECKIT_ENTITY_LINKING` | ON | S6 | Cross-document entity linking via entity-based edges (S5). Requires R10 |
@@ -261,7 +261,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
 | `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
 | `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
-| `SPECKIT_QUALITY_LOOP` | OFF | S7 | Quality feedback loop in save handler (opt-in) |
+| `SPECKIT_QUALITY_LOOP` | OFF | S7 | Verify-fix-verify quality loop for `memory_save` (opt-in) |
 | `SPECKIT_SKIP_API_VALIDATION` | OFF | S0 | Skip API key validation at startup (development only) |
 | `SPECKIT_DEBUG_INDEX_SCAN` | OFF | S7 | Debug logging for index scan operations (opt-in) |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | S3 | Numeric: graduated rollout percentage (0-100) for deterministic feature bucketing |

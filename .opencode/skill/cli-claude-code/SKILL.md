@@ -2,7 +2,7 @@
 name: cli-claude-code
 description: "Claude Code CLI orchestrator enabling external AI assistants (Gemini, Codex, Copilot) to invoke Anthropic's Claude Code CLI for supplementary tasks including deep reasoning, code editing, structured output, code review, agent delegation, and extended thinking."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.0.0
+version: 1.1.0
 ---
 
 <!-- Keywords: claude-code, claude-cli, anthropic, cross-ai, deep-reasoning, extended-thinking, code-editing, structured-output, agent-delegation, opus, sonnet, haiku -->
@@ -456,6 +456,22 @@ claude -p "Now refactor the auth module based on the review" --continue --output
 
 4. **ESCALATE IF task requires `--permission-mode bypassPermissions`**
    - Describe risks and get explicit user approval before proceeding
+
+### Memory Handback Protocol
+
+When the calling AI needs to preserve session context from a Claude Code CLI delegation:
+
+1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §11) to the delegated prompt
+2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
+3. **Parse to JSON**: Map extracted fields to `{ sessionSummary, filesModified, keyDecisions, specFolder, triggerPhrases, nextSteps }` (the save flow accepts either `nextSteps` or `next_steps`)
+4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before writing the JSON file
+5. **Write JSON**: Save the scrubbed payload to `/tmp/save-context-data.json`
+6. **Invoke generate-context.js**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json [spec-folder]`
+7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+
+**Graceful degradation**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the JSON from agent output and saves via the same JSON mode path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
+
+**Explicit JSON mode failures**: If the explicit data file cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture in that case; surface the error and stop.
 
 ---
 

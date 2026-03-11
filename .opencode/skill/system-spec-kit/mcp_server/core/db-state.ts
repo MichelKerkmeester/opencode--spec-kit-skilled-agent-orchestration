@@ -69,6 +69,7 @@ export interface DbStateDeps {
 
 let lastDbCheck: number = 0;
 let reinitializeMutex: Promise<void> | null = null;
+let lastReinitializeSucceeded: boolean = true;
 let embeddingModelReady: boolean = false;
 let constitutionalCache: unknown = null;
 let constitutionalCacheTime: number = 0;
@@ -120,9 +121,11 @@ export async function checkDatabaseUpdated(): Promise<boolean> {
 
     if (updateTime > lastDbCheck) {
       console.error('[db-state] Database updated externally, reinitializing connection...');
-      await reinitializeDatabase();
-      lastDbCheck = updateTime;
-      return true;
+      const rebindSucceeded = await reinitializeDatabase(updateTime);
+      if (!rebindSucceeded) {
+        console.error('[db-state] Reinitialization did not complete; preserving lastDbCheck for retry');
+      }
+      return rebindSucceeded;
     }
   } catch (e: unknown) {
     const code = e && typeof e === 'object' && 'code' in e ? (e as { code?: unknown }).code : undefined;
@@ -136,7 +139,7 @@ export async function checkDatabaseUpdated(): Promise<boolean> {
 }
 
 /** Close and reinitialize the database connection, refreshing all dependent module handles. */
-export async function reinitializeDatabase(): Promise<void> {
+export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<boolean> {
   if (!vectorIndex) {
     throw new Error('db-state not initialized: vector_index is null');
   }
@@ -145,10 +148,11 @@ export async function reinitializeDatabase(): Promise<void> {
   if (reinitializeMutex) {
     console.error('[db-state] Reinitialization already in progress, waiting...');
     await reinitializeMutex;
-    return;
+    return lastReinitializeSucceeded;
   }
 
   let resolveMutex: () => void;
+  let rebindSucceeded = false;
   reinitializeMutex = new Promise<void>(resolve => {
     resolveMutex = resolve;
   });
@@ -164,21 +168,30 @@ export async function reinitializeDatabase(): Promise<void> {
     vectorIndex.initializeDb();
 
     const database = vectorIndex.getDb();
-    if (database) {
-      if (checkpoints) checkpoints.init(database);
-      if (accessTracker) accessTracker.init(database);
-      if (hybridSearch) {
-        if (!graphSearchFnRef && process.env.SPECKIT_GRAPH_UNIFIED !== 'false') {
-          console.warn('[db-state] hybridSearch reinit missing graphSearchFn; graph retrieval channel is disabled');
-        }
-        hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef ?? null);
-      }
-      // P4-12, P4-19 FIX: Refresh stale DB handles in session-manager and incremental-index
-      if (sessionManagerRef) sessionManagerRef.init(database as DatabaseLike);
-      if (incrementalIndexRef) incrementalIndexRef.init(database as DatabaseLike);
+    if (!database) {
+      console.error('[db-state] Database handle unavailable after reinitialize; rebinding skipped');
+      return false;
     }
+
+    if (checkpoints) checkpoints.init(database);
+    if (accessTracker) accessTracker.init(database);
+    if (hybridSearch) {
+      if (!graphSearchFnRef && process.env.SPECKIT_GRAPH_UNIFIED !== 'false') {
+        console.warn('[db-state] hybridSearch reinit missing graphSearchFn; graph retrieval channel is disabled');
+      }
+      hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef ?? null);
+    }
+    // P4-12, P4-19 FIX: Refresh stale DB handles in session-manager and incremental-index
+    if (sessionManagerRef) sessionManagerRef.init(database as DatabaseLike);
+    if (incrementalIndexRef) incrementalIndexRef.init(database as DatabaseLike);
+    if (typeof updatedMarkerTime === 'number' && Number.isFinite(updatedMarkerTime)) {
+      lastDbCheck = updatedMarkerTime;
+    }
+    rebindSucceeded = true;
     console.error('[db-state] Database connection reinitialized');
+    return true;
   } finally {
+    lastReinitializeSucceeded = rebindSucceeded;
     // P4-13 FIX: Resolve the mutex BEFORE clearing the reference.
     // If we set reinitializeMutex = null first, a concurrent caller could
     // see null and start a new reinitialization before resolve is called.

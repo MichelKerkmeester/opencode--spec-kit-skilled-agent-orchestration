@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------
 // Tests for the R4 5th RRF channel: degree-based scoring
 
-import { describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import {
   EDGE_TYPE_WEIGHTS,
@@ -206,6 +206,29 @@ describe('Typed-Weighted Degree Computation', () => {
       expect(scores.get('4')).toBe(0);
       expect(scores.get('1')).toBeGreaterThan(0);
       expect(scores.get('1')).toBeLessThanOrEqual(DEGREE_BOOST_CAP);
+    });
+
+    it('fails closed when constitutional lookup throws', () => {
+      const originalPrepare = testDb.prepare.bind(testDb);
+      const prepareSpy = vi.spyOn(testDb, 'prepare').mockImplementation((sql: string) => {
+        if (sql.includes("importance_tier = 'constitutional'")) {
+          throw new Error('lookup failed');
+        }
+        return originalPrepare(sql);
+      });
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+      const scores = computeDegreeScores(testDb, [1, 4, 999]);
+
+      expect(scores.get('1')).toBe(0);
+      expect(scores.get('4')).toBe(0);
+      expect(scores.get('999')).toBe(0);
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[graph-search-fn] Constitutional exclusion lookup failed; returning zero scores for safety'
+      );
+
+      prepareSpy.mockRestore();
+      warnSpy.mockRestore();
     });
   });
 

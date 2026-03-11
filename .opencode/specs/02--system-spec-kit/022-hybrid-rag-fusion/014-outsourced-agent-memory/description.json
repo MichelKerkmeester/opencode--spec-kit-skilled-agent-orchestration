@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-outsourced-agent-memory",
+  "description": "Feature Specification: Outsourced Agent Memory Capture",
+  "keywords": [
+    "feature",
+    "specification",
+    "outsourced",
+    "agent",
+    "memory",
+    "capture"
+  ],
+  "lastUpdated": "2026-03-11T14:29:39.023Z",
+  "specId": "014",
+  "folderSlug": "outsourced-agent-memory",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "11-03-26_15-29__implemented-defense-in-depth-fix-for-bad-memory.md",
+    "11-03-26_15-30__implemented-defense-in-depth-fix-for-bad-memory.md",
+    "11-03-26_15-37__analyzed-loadcollecteddata-in-data-loader-ts.md"
+  ]
+}

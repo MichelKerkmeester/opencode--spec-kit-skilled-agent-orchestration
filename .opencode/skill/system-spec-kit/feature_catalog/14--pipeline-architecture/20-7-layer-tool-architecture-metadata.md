@@ -2,9 +2,9 @@
 
 ## Current Reality
 
-The layer definitions module (`lib/architecture/layer-definitions.ts`) defines a 7-layer MCP architecture (L1 through L7) where each layer has a designated token budget, priority level, use case description, and list of assigned tools. Layer IDs map to task types (`search`, `browse`, `modify`, `checkpoint`, `analyze`, `maintenance`, `default`) so the system can recommend the appropriate layer for a given operation.
+The layer definitions module (`lib/architecture/layer-definitions.ts`) defines a 7-layer MCP architecture (L1 through L7) where each layer has token budgets, priorities, use-case guidance, and tool membership. Layer IDs still map to task types (`search`, `browse`, `modify`, `checkpoint`, `analyze`, `maintenance`, `default`) for recommendation/hinting.
 
-Each `LayerDefinition` includes: `id`, `name`, `description`, `tokenBudget`, `priority`, `useCase`, and `tools[]`. The architecture metadata is used by the context handler to enforce per-layer token budgets and by the query classifier to route requests to the correct tool subset. This provides structural governance over which tools are available at each abstraction level and how many tokens each layer can consume.
+Runtime dispatch in `context-server.ts` has a single name-based dispatch hop (`dispatchTool(name, args)`), and that hop fans into 5 dispatcher modules in `tools/index.ts` (`context`, `memory`, `causal`, `checkpoint`, `lifecycle`). The 7-layer model is therefore metadata/governance (token budgets and advisory recommendations), not a 7-layer runtime classifier/router.
 
 ## Source Files
 
@@ -12,8 +12,10 @@ Each `LayerDefinition` includes: `id`, `name`, `description`, `tokenBudget`, `pr
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/architecture/layer-definitions.ts` | Lib | 7-layer architecture definitions and routing |
-| `mcp_server/handlers/memory-context.ts` | Handler | Context handler using layer metadata |
+| `mcp_server/lib/architecture/layer-definitions.ts` | Lib | 7-layer architecture metadata and budget/recommendation helpers |
+| `mcp_server/context-server.ts` | Core | Runtime dispatch entrypoint and token-budget injection |
+| `mcp_server/tools/index.ts` | API | Name-based dispatcher routing across tool modules |
+| `mcp_server/handlers/memory-context.ts` | Handler | Surfaces recommended layers as advisory metadata |
 
 ### Tests
 
@@ -21,6 +23,8 @@ Each `LayerDefinition` includes: `id`, `name`, `description`, `tokenBudget`, `pr
 |------|-------|
 | `mcp_server/tests/layer-definitions.vitest.ts` | Layer definition tests |
 | `mcp_server/tests/token-budget-enforcement.vitest.ts` | Token budget enforcement |
+| `mcp_server/tests/context-server.vitest.ts` | Context-server dispatch and budget-injection behavior |
+| `mcp_server/tests/mcp-tool-dispatch.vitest.ts` | Tool-to-handler dispatch matrix validation |
 
 ## Source Metadata
 

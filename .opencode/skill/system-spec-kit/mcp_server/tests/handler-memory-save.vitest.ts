@@ -2,9 +2,10 @@
 // TEST: HANDLER MEMORY SAVE
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-save';
@@ -91,6 +92,251 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     it('T518-12: Escapes % character', () => {
       const result = handler.escapeLikePattern('100% done');
       expect(result).toBe('100\\% done');
+    });
+  });
+
+  describe('atomic-save failure injection', () => {
+    const tempDirs: string[] = [];
+
+    function createAtomicSaveTargetPath(fileName: string): string {
+      const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'atomic-save-fi-'));
+      tempDirs.push(dir);
+      return path.join(dir, fileName);
+    }
+
+    function buildParsedMemory(targetPath: string) {
+      return {
+        specFolder: 'specs/999-atomic-save-fi',
+        filePath: targetPath,
+        title: 'Atomic Save FI',
+        triggerPhrases: ['atomic-save-fi'],
+        content: '# Atomic Save FI',
+        contentHash: 'fi-hash',
+        contextType: 'general',
+        importanceTier: 'normal',
+        hasCausalLinks: false,
+      };
+    }
+
+    function buildIndexResult(overrides: Record<string, unknown> = {}) {
+      return {
+        status: 'indexed',
+        id: 101,
+        specFolder: 'specs/999-atomic-save-fi',
+        title: 'Atomic Save FI',
+        message: 'Indexed successfully',
+        embeddingStatus: 'success',
+        ...overrides,
+      };
+    }
+
+    async function loadAtomicSaveHarness(options: {
+      parseMemoryFileMock?: ReturnType<typeof vi.fn>;
+      checkExistingRowMock?: ReturnType<typeof vi.fn>;
+    } = {}) {
+      vi.resetModules();
+
+      const parseMemoryFileMock = options.parseMemoryFileMock
+        ?? vi.fn((targetPath: string) => buildParsedMemory(targetPath));
+      const validateParsedMemoryMock = vi.fn(() => ({ valid: true, errors: [], warnings: [] }));
+      const runQualityLoopMock = vi.fn(() => ({
+        score: { total: 0, issues: [] },
+        fixes: [],
+        passed: true,
+        rejected: false,
+      }));
+      const checkExistingRowMock = options.checkExistingRowMock
+        ?? vi.fn(() => buildIndexResult());
+
+      const transactionManagerActual = await vi.importActual<typeof import('../lib/storage/transaction-manager')>(
+        '../lib/storage/transaction-manager'
+      );
+      const executeAtomicSaveMock = vi.fn((filePath: string, content: string, dbOperation: () => void) =>
+        transactionManagerActual.executeAtomicSave(filePath, content, dbOperation)
+      );
+      const deleteFileIfExistsMock = vi.fn((filePath: string) =>
+        transactionManagerActual.deleteFileIfExists(filePath)
+      );
+      const atomicWriteFileMock = vi.fn((filePath: string, content: string) =>
+        transactionManagerActual.atomicWriteFile(filePath, content)
+      );
+
+      vi.doMock('../lib/storage/transaction-manager', () => ({
+        ...transactionManagerActual,
+        executeAtomicSave: executeAtomicSaveMock,
+        deleteFileIfExists: deleteFileIfExistsMock,
+        atomicWriteFile: atomicWriteFileMock,
+      }));
+
+      vi.doMock('../lib/parsing/memory-parser', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/parsing/memory-parser')>();
+        return {
+          ...actual,
+          parseMemoryFile: parseMemoryFileMock,
+          validateParsedMemory: validateParsedMemoryMock,
+        };
+      });
+
+      vi.doMock('../handlers/quality-loop', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../handlers/quality-loop')>();
+        return {
+          ...actual,
+          runQualityLoop: runQualityLoopMock,
+        };
+      });
+
+      vi.doMock('../handlers/save/dedup', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../handlers/save/dedup')>();
+        return {
+          ...actual,
+          checkExistingRow: checkExistingRowMock,
+          checkContentHashDedup: vi.fn(() => null),
+        };
+      });
+
+      vi.doMock('../utils', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../utils')>();
+        return {
+          ...actual,
+          requireDb: vi.fn(() => ({
+            prepare: vi.fn(() => ({
+              get: vi.fn(() => undefined),
+              all: vi.fn(() => []),
+              run: vi.fn(() => ({ changes: 0 })),
+            })),
+            transaction: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
+          })),
+        };
+      });
+
+      const module = await import('../handlers/memory-save');
+      return {
+        module,
+        parseMemoryFileMock,
+        checkExistingRowMock,
+        executeAtomicSaveMock,
+        deleteFileIfExistsMock,
+      };
+    }
+
+    afterEach(() => {
+      for (const dir of tempDirs.splice(0, tempDirs.length)) {
+        fs.rmSync(dir, { recursive: true, force: true });
+      }
+
+      vi.doUnmock('../lib/storage/transaction-manager');
+      vi.doUnmock('../lib/parsing/memory-parser');
+      vi.doUnmock('../handlers/quality-loop');
+      vi.doUnmock('../handlers/save/dedup');
+      vi.doUnmock('../utils');
+      vi.restoreAllMocks();
+      vi.resetModules();
+    });
+
+    it('retries when indexMemoryFile throws once then succeeds', async () => {
+      const parseMemoryFileMock = vi.fn()
+        .mockImplementationOnce(() => {
+          throw new Error('simulated transient indexing failure');
+        })
+        .mockImplementation((targetPath: string) => buildParsedMemory(targetPath));
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryFileMock,
+        checkExistingRowMock: vi.fn(() => buildIndexResult({ status: 'indexed', id: 201 })),
+      });
+
+      const filePath = createAtomicSaveTargetPath('retry-once.md');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# retry once' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
+      expect(harness.deleteFileIfExistsMock).not.toHaveBeenCalled();
+    });
+
+    it('rolls back written file when indexMemoryFile throws on both attempts', async () => {
+      const parseMemoryFileMock = vi.fn(() => {
+        throw new Error('simulated persistent indexing failure');
+      });
+
+      const harness = await loadAtomicSaveHarness({
+        parseMemoryFileMock,
+      });
+
+      const filePath = createAtomicSaveTargetPath('throw-both.md');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# throw both attempts' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('error');
+      expect(result.error).toContain('Indexing failed after retry');
+      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(filePath);
+      expect(fs.existsSync(filePath)).toBe(false);
+    });
+
+    it('treats indexMemoryFile status=error as failure and retries once', async () => {
+      const checkExistingRowMock = vi.fn()
+        .mockReturnValueOnce(
+          buildIndexResult({
+            status: 'error',
+            id: 0,
+            message: 'forced error status',
+            error: 'forced error status',
+          })
+        )
+        .mockReturnValueOnce(buildIndexResult({ status: 'indexed', id: 301 }));
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+      });
+
+      const filePath = createAtomicSaveTargetPath('status-error-then-success.md');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# status error then success' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(true);
+      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(2);
+      expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(2);
+      expect(harness.deleteFileIfExistsMock).not.toHaveBeenCalled();
+    });
+
+    it('treats indexMemoryFile status=rejected as non-retry rollback outcome', async () => {
+      const checkExistingRowMock = vi.fn().mockReturnValue(
+        buildIndexResult({
+          status: 'rejected',
+          id: 0,
+          message: 'Quality gate rejected: signal density too low',
+          rejectionReason: 'Quality gate rejected: signal density too low',
+        })
+      );
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+      });
+
+      const filePath = createAtomicSaveTargetPath('status-rejected.md');
+      const result = await harness.module.atomicSaveMemory(
+        { file_path: filePath, content: '# rejected outcome' },
+        { force: true }
+      );
+
+      expect(result.success).toBe(false);
+      expect(result.status).toBe('rejected');
+      expect(result.message).toContain('Quality gate rejected');
+      expect(harness.parseMemoryFileMock).toHaveBeenCalledTimes(1);
+      expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
+      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
+      expect(fs.existsSync(filePath)).toBe(false);
     });
   });
 });

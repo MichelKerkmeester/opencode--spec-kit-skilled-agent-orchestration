@@ -4,6 +4,7 @@ import path from 'path';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 import * as handler from '../handlers/memory-save';
+import { buildSaveResponse } from '../handlers/save/response-builder';
 import * as vectorIndex from '../lib/search/vector-index';
 
 const TEST_DB_DIR = path.join(os.tmpdir(), `speckit-memory-save-ux-${process.pid}`);
@@ -112,5 +113,75 @@ describe('Memory save UX regressions', () => {
     expect(result.postMutationHooks).toBeDefined();
     expect(Array.isArray(result.hints)).toBe(true);
     expect(result.hints?.some((hint: string) => hint.includes('Post-mutation cache clear'))).toBe(true);
+  });
+
+  it('atomicSaveMemory rolls back file when indexing fails after retry', async () => {
+    const atomicPath = path.join(FIXTURE_ROOT, 'memory', 'atomic-save-invalid.md');
+
+    const result = await handler.atomicSaveMemory(
+      {
+        file_path: atomicPath,
+        content: 'bad',
+      },
+      { force: true }
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.status).toBe('error');
+    expect(result.error).toContain('Indexing failed after retry');
+    expect(fs.existsSync(atomicPath)).toBe(false);
+  });
+
+  it('atomicSaveMemory restores previous content when indexing fails after overwrite', async () => {
+    const atomicPath = path.join(FIXTURE_ROOT, 'memory', 'atomic-save-restore.md');
+    const originalContent = buildMemoryContent('Atomic Restore Seed', 'Original content to restore on failure.');
+    fs.writeFileSync(atomicPath, originalContent, 'utf8');
+
+    const result = await handler.atomicSaveMemory(
+      {
+        file_path: atomicPath,
+        content: 'bad',
+      },
+      { force: true }
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.status).toBe('error');
+    expect(result.error).toContain('Indexing failed after retry');
+    expect(fs.existsSync(atomicPath)).toBe(true);
+    expect(fs.readFileSync(atomicPath, 'utf8')).toBe(originalContent);
+  });
+
+  it('buildSaveResponse returns explicit rejected payload without mutation side effects', () => {
+    const response = buildSaveResponse({
+      result: {
+        status: 'rejected',
+        id: 0,
+        specFolder: 'specs/999-memory-save-ux-fixtures',
+        title: 'Rejected Save',
+        qualityScore: 0.2,
+        qualityFlags: ['No trigger phrases found'],
+        rejectionReason: 'Quality score 0.200 below threshold 0.6 after 1 auto-fix attempt(s).',
+        message: 'Quality score 0.200 below threshold 0.6 after 1 auto-fix attempt(s).',
+        qualityGate: {
+          pass: false,
+          reasons: ['signal density too low'],
+          layers: { lexical: { pass: false } },
+        },
+      },
+      filePath: path.join(FIXTURE_ROOT, 'memory', 'rejected.md'),
+      asyncEmbedding: true,
+      requestId: 'req-test-rejected',
+    });
+
+    const parsed = parseResponse(response);
+    expect(parsed.data.status).toBe('rejected');
+    expect(parsed.data.postMutationHooks).toBeUndefined();
+    expect(parsed.data.qualityGate).toEqual({
+      pass: false,
+      reasons: ['signal density too low'],
+      layers: { lexical: { pass: false } },
+    });
+    expect(parsed.hints).toContain('Rejected saves do not mutate the memory index');
   });
 });
