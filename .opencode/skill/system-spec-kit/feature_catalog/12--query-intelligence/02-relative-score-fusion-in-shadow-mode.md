@@ -1,5 +1,7 @@
 # Relative score fusion in shadow mode
 
+> **Status: DORMANT / Shadow-only** — RSF scores are computed for evaluation metadata but do not affect live ranking. The `isRsfEnabled()` flag and the active RSF branch in hybrid-search.ts were removed in Sprint 8.
+
 ## Current Reality
 
 RRF has been the fusion method since day one, but is it the best option? Relative Score Fusion runs alongside RRF in shadow mode to find out.

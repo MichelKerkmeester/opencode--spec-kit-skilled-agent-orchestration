@@ -42,8 +42,8 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Test Files | 226 | All `.vitest.ts` format |
-| Total Tests | 7,003 | Across all test files |
+| Test Files | 261 | All `.vitest.ts` format |
+| Total Tests | See `npx vitest run` | Use the current Vitest summary as the source of truth |
 | Test Framework | Vitest | TypeScript-native, no compilation step needed |
 | Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
 
@@ -52,7 +52,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | Feature | Description |
 |---------|-------------|
 | **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Full Coverage** | 226 test files covering cognitive, search, handlers, integration and eval |
+| **Full Coverage** | 261 test files covering cognitive, search, handlers, integration and eval |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
 | **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
@@ -349,7 +349,6 @@ tests/
 │
 ├── # Documentation
 ├── README.md                              # This file
-└── VERIFICATION_REPORT.md                 # Phase 3 verification report
 ```
 
 ### Key Files
@@ -462,8 +461,7 @@ npx vitest run
 #  PASS  tests/composite-scoring.vitest.ts (101 tests)
 #  PASS  tests/working-memory.vitest.ts (51 tests)
 #  ...
-#  Test Files  226 passed
-#  Tests       7003 passed
+#  Use the Vitest summary as the source of truth for current file and test totals
 ```
 
 ### Example 2: Run Specific Feature Test
@@ -530,7 +528,7 @@ npx vitest run tests/unit-*.vitest.ts
 ```bash
 # Ensure the project is built
 cd .opencode/skill/system-spec-kit/mcp_server
-npm run build
+npx tsc
 
 # Vitest uses ts-node/esbuild for TypeScript. Check vitest.config.ts
 ```
@@ -566,7 +564,7 @@ npx vitest run
 |---------|-----------|
 | Missing database | Run MCP server once to initialize |
 | Embedding API errors | Set `VOYAGE_API_KEY` environment variable |
-| Import errors | Run `npm run build`, check vitest config |
+| Import errors | Run `npx tsc`, check vitest config |
 | Timeout errors | Increase timeout in vitest config or individual test |
 
 ### Diagnostic Commands
@@ -577,7 +575,7 @@ npx vitest --version
 
 # List test files
 ls tests/*.vitest.ts | wc -l
-# Expected: 226
+# Expected: 261
 
 # Run tests with detailed output
 npx vitest run --reporter=verbose 2>&1 | head -50

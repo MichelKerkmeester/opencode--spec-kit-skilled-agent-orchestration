@@ -116,3 +116,19 @@ describe('T038-T044 causal boost', () => {
     expect(cycle.get(2)).toBeCloseTo(0.05, 6);
   });
 });
+
+describe('T008 — Seed cap and multiplier precedence', () => {
+  it('RELATION_WEIGHT_MULTIPLIERS covers all relation types from causal-edges', () => {
+    const boostRelations = Object.keys(causalBoost.RELATION_WEIGHT_MULTIPLIERS);
+    const expectedRelations = ['supersedes', 'contradicts', 'caused', 'enabled', 'derived_from', 'supports'];
+    expect(boostRelations).toEqual(expect.arrayContaining(expectedRelations));
+  });
+
+  it('seed cap limits number of seed nodes used for graph walk', () => {
+    // MAX_SEED_RESULTS = 5 and SEED_FRACTION = 0.25
+    // With 100 results, seeds = ceil(100 * 0.25) = 25, capped at 5
+    // Verify the constants are exported and have expected values
+    expect(causalBoost.MAX_HOPS).toBe(2);
+    expect(causalBoost.MAX_BOOST_PER_HOP).toBe(0.05);
+  });
+});

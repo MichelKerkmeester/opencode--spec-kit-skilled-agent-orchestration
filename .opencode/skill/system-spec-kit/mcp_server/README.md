@@ -289,7 +289,6 @@ dist/context-server.js     (compiled output, executed at runtime by node)
 | ----------------------------- | -------------------------------------------------- | ------- |
 | `task_preflight`              | Capture epistemic baseline before task             | <50ms   |
 | `task_postflight`             | Capture state after task, calculate learning delta | <50ms   |
-| `memory_get_learning_history` | Get learning history with trends                   | <50ms   |
 
 ### Causal and Drift Tools
 
@@ -627,6 +626,7 @@ mcp_server/
 │   ├── memory-search.ts    # memory_search + Testing Effect
 │   ├── memory-triggers.ts  # memory_match_triggers + cognitive
 │   ├── memory-save.ts      # memory_save + PE gating
+│   ├── memory-ingest.ts    # memory_ingest_start/status/cancel
 │   ├── memory-crud.ts      # stable CRUD facade + compatibility aliases
 │   ├── memory-crud-delete.ts # memory_delete
 │   ├── memory-crud-update.ts # memory_update
@@ -637,10 +637,18 @@ mcp_server/
 │   ├── memory-crud-types.ts  # CRUD argument and helper types
 │   ├── memory-bulk-delete.ts # memory_bulk_delete + skipCheckpoint
 │   ├── memory-index.ts     # memory_index_scan + 3-source pipeline
+│   ├── memory-index-alias.ts # index alias management
+│   ├── memory-index-discovery.ts # spec-folder discovery for indexing
 │   ├── checkpoints.ts      # checkpoint_create/list/restore/delete + memory_validate
 │   ├── session-learning.ts # preflight/postflight/learning history
 │   ├── memory-context.ts   # memory_context + unified entry
 │   ├── causal-graph.ts     # causal_link/unlink/stats/drift_why
+│   ├── causal-links-processor.ts # causal link extraction and processing
+│   ├── chunking-orchestrator.ts # anchor-aware chunking orchestration
+│   ├── mutation-hooks.ts   # post-mutation hook runner
+│   ├── quality-loop.ts     # save-time quality feedback loop
+│   ├── save/               # decomposed save pipeline modules
+│   ├── eval-reporting.ts   # eval_run_ablation + eval_reporting_dashboard
 │
 ├── hooks/                  # MCP lifecycle hooks
 │   ├── index.ts            # Hook exports
@@ -652,13 +660,15 @@ mcp_server/
 │   ├── chunking/           # Anchor-aware large-file chunker (50K threshold)
 │   ├── cognitive/          # FSRS, PE gating, state model, co-activation, rollout policy
 │   ├── config/             # Memory types and type inference helpers
-│   ├── contracts/          # ContextEnvelope, RetrievalTrace, DegradedModeContract
+│   ├── contracts/          # Proxy docs only; canonical retrieval contracts are exported from ../shared/index.ts
 │   ├── errors/             # Core errors and recovery hints
 │   ├── eval/               # Eval framework: logger, metrics, ground truth and baselines
 │   ├── extraction/         # Extraction adapter and redaction gate
+│   ├── graph/              # Graph signals and community detection helpers
 │   ├── interfaces/         # Vector store interface
 │   ├── learning/           # Corrections tracking
 │   ├── manage/             # PageRank scoring
+│   ├── ops/                # File watcher and job queue operations
 │   ├── parsing/            # Memory parser, trigger matcher, entity scope
 │   ├── providers/          # Embedding providers and retry manager
 │   ├── response/           # MCP response envelope helpers

@@ -1,7 +1,11 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/010-graph-signal-activation",
   "description": "010 — graph-signal-activation",
-  "keywords": ["graph", "signal", "activation"],
+  "keywords": [
+    "graph",
+    "signal",
+    "activation"
+  ],
   "lastUpdated": "2026-03-10T11:14:56.000Z",
   "specId": "010",
   "folderSlug": "graph-signal-activation",
@@ -10,6 +14,8 @@
     "022-hybrid-rag-fusion",
     "013-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "11-03-26_13-36__graph-signal-activation.md"
+  ]
 }

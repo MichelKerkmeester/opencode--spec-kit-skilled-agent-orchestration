@@ -200,6 +200,7 @@ cli-claude-code/
 | Agent Tool | Spawn focused subagents (built-in) |
 | Skills System | On-demand specialized workflows |
 | Spec Kit Memory | Persistent structured context via MCP |
+| Hooks | Pre/post tool-call automation configured in settings |
 | Session continuity | `--continue` / `--resume SESSION_ID` |
 
 <!-- /ANCHOR:features -->
@@ -224,6 +225,7 @@ cli-claude-code/
 | `-p "prompt"` | Non-interactive mode (required) |
 | `--output-format text` | Plain text output (default) |
 | `--output-format json` | JSON with metadata |
+| `--output-format stream-json` | Streaming JSON for real-time processing |
 | `--model claude-sonnet-4-6` | Model selection |
 | `--permission-mode plan` | Read-only safe mode |
 | `--json-schema '{...}'` | Schema-validated output |

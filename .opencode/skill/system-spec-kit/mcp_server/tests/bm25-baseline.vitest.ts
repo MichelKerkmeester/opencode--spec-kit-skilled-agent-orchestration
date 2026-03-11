@@ -15,6 +15,16 @@
 //   T008.10 — runBM25Baseline: skipHardNegatives reduces query count
 //   T008.11 — runBM25Baseline: returns well-structured BM25BaselineResult
 //   T008.12 — runBM25Baseline: disables non-BM25 channels (only calls searchFn)
+//   T009.1  — computeBootstrapCI: iterations=0 returns safe degenerate CI
+//   T009.2  — computeBootstrapCI: negative iterations return safe degenerate CI
+//   T009.3  — computeBootstrapCI: empty input returns safe degenerate CI
+//   T009.4  — computeBootstrapCI: single-element input behaves correctly
+//   T009.5  — computeBootstrapCI: NaN values in perQueryMRR are filtered out
+//   T009.6  — computeBootstrapCI: Infinity values in perQueryMRR are filtered out
+//   T009.7  — computeBootstrapCI: all-NaN input returns degenerate zero CI
+//   T009.8  — computeBootstrapCI: fractional iterations are floored
+//   T009.9  — computeBootstrapCI: NaN iterations treated as 0
+//   T009.10 — computeBootstrapCI: Infinity iterations treated as 0
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import * as path from 'path';
@@ -25,6 +35,7 @@ import Database from 'better-sqlite3';
 import {
   evaluateContingency,
   evaluateContingencyRelative,
+  computeBootstrapCI,
   recordBaselineMetrics,
   runBM25Baseline,
   type BM25BaselineResult,
@@ -32,7 +43,7 @@ import {
 } from '../lib/eval/bm25-baseline';
 
 import { initEvalDb, closeEvalDb } from '../lib/eval/eval-db';
-import { GROUND_TRUTH_QUERIES } from '../lib/eval/ground-truth-data';
+import { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } from '../lib/eval/ground-truth-data';
 
 /* ---------------------------------------------------------------
    SETUP / TEARDOWN
@@ -67,7 +78,7 @@ function makeMockSearchFn(count: number = 5): (query: string, limit: number) => 
   return (_query: string, limit: number) => {
     const actual = Math.min(count, limit);
     return Array.from({ length: actual }, (_, i) => ({
-      id: 1000 + i,        // IDs that will NOT match placeholder -1 in ground truth
+      id: 1000 + i,        // IDs that will NOT match mapped ground truth IDs
       score: 1.0 - i * 0.1,
       source: 'bm25',
     }));
@@ -209,6 +220,96 @@ describe('T008: BM25 Relative Contingency Decision', () => {
 });
 
 /* ---------------------------------------------------------------
+   TESTS: computeBootstrapCI (T009)
+--------------------------------------------------------------- */
+
+describe('T009: Bootstrap CI guards', () => {
+  it('T009.1: iterations=0 returns safe degenerate CI (no NaN)', () => {
+    const result = computeBootstrapCI([0.4, 0.6], 0);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+    expect(result.ciLower).toBeCloseTo(0.5, 5);
+    expect(result.ciUpper).toBeCloseTo(0.5, 5);
+    expect(result.ciWidth).toBe(0);
+    expect(result.iterations).toBe(0);
+    expect(Number.isNaN(result.ciLower)).toBe(false);
+    expect(Number.isNaN(result.ciUpper)).toBe(false);
+  });
+
+  it('T009.2: negative iterations return safe degenerate CI', () => {
+    const result = computeBootstrapCI([0.2, 0.8], -5);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+    expect(result.ciLower).toBeCloseTo(0.5, 5);
+    expect(result.ciUpper).toBeCloseTo(0.5, 5);
+    expect(result.ciWidth).toBe(0);
+    expect(result.iterations).toBe(0);
+  });
+
+  it('T009.3: empty perQueryMRR returns degenerate zero CI', () => {
+    const result = computeBootstrapCI([], 1000);
+    expect(result.pointEstimate).toBe(0);
+    expect(result.ciLower).toBe(0);
+    expect(result.ciUpper).toBe(0);
+    expect(result.ciWidth).toBe(0);
+    expect(result.sampleSize).toBe(0);
+    expect(Number.isFinite(result.ciLower)).toBe(true);
+    expect(Number.isFinite(result.ciUpper)).toBe(true);
+  });
+
+  it('T009.4: single-element input produces stable CI around that value', () => {
+    const result = computeBootstrapCI([0.75], 200);
+    expect(result.pointEstimate).toBeCloseTo(0.75, 5);
+    expect(result.ciLower).toBeCloseTo(0.75, 5);
+    expect(result.ciUpper).toBeCloseTo(0.75, 5);
+    expect(result.ciWidth).toBe(0);
+    expect(result.sampleSize).toBe(1);
+  });
+
+  it('T009.5: NaN values in perQueryMRR are filtered out', () => {
+    const result = computeBootstrapCI([0.4, NaN, 0.6, NaN], 100);
+    // Only [0.4, 0.6] survive filtering → sampleSize=2, pointEstimate≈0.5
+    expect(result.sampleSize).toBe(2);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+    expect(Number.isFinite(result.ciLower)).toBe(true);
+    expect(Number.isFinite(result.ciUpper)).toBe(true);
+  });
+
+  it('T009.6: Infinity values in perQueryMRR are filtered out', () => {
+    const result = computeBootstrapCI([0.3, Infinity, -Infinity, 0.7], 100);
+    expect(result.sampleSize).toBe(2);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+    expect(Number.isFinite(result.ciLower)).toBe(true);
+  });
+
+  it('T009.7: all-NaN input returns degenerate zero CI', () => {
+    const result = computeBootstrapCI([NaN, NaN, NaN], 1000);
+    expect(result.sampleSize).toBe(0);
+    expect(result.pointEstimate).toBe(0);
+    expect(result.ciLower).toBe(0);
+    expect(result.ciUpper).toBe(0);
+  });
+
+  it('T009.8: fractional iterations are floored', () => {
+    const result = computeBootstrapCI([0.5, 0.5], 3.7);
+    // Math.floor(3.7) = 3 iterations
+    expect(result.iterations).toBe(3);
+    expect(result.sampleSize).toBe(2);
+  });
+
+  it('T009.9: NaN iterations treated as 0', () => {
+    const result = computeBootstrapCI([0.5, 0.5], NaN);
+    expect(result.iterations).toBe(0);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+    expect(result.ciWidth).toBe(0);
+  });
+
+  it('T009.10: Infinity iterations treated as 0', () => {
+    const result = computeBootstrapCI([0.5, 0.5], Infinity);
+    expect(result.iterations).toBe(0);
+    expect(result.pointEstimate).toBeCloseTo(0.5, 5);
+  });
+});
+
+/* ---------------------------------------------------------------
    TESTS: recordBaselineMetrics
 --------------------------------------------------------------- */
 
@@ -344,7 +445,7 @@ describe('T008: runBM25Baseline — Runner Integration', () => {
     expect(calls).toHaveLength(3);
     // All calls should be tagged as bm25 (our tracking tag)
     expect(calls.every(c => c.startsWith('bm25:'))).toBe(true);
-    // Metrics are all 0 because empty results never match placeholder ground truth IDs
+    // Metrics are all 0 because empty results never match mapped ground truth IDs
     expect(result.metrics.mrr5).toBe(0);
   });
 
@@ -355,6 +456,35 @@ describe('T008: runBM25Baseline — Runner Integration', () => {
     const parsed = new Date(result.timestamp);
     expect(isNaN(parsed.getTime())).toBe(false);
     expect(result.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
+  });
+
+  it('T008.20: config.k overrides NDCG/Recall but MRR stays at k=5 for contingency', async () => {
+    const relevantMemoryByQueryId = new Map<number, number>();
+    for (const relevance of GROUND_TRUTH_RELEVANCES) {
+      if (relevance.queryId <= 3 && relevance.relevance > 0 && !relevantMemoryByQueryId.has(relevance.queryId)) {
+        relevantMemoryByQueryId.set(relevance.queryId, relevance.memoryId);
+      }
+    }
+
+    const mockSearch = (query: string, _limit: number): BM25SearchResult[] => {
+      const q = GROUND_TRUTH_QUERIES.find(item => item.query === query);
+      if (!q) {
+        return [{ id: 999_001, score: 1.0, source: 'bm25' }];
+      }
+      const relevantId = relevantMemoryByQueryId.get(q.id) ?? 999_002;
+      return [
+        { id: 999_000, score: 1.0, source: 'bm25' }, // non-relevant at rank 1
+        { id: relevantId, score: 0.9, source: 'bm25' }, // relevant at rank 2
+      ];
+    };
+
+    const baseline = await runBM25Baseline(mockSearch, { queryLimit: 3 });
+    const withKOverride = await runBM25Baseline(mockSearch, { queryLimit: 3, k: 1 });
+
+    expect(withKOverride.metrics.mrr5).toBeCloseTo(baseline.metrics.mrr5, 10);
+    expect(withKOverride.contingencyDecision.bm25MRR).toBeCloseTo(baseline.contingencyDecision.bm25MRR, 10);
+    expect(withKOverride.metrics.ndcg10).not.toBeCloseTo(baseline.metrics.ndcg10, 10);
+    expect(withKOverride.metrics.recall20).not.toBeCloseTo(baseline.metrics.recall20, 10);
   });
 
 });

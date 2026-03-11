@@ -48,7 +48,7 @@ Primary script directories:
 - `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
 - `memory/` - 7 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`)
 - `core/` - 8 TypeScript workflow modules plus barrel export
-- `extractors/` - 10 TypeScript extraction modules plus barrel export
+- `extractors/` - 14 files total (12 TypeScript extraction modules, barrel export, and directory README)
 - `loaders/` - 1 TypeScript loading module (`data-loader.ts`) plus barrel export
 - `renderers/` - 1 TypeScript rendering module (`template-renderer.ts`) plus barrel export
 - `utils/` - 11 TypeScript utility modules plus barrel export
@@ -57,6 +57,7 @@ Primary script directories:
 - `evals/` - 18 evaluation and audit scripts plus policy allowlist
 - `ops/` - 5 shell healing/runbook scripts plus shared helper (`ops-common.sh`)
 - `setup/` - 4 prerequisite and native-module check scripts
+- `scratch/` - empty-by-default workspace for temporary script artifacts and local debugging notes
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
 - `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
 - `test-fixtures/` - 51 numbered fixture directories for validation rule testing

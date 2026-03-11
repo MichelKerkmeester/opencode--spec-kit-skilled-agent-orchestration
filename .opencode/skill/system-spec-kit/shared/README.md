@@ -64,10 +64,10 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 │    ├─────────────┤                 │(RE-EXPORTS) │               │
 │    │embeddings.ts│                 ├─────────────┤               │
 │    │ export *    │                 │embeddings.ts│               │
-│    │ from '@spec-│                 │ export *    │               │
-│    │ kit/shared/ │                 │ from '@spec-│               │
-│    │ embeddings' │                 │ kit/shared/ │               │
-│    └─────────────┘                 │ embeddings' │               │
+│    │ from '@spec-│                 │ explicit    │               │
+│    │ kit/shared/ │                 │ named re-   │               │
+│    │ embeddings' │                 │ exports     │               │
+│    └─────────────┘                 │ from shared │               │
 │                                    └─────────────┘               │
 │                                                                  │
 │  Note: Source is TypeScript (.ts); compiled output is            │
@@ -101,7 +101,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 | Requirement          | Minimum | Recommended |
 | -------------------- | ------- | ----------- |
 | Node.js              | 18+     | 20+         |
-| @xenova/transformers | 2.0+    | Latest      |
+| @huggingface/transformers | 2.0+    | Latest      |
 
 <!-- /ANCHOR:overview -->
 
@@ -199,7 +199,10 @@ shared/
 ├── lib/
 │   └── structure-aware-chunker.ts # Markdown-aware chunking helpers
 ├── mcp_server/
-│   └── database/.db-updated    # Update marker for the database
+│   └── database/
+│       ├── .db-updated         # Update marker for the shared database directory
+│       ├── README.md           # Database directory notes and handling guidance
+│       └── speckit_memory.db   # Active shared SQLite database file
 ├── parsing/
 │   ├── quality-extractors.ts   # Quality score/flags extraction
 │   └── quality-extractors.test.ts # Parsing coverage for quality extraction
@@ -265,9 +268,9 @@ shared/
 
 Two re-export shims exist for path convenience:
 - `scripts/lib/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
-- `mcp_server/lib/providers/embeddings.ts` → `export * from '@spec-kit/shared/embeddings'`
+- `mcp_server/lib/providers/embeddings.ts` → explicit named re-exports from `@spec-kit/shared/embeddings`
 
-The canonical source is the `shared/` package. `shared/embeddings.ts` is the public shared entry point for embeddings, while `shared/embeddings/` contains provider-specific implementation details. These shims are thin re-exports with no implementation.
+The canonical source is the `shared/` package. `shared/embeddings.ts` is the public shared entry point for embeddings, while `shared/embeddings/` contains provider-specific implementation details. These shims stay implementation-free: the scripts shim uses a barrel re-export, while the MCP server shim uses explicit named re-exports for auditability.
 
 ---
 
@@ -337,14 +340,13 @@ The canonical source is the `shared/` package. `shared/embeddings.ts` is the pub
 
 ### Per-Profile Databases
 
-Each provider/model combination uses its own SQLite database:
+The shared database directory currently contains the runtime database plus its marker/readme files:
 
 ```
 database/
-├── context-index.sqlite                                    # Legacy (hf-local + nomic + 768)
-├── context-index__voyage__voyage-code-2__1024.sqlite       # Voyage
-├── context-index__openai__text-embedding-3-small__1536.sqlite
-└── context-index__openai__text-embedding-3-large__3072.sqlite
+├── .db-updated       # Update marker for the shared database directory
+├── README.md         # Database directory notes and handling guidance
+└── speckit_memory.db # Active shared SQLite database file
 ```
 
 <!-- /ANCHOR:configuration -->
@@ -542,7 +544,7 @@ node -e "console.log(require('./dist/trigger-extractor').extractTriggerPhrases('
 
 | Resource                                                                  | Description                        |
 | ------------------------------------------------------------------------- | ---------------------------------- |
-| [@xenova/transformers](https://github.com/xenova/transformers.js)         | JavaScript ML library for HF local |
+| [@huggingface/transformers](https://github.com/huggingface/transformers.js) | JavaScript ML library for HF local |
 | [nomic-embed-text](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) | Default HF embedding model         |
 | [Voyage AI](https://www.voyageai.com/)                                    | Recommended embedding provider     |
 | [OpenAI Embeddings](https://platform.openai.com/docs/guides/embeddings)   | OpenAI embedding API docs          |

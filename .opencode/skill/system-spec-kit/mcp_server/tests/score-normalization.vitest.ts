@@ -127,6 +127,97 @@ describe('RRF Score Normalization (T004)', () => {
       normalizeRrfScores(results);
       expect(results).toEqual([]);
     });
+
+    it('normalizes negative input scores into [0,1]', () => {
+      const results = [
+        makeFusionResult(1, -2.0),
+        makeFusionResult(2, -1.0),
+        makeFusionResult(3, -3.0),
+      ];
+
+      normalizeRrfScores(results);
+
+      expect(results[0].rrfScore).toBeCloseTo(0.5, 5);
+      expect(results[1].rrfScore).toBeCloseTo(1.0, 5);
+      expect(results[2].rrfScore).toBeCloseTo(0.0, 5);
+    });
+
+    it('normalizes scores greater than 1.0 into [0,1]', () => {
+      const results = [
+        makeFusionResult(1, 10),
+        makeFusionResult(2, 5),
+        makeFusionResult(3, 2),
+      ];
+
+      normalizeRrfScores(results);
+
+      expect(results[0].rrfScore).toBeCloseTo(1.0, 5);
+      expect(results[1].rrfScore).toBeCloseTo(0.375, 5);
+      expect(results[2].rrfScore).toBeCloseTo(0.0, 5);
+    });
+
+    it('handles very small score ranges with stable precision', () => {
+      const results = [
+        makeFusionResult(1, 1.000000000001),
+        makeFusionResult(2, 1.000000000002),
+        makeFusionResult(3, 1.000000000003),
+      ];
+
+      normalizeRrfScores(results);
+
+      expect(results[0].rrfScore).toBeCloseTo(0.0, 6);
+      expect(results[1].rrfScore).toBeCloseTo(0.5, 3);
+      expect(results[2].rrfScore).toBeCloseTo(1.0, 6);
+    });
+
+    it('handles NaN and Infinity inputs by coercing them to finite in-range scores', () => {
+      const results = [
+        makeFusionResult(1, Number.NaN),
+        makeFusionResult(2, Number.POSITIVE_INFINITY),
+        makeFusionResult(3, Number.NEGATIVE_INFINITY),
+        makeFusionResult(4, 5),
+        makeFusionResult(5, 10),
+      ];
+
+      normalizeRrfScores(results);
+
+      expect(results[0].rrfScore).toBe(0);
+      expect(results[1].rrfScore).toBe(0);
+      expect(results[2].rrfScore).toBe(0);
+      expect(results[3].rrfScore).toBeCloseTo(0.0, 5);
+      expect(results[4].rrfScore).toBeCloseTo(1.0, 5);
+      for (const r of results) {
+        expect(Number.isFinite(r.rrfScore)).toBe(true);
+        expect(r.rrfScore).toBeGreaterThanOrEqual(0);
+        expect(r.rrfScore).toBeLessThanOrEqual(1);
+      }
+    });
+
+    it('regression: normalized output is always finite and in [0,1]', () => {
+      const rawScores = [
+        -100,
+        -1,
+        -0.000001,
+        0,
+        0.000001,
+        1,
+        10,
+        100,
+        Number.MAX_SAFE_INTEGER,
+        Number.NaN,
+        Number.POSITIVE_INFINITY,
+        Number.NEGATIVE_INFINITY,
+      ];
+      const results = rawScores.map((score, index) => makeFusionResult(index + 1, score));
+
+      normalizeRrfScores(results);
+
+      for (const r of results) {
+        expect(Number.isFinite(r.rrfScore)).toBe(true);
+        expect(r.rrfScore).toBeGreaterThanOrEqual(0);
+        expect(r.rrfScore).toBeLessThanOrEqual(1);
+      }
+    });
   });
 
   describe('fuseResultsMulti with normalization', () => {

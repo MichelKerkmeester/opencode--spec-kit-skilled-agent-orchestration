@@ -2,7 +2,7 @@
 // MODULE: Save Quality Gate
 // ---------------------------------------------------------------
 // ---------------------------------------------------------------
-// TM-04: Pre-Storage Quality Gate
+// Pre-Storage Quality Gate
 //
 // 3-layer validation before storing memories:
 // - Layer 1: Structural validation (existing checks, formalized)
@@ -10,15 +10,15 @@
 //            anchors, metadata, signal density)
 // - Layer 3: Semantic dedup (cosine similarity against existing)
 //
-// Behind SPECKIT_SAVE_QUALITY_GATE flag (default OFF)
+// Behind SPECKIT_SAVE_QUALITY_GATE flag (default ON, graduated).
+// Set SPECKIT_SAVE_QUALITY_GATE=false to disable.
 //
-// MR12 mitigation: warn-only mode for first 2 weeks after
-// activation. When in warn-only mode, log quality scores and
-// would-reject decisions but do NOT block saves.
+// Warn-only mode: for the first 14 days after activation, the
+// gate logs quality scores and would-reject decisions but does
+// NOT block saves. This prevents disruption during rollout.
 //
-// P1-015: Activation timestamp is persisted to SQLite config
-// table so the 14-day graduation countdown survives server
-// restarts.
+// Activation timestamp is persisted to SQLite config table so
+// the 14-day graduation countdown survives server restarts.
 // ---------------------------------------------------------------
 
 import * as vectorIndex from '../search/vector-index';
@@ -223,9 +223,9 @@ export function isQualityGateEnabled(): boolean {
 }
 
 /**
- * Check if the quality gate is in warn-only mode (MR12 mitigation).
+ * Check if the quality gate is in warn-only mode.
  * For the first 14 days after activation, the gate logs scores but
- * does not block saves.
+ * does not block saves, preventing disruption during rollout.
  *
  * P1-015: Lazy-loads from SQLite if in-memory value is null, so the
  * 14-day countdown survives server restarts.
@@ -613,7 +613,7 @@ export function checkSemanticDedup(
  * Run the full 3-layer quality gate for a memory save operation.
  *
  * When the feature flag is OFF, returns a pass-through result.
- * When in warn-only mode (MR12), logs scores but allows saves.
+ * When in warn-only mode, logs scores but allows saves.
  *
  * @param params - The memory parameters to validate
  * @returns QualityGateResult with combined pass/fail and layer details

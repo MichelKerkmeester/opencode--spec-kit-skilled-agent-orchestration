@@ -67,7 +67,8 @@ This skill activates automatically via Gate 2 (`skill_advisor.py`) when you work
 ├── references/
 │   ├── shared/
 │   │   ├── universal_patterns.md     # Cross-language naming, commenting
-│   │   └── code_organization.md      # File structure, sections
+│   │   ├── code_organization.md      # File structure, sections
+│   │   └── alignment_verification_automation.md # Alignment drift automation guidance
 │   ├── javascript/
 │   │   ├── style_guide.md            # Headers, formatting, naming
 │   │   ├── quality_standards.md      # Errors, exports, JSDoc
@@ -86,6 +87,7 @@ This skill activates automatically via Gate 2 (`skill_advisor.py`) when you work
 │   │   └── quick_reference.md        # Cheat sheet
 │   └── config/
 │       ├── style_guide.md            # JSON/JSONC structure, $schema
+│       ├── quality_standards.md      # Config validation and schema quality gates
 │       └── quick_reference.md        # Cheat sheet
 ├── assets/
     └── checklists/

@@ -143,6 +143,7 @@ function buildMockReport(overrides: Partial<AblationReport> = {}): AblationRepor
     config: { channels: ['vector', 'bm25', 'fts5'] as AblationChannel[] },
     results: defaultResults,
     overallBaselineRecall: 0.8,
+    queryCount: 10,
     durationMs: 500,
     ...overrides,
   };
@@ -346,25 +347,18 @@ describe('Ablation Framework (R13-S3)', () => {
         '../lib/eval/ground-truth-data'
       );
 
-      // Only proceed if ground truth data exists; skip otherwise
-      if (GROUND_TRUTH_QUERIES.length === 0) {
-        console.warn('No ground truth queries — skipping runAblation computation test');
-        return;
-      }
+      expect(GROUND_TRUTH_QUERIES.length).toBeGreaterThan(0);
 
       // Pick the first query that has relevance entries
       const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
         GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id),
       );
 
-      if (!queryWithGT) {
-        console.warn('No query with ground truth relevances — skipping');
-        return;
-      }
+      expect(queryWithGT).toBeDefined();
 
       // Get relevant memory IDs for this query
       const relevances = GROUND_TRUTH_RELEVANCES.filter(
-        r => r.queryId === queryWithGT.id && r.relevance > 0,
+        r => r.queryId === queryWithGT!.id && r.relevance > 0,
       );
       const relevantIds = relevances.map(r => r.memoryId);
 
@@ -379,7 +373,7 @@ describe('Ablation Framework (R13-S3)', () => {
 
       const config: AblationConfig = {
         channels: ['vector', 'bm25'],
-        groundTruthQueryIds: [queryWithGT.id],
+        groundTruthQueryIds: [queryWithGT!.id],
         recallK: 20,
       };
 
@@ -417,10 +411,10 @@ describe('Ablation Framework (R13-S3)', () => {
         GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id),
       );
 
-      if (!queryWithGT) return;
+      expect(queryWithGT).toBeDefined();
 
       const relevances = GROUND_TRUTH_RELEVANCES.filter(
-        r => r.queryId === queryWithGT.id && r.relevance > 0,
+        r => r.queryId === queryWithGT!.id && r.relevance > 0,
       );
       const relevantIds = relevances.map(r => r.memoryId);
 
@@ -439,7 +433,7 @@ describe('Ablation Framework (R13-S3)', () => {
 
       const config: AblationConfig = {
         channels: ['vector'],
-        groundTruthQueryIds: [queryWithGT.id],
+        groundTruthQueryIds: [queryWithGT!.id],
       };
 
       const report = await runAblation(asyncSearchFn, config);
@@ -456,10 +450,10 @@ describe('Ablation Framework (R13-S3)', () => {
         GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
       );
 
-      if (!queryWithGT) return;
+      expect(queryWithGT).toBeDefined();
 
       const relevances = GROUND_TRUTH_RELEVANCES.filter(
-        r => r.queryId === queryWithGT.id && r.relevance > 0,
+        r => r.queryId === queryWithGT!.id && r.relevance > 0,
       );
       const relevantIds = relevances.map(r => r.memoryId);
       if (relevantIds.length === 0) return;
@@ -482,7 +476,7 @@ describe('Ablation Framework (R13-S3)', () => {
 
       const report = await runAblation(conditionalFailSearchFn, {
         channels: ['vector', 'bm25'],
-        groundTruthQueryIds: [queryWithGT.id],
+        groundTruthQueryIds: [queryWithGT!.id],
       });
 
       expect(report).not.toBeNull();
@@ -498,12 +492,77 @@ describe('Ablation Framework (R13-S3)', () => {
       expect(report.channelFailures![0]).toMatchObject({
         channel: 'vector',
         error: 'vector channel outage',
-        queryId: queryWithGT.id,
+        queryId: queryWithGT!.id,
       });
       expect(warnSpy).toHaveBeenCalledWith(
         expect.stringContaining('[ablation] Channel "vector" failed'),
         expect.stringContaining('vector channel outage'),
       );
+
+      warnSpy.mockRestore();
+    });
+
+    it('retains baseline queryCount and records all channel failures when every ablation fails', async () => {
+      const { GROUND_TRUTH_QUERIES, GROUND_TRUTH_RELEVANCES } = await import(
+        '../lib/eval/ground-truth-data'
+      );
+
+      const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
+        GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
+      );
+
+      expect(queryWithGT).toBeDefined();
+
+      const relevances = GROUND_TRUTH_RELEVANCES.filter(
+        r => r.queryId === queryWithGT!.id && r.relevance > 0,
+      );
+      const relevantIds = relevances.map(r => r.memoryId);
+      if (relevantIds.length === 0) return;
+
+      const allFailAblationSearchFn: AblationSearchFn = (
+        query: string,
+        disabledChannels: Set<AblationChannel>,
+      ) => {
+        if (disabledChannels.size > 0) {
+          const [disabledChannel] = [...disabledChannels];
+          throw new Error(`${disabledChannel} ablation failed`);
+        }
+
+        return relevantIds.map((id, idx) => ({
+          memoryId: id,
+          score: 1.0 - idx * 0.01,
+          rank: idx + 1,
+        }));
+      };
+
+      const channels: AblationChannel[] = ['vector', 'bm25', 'fts5'];
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+      const report = await runAblation(allFailAblationSearchFn, {
+        channels,
+        groundTruthQueryIds: [queryWithGT!.id],
+        recallK: 20,
+      });
+
+      expect(report).not.toBeNull();
+      if (!report) {
+        warnSpy.mockRestore();
+        return;
+      }
+
+      expect(report.overallBaselineRecall).toBeCloseTo(1.0, 2);
+      expect(report.queryCount).toBe(1);
+      expect(report.results).toHaveLength(0);
+      expect(report.channelFailures).toHaveLength(channels.length);
+
+      const failedChannels = report.channelFailures!.map(f => f.channel).sort();
+      expect(failedChannels).toEqual([...channels].sort());
+
+      for (const failure of report.channelFailures!) {
+        expect(failure.queryId).toBe(queryWithGT!.id);
+        expect(failure.query).toBe(queryWithGT!.query);
+        expect(failure.error).toContain('ablation failed');
+      }
 
       warnSpy.mockRestore();
     });
@@ -805,6 +864,37 @@ describe('Ablation Framework — DB Integration (R13-S3)', () => {
     expect(row).toBeDefined();
     expect(row!.eval_run_id).toBeLessThan(0); // Negative timestamp convention
   });
+
+  it('storeAblationResults() persists baseline query_count when all channel runs failed', () => {
+    const db = getEvalDb();
+    db.exec(`DELETE FROM eval_metric_snapshots WHERE metric_name LIKE 'ablation%'`);
+
+    const report = buildMockReport({
+      results: [],
+      queryCount: 4,
+      channelFailures: [
+        { channel: 'vector', error: 'vector outage', queryId: 1, query: 'q1' },
+        { channel: 'bm25', error: 'bm25 outage', queryId: 1, query: 'q1' },
+      ],
+    });
+
+    const success = storeAblationResults(report);
+    expect(success).toBe(true);
+
+    const baseline = db.prepare(
+      `SELECT query_count, metadata
+       FROM eval_metric_snapshots
+       WHERE metric_name = 'ablation_baseline_recall@20'
+       ORDER BY id DESC
+       LIMIT 1`,
+    ).get() as { query_count: number; metadata: string } | undefined;
+
+    expect(baseline).toBeDefined();
+    expect(baseline!.query_count).toBe(4);
+
+    const metadata = JSON.parse(baseline!.metadata);
+    expect(metadata.channelFailures).toHaveLength(2);
+  });
 });
 
 // ═══════════════════════════════════════════════════════════════════
@@ -933,10 +1023,10 @@ describe('Ablation Framework — Channel Isolation (R13-S3 acceptance)', () => {
       GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
     );
 
-    if (!queryWithGT) return;
+    expect(queryWithGT).toBeDefined();
 
     const relevances = GROUND_TRUTH_RELEVANCES.filter(
-      r => r.queryId === queryWithGT.id && r.relevance > 0,
+      r => r.queryId === queryWithGT!.id && r.relevance > 0,
     );
     const relevantIds = relevances.map(r => r.memoryId);
 
@@ -954,7 +1044,7 @@ describe('Ablation Framework — Channel Isolation (R13-S3 acceptance)', () => {
 
     const config: AblationConfig = {
       channels: ['vector', 'bm25', 'fts5'],
-      groundTruthQueryIds: [queryWithGT.id],
+      groundTruthQueryIds: [queryWithGT!.id],
     };
 
     const report = await runAblation(mockSearchFn, config);
@@ -1094,10 +1184,10 @@ describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
       const queryWithGT = GROUND_TRUTH_QUERIES.find(q =>
         GROUND_TRUTH_RELEVANCES.some(r => r.queryId === q.id && r.relevance > 0),
       );
-      if (!queryWithGT) return;
+      expect(queryWithGT).toBeDefined();
 
       const relevances = GROUND_TRUTH_RELEVANCES.filter(
-        r => r.queryId === queryWithGT.id && r.relevance > 0,
+        r => r.queryId === queryWithGT!.id && r.relevance > 0,
       );
       const relevantIds = relevances.map(r => r.memoryId);
 
@@ -1109,7 +1199,7 @@ describe('Ablation Framework — Multi-Metric Wiring (CHK-088–091)', () => {
 
       const report = await runAblation(mockSearchFn, {
         channels: ['vector'],
-        groundTruthQueryIds: [queryWithGT.id],
+        groundTruthQueryIds: [queryWithGT!.id],
       });
 
       expect(report).not.toBeNull();

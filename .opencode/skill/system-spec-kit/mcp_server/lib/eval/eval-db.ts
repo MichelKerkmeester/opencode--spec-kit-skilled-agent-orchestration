@@ -121,6 +121,13 @@ function initEvalDb(dataDir?: string): Database.Database {
     return evalDb;
   }
 
+  // Close previous handle if path changed
+  if (evalDb) {
+    try { evalDb.close(); } catch (err) { console.warn('[eval-db] initEvalDb close-before-switch warning:', err instanceof Error ? err.message : String(err)); }
+    evalDb = null;
+    evalDbPath = null;
+  }
+
   // AI-GUARD: Ensure the directory exists
   if (!fs.existsSync(resolvedDir)) {
     fs.mkdirSync(resolvedDir, { recursive: true });

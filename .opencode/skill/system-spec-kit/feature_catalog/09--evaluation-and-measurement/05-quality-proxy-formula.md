@@ -16,8 +16,19 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 |------|-------|------|
 | `mcp_server/lib/eval/eval-quality-proxy.ts` | Lib | Quality proxy formula |
 
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/ceiling-quality.vitest.ts` | Ceiling and quality proxy formula tests |
+| `mcp_server/tests/retrieval-telemetry.vitest.ts` | Quality proxy telemetry computation |
+
 ## Source Metadata
 
 - Group: Evaluation and measurement
 - Source feature title: Quality proxy formula
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

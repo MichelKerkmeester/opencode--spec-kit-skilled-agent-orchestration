@@ -46,8 +46,8 @@ This plan translates the evaluation-and-measurement feature audit into a phased 
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
 - [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
@@ -74,19 +74,19 @@ Catalog findings are converted into scoped tasks, executed in runtime/test files
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Normalize feature-doc mappings and requirement IDs
-- [ ] Confirm P0/P1 remediation ownership and target files
-- [ ] Establish logging/error-handling expectations for silent-catch paths
+- [x] Normalize feature-doc mappings and requirement IDs
+- [x] Confirm P0/P1 remediation ownership and target files
+- [x] Establish logging/error-handling expectations for silent-catch paths
 
 ### Phase 2: Core Implementation
-- [ ] Apply metric, observer-overhead, channel-attribution, and persistence edge-case fixes
-- [ ] Add or update regression tests for each corrected behavior
-- [ ] Align feature narratives with implementation truth where code changes are deferred
+- [x] Apply metric, observer-overhead, channel-attribution, and persistence edge-case fixes
+- [x] Add or update regression tests for each corrected behavior
+- [x] Align feature narratives with implementation truth where code changes are deferred
 
 ### Phase 3: Verification
-- [ ] Validate all acceptance criteria and edge-case coverage
-- [ ] Confirm per-feature NEW-050..072 mapping completeness
-- [ ] Synchronize spec/plan/tasks/checklist outcomes
+- [x] Validate all acceptance criteria and edge-case coverage
+- [x] Confirm per-feature NEW-050..072 mapping completeness
+- [x] Synchronize spec/plan/tasks/checklist outcomes
 <!-- /ANCHOR:phases -->
 
 ---

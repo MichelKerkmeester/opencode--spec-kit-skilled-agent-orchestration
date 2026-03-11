@@ -81,6 +81,31 @@ describe('T004: Eval DB Schema (R13-S1)', () => {
       // Both should return the same singleton
       expect(db1).toBe(db2);
     });
+
+    it('initEvalDb closes previous handle when path changes', () => {
+      const unique = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const dirA = path.join(os.tmpdir(), `eval-db-switch-a-${unique}`);
+      const dirB = path.join(os.tmpdir(), `eval-db-switch-b-${unique}`);
+      fs.mkdirSync(dirA, { recursive: true });
+      fs.mkdirSync(dirB, { recursive: true });
+
+      closeEvalDb();
+      const dbA = initEvalDb(dirA);
+      const closeSpy = vi.spyOn(dbA, 'close');
+
+      try {
+        const dbB = initEvalDb(dirB);
+        expect(closeSpy).toHaveBeenCalledTimes(1);
+        expect(dbB.prepare('SELECT 1 AS one').get()).toEqual({ one: 1 });
+        expect(getEvalDbPath()).toBe(path.join(dirB, EVAL_DB_FILENAME));
+      } finally {
+        closeSpy.mockRestore();
+        closeEvalDb();
+        fs.rmSync(dirA, { recursive: true, force: true });
+        fs.rmSync(dirB, { recursive: true, force: true });
+        initEvalDb(testDataDir);
+      }
+    });
   });
 
   /* -----------------------------------------------------------

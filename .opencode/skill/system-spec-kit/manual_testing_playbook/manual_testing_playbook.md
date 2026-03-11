@@ -405,6 +405,7 @@ These catalog entries have no dedicated playbook scenario. They are either defer
 | `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Tested via NEW-104 |
 | `18--ux-hooks/11-final-token-metadata-recomputation.md` | Tested via NEW-105 |
 | `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Tested via NEW-105 |
+| `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Covered by M-005 (outsourced agent memory round-trip) |
 | `20--feature-flag-reference/*` (7 entries) | Reference docs — tested via EX-028..034 |
 
 ## Dedicated Memory/Spec-Kit Scenarios (Required)
@@ -443,6 +444,20 @@ These catalog entries have no dedicated playbook scenario. They are either defer
 - Evidence: review output with file:line findings.
 - Pass: deterministic verdict issued with rationale.
 - Fail triage: collect missing evidence and rerun review.
+
+### M-005 Outsourced Agent Memory Capture Round-Trip
+- Prompt: `Dispatch task to external CLI agent and capture memory back to Spec Kit`
+- Commands:
+  - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
+  - Extract structured memory section from agent stdout
+  - Write JSON to `/tmp/save-context-data.json`
+  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
+  - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
+  - `memory_search({ query: "<key term from agent session>", specFolder: "specs/<target-spec>" })`
+- Expected: Agent output contains structured memory section; saved context is discoverable via search.
+- Evidence: agent stdout with memory section + generate-context output + search result showing saved memory.
+- Pass: Saved memory from outsourced agent session is searchable and contains session summary, files modified, decisions.
+- Fail triage: Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
 
 ## Gemini Overlay Scenario Packs
 

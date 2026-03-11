@@ -2,11 +2,11 @@
 
 ## Current Reality
 
-The RRF fusion system and composite scoring system had a 15:1 magnitude mismatch. RRF scores fell in the 0-0.07 range while composite scores covered the full 0-1 range. Composite dominated purely because of scale, not because it was better.
+Before normalization, RRF and composite scoring used different raw scales. In `shared/algorithms/rrf-fusion.ts`, RRF uses `1 / (k + rank)` with `DEFAULT_K = 60`, so a top-ranked per-source contribution starts near `1/61 ~= 0.016` and decays by rank (with convergence bonuses potentially pushing combined raw scores above `0.1`). Composite scoring already operates in a `0-1` band.
 
-Min-max normalization now maps both outputs to a 0-1 range, letting actual relevance determine ranking instead of which scoring system happens to produce larger numbers. Single-result queries and equal-score edge cases normalize to 1.0.
+Min-max normalization now maps both outputs to `0-1`, letting relevance signals compete on comparable scale instead of whichever subsystem emits larger raw magnitudes. Single-result queries and equal-score edge cases normalize to `1.0`.
 
-The normalization is batch-relative (the same memory can score differently across different queries), which is expected behavior for min-max. Runs behind the `SPECKIT_SCORE_NORMALIZATION` flag.
+Normalization is batch-relative (the same memory can score differently across different queries), which is expected for min-max. Runtime gating uses `SPECKIT_SCORE_NORMALIZATION`: `isScoreNormalizationEnabled()`/`normalizeRrfScores()` in `shared/algorithms/rrf-fusion.ts` and `isCompositeNormalizationEnabled()`/`normalizeCompositeScores()` in `mcp_server/lib/scoring/composite-scoring.ts`.
 
 ## Source Files
 
@@ -44,6 +44,14 @@ The normalization is batch-relative (the same memory can score differently acros
 | `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+
+### Score Normalization Traceability
+
+| Behavior | Implementing source | Validating test |
+|----------|----------------------|-----------------|
+| RRF normalization gate and transform (`SPECKIT_SCORE_NORMALIZATION`, `isScoreNormalizationEnabled`, `normalizeRrfScores`) | `shared/algorithms/rrf-fusion.ts` | `mcp_server/tests/score-normalization.vitest.ts` |
+| Cross-variant RRF normalization path | `shared/algorithms/rrf-fusion.ts` (`fuseResultsCrossVariant`) | `mcp_server/tests/score-normalization.vitest.ts` |
+| Composite normalization gate and transform (`isCompositeNormalizationEnabled`, `normalizeCompositeScores`) | `mcp_server/lib/scoring/composite-scoring.ts` | `mcp_server/tests/score-normalization.vitest.ts` |
 
 ## Source Metadata
 

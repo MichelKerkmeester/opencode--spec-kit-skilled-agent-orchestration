@@ -27,9 +27,6 @@ import {
   calculateFiveFactorScore,
   calculateCompositeScore,
   calculateNoveltyBoost,
-  NOVELTY_BOOST_MAX,
-  NOVELTY_BOOST_HALF_LIFE_HOURS,
-  NOVELTY_BOOST_SCORE_CAP,
   INTERFERENCE_PENALTY_COEFFICIENT,
 } from '../lib/scoring/composite-scoring';
 
@@ -139,16 +136,16 @@ describe('T010-2: Sampling Rate (~5%)', () => {
     expect(SAMPLING_RATE).toBe(0.05);
   });
 
-  it('T010-2c: over 10000 calls, sampling rate is approximately 5% (±2%)', () => {
+  it('T010-2c: over 10000 calls, sampling rate is approximately 5% (within 3%-8%)', () => {
     const N = 10000;
     let trueCount = 0;
     for (let i = 0; i < N; i++) {
       if (shouldSample()) trueCount++;
     }
     const rate = trueCount / N;
-    // Allow generous tolerance for statistical variation
-    expect(rate).toBeGreaterThan(0.02);
-    expect(rate).toBeLessThan(0.10);
+    // Binomial-justified tolerance for N=10000, p=0.05
+    expect(rate).toBeGreaterThan(0.03);
+    expect(rate).toBeLessThan(0.08);
   });
 
   it('T010-2d: with mocked Math.random returning 0.04, shouldSample returns true', () => {
@@ -498,37 +495,59 @@ describe('T010-6: Fail-Safe Behavior', () => {
     expect(() => getScoringStats()).not.toThrow();
   });
 
-  it('T010-6c: initScoringObservability does not throw on error', () => {
-    // Pass a closed DB — should catch error gracefully
-    const db = new Database(':memory:');
-    db.close();
-    expect(() => initScoringObservability(db)).not.toThrow();
-    resetDb();
+  it('T010-6c: initScoringObservability does not throw on error and emits console.error', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      // Pass a closed DB — should catch error gracefully
+      const db = new Database(':memory:');
+      db.close();
+      expect(() => initScoringObservability(db)).not.toThrow();
+      // Verify non-fatal logging was emitted
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[scoring-observability]'),
+        expect.any(String),
+      );
+      // Verify failed init does not leave an invalid active handle
+      expect(getDb()).toBeNull();
+    } finally {
+      errorSpy.mockRestore();
+      resetDb();
+    }
   });
 
-  it('T010-6d: logScoringObservation does not throw when table is missing', () => {
-    // DB without the table
-    const db = new Database(':memory:');
-    // Manually set the db handle without creating the table
-    initScoringObservability(db);
-    db.exec('DROP TABLE IF EXISTS scoring_observations');
-    // Now log — should catch the error
-    expect(() => logScoringObservation({
-      memoryId: 1,
-      queryId: 'no-table',
-      timestamp: new Date().toISOString(),
-      noveltyBoostApplied: false,
-      noveltyBoostValue: 0,
-      memoryAgeDays: 0,
-      interferenceApplied: false,
-      interferenceScore: 0,
-      interferencePenalty: 0,
-      scoreBeforeBoosts: 0.5,
-      scoreAfterBoosts: 0.5,
-      scoreDelta: 0,
-    })).not.toThrow();
-    db.close();
-    resetDb();
+  it('T010-6d: logScoringObservation does not throw when table is missing and emits console.error', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      // DB without the table
+      const db = new Database(':memory:');
+      // Manually set the db handle without creating the table
+      initScoringObservability(db);
+      db.exec('DROP TABLE IF EXISTS scoring_observations');
+      // Now log — should catch the error
+      expect(() => logScoringObservation({
+        memoryId: 1,
+        queryId: 'no-table',
+        timestamp: new Date().toISOString(),
+        noveltyBoostApplied: false,
+        noveltyBoostValue: 0,
+        memoryAgeDays: 0,
+        interferenceApplied: false,
+        interferenceScore: 0,
+        interferencePenalty: 0,
+        scoreBeforeBoosts: 0.5,
+        scoreAfterBoosts: 0.5,
+        scoreDelta: 0,
+      })).not.toThrow();
+      // Verify non-fatal logging was emitted
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[scoring-observability]'),
+        expect.any(String),
+      );
+      db.close();
+    } finally {
+      errorSpy.mockRestore();
+      resetDb();
+    }
   });
 });
 

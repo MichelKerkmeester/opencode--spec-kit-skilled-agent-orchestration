@@ -99,7 +99,7 @@ Prevents exceeding embedding API limits:
 
 | Setting | Default | Environment Variable |
 |---------|---------|---------------------|
-| Chars per token | 3.5 | `MCP_CHARS_PER_TOKEN` |
+| Chars per token | 4 | `MCP_CHARS_PER_TOKEN` |
 | Max tokens | 8000 | `MCP_MAX_MEMORY_TOKENS` |
 | Warning threshold | 80% | `MCP_TOKEN_WARNING_THRESHOLD` |
 
@@ -298,7 +298,7 @@ All thresholds are environment-configurable:
 
 ```bash
 # Token budget
-MCP_CHARS_PER_TOKEN=3.5
+MCP_CHARS_PER_TOKEN=4
 MCP_MAX_MEMORY_TOKENS=8000
 MCP_TOKEN_WARNING_THRESHOLD=0.8
 

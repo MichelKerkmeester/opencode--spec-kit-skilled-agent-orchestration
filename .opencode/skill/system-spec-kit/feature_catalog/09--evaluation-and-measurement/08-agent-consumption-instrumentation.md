@@ -25,3 +25,7 @@ The earlier pattern-analysis outcome from this workstream still informed ground-
 - Group: Evaluation and measurement
 - Source feature title: Agent consumption instrumentation
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

@@ -15,6 +15,7 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/dynamic-token-budget.ts` | Lib | Token budget computation |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Budget adjustment with header overhead (CHK-060) |
 | `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
 
 ### Tests
@@ -23,7 +24,7 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 |------|-------|
 | `mcp_server/tests/dynamic-token-budget.vitest.ts` | Token budget computation |
 | `mcp_server/tests/query-classifier.vitest.ts` | Query classification accuracy |
-| `mcp_server/tests/token-budget.vitest.ts` | Token budget tests |
+| `mcp_server/tests/token-budget.vitest.ts` | Token budget tests + CHK-023 adjustedBudget formula |
 
 ## Source Metadata
 

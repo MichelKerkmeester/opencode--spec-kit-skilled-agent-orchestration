@@ -12,13 +12,13 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/parsing/slug-utils.ts` | Lib | Content-aware slug generation |
+| `scripts/utils/slug-utils.ts` | Script | Content-aware slug generation |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
+| `mcp_server/tests/slug-utils-boundary.vitest.ts` | Slug generation boundary tests |
 
 ## Source Metadata
 

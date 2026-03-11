@@ -9,7 +9,7 @@
 // exercise logging mechanics use forceLogConsumptionEvent() which bypasses
 // the flag check by inserting directly into the DB using the same SQL.
 
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import {
   initConsumptionLog,
@@ -449,26 +449,61 @@ describe('T005: fail-safe behavior — logging errors never propagate', () => {
     }).not.toThrow();
   });
 
+  it('logConsumptionEvent is a no-op when feature is disabled (production path)', () => {
+    // isConsumptionLogEnabled() returns false, so logConsumptionEvent should not insert
+    const db = createTestDb();
+    logConsumptionEvent(db, {
+      event_type: 'search',
+      query_text: 'should-not-appear',
+      result_count: 5,
+    });
+    const rows = db.prepare('SELECT COUNT(*) as cnt FROM consumption_log').get() as { cnt: number };
+    expect(rows.cnt).toBe(0);
+    db.close();
+  });
+
   it('T005-B: getConsumptionStats returns defaults on empty/uninitialized DB', () => {
     const db = new Database(':memory:');
-    // No initConsumptionLog called — table doesn't exist
-    const stats = getConsumptionStats(db);
-    expect(stats.total_events).toBe(0);
-    expect(stats.by_event_type).toEqual({});
-    db.close();
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      // No initConsumptionLog called — table doesn't exist
+      const stats = getConsumptionStats(db);
+      expect(stats.total_events).toBe(0);
+      expect(stats.by_event_type).toEqual({});
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[consumption-logger] getConsumptionStats warning:',
+        expect.stringContaining('no such table'),
+      );
+    } finally {
+      warnSpy.mockRestore();
+      db.close();
+    }
   });
 
   it('T005-C: getConsumptionPatterns returns 5 empty-count patterns on uninitialized DB', () => {
     const db = new Database(':memory:');
-    // No table exists
-    const patterns = getConsumptionPatterns(db);
-    // Should not throw and should return 5 patterns with count 0
-    expect(patterns.length).toBe(5);
-    for (const p of patterns) {
-      expect(p.count).toBe(0);
-      expect(p.examples).toEqual([]);
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      // No table exists
+      const patterns = getConsumptionPatterns(db);
+      // Should not throw and should return 5 patterns with count 0
+      expect(patterns.length).toBe(5);
+      for (const p of patterns) {
+        expect(p.count).toBe(0);
+        expect(p.examples).toEqual([]);
+      }
+      expect(warnSpy).toHaveBeenCalled();
+      expect(
+        warnSpy.mock.calls.some(([message]) =>
+          message === '[consumption-logger] getConsumptionPatterns high-frequency warning:',
+        ),
+      ).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+      db.close();
     }
-    db.close();
   });
 
   it('T005-D: feature flag disabled prevents logging', () => {

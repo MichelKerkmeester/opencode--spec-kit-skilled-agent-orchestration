@@ -2,11 +2,11 @@
 
 ## Current Reality
 
-Interference score distributions are logged at query time via 5% sampling to a `scoring_observations` table. Each observation captures memory ID, query ID, interference penalty, score before and after and the delta.
+Scoring observability logs to `scoring_observations` with a 5% sampler (`SAMPLING_RATE = 0.05`). Each observation includes memory/query identifiers, score-before/score-after values, score delta, and novelty/interference fields provided by the caller.
 
-The novelty boost (`calculateNoveltyBoost`) was removed from the hot scoring path during Sprint 8 remediation because it always returned 0 (the feature completed its evaluation). Telemetry now hardcodes `noveltyBoostApplied: false, noveltyBoostValue: 0` for backward-compatible log schemas.
+The observability module does not remove novelty fields or hardcode novelty values; it persists whatever `ScoringObservation` payload it receives. This keeps schema compatibility while allowing calling code to set novelty data to zero when the runtime feature is inactive.
 
-The 5% sample rate keeps storage costs low while still catching calibration drift. A try-catch wrapper guarantees that telemetry failures never affect scoring results. If the observation write fails, the search result is unchanged and the failure is swallowed silently.
+Failures are fail-safe but not silent: initialization, insert, and stats-query errors are caught and logged with `console.error`, and scoring execution continues unchanged.
 
 ## Source Files
 
@@ -28,3 +28,7 @@ The 5% sample rate keeps storage costs low while still catching calibration drif
 - Group: Evaluation and measurement
 - Source feature title: Scoring observability
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

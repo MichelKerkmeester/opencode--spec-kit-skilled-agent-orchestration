@@ -35,6 +35,19 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | `mcp_server/tests/rsf-fusion.vitest.ts` | RSF fusion scoring |
 | `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
 
+### Fix Traceability Matrix
+
+| Fix | Implementing source | Validating test |
+|-----|----------------------|-----------------|
+| #5 Intent weight recency | `mcp_server/lib/search/intent-classifier.ts` (`applyIntentWeights`) | `mcp_server/tests/intent-weighting.vitest.ts` |
+| #6 Five-factor weight normalization | `mcp_server/lib/scoring/composite-scoring.ts` (`calculateFiveFactorScore`) | `mcp_server/tests/composite-scoring.vitest.ts` |
+| #7 Composite normalization stack-safety | `mcp_server/lib/scoring/composite-scoring.ts` (`normalizeCompositeScores`) | `mcp_server/tests/score-normalization.vitest.ts` |
+| #8 BM25 specFolder filter | `mcp_server/lib/search/hybrid-search.ts` (`bm25Search`) | `mcp_server/tests/hybrid-search.vitest.ts` |
+| #9 RRF convergence double-count | `shared/algorithms/rrf-fusion.ts` (`fuseResultsCrossVariant`) | `mcp_server/tests/unit-rrf-fusion.vitest.ts` |
+| #10 Adaptive fusion normalization | `shared/algorithms/adaptive-fusion.ts` (`getAdaptiveWeights`) | `mcp_server/tests/adaptive-fusion.vitest.ts` |
+| #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `stage2-fusion.ts` and `stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
+| #12 Configurable interference threshold | `mcp_server/lib/scoring/interference-scoring.ts` (`computeInterferenceScoresBatch`) | `mcp_server/tests/interference.vitest.ts` |
+
 ## Source Metadata
 
 - Group: Opus review remediation (Phase 017)

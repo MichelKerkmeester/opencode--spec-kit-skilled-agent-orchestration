@@ -103,13 +103,13 @@ Cross-workflow alignment is mandatory:
 
 | Category | Count |
 | --- | --- |
-| **MCP Tools** | 25 (memory, checkpoint, causal, drift, learning, health) |
+| **MCP Tools** | 28 (memory, checkpoint, causal, drift, learning, eval, ingest, health) |
 | **Templates** | 10 (specs, plans, research, decisions) |
 | **Commands** | 13 (8 spec_kit + 5 memory) |
 | **Importance Tiers** | 6 (constitutional to deprecated) |
 | **Memory Types** | 9 (working, episodic, procedural, semantic, etc.) |
 | **ANCHOR Coverage** | 533 anchors across 78 skill READMEs |
-| **Test Coverage** | 5,797 tests across 196 files |
+| **Test Coverage** | 261 `.vitest.ts` files in `mcp_server/tests/` (run `npx vitest run` for the current total test count) |
 | **Last Verified** | 2026-02-27 |
 
 ### Requirements
@@ -472,6 +472,7 @@ All tools use the `spec_kit_memory_` prefix in MCP calls (e.g., `spec_kit_memory
 | --- | --- |
 | `memory_save` | Index a memory file with PE gating |
 | `memory_index_scan` | Bulk scan workspace (3-source pipeline, incremental) |
+| `memory_bulk_delete` | Bulk delete memories by tier with checkpoint safety gates |
 | `memory_update` | Update memory metadata and tier |
 | `memory_delete` | Delete memories by ID or folder |
 | `memory_validate` | Record validation feedback |
@@ -502,6 +503,21 @@ All tools use the `spec_kit_memory_` prefix in MCP calls (e.g., `spec_kit_memory
 | `memory_causal_stats` | Graph statistics and coverage metrics |
 | `memory_causal_unlink` | Remove causal relationships |
 | `memory_context` | L1 Orchestration unified entry point with multi-query RAG fusion |
+
+**Evaluation**
+
+| Tool | Purpose |
+| --- | --- |
+| `eval_run_ablation` | Run channel-ablation studies and report recall deltas |
+| `eval_reporting_dashboard` | Aggregate eval metrics into sprint and channel dashboards |
+
+**Async Ingest**
+
+| Tool | Purpose |
+| --- | --- |
+| `memory_ingest_start` | Start an async multi-file ingestion job |
+| `memory_ingest_status` | Check async ingestion job progress |
+| `memory_ingest_cancel` | Cancel a running async ingestion job |
 
 **System**
 
@@ -740,7 +756,7 @@ See [mcp_server/README.md](./mcp_server/README.md) for:
 ```bash
 # Run full MCP server test suite (from mcp_server directory)
 cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run
-# Expected: 5,797 tests passing across 196 files
+# Use the Vitest summary as the source of truth for current file and test totals
 ```
 
 ---

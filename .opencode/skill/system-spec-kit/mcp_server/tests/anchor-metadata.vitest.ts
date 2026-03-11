@@ -569,3 +569,72 @@ describe('AnchorMetadata interface shape', () => {
     expect(result[0].type.length).toBeGreaterThan(0);
   });
 });
+
+// ===============================================================
+// SECTION 5: ANCHOR parsing does NOT mutate causal_edges (T011)
+// ===============================================================
+
+describe('ANCHOR parsing — no graph mutation (T011)', () => {
+  it('N01: extractAnchorMetadata does not return edge-like objects', () => {
+    const content = [
+      '<!-- ANCHOR:DECISION-arch-001 -->',
+      'Architecture decision.',
+      '<!-- /ANCHOR:DECISION-arch-001 -->',
+    ].join('\n');
+
+    const result = extractAnchorMetadata(content);
+    for (const meta of result) {
+      // AnchorMetadata should NOT have source_id/target_id/relation fields
+      expect(meta).not.toHaveProperty('source_id');
+      expect(meta).not.toHaveProperty('target_id');
+      expect(meta).not.toHaveProperty('relation');
+      expect(meta).not.toHaveProperty('strength');
+    }
+  });
+
+  it('N02: enrichResultsWithAnchorMetadata does not add causal edge fields', () => {
+    const content = '<!-- ANCHOR:state -->\nstate info\n<!-- /ANCHOR:state -->';
+    const row = { id: 1, score: 0.8, content } as PipelineRow;
+    const result = enrichResultsWithAnchorMetadata([row]);
+
+    for (const enriched of result) {
+      expect(enriched).not.toHaveProperty('source_id');
+      expect(enriched).not.toHaveProperty('target_id');
+      expect(enriched).not.toHaveProperty('relation');
+      expect(enriched).not.toHaveProperty('edge_id');
+    }
+  });
+
+  it('N03: malformed ANCHOR tags produce no output (not partial edges)', () => {
+    const malformedCases = [
+      '<!-- ANCHOR: -->\ncontent\n<!-- /ANCHOR: -->', // empty ID
+      '<!-- ANCHOR -->\ncontent\n<!-- /ANCHOR -->', // no colon
+      '<!--ANCHOR:x-->\ncontent\n<!--/ANCHOR:x-->', // no spaces
+      '<!-- ANCHOR:a -->\ncontent\n<!-- /ANCHOR:b -->', // mismatched
+      '<!-- ANCHOR:unclosed -->\ncontent without closing tag', // unclosed
+    ];
+
+    for (const content of malformedCases) {
+      const result = extractAnchorMetadata(content);
+      // Should either return empty or valid AnchorMetadata objects only
+      for (const meta of result) {
+        expect(typeof meta.id).toBe('string');
+        expect(meta.id.length).toBeGreaterThan(0);
+        expect(typeof meta.startLine).toBe('number');
+        expect(typeof meta.endLine).toBe('number');
+      }
+    }
+  });
+
+  it('N04: ANCHOR with special characters in ID is handled safely', () => {
+    const content = [
+      '<!-- ANCHOR:test/path.file#section -->',
+      'content',
+      '<!-- /ANCHOR:test/path.file#section -->',
+    ].join('\n');
+
+    const result = extractAnchorMetadata(content);
+    // Should either parse or safely ignore — must not throw
+    expect(Array.isArray(result)).toBe(true);
+  });
+});

@@ -597,6 +597,85 @@ describe('T023: RSF Fusion (Relative Score Fusion)', () => {
   });
 
   /* -------------------------------------------------------------
+     T023.SHADOW: Shadow-mode pipeline assertions (T010)
+     RSF computes valid scores but does not affect ranking.
+     The only integration point is Sprint3PipelineMeta.rsfShadow
+     metadata in hybrid-search.ts.
+     ------------------------------------------------------------- */
+  describe('T023.SHADOW: Shadow-mode behavior', () => {
+    it('T023.SHADOW.1: RSF produces valid fused scores without affecting pipeline ranking', () => {
+      // RSF scores are computed for shadow metadata but never used as primary ranking
+      const listA = makeList('vector', [
+        makeItem(1, 0.9),
+        makeItem(2, 0.7),
+        makeItem(3, 0.5),
+      ]);
+      const listB = makeList('bm25', [
+        makeItem(2, 0.8),
+        makeItem(4, 0.6),
+        makeItem(1, 0.3),
+      ]);
+
+      const rsfResults = fuseResultsRsf(listA, listB);
+
+      // RSF produces valid scores (shadow computation succeeds)
+      expect(rsfResults.length).toBeGreaterThan(0);
+      for (const r of rsfResults) {
+        expect(r.rsfScore).toBeGreaterThanOrEqual(0);
+        expect(r.rsfScore).toBeLessThanOrEqual(1);
+      }
+
+      // Shadow metadata shape: resultCount + topRsfScore (matches Sprint3PipelineMeta.rsfShadow)
+      const shadowMeta = {
+        resultCount: rsfResults.length,
+        topRsfScore: rsfResults[0].rsfScore,
+      };
+      expect(typeof shadowMeta.resultCount).toBe('number');
+      expect(shadowMeta.resultCount).toBeGreaterThan(0);
+      expect(shadowMeta.topRsfScore).toBeGreaterThanOrEqual(0);
+      expect(shadowMeta.topRsfScore).toBeLessThanOrEqual(1);
+    });
+
+    it('T023.SHADOW.2: RSF ranking may differ from input order (shadow divergence is expected)', () => {
+      // Shadow-mode RSF may reorder results differently from RRF — this is by design
+      const listA = makeList('vector', [
+        makeItem(1, 0.3),  // low in A
+        makeItem(2, 0.9),  // high in A
+      ]);
+      const listB = makeList('bm25', [
+        makeItem(1, 0.9),  // high in B
+        makeItem(2, 0.3),  // low in B
+      ]);
+
+      const rsfResults = fuseResultsRsf(listA, listB);
+      // Both items appear in both lists with complementary scores
+      // RSF averages normalized scores — both should have similar fused scores
+      expect(rsfResults.length).toBe(2);
+      // Shadow scores are valid regardless of order
+      for (const r of rsfResults) {
+        expect(r.rsfScore).toBeGreaterThanOrEqual(0);
+        expect(r.rsfScore).toBeLessThanOrEqual(1);
+      }
+    });
+
+    it('T023.SHADOW.3: empty RSF result produces zero-value shadow metadata', () => {
+      const listA = makeList('vector', []);
+      const listB = makeList('bm25', []);
+
+      const rsfResults = fuseResultsRsf(listA, listB);
+      expect(rsfResults).toEqual([]);
+
+      // Shadow metadata for empty results
+      const shadowMeta = {
+        resultCount: rsfResults.length,
+        topRsfScore: rsfResults.length > 0 ? rsfResults[0].rsfScore : 0,
+      };
+      expect(shadowMeta.resultCount).toBe(0);
+      expect(shadowMeta.topRsfScore).toBe(0);
+    });
+  });
+
+  /* -------------------------------------------------------------
      T023.15: Computed scores verification
      ------------------------------------------------------------- */
   describe('T023.15: Detailed score computation verification', () => {

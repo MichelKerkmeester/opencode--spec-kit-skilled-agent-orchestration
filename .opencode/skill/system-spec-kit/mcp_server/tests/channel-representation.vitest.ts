@@ -340,4 +340,68 @@ describe('T024 Channel Representation Check', () => {
   it('T15: QUALITY_FLOOR constant is exactly 0.005', () => {
     expect(QUALITY_FLOOR).toBe(0.005);
   });
+
+  // ---- T16: Core function appends promoted items without re-sorting (architectural contract) ----
+  it('T16: promoted items are appended at the end — core function does NOT re-sort', () => {
+    const topK: TopKItem[] = [
+      makeTopKItem('a1', 0.9, 'vector'),
+      makeTopKItem('b1', 0.5, 'bm25'),
+    ];
+    // graph has a higher score than b1 — if re-sorted it would appear before b1
+    const allChannelResults = new Map<string, ChannelResult[]>([
+      ['vector', [makeChannelResult('a1', 0.9)]],
+      ['bm25',   [makeChannelResult('b1', 0.5)]],
+      ['graph',  [makeChannelResult('g1', 0.75)]],
+    ]);
+
+    const result = analyzeChannelRepresentation(topK, allChannelResults);
+
+    expect(result.topK).toHaveLength(3);
+    // Promoted g1 (0.75) must be at the END, after b1 (0.5), proving no re-sort occurred.
+    // The caller (channel-enforcement.ts) is responsible for re-sorting.
+    expect(result.topK[0].id).toBe('a1');
+    expect(result.topK[1].id).toBe('b1');
+    expect(result.topK[2].id).toBe('g1');
+  });
+
+  // ---- T17: Under-represented channel detection works for multiple missing channels ----
+  it('T17: correctly identifies all under-represented channels from channel map', () => {
+    const topK: TopKItem[] = [
+      makeTopKItem('a1', 0.9, 'vector'),
+    ];
+    const allChannelResults = new Map<string, ChannelResult[]>([
+      ['vector',  [makeChannelResult('a1', 0.9)]],
+      ['bm25',    [makeChannelResult('b1', 0.6)]],
+      ['graph',   [makeChannelResult('g1', 0.5)]],
+      ['trigger', [makeChannelResult('t1', 0.4)]],
+    ]);
+
+    const result = analyzeChannelRepresentation(topK, allChannelResults);
+
+    expect(result.underRepresentedChannels).toHaveLength(3);
+    expect(result.underRepresentedChannels).toContain('bm25');
+    expect(result.underRepresentedChannels).toContain('graph');
+    expect(result.underRepresentedChannels).toContain('trigger');
+    expect(result.underRepresentedChannels).not.toContain('vector');
+  });
+
+  // ---- T18: Mixed quality floor — some channels qualify, some don't ----
+  it('T18: only channels with results above QUALITY_FLOOR are promoted', () => {
+    const topK: TopKItem[] = [
+      makeTopKItem('a1', 0.9, 'vector'),
+    ];
+    const allChannelResults = new Map<string, ChannelResult[]>([
+      ['vector', [makeChannelResult('a1', 0.9)]],
+      ['bm25',   [makeChannelResult('b1', 0.6)]],       // above floor → promoted
+      ['graph',  [makeChannelResult('g1', 0.003)]],      // below floor → NOT promoted
+    ]);
+
+    const result = analyzeChannelRepresentation(topK, allChannelResults);
+
+    expect(result.promoted).toHaveLength(1);
+    expect(result.promoted[0].promotedFrom).toBe('bm25');
+    expect(result.topK).toHaveLength(2); // original + 1 promoted
+    // graph is under-represented but could not promote due to quality floor
+    expect(result.underRepresentedChannels).toContain('graph');
+  });
 });

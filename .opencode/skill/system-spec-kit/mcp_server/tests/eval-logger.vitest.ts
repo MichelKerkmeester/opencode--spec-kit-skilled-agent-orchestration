@@ -446,3 +446,77 @@ describe('T004b: Observer Effect Mitigation', () => {
     expect(overhead).toBeLessThan(maxAllowedOverheadMs);
   });
 });
+
+describe('Eval run counter bootstrap across tables', () => {
+  async function bootstrapAndGenerateNextId(
+    channelMaxId: number | null,
+    finalMaxId: number | null,
+  ): Promise<number> {
+    const uniqueDir = path.join(
+      os.tmpdir(),
+      `eval-logger-bootstrap-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+    );
+    fs.mkdirSync(uniqueDir, { recursive: true });
+
+    const prevDbDir = process.env.SPEC_KIT_DB_DIR;
+    const prevLogging = process.env.SPECKIT_EVAL_LOGGING;
+    process.env.SPEC_KIT_DB_DIR = uniqueDir;
+    process.env.SPECKIT_EVAL_LOGGING = 'true';
+
+    let freshEvalDb: typeof import('../lib/eval/eval-db') | null = null;
+    try {
+      vi.resetModules();
+      freshEvalDb = await import('../lib/eval/eval-db');
+      const db = freshEvalDb.initEvalDb(uniqueDir);
+
+      if (channelMaxId !== null) {
+        db.prepare(
+          'INSERT INTO eval_channel_results (eval_run_id, query_id, channel) VALUES (?, ?, ?)',
+        ).run(channelMaxId, 1, 'vector');
+      }
+
+      if (finalMaxId !== null) {
+        db.prepare(
+          'INSERT INTO eval_final_results (eval_run_id, query_id) VALUES (?, ?)',
+        ).run(finalMaxId, 1);
+      }
+
+      const freshEvalLogger = await import('../lib/eval/eval-logger');
+      return freshEvalLogger.generateEvalRunId();
+    } finally {
+      try {
+        freshEvalDb?.closeEvalDb();
+      } catch {
+        // Ignore close errors in test cleanup.
+      }
+
+      if (prevDbDir === undefined) delete process.env.SPEC_KIT_DB_DIR;
+      else process.env.SPEC_KIT_DB_DIR = prevDbDir;
+
+      if (prevLogging === undefined) delete process.env.SPECKIT_EVAL_LOGGING;
+      else process.env.SPECKIT_EVAL_LOGGING = prevLogging;
+
+      try {
+        fs.rmSync(uniqueDir, { recursive: true, force: true });
+      } catch {
+        // Ignore cleanup errors.
+      }
+    }
+  }
+
+  it('boots from eval_final_results when final max ID is higher than channel max ID', async () => {
+    const id = await bootstrapAndGenerateNextId(7, 12);
+    expect(id).toBe(13);
+  });
+
+  it('boots from eval_channel_results when channel max ID is higher than final max ID', async () => {
+    const id = await bootstrapAndGenerateNextId(15, 9);
+    expect(id).toBe(16);
+  });
+
+  it('starts from zero when both tables are empty', async () => {
+    const id = await bootstrapAndGenerateNextId(null, null);
+    // Counter bootstraps to 0, then returns incremented first run ID.
+    expect(id).toBe(1);
+  });
+});

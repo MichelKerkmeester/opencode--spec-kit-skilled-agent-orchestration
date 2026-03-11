@@ -19,10 +19,35 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 
 ## Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Re-sort behavior after feedback mutations before top-K slicing |
+| `mcp_server/lib/search/vector-index-queries.ts` | Lib | Dedup query hardening with `parent_id IS NULL` filters |
+| `mcp_server/lib/search/evidence-gap-detector.ts` | Lib | `Number.isFinite` guards for score safety |
+| `mcp_server/lib/eval/reporting-dashboard.ts` | Lib | Dashboard row-limit configurability (`SPECKIT_DASHBOARD_LIMIT`) |
+| `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction safety for partial-update mutation paths |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | Deletion-path error propagation hardening |
+| `mcp_server/lib/search/hybrid-search.ts` | Lib | Search-handler flow fixes including cache-path ordering remediation |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/integration-search-pipeline.vitest.ts` | Pipeline and guard behavior validation |
+| `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard configuration and metrics reporting |
+| `mcp_server/tests/transaction-manager.vitest.ts` | Transaction boundary and rollback correctness |
+| `mcp_server/tests/causal-edges-unit.vitest.ts` | Causal-edge cleanup and failure-path behavior |
+| `mcp_server/tests/memory-save-extended.vitest.ts` | False-pass guard pattern remediation coverage |
+| `mcp_server/tests/hybrid-search.vitest.ts` | Search-handler ordering and integration behavior |
 
 ## Source Metadata
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Cross-AI validation fixes
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

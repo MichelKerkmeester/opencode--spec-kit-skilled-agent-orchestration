@@ -1,6 +1,6 @@
 ---
 title: "sk-code--full-stack"
-description: "Stack-agnostic development orchestrator guiding developers through implementation, debugging, and verification phases with automatic stack detection via marker files"
+description: "Stack-agnostic development orchestrator guiding developers through implementation, testing, and verification phases with automatic stack detection via marker files"
 trigger_phrases:
   - "full stack development workflow"
   - "multi-stack code orchestrator"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # sk-code--full-stack
 
-> Stack-agnostic development orchestrator guiding developers through implementation, debugging, and verification phases with automatic stack detection via marker files.
+> Stack-agnostic development orchestrator guiding developers through implementation, testing, and verification phases with automatic stack detection via marker files.
 
 ---
 
@@ -31,7 +31,7 @@ trigger_phrases:
 
 This skill provides a unified development workflow for any technology stack: **Go**, **Node.js**, **React/Next.js**, **React Native/Expo** and **Swift**. It automatically detects the active stack via marker files (`go.mod`, `Package.swift`, `app.json`, `package.json`, `next.config.js`) and loads the appropriate code standards and checklists along with reusable patterns.
 
-The core lifecycle is **Implementation -> Debugging (if needed) -> Verification (MANDATORY)**. Every completion claim must be backed by running the stack-specific verification commands (test, lint, build, type-check). This enforces "The Iron Law": no claiming "done" without verification evidence.
+The core lifecycle is **Implementation -> Testing/Debugging -> Verification (MANDATORY)**. Every completion claim must be backed by running the stack-specific verification commands (test, lint, build, type-check). This enforces "The Iron Law": no claiming "done" without verification evidence.
 
 For formal findings-first review output, pair this skill with `sk-code--review` (baseline severity + risk reporting). This skill remains the stack-specific overlay.
 
@@ -48,7 +48,7 @@ The skill uses intelligent task classification (keywords like "implement", "debu
 2. **Stack detection:** Marker files in the project root determine which stack resources load.
 3. **Work through phases**:
    - **Phase 1**: Implement following stack-specific standards from `references/`
-   - **Phase 2**: Debug systematically (one change at a time, trace root cause)
+   - **Phase 2**: Test and debug systematically (run the right checks, then trace root cause one change at a time)
    - **Phase 3**: Run verification commands before claiming completion
 
 ```bash
@@ -108,7 +108,7 @@ sk-code--full-stack/
 <!-- ANCHOR:features -->
 
 - **Automatic stack detection** via marker files (`go.mod`, `Package.swift`, `app.json`, `package.json`)
-- **3-phase lifecycle**: Implementation, Debugging, Verification (mandatory)
+- **3-phase lifecycle**: Implementation, Testing/Debugging, Verification (mandatory)
 - **Smart resource loading** with 4 load levels: MINIMAL, DEBUGGING, FOCUSED, STANDARD
 - **Task classification** routing (verification, debugging, testing, database, API, deployment, implementation)
 - **Per-stack checklists**: code quality (P0/P1 items), debugging and verification

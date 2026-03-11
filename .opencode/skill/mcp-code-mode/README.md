@@ -216,6 +216,13 @@ call_tool_chain({
 });
 ```
 
+**Context parameter guidance**: When a Code Mode tool exposes a `context` field, pass a brief 15-25 word description for analytics and debugging.
+```typescript
+await webflow.webflow_sites_list({
+  context: "Listing sites to identify collection structure for CMS update"
+});
+```
+
 **Returns**:
 ```json
 {
@@ -692,6 +699,7 @@ tool_info({ tool_name: "webflow.webflow_sites_list" });
 | File | Purpose |
 |------|---------|
 | [SKILL.md](./SKILL.md) | AI agent instructions for Code Mode |
+| [INSTALL_GUIDE.md](./INSTALL_GUIDE.md) | Installation and setup guide |
 | [references/naming_convention.md](references/naming_convention.md) | Tool naming patterns |
 | [references/configuration.md](references/configuration.md) | Configuration guide |
 | [references/tool_catalog.md](references/tool_catalog.md) | Available tools |
@@ -699,6 +707,7 @@ tool_info({ tool_name: "webflow.webflow_sites_list" });
 | [references/architecture.md](references/architecture.md) | System internals |
 | [assets/config_template.md](assets/config_template.md) | Template configuration |
 | [assets/env_template.md](assets/env_template.md) | Template .env file |
+| [scripts/update-code-mode.sh](scripts/update-code-mode.sh) | Update helper for refreshing the local Code Mode install |
 | [scripts/validate_config.py](scripts/validate_config.py) | Configuration validator |
 
 ### External Resources

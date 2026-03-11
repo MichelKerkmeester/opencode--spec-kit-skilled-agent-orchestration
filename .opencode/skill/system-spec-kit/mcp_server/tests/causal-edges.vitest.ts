@@ -27,6 +27,7 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
 
   function resetEdges(): void {
     testDb.exec('DELETE FROM causal_edges');
+    testDb.exec('DELETE FROM weight_history');
   }
 
   function insertEdgeOrThrow(
@@ -823,6 +824,56 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(removed).toBe(2);
       expect(remainingPairs).toEqual(expect.arrayContaining(['6->7', '7->8']));
       expect(remaining).toHaveLength(2);
+    });
+  });
+
+  describe('T001/T004 — Audit tracking and cache invalidation', () => {
+    it('T001: touchEdgeAccess updates last_accessed timestamp on read', () => {
+      const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9);
+
+      // Before read, last_accessed should be null
+      const before = (testDb.prepare('SELECT last_accessed FROM causal_edges WHERE id = ?').get(edgeId) as { last_accessed: string | null });
+      expect(before.last_accessed).toBeNull();
+
+      // Reading via getEdgesFrom should trigger touchEdgeAccess
+      causalEdges.getEdgesFrom('1');
+
+      const after = (testDb.prepare('SELECT last_accessed FROM causal_edges WHERE id = ?').get(edgeId) as { last_accessed: string | null });
+      expect(after.last_accessed).not.toBeNull();
+    });
+
+    it('T002: rollback restores old_strength from weight_history', () => {
+      const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.3);
+      causalEdges.updateEdge(edgeId, { strength: 0.8 }, 'test', 'strength bump');
+
+      // Verify weight_history was created
+      const history = causalEdges.getWeightHistory(edgeId);
+      expect(history.length).toBeGreaterThanOrEqual(1);
+      expect(history[0].old_strength).toBe(0.3);
+      expect(history[0].new_strength).toBe(0.8);
+
+      // Rollback to before the change
+      const rollbackResult = causalEdges.rollbackWeights(edgeId, history[0].changed_at);
+      expect(rollbackResult).toBe(true);
+
+      const edge = causalEdges.getEdgesFrom('1')[0];
+      expect(edge.strength).toBe(0.3);
+    });
+
+    it('T002: getWeightHistory returns entries for modified edge', () => {
+      const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.5);
+      causalEdges.updateEdge(edgeId, { strength: 0.7 }, 'audit-test', 'first bump');
+      // Ensure deterministic ordering for ORDER BY changed_at DESC in fast test runs.
+      testDb.prepare("UPDATE weight_history SET changed_at = datetime('now', '-1 minute') WHERE edge_id = ?").run(edgeId);
+      causalEdges.updateEdge(edgeId, { strength: 0.9 }, 'audit-test', 'second bump');
+
+      const history = causalEdges.getWeightHistory(edgeId);
+      expect(history.length).toBe(2);
+      // Most recent first (ORDER BY changed_at DESC)
+      expect(history[0].old_strength).toBe(0.7);
+      expect(history[0].new_strength).toBe(0.9);
+      expect(history[1].old_strength).toBe(0.5);
+      expect(history[1].new_strength).toBe(0.7);
     });
   });
 });

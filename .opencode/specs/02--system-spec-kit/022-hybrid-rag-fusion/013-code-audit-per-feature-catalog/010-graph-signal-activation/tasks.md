@@ -49,19 +49,19 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Wire `touchEdgeAccess` into read/traversal paths (`mcp_server/lib/storage/causal-edges.ts`)
+- [x] T001 Wire `touchEdgeAccess` into read/traversal paths (`mcp_server/lib/storage/causal-edges.ts`)
   - **Priority:** P0 | **Feature:** F-04 Weight history audit tracking
   - **Issue:** `last_accessed` updater exists but is not wired into read/traversal paths; silent catch hides failures.
   - **Fix:** Call `touchEdgeAccess` from read/traversal operations and surface write failures via telemetry.
-- [ ] T002 Replace placeholder causal-edge tests with real DB assertions (`mcp_server/tests/causal-edges.vitest.ts`)
+- [x] T002 Replace placeholder causal-edge tests with real DB assertions (`mcp_server/tests/causal-edges.vitest.ts`)
   - **Priority:** P0 | **Feature:** F-04 Weight history audit tracking
   - **Issue:** Placeholder `expect(true)` patterns leave rollback/audit/access tracking unverified.
   - **Fix:** Add concrete assertions including same-millisecond rollback fallback-to-oldest behavior.
-- [ ] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
+- [x] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
   - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
   - **Issue:** Missing 7-day snapshot currently yields positive momentum (`current - 0`) rather than zero.
   - **Fix:** Treat missing historical snapshot as zero momentum and update affected tests.
-- [ ] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
+- [x] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
   - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
   - **Issue:** Mutation paths clear degree cache but not graph-signals cache, allowing stale momentum.
   - **Fix:** Add `clearGraphSignalsCache()` on mutation paths and validate with regression tests.
@@ -72,23 +72,23 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T005 Fail closed for constitutional exclusion on lookup failure (`mcp_server/lib/search/graph-search-fn.ts`)
+- [x] T005 Fail closed for constitutional exclusion on lookup failure (`mcp_server/lib/search/graph-search-fn.ts`)
   - **Priority:** P1 | **Feature:** F-01 Typed-weighted degree channel
   - **Issue:** Constitutional exclusion can be bypassed if `memory_index` lookup throws.
   - **Fix:** Assign score 0 for constitutional IDs on lookup failure and emit structured warning.
-- [ ] T006 Clamp co-activation strength override to documented safe band (`mcp_server/lib/cognitive/co-activation.ts`)
+- [x] T006 Clamp co-activation strength override to documented safe band (`mcp_server/lib/cognitive/co-activation.ts`)
   - **Priority:** P1 | **Feature:** F-02 Co-activation boost strength increase
   - **Issue:** `SPECKIT_COACTIVATION_STRENGTH` accepts unbounded finite values.
   - **Fix:** Clamp override range or update documentation; add contribution-isolation test.
-- [ ] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
+- [x] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
   - **Priority:** P1 | **Feature:** F-03 Edge density measurement
   - **Issue:** Type/interface comments describe edges-per-node while runtime uses total-memories denominator.
   - **Fix:** Update docs/comments and add integration test for density guard behavior.
-- [ ] T008 Align causal-boost relation multipliers with documented taxonomy (`mcp_server/lib/search/causal-boost.ts`)
+- [x] T008 Align causal-boost relation multipliers with documented taxonomy (`mcp_server/lib/search/causal-boost.ts`)
   - **Priority:** P1 | **Feature:** F-10 Causal neighbor boost and injection
   - **Issue:** Relation hierarchy text diverges from implemented relation labels/weights.
   - **Fix:** Align implementation or docs and add tests for seed-cap + precedence behavior.
-- [ ] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
+- [x] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
   - **Priority:** P1 | **Feature:** F-11 Temporal contiguity layer
   - **Issue:** `MAX_WINDOW` exists but callers can pass values over 24h.
   - **Fix:** Clamp incoming windows to `[1, MAX_WINDOW]` and align naming/docs for exported API.
@@ -99,11 +99,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T010 Update graph/cognitive fixes feature source and test traceability (`feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
+- [x] T010 Update graph/cognitive fixes feature source and test traceability (`feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
   - **Priority:** P2 | **Feature:** F-08 Graph and cognitive memory fixes
   - **Issue:** Claimed fix coverage does not fully match listed implementation files; wildcard export pattern remains.
   - **Fix:** Correct source/test mapping, add focused regression suite, replace wildcard export with explicit exports.
-- [ ] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
+- [x] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
   - **Priority:** P2 | **Feature:** F-09 ANCHOR tags as graph nodes
   - **Issue:** No explicit negative test ensures ANCHOR parsing is metadata-only and never mutates `causal_edges`.
   - **Fix:** Add integration test asserting no graph node/edge mutation occurs during ANCHOR parsing.
@@ -114,9 +114,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

@@ -6,7 +6,7 @@
 // and (via hooks) which results they actually use.
 //
 // Table: consumption_log
-// Feature flag: SPECKIT_CONSUMPTION_LOG (default true)
+// Feature flag: SPECKIT_CONSUMPTION_LOG (deprecated, hardcoded false)
 // ---------------------------------------------------------------
 
 import Database from 'better-sqlite3';
@@ -43,7 +43,6 @@ export interface ConsumptionStatsOptions {
   event_type?: ConsumptionEventType;
   session_id?: string;
   since?: string; // ISO timestamp
-  limit?: number;
 }
 
 /**
@@ -162,8 +161,11 @@ function logConsumptionEvent(db: Database.Database, event: ConsumptionEvent): vo
       event.spec_folder_filter ?? null,
       metadataJson
     );
-  } catch {
-    // AI-GUARD: Intentionally swallowed — instrumentation must never cause failures
+  } catch (err) {
+    console.warn(
+      '[consumption-logger] logConsumptionEvent warning:',
+      err instanceof Error ? err.message : String(err),
+    );
   }
 }
 
@@ -251,7 +253,11 @@ function getConsumptionStats(db: Database.Database, options: ConsumptionStatsOpt
       zero_result_queries: zeroRow?.cnt ?? 0,
       unique_sessions: sessionRow?.cnt ?? 0,
     };
-  } catch {
+  } catch (err) {
+    console.warn(
+      '[consumption-logger] getConsumptionStats warning:',
+      err instanceof Error ? err.message : String(err),
+    );
     return defaultStats;
   }
 }
@@ -293,7 +299,11 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
         count: highFreqRows.length,
         examples: highFreqRows.map(r => `"${r.query_text}" (${r.cnt}x)`),
       });
-    } catch {
+    } catch (err) {
+      console.warn(
+        '[consumption-logger] getConsumptionPatterns high-frequency warning:',
+        err instanceof Error ? err.message : String(err),
+      );
       patterns.push({ category: 'high-frequency-query', description: 'Queries repeated more than 3 times', count: 0, examples: [] });
     }
 
@@ -317,7 +327,11 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
         count: totalZeroRow?.cnt ?? 0,
         examples: zeroRows.map(r => `"${r.query_text}" (${r.cnt}x)`),
       });
-    } catch {
+    } catch (err) {
+      console.warn(
+        '[consumption-logger] getConsumptionPatterns zero-result warning:',
+        err instanceof Error ? err.message : String(err),
+      );
       patterns.push({ category: 'zero-result', description: 'Queries returning 0 results', count: 0, examples: [] });
     }
 
@@ -341,7 +355,11 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
         count: totalLowRow?.cnt ?? 0,
         examples: lowSelectRows.map(r => `"${r.query_text}" (${r.result_count} results)`),
       });
-    } catch {
+    } catch (err) {
+      console.warn(
+        '[consumption-logger] getConsumptionPatterns low-selection warning:',
+        err instanceof Error ? err.message : String(err),
+      );
       patterns.push({ category: 'low-selection', description: 'Queries returning fewer than 3 results', count: 0, examples: [] });
     }
 
@@ -363,7 +381,11 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
         count: mismatchRows.length,
         examples: mismatchRows.map(r => `"${r.query_text}" → [${r.intents}]`),
       });
-    } catch {
+    } catch (err) {
+      console.warn(
+        '[consumption-logger] getConsumptionPatterns intent-mismatch warning:',
+        err instanceof Error ? err.message : String(err),
+      );
       patterns.push({ category: 'intent-mismatch', description: 'Same query classified with different intents', count: 0, examples: [] });
     }
 
@@ -388,12 +410,19 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
           return `session:${sid} (${r.query_count} queries)`;
         }),
       });
-    } catch {
+    } catch (err) {
+      console.warn(
+        '[consumption-logger] getConsumptionPatterns session-heavy warning:',
+        err instanceof Error ? err.message : String(err),
+      );
       patterns.push({ category: 'session-heavy', description: 'Sessions with more than 10 queries', count: 0, examples: [] });
     }
 
-  } catch {
-    // AI-GUARD: If the whole function fails, return empty patterns — never throw
+  } catch (err) {
+    console.warn(
+      '[consumption-logger] getConsumptionPatterns warning:',
+      err instanceof Error ? err.message : String(err),
+    );
   }
 
   return patterns;

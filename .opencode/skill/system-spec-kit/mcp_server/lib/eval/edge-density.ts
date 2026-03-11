@@ -33,8 +33,9 @@ export interface EdgeDensityResult {
   /** Total memories in memory_index (used for coverage context). */
   totalMemories: number;
   /**
-   * Edges per node: edgeCount / nodeCount.
-   * Returns 0 when nodeCount is 0 (empty graph).
+   * Edge density: edgeCount / totalMemories (primary denominator).
+   * Falls back to edgeCount / nodeCount when totalMemories is 0.
+   * Returns 0 when both denominators are 0 (empty graph).
    */
   density: number;
   /** Human-readable density band. */

@@ -51,9 +51,12 @@ function generateEvalRunId(): number {
     try {
       const db = getDb();
       if (db) {
-        const row = db.prepare('SELECT MAX(eval_run_id) as maxId FROM eval_channel_results').get() as { maxId: number | null } | undefined;
-        if (row?.maxId && row.maxId > _evalRunCounter) {
-          _evalRunCounter = row.maxId;
+        const channelMax = db.prepare('SELECT MAX(eval_run_id) as maxId FROM eval_channel_results').get() as { maxId: number | null } | undefined;
+        const finalMax = db.prepare('SELECT MAX(eval_run_id) as maxId FROM eval_final_results').get() as { maxId: number | null } | undefined;
+        const maxId = Math.max(channelMax?.maxId ?? 0, finalMax?.maxId ?? 0);
+
+        if (maxId > _evalRunCounter) {
+          _evalRunCounter = maxId;
         }
       }
     } catch (_error: unknown) { /* DB may not have eval tables yet — start from 0 */ }

@@ -39,8 +39,8 @@ This folder now has 16 skill folders and one shared scripts folder:
 | Item                         | Count        | Notes                                            |
 | ---------------------------- | ------------ | ------------------------------------------------ |
 | Skill folders                | 16           | Each skill has a `SKILL.md` entry point          |
-| Skills with local `scripts/` | 6            | Automation lives close to the skill that owns it |
-| Shared routing scripts       | 1 executable | `.opencode/skill/scripts/skill_advisor.py`       |
+| Skills with local `scripts/` | 5            | Automation lives close to the skill that owns it |
+| Shared routing scripts       | 4 Python files | `skill_advisor.py` plus benchmark, regression and runtime helpers |
 
 Skills are not passive references. Each skill contains executable guidance with references, assets or scripts.
 
@@ -92,8 +92,10 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 ├── mcp-code-mode/
 ├── mcp-figma/
 ├── scripts/
-├── sk-code/                # Baseline code workflow skill
-├── sk-code--*/             # Overlay code workflow skills (optional by repo)
+├── sk-code--full-stack/
+├── sk-code--opencode/
+├── sk-code--review/
+├── sk-code--web/
 ├── sk-doc/
 ├── sk-git/
 ├── sk-prompt-improver/
@@ -106,6 +108,9 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 | File               | Purpose                                       |
 | ------------------ | --------------------------------------------- |
 | `skill_advisor.py` | Gate 2 skill routing with confidence scores   |
+| `skill_advisor_bench.py` | Benchmark harness for `skill_advisor.py` latency and throughput |
+| `skill_advisor_regression.py` | Regression harness for routing quality checks |
+| `skill_advisor_runtime.py` | Runtime helpers for cached skill metadata and routing |
 | `README.md`        | Script usage and integration reference        |
 | `SET-UP_GUIDE.md`  | Setup and tuning guide for `skill_advisor.py` |
 
@@ -113,10 +118,10 @@ Request -> Route skill -> Load SKILL.md -> Load only needed references/assets/sc
 
 | Skill                     | Scripts                                                                                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mcp-code-mode`           | `scripts/update-code-mode.sh`, `scripts/validate_config.py`                                                                                                                       |
-| `sk-code` or `sk-code--*` | Overlay-owned scripts vary by repo (for example alignment checks or minification pipelines)                                                                                       |
-| `sk-doc`                  | `scripts/init_skill.py`, `scripts/quick_validate.py`, `scripts/package_skill.py`, `scripts/validate_document.py`, `scripts/extract_structure.py`, `scripts/validate_flowchart.sh` |
-| `system-spec-kit`         | `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `scripts/memory/generate-context.ts`, `scripts/memory/reindex-embeddings.ts`, `scripts/setup/check-prerequisites.sh`        |
+| `mcp-code-mode`           | `scripts/update-code-mode.sh`, `scripts/validate_config.py`                                                                                                                        |
+| `sk-code--*`              | Overlay-owned scripts vary by skill (for example alignment checks or minification pipelines)                                                                                      |
+| `sk-doc`                  | `scripts/init_skill.py`, `scripts/quick_validate.py`, `scripts/package_skill.py`, `scripts/validate_document.py`, `scripts/extract_structure.py`, `scripts/validate_flowchart.sh`  |
+| `system-spec-kit`         | `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `scripts/memory/generate-context.ts`, `scripts/memory/reindex-embeddings.ts`, `scripts/setup/check-prerequisites.sh`         |
 
 For the full `system-spec-kit` script inventory, use `system-spec-kit/scripts/scripts-registry.json`.
 
@@ -133,20 +138,19 @@ Spec folder workflow, template validation and memory context workflows. This is 
 
 ### Code Workflows
 
-#### `sk-code | sk-code--*` (version varies by repo)
+#### `sk-code--*` (version varies by skill)
 
 Portable code workflow contract:
 
-- Use `sk-code` as the baseline when available
-- Add one overlay skill via `sk-code--*` for repo-specific standards
-- Review flow: baseline + one overlay
+- Use the overlay that matches the current repo or task
+- Review flow: `sk-code--review` plus one implementation overlay
 - Overlay examples: `sk-code--opencode` | `sk-code--web` | `sk-code--full-stack`
 
-#### `sk-code--review` (v1.0.0)
+#### `sk-code--review` (v1.2.0.0)
 
 Findings-first code review baseline with security/correctness minimums and baseline+overlay contract.
 
-#### `sk-git` (v1.0.8.0)
+#### `sk-git` (v1.1.0.0)
 
 Git workflows for workspace setup, clean commits and branch completion.
 
@@ -182,7 +186,7 @@ Figma MCP workflow for file retrieval, image export and component/style extracti
 
 Gemini CLI orchestration for cross-AI task delegation, Google Search grounding, codebase architecture analysis, and parallel code generation.
 
-#### `cli-codex` (v1.0.0)
+#### `cli-codex` (v1.2.0)
 
 Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch.
 
@@ -190,7 +194,7 @@ Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel 
 
 Claude Code CLI orchestration enabling external AIs to invoke Anthropic's Claude Code for deep reasoning, code editing, structured output, agent delegation, and extended thinking.
 
-#### `cli-copilot` (v1.0.0)
+#### `cli-copilot` (v1.2.0)
 
 Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for multi-model tasks, cloud delegation, collaborative planning, autopilot execution, and repository memory.
 
@@ -216,7 +220,7 @@ Copilot CLI orchestration enabling any AI to invoke GitHub's Copilot CLI for mul
 | `mcp-clickup`             | Yes           | Yes       | No         |
 | `mcp-code-mode`           | Yes           | Yes       | Yes        |
 | `mcp-figma`               | Yes           | Yes       | No         |
-| `sk-code` or `sk-code--*` | Varies        | Varies    | Varies     |
+| `sk-code--*`              | Varies        | Varies    | Varies     |
 | `sk-git`                  | Yes           | Yes       | No         |
 | `sk-doc`                  | Yes           | Yes       | Yes        |
 | `sk-prompt-improver`      | Yes           | Yes       | No         |
@@ -287,7 +291,7 @@ Framework and routing:
 Skill folders:
 
 - [system-spec-kit](system-spec-kit/)
-- `sk-code/` or `sk-code--*/` (repo-specific code baseline and overlays)
+- [sk-code--full-stack](sk-code--full-stack/), [sk-code--opencode](sk-code--opencode/), [sk-code--review](sk-code--review/), [sk-code--web](sk-code--web/)
 - [sk-doc](sk-doc/)
 - [sk-git](sk-git/)
 - [sk-prompt-improver](sk-prompt-improver/)

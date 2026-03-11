@@ -67,7 +67,7 @@ export function isDocscoreAggregationEnabled(): boolean {
 }
 
 /**
- * TM-04: Pre-storage quality gate for memory saves.
+ * Pre-storage quality gate for memory saves.
  * Default: TRUE (graduated). Set SPECKIT_SAVE_QUALITY_GATE=false to disable.
  */
 export function isSaveQualityGateEnabled(): boolean {
@@ -205,4 +205,12 @@ export function isFileWatcherEnabled(): boolean {
 export function isLocalRerankerEnabled(): boolean {
   if (process.env.RERANKER_LOCAL?.toLowerCase().trim() !== 'true') return false;
   return isFeatureEnabled('RERANKER_LOCAL');
+}
+
+/**
+ * T008: Verify-fix-verify memory quality loop.
+ * Default: FALSE (opt-in). Set SPECKIT_QUALITY_LOOP=true to enable.
+ */
+export function isQualityLoopEnabled(): boolean {
+  return process.env.SPECKIT_QUALITY_LOOP?.toLowerCase().trim() === 'true';
 }

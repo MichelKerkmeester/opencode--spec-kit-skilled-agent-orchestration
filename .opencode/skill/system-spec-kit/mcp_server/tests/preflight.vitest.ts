@@ -132,7 +132,7 @@ describe('Preflight Validation', () => {
 
   describe('Token Budget Estimation (T070, CHK-158)', () => {
     it('token estimation correct', () => {
-      const content = 'a'.repeat(350); // 350 chars ~ 100 tokens at 3.5 chars/token
+      const content = 'a'.repeat(400); // 400 chars ~ 100 tokens at 4 chars/token
       const tokens = preflight.estimateTokens(content);
       expect(tokens).toBeGreaterThanOrEqual(90);
       expect(tokens).toBeLessThanOrEqual(110);
@@ -517,31 +517,31 @@ More content follows.
   ---------------------------------------------------------------- */
 
   describe('Token Budget — Extended (T165-T166)', () => {
-    it('T165: token estimation ~3.5 chars/token ratio', () => {
-      const charsPerToken = 3.5;
+    it('T165: token estimation ~4 chars/token ratio', () => {
+      const charsPerToken = 4;
 
-      // 350 characters should yield 100 tokens
-      const tokens350 = preflight.estimateTokens('a'.repeat(350));
-      expect(tokens350).toBe(Math.ceil(350 / charsPerToken));
+      // 400 characters should yield 100 tokens
+      const tokens400 = preflight.estimateTokens('a'.repeat(400));
+      expect(tokens400).toBe(Math.ceil(400 / charsPerToken));
 
-      // 700 characters should yield 200 tokens
-      const tokens700 = preflight.estimateTokens('b'.repeat(700));
-      expect(tokens700).toBe(Math.ceil(700 / charsPerToken));
+      // 800 characters should yield 200 tokens
+      const tokens800 = preflight.estimateTokens('b'.repeat(800));
+      expect(tokens800).toBe(Math.ceil(800 / charsPerToken));
 
-      // 35 characters should yield 10 tokens
-      const tokens35 = preflight.estimateTokens('c'.repeat(35));
-      expect(tokens35).toBe(Math.ceil(35 / charsPerToken));
+      // 40 characters should yield 10 tokens
+      const tokens40 = preflight.estimateTokens('c'.repeat(40));
+      expect(tokens40).toBe(Math.ceil(40 / charsPerToken));
 
-      // Verify the ratio: tokens * 3.5 should approximately equal chars
+      // Verify the ratio: tokens * 4 should approximately equal chars
       const tokens1000 = preflight.estimateTokens('d'.repeat(1000));
       const inferredRatio = 1000 / tokens1000;
-      expect(inferredRatio).toBeGreaterThanOrEqual(3.4);
-      expect(inferredRatio).toBeLessThanOrEqual(3.6);
+      expect(inferredRatio).toBeGreaterThanOrEqual(3.9);
+      expect(inferredRatio).toBeLessThanOrEqual(4.1);
     });
 
     it('T166: token budget warning at 80% threshold', () => {
-      // 2450 chars → ~700 tokens + 150 overhead = ~850 tokens = 85% of 1000
-      const content = 'x'.repeat(2450);
+      // 2800 chars → ~700 tokens + 150 overhead = ~850 tokens = 85% of 1000
+      const content = 'x'.repeat(2800);
       const result = preflight.checkTokenBudget(content, {
         maxTokens: 1000,
         warning_threshold: 0.8,

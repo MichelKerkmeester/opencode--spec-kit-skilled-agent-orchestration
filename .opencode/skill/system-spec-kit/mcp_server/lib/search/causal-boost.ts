@@ -25,6 +25,14 @@ const MAX_SEED_RESULTS = 5;
  * C138-P2: Relation-type weight multipliers for causal edge traversal.
  * Applied during CTE accumulation so stronger relation types (supersedes)
  * amplify the boost while weaker ones (contradicts) attenuate it.
+ *
+ * These multipliers serve a DIFFERENT purpose from RELATION_WEIGHTS in
+ * causal-edges.ts. causal-edges weights are applied during chain traversal
+ * scoring (getCausalChain), while these are applied during the causal-boost
+ * CTE walk (getNeighborBoosts) for search result amplification. The value
+ * ranges overlap but are tuned independently for their respective contexts:
+ *   - causal-edges: traversal strength propagation (range 0.8–1.5)
+ *   - causal-boost: search result boost amplitude (range 0.8–1.5)
  */
 const RELATION_WEIGHT_MULTIPLIERS: Record<string, number> = {
   supersedes: 1.5,

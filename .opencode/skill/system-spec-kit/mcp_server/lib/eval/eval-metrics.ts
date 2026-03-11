@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------
 // MODULE: Eval Metrics
 // ---------------------------------------------------------------
-// T006a-e: Pure computation functions for 11 evaluation metrics
-// (6 core + 5 diagnostic). No DB access, no side effects.
+// T006a-e: Pure computation functions for 12 evaluation metrics
+// (7 core + 5 diagnostic). No DB access, no side effects.
 // ---------------------------------------------------------------
 
 /* ---------------------------------------------------------------
@@ -220,7 +220,13 @@ export function computePrecision(
   );
   const topResults = topK(results, k);
   if (topResults.length === 0) return 0;
-  const hits = topResults.filter(r => relevantIds.has(r.memoryId)).length;
+  const seenIds = new Set<number>();
+  let hits = 0;
+  for (const r of topResults) {
+    if (seenIds.has(r.memoryId)) continue;
+    seenIds.add(r.memoryId);
+    if (relevantIds.has(r.memoryId)) hits++;
+  }
   return hits / k;
 }
 
@@ -233,15 +239,9 @@ export function computeF1(
   groundTruth: GroundTruthEntry[],
   k: number = 20
 ): number {
-  if (k <= 0 || results.length === 0 || groundTruth.length === 0) return 0;
-  const relevantIds = new Set(
-    groundTruth.filter(e => e.relevance > 0).map(e => e.memoryId),
-  );
-  if (relevantIds.size === 0) return 0;
-  const topResults = topK(results, k);
-  const hits = topResults.filter(r => relevantIds.has(r.memoryId)).length;
-  const p = topResults.length === 0 ? 0 : hits / k;
-  const r = hits / relevantIds.size;
+  if (k <= 0) return 0;
+  const p = computePrecision(results, groundTruth, k);
+  const r = computeRecall(results, groundTruth, k);
   if (p + r === 0) return 0;
   return 2 * (p * r) / (p + r);
 }
@@ -436,7 +436,10 @@ export function computeImportanceWeightedRecall(
   const topResults = topK(results, k);
 
   let hitWeight = 0;
+  const seenIds = new Set<number>();
   for (const r of topResults) {
+    if (seenIds.has(r.memoryId)) continue;
+    seenIds.add(r.memoryId);
     const entry = gtMap.get(r.memoryId);
     if (entry && entry.relevance > 0) {
       hitWeight += getWeight(entry);
@@ -560,7 +563,7 @@ export function computeIntentWeightedNDCG(
 --------------------------------------------------------------- */
 
 /**
- * Compute all 11 metrics (6 core + 5 diagnostic) in one call.
+ * Compute all 12 metrics (7 core + 5 diagnostic) in one call.
  *
  * @param params.results             Retrieved results for the query.
  * @param params.groundTruth         Ground truth relevance judgments.
@@ -575,7 +578,7 @@ export function computeAllMetrics(params: {
   constitutionalIds?: number[];
   memoryTimestamps?: Record<number, Date>;
   intentType?: string;
-}): Record<string, number> {
+}): AllMetrics {
   const {
     results,
     groundTruth,

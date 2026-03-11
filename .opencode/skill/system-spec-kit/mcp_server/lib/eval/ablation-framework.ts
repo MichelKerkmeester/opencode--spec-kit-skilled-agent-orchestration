@@ -155,6 +155,10 @@ export interface AblationReport {
   channelFailures?: AblationChannelFailure[];
   /** Baseline Recall@K across all queries (all channels enabled). */
   overallBaselineRecall: number;
+  /** Total queries selected for the baseline computation. */
+  queryCount?: number;
+  /** Total queries actually evaluated (queries with ground truth). */
+  evaluatedQueryCount?: number;
   /** Total wall-clock duration in milliseconds. */
   durationMs: number;
 }
@@ -375,12 +379,14 @@ export async function runAblation(
     // -- Step 1: Compute baseline (all channels enabled) --
     const baselineRecalls: Map<number, number> = new Map();
     const baselineMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }> = new Map();
+    let evaluatedCount = 0;
     const noDisabled = new Set<AblationChannel>();
 
     for (const q of queries) {
       const gt = getGroundTruthForQuery(q.id);
       if (gt.length === 0) continue; // Skip queries with no ground truth
 
+      evaluatedCount++;
       const t0 = performance.now();
       const results = await Promise.resolve(searchFn(q.query, noDisabled));
       const latencyMs = performance.now() - t0;
@@ -487,6 +493,8 @@ export async function runAblation(
       results: ablationResults,
       ...(channelFailures.length > 0 ? { channelFailures } : {}),
       overallBaselineRecall,
+      queryCount: queries.length,
+      evaluatedQueryCount: evaluatedCount,
       durationMs: Date.now() - startTime,
     };
 
@@ -539,11 +547,12 @@ export function storeAblationResults(report: AblationReport): boolean {
         `ablation_baseline_recall@${recallK}`,
         report.overallBaselineRecall,
         'all',
-        report.results[0]?.queryCount ?? 0,
+        report.queryCount ?? report.results[0]?.queryCount ?? 0,
         JSON.stringify({
           runId: report.runId,
           config: report.config,
           durationMs: report.durationMs,
+          queryCount: report.queryCount ?? report.results[0]?.queryCount ?? 0,
           channelFailures: report.channelFailures ?? [],
         }),
         report.timestamp,
@@ -618,7 +627,11 @@ export function formatAblationReport(report: AblationReport): string {
   const recallK = report.config.recallK ?? 20;
   lines.push(`- **Baseline Recall@${recallK}:** ${report.overallBaselineRecall.toFixed(4)}`);
   lines.push(`- **Duration:** ${report.durationMs}ms`);
-  lines.push(`- **Queries evaluated:** ${report.results[0]?.queryCount ?? 0}`);
+  const queriesEvaluated = report.evaluatedQueryCount
+    ?? report.results[0]?.queryCount
+    ?? report.queryCount
+    ?? 0;
+  lines.push(`- **Queries evaluated:** ${queriesEvaluated}`);
   lines.push(``);
 
   // Sort by absolute delta descending (most impactful first)
@@ -740,7 +753,7 @@ function getVerdict(result: AblationResult): string {
  * expected by the hybridSearch / hybridSearchEnhanced functions.
  *
  * @param disabledChannels - Set of channels to disable.
- * @returns Object with useVector, useBm25, useFts, useGraph flags.
+ * @returns Object with useVector, useBm25, useFts, useGraph, useTrigger flags.
  */
 export function toHybridSearchFlags(
   disabledChannels: Set<AblationChannel>,

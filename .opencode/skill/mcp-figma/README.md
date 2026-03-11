@@ -1,6 +1,6 @@
 ---
 title: "Figma MCP"
-description: "Programmatic access to Figma design files through 18 specialized tools via Code Mode for token-efficient workflows."
+description: "Programmatic access to Figma design files through two supported paths: the Official Figma MCP (recommended) and Code Mode with figma-developer-mcp."
 trigger_phrases:
   - "figma"
   - "design files"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Figma MCP
 
-> Programmatic access to Figma design files through **18 specialized tools**. Get files, export images, extract components and styles, manage team projects and handle collaborative comments. Accessed via **Code Mode** for token-efficient workflows.
+> Programmatic access to Figma design files through two supported paths: the **Official Figma MCP** (recommended) and **Code Mode + `figma-developer-mcp`**. Get files, export images, extract components and styles, manage team projects and handle collaborative comments.
 
 > **Navigation**:
 > - New to Figma MCP? Start with [Quick Start](#2--quick-start)
@@ -33,7 +33,7 @@ trigger_phrases:
 - [5. CONFIGURATION](#5--configuration)
 - [6. NAMING CONVENTION](#6--naming-convention)
 - [7. USAGE EXAMPLES](#7--usage-examples)
-- [8. MCP TOOLS (18 TOTAL)](#8--mcp-tools-18-total)
+- [8. CODE MODE TOOLS (18 TOTAL)](#8--code-mode-tools-18-total)
 - [9. TROUBLESHOOTING](#9--troubleshooting)
 - [10. FAQ](#10--faq)
 - [11. RELATED DOCUMENTS](#11--related-documents)
@@ -47,26 +47,26 @@ trigger_phrases:
 
 ### What is Figma MCP?
 
-Figma MCP is an MCP server that provides AI assistants with programmatic access to Figma's design platform. It enables reading design files, exporting images, extracting components and styles, managing team projects and handling collaborative comments through Code Mode's efficient TypeScript execution.
+Figma MCP gives AI assistants programmatic access to Figma's design platform through two supported paths: the Official Figma MCP for direct HTTP/OAuth setup, and Code Mode with `figma-developer-mcp` for local stdio workflows. Both paths support reading design files, exporting images, extracting components and styles, managing team projects, and handling collaborative comments.
 
 ### Key Statistics
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Tools | 18 | Across 6 categories |
-| Authentication | PAT | Figma Personal Access Token |
-| Token Overhead | ~1.6k | Via Code Mode (vs ~54k native) |
-| Access Method | Code Mode | `call_tool_chain()` |
+| Supported Paths | 2 | Official Figma MCP and Code Mode + `figma-developer-mcp` |
+| Recommended Path | 1 | Official Figma MCP |
+| Code Mode Tool Surface | 18 | Via `figma-developer-mcp` |
+| Authentication | 2 | OAuth (Official) or PAT (Code Mode) |
 
-### Comparison with Direct Figma API
+### Supported Access Paths
 
-| Feature | Direct API | Figma MCP via Code Mode |
-|---------|------------|-------------------------|
-| **Context Cost** | N/A | ~1.6k tokens (all tools) |
-| **Multi-Tool** | Multiple HTTP calls | Single execution |
-| **State** | Manual management | Automatic persistence |
-| **Type Safety** | Manual | Full TypeScript support |
-| **AI Integration** | Custom code | Native MCP protocol |
+| Feature | Official Figma MCP | Code Mode + `figma-developer-mcp` |
+|---------|---------------------|----------------------------------|
+| **Setup** | Add HTTP MCP server | Configure `.utcp_config.json` |
+| **Authentication** | OAuth browser login | Figma Personal Access Token |
+| **Node.js** | Not required | 18+ required |
+| **Best For** | Recommended default path | Existing Code Mode workflows |
+| **Access Method** | Native MCP client | `call_tool_chain()` |
 
 ### Key Features
 
@@ -80,22 +80,22 @@ Figma MCP is an MCP server that provides AI assistants with programmatic access 
 | **Collaboration** | Read and post comments on design files |
 | **Team Management** | Navigate team projects and files |
 
-### Source Repository
+### Supported Sources
 
 | Property | Value |
 |----------|-------|
-| **npm Package** | [`figma-developer-mcp`](https://www.npmjs.com/package/figma-developer-mcp) |
-| **GitHub** | [anthropics/figma-developer-mcp](https://github.com/anthropics/figma-developer-mcp) |
-| **Tools** | 18 |
-| **License** | MIT |
+| **Official Server** | `https://mcp.figma.com/mcp` |
+| **Official Docs** | [Figma MCP Server](https://developers.figma.com/docs/figma-mcp-server/) |
+| **Code Mode Package** | [`figma-developer-mcp`](https://www.npmjs.com/package/figma-developer-mcp) |
+| **Code Mode Tool Surface** | 18 tools |
 
 ### Requirements
 
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| Node.js | 18+ | Latest LTS |
-| Code Mode MCP | Configured | Configured |
-| Figma Account | Free | Professional (for team features) |
+| Requirement | Official Path | Code Mode Path |
+|-------------|---------------|----------------|
+| AI Client | MCP-compatible client | Code Mode / `mcp-code-mode` available |
+| Authentication | Figma account for OAuth | Figma Personal Access Token |
+| Node.js | Not required | 18+ |
 
 ---
 
@@ -106,22 +106,26 @@ Figma MCP is an MCP server that provides AI assistants with programmatic access 
 
 ### Prerequisites
 
-- Code Mode MCP configured in `.utcp_config.json`
-- Figma Personal Access Token (from Figma Settings > Account > Personal access tokens)
+- **Option A - Official Figma MCP (recommended):** An MCP-compatible client and a Figma account for OAuth login
+- **Option B - Code Mode + `figma-developer-mcp`:** Code Mode configured in `.utcp_config.json` plus a Figma Personal Access Token
 
 ### 30-Second Setup
 
-```bash
-# 1. Add Figma to .utcp_config.json (see Configuration section)
+**Option A - Official Figma MCP (recommended)**
+1. Add the official HTTP server config shown in [Configuration](#5--configuration).
+2. Restart the AI client.
+3. Complete the browser-based OAuth prompt on first use.
 
-# 2. Add token to .env
-echo "FIGMA_API_KEY=figd_your_token_here" >> .env
-
-# 3. Restart your AI client
-```
+**Option B - Code Mode + `figma-developer-mcp`**
+1. Add the Figma provider to `.utcp_config.json`.
+2. Add the token to `.env`.
+3. Restart the AI client.
 
 ### Verify Installation
 
+**Official path:** Trigger the first Figma request from the MCP client and confirm the browser OAuth flow completes successfully.
+
+**Code Mode path:**
 ```typescript
 // Via Code Mode - discover Figma tools
 search_tools({ task_description: "figma" });
@@ -130,6 +134,8 @@ search_tools({ task_description: "figma" });
 ```
 
 ### First Use
+
+For the Official path, use the MCP client's normal Figma tool invocation after OAuth completes. The example below shows the Code Mode path.
 
 ```typescript
 // Get a Figma file
@@ -271,7 +277,24 @@ See [references/tool_reference.md](./references/tool_reference.md) for complete 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
 
-### Code Mode Configuration
+### Official Figma MCP Configuration (Recommended)
+
+Add the official HTTP MCP server to the client configuration. Example for OpenCode (`opencode.json`):
+
+```json
+{
+  "mcp": {
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    }
+  }
+}
+```
+
+On first use, the client opens a browser window for OAuth authorization.
+
+### Code Mode + figma-developer-mcp Configuration
 
 Add to `.utcp_config.json`:
 
@@ -300,7 +323,7 @@ Add to `.utcp_config.json`:
 
 > **Important**: Code Mode does NOT support `${VAR}` env substitution. You must hardcode the API key directly in `.utcp_config.json`. Keep this file secure and do not commit to version control if it contains real API keys.
 
-### Environment Variables
+### Environment Variables (Code Mode path)
 
 Add to `.env`:
 
@@ -317,7 +340,7 @@ figma_FIGMA_API_KEY=figd_your_token_here
 
 > **Security**: Never commit `.env` to version control. Add it to `.gitignore`.
 
-### Getting Your Figma Token
+### Getting Your Figma Token (Code Mode path)
 
 1. Open [Figma Settings](https://www.figma.com/settings)
 2. Scroll to **Personal access tokens**
@@ -326,7 +349,7 @@ figma_FIGMA_API_KEY=figd_your_token_here
 5. Copy the token immediately (you will not see it again)
 6. Add to your `.env` file
 
-### MCP Client Configurations
+### Code Mode Client Configurations
 
 **OpenCode** (`opencode.json`):
 ```json
@@ -365,9 +388,9 @@ figma_FIGMA_API_KEY=figd_your_token_here
 <!-- ANCHOR:naming-convention -->
 ## 6. NAMING CONVENTION
 
-### Critical Pattern
+### Code Mode Naming Pattern
 
-**The #1 most common error** when using Figma MCP is wrong function names. All tool calls MUST follow this pattern:
+**The #1 most common error** when using the Code Mode + `figma-developer-mcp` path is wrong function names. All tool calls MUST follow this pattern:
 
 ```
 figma.figma_{tool_name}
@@ -398,7 +421,7 @@ await figma.figma_getFile({ fileKey: "abc" });
 await figma.figma_get_file({ fileKey: "abc" });
 ```
 
-### Discovery Methods
+### Discovery Methods (Code Mode path)
 
 ```typescript
 // Use these to find exact tool names:
@@ -564,7 +587,7 @@ call_tool_chain({
 <!-- /ANCHOR:usage-examples -->
 
 <!-- ANCHOR:mcp-tools -->
-## 8. MCP TOOLS (18 TOTAL)
+## 8. CODE MODE TOOLS (18 TOTAL)
 
 ### Tool Priority Classification
 
@@ -618,6 +641,8 @@ See [references/tool_reference.md](./references/tool_reference.md) for complete 
 
 ### Common Issues
 
+Most issues below apply to the Code Mode + `figma-developer-mcp` path. Official-path issues usually appear during MCP connection setup or browser OAuth.
+
 #### Tool is not a function
 
 **Symptom**: `TypeError: figma.get_file is not a function`
@@ -633,7 +658,7 @@ await figma.get_file({ fileKey: "abc" });
 await figma.figma_get_file({ fileKey: "abc" });
 ```
 
-#### 403 Forbidden / Authentication Failed
+#### 403 Forbidden / Authentication Failed (Code Mode path)
 
 **Symptom**: `403 Forbidden` or `Invalid token`
 
@@ -676,7 +701,7 @@ await figma.figma_get_file({ fileKey: "abc" });
 3. Cache responses when possible
 4. Use pagination for large datasets
 
-#### Environment Variable Not Found
+#### Environment Variable Not Found (Code Mode path)
 
 **Symptom**: `Environment variable FIGMA_API_KEY not found` or `Variable 'figma_FIGMA_API_KEY' referenced in call template configuration not found`
 
@@ -746,11 +771,11 @@ call_tool_chain({
 
 **Q: What can Figma MCP do?**
 
-A: Figma MCP provides programmatic access to Figma's design platform through 18 tools covering file access, image export, component/style extraction, team management and collaboration.
+A: This skill supports both the Official Figma MCP and Code Mode + `figma-developer-mcp` for file access, image export, component/style extraction, team management and collaboration.
 
-**Q: Why use Code Mode instead of native MCP?**
+**Q: Which path should I use?**
 
-A: Code Mode adds ~1.6k tokens overhead vs ~54k for native MCP (18 tools x 3k each). This is a 97% token savings, crucial for context-heavy conversations.
+A: Start with the Official Figma MCP. Use Code Mode + `figma-developer-mcp` when the workflow already depends on `call_tool_chain()` or when the local 18-tool stdio setup is the better fit.
 
 **Q: What is the difference between file-level and team-level tools?**
 
@@ -811,9 +836,9 @@ A: Figma's API has rate limits that vary by endpoint. If you hit limits, wait 60
 
 | Resource | Description |
 |----------|-------------|
-| [Figma API Documentation](https://www.figma.com/developers/api) | Official API reference |
-| [figma-developer-mcp npm](https://www.npmjs.com/package/figma-developer-mcp) | Package documentation |
-| [Figma Settings](https://www.figma.com/settings) | Token generation |
+| [Figma MCP Server Docs](https://developers.figma.com/docs/figma-mcp-server/) | Official MCP setup and OAuth flow |
+| [figma-developer-mcp npm](https://www.npmjs.com/package/figma-developer-mcp) | Code Mode package documentation |
+| [Figma Settings](https://www.figma.com/settings) | Token generation for the Code Mode path |
 
 ### Related Skills
 

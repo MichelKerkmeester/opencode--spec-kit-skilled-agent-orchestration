@@ -42,7 +42,7 @@ import {
 export interface BM25BaselineConfig {
   /** Maximum number of queries to run. Defaults to all 110. */
   queryLimit?: number;
-  /** Top-K cutoff for metrics. Defaults per metric (MRR@5, NDCG@10, Recall@20, HitRate@1). */
+  /** Top-K cutoff for NDCG and Recall metrics. MRR always uses k=5 for contingency compatibility. */
   k?: number;
   /** Exclude hard-negative queries from the run. Default: false. */
   skipHardNegatives?: boolean;
@@ -51,7 +51,9 @@ export interface BM25BaselineConfig {
 /** Metrics produced by a single BM25 baseline run. */
 export interface BM25BaselineMetrics {
   mrr5: number;
+  /** NDCG at configured K (default 10). Named ndcg10 for backwards compatibility. */
   ndcg10: number;
+  /** Recall at configured K (default 20). Named recall20 for backwards compatibility. */
   recall20: number;
   hitRate1: number;
 }
@@ -322,14 +324,17 @@ export function computeBootstrapCI(
   perQueryMRR: number[],
   iterations: number = 10000,
 ): BootstrapCIResult {
-  const n = perQueryMRR.length;
+  const safeIterations = Number.isFinite(iterations) ? Math.floor(iterations) : 0;
+  // Filter out NaN/Infinity values to prevent poisoning bootstrap means
+  const cleanMRR = perQueryMRR.filter(v => Number.isFinite(v));
+  const n = cleanMRR.length;
   if (n === 0) {
     return {
       pointEstimate: 0,
       ciLower: 0,
       ciUpper: 0,
       ciWidth: 0,
-      iterations,
+      iterations: Math.max(0, safeIterations),
       sampleSize: 0,
       isSignificant: false,
       testedBoundary: 0,
@@ -337,14 +342,27 @@ export function computeBootstrapCI(
   }
 
   // Point estimate
-  const pointEstimate = perQueryMRR.reduce((s, v) => s + v, 0) / n;
+  const pointEstimate = cleanMRR.reduce((s, v) => s + v, 0) / n;
+
+  if (safeIterations <= 0) {
+    return {
+      pointEstimate,
+      ciLower: pointEstimate,
+      ciUpper: pointEstimate,
+      ciWidth: 0,
+      iterations: 0,
+      sampleSize: n,
+      isSignificant: false,
+      testedBoundary: 0,
+    };
+  }
 
   // Bootstrap resampling
   const bootstrapMeans: number[] = [];
-  for (let i = 0; i < iterations; i++) {
+  for (let i = 0; i < safeIterations; i++) {
     let sum = 0;
     for (let j = 0; j < n; j++) {
-      sum += perQueryMRR[Math.floor(Math.random() * n)];
+      sum += cleanMRR[Math.floor(Math.random() * n)];
     }
     bootstrapMeans.push(sum / n);
   }
@@ -353,8 +371,8 @@ export function computeBootstrapCI(
   bootstrapMeans.sort((a, b) => a - b);
 
   // 95% CI = 2.5th and 97.5th percentiles
-  const lowerIdx = Math.ceil(iterations * 0.025) - 1;
-  const upperIdx = Math.ceil(iterations * 0.975) - 1;
+  const lowerIdx = Math.ceil(safeIterations * 0.025) - 1;
+  const upperIdx = Math.ceil(safeIterations * 0.975) - 1;
   const ciLower = bootstrapMeans[lowerIdx];
   const ciUpper = bootstrapMeans[upperIdx];
 
@@ -381,7 +399,7 @@ export function computeBootstrapCI(
     ciLower,
     ciUpper,
     ciWidth: ciUpper - ciLower,
-    iterations,
+    iterations: safeIterations,
     sampleSize: n,
     isSignificant,
     testedBoundary,
@@ -479,11 +497,10 @@ export async function runBM25Baseline(
     skipHardNegatives = false,
   } = config;
 
-  // MRR cutoff: use k if provided, default 5
-  const mrrK   = k ?? 5;
-  // NDCG cutoff: use k if provided, default 10
+  // MRR always uses k=5 (contingency matrix is calibrated for MRR@5)
+  const mrrK = 5;
+  // Other metrics use k override if provided
   const ndcgK  = k ?? 10;
-  // Recall cutoff: use k if provided, default 20
   const recallK = k ?? 20;
   // Retrieval limit: fetch enough results for all metric cutoffs
   const fetchLimit = Math.max(mrrK, ndcgK, recallK, 20);

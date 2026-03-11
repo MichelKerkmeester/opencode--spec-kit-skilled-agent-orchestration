@@ -14,7 +14,7 @@ importance_tier: "important"
 
 # OpenCode Install Guides
 
-> AI-executable guides for the OpenCode dev environment. Covers 3 native MCP servers, native skills, 8 agents, and optional CLI tools.
+> AI-executable guides for the OpenCode dev environment. Covers 3 native MCP servers, native skills, 9 agents, and optional CLI tools.
 
 ---
 
@@ -55,7 +55,7 @@ The `install_guides/` directory is the central hub for all OpenCode setup and in
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Guide files | 9 | 4 MCP/CLI guides, 4 SET-UP guides, 1 index guide |
+| Guide files | 5 | 1 MCP guide, 3 SET-UP guides, 1 index guide |
 | Install scripts | 1 | `install_scripts/` directory |
 | MCP servers covered | 3 | Code Mode, Spec Kit Memory, Sequential Thinking |
 | Platforms supported | 3 | macOS, Linux, Windows WSL |
@@ -70,21 +70,18 @@ This README serves as both the **directory index** (listing all available guides
 <!-- ANCHOR:guides-inventory -->
 ## 2. GUIDES INVENTORY
 
-All guides in this directory, sorted by recommended reading order:
+Root `.md` guide files in this directory, sorted by recommended reading order, plus the automation subdirectory:
 
 | Guide | Purpose | Audience |
 |-------|---------|----------|
 | **[README.md](./README.md)** (this file) | Main installation walkthrough and directory index | All users |
-| **Install Guide Template** | Template maintained in sk-doc: `.opencode/skill/sk-doc/assets/documentation/install_guide_template.md` | Maintainers and guide authors |
-| **[MCP - Code Mode.md](./MCP%20-%20Code%20Mode.md)** | Code Mode MCP server: external tool orchestration (Webflow, Figma, ClickUp, GitHub) | All users (foundation component) |
-| **[MCP - Spec Kit Memory.md](./MCP%20-%20Spec%20Kit%20Memory.md)** | Spec Kit Memory MCP server: conversation context preservation with vector search | All users (core component) |
-| **[MCP - Sequential Thinking.md](./MCP%20-%20Sequential%20Thinking.md)** | Sequential Thinking MCP server: complex reasoning chains | Users needing advanced reasoning |
-| **[MCP - Chrome Dev Tools.md](./MCP%20-%20Chrome%20Dev%20Tools.md)** | Chrome DevTools MCP: browser debugging and automation | Frontend/debugging users |
-| **[SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md)** | AGENTS.md customization: AI agent behavior configuration | All users (post-install) |
-| **[SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)** | Agent system: specialized AI personas and routing | All users (post-install) |
-| **[SET-UP - Skill Advisor.md](./SET-UP%20-%20Skill%20Advisor.md)** | Skill Advisor setup: Gate 2 skill routing configuration | All users (post-install) |
-| **[SET-UP - Skill Creation.md](./SET-UP%20-%20Skill%20Creation.md)** | Custom skill creation: extending AI agent capabilities | Advanced users |
-| **[install_scripts/](./install_scripts/)** | Automated installation scripts | All users |
+| **[MCP - Sequential Thinking.md](./MCP%20-%20Sequential%20Thinking.md)** | Sequential Thinking MCP server installation and usage | Users needing advanced reasoning |
+| **[SET-UP - AGENTS.md](./SET-UP%20-%20AGENTS.md)** | AGENTS.md customization and AI agent behavior configuration | All users (post-install) |
+| **[SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)** | Agent system setup: specialized AI personas and routing | All users (post-install) |
+| **[SET-UP - Skill Creation.md](./SET-UP%20-%20Skill%20Creation.md)** | Custom skill creation and packaging workflow | Advanced users |
+| **[install_scripts/](./install_scripts/)** | Automated installation scripts, including ClickUp setup | All users |
+
+ClickUp setup currently lives in [`install_scripts/`](./install_scripts/) via `install-clickup.sh`. There is no root `MCP - ClickUp.md` guide file in this directory.
 
 ---
 
@@ -810,15 +807,22 @@ Skills are automatically discovered from:
 **Current Skills:**
 | Skill                      | Version    | Purpose                                              |
 | -------------------------- | ---------- | ---------------------------------------------------- |
-| mcp-code-mode              | v1.0.4.0   | External tool orchestration                          |
-| mcp-figma                  | v1.0.2.0   | Figma design file access and integration             |
-| system-spec-kit            | v2.2.9.0   | Spec folder + template system + context preservation |
-| mcp-chrome-devtools  | v1.0.1.0   | Browser debugging                                    |
-| sk-code--full-stack | v1.0.0     | Full-stack implementation orchestrator               |
-| sk-code--opencode   | v1.0.5.0   | OpenCode system code standards                       |
-| sk-code--web    | v1.0.5.0   | Web development implementation orchestrator          |
-| sk-doc    | v1.0.6.0   | Unified markdown and skill management                |
-| sk-git              | v1.0.2.0   | Git workflow orchestrator                            |
+| mcp-code-mode        | v1.0.7.0   | External tool orchestration                          |
+| mcp-figma            | v1.0.7.0   | Figma design file access and integration             |
+| system-spec-kit      | v2.2.26.0  | Spec folder + template system + context preservation |
+| mcp-chrome-devtools  | v1.0.7.0   | Browser debugging                                    |
+| mcp-clickup          | v1.0.0     | ClickUp project management orchestration             |
+| cli-codex            | v1.2.0     | OpenAI Codex CLI orchestration for code and research |
+| cli-copilot          | v1.2.0     | GitHub Copilot CLI orchestration                     |
+| cli-claude-code      | v1.0.0     | Claude Code CLI orchestration                        |
+| cli-gemini           | v1.1.0     | Gemini CLI orchestration for code and web research   |
+| sk-code--full-stack  | v1.1.0.0   | Full-stack implementation orchestrator               |
+| sk-code--opencode    | v1.1.0.0   | OpenCode system code standards                       |
+| sk-code--review      | v1.2.0.0   | Findings-first baseline code review standards        |
+| sk-code--web         | v1.1.0.0   | Web development implementation orchestrator          |
+| sk-doc               | v1.1.2.0   | Unified markdown and skill management                |
+| sk-git               | v1.1.0.0   | Git workflow orchestrator                            |
+| sk-prompt-improver   | v1.2.0.0   | Prompt engineering frameworks and scoring            |
 
 **How it works:**
 - OpenCode scans skill folders on startup
@@ -1405,8 +1409,8 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 | --------------------------- | --------------------------------------------- |
 | `opencode.json`             | OpenCode MCP server config (3 native servers) |
 | `.utcp_config.json`         | Code Mode external tools config               |
-| `.opencode/skill/`          | Skill definitions (11 skills)                 |
-| `.opencode/agent/`          | Agent definitions (8 agents)                  |
+| `.opencode/skill/`          | Skill definitions (16 skills)                 |
+| `.opencode/agent/`          | Agent definitions (9 agents)                  |
 | `.opencode/install_guides/` | Installation documentation                    |
 | `~/.opencode-backup/`       | Configuration backups                         |
 | `AGENTS.md`                 | AI agent behavior configuration               |
@@ -1416,7 +1420,7 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 | Category           | Count | Items                                                                                                                    |
 | ------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | Native MCP Servers | 3     | code_mode, spec_kit_memory, sequential_thinking                                                                          |
-| Skills             | 9     | mcp-code-mode, mcp-figma, system-spec-kit, mcp-chrome-devtools, sk-code--full-stack, sk-code--opencode, sk-code--web, sk-doc, sk-git |
+| Skills             | 16    | mcp-code-mode, mcp-figma, system-spec-kit, mcp-chrome-devtools, mcp-clickup, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-doc, sk-git, sk-prompt-improver |
 | Commands           | 19    | /create:* (6), /memory:* (5), /spec_kit:* (7), agent_router (1)                                                         |
 | CLI Tools          | 1     | Chrome DevTools (bdg)                                                                                                    |
 | Plugins            | 2     | Antigravity Auth, OpenAI Codex Auth                                                                                      |

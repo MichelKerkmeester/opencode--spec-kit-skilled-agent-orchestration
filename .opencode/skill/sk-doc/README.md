@@ -92,10 +92,11 @@ sk-doc/
 │   │   ├── user_onboarding.md        # Nested sub-processes
 │   │   ├── approval_workflow_loops.md# Review cycles
 │   │   └── system_architecture_swimlane.md # Multi-stage pipelines
-│   ├── opencode/                     # Component templates
+│   ├── skill/                        # Skill templates
 │   │   ├── skill_md_template.md      # SKILL.md template
 │   │   ├── skill_reference_template.md
-│   │   ├── skill_asset_template.md
+│   │   └── skill_asset_template.md
+│   ├── agents/                       # Agent and command templates
 │   │   ├── agent_template.md         # Agent creation template
 │   │   └── command_template.md       # Command creation template
 │   └── template_rules.json           # Template enforcement rules

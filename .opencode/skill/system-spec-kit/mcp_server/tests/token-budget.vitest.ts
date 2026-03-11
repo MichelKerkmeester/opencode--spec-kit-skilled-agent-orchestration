@@ -269,3 +269,70 @@ describe('truncateToBudget', () => {
     expect(r2.truncated).toBe(false);
   });
 });
+
+/* ---------------------------------------------------------------
+   CHK-023: adjustedBudget = max(dynamicBudget - (resultCount * 12), 200)
+   The formula lives inline in hybrid-search.ts (line ~971).
+   We test the formula's math directly since it is not exported as a function.
+   --------------------------------------------------------------- */
+
+describe('CHK-023: adjustedBudget formula (header overhead deduction)', () => {
+  /**
+   * Replicates the inline formula from hybrid-search.ts:
+   *   const headerOverhead = resultCount * 12;
+   *   const adjustedBudget = Math.max(dynamicBudget - headerOverhead, 200);
+   */
+  function computeAdjustedBudget(dynamicBudget: number, resultCount: number): number {
+    const headerOverhead = resultCount * 12;
+    return Math.max(dynamicBudget - headerOverhead, 200);
+  }
+
+  it('T1: produces expected values for typical inputs', () => {
+    // 2500 budget, 10 results → 2500 - 120 = 2380
+    expect(computeAdjustedBudget(2500, 10)).toBe(2380);
+    // 4000 budget, 20 results → 4000 - 240 = 3760
+    expect(computeAdjustedBudget(4000, 20)).toBe(3760);
+    // 1500 budget, 5 results → 1500 - 60 = 1440
+    expect(computeAdjustedBudget(1500, 5)).toBe(1440);
+  });
+
+  it('T2: budget never goes below 200 (the floor)', () => {
+    // 500 budget, 100 results → 500 - 1200 = -700 → clamped to 200
+    expect(computeAdjustedBudget(500, 100)).toBe(200);
+    // 200 budget, 1 result → 200 - 12 = 188 → clamped to 200
+    expect(computeAdjustedBudget(200, 1)).toBe(200);
+    // 0 budget, 0 results → 0 - 0 = 0 → clamped to 200
+    expect(computeAdjustedBudget(0, 0)).toBe(200);
+  });
+
+  it('T3: large result counts trigger the floor', () => {
+    // 4000 budget, 500 results → 4000 - 6000 = -2000 → clamped to 200
+    expect(computeAdjustedBudget(4000, 500)).toBe(200);
+    // 1500 budget, 200 results → 1500 - 2400 = -900 → clamped to 200
+    expect(computeAdjustedBudget(1500, 200)).toBe(200);
+  });
+
+  it('T4: zero results produce no overhead deduction', () => {
+    expect(computeAdjustedBudget(2500, 0)).toBe(2500);
+    expect(computeAdjustedBudget(4000, 0)).toBe(4000);
+  });
+
+  it('T5: truncateToBudget respects the adjusted budget when passed', () => {
+    // Simulate what hybrid-search.ts does: compute adjusted budget, pass to truncateToBudget
+    const dynamicBudget = 1500;
+    const resultCount = 50;
+    const adjusted = computeAdjustedBudget(dynamicBudget, resultCount);
+    // 1500 - 600 = 900
+    expect(adjusted).toBe(900);
+
+    // Create results that fit in 900 but not in a smaller budget
+    const results = [
+      makeLargeResult(1, 0.9, 2000),  // ~500 tokens
+      makeLargeResult(2, 0.8, 2000),  // ~500 tokens
+    ];
+
+    const { truncated } = truncateToBudget(results, adjusted);
+    // Two ~500-token results should truncate under 900 budget
+    expect(truncated).toBe(true);
+  });
+});

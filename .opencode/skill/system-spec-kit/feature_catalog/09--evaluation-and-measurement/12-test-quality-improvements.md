@@ -18,10 +18,26 @@ Four test quality issues were addressed:
 
 ## Source Files
 
-No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/lib/parsing/memory-parser.ts` | Lib | Added `/z_archive/` exclusion in `isMemoryFile()` during test-alignment fixes |
+
+### Tests
+
+| File | Focus |
+|------|-------|
+| `mcp_server/tests/memory-save-extended.vitest.ts` | Timeout hardening (5000ms -> 15000ms) |
+| `mcp_server/tests/entity-linker.vitest.ts` | Added `db.close()` in `afterEach` to prevent handle leaks |
+| `mcp_server/tests/integration-search-pipeline.vitest.ts` | Reworked flag tests to validate behavior deltas |
 
 ## Source Metadata
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Test quality improvements
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

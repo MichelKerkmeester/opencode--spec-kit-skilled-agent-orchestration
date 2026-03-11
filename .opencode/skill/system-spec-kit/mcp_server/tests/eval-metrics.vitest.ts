@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Test — Eval Metrics
 // ---------------------------------------------------------------
-// 9 evaluation metrics: 4 core + 5 diagnostic.
+// 12 evaluation metrics: 7 core + 5 diagnostic.
 // All functions are pure computation — no DB access.
 
 import { describe, it, expect } from 'vitest';
@@ -311,6 +311,14 @@ describe('T006c: Importance-Weighted Recall', () => {
     // Found: id1 (weight=5) out of total 5+5=10 → 5/10 = 0.5
     expect(computeImportanceWeightedRecall(results, gt, customWeights)).toBeCloseTo(0.5, 5);
   });
+
+  it('T006-D17: Duplicate memoryIds in results do not inflate weighted recall', () => {
+    // id=1 appears 3 times in results but should count only once
+    const results = [makeResult(1, 1), makeResult(1, 2), makeResult(1, 3), makeResult(2, 4)];
+    const gt = [makeGT(1, 2, 'constitutional'), makeGT(2, 2, 'normal'), makeGT(3, 2, 'normal')];
+    // Found: id1 (weight=3) + id2 (weight=1) = 4 out of total 3+1+1=5 → 4/5 = 0.8
+    expect(computeImportanceWeightedRecall(results, gt)).toBeCloseTo(0.8, 4);
+  });
 });
 
 /* ---------------------------------------------------------------
@@ -519,6 +527,38 @@ describe('Edge Cases', () => {
     for (const value of Object.values(metrics)) {
       expect(Number.isFinite(value)).toBe(true);
     }
+  });
+});
+
+/* ---------------------------------------------------------------
+   DUPLICATE-ID HANDLING: Precision/F1 (T005)
+--------------------------------------------------------------- */
+
+describe('T005: Duplicate-ID handling in Precision/F1', () => {
+  it('T005-01: computePrecision deduplicates repeated relevant IDs', () => {
+    const results = [makeResult(1, 1), makeResult(1, 2), makeResult(99, 3)];
+    const gt = [makeGT(1, 3)];
+    expect(computePrecision(results, gt, 3)).toBeCloseTo(1 / 3, 5);
+  });
+
+  it('T005-02: computeF1 matches harmonic mean of deduped precision and recall', () => {
+    const results = [makeResult(1, 1), makeResult(1, 2), makeResult(2, 3)];
+    const gt = [makeGT(1, 2), makeGT(2, 2)];
+
+    const precision = computePrecision(results, gt, 3);
+    const recall = computeRecall(results, gt, 3);
+    const expectedF1 = (2 * precision * recall) / (precision + recall);
+
+    expect(computeF1(results, gt, 3)).toBeCloseTo(expectedF1, 5);
+  });
+
+  it('T005-03: all results with same relevant ID count as at most one hit', () => {
+    const results = [makeResult(7, 1), makeResult(7, 2), makeResult(7, 3), makeResult(7, 4)];
+    const gt = [makeGT(7, 3)];
+
+    expect(computePrecision(results, gt, 4)).toBeCloseTo(1 / 4, 5);
+    expect(computeRecall(results, gt, 4)).toBe(1);
+    expect(computeF1(results, gt, 4)).toBeCloseTo(0.4, 5);
   });
 });
 

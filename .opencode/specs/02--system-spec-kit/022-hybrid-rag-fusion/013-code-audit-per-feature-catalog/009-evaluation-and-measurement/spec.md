@@ -26,7 +26,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `009-evaluation-and-measurement` |
 <!-- /ANCHOR:metadata -->
@@ -54,17 +54,29 @@ Define a remediation-ready Level 2 specification that preserves all current audi
 - Track NEW-050..072 playbook alignment and explicit source/test traceability gaps.
 
 ### Out of Scope
-- Implementing all runtime remediation code in this documentation rewrite phase - tracked in `tasks.md` for execution.
 - Modifying `description.json` or any files under `memory/` and `scratch/` - explicitly excluded.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/009-evaluation-and-measurement/spec.md | Modify | Rewrite as Level 2 feature specification with mapped audit requirements |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/009-evaluation-and-measurement/tasks.md | Modify | Rewrite as Level 2 tasks document with phased remediation backlog |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/009-evaluation-and-measurement/plan.md | Modify | Rewrite as Level 2 implementation plan with phase dependencies and rollback |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/009-evaluation-and-measurement/checklist.md | Modify | Rewrite as Level 2 verification checklist preserving audit completion state |
+| .opencode/specs/.../009-evaluation-and-measurement/spec.md | Modify | Level 2 feature specification with mapped audit requirements |
+| .opencode/specs/.../009-evaluation-and-measurement/tasks.md | Modify | Level 2 tasks document with phased remediation backlog |
+| .opencode/specs/.../009-evaluation-and-measurement/plan.md | Modify | Level 2 implementation plan with phase dependencies and rollback |
+| .opencode/specs/.../009-evaluation-and-measurement/checklist.md | Modify | Level 2 verification checklist preserving audit completion state |
+| mcp_server/lib/eval/eval-metrics.ts | Modify | Precision/F1 dedupe fix (T005) |
+| mcp_server/lib/eval/bm25-baseline.ts | Modify | Bootstrap CI iteration guard (T009) |
+| mcp_server/lib/eval/eval-db.ts | Modify | closeEvalDb non-fatal logging (T008) |
+| mcp_server/lib/eval/eval-logger.ts | Modify | Dual-table run counter bootstrap (T013) |
+| mcp_server/lib/eval/ablation-framework.ts | Modify | queryCount persistence (T012) |
+| mcp_server/lib/telemetry/consumption-logger.ts | Modify | Non-fatal catch logging (T010) |
+| mcp_server/lib/telemetry/scoring-observability.ts | Modify | JSDoc error-behavior correction (R1 remediation) |
+| mcp_server/tests/channel.vitest.ts | Modify | Replace placeholder tests (T007) |
+| mcp_server/tests/eval-metrics.vitest.ts | Modify | Dedupe regression tests (T005) |
+| mcp_server/tests/bm25-baseline.vitest.ts | Modify | Bootstrap CI edge-case tests (T009) |
+| mcp_server/tests/eval-logger.vitest.ts | Modify | Dual-table bootstrap tests (T013) |
+| mcp_server/tests/ablation-framework.vitest.ts | Modify | All-channel-fail tests (T012) |
+| feature_catalog/09--evaluation-and-measurement/*.md | Modify | 14 catalog files aligned (T001-T003, T006, T011) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -171,10 +183,11 @@ Define a remediation-ready Level 2 specification that preserves all current audi
 
 ---
 
-## 10. OPEN QUESTIONS
+## 10. OPEN QUESTIONS (RESOLVED)
 
-- Should the p95 observer-overhead alert path be implemented in code or removed from current-reality text?
-- Should metric-count language be standardized to 12 metrics across docs, code comments, and feature narratives?
+- **Resolved (observer-overhead alert path):** Current-reality text is explicitly documentation-corrected in `03-observer-effect-mitigation.md` to state that automated p95 overhead alerting is not implemented; mitigation is fail-safe/non-fatal behavior.
+- **Resolved (metric-count contract):** Evaluation-and-measurement feature docs and `eval-metrics.ts` consistently document the 12-metric contract (7 core + 5 diagnostic).
+- **Resolved (non-fatal logging policy for eval/telemetry):** Policy is standardized as: catch blocks log `console.warn` with module prefix + function context + normalized error message (`err instanceof Error ? err.message : String(err)`), do not block user-facing operations, and return fallback values.
 <!-- /ANCHOR:questions -->
 
 ---

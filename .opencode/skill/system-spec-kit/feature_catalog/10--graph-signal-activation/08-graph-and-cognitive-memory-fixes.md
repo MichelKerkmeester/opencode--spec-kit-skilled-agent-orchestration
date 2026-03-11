@@ -34,6 +34,13 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 | `shared/normalization.ts` | Shared | Text normalization |
 | `shared/scoring/folder-scoring.ts` | Shared | Shared folder scoring |
 | `shared/types.ts` | Shared | Type definitions |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage and graph traversal |
+| `mcp_server/lib/cognitive/co-activation.ts` | Lib | Co-activation spreading activation |
+| `mcp_server/lib/cognitive/temporal-contiguity.ts` | Lib | Temporal contiguity boosting |
+| `mcp_server/lib/eval/edge-density.ts` | Lib | Edge density measurement |
+| `mcp_server/lib/search/causal-boost.ts` | Lib | Causal neighbor boost |
+| `mcp_server/lib/search/graph-search-fn.ts` | Lib | Graph-backed FTS5 search |
+| `mcp_server/lib/graph/community-detection.ts` | Lib | Community detection |
 
 ### Tests
 
@@ -64,6 +71,13 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
+| `mcp_server/tests/causal-edges.vitest.ts` | Causal edge operations |
+| `mcp_server/tests/co-activation.vitest.ts` | Co-activation boost tests |
+| `mcp_server/tests/temporal-contiguity.vitest.ts` | Temporal contiguity tests |
+| `mcp_server/tests/edge-density.vitest.ts` | Edge density measurement tests |
+| `mcp_server/tests/causal-boost.vitest.ts` | Causal boost tests |
+| `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
+| `mcp_server/tests/anchor-metadata.vitest.ts` | Anchor metadata parsing tests |
 
 ## Source Metadata
 

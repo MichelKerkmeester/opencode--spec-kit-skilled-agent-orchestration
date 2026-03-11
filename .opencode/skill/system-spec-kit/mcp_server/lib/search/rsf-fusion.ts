@@ -1,6 +1,27 @@
 // ---------------------------------------------------------------
 // MODULE: RSF Fusion
 // ---------------------------------------------------------------
+/**
+ * @module rsf-fusion
+ *
+ * **Status: DORMANT / Shadow-only.**
+ *
+ * This module implements Relative Score Fusion (RSF) as a comparison/evaluation
+ * utility. It is NOT actively used in the search pipeline for ranking. The only
+ * remaining integration point is the `rsfShadow` metadata field in
+ * `hybrid-search.ts` (`Sprint3PipelineMeta.rsfShadow`), which records RSF
+ * scores for offline evaluation without affecting live result ordering.
+ *
+ * The `isRsfEnabled()` feature flag was removed in Sprint 8 as dead code.
+ * The dead RSF branch in hybrid-search.ts was also removed at that time.
+ *
+ * The core fusion functions (`fuseResultsRsf`, `fuseResultsRsfMulti`,
+ * `fuseResultsRsfCrossVariant`) are preserved for:
+ * - Offline A/B evaluation against RRF via Kendall tau correlation
+ * - Potential future activation if RSF outperforms RRF in evaluation
+ *
+ * @see feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md
+ */
 import type { RrfItem, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 /* --- 1. INTERFACES --- */

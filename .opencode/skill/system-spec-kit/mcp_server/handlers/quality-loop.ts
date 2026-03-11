@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------
 
 import { initEvalDb } from '../lib/eval/eval-db';
+import { isQualityLoopEnabled } from '../lib/search/search-flags';
 
 interface QualityScoreBreakdown {
   triggers: number;
@@ -35,14 +36,10 @@ const QUALITY_WEIGHTS = {
   coherence: 0.25,
 } as const;
 
-/** Rough token-to-char ratio: 1 token ~ 4 chars */
+/** Rough token-to-char ratio: 1 token ~ 4 chars (env-configurable via MCP_CHARS_PER_TOKEN) */
 const DEFAULT_TOKEN_BUDGET = 2000;
-const CHARS_PER_TOKEN = 4;
+const CHARS_PER_TOKEN = parseFloat(process.env.MCP_CHARS_PER_TOKEN || '4');
 const DEFAULT_CHAR_BUDGET = DEFAULT_TOKEN_BUDGET * CHARS_PER_TOKEN;
-
-function isQualityLoopEnabled(): boolean {
-  return process.env.SPECKIT_QUALITY_LOOP?.toLowerCase() === 'true';
-}
 
 /**
  * Compute trigger phrase quality sub-score.
@@ -201,7 +198,8 @@ function scoreTokenBudget(content: string, charBudget: number = DEFAULT_CHAR_BUD
   }
 
   const ratio = charBudget / charCount;
-  issues.push(`Content exceeds token budget: ~${Math.ceil(charCount / CHARS_PER_TOKEN)} tokens (budget: ${DEFAULT_TOKEN_BUDGET})`);
+  const tokenBudget = Math.floor(charBudget / CHARS_PER_TOKEN);
+  issues.push(`Content exceeds token budget: ~${Math.ceil(charCount / CHARS_PER_TOKEN)} tokens (budget: ${tokenBudget})`);
   return { score: Math.max(0, ratio), issues };
 }
 
@@ -428,10 +426,13 @@ function normalizeAnchors(content: string): string {
  * Gated behind SPECKIT_QUALITY_LOOP env var.
  * Computes quality score, attempts auto-fix if below threshold,
  * rejects after maxRetries failures.
+ * Retry attempts are intentionally immediate (no delay/backoff): fixes are
+ * deterministic local transforms and the loop is tightly bounded, so immediate
+ * retries keep ingestion latency predictable within a single request cycle.
  *
  * @param content - Memory file content
  * @param metadata - Parsed memory metadata (must include triggerPhrases)
- * @param options - threshold (default 0.6), maxRetries (default 2)
+ * @param options - threshold (default 0.6), maxRetries (default 2 immediate retries)
  * @returns QualityLoopResult with pass/fail, scores, fixes, rejection info
  */
 function runQualityLoop(
@@ -571,6 +572,7 @@ export {
   normalizeAnchors,
   runQualityLoop,
   logQualityMetrics,
+  // Re-exported from search-flags for backward compatibility
   isQualityLoopEnabled,
   QUALITY_WEIGHTS,
   DEFAULT_TOKEN_BUDGET,

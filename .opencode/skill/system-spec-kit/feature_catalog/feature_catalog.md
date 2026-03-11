@@ -125,6 +125,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
   - [Entity normalization consolidation](#entity-normalization-consolidation)
   - [Quality gate timer persistence](#quality-gate-timer-persistence)
   - [Deferred lexical-only indexing](#deferred-lexical-only-indexing)
+  - [Outsourced agent memory capture](#outsourced-agent-memory-capture)
 - [Pipeline architecture](#pipeline-architecture)
   - [4-stage pipeline refactor](#4-stage-pipeline-refactor)
   - [MPAB chunk-to-memory aggregation](#mpab-chunk-to-memory-aggregation)
@@ -1595,6 +1596,18 @@ Deferred memories skip embedding dimension validation and `vec_memories` inserti
 See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-111](../manual_testing_playbook/manual_testing_playbook.md)
+
+### Outsourced agent memory capture
+
+CLI agents dispatched via cli-codex, cli-copilot, cli-gemini, and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. Session context is lost because the agent has no memory save protocol. The planned solution is a memory return protocol using `generate-context.js` JSON mode as a bridge — the agent includes a structured memory epilogue in stdout, the calling AI extracts it and feeds it through the standard save pipeline.
+
+Status: Planned. Spec folder `014-outsourced-agent-memory` exists at Draft status.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md) for full implementation and test file listings.
+
+> **Playbook:** [M-005](../manual_testing_playbook/manual_testing_playbook.md)
 
 ## Pipeline architecture
 

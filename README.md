@@ -62,7 +62,7 @@ Two custom-built systems fix this: a **spec-kit documentation framework** and a 
          ▼                            ▼
 ┌─────────────────┐        ┌─────────────────────┐
 │  AGENT NETWORK  │        │  SKILLS LIBRARY     │
-│  10 specialized │        │  15 domain skills   │
+│  10 specialized │        │  16 domain skills   │
 │  agents with    │◄──────►│  auto-loaded by     │
 │  routing logic  │        │  task keywords      │
 └────────┬────────┘        └──────────┬──────────┘
@@ -145,7 +145,7 @@ opencode
 
 # Test skill routing
 # Ask: "What skills are available?"
-# Expected: 15 skills listed
+# Expected: 16 skills listed
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -464,7 +464,7 @@ The `@debug` agent uses a 4-phase methodology: Observe, Analyze, Hypothesize, Fi
 ## 6. ⌨️ COMMAND ARCHITECTURE
 <!-- ANCHOR:command-architecture -->
 
-20 commands across 4 namespaces with 25 YAML assets.
+19 commands across 4 namespaces with 23 YAML assets.
 
 Commands are user-triggered workflows built on a two-layer architecture. Markdown entry points route to YAML execution engines.
 
@@ -505,13 +505,15 @@ All support `:auto` and `:confirm` mode suffixes.
 | `/memory:learn`    | Explicit learning capture (`correct` subcommand for mistakes) |
 | `/memory:manage`   | Database ops: stats, health, cleanup, checkpoints             |
 
-### create/ (3 commands)
+### create/ (5 commands)
 
 | Command                   | Purpose                                       |
 | ------------------------- | --------------------------------------------- |
-| `/create:sk-skill`        | Unified skill workflows (create/update/file)  |
-| `/create:agent`           | Scaffold a new agent definition               |
-| `/create:folder_readme`   | Unified README + install guide creation        |
+| `/create:sk-skill`        | Unified skill workflows (create/update/file)              |
+| `/create:agent`           | Scaffold a new agent definition                           |
+| `/create:folder_readme`   | Unified README + install guide creation                   |
+| `/create:changelog`       | Create a changelog entry from recent work                 |
+| `/create:prompt`          | Create or improve AI prompts with structured frameworks   |
 
 ### Utility (1 command)
 
@@ -526,7 +528,7 @@ All support `:auto` and `:confirm` mode suffixes.
 ## 7. 🧩 SKILLS LIBRARY
 <!-- ANCHOR:skills-library -->
 
-15 domain skills, auto-loaded by task keywords.
+16 domain skills, auto-loaded by task keywords.
 
 Skills are domain expertise on demand. The AI loads the right skill and already knows your conventions.
 
@@ -538,6 +540,7 @@ Skills are domain expertise on demand. The AI loads the right skill and already 
 | `mcp-figma`           | Design        | Figma file access, components, styles, comments                                        |
 | `system-spec-kit`     | Documentation | Spec folders, templates, memory integration, context preservation and memory workflows |
 | `mcp-chrome-devtools` | Browser       | DevTools automation, screenshots, debugging                                            |
+| `mcp-clickup`         | Project Mgmt  | ClickUp project management via CLI-first routing with MCP fallback                     |
 | `sk-code--full-stack` | Multi-Stack   | Go, Node.js, React, React Native, Swift, auto-detected via marker files                |
 | `sk-code--opencode`   | System Code   | TypeScript, Python, Shell for MCP servers and scripts                                  |
 | `sk-code--web`        | Web Dev       | Webflow, vanilla JS: implementation, debugging, verification                           |

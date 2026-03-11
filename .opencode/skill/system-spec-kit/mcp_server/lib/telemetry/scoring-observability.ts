@@ -70,7 +70,6 @@ let _db: Database.Database | null = null;
  */
 export function initScoringObservability(db: Database.Database): void {
   try {
-    _db = db;
     db.exec(`
       CREATE TABLE IF NOT EXISTS scoring_observations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,7 +87,10 @@ export function initScoringObservability(db: Database.Database): void {
         score_delta REAL
       )
     `);
+    // Only set _db after successful schema creation
+    _db = db;
   } catch (e: unknown) {
+    _db = null;
     const msg = e instanceof Error ? e.message : String(e);
     console.error('[scoring-observability] initScoringObservability failed:', msg);
   }
@@ -112,7 +114,7 @@ export function shouldSample(): boolean {
 
 /**
  * Persist a scoring observation to the DB.
- * Fail-safe: any error is silently caught.
+ * Fail-safe: any error is logged via console.error (non-fatal).
  * Never modifies scoring behavior or return values.
  */
 export function logScoringObservation(obs: ScoringObservation): void {

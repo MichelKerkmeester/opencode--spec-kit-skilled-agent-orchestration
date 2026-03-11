@@ -1,6 +1,6 @@
 # sk-code--review
 
-Stack-agnostic baseline code-review skill for OpenCode repositories.
+Stack-agnostic baseline code-review skill for any codebase.
 
 ---
 

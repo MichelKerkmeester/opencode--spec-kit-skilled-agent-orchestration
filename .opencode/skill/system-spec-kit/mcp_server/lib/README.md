@@ -39,12 +39,12 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Module Categories | 22+ | search, scoring, cognitive, storage, parsing, providers, utils, session, errors, learning, architecture, embeddings, response, cache, config, validation, interfaces, contracts, telemetry, extraction, eval, chunking, manage |
+| Module Categories | 24 | architecture, cache, chunking, cognitive, config, contracts, errors, eval, extraction, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, storage, telemetry, utils, validation |
 | Cognitive Features | 10+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, archival manager, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
-| Total Modules | 99 | Organized into 22 domain-specific folders |
+| Total Modules | 140 | Recursive `.ts` files under `lib/`, organized into 24 top-level folders |
 | Last Verified | 2026-02-27 | Module category and total counts revalidated after Sprint 1-3 |
 
 ### Key Features
@@ -91,35 +91,36 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 ### 30-Second Setup
 
 ```typescript
-// 1. Import barrel exports from compiled output
-import { search, scoring, cognitive } from '@spec-kit/mcp-server/dist/lib';
+// 1. Import direct modules from the source tree
+import { SQLiteVectorStore } from './search/vector-index';
+import * as attentionDecay from './cognitive/attention-decay';
+import { formatAgeString } from './utils/format-helpers';
 
-// 2. Or import specific modules
-import { VectorIndex } from '@spec-kit/mcp-server/dist/lib/search/vector-index';
-import { calculate_attention_score } from '@spec-kit/mcp-server/dist/lib/cognitive/attention-decay';
-
-// 3. Initialize modules with database
+// 2. Initialize modules with database
 import Database from 'better-sqlite3';
 const db = new Database('context-index.sqlite');
-cognitive.attentionDecay.init(db);
+attentionDecay.init(db);
+
+// 3. Use exported symbols
+console.log(SQLiteVectorStore.name, formatAgeString(new Date().toISOString()));
 ```
 
 ### Verify Installation
 
 ```typescript
-// Check that modules are loaded
-import * as lib from '@spec-kit/mcp-server/dist/lib';
-console.log(Object.keys(lib));
-// Expected: ['search', 'scoring', 'cognitive', 'storage', 'parsing', 'providers', 'utils', 'errors', 'channel']
+// Check that direct imports resolve
+import { SQLiteVectorStore } from './search/vector-index';
+import { calculateRetrievabilityDecay } from './cognitive/attention-decay';
+console.log(typeof SQLiteVectorStore, typeof calculateRetrievabilityDecay);
+// Expected: 'function', 'function'
 ```
 
 ### First Use
 
 ```typescript
-// Example: Perform semantic search
-import { search } from '@spec-kit/mcp-server/dist/lib';
-const results = await search.vectorIndex.search_memories('authentication', { limit: 5 });
-console.log(`Found ${results.length} relevant memories`);
+// Example: Normalize a canonical path key
+import { getCanonicalPathKey } from './utils/canonical-path';
+console.log(getCanonicalPathKey('context-index.sqlite'));
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -224,9 +225,6 @@ lib/                            # TypeScript source files
 │   ├── layer-definitions.ts    # 7-layer MCP architecture
 │   └── README.md               # Module documentation
 │
-├── embeddings/                 # Embedding providers (relocated)
-│   └── README.md               # Module documentation (provider-chain relocated)
-│
 ├── response/                   # Response formatting (1 module)
 │   ├── envelope.ts             # Standardized response envelope
 │   └── README.md               # Module documentation
@@ -264,24 +262,39 @@ lib/                            # TypeScript source files
 │   ├── format-helpers.ts       # Format utilities
 │   ├── logger.ts               # Logging utilities
 │   ├── path-security.ts        # Path validation and security
-│   ├── retry.ts                # Retry utilities
+│   ├── canonical-path.ts       # Canonical path normalization
 │   └── README.md               # Module documentation
 │
-├── validation/                 # Input validation (1 module)
+├── validation/                 # Input validation (2 modules)
 │   ├── preflight.ts            # Preflight checks
+│   ├── save-quality-gate.ts    # Save-time quality gate
 │   └── README.md               # Module documentation
 │
-├── contracts/                  # Typed retrieval pipeline contracts (1 module)
-│   ├── retrieval-trace.ts      # ContextEnvelope, RetrievalTrace, DegradedModeContract
-│   └── README.md               # Module documentation
+├── contracts/                  # Proxy docs for shared retrieval contracts
+│   └── README.md               # Points to ../shared/contracts/retrieval-trace.ts
 │
-├── telemetry/                  # Retrieval telemetry metrics (1 module)
+├── telemetry/                  # Retrieval telemetry metrics (4 modules)
+│   ├── consumption-logger.ts   # Selection and usage telemetry
 │   ├── retrieval-telemetry.ts  # Latency, mode, fallback and quality metrics
+│   ├── scoring-observability.ts # Score instrumentation helpers
+│   ├── trace-schema.ts         # Trace payload sanitization and guards
 │   └── README.md               # Module documentation
 │
-├── extraction/                 # Post-tool extraction pipeline
+├── extraction/                 # Post-tool extraction pipeline (4 modules)
+│   ├── entity-denylist.ts      # Denylist for extracted entities
+│   ├── entity-extractor.ts     # Entity extraction helpers
 │   ├── extraction-adapter.ts   # Extraction adapter
 │   ├── redaction-gate.ts       # Redaction gate
+│   └── README.md               # Module documentation
+│
+├── graph/                      # Graph scoring helpers (2 modules)
+│   ├── community-detection.ts  # Community detection helpers
+│   ├── graph-signals.ts        # Graph signal aggregation
+│   └── README.md               # Module documentation
+│
+├── ops/                        # Operational helpers (2 modules)
+│   ├── file-watcher.ts         # File watcher operations
+│   ├── job-queue.ts            # Async job queue helpers
 │   └── README.md               # Module documentation
 │
 ├── errors.ts                   # Custom error classes (legacy)
@@ -328,7 +341,7 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `cache/embedding-cache.ts` | Persistent SQLite embedding cache with LRU eviction |
 | `eval/edge-density.ts` | Edge density measurement for graph analysis |
 | `parsing/entity-scope.ts` | Entity scope detection |
-| `utils/retry.ts` | Retry utilities |
+| `utils/canonical-path.ts` | Canonical path normalization for deduplication |
 | `utils/logger.ts` | Logging utilities |
 | `validation/preflight.ts` | Input validation and security checks |
 
@@ -363,11 +376,13 @@ dist/lib/                       # Compiled JavaScript + type definitions
 
 ```typescript
 // Calculate retrievability using FSRS algorithm
-import { cognitive } from '@spec-kit/mcp-server/dist/lib';
+import { calculateRetrievabilityDecay } from './cognitive/attention-decay';
 
-const retrievability = cognitive.fsrsScheduler.calculate_retrievability(
-  lastAccessTimestamp, // When memory was last accessed
-  stability            // Memory stability (days) - higher = slower decay
+const elapsedDays = 7;
+
+const retrievability = calculateRetrievabilityDecay(
+  stability,   // Memory stability (days) - higher = slower decay
+  elapsedDays  // Days since last review
 );
 
 // Memory states based on retrievability:
@@ -513,11 +528,11 @@ const matches = await parsing.triggerMatcher.match_triggers({
 
 ```typescript
 // Search for memories related to a query
-import { search } from '@spec-kit/mcp-server/dist/lib';
+import * as vectorIndex from './search/vector-index';
 
-const results = await search.vectorIndex.search_memories('authentication flow', {
+const queryEmbedding = new Float32Array(vectorIndex.getEmbeddingDim());
+const results = vectorIndex.vectorSearch(queryEmbedding, {
   limit: 5,
-  threshold: 0.7,
   specFolder: 'specs/<###-spec-name>' // Optional: filter by folder
 });
 
@@ -533,18 +548,15 @@ results.forEach(r => {
 
 ```typescript
 // Calculate memory state using FSRS retrievability
-import { cognitive } from '@spec-kit/mcp-server/dist/lib';
+import { calculateRetrievabilityDecay } from './cognitive/attention-decay';
 
 const lastAccessed = new Date('2025-01-15').getTime();
 const stability = 7.0; // Memory stability in days
 const now = Date.now();
+const elapsedDays = (now - lastAccessed) / (1000 * 60 * 60 * 24);
 
 // Calculate retrievability using FSRS power-law formula
-const retrievability = cognitive.fsrsScheduler.calculate_retrievability(
-  lastAccessed,
-  stability,
-  now
-);
+const retrievability = calculateRetrievabilityDecay(stability, elapsedDays);
 
 // Determine memory state (matches 5-state model)
 let state: string;
@@ -562,17 +574,16 @@ console.log(`Retrievability: ${retrievability.toFixed(2)}, State: ${state}`);
 
 ```typescript
 // Combine semantic and keyword search
-import { search } from '@spec-kit/mcp-server/dist/lib';
+import { hybridSearch } from './search/hybrid-search';
 
-const results = await search.hybridSearch.search('TODO authentication', {
-  limit: 10,
-  semanticWeight: 0.6,  // 60% semantic, 40% keyword
-  keywordWeight: 0.4
+const queryEmbedding = new Float32Array(768);
+const results = await hybridSearch('TODO authentication', queryEmbedding, {
+  limit: 10
 });
 
 // Results are merged using Reciprocal Rank Fusion
 results.forEach(r => {
-  console.log(`${r.title}: semantic=${r.semanticRank}, keyword=${r.keywordRank}`);
+  console.log(`${r.title}: ${r.score?.toFixed?.(2) ?? 'n/a'}`);
 });
 ```
 
@@ -580,21 +591,19 @@ results.forEach(r => {
 
 ```typescript
 // Process items in batches with automatic retry
-import { utils } from '@spec-kit/mcp-server/dist/lib';
+import { processBatches } from '../utils/batch-processor';
 
 const items = [/* ... large array ... */];
 
-const results = await utils.process_batches(
+const results = await processBatches(
   items,
   async (batch) => {
     // Process each batch
     return await processItems(batch);
   },
-  {
-    batchSize: 50,
-    delayMs: 100,
-    retryOptions: { maxRetries: 3 }
-  }
+  50,
+  100,
+  { maxRetries: 3 }
 );
 ```
 
@@ -602,10 +611,10 @@ const results = await utils.process_batches(
 
 | Pattern | Code | When to Use |
 |---------|------|-------------|
-| Barrel imports | `import { search, cognitive } from '@spec-kit/mcp-server/dist/lib';` | Cleaner syntax, multiple modules |
-| Direct imports | `import { VectorIndex } from '@spec-kit/mcp-server/dist/lib/search/vector-index';` | Single module, tree-shaking |
-| Init modules | `cognitive.attentionDecay.init(db);` | Modules requiring database |
-| Error handling | `try { ... } catch (err) { if (err instanceof errors.ValidationError) ... }` | Specific error types |
+| Direct imports | `import { SQLiteVectorStore } from './search/vector-index';` | Focused module usage |
+| Cognitive module | `import * as attentionDecay from './cognitive/attention-decay';` | Modules requiring database |
+| Utility function | `import { formatAgeString } from './utils/format-helpers';` | Pure helper utilities |
+| Error handling | `try { ... } catch (err) { if (err instanceof MemoryError) ... }` | Specific error types |
 
 <!-- /ANCHOR:usage-examples -->
 
@@ -618,22 +627,15 @@ const results = await utils.process_batches(
 
 #### Module not found
 
-**Symptom**: `Error: Cannot find module '@spec-kit/mcp-server/dist/lib/search'`
+**Symptom**: `Error: Cannot find module './search/vector-index'`
 
-**Cause**: TypeScript not compiled or incorrect import path
+**Cause**: Incorrect import path. The package does not export a `dist/lib` barrel.
 
 **Solution**:
 ```typescript
-// First, ensure TypeScript is compiled:
-// npm run build
-// or
-// tsc --project tsconfig.json
-
-// Then use correct import from dist/
-import { search } from '@spec-kit/mcp-server/dist/lib';
-
-// Or use workspace alias (if configured)
-import { search } from '@spec-kit/mcp-server/dist/lib';
+// Import concrete modules that exist in lib/
+import { SQLiteVectorStore } from './search/vector-index';
+import * as attentionDecay from './cognitive/attention-decay';
 ```
 
 #### Database not initialized
@@ -648,10 +650,8 @@ import Database from 'better-sqlite3';
 const db = new Database('context-index.sqlite');
 
 // Initialize modules that need database
-import { cognitive } from '@spec-kit/mcp-server/dist/lib';
-cognitive.attentionDecay.init(db);
-cognitive.workingMemory.init(db);
-cognitive.coActivation.init(db);
+import * as attentionDecay from './cognitive/attention-decay';
+attentionDecay.init(db);
 ```
 
 #### Embedding API errors
@@ -661,20 +661,19 @@ cognitive.coActivation.init(db);
 **Cause**: Missing API key or rate limit exceeded
 
 **Solution**:
-```bash
-# Set environment variable
-export VOYAGE_API_KEY="your-api-key-here"
+```typescript
+// Set the environment variable before starting the process:
+// export VOYAGE_API_KEY="your-api-key-here"
 
-# Or check rate limits in retry-manager
-import { providers } from '@spec-kit/mcp-server/dist/lib';
-// Adjust retry settings if needed
+import * as embeddingsProvider from './providers/embeddings';
+// Adjust provider settings or retry behavior as needed
 ```
 
 ### Quick Fixes
 
 | Problem | Quick Fix |
 |---------|-----------|
-| Import errors | Ensure TypeScript compiled, use: `import from '@spec-kit/mcp-server/dist/lib'` |
+| Import errors | Use concrete module paths such as `./search/vector-index` |
 | Database errors | Initialize modules: `module.init(db)` |
 | API rate limits | Check `VOYAGE_API_KEY` environment variable |
 | Validation errors | Check input against `INPUT_LIMITS` in validation/preflight |
@@ -682,9 +681,10 @@ import { providers } from '@spec-kit/mcp-server/dist/lib';
 ### Diagnostic Commands
 
 ```typescript
-// Check module structure
-import * as lib from '@spec-kit/mcp-server/dist/lib';
-console.log('Available modules:', Object.keys(lib));
+// Check direct imports
+import { SQLiteVectorStore } from './search/vector-index';
+import { calculateRetrievabilityDecay } from './cognitive/attention-decay';
+console.log('Available exports:', SQLiteVectorStore.name, typeof calculateRetrievabilityDecay);
 
 // Verify database connection
 import Database from 'better-sqlite3';
@@ -692,8 +692,8 @@ const db = new Database('context-index.sqlite');
 console.log('Tables:', db.prepare('SELECT name FROM sqlite_master WHERE type="table"').all());
 
 // Test embedding provider
-import { providers } from '@spec-kit/mcp-server/dist/lib';
-const embedding = await providers.embeddings.get_embedding('test query');
+import * as embeddingsProvider from './providers/embeddings';
+const embedding = await embeddingsProvider.generateQueryEmbedding('test query');
 console.log('Embedding dimensions:', embedding.length);
 ```
 

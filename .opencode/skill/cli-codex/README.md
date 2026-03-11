@@ -174,6 +174,7 @@ Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Code
 | Feature | Purpose |
 |---------|---------|
 | `/review` command | Diff-aware code review in TUI (staged changes, commits, branches) |
+| `codex exec review` | Non-interactive diff or commit review flow for scripts and automation |
 | `--search` flag | Live web browsing integrated into reasoning |
 | `codex mcp` | Connect to Model Context Protocol servers |
 | `codex resume` | Continue a previous Codex session |
@@ -200,6 +201,7 @@ Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Code
 | Flag | Purpose |
 |------|---------|
 | `--model gpt-5.3-codex` | Model selection (always include) |
+| `-c model_reasoning_effort="<level>"` | Override GPT-5.4 reasoning depth (`none`, `minimal`, `low`, `medium`, `high`, `xhigh`) |
 | `--sandbox read-only` | Safe mode for review/analysis |
 | `--sandbox workspace-write` | Allow file writes in workspace |
 | `--search` | Enable live web browsing |
@@ -207,7 +209,7 @@ Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Code
 | `--full-auto` | Low-friction mode (requires user approval) |
 
 **Configuration files:**
-- `.codex/config.toml` — MCP servers, agent definitions
+- `.codex/config.toml` — MCP servers, agent definitions, and `model_reasoning_effort` defaults
 - `.codex/agents/*.toml` — Agent-specific configs (sandbox, reasoning, instructions)
 - `instructions.md` — Project context loaded automatically
 
@@ -224,6 +226,11 @@ Decision: reasoning-heavy tasks → GPT-5.4; code-focused tasks → GPT-5.3-Code
 ```bash
 codex exec "Review @./src/auth.ts for security vulnerabilities. Check for XSS, injection, and auth bypasses." \
   --model gpt-5.4 --sandbox read-only
+```
+
+**Non-interactive Git diff review:**
+```bash
+codex exec review "Focus on security" --commit HEAD
 ```
 
 **Web research:**

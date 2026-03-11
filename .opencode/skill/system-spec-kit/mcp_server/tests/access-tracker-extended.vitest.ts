@@ -5,6 +5,8 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import Database from 'better-sqlite3';
 import * as mod from '../lib/storage/access-tracker';
+import * as compositeScoring from '../lib/scoring/composite-scoring';
+import * as folderScoring from '../lib/scoring/folder-scoring';
 
 /* ─────────────────────────────────────────────────────────────
    TESTS: ACCESS TRACKER — Extended Coverage
@@ -319,6 +321,87 @@ describe('Access Tracker Extended', () => {
       expect(typeof mod.reset).toBe('function');
       expect(typeof mod.initExitHandlers).toBe('function');
       expect(typeof mod.cleanupExitHandlers).toBe('function');
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────────────
+     8. COMPOSITE SCORING + ARCHIVAL INTEGRATION
+  ──────────────────────────────────────────────────────────────── */
+
+  describe('Composite scoring + archival integration', () => {
+    const DAY_MS = 1000 * 60 * 60 * 24;
+
+    it('Composite recency delegates to shared folder recency scoring', () => {
+      const timestamp = new Date(Date.now() - (3 * DAY_MS)).toISOString();
+      const compositeRecency = compositeScoring.calculateRecencyScore(timestamp, 'normal');
+      const sharedRecency = folderScoring.computeRecencyScore(
+        timestamp,
+        'normal',
+        folderScoring.DECAY_RATE
+      );
+
+      expect(compositeRecency).toBeCloseTo(sharedRecency, 8);
+    });
+
+    it('Decay-rate boundaries: rate=0 no decay, rate=1.0 near-complete decay', () => {
+      const staleTimestamp = new Date(Date.now() - (3650 * DAY_MS)).toISOString();
+      const noDecay = folderScoring.computeRecencyScore(staleTimestamp, 'normal', 0);
+      const fullDecay = folderScoring.computeRecencyScore(staleTimestamp, 'normal', 1.0);
+
+      expect(noDecay).toBe(1);
+      expect(fullDecay).toBeGreaterThan(0);
+      expect(fullDecay).toBeLessThan(0.001);
+    });
+
+    it('Old timestamps remain above floor while approaching zero', () => {
+      const veryOldTimestamp = new Date(Date.now() - (3650 * DAY_MS)).toISOString();
+      const recency = compositeScoring.calculateRecencyScore(veryOldTimestamp, 'normal');
+
+      expect(recency).toBeGreaterThan(0);
+      expect(recency).toBeLessThan(0.01);
+    });
+
+    it('Tier boundary edges: constitutional stays max and critical outranks important', () => {
+      const oldTimestamp = new Date(Date.now() - (365 * DAY_MS)).toISOString();
+      const constitutionalRecency = compositeScoring.calculateRecencyScore(oldTimestamp, 'constitutional');
+      const criticalRecency = compositeScoring.calculateRecencyScore(oldTimestamp, 'critical');
+
+      expect(constitutionalRecency).toBe(1);
+      expect(criticalRecency).toBeLessThan(1);
+
+      const nowIso = new Date().toISOString();
+      const folderScores = folderScoring.computeFolderScores(
+        [
+          { id: 101, spec_folder: 'tiers/critical', updated_at: nowIso, created_at: nowIso, importance_tier: 'critical' },
+          { id: 102, spec_folder: 'tiers/important', updated_at: nowIso, created_at: nowIso, importance_tier: 'important' },
+        ],
+        { includeArchived: true }
+      );
+
+      const criticalFolder = folderScores.find(folder => folder.folder === 'tiers/critical');
+      const importantFolder = folderScores.find(folder => folder.folder === 'tiers/important');
+
+      expect(criticalFolder).toBeDefined();
+      expect(importantFolder).toBeDefined();
+      expect(criticalFolder?.score ?? 0).toBeGreaterThan(importantFolder?.score ?? 0);
+    });
+
+    it('Archival paths are deprioritized by archive multipliers', () => {
+      const nowIso = new Date().toISOString();
+      const folderScores = folderScoring.computeFolderScores(
+        [
+          { id: 201, spec_folder: 'specs/z_archive/legacy', updated_at: nowIso, created_at: nowIso, importance_tier: 'critical' },
+          { id: 202, spec_folder: 'specs/active/project', updated_at: nowIso, created_at: nowIso, importance_tier: 'critical' },
+        ],
+        { includeArchived: true }
+      );
+
+      const archivedFolder = folderScores.find(folder => folder.folder === 'specs/z_archive/legacy');
+      const activeFolder = folderScores.find(folder => folder.folder === 'specs/active/project');
+
+      expect(archivedFolder).toBeDefined();
+      expect(activeFolder).toBeDefined();
+      expect(archivedFolder?.score ?? 1).toBeLessThan(activeFolder?.score ?? 0);
     });
   });
 });

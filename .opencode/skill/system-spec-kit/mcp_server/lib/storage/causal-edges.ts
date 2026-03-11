@@ -6,6 +6,7 @@
 
 import type Database from 'better-sqlite3';
 import { clearDegreeCache } from '../search/graph-search-fn';
+import { clearGraphSignalsCache } from '../graph/graph-signals';
 import { runInTransaction } from './transaction-manager';
 
 /* -------------------------------------------------------------
@@ -101,6 +102,11 @@ function invalidateDegreeCache(): void {
     clearDegreeCache();
   } catch (_error: unknown) {
     // AI-GUARD: cache invalidation is best-effort; never block edge mutations
+  }
+  try {
+    clearGraphSignalsCache();
+  } catch (_error: unknown) {
+    // AI-GUARD: graph signals cache invalidation is best-effort
   }
 }
 
@@ -312,12 +318,18 @@ function getEdgesFrom(sourceId: string, limit: number = MAX_EDGES_LIMIT): Causal
   if (!db) return [];
 
   try {
-    return (db.prepare(`
+    const edges = (db.prepare(`
       SELECT * FROM causal_edges
       WHERE source_id = ?
       ORDER BY strength DESC
       LIMIT ?
     `) as Database.Statement).all(sourceId, limit) as CausalEdge[];
+    for (const edge of edges) {
+      try { touchEdgeAccess(edge.id); } catch (e: unknown) {
+        console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
+    return edges;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getEdgesFrom error: ${msg}`);
@@ -329,12 +341,18 @@ function getEdgesTo(targetId: string, limit: number = MAX_EDGES_LIMIT): CausalEd
   if (!db) return [];
 
   try {
-    return (db.prepare(`
+    const edges = (db.prepare(`
       SELECT * FROM causal_edges
       WHERE target_id = ?
       ORDER BY strength DESC
       LIMIT ?
     `) as Database.Statement).all(targetId, limit) as CausalEdge[];
+    for (const edge of edges) {
+      try { touchEdgeAccess(edge.id); } catch (e: unknown) {
+        console.warn(`[causal-edges] touchEdgeAccess failed for edge ${edge.id}: ${e instanceof Error ? e.message : String(e)}`);
+      }
+    }
+    return edges;
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[causal-edges] getEdgesTo error: ${msg}`);

@@ -46,8 +46,14 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `level_2/` | Level 1 + verification (`checklist.md`) |
 | `level_3/` | Level 2 + architecture (`decision-record.md`) |
 | `level_3+/` | Level 3 + governance extensions |
+| `context_template.md` | Context snapshot template |
+| `research.md` | Research artifact template |
+| `handover.md` | Session handover template |
+| `debug-delegation.md` | Debug delegation template |
 | `examples/` | Filled references only |
 | `memory/` | Memory workflow notes (no manual memory files) |
+| `scratch/` | Temporary workspace for non-committed artifacts |
+| `sharded/` | Sharded template set |
 
 <!-- /ANCHOR:structure -->
 

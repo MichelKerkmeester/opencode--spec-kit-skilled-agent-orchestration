@@ -32,7 +32,7 @@ These scripts automate installation and configuration of OpenCode components (MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Install Scripts | 5 | 4 component installers + 1 master installer |
+| Install Scripts | 6 | 5 component installers + 1 master installer |
 | Shared Utilities | 36 | Functions in `_utils.sh` |
 | Platforms | 3 | macOS, Linux, Windows (WSL) |
 | Install Time | 2-10 min | Per component, depending on complexity |
@@ -110,6 +110,7 @@ install_scripts/
 ├── install-spec-kit-memory.sh     # Spec Kit Memory MCP
 ├── install-code-mode.sh           # Code Mode MCP
 ├── install-chrome-devtools.sh     # Chrome DevTools MCP (bdg CLI)
+├── install-clickup.sh             # ClickUp CLI + ClickUp MCP for Code Mode
 ├── install-all.sh                 # Master installer with --skip/--only flags
 ├── logs/                          # Installation logs
 ├── test/                          # Docker test environment
@@ -141,6 +142,7 @@ install_scripts/
 | `install-spec-kit-memory.sh` | Spec Kit Memory MCP | Semantic vector search for conversation context | Node.js 18+, npm |
 | `install-code-mode.sh` | Code Mode MCP | MCP orchestration via TypeScript execution | Node.js 18+ |
 | `install-chrome-devtools.sh` | Chrome DevTools CLI | Browser debugging via CDP (bdg CLI) | Node.js 18+, Chrome |
+| `install-clickup.sh` | ClickUp MCP | ClickUp CLI + MCP server installation for Code Mode | Node.js 18+ (22+ for CLI), npm |
 
 ### Shared Utilities (_utils.sh)
 
@@ -363,11 +365,11 @@ A: Yes. All scripts are idempotent. They detect existing installations and skip 
 
 ---
 
-**Q: Do I need all 4 component installers?**
+**Q: Do I need all 5 component installers?**
 
 A: No. Install based on your needs:
 - **Core**: Code Mode MCP, Spec Kit Memory MCP, Sequential Thinking MCP
-- **Optional**: Chrome DevTools CLI (debugging)
+- **Optional**: Chrome DevTools CLI (debugging), ClickUp CLI + MCP (task management)
 
 ---
 

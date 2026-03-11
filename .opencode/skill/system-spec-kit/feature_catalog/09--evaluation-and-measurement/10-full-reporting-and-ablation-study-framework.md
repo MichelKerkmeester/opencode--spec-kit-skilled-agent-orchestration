@@ -35,3 +35,7 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 - Group: Evaluation and measurement
 - Source feature title: Full reporting and ablation study framework
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

@@ -13,8 +13,26 @@ import type Database from 'better-sqlite3';
 const ACCUMULATOR_THRESHOLD = 0.5;
 const INCREMENT_VALUE = 0.1;
 const FLUSH_INTERVAL_MS = 30_000;
+const DEFAULT_RECENCY_DECAY_DAYS = 90;
+const MAX_USAGE_BOOST = 3.0;
 // AI-TRACE: P4-14 FIX: Cap accumulator Map size to prevent unbounded memory growth
 const MAX_ACCUMULATOR_SIZE = 10000;
+
+function getRecencyDecayDays(): number {
+  const configuredDays = process.env.SPECKIT_RECENCY_DECAY_DAYS;
+  if (!configuredDays) {
+    return DEFAULT_RECENCY_DECAY_DAYS;
+  }
+
+  const parsedDays = Number.parseFloat(configuredDays);
+  return Number.isFinite(parsedDays) && parsedDays > 0
+    ? parsedDays
+    : DEFAULT_RECENCY_DECAY_DAYS;
+}
+
+function clampUsageBoost(boost: number): number {
+  return Math.min(boost, MAX_USAGE_BOOST);
+}
 
 /* -------------------------------------------------------------
    2. INTERFACES
@@ -148,6 +166,8 @@ function getAccumulatorState(memoryId: number): AccumulatorState {
 
 /**
  * Calculate popularity score based on access patterns.
+ *
+ * @returns Popularity score in the range [0, 1].
  */
 function calculatePopularityScore(
   accessCount: number,
@@ -164,7 +184,8 @@ function calculatePopularityScore(
   if (lastAccessed) {
     const ageMs = Date.now() - lastAccessed;
     const ageDays = ageMs / (1000 * 60 * 60 * 24);
-    recencyScore = Math.max(0, 1 - (ageDays / 90));
+    const decayDays = getRecencyDecayDays();
+    recencyScore = Math.max(0, Math.min(1, 1 - (ageDays / decayDays)));
   }
 
   return (freqScore * 0.6) + (recencyScore * 0.4);
@@ -172,6 +193,8 @@ function calculatePopularityScore(
 
 /**
  * Calculate usage boost for search ranking.
+ *
+ * @returns Usage boost in the range [0, 3.0].
  */
 function calculateUsageBoost(accessCount: number, lastAccessed: number | null): number {
   if (accessCount === 0) return 0;
@@ -182,11 +205,11 @@ function calculateUsageBoost(accessCount: number, lastAccessed: number | null): 
   if (lastAccessed) {
     const ageMs = Date.now() - lastAccessed;
     const ageHours = ageMs / (1000 * 60 * 60);
-    if (ageHours < 1) return boost * 2;
-    if (ageHours < 24) return boost * 1.5;
+    if (ageHours < 1) return clampUsageBoost(boost * 2);
+    if (ageHours < 24) return clampUsageBoost(boost * 1.5);
   }
 
-  return boost;
+  return clampUsageBoost(boost);
 }
 
 /**

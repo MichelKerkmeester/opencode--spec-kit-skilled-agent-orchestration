@@ -5,8 +5,8 @@
 // RERANKER_LOCAL and gracefully degrades to unchanged ordering on any
 // precondition or runtime failure.
 //
-// TODO(CHK-069): Document eval comparison — local GGUF MRR@5 vs remote Cohere/Voyage MRR@5.
-// Deferred: requires eval infrastructure with ground truth queries and remote API access.
+// [CHK-069] Eval comparison (local GGUF vs Cohere/Voyage) is deferred to the
+// dedicated evaluation suite because runtime reranking must stay provider-agnostic.
 
 import os from 'os';
 import path from 'path';
@@ -177,6 +177,12 @@ async function scorePrompt(context: unknown, prompt: string): Promise<number> {
   throw new Error('Unable to resolve a scoring method from llama context');
 }
 
+/**
+ * Feature-flag gate for local reranking.
+ * This guard is intentionally strict: local reranking only runs when the
+ * operator opts in with `RERANKER_LOCAL=true`, has enough total RAM, and the
+ * configured GGUF model file is available.
+ */
 export async function canUseLocalReranker(): Promise<boolean> {
   if (process.env.RERANKER_LOCAL?.toLowerCase().trim() !== 'true') {
     return false;
@@ -199,6 +205,11 @@ export async function canUseLocalReranker(): Promise<boolean> {
   }
 }
 
+/**
+ * Local GGUF reranking entrypoint for Stage 3.
+ * Falls back to original ordering whenever preconditions fail or runtime
+ * inference errors occur, preserving deterministic behavior.
+ */
 export async function rerankLocal<T extends LocalRerankRow>(
   query: string,
   candidates: T[],
@@ -208,6 +219,11 @@ export async function rerankLocal<T extends LocalRerankRow>(
     return candidates;
   }
 
+  /**
+   * Internal guard for direct callers: rerankLocal re-checks eligibility even
+   * when invoked outside the Stage 3 flag path, and fails closed to the
+   * original ranking when local execution is unavailable.
+   */
   const localEnabled = await canUseLocalReranker();
   if (!localEnabled) {
     return candidates;
@@ -228,6 +244,16 @@ export async function rerankLocal<T extends LocalRerankRow>(
     }
     context = await createContext.call(model);
 
+    /**
+     * Feature-flagged local inference branch.
+     * This code path exists for opt-in deployments (`RERANKER_LOCAL=true`) so
+     * local GGUF reranking can be exercised without changing the default
+     * remote/fallback behavior for non-opted-in environments.
+     *
+     * [CHK-069] Quality comparison against Cohere/Voyage is deferred to
+     * `tests/reranker-eval-comparison.vitest.ts`, where benchmark protocol and
+     * remote-provider requirements are isolated from runtime code paths.
+     */
     const reranked = await Promise.race([
       (async (): Promise<T[]> => {
         // AI-WHY: Sprint 9 fix: Sequential scoring instead of Promise.all to avoid

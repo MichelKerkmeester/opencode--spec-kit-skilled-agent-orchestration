@@ -8,6 +8,19 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 ---
 
+## Handler-path coverage
+
+`memory_validate` enters `handleMemoryValidate(...)` in `mcp_server/handlers/checkpoints.ts`, records validation via `confidenceTracker.recordValidation(...)`, and on positive feedback (`wasUseful === true`) calls `executeAutoPromotion(database, memoryId)`. The returned result is surfaced in `data.autoPromotion`.
+
+## Behavior coverage matrix
+
+| Behavior | Implementation path | Test coverage |
+|------|----------------------|---------------|
+| normal -> important at 5 validations | `PROMOTION_PATHS.normal.threshold = 5`, checked by `checkAutoPromotion(...)`, executed by `executeAutoPromotion(...)` | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP01`), `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` (`auto-promotion checks use positive-validation counts`) |
+| important -> critical at 10 validations | `PROMOTION_PATHS.important.threshold = 10`, checked by `checkAutoPromotion(...)` | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP02`) |
+| Throttle behavior (3 per 8h rolling window) | `MAX_PROMOTIONS_PER_WINDOW = 3`, `PROMOTION_WINDOW_HOURS = 8`, enforced in `executeAutoPromotion(...)` transaction | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP12`, `R11-AP13`) |
+| Non-promotable tier rejection | `NON_PROMOTABLE_TIERS` guard in `checkAutoPromotion(...)`, returns `tier_not_promotable:*` reason | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP05`, `R11-AP06`) |
+
 ## Source Files
 
 ### Implementation
@@ -15,21 +28,16 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/auto-promotion.ts` | Lib | Auto-promotion on validation |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/types.ts` | Shared | Type definitions |
+| `mcp_server/handlers/checkpoints.ts` | Handler | `memory_validate` entrypoint wiring to auto-promotion |
+| `mcp_server/lib/scoring/confidence-tracker.ts` | Lib | Validation count updates used by promotion checks |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `mcp_server/tests/learned-feedback.vitest.ts` | Promotion thresholds, non-promotable guards, and throttle window enforcement |
+| `mcp_server/tests/promotion-positive-validation-semantics.vitest.ts` | Positive-validation counting semantics for promotion eligibility |
+| `mcp_server/tests/checkpoints-extended.vitest.ts` | `handleMemoryValidate` handler happy-path coverage |
 
 ## Source Metadata
 

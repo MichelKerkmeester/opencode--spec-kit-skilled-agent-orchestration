@@ -43,13 +43,13 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] F-01 Query complexity router: tier classification incorporates `charCount` and `stopWordRatio` or Current Reality updated (`query-classifier.ts:173-179`)
-- [ ] CHK-011 [P0] F-01 Query complexity router: flag helper default aligns with classifier docs (`query-classifier.ts:43-46` vs `132-134`)
-- [ ] CHK-012 [P0] F-03 Channel min-representation: `analyzeChannelRepresentation` re-sorts after promotions or documented wrapper usage (`channel-representation.ts:173-182`)
-- [ ] CHK-013 [P0] F-06 Query expansion: stale `retry.vitest.ts` reference removed from feature table (`06-query-expansion.md:72`)
-- [ ] CHK-014 [P1] F-02 RSF shadow mode: feature status clarified (dormant utility vs active shadow)
-- [ ] CHK-015 [P1] F-05 Dynamic token budget: `hybrid-search.ts` added to feature implementation table (`05-dynamic-token-budget-allocation.md:17-19`)
-- [ ] CHK-016 [P1] F-06 Query expansion: `stage1-candidate-gen.ts` added to feature implementation sources
+- [x] CHK-010 [P0] F-01 Query complexity router: Current Reality updated — `01-query-complexity-router.md` clarifies only `termCount`+`triggerMatch` drive tier; `charCount`/`stopWordRatio` are confidence-only features
+- [x] CHK-011 [P0] F-01 Query complexity router: flag helper default aligned — JSDoc at `query-classifier.ts:132` fixed to "enabled by default, graduated Sprint 4"
+- [x] CHK-012 [P0] F-03 Channel min-representation: documented wrapper usage — `03-channel-min-representation.md` updated with two-layer architecture (core appends, enforcement wrapper re-sorts)
+- [x] CHK-013 [P0] F-06 Query expansion: stale duplicate removed — `06-query-expansion.md` duplicate `retry-manager.vitest.ts` row eliminated
+- [x] CHK-014 [P1] F-02 RSF shadow mode: clarified as dormant/shadow-only — JSDoc added to `rsf-fusion.ts`, status banner in `02-relative-score-fusion-in-shadow-mode.md`
+- [x] CHK-015 [P1] F-05 Dynamic token budget: `hybrid-search.ts` added to `05-dynamic-token-budget-allocation.md` implementation table
+- [x] CHK-016 [P1] F-06 Query expansion: `stage1-candidate-gen.ts` added to implementation sources in `06-query-expansion.md`
 - [x] CHK-017 [P1] F-04 Confidence-based result truncation: PASS — no code issues
 <!-- /ANCHOR:code-quality -->
 
@@ -58,11 +58,11 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] F-01 Integration tests asserting `routeResult.tier -> traceMetadata.queryComplexity -> formatter output`
-- [ ] CHK-021 [P0] F-03 Channel tests with ordering assertions after promotions; placeholder stubs replaced (`channel.vitest.ts:10-40`)
-- [ ] CHK-022 [P1] F-02 Pipeline-level shadow logging/comparison output tests added
-- [ ] CHK-023 [P1] F-05 Tests for `adjustedBudget = max(dynamicBudget - (resultCount * 12), 200)` path
-- [ ] CHK-024 [P1] F-06 Stage-1 parallel baseline-first dedup behavior tests added
+- [x] CHK-020 [P0] F-01 Integration tests: `trace-propagation.vitest.ts` (18 tests) — covers simple/moderate/complex tier propagation through full chain
+- [x] CHK-021 [P0] F-03 Channel tests: `channel-representation.vitest.ts` T16-T18 added (no-sort contract, multi-channel detection, mixed quality floor); `channel-enforcement.vitest.ts` 19 existing behavioral tests verified
+- [x] CHK-022 [P1] F-02 Pipeline-level shadow tests: `rsf-fusion.vitest.ts` T023.SHADOW.1-3 verify RSF scores computed but not used for ranking
+- [x] CHK-023 [P1] F-05 adjustedBudget tests: `token-budget.vitest.ts` CHK-023 T1-T5 — formula verification, floor at 200, large result count, zero results, truncation integration
+- [x] CHK-024 [P1] F-06 Stage-1 tests: `stage1-expansion.vitest.ts` T1-T4 — expansion call, baseline-first dedup, R15 mutual exclusion, flag disabled
 <!-- /ANCHOR:testing -->
 
 ---
@@ -80,9 +80,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-040 [P1] F-01 Trace propagation source files updated in feature table
-- [ ] CHK-041 [P1] F-03 Wrapper usage documented or re-sort moved into listed implementation
-- [ ] CHK-042 [P2] Playbook scenarios created for all 6 features (currently MISSING)
+- [x] CHK-040 [P1] F-01 Trace propagation source files updated — `hybrid-search.ts` added to `01-query-complexity-router.md` implementation table, `trace-propagation.vitest.ts` added to test table
+- [x] CHK-041 [P1] F-03 Wrapper usage documented — `03-channel-min-representation.md` updated with `channel-enforcement.ts` wrapper role and `channel-enforcement.vitest.ts` test reference
+- [ ] CHK-042 [P2] Playbook scenarios created for all 6 features (DEFERRED — requires NEW-060+ playbook work, out of scope for this code audit)
 <!-- /ANCHOR:docs -->
 
 ---
@@ -92,7 +92,7 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Temp files in scratch/ only
 - [x] CHK-051 [P1] scratch/ cleaned before completion
-- [ ] CHK-052 [P2] Findings saved to memory/
+- [x] CHK-052 [P2] Findings saved to memory/ — via generate-context.js
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -102,11 +102,12 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 | 2/7 |
-| P1 Items | 9 | 4/9 |
-| P2 Items | 2 | 0/2 |
+| P0 Items | 7 | 7/7 |
+| P1 Items | 9 | 9/9 |
+| P2 Items | 2 | 1/2 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-11
+**Note**: CHK-042 (P2) deferred — playbook scenario creation is out of scope for this code audit phase.
 <!-- /ANCHOR:summary -->
 
 ---

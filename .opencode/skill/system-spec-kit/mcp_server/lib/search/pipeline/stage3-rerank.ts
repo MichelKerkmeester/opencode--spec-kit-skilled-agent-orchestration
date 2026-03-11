@@ -52,6 +52,20 @@ const MMR_DEFAULT_LAMBDA = 0.7;
 /** Column order priority for assembling display text sent to cross-encoder. */
 const TEXT_FIELD_PRIORITY = ['content', 'file_path'] as const;
 
+/**
+ * Enforce non-negative score outputs at Stage 3 rerank boundaries.
+ */
+function floorScore(value: number): number {
+  return Math.max(0, value);
+}
+
+function resolveRerankOutputScore(raw: unknown, fallback: number): number {
+  if (typeof raw === 'number' && Number.isFinite(raw)) {
+    return floorScore(raw);
+  }
+  return floorScore(fallback);
+}
+
 // -- Internal Interfaces ----------------------------------------
 
 /**
@@ -171,7 +185,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
             mmrCandidates.push({
               id: r.id,
               // AI-TRACE: P1-015: Use effectiveScore() for consistent fallback chain
-              score: effectiveScore(r),
+              score: floorScore(effectiveScore(r)),
               embedding: emb,
             });
           }
@@ -293,9 +307,10 @@ async function applyCrossEncoderReranking(
       const localRows: PipelineRow[] = localReranked.map((row) => {
         const original = rowMap.get(row.id);
         const rerankScoreRaw = row.rerankerScore ?? row.score;
-        const rerankScore = typeof rerankScoreRaw === 'number'
-          ? rerankScoreRaw
-          : (original?.score ?? 0);
+        const rerankScore = resolveRerankOutputScore(
+          rerankScoreRaw,
+          original ? effectiveScore(original) : 0,
+        );
 
         return {
           ...(original ?? row),
@@ -321,7 +336,7 @@ async function applyCrossEncoderReranking(
   const documents: RerankDocument[] = results.map((row) => ({
     id: row.id,
     content: resolveDisplayText(row),
-    score: effectiveScore(row),
+    score: floorScore(effectiveScore(row)),
   }));
 
   try {
@@ -346,7 +361,10 @@ async function applyCrossEncoderReranking(
         // Defensive: reranker returned an unknown id — skip it
         continue;
       }
-      const rerankScore = rerankResult.rerankerScore ?? rerankResult.score ?? original.score;
+      const rerankScore = resolveRerankOutputScore(
+        rerankResult.rerankerScore ?? rerankResult.score,
+        effectiveScore(original),
+      );
       rerankedRows.push({
         ...original,
         // P1-015: Preserve Stage 2 composite score for auditability
@@ -472,12 +490,12 @@ async function collapseAndReassembleChunkResults(
   const mergedMap = new Map<unknown, PipelineRow>();
   for (const row of [...nonChunks, ...reassembledRows]) {
     const existing = mergedMap.get(row.id);
-    if (!existing || effectiveScore(row) > effectiveScore(existing)) {
+    if (!existing || floorScore(effectiveScore(row)) > floorScore(effectiveScore(existing))) {
       mergedMap.set(row.id, row);
     }
   }
   const merged = Array.from(mergedMap.values());
-  merged.sort((a, b) => effectiveScore(b) - effectiveScore(a));
+  merged.sort((a, b) => floorScore(effectiveScore(b)) - floorScore(effectiveScore(a)));
 
   return { results: merged, stats };
 }

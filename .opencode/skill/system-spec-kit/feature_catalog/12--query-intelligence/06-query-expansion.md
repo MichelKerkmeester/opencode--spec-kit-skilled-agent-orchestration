@@ -24,6 +24,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 | `mcp_server/lib/scoring/interference-scoring.ts` | Lib | Interference penalty scoring |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 index management |
 | `mcp_server/lib/search/embedding-expansion.ts` | Lib | Embedding query expansion |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage-1 orchestration: parallel baseline+expansion with dedup |
 | `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
 | `mcp_server/lib/search/query-expander.ts` | Lib | Query term expansion |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
@@ -70,7 +71,6 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 | `mcp_server/tests/query-classifier.vitest.ts` | Query classification accuracy |
 | `mcp_server/tests/query-expander.vitest.ts` | Query expansion tests |
 | `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
@@ -83,6 +83,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 | `mcp_server/tests/unit-path-security.vitest.ts` | Path security unit tests |
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `mcp_server/tests/stage1-expansion.vitest.ts` | Stage-1 expansion call and dedup |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
 ## Source Metadata

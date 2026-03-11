@@ -11,7 +11,8 @@
 // scoring impact.
 //
 // Feature Flag:
-//   Controlled by SPECKIT_ENCODING_INTENT=true (opt-in, default off).
+//   Controlled by SPECKIT_ENCODING_INTENT (default ON, graduated).
+//   Set SPECKIT_ENCODING_INTENT=false to disable.
 //   When the flag is off, classifyEncodingIntent() still returns a
 //   classification (default 'document') but callers should gate
 //   persistence on isEncodingIntentEnabled().

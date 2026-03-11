@@ -25,3 +25,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 - Group: Evaluation and measurement
 - Source feature title: Evaluation database and schema
 - Current reality source: feature_catalog.md
+
+## Playbook Coverage
+
+- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)

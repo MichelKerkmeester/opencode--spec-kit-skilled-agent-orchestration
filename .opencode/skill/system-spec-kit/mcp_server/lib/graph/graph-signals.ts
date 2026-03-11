@@ -126,18 +126,18 @@ function getCurrentDegree(db: Database.Database, memoryId: number): number {
  * Get the degree of a memory node from 7 days ago, as recorded in the
  * degree_snapshots table.
  */
-function getPastDegree(db: Database.Database, memoryId: number): number {
+function getPastDegree(db: Database.Database, memoryId: number): number | null {
   try {
     const row = db.prepare(`
       SELECT degree_count
       FROM degree_snapshots
       WHERE memory_id = ? AND snapshot_date = date('now', '-7 days')
     `).get(memoryId) as { degree_count: number } | undefined;
-    return row?.degree_count ?? 0;
+    return row?.degree_count ?? null;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
     console.warn(`[graph-signals] getPastDegree failed for ${memoryId}: ${message}`);
-    return 0;
+    return null;
   }
 }
 
@@ -151,6 +151,7 @@ export function computeMomentum(db: Database.Database, memoryId: number): number
   try {
     const currentDegree = getCurrentDegree(db, memoryId);
     const pastDegree = getPastDegree(db, memoryId);
+    if (pastDegree === null) return 0;
     return currentDegree - pastDegree;
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);

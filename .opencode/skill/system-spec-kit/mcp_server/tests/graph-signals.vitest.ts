@@ -215,15 +215,14 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       expect(momentum).toBe(-3);
     });
 
-    it('returns current degree as momentum when no historical snapshot exists', () => {
+    it('returns 0 when no historical snapshot exists', () => {
       // Current: node 1 has 2 edges
       insertEdge(db, 1, 2);
       insertEdge(db, 1, 3);
-      // No snapshot at -7 days, so past degree = 0
+      // No snapshot at -7 days -> pastDegree = null -> momentum = 0
 
       const momentum = computeMomentum(db, 1);
-      // Current degree = 2, past degree = 0, momentum = 2
-      expect(momentum).toBe(2);
+      expect(momentum).toBe(0);
     });
 
     it('returns 0 for a node not in the graph', () => {
@@ -243,12 +242,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
 
       const scores = computeMomentumScores(db, [1, 2, 3]);
       expect(scores.size).toBe(3);
-      // Node 1: degree 2, no history -> momentum 2
-      expect(scores.get(1)).toBe(2);
-      // Node 2: degree 1, no history -> momentum 1
-      expect(scores.get(2)).toBe(1);
-      // Node 3: degree 1, no history -> momentum 1
-      expect(scores.get(3)).toBe(1);
+      // No historical snapshots for any node -> momentum is 0 for all
+      expect(scores.get(1)).toBe(0);
+      expect(scores.get(2)).toBe(0);
+      expect(scores.get(3)).toBe(0);
     });
 
     it('uses cache on second call (returns same results)', () => {
@@ -329,19 +326,19 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
     });
 
     it('adds momentum bonus to row scores', () => {
-      // Node 1 has current degree 2, no history -> momentum = 2
+      // Node 1 has no historical snapshot -> momentum = 0
       insertEdge(db, 1, 2);
       insertEdge(db, 3, 1);
 
       const rows = [{ id: 1, score: 0.5 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentumBonus = clamp(2 * 0.01, 0, 0.05) = 0.02
+      // momentumBonus = 0 (no historical snapshot)
       // depthBonus: node 1 has in-degree 1 (from 3->1), node 3 is root
       // Graph: 3->1, 1->2; roots=[3], BFS: 3=0,1=1,2=2; maxDepth=2
       // depth(1) = 1/2 = 0.5, depthBonus = 0.5 * 0.05 = 0.025
-      // Total: 0.5 + 0.02 + 0.025 = 0.545
-      expect(result[0].score).toBeCloseTo(0.545, 5);
+      // Total: 0.5 + 0 + 0.025 = 0.525
+      expect(result[0].score).toBeCloseTo(0.525, 5);
     });
 
     it('adds depth bonus to row scores', () => {
@@ -353,12 +350,12 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 30, score: 0.4 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentum for 30: current degree = 1, past = 0, momentum = 1
-      // momentumBonus = clamp(1 * 0.01, 0, 0.05) = 0.01
+      // momentum for 30: no historical snapshot -> momentum = 0
+      // momentumBonus = 0
       // depth for 30: depth=2, maxDepth=2, normalized=1.0
       // depthBonus = 1.0 * 0.05 = 0.05
-      // Total: 0.4 + 0.01 + 0.05 = 0.46
-      expect(result[0].score).toBeCloseTo(0.46, 5);
+      // Total: 0.4 + 0 + 0.05 = 0.45
+      expect(result[0].score).toBeCloseTo(0.45, 5);
     });
 
     it('applies combined momentum + depth bonus', () => {
@@ -371,8 +368,8 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 2, score: 0.5 }];
       const result = applyGraphSignals(rows, db);
 
-      // Node 2: degree = 3 (1->2, 2->3, 4->2), past = 0, momentum = 3
-      // momentumBonus = clamp(3 * 0.01, 0, 0.05) = 0.03
+      // Node 2 has no historical snapshot -> momentum = 0
+      // momentumBonus = 0
       // Roots: 1, 4 (in-degree 0)
       // BFS from roots [1,4]:
       //   1 -> depth 0, 4 -> depth 0
@@ -380,8 +377,8 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       //   3 -> depth 2
       // maxDepth = 2, depth(2) = 1/2 = 0.5
       // depthBonus = 0.5 * 0.05 = 0.025
-      // Total: 0.5 + 0.03 + 0.025 = 0.555
-      expect(result[0].score).toBeCloseTo(0.555, 5);
+      // Total: 0.5 + 0 + 0.025 = 0.525
+      expect(result[0].score).toBeCloseTo(0.525, 5);
     });
 
     it('caps momentum bonus at 0.05', () => {
@@ -389,15 +386,15 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       for (let i = 2; i <= 12; i++) {
         insertEdge(db, 1, i);
       }
-      // Node 1: degree 10, momentum = 10
-      // momentumBonus = clamp(10 * 0.01, 0, 0.05) = min(0.10, 0.05) = 0.05
+      // Node 1 has no historical snapshot -> momentum = 0
+      // momentumBonus = 0
 
       const rows = [{ id: 1, score: 0.5 }];
       const result = applyGraphSignals(rows, db);
 
       // depthBonus for root node = 0
-      // Total: 0.5 + 0.05 + 0 = 0.55
-      expect(result[0].score).toBeCloseTo(0.55, 5);
+      // Total: 0.5 + 0 + 0 = 0.5
+      expect(result[0].score).toBeCloseTo(0.5, 5);
     });
 
     it('caps depth bonus at 0.05 (max normalized depth is 1.0)', () => {
@@ -409,11 +406,11 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const rows = [{ id: 3, score: 0.0 }];
       const result = applyGraphSignals(rows, db);
 
-      // momentum for 3: degree 1, past 0 -> momentum 1
-      // momentumBonus = 0.01
+      // momentum for 3: no historical snapshot -> momentum 0
+      // momentumBonus = 0
       // depthBonus = 0.05
-      // Total = 0 + 0.01 + 0.05 = 0.06
-      expect(result[0].score).toBeCloseTo(0.06, 5);
+      // Total = 0 + 0 + 0.05 = 0.05
+      expect(result[0].score).toBeCloseTo(0.05, 5);
     });
 
     it('defaults score to 0 for rows without a score property', () => {
@@ -423,12 +420,12 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const result = applyGraphSignals(rows, db);
 
       // baseScore defaults to 0 when score is undefined
-      // momentum = 1 (degree 1, no history)
-      // momentumBonus = 0.01
+      // momentum = 0 (no historical snapshot)
+      // momentumBonus = 0
       // Roots: [1], BFS: 1=0, 2=1, maxDepth=1
       // depth(1) = 0/1 = 0, depthBonus = 0
-      // Total: 0 + 0.01 + 0 = 0.01
-      expect(result[0].score).toBeCloseTo(0.01, 5);
+      // Total: 0 + 0 + 0 = 0
+      expect(result[0].score).toBeCloseTo(0, 5);
     });
 
     it('handles rows with non-finite score gracefully', () => {
@@ -464,6 +461,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
 
     it('allows scores to be recomputed after clear (reflects graph mutations)', () => {
       insertEdge(db, 1, 2);
+      const sevenDaysAgo = db
+        .prepare("SELECT date('now', '-7 days') AS d")
+        .get() as { d: string };
+      insertSnapshot(db, 1, 0, sevenDaysAgo.d);
 
       // First computation
       const scores1 = computeMomentumScores(db, [1]);
@@ -518,9 +519,9 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       const degree = __testables.getCurrentDegree(db, 1);
       expect(degree).toBe(1);
 
-      // Momentum: degree 1, no past -> 1
+      // Momentum: no historical snapshot -> 0
       const momentum = computeMomentum(db, 1);
-      expect(momentum).toBe(1);
+      expect(momentum).toBe(0);
     });
 
     it('very large graph does not throw', () => {
@@ -573,10 +574,10 @@ describe('Graph Signals (S8 — N2a + N2b)', () => {
       expect(__testables.getPastDegree(db, 1)).toBe(5);
     });
 
-    it('getPastDegree returns 0 when no snapshot at -7 days', () => {
+    it('getPastDegree returns null when no snapshot at -7 days', () => {
       // Insert snapshot for a different date (not 7 days ago)
       insertSnapshot(db, 1, 5, '2020-01-01');
-      expect(__testables.getPastDegree(db, 1)).toBe(0);
+      expect(__testables.getPastDegree(db, 1)).toBeNull();
     });
 
     it('buildAdjacencyList constructs correct graph structure', () => {

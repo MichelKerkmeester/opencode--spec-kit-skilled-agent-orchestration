@@ -6,7 +6,7 @@ A strong vector channel can monopolize the top-k results, pushing out graph and 
 
 After fusion, the system checks that every channel which returned results has at least one representative in the top-k window. Results below a 0.005 quality floor are excluded from promotion because forcing a bad result into the top-k is worse than missing a channel. The floor was lowered from 0.2 to 0.005 during Sprint 8 remediation because RRF scores typically fall in the 0.01-0.03 range, and the original 0.2 threshold was filtering out virtually all RRF-sourced results.
 
-Promoted items are appended to the result list and the entire set is re-sorted by score so ranking integrity is preserved. The net effect: you see results from diverse retrieval strategies rather than one dominant channel. Runs behind the `SPECKIT_CHANNEL_MIN_REP` flag.
+The architecture is two-layered: `channel-representation.ts` performs the core analysis and appends promoted items to the result list without re-sorting. The pipeline-level wrapper `channel-enforcement.ts` calls the core function and then globally re-sorts the combined list (window + tail + promotions) by score descending so ranking integrity is preserved. This separation keeps the core function pure (append-only, no sort side-effect) while the wrapper guarantees callers always receive a score-ordered list. The net effect: you see results from diverse retrieval strategies rather than one dominant channel. Runs behind the `SPECKIT_CHANNEL_MIN_REP` flag (default: enabled / graduated).
 
 ## Source Files
 
@@ -14,14 +14,15 @@ Promoted items are appended to the result list and the entire set is re-sorted b
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/channel-representation.ts` | Lib | Channel min-representation |
+| `mcp_server/lib/search/channel-representation.ts` | Lib | Core analysis: detects under-represented channels, appends promoted items (no re-sort) |
+| `mcp_server/lib/search/channel-enforcement.ts` | Lib | Pipeline wrapper: delegates to core, re-sorts globally by score, returns enforcement metadata |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
+| `mcp_server/tests/channel-representation.vitest.ts` | Core analysis: promotion logic, quality floor, multi-source counting (15 tests) |
+| `mcp_server/tests/channel-enforcement.vitest.ts` | Wrapper: score ordering after promotion, precision verification, edge cases (19 tests) |
 
 ## Source Metadata
 

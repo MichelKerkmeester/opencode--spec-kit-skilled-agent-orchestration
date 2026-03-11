@@ -57,6 +57,9 @@ export function vectorSearchWithContiguity(
   if (results === null) return null;
   if (results.length <= 1) return results.map(r => ({ ...r }));
 
+  // T009: Clamp window to valid range
+  const clampedWindow = Math.max(1, Math.min(MAX_WINDOW, windowSeconds));
+
   // Clone results so we can mutate similarities safely
   const boosted = results.map(r => ({
     ...r,
@@ -69,9 +72,9 @@ export function vectorSearchWithContiguity(
   for (let i = 0; i < boosted.length; i++) {
     for (let j = i + 1; j < boosted.length; j++) {
       const timeDelta = Math.abs(boosted[i]._ts - boosted[j]._ts) / 1000; // seconds
-      if (timeDelta > windowSeconds) continue;
+      if (timeDelta > clampedWindow) continue;
 
-      const rawBoost = (1 - timeDelta / windowSeconds) * BOOST_FACTOR;
+      const rawBoost = (1 - timeDelta / clampedWindow) * BOOST_FACTOR;
 
       // Clamp each result's cumulative boost to MAX_TOTAL_BOOST
       const boostI = Math.min(rawBoost, MAX_TOTAL_BOOST - cumulativeBoost[i]);
@@ -109,6 +112,9 @@ export function getTemporalNeighbors(
     return [];
   }
 
+  // T009: Clamp window to valid range
+  const clampedWindow = Math.max(1, Math.min(MAX_WINDOW, windowSeconds));
+
   try {
     const anchor = (db.prepare(
       'SELECT created_at FROM memory_index WHERE id = ?',
@@ -127,7 +133,7 @@ export function getTemporalNeighbors(
       anchor.created_at,
       memoryId,
       anchor.created_at,
-      windowSeconds,
+      clampedWindow,
     ) as Array<{ time_delta_seconds: number; [key: string]: unknown }>;
 
     return rows;

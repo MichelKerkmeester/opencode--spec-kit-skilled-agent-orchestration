@@ -129,8 +129,8 @@ function determineConfidence(
  * - Complex: >8 terms AND no trigger match
  * - Moderate: everything else (interior)
  *
- * When the SPECKIT_COMPLEXITY_ROUTER feature flag is disabled (default),
- * all queries classify as "complex" (safe fallback — full pipeline).
+ * When the SPECKIT_COMPLEXITY_ROUTER feature flag is disabled (enabled by default,
+ * graduated Sprint 4), all queries classify as "complex" (safe fallback — full pipeline).
  *
  * On any error, returns "complex" (safe fallback per spec).
  *

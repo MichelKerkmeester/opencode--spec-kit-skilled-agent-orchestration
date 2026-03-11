@@ -4,7 +4,7 @@
 // Computes folder-level relevance scores from individual memory
 // scores using damped aggregation: FolderScore = (1/sqrt(M+1)) * SUM(score(m))
 //
-// Gated behind SPECKIT_FOLDER_SCORING env var (default: disabled).
+// Gated behind SPECKIT_FOLDER_SCORING env var (default: enabled, graduated-on).
 // Pure scoring addition — NO schema changes, NO new tables.
 //
 // References:

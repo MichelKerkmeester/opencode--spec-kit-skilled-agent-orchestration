@@ -15,9 +15,21 @@ const SOURCE_TYPES = {
   KEYWORD: 'keyword',
 } as const;
 
-// AI-WHY: K=60 is the standard RRF constant from Cormack et al. (2009); higher K
-// flattens rank differences, reducing the dominance of top-1 results. 60 balances
-// discrimination vs. stability for our typical 10-50 candidate lists.
+/**
+ * Default RRF smoothing constant used in the reciprocal rank term `1 / (k + rank)`.
+ *
+ * Origin: Cormack, Clarke, and Buettcher (SIGIR 2009), where Reciprocal Rank
+ * Fusion is introduced with `k = 60` as a robust default for rank aggregation.
+ *
+ * Behavior:
+ * - Lower `k` increases sensitivity to early ranks (top results dominate more).
+ * - Higher `k` flattens rank-position impact (more conservative, less top-heavy).
+ *
+ * Valid range:
+ * - Explicit `k` values must be finite and non-negative.
+ * - Runtime override `SPECKIT_RRF_K` is accepted only when parseable as a
+ *   finite positive number (`> 0`).
+ */
 const DEFAULT_K = 60;
 const CONVERGENCE_BONUS = 0.10;
 // AI-WHY: Graph channel gets 1.5x boost when no explicit weight is supplied because
@@ -94,17 +106,37 @@ function canonicalRrfId(id: number | string): string {
   return raw;
 }
 
-/** Resolve k with explicit-zero support and shared validation semantics. */
+/**
+ * Resolve the effective RRF `k` with explicit-zero support and shared validation semantics.
+ *
+ * Runtime override:
+ * - If `SPECKIT_RRF_K` is set and parses to a finite positive number, that value
+ *   is used as the fallback in place of `DEFAULT_K`.
+ * - Invalid/non-positive env values are ignored.
+ *
+ * Precedence:
+ * 1) caller-provided `rawK` (when finite and non-negative)
+ * 2) `SPECKIT_RRF_K` (when valid)
+ * 3) `DEFAULT_K`
+ *
+ * @param rawK - Optional caller-provided RRF smoothing constant.
+ * @returns Effective `k` used for fusion scoring.
+ * @throws Error if `rawK` is negative.
+ */
 function resolveRrfK(rawK: number | undefined): number {
+  const envKRaw = process.env.SPECKIT_RRF_K;
+  const envKParsed = envKRaw === undefined ? Number.NaN : Number(envKRaw);
+  const fallbackK = Number.isFinite(envKParsed) && envKParsed > 0 ? envKParsed : DEFAULT_K;
+
   if (rawK === undefined) {
-    return DEFAULT_K;
+    return fallbackK;
   }
 
   if (rawK < 0) {
     throw new Error('RRF k parameter must be non-negative');
   }
 
-  return Number.isFinite(rawK) ? rawK : DEFAULT_K;
+  return Number.isFinite(rawK) ? rawK : fallbackK;
 }
 
 /* --- 3. CORE FUNCTIONS --- */

@@ -94,8 +94,16 @@ export const PROMOTION_VALIDATION_THRESHOLD: number = 5;
 // ---------------------------------------------------------------
 
 /**
- * Record a validation event for a memory.
- * Updates confidence score and validation count.
+ * Record a validation event for a memory and persist confidence counters.
+ *
+ * Stage 2 integration hooks:
+ * - This function updates `memory_index.confidence` and `validation_count`,
+ *   establishing durable feedback state for search-stage signal consumers.
+ * - For `wasUseful=false`, `handlers/checkpoints.ts` pairs this update with
+ *   `recordNegativeFeedbackEvent`, and Stage 2 (`search/pipeline/stage2-fusion.ts`)
+ *   reads those events via `getNegativeFeedbackStats` to apply demotion.
+ * - Positive validations can trigger auto-promotion (`importance_tier` changes),
+ *   which Stage 2 validation metadata scoring treats as a quality signal.
  */
 export function recordValidation(db: Database, memoryId: number, wasUseful: boolean): ValidationResult {
   try {
@@ -143,6 +151,16 @@ export function recordValidation(db: Database, memoryId: number, wasUseful: bool
         newConfidence,
         positiveValidationCount
       );
+
+      if (!wasUseful) {
+        const chunkId = memoryId;
+        console.warn('[confidence-tracker] negative feedback recorded', {
+          chunkId,
+          previousConfidence: currentConfidence,
+          newConfidence,
+          decrement: CONFIDENCE_NEGATIVE_DECREMENT,
+        });
+      }
 
       return {
         confidence: newConfidence,
@@ -258,6 +276,9 @@ export function promoteToCritical(db: Database, memoryId: number): boolean {
 
 /**
  * Get full confidence info for a memory.
+ *
+ * Stage 2 integration hook: handlers can surface this snapshot in telemetry
+ * responses to explain why Stage 2 feedback-driven ranking changed over time.
  */
 export function getConfidenceInfo(db: Database, memoryId: number): ConfidenceInfo {
   try {

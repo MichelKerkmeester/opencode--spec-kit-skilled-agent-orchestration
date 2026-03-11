@@ -22,14 +22,16 @@ function runPostMutationHooks(
   try {
     triggerMatcher.clearCache();
     triggerCacheCleared = true;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[mutation-hooks] triggerMatcher.clearCache failed:', error);
     triggerCacheCleared = false;
   }
 
   let toolCacheInvalidated = 0;
   try {
     toolCacheInvalidated = toolCache.invalidateOnWrite(operation, context);
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[mutation-hooks] toolCache.invalidateOnWrite failed:', error);
     toolCacheInvalidated = 0;
   }
 
@@ -37,7 +39,8 @@ function runPostMutationHooks(
   try {
     clearConstitutionalCache();
     constitutionalCacheCleared = true;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[mutation-hooks] clearConstitutionalCache failed:', error);
     constitutionalCacheCleared = false;
   }
 
@@ -45,7 +48,8 @@ function runPostMutationHooks(
   try {
     clearGraphSignalsCache();
     graphSignalsCacheCleared = true;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[mutation-hooks] clearGraphSignalsCache failed:', error);
     graphSignalsCacheCleared = false;
   }
 
@@ -53,7 +57,8 @@ function runPostMutationHooks(
   try {
     clearRelatedCache();
     coactivationCacheCleared = true;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[mutation-hooks] clearRelatedCache failed:', error);
     coactivationCacheCleared = false;
   }
 

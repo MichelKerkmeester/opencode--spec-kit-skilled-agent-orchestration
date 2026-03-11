@@ -385,8 +385,13 @@ function computeDegreeScores(
     for (const row of constitutionalRows) {
       constitutionalIds.add(String(row.id));
     }
-  } catch (_err: unknown) { // AI-GUARD: Individual edge fetch failure — skip silently
-    // If memory_index lookup fails, proceed without exclusion
+  } catch (_err: unknown) {
+    // AI-GUARD: Fail closed — if we can't identify constitutional IDs, zero all scores
+    console.warn('[graph-search-fn] Constitutional exclusion lookup failed; returning zero scores for safety');
+    for (const id of memoryIds) {
+      results.set(String(id), 0);
+    }
+    return results;
   }
 
   // Compute global max for normalization (not cached — recomputed per batch)

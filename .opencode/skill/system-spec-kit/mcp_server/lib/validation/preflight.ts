@@ -183,8 +183,8 @@ export const PreflightErrorCodes: Readonly<PreflightErrorCodes> = {
  * Defines the PREFLIGHT_CONFIG constant.
  */
 export const PREFLIGHT_CONFIG: PreflightConfig = {
-  // Token budget estimation (~3.5 chars/token for mixed content)
-  charsPerToken: parseFloat(process.env.MCP_CHARS_PER_TOKEN || '3.5'),
+  // Token budget estimation (~4 chars/token — harmonized with quality-loop.ts)
+  charsPerToken: parseFloat(process.env.MCP_CHARS_PER_TOKEN || '4'),
   max_tokens_per_memory: parseInt(process.env.MCP_MAX_MEMORY_TOKENS || '8000', 10),
   warning_threshold: parseFloat(process.env.MCP_TOKEN_WARNING_THRESHOLD || '0.8'),
 

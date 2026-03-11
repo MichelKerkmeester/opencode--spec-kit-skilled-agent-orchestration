@@ -165,7 +165,7 @@ cli-copilot/
 | Plan | `--mode plan` | Analysis, exploration, and read-only reporting |
 | Autopilot | `--autopilot` | Multi-step task fulfillment with auto-correction |
 | Manual | (default) | Step-by-step approval for every tool call |
-| Delegate | `/delegate` | Offload execution to GitHub's cloud infrastructure |
+| Delegate | `/delegate` or `&prompt` | Offload execution to GitHub's cloud infrastructure |
 
 **Agent System**
 
@@ -206,6 +206,7 @@ cli-copilot/
 | Flag | Purpose |
 |------|---------|
 | `-p "prompt"` | Non-interactive prompt (required for delegation) |
+| `--no-ask-user` | Autonomous mode with no interactive questions |
 | `--allow-all-tools` | Bypass individual tool confirmations |
 | `--model NAME` | Specific model selection (e.g., `gpt-5.3-codex`) |
 | `--mode plan` | Read-only analysis mode |
@@ -218,6 +219,9 @@ cli-copilot/
 - `.github/copilot-instructions.md` — Repository-specific rules
 - `.github/copilot-agents/` — Custom agent definitions
 - `.copilotignore` — File exclusion patterns for indexing
+- `~/.copilot/config.json` — Persistent client configuration, including `reasoning_effort` defaults for GPT-5.x models
+
+**Reasoning effort:** GPT-5.x reasoning depth is configured through `reasoning_effort` in `~/.copilot/config.json` (`low`, `medium`, `high`, `xhigh`). There is no `--reasoning-effort` CLI flag, so non-interactive `copilot -p` calls read the value from the config file.
 
 **Platform support:** macOS, Linux, Windows (GA Feb 2026).
 

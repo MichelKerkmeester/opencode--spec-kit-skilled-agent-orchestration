@@ -3,7 +3,7 @@
 > **Note:** This session had limited actionable content (quality score: 0/100). 0 noise entries and 0 duplicates were filtered.
 
 ---
-title: "lifecycle [005-lifecycle/11-03-26_09-40__lifecycle]"
+title: "query-intelligence [012-query-intelligence/11-03-26_14-32__query-intelligence]"
 description: "Session context memory template for Spec Kit indexing."
 trigger_phrases:
   - "memory dashboard"
@@ -17,25 +17,25 @@ quality_flags: []
 <!-- TEMPLATE: context_template.md v2.2 - DO NOT EDIT GENERATED FILES -->
 ---
 
-# lifecycle
+# query-intelligence
 
 ## SESSION SUMMARY
 
 | **Meta Data** | **Value** |
 |:--------------|:----------|
 | Session Date | 2026-03-11 |
-| Session ID | session-1773218451237-e6efc7475aef |
-| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle |
+| Session ID | session-1773235935004-1b8f7dd5ceef |
+| Spec Folder | 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
 | Total Messages | 0 |
-| Tool Executions | 6 |
+| Tool Executions | 5 |
 | Decisions Made | 0 |
 | Follow-up Items Recorded | 0 |
 | Created At | 2026-03-11 |
-| Created At (Epoch) | 1773218451 |
-| Last Accessed (Epoch) | 1773218451 |
+| Created At (Epoch) | 1773235935 |
+| Last Accessed (Epoch) | 1773235935 |
 | Access Count | 1 |
 
 ---
@@ -67,7 +67,7 @@ quality_flags: []
 |-------|-------|
 | Session Status | IN_PROGRESS |
 | Completion % | 0% |
-| Last Activity | 2026-03-11T08:40:51.253Z |
+| Last Activity | 2026-03-11T13:32:15.019Z |
 | Time in Session | N/A |
 | Continuation Count | 1 |
 
@@ -75,7 +75,7 @@ quality_flags: []
 
 **Phase:** RESEARCH
 
-**Summary:** ### Technical Context Aspect Value -------- ------- Language/Stack TypeScript Framework MCP server architecture Storage SQLite Testing Vitest ### Overview The lifecycle audit phase reviews seven lifec...
+**Summary:** ### Technical Context Aspect Value -------- ------- Language/Stack TypeScript (Node.js MCP server) Framework Spec Kit Memory search pipeline modules Storage SQLite-backed metadata and in-memory rankin...
 
 ### Pending Work
 
@@ -85,20 +85,20 @@ quality_flags: []
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle
+/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle
+Spec: 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence
 Last: Context save initiated
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/spec.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/tasks.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/plan.md
+- Files modified: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/spec.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/plan.md, .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/tasks.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -113,7 +113,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/spec.md |
+| Active File | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/spec.md |
 | Last Action | Context save initiated |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -133,7 +133,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `lifecycle` | `audit` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/005 lifecycle` | `system` | `spec` | `kit/022` | `hybrid` | `rag` | `fusion/013` | `per` | `feature` | `catalog/005` |
+**Key Topics:** `feature` | `query` | `intelligence` | `spec` | `audit` | `per` | `system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/012 query intelligence` | `system` | `kit/022` | `hybrid` | `rag` | `fusion/013` |
 
 ---
 
@@ -142,7 +142,7 @@ Next: Continue implementation
 
 ## 1. OVERVIEW
 
-### Technical Context Aspect Value -------- ------- Language/Stack TypeScript Framework MCP server architecture Storage SQLite Testing Vitest ### Overview The lifecycle audit phase reviews seven lifecycle features and captures PASS/WARN/FAIL findings across correctness, standards, behavior match, and testing coverage. This plan restructures that work into Level 2 phases so remediation and verification can be executed predictably with explicit dependencies. ---
+### Technical Context Aspect Value -------- ------- Language/Stack TypeScript (Node.js MCP server) Framework Spec Kit Memory search pipeline modules Storage SQLite-backed metadata and in-memory ranking pipeline Testing Vitest suites (unit, integration) + manual catalog review ### Overview This plan performs a structured audit of six Query Intelligence features from feature_catalog/12--query-intelligence/ and maps findings to a prioritized remediation backlog. The implementation approach follows feature inventory, per-feature code/test review, playbook cross-referencing, and synchronized Level 2 documentation outputs. ---
 
 **Key Outcomes**:
 - Session in progress
@@ -151,7 +151,7 @@ Next: Continue implementation
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/(merged-small-files)` | Tree-thinning merged 6 small files (spec.md, tasks.md, plan.md, checklist.md, description.json, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/spec.md : Updated spec | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/tasks.md : Updated tasks | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/plan.md : Updated plan | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/checklist.md : Updated checklist | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/description.json : Updated description | Merged from .opencode/spe... |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/(merged-small-files)` | Tree-thinning merged 5 small files (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md). Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/spec.md : Rewrite to Level 2 spec template with mapped Query Intell... | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/plan.md : Align audit methodology to Level 2 plan template | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/tasks.md : Updated tasks | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/checklist.md : Updated checklist | Merged from .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audi... |
 
 <!-- /ANCHOR:summary -->
 
@@ -230,9 +230,9 @@ No conversation messages were captured. This may indicate an issue with data col
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -244,16 +244,16 @@ No conversation messages were captured. This may indicate an issue with data col
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle", limit: 10 })
+memory_search({ specFolder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence", limit: 10 })
 
 # Verify memory file integrity
-ls -la 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/memory/
+ls -la 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence --force
 ```
 
 ### Recovery Priority
@@ -288,8 +288,8 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ```yaml
 # Core Identifiers
-session_id: "session-1773218451237-e6efc7475aef"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle"
+session_id: "session-1773235935004-1b8f7dd5ceef"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence"
 channel: "main"
 
 # Classification
@@ -339,15 +339,15 @@ causal_links:
 
 # Timestamps (for decay calculations)
 created_at: "2026-03-11"
-created_at_epoch: 1773218451
-last_accessed_epoch: 1773218451
-expires_at_epoch: 1780994451  # 0 for critical (never expires)
+created_at_epoch: 1773235935
+last_accessed_epoch: 1773235935
+expires_at_epoch: 1781011935  # 0 for critical (never expires)
 
 # Session Metrics
 message_count: 0
 decision_count: 0
-tool_count: 6
-file_count: 6
+tool_count: 5
+file_count: 5
 followup_count: 0
 
 # Access Analytics
@@ -357,47 +357,47 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
-  - "lifecycle"
-  - "audit"
-  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/005 lifecycle"
-  - "system"
+  - "feature"
+  - "query"
+  - "intelligence"
   - "spec"
+  - "audit"
+  - "per"
+  - "system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/012 query intelligence"
+  - "system"
   - "kit/022"
   - "hybrid"
   - "rag"
   - "fusion/013"
-  - "per"
-  - "feature"
-  - "catalog/005"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/005 lifecycle"
+  - " system spec kit/022 hybrid rag fusion/013 code audit per feature catalog/012 query intelligence"
+  - "sqlite backed"
+  - "in memory"
+  - "cross referencing"
   - "code audit per feature catalog"
   - "tree thinning"
   - "implementation summary"
   - "technical aspect value language/stack"
   - "aspect value language/stack typescript"
-  - "value language/stack typescript framework"
-  - "language/stack typescript framework mcp"
-  - "typescript framework mcp server"
-  - "framework mcp server architecture"
-  - "mcp server architecture storage"
-  - "server architecture storage sqlite"
-  - "architecture storage sqlite testing"
-  - "storage sqlite testing vitest"
-  - "sqlite testing vitest lifecycle"
-  - "testing vitest lifecycle audit"
-  - "vitest lifecycle audit phase"
-  - "lifecycle audit phase reviews"
-  - "audit phase reviews seven"
-  - "phase reviews seven lifecycle"
-  - "reviews seven lifecycle features"
-  - "seven lifecycle features captures"
-  - "lifecycle features captures pass/warn/fail"
-  - "features captures pass/warn/fail findings"
-  - "captures pass/warn/fail findings across"
-  - "pass/warn/fail findings across correctness"
+  - "value language/stack typescript node.js"
+  - "language/stack typescript node.js mcp"
+  - "typescript node.js mcp server"
+  - "node.js mcp server framework"
+  - "mcp server framework spec"
+  - "server framework spec kit"
+  - "framework spec kit memory"
+  - "spec kit memory search"
+  - "kit memory search pipeline"
+  - "memory search pipeline modules"
+  - "search pipeline modules storage"
+  - "pipeline modules storage sqlite-backed"
+  - "modules storage sqlite-backed metadata"
+  - "storage sqlite-backed metadata in-memory"
+  - "sqlite-backed metadata in-memory ranking"
+  - "metadata in-memory ranking pipeline"
+  - "in-memory ranking pipeline testing"
   - "system"
   - "spec"
   - "kit/022"
@@ -408,18 +408,19 @@ trigger_phrases:
   - "audit"
   - "per"
   - "feature"
-  - "catalog/005"
-  - "lifecycle"
+  - "catalog/012"
+  - "query"
+  - "intelligence"
 
 key_files:
-  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/(merged-small-files)"
+  - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/(merged-small-files)"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence"
 child_sessions:
 
   []
