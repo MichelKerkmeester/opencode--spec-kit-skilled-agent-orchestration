@@ -102,7 +102,7 @@ contextType: "general"
 
 - [x] Targeted Vitest suite passed: `5` files / `172` tests.
 - [x] Alignment drift verifier passed: `0` findings.
-- [ ] `npx tsc --noEmit` remains blocked by unrelated pre-existing `TS2345` in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`.
+- [x] `npx tsc --noEmit` now passes in `.opencode/skill/system-spec-kit/mcp_server` (revalidated 2026-03-11).
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -115,7 +115,7 @@ contextType: "general"
 - [x] No `[B]` blocked tasks remaining
 - [x] Task #2 remediation claims match the verified implementation evidence
 - [x] Targeted verification passed for the remediated items
-- [ ] Workspace-wide TypeScript verification clean
+- [x] `mcp_server` TypeScript verification clean (`npx tsc --noEmit`)
 <!-- /ANCHOR:completion -->
 
 ---

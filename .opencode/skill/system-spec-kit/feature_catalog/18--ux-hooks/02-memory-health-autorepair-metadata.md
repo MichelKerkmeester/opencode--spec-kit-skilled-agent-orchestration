@@ -4,6 +4,12 @@
 
 `memory_health` now accepts optional `autoRepair` execution and returns structured repair metadata. Callers can trigger repair work intentionally and inspect what changed from handler output.
 
+Repair metadata semantics for mixed outcomes:
+
+- `repair.repaired` is `true` only when every attempted repair action succeeds.
+- `repair.partialSuccess` is `true` when at least one attempted repair succeeds and at least one fails.
+- If FTS rebuild still mismatches but orphan-edge cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning, and includes the orphan cleanup action in `repair.actions`.
+
 ## Source Files
 
 ### Implementation

@@ -380,7 +380,7 @@ vector-index-impl.ts     (3333 LOC)
 | `SPECKIT_SAVE_QUALITY_GATE`| `true` | Enable 3-layer pre-storage quality gate (TM-04) |
 | `SPECKIT_RECONSOLIDATION` | `false` | Enable similarity-based merge/conflict routing on save (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
 | `SPECKIT_NEGATIVE_FEEDBACK`| `true` | Enable negative feedback demotion multiplier (A4) |
-| `SPECKIT_LEARN_FROM_SELECTION`| `false` | Enable learned relevance feedback from selections (R11) |
+| `SPECKIT_LEARN_FROM_SELECTION`| `true`  | Enable learned relevance feedback from selections (R11). Disable with `SPECKIT_LEARN_FROM_SELECTION=false` |
 | `SPECKIT_EMBEDDING_EXPANSION`| `true` | Enable R12 embedding-based query expansion |
 | `SPECKIT_AUTO_ENTITIES`   | `true`  | Enable auto entity extraction at save time (R10) |
 | `SPECKIT_PIPELINE_V2`     | `true`  | Enable 4-stage retrieval pipeline (R6) |
@@ -696,7 +696,7 @@ FSRS stability is adjusted by a 2D multiplier matrix of context type x importanc
 Validation-count-based tier promotion engine. Thresholds: **5** positive validations = normal -> important, **10** = important -> critical. Throttle safeguard: max **3** promotions per **8-hour** rolling window. `NON_PROMOTABLE_TIERS`: critical, constitutional, temporary, deprecated. Promotion audit logged to `memory_promotion_audit` table.
 
 **R11: Learned Relevance Feedback** (`learned-feedback.ts`):
-Selection tracking writes to a separate `learned_triggers` column (NOT FTS5 index). 10 safeguards: separate column, 30-day TTL, 100+ stop words denylist, rate cap (3 terms/selection, 8 terms/memory), top-3 exclusion, 1-week shadow period, <72h memory exclusion, sprint gate review, rollback mechanism, provenance audit log. Query weight: **0.7x** of organic triggers. Gated via `SPECKIT_LEARN_FROM_SELECTION` (default OFF).
+Selection tracking writes to a separate `learned_triggers` column (NOT FTS5 index). 10 safeguards: separate column, 30-day TTL, 100+ stop words denylist, rate cap (3 terms/selection, 8 terms/memory), top-3 exclusion, 1-week shadow period, <72h memory exclusion, sprint gate review, rollback mechanism, provenance audit log. Query weight: **0.7x** of organic triggers. Gated via `SPECKIT_LEARN_FROM_SELECTION` (default ON; set to `false` to disable).
 
 <!-- /ANCHOR:features -->
 

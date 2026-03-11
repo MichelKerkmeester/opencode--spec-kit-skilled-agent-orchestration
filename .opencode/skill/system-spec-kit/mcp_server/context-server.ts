@@ -32,7 +32,6 @@ import { dispatchTool } from './tools';
 // Handler modules (only indexSingleFile needed directly for startup scan)
 import {
   indexSingleFile,
-  indexMemoryFile,
   handleMemoryStats,
 } from './handlers';
 import { runPostMutationHooks } from './handlers/mutation-hooks';
@@ -958,7 +957,7 @@ async function main(): Promise<void> {
     try {
       const ingestInit = initIngestJobQueue({
         processFile: async (filePath: string) => {
-          await indexMemoryFile(filePath, { asyncEmbedding: true });
+          await indexSingleFile(filePath, false);
         },
       });
       if (ingestInit.resetCount > 0) {
@@ -977,7 +976,7 @@ async function main(): Promise<void> {
           fileWatcher = startFileWatcher({
             paths: watchPaths,
             reindexFn: async (filePath: string) => {
-              await indexMemoryFile(filePath, { asyncEmbedding: true });
+              await indexSingleFile(filePath, false);
             },
             removeFn: async (filePath: string) => {
               await removeIndexedMemoriesForFile(filePath);

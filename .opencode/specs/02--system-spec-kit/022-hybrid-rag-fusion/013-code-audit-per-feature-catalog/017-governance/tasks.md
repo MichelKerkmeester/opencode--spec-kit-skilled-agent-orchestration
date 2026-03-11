@@ -1,6 +1,7 @@
 ---
 title: "Tasks: governance [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "governance"
   - "tasks"
@@ -38,7 +39,7 @@ contextType: "general"
 
 - [x] T001 Inventory governance features (`feature_catalog/17--governance/`)
 - [x] T002 Extract implementation and test references (`feature_catalog/17--governance/*.md`)
-- [x] T003 [P] Map target manual scenarios (`NEW-095+`)
+- [x] T003 [P] Map target manual scenarios (`NEW-063/NEW-064`)
 <!-- /ANCHOR:phase-1 -->
 
 ---

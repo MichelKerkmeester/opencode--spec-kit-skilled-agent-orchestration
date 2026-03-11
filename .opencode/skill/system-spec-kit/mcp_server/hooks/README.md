@@ -47,6 +47,8 @@ Main exports (camelCase):
 - `MEMORY_AWARE_TOOLS`
 - `buildMutationHookFeedback(operation, hookResult)`
 - `appendAutoSurfaceHints(result, autoSurfacedContext)`
+- `syncEnvelopeTokenCount(envelope)`
+- `serializeEnvelopeWithTokenCount(envelope)`
 
 Data shape:
 - `extractContextHint(args)` pulls the first usable string from `input`, `query`, `prompt`, `specFolder`, or `filePath`, and falls back to joining `concepts[]` when present.

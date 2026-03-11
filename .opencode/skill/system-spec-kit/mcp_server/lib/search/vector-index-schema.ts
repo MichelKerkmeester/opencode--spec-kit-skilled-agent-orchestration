@@ -20,6 +20,12 @@ import { getSpecsBasePaths } from './folder-discovery';
 
 const logger = createLogger('VectorIndex');
 
+function logDuplicateColumnMigrationSkip(columnName: string, error: unknown): void {
+  logger.warn(`Migration skipped existing ${columnName} column`, {
+    error: error instanceof Error ? error.message : String(error),
+  });
+}
+
 function getMigrationAllowedBasePaths(): string[] {
   const workspaceRoot = process.cwd();
   const envPaths = process.env.MEMORY_ALLOWED_PATHS
@@ -799,8 +805,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN confidence REAL DEFAULT 0.5`);
       console.warn('[vector-index] Migration: Added confidence column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('confidence', error);
     }
   }
 
@@ -808,8 +817,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN validation_count INTEGER DEFAULT 0`);
       console.warn('[vector-index] Migration: Added validation_count column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('validation_count', error);
     }
   }
 
@@ -817,14 +829,19 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN importance_tier TEXT DEFAULT 'normal'`);
       console.warn('[vector-index] Migration: Added importance_tier column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('importance_tier', error);
     }
     try {
       database.exec(`CREATE INDEX IF NOT EXISTS idx_importance_tier ON memory_index(importance_tier)`);
       console.warn('[vector-index] Migration: Created idx_importance_tier index');
-    } catch (_e: unknown) {
-      console.warn('[vector-index-schema] Index creation failed (non-critical)', { error: _e instanceof Error ? _e.message : String(_e) });
+    } catch (error: unknown) {
+      logger.warn('Index creation failed (non-critical)', {
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
@@ -832,8 +849,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN context_type TEXT DEFAULT 'general'`);
       console.warn('[vector-index] Migration: Added context_type column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('context_type', error);
     }
   }
 
@@ -841,8 +861,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN content_hash TEXT`);
       console.warn('[vector-index] Migration: Added content_hash column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('content_hash', error);
     }
   }
 
@@ -850,8 +873,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN channel TEXT DEFAULT 'default'`);
       console.warn('[vector-index] Migration: Added channel column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('channel', error);
     }
   }
 
@@ -859,8 +885,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN session_id TEXT`);
       console.warn('[vector-index] Migration: Added session_id column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('session_id', error);
     }
   }
 
@@ -868,8 +897,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN base_importance REAL DEFAULT 0.5`);
       console.warn('[vector-index] Migration: Added base_importance column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('base_importance', error);
     }
   }
 
@@ -877,8 +909,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN decay_half_life_days REAL DEFAULT 90.0`);
       console.warn('[vector-index] Migration: Added decay_half_life_days column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('decay_half_life_days', error);
     }
   }
 
@@ -886,8 +921,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN is_pinned INTEGER DEFAULT 0`);
       console.warn('[vector-index] Migration: Added is_pinned column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('is_pinned', error);
     }
   }
 
@@ -895,8 +933,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN last_accessed INTEGER DEFAULT 0`);
       console.warn('[vector-index] Migration: Added last_accessed column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('last_accessed', error);
     }
   }
 
@@ -904,8 +945,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN expires_at DATETIME`);
       console.warn('[vector-index] Migration: Added expires_at column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('expires_at', error);
     }
   }
 
@@ -913,8 +957,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN related_memories TEXT`);
       console.warn('[vector-index] Migration: Added related_memories column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('related_memories', error);
     }
   }
 
@@ -922,8 +969,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN stability REAL DEFAULT 1.0`);
       console.warn('[vector-index] Migration: Added stability column (FSRS)');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('stability', error);
     }
   }
 
@@ -931,8 +981,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN difficulty REAL DEFAULT 5.0`);
       console.warn('[vector-index] Migration: Added difficulty column (FSRS)');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('difficulty', error);
     }
   }
 
@@ -940,8 +993,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN last_review TEXT`);
       console.warn('[vector-index] Migration: Added last_review column (FSRS)');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('last_review', error);
     }
   }
 
@@ -949,8 +1005,11 @@ export function migrate_confidence_columns(database: Database.Database): void {
     try {
       database.exec(`ALTER TABLE memory_index ADD COLUMN review_count INTEGER DEFAULT 0`);
       console.warn('[vector-index] Migration: Added review_count column (FSRS)');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
+      }
+      logDuplicateColumnMigrationSkip('review_count', error);
     }
   }
 }
@@ -968,10 +1027,11 @@ export function ensure_canonical_file_path_support(database: Database.Database):
     try {
       database.exec('ALTER TABLE memory_index ADD COLUMN canonical_file_path TEXT');
       console.warn('[vector-index] Migration: Added canonical_file_path column');
-    } catch (e: unknown) {
-      if (!get_error_message(e).includes('duplicate column')) {
-        throw e;
+    } catch (error: unknown) {
+      if (!get_error_message(error).includes('duplicate column')) {
+        throw error;
       }
+      logDuplicateColumnMigrationSkip('canonical_file_path', error);
     }
   }
 

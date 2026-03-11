@@ -965,6 +965,71 @@ describe('Context Server', () => {
       expect(parsed.meta.tokenCount).toBe(estimateTokenCount(finalText))
     })
 
+    it('T000ja: malformed JSON in appendAutoSurfaceHints logs warning telemetry', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const result = {
+        content: [{ type: 'text', text: '{not-json' }],
+      }
+
+      actualAppendAutoSurfaceHints(result, { constitutional: [], triggered: [] })
+
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+      expect(String(warnSpy.mock.calls[0]?.[0] ?? '')).toContain('[response-hints] appendAutoSurfaceHints failed:')
+      expect(String(warnSpy.mock.calls[0]?.[1] ?? '')).toMatch(/Unexpected|Expected|position|JSON/i)
+      expect(result.content[0].text).toBe('{not-json')
+    })
+
+    it('T000jb: valid non-record JSON payloads are ignored without warning', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const arrayResult = {
+        content: [{ type: 'text', text: '[]' }],
+      }
+      const nullResult = {
+        content: [{ type: 'text', text: 'null' }],
+      }
+
+      actualAppendAutoSurfaceHints(arrayResult, { constitutional: [{ id: 1 }], triggered: [{ id: 2 }] })
+      actualAppendAutoSurfaceHints(nullResult, { constitutional: [{ id: 1 }], triggered: [{ id: 2 }] })
+
+      expect(warnSpy).not.toHaveBeenCalled()
+      expect(arrayResult.content[0].text).toBe('[]')
+      expect(nullResult.content[0].text).toBe('null')
+    })
+
+    it('T000jc: serialization failures log the error and preserve original content', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const nativeStringify = JSON.stringify
+      vi.spyOn(JSON, 'stringify').mockImplementation((value: unknown) => {
+        if (
+          typeof value === 'object'
+          && value !== null
+          && 'summary' in value
+          && (value as { summary?: unknown }).summary === 'ok'
+        ) {
+          throw new TypeError('Converting circular structure to JSON')
+        }
+
+        return nativeStringify(value)
+      })
+
+      const originalText = '{"summary":"ok","data":{"status":"success"},"hints":[],"meta":{"tokenCount":1}}'
+      const result = {
+        content: [{ type: 'text', text: originalText }],
+      }
+
+      actualAppendAutoSurfaceHints(result, {
+        constitutional: [{ id: 1 }],
+        triggered: [{ id: 2 }],
+        surfaced_at: '2026-03-11T00:00:00.000Z',
+        latencyMs: 5,
+      })
+
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+      expect(String(warnSpy.mock.calls[0]?.[0] ?? '')).toContain('[response-hints] appendAutoSurfaceHints failed:')
+      expect(String(warnSpy.mock.calls[0]?.[1] ?? '')).toContain('Converting circular structure to JSON')
+      expect(result.content[0].text).toBe(originalText)
+    })
+
     it('T000k: startup exits when the configured provider dimension does not match the active database', async () => {
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
       const { processExitSpy } = await loadRuntimeHarness({

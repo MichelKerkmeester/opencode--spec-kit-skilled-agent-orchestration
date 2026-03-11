@@ -82,6 +82,10 @@ interface ChunkingOptions {
   ) => void;
 }
 
+function computeNormalizedChunkCacheKey(content: string): string {
+  return cacheContentHash(normalizeContentForEmbedding(content));
+}
+
 const ALLOWED_METADATA_COLUMNS = new Set([
   'content_hash', 'context_type', 'importance_tier', 'memory_type',
   'type_inference_source', 'stability', 'difficulty', 'review_count',
@@ -264,7 +268,7 @@ async function indexChunkedMemoryFile(
       let chunkEmbeddingStatus = 'pending';
 
       try {
-        const chunkHash = cacheContentHash(chunk.content);
+        const chunkHash = computeNormalizedChunkCacheKey(chunk.content);
         const modelId = embeddings.getModelName();
         const cachedChunkBuf = lookupEmbedding(database, chunkHash, modelId);
         if (cachedChunkBuf) {

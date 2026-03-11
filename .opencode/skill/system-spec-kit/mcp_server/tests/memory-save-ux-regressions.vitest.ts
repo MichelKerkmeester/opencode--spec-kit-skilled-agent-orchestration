@@ -96,7 +96,36 @@ describe('Memory save UX regressions', () => {
     expect(parsed.hints.some((hint: string) => hint.includes('caches were left unchanged'))).toBe(true);
   });
 
-  it('atomicSaveMemory returns post-mutation feedback for successful saves', async () => {
+  it('memory_save success response exposes postMutationHooks contract fields and types', async () => {
+    const savePath = path.join(FIXTURE_ROOT, 'memory', 'save-response-contract.md');
+    fs.writeFileSync(savePath, buildMemoryContent('Save Response Contract', 'Response contract fixture content.'), 'utf8');
+
+    const response = await handler.handleMemorySave({
+      filePath: savePath,
+      skipPreflight: true,
+    });
+
+    const parsed = parseResponse(response);
+    expect(['indexed', 'created', 'updated']).toContain(parsed.data.status);
+    expect(parsed.data.postMutationHooks).toBeDefined();
+    expect(parsed.data.postMutationHooks).toMatchObject({
+      latencyMs: expect.any(Number),
+      triggerCacheCleared: expect.any(Boolean),
+      constitutionalCacheCleared: expect.any(Boolean),
+      graphSignalsCacheCleared: expect.any(Boolean),
+      coactivationCacheCleared: expect.any(Boolean),
+      toolCacheInvalidated: expect.any(Number),
+    });
+
+    expect(typeof parsed.data.postMutationHooks.latencyMs).toBe('number');
+    expect(typeof parsed.data.postMutationHooks.triggerCacheCleared).toBe('boolean');
+    expect(typeof parsed.data.postMutationHooks.constitutionalCacheCleared).toBe('boolean');
+    expect(typeof parsed.data.postMutationHooks.graphSignalsCacheCleared).toBe('boolean');
+    expect(typeof parsed.data.postMutationHooks.coactivationCacheCleared).toBe('boolean');
+    expect(typeof parsed.data.postMutationHooks.toolCacheInvalidated).toBe('number');
+  });
+
+  it('atomicSaveMemory returns post-mutation feedback payload with typed fields for successful saves', async () => {
     const atomicPath = path.join(FIXTURE_ROOT, 'memory', 'atomic-save.md');
 
     const result = await handler.atomicSaveMemory(
@@ -111,8 +140,61 @@ describe('Memory save UX regressions', () => {
     expect(result.error).toBeUndefined();
     expect(result.status).toBeDefined();
     expect(result.postMutationHooks).toBeDefined();
+    expect(result.postMutationHooks).toMatchObject({
+      latencyMs: expect.any(Number),
+      triggerCacheCleared: expect.any(Boolean),
+      constitutionalCacheCleared: expect.any(Boolean),
+      graphSignalsCacheCleared: expect.any(Boolean),
+      coactivationCacheCleared: expect.any(Boolean),
+      toolCacheInvalidated: expect.any(Number),
+    });
     expect(Array.isArray(result.hints)).toBe(true);
     expect(result.hints?.some((hint: string) => hint.includes('Post-mutation cache clear'))).toBe(true);
+  });
+
+  it('atomicSaveMemory duplicate no-op omits postMutationHooks and reports no-op status', async () => {
+    const indexedPath = path.join(FIXTURE_ROOT, 'memory', 'atomic-duplicate-seed.md');
+    const duplicatePath = path.join(FIXTURE_ROOT, 'memory', 'atomic-duplicate-copy.md');
+    const sharedContent = buildMemoryContent('Atomic Duplicate Seed', 'Atomic duplicate behavior regression fixture.');
+
+    fs.writeFileSync(indexedPath, sharedContent, 'utf8');
+    const initialIndex = await handler.indexMemoryFile(indexedPath, { force: true, asyncEmbedding: true });
+    const db = vectorIndex.getDb();
+    expect(db).toBeTruthy();
+    db!.prepare('UPDATE memory_index SET embedding_status = ? WHERE id = ?').run('success', initialIndex.id);
+
+    const result = await handler.atomicSaveMemory(
+      {
+        file_path: duplicatePath,
+        content: sharedContent,
+      },
+      { force: false }
+    );
+
+    expect(result.success).toBe(true);
+    expect(['duplicate', 'unchanged', 'no_change']).toContain(result.status);
+    expect(result.postMutationHooks).toBeUndefined();
+  });
+
+  it('atomicSaveMemory succeeds with pending async embedding and returns partial-indexing hints', async () => {
+    const atomicPath = path.join(FIXTURE_ROOT, 'memory', 'atomic-save-async-pending.md');
+    const content = buildMemoryContent('Atomic Async Pending', 'Atomic save should pass with deferred embedding.');
+
+    const result = await handler.atomicSaveMemory(
+      {
+        file_path: atomicPath,
+        content,
+      },
+      { force: true }
+    );
+
+    expect(result.success).toBe(true);
+    expect(result.embeddingStatus).toBe('pending');
+    expect(['deferred', 'created', 'indexed', 'updated']).toContain(result.status);
+    expect(result.message).toContain('deferred indexing');
+    expect(fs.existsSync(atomicPath)).toBe(true);
+    expect(fs.readFileSync(atomicPath, 'utf8')).toBe(content);
+    expect(result.hints?.some((hint: string) => hint.includes('fully indexed when embedding provider becomes available'))).toBe(true);
   });
 
   it('atomicSaveMemory rolls back file when indexing fails after retry', async () => {

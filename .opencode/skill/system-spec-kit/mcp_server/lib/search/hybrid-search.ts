@@ -180,6 +180,15 @@ const MMR_DEFAULT_LAMBDA = 0.7;
 /** Number of top results used as seeds for co-activation spreading. */
 const SPREAD_ACTIVATION_TOP_N = 5;
 
+/** Maximum contextual tree header length prepended to content (including brackets). */
+const CONTEXT_HEADER_MAX_CHARS = 100;
+/** Header/content separator characters added during contextual tree injection. */
+const CONTEXT_HEADER_SEPARATOR_CHARS = 1;
+/** Reserved token overhead per contextual header, calibrated to max header length. */
+const CONTEXT_HEADER_TOKEN_OVERHEAD = Math.ceil(
+  (CONTEXT_HEADER_MAX_CHARS + CONTEXT_HEADER_SEPARATOR_CHARS) / 4
+);
+
 let db: Database.Database | null = null;
 let vectorSearchFn: VectorSearchFn | null = null;
 let graphSearchFn: GraphSearchFn | null = null;
@@ -966,8 +975,11 @@ async function hybridSearchEnhanced(
       const degradationMeta = (reranked as unknown as Record<string, unknown>)['_degradation'];
 
       // Sprint 3/4: Apply token budget truncation before returning live results
-      // CHK-060: Reserve token overhead for contextual tree headers (~12 tokens per result)
-      const headerOverhead = isContextHeadersEnabled() ? reranked.length * 12 : 0;
+      // CHK-060: Reserve token overhead for contextual tree headers
+      // (max 100 chars + newline => ~26 tokens per result, chars/4 heuristic).
+      const headerOverhead = isContextHeadersEnabled()
+        ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
+        : 0;
       const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
       const budgeted = truncateToBudget(reranked, adjustedBudget, {
         includeContent: options.includeContent ?? false,
@@ -1298,7 +1310,7 @@ function injectContextualTree(row: HybridSearchResult, descCache: Map<string, st
   const description = truncateChars(descriptionRaw, 60);
   const base = `[${segments.left} > ${segments.right}`;
   const withDesc = description.length > 0 ? `${base} — ${description}]` : `${base}]`;
-  const header = truncateChars(withDesc, 100);
+  const header = truncateChars(withDesc, CONTEXT_HEADER_MAX_CHARS);
 
   return {
     ...row,

@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: governance [template:level_2/plan.md]"
 description: "Governance feature audit plan covering catalog inventory, code review, test coverage checks, and playbook cross-reference."
+# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 trigger_phrases:
   - "governance"
   - "implementation"
@@ -29,10 +30,12 @@ contextType: "general"
 | **Language/Stack** | TypeScript + Markdown audit artifacts |
 | **Framework** | Spec Kit Memory MCP feature-catalog workflow |
 | **Storage** | Repository source files and spec documents |
-| **Testing** | Existing Vitest coverage + manual playbook mapping (NEW-095+) |
+| **Testing** | Existing Vitest coverage + manual playbook mapping (NEW-063/NEW-064) |
 
 ### Overview
 This plan executes a feature-centric governance audit for two cataloged capabilities: feature flag governance and feature flag sunset audit. The approach inventories feature definitions, validates implementation and tests, then records structured findings with explicit playbook coverage mapping.
+
+> **Audit method**: Audit executed via 5-agent parallel Codex 5.3 xhigh dispatch.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -65,7 +68,7 @@ Catalog-driven audit workflow
 - **Verification Artifacts (`spec.md`, `tasks.md`, `checklist.md`)**: Capture outcomes, traceability, and completion evidence.
 
 ### Data Flow
-Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-095+ playbook mapping.
+Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-063/NEW-064 playbook mapping.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -76,7 +79,7 @@ Feature catalog entries identify scope, source file references are reviewed for 
 ### Phase 1: Setup
 - [x] Feature inventory captured from governance catalog
 - [x] Source file and test file references extracted
-- [x] Manual playbook target (NEW-095+) identified
+- [x] Manual playbook target (NEW-063/NEW-064) identified
 
 ### Phase 2: Core Implementation
 - [x] Correctness and standards review completed per feature
@@ -98,7 +101,7 @@ Feature catalog entries identify scope, source file references are reviewed for 
 |-----------|-------|-------|
 | Unit | Existing governance-related helper behavior | Vitest (existing suite) |
 | Integration | Feature-to-code and feature-to-test mapping validation | Manual source review |
-| Manual | Playbook cross-reference and findings verification | NEW-095+ scenario set |
+| Manual | Playbook cross-reference and findings verification | NEW-063/NEW-064 scenario set |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -111,7 +114,7 @@ Feature catalog entries identify scope, source file references are reviewed for 
 | `feature_catalog/17--governance/` | Internal | Green | Cannot define feature audit scope |
 | `mcp_server/lib/search/search-flags.ts` | Internal | Green | Cannot validate feature behavior |
 | Governance test references | Internal | Green | Cannot confirm coverage claims |
-| Playbook scenario `NEW-095+` | Internal | Green | Cannot complete manual coverage mapping |
+| Playbook scenario `NEW-063/NEW-064` | Internal | Green | Cannot complete manual coverage mapping |
 <!-- /ANCHOR:dependencies -->
 
 ---

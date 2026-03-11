@@ -7,6 +7,7 @@
 
 import type Database from 'better-sqlite3';
 import { isEntityLinkingEnabled } from './search-flags';
+import { createLogger } from '../utils/logger';
 
 // ---------------------------------------------------------------------------
 // 1. CONSTANTS
@@ -20,6 +21,7 @@ const DEFAULT_MAX_EDGE_DENSITY = 1.0;
 
 /** Environment variable for overriding S5 density guard threshold. */
 const ENTITY_LINKING_MAX_DENSITY_ENV = 'SPECKIT_ENTITY_LINKING_MAX_DENSITY';
+const logger = createLogger('EntityLinker');
 
 // ---------------------------------------------------------------------------
 // 2. INTERFACES
@@ -163,7 +165,11 @@ function getEdgeCount(db: Database.Database, nodeId: string): number {
       `SELECT COUNT(*) AS cnt FROM causal_edges WHERE source_id = ? OR target_id = ?`,
     ) as Database.Statement).get(nodeId, nodeId) as { cnt: number } | undefined;
     return row?.cnt ?? 0;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    logger.warn('Failed to count edges for node', {
+      nodeId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return 0;
   }
 }
@@ -177,7 +183,11 @@ function getSpecFolder(db: Database.Database, memoryId: number): string | null {
       `SELECT spec_folder FROM memory_index WHERE id = ?`,
     ) as Database.Statement).get(memoryId) as { spec_folder: string } | undefined;
     return row?.spec_folder ?? null;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    logger.warn('Failed to resolve spec folder for memory', {
+      memoryId,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return null;
   }
 }

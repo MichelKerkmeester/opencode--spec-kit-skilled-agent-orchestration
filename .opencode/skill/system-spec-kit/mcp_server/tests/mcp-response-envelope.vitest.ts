@@ -2,264 +2,190 @@
 // TEST: MCP RESPONSE ENVELOPE
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import * as handlers from '../handlers/index';
+import {
+  formatSearchResults,
+  type MemoryResultEnvelope,
+  type RawSearchResult,
+} from '../formatters/search-results';
+import type { MCPEnvelope, MCPResponse } from '../lib/response/envelope';
 
-interface ContentItem {
-  type?: string;
-  text?: string;
+interface SearchEnvelopeData {
+  count: number;
+  results: MemoryResultEnvelope[];
+  searchType?: string;
+  constitutionalCount?: number;
   [key: string]: unknown;
 }
 
-interface HandlerResponse {
-  content?: ContentItem[];
-  isError?: boolean;
-  _error?: unknown;
-  [key: string]: unknown;
-}
-
-interface EnvelopeValidationResult {
-  valid: boolean;
-  hasContent: boolean;
-  hasTypeText: boolean;
-  hasTextString: boolean;
-  isValidJSON: boolean;
-  parsedData: unknown;
-  issues: string[];
-}
-
-type HandlerFunction = (args: unknown) => Promise<HandlerResponse>;
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null;
-}
-
-function getHandler(handlerName: string): HandlerFunction | null {
-  const candidate = (handlers as Record<string, unknown>)[handlerName];
-  return typeof candidate === 'function' ? (candidate as HandlerFunction) : null;
-}
-
-function getErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
-}
-
-// ---------------------------------------------------------------
-// Helper: Check if a response follows the MCP envelope format
-// ---------------------------------------------------------------
-function validateMCPEnvelope(result: unknown): EnvelopeValidationResult {
-  const issues: string[] = [];
-  let hasContent = false;
-  let hasTypeText = false;
-  let hasTextString = false;
-  let isValidJSON = false;
-  let parsedData: unknown = null;
-
-  if (!isRecord(result)) {
-    issues.push('Result is null/undefined');
-    return { valid: false, hasContent, hasTypeText, hasTextString, isValidJSON, parsedData, issues };
+function parseEnvelope(response: MCPResponse): MCPEnvelope<SearchEnvelopeData> {
+  expect(Array.isArray(response.content)).toBe(true);
+  expect(response.content.length).toBeGreaterThan(0);
+  const firstContent = response.content[0];
+  expect(firstContent).toBeDefined();
+  if (!firstContent) {
+    throw new Error('Missing MCP content payload');
+  }
+  expect(firstContent.type).toBe('text');
+  expect(typeof firstContent.text).toBe('string');
+  if (typeof firstContent.text !== 'string') {
+    throw new Error('MCP content payload is not a JSON string');
   }
 
-  const content = Array.isArray(result.content) ? result.content : undefined;
-
-  if (content) {
-    hasContent = true;
-  } else {
-    issues.push('Missing or non-array .content');
-  }
-
-  const firstItem = content?.[0];
-
-  if (hasContent && firstItem) {
-    const item = isRecord(firstItem) ? firstItem : {};
-
-    if (item.type === 'text') {
-      hasTypeText = true;
-    } else {
-      issues.push(`Content type is '${item.type}', expected 'text'`);
-    }
-
-    if (typeof item.text === 'string') {
-      hasTextString = true;
-
-      try {
-        parsedData = JSON.parse(item.text);
-        isValidJSON = true;
-      } catch {
-        issues.push('Content .text is not valid JSON');
-      }
-    } else {
-      issues.push(`Content .text is ${typeof item.text}, expected string`);
-    }
-  } else if (hasContent) {
-    issues.push('Content array is empty');
-  }
-
-  const valid = hasContent && hasTypeText && hasTextString && isValidJSON;
-  return { valid, hasContent, hasTypeText, hasTextString, isValidJSON, parsedData, issues };
+  return JSON.parse(firstContent.text) as MCPEnvelope<SearchEnvelopeData>;
 }
 
-// ---------------------------------------------------------------
-// Helper: Call handler with graceful DB-error handling
-// ---------------------------------------------------------------
-async function callHandlerSafe(
-  handlerName: string,
-  args: unknown,
-): Promise<{ result: HandlerResponse | null; skipped: boolean; skipReason?: string }> {
-  const handlerFn = getHandler(handlerName);
-  if (!handlerFn) {
-    return { result: null, skipped: true, skipReason: `Handler '${handlerName}' not found` };
+function getFirstResult(envelope: MCPEnvelope<SearchEnvelopeData>): MemoryResultEnvelope {
+  const firstResult = envelope.data.results[0];
+  expect(firstResult).toBeDefined();
+  if (!firstResult) {
+    throw new Error('Expected at least one formatted result');
   }
-
-  try {
-    const result = await handlerFn(args);
-    return { result, skipped: false };
-  } catch (error: unknown) {
-    const msg = getErrorMessage(error);
-    if (
-      msg.includes('Database') ||
-      msg.includes('SQLITE') ||
-      msg.includes('database') ||
-      msg.includes('sqlite') ||
-      msg.includes('no such table') ||
-      msg.includes('ENOENT') ||
-      msg.includes('Cannot read') ||
-      msg.includes('not initialized')
-    ) {
-      return { result: null, skipped: true, skipReason: `DB not available: ${msg.slice(0, 80)}` };
-    }
-    return { result: { _error: error }, skipped: false };
-  }
+  return firstResult;
 }
 
-describe('MCP Protocol Response Envelope (T536) [deferred - requires DB test fixtures]', () => {
-  describe('Envelope Structure Validation (T536-1 to T536-5)', () => {
-    it('T536-1: Success response has .content array', async () => {
-      const { result, skipped } = await callHandlerSafe('handleMemoryHealth', {});
+function createMockResult(overrides: Partial<RawSearchResult> = {}): RawSearchResult {
+  return {
+    id: 101,
+    spec_folder: 'specs/015-provenance',
+    file_path: '/tmp/provenance.md',
+    title: 'Provenance Result',
+    similarity: 87.5,
+    fts_score: 0.42,
+    rrfScore: 0.68,
+    intentAdjustedScore: 0.73,
+    score: 0.55,
+    rerankerScore: 0.88,
+    attentionScore: 0.77,
+    triggerPhrases: ['alpha', 'beta'],
+    created_at: '2026-01-01T00:00:00.000Z',
+    updated_at: '2026-01-02T00:00:00.000Z',
+    memoryState: 'HOT',
+    source: 'vector',
+    sources: ['vector', 'fts'],
+    anchorMetadata: [
+      { id: 'state', type: 'section' },
+      { id: 'next-steps', type: 'section' },
+    ],
+    traceMetadata: {
+      queryComplexity: 'moderate',
+      attribution: {
+        vector: [101],
+        fts: [101],
+        graph: [999],
+      },
+    },
+    ...overrides,
+  };
+}
 
-      if (skipped) {
-        // Try alternative handler
-        const alt = await callHandlerSafe('handleCheckpointList', {});
-        if (alt.skipped || !alt.result || alt.result._error) {
-          // No DB available — document expected format
-          expect(true).toBe(true); // Expected format: { content: [{ type: "text", text: "..." }] }
-          return;
-        }
-        const envelope = validateMCPEnvelope(alt.result);
-        expect(envelope.hasContent).toBe(true);
-        return;
-      }
+describe('MCP Protocol Response Envelope (T536)', () => {
+  it('T536-1: returns MCP content envelope with parseable JSON payload', async () => {
+    const response = await formatSearchResults([createMockResult()], 'hybrid');
+    const envelope = parseEnvelope(response);
 
-      if (result && result._error) {
-        // Non-DB error — envelope testing deferred
-        expect(result._error).toBeDefined();
-        return;
-      }
-
-      const envelope = validateMCPEnvelope(result);
-      expect(envelope.hasContent).toBe(true);
-    });
-
-    it('T536-2: Content items have .type = "text"', async () => {
-      const { result, skipped } = await callHandlerSafe('handleMemoryHealth', {});
-      if (skipped || !result || result._error) return;
-
-      const envelope = validateMCPEnvelope(result);
-      expect(envelope.hasTypeText).toBe(true);
-    });
-
-    it('T536-3: Content items have .text as string', async () => {
-      const { result, skipped } = await callHandlerSafe('handleMemoryHealth', {});
-      if (skipped || !result || result._error) return;
-
-      const envelope = validateMCPEnvelope(result);
-      expect(envelope.hasTextString).toBe(true);
-    });
-
-    it('T536-4: Content .text is valid JSON (parseable)', async () => {
-      const { result, skipped } = await callHandlerSafe('handleMemoryHealth', {});
-      if (skipped || !result || result._error) return;
-
-      const envelope = validateMCPEnvelope(result);
-      expect(envelope.isValidJSON).toBe(true);
-    });
-
-    it('T536-5: Parsed JSON has expected fields', async () => {
-      const { result, skipped } = await callHandlerSafe('handleMemoryHealth', {});
-      if (skipped || !result || result._error) return;
-
-      const envelope = validateMCPEnvelope(result);
-      if (envelope.parsedData) {
-        const keys = Object.keys(envelope.parsedData);
-        expect(keys.length).toBeGreaterThan(0);
-      }
-    });
+    expect(response.isError).toBe(false);
+    expect(envelope.meta.tool).toBe('memory_search');
+    expect(envelope.data.count).toBe(1);
+    expect(envelope.data.results).toHaveLength(1);
   });
 
-  describe('Tool-Specific Envelope Validation (T536-6 to T536-10)', () => {
-    const TOOL_ENVELOPE_TESTS = [
+  it('T536-2: includeTrace=false (default) omits scores/source/trace', async () => {
+    const response = await formatSearchResults([createMockResult()], 'hybrid');
+    const envelope = parseEnvelope(response);
+    const result = getFirstResult(envelope);
+
+    expect(result.scores).toBeUndefined();
+    expect(result.source).toBeUndefined();
+    expect(result.trace).toBeUndefined();
+  });
+
+  it('T536-3: includeTrace=true includes scores, source, and trace fields', async () => {
+    const response = await formatSearchResults(
+      [createMockResult()],
+      'hybrid',
+      false,
+      null,
+      null,
+      null,
       {
-        testId: 'T536-6',
-        name: 'memory_health returns response with correct structure',
-        handler: 'handleMemoryHealth',
-        args: {},
+        retrievalTrace: {
+          stages: [
+            {
+              stage: 'candidate',
+              metadata: {
+                channel: 'vector',
+                channels: ['vector', 'fts'],
+                expandedTerms: ['alpha', 'beta'],
+              },
+            },
+            {
+              stage: 'fallback',
+              metadata: {
+                fallbackTier: 2,
+                queryComplexity: 'moderate',
+                budgetTruncated: true,
+              },
+            },
+          ],
+        },
       },
-      {
-        testId: 'T536-7',
-        name: 'memory_stats returns response with correct structure',
-        handler: 'handleMemoryStats',
-        args: {},
-      },
-      {
-        testId: 'T536-8',
-        name: 'checkpoint_list returns response with correct structure',
-        handler: 'handleCheckpointList',
-        args: {},
-      },
-      {
-        testId: 'T536-9',
-        name: 'memory_causal_stats returns response with correct structure',
-        handler: 'handleMemoryCausalStats',
-        args: {},
-      },
-      {
-        testId: 'T536-10',
-        name: 'memory_list returns response with correct structure',
-        handler: 'handleMemoryList',
-        args: {},
-      },
-    ];
+      true
+    );
 
-    TOOL_ENVELOPE_TESTS.forEach((test) => {
-      it(`${test.testId}: ${test.name}`, async () => {
-        const { result, skipped } = await callHandlerSafe(test.handler, test.args);
+    const envelope = parseEnvelope(response);
+    const result = getFirstResult(envelope);
 
-        if (skipped) return;
+    expect(result.scores).toEqual(expect.objectContaining({
+      semantic: 87.5,
+      lexical: 0.42,
+      fusion: 0.68,
+      composite: 0.73,
+      intentAdjusted: 0.73,
+      rerank: 0.88,
+      attention: 0.77,
+    }));
 
-        if (result && result._error) {
-          const error = result._error;
-          // Even error responses tell us something about the format
-          expect(error).toBeDefined();
-          return;
-        }
-
-        expect(result).toBeDefined();
-
-        const envelope = validateMCPEnvelope(result);
-
-        if (envelope.valid) {
-          expect(envelope.valid).toBe(true);
-        } else if (result?.isError === true) {
-          // Error responses are also valid MCP format
-          const envelope2 = validateMCPEnvelope(result);
-          expect(envelope2.hasContent).toBe(true);
-          expect(envelope2.hasTypeText).toBe(true);
-          expect(envelope2.hasTextString).toBe(true);
-        } else {
-          // Force fail with details
-          expect(envelope.issues).toEqual([]);
-        }
-      });
+    expect(result.source).toEqual({
+      file: '/tmp/provenance.md',
+      anchorIds: ['state', 'next-steps'],
+      anchorTypes: ['section', 'section'],
+      lastModified: '2026-01-02T00:00:00.000Z',
+      memoryState: 'HOT',
     });
+
+    expect(result.trace?.channelsUsed).toEqual(expect.arrayContaining(['vector', 'fts']));
+    expect(result.trace?.pipelineStages).toEqual(['candidate', 'fallback']);
+    expect(result.trace?.fallbackTier).toBe(2);
+    expect(result.trace?.queryComplexity).toBe('moderate');
+    expect(result.trace?.expansionTerms).toEqual(expect.arrayContaining(['alpha', 'beta']));
+    expect(result.trace?.budgetTruncated).toBe(true);
+    expect(result.trace?.scoreResolution).toBe('intentAdjusted');
+  });
+
+  it('T536-4: scoreResolution and composite follow fallback ordering', async () => {
+    const response = await formatSearchResults(
+      [
+        createMockResult({
+          intentAdjustedScore: undefined,
+          rrfScore: 0.66,
+          score: 0.52,
+          similarity: 44,
+        }),
+      ],
+      'hybrid',
+      false,
+      null,
+      null,
+      null,
+      {},
+      true
+    );
+    const envelope = parseEnvelope(response);
+    const result = getFirstResult(envelope);
+
+    expect(result.scores?.composite).toBe(0.66);
+    expect(result.trace?.scoreResolution).toBe('fusion');
   });
 });

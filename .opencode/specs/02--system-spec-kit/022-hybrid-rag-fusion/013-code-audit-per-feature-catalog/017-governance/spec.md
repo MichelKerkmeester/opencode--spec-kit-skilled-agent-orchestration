@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: governance [template:level_2/spec.md]"
 description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
+# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 trigger_phrases:
   - "governance"
   - "feature"
@@ -25,7 +26,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P2 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `017-governance` |
 <!-- /ANCHOR:metadata -->
@@ -50,7 +51,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 ### In Scope
 - Audit the governance feature catalog entries in `feature_catalog/17--governance/`.
 - Cover both features: feature flag governance and feature flag sunset audit.
-- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-095+).
+- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
 - Record findings in SpecKit Level 2 format.
 
 ### Out of Scope
@@ -78,7 +79,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 |----|-------------|---------------------|
 | REQ-001 | All governance features are audited with structured findings | Both features have explicit PASS/WARN/FAIL status and finding fields |
 | REQ-002 | Audit covers correctness, standards, behavior, and tests | Each feature documents code issues, standards violations, behavior mismatch, and test gaps |
-| REQ-003 | Manual playbook coverage is mapped | Each feature includes NEW-095+ mapping or a documented gap |
+| REQ-003 | Manual playbook coverage is mapped | Each feature includes NEW-063/NEW-064 mapping or a documented gap |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -93,7 +94,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Both governance features are represented in the final checklist with PASS status and no uncovered gaps.
+- **SC-001**: Both governance features are represented in the final checklist with PASS/WARN status and documented findings (F-01 PASS, F-02 WARN due to documentation drift).
 - **SC-002**: All four governance docs conform to Level 2 template sections and anchor structure.
 <!-- /ANCHOR:success-criteria -->
 
@@ -107,7 +108,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 | Dependency | `feature_catalog/17--governance/` entries | Incomplete or outdated catalog content can misstate governance scope | Cross-check feature list and references during audit mapping |
 | Dependency | `mcp_server/lib/search/search-flags.ts` behavior | Mismatch between docs and code can invalidate findings | Verify described behavior against current code references |
 | Risk | Audit drift over time | PASS results can become stale after code changes | Re-run governance audit when feature flag helpers change |
-| Risk | Missing scenario mapping evidence | Manual validation coverage confidence drops | Keep NEW-095+ mapping explicit per feature |
+| Risk | Missing scenario mapping evidence | Manual validation coverage confidence drops | Keep NEW-063/NEW-064 mapping explicit per feature |
 <!-- /ANCHOR:risks -->
 
 ---

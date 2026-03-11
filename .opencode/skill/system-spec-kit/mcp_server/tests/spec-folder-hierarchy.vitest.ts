@@ -3,12 +3,13 @@
 // Validates hierarchy-aware retrieval from spec folder paths.
 // ---------------------------------------------------------------
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import Database from 'better-sqlite3';
 import {
   getParentPath,
   getAncestorPaths,
   buildHierarchyTree,
+  invalidateHierarchyCache,
   getRelatedFolders,
   getSiblingPaths,
   getDescendantPaths,
@@ -492,6 +493,58 @@ describe('queryHierarchyMemories', () => {
     const rootResult = results.find(r => r.spec_folder === 'a');
     // 0.8 - 3*0.2 = 0.2, floored to 0.3
     expect(rootResult!.relevance).toBe(0.3);
+  });
+});
+
+// --- 8. Cache behavior (invalidations + TTL stale detection) ---
+
+describe('Hierarchy cache behavior', () => {
+  let db: Database.Database;
+
+  beforeEach(() => {
+    db = createTestDb();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    db.close();
+  });
+
+  it('returns cached tree within TTL and refreshes after explicit cache invalidation', () => {
+    insertMemory(db, 1, '003-foo');
+    const firstTree = buildHierarchyTree(db);
+
+    insertMemory(db, 2, '003-foo/140-new-child');
+
+    const cachedTree = buildHierarchyTree(db);
+    expect(cachedTree).toBe(firstTree);
+    expect(cachedTree.nodeMap.has('003-foo/140-new-child')).toBe(false);
+
+    invalidateHierarchyCache(db);
+    const refreshedTree = buildHierarchyTree(db);
+    expect(refreshedTree).not.toBe(firstTree);
+    expect(refreshedTree.nodeMap.has('003-foo/140-new-child')).toBe(true);
+  });
+
+  it('detects stale cache after TTL expiry and rebuilds hierarchy', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
+
+    insertMemory(db, 1, '003-foo');
+    const initialTree = buildHierarchyTree(db);
+
+    insertMemory(db, 2, '003-foo/140-after-ttl');
+
+    vi.setSystemTime(new Date('2026-01-01T00:00:30.000Z'));
+    const withinTtlTree = buildHierarchyTree(db);
+    expect(withinTtlTree).toBe(initialTree);
+    expect(withinTtlTree.nodeMap.has('003-foo/140-after-ttl')).toBe(false);
+
+    vi.setSystemTime(new Date('2026-01-01T00:01:01.000Z'));
+    const staleRefreshedTree = buildHierarchyTree(db);
+    expect(staleRefreshedTree).not.toBe(initialTree);
+    expect(staleRefreshedTree.nodeMap.has('003-foo/140-after-ttl')).toBe(true);
   });
 });
 

@@ -1,6 +1,7 @@
 ---
 title: "Verification Checklist: memory-quality-and-indexing [template:level_2/checklist.md]"
 description: "Verification Date: 2026-03-11"
+SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -30,14 +31,18 @@ contextType: "general"
 
 ---
 
+## P0 - Blockers
+
+P0 items below are complete and include inline evidence.
+
+---
+
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md
-- [x] CHK-002 [P0] Technical approach defined in plan.md
-- [x] CHK-003 [P1] Dependencies identified and available
-
-Evidence snapshot: Audit scope documented for 16 features in `feature_catalog/13--memory-quality-and-indexing/` with explicit review criteria and playbook mapping intent.
+- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: `spec.md` requirements now capture completed remediation state and validation closure criteria.]
+- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: `plan.md` summary, phases, and done criteria reflect completed remediation and verification outcomes.]
+- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: `plan.md` dependency table tracks feature catalog, source trees, playbook references, and templates used in this phase.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -45,16 +50,10 @@ Evidence snapshot: Audit scope documented for 16 features in `feature_catalog/13
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks — TSC --noEmit clean
-- [x] CHK-011 [P0] No console errors or warnings — 229 tests pass, 0 warnings
-- [x] CHK-012 [P1] Error handling implemented
-- [x] CHK-013 [P1] Code follows project patterns — quality-loop flag routed through search-flags.ts (T009), CHARS_PER_TOKEN harmonized via env var (T006)
-
-Evidence snapshot:
-- Feature-flag inconsistency resolved: quality-loop now uses centralized `isQualityLoopEnabled()` from search-flags.ts
-- CHARS_PER_TOKEN harmonized: both preflight.ts and quality-loop.ts read `MCP_CHARS_PER_TOKEN` with default 4
-- F-01/F-06/F-09 default/behavior drift corrected in catalogs and JSDoc
-- F-10 (extraction-adapter) import paths verified correct via symlink convention
+- [x] CHK-010 [P0] Code passes lint/format checks — TSC --noEmit clean [EVIDENCE: Verification outcome recorded in `tasks.md` T013 and `implementation-summary.md` test table.]
+- [x] CHK-011 [P0] No console errors or warnings — 229 tests pass, 0 warnings [EVIDENCE: `tasks.md` T013 and `implementation-summary.md` report 229/229 targeted tests passing.]
+- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: `tasks.md` T005/T010 capture token-budget and quality-gate behavior corrections, including stale default/comment fixes.]
+- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: `tasks.md` T006/T009/T011 confirm centralized flags, harmonized constants, and corrected defaults in code and docs.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -62,15 +61,10 @@ Evidence snapshot:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met
-- [x] CHK-021 [P0] Manual testing complete — 229 tests across 5 suites, all green
-- [x] CHK-022 [P1] Edge cases tested — retry behavior, token budget bounds, flag routing, import resolution verified
-- [x] CHK-023 [P1] Error scenarios validated — unfixable content rejection, budget exceeded messaging confirmed
-
-Evidence snapshot:
-- Features audited: **16/16**
-- Status totals: **16 PASS**, **0 WARN**, **0 FAIL** (7 WARN remediated to PASS)
-- All P1 remediation items completed (T004-T011); P2 item T012 also completed
+- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: `tasks.md` completion criteria and `spec.md` success criteria align to completed phase state.]
+- [x] CHK-021 [P0] Manual testing complete — 229 tests across 5 suites, all green [EVIDENCE: `implementation-summary.md` Test Results table shows 229 passing tests across 5 suites.]
+- [x] CHK-022 [P1] Edge cases tested — retry behavior, token budget bounds, flag routing, import resolution verified [EVIDENCE: Completed tasks T004-T012 include retry wording correction, token-budget handling, flag routing, and import-path verification.]
+- [x] CHK-023 [P1] Error scenarios validated — unfixable content rejection, budget exceeded messaging confirmed [EVIDENCE: `tasks.md` T005 and T010 describe corrected budget/error messaging and gate semantics.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -78,24 +72,25 @@ Evidence snapshot:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets
-- [x] CHK-031 [P0] Input validation implemented
-- [x] CHK-032 [P1] Auth/authz working correctly — N/A for this audit scope; no auth boundaries crossed
-
-Evidence snapshot: No credential exposure identified in reviewed files; validation and gating logic verified correct.
+- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: Scope of this phase is validation/indexing modules and feature-catalog metadata; no secret-bearing changes recorded in tasks.]
+- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: `tasks.md` T006/T010 and checklist testing items verify validation and gate behavior in preflight and quality-loop paths.]
+- [x] CHK-032 [P1] Auth/authz working correctly — N/A for this audit scope; no auth boundaries crossed [EVIDENCE: `spec.md` out-of-scope and `plan.md` dependencies confirm no auth/authz subsystem changes in this phase.]
 <!-- /ANCHOR:security -->
+
+---
+
+## P1 - Required
+
+P1 items are complete and evidenced inline.
 
 ---
 
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized — all artifacts updated post-remediation
-- [x] CHK-041 [P1] Code comments adequate — stale TM-04/MR12 removed (T010), encoding-intent JSDoc fixed (T011)
-- [x] CHK-042 [P2] README updated (if applicable) — validation/README.md CHARS_PER_TOKEN default updated from 3.5 to 4
-
-Evidence snapshot:
-- All catalog/documentation mismatches resolved: F-06 default state, F-09 default-on/off, F-11 source/test paths corrected.
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized — all artifacts updated post-remediation [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now report the same completion totals and scope boundaries.]
+- [x] CHK-041 [P1] Code comments adequate — stale TM-04/MR12 removed (T010), encoding-intent JSDoc fixed (T011) [EVIDENCE: `tasks.md` T010 and T011 explicitly record these corrections.]
+- [x] CHK-042 [P2] README updated (if applicable) — CHARS_PER_TOKEN default updated from 3.5 to 4 [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md` is listed in completed remediation coverage in `implementation-summary.md`.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -103,11 +98,9 @@ Evidence snapshot:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only
-- [x] CHK-051 [P1] scratch/ cleaned before completion
-- [x] CHK-052 [P2] Findings saved to memory/ — context saved via generate-context.js
-
-Evidence snapshot: Remediation completed across source, catalog, and spec folder artifacts.
+- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: `scratch/` contains only `.gitkeep`; no stray artifacts were introduced.]
+- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: No phase output files remain under `scratch/` beyond `.gitkeep`.]
+- [x] CHK-052 [P2] Findings saved to memory/ — context saved via generate-context.js [EVIDENCE: `description.json` tracks `memorySequence: 1` and memory history for this phase folder.]
 <!-- /ANCHOR:file-org -->
 
 ---

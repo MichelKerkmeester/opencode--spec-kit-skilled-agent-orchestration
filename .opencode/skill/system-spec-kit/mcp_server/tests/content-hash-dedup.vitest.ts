@@ -12,6 +12,7 @@ import * as os from 'os';
 import * as fs from 'fs';
 import * as crypto from 'crypto';
 import * as hybridSearch from '../lib/search/hybrid-search';
+import { checkContentHashDedup, checkExistingRow } from '../handlers/save/dedup';
 
 /* -------------------------------------------------------------
    HELPERS
@@ -37,6 +38,7 @@ function createMinimalDb(): Database.Database {
       title TEXT,
       trigger_phrases TEXT,
       importance_weight REAL DEFAULT 0.5,
+      parent_id INTEGER,
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now')),
       embedding_status TEXT DEFAULT 'success',
@@ -51,40 +53,34 @@ function createMinimalDb(): Database.Database {
 }
 
 /**
- * Simulate the T054 dedup query as implemented in memory-save.ts.
- * Returns the duplicate row if found, else undefined.
- */
-function checkContentHashDedup(
-  db: Database.Database,
-  specFolder: string,
-  contentHash: string
-): { id: number; file_path: string; title: string | null } | undefined {
-  return db.prepare(`
-    SELECT id, file_path, title FROM memory_index
-    WHERE spec_folder = ?
-      AND content_hash = ?
-      AND embedding_status != 'pending'
-    ORDER BY id DESC
-    LIMIT 1
-  `).get(specFolder, contentHash) as { id: number; file_path: string; title: string | null } | undefined;
-}
-
-/**
  * Insert a memory record as if it was already indexed (embedding_status='success').
  */
 function insertIndexedMemory(
   db: Database.Database,
-  specFolder: string,
-  filePath: string,
-  content: string,
-  title?: string
+      specFolder: string,
+      filePath: string,
+      content: string,
+      title?: string,
+      embeddingStatus?: 'success' | 'pending' | 'partial' | 'failed' | 'retry' | 'complete'
 ): number {
   const hash = sha256(content);
   const result = db.prepare(`
     INSERT INTO memory_index (spec_folder, file_path, title, content_hash, embedding_status)
-    VALUES (?, ?, ?, ?, 'success')
-  `).run(specFolder, filePath, title ?? null, hash);
+    VALUES (?, ?, ?, ?, ?)
+  `).run(specFolder, filePath, title ?? null, hash, embeddingStatus ?? 'success');
   return result.lastInsertRowid as number;
+}
+
+function buildParsedMemory(specFolder: string, content: string, title: string | null = 'Test Memory') {
+  return {
+    specFolder,
+    title,
+    triggerPhrases: [],
+    content,
+    contentHash: sha256(content),
+    contextType: 'general',
+    importanceTier: 'normal',
+  } as any;
 }
 
 /* -------------------------------------------------------------
@@ -109,8 +105,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
   describe('Dedup Query Logic', () => {
     it('T054-1: Returns undefined when memory_index is empty', () => {
       const hash = sha256('some content');
-      const result = checkContentHashDedup(db, 'specs/test-folder', hash);
-      expect(result).toBeUndefined();
+      const result = checkContentHashDedup(db, buildParsedMemory('specs/test-folder', 'some content'), false, []);
+      expect(result).toBeNull();
     });
 
     it('T054-2: Returns undefined when spec_folder does not match', () => {
@@ -118,8 +114,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const hash = sha256(content);
       insertIndexedMemory(db, 'specs/other-folder', '/path/to/memory/file.md', content);
 
-      const result = checkContentHashDedup(db, 'specs/test-folder', hash);
-      expect(result).toBeUndefined();
+      const result = checkContentHashDedup(db, buildParsedMemory('specs/test-folder', content), false, []);
+      expect(result).toBeNull();
     });
 
     it('T054-3: Detects duplicate when same content saved under different file path', () => {
@@ -136,11 +132,12 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       );
 
       // Now check as if saving the same content under path-B
-      const result = checkContentHashDedup(db, 'specs/dedup-test', hash);
+      const result = checkContentHashDedup(db, buildParsedMemory('specs/dedup-test', content), false, []);
 
-      expect(result).toBeDefined();
+      expect(result).not.toBeNull();
       expect(result!.id).toBe(originalId);
-      expect(result!.file_path).toBe('/specs/dedup-test/memory/original.md');
+      expect(result!.status).toBe('duplicate');
+      expect(result!.message).toContain('/specs/dedup-test/memory/original.md');
     });
 
     it('T054-4: Changing 1 character produces a different hash — dedup does NOT trigger', () => {
@@ -162,8 +159,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       );
 
       // Query with modified hash — should NOT find a duplicate
-      const result = checkContentHashDedup(db, 'specs/changed-content', modifiedHash);
-      expect(result).toBeUndefined();
+      const result = checkContentHashDedup(db, buildParsedMemory('specs/changed-content', modifiedContent), false, []);
+      expect(result).toBeNull();
     });
 
     it('T054-5: Pending embeddings are excluded from dedup check', () => {
@@ -176,8 +173,8 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         VALUES (?, ?, ?, 'pending')
       `).run('specs/pending-test', '/specs/pending-test/memory/pending.md', hash);
 
-      const result = checkContentHashDedup(db, 'specs/pending-test', hash);
-      expect(result).toBeUndefined();
+      const result = checkContentHashDedup(db, buildParsedMemory('specs/pending-test', content), false, []);
+      expect(result).toBeNull();
     });
 
     it('T054-6: Returns most recent record (highest id) for multiple matches', () => {
@@ -188,11 +185,91 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
       const id1 = insertIndexedMemory(db, folder, '/path/a.md', content);
       const id2 = insertIndexedMemory(db, folder, '/path/b.md', content);
 
-      const result = checkContentHashDedup(db, folder, hash);
-      expect(result).toBeDefined();
+      const result = checkContentHashDedup(db, buildParsedMemory(folder, content), false, []);
+      expect(result).not.toBeNull();
       // Should return the most recently inserted (highest id)
       expect(result!.id).toBe(id2);
       expect(result!.id).toBeGreaterThan(id1);
+    });
+
+    it('T054-6b: Partial parent rows remain dedup-eligible', () => {
+      const content = 'Chunked parent content for partial dedup.';
+      const folder = 'specs/partial-parent';
+      const insertedId = insertIndexedMemory(
+        db,
+        folder,
+        '/specs/partial-parent/memory/chunked.md',
+        content,
+        'Chunked Parent',
+        'partial'
+      );
+
+      const result = checkContentHashDedup(db, buildParsedMemory(folder, content), false, []);
+
+      expect(result).not.toBeNull();
+      expect(result!.id).toBe(insertedId);
+    });
+
+    it('T054-6c: Invalid terminal status complete is excluded from dedup', () => {
+      const content = 'Legacy complete status should not dedup.';
+      const folder = 'specs/invalid-complete-status';
+      insertIndexedMemory(
+        db,
+        folder,
+        '/specs/invalid-complete-status/memory/legacy.md',
+        content,
+        'Legacy Complete',
+        'complete'
+      );
+
+      const result = checkContentHashDedup(db, buildParsedMemory(folder, content), false, []);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('Same-path unchanged gate', () => {
+    it('T054-6d: Same-path unchanged does not short-circuit failed embeddings', () => {
+      const content = 'Existing failed embedding should not be treated as unchanged.';
+      const filePath = '/specs/failed-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'failed', NULL)
+      `).run('specs/failed-same-path', filePath, filePath, 'Failed Embedding', sha256(content));
+
+      const result = checkExistingRow(
+        db,
+        buildParsedMemory('specs/failed-same-path', content, 'Failed Embedding'),
+        filePath,
+        filePath,
+        false,
+        [],
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('T054-6e: Same-path unchanged still short-circuits partial parents', () => {
+      const content = 'Existing partial parent remains unchanged-eligible.';
+      const filePath = '/specs/partial-same-path/memory/doc.md';
+      const inserted = db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'partial', NULL)
+      `).run('specs/partial-same-path', filePath, filePath, 'Partial Parent', sha256(content));
+
+      const result = checkExistingRow(
+        db,
+        buildParsedMemory('specs/partial-same-path', content, 'Partial Parent'),
+        filePath,
+        filePath,
+        false,
+        [],
+      );
+
+      expect(result?.status).toBe('unchanged');
+      expect(result?.id).toBe(Number(inserted.lastInsertRowid));
     });
   });
 
@@ -245,10 +322,11 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         'Shape Test Title'
       );
 
-      const result = checkContentHashDedup(db, folder, hash);
-      expect(result).toBeDefined();
+      const result = checkContentHashDedup(db, buildParsedMemory(folder, content, 'Shape Test Title'), false, []);
+      expect(result).not.toBeNull();
       expect(result).toHaveProperty('id', insertedId);
-      expect(result).toHaveProperty('file_path', '/specs/shape-test/memory/shape.md');
+      expect(result).toHaveProperty('status', 'duplicate');
+      expect(result!.message).toContain('/specs/shape-test/memory/shape.md');
       expect(result).toHaveProperty('title', 'Shape Test Title');
     });
 
@@ -263,9 +341,9 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
         VALUES (?, ?, ?, 'success')
       `).run(folder, '/specs/null-title-test/memory/notitle.md', hash);
 
-      const result = checkContentHashDedup(db, folder, hash);
-      expect(result).toBeDefined();
-      expect(result!.title).toBeNull();
+      const result = checkContentHashDedup(db, buildParsedMemory(folder, content, null), false, []);
+      expect(result).not.toBeNull();
+      expect(result!.title).toBe('');
     });
   });
 });

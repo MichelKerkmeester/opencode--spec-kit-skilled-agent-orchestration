@@ -1373,7 +1373,11 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
           // AI-WHY: Record DELETE history only after confirmed deletion.
           try {
             recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check');
-          } catch (_histErr: unknown) { /* best-effort */ }
+          } catch (error: unknown) {
+            logger.warn('Failed to record integrity-check delete history', {
+              error: error instanceof Error ? error.message : String(error),
+            });
+          }
         }
       } catch (e: unknown) {
         console.warn(`[vector-index] Failed to clean orphaned chunk ${chunk.id}: ${get_error_message(e)}`);

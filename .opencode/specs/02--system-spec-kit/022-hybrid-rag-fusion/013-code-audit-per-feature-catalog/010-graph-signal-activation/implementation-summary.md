@@ -18,7 +18,7 @@ contextType: "general"
 
 This summary now reflects the actual Task #2 remediation scope rather than the earlier full-backlog claim. Task #2 updated one implementation file and four targeted test files, then verified five graph-signal audit items with focused regression coverage.
 
-**Result**: targeted Vitest coverage passed, including the strengthened seed-cap regression in `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` (`6/6` tests in that file), alignment drift passed (`0` findings), and `npx tsc --noEmit` remained blocked by an unrelated pre-existing `TS2345` error in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`.
+**Result**: targeted Vitest coverage passed, including the strengthened seed-cap regression in `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` (`6/6` tests in that file), alignment drift passed (`0` findings), and `npx tsc --noEmit` now passes in `.opencode/skill/system-spec-kit/mcp_server`.
 
 ---
 
@@ -52,7 +52,7 @@ This summary now reflects the actual Task #2 remediation scope rather than the e
 
 - **Vitest**: `node node_modules/vitest/vitest.mjs run tests/causal-edges.vitest.ts tests/degree-computation.vitest.ts tests/co-activation.vitest.ts tests/rrf-degree-channel.vitest.ts tests/causal-boost.vitest.ts` -> passed; `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now passes (`6/6` tests in that file)
 - **Alignment drift**: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` -> passed (`0` findings)
-- **TypeScript**: `npx tsc --noEmit` -> blocked by unrelated pre-existing `TS2345` in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts:133`
+- **TypeScript**: `npx tsc --noEmit` -> passed in `.opencode/skill/system-spec-kit/mcp_server`
 
 ---
 

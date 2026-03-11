@@ -18,18 +18,11 @@ Phase 014 verification now includes an end-to-end appended-envelope assertion in
 
 ### Tests
 
-| File | Focus |
-|------|-------|
-| `mcp_server/tests/envelope.vitest.ts` | Response envelope tests |
-| `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| Test File | Test Name | Coverage |
+|-----------|-----------|----------|
+| `mcp_server/tests/context-server.vitest.ts` | `T000i: successful responses append auto-surface hints and preserve autoSurfacedContext` | Verifies end-to-end success envelopes append auto-surface hints while preserving `autoSurfacedContext` in the response object. |
+| `mcp_server/tests/context-server.vitest.ts` | `T000j: final tokenCount matches the serialized envelope after hints and tokenBudget injection` | Verifies finalized success envelopes recompute `meta.tokenCount` from the fully serialized payload after hint/token-budget mutations. |
+| `mcp_server/tests/hooks-ux-feedback.vitest.ts` | `appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON` | Unit-level contract coverage for envelope hint injection and final token metadata synchronization used by the end-to-end success path. |
 
 ## Source Metadata
 

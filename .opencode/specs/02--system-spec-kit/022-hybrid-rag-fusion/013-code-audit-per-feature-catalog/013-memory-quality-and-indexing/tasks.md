@@ -1,6 +1,7 @@
 ---
 title: "Tasks: memory-quality-and-indexing [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "memory quality"
@@ -64,7 +65,7 @@ contextType: "general"
 
 - [x] T013 [P] Re-run targeted tests for touched validation/indexing modules (mcp_server/tests/) — 229 tests pass (quality-loop 28, preflight 39, save-quality-gate 73, encoding-intent 39, working-memory 50), TSC clean
 - [x] T014 [P] Re-audit impacted features and refresh PASS/WARN/FAIL status entries (checklist.md) — 7 WARN features remediated to PASS; new totals: 16 PASS, 0 WARN, 0 FAIL
-- [x] T015 Update spec/plan/tasks/checklist for consistency after remediation pass (spec.md, plan.md, tasks.md, checklist.md) — all artifacts updated with evidence
+- [x] T015 Update spec/plan/tasks/checklist/implementation-summary for consistency after remediation pass (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) — all artifacts updated with evidence
 <!-- /ANCHOR:phase-3 -->
 
 ---

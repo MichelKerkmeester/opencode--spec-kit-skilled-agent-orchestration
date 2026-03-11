@@ -351,9 +351,21 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     requested: autoRepair,
     attempted: false,
     repaired: false,
+    partialSuccess: false,
     actions: [] as string[],
     warnings: [] as string[],
     errors: [] as string[],
+  };
+  let successfulRepairCount = 0;
+  let failedRepairCount = 0;
+
+  const trackRepairOutcome = (succeeded: boolean): void => {
+    repair.attempted = true;
+    if (succeeded) {
+      successfulRepairCount += 1;
+      return;
+    }
+    failedRepairCount += 1;
   };
 
   if (!profile) {
@@ -415,7 +427,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         );
 
         if (autoRepair) {
-          repair.attempted = true;
           try {
             database.exec("INSERT INTO memory_fts(memory_fts) VALUES('rebuild')");
             repair.actions.push('fts_rebuild');
@@ -425,16 +436,18 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
             const repairedFtsCountRow = database.prepare('SELECT COUNT(*) as count FROM memory_fts').get() as { count: number };
             if (memoryCountRow.count === repairedFtsCountRow.count) {
-              repair.repaired = true;
+              trackRepairOutcome(true);
               repair.actions.push('fts_consistency_verified');
               hints.push('Auto-repair completed: FTS5 index rebuilt and trigger cache refreshed.');
             } else {
+              trackRepairOutcome(false);
               const warning = `Post-repair mismatch persists: memory_index=${memoryCountRow.count}, memory_fts=${repairedFtsCountRow.count}`;
               repair.warnings.push(warning);
               hints.push(`Auto-repair attempted, but mismatch remains (${warning}).`);
             }
           } catch (repairError: unknown) {
             const message = toErrorMessage(repairError);
+            trackRepairOutcome(false);
             repair.errors.push(sanitizeErrorForHint(message));
             hints.push(`Auto-repair failed: ${sanitizeErrorForHint(message)}`);
           }
@@ -444,6 +457,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       const message = toErrorMessage(e);
       hints.push(`FTS5 consistency check failed: ${sanitizeErrorForHint(message)}`);
       if (autoRepair) {
+        trackRepairOutcome(false);
         repair.errors.push(`Consistency check failed before repair: ${sanitizeErrorForHint(message)}`);
       }
     }
@@ -457,14 +471,19 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       causalEdges.init(database);
       const orphanResult = causalEdges.cleanupOrphanedEdges();
       if (orphanResult.deleted > 0) {
-        repair.attempted = true;
-        repair.repaired = true;
+        trackRepairOutcome(true);
         repair.actions.push(`orphan_edges_cleaned:${orphanResult.deleted}`);
         hints.push(`Auto-repair: removed ${orphanResult.deleted} orphaned causal edge(s)`);
       }
     } catch (orphanError: unknown) {
+      trackRepairOutcome(false);
       repair.errors.push(`Orphan edge cleanup failed: ${sanitizeErrorForHint(toErrorMessage(orphanError))}`);
     }
+  }
+
+  if (repair.attempted) {
+    repair.repaired = failedRepairCount === 0 && successfulRepairCount > 0;
+    repair.partialSuccess = failedRepairCount > 0 && successfulRepairCount > 0;
   }
 
   if (aliasConflicts.groups > 0) {

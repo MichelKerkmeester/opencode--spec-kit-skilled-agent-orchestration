@@ -2,13 +2,44 @@
 // TEST: CHANNEL ATTRIBUTION
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type Database from 'better-sqlite3';
 import {
   attributeChannels,
   computeExclusiveContributionRate,
   getChannelAttribution,
   type AttributedResult,
 } from '../lib/eval/channel-attribution';
+import * as bm25Index from '../lib/search/bm25-index';
+import * as hybridSearch from '../lib/search/hybrid-search';
+
+type VectorSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[1]>;
+type GraphSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[2]>;
+
+interface MockDoc {
+  id: number;
+  content: string;
+}
+
+const ROUTING_DOCS: MockDoc[] = [
+  { id: 101, content: 'Authentication token refresh guidance with practical implementation details for secure session continuity flows.' },
+  { id: 102, content: 'BM25 channel indexing behavior for lexical recall validation across constrained retrieval routing paths.' },
+  { id: 103, content: 'Graph retrieval fallback context describing causal links between session events and remediation actions.' },
+];
+
+function createHybridSearchMockDb(): Database.Database {
+  return {
+    prepare: (sql: string) => ({
+      get: () => {
+        if (sql.includes('sqlite_master') && sql.includes('memory_fts')) {
+          return { name: 'memory_fts' };
+        }
+        return null;
+      },
+      all: () => [],
+    }),
+  } as unknown as Database.Database;
+}
 
 describe('Channel Attribution (T511)', () => {
   it('T511-01: attributeChannels tags single-source results as exclusive', () => {
@@ -131,5 +162,109 @@ describe('Channel Attribution (T511)', () => {
       totalInTopK: 2,
       ecr: 1,
     });
+  });
+});
+
+describe('Tier-2 fallback channel forcing (F-07)', () => {
+  const SIMPLE_TRIGGER = 'explain authentication token refresh integration details now please';
+  const ORIGINAL_ROUTER = process.env.SPECKIT_COMPLEXITY_ROUTER;
+
+  beforeEach(() => {
+    process.env.SPECKIT_COMPLEXITY_ROUTER = 'true';
+    bm25Index.resetIndex();
+    const bm25 = bm25Index.getIndex();
+    for (const doc of ROUTING_DOCS) {
+      bm25.addDocument(String(doc.id), doc.content);
+    }
+  });
+
+  afterEach(() => {
+    if (ORIGINAL_ROUTER === undefined) {
+      delete process.env.SPECKIT_COMPLEXITY_ROUTER;
+    } else {
+      process.env.SPECKIT_COMPLEXITY_ROUTER = ORIGINAL_ROUTER;
+    }
+  });
+
+  it('F07-CH-01: forceAllChannels=true executes vector, BM25, and graph channels', async () => {
+    let vectorCallCount = 0;
+    let graphCallCount = 0;
+    const vectorSearch: VectorSearchFn = (_embedding, _options) => {
+      vectorCallCount++;
+      return [{ id: 9001, similarity: 0.95, content: 'vector candidate' }];
+    };
+    const graphSearch: GraphSearchFn = (_query, _options) => {
+      graphCallCount++;
+      return [{ id: 9002, score: 0.73, content: 'graph candidate' }];
+    };
+
+    hybridSearch.init(createHybridSearchMockDb(), vectorSearch, graphSearch);
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      SIMPLE_TRIGGER,
+      new Float32Array(384).fill(0.2),
+      { limit: 20, triggerPhrases: [SIMPLE_TRIGGER], forceAllChannels: true },
+    );
+    const resultIds = new Set(results.map((result) => String(result.id)));
+
+    expect(vectorCallCount).toBe(1);
+    expect(graphCallCount).toBe(1);
+    expect(resultIds.has('9001')).toBe(true);
+    expect(resultIds.has('9002')).toBe(true);
+    expect(['101', '102', '103'].some((id) => resultIds.has(id))).toBe(true);
+  });
+
+  it('F07-CH-02: without forceAllChannels, simple routing can skip BM25 and graph channels', async () => {
+    let graphCallCount = 0;
+    const vectorSearch: VectorSearchFn = (_embedding, _options) => [{ id: 9011, similarity: 0.92, content: 'vector only candidate' }];
+    const graphSearch: GraphSearchFn = (_query, _options) => {
+      graphCallCount++;
+      return [{ id: 9012, score: 0.7, content: 'graph should be skipped' }];
+    };
+
+    hybridSearch.init(createHybridSearchMockDb(), vectorSearch, graphSearch);
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      SIMPLE_TRIGGER,
+      new Float32Array(384).fill(0.2),
+      { limit: 20, triggerPhrases: [SIMPLE_TRIGGER] },
+    );
+    const resultIds = new Set(results.map((result) => String(result.id)));
+    const s3meta = (results as unknown as Record<string, unknown>)._s3meta as
+      | { routing?: { skippedChannels?: string[] } }
+      | undefined;
+
+    expect(graphCallCount).toBe(0);
+    expect(['101', '102', '103'].some((id) => resultIds.has(id))).toBe(false);
+    expect(s3meta?.routing?.skippedChannels).toEqual(
+      expect.arrayContaining(['bm25', 'graph']),
+    );
+  });
+
+  it('F07-CH-03: forceAllChannels=false still allows simple-route channel reduction', async () => {
+    let graphCallCount = 0;
+    const vectorSearch: VectorSearchFn = (_embedding, _options) => [{ id: 9021, similarity: 0.92, content: 'vector only candidate' }];
+    const graphSearch: GraphSearchFn = (_query, _options) => {
+      graphCallCount++;
+      return [{ id: 9022, score: 0.7, content: 'graph should be skipped' }];
+    };
+
+    hybridSearch.init(createHybridSearchMockDb(), vectorSearch, graphSearch);
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      SIMPLE_TRIGGER,
+      new Float32Array(384).fill(0.2),
+      { limit: 20, triggerPhrases: [SIMPLE_TRIGGER], forceAllChannels: false },
+    );
+    const resultIds = new Set(results.map((result) => String(result.id)));
+    const s3meta = (results as unknown as Record<string, unknown>)._s3meta as
+      | { routing?: { skippedChannels?: string[] } }
+      | undefined;
+
+    expect(graphCallCount).toBe(0);
+    expect(['101', '102', '103'].some((id) => resultIds.has(id))).toBe(false);
+    expect(s3meta?.routing?.skippedChannels).toEqual(
+      expect.arrayContaining(['bm25', 'graph']),
+    );
   });
 });

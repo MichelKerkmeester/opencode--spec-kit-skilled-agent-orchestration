@@ -27,6 +27,24 @@ interface QualityLoopResult {
   rejectionReason?: string;
   /** Content after auto-fix mutations (present only when fixes were applied) */
   fixedContent?: string;
+  /** Trigger phrases after auto-fix metadata mutations */
+  fixedTriggerPhrases?: string[];
+}
+
+function triggerPhrasesChanged(
+  original: unknown,
+  updated: unknown,
+): updated is string[] {
+  if (!Array.isArray(updated)) {
+    return false;
+  }
+
+  const originalList = Array.isArray(original) ? original : [];
+  if (originalList.length !== updated.length) {
+    return true;
+  }
+
+  return updated.some((phrase, index) => phrase !== originalList[index]);
 }
 
 const QUALITY_WEIGHTS = {
@@ -497,6 +515,9 @@ function runQualityLoop(
         rejected: false,
         // AI-WHY: Return mutated content so caller can persist it and recompute content_hash
         fixedContent: allFixes.length > 0 ? currentContent : undefined,
+        fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, currentMetadata.triggerPhrases)
+          ? currentMetadata.triggerPhrases as string[]
+          : undefined,
       };
     }
 
@@ -520,6 +541,9 @@ function runQualityLoop(
     rejectionReason,
     // AI-WHY: Return mutated content even on rejection so callers that soft-reject can persist
     fixedContent: allFixes.length > 0 ? currentContent : undefined,
+    fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, currentMetadata.triggerPhrases)
+      ? currentMetadata.triggerPhrases as string[]
+      : undefined,
   };
 }
 

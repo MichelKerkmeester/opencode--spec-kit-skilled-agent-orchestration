@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `018-ux-hooks` |
 <!-- /ANCHOR:metadata -->
@@ -91,8 +91,8 @@ Create a feature-by-feature, evidence-backed audit that produces a prioritized r
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 13 features in `feature_catalog/18--ux-hooks/` are audited with consistent structure and evidence.
-- **SC-002**: A prioritized task backlog exists with 17 mapped fixes/tests/docs actions (P0=2, P1=8, P2=7).
+- **SC-001**: ✓ VERIFIED — All 13 features in `feature_catalog/18--ux-hooks/` audited with `PASS/WARN/FAIL` status, issue type, evidence, and recommended fix. Findings F-01–F-13 preserved in `checklist.md`.
+- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 439 tests across 7 files, all green. See `implementation-summary.md`.
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -13,6 +13,12 @@ Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)
 | `mcp_server/formatters/token-metrics.ts` | Formatter | Token metrics display |
 | `shared/utils/token-estimate.ts` | Shared | Token estimation utility |
 
+### Tests
+
+| Test File | Test Name | Coverage |
+|-----------|-----------|----------|
+| `mcp_server/tests/hooks-ux-feedback.vitest.ts` | `appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON` | Verifies `appendAutoSurfaceHints` drives final token metadata recomputation by using `syncEnvelopeTokenCount` and `serializeEnvelopeWithTokenCount` on the final envelope payload. |
+
 ## Source Metadata
 
 - Group: UX hooks automation (Phase 014)

@@ -8,7 +8,7 @@
 //   4. Enrichment of result arrays (correct field attachment, no reordering)
 //   5. No scoring logic changes (content transformation only)
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import {
   extractRetrievalDirective,
   formatDirectiveMetadata,
@@ -16,6 +16,13 @@ import {
   type RetrievalDirective,
   type ConstitutionalResult,
 } from '../lib/search/retrieval-directives';
+import {
+  autoSurfaceMemories,
+  autoSurfaceAtToolDispatch,
+  clearConstitutionalCache,
+} from '../hooks/memory-surface';
+import * as vectorIndex from '../lib/search/vector-index';
+import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 
 /* ---------------------------------------------------------------
    HELPERS
@@ -32,6 +39,14 @@ function makeResult(
     title: 'Test Rule',
     importanceTier: 'constitutional',
     ...overrides,
+  };
+}
+
+function makeConstitutionalDb(rows: Array<Record<string, unknown>>): { prepare: (sql: string) => { all: () => Array<Record<string, unknown>> } } {
+  return {
+    prepare: vi.fn((_sql: string) => ({
+      all: vi.fn(() => rows),
+    })),
   };
 }
 
@@ -464,5 +479,85 @@ describe('T-A4-07: Edge cases', () => {
     const d = extractRetrievalDirective('Must never skip gates.', 'Gate Rule')!;
     const formatted = formatDirectiveMetadata(d);
     expect(formatted.length).toBeGreaterThan(0);
+  });
+});
+
+/* ---------------------------------------------------------------
+   T-A4-08: AUTO-SURFACE INTEGRATION (constitutional injection path)
+--------------------------------------------------------------- */
+
+describe('T-A4-08: constitutional auto-surface integration', () => {
+  beforeEach(() => {
+    clearConstitutionalCache();
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    clearConstitutionalCache();
+    vi.restoreAllMocks();
+  });
+
+  it('T49: injects constitutional-tier memories with retrieval directives in autoSurfaceMemories()', async () => {
+    const dbRows = [{
+      id: 501,
+      spec_folder: 'specs/501-constitutional',
+      file_path: '',
+      title: 'Always validate retrieval contracts',
+      importance_tier: 'constitutional',
+    }];
+
+    vi.spyOn(vectorIndex, 'getDb').mockReturnValue(
+      makeConstitutionalDb(dbRows) as unknown as ReturnType<typeof vectorIndex.getDb>
+    );
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrases').mockReturnValue([]);
+
+    const result = await autoSurfaceMemories('validate retrieval contracts before changing scoring');
+
+    expect(result).not.toBeNull();
+    expect(result!.constitutional).toHaveLength(1);
+    expect(result!.constitutional[0]).toMatchObject({
+      id: 501,
+      importanceTier: 'constitutional',
+      title: 'Always validate retrieval contracts',
+    });
+    expect(result!.constitutional[0].retrieval_directive).toMatch(/^Always surface when:/);
+    expect(result!.triggered).toEqual([]);
+  });
+
+  it('T50: includes constitutional memories in tool-dispatch auto-surface results when trigger path is active', async () => {
+    const dbRows = [{
+      id: 777,
+      spec_folder: 'specs/777-governance',
+      file_path: '',
+      title: 'Never bypass constitutional guardrails',
+      importance_tier: 'constitutional',
+    }];
+
+    vi.spyOn(vectorIndex, 'getDb').mockReturnValue(
+      makeConstitutionalDb(dbRows) as unknown as ReturnType<typeof vectorIndex.getDb>
+    );
+    vi.spyOn(triggerMatcher, 'matchTriggerPhrases').mockReturnValue([
+      {
+        memoryId: 42,
+        specFolder: 'specs/042-signals',
+        filePath: 'specs/042-signals/memory/triggered.md',
+        title: 'Triggered Memory',
+        importanceWeight: 0.9,
+        matchedPhrases: ['guardrails'],
+      },
+    ]);
+
+    const result = await autoSurfaceAtToolDispatch('bash', { query: 'enforce guardrails for memory retrieval' });
+
+    expect(result).not.toBeNull();
+    expect(result!.constitutional).toHaveLength(1);
+    expect(result!.constitutional[0].importanceTier).toBe('constitutional');
+    expect(result!.constitutional[0].retrieval_directive).toContain('Always surface when:');
+    expect(result!.triggered).toHaveLength(1);
+    expect(result!.triggered[0]).toMatchObject({
+      memory_id: 42,
+      spec_folder: 'specs/042-signals',
+      matched_phrases: ['guardrails'],
+    });
   });
 });

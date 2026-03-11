@@ -14,6 +14,7 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 |------|-------|------|
 | `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
 | `mcp_server/core/config.ts` | Core | Server configuration |
+| `mcp_server/context-server.ts` | Core | Pre-dispatch handling for memory-aware tools (`autoSurfaceMemories` / `autoSurfaceAtCompaction`) |
 | `mcp_server/hooks/memory-surface.ts` | Hook | Auto-surface UX hook |
 | `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding Cache |
 | `mcp_server/lib/interfaces/vector-store.ts` | Lib | Vector store interface |
@@ -62,8 +63,7 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager and utility tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 | `mcp_server/tests/trigger-config-extended.vitest.ts` | Trigger config extended |

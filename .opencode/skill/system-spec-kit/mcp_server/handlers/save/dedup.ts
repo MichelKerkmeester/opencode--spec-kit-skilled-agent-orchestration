@@ -7,6 +7,9 @@ import type Database from 'better-sqlite3';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 import type { IndexResult } from './types';
 
+const UNCHANGED_EMBEDDING_STATUSES = new Set(['success', 'pending', 'partial']);
+const DEDUP_ELIGIBLE_EMBEDDING_STATUSES = ['success', 'partial'] as const;
+
 export function checkExistingRow(
   database: Database.Database,
   parsed: ParsedMemory,
@@ -16,15 +19,22 @@ export function checkExistingRow(
   warnings: string[] | undefined,
 ): IndexResult | null {
   const existing = database.prepare(`
-    SELECT id, content_hash FROM memory_index
+    SELECT id, content_hash, embedding_status FROM memory_index
     WHERE spec_folder = ?
       AND parent_id IS NULL
       AND (canonical_file_path = ? OR file_path = ?)
     ORDER BY id DESC
     LIMIT 1
-  `).get(parsed.specFolder, canonicalFilePath, filePath) as { id: number; content_hash: string } | undefined;
+  `).get(parsed.specFolder, canonicalFilePath, filePath) as {
+    id: number;
+    content_hash: string;
+    embedding_status: string | null;
+  } | undefined;
 
-  if (existing && existing.content_hash === parsed.contentHash && !force) {
+  const existingStatus = existing?.embedding_status ?? null;
+  const isUnchangedEligible = existingStatus !== null && UNCHANGED_EMBEDDING_STATUSES.has(existingStatus);
+
+  if (existing && existing.content_hash === parsed.contentHash && isUnchangedEligible && !force) {
     return {
       status: 'unchanged',
       id: existing.id,
@@ -52,10 +62,14 @@ export function checkContentHashDedup(
       WHERE spec_folder = ?
         AND content_hash = ?
         AND parent_id IS NULL
-        AND embedding_status IN ('complete', 'pending', 'success')
+        AND embedding_status IN (?, ?)
       ORDER BY id DESC
       LIMIT 1
-    `).get(parsed.specFolder, parsed.contentHash) as { id: number; file_path: string; title: string | null } | undefined;
+    `).get(
+      parsed.specFolder,
+      parsed.contentHash,
+      ...DEDUP_ELIGIBLE_EMBEDDING_STATUSES,
+    ) as { id: number; file_path: string; title: string | null } | undefined;
 
     if (duplicateByHash) {
       console.error(`[memory-save] T054: Duplicate content detected (hash match id=${duplicateByHash.id}), skipping embedding`);

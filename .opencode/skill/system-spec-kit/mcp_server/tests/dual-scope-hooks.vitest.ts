@@ -10,6 +10,7 @@
 // ---------------------------------------------------------------
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 // Mock transitive DB dependencies before importing the module under test
 vi.mock('../lib/search/vector-index', () => ({
@@ -160,6 +161,17 @@ describe('TM-05: autoSurfaceAtToolDispatch — skips memory-aware tools', () => 
     }
   });
 
+  it('does not invoke trigger matcher for memory-aware tools', async () => {
+    const matchSpy = vi.mocked(triggerMatcher.matchTriggerPhrases);
+    matchSpy.mockClear();
+
+    for (const toolName of MEMORY_AWARE_TOOLS) {
+      await autoSurfaceAtToolDispatch(toolName, { query: 'recursive prevention check' });
+    }
+
+    expect(matchSpy).not.toHaveBeenCalled();
+  });
+
   it('does NOT skip non-memory-aware tools', async () => {
     // With a trigger match present, a non-memory-aware tool should proceed
     // (result may still be null if DB is null + constitutional empty, but
@@ -270,6 +282,31 @@ describe('TM-05: autoSurfaceAtToolDispatch — context hint extraction from args
 
     await autoSurfaceAtToolDispatch('some_tool', { concepts: ['memory', 'search'] });
     expect(matchSpy).toHaveBeenCalledWith('memory search', 5);
+  });
+});
+
+/* ---------------------------------------------------------------
+   5b. HOOK LIFECYCLE POINTS (DISPATCH + COMPACTION)
+--------------------------------------------------------------- */
+
+describe('TM-05: hook lifecycle points', () => {
+  beforeEach(() => {
+    clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
+    vi.mocked(vectorIndex.getDb).mockReturnValue(null);
+    vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([]);
+  });
+
+  it('fires matcher once at tool-dispatch and once at compaction lifecycle points', async () => {
+    const matchSpy = vi.mocked(triggerMatcher.matchTriggerPhrases);
+    matchSpy.mockClear();
+
+    await autoSurfaceAtToolDispatch('bash', { query: 'dispatch lifecycle context' });
+    await autoSurfaceAtCompaction('compaction lifecycle context');
+
+    expect(matchSpy).toHaveBeenCalledTimes(2);
+    expect(matchSpy).toHaveBeenNthCalledWith(1, 'dispatch lifecycle context', 5);
+    expect(matchSpy).toHaveBeenNthCalledWith(2, 'compaction lifecycle context', 5);
   });
 });
 
@@ -525,7 +562,7 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
     // The second argument to matchTriggerPhrases is the limit
     if (matchSpy.mock.calls.length > 0) {
       const limitArg = matchSpy.mock.calls[0][1];
-      expect(limitArg).toBeLessThanOrEqual(10);
+      expect(limitArg).toBe(5);
     }
   });
 
@@ -542,8 +579,54 @@ describe('TM-05: Token budget enforcement (4000 max per point)', () => {
 
     if (matchSpy.mock.calls.length > 0) {
       const limitArg = matchSpy.mock.calls[0][1];
-      expect(limitArg).toBeLessThanOrEqual(10);
+      expect(limitArg).toBe(5);
     }
+  });
+
+  it('tool-dispatch output boundary enforces estimated token budget', async () => {
+    clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
+    vi.mocked(vectorIndex.getDb).mockReturnValue(null);
+    const oversized = 'x'.repeat(6000);
+    vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([
+      makeTriggerMatch({ title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 2, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 3, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 4, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 5, title: oversized, matchedPhrases: [oversized] }),
+    ]);
+
+    const result = await autoSurfaceAtToolDispatch('bash', { query: 'explicit budget enforcement' });
+    if (!result) {
+      expect(result).toBeNull();
+      return;
+    }
+
+    const estimatedTokens = estimateTokenCount(JSON.stringify(result));
+    expect(estimatedTokens).toBeLessThanOrEqual(TOOL_DISPATCH_TOKEN_BUDGET);
+  });
+
+  it('compaction output boundary enforces estimated token budget', async () => {
+    clearConstitutionalCache();
+    // @ts-expect-error Testing invalid input shape
+    vi.mocked(vectorIndex.getDb).mockReturnValue(null);
+    const oversized = 'y'.repeat(6000);
+    vi.mocked(triggerMatcher.matchTriggerPhrases).mockReturnValue([
+      makeTriggerMatch({ title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 2, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 3, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 4, title: oversized, matchedPhrases: [oversized] }),
+      makeTriggerMatch({ memoryId: 5, title: oversized, matchedPhrases: [oversized] }),
+    ]);
+
+    const result = await autoSurfaceAtCompaction('compaction context for budget enforcement');
+    if (!result) {
+      expect(result).toBeNull();
+      return;
+    }
+
+    const estimatedTokens = estimateTokenCount(JSON.stringify(result));
+    expect(estimatedTokens).toBeLessThanOrEqual(COMPACTION_TOKEN_BUDGET);
   });
 });
 

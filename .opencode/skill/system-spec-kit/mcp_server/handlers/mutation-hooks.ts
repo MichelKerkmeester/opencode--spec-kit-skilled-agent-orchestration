@@ -17,13 +17,19 @@ function runPostMutationHooks(
   context: Record<string, unknown> = {}
 ): MutationHookResult {
   const startTime = Date.now();
+  const errors: string[] = [];
 
   let triggerCacheCleared = false;
   try {
     triggerMatcher.clearCache();
     triggerCacheCleared = true;
   } catch (error: unknown) {
-    console.warn('[mutation-hooks] triggerMatcher.clearCache failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[mutation-hooks] triggerMatcher.clearCache failed for operation="${operation}":`,
+      message
+    );
+    errors.push(`triggerMatcher.clearCache: ${message}`);
     triggerCacheCleared = false;
   }
 
@@ -31,7 +37,12 @@ function runPostMutationHooks(
   try {
     toolCacheInvalidated = toolCache.invalidateOnWrite(operation, context);
   } catch (error: unknown) {
-    console.warn('[mutation-hooks] toolCache.invalidateOnWrite failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[mutation-hooks] toolCache.invalidateOnWrite failed for operation="${operation}":`,
+      message
+    );
+    errors.push(`toolCache.invalidateOnWrite: ${message}`);
     toolCacheInvalidated = 0;
   }
 
@@ -40,7 +51,12 @@ function runPostMutationHooks(
     clearConstitutionalCache();
     constitutionalCacheCleared = true;
   } catch (error: unknown) {
-    console.warn('[mutation-hooks] clearConstitutionalCache failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[mutation-hooks] clearConstitutionalCache failed for operation="${operation}":`,
+      message
+    );
+    errors.push(`clearConstitutionalCache: ${message}`);
     constitutionalCacheCleared = false;
   }
 
@@ -49,7 +65,12 @@ function runPostMutationHooks(
     clearGraphSignalsCache();
     graphSignalsCacheCleared = true;
   } catch (error: unknown) {
-    console.warn('[mutation-hooks] clearGraphSignalsCache failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[mutation-hooks] clearGraphSignalsCache failed for operation="${operation}":`,
+      message
+    );
+    errors.push(`clearGraphSignalsCache: ${message}`);
     graphSignalsCacheCleared = false;
   }
 
@@ -58,7 +79,12 @@ function runPostMutationHooks(
     clearRelatedCache();
     coactivationCacheCleared = true;
   } catch (error: unknown) {
-    console.warn('[mutation-hooks] clearRelatedCache failed:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(
+      `[mutation-hooks] clearRelatedCache failed for operation="${operation}":`,
+      message
+    );
+    errors.push(`clearRelatedCache: ${message}`);
     coactivationCacheCleared = false;
   }
 
@@ -69,6 +95,7 @@ function runPostMutationHooks(
     toolCacheInvalidated,
     graphSignalsCacheCleared,
     coactivationCacheCleared,
+    errors,
   };
 }
 

@@ -1,6 +1,7 @@
 ---
 title: "Verification Checklist: governance [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
+description: "Verification Date: 2026-03-11 — 5-agent parallel Codex 5.3 xhigh audit"
+# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "governance"
   - "verification"
@@ -54,7 +55,7 @@ contextType: "general"
 - [x] CHK-012 [P1] Error handling implemented
   - **Evidence**: Audit criteria explicitly include error-path review and feature-level mismatch reporting.
 - [x] CHK-013 [P1] Code follows project patterns
-  - **Evidence**: F-01 and F-02 both recorded with PASS and no standards violations.
+  - **Evidence**: F-01 PASS (no standards violations). F-02 WARN: catalog claims 23 exported `is*` functions but actual count is **24** (`isQualityLoopEnabled` was added after the original audit). Catalog also claims 61 unique SPECKIT_ flags but actual count is **79** (18 flags added across sprints since the original count). Both are documentation drift, not code violations.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -63,15 +64,16 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
-  - **Evidence**:
-    - F-01 Feature flag governance: PASS, no code issues, no standards violations, no behavior mismatch, no test gaps.
-    - F-02 Feature flag sunset audit: PASS, no code issues, no standards violations, no behavior mismatch, no test gaps.
+  - **Evidence** (5-agent Codex 5.3 xhigh audit, 2026-03-11):
+    - F-01 Feature flag governance: **PASS**. B8 signal ceiling confirmed as governance target only — no runtime enforcement (`MAX_SIGNALS`, `SIGNAL_LIMIT`, `SIGNAL_CAP`, `signal_ceiling` all absent from mcp_server). 24 exported `is*` functions: 19 default-ON, 4 opt-in/OFF, 1 deprecated.
+    - F-02 Feature flag sunset audit: **WARN**. `isPipelineV2Enabled()` correctly deprecated with `@deprecated` JSDoc, always returns `true`, env var ignored. Deferred features (GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES, ENTITY_LINKING) all confirmed default-ON. Dead code removal verified: `stmtCache`, `lastComputedAt`, `flushCount`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`, `computeCausalDepth` (single-node) all removed. 4 remnants exist as comments/test descriptions only (`isShadowScoringEnabled`, `isRsfEnabled`, `activeProvider`, `getSubgraphWeights`). `isInShadowPeriod` confirmed active as Safeguard #6 in `learned-feedback.ts:411`. Stale test scaffolding: `SPECKIT_SHADOW_SCORING` and `SPECKIT_RSF_FUSION` in tests only, no runtime env reads.
+    - **Documentation drift**: catalog says 23 `is*` functions (actual: 24), 61 SPECKIT_ flags (actual: 79).
 - [x] CHK-021 [P0] Manual testing complete
-  - **Evidence**: Both governance features are mapped to manual playbook coverage NEW-095+.
+  - **Evidence**: Governance features mapped to manual playbook scenarios NEW-063/NEW-064 (not NEW-095+ as previously claimed; corrected per playbook cross-reference audit).
 - [x] CHK-022 [P1] Edge cases tested
-  - **Evidence**: Governance findings include explicit checks for boundary, mismatch, and gap conditions; none were found.
+  - **Evidence**: Governance findings include explicit checks for boundary, mismatch, and gap conditions. Documentation drift flagged as WARN (not blocking). Default-OFF functions (`isReconsolidationEnabled`, `isFileWatcherEnabled`, `isLocalRerankerEnabled`, `isQualityLoopEnabled`) verified with correct env-check patterns.
 - [x] CHK-023 [P1] Error scenarios validated
-  - **Evidence**: Current-state assertions for F-02 were verified against `mcp_server/lib/search/search-flags.ts:97-208`, including deprecated `isPipelineV2Enabled()` and exported `is*` helper inventory.
+  - **Evidence**: All 24 functions in `search-flags.ts:15-216` verified. `rollout-policy.ts` covers: default 100% rollout, deterministic bucket hashing, identity gating, feature-flag + rollout interaction. 2 functions lack direct test files: `isFileWatcherEnabled`, `isLocalRerankerEnabled` (test gap — documented, not blocking for audit-only phase). `isQualityLoopEnabled` is tested in `quality-loop.vitest.ts:523` (GPT 5.4 verification corrected Agent 5 false negative).
 <!-- /ANCHOR:testing -->
 
 ---
@@ -124,7 +126,8 @@ contextType: "general"
 | P1 Items | 10 | 10/10 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-10
+**Verification Date**: 2026-03-11
+**Audit Method**: 5-agent parallel Codex 5.3 xhigh via cli-copilot (Depth 0→1 single-hop)
 <!-- /ANCHOR:summary -->
 
 ---

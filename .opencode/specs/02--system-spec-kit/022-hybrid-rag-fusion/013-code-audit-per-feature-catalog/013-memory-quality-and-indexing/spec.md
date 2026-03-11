@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: memory-quality-and-indexing [template:level_2/spec.md]"
-description: "Feature-centric audit and documentation normalization for Memory Quality and Indexing, preserving findings while restructuring artifacts to the Level 2 SpecKit format."
+description: "Phase-close synchronization for Memory Quality and Indexing docs so Level 2 artifacts match completed remediation and verification outcomes."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "memory quality"
   - "memory indexing"
@@ -25,7 +26,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Completed |
 | **Created** | 2026-03-10 |
 | **Branch** | `013-memory-quality-and-indexing` |
 <!-- /ANCHOR:metadata -->
@@ -36,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Memory Quality and Indexing feature catalog contains 16 critical features that require consistent, feature-by-feature audit tracking. Existing phase documents captured useful findings, but they were not structured to the canonical Level 2 template layout, making cross-phase verification and reuse less reliable.
+The Memory Quality and Indexing phase already completed code, test, and catalog remediation work that closed seven WARN findings, but this spec folder still mixed docs-normalization framing with stale pre-remediation language. That drift left scope, outcomes, and verification state inconsistent across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 
 ### Purpose
-Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) to exact Level 2 templates while preserving the current audit scope, findings, and remediation backlog.
+Synchronize all in-scope Level 2 artifacts to the delivered remediation state so the folder truthfully reports completed work: 16 audited features, 16 PASS, 0 WARN, 0 FAIL, and targeted verification evidence.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,22 +49,25 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 ## 3. SCOPE
 
 ### In Scope
-- Rewrite the four spec-folder documents to exact Level 2 template structure with required SPECKIT comments and ANCHOR pairs.
-- Preserve and remap current content: 16-feature audit scope, PASS/WARN/FAIL findings, and prioritized remediation tasks.
-- Keep date, level, status, and naming normalized for this folder (`memory-quality-and-indexing`).
+- Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to the completed remediation state.
+- Preserve file-level traceability for completed remediation tasks T004-T012 and verification tasks T013-T015.
+- Keep Level 2 template compliance intact, including frontmatter template-source metadata and required anchors.
+- Record final outcomes consistently: 16 features audited, 16 PASS, 0 WARN, 0 FAIL, 229 targeted tests passing, and clean `tsc --noEmit`.
 
 ### Out of Scope
-- Implementing code fixes in `mcp_server` or `scripts` - this phase tracks and structures findings only.
-- Modifying `description.json` or anything under `memory/` and `scratch/` - explicitly excluded.
+- New runtime or feature-catalog fixes outside the already completed remediation set.
+- Repo-wide lint/type cleanup outside the targeted verification surface.
+- Modifying `description.json` and non-documentation artifacts under this phase folder.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| spec.md | Modify | Convert existing specification content into Level 2 spec template sections |
-| plan.md | Modify | Convert methodology plan into Level 2 implementation-plan template |
-| tasks.md | Modify | Convert prioritized remediation backlog into Level 2 phased task template |
-| checklist.md | Modify | Convert audit verification report into Level 2 checklist template |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/spec.md` | Modify | Align scope, requirements, and acceptance scenarios to completed remediation outcomes |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/plan.md` | Modify | Ensure execution model and done criteria match completed remediation and verification |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/tasks.md` | Modify | Keep task completion and evidence mapping consistent with final phase state |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/checklist.md` | Modify | Add explicit per-item evidence and reconcile verification claims |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/implementation-summary.md` | Modify | Correct file references and template metadata for validator-safe closure |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -75,15 +79,16 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Preserve full audit coverage for all 16 Memory Quality and Indexing features | The rewritten docs still reference all 16 features and the audit outcome summary (9 PASS, 7 WARN, 0 FAIL) |
-| REQ-002 | Conform exactly to Level 2 template structure for all four files | Each file includes YAML frontmatter, SPECKIT comments, and all required ANCHOR start/end pairs |
+| REQ-001 | Preserve full audit and remediation coverage for all 16 Memory Quality and Indexing features | All in-scope docs consistently report final outcomes: 16 PASS, 0 WARN, 0 FAIL, with 7 WARN findings remediated |
+| REQ-002 | Preserve traceability for completed remediation work | Artifacts reference completed T004-T012 changes across `quality-loop.ts`, `preflight.ts`, `search-flags.ts`, `save-quality-gate.ts`, `encoding-intent.ts`, and updated feature-catalog entries |
+| REQ-003 | Keep Level 2 structural integrity valid for phase closure | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` include valid template-source metadata and pass spec-folder validation without level errors |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Preserve prioritized remediation backlog from the original task list | P1 and P2 remediation items are represented in `tasks.md` with actionable file-path references |
-| REQ-004 | Preserve verification intent and evidence in checklist form | `checklist.md` contains checkbox-based verification status plus concise evidence mapping from existing findings |
+| REQ-004 | Keep remediation and verification status internally consistent across artifacts | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` present the same task and verification totals without contradiction |
+| REQ-005 | Record checklist verification evidence at item level | Completed checklist items include inline evidence tags tied to concrete files, commands, or status snapshots |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -91,21 +96,46 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All four target files are rewritten and structurally match the Level 2 templates exactly.
-- **SC-002**: Existing audit content is retained and relocated into the correct template sections with no loss of major findings.
+- **SC-001**: All five in-scope docs are synchronized and structurally aligned with the applicable Level 2 artifact templates.
+- **SC-002**: All five in-scope docs report the same completed outcome state (16 PASS, 0 WARN, 0 FAIL; 229 tests; clean `tsc --noEmit`).
+- **SC-003**: Validation-blocking documentation issues are removed while preserving existing level/template structure.
+
+---
+
+## 6. ACCEPTANCE SCENARIOS
+
+### Scenario 1 - Completed remediation state is reflected
+**Given** the phase completed remediation tasks T004-T012 and verification tasks T013-T015
+**When** a reviewer reads the synchronized Level 2 docs
+**Then** the folder reports the post-remediation state (16 PASS, 0 WARN, 0 FAIL) instead of pre-remediation totals
+
+### Scenario 2 - Verification evidence remains truthful
+**Given** targeted verification recorded 229 passing tests and clean `tsc --noEmit`
+**When** checklist and plan verification sections are reviewed
+**Then** those outcomes are stated consistently without repo-wide overclaims
+
+### Scenario 3 - Traceability is preserved
+**Given** remediation touched quality-loop, preflight, search-flags, save-quality-gate, encoding-intent, and related feature-catalog files
+**When** tasks and implementation summary are audited
+**Then** file-level references map completed work without introducing new out-of-scope implementation claims
+
+### Scenario 4 - Documentation closure remains validator-safe
+**Given** the phase requires Level 2 template compliance
+**When** spec validation runs on this folder
+**Then** template-source metadata, anchor structure, and in-scope markdown integrity pass without hard validation errors
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/13--memory-quality-and-indexing/` | Missing or stale catalog entries can reduce audit fidelity | Keep references explicit and preserve known issue notes in tasks/checklist |
-| Dependency | Existing checklist findings and task backlog | Incorrect mapping could lose remediation intent | Map findings into requirement, task, and checklist sections with explicit IDs |
-| Risk | Template drift from required anchor/comment format | Validation or downstream tooling may fail | Copy anchor/comment scaffolding directly from Level 2 templates and fill only placeholders |
-| Risk | Content compression may omit critical details | Reduced traceability for remediation | Preserve status totals, priority splits, and all listed remediation themes |
+| Dependency | Completed remediation artifacts captured in `tasks.md` and `implementation-summary.md` | If references drift, completion claims become unreliable | Keep task IDs, touched files, and verification totals synchronized across all docs |
+| Dependency | Feature catalog under `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/` | Stale catalog references can invalidate remediation traceability | Keep catalog corrections explicitly cited in tasks/checklist evidence |
+| Risk | Residual docs-only language in any artifact | Reviewers may misread completed remediation as pending audit-only work | Normalize problem/scope/status language to final delivered state in every in-scope file |
+| Risk | Validation regressions in markdown metadata | Phase closure may fail validator checks despite correct technical outcomes | Keep template-source frontmatter, anchor structure, and markdown links valid |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -118,12 +148,12 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Rewriting and validation of the four markdown files should complete in a single pass without iterative format churn.
+- **NFR-P01**: Rewriting and validation of the five in-scope markdown docs should complete in a single pass without iterative format churn.
 - **NFR-P02**: Documents should remain human-scannable, preserving concise tables and task/checklist structures.
 
 ### Security
 - **NFR-S01**: No secrets, credentials, or sensitive runtime data may be introduced in rewritten documents.
-- **NFR-S02**: File modifications are strictly limited to the four target markdown files in this folder.
+- **NFR-S02**: File modifications are strictly limited to the five in-scope markdown docs in this folder.
 
 ### Reliability
 - **NFR-R01**: All required SPECKIT comments and ANCHOR pairs must be present and properly closed.
@@ -143,7 +173,7 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 ### Error Scenarios
 - External service failure: If instruction-file access is unavailable, use in-repo canonical Level 2 templates as source of truth.
 - Network timeout: Not applicable for local markdown rewrite; all operations are local filesystem edits.
-- Concurrent access: Restrict edits to the four target files only to avoid cross-folder collisions.
+- Concurrent access: Restrict edits to the five in-scope docs only to avoid cross-folder collisions.
 
 ### State Transitions
 - Partial completion: A file is considered valid only when both frontmatter and all anchor pairs are complete.
@@ -157,7 +187,7 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 12/25 | Four files, medium content remapping, strict template conformance |
+| Scope | 12/25 | Five files, medium content remapping, strict template conformance |
 | Risk | 6/25 | Main risk is structure drift or content loss during normalization |
 | Research | 7/20 | Required locating canonical Level 2 templates and preserving prior findings |
 | **Total** | **25/70** | **Level 2** |
@@ -167,8 +197,8 @@ Standardize the four core documents (`spec.md`, `plan.md`, `tasks.md`, `checklis
 
 ## 10. OPEN QUESTIONS
 
-- Should the full per-feature narrative from the prior checklist remain in this folder, or move to a dedicated audit artifact while checklist retains verification status only?
-- Should future phases treat documentation mismatches (for example default ON/OFF text drift) as P1 or P2 by default?
+- No open questions for this phase at this time.
+- Future work, if needed, should open as a separate follow-up phase rather than extending completed scope here.
 <!-- /ANCHOR:questions -->
 
 ---

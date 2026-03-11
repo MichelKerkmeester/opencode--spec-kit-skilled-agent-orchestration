@@ -291,7 +291,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     });
 
     it('T521-DEL2: Empty name throws', async () => {
-      await expect(handler.handleCheckpointDelete({ name: '' })).rejects.toThrow(/name/);
+      await expect(handler.handleCheckpointDelete({ name: '', confirmName: '' })).rejects.toThrow(/name/);
     });
 
     it('T521-DEL3: Missing confirmName throws', async () => {
@@ -321,7 +321,28 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         const parsed = JSON.parse(result.content[0].text);
         expect(parsed.data?.success).toBe(true);
         expect(parsed.data?.safetyConfirmationUsed).toBe(true);
+        expect(parsed.data?.checkpointName).toBe('safe-delete');
+        expect(typeof parsed.data?.deletedAt).toBe('string');
+        expect(Number.isNaN(Date.parse(parsed.data?.deletedAt))).toBe(false);
+        expect(new Date(parsed.data?.deletedAt).toISOString()).toBe(parsed.data?.deletedAt);
         expect(parsed.hints).toEqual([]);
+      } finally {
+        spy.mockRestore();
+      }
+    });
+
+    it('T521-DEL6: Not found response omits deletedAt but keeps checkpointName', async () => {
+      const spy = vi.spyOn(checkpointStorageMod, 'deleteCheckpoint').mockReturnValue(false);
+      try {
+        const result = await handler.handleCheckpointDelete({
+          name: 'missing-delete',
+          confirmName: 'missing-delete',
+        });
+        expect(result.isError).toBeFalsy();
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.success).toBe(false);
+        expect(parsed.data?.checkpointName).toBe('missing-delete');
+        expect(parsed.data?.deletedAt).toBeUndefined();
       } finally {
         spy.mockRestore();
       }

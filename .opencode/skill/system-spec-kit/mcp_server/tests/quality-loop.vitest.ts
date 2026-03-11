@@ -469,6 +469,8 @@ describe('runQualityLoop', () => {
     expect(result.attempts).toBeGreaterThan(1);
     expect(result.fixes.length).toBeGreaterThan(0);
     expect(result.fixes.some(f => /trigger/i.test(f))).toBe(true);
+    expect(result.fixedTriggerPhrases?.length).toBeGreaterThan(0);
+    expect(result.fixedTriggerPhrases).toContain('important sprint documentation');
   });
 
   it('respects custom threshold', () => {

@@ -48,8 +48,8 @@ This plan operationalizes the Tooling and Scripts audit across eight features in
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
+- [x] All acceptance criteria met
+- [x] Tests passing (if applicable)
 - [x] Docs updated (spec/plan/tasks)
 <!-- /ANCHOR:quality-gates -->
 
@@ -86,9 +86,9 @@ Feature entries define expected behavior, implementation and tests are audited f
 - [x] Convert findings into actionable remediation tasks
 
 ### Phase 3: Verification
-- [ ] Validate targeted tests and edge-case coverage after remediation
-- [ ] Confirm catalog/source/test tables are synchronized
-- [ ] Mark checklist verification state with evidence
+- [x] Validate targeted tests and edge-case coverage after remediation
+- [x] Confirm catalog/source/test tables are synchronized
+- [x] Mark checklist verification state with evidence
 <!-- /ANCHOR:phases -->
 
 ---

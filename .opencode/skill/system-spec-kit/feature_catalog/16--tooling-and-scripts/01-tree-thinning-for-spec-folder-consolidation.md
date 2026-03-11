@@ -2,9 +2,9 @@
 
 ## Current Reality
 
-A bottom-up merge strategy thins small files during spec folder context loading. Files under 200 tokens have their summary merged into the parent document. Files under 500 tokens use their content directly as the summary, skipping separate summary generation.
+Chunk thinning in the MCP server scores chunks by anchor presence and content density, then drops low-signal chunks before child chunk indexing. The runtime flow is `chunkLargeFile()` (anchor-aware chunking) followed by `thinChunks()` (quality thinning) in `indexChunkedMemoryFile()`.
 
-Memory file thresholds differ: under 100 tokens for content-as-summary, 100-300 tokens for merged-into-parent, 300+ tokens kept as-is. The `applyTreeThinning()` function runs in `workflow.ts` at Step 7.6 before pipeline stages and is applied to the rendered context payload. Stats track total files, thinned count, merged count and tokens saved.
+The save-time workflow integration is documented as **R7: Chunk Thinning** in `mcp_server/lib/search/README.md`, and the active runtime call happens in `mcp_server/handlers/chunking-orchestrator.ts`.
 
 ## Source Files
 
@@ -12,8 +12,15 @@ Memory file thresholds differ: under 100 tokens for content-as-summary, 100-300 
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
-| `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
+| `mcp_server/lib/chunking/chunk-thinning.ts` | Lib (primary) | Chunk thinning (`scoreChunk()`, `thinChunks()`) |
+| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib (supporting) | Anchor-aware chunk generation (`chunkLargeFile()`) |
+
+### Integration
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Calls `thinChunks(chunkResult.chunks)` in `indexChunkedMemoryFile()` before chunk indexing |
+| `mcp_server/lib/search/README.md` | Search docs | Documents save-time workflow step **R7: Chunk Thinning** |
 
 ### Tests
 

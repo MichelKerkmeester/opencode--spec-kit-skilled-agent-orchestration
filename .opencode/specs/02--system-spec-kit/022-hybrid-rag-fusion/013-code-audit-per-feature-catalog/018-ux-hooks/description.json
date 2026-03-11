@@ -1,7 +1,10 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks",
   "description": "018 — ux-hooks",
-  "keywords": ["ux", "hooks"],
+  "keywords": [
+    "ux",
+    "hooks"
+  ],
   "lastUpdated": "2026-03-10T11:14:56.000Z",
   "specId": "018",
   "folderSlug": "ux-hooks",
@@ -10,6 +13,8 @@
     "022-hybrid-rag-fusion",
     "013-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "11-03-26_20-33__completed-018-ux-hooks-code-audit-remediation-17.md"
+  ]
 }

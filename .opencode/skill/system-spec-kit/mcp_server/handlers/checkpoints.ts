@@ -46,7 +46,7 @@ interface CheckpointRestoreArgs {
 
 interface CheckpointDeleteArgs {
   name: string;
-  confirmName?: string;
+  confirmName: string;
 }
 
 interface MemoryValidateArgs {
@@ -298,6 +298,8 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
     data: {
       success,
       safetyConfirmationUsed: true,
+      checkpointName: name,
+      ...(success ? { deletedAt: new Date().toISOString() } : {}),
     },
     hints: success
       ? []

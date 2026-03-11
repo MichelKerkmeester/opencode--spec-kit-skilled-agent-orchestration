@@ -104,6 +104,8 @@ vi.mock('../lib/search/search-flags', () => ({
 import { indexChunkedMemoryFile } from '../handlers/chunking-orchestrator';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
+import * as embeddingCache from '../lib/cache/embedding-cache';
+import { normalizeContentForEmbedding } from '../lib/parsing/content-normalizer';
 import * as history from '../lib/storage/history';
 
 type ParsedMemoryInput = {
@@ -459,5 +461,25 @@ describe('T013: staged swap regressions', () => {
     expect(newChildren.some(row => row.embedding_status === 'pending')).toBe(true);
     expect(newChildren.some(row => row.embedding_status === 'success')).toBe(true);
     expect(newChildren.every(row => row.parent_id === parentId)).toBe(true);
+  });
+
+  it('uses normalized content hash for chunk embedding cache keys', async () => {
+    mockChunks = [
+      {
+        content: '---\ntitle: Cache Key\n---\n\n## Heading\n- bullet item\n<!-- ANCHOR:test -->',
+        anchorIds: ['cache-1'],
+        label: 'cache-1',
+        charCount: 79,
+      },
+    ];
+
+    const filePath = '/tmp/specs/test-safe-swap/memory-cache-key.md';
+    const parsed = createParsedMemory(filePath);
+
+    await indexChunkedMemoryFile(filePath, parsed);
+
+    const expectedNormalized = normalizeContentForEmbedding(mockChunks[0].content);
+    expect(vi.mocked(embeddingCache.computeContentHash)).toHaveBeenCalledWith(expectedNormalized);
+    expect(vi.mocked(embeddingCache.computeContentHash)).not.toHaveBeenCalledWith(mockChunks[0].content);
   });
 });

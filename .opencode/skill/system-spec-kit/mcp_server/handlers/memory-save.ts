@@ -132,14 +132,15 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
 
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = qualityLoopResult.score.issues;
+  if (qualityLoopResult.fixedTriggerPhrases) {
+    parsed.triggerPhrases = qualityLoopResult.fixedTriggerPhrases;
+  }
 
   if (qualityLoopResult.fixes.length > 0 && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
     console.error(`[memory-save] Quality loop applied ${qualityLoopResult.fixes.length} auto-fix(es) for ${path.basename(filePath)}`);
-    // AI-WHY: Persist mutated content from quality loop; recompute content_hash
-    // so downstream dedup and change-detection use the post-fix content.
+    // AI-WHY: Keep content fixes in memory until later hard-reject gates have passed.
     parsed.content = qualityLoopResult.fixedContent;
     parsed.contentHash = memoryParser.computeContentHash(parsed.content);
-    await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
   }
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
@@ -237,6 +238,10 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
       console.warn(`[memory-save] TM-04: Quality gate error (proceeding with save): ${message}`);
       // AI-GUARD: Quality gate errors must not block saves
     }
+  }
+
+  if (qualityLoopResult.passed && qualityLoopResult.fixedContent) {
+    await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
   }
 
   persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, filePath);

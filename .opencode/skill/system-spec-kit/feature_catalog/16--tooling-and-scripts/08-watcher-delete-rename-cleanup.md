@@ -18,7 +18,7 @@ Rename detection is handled as an unlink followed by an add, which means the mem
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/file-watcher.vitest.ts` | File watcher tests |
+| `mcp_server/tests/file-watcher.vitest.ts` | Delete/unlink callback (removeFn invocation), rename lifecycle (unlink+add pair, old-entry cleanup, new-entry creation), debounce stress (rapid rename sequence collapsed to single reindex), burst rename deduplication, concurrent rename handling |
 
 ## Source Metadata
 

@@ -108,8 +108,20 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 
 ---
 
+## 6. ACCEPTANCE SCENARIOS
+
+1. **Given** the Graph Signal Activation catalog with 11 scoped features, **when** the audit baseline is reviewed, **then** every feature F-01 through F-11 is represented with a PASS/WARN/FAIL status and traceable evidence.
+
+2. **Given** this spec remains audit-first with partial remediation reconciliation, **when** task status is checked, **then** only Task #2 remediated items (T001, T002, T005, T006, T008) are closed and T004 plus other backlog items remain open.
+
+3. **Given** the latest verification state for `mcp_server`, **when** checklist quality gates are reviewed, **then** CHK-010 reflects passing `npx tsc --noEmit` and completed P0/P1 checks include explicit evidence markers.
+
+4. **Given** Level 2 documentation requirements, **when** validator checks run on this folder, **then** required section headers and acceptance scenario count requirements are satisfied without structural warnings.
+
+---
+
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|

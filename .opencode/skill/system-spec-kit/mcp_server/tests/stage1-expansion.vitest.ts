@@ -83,9 +83,14 @@ vi.mock('../lib/search/query-expander', () => ({
 }));
 
 // Mock memory-summaries
+const mockQuerySummaryEmbeddings = vi.fn(
+  (_db?: unknown, _embedding?: Float32Array | number[], _limit?: number): Array<{ memoryId: number; similarity: number }> => []
+);
+const mockCheckScaleGate = vi.fn((_db?: unknown): boolean => false);
 vi.mock('../lib/search/memory-summaries', () => ({
-  querySummaryEmbeddings: vi.fn(() => []),
-  checkScaleGate: vi.fn(() => false),
+  querySummaryEmbeddings: (db: unknown, embedding: Float32Array | number[], limit: number) =>
+    mockQuerySummaryEmbeddings(db, embedding, limit),
+  checkScaleGate: (db: unknown) => mockCheckScaleGate(db),
 }));
 
 // Mock retrieval-trace
@@ -94,8 +99,9 @@ vi.mock('@spec-kit/shared/contracts/retrieval-trace', () => ({
 }));
 
 // Mock db-helpers
+const mockRequireDb = vi.fn(() => ({}));
 vi.mock('../utils/db-helpers', () => ({
-  requireDb: vi.fn(() => ({})),
+  requireDb: () => mockRequireDb(),
 }));
 
 // -- Import SUT after mocks ---------------------------------------------------
@@ -128,10 +134,24 @@ function makeConfig(overrides: Partial<PipelineConfig> = {}): PipelineConfig {
   };
 }
 
+function makeSummaryDb(rowsById: Record<number, Record<string, unknown>>): { prepare: (sql: string) => { get: (id: number) => Record<string, unknown> | undefined } } {
+  return {
+    prepare: vi.fn((_sql: string) => ({
+      get: vi.fn((id: number) => rowsById[id]),
+    })),
+  };
+}
+
 describe('Stage-1: Expansion & Dedup', () => {
   beforeEach(() => {
     saveEnv();
     vi.clearAllMocks();
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(true);
+    mockIsMultiQueryEnabled.mockReturnValue(false);
+    mockIsMemorySummariesEnabled.mockReturnValue(false);
+    mockCheckScaleGate.mockReset().mockReturnValue(false);
+    mockQuerySummaryEmbeddings.mockReset().mockReturnValue([]);
+    mockRequireDb.mockReset().mockReturnValue({});
   });
 
   afterEach(() => {
@@ -221,5 +241,121 @@ describe('Stage-1: Expansion & Dedup', () => {
 
     expect(mockExpandQueryWithEmbeddings).not.toHaveBeenCalled();
     expect(result.metadata.channelCount).toBe(1);
+  });
+
+  it('T5: merges summary-channel candidates with baseline candidates', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsMemorySummariesEnabled.mockReturnValue(true);
+    mockCheckScaleGate.mockReturnValue(true);
+    mockQuerySummaryEmbeddings.mockReturnValue([{ memoryId: 2, similarity: 0.82 }]);
+    mockRequireDb.mockReturnValue(
+      makeSummaryDb({
+        2: {
+          id: 2,
+          title: 'summary-hit',
+          spec_folder: 'specs/200-summary',
+          file_path: 'specs/200-summary/memory/summary-hit.md',
+          importance_tier: 'normal',
+          importance_weight: 1,
+          quality_score: 0.91,
+          created_at: '2026-01-01T00:00:00.000Z',
+          is_archived: 0,
+        },
+      })
+    );
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([{ id: 1, score: 0.93, title: 'baseline-hit', quality_score: 0.93 }]);
+
+    const result = await executeStage1({ config: makeConfig() });
+    const ids = result.candidates.map((row) => row.id);
+
+    expect(ids).toEqual([1, 2]);
+    expect(result.metadata.channelCount).toBe(2);
+
+    const summaryRow = result.candidates.find((row) => row.id === 2);
+    expect(summaryRow?.title).toBe('summary-hit');
+    expect(summaryRow?.score).toBeCloseTo(0.82, 10);
+  });
+
+  it('T6: deduplicates summary candidates by memory id and preserves baseline result', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsMemorySummariesEnabled.mockReturnValue(true);
+    mockCheckScaleGate.mockReturnValue(true);
+    mockQuerySummaryEmbeddings.mockReturnValue([{ memoryId: 1, similarity: 0.15 }]);
+
+    const summaryGetSpy = vi.fn((id: number) => ({
+      id,
+      title: 'summary-version',
+      spec_folder: 'specs/dup',
+      file_path: 'specs/dup/memory/dup.md',
+      importance_tier: 'normal',
+      importance_weight: 1,
+      quality_score: 0.99,
+      created_at: '2026-01-01T00:00:00.000Z',
+      is_archived: 0,
+    }));
+    mockRequireDb.mockReturnValue({
+      prepare: vi.fn(() => ({ get: summaryGetSpy })),
+    });
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([{ id: 1, score: 0.95, title: 'baseline-version', quality_score: 0.95 }]);
+
+    const result = await executeStage1({ config: makeConfig() });
+
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]?.id).toBe(1);
+    expect(result.candidates[0]?.title).toBe('baseline-version');
+    expect(result.metadata.channelCount).toBe(1);
+    expect(summaryGetSpy).not.toHaveBeenCalled();
+  });
+
+  it('T7: applies minQualityScore threshold to summary candidates before merge', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsMemorySummariesEnabled.mockReturnValue(true);
+    mockCheckScaleGate.mockReturnValue(true);
+    mockQuerySummaryEmbeddings.mockReturnValue([
+      { memoryId: 3, similarity: 0.8 },
+      { memoryId: 4, similarity: 0.79 },
+    ]);
+    mockRequireDb.mockReturnValue(
+      makeSummaryDb({
+        3: {
+          id: 3,
+          title: 'high-quality-summary',
+          spec_folder: 'specs/quality/high',
+          file_path: 'specs/quality/high/memory/high.md',
+          importance_tier: 'normal',
+          importance_weight: 1,
+          quality_score: 0.95,
+          created_at: '2026-01-01T00:00:00.000Z',
+          is_archived: 0,
+        },
+        4: {
+          id: 4,
+          title: 'low-quality-summary',
+          spec_folder: 'specs/quality/low',
+          file_path: 'specs/quality/low/memory/low.md',
+          importance_tier: 'normal',
+          importance_weight: 1,
+          quality_score: 0.3,
+          created_at: '2026-01-01T00:00:00.000Z',
+          is_archived: 0,
+        },
+      })
+    );
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([]);
+
+    const result = await executeStage1({
+      config: makeConfig({ qualityThreshold: 0.8 }),
+    });
+
+    expect(result.metadata.channelCount).toBe(2);
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]?.id).toBe(3);
+    expect(result.candidates[0]?.title).toBe('high-quality-summary');
   });
 });

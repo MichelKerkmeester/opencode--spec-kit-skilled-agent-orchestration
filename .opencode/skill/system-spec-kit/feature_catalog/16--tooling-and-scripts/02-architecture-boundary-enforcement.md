@@ -14,13 +14,13 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/architecture/check-architecture-boundaries.ts` | Lib | Architecture boundary enforcement |
+| `scripts/evals/check-architecture-boundaries.ts` | Script (evals) | Architecture boundary enforcement (GAP A: shared neutrality, GAP B: wrapper-only) |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/layer-definitions.vitest.ts` | Layer definition tests |
+| `mcp_server/tests/layer-definitions.vitest.ts` | Layer definitions + architecture boundary violation tests: T39 (GAP A multi-syntax imports), T40-T43 (GAP B wrapper failures and bypass patterns), T44 (valid wrapper pass) |
 
 ## Source Metadata
 

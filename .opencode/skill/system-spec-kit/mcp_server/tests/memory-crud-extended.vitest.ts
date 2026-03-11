@@ -1328,6 +1328,7 @@ describe('handleMemoryHealth - Happy Path', () => {
         requested: true,
         attempted: true,
         repaired: true,
+        partialSuccess: false,
       }));
       expect(parsed?.data?.repair?.actions).toContain('fts_rebuild');
       expect(parsed?.data?.repair?.actions).toContain('trigger_cache_refresh');
@@ -1335,6 +1336,126 @@ describe('handleMemoryHealth - Happy Path', () => {
     } finally {
       refreshSpy.mockRestore();
     }
+  });
+
+  it('EXT-H13: autoRepair marks partial success when FTS mismatch remains but orphan cleanup succeeds', async (ctx) => {
+    if (
+      !handler?.handleMemoryHealth ||
+      !vectorIndex ||
+      !embeddingsSourceMod ||
+      !triggerMatcherMod?.refreshTriggerCache ||
+      !causalEdgesMod?.init ||
+      !causalEdgesMod?.cleanupOrphanedEdges
+    ) {
+      ctx.skip();
+      return;
+    }
+
+    handler.setEmbeddingModelReady(true);
+
+    let ftsCount = 2;
+    const execMock = vi.fn(() => {
+      ftsCount = 41;
+    });
+    const fakeDb = {
+      prepare: (sql: string) => ({
+        get: () => {
+          if (sql.includes('FROM memory_index')) return { count: 42 };
+          if (sql.includes('FROM memory_fts')) return { count: ftsCount };
+          return null;
+        },
+        all: () => [],
+      }),
+      exec: execMock,
+    };
+
+    vi.mocked(vectorIndex.getDb).mockImplementation(() => fakeDb as any);
+    vi.mocked(vectorIndex.isVectorSearchAvailable).mockImplementation(() => true);
+    vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => ({
+      provider: 'test',
+      model: 'test-model',
+      healthy: true,
+    }));
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfile).mockImplementation(() => ({
+      dim: 768,
+      getDatabasePath: (base: string) => `${base}/test.db`,
+    }));
+    vi.mocked(causalEdgesMod.init).mockImplementation(() => undefined);
+    vi.mocked(causalEdgesMod.cleanupOrphanedEdges).mockImplementation(() => ({ deleted: 3 }));
+
+    const refreshSpy = vi.spyOn(triggerMatcherMod, 'refreshTriggerCache').mockImplementation(() => undefined as never);
+
+    try {
+      const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
+      const parsed = parseResponse(result);
+
+      expect(execMock).toHaveBeenCalledTimes(1);
+      expect(refreshSpy).toHaveBeenCalledTimes(1);
+      expect(parsed?.data?.repair).toEqual(expect.objectContaining({
+        requested: true,
+        attempted: true,
+        repaired: false,
+        partialSuccess: true,
+      }));
+      expect(parsed?.data?.repair?.warnings).toEqual(
+        expect.arrayContaining([expect.stringContaining('Post-repair mismatch persists')])
+      );
+      expect(parsed?.data?.repair?.actions).toContain('orphan_edges_cleaned:3');
+    } finally {
+      refreshSpy.mockRestore();
+    }
+  });
+
+  it('EXT-H14: autoRepair marks partial success when FTS consistency check throws but orphan cleanup succeeds', async (ctx) => {
+    if (
+      !handler?.handleMemoryHealth ||
+      !vectorIndex ||
+      !embeddingsSourceMod ||
+      !causalEdgesMod?.init ||
+      !causalEdgesMod?.cleanupOrphanedEdges
+    ) {
+      ctx.skip();
+      return;
+    }
+
+    handler.setEmbeddingModelReady(true);
+
+    // Make the FTS consistency check throw before any repair attempt
+    const fakeDb = {
+      prepare: (_sql: string) => ({
+        get: () => { throw new Error('FTS5 table corrupted'); },
+        all: () => [],
+      }),
+      exec: vi.fn(),
+    };
+
+    vi.mocked(vectorIndex.getDb).mockImplementation(() => fakeDb as any);
+    vi.mocked(vectorIndex.isVectorSearchAvailable).mockImplementation(() => true);
+    vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => ({
+      provider: 'test',
+      model: 'test-model',
+      healthy: true,
+    }));
+    vi.mocked(embeddingsSourceMod.getEmbeddingProfile).mockImplementation(() => ({
+      dim: 768,
+      getDatabasePath: (base: string) => `${base}/test.db`,
+    }));
+    vi.mocked(causalEdgesMod.init).mockImplementation(() => undefined);
+    vi.mocked(causalEdgesMod.cleanupOrphanedEdges).mockImplementation(() => ({ deleted: 2 }));
+
+    const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
+    const parsed = parseResponse(result);
+
+    expect(parsed?.data?.repair).toEqual(expect.objectContaining({
+      requested: true,
+      attempted: true,
+      repaired: false,
+      partialSuccess: true,
+    }));
+    expect(parsed?.data?.repair?.errors).toEqual(
+      expect.arrayContaining([expect.stringContaining('Consistency check failed before repair')])
+    );
+    expect(parsed?.data?.repair?.actions).toContain('orphan_edges_cleaned:2');
   });
 });
 

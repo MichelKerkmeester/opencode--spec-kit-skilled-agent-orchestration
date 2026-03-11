@@ -62,6 +62,7 @@ describe('Mutation hooks', () => {
     expect(result.constitutionalCacheCleared).toBe(true);
     expect(result.graphSignalsCacheCleared).toBe(true);
     expect(result.coactivationCacheCleared).toBe(true);
+    expect(result.errors).toEqual([]);
 
     expect(mockClearCache).toHaveBeenCalledTimes(1);
     expect(mockInvalidateOnWrite).toHaveBeenCalledWith('save', { memoryId: 42 });
@@ -84,10 +85,11 @@ describe('Mutation hooks', () => {
     expect(result.constitutionalCacheCleared).toBe(true);
     expect(result.graphSignalsCacheCleared).toBe(true);
     expect(result.coactivationCacheCleared).toBe(true);
+    expect(result.errors).toEqual(['triggerMatcher.clearCache: trigger cache failure']);
 
     expect(warnSpy).toHaveBeenCalledWith(
-      '[mutation-hooks] triggerMatcher.clearCache failed:',
-      expect.any(Error)
+      '[mutation-hooks] triggerMatcher.clearCache failed for operation="update":',
+      'trigger cache failure'
     );
 
     expect(mockInvalidateOnWrite).toHaveBeenCalledTimes(1);

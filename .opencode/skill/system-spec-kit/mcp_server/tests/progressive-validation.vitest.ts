@@ -857,6 +857,16 @@ describe('PI-B2: Progressive Validation Pipeline', () => {
       expect(afterContent).not.toContain('YYYY-MM-DD');
     });
 
+    it('level 2 propagates detect errors when required files are missing', () => {
+      const folder = tracked(createTempSpecFolder({
+        'spec.md': '# Spec\n\n| **Level** | 1 |\n',
+        // Missing plan.md and tasks.md
+      }));
+
+      const { exitCode } = runProgressive(folder, ['--level', '2']);
+      expect(exitCode).toBe(2);
+    });
+
     it('level 3 runs detect, auto-fix, and suggest', () => {
       const folder = tracked(createTempSpecFolder({
         'spec.md': '# Spec\n\n| **Level** | 2 |\n| **Date** | YYYY-MM-DD |\n\n## Overview\nTest.\n',

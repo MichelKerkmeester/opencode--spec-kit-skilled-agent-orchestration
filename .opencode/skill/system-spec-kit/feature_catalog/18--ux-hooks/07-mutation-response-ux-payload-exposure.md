@@ -20,18 +20,11 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 
 ### Tests
 
-| File | Focus |
-|------|-------|
-| `mcp_server/tests/envelope.vitest.ts` | Response envelope tests |
-| `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| Test File | Test Name | Coverage |
+|-----------|-----------|----------|
+| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `memory_save success response exposes postMutationHooks contract fields and types` | Verifies successful `memory_save` responses include `data.postMutationHooks` with `latencyMs`, cache-clear booleans, and `toolCacheInvalidated` typed as the UX payload contract requires. |
+| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `atomicSaveMemory returns post-mutation feedback payload with typed fields for successful saves` | Verifies successful `atomicSaveMemory` responses emit the same typed `postMutationHooks` payload contract. |
+| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | `atomicSaveMemory duplicate no-op omits postMutationHooks and reports no-op status` | Verifies duplicate/no-op atomic saves do not emit `postMutationHooks` when no post-mutation cache work occurs. |
 
 ## Source Metadata
 

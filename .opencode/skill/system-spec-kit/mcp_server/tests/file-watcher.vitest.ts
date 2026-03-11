@@ -54,6 +54,13 @@ async function waitFor(
   throw new Error(`Timed out waiting for condition after ${timeoutMs}ms`);
 }
 
+type FileWatcherModule = typeof import('../lib/ops/file-watcher');
+
+async function loadFreshWatcherModule(): Promise<FileWatcherModule> {
+  vi.resetModules();
+  return import('../lib/ops/file-watcher');
+}
+
 describe('file-watcher path filters', () => {
   it('does not treat .opencode as a hidden path', () => {
     expect(__testables.isDotfilePath('/workspace/.opencode/specs/001-test/spec.md')).toBe(false);
@@ -296,5 +303,276 @@ describe('file-watcher runtime behavior', () => {
 
     // Should have coalesced to exactly 1 reindex call
     expect(reindexFn.mock.calls.length).toBe(1);
+  });
+
+  it('removes old entry and indexes new entry on file rename', async () => {
+    const tempDir = await createTempDir();
+    const oldPath = path.join(tempDir, 'rename-old.md');
+    const newPath = path.join(tempDir, 'rename-new.md');
+    await fs.writeFile(oldPath, 'rename-test', 'utf8');
+
+    const indexedPaths = new Set<string>([oldPath]);
+    const reindexFn = vi.fn(async (filePath: string) => {
+      indexedPaths.add(filePath);
+    });
+    const removeFn = vi.fn(async (filePath: string) => {
+      indexedPaths.delete(filePath);
+    });
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      removeFn,
+      debounceMs: 80,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(200);
+    await fs.rename(oldPath, newPath);
+
+    await waitFor(
+      () =>
+        removeFn.mock.calls.some((call) => call[0] === oldPath) &&
+        reindexFn.mock.calls.some((call) => call[0] === newPath),
+      { timeoutMs: 5000 }
+    );
+
+    expect(indexedPaths.has(oldPath)).toBe(false);
+    expect(indexedPaths.has(newPath)).toBe(true);
+  });
+
+  it('debounces rapid changes within the 2-second default window to one reindex', async () => {
+    const tempDir = await createTempDir();
+    const filePath = path.join(tempDir, 'debounce-default-window.md');
+    await fs.writeFile(filePath, 'initial', 'utf8');
+
+    const reindexFn = vi.fn(async () => undefined);
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      // Use default debounce (2000ms) to stress real production window.
+    });
+    activeWatchers.push(watcher);
+
+    await delay(250);
+
+    for (let i = 0; i < 8; i++) {
+      await fs.writeFile(filePath, `burst-${i}-${Date.now()}`, 'utf8');
+      await delay(60);
+    }
+
+    await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 9000 });
+    await delay(600);
+
+    expect(reindexFn).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles burst renames and keeps only final path indexed', async () => {
+    const tempDir = await createTempDir();
+    let currentPath = path.join(tempDir, 'burst-0.md');
+    await fs.writeFile(currentPath, 'burst-0', 'utf8');
+
+    const paths: string[] = [currentPath];
+    const indexedPaths = new Set<string>([currentPath]);
+    const reindexFn = vi.fn(async (filePath: string) => {
+      indexedPaths.add(filePath);
+    });
+    const removeFn = vi.fn(async (filePath: string) => {
+      indexedPaths.delete(filePath);
+    });
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      removeFn,
+      debounceMs: 90,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(220);
+
+    for (let i = 1; i <= 5; i++) {
+      const nextPath = path.join(tempDir, `burst-${i}.md`);
+      await fs.rename(currentPath, nextPath);
+      currentPath = nextPath;
+      paths.push(currentPath);
+      await delay(25);
+    }
+
+    const finalPath = currentPath;
+    await waitFor(() => reindexFn.mock.calls.some((call) => call[0] === finalPath), { timeoutMs: 6000 });
+
+    expect(indexedPaths.has(finalPath)).toBe(true);
+    for (const stalePath of paths.slice(0, -1)) {
+      expect(indexedPaths.has(stalePath)).toBe(false);
+    }
+  });
+
+  it('handles concurrent renames across multiple files', async () => {
+    const tempDir = await createTempDir();
+    const originals = ['alpha.md', 'beta.md', 'gamma.md'].map((name) => path.join(tempDir, name));
+    const renamed = ['alpha-renamed.md', 'beta-renamed.md', 'gamma-renamed.md'].map((name) => path.join(tempDir, name));
+
+    await Promise.all(
+      originals.map((filePath, index) => fs.writeFile(filePath, `seed-${index}`, 'utf8'))
+    );
+
+    const indexedPaths = new Set<string>(originals);
+    const reindexFn = vi.fn(async (filePath: string) => {
+      indexedPaths.add(filePath);
+    });
+    const removeFn = vi.fn(async (filePath: string) => {
+      indexedPaths.delete(filePath);
+    });
+
+    const watcher = startFileWatcher({
+      paths: [tempDir],
+      reindexFn,
+      removeFn,
+      debounceMs: 100,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(220);
+
+    await Promise.all(
+      originals.map((oldPath, index) => fs.rename(oldPath, renamed[index]))
+    );
+
+    await waitFor(
+      () =>
+        originals.every((oldPath) => removeFn.mock.calls.some((call) => call[0] === oldPath)) &&
+        renamed.every((newPath) => reindexFn.mock.calls.some((call) => call[0] === newPath)),
+      { timeoutMs: 7000 }
+    );
+
+    for (const oldPath of originals) {
+      expect(indexedPaths.has(oldPath)).toBe(false);
+    }
+    for (const newPath of renamed) {
+      expect(indexedPaths.has(newPath)).toBe(true);
+    }
+  });
+});
+
+describe('file-watcher metrics', () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(async () => {
+    while (activeWatchers.length > 0) {
+      const watcher = activeWatchers.pop();
+      if (watcher) {
+        await watcher.close();
+      }
+    }
+
+    await Promise.all(tempDirs.map(async (dir) => {
+      await fs.rm(dir, { recursive: true, force: true });
+    }));
+    tempDirs.length = 0;
+  });
+
+  it('returns zero metrics before any reindexing', async () => {
+    const { getWatcherMetrics } = await loadFreshWatcherModule();
+
+    expect(getWatcherMetrics()).toEqual({
+      filesReindexed: 0,
+      avgReindexTimeMs: 0,
+    });
+  });
+
+  it('tracks filesReindexed after reindex operations', async () => {
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const filePath = await createTempMarkdown('metrics-count-start');
+    const tempDir = path.dirname(filePath);
+    const reindexFn = vi.fn(async () => undefined);
+
+    const watcher = startFreshWatcher({
+      paths: [tempDir],
+      reindexFn,
+      debounceMs: 40,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(150);
+    await fs.writeFile(filePath, 'metrics-count-updated', 'utf8');
+    await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
+
+    const metrics = getWatcherMetrics();
+    expect(metrics.filesReindexed).toBeGreaterThanOrEqual(1);
+    expect(metrics.filesReindexed).toBe(reindexFn.mock.calls.length);
+  });
+
+  it('computes avgReindexTimeMs as the running average of reindex timings', async () => {
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const filePath = await createTempMarkdown('metrics-avg-start');
+    const tempDir = path.dirname(filePath);
+    const configuredDelays = [30, 90];
+    const observedDurations: number[] = [];
+    let runIndex = 0;
+
+    const reindexFn = vi.fn(async () => {
+      const delayMs = configuredDelays[Math.min(runIndex, configuredDelays.length - 1)];
+      runIndex += 1;
+      const start = Date.now();
+      await delay(delayMs);
+      observedDurations.push(Date.now() - start);
+    });
+
+    const watcher = startFreshWatcher({
+      paths: [tempDir],
+      reindexFn,
+      debounceMs: 40,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(150);
+    await fs.writeFile(filePath, 'metrics-avg-1', 'utf8');
+    await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
+    await fs.unlink(filePath);
+    await delay(1300);
+    await fs.writeFile(filePath, 'metrics-avg-2', 'utf8');
+    await waitFor(() => reindexFn.mock.calls.length >= 2, { timeoutMs: 7000 });
+
+    const metrics = getWatcherMetrics();
+    const observedAverage = Math.round(
+      observedDurations.reduce((sum, duration) => sum + duration, 0) / observedDurations.length
+    );
+
+    expect(metrics.filesReindexed).toBeGreaterThanOrEqual(1);
+    expect(metrics.avgReindexTimeMs).toBeGreaterThanOrEqual(Math.max(0, observedAverage - 40));
+    expect(metrics.avgReindexTimeMs).toBeLessThanOrEqual(observedAverage + 80);
+  });
+
+  it('accumulates metrics across multiple reindex operations', async () => {
+    const { startFileWatcher: startFreshWatcher, getWatcherMetrics } = await loadFreshWatcherModule();
+    const filePath = await createTempMarkdown('metrics-accumulate-start');
+    const tempDir = path.dirname(filePath);
+    const reindexFn = vi.fn(async () => {
+      await delay(10);
+    });
+
+    const watcher = startFreshWatcher({
+      paths: [tempDir],
+      reindexFn,
+      debounceMs: 40,
+    });
+    activeWatchers.push(watcher);
+
+    await delay(150);
+    await fs.writeFile(filePath, 'metrics-accumulate-1', 'utf8');
+    await waitFor(() => getWatcherMetrics().filesReindexed >= 1, { timeoutMs: 5000 });
+    const afterFirst = getWatcherMetrics();
+
+    await delay(1200);
+    await fs.writeFile(filePath, 'metrics-accumulate-2', 'utf8');
+    await waitFor(() => getWatcherMetrics().filesReindexed >= 2, { timeoutMs: 5000 });
+    const afterSecond = getWatcherMetrics();
+
+    expect(afterFirst.filesReindexed).toBeGreaterThanOrEqual(1);
+    expect(afterSecond.filesReindexed).toBeGreaterThan(afterFirst.filesReindexed);
+    expect(afterSecond.filesReindexed).toBe(reindexFn.mock.calls.length);
   });
 });

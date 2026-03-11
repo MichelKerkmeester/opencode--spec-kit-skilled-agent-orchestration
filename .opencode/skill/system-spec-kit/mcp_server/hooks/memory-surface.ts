@@ -6,6 +6,7 @@
 import * as vectorIndex from '../lib/search/vector-index';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import { enrichWithRetrievalDirectives } from '../lib/search/retrieval-directives';
+import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 
 import type { Database } from '@spec-kit/shared/types';
 
@@ -131,7 +132,63 @@ function clearConstitutionalCache(): void {
    5. AUTO-SURFACE MEMORIES
 --------------------------------------------------------------- */
 
-async function autoSurfaceMemories(contextHint: string): Promise<AutoSurfaceResult | null> {
+function enforceAutoSurfaceTokenBudget(
+  result: AutoSurfaceResult | null,
+  tokenBudget: number,
+  hookName: 'tool-dispatch' | 'compaction' | 'memory-aware'
+): AutoSurfaceResult | null {
+  if (!result) {
+    return null;
+  }
+
+  const measureTokens = (candidate: AutoSurfaceResult): number =>
+    estimateTokenCount(JSON.stringify(candidate));
+
+  const budgetLimit = Number.isFinite(tokenBudget) && tokenBudget > 0
+    ? tokenBudget
+    : TOOL_DISPATCH_TOKEN_BUDGET;
+
+  let boundedResult: AutoSurfaceResult = result;
+  let tokenCount = measureTokens(boundedResult);
+
+  if (tokenCount <= budgetLimit) {
+    return boundedResult;
+  }
+
+  const triggered = [...boundedResult.triggered];
+  while (triggered.length > 0 && tokenCount > budgetLimit) {
+    triggered.pop();
+    boundedResult = { ...boundedResult, triggered };
+    tokenCount = measureTokens(boundedResult);
+  }
+
+  const constitutional = [...boundedResult.constitutional];
+  while (constitutional.length > 0 && tokenCount > budgetLimit) {
+    constitutional.pop();
+    boundedResult = { ...boundedResult, constitutional };
+    tokenCount = measureTokens(boundedResult);
+  }
+
+  if (tokenCount > budgetLimit) {
+    console.warn(
+      `[SK-004] Auto-surface output exceeded ${hookName} token budget ` +
+      `(${tokenCount} > ${budgetLimit}); dropping payload`
+    );
+    return null;
+  }
+
+  console.warn(
+    `[SK-004] Auto-surface output truncated to fit ${hookName} token budget ` +
+    `(${tokenCount}/${budgetLimit})`
+  );
+  return boundedResult;
+}
+
+async function autoSurfaceMemories(
+  contextHint: string,
+  tokenBudget: number = TOOL_DISPATCH_TOKEN_BUDGET,
+  hookName: 'tool-dispatch' | 'compaction' | 'memory-aware' = 'memory-aware'
+): Promise<AutoSurfaceResult | null> {
   const startTime = Date.now();
 
   try {
@@ -152,7 +209,7 @@ async function autoSurfaceMemories(contextHint: string): Promise<AutoSurfaceResu
     // Pure content transformation — scoring is unchanged.
     const enrichedConstitutional = enrichWithRetrievalDirectives(constitutional);
 
-    return {
+    return enforceAutoSurfaceTokenBudget({
       constitutional: enrichedConstitutional,
       triggered: triggered.map((t: triggerMatcher.TriggerMatch) => ({
         memory_id: t.memoryId,
@@ -162,7 +219,7 @@ async function autoSurfaceMemories(contextHint: string): Promise<AutoSurfaceResu
       })),
       surfaced_at: new Date().toISOString(),
       latencyMs: latencyMs,
-    };
+    }, tokenBudget, hookName);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn('[SK-004] Auto-surface failed:', message);
@@ -213,10 +270,9 @@ async function autoSurfaceAtToolDispatch(
     return null;
   }
 
-  // Delegate to the core surface function; token budget is enforced by
-  // the trigger-matcher limit (5 results) and constitutional cache cap (10)
-  // which together stay well within TOOL_DISPATCH_TOKEN_BUDGET = 4000.
-  return autoSurfaceMemories(contextHint);
+  // Delegate to the core surface function; token budget is explicitly
+  // enforced at the hook output boundary via estimateTokenCount().
+  return autoSurfaceMemories(contextHint, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
 }
 
 /* ---------------------------------------------------------------
@@ -254,9 +310,9 @@ async function autoSurfaceAtCompaction(
     return null;
   }
 
-  // Delegate to the core surface function; same budget constraints apply
-  // as for tool dispatch: COMPACTION_TOKEN_BUDGET = 4000.
-  return autoSurfaceMemories(sessionContext.trim());
+  // Delegate to the core surface function; token budget is explicitly
+  // enforced at the hook output boundary via estimateTokenCount().
+  return autoSurfaceMemories(sessionContext.trim(), COMPACTION_TOKEN_BUDGET, 'compaction');
 }
 
 /* ---------------------------------------------------------------

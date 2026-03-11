@@ -103,8 +103,11 @@ function appendAutoSurfaceHints(result: HookResult, autoSurfacedContext: AutoSur
     if (firstContent) {
       firstContent.text = serializeEnvelopeWithTokenCount(envelope);
     }
-  } catch {
-    // Non-throwing by design.
+  } catch (err: unknown) {
+    console.warn(
+      '[response-hints] appendAutoSurfaceHints failed:',
+      err instanceof Error ? err.message : String(err)
+    );
   }
 }
 

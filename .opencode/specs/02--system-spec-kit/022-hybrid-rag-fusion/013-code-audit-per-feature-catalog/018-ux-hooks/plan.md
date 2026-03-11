@@ -44,9 +44,9 @@ This plan audits the UX Hooks feature catalog (`feature_catalog/18--ux-hooks/`) 
 - [x] Dependencies identified
 
 ### Definition of Done
-- [ ] All acceptance criteria met
-- [ ] Tests passing (if applicable)
-- [ ] Docs updated (spec/plan/tasks)
+- [x] All acceptance criteria met — 17/17 tasks, 21/21 checklist items
+- [x] Tests passing (if applicable) — 439 tests across 7 files, all green
+- [x] Docs updated (spec/plan/tasks) — all 4 spec folder docs synchronized
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -77,14 +77,15 @@ Catalog claims are read first, then mapped to implementation and tests for each 
 - [x] Establish acceptance criteria and priority model (P0/P1/P2)
 
 ### Phase 2: Core Implementation
-- [ ] Perform feature-by-feature audit with source citations
-- [ ] Record structured findings with status and recommended fixes
-- [ ] Build prioritized backlog for code, test, and catalog corrections
+- [x] Perform feature-by-feature audit with source citations
+- [x] Record structured findings with status and recommended fixes
+- [x] Build prioritized backlog for code, test, and catalog corrections
+- [x] Execute 17 remediation tasks via 5 parallel Copilot CLI agents (gpt-5.3-codex xhigh)
 
 ### Phase 3: Verification
-- [ ] Validate all stale/missing test references and scenario mappings
-- [ ] Confirm documentation synchronization across spec/plan/tasks/checklist
-- [ ] Finalize verification checklist totals and unresolved items
+- [x] Validate all stale/missing test references and scenario mappings
+- [x] Confirm documentation synchronization across spec/plan/tasks/checklist
+- [x] Finalize verification checklist totals and unresolved items — 21/21 items verified
 <!-- /ANCHOR:phases -->
 
 ---
@@ -162,9 +163,9 @@ Phase 1.5 (Config) ───┘
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
+- [x] Backup created (if data changes) — N/A: documentation-only audit, no data migrations
+- [x] Feature flag configured — N/A: no production feature flags in documentation workflow
+- [x] Monitoring alerts set — N/A: no runtime deployment
 
 ### Rollback Procedure
 1. Revert rewritten spec-folder docs to previous commit snapshot.

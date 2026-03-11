@@ -23,6 +23,7 @@ import * as embeddings from '../lib/providers/embeddings';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import * as vectorIndex from '../lib/search/vector-index';
+import { runPostMutationHooks } from './mutation-hooks';
 import {
   findConstitutionalFiles,
   findSpecDocuments,
@@ -242,6 +243,14 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     return { deleted, failed };
   };
 
+  const runScanInvalidationHooks = (context: Record<string, unknown>): void => {
+    try {
+      runPostMutationHooks('scan', context);
+    } catch (error: unknown) {
+      console.warn('[memory-index-scan] Post-mutation invalidation failed:', toErrorMessage(error));
+    }
+  };
+
   if (files.length === 0) {
     let staleDeleted = 0;
     let staleDeleteFailed = 0;
@@ -252,7 +261,7 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
       staleDeleted = staleDeleteResult.deleted;
       staleDeleteFailed = staleDeleteResult.failed;
       if (staleDeleted > 0) {
-        triggerMatcher.clearCache();
+        runScanInvalidationHooks({ staleDeleted, staleDeleteFailed, operation: 'stale-delete' });
       }
     }
 
@@ -501,7 +510,12 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   }
 
   if (results.indexed > 0 || results.updated > 0 || results.staleDeleted > 0) {
-    triggerMatcher.clearCache();
+    runScanInvalidationHooks({
+      indexed: results.indexed,
+      updated: results.updated,
+      staleDeleted: results.staleDeleted,
+      staleDeleteFailed: results.staleDeleteFailed,
+    });
   }
 
   results.aliasConflicts = detectAliasConflictsFromIndex();
