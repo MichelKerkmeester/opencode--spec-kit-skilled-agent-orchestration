@@ -45,7 +45,7 @@ contextType: "general"
 ## Phase 2: Implementation
 
 - [x] T004 Reconcile incremental scan hash accounting with mtime-only reality [Priority: P0] (`mcp_server/handlers/memory-index.ts`, `mcp_server/lib/storage/incremental-index.ts`) — removed `skipped_hash`, renamed `hash_checks` → `mtime_changed`
-- [x] T005 Add direct startup guard unit tests for marker and SQLite warning branches [Priority: P2] (`mcp_server/startup-checks.ts`, `mcp_server/tests/`) — created startup-checks.vitest.ts (6 tests, all pass)
+- [x] T005 Add direct startup guard unit tests for marker and SQLite warning branches [Priority: P2] (`mcp_server/startup-checks.ts`, `mcp_server/tests/`) — created startup-checks.vitest.ts (6 SQLite tests, all pass); marker-path unit tests deferred (ESM limitation tracked)
 - [x] T006 Update maintenance test inventory and remove stale retry test reference [Priority: P2] (`feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`) — hash references removed from feature catalog
 - [x] T007 Confirm no unresolved P1 behavior-mismatch work remains [Priority: P1] (`004-maintenance/tasks.md`) — grep confirms zero remnants
 <!-- /ANCHOR:phase-2 -->

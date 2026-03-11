@@ -53,9 +53,9 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] Discovery success criteria are validated for all 3 features — SC-001 through SC-004 met
-- [x] CHK-021 [P0] `memory_list` edge-case tests cover pagination hint and sort fallback behavior — 6 tests in `handler-memory-list-edge.vitest.ts`
-- [x] CHK-022 [P1] `memory_stats` tests cover scoring fallback and limit truncation behavior — 7 tests in `handler-memory-stats-edge.vitest.ts`
-- [x] CHK-023 [P1] `memory_health` tests cover `divergent_aliases`, `autoRepair`, and schema-missing paths — 8 tests in `handler-memory-health-edge.vitest.ts`
+- [x] CHK-021 [P0] `memory_list` edge-case tests cover pagination hint and sort fallback behavior — 8 tests in `handler-memory-list-edge.vitest.ts` (clamping, fallback, sort, defaults — all with parsed response assertions)
+- [x] CHK-022 [P1] `memory_stats` tests cover scoring fallback and limit truncation behavior — 12 tests in `handler-memory-stats-edge.vitest.ts` (limit clamping, folderRanking validation, excludePatterns, defaults — with structural assertions)
+- [x] CHK-023 [P1] `memory_health` tests cover `divergent_aliases`, `autoRepair`, and schema-missing paths — 8 tests in `handler-memory-health-edge.vitest.ts` (validation error responses with requestId, reportMode, autoRepair, confirmed, specFolder — all with error message + requestId assertions)
 <!-- /ANCHOR:testing -->
 
 ---

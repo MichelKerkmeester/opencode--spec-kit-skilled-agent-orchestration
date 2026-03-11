@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 003-discovery code audit - 4 handler fixes and 21 new edge-case tests across Discovery features."
+description: "Phase 003-discovery code audit - 2 handler bug fixes, 21 new edge-case tests, and stale reference cleanup across Discovery features."
 trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
 importance_tier: "normal"
 contextType: "general"
@@ -57,9 +57,9 @@ Removed the nonexistent `mcp_server/tests/retry.vitest.ts` reference from all 3 
 |------|--------|---------|
 | `mcp_server/handlers/memory-crud-stats.ts` | Modified | Fix summary to use true `totalSpecFolders` before pagination slice |
 | `mcp_server/handlers/memory-crud-health.ts` | Modified | Convert 5 validation throws to `createMCPErrorResponse` with `requestId` |
-| `mcp_server/tests/handler-memory-list-edge.vitest.ts` | Created | 6 edge-case tests for `handleMemoryList` |
-| `mcp_server/tests/handler-memory-stats-edge.vitest.ts` | Created | 7 edge-case tests for `handleMemoryStats` |
-| `mcp_server/tests/handler-memory-health-edge.vitest.ts` | Created | 8 edge-case tests for `handleMemoryHealth` |
+| `mcp_server/tests/handler-memory-list-edge.vitest.ts` | Created | 8 edge-case tests for `handleMemoryList` with payload assertions |
+| `mcp_server/tests/handler-memory-stats-edge.vitest.ts` | Created | 12 edge-case tests for `handleMemoryStats` covering all 4 folderRanking variants |
+| `mcp_server/tests/handler-memory-health-edge.vitest.ts` | Created | 8 edge-case tests for `handleMemoryHealth` with error envelope assertions |
 | `mcp_server/tests/handler-memory-crud.vitest.ts` | Modified | Update T519-H3/H4 from throw to error response assertions |
 | `feature_catalog/03--discovery/01-memory-browser-memorylist.md` | Modified | Remove stale `retry.vitest.ts` reference |
 | `feature_catalog/03--discovery/02-system-statistics-memorystats.md` | Modified | Remove stale `retry.vitest.ts` reference |
@@ -85,7 +85,7 @@ Six parallel GPT-5.3-codex agents (xhigh reasoning) handled implementation via c
 | Remove `limit` from `computeFolderScores` call and slice afterward | `computeFolderScores` applies `.slice(0, limit)` internally, which would make `totalSpecFolders` report the paginated count instead of the true total. |
 | Use `E_INVALID_INPUT` error code for validation errors | Consistent with `E_SCHEMA_MISSING` pattern already used in the same handler. Differs from `E_VALIDATION` in some other handlers (P2, cosmetic). |
 | Create separate test files per handler instead of appending to existing | Avoids merge conflicts, keeps test files focused, follows existing naming convention (`handler-memory-*-edge.vitest.ts`). |
-| Tests use DB-error-tolerant pattern (no mocks) | Matches existing `handler-memory-crud.vitest.ts` style where DB errors are acceptable outcomes for validation-passing tests. |
+| Tests assert response payloads (no mocks) | Handler initializes in-memory SQLite via `checkDatabaseUpdated()`, enabling real response assertions without mocks. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -96,9 +96,11 @@ Six parallel GPT-5.3-codex agents (xhigh reasoning) handled implementation via c
 | Check | Result |
 |-------|--------|
 | TypeScript (`npx tsc --noEmit`) | PASS - clean, 0 errors |
-| Targeted test suite | PASS - 48/48 tests passed across 4 test files |
-| GPT-5.3-codex source review | WARN - 86/100, 0 P0, 1 P1 (fixed), 1 P2 |
-| GPT-5.3-codex test review | PASS - 90/100, 0 P0, 2 P1 (no payload assertions without DB fixtures - expected), 2 P2 |
+| Targeted test suite | PASS - all tests passed across 4 test files |
+| GPT-5.3-codex source review (R1) | WARN - 86/100, 0 P0, 1 P1 (fixed), 1 P2 |
+| GPT-5.3-codex test review (R1) | PASS - 90/100, 0 P0, 2 P1 (no payload assertions), 2 P2 |
+| GPT-5.3-codex ultra-think review (R2) | 79/100, 0 P0, test weakness P1s identified |
+| GPT-5.3-codex fix round (R3) | Tests rewritten with payload assertions, accuracy fixed |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -106,7 +108,7 @@ Six parallel GPT-5.3-codex agents (xhigh reasoning) handled implementation via c
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Edge-case tests do not assert response payload values.** Without DB fixtures, tests verify "no throw" and "DB error acceptable" but cannot check actual response data shapes. This is consistent with the existing test pattern.
+1. **Edge-case tests assert payload structure but not all field values.** Handler initializes in-memory SQLite, enabling response assertions. Tests verify clamped limits, offsets, and response shapes but cannot test populated data without seed fixtures.
 2. **`E_INVALID_INPUT` vs `E_VALIDATION` naming inconsistency across handlers.** Discovery uses `E_INVALID_INPUT`; some other handlers use `E_VALIDATION`. P2 cosmetic, deferred.
 3. **`requestId` not included in successful health responses.** Deferred per spec open questions.
 <!-- /ANCHOR:limitations -->

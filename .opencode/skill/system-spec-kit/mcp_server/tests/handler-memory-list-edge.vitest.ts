@@ -1,94 +1,62 @@
 import { describe, it, expect } from 'vitest';
 import * as handler from '../handlers/memory-crud';
 
-type ErrorLike = {
-  message?: string;
-};
-
-function toErrorLike(error: unknown): ErrorLike {
-  if (error instanceof Error) {
-    return error as ErrorLike;
-  }
-  if (typeof error === 'object' && error !== null) {
-    return error as ErrorLike;
-  }
-  return { message: String(error) };
+/** Parse the JSON payload from an MCP response. */
+function parseResponse(result: { content: Array<{ text: string }> }) {
+  return JSON.parse(result.content[0].text);
 }
 
 describe('handleMemoryList Edge Cases (T006)', () => {
-  it('T006-L1: Invalid sortBy does not throw (falls back to created_at)', async () => {
-    try {
-      await handler.handleMemoryList({
-        sortBy: 'invalid_column' as unknown as Parameters<typeof handler.handleMemoryList>[0]['sortBy'],
-      });
-      // No error or DB error means validation passed
-    } catch (error: unknown) {
-      const typedError = toErrorLike(error);
-      expect(
-        typedError.message?.includes('database') === true ||
-          typedError.message?.includes('DB') === true ||
-          typedError.message?.includes('getDb') === true
-      ).toBe(true);
-    }
+  it('T006-L1: Invalid sortBy falls back to created_at (verified via payload)', async () => {
+    const result = await handler.handleMemoryList({ sortBy: 'invalid_column' as any });
+    const parsed = parseResponse(result);
+    // Handler accepted it (no error) — fallback to created_at means query succeeded
+    expect(parsed.data).toBeDefined();
+    expect(typeof parsed.data.total).toBe('number');
   });
 
   it('T006-L2: Non-boolean includeChunks throws', async () => {
-    await expect(
-      handler.handleMemoryList({
-        includeChunks: 'yes' as unknown as Parameters<typeof handler.handleMemoryList>[0]['includeChunks'],
-      })
-    ).rejects.toThrow(/includeChunks.*boolean|boolean.*includeChunks/);
+    await expect(handler.handleMemoryList({ includeChunks: 'yes' } as any)).rejects.toThrow(
+      /includeChunks.*boolean|boolean/
+    );
   });
 
-  it('T006-L3: Negative limit does not throw (clamped to 1)', async () => {
-    try {
-      await handler.handleMemoryList({ limit: -5 });
-    } catch (error: unknown) {
-      const typedError = toErrorLike(error);
-      expect(
-        typedError.message?.includes('database') === true ||
-          typedError.message?.includes('DB') === true ||
-          typedError.message?.includes('getDb') === true
-      ).toBe(true);
-    }
+  it('T006-L3: Negative limit clamped to 1', async () => {
+    const result = await handler.handleMemoryList({ limit: -5 });
+    const parsed = parseResponse(result);
+    expect(parsed.data.limit).toBe(1); // -5 is truthy, so clamp path gives max(1, min(-5, 100)) = 1
   });
 
-  it('T006-L4: Limit > 100 does not throw (clamped to 100)', async () => {
-    try {
-      await handler.handleMemoryList({ limit: 500 });
-    } catch (error: unknown) {
-      const typedError = toErrorLike(error);
-      expect(
-        typedError.message?.includes('database') === true ||
-          typedError.message?.includes('DB') === true ||
-          typedError.message?.includes('getDb') === true
-      ).toBe(true);
-    }
+  it('T006-L4: Limit > 100 clamped to 100', async () => {
+    const result = await handler.handleMemoryList({ limit: 500 });
+    const parsed = parseResponse(result);
+    expect(parsed.data.limit).toBe(100);
   });
 
-  it('T006-L5: Negative offset does not throw (clamped to 0)', async () => {
-    try {
-      await handler.handleMemoryList({ offset: -10 });
-    } catch (error: unknown) {
-      const typedError = toErrorLike(error);
-      expect(
-        typedError.message?.includes('database') === true ||
-          typedError.message?.includes('DB') === true ||
-          typedError.message?.includes('getDb') === true
-      ).toBe(true);
-    }
+  it('T006-L5: Negative offset clamped to 0', async () => {
+    const result = await handler.handleMemoryList({ offset: -10 });
+    const parsed = parseResponse(result);
+    expect(parsed.data.offset).toBe(0);
   });
 
-  it('T006-L6: Empty string specFolder does not throw', async () => {
-    try {
-      await handler.handleMemoryList({ specFolder: '' });
-    } catch (error: unknown) {
-      const typedError = toErrorLike(error);
-      expect(
-        typedError.message?.includes('database') === true ||
-          typedError.message?.includes('DB') === true ||
-          typedError.message?.includes('getDb') === true
-      ).toBe(true);
-    }
+  it('T006-L6: Limit of 1 is accepted', async () => {
+    const result = await handler.handleMemoryList({ limit: 1 });
+    const parsed = parseResponse(result);
+    expect(parsed.data.limit).toBe(1);
+  });
+
+  it('T006-L7: Empty string specFolder does not error', async () => {
+    const result = await handler.handleMemoryList({ specFolder: '' });
+    const parsed = parseResponse(result);
+    expect(parsed.data).toBeDefined();
+  });
+
+  it('T006-L8: Default args return valid payload', async () => {
+    const result = await handler.handleMemoryList({});
+    const parsed = parseResponse(result);
+    expect(parsed.data.limit).toBe(20);
+    expect(parsed.data.offset).toBe(0);
+    expect(typeof parsed.data.total).toBe('number');
+    expect(Array.isArray(parsed.data.results)).toBe(true);
   });
 });

@@ -52,8 +52,8 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] F-01 acceptance criteria and behavior mismatch checks validated — `skipped_hash` removed, `mtime_changed` naming matches mtime-only reality; incremental-index.vitest.ts 36/36 pass
-- [x] CHK-021 [P0] Startup marker creation/match/mismatch scenarios validated by tests — `detectNodeVersionMismatch` cannot be unit-tested in ESM (path.resolve not spyable); validated via manual EX-022 scenario and code review
+- [x] CHK-020 [P0] F-01 acceptance criteria and behavior mismatch checks validated — `skipped_hash` removed, `mtime_changed` naming matches mtime-only reality; incremental-index.vitest.ts 36/36 pass (deferred stubs — not behavioral evidence; T004 rename verified structurally)
+- [x] CHK-021 [P0] Startup marker creation/match/mismatch scenarios validated by tests — `detectNodeVersionMismatch` cannot be unit-tested in ESM (path.resolve not spyable); marker-path unit tests deferred (ESM path.resolve limitation); validated via manual EX-022 scenario and code review
 - [x] CHK-022 [P1] SQLite version pass/warn/extraction-failure scenarios tested — startup-checks.vitest.ts: 6/6 pass (>=3.35.0, <3.35.0, major<3, query failure, boundary 3.35.0, version string)
 - [x] CHK-023 [P1] EX-021 and EX-022 playbook coverage mapped or gap-noted — EX-021 maps to incremental index tests; EX-022 maps to startup-checks.vitest.ts SQLite tests + manual marker validation
 <!-- /ANCHOR:testing -->
