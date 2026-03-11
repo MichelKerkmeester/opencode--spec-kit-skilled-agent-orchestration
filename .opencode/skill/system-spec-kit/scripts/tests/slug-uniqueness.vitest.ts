@@ -2,14 +2,12 @@
 // MODULE: Test — Slug Uniqueness
 // ---------------------------------------------------------------
 // Tests: ensureUniqueMemoryFilename collision detection and resolution
-// Note: Function is in scripts/utils/slug-utils.ts but tested here
-//       where vitest infrastructure exists.
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as os from 'node:os';
-import { ensureUniqueMemoryFilename } from '../../scripts/dist/utils/slug-utils';
+import { ensureUniqueMemoryFilename } from '../utils/slug-utils';
 
 let tmpDir: string;
 
