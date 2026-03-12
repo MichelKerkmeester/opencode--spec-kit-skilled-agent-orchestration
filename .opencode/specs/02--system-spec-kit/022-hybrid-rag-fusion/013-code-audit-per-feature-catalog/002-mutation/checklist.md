@@ -91,7 +91,7 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 6 | 6/6 |
-| P1 Items | 8 | 8/8 |
+| P1 Items | 10 | 9/10 |
 | P2 Items | 2 | 1/2 |
 
 **Verification Date**: 2026-03-11
@@ -114,7 +114,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. Historical gap (now fixed): `memory-save-integration.vitest.ts` previously used deferred placeholders. It now contains concrete PE/save arbitration assertions (`T501-T510`) for CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED routing and save-helper wiring.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/01-memory-indexing-memorysave.md:194`).
-- **Playbook Coverage:** EX-010 (inferred from phase sequencing), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-006 (inferred from phase sequencing), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Unify reconsolidation gating to a single source-of-truth contract and remove contradictory default semantics.
   2. Completed: replaced deferred integration placeholders with concrete PE/save arbitration assertions.
@@ -132,7 +132,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. Feature-listed tests are mostly infrastructure-level and omit direct `memory_update` behavior suites; no listed test directly asserts `allowPartialUpdate` and embedding-regeneration rollback semantics (`feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md:86-132`; compare coverage in `mcp_server/tests/memory-crud-extended.vitest.ts:725-772`).
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md:116`).
-- **Playbook Coverage:** EX-011 (inferred), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-007 (inferred), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Treat BM25 re-index failure as transactional failure when title/trigger fields change, or mark an explicit "search-index-dirty" state.
   2. Add/update feature test catalog entries to include `handler-memory-crud.vitest.ts` and `memory-crud-extended.vitest.ts` update-path assertions.
@@ -150,12 +150,12 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. No listed test explicitly exercises the database-unavailable bulk fallback path.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md:233`).
-- **Playbook Coverage:** EX-012 (inferred), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-008 (inferred), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Align bulk path with single-delete safety policy: abort when DB handle is unavailable.
   2. Add regression test for DB-unavailable bulk delete to ensure no partial deletes occur.
   3. Clean stale test-file references in the feature catalog.
-- **Post-Fix Status:** FIXED (T-06). No-DB bulk-folder path now throws `Error('Bulk-folder delete aborted: database unavailable...')` instead of silently iterating. Wired `recordHistory('DELETE')` inside both single-delete and bulk-delete transactions. TSC clean.
+- **Post-Fix Status:** FIXED (T-06). DB-unavailable paths for both single and bulk `memory_delete` now return standardized MCP error responses instead of attempting partial delete flow. Wired `recordHistory('DELETE')` inside both single-delete and bulk-delete transactions. TSC clean.
 
 ## F-04: Tier-based bulk deletion (memory_bulk_delete)
 - **Status:** FAIL
@@ -168,7 +168,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. Initial gap (now fixed): boundary tests were missing for `olderThanDays` and schema-level `confirm` enforcement.
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md:122`).
-- **Playbook Coverage:** EX-013 (inferred), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-009 (inferred), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Use a single shared constant for `olderThanDays` minimum across JSON schema, Zod schema, and handler guard.
   2. Add boundary tests for `olderThanDays` validation in both schema and handler suites.
@@ -187,7 +187,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. Listed `handleMemoryValidate` tests emphasize input validation/basic envelope checks and do not deeply assert downstream side effects (auto-promotion throttling, negative-feedback persistence, learned-feedback branching, ground-truth selection IDs) (`mcp_server/tests/handler-checkpoints.vitest.ts:334-364`, `mcp_server/tests/checkpoints-extended.vitest.ts:853-893`).
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md:241`).
-- **Playbook Coverage:** EX-014 (inferred), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-010 (inferred), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Wrap full `memory_validate` side-effect set in a broader transaction (or make every step idempotent with compensating retry).
   2. Add targeted tests for positive+`queryId` learned-feedback and ground-truth logging branches.
@@ -204,7 +204,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Test Gaps:**
   1. Listed tests focus transaction-manager file primitives (`executeAtomicSave`, pending recovery) rather than update/delete handler transaction wrappers (`mcp_server/tests/transaction-manager.vitest.ts:83-120,220-239`).
   2. Listed test path `mcp_server/tests/retry.vitest.ts` does not exist in repo (`.opencode/skill/system-spec-kit/feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md:73`).
-- **Playbook Coverage:** EX-015 (inferred), explicit feature-level tag MISSING.
+- **Playbook Coverage:** EX-007/EX-008 (inferred via update/delete wrapper paths), explicit feature-level tag MISSING.
 - **Recommended Fixes:**
   1. Update feature source table to include `handlers/memory-crud-update.ts` and `handlers/memory-crud-delete.ts`.
   2. Add handler-level rollback tests (e.g., BM25 failure, causal-edge failure, ledger failure) validating wrapper atomicity.
@@ -217,7 +217,7 @@ Historical note: the issue and gap bullets below capture the pre-fix audit findi
 - **Standards Violations:** NONE
 - **Behavior Mismatch:** NONE
 - **Test Gaps:** NONE (feature is explicitly deferred/planned; no active namespace CRUD behavior to assert).
-- **Playbook Coverage:** EX-016/EX-017 deferred scope (inferred), explicit feature-level tags MISSING.
+- **Playbook Coverage:** No direct EX-006..EX-010 mapping (deferred scope), explicit feature-level tags MISSING.
 - **Recommended Fixes:** NONE
 - **Post-Fix Status:** N/A — feature is deferred/planned, PASS status confirmed. No code changes required.
 

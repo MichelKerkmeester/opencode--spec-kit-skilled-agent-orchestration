@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Folder Scoring
 
-> Computes composite relevance scores for spec folders based on their memories. Used by `memory_stats` and `memory_list` to rank folders by relevance to the current session.
+> Computes composite relevance scores for spec folders based on their memories. Used by `memory_stats` to rank folders by relevance to the current session.
 
 ---
 
@@ -30,7 +30,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Computes **composite relevance scores** for spec folders based on their memories. Used by `memory_stats` and `memory_list` to rank folders by how relevant they are to the current session. The primary use case is **"resume recent work"**, which is why recency carries the highest weight.
+Computes **composite relevance scores** for spec folders based on their memories. Used by `memory_stats` to rank folders by how relevant they are to the current session. The primary use case is **"resume recent work"**, which is why recency carries the highest weight.
 
 <!-- /ANCHOR:overview -->
 
@@ -143,7 +143,7 @@ Constitutional-tier memories are **exempt from decay** (always 1.0).
 ## 6. RELATED
 
 - **Types**: `../types` contains `ArchivePattern`, `FolderScore`, `FolderScoreOptions`, `Memory`, `ScoreWeights`, `TierWeights`
-- **Consumers**: `memory_stats` endpoint, `memory_list` with composite ranking
+- **Consumers**: `memory_stats` endpoint
 
 <!-- /ANCHOR:related -->
 

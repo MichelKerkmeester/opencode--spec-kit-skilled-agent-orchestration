@@ -158,56 +158,33 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
     });
 
     it('T521-L2: Empty args returns valid response', async () => {
+      const listSpy = vi.spyOn(checkpointStorageMod, 'listCheckpoints').mockReturnValue([]);
       try {
         const result = await handler.handleCheckpointList({});
         expect(result).toBeDefined();
         expect(result.content).toBeDefined();
         expect(result.content.length).toBeGreaterThan(0);
         const parsed = JSON.parse(result.content[0].text);
-        expect(parsed.data?.count !== undefined || parsed.summary !== undefined).toBe(true);
-      } catch (error: unknown) {
-        // DB-dependent — acceptable to skip if DB not available
-        expect(error).toBeInstanceOf(Error);
-        if (error instanceof Error) {
-          expect(
-            error.message.includes('database') ||
-            error.message.includes('getDb') ||
-            error.message.includes('Database') ||
-            error.message.includes('not initialized') ||
-            error.message.includes('SQLITE')
-          ).toBe(true);
-        }
+        expect(parsed.data?.count).toBe(0);
+        expect(parsed.data?.checkpoints).toEqual([]);
+        expect(listSpy).toHaveBeenCalledWith(null, 50);
+      } finally {
+        listSpy.mockRestore();
       }
     });
 
     it('T521-L3: Limit clamping validates boundary values', async () => {
-      // Zero limit should be clamped to minimum (1)
+      const listSpy = vi.spyOn(checkpointStorageMod, 'listCheckpoints').mockReturnValue([]);
       try {
-        const zeroResult = await handler.handleCheckpointList({ limit: 0 });
-        const parsed = JSON.parse(zeroResult.content[0].text);
-        // If it succeeds, the limit was clamped (not rejected)
-        expect(parsed).toBeDefined();
-      } catch (error: unknown) {
-        // Acceptable: throws on invalid limit or DB not available
-        expect(error instanceof Error).toBe(true);
-      }
+        await handler.handleCheckpointList({ limit: 0 });
+        await handler.handleCheckpointList({ limit: -1 });
+        await handler.handleCheckpointList({ limit: 999 });
 
-      // Negative limit should be clamped or rejected
-      try {
-        const negResult = await handler.handleCheckpointList({ limit: -1 });
-        const parsed = JSON.parse(negResult.content[0].text);
-        expect(parsed).toBeDefined();
-      } catch (error: unknown) {
-        expect(error instanceof Error).toBe(true);
-      }
-
-      // Very large limit should be clamped to maximum
-      try {
-        const largeResult = await handler.handleCheckpointList({ limit: 999 });
-        const parsed = JSON.parse(largeResult.content[0].text);
-        expect(parsed).toBeDefined();
-      } catch (error: unknown) {
-        expect(error instanceof Error).toBe(true);
+        expect(listSpy).toHaveBeenNthCalledWith(1, null, 50);
+        expect(listSpy).toHaveBeenNthCalledWith(2, null, 50);
+        expect(listSpy).toHaveBeenNthCalledWith(3, null, 100);
+      } finally {
+        listSpy.mockRestore();
       }
     });
   });

@@ -579,8 +579,14 @@ async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPRespo
       for (const row of linkedRows) {
         uniqueLinked.add(row.source_id);
       }
-    } catch {
-      // causal_edges table may not exist yet — coverage is 0
+    } catch (error: unknown) {
+      const message = toErrorMessage(error).toLowerCase();
+      if (message.includes('no such table') && message.includes('causal_edges')) {
+        // New/partially initialized DB where causal edges table is absent.
+        // Coverage remains 0 in this case.
+      } else {
+        throw error;
+      }
     }
 
     const safeTotalEdges = stats.totalEdges ?? 0;

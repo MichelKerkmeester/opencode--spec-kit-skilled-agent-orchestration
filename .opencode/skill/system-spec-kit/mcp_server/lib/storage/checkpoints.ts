@@ -758,6 +758,38 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
               result.skipped++;
               continue;
             }
+
+            // AI-GUARD: Protect merge mode from primary-key collision overwrite.
+            // If the snapshot ID already exists for a different logical identity,
+            // skip this row instead of applying UPDATE ... WHERE id = ?.
+            const existingById = database.prepare(
+              `
+                SELECT spec_folder, file_path, anchor_id
+                FROM memory_index
+                WHERE id = ?
+              `
+            ).get(memory.id) as {
+              spec_folder: string;
+              file_path: string;
+              anchor_id: string | null;
+            } | undefined;
+
+            if (existingById) {
+              const existingAnchor = existingById.anchor_id ?? null;
+              const incomingAnchor = memory.anchor_id ?? null;
+              const sameIdentity = (
+                existingById.spec_folder === memory.spec_folder
+                && existingById.file_path === memory.file_path
+                && existingAnchor === incomingAnchor
+              );
+              if (!sameIdentity) {
+                console.error(
+                  `[checkpoints] Skipping restore of memory ${memory.id}: id collision with existing identity "${existingById.spec_folder}:${existingById.file_path}:${String(existingById.anchor_id ?? '')}"`
+                );
+                result.skipped++;
+                continue;
+              }
+            }
           }
 
           if (!memoryInsertStmt) {

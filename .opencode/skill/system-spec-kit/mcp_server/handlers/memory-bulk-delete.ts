@@ -225,6 +225,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+        errors: [],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('bulk-delete', postMutationHooks);

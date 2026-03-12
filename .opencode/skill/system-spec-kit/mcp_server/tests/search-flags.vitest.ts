@@ -8,6 +8,8 @@ import * as crossEncoder from '../lib/search/cross-encoder';
 import {
   isCrossEncoderEnabled,
   isContextHeadersEnabled,
+  isFileWatcherEnabled,
+  isLocalRerankerEnabled,
   isMMREnabled,
   isMultiQueryEnabled,
   isReconsolidationEnabled,
@@ -21,6 +23,9 @@ const FLAG_NAMES = [
   'SPECKIT_CROSS_ENCODER',
   'SPECKIT_CONTEXT_HEADERS',
   'SPECKIT_RECONSOLIDATION',
+  'SPECKIT_FILE_WATCHER',
+  'SPECKIT_ROLLOUT_PERCENT',
+  'RERANKER_LOCAL',
   'VOYAGE_API_KEY',
 ] as const;
 
@@ -120,5 +125,28 @@ describe('Search Feature Flags', () => {
 
     expect(crossEncoder.resolveProvider()).toBe('voyage');
     expect(crossEncoder.isRerankerAvailable()).toBe(true);
+  });
+
+  it('file watcher and local reranker remain opt-in by default', () => {
+    expect(isFileWatcherEnabled()).toBe(false);
+    expect(isLocalRerankerEnabled()).toBe(false);
+  });
+
+  it('enables file watcher and local reranker only with explicit opt-in', () => {
+    process.env.SPECKIT_FILE_WATCHER = 'true';
+    process.env.RERANKER_LOCAL = 'true';
+    process.env.SPECKIT_ROLLOUT_PERCENT = '100';
+
+    expect(isFileWatcherEnabled()).toBe(true);
+    expect(isLocalRerankerEnabled()).toBe(true);
+  });
+
+  it('applies rollout policy to opt-in wrappers and fails closed on partial rollout without identity', () => {
+    process.env.SPECKIT_FILE_WATCHER = 'true';
+    process.env.RERANKER_LOCAL = 'true';
+    process.env.SPECKIT_ROLLOUT_PERCENT = '50';
+
+    expect(isFileWatcherEnabled()).toBe(false);
+    expect(isLocalRerankerEnabled()).toBe(false);
   });
 });

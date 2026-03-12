@@ -1197,10 +1197,10 @@ describe('Context Server', () => {
         async () => await import('../lib/errors'),
       ])
 
-      if (!errorsModule?.buildErrorResponse) return
+      expect(errorsModule?.buildErrorResponse).toBeTypeOf('function')
 
       const testError = new Error('Test error message')
-      const response = errorsModule.buildErrorResponse('memory_search', testError, { query: 'test' })
+      const response = errorsModule!.buildErrorResponse!('memory_search', testError, { query: 'test' })
 
       expect(response).toBeTypeOf('object')
       expect(
@@ -1215,10 +1215,10 @@ describe('Context Server', () => {
         async () => await import('../lib/errors'),
       ])
 
-      if (!errorsModule?.getRecoveryHint) return
+      expect(errorsModule?.getRecoveryHint).toBeTypeOf('function')
 
       // getRecoveryHint(toolName, errorCode) returns a RecoveryHint object
-      const hint = errorsModule.getRecoveryHint('memory_search', 'UNKNOWN_TOOL')
+      const hint = errorsModule!.getRecoveryHint!('memory_search', 'UNKNOWN_TOOL')
       expect(typeof hint).toBe('object')
       expect(hint).not.toBeNull()
     })
@@ -1230,10 +1230,9 @@ describe('Context Server', () => {
         async () => await import('../lib/errors'),
       ])
 
-      if (!errorsModule?.ErrorCodes) return
+      expect(errorsModule?.ErrorCodes).toBeTypeOf('object')
 
-      expect(errorsModule.ErrorCodes).toBeTypeOf('object')
-      expect(Object.keys(errorsModule.ErrorCodes).length).toBeGreaterThan(0)
+      expect(Object.keys(errorsModule!.ErrorCodes!).length).toBeGreaterThan(0)
     })
   })
 
@@ -1256,64 +1255,64 @@ describe('Context Server', () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_context')).toBe(2000)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_context')).toBe(2000)
     })
 
     it('T28b: L2 budget = 1500 (memory_search)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_search')).toBe(1500)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_search')).toBe(1500)
     })
 
     it('T28c: L3 budget = 800 (memory_list)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_list')).toBe(800)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_list')).toBe(800)
     })
 
     it('T28d: Unknown tool budget = 1000 (default)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('nonexistent_tool')).toBe(1000)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('nonexistent_tool')).toBe(1000)
     })
 
     it('T28e: L4 budget = 500 (memory_delete)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_delete')).toBe(500)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_delete')).toBe(500)
     })
 
     it('T28f: L5 budget = 600 (checkpoint_create)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('checkpoint_create')).toBe(600)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('checkpoint_create')).toBe(600)
     })
 
     it('T28g: L6 budget = 1200 (memory_drift_why)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_drift_why')).toBe(1200)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_drift_why')).toBe(1200)
     })
 
     it('T28h: L7 budget = 1000 (memory_index_scan)', async () => {
       const layerDefs = await importFirst<LayerDefinitionsModule>([
         async () => await import('../lib/architecture/layer-definitions'),
       ])
-      if (!layerDefs?.getTokenBudget) return
-      expect(layerDefs.getTokenBudget('memory_index_scan')).toBe(1000)
+      expect(layerDefs?.getTokenBudget).toBeTypeOf('function')
+      expect(layerDefs!.getTokenBudget!('memory_index_scan')).toBe(1000)
     })
   })
 
@@ -1338,9 +1337,7 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (!hooksModule?.MEMORY_AWARE_TOOLS) return
-
-      expect(hooksModule.MEMORY_AWARE_TOOLS).toBeInstanceOf(Set)
+      expect(hooksModule?.MEMORY_AWARE_TOOLS).toBeInstanceOf(Set)
     })
 
     const expectedAwareTools = ['memory_context', 'memory_search', 'memory_match_triggers', 'memory_list', 'memory_save', 'memory_index_scan']
@@ -1351,8 +1348,8 @@ describe('Context Server', () => {
           async () => await import('../hooks'),
           async () => await import('../hooks/memory-surface'),
         ])
-        if (!hooksModule?.MEMORY_AWARE_TOOLS) return
-        expect(hooksModule.MEMORY_AWARE_TOOLS.has(t)).toBe(true)
+        expect(hooksModule?.MEMORY_AWARE_TOOLS).toBeInstanceOf(Set)
+        expect(hooksModule!.MEMORY_AWARE_TOOLS!.has(t)).toBe(true)
       })
     }
 
@@ -1364,8 +1361,8 @@ describe('Context Server', () => {
           async () => await import('../hooks'),
           async () => await import('../hooks/memory-surface'),
         ])
-        if (!hooksModule?.MEMORY_AWARE_TOOLS) return
-        expect(hooksModule.MEMORY_AWARE_TOOLS.has(t)).toBe(false)
+        expect(hooksModule?.MEMORY_AWARE_TOOLS).toBeInstanceOf(Set)
+        expect(hooksModule!.MEMORY_AWARE_TOOLS!.has(t)).toBe(false)
       })
     }
 
@@ -1376,8 +1373,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({ query: 'test search' })).toBe('test search')
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({ query: 'test search' })).toBe('test search')
     })
 
     it('T31e: extractContextHint extracts prompt', async () => {
@@ -1386,8 +1383,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({ prompt: 'trigger phrase' })).toBe('trigger phrase')
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({ prompt: 'trigger phrase' })).toBe('trigger phrase')
     })
 
     it('T31ea: extractContextHint extracts input', async () => {
@@ -1396,8 +1393,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({ input: 'memory context request' })).toBe('memory context request')
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({ input: 'memory context request' })).toBe('memory context request')
     })
 
     it('T31f: extractContextHint handles null', async () => {
@@ -1406,8 +1403,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint(null)).toBeNull()
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!(null)).toBeNull()
     })
 
     it('T31g: extractContextHint handles empty object', async () => {
@@ -1416,8 +1413,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({})).toBeNull()
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({})).toBeNull()
     })
 
     it('T31h: extractContextHint rejects strings < 3 chars', async () => {
@@ -1426,8 +1423,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({ query: 'ab' })).toBeNull()
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({ query: 'ab' })).toBeNull()
     })
 
     it('T31i: extractContextHint joins concepts', async () => {
@@ -1436,8 +1433,8 @@ describe('Context Server', () => {
         async () => await import('../hooks'),
         async () => await import('../hooks/memory-surface'),
       ])
-      if (typeof hooksModule?.extractContextHint !== 'function') return
-      expect(hooksModule.extractContextHint({ concepts: ['memory', 'search'] })).toBe('memory search')
+      expect(hooksModule?.extractContextHint).toBeTypeOf('function')
+      expect(hooksModule!.extractContextHint!({ concepts: ['memory', 'search'] })).toBe('memory search')
     })
   })
 
@@ -1452,9 +1449,9 @@ describe('Context Server', () => {
     })
 
     it('T32a: Schema validation delegated to tool modules', () => {
-      // T303: context-server now validates input length only; per-tool schema validation
-      // is handled via validateToolArgs(...) inside dispatch modules.
-      expect(sourceCode).toMatch(/T304:\s*Zod validation is applied per-tool inside each dispatch module/)
+      // context-server validates only length pre-dispatch; schema checks occur in tool dispatch modules.
+      expect(sourceCode).toMatch(/dispatchTool\(name,\s*args\)/)
+      expect(sourceCode).not.toMatch(/validateToolArgs\(/)
     })
 
     // T33: validateInputLengths direct tests
@@ -1465,7 +1462,10 @@ describe('Context Server', () => {
         async () => await import('../utils/validators'),
       ])
       const validateInputLengths = utilsModule?.validateInputLengths
-      if (!validateInputLengths) return
+      expect(validateInputLengths).toBeTypeOf('function')
+      if (!validateInputLengths) {
+        throw new Error('validateInputLengths was not exported')
+      }
       expect(() => validateInputLengths({ query: 'normal search query' })).not.toThrow()
     })
 
@@ -1476,7 +1476,10 @@ describe('Context Server', () => {
         async () => await import('../utils/validators'),
       ])
       const validateInputLengths = utilsModule?.validateInputLengths
-      if (!validateInputLengths) return
+      expect(validateInputLengths).toBeTypeOf('function')
+      if (!validateInputLengths) {
+        throw new Error('validateInputLengths was not exported')
+      }
       expect(() => validateInputLengths({})).not.toThrow()
     })
 
@@ -1487,7 +1490,10 @@ describe('Context Server', () => {
         async () => await import('../utils/validators'),
       ])
       const validateInputLengths = utilsModule?.validateInputLengths
-      if (!validateInputLengths) return
+      expect(validateInputLengths).toBeTypeOf('function')
+      if (!validateInputLengths) {
+        throw new Error('validateInputLengths was not exported')
+      }
       expect(() => validateInputLengths({ query: 'x'.repeat(20000) })).toThrow()
     })
 
@@ -1498,7 +1504,10 @@ describe('Context Server', () => {
         async () => await import('../utils/validators'),
       ])
       const validateInputLengths = utilsModule?.validateInputLengths
-      if (!validateInputLengths) return
+      expect(validateInputLengths).toBeTypeOf('function')
+      if (!validateInputLengths) {
+        throw new Error('validateInputLengths was not exported')
+      }
       expect(() => validateInputLengths({ title: 'x'.repeat(1000) })).toThrow()
     })
 
@@ -1509,8 +1518,8 @@ describe('Context Server', () => {
         async () => await import('../utils'),
         async () => await import('../utils/validators'),
       ])
-      if (!utilsModule?.INPUT_LIMITS) return
-      expect(utilsModule.INPUT_LIMITS.query).toBe(10000)
+      expect(utilsModule?.INPUT_LIMITS).toBeTypeOf('object')
+      expect(utilsModule!.INPUT_LIMITS!.query).toBe(10000)
     })
 
     it('T34b: INPUT_LIMITS.title = 500', async () => {
@@ -1519,8 +1528,8 @@ describe('Context Server', () => {
         async () => await import('../utils'),
         async () => await import('../utils/validators'),
       ])
-      if (!utilsModule?.INPUT_LIMITS) return
-      expect(utilsModule.INPUT_LIMITS.title).toBe(500)
+      expect(utilsModule?.INPUT_LIMITS).toBeTypeOf('object')
+      expect(utilsModule!.INPUT_LIMITS!.title).toBe(500)
     })
 
     it('T34c: INPUT_LIMITS.filePath = 500', async () => {
@@ -1529,8 +1538,8 @@ describe('Context Server', () => {
         async () => await import('../utils'),
         async () => await import('../utils/validators'),
       ])
-      if (!utilsModule?.INPUT_LIMITS) return
-      expect(utilsModule.INPUT_LIMITS.filePath).toBe(500)
+      expect(utilsModule?.INPUT_LIMITS).toBeTypeOf('object')
+      expect(utilsModule!.INPUT_LIMITS!.filePath).toBe(500)
     })
   })
 

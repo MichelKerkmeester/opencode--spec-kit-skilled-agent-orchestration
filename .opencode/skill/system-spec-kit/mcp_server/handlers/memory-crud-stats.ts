@@ -28,7 +28,19 @@ import type { StatsArgs } from './memory-crud-types';
 async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   const startTime = Date.now();
   const requestId = randomUUID();
-  await checkDatabaseUpdated();
+  try {
+    await checkDatabaseUpdated();
+  } catch (dbStateErr: unknown) {
+    const message = toErrorMessage(dbStateErr);
+    console.error(`[memory-stats] Database refresh failed [requestId=${requestId}]: ${message}`);
+    return createMCPErrorResponse({
+      tool: 'memory_stats',
+      error: 'Database refresh failed before query execution. Retry the request or restart the MCP server.',
+      code: 'E021',
+      details: { requestId },
+      startTime,
+    });
+  }
 
   const database = vectorIndex.getDb();
   if (!database) {

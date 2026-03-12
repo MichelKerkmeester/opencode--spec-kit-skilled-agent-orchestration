@@ -374,6 +374,9 @@ describe('T013: staged swap regressions', () => {
     const deleteHistoryCalls = vi.mocked(history.recordHistory).mock.calls
       .filter(([, event, , , actor]) => event === 'DELETE' && actor === 'mcp:chunking_reindex');
     expect(deleteHistoryCalls.map(([memoryId]) => memoryId)).toEqual(oldChildIds);
+
+    const deleteMemoryCalls = vi.mocked(vectorIndex.deleteMemory).mock.calls.map(([memoryId]) => memoryId);
+    expect(deleteMemoryCalls).toEqual(oldChildIds);
   });
 
   it('swap failure rolls back: old children remain and staged children are cleaned', async () => {
@@ -417,6 +420,10 @@ describe('T013: staged swap regressions', () => {
     const rollbackHistoryCalls = vi.mocked(history.recordHistory).mock.calls
       .filter(([, event, , , actor]) => event === 'DELETE' && actor === 'mcp:chunking_rollback');
     expect(rollbackHistoryCalls).toHaveLength(mockChunks.length);
+
+    const rollbackDeletedIds = rollbackHistoryCalls.map(([memoryId]) => memoryId);
+    const deleteMemoryCalls = vi.mocked(vectorIndex.deleteMemory).mock.calls.map(([memoryId]) => memoryId);
+    expect(deleteMemoryCalls).toEqual(rollbackDeletedIds);
   });
 
   it('partial embedding failures still swap successfully with mixed child statuses', async () => {

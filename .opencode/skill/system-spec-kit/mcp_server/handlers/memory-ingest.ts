@@ -234,10 +234,13 @@ async function handleMemoryIngestCancel(args: MemoryIngestCancelArgs): Promise<M
   }
 
   const cancelled = await cancelIngestJob(args.jobId);
+  const summary = cancelled.state === 'cancelled'
+    ? `Cancelled ingest job ${cancelled.id}`
+    : `Ingest job ${cancelled.id} is already terminal (${cancelled.state})`;
 
   return createMCPSuccessResponse({
     tool: 'memory_ingest_cancel',
-    summary: `Cancelled ingest job ${cancelled.id}`,
+    summary,
     data: mapJobForResponse(cancelled),
   });
 }

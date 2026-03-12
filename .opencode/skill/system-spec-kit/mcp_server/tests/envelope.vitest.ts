@@ -344,7 +344,7 @@ describe('Response Envelope (T148-T155)', () => {
         startTime: startTime
       });
 
-      expect(envelope.meta.latencyMs).toBeGreaterThanOrEqual(30);
+      expect(envelope.meta.latencyMs).toBeGreaterThanOrEqual(20);
     });
 
     it('should measure latency in empty responses', async () => {

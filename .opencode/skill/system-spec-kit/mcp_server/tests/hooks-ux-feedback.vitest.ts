@@ -15,6 +15,7 @@ describe('Hooks UX feedback', () => {
       graphSignalsCacheCleared: true,
       coactivationCacheCleared: true,
       toolCacheInvalidated: 3,
+      errors: [],
     });
 
     expect(feedback.data).toEqual({
@@ -40,6 +41,7 @@ describe('Hooks UX feedback', () => {
       graphSignalsCacheCleared: true,
       coactivationCacheCleared: true,
       toolCacheInvalidated: 1,
+      errors: [],
     });
 
     expect(feedback.hints.some((hint) => hint.includes('non-fatal'))).toBe(false);

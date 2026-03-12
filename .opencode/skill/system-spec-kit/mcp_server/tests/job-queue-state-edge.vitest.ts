@@ -151,7 +151,7 @@ describe('ingest job queue state + edge tests (T005b)', () => {
       id: 'job_whitespace_paths',
       paths: ['   ', '\t', '\n'],
       specFolder: 'specs/test',
-    })).rejects.toThrow();
+    })).rejects.toThrow('paths must include at least one file path');
   });
 
   it('T005b-Q6: getIngestJob returns null when job is not found', async () => {
@@ -161,7 +161,7 @@ describe('ingest job queue state + edge tests (T005b)', () => {
     expect(mod.getIngestJob('job_missing')).toBeNull();
   });
 
-  it('T005b-Q7: cancelIngestJob on terminal state throws invalid transition', async () => {
+  it('T005b-Q7: cancelIngestJob on terminal state returns existing terminal record', async () => {
     const db = createTestDb();
     const mod = await loadJobQueueModule(db);
     const filePath = createTempFile('terminal-state-file');
@@ -178,7 +178,9 @@ describe('ingest job queue state + edge tests (T005b)', () => {
       WHERE id = ?
     `).run(new Date().toISOString(), job.id);
 
-    await expect(mod.cancelIngestJob(job.id)).rejects.toThrow('Invalid ingest job state transition');
+    const cancelled = await mod.cancelIngestJob(job.id);
+    expect(cancelled.id).toBe(job.id);
+    expect(cancelled.state).toBe('complete');
   });
 
   it('T005b-Q8: resetIncompleteJobsToQueued returns empty array when no incomplete jobs exist', async () => {
@@ -211,5 +213,66 @@ describe('ingest job queue state + edge tests (T005b)', () => {
     const updated = mod.getIngestJob(job.id);
     expect(updated?.filesProcessed).toBe(1);
     expect(processFile).toHaveBeenCalledTimes(1);
+  });
+
+  it('T005b-Q10: job is failed when every file errors during processing', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+    const processFile = vi.fn(async () => undefined);
+
+    mod.initIngestJobQueue({ processFile });
+
+    const missingA = path.join(os.tmpdir(), `spec-kit-missing-a-${Date.now()}-${Math.random().toString(36).slice(2)}.md`);
+    const missingB = path.join(os.tmpdir(), `spec-kit-missing-b-${Date.now()}-${Math.random().toString(36).slice(2)}.md`);
+
+    const job = await mod.createIngestJob({
+      id: 'job_all_failed',
+      paths: [missingA, missingB],
+      specFolder: 'specs/test',
+    });
+
+    mod.enqueueIngestJob(job.id);
+
+    await waitFor(() => {
+      const state = mod.getIngestJob(job.id)?.state;
+      return state === 'failed';
+    });
+
+    const updated = mod.getIngestJob(job.id);
+    expect(updated?.state).toBe('failed');
+    expect(updated?.errors.length).toBe(2);
+    expect(processFile).toHaveBeenCalledTimes(0);
+  });
+
+  it('T005b-Q11: partial file failures still complete job with preserved errors', async () => {
+    const db = createTestDb();
+    const mod = await loadJobQueueModule(db);
+    const processFile = vi.fn(async () => undefined);
+
+    mod.initIngestJobQueue({ processFile });
+
+    const validPath = createTempFile('partial-failure-valid');
+    const missingPath = path.join(os.tmpdir(), `spec-kit-missing-c-${Date.now()}-${Math.random().toString(36).slice(2)}.md`);
+
+    const job = await mod.createIngestJob({
+      id: 'job_partial_failure',
+      paths: [validPath, missingPath],
+      specFolder: 'specs/test',
+    });
+
+    mod.enqueueIngestJob(job.id);
+
+    await waitFor(() => {
+      const state = mod.getIngestJob(job.id)?.state;
+      return state === 'complete';
+    });
+
+    const updated = mod.getIngestJob(job.id);
+    expect(updated?.state).toBe('complete');
+    expect(updated?.filesProcessed).toBe(2);
+    expect(updated?.errors.length).toBe(1);
+    expect(updated?.errors[0]?.filePath).toBe(missingPath);
+    expect(processFile).toHaveBeenCalledTimes(1);
+    expect(processFile).toHaveBeenCalledWith(validPath);
   });
 });

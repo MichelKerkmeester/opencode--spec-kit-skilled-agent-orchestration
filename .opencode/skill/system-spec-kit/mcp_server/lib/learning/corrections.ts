@@ -346,6 +346,27 @@ function set_memory_stability(memory_id: number, new_stability: number): boolean
   }
 }
 
+function map_correction_type_to_relation(correction_type: string): string {
+  switch (correction_type) {
+    case CORRECTION_TYPES.SUPERSEDED:
+    case CORRECTION_TYPES.DEPRECATED:
+      return 'supersedes';
+    case CORRECTION_TYPES.REFINED:
+    case CORRECTION_TYPES.MERGED:
+      return 'derived_from';
+    default:
+      return 'supersedes';
+  }
+}
+
+function build_owned_edge_evidence(correction_id: number, correction_type: string, reason: string | null | undefined): string {
+  return `Correction#${correction_id}: ${correction_type}${reason ? ' - ' + reason : ''}`;
+}
+
+function build_legacy_edge_evidence(correction_type: string, reason: string | null | undefined): string {
+  return `Correction: ${correction_type}${reason ? ' - ' + reason : ''}`;
+}
+
 /* -------------------------------------------------------------
    5. CORE CORRECTION FUNCTIONS
 ---------------------------------------------------------------- */
@@ -458,24 +479,9 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
       `).get();
 
       if (causal_table_exists && correction_memory_id) {
-        // Map correction type to causal relation
-        let relation: string;
-        switch (correction_type) {
-          case CORRECTION_TYPES.SUPERSEDED:
-            relation = 'supersedes';
-            break;
-          case CORRECTION_TYPES.DEPRECATED:
-            relation = 'supersedes';
-            break;
-          case CORRECTION_TYPES.REFINED:
-            relation = 'derived_from';
-            break;
-          case CORRECTION_TYPES.MERGED:
-            relation = 'derived_from';
-            break;
-          default:
-            relation = 'supersedes';
-        }
+        const relation = map_correction_type_to_relation(correction_type);
+        const correctionId = Number(result.lastInsertRowid);
+        const edgeEvidence = build_owned_edge_evidence(correctionId, correction_type, reason);
 
         // AI-SAFETY: record_correction validates db before starting this transaction
         // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
@@ -487,7 +493,7 @@ export function record_correction(params: RecordCorrectionParams): CorrectionRes
           String(correction_memory_id),
           String(original_memory_id),
           relation,
-          `Correction: ${correction_type}${reason ? ' - ' + reason : ''}`
+          edgeEvidence
         );
       }
     } catch (e: unknown) {
@@ -590,33 +596,42 @@ export function undo_correction(correction_id: number): UndoResult {
     // between the same pair of memories (e.g., 'supersedes' vs 'derived_from').
     try {
       if (correction.correction_memory_id) {
-        // Map correction_type back to the causal edge relation
-        let undoRelation: string;
-        switch (correction.correction_type) {
-          case CORRECTION_TYPES.SUPERSEDED:
-          case CORRECTION_TYPES.DEPRECATED:
-            undoRelation = 'supersedes';
-            break;
-          case CORRECTION_TYPES.REFINED:
-          case CORRECTION_TYPES.MERGED:
-            undoRelation = 'derived_from';
-            break;
-          default:
-            undoRelation = 'supersedes';
-        }
+        const undoRelation = map_correction_type_to_relation(correction.correction_type);
+        const ownedEdgeEvidencePrefix = `Correction#${correction_id}:`;
 
         // AI-SAFETY: undo_correction throws when db is not initialized before creating this transaction
         const deleteResult = db!.prepare(`
           DELETE FROM causal_edges
-          WHERE source_id = ? AND target_id = ? AND relation = ?
+          WHERE source_id = ?
+            AND target_id = ?
+            AND relation = ?
+            AND evidence LIKE ?
         `).run(
           String(correction.correction_memory_id),
           String(correction.original_memory_id),
-          undoRelation
+          undoRelation,
+          `${ownedEdgeEvidencePrefix}%`
         );
 
         if ((deleteResult as { changes: number }).changes === 0) {
-          console.warn(`[corrections] undo: no causal edge found for (${correction.correction_memory_id} → ${correction.original_memory_id}, relation=${undoRelation})`);
+          const legacyEdgeEvidence = build_legacy_edge_evidence(correction.correction_type, correction.reason);
+
+          const legacyDeleteResult = db!.prepare(`
+            DELETE FROM causal_edges
+            WHERE source_id = ?
+              AND target_id = ?
+              AND relation = ?
+              AND evidence = ?
+          `).run(
+            String(correction.correction_memory_id),
+            String(correction.original_memory_id),
+            undoRelation,
+            legacyEdgeEvidence
+          );
+
+          if ((legacyDeleteResult as { changes: number }).changes === 0) {
+            console.warn(`[corrections] undo: no causal edge found for (${correction.correction_memory_id} → ${correction.original_memory_id}, relation=${undoRelation})`);
+          }
         }
       }
     } catch (edgeErr: unknown) {

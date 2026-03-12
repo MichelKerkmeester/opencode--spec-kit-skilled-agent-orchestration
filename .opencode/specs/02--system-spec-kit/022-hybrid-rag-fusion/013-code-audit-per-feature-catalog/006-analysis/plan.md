@@ -96,7 +96,7 @@ Feature catalog expectations are mapped to concrete code paths, then validated a
 |-----------|-------|-------|
 | Unit | Causal stats computation, learning thresholds, depth semantics | Vitest |
 | Integration | MCP handler flows for causal graph and learning-history behavior | Vitest + SQLite fixtures |
-| Manual | Playbook alignment for EX-028..EX-031 and NEW-* coverage mapping | Catalog review |
+| Manual | Playbook alignment for EX-019..EX-025 coverage mapping | Catalog review |
 <!-- /ANCHOR:testing -->
 
 ---

@@ -19,7 +19,7 @@ Thirteen performance improvements were applied:
 
 **Entity linker:** `mergedEntities` array lookups converted to `Set` for O(1) `.has()` checks. N+1 `getEdgeCount` queries replaced with a single batch query that combines `source_id IN (...)` and `target_id IN (...)` branches via `UNION ALL` before aggregation.
 
-**SQL-level:** Causal edge upsert reduced from 3 DB round-trips to 2 by eliminating the post-upsert SELECT via `lastInsertRowid`. Spec folder hierarchy tree cached with a 60-second WeakMap TTL keyed by database instance.
+**SQL-level:** Causal edge upsert keeps explicit row lookup before and after UPSERT so weight-history logging and canonical row-id resolution stay deterministic; round-trip reduction via `last_insert_rowid()` has not been applied in the current implementation. Spec folder hierarchy tree is cached with a 60-second WeakMap TTL keyed by database instance.
 
 ## 3. SOURCE FILES
 
@@ -31,7 +31,7 @@ Thirteen performance improvements were applied:
 | `mcp_server/lib/search/memory-summaries.ts` | Lib | Summary query LIMIT and summary-channel operations |
 | `mcp_server/lib/storage/mutation-ledger.ts` | Lib | COUNT/json_extract SQL path replacing O(n) scans |
 | `mcp_server/lib/search/entity-linker.ts` | Lib | Set-based entity checks and batched edge counting |
-| `mcp_server/lib/storage/causal-edges.ts` | Lib | Upsert flow reduced round-trips via last_insert_rowid logic |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | Transactional upsert with deterministic pre/post lookup for weight-history logging |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | WeakMap + TTL caching for folder hierarchy tree |
 
 ### Tests

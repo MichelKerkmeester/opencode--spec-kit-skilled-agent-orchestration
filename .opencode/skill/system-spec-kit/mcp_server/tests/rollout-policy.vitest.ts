@@ -43,6 +43,14 @@ describe('rollout policy', () => {
     expect(getRolloutPercent()).toBe(100);
   });
 
+  it('falls back to full rollout for malformed percent values', () => {
+    process.env.SPECKIT_ROLLOUT_PERCENT = '50abc';
+    expect(getRolloutPercent()).toBe(100);
+
+    process.env.SPECKIT_ROLLOUT_PERCENT = '1e2';
+    expect(getRolloutPercent()).toBe(100);
+  });
+
   it('supports deterministic bucket assignment', () => {
     const bucketA = deterministicBucket('session-a');
     const bucketB = deterministicBucket('session-a');
@@ -87,5 +95,20 @@ describe('rollout policy', () => {
       delete process.env[flag];
       expect(isFeatureEnabled(flag, 'session-default-on')).toBe(true);
     }
+  });
+
+  it('fails closed for partial rollout when identity is missing', () => {
+    process.env.SPECKIT_ROLLOUT_PERCENT = '50';
+    process.env.SPECKIT_EXTRACTION = 'true';
+
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION')).toBe(false);
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '')).toBe(false);
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION', '   ')).toBe(false);
+  });
+
+  it("treats '0' as an explicit feature disable signal", () => {
+    process.env.SPECKIT_ROLLOUT_PERCENT = '100';
+    process.env.SPECKIT_EXTRACTION = '0';
+    expect(isFeatureEnabled('SPECKIT_EXTRACTION', 'session-1')).toBe(false);
   });
 });

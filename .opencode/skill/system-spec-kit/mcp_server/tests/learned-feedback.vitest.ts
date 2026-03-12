@@ -531,6 +531,14 @@ describe('Learned Feedback Core Operations', () => {
     expect(entries.length).toBeLessThanOrEqual(MAX_TERMS_PER_MEMORY);
   });
 
+  it('R11-CO06b: applyLearnedTriggers deduplicates repeated terms within one call', () => {
+    applyLearnedTriggers(1, ['Authentication', 'authentication', 'AUTHENTICATION'], testDb, 'test');
+
+    const row = testDb.prepare('SELECT learned_triggers FROM memory_index WHERE id = 1').get();
+    const entries = parseLearnedTriggers(row.learned_triggers);
+    expect(entries.filter((entry) => entry.term === 'authentication').length).toBe(1);
+  });
+
   it('R11-CO07: queryLearnedTriggers returns matches at 0.7x weight', () => {
     // Pre-populate learned triggers
     applyLearnedTriggers(1, ['authentication', 'security'], testDb, 'test');

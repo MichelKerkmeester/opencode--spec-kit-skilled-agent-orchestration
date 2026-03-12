@@ -15,6 +15,8 @@ This document captures the implemented behavior, source references, and validati
 
 On server startup, the transaction manager scans for leftover `_pending` files created by interrupted atomic-write operations. If a previous `memory_save` wrote the pending file and committed the DB row but crashed before renaming, the pending file is the only surviving copy of the content. The recovery routine finds these orphans via `findPendingFiles()`, renames each to its final path, and increments `totalRecoveries` in the transaction metrics.
 
+Scan roots are derived from allowed memory base paths, then constrained to known memory locations (`specs/`, `.opencode/specs/`, and constitutional directories) to balance coverage with startup safety.
+
 Recovery is automatic and requires no user intervention. If the pending file is stale (the DB row was never committed), it is logged and left for manual review rather than silently deleted.
 
 ## 3. SOURCE FILES
@@ -31,6 +33,7 @@ Recovery is automatic and requires no user intervention. If the pending file is 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/transaction-manager.vitest.ts` | Transaction manager tests |
+| `mcp_server/tests/transaction-manager-recovery.vitest.ts` | Startup pending-file recovery edge coverage |
 
 ## 4. SOURCE METADATA
 

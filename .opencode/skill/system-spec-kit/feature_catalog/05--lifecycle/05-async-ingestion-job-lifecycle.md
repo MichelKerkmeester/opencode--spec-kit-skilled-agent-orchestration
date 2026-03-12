@@ -90,11 +90,13 @@ This document captures the implemented behavior, source references, and validati
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/handler-memory-ingest.vitest.ts` | Ingest handler validation |
+| `mcp_server/tests/handler-memory-ingest-edge.vitest.ts` | Ingest boundary/error edge coverage |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/job-queue.vitest.ts` | Job queue tests |
+| `mcp_server/tests/job-queue-state-edge.vitest.ts` | Job queue state-transition edge coverage |
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
 | `mcp_server/tests/recovery-hints.vitest.ts` | Recovery hint tests |

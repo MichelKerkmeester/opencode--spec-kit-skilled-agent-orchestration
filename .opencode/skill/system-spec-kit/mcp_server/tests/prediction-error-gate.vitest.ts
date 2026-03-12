@@ -4,7 +4,7 @@
 // Aligned with production prediction-error-gate.ts named exports
 // ---------------------------------------------------------------
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import * as peGate from '../lib/cache/cognitive/prediction-error-gate';
 
 const peGateModule = peGate as unknown as Record<string, unknown>;
@@ -424,6 +424,53 @@ describe('Prediction Error Gate Module', () => {
 
     it('T161: init(null) does not crash', () => {
       expect(() => peGate.init(null as unknown as Parameters<typeof peGate.init>[0])).not.toThrow();
+    });
+
+    it('MUT05-1: no-candidate CREATE logs existing_memory_id as NULL', () => {
+      const runArgs: unknown[][] = [];
+      const fakeDb = {
+        prepare: vi.fn(() => ({
+          run: (...args: unknown[]) => {
+            runArgs.push(args);
+            return { changes: 1 };
+          },
+        })),
+      };
+
+      peGate.init(fakeDb as unknown as Parameters<typeof peGate.init>[0]);
+      const result = peGate.evaluateMemory('mut05-hash-1', 'Brand new memory', []);
+
+      expect(result.action).toBe(peGate.ACTION.CREATE);
+      expect(runArgs).toHaveLength(1);
+      expect(runArgs[0][2]).toBeNull();
+
+      peGate.init(null as unknown as Parameters<typeof peGate.init>[0]);
+    });
+
+    it('MUT05-2: filtered-out CREATE logs existing_memory_id as NULL', () => {
+      const runArgs: unknown[][] = [];
+      const fakeDb = {
+        prepare: vi.fn(() => ({
+          run: (...args: unknown[]) => {
+            runArgs.push(args);
+            return { changes: 1 };
+          },
+        })),
+      };
+
+      peGate.init(fakeDb as unknown as Parameters<typeof peGate.init>[0]);
+      const result = peGate.evaluateMemory(
+        'mut05-hash-2',
+        'Another new memory',
+        [{ id: 99, similarity: 0.10, content: 'Low similarity candidate' }]
+      );
+
+      expect(result.action).toBe(peGate.ACTION.CREATE);
+      expect(result.reason).toContain('No relevant candidates after filtering');
+      expect(runArgs).toHaveLength(1);
+      expect(runArgs[0][2]).toBeNull();
+
+      peGate.init(null as unknown as Parameters<typeof peGate.init>[0]);
     });
   });
 

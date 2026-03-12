@@ -17,6 +17,12 @@ const REMOVED_SYMBOLS = [
   'isRsfEnabled',
   'computeCausalDepth',
   'getSubgraphWeights',
+  'activeProvider',
+  'stmtCache',
+  'lastComputedAt',
+  'flushCount',
+  'RECOVERY_HALF_LIFE_DAYS',
+  'logCoActivationEvent',
 ] as const;
 
 const MODULE_EXPORTS: ReadonlyArray<[string, Record<string, unknown>]> = [

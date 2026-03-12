@@ -243,6 +243,7 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
       latencyMs: 0, triggerCacheCleared: false,
       constitutionalCacheCleared: false, toolCacheInvalidated: 0,
       graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+      errors: [],
     };
   }
   const postMutationFeedback = buildMutationHookFeedback('update', postMutationHooks);

@@ -1,6 +1,7 @@
 ---
 title: "Tasks: maintenance [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
+SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
 trigger_phrases:
   - "tasks"
   - "maintenance"
@@ -45,9 +46,9 @@ contextType: "general"
 ## Phase 2: Implementation
 
 - [x] T004 Reconcile incremental scan hash accounting with mtime-only reality [Priority: P0] (`mcp_server/handlers/memory-index.ts`, `mcp_server/lib/storage/incremental-index.ts`) — removed `skipped_hash`, renamed `hash_checks` → `mtime_changed`
-- [x] T005 Add direct startup guard unit tests for marker and SQLite warning branches [Priority: P2] (`mcp_server/startup-checks.ts`, `mcp_server/tests/`) — created startup-checks.vitest.ts (6 SQLite tests, all pass); marker-path unit tests deferred (ESM limitation tracked)
-- [x] T006 Update maintenance test inventory and remove stale retry test reference [Priority: P2] (`feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`) — hash references removed from feature catalog
-- [x] T007 Confirm no unresolved P1 behavior-mismatch work remains [Priority: P1] (`004-maintenance/tasks.md`) — grep confirms zero remnants
+- [x] T005 Add dedicated startup-checks coverage for marker creation/match/mismatch, SQLite validation, and runtime mismatch logic [Priority: P2] (`mcp_server/startup-checks.ts`, `mcp_server/tests/startup-checks.vitest.ts`) — startup-checks suite is the primary startup behavioral suite (14/14 pass); manual playbook coverage now exists via EX-035
+- [x] T006 Update maintenance test inventory and remove stale retry test reference [Priority: P2] (`.opencode/skill/system-spec-kit/feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`) — hash references removed from feature catalog
+- [x] T007 Confirm no unresolved P1 behavior-mismatch work remains [Priority: P1] (`tasks.md`) — grep confirms zero remnants
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,9 +56,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Test happy path manually for EX-021 and EX-022 mapping — incremental-index.vitest.ts 36/36, startup-checks.vitest.ts 6/6
-- [x] T009 Test edge cases for hash-accounting semantics and SQLite version extraction failures — boundary 3.35.0, major<3, query failure all covered
-- [x] T010 Update documentation after verification (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) — all 4 docs updated with evidence
+- [x] T008 Validate manual playbook mapping accuracy — F-01 maps to EX-014; F-02 maps to EX-035; behavioral evidence uses `incremental-index-v2.vitest.ts` (43/43 pass) + `startup-checks.vitest.ts` (14/14 pass), while `incremental-index.vitest.ts` is intentionally skipped (36 skipped)
+- [x] T009 Test edge cases for mtime-accounting semantics and startup checks — SQLite boundary 3.35.0, major<3, query failure, and pure runtime mismatch logic coverage verified
+- [x] T010 Update documentation after verification (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) — all 5 docs aligned to corrected mapping and evidence phrasing
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,7 +68,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [x] Manual verification status documented accurately (F-01 via EX-014; F-02 via EX-035)
 <!-- /ANCHOR:completion -->
 
 ---

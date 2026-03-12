@@ -11,101 +11,81 @@ type DriftWhyArgs = Parameters<typeof causalHandler.handleMemoryDriftWhy>[0];
 type CausalStatsArgs = Parameters<typeof causalHandler.handleMemoryCausalStats>[0];
 type CausalUnlinkArgs = Parameters<typeof causalHandler.handleMemoryCausalUnlink>[0];
 
-function getErrorMessage(error: unknown): string | undefined {
-  return error instanceof Error ? error.message : undefined;
+type MCPTextResponse = {
+  content: Array<{ text: string }>;
+  isError?: boolean;
+};
+
+type MCPEnvelope = {
+  summary: string;
+  data: Record<string, unknown>;
+  meta: Record<string, unknown>;
+};
+
+function parseEnvelope(response: unknown): { envelope: MCPEnvelope; isError: boolean } {
+  const cast = response as MCPTextResponse;
+  expect(cast.content?.[0]?.text).toBeTypeOf('string');
+  const envelope = JSON.parse(cast.content[0].text) as MCPEnvelope;
+  return { envelope, isError: Boolean(cast.isError) };
 }
 
-function getErrorCode(error: unknown): string | undefined {
-  if (typeof error !== 'object' || error === null || !('code' in error)) {
-    return undefined;
-  }
-
-  const { code } = error as { code?: unknown };
-  return typeof code === 'string' ? code : undefined;
-}
-
-function isDbInfrastructureError(error: unknown): boolean {
-  const message = getErrorMessage(error);
-  const code = getErrorCode(error);
-  return Boolean(
-    (message && (message.includes('database') || message.includes('SQLITE') ||
-      message.includes('DB') || message.includes('no such table') ||
-      message.includes('initialize'))) ||
-    (code && (code === 'E010' || code === 'E020'))
-  );
+function expectErrorCode(response: unknown, expectedCodes: string[]): MCPEnvelope {
+  const { envelope, isError } = parseEnvelope(response);
+  expect(isError).toBe(true);
+  const code = envelope.data?.code;
+  expect(typeof code).toBe('string');
+  expect(expectedCodes).toContain(code as string);
+  return envelope;
 }
 
 describe('Integration Causal Graph (T528)', () => {
-
-  // -------------------------------------------------------------
-  // SUITE: Pipeline Module Loading
-  // -------------------------------------------------------------
   describe('Pipeline Module Loading', () => {
     it('T528-1: Causal graph modules loaded', () => {
       expect(causalHandler).toBeDefined();
-      // causalEdges is optional but should at least import
       expect(causalEdges).toBeDefined();
     });
   });
 
-  // -------------------------------------------------------------
-  // SUITE: Handler Parameter Validation
-  // -------------------------------------------------------------
   describe('Handler Parameter Validation', () => {
     it('T528-2: Missing params for CausalLink rejected', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalLink({} as CausalLinkArgs);
-        // Handler may return MCP error response instead of throwing
-        expect(result).toBeDefined();
-        expect(result.isError).toBe(true);
-      } catch (error: unknown) {
-        // Error thrown is also acceptable — validates required params
-        expect(getErrorMessage(error)).toBeDefined();
-      }
+      const response = await causalHandler.handleMemoryCausalLink({} as CausalLinkArgs);
+      const envelope = expectErrorCode(response, ['E031']);
+      const missing = envelope.data?.details as { missingParams?: string[] } | undefined;
+      expect(missing?.missingParams).toEqual(
+        expect.arrayContaining(['sourceId', 'targetId', 'relation'])
+      );
     });
 
     it('T528-3: Missing memoryId for DriftWhy rejected', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({} as DriftWhyArgs);
-        // Handler accepted it — valid behavior for handlers that check later
-        expect(result).toBeDefined();
-      } catch (error: unknown) {
-        expect(getErrorMessage(error)).toBeDefined();
-      }
+      const response = await causalHandler.handleMemoryDriftWhy({} as DriftWhyArgs);
+      const envelope = expectErrorCode(response, ['E031']);
+      const details = envelope.data?.details as { param?: string } | undefined;
+      expect(details?.param).toBe('memoryId');
     });
 
-    it('T528-4: CausalStats accepts empty params', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
-        // Should succeed or fail at DB layer, not at validation
-        expect(result).toBeDefined();
-      } catch (error: unknown) {
-        // DB errors are acceptable — parameter validation errors are not
-        const message = getErrorMessage(error);
-        const code = getErrorCode(error);
-        const isInfraError =
-          (message && (message.includes('database') || message.includes('SQLITE') ||
-            message.includes('DB') || message.includes('no such table') ||
-            message.includes('initialize'))) ||
-          (code && (code === 'E010' || code === 'E020'));
-        expect(isInfraError).toBe(true);
+    it('T528-4: CausalStats accepts empty params (no validation error)', async () => {
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        const code = envelope.data?.code;
+        // Runtime/database errors are acceptable; validation errors are not.
+        expect(['E020', 'E021']).toContain(code as string);
+        return;
       }
+
+      expect(envelope.data).toHaveProperty('total_edges');
+      expect(envelope.data).toHaveProperty('targetCoverage');
+      expect(envelope.data).toHaveProperty('meetsTarget');
     });
 
     it('T528-5: Missing edgeId for CausalUnlink rejected', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalUnlink({} as CausalUnlinkArgs);
-        // Handler accepted it — valid behavior for handlers that check later
-        expect(result).toBeDefined();
-      } catch (error: unknown) {
-        expect(getErrorMessage(error)).toBeDefined();
-      }
+      const response = await causalHandler.handleMemoryCausalUnlink({} as CausalUnlinkArgs);
+      const envelope = expectErrorCode(response, ['E031']);
+      const details = envelope.data?.details as { param?: string } | undefined;
+      expect(details?.param).toBe('edgeId');
     });
   });
 
-  // -------------------------------------------------------------
-  // SUITE: Relation Types & Direction Validation
-  // -------------------------------------------------------------
   describe('Relation Types & Direction Validation', () => {
     it('T528-6: Valid relation types accepted by pipeline', async () => {
       const validRelations = [
@@ -116,213 +96,181 @@ describe('Integration Causal Graph (T528)', () => {
         'derived_from',
         'supports',
       ] satisfies CausalLinkArgs['relation'][];
-      let accepted = false;
 
       for (const relation of validRelations) {
-        try {
-          await causalHandler.handleMemoryCausalLink({
-            sourceId: 'test-source-id',
-            targetId: 'test-target-id',
-            relation: relation,
-          });
-          accepted = true;
-          break;
-        } catch (error: unknown) {
-          const message = getErrorMessage(error);
-          if (message && message.includes('relation')) {
-            // Relation type was rejected — fail
-            expect.unreachable(`Relation "${relation}" rejected: ${message}`);
-          }
-          // DB/infra error = relation was accepted but downstream failed
-          accepted = true;
-          break;
+        const response = await causalHandler.handleMemoryCausalLink({
+          sourceId: 'test-source-id',
+          targetId: 'test-target-id',
+          relation,
+        });
+        const { envelope, isError } = parseEnvelope(response);
+        if (isError) {
+          // Infrastructure/storage errors are acceptable in integration mode;
+          // relation-validation errors are not.
+          expect(['E020', 'E022']).toContain(envelope.data?.code as string);
+          continue;
         }
+        expect(envelope.data?.success).toBe(true);
+        expect(envelope.summary).toContain(`[${relation}]`);
       }
-
-      expect(accepted).toBe(true);
     });
 
     it('T528-7: Direction parameter "outgoing" accepted', async () => {
-      try {
-        await causalHandler.handleMemoryDriftWhy({
-          memoryId: 'test-memory-id',
-          direction: 'outgoing',
-        });
-      } catch (error: unknown) {
-        // Direction should not be the reason for failure
-        expect(getErrorMessage(error)).not.toContain('direction');
+      const response = await causalHandler.handleMemoryDriftWhy({
+        memoryId: 'test-memory-id',
+        direction: 'outgoing',
+      });
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
+      }
+
+      const traversalOptions = envelope.data?.traversalOptions as
+        | { direction?: string }
+        | undefined;
+      if (traversalOptions) {
+        expect(traversalOptions.direction).toBe('forward');
+      } else {
+        expect(envelope.summary).toContain('No causal relationships');
       }
     });
 
     it('T528-8: Error response for invalid inputs', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalLink({
-          sourceId: '',
-          targetId: '',
-          relation: '',
-        } as unknown as CausalLinkArgs);
-        // Handler may return MCP error response instead of throwing
-        expect(result).toBeDefined();
-        expect(result.isError).toBe(true);
-      } catch (error: unknown) {
-        expect(typeof getErrorMessage(error)).toBe('string');
-      }
+      const response = await causalHandler.handleMemoryCausalLink({
+        sourceId: '',
+        targetId: '',
+        relation: '',
+      } as unknown as CausalLinkArgs);
+      const envelope = expectErrorCode(response, ['E031']);
+      const details = envelope.data?.details as { missingParams?: string[] } | undefined;
+      expect(details?.missingParams).toContain('relation');
     });
   });
 
   describe('T014: Causal Stats Handler Integration', () => {
     it('T014-CS1: Stats response has expected data structure', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
-        expect(result).toBeDefined();
-        expect(result.content).toBeDefined();
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && !parsed.data.error) {
-          // Verify all expected fields exist
-          expect(parsed.data).toHaveProperty('total_edges');
-          expect(parsed.data).toHaveProperty('by_relation');
-          expect(parsed.data).toHaveProperty('avg_strength');
-          expect(parsed.data).toHaveProperty('health');
-          expect(parsed.data).toHaveProperty('link_coverage_percent');
-          expect(parsed.data).toHaveProperty('orphanedEdges');
-        } else {
-          expect(parsed.data?.error || parsed.isError).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
       }
+
+      expect(envelope.data).toHaveProperty('total_edges');
+      expect(envelope.data).toHaveProperty('by_relation');
+      expect(envelope.data).toHaveProperty('avg_strength');
+      expect(envelope.data).toHaveProperty('health');
+      expect(envelope.data).toHaveProperty('link_coverage_percent');
+      expect(envelope.data).toHaveProperty('orphanedEdges');
     });
 
     it('T014-CS2: Stats response includes targetCoverage field', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && !parsed.data.error) {
-          expect(parsed.data.targetCoverage).toBe('60%');
-          expect(typeof parsed.data.meetsTarget).toBe('boolean');
-        } else {
-          expect(parsed.data?.error || parsed.isError).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
       }
+
+      expect(envelope.data.targetCoverage).toBe('60%');
+      expect(typeof envelope.data.meetsTarget).toBe('boolean');
     });
 
-    it('T014-CS3: Stats summary includes edge count', async () => {
-      try {
-        const result = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.summary) {
-          expect(parsed.summary).toContain('edges');
-        } else {
-          expect(parsed.data?.error || parsed.isError).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+    it('T014-CS3: Stats summary includes edge count and coverage', async () => {
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
       }
+
+      expect(envelope.summary).toContain('edges');
+      expect(envelope.summary).toContain('coverage');
     });
   });
 
   describe('T015: Drift Why Handler Integration', () => {
-    it('T015-DW1: Valid memoryId returns chain structure', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({ memoryId: '1' });
-        expect(result).toBeDefined();
-        expect(result.content).toBeDefined();
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && !parsed.data.error) {
-          expect(parsed.data).toHaveProperty('memoryId');
-          expect(typeof parsed.data.totalEdges === 'number' || parsed.data.totalEdges === undefined).toBe(true);
-        } else {
-          expect(parsed.data?.error || parsed.isError).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+    it('T015-DW1: Valid memoryId returns chain structure or empty response', async () => {
+      const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1' });
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
       }
+
+      const hasChain = typeof envelope.data?.memoryId !== 'undefined';
+      const isEmpty = envelope.summary.includes('No causal relationships');
+      expect(hasChain || isEmpty).toBe(true);
     });
 
     it('T015-DW2: maxDepth parameter is respected', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 1 });
-        expect(result).toBeDefined();
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && parsed.data.traversalOptions) {
-          expect(parsed.data.traversalOptions.maxDepth).toBe(1);
-        } else {
-          expect(
-            parsed.data?.error ||
-            parsed.isError ||
-            parsed.summary?.includes('No causal relationships')
-          ).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 1 });
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
+      }
+
+      const traversalOptions = envelope.data?.traversalOptions as
+        | { maxDepth?: number }
+        | undefined;
+      if (traversalOptions) {
+        expect(traversalOptions.maxDepth).toBe(1);
+      } else {
+        expect(envelope.summary).toContain('No causal relationships');
       }
     });
 
     it('T015-DW3: Direction parameter passed through', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({
-          memoryId: '1',
-          direction: 'incoming'
-        });
-        expect(result).toBeDefined();
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && parsed.data.traversalOptions) {
-          expect(parsed.data.traversalOptions.direction).toBe('backward');
-        } else {
-          expect(
-            parsed.data?.error ||
-            parsed.isError ||
-            parsed.summary?.includes('No causal relationships')
-          ).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryDriftWhy({
+        memoryId: '1',
+        direction: 'incoming',
+      });
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
+      }
+
+      const traversalOptions = envelope.data?.traversalOptions as
+        | { direction?: string }
+        | undefined;
+      if (traversalOptions) {
+        expect(traversalOptions.direction).toBe('backward');
+      } else {
+        expect(envelope.summary).toContain('No causal relationships');
       }
     });
 
     it('T015-DW4: Invalid relation types rejected', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({
-          memoryId: '1',
-          relations: ['invalid_relation'],
-        });
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data) {
-          expect(parsed.data.error || parsed.data.code === 'E030').toBeTruthy();
-        } else {
-          expect(parsed.isError).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryDriftWhy({
+        memoryId: '1',
+        relations: ['invalid_relation'],
+      });
+      const envelope = expectErrorCode(response, ['E020', 'E030']);
+      // If DB is available, invalid relation validation should trigger E030.
+      if (envelope.data?.code === 'E030') {
+        expect(String(envelope.data?.error)).toContain('Invalid relation types');
       }
     });
 
     it('T015-DW5: maxDepth clamped to [1, 10]', async () => {
-      try {
-        const result = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 50 });
-        const parsed = JSON.parse(result.content[0].text);
-        expect(parsed).toBeDefined();
-        if (parsed.data && parsed.data.traversalOptions) {
-          expect(parsed.data.traversalOptions.maxDepth).toBeLessThanOrEqual(10);
-          expect(parsed.data.traversalOptions.maxDepth).toBeGreaterThanOrEqual(1);
-        } else {
-          expect(
-            parsed.data?.error ||
-            parsed.isError ||
-            parsed.summary?.includes('No causal relationships')
-          ).toBeTruthy();
-        }
-      } catch (error: unknown) {
-        expect(isDbInfrastructureError(error)).toBe(true);
+      const response = await causalHandler.handleMemoryDriftWhy({ memoryId: '1', maxDepth: 50 });
+      const { envelope, isError } = parseEnvelope(response);
+      if (isError) {
+        expect(['E020', 'E021']).toContain(envelope.data?.code as string);
+        return;
+      }
+
+      const traversalOptions = envelope.data?.traversalOptions as
+        | { maxDepth?: number }
+        | undefined;
+      if (traversalOptions) {
+        expect(traversalOptions.maxDepth).toBeLessThanOrEqual(10);
+        expect(traversalOptions.maxDepth).toBeGreaterThanOrEqual(1);
+      } else {
+        expect(envelope.summary).toContain('No causal relationships');
       }
     });
   });

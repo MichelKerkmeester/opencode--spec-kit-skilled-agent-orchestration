@@ -443,6 +443,11 @@ async function indexChunkedMemoryFile(
   }
 
   if (useSafeSwap) {
+    const oldChildRows = database.prepare(`
+      SELECT id FROM memory_index WHERE parent_id = ?
+    `).all(parentId) as Array<{ id: number }>;
+    const oldChildIds = oldChildRows.map((row) => row.id);
+
     const finalizeSwapTx = database.transaction((newChildIds: number[]) => {
       const importanceWeight = calculateDocumentWeight(filePath, parsed.documentType);
       const specLevel = isSpecDocumentType(parsed.documentType)
@@ -450,18 +455,6 @@ async function indexChunkedMemoryFile(
         : null;
       const fileMetadata = incrementalIndex.getFileMetadata(filePath);
       const fileMtimeMs = fileMetadata ? fileMetadata.mtime : null;
-
-      // AI-WHY: Record DELETE history only after each old child is confirmed removed (safe-swap path).
-      const oldChildRows = database.prepare(`SELECT id FROM memory_index WHERE parent_id = ?`).all(parentId) as Array<{ id: number }>;
-      const deleteOldChildStmt = database.prepare(`DELETE FROM memory_index WHERE id = ?`);
-      for (const oldChild of oldChildRows) {
-        const deleteResult = deleteOldChildStmt.run(oldChild.id);
-        if (deleteResult.changes > 0) {
-          try {
-            recordHistory(oldChild.id, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
-          } catch (_histErr: unknown) { /* best-effort */ }
-        }
-      }
 
       const placeholders = newChildIds.map(() => '?').join(', ');
       database.prepare(`
@@ -505,17 +498,22 @@ async function indexChunkedMemoryFile(
 
     try {
       finalizeSwapTx(childIds);
+
+      for (const oldChildId of oldChildIds) {
+        if (vectorIndex.deleteMemory(oldChildId)) {
+          try {
+            recordHistory(oldChildId, 'DELETE', filePath ?? null, null, 'mcp:chunking_reindex');
+          } catch (_histErr: unknown) { /* best-effort */ }
+        }
+      }
     } catch (swapErr: unknown) {
       const message = toErrorMessage(swapErr);
       console.error(`[memory-save] Re-chunk swap failed for parent ${parentId}: ${message}`);
 
       if (childIds.length > 0) {
         try {
-          // AI-WHY: Record DELETE history only after each staged chunk is confirmed removed.
-          const deleteStagedChunkStmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
           for (const cid of childIds) {
-            const deleteResult = deleteStagedChunkStmt.run(cid);
-            if (deleteResult.changes > 0) {
+            if (vectorIndex.deleteMemory(cid)) {
               try {
                 recordHistory(cid, 'DELETE', null, null, 'mcp:chunking_rollback');
               } catch (_histErr: unknown) { /* best-effort */ }

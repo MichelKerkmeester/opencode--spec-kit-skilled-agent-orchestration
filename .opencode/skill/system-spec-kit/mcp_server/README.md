@@ -733,7 +733,8 @@ S5 density guard behavior in `lib/search/entity-linker.ts`: if current global ed
 
 ### Feature Flags
 
-All flags are evaluated via `isFeatureEnabled()`. After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
+All flags are evaluated via `isFeatureEnabled()`. The helper treats absent, empty, and `'true'` values as enabled, and treats `'false'` or `'0'` as disabled. For partial rollouts (`SPECKIT_ROLLOUT_PERCENT` between 1 and 99), identity-less checks fail closed. Malformed rollout values fall back to 100.
+After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
 
 #### Default Enabled (specs 137-139)
 

@@ -76,7 +76,7 @@ Final Results
 <a id="4-stage-pipeline-architecture"></a>
 ### 4-Stage Pipeline Architecture
 
-The search pipeline (R6, `SPECKIT_PIPELINE_V2`) decomposes retrieval into four bounded stages with strict responsibilities. Each stage has clear input/output contracts defined in `pipeline/types.ts`.
+The search pipeline (R6) decomposes retrieval into four bounded stages with strict responsibilities. The legacy `SPECKIT_PIPELINE_V2` env var is accepted for compatibility but ignored at runtime (the 4-stage path is always active). Each stage has clear input/output contracts defined in `pipeline/types.ts`.
 
 ```
 Stage 1                Stage 2                 Stage 3              Stage 4
@@ -197,14 +197,14 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 
 **Providers** (REQ-013):
 - **Voyage rerank-2**: API-based, max 100 docs
-- **Cohere Rerank v3.5**: API-based, max 100 docs
-- **Local**: Cross-encoder/ms-marco-MiniLM-L-6-v2 (Python, unimplemented)
+- **Cohere rerank-english-v3.0**: API-based, max 100 docs
+- **Local endpoint**: `cross-encoder/ms-marco-MiniLM-L-6-v2` via `http://localhost:8765/rerank` when `RERANKER_LOCAL=true`
 
-**Length Penalty** (REQ-008): Short content (<100 chars) scored 0.8x - 1.0x.
+**Length Penalty** (REQ-008): Short content (<50 chars) is penalized to `0.9x`; very long content (>2000 chars) is penalized to `0.95x`.
 
 **Latency Protection**:
-- P95 latency threshold: 500ms (configurable via `RERANK_P95_THRESHOLD`)
-- Auto-disable if threshold exceeded
+- Feature gate: `SPECKIT_CROSS_ENCODER` (default on, disable with `false`)
+- Per-provider circuit breaker: opens after 3 consecutive failures, 60s cooldown
 - Cache TTL: 5 minutes (300,000ms)
 
 **Trade-off**: Adds 200-500ms latency but improves precision by 15-25%.
@@ -365,15 +365,11 @@ vector-index-impl.ts     (3333 LOC)
 
 | Variable                 | Default  | Purpose                             |
 | ------------------------ | -------- | ----------------------------------- |
-| `ENABLE_RRF_FUSION`      | `true`   | Enable RRF fusion                   |
-| `ENABLE_BM25`            | `true`   | Enable BM25 lexical search          |
-| `ENABLE_FUZZY_MATCH`     | `true`   | Enable fuzzy query expansion        |
-| `ENABLE_CROSS_ENCODER`   | `false`  | Enable cross-encoder reranking      |
-| `CROSS_ENCODER_PROVIDER` | `auto`   | `voyage`, `cohere`, `local`, `auto` |
-| `MAX_RERANK_CANDIDATES`  | `20`     | Max docs to rerank (R1 mitigation)  |
-| `RERANK_P95_THRESHOLD`   | `500`    | P95 latency threshold (ms)          |
-| `RERANK_CACHE_TTL`       | `300000` | Cache TTL (5 minutes)               |
-| `RERANK_CACHE_SIZE`      | `1000`   | Max cache entries                   |
+| `ENABLE_BM25`            | `true`   | Enable BM25 lexical search (legacy compatibility gate) |
+| `SPECKIT_CROSS_ENCODER`  | `true`   | Enable cross-encoder reranking gate |
+| `VOYAGE_API_KEY`         | _(unset)_| Select Voyage reranker provider when set |
+| `COHERE_API_KEY`         | _(unset)_| Select Cohere reranker provider when set |
+| `RERANKER_LOCAL`         | `false`  | Enable local reranker endpoint fallback |
 | `EMBEDDING_DIM`          | `768`    | Fallback embedding dimension        |
 | `SPECKIT_MEMORY_SUMMARIES`| `true`  | Enable memory summary generation and search channel (R8) |
 | `SPECKIT_ENTITY_LINKING`  | `true`  | Enable cross-document entity linking (S5, requires R10) |
@@ -383,7 +379,7 @@ vector-index-impl.ts     (3333 LOC)
 | `SPECKIT_LEARN_FROM_SELECTION`| `true`  | Enable learned relevance feedback from selections (R11). Disable with `SPECKIT_LEARN_FROM_SELECTION=false` |
 | `SPECKIT_EMBEDDING_EXPANSION`| `true` | Enable R12 embedding-based query expansion |
 | `SPECKIT_AUTO_ENTITIES`   | `true`  | Enable auto entity extraction at save time (R10) |
-| `SPECKIT_PIPELINE_V2`     | `true`  | Enable 4-stage retrieval pipeline (R6) |
+| `SPECKIT_PIPELINE_V2`     | `true`  | Deprecated/compatibility only: accepted but ignored; Stage-1..4 pipeline is always active |
 | `SPECKIT_GRAPH_SIGNALS`   | `true`  | Enable N2a momentum + N2b causal depth scoring |
 | `SPECKIT_COMMUNITY_DETECTION`| `true`| Enable N2c BFS/Louvain community detection |
 

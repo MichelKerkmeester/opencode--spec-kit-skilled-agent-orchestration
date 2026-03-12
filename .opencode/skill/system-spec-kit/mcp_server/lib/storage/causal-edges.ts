@@ -48,6 +48,15 @@ const STALENESS_THRESHOLD_DAYS = 90;
 const DECAY_STRENGTH_AMOUNT = 0.1;
 const DECAY_PERIOD_DAYS = 30;
 
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function clampStrength(strength: number): number | null {
+  if (!Number.isFinite(strength)) return null;
+  return Math.max(0, Math.min(1, strength));
+}
+
 /* -------------------------------------------------------------
    2. INTERFACES
 ----------------------------------------------------------------*/
@@ -171,7 +180,11 @@ function insertEdge(
   }
 
   try {
-    const clampedStrength = Math.max(0, Math.min(1, effectiveStrength));
+    const clampedStrength = clampStrength(effectiveStrength);
+    if (clampedStrength === null) {
+      console.warn('[causal-edges] insertEdge rejected non-finite strength');
+      return null;
+    }
 
     // AI-WHY: Wrap SELECT + UPSERT + logWeightChange in a transaction for atomicity
     const rowId = database.transaction(() => {
@@ -198,7 +211,7 @@ function insertEdge(
       const rowId = row ? row.id : 0;
 
       // T001d: Log weight change on conflict update
-      if (existing && rowId && existing.strength !== clampedStrength) {
+      if (existing && rowId && isFiniteNumber(existing.strength) && existing.strength !== clampedStrength) {
         logWeightChange(rowId, existing.strength, clampedStrength, createdBy, 'insert-upsert');
       }
 
@@ -288,6 +301,10 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
           failed++;
           continue;
         }
+        if (typeof edge.relation !== 'string' || edge.relation.trim().length === 0) {
+          failed++;
+          continue;
+        }
         if (edge.source_id === edge.target_id) {
           failed++;
           continue;
@@ -296,8 +313,6 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
         const result = insertEdgeStmt.run(...edgeColumns.map((column) => edge[column] ?? null)) as { changes: number };
         if (result.changes > 0) {
           inserted++;
-        } else {
-          failed++;
         }
       }
     });
@@ -449,10 +464,17 @@ function updateEdge(
   try {
     const parts: string[] = [];
     const params: unknown[] = [];
+    let nextStrength: number | undefined;
 
     if (updates.strength !== undefined) {
+      const clampedStrength = clampStrength(updates.strength);
+      if (clampedStrength === null) {
+        console.warn('[causal-edges] updateEdge rejected non-finite strength');
+        return false;
+      }
+      nextStrength = clampedStrength;
       parts.push('strength = ?');
-      params.push(Math.max(0, Math.min(1, updates.strength)));
+      params.push(clampedStrength);
     }
     if (updates.evidence !== undefined) {
       parts.push('evidence = ?');
@@ -474,7 +496,7 @@ function updateEdge(
         oldStrength = existing?.strength;
       }
 
-      // AI-SAFETY: String interpolation constructs IN(?,?,?) placeholder list only —
+      // AI-GUARD: String interpolation constructs IN(?,?,?) placeholder list only —
       // all user values are parameterized. Accepted exception per audit H-08.
       const result = (database.prepare(
         `UPDATE causal_edges SET ${parts.join(', ')} WHERE id = ?`
@@ -483,10 +505,9 @@ function updateEdge(
       const changed = (result as { changes: number }).changes > 0;
 
       // T001d: Log weight change to weight_history
-      if (changed && updates.strength !== undefined && oldStrength !== undefined) {
-        const newStrength = Math.max(0, Math.min(1, updates.strength));
-        if (oldStrength !== newStrength) {
-          logWeightChange(edgeId, oldStrength, newStrength, changedBy, reason);
+      if (changed && nextStrength !== undefined && isFiniteNumber(oldStrength)) {
+        if (oldStrength !== nextStrength) {
+          logWeightChange(edgeId, oldStrength, nextStrength, changedBy, reason);
         }
       }
 
@@ -523,7 +544,7 @@ function deleteEdge(edgeId: number): boolean {
   }
 }
 
-// AI-FIX: F-27 — Let errors propagate so callers inside transactions see failures.
+// AI-TRACE T001: Let errors propagate so callers inside transactions see failures.
 // Previously errors were caught and swallowed, which hid edge-cleanup failures
 // from transactional callers (e.g., memory-bulk-delete, memory-crud-delete).
 function deleteEdgesForMemory(memoryId: string): number {
@@ -673,15 +694,10 @@ function logWeightChange(
   reason: string | null = null,
 ): void {
   if (!db) return;
-  try {
-    (db.prepare(`
-      INSERT INTO weight_history (edge_id, old_strength, new_strength, changed_by, reason)
-      VALUES (?, ?, ?, ?, ?)
-    `) as Database.Statement).run(edgeId, oldStrength, newStrength, changedBy, reason);
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[causal-edges] logWeightChange error: ${msg}`);
-  }
+  (db.prepare(`
+    INSERT INTO weight_history (edge_id, old_strength, new_strength, changed_by, reason)
+    VALUES (?, ?, ?, ?, ?)
+  `) as Database.Statement).run(edgeId, oldStrength, newStrength, changedBy, reason);
 }
 
 function getWeightHistory(edgeId: number, limit: number = 50): WeightHistoryEntry[] {
@@ -747,7 +763,7 @@ function rollbackWeights(edgeId: number, toTimestamp: string): boolean {
       ) as Database.Statement).run(entry.old_strength, edgeId);
 
       // Log the rollback
-      if (current.strength !== entry.old_strength) {
+      if (isFiniteNumber(current.strength) && current.strength !== entry.old_strength) {
         logWeightChange(edgeId, current.strength, entry.old_strength, 'rollback', `rollback to ${toTimestamp}`);
       }
 

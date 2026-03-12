@@ -45,8 +45,8 @@ This plan executes a feature-by-feature audit remediation across the 08 bug-fixe
 - [x] Dependencies identified
 
 ### Definition of Done
-- [x] All acceptance criteria met — 14/14 tasks complete, 42 new tests passing
-- [x] Tests passing (if applicable) — TSC 0 errors, Vitest 42/42 green
+- [x] All acceptance criteria met — 14/14 tasks complete, targeted audited suite passing
+- [x] Tests passing (if applicable) — TSC 0 errors, Vitest 49/49 green on audited files
 - [x] Docs updated (spec/plan/tasks) — All spec folder artifacts synchronized
 <!-- /ANCHOR:quality-gates -->
 
@@ -79,10 +79,10 @@ Catalog feature definitions are inventoried first, then cross-checked against ru
 ### Phase 2: Core Implementation
 - [x] Correct catalog pathing and behavior claims (F-02, F-03, F-05, F-06, F-07, F-11) — Agents 1 & 2, T001-T005, T010
 - [x] Apply targeted code hardening (explicit exports, spread-max removal, safe-swap semantics) — Agent 3, T006-T007, T009
-- [x] Add integration-path coverage for content-hash dedup behavior — Agent 4, T008 (15 tests)
+- [x] Add integration-path coverage for content-hash dedup behavior — Agent 4, T008 (23 tests)
 
 ### Phase 3: Verification
-- [x] Execute large-array, dedup, rollback, timestamp, and concurrency regressions — Agents 4 & 5, T011-T014 (42 tests total)
+- [x] Execute large-array, dedup, rollback, timestamp, and stress regressions — Agents 4 & 5, T011-T014 (49 tests total in audited suite)
 - [x] Re-validate catalog entries against updated code/test evidence — All catalog tables cross-checked
 - [x] Synchronize spec.md, plan.md, tasks.md, and checklist.md — All artifacts updated
 <!-- /ANCHOR:phases -->

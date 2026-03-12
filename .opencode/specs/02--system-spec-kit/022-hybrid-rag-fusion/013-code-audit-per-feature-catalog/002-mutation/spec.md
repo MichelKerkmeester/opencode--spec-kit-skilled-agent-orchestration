@@ -74,7 +74,7 @@ Verify all 10 mutation features against implementation reality, remediate high-p
 2. Standards alignment - `sk-code--opencode` TypeScript checklist
 3. Behavior match - code matches feature catalog \"Current Reality\"
 4. Test coverage - tests exist and cover described behavior
-5. Playbook mapping - `EX-010..EX-017`, `NEW-*`
+5. Playbook mapping - `EX-006..EX-010`, `NEW-*`
 
 ### Files to Change
 

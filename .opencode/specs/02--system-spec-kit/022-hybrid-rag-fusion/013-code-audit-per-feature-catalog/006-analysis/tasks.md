@@ -47,7 +47,7 @@ contextType: "general"
 - [x] T004 [P0] Fix orphan-inflated causal coverage computation (handlers/causal-graph.ts) — SQL filtered to exclude orphaned IDs via EXISTS subquery; 75/75 unit tests pass
 - [x] T005 [P0] Add orphan-edge coverage regression test (tests/causal-edges-unit.vitest.ts) — 4 tests (T005-R1, T005-R2, T005-HL1, T005-HL2) added; orphan detection and non-orphan verification
 - [x] T006 [P0] Fix false-positive `max_depth_reached` flag (handlers/causal-graph.ts) — condition changed from `child.depth >= maxDepth - 1` to `child.depth >= maxDepth`; eliminates natural-leaf false positives
-- [x] T007 [P0] Add natural-leaf vs truncated-chain tests (tests/causal-edges-unit.vitest.ts) — 2 tests (T007-NL1, T007-NL2) validating depth behavior
+- [x] T007 [P0] Add natural-leaf vs truncated-chain tests (tests/causal-edges-unit.vitest.ts) — 6 tests (T007-NL1, T007-NL2, T007-FT1 through T007-FT4) validating depth behavior
 - [x] T008 [P1] Replace wildcard barrel exports in error modules (lib/errors.ts, lib/errors/index.ts) — `export *` replaced with named exports; tsc --noEmit clean
 - [x] T009 [P1] Replace deferred causal-edge placeholder tests with DB-backed assertions (tests/causal-edges.vitest.ts) — all `expect(true).toBe(true)` stubs replaced; 77/77 tests pass with real DB
 - [x] T010 [P1] Add DB-backed unlink workflow tests (tests/causal-edges.vitest.ts) — 4 tests (T010-U1 through T010-U4) for deleteEdge and deleteEdgesForMemory

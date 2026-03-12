@@ -89,7 +89,7 @@ interface MutationHookResult {
   toolCacheInvalidated: number;
   graphSignalsCacheCleared: boolean;
   coactivationCacheCleared: boolean;
-  errors?: string[];
+  errors: string[];
 }
 
 /* ---------------------------------------------------------------

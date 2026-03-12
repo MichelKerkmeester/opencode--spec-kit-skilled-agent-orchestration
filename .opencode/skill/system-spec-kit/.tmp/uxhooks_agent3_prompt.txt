@@ -1,0 +1,22 @@
+TASK: Documentation Review for 018-ux-hooks.
+Depth: 1
+Agent Tier: LEAF
+
+Scope:
+- mcp_server/hooks/README.md
+- feature_catalog/18--ux-hooks/*.md (13 files)
+
+Review goals:
+- Feature descriptions match implementation and tests
+- Validate references to code/test files are accurate
+- Validate markdown/frontmatter structure and ANCHOR pairing
+- Check alignment with sk-doc quality conventions
+
+Output format:
+1) Verdict: APPROVE or REQUEST_CHANGES
+2) Findings grouped by severity P0/P1/P2
+3) Each finding must include file:line, impact, evidence
+4) Missing/stale documentation map
+5) Open questions/uncertainties
+
+NESTING CONSTRAINT: You are a LEAF agent at depth 1. Nested dispatch is illegal. You MUST NOT dispatch sub-agents or use the Task tool to create sub-tasks. Execute your work directly using your available tools. If you cannot complete alone, return what you have and escalate to orchestrator.

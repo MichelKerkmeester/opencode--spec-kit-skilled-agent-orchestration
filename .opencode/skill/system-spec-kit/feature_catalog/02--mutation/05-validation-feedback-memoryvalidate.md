@@ -23,7 +23,7 @@ Negative feedback persistence fires unconditionally on every negative validation
 
 When a `queryId` is provided alongside positive feedback, two additional systems activate. Learned feedback persistence records the user's selection and extracts query terms into a separate `learned_triggers` column (isolated from the FTS5 index to prevent contamination). These learned triggers boost future searches for the same terms. Ground truth selection logging records the event in the evaluation database for the ground truth corpus, returning a `groundTruthSelectionId` in the response.
 
-The read-compute-write cycle runs within a single SQLite transaction to prevent concurrent validation events from racing and dropping updates.
+The confidence read-compute-write segment (`recordValidation`) runs within a single SQLite transaction to prevent concurrent validation updates from racing and dropping writes. Downstream side effects (auto-promotion, negative-feedback persistence, learned feedback, and ground-truth logging) execute after that transactional segment.
 
 ---
 

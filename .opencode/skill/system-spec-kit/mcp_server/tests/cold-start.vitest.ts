@@ -153,7 +153,9 @@ describe('five-factor path — novelty boost removed', () => {
   });
 
   it('score is identical with or without flag (feature removed)', () => {
-    const createdAt = new Date(Date.now() - 100).toISOString(); // essentially 0h
+    const fixedNow = Date.now();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(fixedNow);
+    const createdAt = new Date(fixedNow - 100).toISOString(); // essentially 0h
     const row = {
       created_at: createdAt,
       importance_tier: 'normal',
@@ -168,9 +170,10 @@ describe('five-factor path — novelty boost removed', () => {
     vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
     const scoreWith = calculateFiveFactorScore(row);
 
-    // Novelty boost removed — flag has no effect, scores are identical
-    // Use toBeCloseTo to handle sub-microsecond Date.now() drift between calls
-    expect(scoreWith).toBeCloseTo(scoreWithout, 10);
+    // Novelty boost removed — flag has no effect, scores are identical.
+    // Date.now is fixed so this assertion is deterministic.
+    expect(scoreWith).toBe(scoreWithout);
+    nowSpy.mockRestore();
   });
 });
 
@@ -180,7 +183,9 @@ describe('legacy composite path — novelty boost removed', () => {
   });
 
   it('score is identical with or without flag (feature removed)', () => {
-    const createdAt = new Date(Date.now() - 100).toISOString();
+    const fixedNow = Date.now();
+    const nowSpy = vi.spyOn(Date, 'now').mockReturnValue(fixedNow);
+    const createdAt = new Date(fixedNow - 100).toISOString();
     const row = {
       created_at: createdAt,
       importance_tier: 'normal',
@@ -195,8 +200,9 @@ describe('legacy composite path — novelty boost removed', () => {
     vi.stubEnv('SPECKIT_NOVELTY_BOOST', 'true');
     const scoreWith = calculateCompositeScore(row);
 
-    // Novelty boost removed — flag has no effect, scores are identical
-    // Use toBeCloseTo to handle sub-microsecond Date.now() drift between calls
-    expect(scoreWith).toBeCloseTo(scoreWithout, 10);
+    // Novelty boost removed — flag has no effect, scores are identical.
+    // Date.now is fixed so this assertion is deterministic.
+    expect(scoreWith).toBe(scoreWithout);
+    nowSpy.mockRestore();
   });
 });

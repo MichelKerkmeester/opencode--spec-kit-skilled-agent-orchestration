@@ -27,11 +27,18 @@ import { detectSpecLevelFromParsed } from '../handler-utils';
 import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers';
 import type { IndexResult } from './types';
 
+/**
+ * Result payload from reconsolidation pre-checks during memory_save.
+ */
 export interface ReconsolidationBridgeResult {
   earlyReturn: IndexResult | null;
   warnings: string[];
 }
 
+/**
+ * Runs reconsolidation when enabled and returns either an early tool response
+ * or a signal to continue the standard create-record path.
+ */
 export async function runReconsolidationIfEnabled(
   database: BetterSqlite3.Database,
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,

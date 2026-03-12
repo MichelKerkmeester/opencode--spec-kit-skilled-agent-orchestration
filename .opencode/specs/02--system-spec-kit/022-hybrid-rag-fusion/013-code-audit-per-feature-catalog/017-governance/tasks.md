@@ -65,6 +65,18 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Remediation
+
+- [x] T011 Harden rollout parsing and partial-rollout identity behavior (`mcp_server/lib/cache/cognitive/rollout-policy.ts`)
+- [x] T012 Add regression coverage for rollout policy edge cases (`mcp_server/tests/rollout-policy.vitest.ts`)
+- [x] T013 Add direct wrapper tests for file watcher and local reranker gates (`mcp_server/tests/search-flags.vitest.ts`)
+- [x] T014 Expand dead-code regression symbol coverage (`mcp_server/tests/dead-code-regression.vitest.ts`)
+- [x] T015 Align governance docs and references with runtime behavior (`../../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md`, `../../../../../skill/system-spec-kit/mcp_server/README.md`, `checklist.md`, `implementation-summary.md`)
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 

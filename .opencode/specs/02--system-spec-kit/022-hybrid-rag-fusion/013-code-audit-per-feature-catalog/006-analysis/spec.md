@@ -93,7 +93,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 |----|-------------|---------------------|
 | REQ-004 | Standards alignment gaps are tracked across impacted features. | Wildcard export and pattern-violation findings are mapped into tasks/checklist entries. |
 | REQ-005 | Test coverage gaps are traceable to concrete regression tasks. | P0/P1/P2 test gaps are represented in tasks with T### numbering and file context. |
-| REQ-006 | Manual playbook mapping status is recorded. | EX-028..EX-031 and NEW-* mapping state is explicitly noted with gap visibility. |
+| REQ-006 | Manual playbook mapping status is recorded. | EX-019..EX-025 mapping state is explicitly noted with gap visibility. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -129,7 +129,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 
 ### Performance
 - **NFR-P01**: Documentation restructuring should remain readable and quickly scannable for execution planning.
-- **NFR-P02**: Task and checklist navigation should support fast triage across 19 mapped items.
+- **NFR-P02**: Task and checklist navigation should support fast triage across 25 mapped tasks.
 
 ### Security
 - **NFR-S01**: No secrets, credentials, or unsafe command patterns are introduced in spec artifacts.
@@ -177,7 +177,7 @@ Provide a Level 2, template-compliant analysis specification that preserves all 
 
 ## 10. OPEN QUESTIONS
 
-- Should per-feature manual test scenarios be expanded beyond phase-level EX-028..EX-031, NEW-* references in a follow-up phase?
+- Should per-feature manual test scenarios be expanded beyond EX-019..EX-025 in a follow-up phase?
 - Should wildcard export remediation be tracked as a shared cross-phase task instead of repeated per feature?
 <!-- /ANCHOR:questions -->
 

@@ -28,6 +28,10 @@ interface PeDecision {
   contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
 }
 
+/**
+ * Creates a memory row with metadata, optional BM25 entry, and save history.
+ * Returns the persisted memory id for downstream save handlers.
+ */
 export function createMemoryRecord(
   database: BetterSqlite3.Database,
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,

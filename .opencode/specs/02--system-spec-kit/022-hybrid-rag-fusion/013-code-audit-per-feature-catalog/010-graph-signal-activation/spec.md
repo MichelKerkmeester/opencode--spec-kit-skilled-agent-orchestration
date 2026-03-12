@@ -31,7 +31,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `010-graph-signal-activation` |
 <!-- /ANCHOR:metadata -->
@@ -45,7 +45,7 @@ contextType: "general"
 The Graph Signal Activation catalog contains 11 high-complexity features that require a structured code audit. Current implementation and tests show correctness risks, standards deviations, behavior mismatches against catalog "Current Reality" statements, and inconsistent playbook coverage mapping. Without a normalized spec artifact, remediation is hard to prioritize and verify.
 
 ### Purpose
-Deliver an evidence-backed, feature-by-feature audit baseline that drives prioritized remediation for Graph Signal Activation. This spec originated as an audit-only artifact and now also serves as a partial remediation reconciliation record for the subset of fixes and verifications completed after the audit.
+Deliver an evidence-backed, feature-by-feature audit baseline that drives and verifies remediation for Graph Signal Activation. This spec now serves as the completed closure record for all 11 cataloged items with synchronized code/test/doc evidence.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -60,9 +60,9 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 - Synchronize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` to Level 2 structure.
 
 ### Out of Scope
-- Implementing new runtime code fixes beyond the already-documented partial remediation reconciliation captured by this spec set.
-- Altering feature catalog definitions beyond documenting discrepancies.
-- Replacing or removing the existing `implementation-summary.md`; this pass only reconciles it to verified implementation evidence.
+- Implementing net-new graph features beyond closure of the identified audit backlog.
+- Altering catalog taxonomy outside the minimum wording updates required to match runtime behavior.
+- Broad refactors unrelated to graph-signal activation correctness, verification, and documentation alignment.
 
 ### Files to Change
 
@@ -91,7 +91,7 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Map manual playbook coverage for NEW-035..039 and NEW-050+. | Each feature is marked with explicit playbook scenario or `MISSING`. |
+| REQ-004 | Map manual playbook coverage for all in-scope graph-signal features (F-01..F-11). | Each feature is represented with explicit playbook scenario coverage or documented deferral rationale. |
 | REQ-005 | Align documents to SpecKit Level 2 template structure. | All four files contain Level 2 frontmatter, SPECKIT comments, and ANCHOR pairs. |
 <!-- /ANCHOR:requirements -->
 
@@ -112,7 +112,7 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 
 1. **Given** the Graph Signal Activation catalog with 11 scoped features, **when** the audit baseline is reviewed, **then** every feature F-01 through F-11 is represented with a PASS/WARN/FAIL status and traceable evidence.
 
-2. **Given** this spec remains audit-first with partial remediation reconciliation, **when** task status is checked, **then** only Task #2 remediated items (T001, T002, T005, T006, T008) are closed and T004 plus other backlog items remain open.
+2. **Given** this spec is now in closure mode, **when** task status is checked, **then** all 11 tracked items (T001..T011) are closed with supporting evidence in `tasks.md` and `implementation-summary.md`.
 
 3. **Given** the latest verification state for `mcp_server`, **when** checklist quality gates are reviewed, **then** CHK-010 reflects passing `npx tsc --noEmit` and completed P0/P1 checks include explicit evidence markers.
 
@@ -142,7 +142,7 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Documentation updates for this phase complete within a single review cycle on 2026-03-10.
+- **NFR-P01**: Documentation updates for this closure phase complete within the 2026-03-12 verification cycle.
 - **NFR-P02**: Per-feature findings remain scannable and traceable without requiring cross-repo search.
 
 ### Security
@@ -170,7 +170,7 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 - Concurrent access: If underlying files change during rewrite, rerun verification before completion.
 
 ### State Transitions
-- Partial completion: Incomplete sections remain Draft and are tracked as open checklist items.
+- Partial completion: If a regression appears after closure, reopen impacted tasks/checklist items with fresh evidence.
 - Session expiry: Preserve all mapped findings in tasks/checklist so work can resume deterministically.
 <!-- /ANCHOR:edge-cases -->
 
@@ -191,8 +191,8 @@ Deliver an evidence-backed, feature-by-feature audit baseline that drives priori
 
 ## 10. OPEN QUESTIONS
 
-- Should playbook coverage extend beyond NEW-035..039 and NEW-050+ for this feature category?
-- Should feature catalog wording for relation taxonomy (`leads_to`/`relates_to`) be updated or should runtime support be added?
+- Should deferred F-09 (`ANCHOR` tags as graph nodes) be moved into a dedicated implementation spec cycle?
+- Should low-quality `generate-context.js` memory outputs be treated as a hard gate or informational warning in closure checklists?
 <!-- /ANCHOR:questions -->
 
 ---

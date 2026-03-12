@@ -21,6 +21,7 @@ import { ListToolsRequestSchema, CallToolRequestSchema } from '@modelcontextprot
 // Core modules
 import {
   DEFAULT_BASE_PATH,
+  ALLOWED_BASE_PATHS,
   setEmbeddingModelReady, waitForEmbeddingModel,
   init as initDbState
 } from './core';
@@ -424,29 +425,47 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
   console.error('[context-server] Checking for pending memory files...');
 
   try {
-    // BUG-028 FIX: Restrict scan to known memory file locations to prevent OOM when scanning large workspaces
-    const scanLocations = [
-      path.join(basePath, 'specs'),
-      path.join(basePath, '.opencode', 'specs')
-    ];
+    // BUG-028 FIX: Restrict scan to known memory file locations to prevent OOM when scanning large workspaces.
+    // P1 follow-up: derive those known locations from all allowed memory roots so startup recovery matches ingest roots.
+    const configuredMemoryRoot = process.env.MEMORY_BASE_PATH;
+    const derivedMemoryRoot = configuredMemoryRoot && configuredMemoryRoot.trim().length > 0
+      ? path.resolve(process.cwd(), configuredMemoryRoot)
+      : null;
+    const recoveryRoots = Array.from(
+      new Set(
+        [basePath, derivedMemoryRoot, ...ALLOWED_BASE_PATHS]
+          .filter((root): root is string => typeof root === 'string' && root.trim().length > 0)
+          .map((root) => path.resolve(root))
+      )
+    );
 
-    // Also scan constitutional directories (.opencode/skill/*/constitutional/)
-    const skillDir = path.join(basePath, '.opencode', 'skill');
-    try {
-      if (fs.existsSync(skillDir)) {
-        const entries = fs.readdirSync(skillDir, { withFileTypes: true });
-        for (const entry of entries) {
-          if (entry.isDirectory() && !entry.name.startsWith('.')) {
-            const constDir = path.join(skillDir, entry.name, 'constitutional');
-            if (fs.existsSync(constDir)) {
-              scanLocations.push(constDir);
+    const scanLocations: string[] = [];
+    for (const root of recoveryRoots) {
+      scanLocations.push(path.join(root, 'specs'));
+      scanLocations.push(path.join(root, '.opencode', 'specs'));
+
+      // Also scan constitutional directories (.opencode/skill/*/constitutional/)
+      const skillDir = path.join(root, '.opencode', 'skill');
+      try {
+        if (fs.existsSync(skillDir)) {
+          const entries = fs.readdirSync(skillDir, { withFileTypes: true });
+          for (const entry of entries) {
+            if (entry.isDirectory() && !entry.name.startsWith('.')) {
+              const constDir = path.join(skillDir, entry.name, 'constitutional');
+              if (fs.existsSync(constDir)) {
+                scanLocations.push(constDir);
+              }
             }
           }
         }
+      } catch (_error: unknown) {
+        // Non-fatal: constitutional directory discovery failed
       }
-    } catch (_error: unknown) {
-      // Non-fatal: constitutional directory discovery failed
     }
+
+    const existingScanLocations = Array.from(
+      new Set(scanLocations.filter((location) => fs.existsSync(location)))
+    );
 
     // P1 FIX: Wire isCommittedInDb callback so stale pending files are detected at startup.
     // AI-WHY: vectorIndex.getDb() is an initializing accessor — always returns a valid DB after initializeDb().
@@ -456,7 +475,9 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
       return !!row;
     };
 
-    const rawResults = scanLocations.flatMap(loc => transactionManager.recoverAllPendingFiles(loc, isCommittedInDb));
+    const rawResults = existingScanLocations.flatMap((location) =>
+      transactionManager.recoverAllPendingFiles(location, isCommittedInDb)
+    );
 
     // Aggregate per-file results into a summary
     const found = rawResults.length;

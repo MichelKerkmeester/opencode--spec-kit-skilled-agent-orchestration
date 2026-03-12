@@ -33,7 +33,7 @@ contextType: "general"
 | **Testing** | Existing Vitest coverage + manual playbook mapping (NEW-063/NEW-064) |
 
 ### Overview
-This plan executes a feature-centric governance audit for two cataloged capabilities: feature flag governance and feature flag sunset audit. The approach inventories feature definitions, validates implementation and tests, then records structured findings with explicit playbook coverage mapping.
+This plan executes a feature-centric governance audit for two cataloged capabilities: feature flag governance and feature flag sunset audit. The approach inventories feature definitions, validates implementation and tests, records structured findings with explicit playbook coverage mapping, and applies targeted remediation for confirmed gaps.
 
 > **Audit method**: Audit executed via 5-agent parallel Codex 5.3 xhigh dispatch.
 <!-- /ANCHOR:summary -->
@@ -68,7 +68,7 @@ Catalog-driven audit workflow
 - **Verification Artifacts (`spec.md`, `tasks.md`, `checklist.md`)**: Capture outcomes, traceability, and completion evidence.
 
 ### Data Flow
-Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-063/NEW-064 playbook mapping.
+Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-063/NEW-064 playbook mapping. Confirmed issues are fixed in place with targeted regression tests and documentation updates.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -90,6 +90,11 @@ Feature catalog entries identify scope, source file references are reviewed for 
 - [x] Findings report produced for each feature
 - [x] PASS/WARN/FAIL status assigned
 - [x] Documentation updated
+
+### Phase 4: Remediation
+- [x] Harden rollout policy parsing and identity behavior
+- [x] Close search-flag wrapper test gaps
+- [x] Correct governance catalog and README drift
 <!-- /ANCHOR:phases -->
 
 ---
@@ -102,6 +107,7 @@ Feature catalog entries identify scope, source file references are reviewed for 
 | Unit | Existing governance-related helper behavior | Vitest (existing suite) |
 | Integration | Feature-to-code and feature-to-test mapping validation | Manual source review |
 | Manual | Playbook cross-reference and findings verification | NEW-063/NEW-064 scenario set |
+| Regression | Rollout policy + search-flag wrapper + dead-code canary verification | Targeted Vitest runs |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -113,6 +119,8 @@ Feature catalog entries identify scope, source file references are reviewed for 
 |------------|------|--------|-------------------|
 | `feature_catalog/17--governance/` | Internal | Green | Cannot define feature audit scope |
 | `mcp_server/lib/search/search-flags.ts` | Internal | Green | Cannot validate feature behavior |
+| `mcp_server/lib/cache/cognitive/rollout-policy.ts` | Internal | Green | Cannot validate rollout gating behavior |
+| `../../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` | Internal | Green | Cannot close governance documentation drift |
 | Governance test references | Internal | Green | Cannot confirm coverage claims |
 | Playbook scenario `NEW-063/NEW-064` | Internal | Green | Cannot complete manual coverage mapping |
 <!-- /ANCHOR:dependencies -->

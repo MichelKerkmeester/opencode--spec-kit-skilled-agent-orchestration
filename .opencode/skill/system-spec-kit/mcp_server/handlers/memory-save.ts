@@ -181,7 +181,20 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   // Dedup checks above must run first so duplicate content exits before chunking.
   if (needsChunking(parsed.content)) {
     console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
-    return indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
+    const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
+
+    // AI-GUARD: Preserve quality-loop content rewrites for successful chunked saves too.
+    // The non-chunk path persists fixedContent after hard-reject gates; chunked saves
+    // should mirror that behavior once chunk indexing completes successfully.
+    if (
+      qualityLoopResult.passed &&
+      qualityLoopResult.fixedContent &&
+      (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
+    ) {
+      await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
+    }
+
+    return chunkedResult;
   }
 
   // EMBEDDING GENERATION (with persistent SQLite cache — REQ-S2-001)
@@ -402,6 +415,36 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     }
   }
 
+  // AI-GUARD: dryRun must remain non-mutating even when preflight is explicitly skipped.
+  if (dryRun && skipPreflight) {
+    const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
+    const { createMCPSuccessResponse } = await import('../lib/response/envelope');
+    const dryRunSummary = 'Pre-flight validation skipped (dry-run mode)';
+
+    return createMCPSuccessResponse({
+      tool: 'memory_save',
+      summary: dryRunSummary,
+      data: {
+        status: 'dry_run',
+        would_pass: true,
+        file_path: validatedPath,
+        spec_folder: parsedForDryRun.specFolder,
+        title: parsedForDryRun.title,
+        validation: {
+          skipped: true,
+          errors: [],
+          warnings: [],
+          details: { skipped: true },
+        },
+        message: dryRunSummary,
+      },
+      hints: [
+        'Dry-run complete - no changes made',
+        'Pre-flight checks were skipped because skipPreflight=true',
+      ],
+    });
+  }
+
   const result = await indexMemoryFile(validatedPath, { force, parsedOverride: parsedForPreflight, asyncEmbedding });
 
   return buildSaveResponse({ result, filePath: file_path, asyncEmbedding, requestId });
@@ -564,6 +607,7 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+        errors: [],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('atomic-save', postMutationHooks);

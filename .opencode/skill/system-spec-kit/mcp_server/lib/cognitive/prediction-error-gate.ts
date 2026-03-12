@@ -215,7 +215,7 @@ function evaluateMemory(
     // T-09: Log no-candidate CREATE decisions for full audit trail
     if (db) {
       const record = formatConflictRecord(
-        ACTION.CREATE, newContentHash, 0, 0,
+        ACTION.CREATE, newContentHash, null, 0,
         'No existing candidates found',
         { detected: false, type: null, description: null, confidence: 0 },
         truncateContent(newContent), '',
@@ -238,7 +238,7 @@ function evaluateMemory(
     // T-09: Log filtered-out CREATE decisions for full audit trail
     if (db) {
       const record = formatConflictRecord(
-        ACTION.CREATE, newContentHash, 0, 0,
+        ACTION.CREATE, newContentHash, null, 0,
         'No relevant candidates after filtering',
         { detected: false, type: null, description: null, confidence: 0 },
         truncateContent(newContent), '',
@@ -329,7 +329,7 @@ function filterRelevantCandidates(
 function formatConflictRecord(
   action: ActionType,
   newMemoryHash: string,
-  existingMemoryId: number,
+  existingMemoryId: number | null,
   similarity: number,
   reason: string,
   contradiction: ContradictionResult,

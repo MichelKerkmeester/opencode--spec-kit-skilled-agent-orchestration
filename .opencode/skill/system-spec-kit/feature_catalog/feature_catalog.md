@@ -65,12 +65,15 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Health diagnostics (memory_health)](#health-diagnostics-memory_health)
 - [Maintenance](#maintenance)
   - [Workspace scanning and indexing (memory_index_scan)](#workspace-scanning-and-indexing-memory_index_scan)
+  - [Startup runtime compatibility guards](#startup-runtime-compatibility-guards)
 - [Lifecycle](#lifecycle)
   - [Checkpoint creation (checkpoint_create)](#checkpoint-creation-checkpoint_create)
   - [Checkpoint listing (checkpoint_list)](#checkpoint-listing-checkpoint_list)
   - [Checkpoint restore (checkpoint_restore)](#checkpoint-restore-checkpoint_restore)
   - [Checkpoint deletion (checkpoint_delete)](#checkpoint-deletion-checkpoint_delete)
   - [Async ingestion job lifecycle](#async-ingestion-job-lifecycle)
+  - [Startup pending-file recovery](#startup-pending-file-recovery)
+  - [Automatic archival subsystem](#automatic-archival-subsystem)
 - [Analysis](#analysis)
   - [Causal edge creation (memory_causal_link)](#causal-edge-creation-memory_causal_link)
   - [Causal graph statistics (memory_causal_stats)](#causal-graph-statistics-memory_causal_stats)
@@ -507,7 +510,7 @@ Paginated browsing of everything the memory system knows. You can sort by creati
 
 Each entry shows its numeric ID, spec folder, title, creation and update timestamps, importance weight, trigger phrase count and file path. The response includes a total count and pagination hints (like "More results available: use offset: 40") for navigating forward. Default page size is 20, maximum is 100.
 
-This is the starting point for any manual memory management workflow. Need to delete a specific memory? Browse to find its ID. Want to audit what is indexed under a spec folder? Filter by folder and scan the results. Wondering why a memory is not surfacing in search? Look up its importance weight and tier here.
+This is the starting point for any manual memory management workflow. Need to delete a specific memory? Browse to find its ID. Want to audit what is indexed under a spec folder? Filter by folder and scan the results. Wondering why a memory is not surfacing in search? Look up its importance weight here.
 
 
 #### Source Files
@@ -518,7 +521,7 @@ See [`03--discovery/01-memory-browser-memorylist.md`](03--discovery/01-memory-br
 
 A single call returns the system dashboard. Total memory count, embedding status breakdown (how many succeeded, how many are pending, how many failed), date range of the oldest and newest memories, total trigger phrase count, tier distribution across all six tiers, database file size in bytes, last indexed timestamp and whether vector search is available.
 
-The top spec folders are ranked by one of four strategies. Count (default) sorts by how many memories each folder contains. Recency sorts by the most recently updated memory in each folder. Importance sorts by the highest importance tier present. Composite uses a weighted multi-factor score from `folderScoring.computeFolderScores()` that combines recency, importance, activity and validation scores into a single ranking.
+The top spec folders are ranked by one of four strategies. Count (default) sorts by how many memories each folder contains. Recency sorts by the most recently updated memory in each folder. Importance sorts by the computed `importanceScore` from folder scoring. Composite uses a weighted multi-factor score from `folderScoring.computeFolderScores()` that combines recency, importance, activity and validation scores into a single ranking.
 
 The composite mode is the most revealing. A folder can have many memories (high count) but all of them stale (low recency) and unvalidated (low validation score). Composite catches that. Pass `includeScores: true` to see the score breakdown per folder: recencyScore, importanceScore, activityScore, validationScore, topTier and lastActivity.
 
@@ -533,7 +536,7 @@ See [`03--discovery/02-system-statistics-memorystats.md`](03--discovery/02-syste
 
 Two report modes. Full mode checks database connectivity, embedding model readiness, vector search availability, FTS5 index consistency and alias conflicts. The FTS5 check compares row counts between `memory_index` and `memory_fts` tables. If they diverge, something went wrong during indexing and the system suggests running `memory_index_scan` with `force: true` to rebuild. Alias conflict detection finds files that exist under both `specs/` and `.opencode/specs/` paths, which happens in projects with symlinks or path normalization issues.
 
-The response reports overall status as "healthy" or "degraded" along with server version, uptime in seconds, embedding provider details (provider name, model, dimension) and the database file path. "Degraded" does not mean broken. It means something needs attention: a disconnected embedding provider, an FTS mismatch or unresolved alias conflicts.
+The response reports overall status as "healthy" or "degraded" along with server version, uptime in seconds, embedding provider details (provider name, model, dimension) and a redacted database file path. The current handler derives "degraded" from embedding-model readiness and database connectivity. FTS mismatches and alias conflicts surface through hints and repair metadata instead of changing the top-level status on their own.
 
 The `divergent_aliases` report mode narrows the focus. It finds files that exist under both path variants with different content hashes. Same file, two locations, different content. That is a data integrity problem that requires manual triage. You can scope this check to a specific spec folder and paginate results up to 200 groups.
 
@@ -564,6 +567,16 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 #### Source Files
 
 See [`04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) for full implementation and test file listings.
+
+### Startup runtime compatibility guards
+
+This maintenance module runs non-blocking startup diagnostics before the MCP server settles into normal operation. It persists a `.node-version-marker` on first startup, then compares later runtimes against that marker and warns when the Node module ABI, platform, or architecture changes. This reduces surprise native-module crashes after runtime upgrades or machine changes.
+
+The module also verifies that SQLite reports at least version 3.35.0 and degrades to warnings when version queries fail or return malformed strings. The guard stays intentionally non-fatal so startup diagnostics do not prevent the server from booting, but they surface actionable rebuild or environment warnings early.
+
+#### Source Files
+
+See [`04--maintenance/02-startup-runtime-compatibility-guards.md`](04--maintenance/02-startup-runtime-compatibility-guards.md) for full implementation and test file listings.
 
 ## 7. LIFECYCLE
 
@@ -606,7 +619,7 @@ See [`05--lifecycle/03-checkpoint-restore-checkpointrestore.md`](05--lifecycle/0
 
 ### Checkpoint deletion (checkpoint_delete)
 
-Permanently removes a named checkpoint from the `checkpoints` table. Returns a boolean indicating whether the checkpoint was found and deleted. No confirmation prompt. No safety net. If you delete the wrong checkpoint, it is gone. Use `checkpoint_list` first to verify the name.
+Permanently removes a named checkpoint from the `checkpoints` table. Returns a boolean indicating whether the checkpoint was found and deleted. The API requires a `confirmName` parameter that must exactly match `name`, providing a lightweight safety gate against accidental deletion. If you delete the wrong checkpoint, it is gone. Use `checkpoint_list` first to verify the name.
 
 
 #### Source Files
@@ -623,6 +636,24 @@ A dedicated background job queue in `lib/ops/job-queue.ts` manages ingestion tas
 #### Source Files
 
 See [`05--lifecycle/05-async-ingestion-job-lifecycle.md`](05--lifecycle/05-async-ingestion-job-lifecycle.md) for full implementation and test file listings.
+
+### Startup pending-file recovery
+
+On startup, the server scans known memory roots for `_pending` files left by interrupted atomic writes and attempts to recover them. Recovery is gated by a DB commit probe (`isCommittedInDb`) so stale files with no committed `memory_index` row are preserved for manual review instead of being silently promoted. Startup scanning is constrained to spec and constitutional memory locations derived from allowed base roots.
+
+
+#### Source Files
+
+See [`05--lifecycle/06-startup-pending-file-recovery.md`](05--lifecycle/06-startup-pending-file-recovery.md) for full implementation and test file listings.
+
+### Automatic archival subsystem
+
+The archival manager periodically identifies low-activity memories and marks them archived while preserving metadata rows for recovery and unarchive flows. BM25 and vector behavior are explicit: BM25 documents are removed on archive, and vector embeddings are removed from `vec_memories` without deleting the corresponding `memory_index` row. Protected tiers remain excluded from automatic archival.
+
+
+#### Source Files
+
+See [`05--lifecycle/07-automatic-archival-subsystem.md`](05--lifecycle/07-automatic-archival-subsystem.md) for full implementation and test file listings.
 
 ## 8. ANALYSIS
 
@@ -2132,9 +2163,9 @@ No dedicated source files  -- this describes governance process controls.
 
 ### Feature flag sunset audit
 
-A thorough audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+A thorough audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
 
-The current active flag-helper inventory in `search-flags.ts` is 23 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 
 **Phase 017 update:** `SPECKIT_PIPELINE_V2` is now deprecated. `isPipelineV2Enabled()` always returns `true` regardless of the env var. The legacy V1 pipeline code was removed, making the env var a no-op.
 
@@ -2152,7 +2183,7 @@ No dedicated source files  -- this describes governance process controls.
 
 Current mapping: this content is tracked under sub-phase `011-ux-hooks-automation`.
 
-Phase 014 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Verification after implementation: `npx tsc -b` PASS, `npm run lint` PASS, the targeted UX suite PASSed with 7 files and 460 tests, the stdio plus embeddings suite PASSed with 2 files and 15 tests, and the MCP SDK stdio smoke test PASSed with 28 tools listed.
+Phase 014 standardized post-mutation automation and safety checks across mutation handlers, then closed the follow-up review gaps that remained after the initial rollout. The finalized state now includes required `confirmName` enforcement, duplicate-save no-op feedback that leaves caches untouched, atomic-save parity for `postMutationHooks` and hint payloads, token metadata recomputation before token-budget enforcement, hooks README/export alignment, and end-to-end success-envelope verification. Verification after implementation: `npx tsc -b` PASS, `npm run lint` PASS, the targeted UX suite passed with 7 files and 445/445 tests, the stdio plus embeddings suite PASSed with 2 files and 15 tests, and the MCP SDK stdio smoke test PASSed with 28 tools listed.
 
 ### Shared post-mutation hook wiring
 
@@ -2387,9 +2418,9 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 Every runtime behavior in the MCP server is controlled by environment variables. The tables below catalogue all known flags grouped by category. The "Default" column reflects the value in effect when the variable is absent from the environment.
 
-For SPECKIT_* flags that use `isFeatureEnabled()`: the function returns `true` when the variable is absent, empty, or set to `'true'`. It returns `false` only when explicitly set to `'false'`. This means almost all graduated search-pipeline features are **ON by default** and require an explicit opt-out.
+For SPECKIT_* flags that use `isFeatureEnabled()`: the function returns `true` when the variable is absent, empty, or set to `'true'`. It returns `false` when explicitly set to `'false'` or `'0'`. This means almost all graduated search-pipeline features are **ON by default** and require an explicit opt-out.
 
-The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of any individual flag check. At 100 (the default), all sessions pass the rollout gate and every enabled flag takes effect normally.
+The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of any individual flag check. At 100 (the default), checks pass normally. At 0, checks fail. Between 1-99, inclusion uses deterministic identity hashing and calls without identity fail closed. Malformed rollout values fall back to 100.
 
 ### 1. Search Pipeline Features (SPECKIT_*)
 
@@ -2449,7 +2480,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_RECONSOLIDATION` | `false` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. Opt-in only: set `SPECKIT_RECONSOLIDATION=true` to enable merge/supersede behavior after embedding generation. Requires a checkpoint to exist for the spec folder. |
 | `SPECKIT_RELATIONS` | `true` | boolean | `lib/learning/corrections.ts` | Enables relational learning corrections that track and apply inter-memory relationship signals during the learning pipeline. Disabled with explicit `'false'`. |
 | `SPECKIT_RESPONSE_TRACE` | `false` | boolean | `handlers/memory-search.ts` | **IMPLEMENTED (Sprint 004).** P0-2: Include provenance data (scores, source, trace) in `memory_search` response envelopes. Opt-in via `includeTrace: true` parameter. When disabled, response format is unchanged (backward compatible). |
-| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
+| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, checks pass. At 0, checks fail. Between 1-99, inclusion uses deterministic identity hashing and calls without identity fail closed. Malformed rollout values fall back to 100. |
 | `SPECKIT_RRF` | `true` | boolean | `lib/search/rrf-fusion.ts` | Enables Reciprocal Rank Fusion for combining multi-channel search results. When disabled, a simpler score-passthrough merge is used. Rarely disabled in production. |
 | `SPECKIT_RSF_FUSION` | inert | boolean | `lib/search/hybrid-search.ts` | **Deprecated runtime gate.** RSF shadow Stage B is no longer active in production ranking paths. Remaining RSF references are compatibility/testing artifacts and do not alter live ranking behavior. |
 | `SPECKIT_SAVE_QUALITY_GATE` | `true` | boolean | `lib/search/search-flags.ts` | TM-04 three-layer pre-storage quality gate. Layer 1: structure validation (title, content ≥50 chars, valid spec folder path). Layer 2: content quality scoring across 5 dimensions against a 0.4 signal density threshold. Layer 3: semantic dedup via cosine similarity (rejects near-duplicates above 0.92). A 14-day warn-only mode runs after activation. |

@@ -10,7 +10,13 @@ function getRolloutPercent(): number {
     return DEFAULT_ROLLOUT_PERCENT;
   }
 
-  const parsed = Number.parseInt(raw, 10);
+  const trimmed = raw.trim();
+  // Accept only full integer strings. Values like `50abc` or `1e2` fall back.
+  if (!/^-?\d+$/.test(trimmed)) {
+    return DEFAULT_ROLLOUT_PERCENT;
+  }
+
+  const parsed = Number.parseInt(trimmed, 10);
   if (!Number.isFinite(parsed)) {
     return DEFAULT_ROLLOUT_PERCENT;
   }
@@ -42,11 +48,12 @@ function isFeatureEnabled(flagName: string, identity?: string): boolean {
   if (rolloutPercent >= 100) return true;
   if (rolloutPercent <= 0) return false;
 
-  if (!identity || identity.trim().length === 0) {
-    return true;
+  const normalizedIdentity = identity?.trim();
+  if (!normalizedIdentity) {
+    return false;
   }
 
-  return isIdentityInRollout(identity);
+  return isIdentityInRollout(normalizedIdentity);
 }
 
 export {

@@ -43,6 +43,20 @@ function parseMemoryId(rawId: number | string): number {
   return numericId;
 }
 
+function createDatabaseUnavailableDeleteResponse(): MCPResponse {
+  return createMCPErrorResponse({
+    tool: 'memory_delete',
+    error: 'Delete aborted: database unavailable',
+    code: 'E_DB_UNAVAILABLE',
+    details: { deleted: 0 },
+    recovery: {
+      hint: 'Restart the MCP server or run memory_index_scan() to reinitialize the database',
+      actions: ['Restart the MCP server', 'Call memory_index_scan()'],
+      severity: 'error',
+    },
+  });
+}
+
 /** Handle memory_delete tool -- deletes a single memory by ID or bulk-deletes by spec folder. */
 async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
@@ -61,61 +75,48 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   let checkpointName: string | null = null;
   const database = vectorIndex.getDb();
 
+  if (!database) {
+    // AI-GUARD: Unified DB-unavailable contract for single and bulk delete paths.
+    return createDatabaseUnavailableDeleteResponse();
+  }
+
   if (numericId !== null) {
     const singleSnapshot = getMemoryHashSnapshot(database, numericId);
 
     // AI-WHY: T2-5 transaction wrapper — wraps single-delete path (memory delete, causal edge
     // AI-WHY: cleanup, ledger append) in a transaction for atomicity on error.
-    if (database) {
-      database.transaction(() => {
-        deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
+    database.transaction(() => {
+      deletedCount = vectorIndex.deleteMemory(numericId) ? 1 : 0;
 
-        if (deletedCount > 0) {
-          // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
-          // Placed after deleteMemory to avoid false audit rows for non-existent IDs.
-          try {
-            recordHistory(numericId, 'DELETE', singleSnapshot?.file_path ?? null, null, 'mcp:memory_delete');
-          } catch (_histErr: unknown) {
-            // history recording is best-effort
-          }
-
-          causalEdges.init(database);
-          causalEdges.deleteEdgesForMemory(String(numericId));
-
-          appendMutationLedgerSafe(database, {
-            mutationType: 'delete',
-            reason: 'memory_delete: single memory delete',
-            priorHash: singleSnapshot?.content_hash ?? null,
-            newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
-            linkedMemoryIds: [numericId],
-            decisionMeta: {
-              tool: 'memory_delete',
-              bulk: false,
-              memoryId: numericId,
-              specFolder: singleSnapshot?.spec_folder ?? null,
-              filePath: singleSnapshot?.file_path ?? null,
-            },
-            actor: 'mcp:memory_delete',
-          });
+      if (deletedCount > 0) {
+        // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+        // Placed after deleteMemory to avoid false audit rows for non-existent IDs.
+        try {
+          recordHistory(numericId, 'DELETE', singleSnapshot?.file_path ?? null, null, 'mcp:memory_delete');
+        } catch (_histErr: unknown) {
+          // history recording is best-effort
         }
-      })();
-    } else {
-      // AI-GUARD: P1-022 — No database handle means causal edge cleanup and mutation
-      // ledger writes cannot be performed. Abort early per ADR-005 rather than
-      // proceeding with a delete that skips causal edge cleanup.
-      console.warn('[memory-crud-delete] No database handle, aborting delete to prevent orphaned causal edges');
-      return createMCPErrorResponse({
-        tool: 'memory_delete',
-        error: 'Delete aborted: database unavailable',
-        code: 'E_DB_UNAVAILABLE',
-        details: { deleted: 0 },
-        recovery: {
-          hint: 'Restart the MCP server or run memory_index_scan() to reinitialize the database',
-          actions: ['Restart the MCP server', 'Call memory_index_scan()'],
-          severity: 'error',
-        },
-      });
-    }
+
+        causalEdges.init(database);
+        causalEdges.deleteEdgesForMemory(String(numericId));
+
+        appendMutationLedgerSafe(database, {
+          mutationType: 'delete',
+          reason: 'memory_delete: single memory delete',
+          priorHash: singleSnapshot?.content_hash ?? null,
+          newHash: mutationLedger.computeHash(`delete:${numericId}:${Date.now()}`),
+          linkedMemoryIds: [numericId],
+          decisionMeta: {
+            tool: 'memory_delete',
+            bulk: false,
+            memoryId: numericId,
+            specFolder: singleSnapshot?.spec_folder ?? null,
+            filePath: singleSnapshot?.file_path ?? null,
+          },
+          actor: 'mcp:memory_delete',
+        });
+      }
+    })();
   } else {
     const memories: { id: number }[] = vectorIndex.getMemoriesByFolder(specFolder as string);
     const deletedIds: number[] = [];
@@ -167,52 +168,45 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
     }
 
     // AI-WHY: snapshot-then-delete is safe under single-process better-sqlite3; re-evaluate if multi-process support is added
-    if (database) {
-      causalEdges.init(database);
-      const bulkDeleteTx = database.transaction(() => {
-        for (const memory of memories) {
-          if (vectorIndex.deleteMemory(memory.id)) {
-            // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
-            try {
-              const snapshot = hashById.get(memory.id);
-              recordHistory(memory.id, 'DELETE', snapshot?.file_path ?? null, null, 'mcp:memory_delete');
-            } catch (_histErr: unknown) {
-              // history recording is best-effort inside bulk delete
-            }
-            deletedCount++;
-            deletedIds.push(memory.id);
-            causalEdges.deleteEdgesForMemory(String(memory.id));
+    causalEdges.init(database);
+    const bulkDeleteTx = database.transaction(() => {
+      for (const memory of memories) {
+        if (vectorIndex.deleteMemory(memory.id)) {
+          // AI-WHY: Record DELETE history after confirmed delete (no FK, history rows survive).
+          try {
+            const snapshot = hashById.get(memory.id);
+            recordHistory(memory.id, 'DELETE', snapshot?.file_path ?? null, null, 'mcp:memory_delete');
+          } catch (_histErr: unknown) {
+            // history recording is best-effort inside bulk delete
           }
+          deletedCount++;
+          deletedIds.push(memory.id);
+          causalEdges.deleteEdgesForMemory(String(memory.id));
         }
+      }
 
-        // AI-WHY: Mutation ledger entries written inside bulk transaction for atomicity with deletes.
-        for (const deletedId of deletedIds) {
-          const snapshot = hashById.get(deletedId) ?? null;
-          appendMutationLedgerSafe(database, {
-            mutationType: 'delete',
-            reason: 'memory_delete: bulk delete by spec folder',
-            priorHash: snapshot?.content_hash ?? null,
-            newHash: mutationLedger.computeHash(`bulk-delete:${deletedId}:${Date.now()}`),
-            linkedMemoryIds: [deletedId],
-            decisionMeta: {
-              tool: 'memory_delete',
-              bulk: true,
-              specFolder,
-              checkpoint: checkpointName,
-              memoryId: deletedId,
-              filePath: snapshot?.file_path ?? null,
-            },
-            actor: 'mcp:memory_delete',
-          });
-        }
-      });
-      bulkDeleteTx();
-    } else {
-      // T-06: Throw error when DB unavailable for bulk-folder delete path.
-      // Without a DB handle, causal edge cleanup, mutation ledger writes, and
-      // history recording cannot be performed — partial deletes are unsafe.
-      throw new Error('Bulk-folder delete aborted: database unavailable. Causal edge cleanup and history recording require a database handle.');
-    }
+      // AI-WHY: Mutation ledger entries written inside bulk transaction for atomicity with deletes.
+      for (const deletedId of deletedIds) {
+        const snapshot = hashById.get(deletedId) ?? null;
+        appendMutationLedgerSafe(database, {
+          mutationType: 'delete',
+          reason: 'memory_delete: bulk delete by spec folder',
+          priorHash: snapshot?.content_hash ?? null,
+          newHash: mutationLedger.computeHash(`bulk-delete:${deletedId}:${Date.now()}`),
+          linkedMemoryIds: [deletedId],
+          decisionMeta: {
+            tool: 'memory_delete',
+            bulk: true,
+            specFolder,
+            checkpoint: checkpointName,
+            memoryId: deletedId,
+            filePath: snapshot?.file_path ?? null,
+          },
+          actor: 'mcp:memory_delete',
+        });
+      }
+    });
+    bulkDeleteTx();
   }
 
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
@@ -225,6 +219,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+        errors: [],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('delete', postMutationHooks);

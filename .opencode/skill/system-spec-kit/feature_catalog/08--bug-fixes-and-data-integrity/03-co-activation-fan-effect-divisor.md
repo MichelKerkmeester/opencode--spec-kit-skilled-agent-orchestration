@@ -32,7 +32,7 @@ A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activatio
 |------|-------|
 | `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests |
 | `mcp_server/tests/rrf-degree-channel.vitest.ts` | Fan-effect divisor behavior in `boostScore()` and co-activation boost interactions |
-| `mcp_server/tests/stage2-fusion.vitest.ts` | Stage 2 fusion module test surface (scoring-path coverage) |
+| `mcp_server/tests/stage2-fusion.vitest.ts` | Stage 2 adjacent scoring-path coverage (learned-feedback weighting surface) |
 
 ## 4. SOURCE METADATA
 

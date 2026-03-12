@@ -53,9 +53,10 @@ Provide a standardized Level 2 governance specification that captures audit scop
 - Cover both features: feature flag governance and feature flag sunset audit.
 - Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
 - Record findings in SpecKit Level 2 format.
+- Apply targeted corrective fixes found during the audit (rollout-policy behavior hardening, missing wrapper tests, and governance documentation drift).
 
 ### Out of Scope
-- Modifying runtime governance code paths - this phase is audit-only.
+- Large feature additions or architectural refactors outside governance findings.
 - Creating new manual playbook scenarios - only mapping existing coverage is included.
 
 ### Files to Change
@@ -66,6 +67,13 @@ Provide a standardized Level 2 governance specification that captures audit scop
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md` | Modify | Convert audit methodology into Level 2 implementation plan format |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md` | Modify | Convert audit task list into Level 2 task tracking format |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md` | Modify | Convert findings into Level 2 verification checklist format |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts` | Modify | Harden rollout percent parsing and fail-closed partial-rollout identity handling |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts` | Modify | Add regression tests for malformed rollout values and identity gaps |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/search-flags.vitest.ts` | Modify | Add direct tests for `isFileWatcherEnabled` and `isLocalRerankerEnabled` |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts` | Modify | Expand removed-symbol canary to match governance claims |
+| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modify | Correct governance counts and rollout semantics |
+| `.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modify | Align rollout reference text with runtime behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | Align feature flag semantics with runtime behavior |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -94,8 +102,9 @@ Provide a standardized Level 2 governance specification that captures audit scop
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Both governance features are represented in the final checklist with PASS/WARN status and documented findings (F-01 PASS, F-02 WARN due to documentation drift).
+- **SC-001**: Both governance features are represented in the final checklist with documented status and findings (F-01 PASS, F-02 PASS WITH NOTES after remediation).
 - **SC-002**: All four governance docs conform to Level 2 template sections and anchor structure.
+- **SC-003**: Corrective fixes for rollout behavior, test coverage gaps, and governance documentation drift are applied and verified with targeted tests.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -108,6 +117,7 @@ Provide a standardized Level 2 governance specification that captures audit scop
 | Dependency | `feature_catalog/17--governance/` entries | Incomplete or outdated catalog content can misstate governance scope | Cross-check feature list and references during audit mapping |
 | Dependency | `mcp_server/lib/search/search-flags.ts` behavior | Mismatch between docs and code can invalidate findings | Verify described behavior against current code references |
 | Risk | Audit drift over time | PASS results can become stale after code changes | Re-run governance audit when feature flag helpers change |
+| Risk | Partial rollout behavior mismatch | Identity-less wrapper calls can diverge from documented behavior | Keep rollout-policy tests and docs synchronized when semantics change |
 | Risk | Missing scenario mapping evidence | Manual validation coverage confidence drops | Keep NEW-063/NEW-064 mapping explicit per feature |
 <!-- /ANCHOR:risks -->
 
@@ -161,9 +171,9 @@ Provide a standardized Level 2 governance specification that captures audit scop
 | Dimension | Score | Notes |
 |-----------|-------|-------|
 | Scope | 8/25 | Four governance docs and two features |
-| Risk | 5/25 | Audit-only change with no runtime code modification |
+| Risk | 8/25 | Targeted runtime/test/doc corrections in addition to audit artifacts |
 | Research | 5/20 | Requires source-to-catalog verification and playbook mapping |
-| **Total** | **18/70** | **Level 2** |
+| **Total** | **21/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---

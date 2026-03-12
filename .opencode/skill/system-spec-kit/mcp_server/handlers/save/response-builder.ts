@@ -235,6 +235,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
+        errors: [],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('save', postMutationHooks);

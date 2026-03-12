@@ -92,4 +92,32 @@ describe('db-state graph search wiring', () => {
       fs.rmSync(tempDbDir, { recursive: true, force: true });
     }
   });
+
+  it('returns false when session manager rebind fails', async () => {
+    const fakeDb = {} as unknown as DatabaseLike;
+    const vectorIndex = {
+      initializeDb: vi.fn(),
+      getDb: vi.fn(() => fakeDb),
+      closeDb: vi.fn(),
+      vectorSearch: vi.fn(),
+    };
+    const checkpoints = { init: vi.fn() };
+    const accessTracker = { init: vi.fn() };
+    const hybridSearch = { init: vi.fn() };
+    const sessionManager = { init: vi.fn(() => ({ success: false, error: 'session-db-init-failed' })) };
+    const incrementalIndex = { init: vi.fn() };
+
+    init({
+      vectorIndex,
+      checkpoints,
+      accessTracker,
+      hybridSearch,
+      sessionManager,
+      incrementalIndex,
+    });
+
+    const result = await reinitializeDatabase();
+    expect(result).toBe(false);
+    expect(sessionManager.init).toHaveBeenCalledTimes(1);
+  });
 });

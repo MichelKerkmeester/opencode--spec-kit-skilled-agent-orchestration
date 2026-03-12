@@ -368,15 +368,18 @@ export function applyLearnedTriggers(
     // AI-WHY: Filter out already-learned terms and respect rate cap (Safeguard #4)
     const newEntries: LearnedTriggerEntry[] = [];
     for (const term of terms) {
-      if (existingTerms.has(term.toLowerCase())) continue;
+      const normalizedTerm = term.toLowerCase();
+      if (existingTerms.has(normalizedTerm)) continue;
       if (existing.length + newEntries.length >= MAX_TERMS_PER_MEMORY) break;
 
       newEntries.push({
-        term: term.toLowerCase(),
+        term: normalizedTerm,
         addedAt: nowSeconds,
         source,
         expiresAt,
       });
+      // AI-GUARD: Prevent duplicate insertions from repeated terms in a single call.
+      existingTerms.add(normalizedTerm);
     }
 
     if (newEntries.length === 0) return true;

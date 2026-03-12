@@ -16,6 +16,22 @@ contextType: "general"
 
 ---
 
+## TABLE OF CONTENTS
+
+- [1. METADATA](#1--metadata)
+- [2. OVERVIEW](#2--overview)
+- [3. PROBLEM & PURPOSE](#3--problem--purpose)
+- [4. SCOPE](#4--scope)
+- [5. REQUIREMENTS](#5--requirements)
+- [6. SUCCESS CRITERIA](#6--success-criteria)
+- [7. RISKS & DEPENDENCIES](#7--risks--dependencies)
+- [L2: NON-FUNCTIONAL REQUIREMENTS](#l2-non-functional-requirements)
+- [L2: EDGE CASES](#l2-edge-cases)
+- [L2: COMPLEXITY ASSESSMENT](#l2-complexity-assessment)
+- [8. OPEN QUESTIONS](#8--open-questions)
+
+---
+
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
 
@@ -25,37 +41,46 @@ contextType: "general"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-10 |
-| **Updated** | 2026-03-11 |
+| **Updated** | 2026-03-12 |
 | **Branch** | `003-discovery` |
 <!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:overview -->
+## 2. OVERVIEW
+
+This packet now captures final Discovery implementation reality after reliability hardening and doc alignment work were completed. It includes runtime handler error-path hardening for database refresh failures, targeted regression tests for those paths, and synchronized updates to related Discovery documentation.
+<!-- /ANCHOR:overview -->
+
+---
+
 <!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
+## 3. PROBLEM & PURPOSE
 
 ### Problem Statement
-Parts of the Discovery phase docs became stale after the latest handler and schema fixes. Several statements no longer match on-disk behavior or current verification evidence.
+The Discovery packet still reflected an older doc-only audit snapshot. That snapshot no longer matched on-disk runtime behavior, regression coverage, and current verification totals.
 
 ### Purpose
-Make `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` fully match current Discovery implementation reality and focused verification outcomes.
+Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they match the currently landed Discovery changes and their verification evidence.
 <!-- /ANCHOR:problem -->
 
 ---
 
 <!-- ANCHOR:scope -->
-## 3. SCOPE
+## 4. SCOPE
 
 ### In Scope
-- Discovery behavior documentation for `memory_list`, `memory_stats`, and `memory_health`
-- Requirements and checklist coverage for MCP validation envelopes (`E_INVALID_INPUT` + `requestId`) on handler-level validation failures
+- Discovery runtime reliability behavior for `memory_list`, `memory_stats`, and `memory_health` when `checkDatabaseUpdated()` fails before query execution
+- Discovery regression coverage for the three edge suites that now assert MCP `E021` envelopes with `requestId` on pre-query refresh failures
 - Documentation of `memory_list` resolved `sortBy` response field
 - Documentation of `memory_stats` response `limit` field and validation for `includeScores`, `includeArchived`, and non-finite `limit`
 - Documentation of `memory_health` public schema support for `confirmed` in auto-repair confirmation flow
-- Final verification evidence: clean `tsc` run and targeted 5-file suite passing `89/89`
+- Alignment notes for related docs already updated outside this packet: manual testing playbook (`EX-012`), merged feature catalog Discovery section, and scoring README
+- Final verification evidence: clean `tsc` run and targeted 5-file suite passing `95/95`
 
 ### Out of Scope
-- Additional runtime code changes in `mcp_server/handlers/*`, `schemas/*`, or tests
+- New runtime feature changes beyond the already landed Discovery fixes
 - Audit updates for non-Discovery categories
 
 ### Files to Change
@@ -72,42 +97,43 @@ Make `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summa
 ---
 
 <!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+## 5. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document `memory_list` handler-level validation behavior | Docs state invalid `specFolder`, `includeChunks`, and non-finite `limit`/`offset` return MCP error envelopes with `code: E_INVALID_INPUT` and `data.details.requestId` |
-| REQ-002 | Document `memory_list` response shape accurately | Docs state response includes resolved `sortBy` (`created_at` fallback) |
+| REQ-001 | Document pre-query database-refresh failure handling | Docs state `memory_list`, `memory_stats`, and `memory_health` catch `checkDatabaseUpdated()` failures and return MCP `E021` envelopes with `requestId` instead of thrown exceptions |
+| REQ-002 | Document `memory_list` validation and response behavior accurately | Docs state invalid `specFolder`, `includeChunks`, and non-finite `limit`/`offset` return `E_INVALID_INPUT` envelopes with `requestId`, and success payload includes resolved `sortBy` (`created_at` fallback) |
 | REQ-003 | Document `memory_stats` validation and response behavior accurately | Docs state validation coverage for `includeScores`, `includeArchived`, and non-finite `limit` returns `E_INVALID_INPUT` envelopes with `requestId`, and success payload includes resolved `limit` |
-| REQ-004 | Document `memory_health` confirmation schema reachability | Docs state public/runtime schemas accept `confirmed` for `autoRepair` confirmation flow |
-| REQ-005 | Capture final focused verification evidence | Docs record `npx tsc --noEmit` clean and targeted suite passing `89/89` across the 5 named files |
+| REQ-004 | Document `memory_health` confirmation-schema reachability accurately | Docs state public/runtime schemas accept `confirmed` for `autoRepair` confirmation flow |
+| REQ-005 | Capture final focused verification evidence | Docs record `npx tsc --noEmit` clean and targeted suite passing `95/95` across the 5 named files |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | Remove stale Discovery claims | Remove outdated statements including "documentation phase", `48/48` count, old `computeFolderScores`-limit wording, and outdated Discovery-only `E_INVALID_INPUT` inconsistency limitation |
-| REQ-007 | Keep all five phase docs synchronized | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` share consistent behavior statements and verification evidence |
+| REQ-006 | Document related doc alignment completed outside the packet | Packet references that `EX-012` now uses `folderRanking:composite`, merged Discovery catalog wording matches runtime behavior, and scoring README no longer claims `memory_list` folder-scoring consumption |
+| REQ-007 | Remove stale Discovery claims | Remove outdated statements including "documentation-only phase" wording and stale targeted test totals |
+| REQ-008 | Keep all five phase docs synchronized | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` share consistent behavior statements and verification evidence |
 <!-- /ANCHOR:requirements -->
 
 ---
 
 <!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
+## 6. SUCCESS CRITERIA
 
-- **SC-001**: Discovery docs describe `memory_list` validation envelopes and resolved `sortBy` behavior accurately.
-- **SC-002**: Discovery docs describe `memory_stats` validation envelopes and `limit` response field accurately.
+- **SC-001**: Discovery docs describe pre-query `checkDatabaseUpdated()` failure handling as MCP `E021` envelopes with `requestId` for all three Discovery handlers.
+- **SC-002**: Discovery docs describe `memory_list` and `memory_stats` validation envelopes and response fields (`sortBy`, `limit`) accurately.
 - **SC-003**: Discovery docs describe `memory_health` schema support for `confirmed` accurately.
-- **SC-004**: Discovery docs reference the rewritten Discovery feature catalog as current reality.
-- **SC-005**: Verification evidence is updated to `tsc` clean plus targeted `89/89` tests across the five specified files.
+- **SC-004**: Discovery docs note related manual playbook, merged feature catalog, and scoring README alignment updates.
+- **SC-005**: Verification evidence is updated to `tsc` clean plus targeted `95/95` tests across the five specified files.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
@@ -145,6 +171,7 @@ Make `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summa
 
 ### Error Scenarios
 - Handler-level validation failures must be documented as MCP error envelopes with `requestId`, not thrown errors.
+- Pre-query `checkDatabaseUpdated()` failures must be documented as handled MCP `E021` envelopes with `requestId`, not thrown errors.
 - Schema-level acceptance for `confirmed` must be documented for both public schema and runtime args parsing.
 
 ### State Transitions
@@ -167,7 +194,7 @@ Make `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summa
 ---
 
 <!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 8. OPEN QUESTIONS
 
 - None. The previously stale Discovery statements targeted by this phase update are resolved in this revision.
 <!-- /ANCHOR:questions -->

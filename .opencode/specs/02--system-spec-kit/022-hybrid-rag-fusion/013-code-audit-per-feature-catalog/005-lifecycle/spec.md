@@ -52,7 +52,7 @@ Define a template-structured, feature-complete lifecycle audit specification tha
 - Produce prioritized requirements and success criteria for lifecycle audit follow-up.
 
 ### Out of Scope
-- Implementing production code fixes in MCP server modules - handled in follow-up implementation phases.
+- Broad non-lifecycle refactors in MCP server modules outside the audited lifecycle paths.
 - Expanding audit coverage to non-lifecycle categories - outside Phase 005 boundaries.
 
 ### Files to Change
@@ -86,7 +86,7 @@ Define a template-structured, feature-complete lifecycle audit specification tha
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-008 | Map lifecycle audit outputs to playbook scenarios EX-023..EX-027 and call out missing per-feature scenario linkage. | Coverage mapping is present for all audited features with explicit gaps. |
+| REQ-008 | Map lifecycle audit outputs to playbook scenarios EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 and call out missing per-feature scenario linkage. | Coverage mapping is present for all audited features with explicit gaps. |
 | REQ-009 | Maintain a prioritized remediation inventory across FAIL/WARN findings. | P0/P1/P2 task prioritization is documented in `tasks.md`. |
 <!-- /ANCHOR:requirements -->
 
@@ -97,7 +97,7 @@ Define a template-structured, feature-complete lifecycle audit specification tha
 
 - **SC-001**: All 7 lifecycle features are audited with structured PASS/WARN/FAIL findings.
 - **SC-002**: Each feature includes code issues, standards violations, behavior mismatch, and test-gap status.
-- **SC-003**: Playbook scenario mapping EX-023..EX-027 is captured with missing coverage explicitly noted.
+- **SC-003**: Playbook scenario mapping EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 is captured with missing coverage explicitly noted.
 - **SC-004**: Remediation work is triaged into actionable priority buckets with clear follow-up paths.
 <!-- /ANCHOR:success-criteria -->
 

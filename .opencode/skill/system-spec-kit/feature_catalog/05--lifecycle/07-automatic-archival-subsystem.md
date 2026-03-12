@@ -13,9 +13,9 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-The archival manager (`lib/cognitive/archival-manager.ts`) is a background job that identifies dormant memories and transitions them to archived status. It queries `memory_index` for memories that have not been accessed within a configurable threshold period, demotes their tier classification, and optionally removes their BM25 index entries and vector embeddings to reclaim storage. Archived memories remain in the database for SQL-based recovery but are excluded from default search result sets.
+The archival manager (`lib/cognitive/archival-manager.ts`) is a background job that identifies dormant memories and transitions them to archived status. It queries `memory_index` for memories that have not been accessed within a configurable threshold period, demotes their tier classification, and removes BM25 index entries plus vector rows (`vec_memories`) to reclaim storage. Archived memories remain in the database for SQL-based recovery but are excluded from default search result sets.
 
-The archival sweep runs periodically and respects tier-based protection: constitutional and critical-tier memories are never auto-archived. Access tracker data (`access_count`, `last_access_at`) drives the dormancy decision. The archival manager lazy-loads the tier classifier to avoid circular dependencies at import time.
+The archival sweep runs periodically and respects tier-based protection: constitutional and critical-tier memories are never auto-archived. Access tracker data (`access_count`, `last_access_at`) drives the dormancy decision. On unarchive, BM25 is restored from stored text fields, while vector re-embedding is explicitly deferred and logged for the next index scan (no immediate vector row recreation). The archival manager lazy-loads the tier classifier to avoid circular dependencies at import time.
 
 ## 3. SOURCE FILES
 

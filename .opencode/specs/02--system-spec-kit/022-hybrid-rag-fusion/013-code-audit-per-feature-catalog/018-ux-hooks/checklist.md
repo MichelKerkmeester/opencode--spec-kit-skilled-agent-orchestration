@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: ux-hooks [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-11"
+description: "Verification Date: 2026-03-12"
 trigger_phrases:
   - "ux hooks verification"
   - "audit checklist"
@@ -50,7 +50,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met ✓ — 440 tests across 7 files, all green; 17/17 tasks complete
+- [x] CHK-020 [P0] All acceptance criteria met ✓ — 445/445 tests across 7 files, all green; 17/17 tasks complete
 - [x] CHK-021 [P0] Stale/missing test references reconciled ✓ — catalog docs updated with current test file references (T008, T017, T018)
 - [x] CHK-022 [P1] Edge-case regressions added (mixed repair, atomic duplicate no-op, partial indexing) ✓ — T008: EXT-H13/H14; T015: hash-duplicate; T016: async-embedding pending
 - [x] CHK-023 [P1] Expanded mutation contract validated at hook-runner level and save/atomic-save handler paths ✓ — T019: wiring test (5 operations); T014: postMutationHooks contract + type assertions in memory-save-ux-regressions
@@ -131,7 +131,7 @@ CHK-003 (pre-implementation), CHK-012, CHK-013 (code quality), CHK-022, CHK-023 
 | P1 Items | 11 | 11/11 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-11
+**Verification Date**: 2026-03-12
 <!-- /ANCHOR:summary -->
 
 ---

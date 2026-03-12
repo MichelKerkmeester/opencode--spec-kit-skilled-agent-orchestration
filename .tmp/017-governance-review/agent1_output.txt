@@ -1,0 +1,556 @@
+OpenAI Codex v0.114.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public
+model: gpt-5.3-codex
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ce305-4ba9-70b0-9e55-e78007ee1b43
+--------
+user
+TASK #1: Code Quality Review — Governance Feature Flags
+Depth: 1
+Agent Tier: LEAF
+Model Expectation: gpt-5.3-codex (xhigh)
+Objective: Verify governance-related feature-flag code correctness, bug risk, and sk-code--opencode alignment.
+Scope:
+- .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts
+- .opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts
+- .opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts
+- .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts (focus around lines 400-460)
+- .opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts
+Boundary:
+- Read-only analysis only.
+- Do NOT modify any file.
+- Do NOT delegate any sub-task.
+LEAF NESTING CONSTRAINT:
+You are a LEAF agent at depth 1. Nested dispatch is illegal. You MUST NOT dispatch sub-agents or use any task/delegation mechanism. Execute directly and return findings.
+Checks:
+1. Count all exported is* functions in search-flags.ts and verify whether count is exactly 24.
+2. Categorize each function into default-ON, opt-in/OFF, deprecated and verify expected split: 19 / 4 / 1.
+3. Verify isPipelineV2Enabled() always returns true and is marked deprecated in JSDoc.
+4. Verify isFeatureEnabled semantics: undefined/missing env => enabled; only 'false' or '0' disable.
+5. Identify potential bugs and edge cases (null safety, empty string env vars, whitespace input, type hazards).
+6. Confirm isInShadowPeriod in learned-feedback.ts is module-private (not exported).
+7. Evaluate conventions against sk-code--opencode expectations (clarity, naming, behavior consistency, testability).
+Output format:
+- Verdict: PASS | WARN | FAIL
+- Function count + category table
+- Findings ordered by severity (Critical/Major/Minor/Cosmetic)
+- Include file:line evidence for each claim
+- Residual risk/test gaps
+warning: Under-development features enabled: child_agents_md. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/michelkerkmeester/.codex/config.toml.
+mcp: spec_kit_memory starting
+mcp: code_mode starting
+mcp: sequential_thinking starting
+mcp: code_mode ready
+mcp: spec_kit_memory failed: MCP client for `spec_kit_memory` failed to start: MCP startup failed: handshaking with MCP server failed: connection closed: initialize response
+mcp: sequential_thinking ready
+mcp startup: ready: code_mode, sequential_thinking; failed: spec_kit_memory
+codex
+Reviewing these five files in read-only mode now, and I’ll verify each required check with exact line evidence before giving a severity-ordered findings report. First step is to open the target files with line numbers and map every exported `is*` flag function.
+exec
+/bin/zsh -lc 'nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc 'nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Graph Flags
+     3	// ---------------------------------------------------------------
+     4	// AI-WHY: Legacy compatibility shim retained for test/runtime imports.
+     5	
+     6	import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+     7	
+     8	/**
+     9	 * Unified graph channel gate (default-on, explicit opt-out with `'false'`).
+    10	 */
+    11	export function isGraphUnifiedEnabled(): boolean {
+    12	  return isFeatureEnabled('SPECKIT_GRAPH_UNIFIED');
+    13	}
+ succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Rollout Policy
+     3	// ---------------------------------------------------------------
+     4	
+     5	const DEFAULT_ROLLOUT_PERCENT = 100;
+     6	
+     7	function getRolloutPercent(): number {
+     8	  const raw = process.env.SPECKIT_ROLLOUT_PERCENT;
+     9	  if (typeof raw !== 'string' || raw.trim().length === 0) {
+    10	    return DEFAULT_ROLLOUT_PERCENT;
+    11	  }
+    12	
+    13	  const parsed = Number.parseInt(raw, 10);
+    14	  if (!Number.isFinite(parsed)) {
+    15	    return DEFAULT_ROLLOUT_PERCENT;
+    16	  }
+    17	
+    18	  return Math.max(0, Math.min(100, parsed));
+    19	}
+    20	
+exec
+/bin/zsh -lc 'rg -n "''^export function is[A-Za-z0-9_]+'"\\(\" .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts && echo '---' && nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+15:export function isMMREnabled(): boolean {
+23:export function isTRMEnabled(): boolean {
+31:export function isMultiQueryEnabled(): boolean {
+39:export function isCrossEncoderEnabled(): boolean {
+47:export function isSearchFallbackEnabled(): boolean {
+55:export function isFolderDiscoveryEnabled(): boolean {
+65:export function isDocscoreAggregationEnabled(): boolean {
+73:export function isSaveQualityGateEnabled(): boolean {
+81:export function isReconsolidationEnabled(): boolean {
+89:export function isNegativeFeedbackEnabled(): boolean {
+101:export function isPipelineV2Enabled(): boolean {
+110:export function isEmbeddingExpansionEnabled(): boolean {
+121:export function isConsolidationEnabled(): boolean {
+130:export function isEncodingIntentEnabled(): boolean {
+140:export function isGraphSignalsEnabled(): boolean {
+148:export function isCommunityDetectionEnabled(): boolean {
+156:export function isMemorySummariesEnabled(): boolean {
+164:export function isAutoEntitiesEnabled(): boolean {
+173:export function isEntityLinkingEnabled(): boolean {
+178:export function isDegreeBoostEnabled(): boolean {
+codex
+I’ve mapped the flag surface and rollout helper behavior; next I’m checking `learned-feedback.ts` privacy/export status and the rollout-policy tests for behavior coverage and gaps.
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts | sed -n '360,520p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   360	    }
+   361	
+   362	    const existing = parseLearnedTriggers(row.learned_triggers);
+   363	    const existingTerms = new Set(existing.map((e) => e.term.toLowerCase()));
+   364	
+   365	    const nowSeconds = Math.floor(Date.now() / 1000);
+   366	    const expiresAt = nowSeconds + LEARNED_TERM_TTL_SECONDS;
+   367	
+   368	    // AI-WHY: Filter out already-learned terms and respect rate cap (Safeguard #4)
+   369	    const newEntries: LearnedTriggerEntry[] = [];
+   370	    for (const term of terms) {
+   371	      const normalizedTerm = term.toLowerCase();
+   372	      if (existingTerms.has(normalizedTerm)) continue;
+   373	      if (existing.length + newEntries.length >= MAX_TERMS_PER_MEMORY) break;
+   374	
+   375	      newEntries.push({
+   376	        term: normalizedTerm,
+   377	        addedAt: nowSeconds,
+   378	        source,
+   379	        expiresAt,
+exec
+/bin/zsh -lc 'nl -ba .opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// TEST: ROLLOUT POLICY (T061-T065 prep)
+     3	// ---------------------------------------------------------------
+     4	
+     5	import { afterEach, describe, expect, it } from 'vitest';
+     6	import {
+     7	  deterministicBucket,
+     8	  getRolloutPercent,
+     9	  isFeatureEnabled,
+    10	  isIdentityInRollout,
+    11	} from '../lib/cache/cognitive/rollout-policy';
+    12	
+    13	const ROLLOUT_FLAGS = [
+    14	  'SPECKIT_ROLLOUT_PERCENT',
+    15	  'SPECKIT_EXTRACTION',
+    16	  'SPECKIT_SESSION_BOOST',
+    17	  'SPECKIT_PRESSURE_POLICY',
+    18	  'SPECKIT_EVENT_DECAY',
+    19	  'SPECKIT_CAUSAL_BOOST',
+    20	  'SPECKIT_AUTO_RESUME',
+exec
+/bin/zsh -lc 'rg -n "isInShadowPeriod|export" .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+38:export type { Database };
+41:export interface SelectionEvent {
+50:export interface AuditLogEntry {
+60:export interface LearnedTriggerMatch {
+71:export const FEATURE_FLAG = 'SPECKIT_LEARN_FROM_SELECTION';
+74:export const LEARNED_TRIGGER_WEIGHT = 0.7;
+77:export const MAX_TERMS_PER_SELECTION = 3;
+80:export const MAX_TERMS_PER_MEMORY = 8;
+83:export const LEARNED_TERM_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+86:export const LEARNED_TERM_TTL_SECONDS = 30 * 24 * 60 * 60;
+89:export const MIN_MEMORY_AGE_MS = 72 * 60 * 60 * 1000;
+92:export const TOP_N_EXCLUSION = 3;
+95:export const MIN_TERM_LENGTH = 3;
+167:export function isLearnedFeedbackEnabled(): boolean {
+179:export function isMemoryEligible(memoryAgeMs: number): boolean {
+202:export function extractLearnableTerms(
+253:export function recordSelection(
+306:    const shadowMode = isInShadowPeriod(db);
+347:export function applyLearnedTriggers(
+414:function isInShadowPeriod(db: Database): boolean {
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts | sed -n '140,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   140	/**
+   141	 * Ensure the partial index on learned_triggers exists (idempotent, once per process).
+   142	 *
+   143	 * @param db - SQLite database connection
+   144	 */
+   145	function ensureLearnedTriggersIndex(db: Database): void {
+   146	  if (_learnedTriggersIndexEnsured) return;
+   147	  try {
+   148	    db.exec(LEARNED_TRIGGERS_INDEX_SQL);
+   149	    _learnedTriggersIndexEnsured = true;
+   150	  } catch (error: unknown) {
+   151	    const msg = error instanceof Error ? error.message : String(error);
+   152	    console.error(`[learned-feedback] Failed to create learned_triggers index: ${msg}`);
+   153	  }
+   154	}
+   155	
+   156	/* ---------------------------------------------------------------
+   157	   4. FEATURE FLAG & GATING
+   158	   --------------------------------------------------------------- */
+   159	
+codex
+I’m now validating this against the project’s review standards by checking the relevant skill guidance (`sk-code--review` + `sk-code--opencode`) so the findings map cleanly to your governance criteria.
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--review/SKILL.md | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	name: sk-code--review
+     3	description: "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code--opencode, sk-code--web, and sk-code--full-stack standards."
+     4	allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+     5	version: 1.2.0.0
+     6	---
+     7	
+     8	<!-- Keywords: sk-code--review, code-review, pull-request, findings-first, security-review, quality-gate, stack-agnostic, baseline-overlay -->
+     9	
+    10	# Code Review Baseline - Stack-Agnostic Findings-First Review
+    11	
+    12	Universal `sk-code` review baseline for any codebase, implemented by `sk-code--review` and paired with one `sk-code--*` overlay skill for stack-specific rules.
+    13	
+    14	<!-- ANCHOR:when-to-use -->
+    15	## 1. WHEN TO USE
+    16	
+    17	### Activation Triggers
+    18	
+    19	Use this skill when:
+    20	- A user asks for code review, PR review, quality gate, or merge readiness.
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--opencode/SKILL.md | sed -n '1,260p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	name: sk-code--opencode
+     3	description: Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists.
+     4	allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
+     5	version: 1.1.0.0
+     6	---
+     7	
+     8	<!-- Keywords: opencode style, script standards, mcp code quality, node code style, typescript style, ts standards, python style, py standards, bash style, shell script, json format, jsonc config, code standards opencode -->
+     9	
+    10	# Code Standards - OpenCode System Code
+    11	
+    12	Multi-language code standards for OpenCode system code across JavaScript, TypeScript, Python, Shell, and JSON/JSONC.
+    13	
+    14	**Core Principle**: Consistency within language + Clarity across languages = maintainable system code.
+    15	
+    16	
+    17	## 1. WHEN TO USE
+    18	
+    19	### Activation Triggers
+    20	
+exec
+/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "TASK #1: Code Quality Review — Governance Feature Flags" --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 797ms:
+python3: error: couldn't create cache file '/tmp/xcrun_db-UsdgHiaw' (errno=Operation not permitted)
+[
+  {
+    "skill": "sk-code--review",
+    "kind": "skill",
+    "confidence": 0.95,
+    "uncertainty": 0.23,
+    "passes_threshold": true,
+    "reason": "Matched: !intent:review, !review, !review(multi), code(name), review(name)"
+  },
+  {
+    "skill": "sk-code--opencode",
+    "kind": "skill",
+    "confidence": 0.85,
+    "uncertainty": 0.28,
+    "passes_threshold": true,
+    "reason": "Matched: !code(multi), code(name), quality"
+  },
+  {
+    "skill": "sk-code--web",
+codex
+I’ve confirmed the core semantics and now I’m checking the TypeScript quality guidance used by `sk-code--opencode` so I can call out alignment vs. drift with concrete criteria rather than opinion.
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--opencode/references/typescript/quality_standards.md | sed -n '1,240p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--opencode/references/typescript/style_guide.md | sed -n '1,240p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	title: TypeScript Quality Standards
+     3	description: Type system patterns, error handling, documentation, async patterns, and tsconfig baseline for TypeScript files in the OpenCode development environment.
+     4	---
+     5	
+     6	# TypeScript Quality Standards
+     7	
+     8	Type system patterns, error handling, documentation, async patterns, and tsconfig baseline for TypeScript files in the OpenCode development environment.
+     9	
+    10	---
+    11	
+    12	<!-- ANCHOR:overview -->
+    13	## 1. OVERVIEW
+    14	
+    15	### Purpose
+    16	
+    17	Establishes type system patterns, error handling, documentation, async patterns, and tsconfig baseline that all TypeScript code in the OpenCode development environment must follow.
+    18	
+    19	### When to Use
+    20	
+ succeeded in 0ms:
+     1	---
+     2	title: TypeScript Style Guide
+     3	description: Formatting standards and naming conventions for TypeScript files in the OpenCode development environment.
+     4	---
+     5	
+     6	# TypeScript Style Guide
+     7	
+     8	Formatting standards and naming conventions for TypeScript files in the OpenCode development environment.
+     9	
+    10	---
+    11	
+    12	<!-- ANCHOR:overview -->
+    13	## 1. OVERVIEW
+    14	
+    15	### Purpose
+    16	
+    17	Defines consistent styling rules for TypeScript files to ensure readability, maintainability, and alignment across all OpenCode TypeScript code.
+    18	
+    19	### When to Use
+    20	
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--review/references/quick_reference.md | sed -n '1,240p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	title: Code Review Quick Reference
+     3	description: Fast execution reference for findings-first review workflow with severity handling and next-step confirmation.
+     4	---
+     5	
+     6	# Code Review Quick Reference
+     7	
+     8	Fast execution reference for findings-first review workflow with severity handling and next-step confirmation.
+     9	
+    10	---
+    11	
+    12	<!-- ANCHOR:overview -->
+    13	## 1. OVERVIEW
+    14	
+    15	### Purpose
+    16	
+    17	Provide a compact review protocol that keeps outputs consistent, risk-focused, and actionable.
+    18	
+    19	### Core Principle
+    20	
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--review/references/code_quality_checklist.md | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/sk-code--opencode/references/typescript/quick_reference.md | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	title: Code Quality Checklist
+     3	description: Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+     4	---
+     5	
+     6	# Code Quality Checklist
+     7	
+     8	Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+     9	
+    10	---
+    11	
+    12	<!-- ANCHOR:overview -->
+    13	## 1. OVERVIEW
+    14	
+    15	### Purpose
+    16	
+    17	Provide a systematic pass for non-security defects that still cause outages, regressions, or high maintenance cost.
+    18	
+    19	### Core Principle
+    20	
+ succeeded in 0ms:
+     1	---
+     2	title: TypeScript Quick Reference
+     3	description: Copy-paste templates, naming cheat sheet, and common patterns for TypeScript development in OpenCode.
+     4	---
+     5	
+     6	# TypeScript Quick Reference
+     7	
+     8	Copy-paste templates, naming cheat sheet, and common patterns for TypeScript development in OpenCode.
+     9	
+    10	---
+    11	
+    12	<!-- ANCHOR:overview -->
+    13	## 1. OVERVIEW
+    14	
+    15	### Purpose
+    16	
+    17	Quick-access reference card for TypeScript patterns. For detailed explanations, see:
+    18	- [style_guide.md](./style_guide.md) - Full style documentation
+    19	- [quality_standards.md](./quality_standards.md) - Quality requirements
+    20	
+codex
+Next I’m running the focused rollout-policy test file to confirm observed semantics in executable behavior and to spot any coverage gaps the static read can miss.
+exec
+/bin/zsh -lc 'cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/rollout-policy.vitest.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public exited 1 in 625ms:
+
+ RUN  v4.0.18 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server
+
+ ❯ tests/rollout-policy.vitest.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/rollout-policy.vitest.ts [ tests/rollout-policy.vitest.ts ]
+Error: EPERM: operation not permitted, mkdir '/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/yrF8Q5QVWrpMkDF3Tp4bs/ssr'
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  18:09:57
+   Duration  114ms (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts | sed -n '220,360p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   220	      return true;
+   221	    });
+   222	
+   223	  // Deduplicate
+   224	  const unique = [...new Set(candidates)];
+   225	
+   226	  // AI-WHY: Rate cap: max 3 per selection (Safeguard #4)
+   227	  return unique.slice(0, MAX_TERMS_PER_SELECTION);
+   228	}
+   229	
+   230	/* ---------------------------------------------------------------
+   231	   6. CORE OPERATIONS
+   232	   --------------------------------------------------------------- */
+   233	
+   234	/**
+   235	 * Record a user selection and learn from it (Safeguards #1-#10).
+   236	 *
+   237	 * This is the main entry point for the feedback loop. When a user selects
+   238	 * a search result, this function:
+   239	 * 1. Checks if the feature is enabled (Safeguard #8)
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts | sed -n '1,140p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Learned Feedback
+     3	// ---------------------------------------------------------------
+     4	//
+     5	//
+     6	// Learns from user memory selections to improve future search results.
+     7	// Writes to a SEPARATE `learned_triggers` column (NOT FTS5 index).
+     8	//
+     9	// 10 Safeguards:
+    10	// 1. Separate column -- `learned_triggers` TEXT column, NOT in FTS5 index
+    11	// 2. 30-day TTL -- learned terms expire after 30 days
+    12	// 3. 100+ stop words denylist -- prevent noise injection
+    13	// 4. Rate cap -- max 3 terms per selection, max 8 terms per memory
+    14	// 5. Top-3 exclusion -- only learn from selections NOT already in top 3
+    15	// 6. 1-week shadow period -- log but don't apply for first week
+    16	// 7. Exclude <72h memories -- too new to learn from
+    17	// 8. Sprint gate review -- manual review before enabling
+    18	// 9. Rollback mechanism -- can clear all learned triggers
+    19	// 10. Provenance/audit log -- track what was learned and why
+    20	//
+exec
+/bin/zsh -lc 'node -e "const x=undefined; console.log(x?.toLowerCase().trim())"' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+undefined
+exec
+/bin/zsh -lc 'rg -n "''^export function is[A-Za-z0-9_]+'"\\(\" .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts | wc -l" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+      24
+codex
+Verdict: **WARN**
+
+**Function Count + Categories**
+Source: [search-flags.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts)
+
+- Exported `is*` functions: **24** (expected 24)  
+  Evidence: `export function is...` declarations at lines 15, 23, 31, 39, 47, 55, 65, 73, 81, 89, 101, 110, 121, 130, 140, 148, 156, 164, 173, 178, 186, 195, 205, 214.
+- Category split: **19 / 4 / 1** (expected default-ON / opt-in-OFF / deprecated)
+
+| Category | Count | Functions |
+|---|---:|---|
+| Default-ON | 19 | `isMMREnabled`(15), `isTRMEnabled`(23), `isMultiQueryEnabled`(31), `isCrossEncoderEnabled`(39), `isSearchFallbackEnabled`(47), `isFolderDiscoveryEnabled`(55), `isDocscoreAggregationEnabled`(65), `isSaveQualityGateEnabled`(73), `isNegativeFeedbackEnabled`(89), `isEmbeddingExpansionEnabled`(110), `isConsolidationEnabled`(121), `isEncodingIntentEnabled`(130), `isGraphSignalsEnabled`(140), `isCommunityDetectionEnabled`(148), `isMemorySummariesEnabled`(156), `isAutoEntitiesEnabled`(164), `isEntityLinkingEnabled`(173), `isDegreeBoostEnabled`(178), `isContextHeadersEnabled`(186) |
+| Opt-in / OFF by default | 4 | `isReconsolidationEnabled`(81), `isFileWatcherEnabled`(195), `isLocalRerankerEnabled`(205), `isQualityLoopEnabled`(214) |
+| Deprecated | 1 | `isPipelineV2Enabled`(101) |
+
+**Required Checks**
+- `isPipelineV2Enabled()` is deprecated and always `true`: [search-flags.ts:97](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:97), [search-flags.ts:102](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:102).
+- `isFeatureEnabled` semantics verified: missing/undefined env is enabled; only `'false'` or `'0'` disables: [rollout-policy.ts:37](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:37), [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+- `isInShadowPeriod` is module-private (not exported): [learned-feedback.ts:414](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts:414).
+
+**Findings (by severity)**
+
+Critical
+1. None.
+
+Major
+1. Percentage rollout is bypassed when no identity is passed, so `1..99` rollout effectively does not gate these flag checks.  
+Evidence: [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:45) (returns `true` when identity missing), plus callers without identity such as [search-flags.ts:197](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:197) and [search-flags.ts:207](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:207). This conflicts with comments claiming rollout policy is honored: [search-flags.ts:193](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:193), [search-flags.ts:203](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:203).
+
+2. `SPECKIT_ROLLOUT_PERCENT` parsing is permissive (`parseInt`), allowing malformed inputs to silently coerce (e.g., `1e2` -> `1`, `50abc` -> `50`).  
+Evidence: [rollout-policy.ts:13](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:13), [rollout-policy.ts:18](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:18).
+
+3. Flag-disable semantics are inconsistent across modules: learned-feedback does not trim whitespace and ignores `'0'` as disable.  
+Evidence: [learned-feedback.ts:167](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts:167) vs canonical policy [rollout-policy.ts:37](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:37), [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+
+Minor
+1. Test coverage misses key governance edge cases (`'0'`, whitespace, mixed-case disable values, malformed rollout percent, no-identity with partial rollout).  
+Evidence: current tests focus on basic unset/true/false/0-or-100 paths in [rollout-policy.vitest.ts:41](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:41), [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:54), [rollout-policy.vitest.ts:62](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:62), [rollout-policy.vitest.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:72).
+
+Cosmetic
+1. `graph-flags` JSDoc says opt-out with `'false'`, but runtime also treats `'0'` as disabled via shared helper.  
+Evidence: [graph-flags.ts:9](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts:9) vs [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+
+**sk-code--opencode Alignment**
+- Strong alignment on naming/clarity/testability basics: module headers, boolean `is*` naming, explicit return types in reviewed files.
+- Main drift is **behavior consistency** across flag parsers (central helper vs local custom parsing).
+
+**Residual Risk / Test Gaps**
+- Could not execute Vitest in this sandbox due temp-dir write denial (`EPERM mkdir .../ssr`), so runtime verification is static-only.
+- Highest residual risk is rollout misconfiguration behavior under partial rollout and malformed env values.
+tokens used
+46,328
+Verdict: **WARN**
+
+**Function Count + Categories**
+Source: [search-flags.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts)
+
+- Exported `is*` functions: **24** (expected 24)  
+  Evidence: `export function is...` declarations at lines 15, 23, 31, 39, 47, 55, 65, 73, 81, 89, 101, 110, 121, 130, 140, 148, 156, 164, 173, 178, 186, 195, 205, 214.
+- Category split: **19 / 4 / 1** (expected default-ON / opt-in-OFF / deprecated)
+
+| Category | Count | Functions |
+|---|---:|---|
+| Default-ON | 19 | `isMMREnabled`(15), `isTRMEnabled`(23), `isMultiQueryEnabled`(31), `isCrossEncoderEnabled`(39), `isSearchFallbackEnabled`(47), `isFolderDiscoveryEnabled`(55), `isDocscoreAggregationEnabled`(65), `isSaveQualityGateEnabled`(73), `isNegativeFeedbackEnabled`(89), `isEmbeddingExpansionEnabled`(110), `isConsolidationEnabled`(121), `isEncodingIntentEnabled`(130), `isGraphSignalsEnabled`(140), `isCommunityDetectionEnabled`(148), `isMemorySummariesEnabled`(156), `isAutoEntitiesEnabled`(164), `isEntityLinkingEnabled`(173), `isDegreeBoostEnabled`(178), `isContextHeadersEnabled`(186) |
+| Opt-in / OFF by default | 4 | `isReconsolidationEnabled`(81), `isFileWatcherEnabled`(195), `isLocalRerankerEnabled`(205), `isQualityLoopEnabled`(214) |
+| Deprecated | 1 | `isPipelineV2Enabled`(101) |
+
+**Required Checks**
+- `isPipelineV2Enabled()` is deprecated and always `true`: [search-flags.ts:97](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:97), [search-flags.ts:102](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:102).
+- `isFeatureEnabled` semantics verified: missing/undefined env is enabled; only `'false'` or `'0'` disables: [rollout-policy.ts:37](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:37), [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+- `isInShadowPeriod` is module-private (not exported): [learned-feedback.ts:414](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts:414).
+
+**Findings (by severity)**
+
+Critical
+1. None.
+
+Major
+1. Percentage rollout is bypassed when no identity is passed, so `1..99` rollout effectively does not gate these flag checks.  
+Evidence: [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:45) (returns `true` when identity missing), plus callers without identity such as [search-flags.ts:197](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:197) and [search-flags.ts:207](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:207). This conflicts with comments claiming rollout policy is honored: [search-flags.ts:193](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:193), [search-flags.ts:203](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:203).
+
+2. `SPECKIT_ROLLOUT_PERCENT` parsing is permissive (`parseInt`), allowing malformed inputs to silently coerce (e.g., `1e2` -> `1`, `50abc` -> `50`).  
+Evidence: [rollout-policy.ts:13](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:13), [rollout-policy.ts:18](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:18).
+
+3. Flag-disable semantics are inconsistent across modules: learned-feedback does not trim whitespace and ignores `'0'` as disable.  
+Evidence: [learned-feedback.ts:167](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts:167) vs canonical policy [rollout-policy.ts:37](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:37), [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+
+Minor
+1. Test coverage misses key governance edge cases (`'0'`, whitespace, mixed-case disable values, malformed rollout percent, no-identity with partial rollout).  
+Evidence: current tests focus on basic unset/true/false/0-or-100 paths in [rollout-policy.vitest.ts:41](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:41), [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:54), [rollout-policy.vitest.ts:62](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:62), [rollout-policy.vitest.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:72).
+
+Cosmetic
+1. `graph-flags` JSDoc says opt-out with `'false'`, but runtime also treats `'0'` as disabled via shared helper.  
+Evidence: [graph-flags.ts:9](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-flags.ts:9) vs [rollout-policy.ts:39](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts:39).
+
+**sk-code--opencode Alignment**
+- Strong alignment on naming/clarity/testability basics: module headers, boolean `is*` naming, explicit return types in reviewed files.
+- Main drift is **behavior consistency** across flag parsers (central helper vs local custom parsing).
+
+**Residual Risk / Test Gaps**
+- Could not execute Vitest in this sandbox due temp-dir write denial (`EPERM mkdir .../ssr`), so runtime verification is static-only.
+- Highest residual risk is rollout misconfiguration behavior under partial rollout and malformed env values.

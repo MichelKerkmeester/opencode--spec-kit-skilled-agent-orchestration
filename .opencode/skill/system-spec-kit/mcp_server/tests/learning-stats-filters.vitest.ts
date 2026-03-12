@@ -52,8 +52,20 @@ function expectSummary(data: LearningHistoryResponse) {
 
 const SPEC = 'test/t503-stats-filters';
 const TS = Date.now();
+let sequence = 0;
 
 let dbAvailable = false;
+
+function uniqueId(prefix: string): string {
+  sequence += 1;
+  return `${prefix}-${TS}-${sequence}`;
+}
+
+function requireDbOrThrow(): void {
+  if (!dbAvailable) {
+    throw new Error('DB not available - test requires live database');
+  }
+}
 
 describe('T503: Learning Stats SQL Filter Tests', () => {
   beforeAll(() => {
@@ -73,10 +85,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
   // -----------------------------------------------------------
   describe('T503: Summary stats respect sessionId filter', () => {
     it('T503-01: sessionId stats filter — totalTasks=1', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const sessA = `sess-A-${TS}`;
       const sessB = `sess-B-${TS}`;
@@ -129,12 +138,44 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T503-01b: sessionId records filter consistent', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
-      const sessA = `sess-A-${TS}`;
+      const sessA = uniqueId('sess-A');
+      const sessB = uniqueId('sess-B');
+      const taskA = uniqueId('T-SESSA');
+      const taskB = uniqueId('T-SESSB');
+
+      await handler.handleTaskPreflight({
+        specFolder: SPEC,
+        taskId: taskA,
+        knowledgeScore: 20,
+        uncertaintyScore: 80,
+        contextScore: 20,
+        sessionId: sessA,
+      });
+      await handler.handleTaskPostflight({
+        specFolder: SPEC,
+        taskId: taskA,
+        knowledgeScore: 80,
+        uncertaintyScore: 20,
+        contextScore: 80,
+      });
+
+      await handler.handleTaskPreflight({
+        specFolder: SPEC,
+        taskId: taskB,
+        knowledgeScore: 50,
+        uncertaintyScore: 50,
+        contextScore: 50,
+        sessionId: sessB,
+      });
+      await handler.handleTaskPostflight({
+        specFolder: SPEC,
+        taskId: taskB,
+        knowledgeScore: 55,
+        uncertaintyScore: 45,
+        contextScore: 55,
+      });
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -156,10 +197,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
   // -----------------------------------------------------------
   describe('T503: Summary stats respect onlyComplete filter', () => {
     it('T503-02: onlyComplete records filter', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       // Create one complete and one preflight-only record
       await handler.handleTaskPreflight({
@@ -200,10 +238,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T503-02b: onlyComplete stats — total matches completed', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -222,10 +257,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
   // -----------------------------------------------------------
   describe('T503: Combined sessionId + onlyComplete filters', () => {
     it('T503-03: combined filters — 1 complete record', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const sessC = `sess-C-${TS}`;
 
@@ -271,12 +303,36 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T503-03b: combined stats correct', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
-      const sessC = `sess-C-${TS}`;
+      const sessC = uniqueId('sess-C');
+      const completeTask = uniqueId('T-COMBO-COMPLETE');
+      const preflightOnlyTask = uniqueId('T-COMBO-PREFLIGHT');
+
+      await handler.handleTaskPreflight({
+        specFolder: SPEC,
+        taskId: completeTask,
+        knowledgeScore: 10,
+        uncertaintyScore: 90,
+        contextScore: 10,
+        sessionId: sessC,
+      });
+      await handler.handleTaskPostflight({
+        specFolder: SPEC,
+        taskId: completeTask,
+        knowledgeScore: 70,
+        uncertaintyScore: 30,
+        contextScore: 70,
+      });
+
+      await handler.handleTaskPreflight({
+        specFolder: SPEC,
+        taskId: preflightOnlyTask,
+        knowledgeScore: 50,
+        uncertaintyScore: 50,
+        contextScore: 50,
+        sessionId: sessC,
+      });
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -294,10 +350,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
 
   describe('T013: Learning History Ordering and Threshold Tests', () => {
     it('T013-O1: Limit clamped to minimum 1', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -311,10 +364,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T013-O2: Limit clamped to maximum 100', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -329,10 +379,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T013-O3: Results ordered by updated_at DESC', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -362,10 +409,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T013-O4: Default limit returns records without error', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,
@@ -379,10 +423,7 @@ describe('T503: Learning Stats SQL Filter Tests', () => {
     });
 
     it('T013-O5: Summary includes interpretation for completed tasks', async () => {
-      if (!dbAvailable) {
-        console.warn('[SKIP] DB not available - test requires live database');
-        return;
-      }
+      requireDbOrThrow();
 
       const result = await handler.handleGetLearningHistory({
         specFolder: SPEC,

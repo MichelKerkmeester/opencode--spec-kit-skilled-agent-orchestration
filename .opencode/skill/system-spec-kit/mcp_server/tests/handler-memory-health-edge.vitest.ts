@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as handler from '../handlers/memory-crud';
+import * as core from '../core';
 import type { HealthArgs } from '../handlers/memory-crud-types';
 
 /** Parse the JSON response text from an MCP response. */
@@ -16,6 +17,10 @@ function getDetails(parsed: Record<string, unknown>) {
   const data = parsed.data as { details?: Record<string, unknown> } | undefined;
   return (data?.details ?? parsed.details) as Record<string, unknown> | undefined;
 }
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('handleMemoryHealth Edge Cases (T007b)', () => {
   it('T007b-H1: Invalid reportMode returns error response with requestId', async () => {
@@ -92,5 +97,18 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
     expect(typeof parsed.data.status).toBe('string');
     expect(typeof parsed.data.databaseConnected).toBe('boolean');
     expect(parsed.data.aliasConflicts).toBeDefined();
+  });
+
+  it('T007b-H9: checkDatabaseUpdated failures return MCP error response with requestId', async () => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockRejectedValue(new Error('marker read failed'));
+
+    const result = await handler.handleMemoryHealth({});
+    const parsed = parseResponse(result);
+    const details = getDetails(parsed);
+
+    expect(result.isError).toBe(true);
+    expect(getErrorMessage(parsed)).toMatch(/Database refresh failed before diagnostics completed/);
+    expect(parsed.data.code).toBe('E021');
+    expect(typeof details?.requestId).toBe('string');
   });
 });

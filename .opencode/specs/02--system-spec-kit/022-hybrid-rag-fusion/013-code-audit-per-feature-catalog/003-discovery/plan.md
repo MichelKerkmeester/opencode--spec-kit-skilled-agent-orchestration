@@ -16,6 +16,22 @@ contextType: "general"
 
 ---
 
+## TABLE OF CONTENTS
+
+- [1. SUMMARY](#1--summary)
+- [2. OVERVIEW](#2--overview)
+- [3. QUALITY GATES](#3--quality-gates)
+- [4. ARCHITECTURE](#4--architecture)
+- [5. IMPLEMENTATION PHASES](#5--implementation-phases)
+- [6. TESTING STRATEGY](#6--testing-strategy)
+- [7. DEPENDENCIES](#7--dependencies)
+- [8. ROLLBACK PLAN](#8--rollback-plan)
+- [L2: PHASE DEPENDENCIES](#l2-phase-dependencies)
+- [L2: EFFORT ESTIMATION](#l2-effort-estimation)
+- [L2: ENHANCED ROLLBACK](#l2-enhanced-rollback)
+
+---
+
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
@@ -29,37 +45,46 @@ contextType: "general"
 | **Testing** | Vitest |
 
 ### Overview
-This plan finalizes Discovery audit documentation against current on-disk implementation reality. It updates all five phase documents to reflect latest handler behavior, public schema behavior, tightened feature-catalog wording, and focused verification evidence (`tsc` clean + targeted `89/89` tests).
+This plan finalizes Discovery audit artifacts against current on-disk implementation reality. It synchronizes all five phase docs to landed runtime handler fixes, new regression tests, related documentation corrections, and focused verification evidence (`tsc` clean + targeted `95/95` tests).
 <!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:overview -->
+## 2. OVERVIEW
+
+The plan captures a packet-sync workflow: verify landed Discovery runtime and doc changes, update only the five packet docs, then validate evidence and cross-file consistency.
+<!-- /ANCHOR:overview -->
+
+---
+
 <!-- ANCHOR:quality-gates -->
-## 2. QUALITY GATES
+## 3. QUALITY GATES
 
 ### Definition of Ready
-- [x] Source-of-truth files identified (`handlers`, `schemas`, `feature_catalog`, `tests`)
+- [x] Source-of-truth files identified (`handlers`, `schemas`, `tests`, `manual_testing_playbook`, merged `feature_catalog`, scoring `README`)
 - [x] Stale claims explicitly listed for removal
 - [x] Scope locked to five Discovery phase docs
 
 ### Definition of Done
 - [x] All five target docs updated and synchronized
-- [x] Behavior statements match current code and schema reality
-- [x] Verification evidence updated to `npx tsc --noEmit` clean and targeted `89/89` tests
+- [x] Behavior statements match current code, schema, and related doc reality
+- [x] Verification evidence updated to `npx tsc --noEmit` clean and targeted `95/95` tests
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
 <!-- ANCHOR:architecture -->
-## 3. ARCHITECTURE
+## 4. ARCHITECTURE
 
 ### Pattern
-Evidence-driven documentation alignment for Discovery handlers and schemas.
+Evidence-driven documentation alignment for Discovery handlers, schemas, tests, and related system docs.
 
 ### Key Components
 - **Handlers**: `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts`
 - **Schema surface**: `mcp_server/schemas/tool-input-schemas.ts`, `mcp_server/tool-schemas.ts`
-- **Feature catalog**: `feature_catalog/03--discovery/*.md` (rewritten for focused accuracy)
+- **Regression tests**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge` (pre-query refresh failure coverage)
+- **Related docs**: `manual_testing_playbook/manual_testing_playbook.md`, merged `feature_catalog/feature_catalog.md`, `shared/scoring/README.md`
 - **Focused verification suite**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge`, `handler-memory-crud`, `tool-input-schema`
 
 ### Data Flow
@@ -69,7 +94,7 @@ On-disk implementation behavior and test outcomes feed requirements/checklist ev
 ---
 
 <!-- ANCHOR:phases -->
-## 4. IMPLEMENTATION PHASES
+## 5. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
 - [x] Re-read current Discovery phase docs and identify stale statements
@@ -77,46 +102,51 @@ On-disk implementation behavior and test outcomes feed requirements/checklist ev
 - [x] Confirm scope lock to the five requested files
 
 ### Phase 2: Core Implementation
+- [x] Update docs to capture pre-query `checkDatabaseUpdated()` failure handling (`E021` + `requestId`) for all three Discovery handlers
+- [x] Update docs to capture new regression tests in Discovery edge suites for the pre-query failure path
 - [x] Update requirements to current `memory_list`/`memory_stats` validation-envelope behavior
 - [x] Update docs for `memory_list` resolved `sortBy` and `memory_stats` response `limit`
 - [x] Update docs for `memory_health` public-schema support for `confirmed`
-- [x] Remove stale wording (`documentation phase`, `48/48`, old `computeFolderScores`-limit narrative, outdated Discovery inconsistency limitation)
+- [x] Document related doc corrections in playbook, merged catalog, and scoring README
+- [x] Remove stale wording (`documentation-only phase`, stale targeted test totals, outdated Discovery inconsistency limitation)
 
 ### Phase 3: Verification
 - [x] Record clean `npx tsc --noEmit` result
-- [x] Record targeted 5-file suite result: `89/89` passing
+- [x] Record targeted 5-file suite result: `95/95` passing
+- [x] Validate `spec.md` and `implementation-summary.md` with `validate_document.py`
 - [x] Perform cross-file consistency pass across all five docs
 <!-- /ANCHOR:phases -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## 5. TESTING STRATEGY
+## 6. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Static type check | TypeScript compile check for MCP server | `npx tsc --noEmit` |
 | Focused automated verification | Discovery handlers + schema coverage across 5 files | `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts` |
+| sk-doc validation | Ensure packet docs satisfy required markdown structure | `python3 .opencode/skill/sk-doc/scripts/validate_document.py <doc-path>` |
 | Documentation consistency | Cross-file sync validation among five updated docs | Manual doc review |
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:dependencies -->
-## 6. DEPENDENCIES
+## 7. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Discovery handlers (`mcp_server/handlers/*`) | Internal | Green | Behavior claims cannot be verified |
 | Public/runtime schemas (`tool-schemas.ts`, `tool-input-schemas.ts`) | Internal | Green | `confirmed` flow documentation can become inaccurate |
-| Discovery feature catalog (`feature_catalog/03--discovery/*`) | Internal | Green | Cross-reference accuracy degrades |
+| Related docs (playbook, merged catalog, scoring README) | Internal | Green | Packet misses documented alignment outcomes |
 | Focused test files (`mcp_server/tests/*`) | Internal | Green | Verification evidence cannot be updated |
 <!-- /ANCHOR:dependencies -->
 
 ---
 
 <!-- ANCHOR:rollback -->
-## 7. ROLLBACK PLAN
+## 8. ROLLBACK PLAN
 
 - **Trigger**: Any newly updated Discovery doc is found inconsistent with current source behavior.
 - **Procedure**: Restore only the affected `003-discovery` doc(s) from git history, then re-run source verification and re-apply corrected statements.

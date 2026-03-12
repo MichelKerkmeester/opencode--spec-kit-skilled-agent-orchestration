@@ -38,12 +38,12 @@ function sanitizeErrorForHint(msg: string): string {
 /** Redact absolute paths: keep only project-relative portion or basename. */
 function redactPath(absolutePath: string): string {
   const normalizedPath = toNormalizedPath(absolutePath);
+  if (normalizedPath.startsWith('.opencode/')) return normalizedPath;
+  if (normalizedPath.startsWith('specs/')) return normalizedPath;
   const opencodeIdx = normalizedPath.indexOf('/.opencode/');
   const specsIdx = normalizedPath.indexOf('/specs/');
   if (opencodeIdx !== -1) return normalizedPath.slice(opencodeIdx + 1);
   if (specsIdx !== -1) return normalizedPath.slice(specsIdx + 1);
-  if (normalizedPath.startsWith('.opencode/')) return normalizedPath;
-  if (normalizedPath.startsWith('specs/')) return normalizedPath;
   // AI-WHY: Fallback: basename only
   const lastSlash = normalizedPath.lastIndexOf('/');
   return lastSlash !== -1 ? normalizedPath.slice(lastSlash + 1) : normalizedPath;
@@ -114,7 +114,10 @@ function toNormalizedPath(filePath: string): string {
 }
 
 function toSpecAliasKey(filePath: string): string {
-  return toNormalizedPath(filePath).replace(DOT_OPENCODE_SPECS_SEGMENT, SPECS_SEGMENT);
+  const normalizedPath = toNormalizedPath(filePath);
+  return normalizedPath
+    .replace(/\/\.opencode\/specs\//g, '/specs/')
+    .replace(/^\.opencode\/specs\//, 'specs/');
 }
 
 function isSpecsAliasPath(filePath: string): boolean {
@@ -125,6 +128,17 @@ function isSpecsAliasPath(filePath: string): boolean {
     normalizedPath.startsWith('.opencode/specs/') ||
     normalizedPath.startsWith('specs/')
   );
+}
+
+function isDotOpencodeVariantPath(normalizedPath: string): boolean {
+  return normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT) || normalizedPath.startsWith('.opencode/specs/');
+}
+
+function isSpecsVariantPath(normalizedPath: string): boolean {
+  if (isDotOpencodeVariantPath(normalizedPath)) {
+    return false;
+  }
+  return normalizedPath.includes(SPECS_SEGMENT) || normalizedPath.startsWith('specs/');
 }
 
 function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): DivergentAliasGroup[] {
@@ -153,10 +167,10 @@ function getDivergentAliasGroups(rows: AliasConflictDbRow[], limit: number): Div
       buckets.set(aliasKey, bucket);
     }
 
-    if (normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
+    if (isDotOpencodeVariantPath(normalizedPath)) {
       bucket.hasDotOpencodeVariant = true;
     }
-    if (normalizedPath.includes(SPECS_SEGMENT) && !normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
+    if (isSpecsVariantPath(normalizedPath)) {
       bucket.hasSpecsVariant = true;
     }
 
@@ -204,7 +218,19 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   const startTime = Date.now();
   // A7-P2-1: Generate requestId for incident correlation in error responses
   const requestId = randomUUID();
-  await checkDatabaseUpdated();
+  try {
+    await checkDatabaseUpdated();
+  } catch (dbStateErr: unknown) {
+    const message = toErrorMessage(dbStateErr);
+    console.error(`[memory-health] Database refresh failed [requestId=${requestId}]: ${message}`);
+    return createMCPErrorResponse({
+      tool: 'memory_health',
+      error: 'Database refresh failed before diagnostics completed. Retry the request or restart the MCP server.',
+      code: 'E021',
+      details: { requestId },
+      startTime,
+    });
+  }
 
   const {
     reportMode = 'full',

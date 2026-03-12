@@ -10,6 +10,9 @@ import {
   MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS,
 } from './schemas/tool-input-schemas';
 
+/**
+ * Re-export schema validation helpers used by the MCP tool entry points.
+ */
 export {
   ToolSchemaValidationError,
   formatZodError,
@@ -20,7 +23,9 @@ export {
 
 // --- 1. TYPES ---
 
-/** Defines an MCP tool schema entry. */
+/**
+ * Normalized definition for a single MCP tool and its JSON schema.
+ */
 export interface ToolDefinition {
   name: string;
   description: string;
@@ -458,6 +463,9 @@ const memoryIngestCancel: ToolDefinition = {
 
 // --- 4. AGGREGATED DEFINITIONS ---
 
+/**
+ * Canonical ordered list of MCP tool registrations exposed by this server.
+ */
 export const TOOL_DEFINITIONS: ToolDefinition[] = [
   // L1: Orchestration
   memoryContext,

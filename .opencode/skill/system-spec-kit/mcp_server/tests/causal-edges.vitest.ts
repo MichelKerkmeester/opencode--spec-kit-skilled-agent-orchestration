@@ -30,6 +30,20 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
     testDb.exec('DELETE FROM weight_history');
   }
 
+  function ensureWeightHistoryTable(): void {
+    testDb.exec(`
+      CREATE TABLE IF NOT EXISTS weight_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        edge_id INTEGER NOT NULL REFERENCES causal_edges(id) ON DELETE CASCADE,
+        old_strength REAL NOT NULL,
+        new_strength REAL NOT NULL,
+        changed_by TEXT DEFAULT 'manual',
+        changed_at TEXT DEFAULT (datetime('now')),
+        reason TEXT
+      )
+    `);
+  }
+
   function insertEdgeOrThrow(
     sourceId: string,
     targetId: string,
@@ -568,11 +582,11 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(edge.strength).toBe(0.0);
     });
 
-    it('should persist non-numeric strength input without rejection', () => {
+    it('should reject non-numeric strength input', () => {
       const edgeId = causalEdges.insertEdge('1', '2', causalEdges.RELATION_TYPES.CAUSED, Number.NaN);
-      expect(edgeId).toBeTypeOf('number');
-      const edge = causalEdges.getEdgesFrom('1')[0];
-      expect(Number.isFinite(edge.strength)).toBe(false);
+      expect(edgeId).toBeNull();
+      const edges = causalEdges.getEdgesFrom('1');
+      expect(edges).toHaveLength(0);
     });
 
     it('should accept strength = 0.0', () => {
@@ -912,6 +926,36 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
 
       const edge = causalEdges.getEdgesFrom('1')[0];
       expect(edge.strength).toBe(0.5);
+    });
+
+    it('T002: updateEdge rolls back when weight_history insert fails', () => {
+      const edgeId = insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.3);
+      try {
+        testDb.exec('DROP TABLE weight_history');
+
+        const updated = causalEdges.updateEdge(edgeId, { strength: 0.8 }, 'test', 'should rollback');
+        expect(updated).toBe(false);
+
+        const edge = causalEdges.getEdgesFrom('1')[0];
+        expect(edge.strength).toBe(0.3);
+      } finally {
+        ensureWeightHistoryTable();
+      }
+    });
+
+    it('T002: insertEdge upsert rolls back when weight_history insert fails', () => {
+      insertEdgeOrThrow('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.4);
+      try {
+        testDb.exec('DROP TABLE weight_history');
+
+        const edgeId = causalEdges.insertEdge('1', '2', causalEdges.RELATION_TYPES.CAUSED, 0.9);
+        expect(edgeId).toBeNull();
+
+        const edge = causalEdges.getEdgesFrom('1')[0];
+        expect(edge.strength).toBe(0.4);
+      } finally {
+        ensureWeightHistoryTable();
+      }
     });
   });
 });

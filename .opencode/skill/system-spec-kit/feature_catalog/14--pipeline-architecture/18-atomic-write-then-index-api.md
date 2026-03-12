@@ -13,9 +13,9 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-The `memory_save` handler offers an atomic write-then-index mode where file writing and database indexing are coupled in a single transactional unit. The transaction manager writes the memory content to a `_pending` temporary file, inserts the database row (memory_index, vec_memories, BM25 tokens) inside a SQLite transaction, and only renames the pending file to its final path after the DB commit succeeds. If the DB transaction fails, the pending file is cleaned up and no partial state is left on disk.
+The `memory_save` handler offers an atomic write-then-index mode where file writing is atomic (pending file + rename), while indexing runs asynchronously after the write succeeds. The transaction manager writes memory content to a `_pending` file and renames it to the final path. The `dbOperation` callback in this path is intentionally a no-op; `indexMemoryFile(...)` executes afterward and can retry once on transient failures.
 
-This ensures that a memory file and its corresponding index entry either both exist or neither does. The `AtomicSaveResult` interface reports `dbCommitted` status so callers can distinguish between a full success and a partial commit (DB succeeded but rename failed, leaving a pending file for startup recovery).
+Because indexing is decoupled from the file rename, this flow provides atomic file persistence with guarded best-effort index consistency (retry + rollback), not a single file+DB transaction. The `AtomicSaveResult` interface reports `dbCommitted` to distinguish full success from partial commit states (for example, DB callback committed but rename failed, leaving a pending file for startup recovery).
 
 ## 3. SOURCE FILES
 
@@ -33,6 +33,7 @@ This ensures that a memory file and its corresponding index entry either both ex
 |------|-------|
 | `mcp_server/tests/transaction-manager.vitest.ts` | Transaction manager tests |
 | `mcp_server/tests/transaction-manager-extended.vitest.ts` | Transaction extended tests |
+| `mcp_server/tests/handler-memory-save.vitest.ts` | Atomic-save retry and rollback behavior in handler flow |
 
 ## 4. SOURCE METADATA
 

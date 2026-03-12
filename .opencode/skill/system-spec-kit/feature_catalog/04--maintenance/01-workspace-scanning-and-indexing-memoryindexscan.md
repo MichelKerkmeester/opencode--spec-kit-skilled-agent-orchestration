@@ -175,8 +175,8 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler validation |
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
-| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |
-| `mcp_server/tests/incremental-index.vitest.ts` | Incremental index tests |
+| `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
+| `mcp_server/tests/incremental-index.vitest.ts` | Legacy deferred placeholder suite (skipped; not behavioral evidence) |
 | `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
@@ -197,8 +197,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/tests/recovery-hints.vitest.ts` | Recovery hint tests |
 | `mcp_server/tests/regression-010-index-large-files.vitest.ts` | Large file indexing regression |
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager tests |
-| `mcp_server/tests/retry-manager.vitest.ts` | Retry utility tests |
+| `mcp_server/tests/retry-manager.vitest.ts` | Retry manager and retry utility tests |
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/save-quality-gate.vitest.ts` | Quality gate tests |
 | `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |

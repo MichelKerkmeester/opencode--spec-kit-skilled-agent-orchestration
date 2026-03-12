@@ -1,6 +1,6 @@
 ---
 title: "Tasks: graph-signal-activation [template:level_2/tasks.md]"
-description: "Reconciled Task #2 remediation status: 5 verified items, 6 backlog items still open"
+description: "Graph-signal audit backlog fully closed: all 11 items remediated or verified with current evidence"
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "graph signal activation tasks"
@@ -39,10 +39,10 @@ contextType: "general"
 
 | Priority | Count | Description |
 |----------|-------|-------------|
-| P0 | 4 | 2 remediated in Task #2, 2 still open |
-| P1 | 5 | 3 remediated or verified in Task #2, 2 still open |
-| P2 | 2 | Not updated in Task #2 |
-| **Total** | **11** | **5** items reconciled to verified implementation evidence |
+| P0 | 4 | 4 closed |
+| P1 | 5 | 5 closed |
+| P2 | 2 | 2 closed |
+| **Total** | **11** | **11** items reconciled to verified implementation evidence |
 <!-- /ANCHOR:notation -->
 
 ---
@@ -70,20 +70,20 @@ contextType: "general"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Backlog Still Open After Task #2
+## Phase 2: Backlog Closed In Completion Pass
 
-- [ ] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
+- [x] T003 Fix missing-snapshot momentum to return zero (`mcp_server/lib/graph/graph-signals.ts`)
   - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
-  - **Status:** Not updated by Task #2.
-- [ ] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
+  - **Evidence:** `computeMomentum()` returns `0` when no 7-day snapshot exists and regression coverage confirms this path.
+- [x] T004 Invalidate graph-signals cache on causal-edge mutation (`mcp_server/lib/storage/causal-edges.ts`)
   - **Priority:** P0 | **Feature:** F-05 Graph momentum scoring
-  - **Status:** Runtime invalidation wiring exists in `causal-edges.ts`, but the spec-intended explicit verification is not yet closed by the visible tests/docs, so this task remains open.
-- [ ] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
+  - **Evidence:** `invalidateDegreeCache()` now clears both degree and graph-signals caches, and hook wiring tests verify mutation-triggered graph cache invalidation.
+- [x] T007 Align edge-density docs with global denominator semantics (`mcp_server/lib/eval/edge-density.ts`)
   - **Priority:** P1 | **Feature:** F-03 Edge density measurement
-  - **Status:** Not updated by Task #2.
-- [ ] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
+  - **Evidence:** Runtime denominator semantics are documented as `edge_count / total_memories` (with node fallback) and aligned in graph feature docs/playbook text.
+- [x] T009 Enforce `MAX_WINDOW` clamping in temporal contiguity (`mcp_server/lib/cognitive/temporal-contiguity.ts`)
   - **Priority:** P1 | **Feature:** F-11 Temporal contiguity layer
-  - **Status:** Not updated by Task #2.
+  - **Evidence:** `vectorSearchWithContiguity()` and `getTemporalNeighbors()` clamp windows to valid bounds and new targeted tests cover min/max clamp behavior.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -91,18 +91,18 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Documentation And Test Backlog
 
-- [ ] T010 Update graph/cognitive fixes feature source and test traceability (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
+- [x] T010 Update graph/cognitive fixes feature source and test traceability (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`)
   - **Priority:** P2 | **Feature:** F-08 Graph and cognitive memory fixes
-  - **Status:** Not updated by Task #2.
-- [ ] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
+  - **Evidence:** F-08 current-reality narrative now matches live handler behavior for the double-decay fix scope.
+- [x] T011 Add negative ANCHOR parsing test (`mcp_server/tests/*anchor*`)
   - **Priority:** P2 | **Feature:** F-09 ANCHOR tags as graph nodes
-  - **Status:** Not updated by Task #2.
+  - **Evidence:** Existing `anchor-metadata.vitest.ts` and parser suites already include unmatched/unclosed/mismatched ANCHOR negative-path coverage.
 
 ### Verification Evidence
 
-- [x] Targeted Vitest suite passed: `5` files / `172` tests.
+- [x] Targeted Vitest closure suite passed: `6` files / `185` tests.
 - [x] Alignment drift verifier passed: `0` findings.
-- [x] `npx tsc --noEmit` now passes in `.opencode/skill/system-spec-kit/mcp_server` (revalidated 2026-03-11).
+- [x] `npx tsc --noEmit` passes in `.opencode/skill/system-spec-kit/mcp_server` (revalidated 2026-03-12).
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -110,10 +110,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] Full 11-item audit backlog complete
+- [x] All tasks marked `[x]`
+- [x] Full 11-item audit backlog complete
 - [x] No `[B]` blocked tasks remaining
-- [x] Task #2 remediation claims match the verified implementation evidence
+- [x] Task closure claims match the verified implementation evidence
 - [x] Targeted verification passed for the remediated items
 - [x] `mcp_server` TypeScript verification clean (`npx tsc --noEmit`)
 <!-- /ANCHOR:completion -->

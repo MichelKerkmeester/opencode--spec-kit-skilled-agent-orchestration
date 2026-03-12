@@ -1,0 +1,1165 @@
+OpenAI Codex v0.114.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019ce305-174a-71b0-bc1b-db27f9e1dd44
+--------
+user
+TASK #4: Cross-Cutting Verification + Synthesis Validation
+Depth: 1
+Agent Tier: LEAF
+Model Expectation: gpt-5.4 (high reasoning)
+Objective: Validate the governance audit itself for internal consistency and missed issues across code + docs + tests.
+Scope:
+All files used by tasks #1-#3, plus:
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json
+- .opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts (focus lines ~519-555)
+- .opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts
+Boundary:
+- Read-only analysis only.
+- Do NOT modify files.
+- Do NOT delegate any sub-task.
+LEAF NESTING CONSTRAINT:
+You are a LEAF agent at depth 1. Nested dispatch is illegal. You MUST NOT dispatch sub-agents or use any task/delegation mechanism. Execute directly and return findings.
+Checks:
+1. Implementation-summary narrative consistency vs checklist claims.
+2. Verify whether quality-loop.vitest.ts:523 truly tests isQualityLoopEnabled.
+3. Evaluate potential missed issues: rollout-policy duplication paths, isFeatureEnabled behavior for 0%-rollout/no-identity path.
+4. Assess backlog completeness of tracked issues.
+5. Validate description.json integrity (specFolder, parentChain, keywords coherence).
+6. Assess CHK-003 "NEW-095+" vs CHK-021 "NEW-063/NEW-064" as material vs cosmetic issue.
+7. Provide overall audit quality score from 1-10 with rationale.
+Output format:
+- Verdict: PASS | WARN | FAIL
+- Consistency findings
+- Missed issues list (if any)
+- Quality score (1-10)
+- Recommended actions prioritized
+- file:line evidence for every non-trivial claim
+warning: Under-development features enabled: child_agents_md. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/michelkerkmeester/.codex/config.toml.
+mcp: sequential_thinking starting
+mcp: spec_kit_memory starting
+mcp: code_mode starting
+mcp: spec_kit_memory failed: MCP client for `spec_kit_memory` failed to start: MCP startup failed: handshaking with MCP server failed: connection closed: initialize response
+mcp: code_mode ready
+mcp: sequential_thinking ready
+mcp startup: ready: code_mode, sequential_thinking; failed: spec_kit_memory
+codex
+I’m treating this as a read-only audit of the governance review itself, with special attention to the named tests and spec metadata. I’ll first route the task through the local skill advisor, then gather the specific code, spec, and test artifacts needed to check consistency and missed issues before I synthesize findings with file:line evidence.
+Plan update
+  → Run skill routing and identify the exact files involved in the governance audit
+  • Read the targeted code, test, and spec artifacts and verify the requested consistency checks
+  • Synthesize verdict, missed issues, and prioritized actions with line-based evidence
+exec
+/bin/zsh -lc pwd in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public
+exec
+/bin/zsh -lc 'python3 .opencode/skill/scripts/skill_advisor.py "Validate the governance audit for internal consistency and missed issues across code, docs, and tests. Focus on implementation-summary vs checklist claims, quality-loop and dead-code regression tests, rollout-policy duplication, isFeatureEnabled for 0%-rollout/no-identity, backlog completeness, and description.json integrity." --threshold 0.8' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 615ms:
+[
+  {
+    "skill": "sk-code--review",
+    "kind": "skill",
+    "confidence": 0.95,
+    "uncertainty": 0.31,
+    "passes_threshold": true,
+    "reason": "Matched: !audit, !audit(multi), !intent:review, !regression, !validate(multi)"
+  },
+  {
+    "skill": "sk-code--opencode",
+    "kind": "skill",
+    "confidence": 0.95,
+    "uncertainty": 0.31,
+    "passes_threshold": true,
+    "reason": "Matched: !code(multi), checklist~, check~, code(name), json"
+  },
+  {
+    "skill": "sk-code--full-stack",
+    "kind": "skill",
+codex
+Skill routing points strongly to `sk-code--review`, with `sk-code--opencode` as the relevant project standards overlay. I’m loading just those skill instructions now, then I’ll pull the governance spec and the targeted tests so we can validate the audit against the actual evidence instead of the narrative.
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--review/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--opencode/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+name: sk-code--opencode
+description: Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists.
+allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
+version: 1.1.0.0
+---
+
+<!-- Keywords: opencode style, script standards, mcp code quality, node code style, typescript style, ts standards, python style, py standards, bash style, shell script, json format, jsonc config, code standards opencode -->
+
+# Code Standards - OpenCode System Code
+
+Multi-language code standards for OpenCode system code across JavaScript, TypeScript, Python, Shell, and JSON/JSONC.
+
+**Core Principle**: Consistency within language + Clarity across languages = maintainable system code.
+
+
+## 1. WHEN TO USE
+
+### Activation Triggers
+
+ succeeded in 0ms:
+---
+name: sk-code--review
+description: "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code--opencode, sk-code--web, and sk-code--full-stack standards."
+allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+version: 1.2.0.0
+---
+
+<!-- Keywords: sk-code--review, code-review, pull-request, findings-first, security-review, quality-gate, stack-agnostic, baseline-overlay -->
+
+# Code Review Baseline - Stack-Agnostic Findings-First Review
+
+Universal `sk-code` review baseline for any codebase, implemented by `sk-code--review` and paired with one `sk-code--*` overlay skill for stack-specific rules.
+
+<!-- ANCHOR:when-to-use -->
+## 1. WHEN TO USE
+
+### Activation Triggers
+
+Use this skill when:
+- A user asks for code review, PR review, quality gate, or merge readiness.
+exec
+/bin/zsh -lc 'rg --files .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--review/references/security_checklist.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--review/references/code_quality_checklist.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--review/references/quick_reference.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: Security and Reliability Checklist
+description: Structured risk checklist for security vulnerabilities, runtime reliability issues, and concurrent-behavior defects.
+---
+
+# Security and Reliability Checklist
+
+Structured risk checklist for security vulnerabilities, runtime reliability issues, and concurrent-behavior defects.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Help reviewers prioritize exploitability and business impact, not just code style.
+
+### Core Principle
+
+ succeeded in 0ms:
+---
+title: Code Quality Checklist
+description: Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+---
+
+# Code Quality Checklist
+
+Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Provide a systematic pass for non-security defects that still cause outages, regressions, or high maintenance cost.
+
+### Core Principle
+
+ succeeded in 0ms:
+---
+title: Code Review Quick Reference
+description: Fast execution reference for findings-first review workflow with severity handling and next-step confirmation.
+---
+
+# Code Review Quick Reference
+
+Fast execution reference for findings-first review workflow with severity handling and next-step confirmation.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Provide a compact review protocol that keeps outputs consistent, risk-focused, and actionable.
+
+### Core Principle
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code--opencode/references/shared/universal_patterns.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: Universal Patterns - Cross-Language Code Standards
+description: Patterns applicable to ALL languages in OpenCode system code including naming principles, commenting philosophy, and reference comment patterns.
+---
+
+# Universal Patterns - Cross-Language Code Standards
+
+Patterns applicable to ALL languages in OpenCode system code.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+This reference defines patterns that apply universally across JavaScript, TypeScript, Python, Shell, and JSON/JSONC in the OpenCode codebase. These principles ensure consistency regardless of language choice.
+
+### Core Principle
+
+codex
+I’ve got the review baseline in hand. Next I’m reading the governance spec artifacts together with the cited tests and searching for the tracked issue IDs so we can check whether the audit narrative, checklist, and actual coverage all line up.
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: "Verification Checklist: governance [template:level_2/checklist.md]"
+description: "Verification Date: 2026-03-11 — 5-agent parallel Codex 5.3 xhigh audit"
+# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
+trigger_phrases:
+  - "governance"
+  - "verification"
+  - "checklist"
+  - "feature"
+  - "flag"
+  - "sunset"
+  - "audit"
+importance_tier: "normal"
+contextType: "general"
+---
+# Verification Checklist: governance
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+ succeeded in 0ms:
+---
+title: "Implementation Summary: governance [template:level_2/implementation-summary.md]"
+description: "5-agent parallel Codex 5.3 xhigh audit: F-01 PASS, F-02 WARN, 3 documentation drift items, 2 test gaps documented"
+# SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
+trigger_phrases:
+  - "governance implementation"
+  - "017 governance summary"
+  - "feature flag governance audit"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Summary: governance
+
+<!-- SPECKIT_LEVEL: 2 -->
+
+---
+
+## Overview
+
+Five Codex 5.3 xhigh agents were dispatched in parallel via cli-copilot (single-hop depth 0->1, LEAF constraint enforced) to perform a comprehensive feature-centric code audit for the two governance features in `feature_catalog/17--governance/`.
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance",
+  "description": "017 — governance",
+  "keywords": ["governance", "code-audit", "5-agent"],
+  "lastUpdated": "2026-03-11T19:38:53.000Z",
+  "specId": "017",
+  "folderSlug": "governance",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "013-code-audit-per-feature-catalog"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: "Feature Specification: governance [template:level_2/spec.md]"
+description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
+# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+trigger_phrases:
+  - "governance"
+  - "feature"
+  - "flag"
+  - "sunset"
+  - "audit"
+  - "catalog"
+importance_tier: "normal"
+contextType: "general"
+---
+# Feature Specification: governance
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+---
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: "Tasks: governance [template:level_2/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+trigger_phrases:
+  - "governance"
+  - "tasks"
+  - "feature"
+  - "flag"
+  - "sunset"
+  - "audit"
+importance_tier: "normal"
+contextType: "general"
+---
+# Tasks: governance
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+---
+title: "Implementation Plan: governance [template:level_2/plan.md]"
+description: "Governance feature audit plan covering catalog inventory, code review, test coverage checks, and playbook cross-reference."
+# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+trigger_phrases:
+  - "governance"
+  - "implementation"
+  - "plan"
+  - "feature"
+  - "flag"
+  - "sunset"
+  - "audit"
+importance_tier: "normal"
+contextType: "general"
+---
+# Implementation Plan: governance
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+exec
+/bin/zsh -lc "sed -n '1,260p' .opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+// ---------------------------------------------------------------
+// TEST: Dead Code Regression Canary
+// ---------------------------------------------------------------
+
+import { describe, it, expect } from 'vitest';
+import { readFile, readdir } from 'node:fs/promises';
+import path from 'node:path';
+
+import * as searchFlags from '../lib/search/search-flags';
+import * as shadowScoring from '../lib/eval/shadow-scoring';
+import * as rsfFusion from '../lib/search/rsf-fusion';
+import * as graphSignals from '../lib/graph/graph-signals';
+import * as graphSearchFn from '../lib/search/graph-search-fn';
+
+const REMOVED_SYMBOLS = [
+  'isShadowScoringEnabled',
+  'isRsfEnabled',
+  'computeCausalDepth',
+  'getSubgraphWeights',
+] as const;
+exec
+/bin/zsh -lc "sed -n '500,580p' .opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+      '## Heading Two',
+      '## Heading Three',
+      '<!-- ANCHOR: broken -->',
+      'Content that gives this some length and substance for the coherence check to not fail badly.',
+    ].join('\n');
+    const metadata = { triggerPhrases: [], title: 'Title Here' };
+
+    const result = runQualityLoop(content, metadata);
+    // Should have attempted fixes
+    if (result.fixes.length > 0) {
+      // Verify fixes are descriptive strings
+      result.fixes.forEach(fix => {
+        expect(typeof fix).toBe('string');
+        expect(fix.length).toBeGreaterThan(0);
+      });
+    }
+  });
+});
+
+/* ---------------------------------------------------------------
+exec
+/bin/zsh -lc 'rg -n "NEW-063|NEW-064|NEW-095|CHK-003|CHK-021|rollout-policy|isQualityLoopEnabled|isFeatureEnabled|0%-rollout|no-identity|quality loop|governance" .opencode/skill/system-spec-kit .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:2:title: "Feature Specification: governance [template:level_2/spec.md]"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:3:description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:6:  - "governance"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:15:# Feature Specification: governance
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:31:| **Branch** | `017-governance` |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:40:Governance features in the hybrid RAG fusion catalog require consistent, feature-level audit documentation to confirm code correctness, standards alignment, behavior parity, and test coverage. Existing notes were present but not aligned to the Level 2 SpecKit structure, which made governance review evidence harder to compare across phases.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:43:Provide a standardized Level 2 governance specification that captures audit scope, requirements, and measurable success criteria for the two governance features.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:52:- Audit the governance feature catalog entries in `feature_catalog/17--governance/`.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:53:- Cover both features: feature flag governance and feature flag sunset audit.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:54:- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:58:- Modifying runtime governance code paths - this phase is audit-only.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:65:| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md` | Modify | Convert governance specification into Level 2 template format |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:66:| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md` | Modify | Convert audit methodology into Level 2 implementation plan format |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:67:| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md` | Modify | Convert audit task list into Level 2 task tracking format |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:68:| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md` | Modify | Convert findings into Level 2 verification checklist format |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:80:| REQ-001 | All governance features are audited with structured findings | Both features have explicit PASS/WARN/FAIL status and finding fields |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:82:| REQ-003 | Manual playbook coverage is mapped | Each feature includes NEW-063/NEW-064 mapping or a documented gap |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:89:| REQ-005 | Feature-level results remain preserved from existing audit notes | No governance finding content is lost during template migration |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:97:- **SC-001**: Both governance features are represented in the final checklist with PASS/WARN status and documented findings (F-01 PASS, F-02 WARN due to documentation drift).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:98:- **SC-002**: All four governance docs conform to Level 2 template sections and anchor structure.
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts | sed -n '1,260p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Search Flags
+     3	// ---------------------------------------------------------------
+     4	// Default-on runtime gates for search pipeline controls
+     5	//
+     6	// Production-ready flags graduated to default-ON.
+     7	// Set SPECKIT_<FLAG>=false to disable any graduated feature.
+     8	
+     9	import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+    10	
+    11	/**
+    12	 * Graph-guided MMR diversity reranking.
+    13	 * Default: TRUE (enabled). Set SPECKIT_MMR=false to disable.
+    14	 */
+    15	export function isMMREnabled(): boolean {
+    16	  return isFeatureEnabled('SPECKIT_MMR');
+    17	}
+    18	
+    19	/**
+    20	 * Transparent Reasoning Module (evidence-gap detection).
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Rollout Policy
+     3	// ---------------------------------------------------------------
+     4	
+     5	const DEFAULT_ROLLOUT_PERCENT = 100;
+     6	
+     7	function getRolloutPercent(): number {
+     8	  const raw = process.env.SPECKIT_ROLLOUT_PERCENT;
+     9	  if (typeof raw !== 'string' || raw.trim().length === 0) {
+    10	    return DEFAULT_ROLLOUT_PERCENT;
+    11	  }
+    12	
+    13	  const parsed = Number.parseInt(raw, 10);
+    14	  if (!Number.isFinite(parsed)) {
+    15	    return DEFAULT_ROLLOUT_PERCENT;
+    16	  }
+    17	
+    18	  return Math.max(0, Math.min(100, parsed));
+    19	}
+    20	
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// TEST: ROLLOUT POLICY (T061-T065 prep)
+     3	// ---------------------------------------------------------------
+     4	
+     5	import { afterEach, describe, expect, it } from 'vitest';
+     6	import {
+     7	  deterministicBucket,
+     8	  getRolloutPercent,
+     9	  isFeatureEnabled,
+    10	  isIdentityInRollout,
+    11	} from '../lib/cache/cognitive/rollout-policy';
+    12	
+    13	const ROLLOUT_FLAGS = [
+    14	  'SPECKIT_ROLLOUT_PERCENT',
+    15	  'SPECKIT_EXTRACTION',
+    16	  'SPECKIT_SESSION_BOOST',
+    17	  'SPECKIT_PRESSURE_POLICY',
+    18	  'SPECKIT_EVENT_DECAY',
+    19	  'SPECKIT_CAUSAL_BOOST',
+    20	  'SPECKIT_AUTO_RESUME',
+exec
+/bin/zsh -lc 'rg --files .opencode/skill/system-spec-kit/feature_catalog/17--governance' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/01-feature-flag-governance.md
+exec
+/bin/zsh -lc "sed -n '150,190p' .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+| NEW-054 | Learned relevance feedback (R11) | Confirm learned trigger safeguards | `Verify learned relevance feedback (R11).` | 1) submit helpful validation/queryId 2) inspect learned triggers 3) verify safeguards | Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning | Learned trigger list + safeguard enforcement evidence + queryId validation | PASS: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers; FAIL: Triggers learned without queryId or safeguard limits exceeded | Verify trigger learning pipeline → Check safeguard limits → Inspect queryId validation |
+| NEW-055 | Dual-scope memory auto-surface (TM-05) | Confirm auto-surface hooks | `Validate dual-scope auto-surface (TM-05).` | 1) invoke non-memory-aware tool path 2) trigger compaction 3) verify surfaced memories | Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context | Auto-surface hook trace + surfaced memory list + context relevance assessment | PASS: Hook triggers on non-memory tool path; compaction surfaces context-relevant memories; FAIL: Hook does not fire or surfaced memories irrelevant | Verify auto-surface hook registration → Check compaction trigger logic → Inspect context matching for surfaced memories |
+| NEW-056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `Verify constitutional memory directive injection (PI-A4).` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
+| NEW-057 | Spec folder hierarchy as retrieval structure (S4) | Confirm hierarchy-aware retrieval | `Validate spec-folder hierarchy retrieval (S4).` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring | Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking | Query output showing hierarchy-aware ranking + folder path evidence in results | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering | Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline |
+| NEW-058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `Run lightweight consolidation cycle (N3-lite).` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
+| NEW-059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `Verify memory summary search channel (R8).` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
+| NEW-060 | Cross-document entity linking (S5) | Confirm guarded supports-edge linking | `Validate cross-document entity linking (S5).` | 1) ensure shared entities across docs 2) run linker 3) verify density guards | Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied | Linker output showing created edges + density guard metrics + entity normalization evidence | PASS if supports-edges are created for shared entities and density guards cap edge count appropriately | Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline |
+| NEW-061 | Tree thinning for spec folder consolidation (PI-B1) | Confirm small-file merge thinning | `Validate tree thinning behavior (PI-B1).` | 1) prepare mixed-size tree 2) run thinning path 3) verify merged output/tokens saved | Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity | Thinning output showing merged files + before/after token counts + file list comparison | PASS if small files are merged, token savings are positive, and content integrity is preserved | Verify file size thresholds; check merge logic for content preservation; inspect token counting accuracy |
+| NEW-062 | Progressive validation for spec documents (PI-B2) | Confirm level 1-4 behavior | `Run progressive validation (PI-B2).` | 1) run level1..4 2) inspect fixes/diffs 3) verify exit/report behavior | Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels | Validation output per level + exit codes + applied fix diffs | PASS if levels 1-4 produce progressively stricter validation and exit codes match severity | Verify validation level definitions; check exit code mapping; inspect auto-fix application logic |
+| NEW-063 | Feature flag governance | Confirm governance policy conformance | `Audit feature flag governance conformance.` | 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps | All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found | Flag inventory + compliance report + gap list | PASS if all flags have documented governance metadata and compliance gaps are identified | Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking |
+| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
+| NEW-065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
+| NEW-066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
+| NEW-067 | Search pipeline safety | Confirm Sprint 8 pipeline safety fixes | `Validate search pipeline safety bundle.` | 1) run summary/lexical heavy queries 2) inspect filters/tokenization 3) verify safety outcomes | Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions | Query output for heavy/edge-case inputs + filter inspection + tokenization output | PASS if pipeline safely handles summary/lexical heavy queries with correct filtering and tokenization | Inspect error handling in pipeline stages; verify filter boundary conditions; check tokenizer for malformed input handling |
+| NEW-068 | Guards and edge cases | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
+| NEW-069 | Entity normalization consolidation | Confirm shared normalization path | `Validate entity normalization consolidation.` | 1) feed unicode entities 2) compare extractor/linker outputs 3) verify parity | Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence | Extractor output + linker output + side-by-side comparison showing parity | PASS if extractor and linker produce identical normalized entities for all test inputs including unicode | Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases |
+| NEW-070 | Dead code removal | Confirm dead path elimination | `Audit dead code removal outcomes.` | 1) search removed symbols 2) run representative flows 3) confirm no runtime references | Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain | Symbol search output (empty results) + flow execution transcripts + import audit | PASS if removed symbols have zero references and representative flows execute cleanly | Verify symbol removal was complete; check for dynamic references (string-based imports); run full test suite for regression |
+| NEW-071 | Performance improvements | Confirm key perf remediations active | `Verify performance improvements (Sprint 8).` | 1) inspect optimized code paths 2) run heavy queries 3) capture timing notes | Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions | Code path inspection evidence + timing measurements for heavy queries | PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline | Profile heavy query execution; check for bypassed optimizations; compare timing with pre-optimization baseline |
+| NEW-072 | Test quality improvements | Confirm test quality remediations | `Audit test quality improvements.` | 1) inspect changed tests 2) verify teardown/assertion patterns 3) record reliability signals | Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained | Test inspection evidence + teardown/assertion pattern samples + reliability signal notes | PASS if changed tests follow quality patterns (proper teardown, specific assertions, no flaky timing) | Inspect specific test changes; verify teardown completeness; check for residual flaky patterns |
+| NEW-073 | Quality gate timer persistence | Confirm restart persistence | `Verify quality gate timer persistence.` | 1) set activation timestamp 2) restart service 3) verify persisted timestamp | Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart | Pre-restart timestamp + post-restart timestamp comparison + quality gate status | PASS if activation timestamp persists across restart and quality gate honors the original timer | Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart |
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/feature_catalog/17--governance/01-feature-flag-governance.md | sed -n '1,260p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	# Feature flag governance
+     2	
+     3	## TABLE OF CONTENTS
+     4	
+     5	- [1. OVERVIEW](#1--overview)
+     6	- [2. CURRENT REALITY](#2--current-reality)
+     7	- [3. SOURCE FILES](#3--source-files)
+     8	- [4. SOURCE METADATA](#4--source-metadata)
+     9	
+    10	## 1. OVERVIEW
+    11	
+    12	This document captures the implemented behavior, source references, and validation scope for Feature flag governance.
+    13	
+    14	## 2. CURRENT REALITY
+    15	
+    16	The program introduces many new scoring signals and pipeline stages. Without governance, flags accumulate until nobody knows what is enabled.
+    17	
+    18	A governance framework defines operational targets (small active flag surface, explicit sunset windows and periodic audits). These are process controls, not hard runtime-enforced caps in code.
+    19	
+    20	The B8 signal ceiling ("12 active scoring signals") is a governance target, not a runtime-enforced guardrail.
+exec
+/bin/zsh -lc 'rg -n "NEW-063|NEW-064|NEW-095" .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+159:| NEW-063 | Feature flag governance | Confirm governance policy conformance | `Audit feature flag governance conformance.` | 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps | All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found | Flag inventory + compliance report + gap list | PASS if all flags have documented governance metadata and compliance gaps are identified | Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking |
+160:| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
+191:| NEW-095 | Strict Zod schema validation (P0-1) | Confirm schema enforcement rejects hallucinated params | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | 1) call any MCP tool with an extra unknown parameter (e.g., `memory_search({query:"test", bogus:1})`) 2) verify Zod strict error is returned 3) set `SPECKIT_STRICT_SCHEMAS=false` and confirm `.passthrough()` allows the extra param 4) verify validation runs per-tool in handler, not duplicated at server dispatch | Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer | Tool outputs + Zod error messages | PASS if strict mode rejects unknown params and passthrough mode allows them | Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching |
+345:| NEW-063 | [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md) |
+346:| NEW-064 | [17--governance/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/02-feature-flag-sunset-audit.md) |
+377:| NEW-095 | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
+429:| `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Build-time concern — tested via NEW-095 |
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md | sed -n '1,320p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	# Feature flag sunset audit
+     2	
+     3	## TABLE OF CONTENTS
+     4	
+     5	- [1. OVERVIEW](#1--overview)
+     6	- [2. CURRENT REALITY](#2--current-reality)
+     7	- [3. SOURCE FILES](#3--source-files)
+     8	- [4. SOURCE METADATA](#4--source-metadata)
+     9	
+    10	## 1. OVERVIEW
+    11	
+    12	This document captures the implemented behavior, source references, and validation scope for Feature flag sunset audit.
+    13	
+    14	## 2. CURRENT REALITY
+    15	
+    16	A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+    17	
+    18	The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+    19	
+    20	**Phase 017 update:** `SPECKIT_PIPELINE_V2` is now deprecated. `isPipelineV2Enabled()` always returns `true` regardless of the env var. The legacy V1 pipeline code was removed, making the env var a no-op.
+exec
+/bin/zsh -lc "rg -n \"description.json\" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog -g 'description.json'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public exited 1 in 0ms:
+
+exec
+/bin/zsh -lc "find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog -name description.json | sort | sed -n '1,40p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/001-retrieval/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/002-mutation/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/004-maintenance/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/007-evaluation/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/009-evaluation-and-measurement/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/010-graph-signal-activation/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/011-scoring-and-calibration/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/012-query-intelligence/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/013-memory-quality-and-indexing/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/014-pipeline-architecture/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/015-retrieval-enhancements/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/016-tooling-and-scripts/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/019-decisions-and-deferrals/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/020-feature-flag-reference/description.json
+codex
+The core evidence is in place now. I’m drilling into the two likely blind spots the prompt called out explicitly: whether the `quality-loop` test is genuinely meaningful, and whether the audit missed rollout-policy edge cases or duplication paths that the checklist currently treats as settled.
+exec
+/bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	title: "Implementation Summary: governance [template:level_2/implementation-summary.md]"
+     3	description: "5-agent parallel Codex 5.3 xhigh audit: F-01 PASS, F-02 WARN, 3 documentation drift items, 2 test gaps documented"
+     4	# SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
+     5	trigger_phrases:
+     6	  - "governance implementation"
+     7	  - "017 governance summary"
+     8	  - "feature flag governance audit"
+     9	importance_tier: "normal"
+    10	contextType: "general"
+    11	---
+    12	# Implementation Summary: governance
+    13	
+    14	<!-- SPECKIT_LEVEL: 2 -->
+    15	
+    16	---
+    17	
+    18	## Overview
+    19	
+    20	Five Codex 5.3 xhigh agents were dispatched in parallel via cli-copilot (single-hop depth 0->1, LEAF constraint enforced) to perform a comprehensive feature-centric code audit for the two governance features in `feature_catalog/17--governance/`.
+exec
+/bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	---
+     2	title: "Verification Checklist: governance [template:level_2/checklist.md]"
+     3	description: "Verification Date: 2026-03-11 — 5-agent parallel Codex 5.3 xhigh audit"
+     4	# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
+     5	trigger_phrases:
+     6	  - "governance"
+     7	  - "verification"
+     8	  - "checklist"
+     9	  - "feature"
+    10	  - "flag"
+    11	  - "sunset"
+    12	  - "audit"
+    13	importance_tier: "normal"
+    14	contextType: "general"
+    15	---
+    16	# Verification Checklist: governance
+    17	
+    18	<!-- SPECKIT_LEVEL: 2 -->
+    19	<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+    20	
+exec
+/bin/zsh -lc 'rg -n "isFileWatcherEnabled|isLocalRerankerEnabled|isQualityLoopEnabled" .opencode/skill/system-spec-kit/mcp_server/tests' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:537:        isFileWatcherEnabled: vi.fn(() => false),
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:264:          isQualityLoopEnabled: vi.fn(() => false),
+.opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts:20:  isLocalRerankerEnabled: () => flagState.localReranker,
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:19:  isQualityLoopEnabled,
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:520:   TEST: isQualityLoopEnabled
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:523:describe('isQualityLoopEnabled', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:536:    expect(isQualityLoopEnabled()).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:541:    expect(isQualityLoopEnabled()).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:546:    expect(isQualityLoopEnabled()).toBe(false);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:551:    expect(isQualityLoopEnabled()).toBe(false);
+exec
+/bin/zsh -lc "rg -n \"SPECKIT_ROLLOUT_PERCENT|no identity|identity gating|isFeatureEnabled\\(|0%|rollout\" .opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md .opencode/skill/system-spec-kit/mcp_server/README.md .opencode/skill/system-spec-kit/mcp_server/lib/search/README.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:21:| `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:50:| `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:67:| `SPECKIT_PRESSURE_POLICY` | `true` | boolean | `handlers/memory-context.ts` | Enables context-pressure-based mode downgrading in `memory_context`. Above 0.60 token usage ratio, switches to focused mode. Above 0.80, switches to quick mode. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:72:| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:78:| `SPECKIT_SESSION_BOOST` | `true` | boolean | `lib/search/session-boost.ts` | Enables session-attention boosting. Memories from the current session's working memory receive a 0.15× score boost. Combined with causal boost, the ceiling is 0.20. Uses session identity for rollout-based gating. |
+.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:137:- **10% Convergence Bonus**: Results in multiple sources get +10% score boost
+.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:389:const CONVERGENCE_BONUS = 0.10;    // 10% boost for multi-source
+.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:621:BFS connected-component labelling assigns community IDs. When the largest component contains >50% of all nodes, escalates to Louvain modularity optimization for finer-grained communities. Community co-members are injected into Stage 2 results before graph signal scoring. Gated via `SPECKIT_COMMUNITY_DETECTION`.
+.opencode/skill/system-spec-kit/mcp_server/lib/search/README.md:701:`wasUseful=false` validations apply a demotion multiplier to composite scores. Penalty: -0.1 per negative validation, floor at 0.3 (never suppress below 30%). 30-day half-life recovery: penalty halves over time if no further negative feedback. Gated via `SPECKIT_NEGATIVE_FEEDBACK` (default ON).
+.opencode/skill/system-spec-kit/mcp_server/README.md:77:| **Sessions**      | None                | Deduplication with ~50% tokens saved on follow-up        |
+.opencode/skill/system-spec-kit/mcp_server/README.md:388:       |  k=60, +10% convergence     |
+.opencode/skill/system-spec-kit/mcp_server/README.md:661:│   ├── cognitive/          # FSRS, PE gating, state model, co-activation, rollout policy
+.opencode/skill/system-spec-kit/mcp_server/README.md:736:All flags are evaluated via `isFeatureEnabled()`. After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
+.opencode/skill/system-spec-kit/mcp_server/README.md:1065:Use this procedure when rollout metrics regress (rank instability, elevated context errors or extraction quality drop):
+exec
+/bin/zsh -lc 'rg -n "rollout-policy" .opencode/skill/system-spec-kit/mcp_server/lib .opencode/skill/system-spec-kit/mcp_server/tests .opencode/skill/system-spec-kit/feature_catalog' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md:37:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md:162:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md:26:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md:44:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2463:| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
+.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md:36:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md:73:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts:11:} from '../lib/cache/cognitive/rollout-policy';
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:72:| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
+.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:39:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md:164:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md:71:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md:243:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md:35:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md:183:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md:30:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md:136:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+.opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts:8:import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+.opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md:80:| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
+.opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-indexing-memorysave.md:207:| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
+exec
+/bin/zsh -lc 'rg -n "stmtCache|lastComputedAt|flushCount|RECOVERY_HALF_LIFE_DAYS|logCoActivationEvent|computeCausalDepth|activeProvider|getSubgraphWeights|isShadowScoringEnabled|isRsfEnabled" .opencode/skill/system-spec-kit/mcp_server/lib .opencode/skill/system-spec-kit/mcp_server/tests' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/tests/intent-routing.vitest.ts:2:// Previously tested getSubgraphWeights, which was removed as dead code.
+.opencode/skill/system-spec-kit/mcp_server/tests/intent-routing.vitest.ts:3:// getSubgraphWeights always returned { causalWeight: 1.0 } regardless of intent.
+.opencode/skill/system-spec-kit/mcp_server/tests/intent-routing.vitest.ts:9:  it('getSubgraphWeights was removed — causal weight is inlined as 1.0', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:503:      // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:510:      // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:567:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:577:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:587:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:596:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:608:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/mpab-quality-gate-integration.vitest.ts:660:    // isShadowScoringEnabled removed — shadow scoring permanently disabled
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:16:  'isShadowScoringEnabled',
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:17:  'isRsfEnabled',
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:18:  'computeCausalDepth',
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:19:  'getSubgraphWeights',
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:67:    const computeDepthPattern = declarationPatternFor('computeCausalDepth');
+.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts:68:    expect(computeDepthPattern.test('export function computeCausalDepthScores() {}')).toBe(false);
+.opencode/skill/system-spec-kit/mcp_server/lib/search/rsf-fusion.ts:15: * The `isRsfEnabled()` feature flag was removed in Sprint 8 as dead code.
+.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts:4://         computeCausalDepthScores, applyGraphSignals, clearGraphSignalsCache
+.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts:13:  computeCausalDepthScores,
+exec
+/bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/description.json | sed -n '1,120p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	{
+     2	  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog",
+     3	  "description": "013 — Code Audit Per Feature Catalog",
+     4	  "keywords": [
+     5	    "013",
+     6	    "code",
+     7	    "audit",
+     8	    "per",
+     9	    "feature",
+    10	    "catalog"
+    11	  ],
+    12	  "lastUpdated": "2026-03-10T10:16:39.612Z",
+    13	  "specId": "013",
+    14	  "folderSlug": "code-audit-per-feature-catalog",
+    15	  "parentChain": [
+    16	    "02--system-spec-kit",
+    17	    "022-hybrid-rag-fusion"
+    18	  ],
+    19	  "memorySequence": 1,
+    20	  "memoryNameHistory": [
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts | sed -n '1,80p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Test — Quality Loop
+     3	// ---------------------------------------------------------------
+     4	// Quality Loop
+     5	//
+     6	// Verify-fix-verify memory quality loop:
+     7	// - Quality score computation (trigger phrases, anchors, budget, coherence)
+     8	// - Auto-fix strategies (re-extract triggers, normalize anchors, trim budget)
+     9	// - Loop rejection after retries
+    10	// - Env var gating (SPECKIT_QUALITY_LOOP)
+    11	// - Eval metrics logging
+    12	
+    13	import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+    14	
+    15	import {
+    16	  computeMemoryQualityScore,
+    17	  attemptAutoFix,
+    18	  runQualityLoop,
+    19	  isQualityLoopEnabled,
+    20	  scoreTriggerPhrases,
+exec
+/bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json | sed -n '1,120p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	{
+     2	  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks",
+     3	  "description": "018 — ux-hooks",
+     4	  "keywords": [
+     5	    "ux",
+     6	    "hooks"
+     7	  ],
+     8	  "lastUpdated": "2026-03-10T11:14:56.000Z",
+     9	  "specId": "018",
+    10	  "folderSlug": "ux-hooks",
+    11	  "parentChain": [
+    12	    "02--system-spec-kit",
+    13	    "022-hybrid-rag-fusion",
+    14	    "013-code-audit-per-feature-catalog"
+    15	  ],
+    16	  "memorySequence": 1,
+    17	  "memoryNameHistory": [
+    18	    "11-03-26_20-33__completed-018-ux-hooks-code-audit-remediation-17.md"
+    19	  ]
+    20	}
+exec
+/bin/zsh -lc "rg -n \"5-agent|cli-copilot|Premium requests|2026-03-11|quality-loop.vitest.ts:523|NEW-095\\+|NEW-063/NEW-064\" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:54:- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:82:| REQ-003 | Manual playbook coverage is mapped | Each feature includes NEW-063/NEW-064 mapping or a documented gap |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:111:| Risk | Missing scenario mapping evidence | Manual validation coverage confidence drops | Keep NEW-063/NEW-064 mapping explicit per feature |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:3:description: "Verification Date: 2026-03-11 — 5-agent parallel Codex 5.3 xhigh audit"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:43:  - **Evidence**: Catalog files, `mcp_server/lib/search/search-flags.ts`, and NEW-095+ playbook references are available.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:67:  - **Evidence** (5-agent Codex 5.3 xhigh audit, 2026-03-11):
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:72:  - **Evidence**: Governance features mapped to manual playbook scenarios NEW-063/NEW-064 (not NEW-095+ as previously claimed; corrected per playbook cross-reference audit).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:76:  - **Evidence**: All 24 functions in `search-flags.ts:15-216` verified. `rollout-policy.ts` covers: default 100% rollout, deterministic bucket hashing, identity gating, feature-flag + rollout interaction. 2 functions lack direct test files: `isFileWatcherEnabled`, `isLocalRerankerEnabled` (test gap — documented, not blocking for audit-only phase). `isQualityLoopEnabled` is tested in `quality-loop.vitest.ts:523` (GPT 5.4 verification corrected Agent 5 false negative).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:129:**Verification Date**: 2026-03-11
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:130:**Audit Method**: 5-agent parallel Codex 5.3 xhigh via cli-copilot (Depth 0→1 single-hop)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:4:  "keywords": ["governance", "code-audit", "5-agent"],
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:5:  "lastUpdated": "2026-03-11T19:38:53.000Z",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:3:description: "5-agent parallel Codex 5.3 xhigh audit: F-01 PASS, F-02 WARN, 3 documentation drift items, 2 test gaps documented"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:20:Five Codex 5.3 xhigh agents were dispatched in parallel via cli-copilot (single-hop depth 0->1, LEAF constraint enforced) to perform a comprehensive feature-centric code audit for the two governance features in `feature_catalog/17--governance/`.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:36:**Total tokens**: ~3.9M input, ~60K output across all 5 agents (5 Premium requests).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:72:- **2 untested functions**: `isFileWatcherEnabled`, `isLocalRerankerEnabled` — these are default-OFF/opt-in functions with simple env-check patterns. (`isQualityLoopEnabled` was initially reported as untested by Agent 5 but is actually tested in `quality-loop.vitest.ts:523` — corrected by GPT 5.4 verification.)
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:74:- **Playbook Mapping Correction**: Governance features map to **NEW-063/NEW-064** (not NEW-095+ as previously claimed). Corrected in checklist.md.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:82:| `checklist.md` | Modified | Updated with corrected 5-agent audit findings, fixed playbook mapping (NEW-063/NEW-064), updated verification date |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:84:| `implementation-summary.md` | Created | This file — consolidated 5-agent audit results |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md:94:| ~~Add tests for `isQualityLoopEnabled`~~ | ~~P2~~ | ~~Resolved: already tested in `quality-loop.vitest.ts:523` (Agent 5 false negative, corrected by GPT 5.4 verification)~~ |
+exec
+/bin/zsh -lc 'rg -n "activeProvider|stmtCache|lastComputedAt|flushCount|RECOVERY_HALF_LIFE_DAYS|logCoActivationEvent" .opencode/skill/system-spec-kit/mcp_server/lib .opencode/skill/system-spec-kit/mcp_server/tests' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:507:  // AI-GUARD: no-op: activeProvider cache removed (was never populated)
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/README.md | sed -n '728,752p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md | sed -n '1,110p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   728	| `EMBEDDINGS_PROVIDER` | No         | Force: `voyage`, `openai` or `hf-local` |
+   729	| `VOYAGE_API_KEY`      | For Voyage | Voyage AI API key (1024d, recommended)  |
+   730	| `OPENAI_API_KEY`      | For OpenAI | OpenAI API key (1536d/3072d)            |
+   731	
+   732	**Auto-detection priority:** `EMBEDDINGS_PROVIDER` env > `VOYAGE_API_KEY` detected > `OPENAI_API_KEY` detected > HuggingFace local (768d, default fallback)
+   733	
+   734	### Feature Flags
+   735	
+   736	All flags are evaluated via `isFeatureEnabled()`. After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
+   737	
+   738	#### Default Enabled (specs 137-139)
+   739	
+   740	| Flag                         | Default | Description                                                                           |
+   741	| ---------------------------- | ------- | ------------------------------------------------------------------------------------- |
+   742	| `SPECKIT_RRF`                | `true`  | Enable RRF search fusion                                                              |
+   743	| `SPECKIT_MMR`                | `true`  | Enable MMR diversity reranking                                                        |
+   744	| `SPECKIT_TRM`                | `true`  | Enable Transparent Reasoning Module (evidence-gap detection)                          |
+   745	| `SPECKIT_MULTI_QUERY`        | `true`  | Enable multi-query expansion for deep-mode retrieval                                  |
+   746	| `SPECKIT_CROSS_ENCODER`      | `true`  | Enable cross-encoder reranking when a provider is configured (set `false` to disable) |
+   747	| `SPECKIT_RELATIONS`          | `true`  | Enable causal memory graph                                                            |
+ succeeded in 0ms:
+     1	# 1. Search Pipeline Features (SPECKIT_*)
+     2	
+     3	## TABLE OF CONTENTS
+     4	
+     5	- [1. OVERVIEW](#1--overview)
+     6	- [2. CURRENT REALITY](#2--current-reality)
+     7	- [3. SOURCE FILES](#3--source-files)
+     8	- [4. SOURCE METADATA](#4--source-metadata)
+     9	
+    10	## 1. OVERVIEW
+    11	
+    12	This document captures the implemented behavior, source references, and validation scope for 1. Search Pipeline Features (SPECKIT_*).
+    13	
+    14	## 2. CURRENT REALITY
+    15	
+    16	| Name | Default | Type | Source File | Description |
+    17	|---|---|---|---|---|
+    18	| `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/eval-metrics.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
+    19	| `SPECKIT_ARCHIVAL` | `true` | boolean | `lib/cognitive/archival-manager.ts` | Enables the archival manager which promotes DORMANT memories to the ARCHIVED state based on access patterns. Disable to keep all memories in active tiers. |
+    20	| `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
+exec
+/bin/zsh -lc "rg -n \"isFeatureEnabled\\('["'^'"']+',\\s*["'^)]*'"\\)\" .opencode/skill/system-spec-kit/mcp_server/lib" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n \"isFeatureEnabled\\('["'^'"']+'\\)\" .opencode/skill/system-spec-kit/mcp_server/lib" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts:72:  return isFeatureEnabled('SPECKIT_EXTRACTION', identity);
+.opencode/skill/system-spec-kit/mcp_server/lib/search/session-boost.ts:29:  return isFeatureEnabled('SPECKIT_SESSION_BOOST', sessionId ?? undefined);
+.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts:483:  if (!isFeatureEnabled('SPECKIT_EVENT_DECAY', sessionId)) {
+ succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts:72:  return isFeatureEnabled('SPECKIT_CAUSAL_BOOST');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:16:  return isFeatureEnabled('SPECKIT_MMR');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:24:  return isFeatureEnabled('SPECKIT_TRM');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:32:  return isFeatureEnabled('SPECKIT_MULTI_QUERY');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:40:  return isFeatureEnabled('SPECKIT_CROSS_ENCODER');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:48:  return isFeatureEnabled('SPECKIT_SEARCH_FALLBACK');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:56:  return isFeatureEnabled('SPECKIT_FOLDER_DISCOVERY');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:66:  return isFeatureEnabled('SPECKIT_DOCSCORE_AGGREGATION');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:74:  return isFeatureEnabled('SPECKIT_SAVE_QUALITY_GATE');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:90:  return isFeatureEnabled('SPECKIT_NEGATIVE_FEEDBACK');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:111:  return isFeatureEnabled('SPECKIT_EMBEDDING_EXPANSION');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:122:  return isFeatureEnabled('SPECKIT_CONSOLIDATION');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:131:  return isFeatureEnabled('SPECKIT_ENCODING_INTENT');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:141:  return isFeatureEnabled('SPECKIT_GRAPH_SIGNALS');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:149:  return isFeatureEnabled('SPECKIT_COMMUNITY_DETECTION');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:157:  return isFeatureEnabled('SPECKIT_MEMORY_SUMMARIES');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:165:  return isFeatureEnabled('SPECKIT_AUTO_ENTITIES');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:174:  return isFeatureEnabled('SPECKIT_ENTITY_LINKING');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:179:  return isFeatureEnabled('SPECKIT_DEGREE_BOOST');
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:187:  return isFeatureEnabled('SPECKIT_CONTEXT_HEADERS');
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts | sed -n '1,80p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n \"isQualityLoopEnabled|export \\{.*isQualityLoopEnabled|const is_quality_loop_enabled\" .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts | sed -n '660,730p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+35:  isQualityLoopEnabled,
+681:  isQualityLoopEnabled,
+719:const is_quality_loop_enabled = isQualityLoopEnabled;
+ succeeded in 0ms:
+   660	  atomicSaveMemory,
+   661	  getAtomicityMetrics,
+   662	
+   663	  // PE gating helper functions
+   664	  calculateDocumentWeight,
+   665	  findSimilarMemories,
+   666	  reinforceExistingMemory,
+   667	  markMemorySuperseded,
+   668	  updateExistingMemory,
+   669	  logPeDecision,
+   670	
+   671	  // Causal links helper functions
+   672	  processCausalLinks,
+   673	  resolveMemoryReference,
+   674	  escapeLikePattern,
+   675	  CAUSAL_LINK_MAPPINGS,
+   676	
+   677	  // Quality Loop (T008)
+   678	  computeMemoryQualityScore,
+   679	  attemptAutoFix,
+ succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// MODULE: Memory Save Handler
+     3	// ---------------------------------------------------------------
+     4	/* --- 1. DEPENDENCIES --- */
+     5	
+     6	// Node built-ins
+     7	import { randomUUID } from 'node:crypto';
+     8	import * as fs from 'node:fs';
+     9	import path from 'path';
+    10	
+    11	// Shared packages
+    12	import { validateFilePath } from '@spec-kit/shared/utils/path-security';
+    13	
+    14	// Internal modules
+    15	import { ALLOWED_BASE_PATHS, checkDatabaseUpdated } from '../core';
+    16	import { createFilePathValidator } from '../utils/validators';
+    17	import * as memoryParser from '../lib/parsing/memory-parser';
+    18	import * as transactionManager from '../lib/storage/transaction-manager';
+    19	import * as preflight from '../lib/validation/preflight';
+    20	import { requireDb } from '../utils';
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tests/stage3-rerank-regression.vitest.ts | sed -n '1,80p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc 'rg -n "Quality Loop|SPECKIT_QUALITY_LOOP|isQualityLoopEnabled" .opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+16:The quality loop is opt-in. When `SPECKIT_QUALITY_LOOP` is unset or not equal to `true`, the runtime still computes a quality score but the save passes without retries or rejection. When the flag is enabled, the save pipeline runs an initial quality evaluation and then up to 2 immediate auto-fix retries by default (`maxRetries=2`). Auto-fixes can re-extract trigger phrases from headings/title, normalize unclosed anchors, and trim content to the shared token budget.
+ succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// TEST: Stage 3 Rerank Regression
+     3	// ---------------------------------------------------------------
+     4	
+     5	import { beforeEach, describe, expect, it, vi } from 'vitest';
+     6	import type { PipelineRow } from '../lib/search/pipeline/types';
+     7	
+     8	const flagState = {
+     9	  crossEncoder: true,
+    10	  mmr: false,
+    11	  localReranker: false,
+    12	};
+    13	
+    14	const rerankResultsMock = vi.fn();
+    15	const rerankLocalMock = vi.fn();
+    16	
+    17	vi.mock('../lib/search/search-flags', () => ({
+    18	  isCrossEncoderEnabled: () => flagState.crossEncoder,
+    19	  isMMREnabled: () => flagState.mmr,
+    20	  isLocalRerankerEnabled: () => flagState.localReranker,
+codex
+I’ve confirmed the `quality-loop` point now: that specific test is real coverage, not a mistaken grep hit. The remaining synthesis step is weighing which gaps are cosmetic versus actually material to the governance audit’s trustworthiness, especially around stale checklist evidence and rollout semantics.
+exec
+/bin/zsh -lc 'rg -n "23 exported|61 unique|79 unique|24 exported|search-flags.ts" .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md .opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md:16:A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md:18:The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2078:**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2146:A thorough audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2148:The current active flag-helper inventory in `search-flags.ts` is 23 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2411:| `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2420:| `SPECKIT_COMMUNITY_DETECTION` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2c BFS connected-component detection with Louvain escalation for large graphs. Injects community co-members alongside Stage 2 fusion results. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2423:| `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2426:| `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2429:| `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2430:| `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2434:| `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2435:| `SPECKIT_ENCODING_INTENT` | `true` | boolean | `lib/search/search-flags.ts` | R16 encoding-intent capture at index time. Classifies content as `document`, `code` or `structured_data` using heuristic scoring above a 0.4 threshold. Stored as read-only metadata on the `encoding_intent` column. No retrieval-time scoring impact yet; builds a labeled dataset. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2436:| `SPECKIT_ENTITY_LINKING` | `true` | boolean | `lib/search/search-flags.ts` | S5 cross-document entity linking. Creates causal edges between memories sharing entities across spec folders. Depends on a populated `entity_catalog` (typically produced by R10 auto-entities). Controlled by the global density guard (`SPECKIT_ENTITY_LINKING_MAX_DENSITY`). |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2443:| `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2446:| `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2452:| `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each memory and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2453:| `SPECKIT_MMR` | `true` | boolean | `lib/search/search-flags.ts` | Enables Maximal Marginal Relevance reranking after fusion to promote result diversity. Uses intent-specific lambda values from `INTENT_LAMBDA_MAP` (default 0.7). Requires embeddings to be loaded from `vec_memories` for top-N candidates. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2454:| `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2455:| `SPECKIT_NEGATIVE_FEEDBACK` | `true` | boolean | `lib/search/search-flags.ts` | T002b/A4 negative-feedback confidence demotion. Applies a confidence multiplier (starts at 1.0, decreases 0.1 per negative validation, floors at 0.3) with 30-day half-life recovery. |
+exec
+/bin/zsh -lc 'rg -n "isQualityLoopEnabled" .opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts .opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:35:  isQualityLoopEnabled,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:681:  isQualityLoopEnabled,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:719:const is_quality_loop_enabled = isQualityLoopEnabled;
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:19:  isQualityLoopEnabled,
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:520:   TEST: isQualityLoopEnabled
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:523:describe('isQualityLoopEnabled', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:536:    expect(isQualityLoopEnabled()).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:541:    expect(isQualityLoopEnabled()).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:546:    expect(isQualityLoopEnabled()).toBe(false);
+.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts:551:    expect(isQualityLoopEnabled()).toBe(false);
+.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:6:import { isQualityLoopEnabled } from '../lib/search/search-flags';
+.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:465:  if (!isQualityLoopEnabled()) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:604:  isQualityLoopEnabled,
+exec
+/bin/zsh -lc 'rg -n "5-agent|code-audit|governance|017" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/*/description.json' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/005-lifecycle/description.json:13:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:3:  "description": "017 — governance",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:4:  "keywords": ["governance", "code-audit", "5-agent"],
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:6:  "specId": "017",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:7:  "folderSlug": "governance",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json:11:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/description.json:17:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/003-discovery/description.json:13:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/007-evaluation/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/007-evaluation",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/007-evaluation/description.json:11:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/004-maintenance/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/004-maintenance",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/004-maintenance/description.json:13:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/006-analysis/description.json:11:    "013-code-audit-per-feature-catalog"
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/001-retrieval/description.json:2:  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/001-retrieval",
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/001-retrieval/description.json:13:    "013-code-audit-per-feature-catalog"
+exec
+/bin/zsh -lc 'rg -n "All flags are evaluated via `isFeatureEnabled'"\\(\\)"'`|global rollout gate applied on top of individual feature flags|At 0, all sessions are excluded|Between 1–99" .opencode/skill/system-spec-kit/mcp_server/README.md .opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+zsh:1: command not found: isFeatureEnabled()
+.opencode/skill/system-spec-kit/mcp_server/README.md:736:All flags are evaluated via `isFeatureEnabled()`. After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
+.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md:72:| `SPECKIT_ROLLOUT_PERCENT` | `100` | number | `lib/cognitive/rollout-policy.ts` | Global rollout gate applied on top of individual feature flags. At 100, all sessions pass. At 0, all sessions are excluded. Between 1–99, a deterministic hash of the session identity determines inclusion. |
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/search/session-boost.ts | sed -n '20,34p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts | sed -n '64,76p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+    64	const metrics: ExtractionMetrics = {
+    65	  matched: 0,
+    66	  inserted: 0,
+    67	  skipped: 0,
+    68	  redacted: 0,
+    69	};
+    70	
+    71	function isEnabled(identity?: string): boolean {
+    72	  return isFeatureEnabled('SPECKIT_EXTRACTION', identity);
+    73	}
+    74	
+    75	function normalizeAttention(value: number): number {
+    76	  if (!Number.isFinite(value)) return 0;
+ succeeded in 0ms:
+    20	interface SessionBoostMetadata {
+    21	  enabled: boolean;
+    22	  applied: boolean;
+    23	  sessionId: string | null;
+    24	  boostedCount: number;
+    25	  maxBoostApplied: number;
+    26	}
+    27	
+    28	function isEnabled(sessionId?: string | null): boolean {
+    29	  return isFeatureEnabled('SPECKIT_SESSION_BOOST', sessionId ?? undefined);
+    30	}
+    31	
+    32	function init(database: Database.Database): void {
+    33	  db = database;
+    34	}
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts | sed -n '1,110p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+     1	// ---------------------------------------------------------------
+     2	// TEST: Dead Code Regression Canary
+     3	// ---------------------------------------------------------------
+     4	
+     5	import { describe, it, expect } from 'vitest';
+     6	import { readFile, readdir } from 'node:fs/promises';
+     7	import path from 'node:path';
+     8	
+     9	import * as searchFlags from '../lib/search/search-flags';
+    10	import * as shadowScoring from '../lib/eval/shadow-scoring';
+    11	import * as rsfFusion from '../lib/search/rsf-fusion';
+    12	import * as graphSignals from '../lib/graph/graph-signals';
+    13	import * as graphSearchFn from '../lib/search/graph-search-fn';
+    14	
+    15	const REMOVED_SYMBOLS = [
+    16	  'isShadowScoringEnabled',
+    17	  'isRsfEnabled',
+    18	  'computeCausalDepth',
+    19	  'getSubgraphWeights',
+    20	] as const;
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts | sed -n '476,488p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   476	 * deletion. Entries can only reach below deleteThreshold through explicit
+   477	 * score-setting or extended inactivity cleanup.
+   478	 */
+   479	function batchUpdateScores(sessionId: string): number {
+   480	  if (!db) return 0;
+   481	  ensureSchema();
+   482	
+   483	  if (!isFeatureEnabled('SPECKIT_EVENT_DECAY', sessionId)) {
+   484	    return 0;
+   485	  }
+   486	
+   487	  try {
+   488	    const currentEventCounter = getCurrentEventCounter(sessionId);
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md | sed -n '188,194p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md | sed -n '156,162p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+   156	| NEW-060 | Cross-document entity linking (S5) | Confirm guarded supports-edge linking | `Validate cross-document entity linking (S5).` | 1) ensure shared entities across docs 2) run linker 3) verify density guards | Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied | Linker output showing created edges + density guard metrics + entity normalization evidence | PASS if supports-edges are created for shared entities and density guards cap edge count appropriately | Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline |
+   157	| NEW-061 | Tree thinning for spec folder consolidation (PI-B1) | Confirm small-file merge thinning | `Validate tree thinning behavior (PI-B1).` | 1) prepare mixed-size tree 2) run thinning path 3) verify merged output/tokens saved | Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity | Thinning output showing merged files + before/after token counts + file list comparison | PASS if small files are merged, token savings are positive, and content integrity is preserved | Verify file size thresholds; check merge logic for content preservation; inspect token counting accuracy |
+   158	| NEW-062 | Progressive validation for spec documents (PI-B2) | Confirm level 1-4 behavior | `Run progressive validation (PI-B2).` | 1) run level1..4 2) inspect fixes/diffs 3) verify exit/report behavior | Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels | Validation output per level + exit codes + applied fix diffs | PASS if levels 1-4 produce progressively stricter validation and exit codes match severity | Verify validation level definitions; check exit code mapping; inspect auto-fix application logic |
+   159	| NEW-063 | Feature flag governance | Confirm governance policy conformance | `Audit feature flag governance conformance.` | 1) enumerate flags 2) verify age/limits/review cadence 3) record compliance gaps | All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found | Flag inventory + compliance report + gap list | PASS if all flags have documented governance metadata and compliance gaps are identified | Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking |
+   160	| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
+   161	| NEW-065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
+   162	| NEW-066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
+ succeeded in 0ms:
+   188	| NEW-092 | Implemented: auto entity extraction (R10) | Confirm deferred->implemented status | `Verify R10 implemented and active.` | 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults | Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied | Save output + entity extraction results + default configuration evidence | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings | Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration |
+   189	| NEW-093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `Verify R8 implemented and gated.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
+   190	| NEW-094 | Implemented: cross-document entity linking (S5) | Confirm deferred->implemented status | `Verify S5 implemented and guarded.` | 1) run entity linker 2) inspect supports edges 3) verify density guards | Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified | Entity linker output + supports-edge inspection + density guard metrics | PASS if entity linker produces correctly typed supports-edges and density guards enforce limits | Verify entity linker implementation is active; check supports-edge schema; inspect density guard threshold and enforcement |
+   191	| NEW-095 | Strict Zod schema validation (P0-1) | Confirm schema enforcement rejects hallucinated params | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | 1) call any MCP tool with an extra unknown parameter (e.g., `memory_search({query:"test", bogus:1})`) 2) verify Zod strict error is returned 3) set `SPECKIT_STRICT_SCHEMAS=false` and confirm `.passthrough()` allows the extra param 4) verify validation runs per-tool in handler, not duplicated at server dispatch | Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer | Tool outputs + Zod error messages | PASS if strict mode rejects unknown params and passthrough mode allows them | Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching |
+   192	| NEW-096 | Provenance-rich response envelopes (P0-2) | Confirm includeTrace opt-in exposes scores/source/trace | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | **Precondition:** ensure `SPECKIT_RESPONSE_TRACE` is unset or `false` before running the "absent" assertion (env var forces trace inclusion regardless of arg). 1) `memory_search({query:"test", includeTrace:true})` → verify `scores`, `source`, `trace` objects in response 2) `memory_search({query:"test"})` (no includeTrace, env unset) → verify these objects are absent 3) set `SPECKIT_RESPONSE_TRACE=true` and repeat without arg → verify trace objects appear due to env override 4) inspect score fields: semantic, lexical, fusion, intentAdjusted, composite | Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 5 expected sub-fields | Search outputs with/without includeTrace + env override | PASS if trace objects present when opt-in or env-forced and absent otherwise | Check `handlers/memory-search.ts` for includeTrace and env branching |
+   193	| NEW-097 | Async ingestion job lifecycle (P0-3) | Confirm job state machine and crash recovery | `Validate memory_ingest_start/status/cancel lifecycle.` | 1) `memory_ingest_start({paths:["specs/<target-spec>/memory/file1.md","specs/<target-spec>/memory/file2.md"]})` → capture jobId (must be explicit `.md` file paths, not directories) 2) `memory_ingest_status({jobId})` → verify state transitions (queued→parsing→embedding→indexing→complete) 3) start a new job, then `memory_ingest_cancel({jobId})` → verify cancelled state 4) verify job IDs are nanoid-style (`job_` prefix + 12 alphanumeric chars) 5) restart server → verify incomplete jobs re-enqueue via `resetIncompleteJobsToQueued` | Job state transitions through queued→parsing→embedding→indexing→complete in order; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart | Ingest tool outputs + job state sequence | PASS if state machine transitions correctly through all 5 states and cancel works | Inspect `lib/ops/job-queue.ts` for state machine logic and `resetIncompleteJobsToQueued` |
+   194	| NEW-098 | Local GGUF reranker via node-llama-cpp (P1-5) | Confirm reranker gating and graceful fallback | `Validate RERANKER_LOCAL strict check and memory thresholds.` | 1) set `RERANKER_LOCAL=1` (truthy but not `'true'`) → verify reranker is NOT activated (strict string equality) 2) set `RERANKER_LOCAL=true` without model file → verify silent fallback 3) set `SPECKIT_RERANKER_MODEL=/custom/path` → verify 512MB memory threshold applies instead of 4GB 4) with valid model, verify sequential scoring (not parallel) in logs | Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers memory threshold to 512MB; scoring runs sequentially in logs | Reranker log output + fallback behavior | PASS if strict `=== 'true'` check works, custom model lowers threshold, and scoring is sequential | Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLocal()` |
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md | sed -n '2144,2149p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+  2144	### Feature flag sunset audit
+  2145	
+  2146	A thorough audit at Sprint 7 exit found 61 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+  2147	
+  2148	The current active flag-helper inventory in `search-flags.ts` is 23 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+  2149	
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md | sed -n '2076,2079p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+  2076	**Hot-path dead branches (~80 lines):** Dead RSF branch and dead shadow-scoring branch removed from `hybrid-search.ts`. Both were guarded by feature flag functions that always returned `false`.
+  2077	
+  2078	**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` removed from `rsf-fusion.ts`. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
+  2079	
+Plan update
+  ✓ Run skill routing and identify the exact files involved in the governance audit
+  ✓ Read the targeted code, test, and spec artifacts and verify the requested consistency checks
+  → Synthesize verdict, missed issues, and prioritized actions with line-based evidence
+codex
+Verdict: WARN
+
+**Consistency Findings**
+- CHK-003 is still stale and contradicts the rest of the audit. It says the dependency is `NEW-095+`, while the spec requirement, plan/tasks, CHK-021, and implementation summary all say governance maps to `NEW-063/NEW-064`. That makes the CHK-003 vs CHK-021 mismatch material, not cosmetic, because `REQ-003` explicitly requires `NEW-063/NEW-064` mapping. Evidence: [checklist.md:42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L42) [checklist.md:71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L71) [spec.md:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md#L82) [tasks.md:42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md#L42) [implementation-summary.md:74](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L74) [manual_testing_playbook.md:159](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L159) [manual_testing_playbook.md:160](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L160) [manual_testing_playbook.md:191](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L191)
+- `quality-loop.vitest.ts:523` does genuinely test `isQualityLoopEnabled()`. The test imports `isQualityLoopEnabled` from `handlers/memory-save`, and that file re-exports the symbol from `./quality-loop`; the test then asserts true/false behavior for four env-var cases. This is valid unit coverage for the helper itself, though not an end-to-end assertion of handler behavior. Evidence: [quality-loop.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L15) [quality-loop.vitest.ts:523](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L523) [quality-loop.vitest.ts:536](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L536) [quality-loop.vitest.ts:546](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L546) [memory-save.ts:31](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L31) [memory-save.ts:681](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L681)
+- `description.json` is structurally intact: `specFolder`, `specId`, `folderSlug`, and `parentChain` are coherent with the parent catalog hierarchy. The only weakness is semantic, not structural: its keywords are process-centric (`5-agent`) rather than topic-centric, unlike nearby siblings. Evidence: [description.json:2](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L2) [description.json:6](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L6) [description.json:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L8) [013 description.json:2](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/description.json#L2) [018 description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json#L4)
+- The backlog is only partially complete. It correctly tracks stale master-catalog counts, and those stale `61` / `23` values still exist in the master catalog, but it does not track the still-stale CHK-003 playbook reference. Evidence: [implementation-summary.md:97](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L97) [feature_catalog.md:2146](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2146) [feature_catalog.md:2148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2148) [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43)
+
+**Missed Issues**
+- The audit missed a real rollout-policy behavior gap. `isFeatureEnabled()` returns `true` for partial rollouts when `identity` is missing, and most `search-flags.ts` wrappers call it without identity. That conflicts with duplicated docs that describe `SPECKIT_ROLLOUT_PERCENT` as a global gate on individual flags. This is material because it changes effective behavior for many governance-related flags, not just wording. Evidence: [rollout-policy.ts:41](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L41) [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45) [search-flags.ts:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L16) [search-flags.ts:141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L141) [search-flags.ts:197](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L197) [search-flags.ts:207](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L207) [feature-flag-reference.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md#L72) [mcp_server/README.md:736](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/README.md#L736)
+- Related test coverage is overstated. `rollout-policy.vitest.ts` covers 0/100 membership, feature-flag interaction with an identity, and default-on behavior, but it does not test `isFeatureEnabled(flag)` without identity at 0%, 1-99%, or 100%, even though many wrappers omit identity. That weakens the checklist’s “edge cases tested” claim. Evidence: [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L54) [rollout-policy.vitest.ts:62](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L62) [rollout-policy.vitest.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L72) [checklist.md:73](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L73) [extraction-adapter.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts#L72) [session-boost.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/session-boost.ts#L29) [working-memory.ts:483](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts#L483)
+- The dead-code regression canary is narrower than the audit narrative. The audit claims a wider Sprint 8 removal set, but the regression test only guards four removed symbols, so the “dead code removal verified” story is broader than the automated regression protection. Evidence: [implementation-summary.md:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L54) [checklist.md:69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L69) [dead-code-regression.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L15) [dead-code-regression.vitest.ts:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L82)
+
+Quality score: 6/10
+
+- The audit gets the big picture mostly right: the `quality-loop` correction is valid, the governance feature docs now show the updated `79` / `24` values, and the master catalog drift is real. Evidence: [quality-loop.vitest.ts:523](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L523) [02-feature-flag-sunset-audit.md:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md#L16) [02-feature-flag-sunset-audit.md:18](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md#L18) [feature_catalog.md:2146](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2146)
+- It falls short of PASS because one checklist claim is still internally contradictory and one behaviorally meaningful rollout edge case was missed across code, docs, and tests. Evidence: [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43) [checklist.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L72) [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45)
+
+**Recommended Actions Prioritized**
+1. Correct CHK-003 to `NEW-063/NEW-064` and resync the checklist/summary so every playbook reference matches `REQ-003`. Evidence: [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43) [spec.md:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md#L82)
+2. Add a governance finding or backlog item for `isFeatureEnabled()` no-identity semantics, and either document that bypass as intentional or narrow the “global rollout” wording in duplicated docs. Evidence: [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45) [feature-flag-reference.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md#L72) [mcp_server/README.md:736](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/README.md#L736)
+3. Add rollout-policy tests for `isFeatureEnabled(flag)` with no identity at `0`, partial, and `100`, plus at least one representative `search-flags.ts` wrapper. Evidence: [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L54) [search-flags.ts:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L16)
+4. Expand `dead-code-regression.vitest.ts` to cover the full removal set claimed by the audit, or narrow the audit language to the four currently-canaryed symbols. Evidence: [implementation-summary.md:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L54) [dead-code-regression.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L15)
+5. Clean up `description.json` keywords to be content-centric rather than process-centric. Evidence: [description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L4) [018 description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json#L4)
+tokens used
+196,558
+Verdict: WARN
+
+**Consistency Findings**
+- CHK-003 is still stale and contradicts the rest of the audit. It says the dependency is `NEW-095+`, while the spec requirement, plan/tasks, CHK-021, and implementation summary all say governance maps to `NEW-063/NEW-064`. That makes the CHK-003 vs CHK-021 mismatch material, not cosmetic, because `REQ-003` explicitly requires `NEW-063/NEW-064` mapping. Evidence: [checklist.md:42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L42) [checklist.md:71](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L71) [spec.md:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md#L82) [tasks.md:42](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md#L42) [implementation-summary.md:74](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L74) [manual_testing_playbook.md:159](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L159) [manual_testing_playbook.md:160](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L160) [manual_testing_playbook.md:191](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md#L191)
+- `quality-loop.vitest.ts:523` does genuinely test `isQualityLoopEnabled()`. The test imports `isQualityLoopEnabled` from `handlers/memory-save`, and that file re-exports the symbol from `./quality-loop`; the test then asserts true/false behavior for four env-var cases. This is valid unit coverage for the helper itself, though not an end-to-end assertion of handler behavior. Evidence: [quality-loop.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L15) [quality-loop.vitest.ts:523](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L523) [quality-loop.vitest.ts:536](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L536) [quality-loop.vitest.ts:546](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L546) [memory-save.ts:31](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L31) [memory-save.ts:681](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L681)
+- `description.json` is structurally intact: `specFolder`, `specId`, `folderSlug`, and `parentChain` are coherent with the parent catalog hierarchy. The only weakness is semantic, not structural: its keywords are process-centric (`5-agent`) rather than topic-centric, unlike nearby siblings. Evidence: [description.json:2](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L2) [description.json:6](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L6) [description.json:8](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L8) [013 description.json:2](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/description.json#L2) [018 description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json#L4)
+- The backlog is only partially complete. It correctly tracks stale master-catalog counts, and those stale `61` / `23` values still exist in the master catalog, but it does not track the still-stale CHK-003 playbook reference. Evidence: [implementation-summary.md:97](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L97) [feature_catalog.md:2146](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2146) [feature_catalog.md:2148](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2148) [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43)
+
+**Missed Issues**
+- The audit missed a real rollout-policy behavior gap. `isFeatureEnabled()` returns `true` for partial rollouts when `identity` is missing, and most `search-flags.ts` wrappers call it without identity. That conflicts with duplicated docs that describe `SPECKIT_ROLLOUT_PERCENT` as a global gate on individual flags. This is material because it changes effective behavior for many governance-related flags, not just wording. Evidence: [rollout-policy.ts:41](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L41) [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45) [search-flags.ts:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L16) [search-flags.ts:141](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L141) [search-flags.ts:197](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L197) [search-flags.ts:207](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L207) [feature-flag-reference.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md#L72) [mcp_server/README.md:736](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/README.md#L736)
+- Related test coverage is overstated. `rollout-policy.vitest.ts` covers 0/100 membership, feature-flag interaction with an identity, and default-on behavior, but it does not test `isFeatureEnabled(flag)` without identity at 0%, 1-99%, or 100%, even though many wrappers omit identity. That weakens the checklist’s “edge cases tested” claim. Evidence: [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L54) [rollout-policy.vitest.ts:62](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L62) [rollout-policy.vitest.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L72) [checklist.md:73](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L73) [extraction-adapter.ts:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts#L72) [session-boost.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/session-boost.ts#L29) [working-memory.ts:483](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts#L483)
+- The dead-code regression canary is narrower than the audit narrative. The audit claims a wider Sprint 8 removal set, but the regression test only guards four removed symbols, so the “dead code removal verified” story is broader than the automated regression protection. Evidence: [implementation-summary.md:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L54) [checklist.md:69](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L69) [dead-code-regression.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L15) [dead-code-regression.vitest.ts:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L82)
+
+Quality score: 6/10
+
+- The audit gets the big picture mostly right: the `quality-loop` correction is valid, the governance feature docs now show the updated `79` / `24` values, and the master catalog drift is real. Evidence: [quality-loop.vitest.ts:523](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/quality-loop.vitest.ts#L523) [02-feature-flag-sunset-audit.md:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md#L16) [02-feature-flag-sunset-audit.md:18](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md#L18) [feature_catalog.md:2146](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L2146)
+- It falls short of PASS because one checklist claim is still internally contradictory and one behaviorally meaningful rollout edge case was missed across code, docs, and tests. Evidence: [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43) [checklist.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L72) [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45)
+
+**Recommended Actions Prioritized**
+1. Correct CHK-003 to `NEW-063/NEW-064` and resync the checklist/summary so every playbook reference matches `REQ-003`. Evidence: [checklist.md:43](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md#L43) [spec.md:82](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md#L82)
+2. Add a governance finding or backlog item for `isFeatureEnabled()` no-identity semantics, and either document that bypass as intentional or narrow the “global rollout” wording in duplicated docs. Evidence: [rollout-policy.ts:45](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts#L45) [feature-flag-reference.md:72](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/20--feature-flag-reference/01-1-search-pipeline-features-speckit.md#L72) [mcp_server/README.md:736](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/README.md#L736)
+3. Add rollout-policy tests for `isFeatureEnabled(flag)` with no identity at `0`, partial, and `100`, plus at least one representative `search-flags.ts` wrapper. Evidence: [rollout-policy.vitest.ts:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts#L54) [search-flags.ts:16](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L16)
+4. Expand `dead-code-regression.vitest.ts` to cover the full removal set claimed by the audit, or narrow the audit language to the four currently-canaryed symbols. Evidence: [implementation-summary.md:54](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md#L54) [dead-code-regression.vitest.ts:15](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts#L15)
+5. Clean up `description.json` keywords to be content-centric rather than process-centric. Evidence: [description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json#L4) [018 description.json:4](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/018-ux-hooks/description.json#L4)

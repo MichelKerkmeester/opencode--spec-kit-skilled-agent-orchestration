@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as handler from '../handlers/memory-crud';
+import * as core from '../core';
 
 /** Parse the JSON payload from an MCP response. */
 function parseResponse(result: { content: Array<{ text: string }> }) {
@@ -10,6 +11,10 @@ function getDetails(parsed: Record<string, unknown>) {
   const data = parsed.data as { details?: Record<string, unknown> } | undefined;
   return data?.details;
 }
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('handleMemoryList Edge Cases (T006)', () => {
   it('T006-L1: Invalid sortBy falls back to created_at in the response payload', async () => {
@@ -71,5 +76,17 @@ describe('handleMemoryList Edge Cases (T006)', () => {
     expect(parsed.data.sortBy).toBe('created_at');
     expect(typeof parsed.data.total).toBe('number');
     expect(Array.isArray(parsed.data.results)).toBe(true);
+  });
+
+  it('T006-L9: checkDatabaseUpdated failures return MCP error response with requestId', async () => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockRejectedValue(new Error('marker read failed'));
+
+    const result = await handler.handleMemoryList({});
+    const parsed = parseResponse(result);
+
+    expect(result.isError).toBe(true);
+    expect(parsed.data.code).toBe('E021');
+    expect(parsed.data.error).toMatch(/Database refresh failed before query execution/);
+    expect(typeof getDetails(parsed)?.requestId).toBe('string');
   });
 });

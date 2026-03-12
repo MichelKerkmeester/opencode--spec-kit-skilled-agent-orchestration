@@ -182,7 +182,14 @@ export async function reinitializeDatabase(updatedMarkerTime?: number): Promise<
       hybridSearch.init(database, vectorIndex.vectorSearch, graphSearchFnRef ?? null);
     }
     // P4-12, P4-19 FIX: Refresh stale DB handles in session-manager and incremental-index
-    if (sessionManagerRef) sessionManagerRef.init(database as DatabaseLike);
+    if (sessionManagerRef) {
+      const sessionInitResult = sessionManagerRef.init(database as DatabaseLike);
+      if (!sessionInitResult.success) {
+        const errorSuffix = sessionInitResult.error ? `: ${sessionInitResult.error}` : '';
+        console.error(`[db-state] Session manager rebind failed${errorSuffix}`);
+        return false;
+      }
+    }
     if (incrementalIndexRef) incrementalIndexRef.init(database as DatabaseLike);
     if (typeof updatedMarkerTime === 'number' && Number.isFinite(updatedMarkerTime)) {
       lastDbCheck = updatedMarkerTime;

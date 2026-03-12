@@ -13,7 +13,7 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-Phase 014 verification now includes an end-to-end appended-envelope assertion in `tests/context-server.vitest.ts`. That coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together so future response-envelope regressions fail fast.
+Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext`, and final token metadata behavior together so response-envelope regressions fail fast.
 
 ## 3. SOURCE FILES
 
@@ -21,11 +21,9 @@ Phase 014 verification now includes an end-to-end appended-envelope assertion in
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/formatters/token-metrics.ts` | Formatter | Token metrics display |
-| `mcp_server/lib/response/envelope.ts` | Lib | Response envelope formatting |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/types.ts` | Shared | Type definitions |
-| `shared/utils/token-estimate.ts` | Shared | Token estimation utility |
+| `mcp_server/context-server.ts` | Server | End-to-end success path and envelope mutation ordering |
+| `mcp_server/hooks/response-hints.ts` | Hook | Hint append + token-count resync on finalized envelope |
+| `mcp_server/hooks/index.ts` | Hook Barrel | Exposes response-hint hooks to server runtime |
 
 ### Tests
 

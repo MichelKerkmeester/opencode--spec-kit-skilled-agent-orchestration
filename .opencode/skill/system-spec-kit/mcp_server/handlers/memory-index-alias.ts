@@ -92,7 +92,21 @@ function toNormalizedPath(filePath: string): string {
 }
 
 function toSpecAliasKey(filePath: string): string {
-  return toNormalizedPath(filePath).replace(DOT_OPENCODE_SPECS_SEGMENT, SPECS_SEGMENT);
+  const normalizedPath = toNormalizedPath(filePath);
+  return normalizedPath
+    .replace(/\/\.opencode\/specs\//g, '/specs/')
+    .replace(/^\.opencode\/specs\//, 'specs/');
+}
+
+function isDotOpencodeVariantPath(normalizedPath: string): boolean {
+  return normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT) || normalizedPath.startsWith('.opencode/specs/');
+}
+
+function isSpecsVariantPath(normalizedPath: string): boolean {
+  if (isDotOpencodeVariantPath(normalizedPath)) {
+    return false;
+  }
+  return normalizedPath.includes(SPECS_SEGMENT) || normalizedPath.startsWith('specs/');
 }
 
 /* ------- 3. ALIAS CONFLICT ANALYSIS ------- */
@@ -118,10 +132,10 @@ function buildAliasBuckets(rows: AliasConflictRow[]): Map<string, AliasConflictB
       buckets.set(aliasKey, bucket);
     }
 
-    if (normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
+    if (isDotOpencodeVariantPath(normalizedPath)) {
       bucket.hasDotOpencodeVariant = true;
     }
-    if (normalizedPath.includes(SPECS_SEGMENT) && !normalizedPath.includes(DOT_OPENCODE_SPECS_SEGMENT)) {
+    if (isSpecsVariantPath(normalizedPath)) {
       bucket.hasSpecsVariant = true;
     }
     bucket.variants.add(normalizedPath);
@@ -186,7 +200,12 @@ export function detectAliasConflictsFromIndex(): AliasConflictSummary {
       SELECT file_path, content_hash
       FROM memory_index
       WHERE parent_id IS NULL
-        AND file_path LIKE '%/specs/%'
+        AND (
+          file_path LIKE '%/.opencode/specs/%'
+          OR file_path LIKE '%/specs/%'
+          OR file_path LIKE '.opencode/specs/%'
+          OR file_path LIKE 'specs/%'
+        )
       ORDER BY file_path ASC
     `).all() as AliasConflictRow[];
     return summarizeAliasConflicts(rows);
@@ -206,7 +225,12 @@ function listDivergentAliasConflictCandidates(
     SELECT file_path, content_hash
     FROM memory_index
     WHERE parent_id IS NULL
-      AND file_path LIKE '%/specs/%'
+      AND (
+        file_path LIKE '%/.opencode/specs/%'
+        OR file_path LIKE '%/specs/%'
+        OR file_path LIKE '.opencode/specs/%'
+        OR file_path LIKE 'specs/%'
+      )
     ORDER BY file_path ASC
   `).all() as AliasConflictRow[];
 

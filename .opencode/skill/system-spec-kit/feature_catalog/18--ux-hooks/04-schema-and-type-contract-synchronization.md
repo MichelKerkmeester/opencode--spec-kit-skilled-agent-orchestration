@@ -13,7 +13,7 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-Phase 014 aligned runtime validation and TypeScript contracts for the new mutation-safety behavior. Tool schemas and types were updated together so added parameters and output metadata remain consistent across handler logic, schema validation, and tool typing. The finalized follow-up closures specifically synced required `confirmName` enforcement and the updated mutation response metadata contract across all layers.
+Phase 014 aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema, and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
 
 ## 3. SOURCE FILES
 
@@ -21,24 +21,22 @@ Phase 014 aligned runtime validation and TypeScript contracts for the new mutati
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/handlers/types.ts` | Handler | Type definitions |
-| `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input schemas |
-| `shared/normalization.ts` | Shared | Text normalization |
-| `shared/types.ts` | Shared | Type definitions |
+| `mcp_server/handlers/checkpoints.ts` | Handler | Enforces required `confirmName` and delete safety semantics |
+| `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod schemas requiring `confirmName` |
+| `mcp_server/tool-schemas.ts` | Tool Definition | Published tool schema shape for checkpoint inputs |
+| `mcp_server/tools/types.ts` | Tool Boundary | `validateToolArgs(...)` + typed parse boundary |
+| `mcp_server/handlers/memory-crud-types.ts` | Handler Type | Shared `MutationHookResult` contract |
+| `mcp_server/handlers/mutation-hooks.ts` | Handler Runtime | Produces contract-aligned hook result fields |
+| `mcp_server/hooks/mutation-feedback.ts` | Hook Consumer | Consumes hook-result contract for UX payload shaping |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |
-| `mcp_server/tests/score-normalization.vitest.ts` | Score normalization tests |
-| `mcp_server/tests/tool-input-schema.vitest.ts` | Tool input schema tests |
-| `mcp_server/tests/unit-composite-scoring-types.vitest.ts` | Scoring type tests |
-| `mcp_server/tests/unit-folder-scoring-types.vitest.ts` | Folder scoring type tests |
-| `mcp_server/tests/unit-normalization-roundtrip.vitest.ts` | Normalization roundtrip |
-| `mcp_server/tests/unit-normalization.vitest.ts` | Normalization unit tests |
-| `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
-| `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
+| `mcp_server/tests/handler-checkpoints.vitest.ts` | `confirmName` validation and checkpoint-delete contract coverage |
+| `mcp_server/tests/hooks-mutation-wiring.vitest.ts` | Cross-handler wiring against shared mutation-hook contract |
+| `mcp_server/tests/mutation-hooks.vitest.ts` | Mutation-hook result behavior and warning/error consistency |
+| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Mutation response payload contract verification (`postMutationHooks`) |
 
 ## 4. SOURCE METADATA
 

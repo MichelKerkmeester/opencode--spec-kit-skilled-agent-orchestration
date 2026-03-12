@@ -358,6 +358,45 @@ async function appendIngestError(jobId: string, filePath: string, error: unknown
 }
 
 async function cancelIngestJob(jobId: string): Promise<IngestJob> {
+  const MAX_CANCEL_RETRIES = 3;
+
+  for (let attempt = 0; attempt < MAX_CANCEL_RETRIES; attempt += 1) {
+    const current = getIngestJob(jobId);
+    if (!current) {
+      throw new Error(`Ingest job not found: ${jobId}`);
+    }
+    if (TERMINAL_STATES.has(current.state)) {
+      return current;
+    }
+
+    try {
+      return await setIngestJobState(jobId, 'cancelled');
+    } catch (error: unknown) {
+      const message = toErrorMessage(error);
+      if (message.startsWith('State transition conflict:')) {
+        continue;
+      }
+
+      if (message.startsWith('Invalid ingest job state transition:')) {
+        const latest = getIngestJob(jobId);
+        if (latest && TERMINAL_STATES.has(latest.state)) {
+          return latest;
+        }
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  const latest = getIngestJob(jobId);
+  if (!latest) {
+    throw new Error(`Ingest job not found: ${jobId}`);
+  }
+  if (TERMINAL_STATES.has(latest.state)) {
+    return latest;
+  }
+
   return setIngestJobState(jobId, 'cancelled');
 }
 

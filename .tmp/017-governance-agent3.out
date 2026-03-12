@@ -1,0 +1,426 @@
+OpenAI Codex v0.114.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public
+model: gpt-5.3-codex
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ce305-174a-76b2-8dc4-b9d011f8b3d6
+--------
+user
+TASK #3: Spec + Documentation Quality (sk-doc & Level 2 template alignment)
+Depth: 1
+Agent Tier: LEAF
+Model Expectation: gpt-5.3-codex (xhigh)
+Objective: Validate governance audit spec docs and related governance feature docs for structure, consistency, and quality.
+Scope:
+Spec folder docs:
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md
+Templates:
+- .opencode/skill/system-spec-kit/templates/
+Related docs:
+- .opencode/skill/system-spec-kit/feature_catalog/17--governance/*.md
+Boundary:
+- Read-only analysis only.
+- Do NOT modify files.
+- Do NOT delegate any sub-task.
+LEAF NESTING CONSTRAINT:
+You are a LEAF agent at depth 1. Nested dispatch is illegal. You MUST NOT dispatch sub-agents or use any task/delegation mechanism. Execute directly and return findings.
+Checks:
+1. Frontmatter presence/quality for each doc (title, description, template source, trigger_phrases, importance_tier where applicable).
+2. Required anchor comment coverage.
+3. Presence of <!-- SPECKIT_LEVEL: 2 --> markers.
+4. Level 2 addendum sections in spec/plan/checklist.
+5. Cross-document consistency: scope, phase, completion status, evidence coherence.
+6. Checklist evidence quality: specific and verifiable, not generic.
+7. Implementation-summary pattern compliance.
+8. Validate CHK-003 reference consistency around NEW-095+ vs NEW-063/NEW-064 and severity.
+Output format:
+- Verdict: PASS | WARN | FAIL
+- Per-document conformance table
+- Cross-doc inconsistencies
+- Severity-ranked findings with file:line evidence
+- Recommendation list
+warning: Under-development features enabled: child_agents_md. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /Users/michelkerkmeester/.codex/config.toml.
+mcp: spec_kit_memory starting
+mcp: sequential_thinking starting
+mcp: code_mode starting
+mcp: spec_kit_memory failed: MCP client for `spec_kit_memory` failed to start: MCP startup failed: handshaking with MCP server failed: connection closed: initialize response
+mcp: code_mode ready
+mcp: sequential_thinking ready
+mcp startup: ready: code_mode, sequential_thinking; failed: spec_kit_memory
+codex
+I’m going to run a read-only documentation audit across the governance spec folder, compare it against the Level 2 templates, and then report conformance and inconsistencies with file-and-line evidence. I’ll start by loading the target docs and the relevant template files side by side.
+exec
+/bin/zsh -lc "pwd && rg --files -g 'AGENTS.md' && rg --files '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance' && rg --files '.opencode/skill/system-spec-kit/templates' && rg --files '.opencode/skill/system-spec-kit/feature_catalog/17--governance'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public
+AGENTS.md
+.opencode/specs/03--commands-and-skills/sk-mcp/001-mcp-clickup-creation/context/clickup-cli-main/AGENTS.md
+.opencode/specs/02--system-spec-kit/024-sqlite-to-turso/context/turso-main/AGENTS.md
+.opencode/specs/02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/scratch/opencode-working-memory/AGENTS.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/description.json
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md
+.opencode/skill/system-spec-kit/templates/handover.md
+.opencode/skill/system-spec-kit/templates/addendum/README.md
+.opencode/skill/system-spec-kit/templates/addendum/level2-verify/checklist.md
+.opencode/skill/system-spec-kit/templates/addendum/level2-verify/plan-level2.md
+.opencode/skill/system-spec-kit/templates/addendum/level2-verify/spec-level2.md
+.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/spec-level3plus-guidance.md
+.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/plan-level3plus.md
+.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/spec-level3plus-suffix.md
+.opencode/skill/system-spec-kit/templates/addendum/level3plus-govern/checklist-extended.md
+codex
+I found all target files and template paths. Next I’m extracting the Level 2 template requirements (frontmatter fields, anchor comments, and section markers) so we can score each governance doc against the exact baseline.
+exec
+/bin/zsh -lc 'for f in .opencode/skill/system-spec-kit/templates/level_2/plan.md .opencode/skill/system-spec-kit/templates/core/plan-core.md .opencode/skill/system-spec-kit/templates/addendum/level2-verify/plan-level2.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/skill/system-spec-kit/templates/level_2/plan.md =====
+     1	---
+     2	title: "Implementation Plan: [NAME] [template:level_2/plan.md]"
+     3	description: "[2-3 sentences: what this implements and the technical approach]"
+     4	trigger_phrases:
+     5	  - "implementation"
+     6	  - "plan"
+     7	  - "name"
+     8	  - "template"
+     9	  - "plan core"
+    10	importance_tier: "normal"
+    11	contextType: "general"
+    12	---
+    13	# Implementation Plan: [NAME]
+    14	
+    15	<!-- SPECKIT_LEVEL: 2 -->
+    16	<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+    17	
+    18	---
+    19	
+exec
+/bin/zsh -lc 'for f in .opencode/skill/system-spec-kit/templates/README.md .opencode/skill/system-spec-kit/templates/level_2/README.md .opencode/skill/system-spec-kit/templates/level_2/spec.md .opencode/skill/system-spec-kit/templates/core/spec-core.md .opencode/skill/system-spec-kit/templates/addendum/level2-verify/spec-level2.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/skill/system-spec-kit/templates/README.md =====
+     1	---
+     2	title: "Templates [template:README.md]"
+     3	description: "System Spec Kit template architecture and level routing."
+     4	trigger_phrases:
+     5	  - "templates"
+     6	  - "level architecture"
+     7	  - "core addendum"
+     8	contextType: "general"
+     9	---
+    10	# Templates
+    11	
+    12	Source of truth for Spec Kit documentation templates.
+    13	
+    14	## TABLE OF CONTENTS
+    15	<!-- ANCHOR:table-of-contents -->
+    16	
+    17	- [1. OVERVIEW](#1--overview)
+    18	- [2. STRUCTURE](#2--structure)
+    19	- [3. LEVEL SELECTION](#3--level-selection)
+exec
+/bin/zsh -lc 'for f in .opencode/skill/system-spec-kit/templates/level_2/checklist.md .opencode/skill/system-spec-kit/templates/core/tasks-core.md .opencode/skill/system-spec-kit/templates/core/impl-summary-core.md .opencode/skill/system-spec-kit/templates/level_2/tasks.md .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md .opencode/skill/system-spec-kit/templates/addendum/level2-verify/checklist.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/skill/system-spec-kit/templates/level_2/checklist.md =====
+     1	---
+     2	title: "Verification Checklist: [NAME] [template:level_2/checklist.md]"
+     3	description: "Verification Date: [YYYY-MM-DD]"
+     4	trigger_phrases:
+     5	  - "verification"
+     6	  - "checklist"
+     7	  - "name"
+     8	  - "template"
+     9	importance_tier: "normal"
+    10	contextType: "general"
+    11	---
+    12	# Verification Checklist: [NAME]
+    13	
+    14	<!-- SPECKIT_LEVEL: 2 -->
+    15	<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+    16	
+    17	---
+    18	
+    19	<!-- ANCHOR:protocol -->
+codex
+I’ve captured the Level 2 template contract and anchor schema. I’m now inspecting the five governance spec docs plus feature catalog docs to compare frontmatter, anchors, Level 2 sections, and CHK-003 references.
+exec
+/bin/zsh -lc 'for f in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md =====
+     1	---
+     2	title: "Feature Specification: governance [template:level_2/spec.md]"
+     3	description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
+     4	# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+     5	trigger_phrases:
+     6	  - "governance"
+     7	  - "feature"
+     8	  - "flag"
+     9	  - "sunset"
+    10	  - "audit"
+    11	  - "catalog"
+    12	importance_tier: "normal"
+    13	contextType: "general"
+    14	---
+    15	# Feature Specification: governance
+    16	
+    17	<!-- SPECKIT_LEVEL: 2 -->
+    18	<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+    19	
+exec
+/bin/zsh -lc 'for f in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md =====
+     1	---
+     2	title: "Tasks: governance [template:level_2/tasks.md]"
+     3	description: "Task Format: T### [P?] Description (file path)"
+     4	# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+     5	trigger_phrases:
+     6	  - "governance"
+     7	  - "tasks"
+     8	  - "feature"
+     9	  - "flag"
+    10	  - "sunset"
+    11	  - "audit"
+    12	importance_tier: "normal"
+    13	contextType: "general"
+    14	---
+    15	# Tasks: governance
+    16	
+    17	<!-- SPECKIT_LEVEL: 2 -->
+    18	<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+    19	
+exec
+/bin/zsh -lc 'for f in .opencode/skill/system-spec-kit/feature_catalog/17--governance/01-feature-flag-governance.md .opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md; do echo "===== $f ====="; nl -ba "$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/skill/system-spec-kit/feature_catalog/17--governance/01-feature-flag-governance.md =====
+     1	# Feature flag governance
+     2	
+     3	## TABLE OF CONTENTS
+     4	
+     5	- [1. OVERVIEW](#1--overview)
+     6	- [2. CURRENT REALITY](#2--current-reality)
+     7	- [3. SOURCE FILES](#3--source-files)
+     8	- [4. SOURCE METADATA](#4--source-metadata)
+     9	
+    10	## 1. OVERVIEW
+    11	
+    12	This document captures the implemented behavior, source references, and validation scope for Feature flag governance.
+    13	
+    14	## 2. CURRENT REALITY
+    15	
+    16	The program introduces many new scoring signals and pipeline stages. Without governance, flags accumulate until nobody knows what is enabled.
+    17	
+    18	A governance framework defines operational targets (small active flag surface, explicit sunset windows and periodic audits). These are process controls, not hard runtime-enforced caps in code.
+    19	
+exec
+/bin/zsh -lc 'for f in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/{spec.md,plan.md,tasks.md,checklist.md,implementation-summary.md}; do echo "===== $f ====="; echo "-- Frontmatter keys --"; awk '"'BEGIN{in=0} /"'^---$/ {if(in==0){in=1;next}else{in=0;exit}} in{print}'"' \""'$f" | sed -E '"'s/:.*//' | sed -E 's/"'^'"\\s*#\\s*//' | sed -E 's/"'^'"\\s*-\\s*//' | sed -E 's/\\s+"'$//'"' | sed '/"'^$/d'"'; echo \"-- Anchors --\"; rg -n \"ANCHOR:\" \""'$f"; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md =====
+-- Frontmatter keys --
+awk: syntax error at source line 1
+ context is
+	 >>> BEGIN{in <<< =0} /^---$/ {if(in==0){in=1;next}else{in=0;exit}} in{print}
+awk: illegal statement at source line 1
+-- Anchors --
+22:<!-- ANCHOR:metadata -->
+32:<!-- /ANCHOR:metadata -->
+36:<!-- ANCHOR:problem -->
+44:<!-- /ANCHOR:problem -->
+48:<!-- ANCHOR:scope -->
+69:<!-- /ANCHOR:scope -->
+73:<!-- ANCHOR:requirements -->
+90:<!-- /ANCHOR:requirements -->
+94:<!-- ANCHOR:success-criteria -->
+99:<!-- /ANCHOR:success-criteria -->
+103:<!-- ANCHOR:risks -->
+112:<!-- /ANCHOR:risks -->
+116:<!-- ANCHOR:questions -->
+exec
+/bin/zsh -lc 'for f in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/{spec.md,plan.md,tasks.md,checklist.md,implementation-summary.md}; do echo "===== $f ====="; awk '"'BEGIN{fm=0;sep=0} /"'^---$/ {sep++; if(sep==1){fm=1;next} if(sep==2){exit}} fm{print}'"' \""'$f" | nl -ba; echo; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+===== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md =====
+     1	title: "Feature Specification: governance [template:level_2/spec.md]"
+     2	description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
+     3	# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+     4	trigger_phrases:
+     5	  - "governance"
+     6	  - "feature"
+     7	  - "flag"
+     8	  - "sunset"
+     9	  - "audit"
+    10	  - "catalog"
+    11	importance_tier: "normal"
+    12	contextType: "general"
+
+===== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md =====
+     1	title: "Implementation Plan: governance [template:level_2/plan.md]"
+     2	description: "Governance feature audit plan covering catalog inventory, code review, test coverage checks, and playbook cross-reference."
+     3	# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+     4	trigger_phrases:
+     5	  - "governance"
+exec
+/bin/zsh -lc "base='.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance';
+check(){ f=\""'$1"; shift; echo "## $f"; for a in "$@"; do if rg -q "ANCHOR:${a}" "$f"; then echo "ANCHOR ${a}: OK"; else echo "ANCHOR ${a}: MISSING"; fi; done; if rg -q "SPECKIT_LEVEL: 2" "$f"; then echo "SPECKIT_LEVEL:2 OK"; else echo "SPECKIT_LEVEL:2 MISSING"; fi; if rg -q "SPECKIT_TEMPLATE_SOURCE:" "$f"; then echo "SPECKIT_TEMPLATE_SOURCE marker OK"; else echo "SPECKIT_TEMPLATE_SOURCE marker MISSING"; fi; echo; }
+check "$base/spec.md" metadata problem scope requirements success-criteria risks questions nfr edge-cases complexity;
+check "$base/plan.md" summary quality-gates architecture phases testing dependencies rollback phase-deps effort enhanced-rollback;
+check "$base/tasks.md" notation phase-1 phase-2 phase-3 completion cross-refs;
+check "$base/checklist.md" protocol pre-impl code-quality testing security docs file-org summary;
+check "$base/implementation-summary.md" metadata what-built how-delivered decisions verification limitations;' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 28ms:
+ANCHOR file-org: OK
+ANCHOR summary: OK
+SPECKIT_LEVEL:2 OK
+SPECKIT_TEMPLATE_SOURCE marker OK
+
+## .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md
+ANCHOR metadata: MISSING
+ANCHOR what-built: MISSING
+ANCHOR how-delivered: MISSING
+ANCHOR decisions: MISSING
+ANCHOR verification: MISSING
+ANCHOR limitations: MISSING
+SPECKIT_LEVEL:2 OK
+SPECKIT_TEMPLATE_SOURCE marker OK
+
+exec
+/bin/zsh -lc 'for f in .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/{spec.md,plan.md,tasks.md,checklist.md,implementation-summary.md}; do echo "== $f"; rg -n "SPECKIT_TEMPLATE_SOURCE" "$f"; done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md
+4:# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+18:<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md
+4:# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+19:<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/tasks.md
+4:# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+18:<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md
+4:# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
+19:<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+== .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md
+4:# SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
+63:- `spec.md`: frontmatter, SPECKIT_LEVEL, SPECKIT_TEMPLATE_SOURCE, core anchors, L2 addendum anchors, metadata table — all PASS.
+codex
+I’ve identified a likely core issue: `implementation-summary.md` appears to diverge from the Level 2 implementation-summary template (missing required anchors/sections), and I’m now validating cross-doc contradictions around NEW-095+ vs NEW-063/NEW-064 and outdated 23/61 vs 24/79 claims.
+exec
+/bin/zsh -lc "rg -n \"NEW-095\\+|NEW-063|NEW-064|23|24|61|79|documentation drift|F-02|PASS|WARN\" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/{spec.md,plan.md,tasks.md,checklist.md,implementation-summary.md} .opencode/skill/system-spec-kit/feature_catalog/17--governance/*.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 0ms:
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md:16:A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md:18:The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON, and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:33:| **Testing** | Existing Vitest coverage + manual playbook mapping (NEW-063/NEW-064) |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:71:Feature catalog entries identify scope, source file references are reviewed for behavior correctness, test coverage is checked, and per-feature findings are written with PASS/WARN/FAIL status and NEW-063/NEW-064 playbook mapping.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:82:- [x] Manual playbook target (NEW-063/NEW-064) identified
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:91:- [x] PASS/WARN/FAIL status assigned
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:104:| Manual | Playbook cross-reference and findings verification | NEW-063/NEW-064 scenario set |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md:117:| Playbook scenario `NEW-063/NEW-064` | Internal | Green | Cannot complete manual coverage mapping |
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:43:  - **Evidence**: Catalog files, `mcp_server/lib/search/search-flags.ts`, and NEW-095+ playbook references are available.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:58:  - **Evidence**: F-01 PASS (no standards violations). F-02 WARN: catalog claims 23 exported `is*` functions but actual count is **24** (`isQualityLoopEnabled` was added after the original audit). Catalog also claims 61 unique SPECKIT_ flags but actual count is **79** (18 flags added across sprints since the original count). Both are documentation drift, not code violations.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:68:    - F-01 Feature flag governance: **PASS**. B8 signal ceiling confirmed as governance target only — no runtime enforcement (`MAX_SIGNALS`, `SIGNAL_LIMIT`, `SIGNAL_CAP`, `signal_ceiling` all absent from mcp_server). 24 exported `is*` functions: 19 default-ON, 4 opt-in/OFF, 1 deprecated.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:69:    - F-02 Feature flag sunset audit: **WARN**. `isPipelineV2Enabled()` correctly deprecated with `@deprecated` JSDoc, always returns `true`, env var ignored. Deferred features (GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES, ENTITY_LINKING) all confirmed default-ON. Dead code removal verified: `stmtCache`, `lastComputedAt`, `flushCount`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`, `computeCausalDepth` (single-node) all removed. 4 remnants exist as comments/test descriptions only (`isShadowScoringEnabled`, `isRsfEnabled`, `activeProvider`, `getSubgraphWeights`). `isInShadowPeriod` confirmed active as Safeguard #6 in `learned-feedback.ts:411`. Stale test scaffolding: `SPECKIT_SHADOW_SCORING` and `SPECKIT_RSF_FUSION` in tests only, no runtime env reads.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:70:    - **Documentation drift**: catalog says 23 `is*` functions (actual: 24), 61 SPECKIT_ flags (actual: 79).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:72:  - **Evidence**: Governance features mapped to manual playbook scenarios NEW-063/NEW-064 (not NEW-095+ as previously claimed; corrected per playbook cross-reference audit).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:74:  - **Evidence**: Governance findings include explicit checks for boundary, mismatch, and gap conditions. Documentation drift flagged as WARN (not blocking). Default-OFF functions (`isReconsolidationEnabled`, `isFileWatcherEnabled`, `isLocalRerankerEnabled`, `isQualityLoopEnabled`) verified with correct env-check patterns.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:75:- [x] CHK-023 [P1] Error scenarios validated
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:76:  - **Evidence**: All 24 functions in `search-flags.ts:15-216` verified. `rollout-policy.ts` covers: default 100% rollout, deterministic bucket hashing, identity gating, feature-flag + rollout interaction. 2 functions lack direct test files: `isFileWatcherEnabled`, `isLocalRerankerEnabled` (test gap — documented, not blocking for audit-only phase). `isQualityLoopEnabled` is tested in `quality-loop.vitest.ts:523` (GPT 5.4 verification corrected Agent 5 false negative).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md:100:  - **Evidence**: Audit notes preserve source references and rationale for PASS outcomes.
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:54:- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
+.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md:80:| REQ-001 | All governance features are audited with structured findings | Both features have explicit PASS/WARN/FAIL status and finding fields |
+codex
+I’ve completed the read-only audit and validated template alignment, anchor coverage, and cross-document consistency. I’m compiling the final report now with a pass/warn/fail table, ranked findings, and concrete recommendations.
+codex
+Verdict: **FAIL**
+
+| Document | Frontmatter | Anchors | `SPECKIT_LEVEL: 2` | L2 Addendum/Pattern | Consistency & Evidence | Status |
+|---|---|---|---|---|---|---|
+| `spec.md` | PASS | PASS | PASS | PASS (`nfr`, `edge-cases`, `complexity`) | WARN (scope/conformance counts omit impl summary) | WARN |
+| `plan.md` | PASS | PASS | PASS | PASS (`phase-deps`, `effort`, `enhanced-rollback`) | PASS | PASS |
+| `tasks.md` | PASS | PASS | PASS | N/A (core tasks template) | PASS | PASS |
+| `checklist.md` | PASS | PASS | PASS | PASS (Level 2 checklist structure) | **FAIL** (contradictory CHK-003 mapping + stale drift evidence + weak verification evidence in several checks) | FAIL |
+| `implementation-summary.md` | WARN | **FAIL** (required anchors missing) | PASS | **FAIL** (does not follow Level 2 impl-summary section pattern) | FAIL | FAIL |
+| `feature_catalog/01-feature-flag-governance.md` | N/A (not SpecKit level template) | N/A | N/A | N/A | PASS | PASS |
+| `feature_catalog/02-feature-flag-sunset-audit.md` | N/A (not SpecKit level template) | N/A | N/A | N/A | WARN (conflicts with checklist drift claims) | WARN |
+
+**Cross-doc inconsistencies**
+- CHK-003 still cites `NEW-095+`, while spec/plan/tasks and other checklist lines use `NEW-063/NEW-064`.
+- Checklist still claims catalog drift `23/61 -> 24/79`, but related governance feature doc already states `24` functions and `79` flags.
+- Implementation summary claims template conformance “4/4 PASS,” but Level 2 required file set is 5 files and the implementation summary itself is non-conformant to template anchors/sections.
+- Spec success/conformance language is “four docs” rather than full Level 2 file set including `implementation-summary.md`.
+
+**Severity-ranked findings (with evidence)**
+1. **HIGH**: `implementation-summary.md` is not aligned to Level 2 implementation-summary template structure (missing required anchors/sections).
+- Evidence: [implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md):18-109 (custom sections, no `ANCHOR:*` blocks)
+- Required pattern: [level_2/implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md):20-110 (`metadata`, `what-built`, `how-delivered`, `decisions`, `verification`, `limitations`)
+
+2. **HIGH**: CHK-003 reference mapping is internally contradictory (`NEW-095+` vs corrected `NEW-063/NEW-064`).
+- Evidence: [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):43 vs :72
+- Consistent mapping elsewhere: [plan.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md):33,71,104,117 and [spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md):54,82
+
+3. **MEDIUM**: Checklist WARN rationale on “23/61 drift” appears stale against current related governance feature doc values.
+- Evidence (stale claim): [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):58-70
+- Evidence (current values): [02-feature-flag-sunset-audit.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md):16,18
+
+4. **MEDIUM**: Conformance denominator is inconsistent (4 docs vs Level 2 required 5 docs).
+- Evidence: [implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md):22,60-66,106
+- Level 2 required files: [level_2/README.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/level_2/README.md):41-45
+- Related spec wording: [spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md):65-69,98
+
+5. **LOW**: Several checklist evidence entries are generic/non-verifiable relative to the item text.
+- Examples:
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):51-53 (`CHK-010` lint/format claim without run evidence)
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):99-101 (`CHK-041` code comments item evidenced by “audit notes”)
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):114-116 (`CHK-052` says memory saved, evidence says memory not modified)
+
+**Recommendations**
+1. Bring `implementation-summary.md` back to the Level 2 template skeleton (anchors + required section set), then re-run conformance.
+2. Fix CHK-003 evidence to only reference `NEW-063/NEW-064` and remove `NEW-095+`.
+3. Reconcile checklist F-02/WARN drift text with current governance feature docs (`24` / `79`) or explicitly scope drift to another file (e.g., master catalog) with direct evidence.
+4. Update conformance statements from “4/4” to full Level 2 set (including implementation summary), or clearly state why denominator excludes it.
+5. Tighten checklist evidence lines to be directly verifiable (file paths, commands, or explicit N/A rationale per check).
+tokens used
+54,601
+Verdict: **FAIL**
+
+| Document | Frontmatter | Anchors | `SPECKIT_LEVEL: 2` | L2 Addendum/Pattern | Consistency & Evidence | Status |
+|---|---|---|---|---|---|---|
+| `spec.md` | PASS | PASS | PASS | PASS (`nfr`, `edge-cases`, `complexity`) | WARN (scope/conformance counts omit impl summary) | WARN |
+| `plan.md` | PASS | PASS | PASS | PASS (`phase-deps`, `effort`, `enhanced-rollback`) | PASS | PASS |
+| `tasks.md` | PASS | PASS | PASS | N/A (core tasks template) | PASS | PASS |
+| `checklist.md` | PASS | PASS | PASS | PASS (Level 2 checklist structure) | **FAIL** (contradictory CHK-003 mapping + stale drift evidence + weak verification evidence in several checks) | FAIL |
+| `implementation-summary.md` | WARN | **FAIL** (required anchors missing) | PASS | **FAIL** (does not follow Level 2 impl-summary section pattern) | FAIL | FAIL |
+| `feature_catalog/01-feature-flag-governance.md` | N/A (not SpecKit level template) | N/A | N/A | N/A | PASS | PASS |
+| `feature_catalog/02-feature-flag-sunset-audit.md` | N/A (not SpecKit level template) | N/A | N/A | N/A | WARN (conflicts with checklist drift claims) | WARN |
+
+**Cross-doc inconsistencies**
+- CHK-003 still cites `NEW-095+`, while spec/plan/tasks and other checklist lines use `NEW-063/NEW-064`.
+- Checklist still claims catalog drift `23/61 -> 24/79`, but related governance feature doc already states `24` functions and `79` flags.
+- Implementation summary claims template conformance “4/4 PASS,” but Level 2 required file set is 5 files and the implementation summary itself is non-conformant to template anchors/sections.
+- Spec success/conformance language is “four docs” rather than full Level 2 file set including `implementation-summary.md`.
+
+**Severity-ranked findings (with evidence)**
+1. **HIGH**: `implementation-summary.md` is not aligned to Level 2 implementation-summary template structure (missing required anchors/sections).
+- Evidence: [implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md):18-109 (custom sections, no `ANCHOR:*` blocks)
+- Required pattern: [level_2/implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md):20-110 (`metadata`, `what-built`, `how-delivered`, `decisions`, `verification`, `limitations`)
+
+2. **HIGH**: CHK-003 reference mapping is internally contradictory (`NEW-095+` vs corrected `NEW-063/NEW-064`).
+- Evidence: [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):43 vs :72
+- Consistent mapping elsewhere: [plan.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/plan.md):33,71,104,117 and [spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md):54,82
+
+3. **MEDIUM**: Checklist WARN rationale on “23/61 drift” appears stale against current related governance feature doc values.
+- Evidence (stale claim): [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):58-70
+- Evidence (current values): [02-feature-flag-sunset-audit.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/17--governance/02-feature-flag-sunset-audit.md):16,18
+
+4. **MEDIUM**: Conformance denominator is inconsistent (4 docs vs Level 2 required 5 docs).
+- Evidence: [implementation-summary.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/implementation-summary.md):22,60-66,106
+- Level 2 required files: [level_2/README.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/level_2/README.md):41-45
+- Related spec wording: [spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/spec.md):65-69,98
+
+5. **LOW**: Several checklist evidence entries are generic/non-verifiable relative to the item text.
+- Examples:
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):51-53 (`CHK-010` lint/format claim without run evidence)
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):99-101 (`CHK-041` code comments item evidenced by “audit notes”)
+- [checklist.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-code-audit-per-feature-catalog/017-governance/checklist.md):114-116 (`CHK-052` says memory saved, evidence says memory not modified)
+
+**Recommendations**
+1. Bring `implementation-summary.md` back to the Level 2 template skeleton (anchors + required section set), then re-run conformance.
+2. Fix CHK-003 evidence to only reference `NEW-063/NEW-064` and remove `NEW-095+`.
+3. Reconcile checklist F-02/WARN drift text with current governance feature docs (`24` / `79`) or explicitly scope drift to another file (e.g., master catalog) with direct evidence.
+4. Update conformance statements from “4/4” to full Level 2 set (including implementation summary), or clearly state why denominator excludes it.
+5. Tighten checklist evidence lines to be directly verifiable (file paths, commands, or explicit N/A rationale per check).

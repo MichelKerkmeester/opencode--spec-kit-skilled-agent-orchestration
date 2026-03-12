@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: bug-fixes-and-data-integrity [template:level_2/implementation-summary.md]"
-description: "Summary of 14-task remediation across 11 bug-fix/data-integrity features with 42 new regression tests."
+description: "Summary of 14-task remediation across 11 bug-fix/data-integrity features with refreshed verification evidence."
 trigger_phrases:
   - "implementation summary"
   - "bug fixes"
@@ -24,7 +24,7 @@ contextType: "general"
 |-------|-------|
 | **Completed** | 2026-03-11 |
 | **Tasks** | 14/14 (5 P0, 8 P1, 1 P2) |
-| **Tests Added** | 42 new tests across 5 test files |
+| **Targeted Verification** | 49 current tests across 5 audited test files |
 | **TSC Status** | 0 errors |
 | **Agents Used** | 5 parallel cli-copilot agents (gpt-5.3-codex, xhigh reasoning) |
 
@@ -49,8 +49,8 @@ contextType: "general"
 |------|------|--------|
 | T006 [P0] | `lib/errors/index.ts` | ALREADY DONE — explicit named exports confirmed, no `export *` found |
 | T007 [P0] | `shared/scoring/folder-scoring.ts` | Replaced 2x `Math.max(...spread)` with stack-safe `reduce()` at lines 200-207 and 269-271; rebuilt `shared/dist/` |
-| T008 [P1] | `tests/content-hash-dedup.vitest.ts` | Extended production-path content-hash dedup coverage (15 tests) |
-| T009 [P1] | `handlers/chunking-orchestrator.ts` | Added AI-WHY comment documenting force-path as intentionally destructive (lines 166-168) |
+| T008 [P1] | `tests/content-hash-dedup.vitest.ts` | Extended production-path content-hash dedup coverage (23 tests) |
+| T009 [P1] | `handlers/chunking-orchestrator.ts` | Added AI-WHY comment documenting force-path as intentionally destructive (lines 170-172) |
 
 ### Phase 3: Regression Tests (T011-T014)
 
@@ -58,8 +58,8 @@ contextType: "general"
 |------|-----------|-------|----------|
 | T011 [P0] | `folder-scoring-overflow.vitest.ts` | 2 | 150K-element arrays for `computeSingleFolderScore` and `findLastActivity` |
 | T012 [P1] | `handler-memory-search.vitest.ts` | 18 | Include-content-independent dedup regression |
-| T013 [P1] | `chunking-orchestrator-swap.vitest.ts` | 3 | Staged-swap success, failure rollback, partial-embedding |
-| T014 [P2] | `session-manager-stress.vitest.ts` | 2 | Concurrent over-capacity insert, cleanup timestamp |
+| T013 [P1] | `chunking-orchestrator-swap.vitest.ts` | 4 | Staged-swap success, failure rollback, partial-embedding, cache-key normalization |
+| T014 [P2] | `session-manager-stress.vitest.ts` | 2 | High-volume interleaved insert stress, cleanup timestamp |
 
 ---
 
@@ -76,8 +76,8 @@ contextType: "general"
 ## Verification
 
 - **TSC**: `npx tsc --noEmit` — 0 errors
-- **Vitest**: 42 new tests all passing across 5 test files
-- **Checklist**: 27/27 items verified (10 P0, 14 P1, 3 P2)
+- **Vitest**: targeted audited suite passes — 49/49 across 5 files
+- **Checklist**: 34/34 items verified (13 P0, 18 P1, 3 P2)
 
 ---
 
@@ -95,16 +95,16 @@ contextType: "general"
 - `08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`
 - `08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`
 
-### Test Files (3 new, 2 extended)
+### Test Files (audited verification scope)
 - `tests/folder-scoring-overflow.vitest.ts` (new)
 - `tests/chunking-orchestrator-swap.vitest.ts` (new)
 - `tests/session-manager-stress.vitest.ts` (new)
-- `tests/content-hash-dedup.vitest.ts` (extended)
-- `tests/handler-memory-search.vitest.ts` (extended)
+- `tests/content-hash-dedup.vitest.ts` (current count: 23)
+- `tests/handler-memory-search.vitest.ts` (current count: 18)
 
 ### Spec Folder Artifacts
 - `spec.md` — Status: Draft → Complete, questions resolved
 - `plan.md` — All 3 phases and DoD checked
 - `tasks.md` — 14/14 tasks marked complete with evidence
-- `checklist.md` — 27/27 items verified
+- `checklist.md` — 34/34 items verified
 - `implementation-summary.md` — This file

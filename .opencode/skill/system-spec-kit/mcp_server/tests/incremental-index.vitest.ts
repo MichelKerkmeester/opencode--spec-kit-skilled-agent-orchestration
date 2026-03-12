@@ -4,10 +4,11 @@
 
 import { describe, it, expect } from 'vitest';
 
-// DB-dependent imports (commented out - requires better-sqlite3 / dist modules)
+// Legacy placeholder suite retained only as a deferred spec stub.
+// Real behavioral coverage lives in incremental-index-v2.vitest.ts.
 import * as incrementalIndex from '../lib/storage/incremental-index.js';
 
-describe('Incremental Indexing (T064-T066) [deferred - requires DB test fixtures]', () => {
+describe.skip('Incremental Indexing (T064-T066) [deferred - requires DB test fixtures]', () => {
 
   describe('T064 - Content Hash + Mtime Tracking', () => {
     it('should return content hash and mtime from getFileMetadata', () => {

@@ -18,7 +18,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 005-lifecycle |
-| **Completed** | 2026-03-11 |
+| **Completed** | 2026-03-12 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -35,7 +35,7 @@ The `MAX_INGEST_PATHS = 50` constant was extracted to `tool-input-schemas.ts` an
 
 ### Ingest Boundary and Queue State Tests (T005)
 
-8 ingest edge tests (`handler-memory-ingest-edge.vitest.ts`) cover empty paths, non-string values, path traversal, paths outside base, missing jobId, and over-length paths. 9 job queue state tests (`job-queue-state-edge.vitest.ts`) cover progress percentages, whitespace paths, missing jobs, terminal cancel rejection, empty incomplete sets, and duplicate enqueue protection.
+13 ingest edge tests (`handler-memory-ingest-edge.vitest.ts`) cover empty paths, non-string values, path traversal, paths outside base, missing jobId, unknown-job E404 flows, cancel race terminal summaries, and over-length paths. 13 job queue state tests (`job-queue-state-edge.vitest.ts`) cover progress percentages, whitespace paths, terminal cancel idempotency, all-fail vs partial-fail terminal outcomes, empty incomplete sets, and duplicate enqueue protection.
 
 ### Stale Pending-File Detection (T006)
 
@@ -47,15 +47,19 @@ The startup recovery path in `context-server.ts` now creates a DB-backed `isComm
 
 ### Crash Recovery Tests (T007)
 
-8 tests in `transaction-manager-recovery.vitest.ts` cover backward-compatible recovery (no callback), committed file recovery, stale file detection, stale file persistence on disk, callback forwarding through `recoverAllPendingFiles`, mixed committed/stale batches, `findPendingFiles` filtering, and original-newer scenarios.
+13 tests in `transaction-manager-recovery.vitest.ts` cover backward-compatible recovery (no callback), committed file recovery, stale file detection, stale file persistence on disk, callback forwarding through `recoverAllPendingFiles`, mixed committed/stale batches, `findPendingFiles` filtering, and original-newer scenarios.
 
 ### Vector Archival Cleanup (T008 + P2 Fix)
 
-The archival manager now correctly calls `deleteMemory(id)` from `vector-index-mutations.ts` when archiving. The original implementation defined a `VectorIndexModule` interface expecting `deleteVectors` — a function that does not exist. The lazy-load check silently returned null, so vector entries were never cleaned up on archive. The interface now matches the actual export: `deleteMemory(id: number): boolean`.
+The archival manager now performs vector-only cleanup directly in SQLite (`DELETE FROM vec_memories WHERE rowid = ?`) while preserving the archived `memory_index` row for later unarchive. This keeps BM25/vector parity explicit without deleting metadata rows needed for recovery paths. On unarchive, BM25 is restored while vector re-embedding is intentionally deferred to the next index scan.
 
 ### Checkpoint Edge Tests (T009-T012)
 
-10 deterministic tests in `handler-checkpoints-edge.vitest.ts` using in-memory SQLite cover checkpoint create (valid + empty name), list (empty + with limit + specFolder filter), restore (non-existent + clearExisting), and delete (mismatched confirm + non-existent + matching confirm).
+12 deterministic tests in `handler-checkpoints-edge.vitest.ts` using in-memory SQLite cover checkpoint create (valid + empty name), list (empty + with limit + specFolder filter), restore (non-existent + clearExisting + restore hints + id-collision merge guard), and delete (mismatched confirm + non-existent + matching confirm).
+
+### Checkpoint Restore Idempotency Follow-up (P0)
+
+`causal-edges.ts` now treats `INSERT OR IGNORE` replay no-op rows as expected duplicates instead of failed inserts during restore replay. This removes false-positive restore errors when a checkpoint is restored in merge mode over an already-present edge set.
 
 ### Stale Reference Cleanup (T013-T015)
 
@@ -111,9 +115,9 @@ All findings from all 4 review rounds addressed. Final verdict: APPROVE at 97/10
 
 | Check | Result |
 |-------|--------|
-| **TSC** | 0 errors |
-| **New test files** | 4 files, 35 tests, all passing |
-| **Full suite** | 245/254 files passed (9 pre-existing failures) |
+| **TSC** | Pass (`npx tsc --noEmit`) |
+| **New test files** | 4 files, 51 tests, all passing |
+| **Full suite** | 264/265 files passed (`1 skipped`, `0 failed`) |
 | **Checklist** | 20/20 items verified (8 P0, 10 P1, 2 P2) |
 <!-- /ANCHOR:verification -->
 
@@ -127,15 +131,21 @@ All findings from all 4 review rounds addressed. Final verdict: APPROVE at 97/10
 | `mcp_server/schemas/tool-input-schemas.ts` | Extract `MAX_INGEST_PATHS = 50` constant |
 | `mcp_server/handlers/memory-ingest.ts` | Import shared `MAX_INGEST_PATHS` |
 | `mcp_server/lib/storage/transaction-manager.ts` | Add `IsCommittedCheck` callback to recovery |
-| `mcp_server/context-server.ts` | Wire `isCommittedInDb` into startup recovery |
+| `mcp_server/context-server.ts` | Wire `isCommittedInDb` into startup recovery and derive scan locations from allowed roots |
+| `mcp_server/lib/storage/causal-edges.ts` | Make checkpoint edge replay idempotent (duplicate `INSERT OR IGNORE` rows are no-op, not failures) |
+| `mcp_server/lib/storage/checkpoints.ts` | Guard merge-mode restore against id-collision overwrite on unrelated logical identities |
 | `mcp_server/lib/cognitive/archival-manager.ts` | Vector-only delete on archive (removed destructive `deleteMemory` call) |
-| `mcp_server/lib/ops/job-queue.ts` | Add `.trim()` to `createIngestJob` path normalization |
-| `mcp_server/tests/handler-memory-ingest-edge.vitest.ts` | New: 8 ingest edge tests |
-| `mcp_server/tests/job-queue-state-edge.vitest.ts` | New: 9 queue state tests |
-| `mcp_server/tests/transaction-manager-recovery.vitest.ts` | New: 8 recovery tests |
-| `mcp_server/tests/handler-checkpoints-edge.vitest.ts` | New: 10 checkpoint edge tests |
+| `mcp_server/lib/ops/job-queue.ts` | Add `.trim()` path normalization and race-tolerant cancel semantics |
+| `mcp_server/tests/handler-memory-ingest-edge.vitest.ts` | New: 13 ingest edge tests |
+| `mcp_server/tests/job-queue-state-edge.vitest.ts` | New: 13 queue state tests |
+| `mcp_server/tests/transaction-manager-recovery.vitest.ts` | New: 13 recovery tests |
+| `mcp_server/tests/handler-checkpoints-edge.vitest.ts` | New: 12 checkpoint edge tests |
+| `mcp_server/tests/startup-checks.vitest.ts` | Align success-path logging assertions with stderr-safe `console.warn` behavior |
+| `mcp_server/tests/cold-start.vitest.ts` | Remove `Date.now()` drift flake by fixing time in novelty-removed parity assertions |
 | `mcp_server/tests/README.md` | Remove stale `retry.vitest.ts` reference |
 | `feature_catalog/05--lifecycle/01-*.md` through `05-*.md` | Remove stale `retry.vitest.ts` refs |
+| `feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md` | Clarify deferred vector re-embedding on unarchive |
+| `manual_testing_playbook/manual_testing_playbook.md` | Fix stale source-artifact links and align NEW-124 with deferred vector rebuild behavior |
 <!-- /ANCHOR:files-changed -->
 
 ---

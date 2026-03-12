@@ -42,7 +42,7 @@ This plan audits the UX Hooks feature catalog (`feature_catalog/18--ux-hooks/`) 
 
 ### Definition of Done
 - [x] All acceptance criteria met — 17/17 tasks, 21/21 checklist items
-- [x] Tests passing (if applicable) — 439 tests across 7 files, all green
+- [x] Tests passing (if applicable) — 445/445 tests across 7 files, all green
 - [x] Docs updated (spec/plan/tasks) — all 4 spec folder docs synchronized
 <!-- /ANCHOR:quality-gates -->
 

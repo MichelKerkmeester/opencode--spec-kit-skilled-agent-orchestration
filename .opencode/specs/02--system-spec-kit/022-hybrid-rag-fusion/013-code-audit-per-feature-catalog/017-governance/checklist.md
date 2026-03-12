@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: governance [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-11 — 5-agent parallel Codex 5.3 xhigh audit"
+description: "Verification Date: 2026-03-12 - governance audit corrections validated"
 # SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "governance"
@@ -40,7 +40,7 @@ contextType: "general"
 - [x] CHK-002 [P0] Technical approach defined in plan.md
   - **Evidence**: `plan.md` documents feature inventory, per-feature audit review, and playbook cross-reference steps.
 - [x] CHK-003 [P1] Dependencies identified and available
-  - **Evidence**: Catalog files, `mcp_server/lib/search/search-flags.ts`, and NEW-095+ playbook references are available.
+  - **Evidence**: Catalog files, `mcp_server/lib/search/search-flags.ts`, and governance playbook scenarios NEW-063/NEW-064 are available.
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -49,13 +49,13 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Code passes lint/format checks
-  - **Evidence**: Documentation rewritten to Level 2 template structure with required anchors and frontmatter.
+  - **Evidence**: Targeted TypeScript and Markdown edits compile and run through the targeted Vitest suites listed in CHK-023.
 - [x] CHK-011 [P0] No console errors or warnings
-  - **Evidence**: No runtime code execution changes were introduced in this governance phase.
+  - **Evidence**: `rollout-policy`, `search-flags`, and dead-code regression tests pass without runtime warnings.
 - [x] CHK-012 [P1] Error handling implemented
-  - **Evidence**: Audit criteria explicitly include error-path review and feature-level mismatch reporting.
+  - **Evidence**: Rollout policy now fails closed for partial rollouts without identity and rejects malformed rollout-percent strings by falling back to safe default (100).
 - [x] CHK-013 [P1] Code follows project patterns
-  - **Evidence**: F-01 PASS (no standards violations). F-02 WARN: catalog claims 23 exported `is*` functions but actual count is **24** (`isQualityLoopEnabled` was added after the original audit). Catalog also claims 61 unique SPECKIT_ flags but actual count is **79** (18 flags added across sprints since the original count). Both are documentation drift, not code violations.
+  - **Evidence**: F-01 remains PASS. F-02 documentation drift items were corrected (`24` exported `is*` helpers, `79` unique `SPECKIT_` flags). No standards violations were introduced by remediation.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -64,16 +64,16 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
-  - **Evidence** (5-agent Codex 5.3 xhigh audit, 2026-03-11):
-    - F-01 Feature flag governance: **PASS**. B8 signal ceiling confirmed as governance target only — no runtime enforcement (`MAX_SIGNALS`, `SIGNAL_LIMIT`, `SIGNAL_CAP`, `signal_ceiling` all absent from mcp_server). 24 exported `is*` functions: 19 default-ON, 4 opt-in/OFF, 1 deprecated.
-    - F-02 Feature flag sunset audit: **WARN**. `isPipelineV2Enabled()` correctly deprecated with `@deprecated` JSDoc, always returns `true`, env var ignored. Deferred features (GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES, ENTITY_LINKING) all confirmed default-ON. Dead code removal verified: `stmtCache`, `lastComputedAt`, `flushCount`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`, `computeCausalDepth` (single-node) all removed. 4 remnants exist as comments/test descriptions only (`isShadowScoringEnabled`, `isRsfEnabled`, `activeProvider`, `getSubgraphWeights`). `isInShadowPeriod` confirmed active as Safeguard #6 in `learned-feedback.ts:411`. Stale test scaffolding: `SPECKIT_SHADOW_SCORING` and `SPECKIT_RSF_FUSION` in tests only, no runtime env reads.
-    - **Documentation drift**: catalog says 23 `is*` functions (actual: 24), 61 SPECKIT_ flags (actual: 79).
+  - **Evidence** (audit + remediation pass, 2026-03-12):
+    - F-01 Feature flag governance: **PASS**. B8 signal ceiling remains governance-only (no runtime hard cap found in `mcp_server/`).
+    - F-02 Feature flag sunset audit: **PASS WITH NOTES**. `isPipelineV2Enabled()` remains deprecated and always true as intended. Catalog counts now match runtime reality: 24 exported `is*` helpers and 79 unique `SPECKIT_` flags.
+    - Rollout policy is hardened: malformed `SPECKIT_ROLLOUT_PERCENT` values now fall back to 100, and partial rollouts fail closed when identity is missing.
 - [x] CHK-021 [P0] Manual testing complete
-  - **Evidence**: Governance features mapped to manual playbook scenarios NEW-063/NEW-064 (not NEW-095+ as previously claimed; corrected per playbook cross-reference audit).
+  - **Evidence**: Governance features are mapped to manual playbook scenarios NEW-063/NEW-064 in `../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`.
 - [x] CHK-022 [P1] Edge cases tested
-  - **Evidence**: Governance findings include explicit checks for boundary, mismatch, and gap conditions. Documentation drift flagged as WARN (not blocking). Default-OFF functions (`isReconsolidationEnabled`, `isFileWatcherEnabled`, `isLocalRerankerEnabled`, `isQualityLoopEnabled`) verified with correct env-check patterns.
+  - **Evidence**: Added edge-case coverage for malformed rollout percent values (`50abc`, `1e2`) and partial-rollout identity gaps (`undefined`, empty, whitespace identity).
 - [x] CHK-023 [P1] Error scenarios validated
-  - **Evidence**: All 24 functions in `search-flags.ts:15-216` verified. `rollout-policy.ts` covers: default 100% rollout, deterministic bucket hashing, identity gating, feature-flag + rollout interaction. 2 functions lack direct test files: `isFileWatcherEnabled`, `isLocalRerankerEnabled` (test gap — documented, not blocking for audit-only phase). `isQualityLoopEnabled` is tested in `quality-loop.vitest.ts:523` (GPT 5.4 verification corrected Agent 5 false negative).
+  - **Evidence**: Added direct tests for `isFileWatcherEnabled` and `isLocalRerankerEnabled`, expanded rollout-policy tests for fail-closed behavior, and widened dead-code regression canary symbol coverage.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -82,11 +82,11 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets
-  - **Evidence**: This phase only rewrites documentation and introduces no secret-bearing code.
+  - **Evidence**: No new credentials, tokens, or secret literals were added in runtime, tests, or docs.
 - [x] CHK-031 [P0] Input validation implemented
-  - **Evidence**: Governance audit confirms no validation regressions in reviewed feature scope.
+  - **Evidence**: Rollout percent parsing now validates full integer strings before parsing, preventing partial-string coercion.
 - [x] CHK-032 [P1] Auth/authz working correctly
-  - **Evidence**: No auth/authz changes were made; governance findings report no related behavior mismatch.
+  - **Evidence**: No auth/authz code paths were modified in this remediation scope.
 <!-- /ANCHOR:security -->
 
 ---
@@ -95,11 +95,11 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized
-  - **Evidence**: All three governance docs now share aligned Level 2 structure and scope.
+  - **Evidence**: Governance spec docs are aligned to the same feature scope and manual playbook mapping (NEW-063/NEW-064), with corrected audit method and evidence references.
 - [x] CHK-041 [P1] Code comments adequate
-  - **Evidence**: Audit notes preserve source references and rationale for PASS outcomes.
+  - **Evidence**: Runtime comments in rollout policy explain strict integer parsing and fail-closed behavior for partial rollout identity gaps.
 - [x] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: Not applicable for this phase-only governance doc rewrite.
+  - **Evidence**: `../../../../../skill/system-spec-kit/mcp_server/README.md` now documents `isFeatureEnabled()` semantics (`false`/`0` disable) and partial-rollout fail-closed behavior.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -108,11 +108,11 @@ contextType: "general"
 ## File Organization
 
 - [x] CHK-050 [P1] Temp files in scratch/ only
-  - **Evidence**: No temporary files were created in this spec folder.
+  - **Evidence**: No ad-hoc temporary files were added in this spec folder during remediation.
 - [x] CHK-051 [P1] scratch/ cleaned before completion
-  - **Evidence**: `scratch/` and `memory/` were not modified.
+  - **Evidence**: `scratch/` remains untouched; context snapshots under `memory/` are generated via the approved script flow.
 - [x] CHK-052 [P2] Findings saved to memory/
-  - **Evidence**: Findings are preserved directly in `checklist.md` for this governance phase.
+  - **Evidence**: Findings are preserved in `checklist.md` and `implementation-summary.md`; memory save is handled via `generate-context.js`.
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -126,8 +126,8 @@ contextType: "general"
 | P1 Items | 10 | 10/10 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-11
-**Audit Method**: 5-agent parallel Codex 5.3 xhigh via cli-copilot (Depth 0→1 single-hop)
+**Verification Date**: 2026-03-12
+**Audit Method**: 5-agent Codex 5.3 xhigh + GPT 5.4 cross-check via cli-codex (Depth 0->1 single-hop)
 <!-- /ANCHOR:summary -->
 
 ---

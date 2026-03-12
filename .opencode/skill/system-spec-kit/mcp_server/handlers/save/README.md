@@ -24,7 +24,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`handlers/save/` contains the decomposed pipeline for the `memory_save` MCP tool. Each file owns a single stage of the save flow, from deduplication through embedding generation, prediction-error gating, record creation, post-insert enrichment, reconsolidation and final response assembly.
+`handlers/save/` contains the decomposed pipeline for the `memory_save` MCP tool. Each file owns a single stage of the save flow, from deduplication through embedding generation, save quality gating, prediction-error gating, reconsolidation, record creation, post-insert enrichment, and final response assembly.
 
 The barrel `index.ts` re-exports every module so consumers can import from `handlers/save` directly.
 
@@ -52,12 +52,13 @@ The barrel `index.ts` re-exports every module so consumers can import from `hand
 ```
 1. dedup          -- Skip if unchanged or duplicate content hash
 2. embedding      -- Generate or retrieve cached embedding
-3. reconsolidation -- Merge/conflict handling (TM-06, flag-gated)
+3. save-quality-gate -- Evaluate semantic/structural quality before persistence
 4. pe-orchestration -- Predict action via similarity comparison
-5. create-record  -- Insert memory into vector + BM25 indexes
-6. db-helpers     -- Apply post-insert metadata columns
-7. post-insert    -- Enrich with entities, summaries, causal links
-8. response-builder -- Assemble MCP response envelope
+5. reconsolidation -- Merge/conflict handling (TM-06, flag-gated)
+6. create-record  -- Insert memory into vector + BM25 indexes
+7. db-helpers     -- Apply post-insert metadata columns
+8. post-insert    -- Enrich with entities, summaries, causal links
+9. response-builder -- Assemble MCP response envelope
 ```
 
 <!-- /ANCHOR:pipeline-flow -->

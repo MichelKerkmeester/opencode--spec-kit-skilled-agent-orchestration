@@ -108,6 +108,7 @@ Checkpoints are the safety net for destructive operations. `memory_bulk_delete` 
 | `mcp_server/tests/ground-truth-feedback.vitest.ts` | Ground truth feedback |
 | `mcp_server/tests/ground-truth.vitest.ts` | Ground truth tests |
 | `mcp_server/tests/handler-checkpoints.vitest.ts` | Checkpoint handler validation |
+| `mcp_server/tests/handler-checkpoints-edge.vitest.ts` | Checkpoint lifecycle edge coverage (create/list/restore/delete) |
 | `mcp_server/tests/handler-memory-index-cooldown.vitest.ts` | Index cooldown validation |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | Index handler validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index v2 tests |

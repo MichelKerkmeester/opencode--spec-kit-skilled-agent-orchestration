@@ -12,96 +12,118 @@ contextType: "general"
 
 ---
 
+## TABLE OF CONTENTS
+
+- [1. METADATA](#1--metadata)
+- [2. OVERVIEW](#2--overview)
+- [3. WHAT WAS BUILT](#3--what-was-built)
+- [4. HOW IT WAS DELIVERED](#4--how-it-was-delivered)
+- [5. KEY DECISIONS](#5--key-decisions)
+- [6. VERIFICATION](#6--verification)
+- [7. KNOWN LIMITATIONS](#7--known-limitations)
+
+---
+
 <!-- ANCHOR:metadata -->
-## Metadata
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-discovery |
-| **Completed** | 2026-03-11 |
+| **Completed** | 2026-03-12 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:overview -->
+## 2. OVERVIEW
+
+This packet now reflects the final Discovery fixes that were already landed in runtime code, tests, and related documentation. The update removes remaining stale packet claims so phase artifacts match current behavior and current verification evidence.
+<!-- /ANCHOR:overview -->
+
+---
+
 <!-- ANCHOR:what-built -->
-## What Was Built
+## 3. WHAT WAS BUILT
 
-This update completes Discovery documentation alignment to current on-disk reality after the latest fixes.
+This update synchronizes the Discovery phase packet to the currently landed implementation.
 
-### `memory_list` Behavior Alignment
+### Runtime Reliability Alignment (`memory_list`, `memory_stats`, `memory_health`)
 
-Docs now state that handler-level validation failures return MCP error envelopes with `code: E_INVALID_INPUT` and `data.details.requestId` (for invalid `specFolder`, invalid `includeChunks`, and non-finite `limit`/`offset`). Docs also now state that success payloads include resolved `sortBy`, including fallback to `created_at`.
+Docs now capture that all three Discovery handlers catch pre-query `checkDatabaseUpdated()` failures and return MCP error envelopes (`E021`) with `requestId`, instead of allowing thrown exceptions to escape handler-level contracts.
 
-### `memory_stats` Behavior Alignment
+### Discovery Regression Coverage Alignment
 
-Docs now state that handler-level validation failures return MCP error envelopes with `code: E_INVALID_INPUT` and `requestId` for invalid `includeScores`, invalid `includeArchived`, and non-finite `limit` inputs (plus other validation paths). Docs also now state that success payloads include resolved `limit`.
+Docs now capture the added regression tests in the three Discovery edge suites that assert the pre-query refresh failure path returns MCP `E021` envelopes with `requestId`.
 
-### `memory_health` Schema Alignment
+### Existing Behavior Documentation Alignment
 
-Docs now state that public/runtime schemas accept `confirmed` so the `autoRepair` confirmation flow is reachable via schema-validated calls.
+Docs now keep `memory_list` and `memory_stats` response/validation details synchronized (`sortBy`, `limit`, validation envelopes), and keep `memory_health` schema reachability for `confirmed` synchronized.
 
-### Discovery Catalog Alignment
+### Related Documentation Alignment (Outside Packet)
 
-Docs now reference the rewritten Discovery feature catalog entries in `feature_catalog/03--discovery/` as the authoritative current behavior summaries.
+The packet now explicitly notes that related docs were corrected:
+- `manual_testing_playbook.md`: EX-012 uses `memory_stats(folderRanking:composite,includeScores:true)`
+- merged `feature_catalog.md`: removed `memory_list` tier claim, corrected `importanceScore` wording, corrected `memory_health` top-level status wording
+- `shared/scoring/README.md`: removed stale `memory_list` folder-scoring consumer claims
 
 ### Stale Claim Removal
 
 Removed stale wording from the Discovery phase docs, including:
-- "documentation phase" wording
-- old `48/48` verification count
-- old `computeFolderScores`-limit narrative
-- outdated Discovery-only `E_INVALID_INPUT` inconsistency limitation
+- "documentation-only phase" framing
+- stale targeted test totals (`89/89`)
+- outdated Discovery inconsistency limitation
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `spec.md` | Modified | Updated requirements, success criteria, scope, and risks to current Discovery behavior |
-| `plan.md` | Modified | Updated execution phases and testing strategy to final verification state |
-| `tasks.md` | Modified | Updated completed tasks to current behavior/evidence alignment work |
-| `checklist.md` | Modified | Updated verification items and evidence to current behavior and `89/89` targeted result |
-| `implementation-summary.md` | Modified | Replaced stale summary content with current final-state evidence |
+| `spec.md` | Modified | Added `TABLE OF CONTENTS`/`OVERVIEW`; updated scope/requirements to landed runtime+test+doc reality |
+| `plan.md` | Modified | Updated phases, dependencies, and testing strategy to include runtime/test/doc sync and current evidence |
+| `tasks.md` | Modified | Updated completed tasks to include pre-query reliability fixes, regression coverage, and related-doc sync |
+| `checklist.md` | Modified | Updated verification items and evidence to `95/95` and pre-query `E021` coverage |
+| `implementation-summary.md` | Modified | Added `TABLE OF CONTENTS`/`OVERVIEW`; replaced stale completion narrative with current final-state evidence |
 <!-- /ANCHOR:what-built -->
 
 ---
 
 <!-- ANCHOR:how-delivered -->
-## How It Was Delivered
+## 4. HOW IT WAS DELIVERED
 
-Delivery followed a source-first pass: verify handlers, schemas, feature catalog, and tests; update all five Discovery docs; then record focused verification evidence and remove stale claims.
+Delivery followed a source-first pass: verify handlers, schemas, tests, and related docs; update all five Discovery packet docs; then record current focused verification evidence and remove stale packet claims.
 <!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
-## Key Decisions
+## 5. KEY DECISIONS
 
 | Decision | Why |
 |----------|-----|
 | Use current on-disk implementation as source of truth | Prevents drift from older audit narratives |
-| Document list/stats invalid-input behavior as MCP envelope contracts | Matches current handler behavior and `requestId` observability |
+| Document pre-query refresh failure handling as MCP envelope contracts | Matches current handler behavior and `requestId` observability across all three Discovery handlers |
 | Explicitly document resolved response fields (`sortBy`, `limit`) | Makes caller-visible behavior precise and testable |
-| Reference rewritten Discovery feature catalog files directly | Keeps phase docs aligned to focused current-reality feature summaries |
+| Record related-doc fixes outside this packet | Ensures packet readers can reconcile Discovery behavior across playbook/catalog/scoring docs |
 | Replace old verification counts with current focused evidence | Keeps completion claims current and measurable |
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-## Verification
+## 6. VERIFICATION
 
 | Check | Result |
 |-------|--------|
 | TypeScript (`npx tsc --noEmit`) | PASS - clean run, no output |
-| Targeted Discovery suite (5 files) | PASS - `89/89` tests passed |
+| Targeted Discovery suite (5 files) | PASS - `95/95` tests passed |
 | Targeted files included | `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`, `handler-memory-crud.vitest.ts`, `tool-input-schema.vitest.ts` |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations
+## 7. KNOWN LIMITATIONS
 
 1. **Verification scope is focused.** This summary records the targeted Discovery suite and does not claim full-suite execution.
 2. **`requestId` discussion here is error-path focused.** Success-response shape was not broadened by this doc update.

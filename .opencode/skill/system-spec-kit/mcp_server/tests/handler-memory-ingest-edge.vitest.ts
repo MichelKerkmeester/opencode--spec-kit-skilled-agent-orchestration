@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   mockCheckDatabaseUpdated: vi.fn(async () => undefined),
@@ -33,6 +33,8 @@ function parseResponse(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text);
 }
 
+const originalMemoryBasePath = process.env.MEMORY_BASE_PATH;
+
 describe('Handler Memory Ingest edge cases (T005a)', () => {
   beforeEach(() => {
     process.env.MEMORY_BASE_PATH = '/tmp';
@@ -43,6 +45,14 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
     mocks.mockGetIngestJob.mockReset();
     mocks.mockCancelIngestJob.mockReset();
     mocks.mockGetIngestProgressPercent.mockClear();
+  });
+
+  afterEach(() => {
+    if (originalMemoryBasePath === undefined) {
+      delete process.env.MEMORY_BASE_PATH;
+    } else {
+      process.env.MEMORY_BASE_PATH = originalMemoryBasePath;
+    }
   });
 
   it('T005a-I1: empty paths array throws "non-empty array"', async () => {
@@ -63,6 +73,8 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
 
     expect(errorText).toContain('Invalid path(s) rejected');
     expect(errorCode).toBe('E_VALIDATION');
+    expect(mocks.mockCreateIngestJob).not.toHaveBeenCalled();
+    expect(mocks.mockEnqueueIngestJob).not.toHaveBeenCalled();
   });
 
   it('T005a-I4: path outside allowed base is rejected with E_VALIDATION response', async () => {
@@ -73,6 +85,8 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
 
     expect(errorText).toContain('Invalid path(s) rejected');
     expect(errorCode).toBe('E_VALIDATION');
+    expect(mocks.mockCreateIngestJob).not.toHaveBeenCalled();
+    expect(mocks.mockEnqueueIngestJob).not.toHaveBeenCalled();
   });
 
   it('T005a-I4b: exactly MAX_INGEST_PATHS paths is accepted', async () => {
@@ -115,10 +129,62 @@ describe('Handler Memory Ingest edge cases (T005a)', () => {
     );
   });
 
+  it('T005a-I6b: status returns E404 payload when job is unknown', async () => {
+    mocks.mockGetIngestJob.mockReturnValue(null);
+
+    const result = await handler.handleMemoryIngestStatus({ jobId: 'job_missing' });
+    const parsed = parseResponse(result) as Record<string, any>;
+    const errorCode = String(parsed.code ?? parsed.data?.code ?? '');
+    const errorText = String(parsed.error ?? parsed.data?.error ?? '');
+
+    expect(errorCode).toBe('E404');
+    expect(errorText).toContain('Ingest job not found');
+  });
+
   it('T005a-I7: cancel with missing jobId throws', async () => {
     await expect(handler.handleMemoryIngestCancel({} as unknown as { jobId: string })).rejects.toThrow(
       /jobId is required and must be a string/i,
     );
+  });
+
+  it('T005a-I7b: cancel returns E404 payload when job is unknown', async () => {
+    mocks.mockGetIngestJob.mockReturnValue(null);
+
+    const result = await handler.handleMemoryIngestCancel({ jobId: 'job_missing' });
+    const parsed = parseResponse(result) as Record<string, any>;
+    const errorCode = String(parsed.code ?? parsed.data?.code ?? '');
+    const errorText = String(parsed.error ?? parsed.data?.error ?? '');
+
+    expect(errorCode).toBe('E404');
+    expect(errorText).toContain('Ingest job not found');
+  });
+
+  it('T005a-I7c: cancel returns terminal summary when race completes job before cancel writes', async () => {
+    const inFlightJob = {
+      id: 'job_race_complete',
+      state: 'indexing',
+      specFolder: null,
+      paths: ['/tmp/a.md'],
+      filesTotal: 1,
+      filesProcessed: 0,
+      errors: [],
+      createdAt: '2026-03-11T00:00:00.000Z',
+      updatedAt: '2026-03-11T00:00:00.000Z',
+    };
+    const alreadyComplete = {
+      ...inFlightJob,
+      state: 'complete',
+      filesProcessed: 1,
+    };
+    mocks.mockGetIngestJob.mockReturnValue(inFlightJob);
+    mocks.mockCancelIngestJob.mockResolvedValue(alreadyComplete);
+
+    const result = await handler.handleMemoryIngestCancel({ jobId: inFlightJob.id });
+    const parsed = parseResponse(result) as Record<string, any>;
+    const summary = String(parsed.summary ?? '');
+
+    expect(mocks.mockCancelIngestJob).toHaveBeenCalledWith(inFlightJob.id);
+    expect(summary).toContain('already terminal (complete)');
   });
 
   it('T005a-I8: all paths over 500 chars are dropped and then throw', async () => {

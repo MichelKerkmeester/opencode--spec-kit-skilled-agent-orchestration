@@ -44,8 +44,8 @@ function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-describe('T014: concurrent session entry-limit stress', () => {
-  it('keeps concurrent inserts within maxCapacity tolerance', async () => {
+describe('T014: interleaved session entry-limit stress', () => {
+  it('keeps interleaved inserts within maxCapacity tolerance', async () => {
     const db = createWorkingMemoryDb();
     try {
       workingMemory.init(db);

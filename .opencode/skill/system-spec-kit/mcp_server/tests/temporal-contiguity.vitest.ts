@@ -179,5 +179,24 @@ describe('Temporal Contiguity Tests (T502)', () => {
       expect(mod.DEFAULT_WINDOW).toBe(3600);
       expect(mod.MAX_WINDOW).toBe(86400);
     });
+
+    it('T502-09: vector contiguity clamps non-positive windows to minimum bound', () => {
+      const now = new Date();
+      const results_arr = [
+        { id: 1, similarity: 0.8, created_at: now.toISOString() },
+        { id: 2, similarity: 0.5, created_at: new Date(now.getTime() - 500).toISOString() },
+      ];
+
+      const boosted = mod.vectorSearchWithContiguity(results_arr, 0);
+      const mem2 = boosted!.find((r: { id: number }) => r.id === 2);
+      expect(mem2).toBeDefined();
+      expect(mem2!.similarity).toBeGreaterThan(0.5);
+    });
+
+    it('T502-10: temporal neighbor query clamps windows above MAX_WINDOW', () => {
+      const neighbors = mod.getTemporalNeighbors(1, Number.MAX_SAFE_INTEGER);
+      expect(Array.isArray(neighbors)).toBe(true);
+      expect(neighbors.every((row: { time_delta_seconds: number }) => row.time_delta_seconds <= mod.MAX_WINDOW)).toBe(true);
+    });
   });
 });

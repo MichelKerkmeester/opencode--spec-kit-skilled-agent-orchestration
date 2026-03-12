@@ -13,7 +13,9 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-After Stage 2 fusion produces a ranked result set, the causal boost module walks the `causal_edges` graph to amplify scores for memories related to top-ranked seed results. Up to 25% of the result set (capped at 5) serves as seed nodes. The graph walk traverses up to 2 hops via a weighted recursive CTE, applying a per-hop boost capped at 0.05. Relation-type weight multipliers (supersedes > leads_to > relates_to) scale the boost so stronger causal relationships receive proportionally more amplification.
+After Stage 2 fusion produces a ranked result set, the causal boost module walks the `causal_edges` graph to amplify scores for memories related to top-ranked seed results. Up to 25% of the result set (capped at 5) serves as seed nodes. The graph walk traverses up to 2 hops via a weighted recursive CTE, applying a per-hop base boost capped at 0.05.
+
+Relation-type weight multipliers are applied during traversal as follows: `supersedes` (1.5), `contradicts` (0.8), and `caused`/`enabled`/`derived_from`/`supports` (1.0). These weights are combined with edge `strength` to scale neighbor amplification while preserving the hop-depth cap.
 
 The combined causal + session boost ceiling is 0.20, preventing runaway score inflation from graph-dense clusters. The feature is gated by `SPECKIT_CAUSAL_BOOST` (default `true`). When disabled, results pass through without graph-based score adjustment.
 

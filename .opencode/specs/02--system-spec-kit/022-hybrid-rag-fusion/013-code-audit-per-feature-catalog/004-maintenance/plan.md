@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: maintenance [template:level_2/plan.md]"
 description: "Maintenance audit execution and remediation planning for workspace indexing metrics and startup compatibility guard coverage."
+SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
   - "plan"
@@ -30,7 +31,7 @@ contextType: "general"
 | **Testing** | Vitest |
 
 ### Overview
-This plan operationalizes the maintenance audit work for two cataloged features: workspace scanning/indexing and startup runtime compatibility guards. It translates the existing methodology and checklist into phased implementation and verification activities, with explicit focus on the F-01 P0 semantic mismatch and F-02 test coverage gaps.
+This plan operationalizes the maintenance audit work for two cataloged features: workspace scanning/indexing and startup runtime compatibility guards. It translates the existing methodology and checklist into phased implementation and verification activities, with explicit focus on the F-01 P0 semantic mismatch and F-02 automated-plus-manual coverage alignment.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -46,7 +47,7 @@ This plan operationalizes the maintenance audit work for two cataloged features:
 ### Definition of Done
 - [x] All acceptance criteria met
 - [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
+- [x] Docs updated (spec/plan/tasks/checklist/implementation-summary)
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -72,19 +73,19 @@ Feature catalog definitions drive audit criteria, which are validated against im
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Inventory both maintenance features and confirm referenced source/test files
-- [ ] Map features to manual scenarios EX-021 and EX-022
-- [ ] Confirm baseline findings and priority labels (P0/P1/P2)
+- [x] Inventory both maintenance features and confirm referenced source/test files
+- [x] Map playbook coverage correctly (F-01 -> EX-014, F-02 -> EX-035)
+- [x] Confirm baseline findings and priority labels (P0/P1/P2)
 
 ### Phase 2: Core Implementation
-- [ ] Reconcile F-01 incremental accounting semantics (`skipped_hash`, `hash_checks`)
-- [ ] Add direct startup compatibility guard tests for marker and SQLite branches
-- [ ] Update maintenance catalog/test inventory references after changes
+- [x] Reconcile F-01 incremental accounting semantics (`skipped_hash`, `hash_checks`)
+- [x] Validate dedicated startup-checks coverage for SQLite validation and pure runtime mismatch logic
+- [x] Update maintenance catalog/test inventory references after changes
 
 ### Phase 3: Verification
-- [ ] Validate behavior matches Current Reality descriptions
-- [ ] Execute relevant Vitest coverage for modified maintenance paths
-- [ ] Synchronize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`
+- [x] Validate behavior matches Current Reality descriptions
+- [x] Execute relevant Vitest coverage for modified maintenance paths
+- [x] Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
 <!-- /ANCHOR:phases -->
 
 ---
@@ -94,9 +95,9 @@ Feature catalog definitions drive audit criteria, which are validated against im
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `startup-checks.ts` warning branches; incremental decision semantics | Vitest |
-| Integration | `memory_index_scan` handler output fields + incremental indexing flow | Vitest |
-| Manual | EX-021/EX-022 playbook mapping and findings validation | Feature catalog + checklist |
+| Unit | `startup-checks.ts` SQLite validation + pure runtime mismatch logic; incremental decision semantics | Vitest |
+| Integration | `memory_index_scan` handler output fields + incremental indexing flow (`incremental-index-v2.vitest.ts`) | Vitest |
+| Manual | F-01 mapped to EX-014; F-02 mapped to EX-035 | Manual test playbook + checklist |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -123,23 +124,17 @@ Feature catalog definitions drive audit criteria, which are validated against im
 
 ---
 
-
----
-
 <!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Setup) ───► Phase 2 (Core) ───► Phase 3 (Verify)
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
+| Setup | None | Core |
+| Core | Setup | Verify |
 | Verify | Core | None |
 <!-- /ANCHOR:phase-deps -->
 

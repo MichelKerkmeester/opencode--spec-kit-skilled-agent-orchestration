@@ -14,8 +14,12 @@
     "022-hybrid-rag-fusion",
     "013-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 1,
+  "memorySequence": 5,
   "memoryNameHistory": [
-    "11-03-26_13-36__graph-signal-activation.md"
+    "11-03-26_13-36__graph-signal-activation.md",
+    "12-03-26_13-51__graph-signal-activation.md",
+    "12-03-26_13-52__graph-signal-activation.md",
+    "12-03-26_13-53__closed-graph-signal-activation-backlog-to.md",
+    "12-03-26_13-55__rejected-non-finite-causal-edge-strengths-before.md"
   ]
 }

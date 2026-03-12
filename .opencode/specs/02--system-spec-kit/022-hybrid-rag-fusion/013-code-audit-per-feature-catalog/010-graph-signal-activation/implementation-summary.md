@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: graph-signal-activation [template:level_2/implementation-summary.md]"
-description: "Task #2 remediation reconciled to verified implementation evidence: 5 audit items covered, 6 backlog items still open"
+description: "Graph-signal activation completion pass: code bug fixes, documentation alignment and full 11-item audit backlog closure"
 # SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
 trigger_phrases:
   - "graph signal activation implementation"
@@ -16,9 +16,9 @@ contextType: "general"
 
 ## Overview
 
-This summary now reflects the actual Task #2 remediation scope rather than the earlier full-backlog claim. Task #2 updated one implementation file and four targeted test files, then verified five graph-signal audit items with focused regression coverage.
+This summary now reflects full backlog closure for the graph-signal activation audit. Task #2 established the first remediation baseline, and the completion pass finalized remaining correctness, standards, and documentation gaps.
 
-**Result**: targeted Vitest coverage passed, including the strengthened seed-cap regression in `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` (`6/6` tests in that file), alignment drift passed (`0` findings), and `npx tsc --noEmit` now passes in `.opencode/skill/system-spec-kit/mcp_server`.
+**Result**: targeted Vitest closure coverage passed (`6` files / `185` tests), alignment drift passed (`0` findings), spec validation passed (`0` warnings/errors), and `npx tsc --noEmit` passes in `.opencode/skill/system-spec-kit/mcp_server`.
 
 ---
 
@@ -31,6 +31,13 @@ This summary now reflects the actual Task #2 remediation scope rather than the e
 | `.opencode/skill/system-spec-kit/mcp_server/tests/degree-computation.vitest.ts` | Fail-closed constitutional lookup throw-path coverage |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts` | Env clamp coverage for `>1`, `<0`, and non-numeric inputs |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` | Behavioral coverage for seed cap and relation precedence |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/temporal-contiguity.vitest.ts` | MAX_WINDOW/min-window clamp coverage |
+| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md` | F-08 current-reality statement alignment |
+| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md` | F-10 relation taxonomy alignment |
+| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md` | F-11 API and behavior alignment |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | F-06 semantics correction and dedicated F-10/F-11 coverage entries |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md` | TOC anchor compliance fix |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/README.md` | Schema version and metadata refresh |
 
 ---
 
@@ -46,17 +53,26 @@ This summary now reflects the actual Task #2 remediation scope rather than the e
 
 5. `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now covers seed-cap handling and relation-precedence behavior for causal boost scoring, and the strengthened regression passes (`6/6` tests in that file).
 
+6. Non-finite edge strengths are now rejected before insert/update writes, preventing invalid strengths from entering causal graph storage.
+
+7. Weight-history writes now participate in transactional failure semantics (no swallowed `logWeightChange` errors), with regression tests proving rollback behavior when `weight_history` persistence fails.
+
+8. Temporal contiguity clamp behavior now has explicit tests for minimum and maximum window bounds.
+
+9. Graph signal docs and playbook coverage were reconciled for F-06, F-08, F-10, and F-11 to match runtime behavior.
+
 ---
 
 ## Verification
 
-- **Vitest**: `node node_modules/vitest/vitest.mjs run tests/causal-edges.vitest.ts tests/degree-computation.vitest.ts tests/co-activation.vitest.ts tests/rrf-degree-channel.vitest.ts tests/causal-boost.vitest.ts` -> passed; `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now passes (`6/6` tests in that file)
+- **Vitest**: `npx vitest run tests/causal-edges.vitest.ts tests/degree-computation.vitest.ts tests/co-activation.vitest.ts tests/rrf-degree-channel.vitest.ts tests/causal-boost.vitest.ts tests/temporal-contiguity.vitest.ts` -> passed (`6` files / `185` tests)
 - **Alignment drift**: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` -> passed (`0` findings)
 - **TypeScript**: `npx tsc --noEmit` -> passed in `.opencode/skill/system-spec-kit/mcp_server`
+- **Spec validation**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder>` -> passed (`0` errors, `0` warnings)
 
 ---
 
-## Backlog Status After Task #2
+## Final Backlog Status
 
 | Task | Status | Notes |
 |------|--------|-------|
@@ -65,5 +81,9 @@ This summary now reflects the actual Task #2 remediation scope rather than the e
 | T005 | Verified | Fail-closed constitutional lookup throw-path coverage added |
 | T006 | Verified | Co-activation env clamp coverage expanded |
 | T008 | Verified | Causal-boost seed-cap and relation-precedence coverage added; strengthened seed-cap regression now passes `6/6` |
-| T004 | Open | Runtime invalidation wiring exists, but the spec-intended explicit verification is not yet clearly closed by visible tests/docs |
-| T003, T007, T009, T010, T011 | Open | No Task #2 file changes or closing verification evidence were provided for these items |
+| T003 | Closed | Missing-snapshot momentum path verified as zero with regression coverage |
+| T004 | Closed | Graph-signals cache invalidation wiring and mutation-hook coverage verified |
+| T007 | Closed | Edge-density denominator semantics aligned between code and docs |
+| T009 | Closed | Temporal window clamping verified in runtime and tests |
+| T010 | Closed | F-08 doc traceability and behavior text aligned to current code |
+| T011 | Closed | Negative ANCHOR parsing coverage verified in existing anchor/parser test suites |

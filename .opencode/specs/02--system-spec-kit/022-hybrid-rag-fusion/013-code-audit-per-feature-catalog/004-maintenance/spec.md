@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: maintenance [template:level_2/spec.md]"
 description: "Maintenance feature audit for workspace indexing and startup runtime compatibility guard behavior."
+SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "feature"
   - "specification"
@@ -49,7 +50,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 ### In Scope
 - Audit `memory_index_scan` behavior for correctness, standards alignment, behavior match, and test coverage.
 - Audit startup runtime compatibility guards for behavior match and coverage gaps.
-- Record structured findings with PASS/WARN/FAIL status and mapped playbook coverage (EX-021, EX-022).
+- Record structured findings with PASS/WARN/FAIL status and accurate playbook mapping (F-01 -> EX-014; F-02 -> EX-035).
 
 ### Out of Scope
 - Implementing production code fixes in `mcp_server/` during this documentation rewrite - tracked separately in tasks.
@@ -81,7 +82,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Audit F-02 startup runtime compatibility guards with behavior and coverage assessment. | Findings include status, source evidence, and specific test coverage gaps for marker/SQLite warning branches. |
+| REQ-003 | Audit F-02 startup runtime compatibility guards with behavior and coverage assessment. | Findings include status, source evidence, dedicated automated coverage for SQLite validation + pure runtime mismatch logic, and a dedicated manual playbook scenario reference. |
 | REQ-004 | Capture non-critical remediation and documentation updates for maintenance findings. | Phase 2 tasks include numbered follow-up actions for F-02 tests and catalog/test inventory alignment. |
 <!-- /ANCHOR:requirements -->
 
@@ -93,30 +94,52 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 - **SC-001**: All 2 maintenance features are represented in the Level 2 structure with clear status and evidence mapping.
 - **SC-002**: Requirements, implementation plan, tasks, and verification checklist are synchronized around F-01 and F-02 findings.
 - **SC-003**: P0 and P2 remediation actions are explicitly trackable through numbered tasks.
-- **SC-004**: Playbook coverage references (EX-021, EX-022) are retained for manual validation context.
+- **SC-004**: Playbook coverage mapping is accurate: F-01 maps to EX-014 and F-02 maps to EX-035.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:acceptance-scenarios -->
+## 6. ACCEPTANCE SCENARIOS
+
+### Scenario 1: F-01 mapping stays aligned with the maintenance playbook
+- **Given** the maintenance audit references workspace scanning behavior
+- **When** the docs and manual playbook are cross-checked
+- **Then** F-01 resolves to `EX-014` only
+
+### Scenario 2: F-02 startup validation has both automated and manual coverage
+- **Given** the startup runtime guards are documented in the maintenance audit
+- **When** coverage references are reviewed
+- **Then** the docs cite `startup-checks.vitest.ts` for automated coverage and `EX-035` for manual coverage
+
+### Scenario 3: Placeholder incremental tests are not used as behavioral proof
+- **Given** the legacy incremental-index placeholder suite still exists
+- **When** behavioral evidence is summarized
+- **Then** `incremental-index-v2.vitest.ts` is treated as the primary behavioral suite and the placeholder suite is called out as deferred
+
+### Scenario 4: Completion evidence remains internally consistent
+- **Given** the Level 2 maintenance spec is marked complete
+- **When** spec, plan, tasks, checklist, and implementation summary are compared
+- **Then** they agree on mapping, verification results, and remaining limitations
+<!-- /ANCHOR:acceptance-scenarios -->
+
+---
+
 <!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+## 7. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | `feature_catalog/04--maintenance/` source-of-truth entries | Missing or stale catalog entries can misalign documented requirements | Keep findings traceable to concrete file/line evidence and update catalog references where needed |
 | Dependency | `mcp_server` runtime and test files | Changes in handler semantics can invalidate documented findings | Re-validate against current source/test files before execution of remediation tasks |
 | Risk | `skipped_hash` / `hash_checks` semantic mismatch persists | Medium | Treat REQ-001/REQ-002 as P0 and block completion until mismatch is resolved or explicitly documented as mtime-only |
-| Risk | Startup guard warning branches remain under-tested | Low | Add direct unit coverage and include checks in verification checklist |
+| Risk | Startup guard manual scenario drifts from current runtime semantics | Low | Re-validate EX-035 against `startup-checks.vitest.ts` and `startup-checks.ts` whenever startup diagnostics change |
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
 <!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 8. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Documentation updates remain concise and reviewable in a single pass (<15 minutes review time).
@@ -134,7 +157,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 ---
 
 <!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 9. EDGE CASES
 
 ### Data Boundaries
 - Empty findings set: represent explicitly as "No findings" in relevant sections.
@@ -154,7 +177,7 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 ---
 
 <!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 10. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -166,10 +189,10 @@ Standardize the maintenance audit into a Level 2 spec so requirements, risks, an
 
 ---
 
-## 10. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
+## 11. OPEN QUESTIONS
 
-- Should `skipped_hash` remain a required metric, or should maintenance documentation formally adopt mtime-only semantics?
-- Should startup guard behavior tests be implemented in a dedicated suite or added to existing context-server/modularization tests?
+- Should the legacy placeholder suite `incremental-index.vitest.ts` be archived to prevent accidental use as behavioral evidence?
 <!-- /ANCHOR:questions -->
 
 ---

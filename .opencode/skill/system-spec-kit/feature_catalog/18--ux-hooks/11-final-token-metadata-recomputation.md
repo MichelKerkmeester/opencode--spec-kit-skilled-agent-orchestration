@@ -13,7 +13,7 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)` adds the last response-envelope content and before token-budget enforcement evaluates the payload. This keeps `meta.tokenCount` aligned with the finalized envelope that callers actually receive.
+Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. This keeps `meta.tokenCount` aligned with the exact serialized envelope returned to callers.
 
 ## 3. SOURCE FILES
 
@@ -21,14 +21,16 @@ Phase 014 now recomputes final token metadata after `appendAutoSurfaceHints(...)
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/formatters/token-metrics.ts` | Formatter | Token metrics display |
-| `shared/utils/token-estimate.ts` | Shared | Token estimation utility |
+| `mcp_server/hooks/response-hints.ts` | Hook | Recomputes `meta.tokenCount` from finalized serialized envelope |
+| `mcp_server/context-server.ts` | Server | Runs hint append before budget enforcement in success path |
+| `shared/utils/token-estimate.ts` | Shared | Token estimation utility used for final token sync |
 
 ### Tests
 
 | Test File | Test Name | Coverage |
 |-----------|-----------|----------|
 | `mcp_server/tests/hooks-ux-feedback.vitest.ts` | `appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON` | Verifies `appendAutoSurfaceHints` drives final token metadata recomputation by using `syncEnvelopeTokenCount` and `serializeEnvelopeWithTokenCount` on the final envelope payload. |
+| `mcp_server/tests/context-server.vitest.ts` | `T000j: final tokenCount matches the serialized envelope after hints and tokenBudget injection` | Verifies end-to-end server flow preserves final token-count correctness after hint and metadata mutations. |
 
 ## 4. SOURCE METADATA
 

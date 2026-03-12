@@ -89,7 +89,7 @@ Create a feature-by-feature, evidence-backed audit that produces a prioritized r
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: ✓ VERIFIED — All 13 features in `feature_catalog/18--ux-hooks/` audited with `PASS/WARN/FAIL` status, issue type, evidence, and recommended fix. Findings F-01–F-13 preserved in `checklist.md`.
-- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 440 tests across 7 files, all green. See `implementation-summary.md`.
+- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 445/445 tests across 7 files, all green. See `implementation-summary.md`.
 
 ### Acceptance Scenarios
 
@@ -99,7 +99,7 @@ Create a feature-by-feature, evidence-backed audit that produces a prioritized r
 
 **Given** a feature catalog entry referencing a stale test file (e.g. `retry.vitest.ts`), **When** test coverage is assessed, **Then** the stale reference is logged and a reconciliation task is created.
 
-**Given** a completed remediation backlog with 17 tasks, **When** the full test suite executes, **Then** all 440 tests pass with zero regressions.
+**Given** a completed remediation backlog with 17 tasks, **When** the full test suite executes, **Then** all 445/445 tests pass with zero regressions.
 <!-- /ANCHOR:success-criteria -->
 
 ---

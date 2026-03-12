@@ -74,8 +74,14 @@ async function expectThrowOrErrorResponse(
     const hasErrorField = typeof data.error === 'string';
     expect(result.isError || hasErrorField).toBe(true);
     assertErrorPayload(payload);
-  } catch {
-    await expect(operation).rejects.toThrow();
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    assertErrorPayload({
+      summary: message,
+      data: {
+        error: message,
+      },
+    });
   }
 }
 
@@ -196,6 +202,55 @@ describe('Handler Checkpoints Edge Cases (T009-T012)', () => {
 
     expect(result.isError).toBeFalsy();
     expect(data.success).toBe(true);
+    const hints = Array.isArray(payload.hints) ? payload.hints.map((hint) => String(hint)) : [];
+    expect(hints.length).toBeGreaterThan(0);
+    expect(hints.some((hint) => /search indexes rebuilt/i.test(hint))).toBe(true);
+  });
+
+  it('T011-C7c: Restore merge skips row when checkpoint id collides with different live identity', async () => {
+    const db = vectorIndex.getDb();
+    const memoryId = 99001;
+    const snapshotSpecFolder = `specs/${checkpointName('t011-c7c-snapshot-folder')}`;
+    const snapshotPath = `${snapshotSpecFolder}/memory/snapshot.md`;
+    const collisionSpecFolder = `specs/${checkpointName('t011-c7c-collision-folder')}`;
+    const collisionPath = `${collisionSpecFolder}/memory/collision.md`;
+    const checkpoint = checkpointName('t011-c7c-id-collision');
+
+    db.prepare(
+      'INSERT INTO memory_index (id, spec_folder, file_path, title, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+    ).run(
+      memoryId,
+      snapshotSpecFolder,
+      snapshotPath,
+      'snapshot-title',
+      new Date().toISOString(),
+      new Date().toISOString(),
+    );
+
+    await createCheckpointExpectSuccess(checkpoint, snapshotSpecFolder);
+
+    db.prepare(
+      'UPDATE memory_index SET spec_folder = ?, file_path = ?, title = ? WHERE id = ?'
+    ).run(collisionSpecFolder, collisionPath, 'collision-title', memoryId);
+
+    const restore = await handler.handleCheckpointRestore({ name: checkpoint, clearExisting: false });
+    const restorePayload = parseResponse(restore) as ParsedEnvelope;
+    const restoreData = getData(restorePayload);
+
+    expect(restore.isError).toBeFalsy();
+    expect(restoreData.success).toBe(true);
+
+    const restored = restoreData.restored as { skipped?: unknown } | undefined;
+    expect(Number(restored?.skipped ?? 0)).toBeGreaterThanOrEqual(1);
+
+    const row = db.prepare(
+      'SELECT spec_folder, file_path, title FROM memory_index WHERE id = ?'
+    ).get(memoryId) as { spec_folder: string; file_path: string; title: string } | undefined;
+
+    expect(row).toBeDefined();
+    expect(row?.spec_folder).toBe(collisionSpecFolder);
+    expect(row?.file_path).toBe(collisionPath);
+    expect(row?.title).toBe('collision-title');
   });
 
   it('T012-C8: Delete with mismatched confirmName returns error or throws', async () => {

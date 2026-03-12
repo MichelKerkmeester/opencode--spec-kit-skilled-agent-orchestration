@@ -86,7 +86,7 @@ Internal helper modules (not direct MCP tool endpoints):
 ## 4. TELEMETRY NOTES
 
 
-- `memory-search.ts` integrates retrieval telemetry: captures latency, mode (e.g., `hybrid`, `bm25`, `vector`), and quality signals via a `_telemetry` key on the response metadata.
+- `memory-search.ts` records retrieval telemetry through consumption/eval logging and can include `retrievalTrace` in response data when trace output is requested.
 - `memory-context.ts` captures mode selection, pressure override, and fallback detection in `extraMeta._telemetry`. This allows downstream consumers to observe how the context assembly path was chosen.
 
 

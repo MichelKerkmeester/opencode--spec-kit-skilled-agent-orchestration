@@ -652,12 +652,12 @@ describe('Edge Cases: Importance Factor', () => {
     expect(score).toBe(normalScore);
   });
 
-  it('EDGE-I04: Falsy base weight defaults to 0.5', () => {
-    // Implementation note: calculate_importance_score treats falsy base as 0.5
-    // base = 0.5, critical multiplier = 1.5
-    // normalized = (0.5 * 1.5) / 2.0 = 0.375
+  it('EDGE-I04: Zero base weight remains zero (only undefined defaults)', () => {
+    // calculateImportanceScore uses nullish coalescing:
+    // base = baseWeight ?? 0.5
+    // so 0 is preserved, while undefined falls back to 0.5.
     const score = calculateImportanceScore('critical', 0);
-    expect(Math.abs(score - 0.375)).toBeLessThan(0.001);
+    expect(score).toBe(0);
   });
 
   it('EDGE-I05: Base weight 1.0 with critical tier normalized correctly', () => {

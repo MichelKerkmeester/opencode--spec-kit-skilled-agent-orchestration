@@ -133,6 +133,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
     async function loadAtomicSaveHarness(options: {
       parseMemoryFileMock?: ReturnType<typeof vi.fn>;
+      isMemoryFileMock?: ReturnType<typeof vi.fn>;
       checkExistingRowMock?: ReturnType<typeof vi.fn>;
       checkContentHashDedupMock?: ReturnType<typeof vi.fn>;
       runQualityGateMock?: ReturnType<typeof vi.fn>;
@@ -142,11 +143,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       createRecordModuleFactory?: () => unknown;
       postInsertModuleFactory?: () => unknown;
       responseBuilderModuleFactory?: () => unknown | Promise<unknown>;
+      chunkingModuleFactory?: () => unknown | Promise<unknown>;
     } = {}) {
       vi.resetModules();
 
       const parseMemoryFileMock = options.parseMemoryFileMock
         ?? vi.fn((targetPath: string) => buildParsedMemory(targetPath));
+      const isMemoryFileMock = options.isMemoryFileMock
+        ?? vi.fn(() => true);
       const validateParsedMemoryMock = vi.fn(() => ({ valid: true, errors: [], warnings: [] }));
       const runQualityLoopMock = vi.fn(() => ({
         score: { total: 0, issues: [] },
@@ -189,6 +193,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         return {
           ...actual,
           parseMemoryFile: parseMemoryFileMock,
+          isMemoryFile: isMemoryFileMock,
           validateParsedMemory: validateParsedMemoryMock,
         };
       });
@@ -229,6 +234,18 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       if (options.responseBuilderModuleFactory) {
         vi.doMock('../handlers/save/response-builder', options.responseBuilderModuleFactory as any);
       }
+
+      if (options.chunkingModuleFactory) {
+        vi.doMock('../handlers/chunking-orchestrator', options.chunkingModuleFactory as any);
+      }
+
+      vi.doMock('../utils/validators', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../utils/validators')>();
+        return {
+          ...actual,
+          createFilePathValidator: vi.fn(() => ((candidatePath: string) => candidatePath)),
+        };
+      });
 
       vi.doMock('../lib/validation/save-quality-gate', async (importOriginal) => {
         const actual = await importOriginal<typeof import('../lib/validation/save-quality-gate')>();
@@ -289,8 +306,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('../handlers/save/create-record');
         vi.doUnmock('../handlers/save/post-insert');
         vi.doUnmock('../handlers/save/response-builder');
+        vi.doUnmock('../handlers/chunking-orchestrator');
         vi.doUnmock('../lib/validation/save-quality-gate');
         vi.doUnmock('../lib/search/search-flags');
+        vi.doUnmock('../utils/validators');
         vi.doUnmock('../utils');
         vi.restoreAllMocks();
         vi.resetModules();
@@ -672,6 +691,100 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
       expect(result.status).toBe('reinforced');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original on disk');
+    });
+
+    it('returns dry-run response without indexing when dryRun and skipPreflight are both true', async () => {
+      const checkExistingRowMock = vi.fn(() => buildIndexResult({ status: 'indexed', id: 999 }));
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+      });
+
+      const filePath = createAtomicSaveTargetPath('dryrun-skip-preflight.md');
+      fs.writeFileSync(filePath, '# dry run original content', 'utf8');
+
+      const response = await harness.module.handleMemorySave({
+        filePath,
+        dryRun: true,
+        skipPreflight: true,
+      } as Parameters<typeof harness.module.handleMemorySave>[0]);
+
+      const payload = JSON.parse(String(response?.content?.[0]?.text ?? '{}'));
+      expect(payload?.data?.status).toBe('dry_run');
+      expect(payload?.data?.validation?.skipped).toBe(true);
+      expect(checkExistingRowMock).not.toHaveBeenCalled();
+      expect(fs.readFileSync(filePath, 'utf8')).toBe('# dry run original content');
+    });
+
+    it('persists quality-loop fixed content after successful chunked indexing', async () => {
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        checkContentHashDedupMock: vi.fn(() => null),
+        chunkingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
+          return {
+            ...actual,
+            needsChunking: vi.fn(() => true),
+            indexChunkedMemoryFile: vi.fn(async () => ({
+              status: 'indexed',
+              id: 444,
+              specFolder: 'specs/999-atomic-save-fi',
+              title: 'Atomic Save FI',
+              message: 'Chunked indexed',
+            })),
+          };
+        },
+      });
+
+      harness.runQualityLoopMock.mockReturnValue({
+        score: { total: 0.9, issues: [] },
+        fixes: ['normalized structure'],
+        passed: true,
+        rejected: false,
+        fixedContent: '# rewritten chunked content',
+      } as any);
+
+      const filePath = createAtomicSaveTargetPath('chunked-quality-fix.md');
+      fs.writeFileSync(filePath, '# original chunked content', 'utf8');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+      expect(result.status).toBe('indexed');
+      expect(fs.readFileSync(filePath, 'utf8')).toBe('# rewritten chunked content');
+    });
+
+    it('does not persist quality-loop fixed content when chunked indexing fails', async () => {
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        checkContentHashDedupMock: vi.fn(() => null),
+        chunkingModuleFactory: async () => {
+          const actual = await vi.importActual<typeof import('../handlers/chunking-orchestrator')>('../handlers/chunking-orchestrator');
+          return {
+            ...actual,
+            needsChunking: vi.fn(() => true),
+            indexChunkedMemoryFile: vi.fn(async () => ({
+              status: 'error',
+              id: 0,
+              specFolder: 'specs/999-atomic-save-fi',
+              title: 'Atomic Save FI',
+              message: 'Chunked indexing failed',
+            })),
+          };
+        },
+      });
+
+      harness.runQualityLoopMock.mockReturnValue({
+        score: { total: 0.9, issues: [] },
+        fixes: ['normalized structure'],
+        passed: true,
+        rejected: false,
+        fixedContent: '# rewritten chunked content',
+      } as any);
+
+      const filePath = createAtomicSaveTargetPath('chunked-quality-fix-error.md');
+      fs.writeFileSync(filePath, '# original chunked content', 'utf8');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+      expect(result.status).toBe('error');
+      expect(fs.readFileSync(filePath, 'utf8')).toBe('# original chunked content');
     });
   });
 });

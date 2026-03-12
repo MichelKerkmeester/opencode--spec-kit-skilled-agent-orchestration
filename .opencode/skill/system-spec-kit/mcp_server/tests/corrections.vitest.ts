@@ -249,6 +249,112 @@ describe('CORRECTIONS MODULE TESTS (T052-T055, T142-T147)', () => {
       expect(undoneCorrection.is_undone).toBe(1);
       expect(undoneCorrection.undone_at).not.toBeNull();
     });
+
+    it('undo removes only correction-owned edge when same-relation edge already exists', () => {
+      const originalId = 501;
+      const correctionId = 502;
+
+      db.prepare(`INSERT OR REPLACE INTO memory_index (id, title, stability) VALUES (?, 'Undo Original', 9.0)`).run(originalId);
+      db.prepare(`INSERT OR REPLACE INTO memory_index (id, title, stability) VALUES (?, 'Undo Correction', 9.0)`).run(correctionId);
+
+      db.prepare(`
+        INSERT INTO causal_edges (source_id, target_id, relation, evidence)
+        VALUES (?, ?, 'supersedes', 'pre-existing edge')
+      `).run(String(correctionId), String(originalId));
+
+      const correctionResult = corrections.recordCorrection({
+        original_memory_id: originalId,
+        correction_memory_id: correctionId,
+        correction_type: 'superseded',
+        reason: 'ownership-safe undo test',
+      });
+
+      const beforeUndoEdges = db.prepare(`
+        SELECT evidence
+        FROM causal_edges
+        WHERE source_id = ? AND target_id = ? AND relation = 'supersedes'
+        ORDER BY id ASC
+      `).all(String(correctionId), String(originalId)) as Array<{ evidence: string | null }>;
+      expect(beforeUndoEdges.length).toBeGreaterThanOrEqual(2);
+
+      const undoResult = corrections.undoCorrection(Number(correctionResult.correction_id));
+      expect(undoResult.success).toBe(true);
+
+      const afterUndoEdges = db.prepare(`
+        SELECT evidence
+        FROM causal_edges
+        WHERE source_id = ? AND target_id = ? AND relation = 'supersedes'
+        ORDER BY id ASC
+      `).all(String(correctionId), String(originalId)) as Array<{ evidence: string | null }>;
+
+      expect(afterUndoEdges).toHaveLength(1);
+      expect(afterUndoEdges[0].evidence).toBe('pre-existing edge');
+    });
+
+    it('undo removes legacy-format correction-owned edge via scoped fallback only', () => {
+      const originalId = 503;
+      const correctionId = 504;
+      const reason = 'legacy format fallback test';
+
+      db.prepare(`INSERT OR REPLACE INTO memory_index (id, title, stability) VALUES (?, 'Legacy Undo Original', 9.0)`).run(originalId);
+      db.prepare(`INSERT OR REPLACE INTO memory_index (id, title, stability) VALUES (?, 'Legacy Undo Correction', 9.0)`).run(correctionId);
+
+      db.prepare(`
+        INSERT INTO causal_edges (source_id, target_id, relation, evidence)
+        VALUES (?, ?, 'supersedes', 'pre-existing edge')
+      `).run(String(correctionId), String(originalId));
+
+      const correctionResult = corrections.recordCorrection({
+        original_memory_id: originalId,
+        correction_memory_id: correctionId,
+        correction_type: 'superseded',
+        reason,
+      });
+
+      const createdEdge = db.prepare(`
+        SELECT id
+        FROM causal_edges
+        WHERE source_id = ?
+          AND target_id = ?
+          AND relation = 'supersedes'
+          AND evidence LIKE ?
+        ORDER BY id DESC
+        LIMIT 1
+      `).get(
+        String(correctionId),
+        String(originalId),
+        `Correction#${Number(correctionResult.correction_id)}:%`
+      ) as { id: number } | undefined;
+
+      expect(createdEdge).toBeDefined();
+
+      db.prepare(`
+        UPDATE causal_edges
+        SET evidence = ?
+        WHERE id = ?
+      `).run(`Correction: superseded - ${reason}`, createdEdge!.id);
+
+      const beforeUndoEdges = db.prepare(`
+        SELECT evidence
+        FROM causal_edges
+        WHERE source_id = ? AND target_id = ? AND relation = 'supersedes'
+        ORDER BY id ASC
+      `).all(String(correctionId), String(originalId)) as Array<{ evidence: string | null }>;
+      expect(beforeUndoEdges).toHaveLength(2);
+
+      const undoResult = corrections.undoCorrection(Number(correctionResult.correction_id));
+      expect(undoResult.success).toBe(true);
+
+      const afterUndoEdges = db.prepare(`
+        SELECT evidence
+        FROM causal_edges
+        WHERE source_id = ? AND target_id = ? AND relation = 'supersedes'
+        ORDER BY id ASC
+      `).all(String(correctionId), String(originalId)) as Array<{ evidence: string | null }>;
+
+      expect(afterUndoEdges).toHaveLength(1);
+      expect(afterUndoEdges[0].evidence).toBe('pre-existing edge');
+    });
   });
 
   // --- CHK-069: Feature flag ----------------------------------

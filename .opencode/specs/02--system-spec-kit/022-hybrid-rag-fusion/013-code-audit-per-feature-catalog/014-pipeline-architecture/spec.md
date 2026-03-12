@@ -83,7 +83,7 @@ Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feat
 |----|-------------|---------------------|
 | REQ-001 | All four folder documents match Level 2 template structure, including YAML frontmatter, SPECKIT comments, and ANCHOR pairs. | Each file contains required headings/comments/anchors from Level 2 templates with no missing open/close anchors. |
 | REQ-002 | Core docs carry a self-contained traceability model for all 21 audited features. | `tasks.md` contains 21 feature rows (F01-F21) with source feature files, rubric classification, and linked backlog tasks or explicit gap notes. |
-| REQ-003 | Keep status/date conventions consistent for this rewrite cycle. | All metadata uses Level `2`, Status `Draft`, and date `2026-03-10`. |
+| REQ-003 | Keep status/date conventions consistent for this rewrite cycle. | All metadata uses Level `2`, Status `Complete`, and date `2026-03-10`. |
 
 ### P1 - Required (complete OR user-approved deferral)
 

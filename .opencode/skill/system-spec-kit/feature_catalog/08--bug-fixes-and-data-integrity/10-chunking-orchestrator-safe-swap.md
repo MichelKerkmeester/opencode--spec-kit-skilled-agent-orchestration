@@ -27,7 +27,7 @@ During re-chunking of parent memories, the orchestrator previously deleted exist
 
 | File | Focus |
 |------|-------|
-| (no dedicated test file yet) | — |
+| `mcp_server/tests/chunking-orchestrator-swap.vitest.ts` | Staged-swap success, rollback, partial-embedding, and cache-key normalization regressions |
 
 ## 4. SOURCE METADATA
 

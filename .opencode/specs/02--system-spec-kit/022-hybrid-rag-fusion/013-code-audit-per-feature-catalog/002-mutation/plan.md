@@ -70,7 +70,7 @@ Catalog definitions are inventoried first, then each feature is traced to implem
 - [x] **Step 1: Feature Inventory**
 - [x] Read all 10 feature `.md` files in `feature_catalog/02--mutation/`
 - [x] Extract source file lists (implementation + tests)
-- [x] Map features to manual playbook scenarios (`EX-010..EX-017`, `NEW-*`)
+- [x] Map features to manual playbook scenarios (`EX-006..EX-010`, `NEW-*`)
 
 ### Phase 2: Audit per Feature
 - [x] **Step 2: Code Review Per Feature**
@@ -83,7 +83,7 @@ Catalog definitions are inventoried first, then each feature is traced to implem
 - [x] Verify tests assert described feature behavior
 - [x] Document gaps between documented behavior and assertions
 - [x] **Step 4: Manual Test Playbook Cross-Reference**
-- [x] Map to scenarios `EX-010..EX-017`, `NEW-*`
+- [x] Map to scenarios `EX-006..EX-010`, `NEW-*`
 - [x] Mark missing or weak scenario coverage
 
 ### Phase 3: Fix + Verify

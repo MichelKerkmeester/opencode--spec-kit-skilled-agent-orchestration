@@ -74,7 +74,7 @@ Lifecycle feature documents feed the audit review, findings are triaged into pri
 ### Phase 1: Setup
 - [x] Inventory all lifecycle features and source/test references
 - [x] Validate audit criteria and severity taxonomy
-- [x] Establish playbook scenario baseline EX-023..EX-027
+- [x] Establish playbook scenario baseline EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124
 
 ### Phase 2: Core Implementation
 - [x] Convert methodology outputs into prioritized T### lifecycle tasks
@@ -96,7 +96,7 @@ Lifecycle feature documents feed the audit review, findings are triaged into pri
 |-----------|-------|-------|
 | Unit | Handler/schema/queue/archival logic referenced by lifecycle findings | Vitest |
 | Integration | Checkpoint lifecycle and crash-recovery end-to-end paths | Vitest + SQLite fixtures |
-| Manual | EX-023..EX-027 lifecycle playbook coverage validation | MCP tools + reviewer checklist |
+| Manual | EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 lifecycle playbook coverage validation | MCP tools + reviewer checklist |
 <!-- /ANCHOR:testing -->
 
 ---

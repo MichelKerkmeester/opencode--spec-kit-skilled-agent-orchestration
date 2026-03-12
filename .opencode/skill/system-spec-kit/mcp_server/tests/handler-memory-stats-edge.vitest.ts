@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 import * as handler from '../handlers/memory-crud';
-import { checkDatabaseUpdated } from '../core';
+import * as core from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
 
 /** Parse the JSON payload from an MCP response. */
@@ -19,7 +19,7 @@ function getDetails(parsed: Record<string, unknown>) {
 }
 
 async function insertStatsRows(specFolders: string[], repeat = 1) {
-  await checkDatabaseUpdated();
+  await core.checkDatabaseUpdated();
   const database = vectorIndex.getDb();
   if (!database) {
     throw new Error('Database not initialized');
@@ -45,6 +45,10 @@ async function insertStatsRows(specFolders: string[], repeat = 1) {
     }
   }
 }
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('handleMemoryStats Edge Cases (T007a)', () => {
   it('T007a-S1: Zero limit falls back to 10', async () => {
@@ -167,5 +171,18 @@ describe('handleMemoryStats Edge Cases (T007a)', () => {
     expect(Array.isArray(parsed.data.topFolders)).toBe(true);
     expect(parsed.data.topFolders.length).toBe(2);
     expect(parsed.data.totalSpecFolders).toBeGreaterThan(parsed.data.topFolders.length);
+  });
+
+  it('T007a-S14: checkDatabaseUpdated failures return MCP error response with requestId', async () => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockRejectedValue(new Error('marker read failed'));
+
+    const result = await handler.handleMemoryStats({ folderRanking: 'count' });
+    const parsed = parseResponse(result);
+    const details = getDetails(parsed);
+
+    expect(result.isError).toBe(true);
+    expect(getErrorMessage(parsed)).toMatch(/Database refresh failed before query execution/);
+    expect(parsed.data.code).toBe('E021');
+    expect(typeof details?.requestId).toBe('string');
   });
 });

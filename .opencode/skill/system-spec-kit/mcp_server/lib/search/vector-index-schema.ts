@@ -1271,7 +1271,10 @@ export function ensureCompanionTables(database: Database.Database): void {
  * @param options - Schema creation options.
  * @returns Nothing.
  */
-export function create_schema(database: Database.Database, options: { sqlite_vec_available: boolean; get_embedding_dim: () => number }) {
+export function create_schema(
+  database: Database.Database,
+  options: { sqlite_vec_available: boolean; get_embedding_dim: () => number }
+): void {
   const { sqlite_vec_available, get_embedding_dim } = options;
 
   const table_exists = database.prepare(`

@@ -286,6 +286,7 @@ function installUpdateMocks(opts: {
   const { existingMemory = { id: 1, title: 'Old Title' }, embeddingResult = new Float32Array(768), embeddingThrows = false } = opts;
   const calls: Record<string, any[]> = {
     getMemory: [],
+    getDb: [],
     updateMemory: [],
     generateDocumentEmbedding: [],
     updateEmbeddingStatus: [],
@@ -294,7 +295,26 @@ function installUpdateMocks(opts: {
     clearConstitutionalCache: [],
   };
 
+  const fakeDb = {
+    inTransaction: false,
+    transaction: (fn: Function) => {
+      return () => fn();
+    },
+    prepare: (_sql: string) => ({
+      get: (_id: number) => ({
+        id: existingMemory?.id ?? 1,
+        title: existingMemory?.title ?? 'Old Title',
+        content_hash: existingMemory?.content_hash ?? 'old-hash',
+        spec_folder: existingMemory?.spec_folder ?? 'specs/test',
+        file_path: existingMemory?.file_path ?? '/tmp/memory.md',
+        content_text: existingMemory?.content_text ?? 'Mock content',
+        trigger_phrases: existingMemory?.trigger_phrases ?? '[]',
+      }),
+    }),
+  };
+
   vi.mocked(vectorIndex.getMemory).mockImplementation((id: number) => { calls.getMemory.push(id); return existingMemory; });
+  vi.mocked(vectorIndex.getDb).mockImplementation(() => { calls.getDb.push(true); return fakeDb as any; });
   vi.mocked(vectorIndex.updateMemory).mockImplementation((params: any) => { calls.updateMemory.push(params); });
   vi.mocked(vectorIndex.updateEmbeddingStatus).mockImplementation((id: number, status: string) => { calls.updateEmbeddingStatus.push({ id, status }); });
 
@@ -531,6 +551,19 @@ describe('handleMemoryDelete - Happy Path', () => {
     expect(calls.clearCache).toHaveLength(0);
     expect(calls.invalidateOnWrite).toHaveLength(0);
   });
+
+  it('EXT-D6: Single delete with unavailable DB returns E_DB_UNAVAILABLE envelope', async () => {
+    if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    installDeleteMocks({ dbAvailable: false });
+
+    const result = await handler.handleMemoryDelete({ id: 42 });
+    const parsed = parseResponse(result);
+
+    expect(result?.isError).toBe(true);
+    expect(parsed?.data?.code).toBe('E_DB_UNAVAILABLE');
+    expect(parsed?.data?.error).toBe('Delete aborted: database unavailable');
+    expect(parsed?.data?.details?.deleted).toBe(0);
+  });
 });
 
 /* -------------------------------------------------------------
@@ -605,10 +638,10 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
     const calls = installBulkDeleteMocks({ memories: [{ id: 40 }], checkpointThrows: true });
     const result = await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
     const parsed = parseResponse(result);
-    // With confirm=true, checkpoint failure should be non-fatal
-    const succeeded = (parsed?.data?.deleted >= 1) ||
-                      (parsed?.summary && parsed.summary.includes('Error'));
-    expect(succeeded).toBe(true);
+    // With confirm=true, checkpoint failure should be non-fatal and delete should still succeed.
+    expect(result?.isError).toBeFalsy();
+    expect(parsed?.data?.deleted).toBe(1);
+    expect(parsed?.summary).toMatch(/Deleted 1 memory/);
   });
 
   it('EXT-BD5: Bulk delete cleans causal edges for each memory', async (ctx) => {
@@ -641,6 +674,20 @@ describe('handleMemoryDelete - Bulk Delete Transaction', () => {
     expect(parsed?.data?.checkpoint).toBeUndefined();
     expect(parsed?.data?.restoreCommand).toBeUndefined();
     expect(calls.createCheckpoint.length).toBe(1);
+  });
+
+  it('EXT-BD8: Bulk delete with unavailable DB returns same E_DB_UNAVAILABLE envelope', async () => {
+    if (!handler?.handleMemoryDelete || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    const calls = installBulkDeleteMocks({ memories: [{ id: 70 }], dbAvailable: false });
+
+    const result = await handler.handleMemoryDelete({ specFolder: 'specs/test', confirm: true });
+    const parsed = parseResponse(result);
+
+    expect(result?.isError).toBe(true);
+    expect(parsed?.data?.code).toBe('E_DB_UNAVAILABLE');
+    expect(parsed?.data?.error).toBe('Delete aborted: database unavailable');
+    expect(parsed?.data?.details?.deleted).toBe(0);
+    expect(calls.deleteMemory).toHaveLength(0);
   });
 });
 
@@ -1257,6 +1304,27 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.groups?.[0]?.variants?.map((variant: { filePath: string }) => variant.filePath)).toEqual([
       '.opencode/specs/02--system-spec-kit/011-test/memory/b.md',
       'specs/02--system-spec-kit/011-test/memory/b.md',
+    ]);
+  });
+
+  it('EXT-H10c: divergent_aliases mode detects relative specs aliases and groups them correctly', async () => {
+    if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
+    handler.setEmbeddingModelReady(true);
+    installHealthMocks({
+      dbAvailable: true,
+      aliasRows: [
+        { file_path: 'specs/02--system-spec-kit/012-test/memory/c.md', content_hash: 'hash-1', spec_folder: '02--system-spec-kit/012-test' },
+        { file_path: '.opencode/specs/02--system-spec-kit/012-test/memory/c.md', content_hash: 'hash-2', spec_folder: '02--system-spec-kit/012-test' },
+      ],
+    });
+    const result = await handler.handleMemoryHealth({ reportMode: 'divergent_aliases', limit: 20 });
+    const parsed = parseResponse(result);
+    expect(parsed?.data?.totalDivergentGroups).toBe(1);
+    expect(parsed?.data?.returnedGroups).toBe(1);
+    expect(parsed?.data?.groups?.[0]?.normalizedPath).toBe('specs/02--system-spec-kit/012-test/memory/c.md');
+    expect(parsed?.data?.groups?.[0]?.variants?.map((variant: { filePath: string }) => variant.filePath)).toEqual([
+      '.opencode/specs/02--system-spec-kit/012-test/memory/c.md',
+      'specs/02--system-spec-kit/012-test/memory/c.md',
     ]);
   });
 

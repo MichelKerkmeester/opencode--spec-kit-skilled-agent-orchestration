@@ -43,8 +43,8 @@ contextType: "general"
 
 - [x] CHK-010 [P0] F-05 ingest path limit uses one shared constant across schema and handler — `MAX_INGEST_PATHS = 50` exported from `tool-input-schemas.ts`, imported by `memory-ingest.ts`
 - [x] CHK-011 [P0] F-06 pending-file recovery performs stale/uncommitted detection before rename — `IsCommittedCheck` callback added to `recoverPendingFile`, stale files logged and left for review
-- [x] CHK-012 [P1] F-07 archival logic defines BM25 and vector embedding behavior explicitly — `syncVectorOnArchive`/`syncVectorOnUnarchive` added with lazy-loaded `VectorIndexModule`
-- [x] CHK-013 [P1] Lifecycle fixes follow project TypeScript patterns and typed error handling — TSC clean, matches existing patterns (lazy-load, warn-not-throw, typed interfaces)
+- [x] CHK-012 [P1] F-07 archival logic defines BM25 and vector embedding behavior explicitly — `syncVectorOnArchive` performs vector-only delete (`DELETE FROM vec_memories`), and `syncVectorOnUnarchive` defers vector re-embedding to the next index scan
+- [x] CHK-013 [P1] Lifecycle fixes follow project TypeScript patterns and typed error handling — Lifecycle-touched modules remain type-safe and pattern-aligned (lazy-load, warn-not-throw, typed interfaces); `tsc --noEmit` passes cleanly
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -53,9 +53,9 @@ contextType: "general"
 ## Testing
 
 - [x] CHK-020 [P0] All lifecycle acceptance criteria are met for F-01..F-07 — SC-001 through SC-004 validated
-- [x] CHK-021 [P0] Boundary/concurrency/crash-recovery tests added for F-05 and F-06 — 8 ingest edge + 9 queue state + 8 recovery tests (25 total)
-- [x] CHK-022 [P1] Checkpoint lifecycle integration gaps closed for F-01..F-04 — 10 checkpoint edge tests in `handler-checkpoints-edge.vitest.ts`
-- [x] CHK-023 [P1] Archival regression coverage validates archive/unarchive vec/BM25 behavior (F-07) — Vector sync functions added; BM25 parity confirmed in source review
+- [x] CHK-021 [P0] Boundary/concurrency/crash-recovery tests added for F-05 and F-06 — 13 ingest edge + 13 queue state + 13 recovery tests (39 total)
+- [x] CHK-022 [P1] Checkpoint lifecycle integration gaps closed for F-01..F-04 — 12 checkpoint edge tests in `handler-checkpoints-edge.vitest.ts`
+- [x] CHK-023 [P1] Archival regression coverage validates archive/unarchive vec/BM25 behavior (F-07) — Vector delete-on-archive and deferred vector rebuild-on-unarchive behavior confirmed; BM25 parity confirmed in source review
 <!-- /ANCHOR:testing -->
 
 ---
@@ -75,7 +75,7 @@ contextType: "general"
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized for lifecycle phase — all 4 artifacts updated post-implementation
 - [x] CHK-041 [P1] Stale `retry.vitest.ts` references removed from lifecycle feature docs — removed from all 5 files that had them (F-06, F-07 already clean)
-- [x] CHK-042 [P2] README updated (if applicable) — N/A, no README changes required
+- [x] CHK-042 [P2] README updated (if applicable) — updated `mcp_server/tests/README.md` file count + coverage snapshot (265 files, as-of 2026-03-12)
 <!-- /ANCHOR:docs -->
 
 ---
