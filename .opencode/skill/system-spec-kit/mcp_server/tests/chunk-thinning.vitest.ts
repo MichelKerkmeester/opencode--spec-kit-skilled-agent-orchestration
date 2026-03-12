@@ -9,9 +9,7 @@ import path from 'node:path';
 import { afterEach, describe, it, expect, vi } from 'vitest';
 import { scoreChunk, thinChunks, DEFAULT_THINNING_THRESHOLD, ANCHOR_WEIGHT, DENSITY_WEIGHT } from '../lib/chunking/chunk-thinning';
 import { chunkLargeFile } from '../lib/chunking/anchor-chunker';
-import { applyTreeThinning } from '../../scripts/core/tree-thinning';
 import type { AnchorChunk } from '../lib/chunking/anchor-chunker';
-import type { FileEntry } from '../../scripts/core/tree-thinning';
 
 const tempDirs: string[] = [];
 
@@ -80,17 +78,6 @@ function makeCommentOnlyChunk(): AnchorChunk {
     label: 'comments-only',
     charCount: 90,
   });
-}
-
-function makeTokenContent(tokens: number): string {
-  return 'abcd'.repeat(tokens);
-}
-
-function makeTreeFile(name: string, tokens: number, parent = 'specs/001-feature'): FileEntry {
-  return {
-    path: `${parent}/${name}`,
-    content: makeTokenContent(tokens),
-  };
 }
 
 /* ---------------------------------------------------------------
@@ -329,119 +316,7 @@ describe('thinChunks — threshold customization', () => {
 });
 
 /* ---------------------------------------------------------------
-   7. applyTreeThinning — token-threshold merges + summaries
---------------------------------------------------------------- */
-
-describe('applyTreeThinning — token-threshold merge behavior', () => {
-  it('should handle one-below/exactly-at/one-above 200-token boundary', () => {
-    const oneBelow = makeTreeFile('one-below.md', 199);
-    const exactlyAt = makeTreeFile('exactly-at.md', 200);
-    const oneAbove = makeTreeFile('one-above.md', 201);
-
-    const result = applyTreeThinning([oneBelow, exactlyAt, oneAbove]);
-    const byPath = new Map(result.thinned.map(entry => [entry.path, entry.action]));
-
-    expect(byPath.get(oneBelow.path)).toBe('merged-into-parent');
-    expect(byPath.get(exactlyAt.path)).toBe('content-as-summary');
-    expect(byPath.get(oneAbove.path)).toBe('content-as-summary');
-  });
-
-  it('should merge sibling chunks under threshold into one parent merged entry', () => {
-    const result = applyTreeThinning([
-      makeTreeFile('tiny-a.md', 50),
-      makeTreeFile('tiny-b.md', 100),
-    ]);
-
-    expect(result.stats.mergedCount).toBe(2);
-    expect(result.merged).toHaveLength(1);
-    expect(result.merged[0].childPaths).toHaveLength(2);
-    expect(result.merged[0].parentPath).toBe('specs/001-feature');
-  });
-});
-
-describe('applyTreeThinning — content-summary preservation', () => {
-  it('should preserve content verbatim when file is thinned as content-as-summary', () => {
-    const anchoredContent = [
-      '<!-- ANCHOR:state -->',
-      'This anchor content must be preserved in the summary pass.',
-      '<!-- /ANCHOR:state -->',
-      makeTokenContent(240),
-    ].join('\n');
-    const file: FileEntry = {
-      path: 'specs/001-feature/state-summary.md',
-      content: anchoredContent,
-    };
-
-    const result = applyTreeThinning([file]);
-    expect(result.thinned[0].action).toBe('content-as-summary');
-    expect(result.thinned[0].content).toBe(anchoredContent);
-  });
-
-  it('should preserve anchor-rich content inside merged parent summaries', () => {
-    const anchorFirst = {
-      path: 'specs/001-feature/anchor-note.md',
-      content: '<!-- ANCHOR:state -->\nAnchor-first details\n<!-- /ANCHOR:state -->',
-    };
-    const siblingSecond = {
-      path: 'specs/001-feature/sibling-note.md',
-      content: 'Sibling details',
-    };
-
-    const result = applyTreeThinning([anchorFirst, siblingSecond]);
-    expect(result.merged).toHaveLength(1);
-
-    const mergedSummary = result.merged[0].mergedSummary;
-    expect(mergedSummary).toContain('<!-- merged from: specs/001-feature/anchor-note.md -->');
-    expect(mergedSummary).toContain(anchorFirst.content);
-    expect(mergedSummary).toContain('<!-- merged from: specs/001-feature/sibling-note.md -->');
-    expect(mergedSummary).toContain(siblingSecond.content);
-    expect(mergedSummary.indexOf(anchorFirst.content)).toBeLessThan(mergedSummary.indexOf(siblingSecond.content));
-  });
-});
-
-describe('applyTreeThinning — edge cases', () => {
-  it('should handle empty input without errors', () => {
-    const result = applyTreeThinning([]);
-    expect(result.thinned).toHaveLength(0);
-    expect(result.merged).toHaveLength(0);
-    expect(result.stats.totalFiles).toBe(0);
-  });
-
-  it('should handle single-file input', () => {
-    const file = makeTreeFile('single.md', 120);
-    const result = applyTreeThinning([file]);
-
-    expect(result.thinned).toHaveLength(1);
-    expect(result.thinned[0].path).toBe(file.path);
-  });
-
-  it('should merge all files when all are below threshold', () => {
-    const files = [
-      makeTreeFile('small-1.md', 10),
-      makeTreeFile('small-2.md', 20),
-      makeTreeFile('small-3.md', 30),
-    ];
-
-    const result = applyTreeThinning(files);
-    expect(result.stats.mergedCount).toBe(3);
-    expect(result.merged).toHaveLength(1);
-  });
-
-  it('should keep all files when all are above threshold', () => {
-    const files = [
-      makeTreeFile('large-1.md', 600),
-      makeTreeFile('large-2.md', 700),
-      makeTreeFile('large-3.md', 800),
-    ];
-
-    const result = applyTreeThinning(files);
-    expect(result.stats.mergedCount).toBe(0);
-    expect(result.thinned.every(entry => entry.action === 'keep')).toBe(true);
-  });
-});
-
-/* ---------------------------------------------------------------
-   8. Constants export
+   7. Constants export
 --------------------------------------------------------------- */
 
 describe('constants', () => {
@@ -459,7 +334,7 @@ describe('constants', () => {
 });
 
 /* ---------------------------------------------------------------
-   9. Integration wiring — memory-save chunk flow uses thinChunks
+   8. Integration wiring — memory-save chunk flow uses thinChunks
 --------------------------------------------------------------- */
 
 describe('R7 integration wiring', () => {

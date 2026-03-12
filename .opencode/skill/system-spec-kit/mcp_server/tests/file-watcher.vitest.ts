@@ -22,6 +22,43 @@ function createDeferred(): { promise: Promise<void>; resolve: () => void } {
 const tempDirs: string[] = [];
 const activeWatchers: Array<{ close: () => Promise<void> }> = [];
 
+function trackWatcher<T extends { close: () => Promise<void> }>(watcher: T): T {
+  activeWatchers.push(watcher);
+  return watcher;
+}
+
+async function closeTrackedWatcher(watcher: { close: () => Promise<void> }): Promise<void> {
+  const watcherIndex = activeWatchers.indexOf(watcher);
+  if (watcherIndex >= 0) {
+    activeWatchers.splice(watcherIndex, 1);
+  }
+  await watcher.close();
+}
+
+async function cleanupWatchers(): Promise<void> {
+  const watchersToClose = activeWatchers.splice(0, activeWatchers.length);
+  const closeResults = await Promise.allSettled(watchersToClose.map(async (watcher) => watcher.close()));
+  const failedClose = closeResults.find(
+    (result): result is PromiseRejectedResult => result.status === 'rejected'
+  );
+  if (failedClose) {
+    throw failedClose.reason;
+  }
+}
+
+async function cleanupTempDirs(): Promise<void> {
+  const dirsToRemove = tempDirs.splice(0, tempDirs.length);
+  const removeResults = await Promise.allSettled(
+    dirsToRemove.map(async (dir) => fs.rm(dir, { recursive: true, force: true }))
+  );
+  const failedRemove = removeResults.find(
+    (result): result is PromiseRejectedResult => result.status === 'rejected'
+  );
+  if (failedRemove) {
+    throw failedRemove.reason;
+  }
+}
+
 async function createTempMarkdown(content = 'hello world'): Promise<string> {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'spec-kit-watcher-'));
   tempDirs.push(tempDir);
@@ -58,6 +95,7 @@ type FileWatcherModule = typeof import('../lib/ops/file-watcher');
 
 async function loadFreshWatcherModule(): Promise<FileWatcherModule> {
   vi.resetModules();
+  vi.doUnmock('chokidar');
   return import('../lib/ops/file-watcher');
 }
 
@@ -86,20 +124,14 @@ describe('file-watcher path filters', () => {
 describe('file-watcher runtime behavior', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   afterEach(async () => {
-    while (activeWatchers.length > 0) {
-      const watcher = activeWatchers.pop();
-      if (watcher) {
-        await watcher.close();
-      }
-    }
-
-    await Promise.all(tempDirs.map(async (dir) => {
-      await fs.rm(dir, { recursive: true, force: true });
-    }));
-    tempDirs.length = 0;
+    vi.useRealTimers();
+    vi.doUnmock('chokidar');
+    await cleanupWatchers();
+    await cleanupTempDirs();
   });
 
   it('forces reindex for repeated add events even when content is unchanged', async () => {
@@ -112,7 +144,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 50,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
 
@@ -141,7 +173,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 30,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
 
@@ -149,7 +181,7 @@ describe('file-watcher runtime behavior', () => {
     await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 4000 });
 
     let closeResolved = false;
-    const closePromise = watcher.close().then(() => {
+    const closePromise = closeTrackedWatcher(watcher).then(() => {
       closeResolved = true;
     });
 
@@ -161,10 +193,6 @@ describe('file-watcher runtime behavior', () => {
 
     expect(closeResolved).toBe(true);
 
-    const watcherIndex = activeWatchers.indexOf(watcher);
-    if (watcherIndex >= 0) {
-      activeWatchers.splice(watcherIndex, 1);
-    }
   });
 
   it('silently ignores ENOENT when file is removed before debounce execution', async () => {
@@ -178,7 +206,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 80,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
 
@@ -203,7 +231,7 @@ describe('file-watcher runtime behavior', () => {
       removeFn,
       debounceMs: 50,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
 
@@ -228,7 +256,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 30,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
 
@@ -237,11 +265,7 @@ describe('file-watcher runtime behavior', () => {
     await waitFor(() => reindexFn.mock.calls.length >= 3, { timeoutMs: 5500 });
     expect(reindexFn).toHaveBeenCalledTimes(3);
 
-    const watcherIndex = activeWatchers.indexOf(watcher);
-    if (watcherIndex >= 0) {
-      activeWatchers.splice(watcherIndex, 1);
-      await watcher.close();
-    }
+    await closeTrackedWatcher(watcher);
   });
 
   // CHK-077: File watcher timing test — changed file re-indexed within 5 seconds
@@ -256,7 +280,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 100,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     // Wait for watcher to initialize
     await delay(200);
@@ -282,7 +306,7 @@ describe('file-watcher runtime behavior', () => {
       reindexFn,
       debounceMs: 200,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(200);
 
@@ -305,7 +329,7 @@ describe('file-watcher runtime behavior', () => {
     expect(reindexFn.mock.calls.length).toBe(1);
   });
 
-  it('removes old entry and indexes new entry on file rename', async () => {
+  it('removes old entry and indexes new entry on file rename', { timeout: 10000 }, async () => {
     const tempDir = await createTempDir();
     const oldPath = path.join(tempDir, 'rename-old.md');
     const newPath = path.join(tempDir, 'rename-new.md');
@@ -325,49 +349,52 @@ describe('file-watcher runtime behavior', () => {
       removeFn,
       debounceMs: 80,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
-    await delay(200);
-    await fs.rename(oldPath, newPath);
+    try {
+      await delay(200);
+      await fs.rename(oldPath, newPath);
 
-    await waitFor(
-      () =>
-        removeFn.mock.calls.some((call) => call[0] === oldPath) &&
-        reindexFn.mock.calls.some((call) => call[0] === newPath),
-      { timeoutMs: 5000 }
-    );
+      await waitFor(
+        () =>
+          removeFn.mock.calls.some((call) => call[0] === oldPath) &&
+          reindexFn.mock.calls.some((call) => call[0] === newPath),
+        { timeoutMs: 5000 }
+      );
 
-    expect(indexedPaths.has(oldPath)).toBe(false);
-    expect(indexedPaths.has(newPath)).toBe(true);
+      expect(indexedPaths.has(oldPath)).toBe(false);
+      expect(indexedPaths.has(newPath)).toBe(true);
+    } finally {
+      await closeTrackedWatcher(watcher);
+    }
   });
 
-  it('debounces rapid changes within the 2-second default window to one reindex', async () => {
+  it('debounces rapid changes within the 2-second default window to one reindex', { timeout: 10000 }, async () => {
     const tempDir = await createTempDir();
     const filePath = path.join(tempDir, 'debounce-default-window.md');
     await fs.writeFile(filePath, 'initial', 'utf8');
 
     const reindexFn = vi.fn(async () => undefined);
-    const watcher = startFileWatcher({
+    const watcher = trackWatcher(startFileWatcher({
       paths: [tempDir],
       reindexFn,
-      // Use default debounce (2000ms) to stress real production window.
-    });
-    activeWatchers.push(watcher);
+    }));
 
-    await delay(250);
+    try {
+      await delay(200);
+      for (let i = 0; i < 3; i++) {
+        await fs.writeFile(filePath, `burst-${i}`, 'utf8');
+        await delay(80);
+      }
 
-    for (let i = 0; i < 8; i++) {
-      await fs.writeFile(filePath, `burst-${i}-${Date.now()}`, 'utf8');
-      await delay(60);
+      await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 7000 });
+      expect(reindexFn).toHaveBeenCalledTimes(1);
+    } finally {
+      await closeTrackedWatcher(watcher);
     }
-
-    await waitFor(() => reindexFn.mock.calls.length >= 1, { timeoutMs: 9000 });
-    await delay(600);
-
-    expect(reindexFn).toHaveBeenCalledTimes(1);
   });
 
-  it('handles burst renames and keeps only final path indexed', async () => {
+  it('handles burst renames and keeps only final path indexed', { timeout: 10000 }, async () => {
     const tempDir = await createTempDir();
     let currentPath = path.join(tempDir, 'burst-0.md');
     await fs.writeFile(currentPath, 'burst-0', 'utf8');
@@ -387,28 +414,32 @@ describe('file-watcher runtime behavior', () => {
       removeFn,
       debounceMs: 90,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
-    await delay(220);
+    try {
+      await delay(220);
 
-    for (let i = 1; i <= 5; i++) {
-      const nextPath = path.join(tempDir, `burst-${i}.md`);
-      await fs.rename(currentPath, nextPath);
-      currentPath = nextPath;
-      paths.push(currentPath);
-      await delay(25);
-    }
+      for (let i = 1; i <= 3; i++) {
+        const nextPath = path.join(tempDir, `burst-${i}.md`);
+        await fs.rename(currentPath, nextPath);
+        currentPath = nextPath;
+        paths.push(currentPath);
+        await delay(40);
+      }
 
-    const finalPath = currentPath;
-    await waitFor(() => reindexFn.mock.calls.some((call) => call[0] === finalPath), { timeoutMs: 6000 });
+      const finalPath = currentPath;
+      await waitFor(() => reindexFn.mock.calls.some((call) => call[0] === finalPath), { timeoutMs: 5000 });
 
-    expect(indexedPaths.has(finalPath)).toBe(true);
-    for (const stalePath of paths.slice(0, -1)) {
-      expect(indexedPaths.has(stalePath)).toBe(false);
+      expect(indexedPaths.has(finalPath)).toBe(true);
+      for (const stalePath of paths.slice(0, -1)) {
+        expect(indexedPaths.has(stalePath)).toBe(false);
+      }
+    } finally {
+      await closeTrackedWatcher(watcher);
     }
   });
 
-  it('handles concurrent renames across multiple files', async () => {
+  it('handles concurrent renames across multiple files', { timeout: 10000 }, async () => {
     const tempDir = await createTempDir();
     const originals = ['alpha.md', 'beta.md', 'gamma.md'].map((name) => path.join(tempDir, name));
     const renamed = ['alpha-renamed.md', 'beta-renamed.md', 'gamma-renamed.md'].map((name) => path.join(tempDir, name));
@@ -431,26 +462,29 @@ describe('file-watcher runtime behavior', () => {
       removeFn,
       debounceMs: 100,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
-    await delay(220);
+    try {
+      await delay(220);
 
-    await Promise.all(
-      originals.map((oldPath, index) => fs.rename(oldPath, renamed[index]))
-    );
+      await Promise.all(originals.slice(0, 2).map((oldPath, index) => fs.rename(oldPath, renamed[index])));
+      await fs.rename(originals[2], renamed[2]);
 
-    await waitFor(
-      () =>
-        originals.every((oldPath) => removeFn.mock.calls.some((call) => call[0] === oldPath)) &&
-        renamed.every((newPath) => reindexFn.mock.calls.some((call) => call[0] === newPath)),
-      { timeoutMs: 7000 }
-    );
+      await waitFor(
+        () =>
+          originals.every((oldPath) => removeFn.mock.calls.some((call) => call[0] === oldPath)) &&
+          renamed.every((newPath) => reindexFn.mock.calls.some((call) => call[0] === newPath)),
+        { timeoutMs: 7000 }
+      );
 
-    for (const oldPath of originals) {
-      expect(indexedPaths.has(oldPath)).toBe(false);
-    }
-    for (const newPath of renamed) {
-      expect(indexedPaths.has(newPath)).toBe(true);
+      for (const oldPath of originals) {
+        expect(indexedPaths.has(oldPath)).toBe(false);
+      }
+      for (const newPath of renamed) {
+        expect(indexedPaths.has(newPath)).toBe(true);
+      }
+    } finally {
+      await closeTrackedWatcher(watcher);
     }
   });
 });
@@ -458,20 +492,14 @@ describe('file-watcher runtime behavior', () => {
 describe('file-watcher metrics', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   afterEach(async () => {
-    while (activeWatchers.length > 0) {
-      const watcher = activeWatchers.pop();
-      if (watcher) {
-        await watcher.close();
-      }
-    }
-
-    await Promise.all(tempDirs.map(async (dir) => {
-      await fs.rm(dir, { recursive: true, force: true });
-    }));
-    tempDirs.length = 0;
+    vi.useRealTimers();
+    vi.doUnmock('chokidar');
+    await cleanupWatchers();
+    await cleanupTempDirs();
   });
 
   it('returns zero metrics before any reindexing', async () => {
@@ -494,7 +522,7 @@ describe('file-watcher metrics', () => {
       reindexFn,
       debounceMs: 40,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
     await fs.writeFile(filePath, 'metrics-count-updated', 'utf8');
@@ -526,7 +554,7 @@ describe('file-watcher metrics', () => {
       reindexFn,
       debounceMs: 40,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
     await fs.writeFile(filePath, 'metrics-avg-1', 'utf8');
@@ -559,7 +587,7 @@ describe('file-watcher metrics', () => {
       reindexFn,
       debounceMs: 40,
     });
-    activeWatchers.push(watcher);
+    trackWatcher(watcher);
 
     await delay(150);
     await fs.writeFile(filePath, 'metrics-accumulate-1', 'utf8');

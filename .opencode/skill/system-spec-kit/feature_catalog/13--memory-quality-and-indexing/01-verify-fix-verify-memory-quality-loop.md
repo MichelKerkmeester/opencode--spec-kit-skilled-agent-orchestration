@@ -6,7 +6,7 @@ The quality loop is opt-in. When `SPECKIT_QUALITY_LOOP` is unset or not equal to
 
 `attempts` reports the actual number of evaluations used, not the configured ceiling. If a retry applies no fixes, the loop breaks early, so a case with `maxRetries=5` can still reject after only 2 total attempts (1 initial evaluation + 1 no-op retry). The rejection reason also reports the actual auto-fix attempt count.
 
-When fixes improve the score past the threshold, the handler returns `fixedContent` so `memory-save.ts` can persist the mutated content and recompute the content hash. When the loop rejects a save, `indexMemoryFile()` returns `status: 'rejected'` without continuing to storage. `atomicSaveMemory()` treats that rejected status as a non-retry rollback path: it restores the previous file or deletes the newly written file immediately.
+When fixes improve the score past the threshold, the handler returns `fixedContent` and `fixedTriggerPhrases`. Accepted saves persist metadata fixes immediately, while rewritten body content stays in-memory and is written only after later hard-reject gates clear under the per-spec-folder lock. Rejected saves still surface the rewritten in-memory draft for diagnostics, but `indexMemoryFile()` returns `status: 'rejected'` without continuing to storage. `atomicSaveMemory()` treats that rejected status as a non-retry rollback path: it restores the previous file or deletes the newly written file immediately.
 
 The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` through `MCP_CHARS_PER_TOKEN` so both save-time checks use the same token estimate.
 

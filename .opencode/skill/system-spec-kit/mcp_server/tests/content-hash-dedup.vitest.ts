@@ -44,7 +44,9 @@ function createMinimalDb(): Database.Database {
       embedding_status TEXT DEFAULT 'success',
       importance_tier TEXT DEFAULT 'normal',
       content_hash TEXT,
-      content_text TEXT
+      content_text TEXT,
+      quality_score REAL DEFAULT 0,
+      quality_flags TEXT
     );
 
     CREATE INDEX IF NOT EXISTS idx_content_hash ON memory_index(content_hash);
@@ -80,6 +82,8 @@ function buildParsedMemory(specFolder: string, content: string, title: string | 
     contentHash: sha256(content),
     contextType: 'general',
     importanceTier: 'normal',
+    qualityScore: 0,
+    qualityFlags: [],
   } as any;
 }
 
@@ -270,6 +274,121 @@ describe('T054: SHA256 Content-Hash Dedup (TM-02)', () => {
 
       expect(result?.status).toBe('unchanged');
       expect(result?.id).toBe(Number(inserted.lastInsertRowid));
+    });
+
+    it('T054-6f: Same-path unchanged does not short-circuit when trigger phrases changed', () => {
+      const content = 'Existing same-path row with stale trigger phrases.';
+      const filePath = '/specs/metadata-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'success', ?, ?, ?, NULL)
+      `).run(
+        'specs/metadata-same-path',
+        filePath,
+        filePath,
+        'Metadata Drift',
+        sha256(content),
+        JSON.stringify(['legacy-trigger']),
+        0,
+        JSON.stringify([]),
+      );
+
+      const result = checkExistingRow(
+        db,
+        buildParsedMemory('specs/metadata-same-path', content, 'Metadata Drift'),
+        filePath,
+        filePath,
+        false,
+        [],
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('T054-6g: Same-path metadata drift is not reclassified as folder duplicate', () => {
+      const content = 'Existing same-path row with stale trigger phrases.';
+      const filePath = '/specs/metadata-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, trigger_phrases, quality_score, quality_flags, parent_id
+        ) VALUES (?, ?, ?, ?, ?, 'success', ?, ?, ?, NULL)
+      `).run(
+        'specs/metadata-same-path',
+        filePath,
+        filePath,
+        'Metadata Drift',
+        sha256(content),
+        JSON.stringify(['legacy-trigger']),
+        0,
+        JSON.stringify([]),
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        {
+          ...buildParsedMemory('specs/metadata-same-path', content, 'Metadata Drift'),
+          triggerPhrases: ['fresh-trigger'],
+        },
+        false,
+        [],
+        { canonicalFilePath: filePath, filePath },
+      );
+
+      expect(result).toBeNull();
+    });
+
+    it('T054-6h: Cross-path duplicates remain detectable when legacy rows have NULL canonical_file_path', () => {
+      const content = 'Legacy rows with null canonical paths must still dedup across paths.';
+      const originalFilePath = '/specs/legacy-null-canonical/memory/original.md';
+      const incomingFilePath = '/specs/legacy-null-canonical/memory/incoming.md';
+      const inserted = db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
+        ) VALUES (?, ?, NULL, ?, ?, 'success', NULL)
+      `).run(
+        'specs/legacy-null-canonical',
+        originalFilePath,
+        'Legacy Duplicate',
+        sha256(content),
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory('specs/legacy-null-canonical', content, 'Legacy Duplicate'),
+        false,
+        [],
+        { canonicalFilePath: incomingFilePath, filePath: incomingFilePath },
+      );
+
+      expect(result?.status).toBe('duplicate');
+      expect(result?.id).toBe(Number(inserted.lastInsertRowid));
+      expect(result?.message).toContain(originalFilePath);
+    });
+
+    it('T054-6i: Same-path exclusion stays effective for legacy rows with NULL canonical_file_path', () => {
+      const content = 'Same-path legacy rows with null canonical paths should still be excluded.';
+      const filePath = '/specs/legacy-null-same-path/memory/doc.md';
+      db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, canonical_file_path, title, content_hash, embedding_status, parent_id
+        ) VALUES (?, ?, NULL, ?, ?, 'success', NULL)
+      `).run(
+        'specs/legacy-null-same-path',
+        filePath,
+        'Legacy Same Path',
+        sha256(content),
+      );
+
+      const result = checkContentHashDedup(
+        db,
+        buildParsedMemory('specs/legacy-null-same-path', content, 'Legacy Same Path'),
+        false,
+        [],
+        { canonicalFilePath: filePath, filePath },
+      );
+
+      expect(result).toBeNull();
     });
   });
 

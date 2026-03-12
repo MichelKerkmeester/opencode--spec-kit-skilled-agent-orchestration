@@ -2,11 +2,14 @@
 
 ## Current Reality
 
-CLI agents dispatched via cli-codex, cli-copilot, cli-gemini, and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. When the calling AI delegates work to an external CLI agent, session context — decisions made, files modified, problems solved — is lost because the agent has no memory save protocol. Current workarounds produce garbage placeholder memories or skip saving entirely.
+Outsourced-agent memory capture is now implemented and aligned across runtime behavior, regression tests, and CLI handback documentation.
 
-The planned solution is a memory return protocol that embeds a structured memory epilogue in the agent's dispatch prompt. The agent includes its session summary in stdout using a defined format. The calling AI then extracts this structured section and feeds it to `generate-context.js` JSON mode (`/tmp/save-context-data.json`) as a bridge into the standard Spec Kit Memory pipeline. This preserves the existing quality gates, deduplication, and indexing infrastructure while enabling outsourced sessions to contribute real memories.
+Current behavior is enforced in three slices:
+1. `EXPLICIT_DATA_FILE_LOAD_FAILED` hard-fail in `data-loader.ts` for missing files, invalid JSON, and validation failures when `dataFile` is provided explicitly.
+2. `nextSteps` / `next_steps` persistence in normalization and extraction flow, producing `Next: ...`, `Follow-up: ...`, and `NEXT_ACTION`.
+3. 8 CLI handback docs (`cli-codex`, `cli-copilot`, `cli-claude-code`, `cli-gemini` `SKILL.md` + `prompt_templates.md`) documenting redact/scrub guidance before writing `/tmp/save-context-data.json`.
 
-Status: Planned. Spec folder `014-outsourced-agent-memory` exists at Draft status.
+Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
 ## Source Files
 
@@ -14,16 +17,31 @@ Status: Planned. Spec folder `014-outsourced-agent-memory` exists at Draft statu
 
 | File | Layer | Role |
 |------|-------|------|
-| (none yet — feature is planned) | — | — |
+| scripts/loaders/data-loader.ts | Scripts | JSON-mode data loading with EXPLICIT_DATA_FILE_LOAD_FAILED hard-fail (3 throw paths) |
+| scripts/utils/input-normalizer.ts | Scripts | nextSteps/next_steps field normalization into NEXT_ACTION observations |
+| scripts/extractors/session-extractor.ts | Scripts | Next:/Follow-up: pattern extraction from session transcripts |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| (none yet — feature is planned) | — |
+| scripts/tests/runtime-memory-inputs.vitest.ts | JSON-mode hard-fail, nextSteps persistence, field normalization (26+ tests) |
+
+### CLI Handback Docs
+
+| File | Focus |
+|------|-------|
+| .opencode/skill/cli-codex/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
+| .opencode/skill/cli-codex/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-copilot/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
+| .opencode/skill/cli-copilot/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-claude-code/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
+| .opencode/skill/cli-claude-code/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
+| .opencode/skill/cli-gemini/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
+| .opencode/skill/cli-gemini/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
 
 ## Source Metadata
 
 - Group: Memory quality and indexing
 - Source feature title: Outsourced agent memory capture
-- Current reality source: spec 014-outsourced-agent-memory (Draft)
+- Current reality source: spec 014-outsourced-agent-memory (Complete)

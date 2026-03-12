@@ -70,7 +70,7 @@ Current modules:
 - Core persistence uses `memory_index` (not `memories`) with FTS/vector/checkpoint support.
 - Spec 126 alignment:
   - `memory-index` supports `includeSpecDocs` and indexes spec docs plus memory files.
-  - `memory-save` preserves `document_type` and `spec_level` across create/update/reinforce flows. Integrates with embedding cache for deduplication of unchanged content.
+  - `memory-save` preserves `document_type` and `spec_level` across create/update/reinforce flows. Integrates with embedding cache for deduplication of unchanged content, persists accepted quality-loop metadata fixes, and carries rewritten body content in-memory until downstream hard-reject gates clear under lock.
   - scan flow can build spec-document causal chains after indexing.
 
 
@@ -83,6 +83,7 @@ Current modules:
 - Spec-folder filtering in scan logic is boundary-safe (no prefix bleed).
 - File descriptor reads for spec-level detection are `finally`-closed.
 - Deferred embedding paths preserve indexability via BM25/FTS and retry manager handoff.
+- `memory-index` scan invalidation now uses the broader post-mutation hook behavior on indexed, updated, and stale-delete outcomes.
 
 
 <!-- /ANCHOR:hardening-notes -->

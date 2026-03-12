@@ -24,6 +24,14 @@ const mocks = vi.hoisted(() => ({
   mockBatchUpdateMtimes: vi.fn(() => ({ updated: 0 })),
   mockListIndexedRecordIdsForDeletedPaths: vi.fn((): number[] => []),
   mockDeleteMemory: vi.fn((): boolean => true),
+  mockRunPostMutationHooks: vi.fn(() => ({
+    latencyMs: 0,
+    triggerCacheCleared: true,
+    constitutionalCacheCleared: true,
+    toolCacheInvalidated: 1,
+    graphSignalsCacheCleared: true,
+    coactivationCacheCleared: true,
+  })),
 }));
 
 vi.mock('../core', () => ({
@@ -67,6 +75,10 @@ vi.mock('../lib/search/vector-index', () => ({
   deleteMemory: mocks.mockDeleteMemory,
 }));
 
+vi.mock('../handlers/mutation-hooks', () => ({
+  runPostMutationHooks: mocks.mockRunPostMutationHooks,
+}));
+
 vi.mock('../lib/response/envelope', () => ({
   createMCPSuccessResponse: (payload: unknown) => ({
     content: [{ type: 'text', text: JSON.stringify(payload) }],
@@ -93,6 +105,7 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockBatchUpdateMtimes.mockReset();
     mocks.mockListIndexedRecordIdsForDeletedPaths.mockReset();
     mocks.mockDeleteMemory.mockReset();
+    mocks.mockRunPostMutationHooks.mockReset();
 
     mocks.mockGetLastScanTime.mockResolvedValue(0);
     mocks.mockSetLastScanTime.mockResolvedValue(undefined);
@@ -113,6 +126,14 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockBatchUpdateMtimes.mockReturnValue({ updated: 0 });
     mocks.mockListIndexedRecordIdsForDeletedPaths.mockReturnValue([]);
     mocks.mockDeleteMemory.mockReturnValue(true);
+    mocks.mockRunPostMutationHooks.mockReturnValue({
+      latencyMs: 0,
+      triggerCacheCleared: true,
+      constitutionalCacheCleared: true,
+      toolCacheInvalidated: 1,
+      graphSignalsCacheCleared: true,
+      coactivationCacheCleared: true,
+    });
   });
 
   it('does not set cooldown timestamp when request is rate-limited', async () => {
@@ -162,6 +183,11 @@ describe('handler-memory-index cooldown behavior', () => {
     expect(mocks.mockCategorizeFilesForIndexing).toHaveBeenCalledWith([]);
     expect(mocks.mockListIndexedRecordIdsForDeletedPaths).toHaveBeenCalledWith(['/tmp/deleted-only.md']);
     expect(mocks.mockDeleteMemory).toHaveBeenCalledWith(901);
+    expect(mocks.mockRunPostMutationHooks).toHaveBeenCalledWith('scan', {
+      staleDeleted: 1,
+      staleDeleteFailed: 0,
+      operation: 'stale-delete',
+    });
 
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.summary).toBe('No memory files found');
@@ -189,6 +215,12 @@ describe('handler-memory-index cooldown behavior', () => {
     expect(mocks.mockDeleteMemory).toHaveBeenCalledTimes(2);
     expect(mocks.mockDeleteMemory).toHaveBeenNthCalledWith(1, 101);
     expect(mocks.mockDeleteMemory).toHaveBeenNthCalledWith(2, 202);
+    expect(mocks.mockRunPostMutationHooks).toHaveBeenCalledWith('scan', {
+      indexed: 0,
+      updated: 0,
+      staleDeleted: 2,
+      staleDeleteFailed: 0,
+    });
 
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.data.staleDeleted).toBe(2);
@@ -218,5 +250,11 @@ describe('handler-memory-index cooldown behavior', () => {
     const envelope = JSON.parse(result.content[0].text);
     expect(envelope.data.staleDeleted).toBe(1);
     expect(envelope.data.staleDeleteFailed).toBe(1);
+    expect(mocks.mockRunPostMutationHooks).toHaveBeenCalledWith('scan', {
+      indexed: 0,
+      updated: 0,
+      staleDeleted: 1,
+      staleDeleteFailed: 1,
+    });
   });
 });

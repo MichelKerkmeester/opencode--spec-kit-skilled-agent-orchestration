@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: memory-quality-and-indexing [template:level_2/plan.md]"
-description: "Feature-centric audit execution plan for 16 Memory Quality and Indexing features, using a structured review workflow that maps findings to prioritized remediation tasks."
+description: "Feature-centric audit execution plan for 16 Memory Quality and Indexing features, including adjacent-path save/indexing fixes and updated verification outcomes."
 SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
 trigger_phrases:
   - "implementation"
@@ -29,10 +29,10 @@ contextType: "general"
 | **Language/Stack** | Markdown documentation + TypeScript codebase under audit |
 | **Framework** | SpecKit Level 2 documentation templates |
 | **Storage** | File-based spec folder artifacts |
-| **Testing** | Manual audit verification + targeted module tests when remediation lands |
+| **Testing** | Targeted Vitest suites + `tsc --noEmit` + alignment drift verification |
 
 ### Overview
-This plan now records completed execution for the Memory Quality and Indexing catalog (16 features total). Work covered feature inventory, code/test verification, remediation of all WARN findings, and synchronization of Level 2 artifacts to a closed state.
+This plan records completed execution for the Memory Quality and Indexing catalog (16 features total), including follow-on adjacent-path fixes after WARN remediation closed. Work covered feature inventory, code/test verification, remediation of all WARN findings, adjacent quality/indexing-path behavior fixes, and synchronization of Level 2 artifacts to a closed state.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -46,8 +46,8 @@ This plan now records completed execution for the Memory Quality and Indexing ca
 - [x] Dependencies identified
 
 ### Definition of Done
-- [x] All acceptance criteria met — 15/15 tasks complete
-- [x] Tests passing (if applicable) — 229 tests, TSC clean
+- [x] All acceptance criteria met — remediation and adjacent-path tasks complete
+- [x] Tests passing (if applicable) — 410/410 targeted tests, TSC clean, alignment drift verifier clean
 - [x] Docs updated (spec/plan/tasks/checklist/implementation-summary) — all in-scope artifacts synchronized
 <!-- /ANCHOR:quality-gates -->
 
@@ -82,9 +82,12 @@ Feature definitions and referenced source files were reviewed first, findings we
 - [x] Feature inventory and source/test mapping complete
 - [x] Per-feature correctness/standards/behavior review complete
 - [x] Playbook cross-reference and findings capture complete
+- [x] Adjacent-path fixes applied: quality-loop metadata persistence on accepted saves and in-memory rewrite behavior under lock
+- [x] Adjacent-path fixes applied: same-path `unchanged` no longer masks unhealthy embeddings; hash dedup now keeps valid `partial` parents and rejects invalid `complete`
+- [x] Adjacent-path fixes applied: chunking cache keys now hash normalized content; watcher/ingest and `memory_index_scan` invalidation behavior updated
 
 ### Phase 3: Verification
-- [x] Manual testing complete — 229 tests pass, TSC clean
+- [x] Combined verification complete — 410/410 tests pass, `npx tsc --noEmit` pass, alignment drift verifier pass with 0 findings
 - [x] Edge cases handled — retry bounds, token budget, flag routing, symlink imports
 - [x] Documentation updated — all spec folder artifacts synchronized
 <!-- /ANCHOR:phases -->
@@ -96,8 +99,8 @@ Feature definitions and referenced source files were reviewed first, findings we
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Remediation changes in validation/indexing modules | Vitest (targeted suites) |
-| Integration | End-to-end behavior of audited features after fixes | Existing MCP/server test harness |
+| Unit | Remediation and adjacent-path changes in save/indexing/chunking modules | Vitest (targeted suites) |
+| Integration | End-to-end save/index/index-scan behavior across handler and context-server paths | Existing MCP/server test harness |
 | Manual | Feature-status verification and artifact consistency checks | Markdown review |
 <!-- /ANCHOR:testing -->
 
@@ -109,7 +112,7 @@ Feature definitions and referenced source files were reviewed first, findings we
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `feature_catalog/13--memory-quality-and-indexing/` | Internal | Green | Cannot confirm expected behavior baselines |
-| `mcp_server` and `scripts` source trees | Internal | Green | Cannot validate findings against implementation |
+| `mcp_server` and `scripts` source trees | Internal | Green | Cannot validate remediation and adjacent-path behavior against implementation |
 | Manual test playbook scenarios `NEW-073..085+` | Internal | Yellow | Coverage mapping may be incomplete |
 | Level 2 template files | Internal | Green | Cannot maintain required structure consistency |
 <!-- /ANCHOR:dependencies -->

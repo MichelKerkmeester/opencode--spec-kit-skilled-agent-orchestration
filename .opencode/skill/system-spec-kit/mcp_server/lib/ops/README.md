@@ -52,6 +52,7 @@ Both modules include SQLITE_BUSY retry logic to handle concurrent database acces
 - Bounded concurrency: A semaphore limits parallel re-index operations to 2.
 - AbortController cancellation: A new change to the same file aborts any in-flight re-index for that path.
 - Containment check: Resolved real paths are validated against configured watch roots to prevent symlink escapes.
+- Reindex parity: watcher- and ingest-driven reindex paths use the normal synchronous embedding cache-miss path; they do not force deferred embeddings unless async mode was explicitly requested or provider generation fails.
 
 **Job Queue**
 - State machine: Six states with a strict transition map. Terminal states (`complete`, `failed`, `cancelled`) are immutable.

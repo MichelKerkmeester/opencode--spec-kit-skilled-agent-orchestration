@@ -1,13 +1,13 @@
 ---
 title: "Implementation Summary: ux-hooks [template:level_2/implementation-summary.md]"
-description: "018-ux-hooks code audit remediation — 17 tasks, 439 tests, 5-agent parallel execution via Copilot CLI gpt-5.3-codex xhigh"
+description: "018-ux-hooks code audit remediation — 17 tasks, 440 tests, 5-agent parallel execution"
 trigger_phrases:
   - "ux hooks implementation"
   - "code audit results"
-  - "mutation hooks remediation"
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
 # Implementation Summary: ux-hooks
 
 <!-- SPECKIT_LEVEL: 2 -->
@@ -50,22 +50,22 @@ contextType: "general"
 - `mcp_server/handlers/memory-crud-types.ts` — T011: `errors?: string[]` in `MutationHookResult`
 - `mcp_server/hooks/index.ts` — T010: explicit named exports (no wildcards)
 - `mcp_server/hooks/response-hints.ts` — T012: observable `console.warn` in catch
-- `mcp_server/hooks/README.md` — T013: export list aligned
+- mcp_server/hooks/README.md — T013: export list aligned
 
 ### Test Files (7 files)
-- `tests/memory-crud-extended.vitest.ts` — T008: mixed-outcome regression EXT-H13
+- `tests/memory-crud-extended.vitest.ts` — T008: mixed-outcome regression EXT-H13, EXT-H14
 - `tests/handler-checkpoints.vitest.ts` — T009: deletedAt/checkpointName assertions
-- `tests/hooks-mutation-wiring.vitest.ts` — T007: new file, hook wiring + T013/T019 regressions
+- `tests/hooks-mutation-wiring.vitest.ts` — T007: new file, hook wiring + T013/T019 regressions (5 operations incl. atomic-save)
 - `tests/mutation-hooks.vitest.ts` — T011: updated for new warning format
 - `tests/context-server.vitest.ts` — T012/T020: parse-failure telemetry (3 tests)
 - `tests/memory-save-ux-regressions.vitest.ts` — T014-T016: contract + duplicate + partial-indexing
 - `tests/hooks-ux-feedback.vitest.ts` — existing, verified passing
 
 ### Feature Catalog Docs (4 files)
-- `feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md` — T008: `partialSuccess` semantics
-- `feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md` — T014: tests table
-- `feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md` — T017: tests table
-- `feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md` — T018: tests table
+- feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md — T008: `partialSuccess` semantics
+- feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md — T014: tests table
+- feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md — T017: tests table
+- feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md — T018: tests table
 
 ---
 

@@ -5,7 +5,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import * as searchFlags from '../lib/search/search-flags';
 import * as shadowScoring from '../lib/eval/shadow-scoring';
@@ -28,6 +27,23 @@ const MODULE_EXPORTS: ReadonlyArray<[string, Record<string, unknown>]> = [
   ['../lib/search/graph-search-fn', graphSearchFn as Record<string, unknown>],
 ];
 
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function declarationPatternFor(symbol: string): RegExp {
+  const identifier = escapeRegex(symbol);
+  return new RegExp(
+    `\\b(?:export\\s+)?(?:default\\s+)?(?:async\\s+)?(?:function|const|let|var|class|type|interface|enum)\\s+${identifier}\\b`,
+    'u',
+  );
+}
+
+function exportListPatternFor(symbol: string): RegExp {
+  const identifier = escapeRegex(symbol);
+  return new RegExp(`\\bexport\\s*\\{[^}]*\\b${identifier}\\b[^}]*\\}`, 'su');
+}
+
 async function collectTypeScriptFiles(rootDir: string): Promise<string[]> {
   const files: string[] = [];
   const entries = await readdir(rootDir, { withFileTypes: true });
@@ -47,6 +63,11 @@ async function collectTypeScriptFiles(rootDir: string): Promise<string[]> {
 }
 
 describe('dead-code regression - removed symbols must stay removed', () => {
+  it('uses exact symbol matching (no substring matches)', () => {
+    const computeDepthPattern = declarationPatternFor('computeCausalDepth');
+    expect(computeDepthPattern.test('export function computeCausalDepthScores() {}')).toBe(false);
+  });
+
   for (const symbol of REMOVED_SYMBOLS) {
     it(`does not export ${symbol} from runtime modules`, () => {
       for (const [modulePath, mod] of MODULE_EXPORTS) {
@@ -58,8 +79,8 @@ describe('dead-code regression - removed symbols must stay removed', () => {
     });
   }
 
-  it('does not declare removed symbols in export statements under lib/', async () => {
-    const testDir = path.dirname(fileURLToPath(import.meta.url));
+  it('does not declare removed symbols under lib/ with exact identifier matching', async () => {
+    const testDir = __dirname;
     const libDir = path.resolve(testDir, '../lib');
     const libFiles = await collectTypeScriptFiles(libDir);
 
@@ -69,12 +90,10 @@ describe('dead-code regression - removed symbols must stay removed', () => {
       const relative = path.relative(libDir, filePath);
 
       for (const symbol of REMOVED_SYMBOLS) {
-        const exportDeclaration = new RegExp(
-          `\\bexport\\s+(?:async\\s+)?(?:function|const|let|var|class|type|interface)\\s+${symbol}\\b`
-        );
-        const exportList = new RegExp(`\\bexport\\s*\\{[^}]*\\b${symbol}\\b[^}]*\\}`, 's');
+        const declarationPattern = declarationPatternFor(symbol);
+        const exportListPattern = exportListPatternFor(symbol);
 
-        if (exportDeclaration.test(source) || exportList.test(source)) {
+        if (declarationPattern.test(source) || exportListPattern.test(source)) {
           offenders.push(`${relative}:${symbol}`);
         }
       }

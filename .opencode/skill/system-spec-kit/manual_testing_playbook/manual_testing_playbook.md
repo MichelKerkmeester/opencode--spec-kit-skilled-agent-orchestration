@@ -381,7 +381,7 @@ Note: NEW-042, NEW-119, NEW-120, and NEW-121 all map to the same catalog entry f
 | NEW-120 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
 | NEW-121 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
 
-### Catalog Entries Without Playbook Coverage (19 entries)
+### Catalog Entries Without Playbook Coverage (18 entries)
 
 These catalog entries have no dedicated playbook scenario. They are either deferred/planned features, cross-cutting concerns tested implicitly via other scenarios, or documentation-only entries:
 
@@ -405,7 +405,6 @@ These catalog entries have no dedicated playbook scenario. They are either defer
 | `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Tested via NEW-104 |
 | `18--ux-hooks/11-final-token-metadata-recomputation.md` | Tested via NEW-105 |
 | `18--ux-hooks/13-end-to-end-success-envelope-verification.md` | Tested via NEW-105 |
-| `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` | Covered by M-005 (outsourced agent memory round-trip) |
 | `20--feature-flag-reference/*` (7 entries) | Reference docs — tested via EX-028..034 |
 
 ## Dedicated Memory/Spec-Kit Scenarios (Required)
@@ -451,13 +450,27 @@ These catalog entries have no dedicated playbook scenario. They are either defer
   - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
   - Extract structured memory section from agent stdout
   - Write JSON to `/tmp/save-context-data.json`
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
+  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
   - `memory_index_scan({ specFolder: "specs/<target-spec>" })`
   - `memory_search({ query: "<key term from agent session>", specFolder: "specs/<target-spec>" })`
 - Expected: Agent output contains structured memory section; saved context is discoverable via search.
 - Evidence: agent stdout with memory section + generate-context output + search result showing saved memory.
 - Pass: Saved memory from outsourced agent session is searchable and contains session summary, files modified, decisions.
 - Fail triage: Check memory epilogue in prompt template → Verify generate-context.js JSON mode input → Inspect agent stdout for structured section → Verify index scan ran post-save.
+
+#### M-005a: JSON-mode hard-fail (REQ-001)
+1. Create an invalid JSON file: `echo "not json" > /tmp/save-context-data.json`
+2. Run: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<target-spec>`
+3. Verify: Command exits with error containing `EXPLICIT_DATA_FILE_LOAD_FAILED`
+
+#### M-005b: nextSteps persistence (REQ-002)
+1. Create valid JSON with nextSteps: `echo '{"nextSteps":["Fix bug X","Deploy Y"]}' > /tmp/save-context-data.json`
+2. Run generate-context.js with the JSON file
+3. Verify: Output memory contains `Next:` or `NEXT_ACTION` observations derived from the nextSteps array
+
+#### M-005c: Verification freshness (REQ-004/REQ-005)
+1. Do not claim outsourced CLI live round-trip passed unless freshly rerun with evidence
+2. Check that implementation-summary.md deferred items are not marked as verified in checklist.md
 
 ## Gemini Overlay Scenario Packs
 

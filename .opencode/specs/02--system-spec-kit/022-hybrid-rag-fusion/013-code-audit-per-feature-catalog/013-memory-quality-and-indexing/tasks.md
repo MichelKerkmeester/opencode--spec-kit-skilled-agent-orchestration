@@ -56,6 +56,13 @@ contextType: "general"
 - [x] T010 Fix stale save-quality-gate comments (mcp_server/lib/validation/save-quality-gate.ts) — removed TM-04/MR12 tracking codes, fixed "default OFF" to "default ON, graduated"
 - [x] T011 Reconcile encoding-intent default documentation (mcp_server/lib/search/encoding-intent.ts, feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md) — JSDoc fixed from "opt-in, default OFF" to "default ON, graduated" (isFeatureEnabled treats undefined as enabled)
 - [x] T012 Correct F-11/F-12 feature catalog references (feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md, feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) — F-11 paths fixed to scripts/utils/slug-utils.ts and tests/slug-utils-boundary.vitest.ts; F-12 verified correct
+- [x] T016 Persist quality-loop metadata fixes on accepted saves (mcp_server/handlers/quality-loop.ts, mcp_server/handlers/memory-save.ts) — accepted saves now retain quality-loop metadata updates
+- [x] T017 Keep quality-loop content rewrites in-memory under lock until later hard-reject gates pass (mcp_server/handlers/quality-loop.ts, mcp_server/handlers/memory-save.ts) — rewrite payload is not persisted prematurely
+ - [x] T018 Prevent same-path `unchanged` from masking unhealthy embedding states (mcp_server/handlers/save/dedup.ts, mcp_server/context-server.ts) — same-path and metadata-only `unchanged` flows no longer hide unhealthy embeddings
+ - [x] T019 Update hash dedup for chunked-parent state validity (mcp_server/handlers/save/dedup.ts, mcp_server/handlers/chunking-orchestrator.ts) — valid `partial` parents retained; invalid `complete` parents dropped
+ - [x] T020 Switch chunking embedding-cache keying to normalized-content hashing (mcp_server/handlers/chunking-orchestrator.ts) — cache identity now tracks normalized content
+ - [x] T021 Stop forcing deferred embeddings on watcher/ingest reindex normal cache misses (mcp_server/handlers/memory-index.ts, mcp_server/context-server.ts) — normal cache-miss path now keeps standard embedding mode
+ - [x] T022 Broaden post-mutation invalidation behavior in `memory_index_scan` (mcp_server/handlers/memory-index.ts, mcp_server/context-server.ts) — invalidation now covers adjacent mutation surfaces
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -63,9 +70,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T013 [P] Re-run targeted tests for touched validation/indexing modules (mcp_server/tests/) — 229 tests pass (quality-loop 28, preflight 39, save-quality-gate 73, encoding-intent 39, working-memory 50), TSC clean
+- [x] T013 [P] Re-run combined targeted Vitest suites for touched save/indexing paths (mcp_server/tests/) — 410/410 tests pass across quality-loop, handler-memory-save, content-hash-dedup, chunking-orchestrator-swap, context-server, handler-memory-index-cooldown, and mutation-hooks suites
 - [x] T014 [P] Re-audit impacted features and refresh PASS/WARN/FAIL status entries (checklist.md) — 7 WARN features remediated to PASS; new totals: 16 PASS, 0 WARN, 0 FAIL
-- [x] T015 Update spec/plan/tasks/checklist/implementation-summary for consistency after remediation pass (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) — all artifacts updated with evidence
+- [x] T015 Update spec/plan/tasks/checklist/implementation-summary for consistency after remediation and adjacent-path pass (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) — all artifacts updated with evidence
+- [x] T023 [P] Re-run type-check verification (`npx tsc --noEmit`) on updated save/indexing paths — pass
+- [x] T024 [P] Run alignment drift verifier for `.opencode/skill/system-spec-kit/mcp_server` — pass with 0 findings
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,7 +84,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed — TSC clean, 229 tests green
+- [x] Manual verification passed — 410/410 targeted tests green, `npx tsc --noEmit` pass, alignment drift verifier pass (0 findings)
 <!-- /ANCHOR:completion -->
 
 ---

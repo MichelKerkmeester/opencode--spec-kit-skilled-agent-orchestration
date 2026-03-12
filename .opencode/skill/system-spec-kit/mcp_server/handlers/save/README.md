@@ -36,8 +36,8 @@ The barrel `index.ts` re-exports every module so consumers can import from `hand
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | `types.ts`                  | Shared interfaces for the pipeline: `IndexResult`, `PeDecision`, `SimilarMemory`, `SaveArgs`, `PostInsertMetadataFields` and related types. |
 | `index.ts`                  | Barrel re-export of all save sub-modules.                                                                            |
-| `dedup.ts`                  | Pre-save deduplication. `checkExistingRow` matches by file path, `checkContentHashDedup` matches by content hash.    |
-| `embedding-pipeline.ts`     | Embedding generation with persistent cache. Checks the embedding cache first, falls back to the provider, and stores new embeddings for future re-index. Supports async/deferred mode. |
+| `dedup.ts`                  | Pre-save deduplication. `checkExistingRow` matches by file path but returns `unchanged` only for healthy rows (`success`, `pending`, `partial`); `checkContentHashDedup` matches by content hash and accepts chunked parents only when their status is valid `partial`. |
+| `embedding-pipeline.ts`     | Embedding generation with persistent cache. Cache keys hash normalized content, matching the main and chunked embedding paths. Checks the embedding cache first, falls back to the provider, and stores new embeddings for future re-index. Async/deferred mode is opt-in. |
 | `pe-orchestration.ts`       | Prediction-error (PE) gate orchestration. Finds similar memories, evaluates via `predictionErrorGate`, and applies REINFORCE, SUPERSEDE, UPDATE or CREATE_LINKED actions with mutation ledger logging. |
 | `reconsolidation-bridge.ts` | TM-06 reconsolidation bridge. When enabled and a checkpoint exists, delegates to the reconsolidation engine for merge/conflict resolution before falling through to normal creation. |
 | `create-record.ts`          | Core record creation. Inserts into vector index (or deferred index), applies post-insert metadata, links related memories and indexes into BM25 when enabled. |
@@ -65,7 +65,7 @@ The barrel `index.ts` re-exports every module so consumers can import from `hand
 ## 4. KEY CONCEPTS
 
 - **Prediction-Error (PE) Gate** -- Compares new content against existing memories to decide between CREATE, REINFORCE, UPDATE, SUPERSEDE or CREATE_LINKED actions.
-- **Deferred Indexing** -- When embedding generation fails or async mode is requested, the memory is stored with `embedding_status = 'pending'` and remains searchable via BM25/FTS5.
+- **Deferred Indexing** -- When embedding generation fails or async mode is explicitly requested, the memory is stored with `embedding_status = 'pending'` and remains searchable via BM25/FTS5. Normal watcher/ingest reindex cache misses still run the eager provider path.
 - **Reconsolidation** -- Optional merge/conflict resolution pass that requires a pre-reconsolidation checkpoint (TM-06 safety gate).
 - **Mutation Ledger** -- Every create/update action appends to the mutation ledger for audit trail.
 

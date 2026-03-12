@@ -20,7 +20,6 @@ import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 import { recordHistory } from '../lib/storage/history';
 import * as memoryParser from '../lib/parsing/memory-parser';
 import * as embeddings from '../lib/providers/embeddings';
-import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import * as vectorIndex from '../lib/search/vector-index';
 import { runPostMutationHooks } from './mutation-hooks';

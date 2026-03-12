@@ -2,9 +2,9 @@
 
 ## Current Reality
 
-Chunk thinning in the MCP server scores chunks by anchor presence and content density, then drops low-signal chunks before child chunk indexing. The runtime flow is `chunkLargeFile()` (anchor-aware chunking) followed by `thinChunks()` (quality thinning) in `indexChunkedMemoryFile()`.
+Tree thinning is a pre-pipeline token-reduction step for spec-folder consolidation. `applyTreeThinning()` classifies files by token count, keeps larger files intact, uses content-as-summary for medium files, and merges small files into parent-level summaries.
 
-The save-time workflow integration is documented as **R7: Chunk Thinning** in `mcp_server/lib/search/README.md`, and the active runtime call happens in `mcp_server/handlers/chunking-orchestrator.ts`.
+Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered file changes are transformed into thinning inputs, processed through `applyTreeThinning()`, and then applied back to the effective file set before downstream retrieval/scoring logic.
 
 ## Source Files
 
@@ -12,21 +12,14 @@ The save-time workflow integration is documented as **R7: Chunk Thinning** in `m
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/chunking/chunk-thinning.ts` | Lib (primary) | Chunk thinning (`scoreChunk()`, `thinChunks()`) |
-| `mcp_server/lib/chunking/anchor-chunker.ts` | Lib (supporting) | Anchor-aware chunk generation (`chunkLargeFile()`) |
-
-### Integration
-
-| File | Layer | Role |
-|------|-------|------|
-| `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Calls `thinChunks(chunkResult.chunks)` in `indexChunkedMemoryFile()` before chunk indexing |
-| `mcp_server/lib/search/README.md` | Search docs | Documents save-time workflow step **R7: Chunk Thinning** |
+| `scripts/core/tree-thinning.ts` | Core script (primary) | Tree thinning model and implementation (`applyTreeThinning()`, thresholds, parent merges) |
+| `scripts/core/workflow.ts` | Core workflow (integration) | Step 7.6 integration (`applyTreeThinning()` and `applyThinningToFileChanges()`) |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |
+| `scripts/tests/tree-thinning.vitest.ts` | Tree-thinning thresholds, merge behavior, boundary handling, and invariants |
 
 ## Source Metadata
 

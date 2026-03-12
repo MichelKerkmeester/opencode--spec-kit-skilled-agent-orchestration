@@ -9,6 +9,7 @@ import os from 'os';
 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-save';
+import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
 const MEMORY_SAVE_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'handlers', 'memory-save.ts'), 'utf8');
 
@@ -545,6 +546,46 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect((createMemoryRecordMock.mock.calls[0] as any)?.[1].triggerPhrases).toEqual(['alpha', 'beta', 'gamma', 'delta']);
       expect((createMemoryRecordMock.mock.calls[0] as any)?.[1].content).toBe('# updated content');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# updated content');
+    });
+
+    it('passes same-path exclusion into content-hash dedup after unchanged miss', async () => {
+      const runQualityGateMock = vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
+      const checkExistingRowMock = vi.fn(() => null);
+      const checkContentHashDedupMock = vi.fn(() => null);
+
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock,
+        checkContentHashDedupMock,
+        runQualityGateMock,
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: null,
+          })),
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: vi.fn(() => ({
+            decision: { action: 'CREATE', similarity: 0 },
+            earlyReturn: buildIndexResult({ status: 'indexed', id: 778 }),
+          })),
+        }),
+      });
+
+      const filePath = createAtomicSaveTargetPath('quality-loop-same-path-exclusion.md');
+      fs.writeFileSync(filePath, '# original content', 'utf8');
+
+      await harness.module.indexMemoryFile(filePath, { force: false, asyncEmbedding: false });
+
+      expect(checkExistingRowMock).toHaveBeenCalledTimes(1);
+      expect(checkContentHashDedupMock).toHaveBeenCalledTimes(1);
+      expect((checkContentHashDedupMock.mock.calls[0] as any)?.[4]).toEqual({
+        canonicalFilePath: getCanonicalPathKey(filePath),
+        filePath,
+      });
     });
 
     it('does not rewrite file before later hard rejection under atomic save', async () => {

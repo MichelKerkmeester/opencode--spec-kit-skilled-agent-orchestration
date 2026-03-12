@@ -1,19 +1,16 @@
 ---
 title: "Implementation Plan: ux-hooks [template:level_2/plan.md]"
-description: "Execute a structured audit of 13 UX Hooks catalog features and convert findings into a prioritized remediation backlog. The plan focuses on source-to-catalog verification, standards checks, and coverage gap mapping."
+description: "Execute a structured audit of 13 UX Hooks catalog features and convert findings into a prioritized remediation backlog."
 trigger_phrases:
   - "ux hooks"
   - "audit plan"
-  - "feature catalog"
-  - "mutation hooks"
-  - "verification workflow"
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 # Implementation Plan: ux-hooks
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 

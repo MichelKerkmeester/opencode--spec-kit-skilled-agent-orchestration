@@ -28,10 +28,12 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/cli.vitest.ts` | CLI integration tests: stats output, bulk-delete (dry-run, execution, invalid tier), reindex, schema-downgrade (missing --confirm, valid execution), unknown command rejection |
+| `mcp_server/tests/cli.vitest.ts` | CLI integration tests: stats success, bulk-delete execution with checkpoint creation, reindex success, schema-downgrade guardrails (`--confirm` required + safe failure for unsupported downgrade path), unknown command/missing-arg errors, and database-path failure handling |
 | `mcp_server/tests/checkpoints-storage.vitest.ts` | Checkpoint storage tests |
 | `mcp_server/tests/checkpoints-extended.vitest.ts` | Checkpoint extended tests |
 | `mcp_server/tests/mutation-ledger.vitest.ts` | Mutation ledger tests |
+
+`mcp_server/tests/cli.vitest.ts` currently does **not** cover dry-run mode, invalid tier-value handling, or a successful schema-downgrade execution path.
 
 ## Source Metadata
 

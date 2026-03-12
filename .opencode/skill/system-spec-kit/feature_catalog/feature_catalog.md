@@ -1599,9 +1599,9 @@ See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13-
 
 ### Outsourced agent memory capture
 
-CLI agents dispatched via cli-codex, cli-copilot, cli-gemini, and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. Session context is lost because the agent has no memory save protocol. The planned solution is a memory return protocol using `generate-context.js` JSON mode as a bridge — the agent includes a structured memory epilogue in stdout, the calling AI extracts it and feeds it through the standard save pipeline.
+CLI agents dispatched via cli-codex, cli-copilot, cli-gemini, and cli-claude-code run in sandboxed subprocesses with no access to the Spec Kit Memory MCP server. The outsourced memory return protocol is now implemented: explicit JSON-mode failures hard-fail with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`, `nextSteps` / `next_steps` persist into `Next: ...` and `Follow-up: ...` (feeding `NEXT_ACTION`), and the 8 CLI handback docs now standardize redact/scrub guidance plus explicit failure handling.
 
-Status: Planned. Spec folder `014-outsourced-agent-memory` exists at Draft status.
+Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
 #### Source Files
 

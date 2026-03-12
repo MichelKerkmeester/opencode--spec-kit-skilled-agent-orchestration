@@ -1616,6 +1616,15 @@ describe('Context Server', () => {
       expect(sourceCode).toMatch(/runPostMutationHooks\('delete',\s*\{\s*filePath,\s*deletedCount\s*\}\)/)
     })
 
+    it('T47c: ingest queue uses indexSingleFile sync semantics', () => {
+      expect(sourceCode).toMatch(/processFile:\s*async\s*\(filePath:\s*string\)\s*=>\s*\{[\s\S]*?await\s+indexSingleFile\(filePath,\s*false\);?[\s\S]*?\}/)
+    })
+
+    it('T47d: file watcher reindex uses indexSingleFile sync semantics', () => {
+      expect(sourceCode).toMatch(/reindexFn:\s*async\s*\(filePath:\s*string\)\s*=>\s*\{[\s\S]*?await\s+indexSingleFile\(filePath,\s*false\);?[\s\S]*?\}/)
+      expect(sourceCode).not.toMatch(/indexMemoryFile\(filePath,\s*\{\s*asyncEmbedding:\s*true\s*\}\)/)
+    })
+
     // T48: Shutdown guard prevents double shutdown
     it('T48: Double-shutdown guard', () => {
       expect(sourceCode).toMatch(/if\s*\(shuttingDown\)\s*return/)

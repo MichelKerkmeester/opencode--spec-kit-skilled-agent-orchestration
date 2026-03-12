@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: memory-quality-and-indexing [template:level_2/spec.md]"
-description: "Phase-close synchronization for Memory Quality and Indexing docs so Level 2 artifacts match completed remediation and verification outcomes."
+description: "Phase-close synchronization for Memory Quality and Indexing docs so Level 2 artifacts match adjacent-path fixes and latest verification outcomes."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
   - "memory quality"
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Memory Quality and Indexing phase already completed code, test, and catalog remediation work that closed seven WARN findings, but this spec folder still mixed docs-normalization framing with stale pre-remediation language. That drift left scope, outcomes, and verification state inconsistent across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+The Memory Quality and Indexing phase closed seven WARN findings, then landed adjacent-path fixes affecting quality-loop save semantics, hash/chunk dedup behavior, and indexing invalidation. This spec folder still reflected the earlier closure snapshot, which left the newer fixes and expanded verification state inconsistent across `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
 
 ### Purpose
-Synchronize all in-scope Level 2 artifacts to the delivered remediation state so the folder truthfully reports completed work: 16 audited features, 16 PASS, 0 WARN, 0 FAIL, and targeted verification evidence.
+Synchronize all in-scope Level 2 artifacts to the delivered remediation-plus-adjacent-fix state so the folder truthfully reports completed work: 16 audited features, 16 PASS, 0 WARN, 0 FAIL, plus updated verification evidence (410/410 targeted tests, `npx tsc --noEmit` pass, alignment drift verifier pass with 0 findings).
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,9 +50,10 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation state so
 
 ### In Scope
 - Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to the completed remediation state.
-- Preserve file-level traceability for completed remediation tasks T004-T012 and verification tasks T013-T015.
+- Capture adjacent-path behavior fixes now applied around quality-loop persistence/locking, unchanged embedding health handling, chunk/hash dedup semantics, embedding-cache hashing, watcher/ingest reindex behavior, and `memory_index_scan` invalidation.
+- Preserve file-level traceability for completed remediation tasks T004-T012, adjacent-path tasks T016-T022, and verification tasks T013-T015/T023-T024.
 - Keep Level 2 template compliance intact, including frontmatter template-source metadata and required anchors.
-- Record final outcomes consistently: 16 features audited, 16 PASS, 0 WARN, 0 FAIL, 229 targeted tests passing, and clean `tsc --noEmit`.
+- Record final outcomes consistently: 16 features audited, 16 PASS, 0 WARN, 0 FAIL, 410 targeted tests passing, clean `tsc --noEmit`, and alignment drift verifier pass with 0 findings.
 
 ### Out of Scope
 - New runtime or feature-catalog fixes outside the already completed remediation set.
@@ -80,14 +81,14 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation state so
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Preserve full audit and remediation coverage for all 16 Memory Quality and Indexing features | All in-scope docs consistently report final outcomes: 16 PASS, 0 WARN, 0 FAIL, with 7 WARN findings remediated |
-| REQ-002 | Preserve traceability for completed remediation work | Artifacts reference completed T004-T012 changes across `quality-loop.ts`, `preflight.ts`, `search-flags.ts`, `save-quality-gate.ts`, `encoding-intent.ts`, and updated feature-catalog entries |
+| REQ-002 | Preserve traceability for completed remediation and adjacent-path fixes | Artifacts reference completed T004-T012 and T016-T022 changes across quality-loop save flow, dedup/chunking behavior, watcher/ingest reindex behavior, `memory_index_scan` invalidation, and updated feature-catalog entries |
 | REQ-003 | Keep Level 2 structural integrity valid for phase closure | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` include valid template-source metadata and pass spec-folder validation without level errors |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Keep remediation and verification status internally consistent across artifacts | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` present the same task and verification totals without contradiction |
+| REQ-004 | Keep remediation, adjacent-path behavior, and verification status internally consistent across artifacts | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` present the same fix set and verification outcomes without contradiction |
 | REQ-005 | Record checklist verification evidence at item level | Completed checklist items include inline evidence tags tied to concrete files, commands, or status snapshots |
 <!-- /ANCHOR:requirements -->
 
@@ -97,25 +98,25 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation state so
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All five in-scope docs are synchronized and structurally aligned with the applicable Level 2 artifact templates.
-- **SC-002**: All five in-scope docs report the same completed outcome state (16 PASS, 0 WARN, 0 FAIL; 229 tests; clean `tsc --noEmit`).
+- **SC-002**: All five in-scope docs report the same completed outcome state (16 PASS, 0 WARN, 0 FAIL; 410/410 tests; clean `tsc --noEmit`; alignment drift verifier pass with 0 findings).
 - **SC-003**: Validation-blocking documentation issues are removed while preserving existing level/template structure.
 
 ---
 
 ## 6. ACCEPTANCE SCENARIOS
 
-### Scenario 1 - Completed remediation state is reflected
-**Given** the phase completed remediation tasks T004-T012 and verification tasks T013-T015
+### Scenario 1 - Completed remediation-plus-adjacent fix state is reflected
+**Given** the phase completed remediation tasks T004-T012, adjacent-path tasks T016-T022, and verification tasks T013-T015/T023-T024
 **When** a reviewer reads the synchronized Level 2 docs
-**Then** the folder reports the post-remediation state (16 PASS, 0 WARN, 0 FAIL) instead of pre-remediation totals
+**Then** the folder reports the post-remediation state (16 PASS, 0 WARN, 0 FAIL) plus the adjacent-path behavior updates instead of an earlier partial closure snapshot
 
 ### Scenario 2 - Verification evidence remains truthful
-**Given** targeted verification recorded 229 passing tests and clean `tsc --noEmit`
+**Given** targeted verification recorded 410/410 passing tests, clean `npx tsc --noEmit`, and alignment drift verifier pass with 0 findings
 **When** checklist and plan verification sections are reviewed
 **Then** those outcomes are stated consistently without repo-wide overclaims
 
 ### Scenario 3 - Traceability is preserved
-**Given** remediation touched quality-loop, preflight, search-flags, save-quality-gate, encoding-intent, and related feature-catalog files
+**Given** remediation and adjacent-path fixes touched quality-loop save handling, dedup/chunking behavior, watcher/ingest reindex behavior, `memory_index_scan`, and related feature-catalog files
 **When** tasks and implementation summary are audited
 **Then** file-level references map completed work without introducing new out-of-scope implementation claims
 
@@ -132,9 +133,9 @@ Synchronize all in-scope Level 2 artifacts to the delivered remediation state so
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Completed remediation artifacts captured in `tasks.md` and `implementation-summary.md` | If references drift, completion claims become unreliable | Keep task IDs, touched files, and verification totals synchronized across all docs |
+| Dependency | Completed remediation and adjacent-path artifacts captured in `tasks.md` and `implementation-summary.md` | If references drift, completion claims become unreliable | Keep task IDs, touched files, and verification outcomes synchronized across all docs |
 | Dependency | Feature catalog under `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/` | Stale catalog references can invalidate remediation traceability | Keep catalog corrections explicitly cited in tasks/checklist evidence |
-| Risk | Residual docs-only language in any artifact | Reviewers may misread completed remediation as pending audit-only work | Normalize problem/scope/status language to final delivered state in every in-scope file |
+| Risk | Residual docs-only language in any artifact | Reviewers may misread completed remediation-plus-adjacent fixes as pending audit-only work | Normalize problem/scope/status language to final delivered state in every in-scope file |
 | Risk | Validation regressions in markdown metadata | Phase closure may fail validator checks despite correct technical outcomes | Keep template-source frontmatter, anchor structure, and markdown links valid |
 <!-- /ANCHOR:risks -->
 

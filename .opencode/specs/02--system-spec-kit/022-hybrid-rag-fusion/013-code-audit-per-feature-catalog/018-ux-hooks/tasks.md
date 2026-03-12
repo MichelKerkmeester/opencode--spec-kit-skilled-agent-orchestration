@@ -4,16 +4,13 @@ description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "ux hooks tasks"
   - "audit backlog"
-  - "mutation hooks"
-  - "feature catalog"
-  - "verification tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 # Tasks: ux-hooks
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
@@ -50,17 +47,17 @@ contextType: "general"
 - [x] T005 [P] [P0] Make `CheckpointDeleteArgs.confirmName` required across all layers (`mcp_server/handlers/checkpoints.ts`, `mcp_server/tools/types.ts`) — Agent 2: removed `?` from local type
 - [x] T006 [P] [P1] Add warning-level logging to mutation hook catch blocks (`mcp_server/handlers/mutation-hooks.ts`) — Agent 3: operation-aware warnings in all 5 catch blocks
 - [x] T007 [P] [P1] Add integration test for hook wiring across save/update/delete/bulk-delete/atomic-save (`mcp_server/tests/hooks-mutation-wiring.vitest.ts`) — Agent 3: new file; atomic-save added post-verification
-- [x] T008 [P] [P1] Add mixed-outcome autoRepair regression test and align catalog references (`mcp_server/tests/memory-crud-extended.vitest.ts`, `feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md`) — Agent 1: test EXT-H13 + catalog update
+- [x] T008 [P] [P1] Add mixed-outcome autoRepair regression test and align catalog references (`mcp_server/tests/memory-crud-extended.vitest.ts`, feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md) — Agent 1: test EXT-H13/H14 + catalog update
 - [x] T009 [P] [P1] Include deletion metadata in checkpoint delete success response and tests (`mcp_server/handlers/checkpoints.ts`, `mcp_server/tests/handler-checkpoints.vitest.ts`) — Agent 2: `deletedAt` + `checkpointName` in response
 - [x] T010 [P] [P1] Replace wildcard exports in hooks barrel with explicit named exports (`mcp_server/hooks/index.ts`) — Agent 3: explicit re-exports
 - [x] T011 [P] [P1] Preserve diagnosable hook failure details and assert expanded postMutationHooks fields (`mcp_server/handlers/mutation-hooks.ts`, `mcp_server/tests`) — Agent 3: `errors?: string[]` in MutationHookResult
 - [x] T012 [P] [P1] Add observable warning logs and parse-failure regression coverage for hint append (`mcp_server/hooks/response-hints.ts`, `mcp_server/tests/context-server.vitest.ts`) — Agent 4: `console.warn` in catch, 3 regression tests
-- [x] T013 [P] [P1] Enforce hooks README/export alignment with regression test and stale-reference cleanup (`mcp_server/hooks/README.md`, `mcp_server/hooks/index.ts`) — Agent 3: README updated, no-wildcard regression test
-- [x] T014 [P] [P2] Add explicit mutation response UX payload contract tests and update feature table (`mcp_server/tests/memory-save-ux-regressions.vitest.ts`, `feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md`) — Agent 5: contract + type assertions
+- [x] T013 [P] [P1] Enforce hooks README/export alignment with regression test and stale-reference cleanup (mcp_server/hooks/README.md, `mcp_server/hooks/index.ts`) — Agent 3: README updated, no-wildcard regression test
+- [x] T014 [P] [P2] Add explicit mutation response UX payload contract tests and update feature table (`mcp_server/tests/memory-save-ux-regressions.vitest.ts`, feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md) — Agent 5: contract + type assertions
 - [x] T015 [P] [P2] Add atomic duplicate no-op regression assertion (`mcp_server/tests/memory-save-ux-regressions.vitest.ts`) — Agent 5: hash-duplicate path test
 - [x] T016 [P] [P2] Add partial-indexing hint branch test for atomic save (`mcp_server/handlers/memory-save.ts`, `mcp_server/tests`) — Agent 5: async-embedding pending assertion
-- [x] T017 [P] [P2] Add tests section to final token metadata recomputation feature doc (`feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md`) — Agent 5: tests table added
-- [x] T018 [P] [P2] Add end-to-end success-envelope mapping to feature test table (`feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md`) — Agent 5: tests table added
+- [x] T017 [P] [P2] Add tests section to final token metadata recomputation feature doc (feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) — Agent 5: tests table added
+- [x] T018 [P] [P2] Add end-to-end success-envelope mapping to feature test table (feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) — Agent 5: tests table added
 - [x] T019 [P] [P2] Add hook-runner-level expanded contract assertions for mutation hook result expansion (`mcp_server/tests/hooks-mutation-wiring.vitest.ts`) — Agent 3: MutationHookResult shape + errors[] assertions in wiring test
 - [x] T020 [P] [P2] Add parse-failure telemetry assertion for success-path hint append (`mcp_server/tests/context-server.vitest.ts`) — Agent 4: serialization-failure telemetry test
 <!-- /ANCHOR:phase-2 -->

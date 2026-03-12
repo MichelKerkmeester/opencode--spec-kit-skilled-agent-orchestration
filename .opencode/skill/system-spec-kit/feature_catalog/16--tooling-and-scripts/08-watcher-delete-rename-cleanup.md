@@ -6,6 +6,8 @@ The chokidar-based file watcher (`lib/ops/file-watcher.ts`) handles more than ju
 
 Rename detection is handled as an unlink followed by an add, which means the memory gets a fresh index entry at the new path while the old entry is cleaned up. The 2-second debounce window collapses rapid rename sequences into a single reindex cycle.
 
+Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, but watcher-suite reliability is currently being remediated by Agent R2; do not treat these checks as fully verified until that reliability work is merged and green.
+
 ## Source Files
 
 ### Implementation
@@ -18,7 +20,7 @@ Rename detection is handled as an unlink followed by an add, which means the mem
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/file-watcher.vitest.ts` | Delete/unlink callback (removeFn invocation), rename lifecycle (unlink+add pair, old-entry cleanup, new-entry creation), debounce stress (rapid rename sequence collapsed to single reindex), burst rename deduplication, concurrent rename handling |
+| `mcp_server/tests/file-watcher.vitest.ts` | Declared scenarios: delete/unlink callback (removeFn invocation), rename lifecycle (unlink+add pair, old-entry cleanup, new-entry creation), debounce stress (rapid rename sequence collapsed to single reindex), burst rename deduplication, concurrent rename handling — verification status pending Agent R2 reliability fixes |
 
 ## Source Metadata
 

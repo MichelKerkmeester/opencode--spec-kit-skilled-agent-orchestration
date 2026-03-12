@@ -4,16 +4,13 @@ description: "Audit the UX Hooks feature catalog for correctness, standards, beh
 trigger_phrases:
   - "ux hooks"
   - "code audit"
-  - "feature catalog"
-  - "mutation hooks"
-  - "checkpoint delete"
 importance_tier: "normal"
 contextType: "general"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 # Feature Specification: ux-hooks
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -59,10 +56,10 @@ Create a feature-by-feature, evidence-backed audit that produces a prioritized r
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/.../018-ux-hooks/spec.md` | Modify | Level 2 specification for UX Hooks audit scope and requirements |
-| `.opencode/specs/.../018-ux-hooks/plan.md` | Modify | Methodology and execution plan mapped to Level 2 structure |
-| `.opencode/specs/.../018-ux-hooks/tasks.md` | Modify | Prioritized remediation backlog and execution checklist |
-| `.opencode/specs/.../018-ux-hooks/checklist.md` | Modify | Verification checklist with preserved feature findings |
+| `spec.md` | Modify | Level 2 specification for UX Hooks audit scope and requirements |
+| `plan.md` | Modify | Methodology and execution plan mapped to Level 2 structure |
+| `tasks.md` | Modify | Prioritized remediation backlog and execution checklist |
+| `checklist.md` | Modify | Verification checklist with preserved feature findings |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -92,7 +89,17 @@ Create a feature-by-feature, evidence-backed audit that produces a prioritized r
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: ✓ VERIFIED — All 13 features in `feature_catalog/18--ux-hooks/` audited with `PASS/WARN/FAIL` status, issue type, evidence, and recommended fix. Findings F-01–F-13 preserved in `checklist.md`.
-- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 439 tests across 7 files, all green. See `implementation-summary.md`.
+- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 440 tests across 7 files, all green. See `implementation-summary.md`.
+
+### Acceptance Scenarios
+
+**Given** a feature catalog entry with a documented contract (e.g. `confirmName` required), **When** the handler code is audited, **Then** the finding captures contract desynchronization as P0 with source reference.
+
+**Given** a mutation hook catch block that silently swallows errors, **When** the error handling audit runs, **Then** the finding is flagged as WARN with recommended logging fix and test gap.
+
+**Given** a feature catalog entry referencing a stale test file (e.g. `retry.vitest.ts`), **When** test coverage is assessed, **Then** the stale reference is logged and a reconciliation task is created.
+
+**Given** a completed remediation backlog with 17 tasks, **When** the full test suite executes, **Then** all 440 tests pass with zero regressions.
 <!-- /ANCHOR:success-criteria -->
 
 ---

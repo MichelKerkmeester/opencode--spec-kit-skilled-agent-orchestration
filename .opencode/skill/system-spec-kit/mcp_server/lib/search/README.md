@@ -633,7 +633,10 @@ Measures graph density and reports metrics used for R10 entity extraction escala
 Processing steps applied during `memory_save` before a memory is persisted.
 
 **PI-A5: Verify-Fix-Verify Loop** (`memory-save.ts` / `quality-loop.ts`):
-Opt-in quality loop gated by `SPECKIT_QUALITY_LOOP`. When enabled, the save path performs 1 initial evaluation plus up to 2 immediate auto-fix retries by default. The reported `attempts` count reflects actual evaluations used, so early-break cases can stop before the configured ceiling. Rejected memories return structured rejection feedback instead of continuing to storage.
+Opt-in quality loop gated by `SPECKIT_QUALITY_LOOP`. When enabled, the save path performs 1 initial evaluation plus up to 2 immediate auto-fix retries by default. The reported `attempts` count reflects actual evaluations used, so early-break cases can stop before the configured ceiling. Accepted saves persist metadata fixes and carry rewritten body content in-memory until later hard-reject gates clear under lock. Rejected memories return structured rejection feedback instead of continuing to storage.
+
+**TM-02: Same-Path and Hash Dedup Hardening** (`save/dedup.ts`):
+Same-path `unchanged` only applies to healthy existing rows (`success`, `pending`, `partial`), so unhealthy embedding states still re-enter indexing. Cross-path content-hash dedup accepts chunked parents only when the parent row is in valid `partial` state and ignores invalid parent rows marked `complete`.
 
 **TM-04: Quality Gate** (`save-quality-gate.ts`):
 3-layer pre-storage validation gated via `SPECKIT_SAVE_QUALITY_GATE` (default ON, graduated Sprint 4):
@@ -660,6 +663,9 @@ Checks top-3 most similar memories in the spec folder.
 **R7: Chunk Thinning** (`chunk-thinning.ts`):
 Scores chunks by anchor presence + content density. Composite score: `anchorScore * ANCHOR_WEIGHT + densityScore * DENSITY_WEIGHT`. Chunks below the `DEFAULT_THINNING_THRESHOLD=0.3` are dropped before indexing.
 
+**Embedding Cache Consistency** (`save/embedding-pipeline.ts` + chunking path):
+Embedding cache keys now hash normalized content in both the primary and chunked embedding paths, so equivalent normalized content shares cache entries.
+
 **R16: Encoding-Intent Classification** (`encoding-intent.ts`):
 Heuristic classification of memory content intent at index time. Stored in the `encoding_intent` column for retrieval-time filtering. Gated via `SPECKIT_ENCODING_INTENT`.
 
@@ -668,6 +674,12 @@ NER + key-phrase rules extract entities at save time and populate the `memory_en
 
 **PI-A3: Token Budget Validation**:
 Pre-save check validates content fits within tier-specific token budgets. Greedy truncation strategy applied when content overflows.
+
+**Reindex Save Parity** (`ops/file-watcher.ts` / ingest reindex callers):
+Watcher- and ingest-triggered reindex paths now use the normal synchronous embedding cache-miss flow. Deferred embeddings remain opt-in via `asyncEmbedding` or failure fallback.
+
+**Scan Invalidation Hooks** (`handlers/memory-index.ts` / `handlers/mutation-hooks.ts`):
+`memory_index_scan` now runs the broader post-mutation invalidation hook behavior whenever a scan indexes, updates, or stale-deletes rows.
 
 <a id="scoring-enhancements"></a>
 ### Scoring Enhancements
@@ -895,7 +907,7 @@ Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
 ---
 
 **Version**: 2.1.0
-**Last Updated**: 2026-03-08
+**Last Updated**: 2026-03-11
 **Maintainer**: system-spec-kit MCP server
 
 **Migration Status**:

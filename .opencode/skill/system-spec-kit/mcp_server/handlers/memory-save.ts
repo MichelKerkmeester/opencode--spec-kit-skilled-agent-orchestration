@@ -170,7 +170,10 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   if (existingResult) return existingResult;
 
   // DEDUP: Check content hash across spec folder (T054)
-  const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings);
+  const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
+    canonicalFilePath,
+    filePath,
+  });
   if (dupResult) return dupResult;
 
   // AI-WHY: CHUNKING BRANCH: Large files get split into parent + child records
