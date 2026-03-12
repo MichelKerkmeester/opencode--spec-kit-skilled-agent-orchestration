@@ -57,6 +57,8 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Transaction wrappers on mutation handlers](#transaction-wrappers-on-mutation-handlers)
   - [Namespace management CRUD tools](#namespace-management-crud-tools)
   - [Prediction-error save arbitration](#prediction-error-save-arbitration)
+  - [Correction tracking with undo](#correction-tracking-with-undo)
+  - [Per-memory history log](#per-memory-history-log)
 - [Discovery](#discovery)
   - [Memory browser (memory_list)](#memory-browser-memory_list)
   - [System statistics (memory_stats)](#system-statistics-memory_stats)
@@ -155,6 +157,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Entity normalization consolidation](#entity-normalization-consolidation)
   - [Quality gate timer persistence](#quality-gate-timer-persistence)
   - [Deferred lexical-only indexing](#deferred-lexical-only-indexing)
+  - [Dry-run preflight for memory_save](#dry-run-preflight-for-memory_save)
   - [Outsourced agent memory capture](#outsourced-agent-memory-capture)
 - [Pipeline architecture](#pipeline-architecture)
   - [4-stage pipeline refactor](#4-stage-pipeline-refactor)
@@ -356,6 +359,8 @@ See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/0
 
 ## 4. MUTATION
 
+This section documents 10 mutation features.
+
 ### Memory indexing (memory_save)
 
 `memory_save` is the entry point for getting content into the memory system. You give it a file path. It reads the file, parses metadata from the frontmatter (title, trigger phrases, spec folder, importance tier, context type, causal links), generates a vector embedding and indexes everything into the SQLite database.
@@ -406,7 +411,7 @@ Two deletion modes in one tool. Pass a numeric `id` for single delete or a `spec
 
 Single deletes run inside a database transaction: remove the memory record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
 
-Bulk deletes by spec folder are more involved. Unless the caller sets `skipCheckpoint=true`, the system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching memories inside a database transaction with per-memory causal edge cleanup and per-memory mutation ledger entries. The entire operation is atomic: either all memories in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint when a checkpoint was created.
+Bulk deletes by spec folder require `confirm: true` and run inside a database transaction with per-memory causal-edge cleanup and mutation-ledger writes. If the database handle is unavailable, the operation aborts instead of attempting partial deletion.
 
 
 #### Source Files
@@ -438,7 +443,7 @@ Negative feedback persistence fires unconditionally on every negative validation
 
 When a `queryId` is provided alongside positive feedback, two additional systems activate. Learned feedback persistence records the user's selection and extracts query terms into a separate `learned_triggers` column (isolated from the FTS5 index to prevent contamination). These learned triggers boost future searches for the same terms. Ground truth selection logging records the event in the evaluation database for the ground truth corpus, returning a `groundTruthSelectionId` in the response.
 
-The read-compute-write cycle runs within a single SQLite transaction to prevent concurrent validation events from racing and dropping updates.
+The confidence read-compute-write segment (`recordValidation`) runs within a single SQLite transaction to prevent concurrent validation updates from racing and dropping writes. Downstream side effects (auto-promotion, negative-feedback persistence, learned feedback, and ground-truth logging) execute after that transactional segment.
 
 
 #### Source Files
@@ -473,6 +478,24 @@ Contradiction detection uses regex patterns. All decisions are logged to the `me
 #### Source Files
 
 See [`02--mutation/08-prediction-error-save-arbitration.md`](02--mutation/08-prediction-error-save-arbitration.md) for full implementation and test file listings.
+
+### Correction tracking with undo
+
+The corrections module tracks relationship-level learning corrections (`superseded`, `deprecated`, `refined`, `merged`) and applies stability penalties/boosts to the participating memories. Undo cleanup is relation-scoped so only the correction-created edge is removed.
+
+
+#### Source Files
+
+See [`02--mutation/09-correction-tracking-with-undo.md`](02--mutation/09-correction-tracking-with-undo.md) for full implementation and test file listings.
+
+### Per-memory history log
+
+The `memory_history` table records per-memory mutation events (`ADD`, `UPDATE`, `DELETE`) with timestamp, actor, and optional before/after payloads. History writes are wired into mutation handlers and deletion helpers so lifecycle activity is captured across save, update, and delete flows.
+
+
+#### Source Files
+
+See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-history-log.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-110](../manual_testing_playbook/manual_testing_playbook.md)
 
@@ -1629,6 +1652,18 @@ Deferred memories skip embedding dimension validation and `vec_memories` inserti
 See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-111](../manual_testing_playbook/manual_testing_playbook.md)
+
+### Dry-run preflight for memory_save
+
+`memory_save` supports a `dryRun` mode that executes preflight validation only and returns the same validation contract used by normal saves (`would_pass`, validation errors, warnings, and details). In dry-run mode, the save/index pipeline is not executed: no indexing, no database mutation, and no file-write side effects are performed.
+
+This gives operators a deterministic way to preview content-size, anchor-format, token-budget, and duplicate checks before committing. In non-dry-run mode, the same preflight logic runs first (unless `skipPreflight=true`) and then the normal indexing path executes.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) for full implementation and test file listings.
+
+> **Playbook:** [NEW-122](../manual_testing_playbook/manual_testing_playbook.md)
 
 ### Outsourced agent memory capture
 

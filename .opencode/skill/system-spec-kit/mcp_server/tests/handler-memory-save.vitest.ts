@@ -628,5 +628,50 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(result.status).toBe('rejected');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original on disk');
     });
+
+    it('does not rewrite file when PE gating short-circuits before create path', async () => {
+      const harness = await loadAtomicSaveHarness({
+        checkExistingRowMock: vi.fn(() => null),
+        runQualityGateMock: vi.fn(() => ({
+          pass: true,
+          warnOnly: false,
+          reasons: [],
+          layers: {},
+        })),
+        isSaveQualityGateEnabledMock: vi.fn(() => true),
+        embeddingPipelineModuleFactory: () => ({
+          generateOrCacheEmbedding: vi.fn(async () => ({
+            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            status: 'success',
+            failureReason: null,
+            pendingCacheWrite: null,
+          })),
+          persistPendingEmbeddingCacheWrite: vi.fn(),
+        }),
+        peOrchestrationModuleFactory: () => ({
+          evaluateAndApplyPeDecision: vi.fn(() => ({
+            decision: { action: 'REINFORCE', similarity: 97.2 },
+            earlyReturn: buildIndexResult({ status: 'reinforced', id: 902 }),
+          })),
+        }),
+      });
+
+      harness.runQualityLoopMock.mockReturnValue({
+        score: { total: 0.7, issues: [] },
+        fixes: ['Re-extracted 4 trigger phrases from content'],
+        passed: true,
+        rejected: false,
+        fixedContent: '# rewritten by quality loop',
+        fixedTriggerPhrases: ['alpha', 'beta', 'gamma', 'delta'],
+      } as any);
+
+      const filePath = createAtomicSaveTargetPath('pe-early-return-no-prewrite.md');
+      fs.writeFileSync(filePath, '# original on disk', 'utf8');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('reinforced');
+      expect(fs.readFileSync(filePath, 'utf8')).toBe('# original on disk');
+    });
   });
 });

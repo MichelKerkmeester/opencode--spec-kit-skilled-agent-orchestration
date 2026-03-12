@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   mockGetLastScanTime: vi.fn(),
   mockSetLastScanTime: vi.fn(),
   mockCheckDatabaseUpdated: vi.fn(),
+  mockProcessBatches: vi.fn(),
   mockFindMemoryFiles: vi.fn((): string[] => []),
   mockRequireDb: vi.fn(() => ({
     prepare: vi.fn(() => ({
@@ -48,7 +49,7 @@ vi.mock('../core/config', () => ({
 }));
 
 vi.mock('../utils', () => ({
-  processBatches: async (files: string[], worker: (file: string) => Promise<unknown>) => Promise.all(files.map(worker)),
+  processBatches: mocks.mockProcessBatches,
   requireDb: mocks.mockRequireDb,
   toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
 }));
@@ -100,6 +101,7 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockSetLastScanTime.mockReset();
     mocks.mockCheckDatabaseUpdated.mockReset();
     mocks.mockFindMemoryFiles.mockReset();
+    mocks.mockProcessBatches.mockReset();
     mocks.mockRequireDb.mockReset();
     mocks.mockCategorizeFilesForIndexing.mockReset();
     mocks.mockBatchUpdateMtimes.mockReset();
@@ -111,6 +113,7 @@ describe('handler-memory-index cooldown behavior', () => {
     mocks.mockSetLastScanTime.mockResolvedValue(undefined);
     mocks.mockCheckDatabaseUpdated.mockResolvedValue(false);
     mocks.mockFindMemoryFiles.mockReturnValue([]);
+    mocks.mockProcessBatches.mockImplementation(async (files: string[], worker: (file: string) => Promise<unknown>) => Promise.all(files.map(worker)));
     mocks.mockRequireDb.mockReturnValue({
       prepare: vi.fn(() => ({
         all: vi.fn(() => []),
@@ -256,5 +259,42 @@ describe('handler-memory-index cooldown behavior', () => {
       staleDeleted: 1,
       staleDeleteFailed: 1,
     });
+  });
+
+  it('treats RetryErrorResult entries as failed files and captures retry details', async () => {
+    mocks.mockFindMemoryFiles.mockReturnValue(['/tmp/retry-target.md']);
+    mocks.mockCategorizeFilesForIndexing.mockReturnValue({
+      toIndex: ['/tmp/retry-target.md'],
+      toUpdate: [],
+      toSkip: [],
+      toDelete: [],
+    });
+    mocks.mockProcessBatches.mockResolvedValue([
+      {
+        error: 'Transient failure after retries',
+        errorDetail: '429 rate limit',
+        item: '/tmp/retry-target.md',
+        retries_failed: true,
+      },
+    ]);
+
+    const result = await handler.handleMemoryIndexScan({
+      includeConstitutional: false,
+      includeSpecDocs: false,
+    });
+
+    const envelope = JSON.parse(result.content[0].text);
+    expect(envelope.data.failed).toBe(1);
+    expect(envelope.data.files).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          filePath: '/tmp/retry-target.md',
+          status: 'failed',
+          error: 'Transient failure after retries',
+          errorDetail: '429 rate limit',
+        }),
+      ])
+    );
+    expect(mocks.mockRunPostMutationHooks).not.toHaveBeenCalled();
   });
 });

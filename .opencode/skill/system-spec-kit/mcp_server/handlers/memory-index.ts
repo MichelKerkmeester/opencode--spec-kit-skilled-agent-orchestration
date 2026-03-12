@@ -60,7 +60,12 @@ interface IndexResult {
 
 /** Type guard: distinguishes IndexResult from RetryErrorResult via the 'status' property */
 function isIndexResult(result: IndexResult | RetryErrorResult): result is IndexResult {
-  return 'status' in result;
+  return (
+    typeof result === 'object' &&
+    result !== null &&
+    typeof (result as { status?: unknown }).status === 'string' &&
+    !('retries_failed' in result)
+  );
 }
 
 /** Individual file result from a memory index scan. */
@@ -424,6 +429,15 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
             isConstitutional
           });
         }
+      } else {
+        results.failed++;
+        results.files.push({
+          file: path.basename(filePath),
+          filePath,
+          status: 'failed',
+          error: 'Unexpected batch result shape',
+          errorDetail: JSON.stringify(result),
+        });
       }
     }
   }

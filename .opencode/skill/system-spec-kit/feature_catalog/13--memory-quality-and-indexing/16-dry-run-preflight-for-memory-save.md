@@ -13,9 +13,9 @@ This document captures the implemented behavior, source references, and validati
 
 ## 2. CURRENT REALITY
 
-The `memory_save` tool accepts a `dryRun` parameter that runs the full save pipeline — content normalization, quality gate evaluation, deduplication check, token budget estimation — without committing any changes to the database or writing files to disk. The response includes what would have happened: whether the save would pass quality gates, the computed quality score breakdown, any near-duplicate warnings, and the estimated token cost.
+The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation, and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and the save/index pipeline is not executed.
 
-This allows agents to preview a save operation before committing, catching quality gate rejections or duplicate content early. The dry-run path shares the same validation code as the real save path, ensuring preview accuracy matches production behavior.
+This allows agents to preview validation outcomes before committing while still using the same preflight validator used by non-dry-run requests. In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, quality-gate, PE-gating, and persistence flows.
 
 ## 3. SOURCE FILES
 
@@ -35,6 +35,12 @@ This allows agents to preview a save operation before committing, catching quali
 |------|-------|
 | `mcp_server/tests/preflight.vitest.ts` | Pre-flight validation tests |
 | `mcp_server/tests/handler-memory-save.vitest.ts` | Save handler validation |
+
+### Validation coverage snapshot
+
+- `mcp_server/tests/preflight.vitest.ts`: 39 test cases
+- `mcp_server/tests/handler-memory-save.vitest.ts`: 23 test cases
+- Combined scoped total for this feature path: 62 test cases
 
 ## 4. SOURCE METADATA
 

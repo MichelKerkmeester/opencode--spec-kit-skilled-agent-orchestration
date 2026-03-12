@@ -152,6 +152,10 @@ const EMBEDDING_MODEL_TIMEOUT_MS = 30_000;
 /** Timeout (ms) for API key validation during startup. */
 const API_KEY_VALIDATION_TIMEOUT_MS = 5_000;
 
+function isMutationStatus(status: string | undefined): boolean {
+  return status === 'indexed' || status === 'updated' || status === 'reinforced' || status === 'deferred';
+}
+
 let generatedCallIdCounter = 0;
 
 function resolveToolCallId(request: { id?: unknown }): string {
@@ -528,6 +532,20 @@ async function startupScan(basePath: string): Promise<void> {
       console.error(`[context-server] Startup scan: ${indexed} new, ${updated} updated, ${unchanged} unchanged, ${failed} failed`);
     } else {
       console.error(`[context-server] Startup scan: all ${unchanged} files up to date`);
+    }
+
+    if (indexed > 0 || updated > 0) {
+      try {
+        runPostMutationHooks('scan', {
+          indexed,
+          updated,
+          staleDeleted: 0,
+          staleDeleteFailed: 0,
+          operation: 'startup-scan',
+        });
+      } catch (_error: unknown) {
+        // Non-fatal: startup scan must continue even if invalidation hooks fail.
+      }
     }
 
     // Log atomicity metrics for monitoring (CHK-190)
@@ -976,7 +994,22 @@ async function main(): Promise<void> {
           fileWatcher = startFileWatcher({
             paths: watchPaths,
             reindexFn: async (filePath: string) => {
-              await indexSingleFile(filePath, false);
+              const result = await indexSingleFile(filePath, false);
+              if (isMutationStatus(result.status)) {
+                try {
+                  runPostMutationHooks('scan', {
+                    indexed: result.status === 'indexed' || result.status === 'deferred' ? 1 : 0,
+                    updated: result.status === 'updated' || result.status === 'reinforced' ? 1 : 0,
+                    staleDeleted: 0,
+                    staleDeleteFailed: 0,
+                    operation: 'file-watcher-reindex',
+                    filePath,
+                    status: result.status,
+                  });
+                } catch (_error: unknown) {
+                  // Non-fatal by design for file-watcher callback path.
+                }
+              }
             },
             removeFn: async (filePath: string) => {
               await removeIndexedMemoriesForFile(filePath);

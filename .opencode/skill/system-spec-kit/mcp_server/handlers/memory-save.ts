@@ -243,10 +243,6 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
     }
   }
 
-  if (qualityLoopResult.passed && qualityLoopResult.fixedContent) {
-    await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
-  }
-
   persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, filePath);
 
   // PE GATING
@@ -258,6 +254,12 @@ async function indexMemoryFile(filePath: string, { force = false, parsedOverride
   // -- Sprint 4: TM-06 Reconsolidation-on-Save --
   const reconResult = await runReconsolidationIfEnabled(database, parsed, filePath, force, embedding);
   if (reconResult.earlyReturn) return reconResult.earlyReturn;
+
+  // AI-GUARD: Persist quality-loop content fixes only after decisive save gates pass.
+  // This avoids on-disk writes when PE/reconsolidation rejects or short-circuits the save.
+  if (qualityLoopResult.passed && qualityLoopResult.fixedContent) {
+    await fs.promises.writeFile(filePath, qualityLoopResult.fixedContent, 'utf-8');
+  }
 
   // CREATE NEW MEMORY
   const existing = database.prepare(`

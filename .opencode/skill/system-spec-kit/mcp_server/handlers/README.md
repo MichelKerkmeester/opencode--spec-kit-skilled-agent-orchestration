@@ -1,6 +1,6 @@
 ---
 title: "Handlers"
-description: "MCP tool handlers for context, search, CRUD, indexing, ingest, checkpoints, learning, causal graph, PE gating, eval reporting, and quality loop operations."
+description: "MCP tool handler surface plus internal handler helpers for save/index orchestration."
 trigger_phrases:
   - "MCP handlers"
   - "memory handlers"
@@ -25,38 +25,32 @@ trigger_phrases:
 
 This section provides an overview of the Handlers directory.
 
-`handlers/` is the business-logic layer behind the MCP tool surface.
+`handlers/` contains both the MCP tool handler surface and internal helper modules used by those handlers.
 
-Current modules:
+Tool handler surface (wired through `handlers/index.ts` and `tools/memory-tools.ts`):
 - `memory-context.ts` — L1 orchestration handler (T061)
 - `memory-search.ts` — hybrid search with retrieval telemetry
 - `memory-triggers.ts` — trigger phrase matching
 - `memory-save.ts` — save orchestrator (delegates to `save/` pipeline)
 - `memory-ingest.ts` — batch ingest start/status/cancel handlers
 - `memory-crud.ts` — stable CRUD facade + snake_case aliases
-- `memory-crud-delete.ts` — single-memory delete
-- `memory-crud-update.ts` — single-memory update
-- `memory-crud-list.ts` — memory listing with filters
-- `memory-crud-stats.ts` — database statistics
-- `memory-crud-health.ts` — health check handler
-- `memory-crud-types.ts` — shared CRUD type definitions
-- `memory-crud-utils.ts` — mutation ledger and CRUD utilities
 - `memory-bulk-delete.ts` — bulk delete handler
 - `memory-index.ts` — index scan, single-file indexing, constitutional file discovery
-- `memory-index-alias.ts` — index alias management
-- `memory-index-discovery.ts` — spec-folder discovery for indexing
 - `checkpoints.ts` — checkpoint create/list/restore/delete and memory validate
 - `session-learning.ts` — task preflight/postflight and learning history
 - `causal-graph.ts` — causal link/unlink, drift-why, causal stats (T043-T047)
+- `eval-reporting.ts` — ablation runs and reporting dashboard (R13-S3)
+- `index.ts` — barrel re-exports
+
+Internal helper modules (not direct MCP tool endpoints):
+- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` — split CRUD internals behind `memory-crud.ts`
+- `memory-crud-types.ts`, `memory-crud-utils.ts` — shared CRUD types and utilities
+- `memory-index-alias.ts`, `memory-index-discovery.ts` — indexing support helpers
 - `causal-links-processor.ts` — causal link extraction and processing
 - `chunking-orchestrator.ts` — document chunking orchestration
-- `eval-reporting.ts` — ablation runs and reporting dashboard (R13-S3)
-- `handler-utils.ts` — shared handler utility functions
-- `mutation-hooks.ts` — post-mutation hook runner (cache invalidation)
-- `pe-gating.ts` — prediction-error gate actions (findSimilarMemories, reinforce, etc.)
-- `quality-loop.ts` — quality feedback loop handler
-- `types.ts` — shared handler type definitions
-- `index.ts` — barrel re-exports
+- `handler-utils.ts`, `mutation-hooks.ts`, `types.ts` — shared handler helpers/types
+- `pe-gating.ts` — prediction-error decision utilities consumed by save/index flows
+- `quality-loop.ts` — quality scoring/fix helpers consumed by `memory-save.ts` (not a standalone MCP handler)
 - `save/` — decomposed save pipeline (see `save/README.md`)
 
 <!-- /ANCHOR:overview -->
@@ -68,6 +62,7 @@ Current modules:
 - CRUD handlers are split into focused modules while keeping `memory-crud.ts` as the stable entry point.
 - Tool domains cover L1-L7 behavior through the dispatch layer in `tools/`.
 - Core persistence uses `memory_index` (not `memories`) with FTS/vector/checkpoint support.
+- `quality-loop.ts` is an internal save helper module invoked inside `memory-save.ts`; MCP does not expose a separate `quality_loop` tool.
 - Spec 126 alignment:
   - `memory-index` supports `includeSpecDocs` and indexes spec docs plus memory files.
   - `memory-save` preserves `document_type` and `spec_level` across create/update/reinforce flows. Integrates with embedding cache for deduplication of unchanged content, persists accepted quality-loop metadata fixes, and carries rewritten body content in-memory until downstream hard-reject gates clear under lock.
