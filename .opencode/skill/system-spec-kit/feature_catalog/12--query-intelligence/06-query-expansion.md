@@ -1,6 +1,17 @@
 # Query expansion
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Query expansion.
+
+## 2. CURRENT REALITY
 
 Embedding-based query expansion broadens retrieval for complex queries by mining similar memories from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
 
@@ -8,7 +19,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -86,7 +97,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 | `mcp_server/tests/stage1-expansion.vitest.ts` | Stage-1 expansion call and dedup |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Query intelligence
 - Source feature title: Query expansion

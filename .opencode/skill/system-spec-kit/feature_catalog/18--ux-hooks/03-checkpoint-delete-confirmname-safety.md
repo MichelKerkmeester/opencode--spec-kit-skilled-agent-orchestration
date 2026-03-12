@@ -1,10 +1,21 @@
 # Checkpoint delete confirmName safety
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Checkpoint delete confirmName safety.
+
+## 2. CURRENT REALITY
 
 Checkpoint deletion now requires a matching `confirmName` safety parameter before destructive action proceeds. The finalized follow-up pass enforced that requirement across handler, schema, tool-schema, and tool-type layers so callers cannot bypass it through a looser boundary. Successful deletion responses also report the confirmation outcome through `safetyConfirmationUsed=true` plus deletion metadata.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -121,7 +132,7 @@ Checkpoint deletion now requires a matching `confirmName` safety parameter befor
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Checkpoint delete confirmName safety

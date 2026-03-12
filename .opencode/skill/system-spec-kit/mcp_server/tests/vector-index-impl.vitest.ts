@@ -1048,8 +1048,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
 
     let vecMemId: number | null = null;
 
-    it('indexMemory creates vector memory with embedding', () => {
-      if (!sqliteVecAvailable) return; // skip if not available
+    it.skipIf(!sqliteVecAvailable)('indexMemory creates vector memory with embedding', () => {
       vecMemId = mod.indexMemory({
         specFolder: 'specs/test-vec',
         filePath: path.join(TMP_DIR, 'vec-memory-1.md'),
@@ -1063,8 +1062,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(mem?.embedding_status).toBe('success');
     });
 
-    it('indexMemory creates additional vector memories for search', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('indexMemory creates additional vector memories for search', () => {
       mod.indexMemory({
         specFolder: 'specs/test-vec',
         filePath: path.join(TMP_DIR, 'vec-memory-2.md'),
@@ -1083,8 +1081,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       });
     });
 
-    it('indexMemory populates and maintains interference_score on insert/update paths', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('indexMemory populates and maintains interference_score on insert/update paths', () => {
 
       const idA = mod.indexMemory({
         specFolder: 'specs/test-interference',
@@ -1123,8 +1120,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       expect(rowAAfter.interference_score).toBeGreaterThanOrEqual(0);
     });
 
-    it('vectorSearch returns results', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('vectorSearch returns results', () => {
       const query = makeEmbedding(1);
       const searchResults = mod.vectorSearch(query, { limit: 5 });
       expect(Array.isArray(searchResults)).toBe(true);
@@ -1135,23 +1131,20 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }
     });
 
-    it('vectorSearch filters by specFolder', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('vectorSearch filters by specFolder', () => {
       const query = makeEmbedding(1);
       const filtered = mod.vectorSearch(query, { limit: 10, specFolder: 'specs/test-vec' });
       expect(filtered.every(r => r.spec_folder === 'specs/test-vec' || r.isConstitutional)).toBe(true);
     });
 
-    it('vectorSearch respects minSimilarity', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('vectorSearch respects minSimilarity', () => {
       const query = makeEmbedding(1);
       const strict = mod.vectorSearch(query, { limit: 10, minSimilarity: 99 });
       // Very high threshold should reduce results
       expect(Array.isArray(strict)).toBe(true);
     });
 
-    it('indexMemory rejects wrong embedding dimension', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('indexMemory rejects wrong embedding dimension', () => {
       const badEmbedding = new Float32Array(10); // Wrong dimension
       expect(() => {
         mod.indexMemory({
@@ -1163,8 +1156,7 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }).toThrow(/dimensions/);
     });
 
-    it('indexMemory rejects null embedding', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('indexMemory rejects null embedding', () => {
       expect(() => {
         mod.indexMemory({
           specFolder: 'specs/test-vec',
@@ -1175,16 +1167,14 @@ describe('Vector Index Implementation [deferred - requires DB test fixtures]', (
       }).toThrow(/required/);
     });
 
-    it('multiConceptSearch returns results for 2 concepts', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('multiConceptSearch returns results for 2 concepts', () => {
       const emb1 = makeEmbedding(1);
       const emb2 = makeEmbedding(2);
       const mcResults = mod.multiConceptSearch([emb1, emb2], { limit: 5 });
       expect(Array.isArray(mcResults)).toBe(true);
     });
 
-    it('multiConceptSearch rejects fewer than 2 concepts', () => {
-      if (!sqliteVecAvailable) return;
+    it.skipIf(!sqliteVecAvailable)('multiConceptSearch rejects fewer than 2 concepts', () => {
       expect(() => {
         mod.multiConceptSearch([makeEmbedding(1)], { limit: 5 });
       }).toThrow(/2-5/);

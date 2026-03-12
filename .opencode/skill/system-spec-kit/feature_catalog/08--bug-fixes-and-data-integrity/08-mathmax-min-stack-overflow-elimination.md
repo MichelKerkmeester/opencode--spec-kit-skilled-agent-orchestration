@@ -1,6 +1,17 @@
 # Math.max/min stack overflow elimination
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Math.max/min stack overflow elimination.
+
+## 2. CURRENT REALITY
 
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
@@ -13,7 +24,7 @@
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -52,7 +63,7 @@ Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with 
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Math.max/min stack overflow elimination

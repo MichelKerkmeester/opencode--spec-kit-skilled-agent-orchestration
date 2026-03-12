@@ -1,6 +1,17 @@
 # Score normalization
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Score normalization.
+
+## 2. CURRENT REALITY
 
 Before normalization, RRF and composite scoring used different raw scales. In `shared/algorithms/rrf-fusion.ts`, RRF uses `1 / (k + rank)` with `DEFAULT_K = 60`, so a top-ranked per-source contribution starts near `1/61 ~= 0.016` and decays by rank (with convergence bonuses potentially pushing combined raw scores above `0.1`). Composite scoring already operates in a `0-1` band.
 
@@ -8,7 +19,7 @@ Min-max normalization now maps both outputs to `0-1`, letting relevance signals 
 
 Normalization is batch-relative (the same memory can score differently across different queries), which is expected for min-max. Runtime gating uses `SPECKIT_SCORE_NORMALIZATION`: `isScoreNormalizationEnabled()`/`normalizeRrfScores()` in `shared/algorithms/rrf-fusion.ts` and `isCompositeNormalizationEnabled()`/`normalizeCompositeScores()` in `mcp_server/lib/scoring/composite-scoring.ts`.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -53,7 +64,7 @@ Normalization is batch-relative (the same memory can score differently across di
 | Cross-variant RRF normalization path | `shared/algorithms/rrf-fusion.ts` (`fuseResultsCrossVariant`) | `mcp_server/tests/score-normalization.vitest.ts` |
 | Composite normalization gate and transform (`isCompositeNormalizationEnabled`, `normalizeCompositeScores`) | `mcp_server/lib/scoring/composite-scoring.ts` | `mcp_server/tests/score-normalization.vitest.ts` |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Score normalization

@@ -1,6 +1,17 @@
 # Scoring and ranking corrections
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Scoring and ranking corrections.
+
+## 2. CURRENT REALITY
 
 Four scoring-layer bugs were fixed:
 
@@ -12,7 +23,7 @@ Four scoring-layer bugs were fixed:
 
 **C4 — Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -32,7 +43,7 @@ Four scoring-layer bugs were fixed:
 | C3 | `mcp_server/tests/causal-boost.vitest.ts` | Cycle/dedup behavior in recursive graph boost |
 | C4 | `mcp_server/tests/ablation-framework.vitest.ts` | Large-n sign test stability and p-value computation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Scoring and ranking corrections

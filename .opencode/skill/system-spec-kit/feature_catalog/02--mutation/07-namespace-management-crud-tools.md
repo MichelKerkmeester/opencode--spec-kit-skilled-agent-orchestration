@@ -1,10 +1,21 @@
 # Namespace management CRUD tools
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Namespace management CRUD tools.
+
+## 2. CURRENT REALITY
 
 **PLANNED (Sprint 019) — DEFERRED.** Namespace CRUD (`list/create/switch/delete`) remains deferred pending demonstrated multi-tenant demand. Current scoping relies on logical `specFolder` filtering. Estimated effort: S-M (3-5 days).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -359,7 +370,7 @@
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Namespace management CRUD tools

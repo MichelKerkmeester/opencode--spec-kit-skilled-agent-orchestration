@@ -1,6 +1,18 @@
 # Cross-AI validation fixes
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Cross-AI validation fixes.
+
+## 2. CURRENT REALITY
 
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
@@ -17,7 +29,7 @@ Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issu
 
 All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed, Claude final-reviewed.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -42,12 +54,12 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 | `mcp_server/tests/memory-save-extended.vitest.ts` | False-pass guard pattern remediation coverage |
 | `mcp_server/tests/hybrid-search.vitest.ts` | Search-handler ordering and integration behavior |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Cross-AI validation fixes
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-088

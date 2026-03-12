@@ -1,6 +1,17 @@
 # Pipeline and mutation hardening
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Pipeline and mutation hardening.
+
+## 2. CURRENT REALITY
 
 Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency, stemmer quality, and data cleanup:
 
@@ -15,7 +26,7 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 - **Atomic save error tracking (#22):** `atomicSaveMemory` now tracks rename-failure state with a `dbCommitted` flag for better error reporting.
 - **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation — Pipeline hardening
 
@@ -57,7 +68,7 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 | `mcp_server/tests/transaction-manager.vitest.ts` | Atomic-save and pending-file transaction behavior |
 | `mcp_server/tests/preflight.vitest.ts` | Preflight error-code contract used by save handler responses |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Pipeline and mutation hardening

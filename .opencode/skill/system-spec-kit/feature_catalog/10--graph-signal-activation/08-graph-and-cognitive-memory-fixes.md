@@ -1,6 +1,17 @@
 # Graph and cognitive memory fixes
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Graph and cognitive memory fixes.
+
+## 2. CURRENT REALITY
 
 Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive scoring:
 
@@ -14,7 +25,7 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 
 **Deferred:** #26 (FK existence check on causal edges, test fixtures use synthetic IDs not in memory_index) and #31 (session entry limit off-by-one, code already correct).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -79,7 +90,7 @@ Seven fixes (of 9 planned; 2 deferred) addressed graph integrity and cognitive s
 | `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
 | `mcp_server/tests/anchor-metadata.vitest.ts` | Anchor metadata parsing tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Graph and cognitive memory fixes

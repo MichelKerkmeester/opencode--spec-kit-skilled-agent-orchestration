@@ -1,6 +1,17 @@
 # Standalone admin CLI
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Standalone admin CLI.
+
+## 2. CURRENT REALITY
 
 Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint; constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), `schema-downgrade` (--to 15, --confirm). Transaction-wrapped deletions, checkpoint creation before bulk-delete, mutation ledger recording. Invoked as `node cli.js <command>` from any directory.
 
@@ -14,7 +25,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 **Decision rationale:** this CLI is an operator recovery tool and must stay usable during partial storage failures. Making checkpoints mandatory for every delete could block necessary cleanup when checkpoint persistence is degraded; instead, the command keeps explicit safety gates (tier validation and critical-tier scope requirements) and surfaces checkpoint failure clearly.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -35,7 +46,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 `mcp_server/tests/cli.vitest.ts` currently does **not** cover dry-run mode, invalid tier-value handling, or a successful schema-downgrade execution path.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Undocumented feature gap scan
 - Source feature title: Standalone admin CLI

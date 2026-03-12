@@ -1,6 +1,17 @@
 # Weight history audit tracking
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Weight history audit tracking.
+
+## 2. CURRENT REALITY
 
 Every causal edge now carries `created_by` and `last_accessed` metadata fields tracking who created the edge and when it was last used. All strength modifications are logged to a `weight_history` table recording old strength, new strength, the actor (`changed_by`), timestamp and reason.
 
@@ -8,7 +19,7 @@ Edge bounds are enforced at insert time. Auto-generated edges (those with `creat
 
 This audit infrastructure supports the N3-lite consolidation engine: Hebbian strengthening, staleness detection and edge bounds enforcement all rely on accurate weight history and provenance tracking.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -32,7 +43,7 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 | `mcp_server/tests/graph-search-fn.vitest.ts` | Graph search function tests |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Graph signal activation
 - Source feature title: Weight history audit tracking

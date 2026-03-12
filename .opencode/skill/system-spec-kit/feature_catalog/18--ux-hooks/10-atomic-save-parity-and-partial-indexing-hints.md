@@ -1,10 +1,21 @@
 # Atomic-save parity and partial-indexing hints
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Atomic-save parity and partial-indexing hints.
+
+## 2. CURRENT REALITY
 
 `atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle atomic-save outcomes with the same parsing and recovery flow used for standard saves.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -171,7 +182,7 @@
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Atomic-save parity and partial-indexing hints

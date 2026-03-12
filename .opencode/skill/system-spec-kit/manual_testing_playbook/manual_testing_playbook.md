@@ -381,13 +381,14 @@ Note: NEW-042, NEW-119, NEW-120, and NEW-121 all map to the same catalog entry f
 | NEW-120 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
 | NEW-121 | [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md) |
 
-### Catalog Entries Without Playbook Coverage (18 entries)
+### Catalog Entries Without Playbook Coverage (19 entries)
 
 These catalog entries have no dedicated playbook scenario. They are either deferred/planned features, cross-cutting concerns tested implicitly via other scenarios, or documentation-only entries:
 
 | Catalog Entry | Reason |
 |---|---|
 | `01--retrieval/07-ast-level-section-retrieval-tool.md` | DEFERRED — not yet implemented |
+| `01--retrieval/09-tool-result-extraction-to-working-memory` | Covered by unit tests (`working-memory.vitest.ts`, `working-memory-event-decay.vitest.ts`, `checkpoint-working-memory.vitest.ts`) but no manual playbook scenario defined; Deferred — automated test coverage sufficient |
 | `02--mutation/07-namespace-management-crud-tools.md` | DEFERRED — not yet implemented |
 | `10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md` | DEFERRED — planned for Sprint 019, not yet implemented |
 | `13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md` | Tested implicitly via NEW-045 (smarter content generation) |

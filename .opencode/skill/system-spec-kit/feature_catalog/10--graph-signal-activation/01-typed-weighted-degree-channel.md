@@ -1,12 +1,23 @@
 # Typed-weighted degree channel
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Typed-weighted degree channel.
+
+## 2. CURRENT REALITY
 
 A fifth RRF channel scores memories by their graph connectivity. Edge type weights range from caused at 1.0 down to supports at 0.5, with logarithmic normalization and a hub cap (`MAX_TYPED_DEGREE=15`, `MAX_TOTAL_DEGREE=50`, `DEGREE_BOOST_CAP=0.15`) to prevent any single memory from dominating results through connections alone.
 
 Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. When a memory has zero edges, the channel returns 0 rather than failing.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -34,7 +45,7 @@ Constitutional memories are excluded from degree boosting because they already r
 | `mcp_server/tests/rrf-degree-channel.vitest.ts` | Degree channel integration |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Graph signal activation
 - Source feature title: Typed-weighted degree channel

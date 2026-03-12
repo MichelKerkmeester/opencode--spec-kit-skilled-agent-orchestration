@@ -1,12 +1,23 @@
 # Stage 3 effectiveScore fallback chain
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Stage 3 effectiveScore fallback chain.
+
+## 2. CURRENT REALITY
 
 `effectiveScore()` in `stage3-rerank.ts` only checked `score` then `similarity/100`, skipping `intentAdjustedScore` and `rrfScore` from Stage 2 enrichment. The fix updated the fallback chain to: `intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1] with `isFinite()` guards. Cross-encoder document mapping and MMR candidate scoring now use `effectiveScore()` instead of inline fallbacks. A `stage2Score` field was added to `PipelineRow` in `types.ts` for auditability when Stage 3 overwrites scores.
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -112,7 +123,7 @@
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Gemini review P1 fixes (Phase 015)
 - Source feature title: Stage 3 effectiveScore fallback chain

@@ -1,6 +1,17 @@
 # Interference scoring
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Interference scoring.
+
+## 2. CURRENT REALITY
 
 Memories in dense similarity clusters tend to crowd out unique results. If you have five near-identical memories about the same topic, all five can occupy the top results and push out a different memory that might be more relevant.
 
@@ -8,7 +19,7 @@ Interference scoring penalizes cluster density: for each memory, the system coun
 
 Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be tuned empirically after two R13 evaluation cycles, tracked as FUT-S2-001. Runs behind the `SPECKIT_INTERFERENCE_SCORE` flag.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -23,7 +34,7 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Interference scoring

@@ -1,6 +1,17 @@
 # Search pipeline safety
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Search pipeline safety.
+
+## 2. CURRENT REALITY
 
 Three search pipeline issues were fixed:
 
@@ -10,7 +21,7 @@ Three search pipeline issues were fixed:
 
 **D3 — Quality floor vs RRF range mismatch:** `channel-representation.ts` used `QUALITY_FLOOR=0.2` which filtered out virtually all RRF-sourced results (RRF scores are typically 0.01-0.03). Lowered to 0.005.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -193,7 +204,7 @@ Three search pipeline issues were fixed:
 | `mcp_server/tests/validation-metadata.vitest.ts` | Validation metadata tests |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Search pipeline safety

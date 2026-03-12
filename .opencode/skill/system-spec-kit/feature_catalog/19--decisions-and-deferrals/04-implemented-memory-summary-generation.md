@@ -1,12 +1,23 @@
 # Implemented: memory summary generation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Implemented: memory summary generation.
+
+## 2. CURRENT REALITY
 
 Originally skipped at Sprint 7 because the scale gate measured 2,411 active memories, below the 5,000 threshold.
 
 **Now implemented.** Pure-TypeScript TF-IDF extractive summarizer generates top-3 key sentences at save time, stored with summary-specific embeddings in the `memory_summaries` table. Operates as a parallel search channel in Stage 1 (not a pre-filter, avoiding recall loss). The runtime scale gate remains: the channel skips execution below 5,000 indexed memories. Runs behind `SPECKIT_MEMORY_SUMMARIES` (default ON). Schema migration v20 added the `memory_summaries` table. See [Memory summary search channel](#memory-summary-search-channel) for the full description.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -26,7 +37,7 @@ Originally skipped at Sprint 7 because the scale gate measured 2,411 active memo
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: memory summary generation

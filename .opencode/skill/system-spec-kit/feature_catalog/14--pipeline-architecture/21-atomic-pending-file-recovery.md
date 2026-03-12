@@ -1,12 +1,23 @@
 # Atomic pending-file recovery
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Atomic pending-file recovery.
+
+## 2. CURRENT REALITY
 
 The transaction manager maintains an atomic write protocol where memory files are first written to a `_pending` path and only renamed to their final location after the database transaction commits. When a crash or error interrupts this sequence after DB commit but before rename, a `_pending` file is left on disk as a recoverable artifact.
 
 The `findPendingFiles()` function scans the memory directories for files matching the `_pending` suffix. Each discovered pending file is checked against the database: if the corresponding DB row exists (committed), the file is renamed to its final path completing the interrupted operation. The `recoverPendingFile()` function handles individual file recovery and updates the `totalRecoveries` metric. This mechanism ensures zero data loss from interrupted save operations.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,7 +33,7 @@ The `findPendingFiles()` function scans the memory directories for files matchin
 | `mcp_server/tests/transaction-manager.vitest.ts` | Transaction manager tests |
 | `mcp_server/tests/transaction-manager-extended.vitest.ts` | Transaction extended tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Pipeline architecture
 - Source feature title: Atomic pending-file recovery

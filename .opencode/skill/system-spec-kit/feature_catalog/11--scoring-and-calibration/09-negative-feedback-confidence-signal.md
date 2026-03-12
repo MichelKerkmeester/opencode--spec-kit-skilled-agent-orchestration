@@ -1,6 +1,17 @@
 # Negative feedback confidence signal
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Negative feedback confidence signal.
+
+## 2. CURRENT REALITY
 
 When you mark a memory as not useful via `memory_validate(wasUseful: false)`, the signal now flows into composite scoring as a demotion multiplier. The multiplier starts at 1.0, decreases by 0.1 per negative validation and floors at 0.3 so a memory is never suppressed below 30% of its natural score. Time-based recovery with a 30-day half-life (`RECOVERY_HALF_LIFE_MS`) gradually restores the multiplier: the penalty halves every 30 days since the last negative validation.
 
@@ -8,7 +19,7 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 
 **Sprint 8 update:** The unused `RECOVERY_HALF_LIFE_DAYS` constant was removed (the millisecond-based `RECOVERY_HALF_LIFE_MS` is the actual constant used in computation).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -33,7 +44,7 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Negative feedback confidence signal

@@ -1,10 +1,21 @@
 # Edge density measurement
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Edge density measurement.
+
+## 2. CURRENT REALITY
 
 The current density metric used by runtime guards is global edge density: `total_edges / total_memories` from the graph tables. If density is too low, graph-derived gains are naturally limited; if density is too high, entity-linking creation is gated by the configured density threshold. Earlier "edges-per-node" phrasing is still useful intuition, but runtime checks now use the global-density denominator for consistency.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -18,7 +29,7 @@ The current density metric used by runtime guards is global edge density: `total
 |------|-------|
 | `mcp_server/tests/edge-density.vitest.ts` | Edge density measurement |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Graph signal activation
 - Source feature title: Edge density measurement

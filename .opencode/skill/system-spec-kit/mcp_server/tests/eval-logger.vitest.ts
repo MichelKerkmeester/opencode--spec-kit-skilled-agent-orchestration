@@ -184,6 +184,14 @@ describe('T005: Eval Logger', () => {
       expect(row.intent).toBeNull();
     });
 
+    it('T005-9b: logSearchQuery uses queryId as evalRunId for cross-process-safe correlation', () => {
+      const restore = setEvalLogging('true');
+      const { queryId, evalRunId } = logSearchQuery({ query: 'run-id-from-query-id' });
+      restore();
+
+      expect(evalRunId).toBe(queryId);
+    });
+
     it('T005-10: logChannelResult inserts a row into eval_channel_results', () => {
       const restore = setEvalLogging('true');
       const { queryId, evalRunId } = logSearchQuery({ query: 'channel-log-test-T005-10' });

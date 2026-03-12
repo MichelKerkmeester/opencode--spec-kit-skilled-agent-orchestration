@@ -1,6 +1,17 @@
 # Spec folder hierarchy as retrieval structure
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Spec folder hierarchy as retrieval structure.
+
+## 2. CURRENT REALITY
 
 Spec folder paths from memory metadata are parsed into an in-memory hierarchy tree. The `buildHierarchyTree()` function performs two-pass construction: the first pass creates nodes from all distinct `spec_folder` values including implicit intermediate parents, the second pass links children to parents via path splitting.
 
@@ -8,7 +19,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 
 **Sprint 8 update:** A WeakMap TTL cache (60s, keyed by database instance) was added to `buildHierarchyTree()` to avoid full-scan reconstruction on every search request. An `invalidateHierarchyCache()` export allows explicit cache clearing when hierarchy data changes.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,7 +33,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 |------|-------|
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Retrieval enhancements
 - Source feature title: Spec folder hierarchy as retrieval structure

@@ -47,7 +47,6 @@ function generateEvalRunId(): number {
   if (!isEvalLoggingEnabled()) return 0;
   // Lazy init from DB on first call to survive server restarts
   if (!_evalRunCounterInitialized) {
-    _evalRunCounterInitialized = true;
     try {
       const db = getDb();
       if (db) {
@@ -59,7 +58,12 @@ function generateEvalRunId(): number {
           _evalRunCounter = maxId;
         }
       }
-    } catch (_error: unknown) { /* DB may not have eval tables yet — start from 0 */ }
+      _evalRunCounterInitialized = true;
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      console.warn('[eval-logger] generateEvalRunId bootstrap warning:', msg);
+      // Keep _evalRunCounterInitialized=false so next call can retry bootstrap.
+    }
   }
   return ++_evalRunCounter;
 }
@@ -143,7 +147,6 @@ function logSearchQuery(params: LogSearchQueryParams): LogSearchQueryResult {
   if (!isEvalLoggingEnabled()) return noop;
 
   try {
-    const evalRunId = generateEvalRunId();
     const db = getDb();
 
     const result = db.prepare(`
@@ -158,6 +161,10 @@ function logSearchQuery(params: LogSearchQueryParams): LogSearchQueryResult {
     const queryId = typeof result.lastInsertRowid === 'bigint'
       ? Number(result.lastInsertRowid)
       : result.lastInsertRowid as number;
+
+    // Use queryId as the canonical per-invocation run ID.
+    // This guarantees uniqueness across concurrent processes that share the DB.
+    const evalRunId = queryId > 0 ? queryId : generateEvalRunId();
 
     return { queryId, evalRunId };
   } catch (err: unknown) {

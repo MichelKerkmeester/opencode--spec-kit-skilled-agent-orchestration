@@ -1,12 +1,23 @@
 # Tree thinning for spec folder consolidation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Tree thinning for spec folder consolidation.
+
+## 2. CURRENT REALITY
 
 Tree thinning is a pre-pipeline token-reduction step for spec-folder consolidation. `applyTreeThinning()` classifies files by token count, keeps larger files intact, uses content-as-summary for medium files, and merges small files into parent-level summaries.
 
 Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered file changes are transformed into thinning inputs, processed through `applyTreeThinning()`, and then applied back to the effective file set before downstream retrieval/scoring logic.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -21,7 +32,7 @@ Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered fi
 |------|-------|
 | `scripts/tests/tree-thinning.vitest.ts` | Tree-thinning thresholds, merge behavior, boundary handling, and invariants |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Tooling and scripts
 - Source feature title: Tree thinning for spec folder consolidation

@@ -1,10 +1,21 @@
 # DB_PATH extraction and import standardization
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for DB_PATH extraction and import standardization.
+
+## 2. CURRENT REALITY
 
 `shared/config.ts` gained an exported `getDbDir()` function reading `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR` env vars. `shared/paths.ts` exports `DB_PATH` using this config. Scripts that hardcoded database paths (`cleanup-orphaned-vectors.ts`) now import from shared. Fourteen relative cross-boundary imports across scripts were converted to `@spec-kit/` workspace aliases.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -25,7 +36,7 @@
 | `scripts/tests/test-cleanup-orphaned-vectors.js` | Script-level DB_PATH consumer coverage for cleanup flow |
 | `scripts/tests/import-policy-rules.vitest.ts` | Import-standardization policy checks for @spec-kit alias usage |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: DB_PATH extraction and import standardization

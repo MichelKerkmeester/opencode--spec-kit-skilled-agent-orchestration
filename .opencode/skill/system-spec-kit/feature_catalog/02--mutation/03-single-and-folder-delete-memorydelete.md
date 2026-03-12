@@ -1,6 +1,17 @@
 # Single and folder delete (memory_delete)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Single and folder delete (memory_delete).
+
+## 2. CURRENT REALITY
 
 Two deletion modes in one tool. Pass a numeric `id` for single delete or a `specFolder` string (with `confirm: true`) for bulk folder delete.
 
@@ -8,7 +19,7 @@ Single deletes run inside a database transaction: remove the memory record via `
 
 Bulk deletes by spec folder are more involved. The system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching memories inside a database transaction with per-memory causal edge cleanup and per-memory mutation ledger entries. The entire operation is atomic: either all memories in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -256,7 +267,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Mutation
 - Source feature title: Single and folder delete (memory_delete)

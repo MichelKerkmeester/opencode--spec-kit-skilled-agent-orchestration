@@ -1,6 +1,18 @@
 # Full reporting and ablation study framework
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Full reporting and ablation study framework.
+
+## 2. CURRENT REALITY
 
 The ablation study framework disables one retrieval channel at a time (vector, BM25, FTS5, graph or trigger) and measures Recall@20 delta against a full-pipeline baseline. "What happens if we turn off the graph channel?" is now a question with a measured answer rather than speculation.
 
@@ -8,7 +20,7 @@ The framework uses dependency injection for the search function, making it testa
 
 The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the evaluation database. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON. A `isHigherBetter()` helper correctly interprets trend direction for different metric types. Both the ablation runner and the dashboard are exposed as new MCP tools: `eval_run_ablation` and `eval_reporting_dashboard`.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -30,12 +42,12 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 | `mcp_server/tests/ground-truth.vitest.ts` | Ground truth tests |
 | `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Evaluation and measurement
 - Source feature title: Full reporting and ablation study framework
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-014

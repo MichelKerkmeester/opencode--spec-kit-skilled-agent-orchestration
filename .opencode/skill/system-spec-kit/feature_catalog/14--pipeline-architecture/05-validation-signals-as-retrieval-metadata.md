@@ -1,12 +1,23 @@
 # Validation signals as retrieval metadata
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Validation signals as retrieval metadata.
+
+## 2. CURRENT REALITY
 
 Spec document validation metadata integrates into the scoring layer as an additional ranking dimension in Stage 2. Four signal sources contribute: importance tier mapped to a numeric quality score (constitutional=1.0 through deprecated=0.1), the direct `quality_score` database column, `<!-- SPECKIT_LEVEL: N -->` content marker extraction and validation completion markers (`<!-- VALIDATED -->`, `<!-- VALIDATION: PASS -->`).
 
 The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed of quality factor (0.9-1.1), spec level bonus (0-0.06), completion bonus (0-0.04) and checklist bonus (0-0.01). Well-maintained documentation ranks slightly above neglected documentation when both are relevant. No feature flag; always active.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -28,7 +39,7 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/validation-metadata.vitest.ts` | Validation metadata tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Pipeline architecture
 - Source feature title: Validation signals as retrieval metadata

@@ -1,6 +1,17 @@
 # 4-stage pipeline refactor
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for 4-stage pipeline refactor.
+
+## 2. CURRENT REALITY
 
 The retrieval pipeline was restructured into four bounded stages with clear responsibilities, a single authoritative scoring point and a strict score-immutability invariant in the final stage.
 
@@ -18,7 +29,7 @@ Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual
 
 **Phase 017 update:** The legacy `postSearchPipeline` path  was removed entirely. `isPipelineV2Enabled()` now always returns `true` regardless of the `SPECKIT_PIPELINE_V2` env var (deprecated). The V2 4-stage pipeline is the only code path. A shared `resolveEffectiveScore()` function in `pipeline/types.ts` replaced both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`, ensuring a consistent fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1]) across all stages.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -204,7 +215,7 @@ Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual
 | `mcp_server/tests/validation-metadata.vitest.ts` | Validation metadata tests |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Pipeline architecture
 - Source feature title: 4-stage pipeline refactor

@@ -895,6 +895,32 @@ describe('Ablation Framework — DB Integration (R13-S3)', () => {
     const metadata = JSON.parse(baseline!.metadata);
     expect(metadata.channelFailures).toHaveLength(2);
   });
+
+  it('storeAblationResults() prefers evaluatedQueryCount for baseline query_count', () => {
+    const db = getEvalDb();
+    db.exec(`DELETE FROM eval_metric_snapshots WHERE metric_name LIKE 'ablation%'`);
+
+    const report = buildMockReport({
+      queryCount: 10,
+      evaluatedQueryCount: 4,
+    });
+
+    const success = storeAblationResults(report);
+    expect(success).toBe(true);
+
+    const baseline = db.prepare(
+      `SELECT query_count, metadata
+       FROM eval_metric_snapshots
+       WHERE metric_name = 'ablation_baseline_recall@20'
+       ORDER BY id DESC
+       LIMIT 1`,
+    ).get() as { query_count: number; metadata: string } | undefined;
+
+    expect(baseline).toBeDefined();
+    expect(baseline!.query_count).toBe(4);
+    const metadata = JSON.parse(baseline!.metadata);
+    expect(metadata.queryCount).toBe(4);
+  });
 });
 
 // ═══════════════════════════════════════════════════════════════════

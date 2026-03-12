@@ -1,6 +1,6 @@
 ---
 title: "Search Subsystem"
-description: "4-channel hybrid search architecture combining vector, lexical (BM25/FTS5), graph-based and structure-aware graph retrieval with Reciprocal Rank Fusion (RRF) and Adaptive Fusion."
+description: "5-channel hybrid search architecture combining vector, lexical (BM25/FTS5), graph-based and structure-aware graph retrieval with Reciprocal Rank Fusion (RRF) and Adaptive Fusion."
 trigger_phrases:
   - "search subsystem"
   - "hybrid search"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Search Subsystem
 
-> 4-channel hybrid search architecture combining vector, lexical (BM25/FTS5), graph-based and structure-aware graph retrieval, fused with Reciprocal Rank Fusion (RRF) and Adaptive Fusion.
+> 5-channel hybrid search architecture combining vector, lexical (BM25/FTS5), graph-based and structure-aware graph retrieval, fused with Reciprocal Rank Fusion (RRF) and Adaptive Fusion.
 
 ---
 
@@ -38,7 +38,7 @@ trigger_phrases:
 The search subsystem provides production-grade hybrid search capabilities with multiple retrieval methods fused via RRF scoring. It handles query expansion, intent classification, typo tolerance and optional cross-encoder reranking.
 
 **Core Capabilities:**
-- **4-Channel Hybrid Search**: Vector (semantic) + BM25/FTS5 (lexical) + Graph (relationship-based) + Graph Structure (structural)
+- **5-Channel Hybrid Search**: Vector (semantic) + BM25/FTS5 (lexical) + Graph (relationship-based) + Graph Structure (structural)
 - **RRF Score Fusion**: Industry-standard k=60 with convergence bonuses
 - **Intent Classification**: 7 intent types route to task-specific retrieval weights
 - **Query Enhancement**: Fuzzy matching (Levenshtein) + acronym expansions (via hybrid-search.ts inline logic)
@@ -53,7 +53,7 @@ Query Input
     |
 Intent Classifier -> Task-specific weights
     |
-Parallel Search (4 channels)
+Parallel Search (5 channels)
 |---> Vector (sqlite-vec)       -> Semantic matches
 |---> BM25 (Pure JS)            -> Keyword matches
 |---> Graph (Co-activation)     -> Relationship matches
@@ -317,7 +317,7 @@ vector-index-impl.ts     (3333 LOC)
          |
          v
 
-2. PARALLEL RETRIEVAL (4 channels)
+2. PARALLEL RETRIEVAL (5 channels)
    vector-index.ts (-> vector-index-impl.ts) -> Vector search (semantic)
    bm25-index.ts -> BM25 search (keyword)
    graph (via co-activation.ts) -> Relationship search
@@ -460,7 +460,7 @@ IDF = log((N - n(qi) + 0.5) / (n(qi) + 0.5) + 1)
 
 ### Hybrid Search Features
 
-**4-Channel Fusion**:
+**5-Channel Fusion**:
 ```javascript
 // unifiedSearch() orchestrates:
 // 1. Vector search (semantic similarity)

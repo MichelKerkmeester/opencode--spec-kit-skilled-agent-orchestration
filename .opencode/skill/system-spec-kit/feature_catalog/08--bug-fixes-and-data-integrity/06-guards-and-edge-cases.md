@@ -1,6 +1,17 @@
 # Guards and edge cases
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Guards and edge cases.
+
+## 2. CURRENT REALITY
 
 Two guard/edge-case issues were fixed:
 
@@ -8,7 +19,7 @@ Two guard/edge-case issues were fixed:
 
 **E2 — Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed; the function returns `null` on resolution failure.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -24,7 +35,7 @@ Two guard/edge-case issues were fixed:
 | `mcp_server/tests/temporal-contiguity.vitest.ts` | **E1**: T502 coverage validates temporal-contiguity boost behavior on adjacent/time-windowed results. |
 | `mcp_server/tests/extraction-adapter.vitest.ts` | **E2**: T035a/T035b/T035c verifies unresolved memory IDs skip insert rather than linking the wrong memory. |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Guards and edge cases

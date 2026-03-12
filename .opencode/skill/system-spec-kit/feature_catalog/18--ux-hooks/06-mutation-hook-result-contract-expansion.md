@@ -1,10 +1,21 @@
 # Mutation hook result contract expansion
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Mutation hook result contract expansion.
+
+## 2. CURRENT REALITY
 
 The shared mutation hook result contract was expanded to include `latencyMs` and cache-clear booleans. Callers now receive explicit timing and cache invalidation signals from post-mutation hook execution.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -85,7 +96,7 @@ The shared mutation hook result contract was expanded to include `latencyMs` and
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Mutation hook result contract expansion

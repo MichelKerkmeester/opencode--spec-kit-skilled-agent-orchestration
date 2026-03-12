@@ -1,10 +1,21 @@
 # Dedicated UX hook modules
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Dedicated UX hook modules.
+
+## 2. CURRENT REALITY
 
 Phase 014 introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -87,7 +98,7 @@ Phase 014 introduced dedicated UX hook modules for mutation feedback and respons
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Dedicated UX hook modules

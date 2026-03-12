@@ -1,6 +1,17 @@
 # Trigger phrase matching (memory_match_triggers)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Trigger phrase matching (memory_match_triggers).
+
+## 2. CURRENT REALITY
 
 When you need speed over depth, trigger matching delivers. Rather than generating embeddings and running multi-channel search, it performs direct string matching of your prompt against stored trigger phrases. The performance target is under 100ms. Think of it as the "fast path" that sacrifices recall for latency.
 
@@ -10,7 +21,7 @@ Tiered content injection is the most visible effect. HOT memories return their f
 
 The cognitive path fetches 2x the requested limit from the trigger matcher to give the cognitive pipeline headroom for filtering. If you request 3 results, 6 candidates enter the cognitive pipeline and the top 3 survivors are returned.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -150,7 +161,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Retrieval
 - Source feature title: Trigger phrase matching (memory_match_triggers)

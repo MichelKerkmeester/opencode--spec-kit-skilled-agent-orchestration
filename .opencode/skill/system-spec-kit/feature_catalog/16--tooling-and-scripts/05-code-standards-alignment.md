@@ -1,10 +1,23 @@
 # Code standards alignment
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE EVIDENCE](#3--source-evidence)
+- [4. VERIFICATION TRACEABILITY](#4--verification-traceability)
+- [5. SOURCE FILES](#5--source-files)
+- [6. SOURCE METADATA](#6--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Code standards alignment.
+
+## 2. CURRENT REALITY
 
 All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections, and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
 
-## Source Evidence
+## 3. SOURCE EVIDENCE
 
 ### 1) AI-intent comments (AI-WHY / AI-TRACE / AI-GUARD)
 
@@ -59,7 +72,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - `rg "\\bspecFolderLocks\\b" mcp_server` returns no matches.
   - `rg "SPEC_FOLDER_LOCKS" mcp_server/handlers/memory-save.ts` returns active uses at lines `89, 93, 96, 100, 101`.
 
-## Verification Traceability
+## 4. VERIFICATION TRACEABILITY
 
 ### Lint/check commands
 
@@ -89,11 +102,11 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - `mcp_server/package.json` (`lint`, `check`)
   - `package.json` at `system-spec-kit` root (`typecheck`)
 
-## Source Files
+## 5. SOURCE FILES
 
 No dedicated source files — this is a cross-cutting meta-improvement applied across multiple modules.
 
-## Source Metadata
+## 6. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: Code standards alignment

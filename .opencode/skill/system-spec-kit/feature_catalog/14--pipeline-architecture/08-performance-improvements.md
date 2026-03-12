@@ -1,6 +1,17 @@
 # Performance improvements
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Performance improvements.
+
+## 2. CURRENT REALITY
 
 Thirteen performance improvements were applied:
 
@@ -10,7 +21,7 @@ Thirteen performance improvements were applied:
 
 **SQL-level:** Causal edge upsert reduced from 3 DB round-trips to 2 by eliminating the post-upsert SELECT via `lastInsertRowid`. Spec folder hierarchy tree cached with a 60-second WeakMap TTL keyed by database instance.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -34,7 +45,7 @@ Thirteen performance improvements were applied:
 | `mcp_server/tests/causal-edges.vitest.ts` | Causal edge storage integration paths |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Hierarchy cache/TTL behavior and traversal checks |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Performance improvements

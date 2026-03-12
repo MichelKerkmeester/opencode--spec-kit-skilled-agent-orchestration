@@ -1,6 +1,17 @@
 # Spec folder description discovery
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Spec folder description discovery.
+
+## 2. CURRENT REALITY
 
 Each spec folder now has its own `description.json` containing identity metadata
 (`specId`, `folderSlug`, `parentChain`) and memory tracking fields
@@ -50,7 +61,7 @@ suffixes, `ensureUniqueMemoryFilename()` now falls back to a
 clamping before incrementing, keeping invalid numeric values from escaping into
 the saved `memoryNameHistory` ring buffer state.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -73,7 +84,7 @@ the saved `memoryNameHistory` ring buffer state.
 | `mcp_server/tests/workflow-memory-tracking.vitest.ts` | Load-mutate-save cycle for `memorySequence` increment and `memoryNameHistory` ring buffer |
 | `mcp_server/tests/slug-utils-boundary.vitest.ts` | Numeric coercion and boundary cases for `Number(existing.memorySequence) \|\| 0` |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Spec folder description discovery

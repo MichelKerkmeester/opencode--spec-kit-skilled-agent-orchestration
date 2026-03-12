@@ -1,6 +1,17 @@
 # Progressive validation for spec documents
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Progressive validation for spec documents.
+
+## 2. CURRENT REALITY
 
 The `progressive-validate.sh` wrapper in `scripts/spec/` runs a 4-level pipeline on top of `validate.sh`:
 
@@ -13,7 +24,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -43,7 +54,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 | `CHK-PI-B2-010` | Backward-compatibility of direct `validate.sh` callers |
 | `Pipeline Level Progression` | Level sequencing checks for level 2/3 behavior and level 4 defaulting |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Tooling and scripts
 - Source feature title: Progressive validation for spec documents

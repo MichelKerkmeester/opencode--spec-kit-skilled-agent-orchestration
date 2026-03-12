@@ -1,6 +1,17 @@
 # Graph momentum scoring
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Graph momentum scoring.
+
+## 2. CURRENT REALITY
 
 Graph connectivity changes over time, and that trajectory carries signal. A memory gaining three new edges this week is more actively relevant than one whose connections have been static for months.
 
@@ -10,7 +21,7 @@ The momentum signal applies as an additive bonus in Stage 2 of the pipeline, cap
 
 When no snapshot exists for the 7-day lookback (common during initial rollout), the momentum defaults to zero rather than penalizing the memory. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2b).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -25,7 +36,7 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 | `mcp_server/tests/feature-eval-graph-signals.vitest.ts` | Graph signal evaluation |
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Graph signal activation
 - Source feature title: Graph momentum scoring

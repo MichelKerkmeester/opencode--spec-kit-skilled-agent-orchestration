@@ -1,6 +1,17 @@
 # Memory browser (memory_list)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Memory browser (memory_list).
+
+## 2. CURRENT REALITY
 
 `memory_list` is the low-friction browse endpoint for indexed memories. It returns paginated parent memories by default, with `includeChunks: true` opting into child chunk rows. The payload includes `total`, `count`, `limit`, `offset`, the resolved `sortBy`, and the current page of results.
 
@@ -8,7 +19,7 @@ The handler accepts three sort modes: `created_at`, `updated_at`, and `importanc
 
 Validation and runtime failures return MCP error envelopes instead of raw throws. Direct handler calls with invalid `specFolder`, invalid `includeChunks`, or non-finite `limit`/`offset` values return `E_INVALID_INPUT` with a `requestId` in `data.details`. Database initialization/query failures also return MCP error envelopes.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -28,7 +39,7 @@ Validation and runtime failures return MCP error envelopes instead of raw throws
 | `mcp_server/tests/handler-memory-crud.vitest.ts` | Public export and direct input-validation coverage |
 | `mcp_server/tests/memory-crud-extended.vitest.ts` | Happy-path list structure, chunk inclusion, and trigger count parsing |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Discovery
 - Source feature title: Memory browser (memory_list)

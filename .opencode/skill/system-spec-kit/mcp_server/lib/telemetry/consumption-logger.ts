@@ -338,14 +338,22 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
     // 3. Low-selection queries (result_count > 0 but ≤ 2 — proxy for low relevance)
     try {
       const lowSelectRows = db.prepare(`
-        SELECT query_text, result_count, COUNT(*) as cnt
+        SELECT query_text,
+               MIN(result_count) as min_result_count,
+               MAX(result_count) as max_result_count,
+               COUNT(*) as cnt
         FROM consumption_log
         WHERE result_count > 0 AND result_count <= 2
           AND query_text IS NOT NULL
         GROUP BY query_text
         ORDER BY cnt DESC
         LIMIT ?
-      `).all(exampleLimit) as Array<{ query_text: string; result_count: number; cnt: number }>;
+      `).all(exampleLimit) as Array<{
+        query_text: string;
+        min_result_count: number;
+        max_result_count: number;
+        cnt: number;
+      }>;
 
       const totalLowRow = db.prepare(`SELECT COUNT(*) as cnt FROM consumption_log WHERE result_count > 0 AND result_count <= 2`).get() as { cnt: number };
 
@@ -353,7 +361,12 @@ function getConsumptionPatterns(db: Database.Database, options: ConsumptionPatte
         category: 'low-selection',
         description: 'Queries returning ≤2 results — potential relevance issues or sparse index coverage',
         count: totalLowRow?.cnt ?? 0,
-        examples: lowSelectRows.map(r => `"${r.query_text}" (${r.result_count} results)`),
+        examples: lowSelectRows.map(r => {
+          if (r.min_result_count === r.max_result_count) {
+            return `"${r.query_text}" (${r.min_result_count} results)`;
+          }
+          return `"${r.query_text}" (${r.min_result_count}-${r.max_result_count} results)`;
+        }),
       });
     } catch (err) {
       console.warn(

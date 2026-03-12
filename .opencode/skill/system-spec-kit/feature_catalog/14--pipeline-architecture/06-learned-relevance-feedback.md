@@ -1,6 +1,17 @@
 # Learned relevance feedback
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Learned relevance feedback.
+
+## 2. CURRENT REALITY
 
 The system learns from user result selections. When a user marks a search result as useful via `memory_validate` with a `queryId`, query terms are extracted and stored in a separate `learned_triggers` column. This column is explicitly isolated from the FTS5 index to prevent contamination, which would be irreversible without a full re-index.
 
@@ -12,7 +23,7 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -39,7 +50,7 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Pipeline architecture
 - Source feature title: Learned relevance feedback

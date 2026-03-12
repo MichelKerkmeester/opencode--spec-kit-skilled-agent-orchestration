@@ -1,6 +1,17 @@
 # Pre-flight token budget validation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Pre-flight token budget validation.
+
+## 2. CURRENT REALITY
 
 Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a retrieval-time truncation feature. Before embedding generation, the runtime estimates token count from content length using `Math.ceil(text.length / charsPerToken)`, where `charsPerToken` defaults to `4` and can be overridden with `MCP_CHARS_PER_TOKEN`.
 
@@ -8,7 +19,7 @@ Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a
 
 This validation runs in `memory_save` pre-flight before any embedding generation or database writes. It protects ingestion cost and save-time limits; it does not control search-result truncation.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,7 +33,7 @@ This validation runs in `memory_save` pre-flight before any embedding generation
 |------|-------|
 | `mcp_server/tests/preflight.vitest.ts` | Token-budget validation and pre-flight error/warning behavior |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Pre-flight token budget validation

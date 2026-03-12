@@ -1,12 +1,23 @@
 # Checkpoint deletion (checkpoint_delete)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Checkpoint deletion (checkpoint_delete).
+
+## 2. CURRENT REALITY
 
 Permanently removes a named checkpoint from the `checkpoints` table. Returns a boolean indicating whether the checkpoint was found and deleted. No confirmation prompt, but the caller must supply a `confirmName` parameter that matches the checkpoint name as a safety gate against accidental deletion. If you delete the wrong checkpoint, it is gone. Use `checkpoint_list` first to verify the name.
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -122,7 +133,7 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Lifecycle
 - Source feature title: Checkpoint deletion (checkpoint_delete)

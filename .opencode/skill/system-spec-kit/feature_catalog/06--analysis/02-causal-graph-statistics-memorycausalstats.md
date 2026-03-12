@@ -1,6 +1,17 @@
 # Causal graph statistics (memory_causal_stats)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Causal graph statistics (memory_causal_stats).
+
+## 2. CURRENT REALITY
 
 Returns the health metrics of the causal graph in a single call. Total edge count, breakdown by relationship type (how many caused edges, how many supports edges and so on), average edge strength across all edges, unique source and target memory counts and the link coverage percentage.
 
@@ -8,7 +19,7 @@ Link coverage is the most important metric: what percentage of memories particip
 
 Orphaned edges (edges referencing source or target memories that no longer exist in `memory_index`) are detected and counted. When orphans exist, the health status changes from "healthy" to "has_orphans." You can use `memory_drift_why` to find the edge IDs and `memory_causal_unlink` to clean them up.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -117,7 +128,7 @@ Orphaned edges (edges referencing source or target memories that no longer exist
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Causal graph statistics (memory_causal_stats)

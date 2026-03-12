@@ -1,12 +1,23 @@
 # Startup runtime compatibility guards
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Startup runtime compatibility guards.
+
+## 2. CURRENT REALITY
 
 The startup checks module (`startup-checks.ts`) runs non-critical compatibility validation when the MCP server initializes. The primary guard is Node.js version mismatch detection: the server writes a `.node-version-marker` file containing the Node version, module ABI version, platform, and architecture at build time. On startup, it compares the current runtime's `process.versions.modules` against the marker. A mismatch indicates that native modules (like `better-sqlite3` or `sqlite-vec`) were compiled for a different Node version and may crash at runtime, prompting a clear warning before the crash occurs.
 
 These guards are extracted from the main `context-server.ts` (T303) to keep the startup path modular. Additional startup checks can be added to this module without cluttering the server initialization logic. All checks are non-blocking — they emit warnings but do not prevent server startup.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -23,7 +34,7 @@ These guards are extracted from the main `context-server.ts` (T303) to keep the 
 | `mcp_server/tests/context-server.vitest.ts` | Context server tests |
 | `mcp_server/tests/modularization.vitest.ts` | Modularization tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Maintenance
 - Source feature title: Startup runtime compatibility guards

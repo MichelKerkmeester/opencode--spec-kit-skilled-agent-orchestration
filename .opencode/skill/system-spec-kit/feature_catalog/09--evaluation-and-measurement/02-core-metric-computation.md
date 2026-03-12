@@ -1,6 +1,18 @@
 # Core metric computation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Core metric computation.
+
+## 2. CURRENT REALITY
 
 Eleven metrics run against logged retrieval data. The four primary ones are MRR@5 (how high does the right answer rank?), NDCG@10 (are results ordered well?), Recall@20 (do we find everything relevant?) and Hit Rate@1 (is the top result correct?).
 
@@ -8,7 +20,7 @@ Seven diagnostic metrics add depth: inversion rate counts pairwise ranking mista
 
 This battery of metrics means you can diagnose where the pipeline fails, not just whether it fails.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,12 +34,12 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 |------|-------|
 | `mcp_server/tests/eval-metrics.vitest.ts` | Eval metrics computation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Evaluation and measurement
 - Source feature title: Core metric computation
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-006

@@ -1,6 +1,17 @@
 # Embedding cache
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Embedding cache.
+
+## 2. CURRENT REALITY
 
 Embedding API calls are the most expensive operation in the indexing pipeline. The embedding cache stores generated embeddings in a SQLite table keyed by SHA-256 content hash and model ID. On re-index, the system checks the cache first.
 
@@ -8,7 +19,7 @@ A hit returns the stored embedding in microseconds instead of making a network r
 
 The cache has no feature flag because cache misses fall through to normal embedding generation with zero behavioral change.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,7 +33,7 @@ The cache has no feature flag because cache misses fall through to normal embedd
 |------|-------|
 | `mcp_server/tests/embedding-cache.vitest.ts` | Embedding cache tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Embedding cache

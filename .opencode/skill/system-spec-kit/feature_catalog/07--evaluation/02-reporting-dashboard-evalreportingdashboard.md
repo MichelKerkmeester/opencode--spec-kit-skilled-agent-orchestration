@@ -1,6 +1,17 @@
 # Reporting dashboard (eval_reporting_dashboard)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Reporting dashboard (eval_reporting_dashboard).
+
+## 2. CURRENT REALITY
 
 Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
 
@@ -10,7 +21,7 @@ This is a read-only module. It queries the eval database and produces reports. N
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -171,7 +182,7 @@ This is a read-only module. It queries the eval database and produces reports. N
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Evaluation
 - Source feature title: Reporting dashboard (eval_reporting_dashboard)

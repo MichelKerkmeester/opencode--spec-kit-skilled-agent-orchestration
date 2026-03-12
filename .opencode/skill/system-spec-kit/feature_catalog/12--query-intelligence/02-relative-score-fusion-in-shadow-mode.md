@@ -1,8 +1,17 @@
 # Relative score fusion in shadow mode
 
-> **Status: DORMANT / Shadow-only** — RSF scores are computed for evaluation metadata but do not affect live ranking. The `isRsfEnabled()` flag and the active RSF branch in hybrid-search.ts were removed in Sprint 8.
+## TABLE OF CONTENTS
 
-## Current Reality
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Relative score fusion in shadow mode.
+
+## 2. CURRENT REALITY
 
 RRF has been the fusion method since day one, but is it the best option? Relative Score Fusion runs alongside RRF in shadow mode to find out.
 
@@ -12,7 +21,7 @@ Kendall tau correlation between RSF and RRF rankings is computed at sprint exit 
 
 **Sprint 8 update:** The `isRsfEnabled()` feature flag function was removed as dead code. The dead RSF branch in `hybrid-search.ts` (which was gated behind this flag returning `false`) was also removed. The RSF fusion module (`rsf-fusion.ts`) retains its core fusion logic for potential future activation, but the flag guard function is gone.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -30,7 +39,7 @@ Kendall tau correlation between RSF and RRF rankings is computed at sprint exit 
 | `mcp_server/tests/rsf-fusion.vitest.ts` | RSF fusion scoring |
 | `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Query intelligence
 - Source feature title: Relative score fusion in shadow mode

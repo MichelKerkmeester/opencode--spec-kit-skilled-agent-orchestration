@@ -1,6 +1,17 @@
 # Cross-document entity linking
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Cross-document entity linking.
+
+## 2. CURRENT REALITY
 
 Memories in different spec folders often discuss the same concepts without any explicit connection between them. A decision record in one folder mentions "embedding cache" and an implementation summary in another folder implements it, but the retrieval system has no way to connect them unless a causal edge exists.
 
@@ -16,7 +27,7 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -35,7 +46,7 @@ A density guard prevents runaway edge creation: current global edge density is c
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Retrieval enhancements
 - Source feature title: Cross-document entity linking

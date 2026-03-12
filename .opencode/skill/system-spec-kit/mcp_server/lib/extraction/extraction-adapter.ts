@@ -11,11 +11,11 @@ import { applyRedactionGate } from './redaction-gate';
 type SummarizerId = 'firstLast500' | 'matchCountSummary' | 'stdoutSummary';
 
 interface ExtractionRule {
-  id: string;
-  toolPattern: RegExp;
-  contentPattern: RegExp;
-  attention: number;
-  summarizer: SummarizerId;
+  readonly id: string;
+  readonly toolPattern: RegExp;
+  readonly contentPattern: RegExp;
+  readonly attention: number;
+  readonly summarizer: SummarizerId;
 }
 
 interface RuleMatch {
@@ -110,6 +110,7 @@ function stringifyToolResult(result: unknown): string {
   try {
     return JSON.stringify(result, null, 2);
   } catch {
+    // AI-WHY: Intentional no-op — error deliberately discarded for fail-safe fallback
     return String(result);
   }
 }
@@ -133,12 +134,14 @@ function summarizeStdout(content: string): string {
   return `${trimmed.slice(0, 600)}...`;
 }
 
+/** Applies the configured summarizer to produce a summary from the given text content. */
 function applySummarizer(summarizer: SummarizerId, content: string): string {
   if (summarizer === 'firstLast500') return summarizeFirstLast500(content);
   if (summarizer === 'matchCountSummary') return summarizeMatchCount(content);
   return summarizeStdout(content);
 }
 
+/** Tests input text against extraction rules and returns the first matching rule, or null. */
 function matchRule(toolName: string, rawText: string): RuleMatch | null {
   for (const rule of RULES) {
     if (!rule.toolPattern.test(toolName)) {
@@ -175,7 +178,7 @@ function resolveSessionId(result: unknown): string {
       }
     }
   } catch {
-    // Ignore parsing errors and fall back to default.
+    // AI-WHY: Intentional no-op — error deliberately discarded for fail-safe fallback
   }
 
   return 'auto-extraction';
@@ -278,16 +281,19 @@ async function handleAfterTool(toolName: string, callId: string, result: unknown
   }
 }
 
+/** Initializes the extraction adapter with a database connection and optional tool callback. */
 function initExtractionAdapter(database: Database.Database, registerCallback: RegisterAfterToolCallback): void {
   db = database;
   validateExtractionRules(RULES);
   registerCallback(handleAfterTool);
 }
 
+/** Returns current extraction metrics including match counts and processing stats. */
 function getExtractionMetrics(): ExtractionMetrics {
   return { ...metrics };
 }
 
+/** Resets all extraction metrics counters to zero. */
 function resetExtractionMetrics(): void {
   metrics.matched = 0;
   metrics.inserted = 0;

@@ -1,6 +1,17 @@
 # Causal chain tracing (memory_drift_why)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Causal chain tracing (memory_drift_why).
+
+## 2. CURRENT REALITY
 
 "Why was this decision made?" This tool answers that question by tracing the causal relationship chain for a given memory through depth-limited graph traversal.
 
@@ -12,7 +23,7 @@ You can filter to specific relationship types after traversal. Pass `relations: 
 
 When contradictions are found, the response includes warning hints. Two memories that contradict each other in the same causal chain is a signal that something needs resolution.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -121,7 +132,7 @@ When contradictions are found, the response includes warning hints. Two memories
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Causal chain tracing (memory_drift_why)

@@ -1,6 +1,17 @@
 # Ablation studies (eval_run_ablation)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Ablation studies (eval_run_ablation).
+
+## 2. CURRENT REALITY
 
 This tool runs controlled ablation studies across the retrieval pipeline's search channels. You disable one channel at a time (vector, BM25, FTS5, graph or trigger) and measure the Recall@20 delta against a full-pipeline baseline. The answer to "what happens if we turn off the graph channel?" becomes a measured number rather than speculation.
 
@@ -8,7 +19,7 @@ The framework uses dependency injection for the search function, making it testa
 
 Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool requires `SPECKIT_ABLATION=true` to activate. When the flag is off, the MCP handler returns an explicit disabled-flag error and does not execute an ablation run.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -169,7 +180,7 @@ Results are stored in `eval_metric_snapshots` with negative timestamp IDs to dis
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Evaluation
 - Source feature title: Ablation studies (eval_run_ablation)

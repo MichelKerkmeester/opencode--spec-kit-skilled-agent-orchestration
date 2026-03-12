@@ -1,6 +1,17 @@
 # 3. MCP Configuration
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for 3. MCP Configuration.
+
+## 2. CURRENT REALITY
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
@@ -12,11 +23,11 @@
 | `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
 | `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
 
-## Source Files
+## 3. SOURCE FILES
 
 Source file references are included in the flag table above.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: 3. MCP Configuration

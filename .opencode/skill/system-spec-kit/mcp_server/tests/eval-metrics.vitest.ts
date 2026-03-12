@@ -528,6 +528,17 @@ describe('Edge Cases', () => {
       expect(Number.isFinite(value)).toBe(true);
     }
   });
+
+  it('T006-F05: Non-positive or non-finite k yields safe zero outputs', () => {
+    const results = [makeResult(1, 1), makeResult(2, 2)];
+    const gt = [makeGT(1, 2), makeGT(2, 1)];
+
+    expect(computeMRR(results, gt, 0)).toBe(0);
+    expect(computeNDCG(results, gt, -3)).toBe(0);
+    expect(computeRecall(results, gt, 0)).toBe(0);
+    expect(computeHitRate(results, gt, -1)).toBe(0);
+    expect(computeMAP(results, gt, Number.NaN)).toBe(0);
+  });
 });
 
 /* ---------------------------------------------------------------

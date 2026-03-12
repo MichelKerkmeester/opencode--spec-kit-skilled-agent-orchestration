@@ -378,8 +378,6 @@ function fuseResultsCrossVariant(
 ): FusionResult[] {
   // Use ?? so callers can explicitly pass 0 convergence bonus without falling back to default
   const convergenceBonusPerVariant = options.convergenceBonus ?? CONVERGENCE_BONUS;
-  const k = resolveRrfK(options.k);
-
   if (variantLists.length === 0) return [];
 
   // Step 1: Fuse each variant's lists independently
@@ -415,8 +413,8 @@ function fuseResultsCrossVariant(
             existing.sources.push(src);
           }
         }
-        for (const [key, val] of Object.entries(result.sourceScores)) {
-          existing.sourceScores[key] = (existing.sourceScores[key] || 0) + val;
+        for (const [scoreKey, val] of Object.entries(result.sourceScores)) {
+          existing.sourceScores[scoreKey] = (existing.sourceScores[scoreKey] || 0) + val;
         }
       } else {
         mergedMap.set(key, { ...result, rrfScore: result.rrfScore, convergenceBonus: 0 });

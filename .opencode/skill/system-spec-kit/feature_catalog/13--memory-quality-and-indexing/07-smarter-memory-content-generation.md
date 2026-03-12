@@ -1,6 +1,17 @@
 # Smarter memory content generation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Smarter memory content generation.
+
+## 2. CURRENT REALITY
 
 Raw markdown including code fences, nested lists and YAML frontmatter was being embedded as-is, diluting embedding quality with formatting noise. A content normalizer now strips this noise before embedding generation and BM25 rebuild/index paths that call `normalizeContentForBM25()`.
 
@@ -8,7 +19,7 @@ Seven primitives run in sequence: strip YAML frontmatter, strip anchor markers, 
 
 The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -36,7 +47,7 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 | `mcp_server/tests/unit-path-security.vitest.ts` | Path security unit tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Smarter memory content generation

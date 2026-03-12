@@ -1,10 +1,21 @@
 # Context-server success-path hint append
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Context-server success-path hint append.
+
+## 2. CURRENT REALITY
 
 The context-server success path now appends UX hints through `appendAutoSurfaceHints` while preserving the existing `autoSurfacedContext` payload. This adds guidance without changing the established context auto-surface contract. The finalized implementation runs that append step before token-budget enforcement and recomputes final token metadata from the completed envelope.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -381,7 +392,7 @@ The context-server success path now appends UX hints through `appendAutoSurfaceH
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Context-server success-path hint append

@@ -40,7 +40,7 @@ The telemetry module provides structured observability for the retrieval pipelin
 |----------|-------|---------|
 | Modules | 4 | `retrieval-telemetry.ts`, `scoring-observability.ts`, `trace-schema.ts`, `consumption-logger.ts` |
 | Metric Groups | 4 | LatencyMetrics, ModeMetrics, FallbackMetrics, QualityMetrics |
-| Feature Flags | 3 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE` |
+| Feature Flags | 4 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE`, `SPECKIT_CONSUMPTION_LOG` (deprecated, inert) |
 
 ### Key Features
 

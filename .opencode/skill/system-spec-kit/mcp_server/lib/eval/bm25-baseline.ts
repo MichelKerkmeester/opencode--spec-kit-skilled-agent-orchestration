@@ -219,7 +219,7 @@ export function evaluateContingencyRelative(
   bm25MRR: number,
   hybridMRR: number,
 ): ContingencyDecision {
-  if (hybridMRR <= 0) {
+  if (!Number.isFinite(bm25MRR) || !Number.isFinite(hybridMRR) || hybridMRR <= 0) {
     return {
       bm25MRR,
       hybridMRR,
@@ -228,7 +228,7 @@ export function evaluateContingencyRelative(
       threshold: '<0.5',
       action: 'PROCEED',
       interpretation:
-        'Hybrid MRR@5 is zero or negative — cannot compute meaningful ratio. ' +
+        'Hybrid/BM25 MRR@5 is non-finite, zero, or negative — cannot compute meaningful ratio. ' +
         'Defaulting to PROCEED until hybrid baseline is established.',
     };
   }
@@ -325,6 +325,7 @@ export function computeBootstrapCI(
   iterations: number = 10000,
 ): BootstrapCIResult {
   const safeIterations = Number.isFinite(iterations) ? Math.floor(iterations) : 0;
+  const boundedIterations = Math.min(safeIterations, 100_000);
   // Filter out NaN/Infinity values to prevent poisoning bootstrap means
   const cleanMRR = perQueryMRR.filter(v => Number.isFinite(v));
   const n = cleanMRR.length;
@@ -334,7 +335,7 @@ export function computeBootstrapCI(
       ciLower: 0,
       ciUpper: 0,
       ciWidth: 0,
-      iterations: Math.max(0, safeIterations),
+      iterations: Math.max(0, boundedIterations),
       sampleSize: 0,
       isSignificant: false,
       testedBoundary: 0,
@@ -344,7 +345,7 @@ export function computeBootstrapCI(
   // Point estimate
   const pointEstimate = cleanMRR.reduce((s, v) => s + v, 0) / n;
 
-  if (safeIterations <= 0) {
+  if (boundedIterations <= 0) {
     return {
       pointEstimate,
       ciLower: pointEstimate,
@@ -359,7 +360,7 @@ export function computeBootstrapCI(
 
   // Bootstrap resampling
   const bootstrapMeans: number[] = [];
-  for (let i = 0; i < safeIterations; i++) {
+  for (let i = 0; i < boundedIterations; i++) {
     let sum = 0;
     for (let j = 0; j < n; j++) {
       sum += cleanMRR[Math.floor(Math.random() * n)];
@@ -371,8 +372,8 @@ export function computeBootstrapCI(
   bootstrapMeans.sort((a, b) => a - b);
 
   // 95% CI = 2.5th and 97.5th percentiles
-  const lowerIdx = Math.ceil(safeIterations * 0.025) - 1;
-  const upperIdx = Math.ceil(safeIterations * 0.975) - 1;
+  const lowerIdx = Math.ceil(boundedIterations * 0.025) - 1;
+  const upperIdx = Math.ceil(boundedIterations * 0.975) - 1;
   const ciLower = bootstrapMeans[lowerIdx];
   const ciUpper = bootstrapMeans[upperIdx];
 
@@ -399,7 +400,7 @@ export function computeBootstrapCI(
     ciLower,
     ciUpper,
     ciWidth: ciUpper - ciLower,
-    iterations: safeIterations,
+    iterations: boundedIterations,
     sampleSize: n,
     isSignificant,
     testedBoundary,

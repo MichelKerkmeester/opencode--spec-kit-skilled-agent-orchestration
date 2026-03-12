@@ -1,6 +1,17 @@
 # Auto entity extraction
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Auto entity extraction.
+
+## 2. CURRENT REALITY
 
 Memory content contains implicit entities — technology names, architectural concepts, project identifiers — that are valuable for cross-document linking but were never explicitly captured. Manual entity tagging does not scale, and the system had zero entities in its catalog.
 
@@ -16,7 +27,7 @@ Entities are deliberately stored in a separate table rather than as causal edges
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -40,7 +51,7 @@ Entities are deliberately stored in a separate table rather than as causal edges
 | `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay |
 | `mcp_server/tests/working-memory.vitest.ts` | Working memory tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Auto entity extraction

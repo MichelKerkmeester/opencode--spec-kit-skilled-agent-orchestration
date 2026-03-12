@@ -1,6 +1,18 @@
 # Test quality improvements
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Test quality improvements.
+
+## 2. CURRENT REALITY
 
 Four test quality issues were addressed:
 
@@ -16,7 +28,7 @@ Four test quality issues were addressed:
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -32,12 +44,12 @@ Four test quality issues were addressed:
 | `mcp_server/tests/entity-linker.vitest.ts` | Added `db.close()` in `afterEach` to prevent handle leaks |
 | `mcp_server/tests/integration-search-pipeline.vitest.ts` | Reworked flag tests to validate behavior deltas |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Test quality improvements
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-072

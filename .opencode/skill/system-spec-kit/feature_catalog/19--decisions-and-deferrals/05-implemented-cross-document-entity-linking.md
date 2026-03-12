@@ -1,12 +1,23 @@
 # Implemented: cross-document entity linking
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Implemented: cross-document entity linking.
+
+## 2. CURRENT REALITY
 
 Originally skipped at Sprint 7 because zero entities existed in the system. R10 had not been built, so there was no entity catalog to link against.
 
 **Now implemented.** With R10 providing extracted entities, S5 scans the `entity_catalog` for entities appearing in two or more spec folders and creates `supports` causal edges with `strength=0.7` and `created_by='entity_linker'`. A density guard prevents runaway edge creation by running both a current-global-density precheck (`total_edges / total_memories`) and a projected post-insert global density check against `SPECKIT_ENTITY_LINKING_MAX_DENSITY` (default `1.0`, invalid or negative values fall back to `1.0`). Runs behind `SPECKIT_ENTITY_LINKING` (default ON) and depends on a populated `entity_catalog` (typically produced by R10 auto-entities). See [Cross-document entity linking](#cross-document-entity-linking) for the full description.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -25,7 +36,7 @@ Originally skipped at Sprint 7 because zero entities existed in the system. R10 
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Decisions and deferrals
 - Source feature title: Implemented: cross-document entity linking

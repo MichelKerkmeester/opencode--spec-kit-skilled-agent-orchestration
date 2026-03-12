@@ -1,6 +1,17 @@
 # Checkpoint creation (checkpoint_create)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Checkpoint creation (checkpoint_create).
+
+## 2. CURRENT REALITY
 
 Named snapshots capture the current memory state by serializing the `memory_index` table, `working_memory` table and vector embeddings from `vec_memories` into a gzip-compressed JSON blob stored in the `checkpoints` table. You can scope a snapshot to a specific spec folder if you only care about preserving one area of the system.
 
@@ -8,7 +19,7 @@ A maximum of 10 checkpoints are retained. When you create the 11th, the oldest i
 
 Checkpoints are the safety net for destructive operations. `memory_bulk_delete` creates one by default before bulk deletion, unless explicitly skipped for lower-risk tiers. `checkpoint_restore` brings it all back. The cycle works because checkpoints include vector embeddings alongside metadata, so restored memories are immediately searchable without re-running embedding generation.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -125,7 +136,7 @@ Checkpoints are the safety net for destructive operations. `memory_bulk_delete` 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Lifecycle
 - Source feature title: Checkpoint creation (checkpoint_create)

@@ -1,6 +1,17 @@
 # 5. Embedding and API
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for 5. Embedding and API.
+
+## 2. CURRENT REALITY
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
@@ -11,11 +22,11 @@
 | `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient free memory (4GB default, 512MB with custom `SPECKIT_RERANKER_MODEL`). Sequential per-candidate inference; expect 200-400ms for top-20 on Apple Silicon (CHK-113). Falls back silently to algorithmic RRF scoring on any precondition failure. |
 | `VOYAGE_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the Voyage AI embeddings and reranker provider. In `'auto'` mode, Voyage is preferred over OpenAI when this key is present. |
 
-## Source Files
+## 3. SOURCE FILES
 
 Source file references are included in the flag table above.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: 5. Embedding and API

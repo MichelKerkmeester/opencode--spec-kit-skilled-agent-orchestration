@@ -7,7 +7,37 @@ description: "Unified reference combining the complete system feature inventory 
 
 This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today  -- every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why  -- every improvement delivered across the refinement program, with ticket IDs and implementation details.
 
-## Contents
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CONTENTS](#2--contents)
+- [3. RETRIEVAL](#3--retrieval)
+- [4. MUTATION](#4--mutation)
+- [5. DISCOVERY](#5--discovery)
+- [6. MAINTENANCE](#6--maintenance)
+- [7. LIFECYCLE](#7--lifecycle)
+- [8. ANALYSIS](#8--analysis)
+- [9. EVALUATION](#9--evaluation)
+- [10. BUG FIXES AND DATA INTEGRITY](#10--bug-fixes-and-data-integrity)
+- [11. EVALUATION AND MEASUREMENT](#11--evaluation-and-measurement)
+- [12. GRAPH SIGNAL ACTIVATION](#12--graph-signal-activation)
+- [13. SCORING AND CALIBRATION](#13--scoring-and-calibration)
+- [14. QUERY INTELLIGENCE](#14--query-intelligence)
+- [15. MEMORY QUALITY AND INDEXING](#15--memory-quality-and-indexing)
+- [16. PIPELINE ARCHITECTURE](#16--pipeline-architecture)
+- [17. RETRIEVAL ENHANCEMENTS](#17--retrieval-enhancements)
+- [18. TOOLING AND SCRIPTS](#18--tooling-and-scripts)
+- [19. GOVERNANCE](#19--governance)
+- [20. UX HOOKS](#20--ux-hooks)
+- [21. DECISIONS AND DEFERRALS](#21--decisions-and-deferrals)
+- [22. PHASE SYSTEM](#22--phase-system)
+- [23. FEATURE FLAG REFERENCE](#23--feature-flag-reference)
+
+## 1. OVERVIEW
+
+This document indexes Spec Kit Memory feature documentation and links each feature to its detailed reference file.
+
+## 2. CONTENTS
 
 - [Retrieval](#retrieval)
   - [Unified context retrieval (memory_context)](#unified-context-retrieval-memory_context)
@@ -201,7 +231,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 
 ---
 
-## Retrieval
+## 3. RETRIEVAL
 
 ### Unified context retrieval (memory_context)
 
@@ -324,7 +354,7 @@ See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/0
 
 ---
 
-## Mutation
+## 4. MUTATION
 
 ### Memory indexing (memory_save)
 
@@ -446,7 +476,7 @@ See [`02--mutation/08-prediction-error-save-arbitration.md`](02--mutation/08-pre
 
 > **Playbook:** [NEW-110](../manual_testing_playbook/manual_testing_playbook.md)
 
-## Discovery
+## 5. DISCOVERY
 
 ### Memory browser (memory_list)
 
@@ -489,7 +519,7 @@ The `divergent_aliases` report mode narrows the focus. It finds files that exist
 
 See [`03--discovery/03-health-diagnostics-memoryhealth.md`](03--discovery/03-health-diagnostics-memoryhealth.md) for full implementation and test file listings.
 
-## Maintenance
+## 6. MAINTENANCE
 
 ### Workspace scanning and indexing (memory_index_scan)
 
@@ -512,7 +542,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 
 See [`04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) for full implementation and test file listings.
 
-## Lifecycle
+## 7. LIFECYCLE
 
 ### Checkpoint creation (checkpoint_create)
 
@@ -571,7 +601,7 @@ A dedicated background job queue in `lib/ops/job-queue.ts` manages ingestion tas
 
 See [`05--lifecycle/05-async-ingestion-job-lifecycle.md`](05--lifecycle/05-async-ingestion-job-lifecycle.md) for full implementation and test file listings.
 
-## Analysis
+## 8. ANALYSIS
 
 ### Causal edge creation (memory_causal_link)
 
@@ -670,7 +700,7 @@ Pass `onlyComplete: true` to restrict results to tasks where both preflight and 
 
 See [`06--analysis/07-learning-history-memorygetlearninghistory.md`](06--analysis/07-learning-history-memorygetlearninghistory.md) for full implementation and test file listings.
 
-## Evaluation
+## 9. EVALUATION
 
 ### Ablation studies (eval_run_ablation)
 
@@ -698,7 +728,7 @@ This is a read-only module. It queries the eval database and produces reports. N
 
 See [`07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`](07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) for full implementation and test file listings.
 
-## Bug fixes and data integrity
+## 10. BUG FIXES AND DATA INTEGRITY
 
 ### Graph channel ID fix
 
@@ -834,7 +864,7 @@ The `cleanupOldSessions()` method in the working memory manager compared `last_f
 
 See [`08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`](08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) for full implementation and test file listings.
 
-## Evaluation and measurement
+## 11. EVALUATION AND MEASUREMENT
 
 ### Evaluation database and schema
 
@@ -930,9 +960,9 @@ See [`09--evaluation-and-measurement/08-agent-consumption-instrumentation.md`](0
 
 Interference score distributions are logged at query time via 5% sampling to a `scoring_observations` table. Each observation captures memory ID, query ID, interference penalty, score before and after and the delta.
 
-The novelty boost (`calculateNoveltyBoost`) was removed from the hot scoring path during Sprint 8 remediation because it always returned 0 (the feature completed its evaluation). Telemetry now hardcodes `noveltyBoostApplied: false, noveltyBoostValue: 0` for backward-compatible log schemas.
+The novelty boost (`calculateNoveltyBoost`) was removed from the hot scoring path during Sprint 8 remediation because it always returned 0 (the feature completed its evaluation). Callers can still provide novelty fields as `false` and `0` for backward-compatible log schemas when the runtime feature is inactive.
 
-The 5% sample rate keeps storage costs low while still catching calibration drift. A try-catch wrapper guarantees that telemetry failures never affect scoring results. If the observation write fails, the search result is unchanged and the failure is swallowed silently.
+The 5% sample rate keeps storage costs low while still catching calibration drift. A try-catch wrapper guarantees that telemetry failures never affect scoring results. If the observation write fails, the search result is unchanged and the failure is logged as non-fatal.
 
 
 #### Source Files
@@ -982,7 +1012,9 @@ Four test quality issues were addressed:
 
 #### Source Files
 
-No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
+See [`09--evaluation-and-measurement/12-test-quality-improvements.md`](09--evaluation-and-measurement/12-test-quality-improvements.md) for full implementation and test file listings.
+
+This remains a cross-cutting meta-improvement applied across multiple modules.
 
 
 ---
@@ -1023,10 +1055,11 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 
 #### Source Files
 
-No dedicated source files  -- this is a cross-cutting meta-improvement applied across multiple modules.
+See [`09--evaluation-and-measurement/14-cross-ai-validation-fixes.md`](09--evaluation-and-measurement/14-cross-ai-validation-fixes.md) for full implementation and test file listings.
 
+This remains a cross-cutting meta-improvement applied across multiple modules.
 
-## Graph signal activation
+## 12. GRAPH SIGNAL ACTIVATION
 
 ### Typed-weighted degree channel
 
@@ -1145,7 +1178,7 @@ See [`10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10--g
 
 See [`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) for full implementation and test file listings.
 
-## Scoring and calibration
+## 13. SCORING AND CALIBRATION
 
 ### Score normalization
 
@@ -1328,7 +1361,7 @@ The system uses a quantized `bge-reranker-v2-m3.Q4_K_M.gguf` model (~350MB). Bef
 
 See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) for full implementation and test file listings.
 
-## Query intelligence
+## 14. QUERY INTELLIGENCE
 
 ### Query complexity router
 
@@ -1408,7 +1441,7 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 
 See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-query-expansion.md) for full implementation and test file listings.
 
-## Memory quality and indexing
+## 15. MEMORY QUALITY AND INDEXING
 
 ### Verify-fix-verify memory quality loop
 
@@ -1609,7 +1642,7 @@ See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13
 
 > **Playbook:** [M-005](../manual_testing_playbook/manual_testing_playbook.md)
 
-## Pipeline architecture
+## 16. PIPELINE ARCHITECTURE
 
 ### 4-stage pipeline refactor
 
@@ -1831,7 +1864,7 @@ See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipel
 
 > **Playbook:** [NEW-112](../manual_testing_playbook/manual_testing_playbook.md)
 
-## Retrieval enhancements
+## 17. RETRIEVAL ENHANCEMENTS
 
 ### Dual-scope memory auto-surface
 
@@ -1950,7 +1983,7 @@ Headers follow the format `[parent > child  -- description]`, capped at 100 char
 
 See [`15--retrieval-enhancements/09-contextual-tree-injection.md`](15--retrieval-enhancements/09-contextual-tree-injection.md) for full implementation and test file listings.
 
-## Tooling and scripts
+## 18. TOOLING AND SCRIPTS
 
 ### Tree thinning for spec folder consolidation
 
@@ -2046,7 +2079,7 @@ See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scrip
 
 > **Playbook:** [NEW-113](../manual_testing_playbook/manual_testing_playbook.md)
 
-## Governance
+## 19. GOVERNANCE
 
 ### Feature flag governance
 
@@ -2080,7 +2113,7 @@ No dedicated source files  -- this describes governance process controls.
 
 ---
 
-## UX hooks
+## 20. UX HOOKS
 
 Current mapping: this content is tracked under sub-phase `011-ux-hooks-automation`.
 
@@ -2203,7 +2236,7 @@ Phase 014 verification now includes an end-to-end appended-envelope assertion in
 
 See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks/13-end-to-end-success-envelope-verification.md) for full implementation and test file listings.
 
-## Decisions and deferrals
+## 21. DECISIONS AND DEFERRALS
 
 ### INT8 quantization evaluation
 
@@ -2263,7 +2296,7 @@ Originally skipped at Sprint 7 because zero entities existed in the system. R10 
 
 See [`19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md`](19--decisions-and-deferrals/05-implemented-cross-document-entity-linking.md) for full implementation and test file listings.
 
-## Phase System
+## 22. PHASE SYSTEM
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -2315,7 +2348,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## Feature Flag Reference
+## 23. FEATURE FLAG REFERENCE
 
 Every runtime behavior in the MCP server is controlled by environment variables. The tables below catalogue all known flags grouped by category. The "Default" column reflects the value in effect when the variable is absent from the environment.
 

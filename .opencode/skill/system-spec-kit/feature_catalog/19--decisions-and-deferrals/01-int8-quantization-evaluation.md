@@ -1,6 +1,17 @@
 # INT8 quantization evaluation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for INT8 quantization evaluation.
+
+## 2. CURRENT REALITY
 
 Decision: **NO-GO**. All three activation criteria were unmet.
 
@@ -8,11 +19,11 @@ Active memories with embeddings: 2,412 measured versus the 10,000 threshold (24.
 
 The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5.32% estimated recall risk, custom quantized BLOB complexity, or KL-divergence calibration overhead. Re-evaluate when the corpus grows approximately 4x (above 10K memories), sustained p95 exceeds 50ms, or the embedding provider changes to dimensions above 1,536.
 
-## Source Files
+## 3. SOURCE FILES
 
 No dedicated source files — this is a decision record.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Decisions and deferrals
 - Source feature title: INT8 quantization evaluation

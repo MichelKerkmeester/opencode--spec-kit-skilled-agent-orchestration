@@ -1,6 +1,17 @@
 # Entity normalization consolidation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Entity normalization consolidation.
+
+## 2. CURRENT REALITY
 
 Two cross-cutting normalization issues were resolved:
 
@@ -8,7 +19,7 @@ Two cross-cutting normalization issues were resolved:
 
 **A2 — Duplicate computeEdgeDensity:** Both `entity-extractor.ts` and `entity-linker.ts` had independent implementations. Consolidated to `entity-linker.ts` with import and re-export from `entity-extractor.ts`.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -25,7 +36,7 @@ Two cross-cutting normalization issues were resolved:
 | `mcp_server/tests/entity-extractor.vitest.ts` | Entity extraction tests |
 | `mcp_server/tests/entity-scope.vitest.ts` | Entity scope parsing |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Entity normalization consolidation

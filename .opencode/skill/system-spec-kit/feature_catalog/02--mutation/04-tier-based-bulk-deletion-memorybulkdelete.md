@@ -1,6 +1,17 @@
 # Tier-based bulk deletion (memory_bulk_delete)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Tier-based bulk deletion (memory_bulk_delete).
+
+## 2. CURRENT REALITY
 
 For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated memories, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), creates a safety checkpoint, then deletes within a database transaction.
 
@@ -10,7 +21,7 @@ Each deleted memory gets its causal graph edges removed. A single consolidated m
 
 The `olderThanDays` parameter is validated as a positive integer (>= 1) before query construction. Values that are zero, negative, non-integer, or NaN return a validation error rather than silently removing the age filter. The `tool-schemas.ts` definition enforces `minimum: 1` at the schema level.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -136,7 +147,7 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Mutation
 - Source feature title: Tier-based bulk deletion (memory_bulk_delete)

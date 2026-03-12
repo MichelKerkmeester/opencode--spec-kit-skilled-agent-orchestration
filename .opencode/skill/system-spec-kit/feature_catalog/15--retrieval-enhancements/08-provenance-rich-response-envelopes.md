@@ -1,10 +1,21 @@
 # Provenance-rich response envelopes
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Provenance-rich response envelopes.
+
+## 2. CURRENT REALITY
 
 **IMPLEMENTED (Sprint 019).** Search results gain optional provenance envelopes (default `includeTrace: false`) exposing internal pipeline scoring that is currently dropped at Stage 4 exit. When enabled, responses include `scores` (semantic, lexical, fusion, intentAdjusted, composite, rerank, attention), `source` (file, anchorIds, anchorTypes, lastModified, memoryState), and `trace` (channelsUsed, pipelineStages, fallbackTier, queryComplexity, expansionTerms, budgetTruncated, scoreResolution).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -25,7 +36,7 @@
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | Protocol-level MCP envelope validation with `includeTrace` on/off provenance assertions. |
 | `mcp_server/tests/envelope.vitest.ts` | Core response envelope contract validation (`content[]`, `meta`, and wrapper behavior). |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Provenance-rich response envelopes

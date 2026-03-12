@@ -1,6 +1,17 @@
 # Causal edge creation (memory_causal_link)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Causal edge creation (memory_causal_link).
+
+## 2. CURRENT REALITY
 
 Creates a directed relationship edge between two memories in the causal graph. Six relationship types are supported: caused (this memory led to that one), enabled (this memory made that one possible), supersedes (this memory replaces that one), contradicts (these memories disagree), derived_from (this memory was produced from that one) and supports (this memory backs up that one).
 
@@ -10,7 +21,7 @@ Edge bounds are enforced at insert time. Auto-generated edges (those with `creat
 
 A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during spec document indexing. The `createSpecDocumentChain()` function auto-links spec folder documents in a standard chain: spec causes plan, plan causes tasks, tasks cause implementation-summary. Checklist, decision-record and research documents get support relationships to the primary chain.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -115,7 +126,7 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Analysis
 - Source feature title: Causal edge creation (memory_causal_link)

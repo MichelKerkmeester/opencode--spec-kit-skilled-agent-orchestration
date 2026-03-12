@@ -395,6 +395,17 @@ describe('T004: getConsumptionPatterns — pattern detection', () => {
     expect(lowSel!.count).toBe(2);
   });
 
+  it('T004-D2: low-selection examples show deterministic range for mixed result_count values', () => {
+    forceLogConsumptionEvent(db, { event_type: 'search', query_text: 'mixed sparse', result_count: 1 });
+    forceLogConsumptionEvent(db, { event_type: 'search', query_text: 'mixed sparse', result_count: 2 });
+
+    const patterns = getConsumptionPatterns(db);
+    const lowSel = patterns.find(p => p.category === 'low-selection');
+
+    expect(lowSel).toBeDefined();
+    expect(lowSel!.examples.some(e => e.includes('mixed sparse') && e.includes('(1-2 results)'))).toBe(true);
+  });
+
   it('T004-E: detects intent-mismatch (same query, different intents)', () => {
     forceLogConsumptionEvent(db, { event_type: 'search', query_text: 'fix the bug', intent: 'fix_bug', result_count: 3 });
     forceLogConsumptionEvent(db, { event_type: 'search', query_text: 'fix the bug', intent: 'refactor', result_count: 2 });

@@ -1,6 +1,17 @@
 # Cold-start novelty boost
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Cold-start novelty boost.
+
+## 2. CURRENT REALITY
 
 FSRS temporal decay biases against recent items. A memory indexed 2 hours ago has barely any retrievability score, even when it is exactly what you need.
 
@@ -10,7 +21,7 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 
 **Sprint 8 update:** The `calculateNoveltyBoost()` call was removed from the hot scoring path in `composite-scoring.ts` because evaluation showed it always returned 0. The function definition remains but is no longer invoked during search. Telemetry fields are hardcoded to `noveltyBoostApplied: false, noveltyBoostValue: 0` for log schema compatibility.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -47,7 +58,7 @@ The boost applies before FSRS decay and caps the composite score at 0.95 to prev
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Cold-start novelty boost

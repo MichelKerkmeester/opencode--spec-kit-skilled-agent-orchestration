@@ -1,6 +1,18 @@
 # Evaluation and housekeeping fixes
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Evaluation and housekeeping fixes.
+
+## 2. CURRENT REALITY
 
 Six fixes addressed evaluation framework reliability and protocol-boundary safety:
 
@@ -13,7 +25,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -31,12 +43,12 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 | `mcp_server/tests/eval-logger.vitest.ts` | Eval logger tests |
 | `mcp_server/tests/reporting-dashboard.vitest.ts` | Dashboard reporting tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Evaluation and housekeeping fixes
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-082

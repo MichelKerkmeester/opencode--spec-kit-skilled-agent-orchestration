@@ -1,6 +1,17 @@
 # Outsourced agent memory capture
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Outsourced agent memory capture.
+
+## 2. CURRENT REALITY
 
 Outsourced-agent memory capture is now implemented and aligned across runtime behavior, regression tests, and CLI handback documentation.
 
@@ -11,7 +22,7 @@ Current behavior is enforced in three slices:
 
 Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -40,7 +51,7 @@ Status: Implemented. Spec folder `014-outsourced-agent-memory` is complete.
 | .opencode/skill/cli-gemini/SKILL.md | Caller-side handback flow, redact/scrub guidance, explicit JSON-mode hard-fail behavior |
 | .opencode/skill/cli-gemini/assets/prompt_templates.md | Prompt template for MEMORY_HANDBACK extraction and `/tmp/save-context-data.json` save flow |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Outsourced agent memory capture

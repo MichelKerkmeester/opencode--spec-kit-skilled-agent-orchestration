@@ -1,10 +1,21 @@
 # BM25 trigger phrase re-index gate
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for BM25 trigger phrase re-index gate.
+
+## 2. CURRENT REALITY
 
 The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-only to title OR trigger phrases: `if ((updateParams.title !== undefined || updateParams.triggerPhrases !== undefined) && bm25Index.isBm25Enabled())`. The BM25 corpus includes trigger phrases, so changes to either field must trigger re-indexing.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -23,7 +34,7 @@ The BM25 re-index condition in `memory-crud-update.ts` was expanded from title-o
 | `mcp_server/tests/content-normalizer.vitest.ts` | Content normalization tests |
 | `mcp_server/tests/sqlite-fts.vitest.ts` | SQLite FTS5 operations |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
 - Source feature title: BM25 trigger phrase re-index gate

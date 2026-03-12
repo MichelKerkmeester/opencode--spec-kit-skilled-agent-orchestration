@@ -1,6 +1,17 @@
 # Memory indexing (memory_save)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Memory indexing (memory_save).
+
+## 2. CURRENT REALITY
 
 `memory_save` is the entry point for getting content into the memory system. You give it a file path. It reads the file, parses metadata from the frontmatter (title, trigger phrases, spec folder, importance tier, context type, causal links), generates a vector embedding and indexes everything into the SQLite database.
 
@@ -26,7 +37,7 @@ Safety mechanisms run deep. Path security validation checks the file against an 
 
 Document type affects importance weighting automatically: constitutional files get 1.0, spec documents 0.8, plans 0.7, memory files 0.5 and scratch files 0.25.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -216,7 +227,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Mutation
 - Source feature title: Memory indexing (memory_save)

@@ -1,12 +1,23 @@
 # Graph channel ID fix
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Graph channel ID fix.
+
+## 2. CURRENT REALITY
 
 The graph search channel had a 0% hit rate in production. Zero. The system was designed as a multi-channel retrieval engine, but the graph channel contributed nothing because `graph-search-fn.ts` compared string-formatted IDs (`mem:${edgeId}`) against numeric memory IDs at two separate locations.
 
 Both comparison points now extract numeric IDs, and the graph channel returns results for queries where causal edge relationships exist. This was the single highest-impact bug in the system because it meant an entire retrieval signal was dead on arrival.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -31,7 +42,7 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 | `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Bug fixes and data integrity
 - Source feature title: Graph channel ID fix

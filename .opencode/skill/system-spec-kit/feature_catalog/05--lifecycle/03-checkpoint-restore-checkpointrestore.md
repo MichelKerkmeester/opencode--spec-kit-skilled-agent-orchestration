@@ -1,6 +1,17 @@
 # Checkpoint restore (checkpoint_restore)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Checkpoint restore (checkpoint_restore).
+
+## 2. CURRENT REALITY
 
 Restoring from a named checkpoint decompresses the gzip snapshot, validates every row against the database schema (a T107 fix that catches corrupted snapshots before they damage the database) and either merges with existing data or clears existing data first.
 
@@ -10,7 +21,7 @@ When merging (the default), the system checks for duplicates using a logical key
 
 After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled, and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -126,7 +137,7 @@ After restore, vectors are restored from the checkpoint snapshot when vector pay
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Lifecycle
 - Source feature title: Checkpoint restore (checkpoint_restore)

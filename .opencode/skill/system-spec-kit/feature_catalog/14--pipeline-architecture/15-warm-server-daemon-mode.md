@@ -1,10 +1,21 @@
 # Warm server / daemon mode
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Warm server / daemon mode.
+
+## 2. CURRENT REALITY
 
 **PLANNED (Sprint 019) — DEFERRED.** HTTP daemon transport for warm, persistent server execution is deferred while MCP SDK HTTP transport conventions continue evolving. Current transport remains stdio. Estimated effort: L (2-3 weeks).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -22,7 +33,7 @@
 | `mcp_server/tests/lazy-loading.vitest.ts` | Verifies deferred warmup flags and `shouldEagerWarmup()` behavior |
 | `mcp_server/tests/stdio-logging-safety.vitest.ts` | Verifies stdio-safe runtime logging in non-daemon mode |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Extra features (Sprint 019)
 - Source feature title: Warm server / daemon mode

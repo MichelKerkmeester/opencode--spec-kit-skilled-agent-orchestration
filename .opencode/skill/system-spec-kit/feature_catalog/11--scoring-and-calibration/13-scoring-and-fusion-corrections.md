@@ -1,6 +1,17 @@
 # Scoring and fusion corrections
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Scoring and fusion corrections.
+
+## 2. CURRENT REALITY
 
 Eight scoring issues were fixed:
 
@@ -15,7 +26,7 @@ Eight scoring issues were fixed:
 
 In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals) write to the `score` field. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now updates `intentAdjustedScore` from the post-signal `score` using `Math.max(intentAdjustedScore, score)` to preserve the higher value while ensuring all pipeline signal contributions are reflected in the final ranking.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -48,7 +59,7 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | #11 Shared resolveEffectiveScore | `mcp_server/lib/search/pipeline/types.ts` (`resolveEffectiveScore`), wired in `stage2-fusion.ts` and `stage3-rerank.ts` | `mcp_server/tests/pipeline-v2.vitest.ts` |
 | #12 Configurable interference threshold | `mcp_server/lib/scoring/interference-scoring.ts` (`computeInterferenceScoresBatch`) | `mcp_server/tests/interference.vitest.ts` |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Opus review remediation (Phase 017)
 - Source feature title: Scoring and fusion corrections

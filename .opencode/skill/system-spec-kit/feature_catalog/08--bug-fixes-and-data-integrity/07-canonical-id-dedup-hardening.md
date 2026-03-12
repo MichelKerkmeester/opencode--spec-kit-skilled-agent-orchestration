@@ -1,10 +1,21 @@
 # Canonical ID dedup hardening
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Canonical ID dedup hardening.
+
+## 2. CURRENT REALITY
 
 Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybrid search. Normalization was applied in `combinedLexicalSearch()` for the new pipeline and in legacy `hybridSearch()` for the dedup map. Regression tests `T031-LEX-05` and `T031-BASIC-04` verify the fix.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -42,7 +53,7 @@ Mixed ID formats (`42`, `"42"`, `mem:42`) caused deduplication failures in hybri
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Alignment remediation (Phase 016)
 - Source feature title: Canonical ID dedup hardening

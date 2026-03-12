@@ -29,37 +29,37 @@ const logger = createLogger('VectorIndex');
 
 type EmbeddingInput = Float32Array | number[];
 type IndexMemoryParams = {
-  specFolder: string;
-  filePath: string;
-  anchorId?: string | null;
-  title?: string | null;
-  triggerPhrases?: string[];
-  importanceWeight?: number;
-  embedding: EmbeddingInput;
-  encodingIntent?: string;
-  documentType?: string;
-  specLevel?: number | null;
-  contentText?: string | null;
-  qualityScore?: number;
-  qualityFlags?: string[];
+  readonly specFolder: string;
+  readonly filePath: string;
+  readonly anchorId?: string | null;
+  readonly title?: string | null;
+  readonly triggerPhrases?: string[];
+  readonly importanceWeight?: number;
+  readonly embedding: EmbeddingInput;
+  readonly encodingIntent?: string;
+  readonly documentType?: string;
+  readonly specLevel?: number | null;
+  readonly contentText?: string | null;
+  readonly qualityScore?: number;
+  readonly qualityFlags?: string[];
 };
 type IndexMemoryDeferredParams = Omit<IndexMemoryParams, 'embedding'> & {
-  failureReason?: string | null;
+  readonly failureReason?: string | null;
 };
 type UpdateMemoryParams = {
-  id: number;
-  title?: string;
-  triggerPhrases?: string[];
-  importanceWeight?: number;
-  importanceTier?: string;
-  embedding?: EmbeddingInput;
-  canonicalFilePath?: string;
-  encodingIntent?: string;
-  documentType?: string;
-  specLevel?: number | null;
-  contentText?: string | null;
-  qualityScore?: number;
-  qualityFlags?: string[];
+  readonly id: number;
+  readonly title?: string;
+  readonly triggerPhrases?: string[];
+  readonly importanceWeight?: number;
+  readonly importanceTier?: string;
+  readonly embedding?: EmbeddingInput;
+  readonly canonicalFilePath?: string;
+  readonly encodingIntent?: string;
+  readonly documentType?: string;
+  readonly specLevel?: number | null;
+  readonly contentText?: string | null;
+  readonly qualityScore?: number;
+  readonly qualityFlags?: string[];
 };
 
 /**

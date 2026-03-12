@@ -1,6 +1,18 @@
 # Query complexity router
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. TRACEABILITY](#4--traceability)
+- [5. SOURCE METADATA](#5--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Query complexity router.
+
+## 2. CURRENT REALITY
 
 Not all queries need the full 5-channel pipeline. A short trigger-phrase lookup like "memory save rules" is wasted on graph traversal and BM25 scoring.
 
@@ -10,7 +22,7 @@ The `SPECKIT_COMPLEXITY_ROUTER` flag is **enabled by default** (graduated Sprint
 
 The router's classification tier (`routeResult.tier`) is propagated into `traceMetadata.queryComplexity` in hybrid search (CHK-038), making it available in response envelopes when `includeTrace: true`. The formatter reads this via a fallback path from `traceMetadata` when stage metadata is unavailable.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -29,7 +41,7 @@ The router's classification tier (`routeResult.tier`) is propagated into `traceM
 | `mcp_server/tests/query-router.vitest.ts` | Query routing logic |
 | `mcp_server/tests/trace-propagation.vitest.ts` | Trace propagation chain integration tests |
 
-## Traceability
+## 4. TRACEABILITY
 
 | Claim | Source | Lines |
 |-------|--------|-------|
@@ -39,7 +51,7 @@ The router's classification tier (`routeResult.tier`) is propagated into `traceM
 | Tier propagated to `traceMetadata.queryComplexity` | `hybrid-search.ts` | CHK-038 |
 | Classification accuracy tests | `query-classifier.vitest.ts` | — |
 
-## Source Metadata
+## 5. SOURCE METADATA
 
 - Group: Query intelligence
 - Source feature title: Query complexity router

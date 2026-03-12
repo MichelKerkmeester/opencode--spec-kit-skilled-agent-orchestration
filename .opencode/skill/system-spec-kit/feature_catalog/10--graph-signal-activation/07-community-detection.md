@@ -1,6 +1,17 @@
 # Community detection
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Community detection.
+
+## 2. CURRENT REALITY
 
 Individual memories are retrieved based on query similarity, but they exist within communities of related knowledge. Community detection identifies these clusters so that when one member surfaces, its neighbors get a retrieval boost.
 
@@ -12,7 +23,7 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -26,7 +37,7 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 |------|-------|
 | `mcp_server/tests/community-detection.vitest.ts` | Community detection tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Graph signal activation
 - Source feature title: Community detection

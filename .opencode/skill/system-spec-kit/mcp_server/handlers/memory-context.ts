@@ -48,10 +48,10 @@ import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
 --------------------------------------------------------------- */
 
 interface ContextMode {
-  name: string;
-  description: string;
-  strategy: string;
-  tokenBudget?: number;
+  readonly name: string;
+  readonly description: string;
+  readonly strategy: string;
+  readonly tokenBudget?: number;
 }
 
 interface ContextOptions {
@@ -576,7 +576,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     });
     _evalQueryId = evalEntry.queryId;
     _evalRunId = evalEntry.evalRunId;
-  } catch { /* eval logging must never break context handler */ }
+  } catch {
+    // AI-WHY: Intentional no-op — error deliberately discarded
+  }
 
   const requestedSessionId = typeof session_id === 'string' && session_id.trim().length > 0
     ? session_id.trim()
@@ -848,7 +850,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
           resultIds = innerResults.map(r => r.id as number).filter(id => typeof id === 'number');
           resultCount = innerResults.length;
         }
-      } catch { /* ignore parse errors */ }
+      } catch {
+        // AI-WHY: Intentional no-op — error deliberately discarded
+      }
       logConsumptionEvent(db, {
         event_type: 'context',
         query_text: normalizedInput,
@@ -861,7 +865,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         spec_folder_filter: spec_folder ?? null,
       });
     }
-  } catch { /* instrumentation must never cause context handler to fail */ }
+  } catch {
+    // AI-WHY: Intentional no-op — error deliberately discarded
+  }
 
   // AI-TRACE: T005: Eval logger — capture final context results at exit (fail-safe)
   try {
@@ -874,7 +880,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
           finalMemoryIds = innerResults.map(r => (r.id ?? r.memoryId) as number).filter(id => typeof id === 'number');
           finalScores = innerResults.map(r => (r.score ?? r.similarity ?? 0) as number);
         }
-      } catch { /* ignore parse errors */ }
+      } catch {
+        // AI-WHY: Intentional no-op — error deliberately discarded
+      }
       logFinalResult({
         evalRunId: _evalRunId,
         queryId: _evalQueryId,
@@ -897,7 +905,9 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         latencyMs: Date.now() - _contextStartTime,
       });
     }
-  } catch { /* eval logging must never break context handler */ }
+  } catch {
+    // AI-WHY: Intentional no-op — error deliberately discarded
+  }
 
   return _contextResponse;
 }

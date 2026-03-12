@@ -1,6 +1,17 @@
 # Feature flag sunset audit
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Feature flag sunset audit.
+
+## 2. CURRENT REALITY
 
 A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
 
@@ -12,11 +23,11 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 No dedicated source files — this describes governance process controls.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Governance
 - Source feature title: Feature flag sunset audit

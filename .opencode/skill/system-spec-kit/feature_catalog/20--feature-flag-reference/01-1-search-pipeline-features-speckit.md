@@ -1,6 +1,17 @@
 # 1. Search Pipeline Features (SPECKIT_*)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for 1. Search Pipeline Features (SPECKIT_*).
+
+## 2. CURRENT REALITY
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
@@ -72,11 +83,11 @@
 | `SPECKIT_TRM` | `true` | boolean | `lib/search/search-flags.ts` | Enables the Transparent Reasoning Module (evidence-gap detection). Stage 4 runs a TRM Z-score analysis to detect evidence gaps and annotate results accordingly. |
 | `SPECKIT_WORKING_MEMORY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables the working memory system which tracks attention scores for memories seen in the current session. Working memory context is injected during resume mode and influences session-boost scoring. |
 
-## Source Files
+## 3. SOURCE FILES
 
 Source file references are included in the flag table above.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: 1. Search Pipeline Features (SPECKIT_*)

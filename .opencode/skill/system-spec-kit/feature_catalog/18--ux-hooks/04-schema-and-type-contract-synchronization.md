@@ -1,10 +1,21 @@
 # Schema and type contract synchronization
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Schema and type contract synchronization.
+
+## 2. CURRENT REALITY
 
 Phase 014 aligned runtime validation and TypeScript contracts for the new mutation-safety behavior. Tool schemas and types were updated together so added parameters and output metadata remain consistent across handler logic, schema validation, and tool typing. The finalized follow-up closures specifically synced required `confirmName` enforcement and the updated mutation response metadata contract across all layers.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -29,7 +40,7 @@ Phase 014 aligned runtime validation and TypeScript contracts for the new mutati
 | `mcp_server/tests/unit-tier-classifier-types.vitest.ts` | Tier classifier types |
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Schema and type contract synchronization

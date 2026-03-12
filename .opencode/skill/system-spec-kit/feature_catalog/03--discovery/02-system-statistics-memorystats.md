@@ -1,6 +1,17 @@
 # System statistics (memory_stats)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for System statistics (memory_stats).
+
+## 2. CURRENT REALITY
 
 `memory_stats` returns the discovery dashboard for the memory database: total memory count, embedding status breakdown, oldest/newest timestamps, total trigger phrase count, tier breakdown, database size, last indexed timestamp, graph channel metrics, and the ranked folder summary.
 
@@ -10,7 +21,7 @@ The response now reports `totalSpecFolders` from the full filtered/scored set be
 
 Direct handler validation failures return MCP error envelopes with `E_INVALID_INPUT` and `data.details.requestId` for invalid `folderRanking`, invalid `excludePatterns`, invalid `includeScores`/`includeArchived`, or non-finite `limit` values. Aggregate-query and folder-ranking failures return MCP error envelopes instead of raw throws.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -31,7 +42,7 @@ Direct handler validation failures return MCP error envelopes with `E_INVALID_IN
 | `mcp_server/tests/handler-memory-crud.vitest.ts` | Public export and direct validation coverage |
 | `mcp_server/tests/memory-crud-extended.vitest.ts` | Happy-path stats structure, scoring fallback, and composite-score payload coverage |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Discovery
 - Source feature title: System statistics (memory_stats)

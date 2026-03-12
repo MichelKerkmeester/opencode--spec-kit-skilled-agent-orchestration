@@ -1,12 +1,23 @@
 # Tool-result extraction to working memory
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Tool-result extraction to working memory.
+
+## 2. CURRENT REALITY
 
 The working memory module (`lib/cognitive/working-memory.ts`) captures salient results from tool invocations and stores them as session-scoped attention items. When a retrieval tool returns results, the system extracts key findings and inserts them into the `working_memory` table with an attention score. These extracted items persist across turns within the same session, enabling cross-turn context continuity.
 
 The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preserving working memory state during checkpoint creation so that restored sessions retain their accumulated tool-result context. Attention scores decay with an event-distance model (0.85 per event elapsed) with a floor of 0.05 and explicit eviction at 0.01, ensuring that recent tool results remain prominent while older ones gracefully fade.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -23,7 +34,7 @@ The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preser
 | `mcp_server/tests/working-memory-event-decay.vitest.ts` | Working memory decay tests |
 | `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Retrieval
 - Source feature title: Tool-result extraction to working memory

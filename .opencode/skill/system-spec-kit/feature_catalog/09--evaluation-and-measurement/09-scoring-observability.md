@@ -1,6 +1,18 @@
 # Scoring observability
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+- [5. PLAYBOOK COVERAGE](#5--playbook-coverage)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Scoring observability.
+
+## 2. CURRENT REALITY
 
 Scoring observability logs to `scoring_observations` with a 5% sampler (`SAMPLING_RATE = 0.05`). Each observation includes memory/query identifiers, score-before/score-after values, score delta, and novelty/interference fields provided by the caller.
 
@@ -8,7 +20,7 @@ The observability module does not remove novelty fields or hardcode novelty valu
 
 Failures are fail-safe but not silent: initialization, insert, and stats-query errors are caught and logged with `console.error`, and scoring execution continues unchanged.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -23,12 +35,12 @@ Failures are fail-safe but not silent: initialization, insert, and stats-query e
 | `mcp_server/tests/scoring-observability.vitest.ts` | Scoring observability tests |
 | `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Evaluation and measurement
 - Source feature title: Scoring observability
 - Current reality source: feature_catalog.md
 
-## Playbook Coverage
+## 5. PLAYBOOK COVERAGE
 
-- Mapped to evaluation playbook scenarios NEW-050 through NEW-072 (phase-level)
+- Mapped to manual testing playbook scenario NEW-013

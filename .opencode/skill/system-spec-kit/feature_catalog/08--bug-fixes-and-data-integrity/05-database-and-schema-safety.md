@@ -1,6 +1,17 @@
 # Database and schema safety
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Database and schema safety.
+
+## 2. CURRENT REALITY
 
 Four database-layer bugs were fixed:
 
@@ -12,7 +23,7 @@ Four database-layer bugs were fixed:
 
 **B4 — Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -33,7 +44,7 @@ Four database-layer bugs were fixed:
 | `mcp_server/tests/causal-edges-unit.vitest.ts` | **B3**: DM1/DM2 verify deletion filters only intended source/target edge rows. |
 | `mcp_server/tests/memory-save-extended.vitest.ts` | **B4**: save update paths treat zero-row UPDATEs (`changes === 0`) as failure/no-op. |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Database and schema safety

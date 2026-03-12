@@ -1,6 +1,17 @@
 # 2. Session and Cache
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for 2. Session and Cache.
+
+## 2. CURRENT REALITY
 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
@@ -16,11 +27,11 @@
 | `TOOL_CACHE_MAX_ENTRIES` | `1000` | number | `lib/cache/tool-cache.ts` | Maximum number of entries the tool cache holds before evicting the oldest entry on insert. Eviction is O(1) using insertion-order iteration over the underlying Map. |
 | `TOOL_CACHE_TTL_MS` | `60000` | number | `lib/cache/tool-cache.ts` | Default time-to-live in milliseconds for tool cache entries. After this duration, entries are treated as expired and evicted on next access or cleanup sweep. Default is 60 seconds (60,000 ms). |
 
-## Source Files
+## 3. SOURCE FILES
 
 Source file references are included in the flag table above.
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Feature Flag Reference
 - Source feature title: 2. Session and Cache

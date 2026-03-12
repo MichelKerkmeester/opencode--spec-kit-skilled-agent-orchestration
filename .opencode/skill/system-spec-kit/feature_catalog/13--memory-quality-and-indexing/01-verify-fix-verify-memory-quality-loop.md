@@ -1,6 +1,17 @@
 # Verify-fix-verify memory quality loop
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Verify-fix-verify memory quality loop.
+
+## 2. CURRENT REALITY
 
 The quality loop is opt-in. When `SPECKIT_QUALITY_LOOP` is unset or not equal to `true`, the runtime still computes a quality score but the save passes without retries or rejection. When the flag is enabled, the save pipeline runs an initial quality evaluation and then up to 2 immediate auto-fix retries by default (`maxRetries=2`). Auto-fixes can re-extract trigger phrases from headings/title, normalize unclosed anchors, and trim content to the shared token budget.
 
@@ -10,7 +21,7 @@ When fixes improve the score past the threshold, the handler returns `fixedConte
 
 The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` through `MCP_CHARS_PER_TOKEN` so both save-time checks use the same token estimate.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -26,7 +37,7 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 | `mcp_server/tests/quality-loop.vitest.ts` | Attempt counting, retry behavior, and rejection semantics |
 | `mcp_server/tests/handler-memory-save.vitest.ts` | Rejected-save rollback semantics in atomic save flow |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
 - Source feature title: Verify-fix-verify memory quality loop

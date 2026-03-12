@@ -1,6 +1,17 @@
 # Workspace scanning and indexing (memory_index_scan)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Workspace scanning and indexing (memory_index_scan).
+
+## 2. CURRENT REALITY
 
 This is the tool that keeps the memory database synchronized with the filesystem. Without it, new or modified memory files would be invisible to search.
 
@@ -18,7 +29,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 
 ---
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -211,7 +222,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 | `shared/parsing/quality-extractors.test.ts` | Quality Extractors.Ts |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Maintenance
 - Source feature title: Workspace scanning and indexing (memory_index_scan)

@@ -1,6 +1,17 @@
 # Lightweight consolidation
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Lightweight consolidation.
+
+## 2. CURRENT REALITY
 
 Four sub-components handle ongoing memory graph maintenance as a weekly batch cycle. Contradiction scanning finds memory pairs above 0.85 cosine similarity with keyword negation conflicts using a dual strategy: vector-based (cosine on sqlite-vec embeddings) plus heuristic fallback (word overlap). Both use a `hasNegationConflict()` keyword asymmetry check against approximately 20 negation terms (not, never, deprecated, replaced, and others). The system surfaces full contradiction clusters rather than isolated pairs via 1-hop causal edge neighbor expansion.
 
@@ -8,7 +19,7 @@ Hebbian edge strengthening reinforces recently accessed edges at +0.05 per cycle
 
 All weight modifications are logged to the `weight_history` table. The cycle fires after every successful `memory_save` when enabled. Runs behind the `SPECKIT_CONSOLIDATION` flag (default ON).
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -40,7 +51,7 @@ All weight modifications are logged to the `weight_history` table. The cycle fir
 | `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
 | `mcp_server/tests/spec-folder-hierarchy.vitest.ts` | Folder hierarchy tests |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Retrieval enhancements
 - Source feature title: Lightweight consolidation

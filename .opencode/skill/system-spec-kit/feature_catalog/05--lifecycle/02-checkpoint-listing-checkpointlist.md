@@ -1,10 +1,21 @@
 # Checkpoint listing (checkpoint_list)
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Checkpoint listing (checkpoint_list).
+
+## 2. CURRENT REALITY
 
 Returns a paginated list of available checkpoints with metadata: name, creation date, spec folder scope, git branch and compressed snapshot size. The actual snapshot data is not included. Results are ordered by creation date, most recent first. Default limit is 50, maximum 100. You can filter by spec folder to see only checkpoints that cover a specific area.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -120,7 +131,7 @@ Returns a paginated list of available checkpoints with metadata: name, creation 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Lifecycle
 - Source feature title: Checkpoint listing (checkpoint_list)

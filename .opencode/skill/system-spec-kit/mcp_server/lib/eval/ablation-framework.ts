@@ -539,6 +539,11 @@ export function storeAblationResults(report: AblationReport): boolean {
     `);
 
     const recallK = report.config.recallK ?? 20;
+    const baselineQueryCount =
+      report.evaluatedQueryCount
+      ?? report.queryCount
+      ?? report.results[0]?.queryCount
+      ?? 0;
 
     const writeAll = db.transaction(() => {
       // Store baseline recall
@@ -547,12 +552,12 @@ export function storeAblationResults(report: AblationReport): boolean {
         `ablation_baseline_recall@${recallK}`,
         report.overallBaselineRecall,
         'all',
-        report.queryCount ?? report.results[0]?.queryCount ?? 0,
+        baselineQueryCount,
         JSON.stringify({
           runId: report.runId,
           config: report.config,
           durationMs: report.durationMs,
-          queryCount: report.queryCount ?? report.results[0]?.queryCount ?? 0,
+          queryCount: baselineQueryCount,
           channelFailures: report.channelFailures ?? [],
         }),
         report.timestamp,

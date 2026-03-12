@@ -1,6 +1,18 @@
 # Dead code removal
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE EVIDENCE](#3--source-evidence)
+- [4. SOURCE FILES](#4--source-files)
+- [5. SOURCE METADATA](#5--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Dead code removal.
+
+## 2. CURRENT REALITY
 
 Approximately 360 lines of dead code were removed across four categories:
 
@@ -14,7 +26,7 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
 
-## Source Evidence
+## 3. SOURCE EVIDENCE
 
 ### 1) Hot-path dead branches (RSF + shadow-scoring)
 
@@ -96,7 +108,7 @@ Approximately 360 lines of dead code were removed across four categories:
     - `rg -n "computeCausalDepth\\b|computeCausalDepthScores" mcp_server/lib/graph/graph-signals.ts` => only `computeCausalDepthScores` is present and used.
 - **Approx LOC removed:** `~118` (`graph-signals -65`, `graph-search-fn -16`, `negative-feedback -5`, `co-activation -20`, `causal-edges -12`, commit `b4f85e327`).
 
-## Source Files
+## 4. SOURCE FILES
 
 Cross-cutting evidence is distributed across:
 
@@ -116,7 +128,7 @@ Cross-cutting evidence is distributed across:
 - `mcp_server/lib/cognitive/co-activation.ts`
 - `mcp_server/lib/storage/causal-edges.ts`
 
-## Source Metadata
+## 5. SOURCE METADATA
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal

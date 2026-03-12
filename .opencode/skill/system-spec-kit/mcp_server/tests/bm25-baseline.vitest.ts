@@ -210,6 +210,14 @@ describe('T008: BM25 Relative Contingency Decision', () => {
     expect(result.interpretation).toContain('zero');
   });
 
+  it('T008.18b: non-finite ratio inputs → safe fallback to PROCEED', () => {
+    const result = evaluateContingencyRelative(Number.NaN, 0.5);
+    expect(result.action).toBe('PROCEED');
+    expect(result.mode).toBe('relative');
+    expect(result.ratio).toBe(0);
+    expect(result.interpretation).toContain('non-finite');
+  });
+
   it('T008.19: absolute mode tags results with mode="absolute"', () => {
     const result = evaluateContingency(0.65);
     expect(result.mode).toBe('absolute');

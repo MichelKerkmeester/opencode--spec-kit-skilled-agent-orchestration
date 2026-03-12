@@ -1,12 +1,23 @@
 # Per-memory history log
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Per-memory history log.
+
+## 2. CURRENT REALITY
 
 The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor, and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
 
 The history log is written by mutation handlers (`memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`) and lower-level mutation helpers (`delete_memories`, `delete_memory_by_path`). `lib/storage/history.ts` owns schema-safe initialization/migration and read/write helpers, while `vector-index-schema.ts` ensures initialization runs at DB startup. The orphan cleanup script removes orphaned history rows when parent memories are missing.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -28,7 +39,7 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 | `.opencode/skill/system-spec-kit/mcp_server/tests/history.vitest.ts` | History schema migration, actor format coverage, and boundary validation |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-extended.vitest.ts` | Mutation handler integration paths that write history events |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: Mutation
 - Source feature title: Per-memory history log

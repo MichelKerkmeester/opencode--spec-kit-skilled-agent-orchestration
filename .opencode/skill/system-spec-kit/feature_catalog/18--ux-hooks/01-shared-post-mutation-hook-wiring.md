@@ -1,10 +1,21 @@
 # Shared post-mutation hook wiring
 
-## Current Reality
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+## 1. OVERVIEW
+
+This document captures the implemented behavior, source references, and validation scope for Shared post-mutation hook wiring.
+
+## 2. CURRENT REALITY
 
 Phase 014 introduced a shared post-mutation hook path across mutation handlers. The same hook automation now runs after save, update, delete, and bulk-delete flows, including atomic save paths, so cache invalidation and follow-up behavior no longer drift by handler.
 
-## Source Files
+## 3. SOURCE FILES
 
 ### Implementation
 
@@ -85,7 +96,7 @@ Phase 014 introduced a shared post-mutation hook path across mutation handlers. 
 | `mcp_server/tests/unit-transaction-metrics-types.vitest.ts` | Transaction metric types |
 | `mcp_server/tests/vector-index-impl.vitest.ts` | Vector index implementation |
 
-## Source Metadata
+## 4. SOURCE METADATA
 
 - Group: UX hooks automation (Phase 014)
 - Source feature title: Shared post-mutation hook wiring

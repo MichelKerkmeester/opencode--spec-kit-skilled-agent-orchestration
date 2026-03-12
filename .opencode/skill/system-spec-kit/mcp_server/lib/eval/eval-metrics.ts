@@ -85,9 +85,11 @@ function buildGroundTruthMap(groundTruth: GroundTruthEntry[]): Map<number, Groun
  * Sort results by rank ascending, return first k items.
  */
 function topK(results: EvalResult[], k: number): EvalResult[] {
+  const safeK = Number.isFinite(k) ? Math.floor(k) : 0;
+  if (safeK <= 0) return [];
   return [...results]
     .sort((a, b) => a.rank - b.rank)
-    .slice(0, k);
+    .slice(0, safeK);
 }
 
 /* ---------------------------------------------------------------
