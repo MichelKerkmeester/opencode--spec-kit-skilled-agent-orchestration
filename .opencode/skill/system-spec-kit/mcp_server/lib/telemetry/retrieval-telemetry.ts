@@ -12,6 +12,13 @@ import {
 import type {
   TelemetryTracePayload,
 } from './trace-schema';
+import {
+  getHydraRolloutDefaults,
+} from '../config/capability-flags';
+import type {
+  HydraCapabilityFlags,
+  HydraPhase,
+} from '../config/capability-flags';
 
 /* ---------------------------------------------------------------
    1. FEATURE FLAG
@@ -74,6 +81,13 @@ interface QualityMetrics {
   qualityProxyScore: number; // 0-1
 }
 
+/** Architecture rollout telemetry for phased Hydra capabilities. */
+interface ArchitectureMetrics {
+  phase: HydraPhase;
+  capabilities: HydraCapabilityFlags;
+  scopeDimensionsTracked: number;
+}
+
 /** Full retrieval telemetry record */
 interface RetrievalTelemetry {
   enabled: boolean;
@@ -82,6 +96,7 @@ interface RetrievalTelemetry {
   mode: ModeMetrics;
   fallback: FallbackMetrics;
   quality: QualityMetrics;
+  architecture: ArchitectureMetrics;
   tracePayload?: TelemetryTracePayload;
 }
 
@@ -92,6 +107,8 @@ type LatencyStage = keyof Omit<LatencyMetrics, 'totalLatencyMs'>;
 --------------------------------------------------------------- */
 
 function createTelemetry(): RetrievalTelemetry {
+  const hydraDefaults = getHydraRolloutDefaults();
+
   return {
     enabled: isExtendedTelemetryEnabled(),
     timestamp: new Date().toISOString(),
@@ -118,6 +135,11 @@ function createTelemetry(): RetrievalTelemetry {
       boostImpactDelta: 0,
       extractionCountInSession: 0,
       qualityProxyScore: 0,
+    },
+    architecture: {
+      phase: hydraDefaults.phase,
+      capabilities: { ...hydraDefaults.capabilities },
+      scopeDimensionsTracked: hydraDefaults.scopeDimensionsTracked,
     },
   };
 }
@@ -203,6 +225,32 @@ function recordTracePayload(t: RetrievalTelemetry, payload: unknown): boolean {
   return true;
 }
 
+function recordArchitecturePhase(
+  t: RetrievalTelemetry,
+  update: {
+    phase?: HydraPhase;
+    capabilities?: Partial<HydraCapabilityFlags>;
+    scopeDimensionsTracked?: number;
+  }
+): void {
+  if (!t.enabled) return;
+
+  if (update.phase) {
+    t.architecture.phase = update.phase;
+  }
+
+  if (update.capabilities) {
+    t.architecture.capabilities = {
+      ...t.architecture.capabilities,
+      ...update.capabilities,
+    };
+  }
+
+  if (typeof update.scopeDimensionsTracked === 'number' && Number.isFinite(update.scopeDimensionsTracked)) {
+    t.architecture.scopeDimensionsTracked = Math.max(0, Math.floor(update.scopeDimensionsTracked));
+  }
+}
+
 /* ---------------------------------------------------------------
    5. QUALITY PROXY COMPUTATION
 --------------------------------------------------------------- */
@@ -284,6 +332,18 @@ function toJSON(t: RetrievalTelemetry): Record<string, unknown> {
       extractionCountInSession: t.quality.extractionCountInSession,
       qualityProxyScore: t.quality.qualityProxyScore,
     },
+    architecture: {
+      phase: t.architecture.phase,
+      capabilities: {
+        lineageState: t.architecture.capabilities.lineageState,
+        graphUnified: t.architecture.capabilities.graphUnified,
+        adaptiveRanking: t.architecture.capabilities.adaptiveRanking,
+        scopeEnforcement: t.architecture.capabilities.scopeEnforcement,
+        governanceGuardrails: t.architecture.capabilities.governanceGuardrails,
+        sharedMemory: t.architecture.capabilities.sharedMemory,
+      },
+      scopeDimensionsTracked: t.architecture.scopeDimensionsTracked,
+    },
   };
 
   if (tracePayload) {
@@ -305,6 +365,7 @@ export {
   recordFallback,
   recordQualityProxy,
   recordTracePayload,
+  recordArchitecturePhase,
   computeQualityProxy,
   toJSON,
 };
@@ -318,6 +379,7 @@ export type {
   ModeMetrics,
   FallbackMetrics,
   QualityMetrics,
+  ArchitectureMetrics,
   LatencyStage,
 };
 

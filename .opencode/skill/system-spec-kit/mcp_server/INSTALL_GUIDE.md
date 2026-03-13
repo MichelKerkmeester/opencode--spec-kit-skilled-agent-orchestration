@@ -315,12 +315,14 @@ Replace `YOUR_USERNAME` and `path/to/project` with your actual values. Find your
 
 ### Feature Flag Environment Variables
 
-Add these flags to the `environment` (or `env`) block of any configuration option above. All flags use an opt-out pattern: they are enabled by default unless you set them to `false`.
+Add these flags to the `environment` (or `env`) block of any configuration option above. Most runtime retrieval flags use an opt-out pattern and are enabled by default unless you set them to `false`. Observability and Hydra roadmap metadata flags remain explicit opt-in.
 
 | Variable | Default | Description |
 |---|---|---|
 | `SPECKIT_ADAPTIVE_FUSION` | `true` | Controls adaptive intent-based fusion weights. Set to `false` to disable (7 task types). |
-| `SPECKIT_EXTENDED_TELEMETRY` | `true` | Controls 4-dimension per-retrieval telemetry. Set to `false` to disable metrics collection. |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | Controls 4-dimension per-retrieval telemetry. Set to `true` to enable metrics collection. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | Records the current Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | Opt-in Hydra roadmap capability metadata. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime retrieval gate. |
 
 **Example** (OpenCode with all flags explicit):
 
@@ -337,7 +339,9 @@ Add these flags to the `environment` (or `env`) block of any configuration optio
         "EMBEDDINGS_PROVIDER": "hf-local",
         "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite",
         "SPECKIT_ADAPTIVE_FUSION": "true",
-        "SPECKIT_EXTENDED_TELEMETRY": "true"
+        "SPECKIT_EXTENDED_TELEMETRY": "true",
+        "SPECKIT_HYDRA_PHASE": "graph",
+        "SPECKIT_HYDRA_GRAPH_UNIFIED": "true"
       },
       "enabled": true
     }
@@ -553,7 +557,7 @@ When Z-score analysis signals low-confidence retrieval (insufficient signal in t
 
 ### Extended Telemetry
 
-**Flag:** `SPECKIT_EXTENDED_TELEMETRY` (default: on)
+**Flag:** `SPECKIT_EXTENDED_TELEMETRY` (default: off)
 
 Collects 4-dimension metrics per retrieval operation:
 - `latency`: End-to-end retrieval time (ms)
@@ -561,7 +565,7 @@ Collects 4-dimension metrics per retrieval operation:
 - `fallback`: Whether degraded-mode fallback triggered
 - `quality`: Result quality score based on embedding confidence and match density
 
-Disable by setting `SPECKIT_EXTENDED_TELEMETRY: "false"`.
+Enable by setting `SPECKIT_EXTENDED_TELEMETRY: "true"`.
 
 ### Artifact-Class Routing
 
@@ -894,8 +898,9 @@ GRAPH LINKS:  bash scripts/check-links.sh
 PHASE VALID:  bash scripts/validate.sh specs/NNN-name --recursive
 
 FEATURE FLAGS (env vars):
-  SPECKIT_ADAPTIVE_FUSION   default: true  (false = disable intent-based fusion)
-  SPECKIT_EXTENDED_TELEMETRY default: true (false = disable metrics)
+  SPECKIT_ADAPTIVE_FUSION    default: true     (false = disable intent-based fusion)
+  SPECKIT_EXTENDED_TELEMETRY default: false    (true = enable metrics)
+  SPECKIT_HYDRA_PHASE        default: baseline (metadata only)
 
 MCP TOOLS: memory_context, memory_search, memory_match_triggers,
            memory_save, memory_index_scan, memory_stats

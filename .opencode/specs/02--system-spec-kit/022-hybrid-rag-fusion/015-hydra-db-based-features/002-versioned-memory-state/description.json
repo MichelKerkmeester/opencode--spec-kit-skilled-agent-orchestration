@@ -1,0 +1,16 @@
+{
+  "specFolder": "015-hydra-db-based-features/002-versioned-memory-state",
+  "description": "Phase 2: versioned-memory-state",
+  "keywords": [
+    "phase",
+    "versioned-memory-state"
+  ],
+  "lastUpdated": "2026-03-13T17:36:26.829Z",
+  "specId": "002",
+  "folderSlug": "versioned-memory-state",
+  "parentChain": [
+    "015-hydra-db-based-features"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

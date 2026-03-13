@@ -42,7 +42,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Test Files | 265 | All `.vitest.ts` format (snapshot as of 2026-03-13) |
+| Test Files | 269 | All `.vitest.ts` format (snapshot as of 2026-03-13) |
 | Total Tests | See `npx vitest run` | Use the current Vitest summary as the source of truth |
 | Test Framework | Vitest | TypeScript-native, no compilation step needed |
 | Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
@@ -52,7 +52,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | Feature | Description |
 |---------|-------------|
 | **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Coverage Snapshot** | 265 test files across cognitive, search, handlers, integration and eval; some DB-fixture-dependent suites remain explicit deferred stubs |
+| **Coverage Snapshot** | 269 test files across cognitive, search, handlers, integration and eval; some DB-fixture-dependent suites remain explicit deferred stubs |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
 | **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
@@ -119,6 +119,8 @@ npx vitest run tests/working-memory.vitest.ts
 ## 3. STRUCTURE
 <!-- ANCHOR:structure -->
 
+The directory tree below is a representative catalog slice, not a byte-for-byte exhaustive listing of all 265 `.vitest.ts` files. For current inventory checks, treat `rg --files tests -g '*.vitest.ts'` and the latest Vitest summary as the source of truth. Notable suites added beyond the representative tree include `file-watcher.vitest.ts`, `chunk-thinning.vitest.ts`, `cli.vitest.ts`, and `startup-checks.vitest.ts`.
+
 ```
 tests/
 ├── # Core Cognitive Tests
@@ -163,7 +165,7 @@ tests/
 ├── structure-aware-chunker.vitest.ts      # Structure-aware document chunking
 ├── memory-search-quality-filter.vitest.ts # Memory search quality filtering
 ├── retrieval-trace.vitest.ts              # 17 tests for typed retrieval-trace contracts
-├── retrieval-telemetry.vitest.ts          # 22 tests for retrieval telemetry
+├── retrieval-telemetry.vitest.ts          # Retrieval telemetry + architecture metadata coverage
 │
 ├── # Session & Recovery Tests
 ├── session-manager.vitest.ts              # Session deduplication
@@ -225,6 +227,7 @@ tests/
 ├── db-state-graph-reinit.vitest.ts        # DB state graph reinitialization
 ├── evidence-gap-detector.vitest.ts        # Evidence gap detection
 ├── graph-flags.vitest.ts                  # Graph feature flags
+├── hydra-capability-flags.vitest.ts       # Hydra roadmap capability flags
 ├── graph-regression-flag-off.vitest.ts    # Graph regression when flags off
 ├── graph-search-fn.vitest.ts              # Graph search functions
 ├── hybrid-search-flags.vitest.ts          # Hybrid search feature flags
@@ -245,6 +248,7 @@ tests/
 ├── access-tracker-extended.vitest.ts      # Extended access tracking
 ├── checkpoints-extended.vitest.ts         # Extended checkpoints
 ├── checkpoints-storage.vitest.ts          # Checkpoint storage
+├── migration-checkpoint-scripts.vitest.ts # Raw migration checkpoint scripts
 ├── artifact-routing.vitest.ts             # 35 tests for artifact-class routing
 ├── mutation-ledger.vitest.ts              # 16 tests for append-only mutation ledger
 │
@@ -293,6 +297,7 @@ tests/
 ├── eval-db.vitest.ts                     # Eval database infrastructure
 ├── eval-logger.vitest.ts                 # Eval logging pipeline
 ├── eval-metrics.vitest.ts                # Eval metrics computation
+├── hydra-baseline.vitest.ts              # Hydra baseline snapshot capture/persistence
 ├── ceiling-quality.vitest.ts             # Ceiling quality proxy
 ├── ground-truth.vitest.ts                # Ground truth dataset
 ├── bm25-baseline.vitest.ts               # BM25 baseline measurement
@@ -343,6 +348,7 @@ tests/
 ├── unit-tier-classifier-types.vitest.ts   # Tier classifier types
 ├── unit-transaction-metrics-types.vitest.ts # Transaction metrics types
 ├── batch-processor.vitest.ts              # Batch processor
+├── vector-index-schema-compatibility.vitest.ts # Schema compatibility validator
 │
 ├── # Test Support
 ├── fixtures/                              # Test fixtures and sample data
@@ -364,6 +370,10 @@ tests/
 | `handler-memory-save.vitest.ts` | Memory save handler tests |
 | `handler-memory-index-cooldown.vitest.ts` | memory_index_scan cooldown and rate-limit safety |
 | `handler-session-learning.vitest.ts` | Session learning handler tests |
+| `file-watcher.vitest.ts` | Watcher metrics plus delete/rename lifecycle coverage |
+| `chunk-thinning.vitest.ts` | Tree-thinning and token-threshold merge logic |
+| `cli.vitest.ts` | Standalone admin CLI integration coverage |
+| `startup-checks.vitest.ts` | Runtime compatibility, marker creation, and SQLite startup diagnostics |
 | `integration-save-pipeline.vitest.ts` | Save pipeline integration |
 | `integration-search-pipeline.vitest.ts` | Search pipeline integration |
 | `memory-save-integration.vitest.ts` | PE gate + save handler integration |

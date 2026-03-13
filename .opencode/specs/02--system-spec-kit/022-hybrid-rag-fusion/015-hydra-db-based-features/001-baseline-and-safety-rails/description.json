@@ -1,0 +1,16 @@
+{
+  "specFolder": "015-hydra-db-based-features/001-baseline-and-safety-rails",
+  "description": "Phase 1: baseline-and-safety-rails",
+  "keywords": [
+    "phase",
+    "baseline-and-safety-rails"
+  ],
+  "lastUpdated": "2026-03-13T17:36:26.722Z",
+  "specId": "001",
+  "folderSlug": "baseline-and-safety-rails",
+  "parentChain": [
+    "015-hydra-db-based-features"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

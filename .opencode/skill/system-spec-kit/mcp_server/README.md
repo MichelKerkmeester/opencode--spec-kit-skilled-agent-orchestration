@@ -733,8 +733,11 @@ S5 density guard behavior in `lib/search/entity-linker.ts`: if current global ed
 
 ### Feature Flags
 
-All flags are evaluated via `isFeatureEnabled()`. The helper treats absent, empty, and `'true'` values as enabled, and treats `'false'` or `'0'` as disabled. For partial rollouts (`SPECKIT_ROLLOUT_PERCENT` between 1 and 99), identity-less checks fail closed. Malformed rollout values fall back to 100.
-After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 140) added 14 dark-run flags that default to disabled:
+Most runtime search flags are evaluated via `isFeatureEnabled()`. That helper treats absent, empty, and `'true'` values as enabled, and treats `'false'` or `'0'` as disabled. For partial rollouts (`SPECKIT_ROLLOUT_PERCENT` between 1 and 99), identity-less checks fail closed. Malformed rollout values fall back to 100.
+
+Operator-only and observational flags remain explicit opt-in instead of using default-on semantics. Notable examples are `SPECKIT_EXTENDED_TELEMETRY`, `SPECKIT_EVAL_LOGGING`, `SPECKIT_ABLATION`, and the Phase 1 Hydra roadmap metadata flags (`SPECKIT_HYDRA_*`).
+
+After specs 137-139, the core retrieval flags defaulted to enabled. Expensive or experimental paths introduced later remain opt-in.
 
 #### Default Enabled (specs 137-139)
 
@@ -747,7 +750,6 @@ After specs 137-139, the 12 original flags default to enabled. Sprint 1-3 (spec 
 | `SPECKIT_CROSS_ENCODER`      | `true`  | Enable cross-encoder reranking when a provider is configured (set `false` to disable) |
 | `SPECKIT_RELATIONS`          | `true`  | Enable causal memory graph                                                            |
 | `SPECKIT_INDEX_SPEC_DOCS`    | `true`  | Enable spec folder document indexing                                                  |
-| `SPECKIT_EXTENDED_TELEMETRY` | `true`  | Enable 4-dimension retrieval telemetry                                                |
 | `SPECKIT_CAUSAL_BOOST`       | `true`  | Enable 2-hop causal-neighbor score boost                                              |
 | `SPECKIT_SESSION_BOOST`      | `true`  | Enable session-attention score boost                                                  |
 | `SPECKIT_ADAPTIVE_FUSION`    | `true`  | Enable intent-aware weighted RRF fusion                                               |
@@ -771,6 +773,7 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET`  | `true`  | Complexity-tier token budgets |
 | `SPECKIT_STRICT_SCHEMAS`        | `true`  | Enforce strict Zod input validation for all MCP tools (`false` allows passthrough unknown keys) |
 | `SPECKIT_RESPONSE_TRACE`        | `false` | Include provenance-rich `scores` / `source` / `trace` response envelopes by default |
+| `SPECKIT_EXTENDED_TELEMETRY`    | `false` | Opt-in detailed retrieval telemetry; when enabled, records latency/mode/fallback/quality metrics and architecture snapshots |
 | `SPECKIT_DYNAMIC_INIT`          | `true`  | Inject dynamic startup instructions with live memory/index counts |
 | `SPECKIT_CONTEXT_HEADERS`       | `true`  | Prepend contextual tree headers to markdown content chunks in search results |
 | `SPECKIT_FILE_WATCHER`          | `false` | Enable chokidar-based real-time markdown re-indexing |
@@ -779,6 +782,28 @@ Canonical source of truth: `../references/config/environment_variables.md`.
 | `SPECKIT_EVAL_LOGGING`          | `false` | Evaluation telemetry logging |
 | `SPECKIT_ABLATION`              | `false` | Ablation tool execution |
 | `SPECKIT_LEARN_FROM_SELECTION`  | `true`  | Learned-feedback from selection events (R11 — 9 safeguards, 0.7x boost weight) |
+
+#### Hydra Phase 1 Roadmap Metadata Controls
+
+These env vars do not turn new Hydra runtime features on by themselves. They exist so telemetry, eval baselines, and migration checkpoint sidecars can record which Phase 1 rollout slice is under test. They are intentionally separate from live runtime flags such as `SPECKIT_GRAPH_UNIFIED`.
+
+| Flag | Default | Description |
+| ---- | ------- | ----------- |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | Recorded roadmap phase for telemetry, eval baselines, and migration checkpoints (`baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, `shared-rollout`) |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | Explicit opt-in roadmap metadata for the lineage-state milestone |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | Explicit opt-in roadmap metadata for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Explicit opt-in roadmap metadata for adaptive-ranking experiments |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Explicit opt-in roadmap metadata for scope-enforcement tracking |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Explicit opt-in roadmap metadata for governance-guardrail tracking |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Explicit opt-in roadmap metadata for the shared-memory milestone |
+
+#### Phase 1 Readiness Helpers
+
+The Phase 1 Hydra hardening slice adds a few low-level helpers outside the main MCP tool surface:
+
+- `lib/eval/hydra-baseline.ts` captures baseline retrieval/isolation metrics and can persist them into `eval_metric_snapshots`.
+- `scripts/migrations/create-checkpoint.ts` and `scripts/migrations/restore-checkpoint.ts` operate on raw SQLite files for pre-migration safety.
+- `lib/search/vector-index-schema.ts` exports `validateBackwardCompatibility()` for non-throwing schema readiness checks.
 
 #### Local GGUF Reranker Setup (Sprint 9 P1-5)
 

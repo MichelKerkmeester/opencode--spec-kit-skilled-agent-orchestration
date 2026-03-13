@@ -8,6 +8,7 @@ import {
   recordLatency,
   recordMode,
   recordFallback,
+  recordArchitecturePhase,
   recordQualityProxy,
   recordTracePayload,
   computeQualityProxy,
@@ -51,9 +52,7 @@ function expectPresent<T>(value: T | null | undefined, message: string): T {
   return value;
 }
 
-/** Create a telemetry object with enabled=true for testing recording mechanics.
- *  The isExtendedTelemetryEnabled flag is REMOVED (always false), so
- *  createTelemetry() returns disabled objects. Force-enable for recording tests. */
+/** Create a telemetry object with enabled=true for testing recording mechanics. */
 function createEnabledTelemetry(): ReturnType<typeof createTelemetry> {
   const t = createTelemetry();
   t.enabled = true;
@@ -79,9 +78,9 @@ describe('C136-12: retrieval-telemetry', () => {
   // ---------------------------------------------------------------
   // T01: Default telemetry object structure
   // ---------------------------------------------------------------
-  it('T01: createTelemetry returns valid default structure (REMOVED — disabled)', () => {
+  it('T01: createTelemetry returns valid default structure', () => {
     const t = createTelemetry();
-    expect(t.enabled).toBe(false); // REMOVED — isExtendedTelemetryEnabled always false
+    expect(t.enabled).toBe(false);
     expect(t.timestamp).toBeTruthy();
     expect(t.latency.totalLatencyMs).toBe(0);
     expect(t.latency.candidateLatencyMs).toBe(0);
@@ -99,6 +98,10 @@ describe('C136-12: retrieval-telemetry', () => {
     expect(t.quality.boostImpactDelta).toBe(0);
     expect(t.quality.extractionCountInSession).toBe(0);
     expect(t.quality.qualityProxyScore).toBe(0);
+    expect(t.architecture.phase).toBe('baseline');
+    expect(t.architecture.capabilities.lineageState).toBe(false);
+    expect(t.architecture.capabilities.graphUnified).toBe(false);
+    expect(t.architecture.scopeDimensionsTracked).toBe(4);
   });
 
   // ---------------------------------------------------------------
@@ -125,9 +128,9 @@ describe('C136-12: retrieval-telemetry', () => {
     expect(isExtendedTelemetryEnabled()).toBe(false);
   });
 
-  it('T02c: feature flag unset — always disabled (REMOVED flag)', () => {
+  it('T02c: feature flag unset defaults to disabled', () => {
     delete process.env.SPECKIT_EXTENDED_TELEMETRY;
-    expect(isExtendedTelemetryEnabled()).toBe(false); // REMOVED — always false
+    expect(isExtendedTelemetryEnabled()).toBe(false);
   });
 
   // ---------------------------------------------------------------
@@ -282,6 +285,11 @@ describe('C136-12: retrieval-telemetry', () => {
     recordLatency(t, 'candidateLatencyMs', 42);
     recordMode(t, 'deep', false, 'none');
     recordQualityProxy(t, [{ score: 0.8 }], 0.02, 1);
+    recordArchitecturePhase(t, {
+      phase: 'graph',
+      capabilities: { graphUnified: true },
+      scopeDimensionsTracked: 5,
+    });
 
     const json = toJSON(t);
     expect(json.enabled).toBe(true);
@@ -289,6 +297,9 @@ describe('C136-12: retrieval-telemetry', () => {
     expect((json as TelemetryJson).latency?.candidateLatencyMs).toBe(42);
     expect((json as TelemetryJson).mode?.selectedMode).toBe('deep');
     expect((json as TelemetryJson).quality?.resultCount).toBe(1);
+    expect((json as { architecture?: { phase?: string; scopeDimensionsTracked?: number; capabilities?: { graphUnified?: boolean } } }).architecture?.phase).toBe('graph');
+    expect((json as { architecture?: { phase?: string; scopeDimensionsTracked?: number; capabilities?: { graphUnified?: boolean } } }).architecture?.capabilities?.graphUnified).toBe(true);
+    expect((json as { architecture?: { phase?: string; scopeDimensionsTracked?: number; capabilities?: { graphUnified?: boolean } } }).architecture?.scopeDimensionsTracked).toBe(5);
 
     // Should be serializable without errors
     const serialized = JSON.stringify(json);
@@ -351,6 +362,21 @@ describe('C136-12: retrieval-telemetry', () => {
     recordLatency(t, 'candidateLatencyMs', 50);
     expect(t.latency.candidateLatencyMs).toBe(50);
     expect(t.latency.totalLatencyMs).toBe(50);
+  });
+
+  it('T10b: recordArchitecturePhase merges partial Hydra rollout updates', () => {
+    const t = createEnabledTelemetry();
+
+    recordArchitecturePhase(t, {
+      phase: 'adaptive',
+      capabilities: { adaptiveRanking: true },
+      scopeDimensionsTracked: 6,
+    });
+
+    expect(t.architecture.phase).toBe('adaptive');
+    expect(t.architecture.capabilities.adaptiveRanking).toBe(true);
+    expect(t.architecture.capabilities.sharedMemory).toBe(false);
+    expect(t.architecture.scopeDimensionsTracked).toBe(6);
   });
 
   // ---------------------------------------------------------------

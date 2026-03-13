@@ -564,7 +564,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Adaptive fusion** — Intent-aware weighted RRF with 7 task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision). Enabled by default via feature flag `SPECKIT_ADAPTIVE_FUSION` (set `false` to disable)
 - **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
-- **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled via feature flag `SPECKIT_EXTENDED_TELEMETRY` (default: on)
+- **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
+- **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 
 **Feature Flags:**
@@ -572,10 +573,10 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | Flag                          | Default | Effect                                                                                      |
 | ----------------------------- | ------- | ------------------------------------------------------------------------------------------- |
 | `SPECKIT_ADAPTIVE_FUSION`     | on      | Enables intent-aware weighted RRF with 7 task-type profiles in `memory_search()` (set `false` to disable) |
-| `SPECKIT_EXTENDED_TELEMETRY`  | on      | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) per search operation |
+| `SPECKIT_EXTENDED_TELEMETRY`  | off     | Emits 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture metadata when explicitly set to `true` |
 | `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. |
 | `SPECKIT_SAVE_QUALITY_GATE`  | on      | Pre-storage quality gate rejects content below 0.4 signal density (14-day warn-only period after activation) |
-| `SPECKIT_RECONSOLIDATION`    | on      | Auto-merges similar memories on save when similarity ≥0.88; supersedes at 0.75-0.88 |
+| `SPECKIT_RECONSOLIDATION`    | off     | Auto-merges similar memories on save when similarity ≥0.88; supersedes at 0.75-0.88 when explicitly enabled |
 | `SPECKIT_NEGATIVE_FEEDBACK`  | on      | `wasUseful=false` applies score demotion with 30-day recovery window |
 | `SPECKIT_LEARN_FROM_SELECTION` | on    | Tracks which search results are used and boosts them in future searches |
 | `SPECKIT_EMBEDDING_EXPANSION` | on     | Expands queries with semantic neighbors before vector search |

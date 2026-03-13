@@ -40,7 +40,7 @@ The telemetry module provides structured observability for the retrieval pipelin
 |----------|-------|---------|
 | Modules | 4 | `retrieval-telemetry.ts`, `scoring-observability.ts`, `trace-schema.ts`, `consumption-logger.ts` |
 | Metric Groups | 4 | LatencyMetrics, ModeMetrics, FallbackMetrics, QualityMetrics |
-| Feature Flags | 4 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE`, `SPECKIT_CONSUMPTION_LOG` (deprecated, inert) |
+| Feature Flags | 11 | `SPECKIT_EXTENDED_TELEMETRY` (default: false), `SPECKIT_HYDRA_PHASE`, six `SPECKIT_HYDRA_*` capability flags, `SPECKIT_NOVELTY_BOOST`, `SPECKIT_INTERFERENCE_SCORE`, `SPECKIT_CONSUMPTION_LOG` (deprecated, inert) |
 
 ### Key Features
 
@@ -91,12 +91,19 @@ telemetry/
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `SPECKIT_EXTENDED_TELEMETRY` | `false` | Enable extended metric collection (latency breakdown, quality scoring). Set to `true` to activate |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | Enable extended metric collection (latency breakdown, quality scoring, trace payload validation, and architecture updates). Set to `true` to activate |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | Record the active Hydra roadmap phase in telemetry/checkpoint metadata. Unsupported values fall back to `baseline` |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only; distinct from live `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Opt-in roadmap capability flag surfaced in telemetry metadata only |
 | `SPECKIT_NOVELTY_BOOST` | - | Gates N4 cold-start boost in scoring observability |
 | `SPECKIT_INTERFERENCE_SCORE` | - | Gates TM-01 interference penalty in scoring observability |
 | `SPECKIT_CONSUMPTION_LOG` | inert | Deprecated. Consumption logging is hardcoded to disabled after Sprint 7 audit |
 
-When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), only the minimal `RetrievalTelemetry` shell is populated; latency, mode, fallback, and quality sub-metrics are omitted.
+When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), the minimal `RetrievalTelemetry` shell is still created so callers can rely on a stable shape. Latency, mode, fallback, and quality sub-metrics remain zeroed/empty, while the baseline architecture snapshot still records the current Hydra phase/capability defaults.
 
 ### RetrievalTelemetry
 
@@ -110,6 +117,7 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), only the minimal `Retri
 | `mode` | `ModeMetrics` | Search mode selection details |
 | `fallback` | `FallbackMetrics` | Fallback trigger record |
 | `quality` | `QualityMetrics` | Composite quality assessment |
+| `architecture` | `ArchitectureMetrics` | Hydra rollout phase and capability state for the run |
 | `tracePayload` | `TelemetryTracePayload \| undefined` | Optional canonical retrieval trace payload |
 
 ### LatencyMetrics
@@ -166,6 +174,16 @@ When `SPECKIT_EXTENDED_TELEMETRY` is disabled (default), only the minimal `Retri
 | 0.60-0.79 | Acceptable |
 | 0.40-0.59 | Degraded |
 | < 0.40 | Poor -- review fallback policy |
+
+### ArchitectureMetrics
+
+**Purpose**: Capture Hydra rollout phase and capability state for architectural telemetry.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `phase` | `HydraPhase` | Active Hydra rollout phase for this retrieval run |
+| `capabilities` | `HydraCapabilityFlags` | Capability flags snapshot associated with the phase |
+| `scopeDimensionsTracked` | `number` | Number of tracked retrieval scope dimensions in this phase |
 
 ### Scoring Observability (`scoring-observability.ts`)
 

@@ -112,6 +112,7 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Test quality improvements](#test-quality-improvements)
   - [Evaluation and housekeeping fixes](#evaluation-and-housekeeping-fixes)
   - [Cross-AI validation fixes](#cross-ai-validation-fixes)
+  - [Hydra baseline snapshot](#hydra-baseline-snapshot)
 - [Graph signal activation](#graph-signal-activation)
   - [Typed-weighted degree channel](#typed-weighted-degree-channel)
   - [Co-activation boost strength increase](#co-activation-boost-strength-increase)
@@ -122,6 +123,8 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Community detection](#community-detection)
   - [Graph and cognitive memory fixes](#graph-and-cognitive-memory-fixes)
   - [ANCHOR tags as graph nodes](#anchor-tags-as-graph-nodes)
+  - [Causal neighbor boost and injection](#causal-neighbor-boost-and-injection)
+  - [Temporal contiguity layer](#temporal-contiguity-layer)
 - [Scoring and calibration](#scoring-and-calibration)
   - [Score normalization](#score-normalization)
   - [Cold-start novelty boost](#cold-start-novelty-boost)
@@ -137,6 +140,9 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Stage 3 effectiveScore fallback chain](#stage-3-effectivescore-fallback-chain)
   - [Scoring and fusion corrections](#scoring-and-fusion-corrections)
   - [Local GGUF reranker via node-llama-cpp](#local-gguf-reranker-via-node-llama-cpp)
+  - [Tool-level TTL cache](#tool-level-ttl-cache)
+  - [Access-driven popularity scoring](#access-driven-popularity-scoring)
+  - [Temporal-structural coherence scoring](#temporal-structural-coherence-scoring)
 - [Query intelligence](#query-intelligence)
   - [Query complexity router](#query-complexity-router)
   - [Relative score fusion in shadow mode](#relative-score-fusion-in-shadow-mode)
@@ -181,6 +187,10 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Warm server / daemon mode](#warm-server--daemon-mode)
   - [Backend storage adapter abstraction](#backend-storage-adapter-abstraction)
   - [Cross-process DB hot rebinding](#cross-process-db-hot-rebinding)
+  - [Atomic write-then-index API](#atomic-write-then-index-api)
+  - [Embedding retry orchestrator](#embedding-retry-orchestrator)
+  - [7-layer tool architecture metadata](#7-layer-tool-architecture-metadata)
+  - [Atomic pending-file recovery](#atomic-pending-file-recovery)
 - [Retrieval enhancements](#retrieval-enhancements)
   - [Dual-scope memory auto-surface](#dual-scope-memory-auto-surface)
   - [Constitutional memory as expert knowledge injection](#constitutional-memory-as-expert-knowledge-injection)
@@ -199,6 +209,9 @@ This document indexes Spec Kit Memory feature documentation and links each featu
   - [Code standards alignment](#code-standards-alignment)
   - [Real-time filesystem watching with chokidar](#real-time-filesystem-watching-with-chokidar)
   - [Standalone admin CLI](#standalone-admin-cli)
+  - [Migration checkpoint scripts](#migration-checkpoint-scripts)
+  - [Schema compatibility validation](#schema-compatibility-validation)
+  - [Watcher delete/rename cleanup](#watcher-deleterename-cleanup)
 - [Governance](#governance)
   - [Feature flag governance](#feature-flag-governance)
   - [Feature flag sunset audit](#feature-flag-sunset-audit)
@@ -1114,6 +1127,17 @@ See [`09--evaluation-and-measurement/14-cross-ai-validation-fixes.md`](09--evalu
 
 This remains a cross-cutting meta-improvement applied across multiple modules.
 
+### Hydra baseline snapshot
+
+`captureHydraBaselineSnapshot()` records a compact Phase 1 readiness baseline before any broader Hydra rollout. It combines retrieval-volume counters from the eval database with isolation/schema counters from the target context database and returns a single metrics snapshot with metadata describing the current Hydra phase and capability flags.
+
+When `persist=true`, the snapshot writes one row per metric into `eval_metric_snapshots` with `channel='hydra-baseline'`. The metadata now includes the resolved `contextDbPath`, the prefixed Hydra roadmap flags, and `scopeDimensionsTracked`, and the eval database is initialized beside the context database under test instead of silently falling back to the default eval location. Missing or unreadable context databases are tolerated; the retrieval-side metrics still record and context-backed counters fall back to zero.
+
+
+#### Source Files
+
+See [`09--evaluation-and-measurement/15-hydra-baseline-snapshot.md`](09--evaluation-and-measurement/15-hydra-baseline-snapshot.md) for full implementation and test file listings.
+
 ## 12. GRAPH SIGNAL ACTIVATION
 
 ### Typed-weighted degree channel
@@ -1232,6 +1256,30 @@ See [`10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](10--g
 #### Source Files
 
 See [`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`](10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) for full implementation and test file listings.
+
+### Causal neighbor boost and injection
+
+After Stage 2 fusion produces a ranked result set, the causal boost module walks the `causal_edges` graph to amplify scores for memories related to top-ranked seed results. Up to 25% of the result set (capped at 5) serves as seed nodes. The graph walk traverses up to 2 hops via a weighted recursive CTE, applying a per-hop base boost capped at 0.05.
+
+Relation-type weight multipliers are applied during traversal as follows: `supersedes` (1.5), `contradicts` (0.8), and `caused`/`enabled`/`derived_from`/`supports` (1.0). These weights are combined with edge `strength` to scale neighbor amplification while preserving the hop-depth cap.
+
+The combined causal + session boost ceiling is 0.20, preventing runaway score inflation from graph-dense clusters. The feature is gated by `SPECKIT_CAUSAL_BOOST` (default `true`). When disabled, results pass through without graph-based score adjustment.
+
+
+#### Source Files
+
+See [`10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md`](10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) for full implementation and test file listings.
+
+### Temporal contiguity layer
+
+The temporal contiguity module (`lib/cognitive/temporal-contiguity.ts`) boosts search result scores when memories were created close together in time. Given an in-memory set of search results, it applies pairwise temporal boosts inside a clamped window (`1..86400` seconds, default 3600). Each pair contributes a distance-weighted boost using factor `0.15`, with a cumulative cap of `0.50` per result.
+
+The module also provides `getTemporalNeighbors()` for direct temporal neighborhood lookups and `buildTimeline()` for chronological timeline construction. This captures the cognitive principle that memories formed close together in time are often contextually related, the temporal contiguity effect from memory psychology.
+
+
+#### Source Files
+
+See [`10--graph-signal-activation/11-temporal-contiguity-layer.md`](10--graph-signal-activation/11-temporal-contiguity-layer.md) for full implementation and test file listings.
 
 ## 13. SCORING AND CALIBRATION
 
@@ -1415,6 +1463,41 @@ The system uses a quantized `bge-reranker-v2-m3.Q4_K_M.gguf` model (~350MB). Bef
 #### Source Files
 
 See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) for full implementation and test file listings.
+
+### Tool-level TTL cache
+
+The tool cache (`lib/cache/tool-cache.ts`) provides a per-tool, TTL-based in-memory cache that sits in front of expensive operations like embedding generation and database queries. Each cache entry is keyed by a SHA-256 hash of the tool name plus input parameters and expires after a configurable TTL (default 60 seconds via `TOOL_CACHE_TTL_MS`). Maximum cache size is governed by `TOOL_CACHE_MAX_ENTRIES` (default 1000) with oldest-entry eviction on overflow.
+
+Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked for observability. A periodic cleanup sweep removes expired entries. Tool-specific invalidation allows targeted cache busting after mutations without flushing the entire cache. The cache is wired into multiple handlers including `memory_search`, `memory_save`, `memory_delete`, and `memory_bulk_delete` via the mutation hooks system.
+
+
+#### Source Files
+
+See [`11--scoring-and-calibration/15-tool-level-ttl-cache.md`](11--scoring-and-calibration/15-tool-level-ttl-cache.md) for full implementation and test file listings.
+
+### Access-driven popularity scoring
+
+The access tracker (`lib/storage/access-tracker.ts`) implements batched access counting with a soft-accumulator pattern. Each retrieval hit increments an in-memory accumulator by 0.1. When the accumulator exceeds the 0.5 threshold, a database write flushes the accumulated count to the `access_count` column in `memory_index` and updates `last_accessed`. This batching reduces write amplification from high-frequency search operations.
+
+The `access_count` feeds into composite scoring as a popularity signal, boosting frequently retrieved memories. The accumulator map is capped at 10,000 entries to prevent unbounded memory growth. Access data also drives the archival manager's dormancy detection: memories with no recent access are candidates for automatic archival. The tracker currently exposes accumulator and scoring helpers such as `getAccumulatorState()`, `calculatePopularityScore()`, and `calculateUsageBoost()`, rather than a separate `getAccessStats()` API.
+
+
+#### Source Files
+
+See [`11--scoring-and-calibration/16-access-driven-popularity-scoring.md`](11--scoring-and-calibration/16-access-driven-popularity-scoring.md) for full implementation and test file listings.
+
+### Temporal-structural coherence scoring
+
+The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The coherence score measures how well a memory's content structure aligns with its temporal context, whether the claimed relationships (references to other memories, spec folder associations, causal links) are consistent with the chronological ordering of events. Incoherent memories that reference future events or claim relationships with non-existent predecessors receive a lower coherence score, which reduces their overall quality assessment.
+
+The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density, and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing temporally inconsistent content from entering the index.
+
+The verify-fix-verify retry cycle in `mcp_server/handlers/quality-loop.ts` is immediate by design with no backoff delay between attempts. Retries are bounded by `maxRetries` (default `2`) and run synchronously because the auto-fix steps are deterministic local transforms.
+
+
+#### Source Files
+
+See [`11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`](11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) for full implementation and test file listings.
 
 ## 14. QUERY INTELLIGENCE
 
@@ -1941,6 +2024,50 @@ See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipel
 
 > **Playbook:** [NEW-112](../manual_testing_playbook/manual_testing_playbook.md)
 
+### Atomic write-then-index API
+
+The `memory_save` handler offers an atomic write-then-index mode where file writing is atomic (pending file + rename), while indexing runs asynchronously after the write succeeds. The transaction manager writes memory content to a `_pending` file and renames it to the final path. The `dbOperation` callback in this path is intentionally a no-op; `indexMemoryFile(...)` executes afterward and can retry once on transient failures.
+
+Because indexing is decoupled from the file rename, this flow provides atomic file persistence with guarded best-effort index consistency (retry + rollback), not a single file+DB transaction. The `AtomicSaveResult` interface reports `dbCommitted` to distinguish full success from partial commit states (for example, DB callback committed but rename failed, leaving a pending file for startup recovery).
+
+
+#### Source Files
+
+See [`14--pipeline-architecture/18-atomic-write-then-index-api.md`](14--pipeline-architecture/18-atomic-write-then-index-api.md) for full implementation and test file listings.
+
+### Embedding retry orchestrator
+
+The retry manager (`lib/providers/retry-manager.ts`) orchestrates background retry of failed embedding operations. When the primary embedding provider is unavailable or returns errors during `memory_save` or `memory_index_scan`, the affected memories are marked with `embedding_status = 'pending'` and stored without vectors (lexical-only fallback). The retry manager runs as a background job with configurable interval and batch size, picking up pending memories and re-attempting embedding generation.
+
+Each retry attempt uses the embedding cache to avoid redundant API calls for content that was previously embedded successfully. The retry stats (`pending`, `retry`, `failed` counts) are exposed for monitoring. Failed memories increment a `retry_count` for progressive backoff. The orchestrator coordinates with the index-refresh module to ensure retried embeddings are properly inserted into `vec_memories`.
+
+
+#### Source Files
+
+See [`14--pipeline-architecture/19-embedding-retry-orchestrator.md`](14--pipeline-architecture/19-embedding-retry-orchestrator.md) for full implementation and test file listings.
+
+### 7-layer tool architecture metadata
+
+The layer definitions module (`lib/architecture/layer-definitions.ts`) defines a 7-layer MCP architecture (L1 through L7) where each layer has token budgets, priorities, use-case guidance, and tool membership. Layer IDs still map to task types (`search`, `browse`, `modify`, `checkpoint`, `analyze`, `maintenance`, `default`) for recommendation and hinting.
+
+Runtime dispatch in `context-server.ts` has a single name-based dispatch hop (`dispatchTool(name, args)`), and that hop fans into 5 dispatcher modules in `tools/index.ts` (`context`, `memory`, `causal`, `checkpoint`, `lifecycle`). The 7-layer model is therefore metadata and governance, not a 7-layer runtime classifier or router.
+
+
+#### Source Files
+
+See [`14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md`](14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md) for full implementation and test file listings.
+
+### Atomic pending-file recovery
+
+The transaction manager maintains an atomic write protocol where memory files are first written to a `_pending` path and only renamed to their final location after the database transaction commits. When a crash or error interrupts this sequence after DB commit but before rename, a `_pending` file is left on disk as a recoverable artifact.
+
+The `findPendingFiles()` function scans the memory directories for files matching the `_pending` suffix. Each discovered pending file is checked against the database: if the corresponding DB row exists (committed), the file is renamed to its final path completing the interrupted operation. The `recoverPendingFile()` function handles individual file recovery and updates the `totalRecoveries` metric. This mechanism ensures zero data loss from interrupted save operations.
+
+
+#### Source Files
+
+See [`14--pipeline-architecture/21-atomic-pending-file-recovery.md`](14--pipeline-architecture/21-atomic-pending-file-recovery.md) for full implementation and test file listings.
+
 ## 17. RETRIEVAL ENHANCEMENTS
 
 ### Dual-scope memory auto-surface
@@ -2147,7 +2274,7 @@ See [`16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`
 
 Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance outside the MCP protocol. Provides four commands: `stats` (tier distribution, top folders, schema version), `bulk-delete` (with --tier, --folder, --older-than, --dry-run, --skip-checkpoint; constitutional/critical tiers require folder scope), `reindex` (--force, --eager-warmup), and `schema-downgrade` (--to 15, --confirm).
 
-Deletions are transaction-wrapped with automatic checkpoint creation before bulk-delete and mutation ledger recording. Invoked as `node cli.js <command>` from any directory. This provides operators a direct database maintenance path without requiring an active MCP session or AI assistant.
+Deletions are transaction-wrapped with mutation ledger recording and a best-effort pre-delete checkpoint attempt unless `--skip-checkpoint` is set. For `constitutional` and `critical` tiers, `--skip-checkpoint` is blocked and folder scope is required. If checkpoint creation fails, the CLI logs a warning and proceeds with deletion so recovery tooling remains usable during partial storage failures. Invoked as `node cli.js <command>` from any directory. This provides operators a direct database maintenance path without requiring an active MCP session or AI assistant.
 
 
 #### Source Files
@@ -2155,6 +2282,41 @@ Deletions are transaction-wrapped with automatic checkpoint creation before bulk
 See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
 
 > **Playbook:** [NEW-113](../manual_testing_playbook/manual_testing_playbook.md)
+
+### Migration checkpoint scripts
+
+Two raw SQLite helpers live under `mcp_server/scripts/migrations/` for pre-migration safety outside the logical checkpoint tables. `create-checkpoint.ts` copies a target database to a timestamped checkpoint file and writes a JSON sidecar with schema version, size, optional note, and Hydra roadmap metadata. `restore-checkpoint.ts` restores a checkpoint into a target database path, creates a pre-restore backup when replacing an existing file, and verifies that the restored file opens as SQLite before reporting success.
+
+These scripts are intentionally distinct from the `checkpoint_create` / `checkpoint_restore` MCP tools. The MCP tools serialize memory state into the `checkpoints` table, while the migration helpers operate directly on database files so schema experiments can be rolled back even when the logical checkpoint tables themselves are changing. Both helpers now expose testable `run*` functions plus `--json` output for deterministic automation.
+
+
+#### Source Files
+
+See [`16--tooling-and-scripts/09-migration-checkpoint-scripts.md`](16--tooling-and-scripts/09-migration-checkpoint-scripts.md) for full implementation and test file listings.
+
+### Schema compatibility validation
+
+`validateBackwardCompatibility()` performs a non-throwing schema readiness check against a live database handle. It treats `memory_index` and `schema_version` as hard requirements, verifies that `memory_index` still exposes the core columns the runtime expects, and emits warnings when supporting tables such as `memory_history`, `checkpoints`, or `memory_conflicts` are missing.
+
+The helper is exported as `validateBackwardCompatibility` from `vector-index-schema.ts`, which makes it usable from rollout gates, migration tooling, and tests without crashing startup when a database is only partially compatible.
+
+
+#### Source Files
+
+See [`16--tooling-and-scripts/10-schema-compatibility-validation.md`](16--tooling-and-scripts/10-schema-compatibility-validation.md) for full implementation and test file listings.
+
+### Watcher delete/rename cleanup
+
+The chokidar-based file watcher (`lib/ops/file-watcher.ts`) handles more than add and change events. When a watched memory file is deleted or renamed, the watcher receives an `unlink` event and invokes the configured `removeFn` callback to purge the corresponding memory index entry, BM25 tokens, and vector embedding from the database. This prevents orphaned index entries from appearing in search results after a file is moved or removed on disk.
+
+Rename detection is handled as an unlink followed by an add, which means the memory gets a fresh index entry at the new path while the old entry is cleaned up. The 2-second debounce window collapses rapid rename sequences into a single reindex cycle.
+
+Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which exercises unlink cleanup, rename lifecycle handling, debounce behavior, burst rename deduplication, and concurrent rename handling.
+
+
+#### Source Files
+
+See [`16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`](16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md) for full implementation and test file listings.
 
 ## 19. GOVERNANCE
 
@@ -2468,7 +2630,7 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_ENTITY_LINKING_MAX_DENSITY` | `1.0` | number | `lib/search/entity-linker.ts` | S5 global density guard threshold. Entity linking performs a current-global-density precheck (`total_edges / total_memories`) and a projected post-insert global density check before creating links. If either check exceeds this value, link creation is skipped. Default 1.0 is permissive, but the guard can still trigger when total edges exceed total memories. |
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | Enables eval logging that writes retrieval events to the eval database. Must be explicitly set to `'true'`. Used during ablation and ground-truth evaluation runs. |
 | `SPECKIT_EVENT_DECAY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables FSRS-based attention decay in the working memory system. Scores decay each turn via exponential degradation. When disabled, attention scores do not degrade over the session. |
-| `SPECKIT_EXTENDED_TELEMETRY` | inert | boolean | `lib/telemetry/retrieval-telemetry.ts` | **Deprecated.** Sprint 7 audit determined the overhead was not justified. The env var is accepted but has no effect; the function always returns `false`. |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | Opt-in extended retrieval telemetry. When `'true'`, the runtime records latency, mode, fallback, quality, trace-payload validation, and the default Hydra architecture snapshot; when unset or `'false'`, the telemetry shell still exists but detailed metrics remain zero/empty. |
 | `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
 | `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, ENOENT grace handling, and exponential backoff for `SQLITE_BUSY`. |
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
@@ -2476,6 +2638,13 @@ The `SPECKIT_ROLLOUT_PERCENT` flag applies a global percentage gate on top of an
 | `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded Hydra roadmap phase for telemetry, eval baselines, and migration checkpoint metadata. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `baseline`. |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra lineage-state capability. Used only for rollout metadata snapshots; it does not enable lineage behavior by itself. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra unified-graph milestone. Intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the Hydra adaptive-ranking milestone. Used by telemetry, eval baseline snapshots, and migration checkpoint metadata only. |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for Hydra scope-enforcement tracking. Requires `'true'` and still passes through rollout gating before it appears as enabled in metadata. |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for Hydra governance-guardrail tracking. Metadata only; no retrieval behavior changes occur from this env var alone. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Explicit opt-in roadmap flag for the shared-memory milestone. Used to describe the evaluated rollout slice in telemetry and checkpoint sidecars, not to activate a shared-memory runtime. |
 | `SPECKIT_INDEX_SPEC_DOCS` | `true` | boolean | `handlers/memory-index-discovery.ts` | Controls whether `memory_index_scan` indexes spec folder documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
 | `SPECKIT_INTERFERENCE_SCORE` | `true` | boolean | `lib/scoring/interference-scoring.ts` | Enables interference-based penalty scoring in composite scoring. When disabled (set to `'false'`), the interference computation is bypassed and the raw score passes through unchanged. |
 | `SPECKIT_LAZY_LOADING` | inert | boolean | `shared/embeddings.ts` | **Deprecated/inert.** Lazy loading is now permanent behavior and this env var no longer changes startup warmup behavior. |
@@ -2595,7 +2764,14 @@ Source file references are included in the flag table above.
 | `LOG_LEVEL` | `'info'` | string | `lib/utils/logger.ts` | Minimum log severity level. Messages below this level are suppressed. Valid values: `'debug'`, `'info'`, `'warn'`, `'error'`. All log output goes to stderr (stdout is reserved for JSON-RPC). |
 | `SPECKIT_EVAL_LOGGING` | `false` | boolean | `lib/eval/eval-logger.ts` | (Also listed under Search Pipeline.) Enables writes to the eval database during retrieval operations. Must be explicitly `'true'`. See category 1 for full description. |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | (Also listed under Search Pipeline.) Enables verbose file-count diagnostics during index scans. Must be explicitly `'true'`. See category 1 for full description. |
-| `SPECKIT_EXTENDED_TELEMETRY` | inert | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
+| `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | (Also listed under Search Pipeline.) Opt-in retrieval telemetry. Detailed latency/mode/fallback/quality metrics and architecture updates are recorded only when this is explicitly `'true'`. |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | string | `lib/config/capability-flags.ts` | Sets the recorded Hydra roadmap phase for telemetry and migration metadata. Unsupported values fall back to `baseline`. |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. Distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Opt-in Hydra roadmap capability flag surfaced in telemetry metadata only. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
 
 

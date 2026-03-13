@@ -20,6 +20,40 @@ import { getSpecsBasePaths } from './folder-discovery';
 
 const logger = createLogger('VectorIndex');
 
+interface SchemaCompatibilityReport {
+  compatible: boolean;
+  schemaVersion: number | null;
+  missingTables: string[];
+  missingColumns: Record<string, string[]>;
+  warnings: string[];
+}
+
+const REQUIRED_TABLES: readonly string[] = ['memory_index', 'schema_version'];
+const REQUIRED_MEMORY_INDEX_COLUMNS: readonly string[] = [
+  'id',
+  'spec_folder',
+  'file_path',
+  'importance_tier',
+  'context_type',
+  'session_id',
+  'created_at',
+  'updated_at',
+];
+
+function hasTable(database: Database.Database, tableName: string): boolean {
+  const row = database.prepare(
+    "SELECT 1 AS present FROM sqlite_master WHERE type='table' AND name = ?"
+  ).get(tableName) as { present?: number } | undefined;
+
+  return row?.present === 1;
+}
+
+function getTableColumns(database: Database.Database, tableName: string): string[] {
+  return (database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>)
+    .map((column) => column.name)
+    .filter((columnName) => typeof columnName === 'string' && columnName.length > 0);
+}
+
 function logDuplicateColumnMigrationSkip(columnName: string, error: unknown): void {
   logger.warn(`Migration skipped existing ${columnName} column`, {
     error: error instanceof Error ? error.message : String(error),
@@ -789,7 +823,81 @@ export function ensure_schema_version(database: Database.Database): number {
     logger.info(`Schema migration complete: v${SCHEMA_VERSION}`);
   }
 
+  const compatibility = validate_backward_compatibility(database);
+  if (!compatibility.compatible) {
+    logger.warn(
+      'Backward-compatibility validation detected schema gaps',
+      compatibility as unknown as Record<string, unknown>
+    );
+  }
+
   return current_version;
+}
+
+/**
+ * Validates backward compatibility expectations for the current schema.
+ * Never throws; returns compatibility details for logging and rollout gates.
+ */
+export function validate_backward_compatibility(database: Database.Database): SchemaCompatibilityReport {
+  try {
+    const missingTables = REQUIRED_TABLES.filter((tableName) => !hasTable(database, tableName));
+    const missingColumns: Record<string, string[]> = {};
+    const warnings: string[] = [];
+
+    if (hasTable(database, 'memory_index')) {
+      const existingColumns = new Set(getTableColumns(database, 'memory_index'));
+      const absentColumns = REQUIRED_MEMORY_INDEX_COLUMNS.filter((columnName) => !existingColumns.has(columnName));
+      if (absentColumns.length > 0) {
+        missingColumns.memory_index = absentColumns;
+      }
+    } else {
+      missingColumns.memory_index = [...REQUIRED_MEMORY_INDEX_COLUMNS];
+    }
+
+    if (!hasTable(database, 'memory_history')) {
+      warnings.push('memory_history table missing; historical replay functionality may be degraded.');
+    }
+    if (!hasTable(database, 'checkpoints')) {
+      warnings.push('checkpoints table missing; migration checkpoint tooling may be unavailable.');
+    }
+    if (!hasTable(database, 'memory_conflicts')) {
+      warnings.push('memory_conflicts table missing; conflict audit trail may be incomplete.');
+    }
+
+    const schemaVersion = safe_get_schema_version(database);
+    return {
+      compatible: missingTables.length === 0 && Object.keys(missingColumns).length === 0,
+      schemaVersion,
+      missingTables,
+      missingColumns,
+      warnings,
+    };
+  } catch (error: unknown) {
+    return {
+      compatible: false,
+      schemaVersion: null,
+      missingTables: [...REQUIRED_TABLES],
+      missingColumns: { memory_index: [...REQUIRED_MEMORY_INDEX_COLUMNS] },
+      warnings: [
+        `Compatibility check failed: ${error instanceof Error ? error.message : String(error)}`,
+      ],
+    };
+  }
+}
+
+function safe_get_schema_version(database: Database.Database): number | null {
+  try {
+    if (!hasTable(database, 'schema_version')) {
+      return null;
+    }
+    const row = database.prepare('SELECT version FROM schema_version WHERE id = 1').get() as { version?: number } | undefined;
+    if (typeof row?.version === 'number' && Number.isFinite(row.version)) {
+      return row.version;
+    }
+    return null;
+  } catch (_error: unknown) {
+    return null;
+  }
 }
 
 /**
@@ -1289,6 +1397,13 @@ export function create_schema(
     create_common_indexes(database);
     ensureCompanionTables(database);
     initHistory(database);
+    const compatibility = validate_backward_compatibility(database);
+    if (!compatibility.compatible) {
+      logger.warn(
+        'Existing schema is not fully backward-compatible after bootstrap',
+        compatibility as unknown as Record<string, unknown>
+      );
+    }
     // AI-WHY: Sprint 2 (REQ-S2-001) — embedding cache table must exist before any
     // save/index operation so lookupEmbedding() can skip redundant provider calls.
     initEmbeddingCache(database);
@@ -1454,3 +1569,4 @@ export { create_common_indexes as createCommonIndexes };
 export { migrate_confidence_columns as migrateConfidenceColumns };
 export { ensure_canonical_file_path_support as ensureCanonicalFilePathSupport };
 export { migrate_constitutional_tier as migrateConstitutionalTier };
+export { validate_backward_compatibility as validateBackwardCompatibility };

@@ -13,6 +13,7 @@
     "spec-kit-cli": "./dist/cli.js"
   },
   "scripts": {
+    "build": "tsc --build",
     "start": "node dist/context-server.js",
     "check": "npm run lint && npx tsc --noEmit",
     "check:full": "npm run check && npm run test",

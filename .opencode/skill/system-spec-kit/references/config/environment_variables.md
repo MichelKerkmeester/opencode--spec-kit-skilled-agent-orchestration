@@ -257,7 +257,14 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_EXTENDED_TELEMETRY` | ON | S5 | 4-dimension retrieval metrics (latency, mode, fallback, quality) |
+| `SPECKIT_EXTENDED_TELEMETRY` | OFF | S5 | Opt-in 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture snapshots |
+| `SPECKIT_HYDRA_PHASE` | `baseline` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | OFF | S7 | Opt-in Hydra roadmap metadata for the lineage-state milestone |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | OFF | S7 | Opt-in Hydra roadmap metadata for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | OFF | S7 | Opt-in Hydra roadmap metadata for adaptive-ranking experiments |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | OFF | S7 | Opt-in Hydra roadmap metadata for scope-enforcement tracking |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | OFF | S7 | Opt-in Hydra roadmap metadata for governance-guardrail tracking |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | OFF | S7 | Opt-in Hydra roadmap metadata for the shared-memory milestone |
 | `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
 | `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
 | `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
